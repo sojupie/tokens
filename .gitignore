@@ -1,0 +1,26 @@
+# JavaScript dependencies and package-manager state.
+node_modules/
+.pnpm-store/
+.corepack/
+
+# Go build cache, crawler payload cache, and other generated caches.
+.cache/
+
+# Generated crawler evidence. Curated, reviewed snapshots should live in a
+# separately named directory so they are intentionally added to Git.
+sources/raw/
+sources/normalized/
+sources/runs/
+
+# Local diagnostics and build output.
+inspect.txt
+coverage/
+dist/
+*.log
+*.tmp
+.idea/
+
+# Local environment overrides.
+.env
+.env.*
+!.env.example

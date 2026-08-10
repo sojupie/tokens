@@ -1,0 +1,16 @@
+{
+  "name": "material-pain-3",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.0.0",
+  "scripts": {
+    "harvest:m3": "node tools/m3-site-harvester/harvest.mjs",
+    "crawl:m3": "go run ./cmd/m3crawl",
+    "crawl:m3:legacy": "node tools/m3-site-harvester/crawl.mjs",
+    "normalize:m3": "node tools/m3-site-harvester/normalize.mjs",
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "playwright": "^1.52.0"
+  }
+}
