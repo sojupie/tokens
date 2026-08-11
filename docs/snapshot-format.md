@@ -1,13 +1,14 @@
 # M3 Source snapshot format
 
-**Status:** Proposed version 1  
+**Status:** Proposed version 2
 **Date:** 2026-08-11
 
 ## Purpose
 
-A snapshot is an immutable account of Material's published token data at one
-point in time. It gives M3 Forge and other consumers a stable input without
-requiring the crawler, a browser, a live API, or Material's website.
+A snapshot is an immutable bundle of Material's fetched token-table source
+payloads and the generated token data extracted from them at one point in time.
+It gives M3 Forge and other consumers a stable input without requiring the
+crawl tool, a browser, a live API, or Material's website.
 
 The snapshot preserves source meaning. It does not claim that every upstream
 value is correct for a consumer or approved for a design-system release.
@@ -15,27 +16,29 @@ value is correct for a consumer or approved for a design-system release.
 ## Bundle layout
 
 ```text
-m3-source-<snapshot-id>/
+m3-material-token-data-<snapshot-id>/
 |-- manifest.json
-|-- catalog.json
-|-- material.graph.json.gz
-|-- provenance.json
-|-- coverage.json
+|-- page-catalog.json             # Material specification page URL catalog
+|-- source-payloads/<hash-prefix>/<sha256>.json.gz
+|-- generated-token-graph.json.gz
+|-- source-payload-details.json
+|-- page-results.json
 `-- checksums.txt
 ```
 
-An optional evidence bundle can contain raw content-addressed payloads. Keep it
-separate so ordinary consumers do not download large browser captures.
+Successful content-addressed payload artifacts are part of the snapshot. A
+publisher may provide a separately indexed or compressed distribution, but it
+must contain the same verified payload bytes.
 
 ## Snapshot identity
 
 The publisher serializes release files deterministically, calculates their
 SHA-256 hashes, then writes the manifest. The manifest digest is the integrity
 identity used by consumers. A human-readable snapshot ID contains the source
-family, capture date, and a digest prefix:
+family, capture date, capture time in UTC (`HHMM`), and a digest prefix:
 
 ```text
-m3-2026-08-11-a1b2c3d4e5f6
+m3-2026-08-11-2348-a1b2c3d4e5f6
 ```
 
 Never replace files under a published snapshot ID. Publish a new snapshot when
@@ -43,21 +46,22 @@ content, extraction rules, or source metadata changes.
 
 ## Manifest
 
-Version 1 has this logical shape:
+Version 2 has this logical shape:
 
 ```json
 {
-  "schemaVersion": 1,
+  "type": "material-token-data-snapshot",
+  "schemaVersion": 2,
   "snapshotId": "m3-2026-08-11-a1b2c3d4e5f6",
   "createdAt": "2026-08-11T00:00:00Z",
   "source": {
     "system": "material-3",
-    "catalogSha256": "<sha256>",
+    "pageCatalogSha256": "<sha256>",
     "pageCount": 36
   },
   "capture": {
-    "runId": "20260811T000000.000000000Z",
-    "runManifest": "20260811T000000.000000000Z.json",
+    "crawlId": "20260811T000000.000000000Z",
+    "crawlReceipt": "20260811T000000.000000000Z.json",
     "pagesAttempted": 36,
     "pagesSucceeded": 36,
     "payloadsObserved": 36,
@@ -67,11 +71,12 @@ Version 1 has this logical shape:
   "extractor": {
     "name": "m3source",
     "version": "0.1.0",
-    "schemaVersion": 1
+    "schemaVersion": 2
   },
   "artifacts": [
     {
-      "path": "material.graph.json.gz",
+      "path": "generated-token-graph.json.gz",
+      "role": "generated-token-data",
       "mediaType": "application/json",
       "contentEncoding": "gzip",
       "sha256": "<sha256>",
@@ -85,9 +90,10 @@ The final schema must state which timestamps are descriptive and which fields
 participate in deterministic identity. Snapshot tooling must reject duplicate
 paths, invalid hashes, unsupported schema versions, and missing required files.
 
-## Extracted graph
+## Generated token graph
 
-The graph is Material-specific and loss-preserving. It retains:
+`generated-token-graph.json.gz` is generated from the source payload files. It is
+Material-specific and loss-preserving. It retains:
 
 - canonical and display token names;
 - upstream token, value, table, and revision IDs;
@@ -95,22 +101,23 @@ The graph is Material-specific and loss-preserving. It retains:
 - literals and full reference trees;
 - original types and units;
 - unknown fields required to diagnose source-schema drift;
-- source record IDs that join to provenance.
+- source record IDs that join to source-payload details.
 
 It is not DTCG source and does not flatten themes or contexts into one value.
 Consumers may generate DTCG candidates, platform inputs, documentation, or
 queries from it.
 
-## Provenance
+## Source-payload details
 
-Provenance records page and payload URLs, payload hashes, retrieval metadata,
-upstream revision details, and extraction notes. Use stable source IDs so graph
-records can refer to provenance without duplicating long strings.
+Source-payload details record page and source-payload URLs, source-payload
+hashes, retrieval metadata, upstream revision details, and extraction notes. Use
+stable source IDs so generated records can refer to source-payload details
+without duplicating long strings.
 
-## Coverage
+## Page results
 
-The coverage report lists each catalog page and whether it produced a token
-payload, extracted records, warnings, or errors. A missing token table is visible
+The page-results file lists each page and whether it produced source payloads,
+generated records, warnings, or errors. A missing token table is visible
 evidence, not a silently dropped page.
 
 ## Publishing and storage
@@ -119,7 +126,7 @@ Publish static files to content-addressable object storage, GitHub Releases, or
 both. Static HTTP files are the stable contract. Documentation sites, APIs,
 packages, and SQLite databases are derived views.
 
-Git stores code, schemas, the curated catalog, fixtures, and small lock records.
+Git stores code, schemas, the curated page URL catalog, fixtures, and small lock records.
 Object storage holds full snapshot bundles and optional raw evidence. A
 per-snapshot SQLite file may provide local query convenience, but it is generated
 from the snapshot and is never canonical.
@@ -136,3 +143,14 @@ A consumer must:
    otherwise.
 
 A consumer must not rely on mutable `latest` URLs for reproducible builds.
+
+## Diffing
+
+`snapshot compare` verifies both input directories, then compares their page
+page URL catalogs, page results, capture completeness, content-addressed source payloads, and
+generic extracted records. Record changes are keyed by source payload, record
+kind, upstream record ID, and occurrence ordinal; the complete upstream object
+is compared through the record's loss-preserving `raw` field. It ignores
+snapshot IDs, crawl IDs,
+retrieval timestamps, and artifact paths when deciding whether capture metadata
+changed.

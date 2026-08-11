@@ -23,7 +23,7 @@ M3 Source owns:
 - content-addressed payload capture;
 - a loss-preserving Material-specific graph;
 - semantic diffs between snapshots;
-- provenance, coverage, and immutable snapshot publication.
+- source-payload details, page results, and immutable snapshot publication.
 
 M3 Source does not own:
 
@@ -41,14 +41,11 @@ project.
 Keep commands conceptually separate even if they initially share one binary:
 
 ```text
-m3source catalog audit
-m3source capture
-m3source verify
-m3source extract
-m3source inspect
-m3source diff
-m3source snapshot build
+m3source crawl --discover --dry-run  # audit the page URL catalog
+m3source crawl
+m3source snapshot create
 m3source snapshot verify
+m3source snapshot compare
 ```
 
 Keep implementation packages internal until an external Go API has a concrete
@@ -58,10 +55,10 @@ consumer.
 
 Use files and content-addressed artifacts:
 
-- Git: code, schemas, curated catalog, small fixtures, and documentation.
-- Local cache: raw payload CAS and development run manifests.
-- Snapshot bundle: deterministic extracted graph, provenance, coverage, and
-  checksums.
+- Git: code, schemas, curated page URL catalog, small fixtures, and documentation.
+- Local cache: downloaded source-payload files and crawl receipts.
+- Snapshot bundle: source payloads, generated token graph, source-payload details,
+  page results, and checksums.
 - Object storage or GitHub Releases: immutable public snapshots and optional raw
   evidence bundles.
 
@@ -74,8 +71,8 @@ local queries without becoming a source of truth.
 Track these independently:
 
 1. Tool semantic version.
-2. Catalog schema version.
-3. Extracted graph schema version.
+2. Page URL catalog schema version.
+3. Generated token graph schema version.
 4. Snapshot manifest schema version.
 5. Snapshot ID and manifest SHA-256.
 6. Upstream page, payload URL, revision, and payload SHA-256.
@@ -100,14 +97,14 @@ existing snapshot or force a Forge release.
 - Validate response status, media type, JSON shape, and hash.
 - Separate volatile run reports from deterministic capture records.
 - Add cache verification and portable cache import/export.
-- Test catalog drift, duplicate payloads, corrupt cache entries, and stable
+- Test page URL catalog drift, duplicate source payloads, corrupt cache entries, and stable
   manifests with recorded fixtures.
 
-**Exit:** a catalog capture can be reproduced and verified without recrawling.
+**Exit:** a page URL catalog capture can be reproduced and verified without recrawling.
 
-### Phase 2: generic extraction
+### Phase 2: generic token extraction
 
-- Define versioned graph and provenance schemas.
+- Define versioned generated-token-graph and source-payload-detail schemas.
 - Preserve names, IDs, states, contexts, reference trees, types, units, and
   unknown source fields.
 - Extract representative foundations and component families without
@@ -130,7 +127,8 @@ raw payloads.
 ### Phase 4: immutable snapshots
 
 - Implement deterministic bundle assembly and verification.
-- Generate manifest, catalog, graph, provenance, coverage, and checksums.
+- Generate the manifest, page URL catalog, source payloads, generated token graph,
+  source-payload details, page results, and checksums.
 - Publish to static storage and mirror to a durable release channel.
 - Document retention and raw-evidence redistribution policy.
 
@@ -152,17 +150,17 @@ URL filtering, cache integrity, schema drift, extraction fidelity, semantic
 diffs, deterministic serialization, bundle verification, and corrupt inputs.
 
 Run live crawling manually or on a scheduled audit. A scheduled job can report
-catalog or token drift and publish an evidence candidate. It must not rewrite a
-catalog, publish over an existing snapshot, or promote Forge tokens without
+page URL catalog or token drift and publish an evidence candidate. It must not rewrite a
+page URL catalog, publish over an existing snapshot, or promote Forge tokens without
 review.
 
 ## 8. Immediate work
 
 1. Rename the Go module and command from the feasibility-spike names.
-2. Define the extracted graph, provenance, coverage, and manifest schemas.
-3. Refactor capture so it records generic payload metadata only.
-4. Build the first deterministic full-catalog capture record.
-5. Implement loss-preserving extraction.
-6. Implement semantic diffing.
-7. Build and verify the first immutable snapshot.
+2. Define the generated token graph, source-payload details, page results, and manifest schemas.
+3. Refactor capture so it records generic source-payload metadata only.
+4. Build the first deterministic full page-URL-catalog crawl result.
+5. Implement loss-preserving token extraction.
+6. Implement semantic snapshot comparison.
+7. Build and verify the first immutable material-token-data snapshot.
 8. Decide public object storage, mirroring, and retention policy.

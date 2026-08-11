@@ -1,0 +1,563 @@
+{
+  "schemaVersion": 1,
+  "crawlId": "20260811T182711.484563100Z",
+  "startedAt": "2026-08-11T18:27:11.4845631Z",
+  "completedAt": "2026-08-11T18:30:13.6064285Z",
+  "mode": "all",
+  "options": {
+    "seed": "https://m3.material.io/components/buttons/specs",
+    "pathPrefix": "/components/",
+    "specsOnly": true,
+    "pageCatalogPath": "inputs/page-catalog.json",
+    "discover": false,
+    "updatePageCatalog": false,
+    "noPageCatalog": false,
+    "maxPages": 500,
+    "concurrency": 2,
+    "pageTimeout": "10s",
+    "cacheDir": ".cache/material-token-table-responses",
+    "resultsDir": "crawl-results",
+    "refresh": false,
+    "dryRun": false,
+    "headed": false
+  },
+  "discovery": {
+    "mode": "page-catalog",
+    "pageCatalogPath": "inputs/page-catalog.json"
+  },
+  "capture": {
+    "pagesAttempted": 36,
+    "pagesSucceeded": 36,
+    "pagesFailed": 0,
+    "payloadsObserved": 34,
+    "payloadsFetched": 33,
+    "complete": false
+  },
+  "pages": [
+    "https://m3.material.io/components/app-bars/specs",
+    "https://m3.material.io/components/badges/specs",
+    "https://m3.material.io/components/bottom-sheets/specs",
+    "https://m3.material.io/components/button-groups/specs",
+    "https://m3.material.io/components/buttons/specs",
+    "https://m3.material.io/components/cards/specs",
+    "https://m3.material.io/components/carousel/specs",
+    "https://m3.material.io/components/checkbox/specs",
+    "https://m3.material.io/components/chips/specs",
+    "https://m3.material.io/components/date-pickers/specs",
+    "https://m3.material.io/components/dialogs/specs",
+    "https://m3.material.io/components/divider/specs",
+    "https://m3.material.io/components/extended-fab/specs",
+    "https://m3.material.io/components/fab-menu/specs",
+    "https://m3.material.io/components/floating-action-button/specs",
+    "https://m3.material.io/components/icon-buttons/specs",
+    "https://m3.material.io/components/lists/specs",
+    "https://m3.material.io/components/loading-indicator/specs",
+    "https://m3.material.io/components/menus/specs",
+    "https://m3.material.io/components/navigation-bar/specs",
+    "https://m3.material.io/components/navigation-drawer/specs",
+    "https://m3.material.io/components/navigation-rail/specs",
+    "https://m3.material.io/components/progress-indicators/specs",
+    "https://m3.material.io/components/radio-button/specs",
+    "https://m3.material.io/components/search/specs",
+    "https://m3.material.io/components/segmented-buttons/specs",
+    "https://m3.material.io/components/side-sheets/specs",
+    "https://m3.material.io/components/sliders/specs",
+    "https://m3.material.io/components/snackbar/specs",
+    "https://m3.material.io/components/split-button/specs",
+    "https://m3.material.io/components/switch/specs",
+    "https://m3.material.io/components/tabs/specs",
+    "https://m3.material.io/components/text-fields/specs",
+    "https://m3.material.io/components/time-pickers/specs",
+    "https://m3.material.io/components/toolbars/specs",
+    "https://m3.material.io/components/tooltips/specs"
+  ],
+  "observations": [
+    {
+      "pageUrl": "https://m3.material.io/components/app-bars/specs",
+      "status": 200,
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.3ec622835c7987b5.json"
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/badges/specs",
+      "status": 200,
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.59a1b3a9a90ca8b3.json"
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/bottom-sheets/specs",
+      "status": 200,
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.75e530a1014802b3.json"
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/button-groups/specs",
+      "status": 200,
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.082d7fd6e058b011.json"
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/buttons/specs",
+      "status": 200,
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.1c4257f8804f9478.json"
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/cards/specs",
+      "status": 200,
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.100ebfb4332adab1.json"
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/carousel/specs",
+      "status": 200,
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.43a124d2adc8a2ef.json"
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/checkbox/specs",
+      "status": 200,
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.31f16b44fe03b0c0.json"
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/chips/specs",
+      "status": 200,
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.484a63be03b01a17.json"
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/date-pickers/specs",
+      "status": 200,
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.01c5310367774eb8.json"
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/dialogs/specs",
+      "status": 200,
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.0b1e39a67d5bafdc.json"
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/divider/specs",
+      "status": 200,
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.77f7657eb270e53d.json"
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/extended-fab/specs",
+      "status": 200,
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.36500f77b86d20a5.json"
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/fab-menu/specs",
+      "status": 200,
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.1a076cec8bc202c2.json"
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/floating-action-button/specs",
+      "status": 200,
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.41587918e51cca98.json"
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/icon-buttons/specs",
+      "status": 200
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/lists/specs",
+      "status": 200,
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.6c818a16475113bd.json"
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/loading-indicator/specs",
+      "status": 200,
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.68895be451a51c31.json"
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/menus/specs",
+      "status": 200,
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.385a28e5d3bb3dd0.json"
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/navigation-bar/specs",
+      "status": 200,
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.52865380210a9b69.json"
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/navigation-drawer/specs",
+      "status": 200,
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.376969f91547be8e.json"
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/navigation-rail/specs",
+      "status": 200,
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.5b55bd7cc1ea6e29.json"
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/progress-indicators/specs",
+      "status": 200,
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.6f51f7ab7775a392.json"
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/radio-button/specs",
+      "status": 200,
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.6acb269a58d5f93f.json"
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/search/specs",
+      "status": 200,
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.07341534518f78d0.json"
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/segmented-buttons/specs",
+      "status": 200,
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.67e2613d87ca6f98.json"
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/side-sheets/specs",
+      "status": 200,
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.06c2c925cf96adca.json"
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/sliders/specs",
+      "status": 200,
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.0045edb815f2325e.json"
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/snackbar/specs",
+      "status": 200,
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.346ae12a744b45dd.json"
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/split-button/specs",
+      "status": 200,
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.624e8f2da4007fc8.json"
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/switch/specs",
+      "status": 200,
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.33b1b2925d9ff561.json"
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/tabs/specs",
+      "status": 200,
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.6039f0080a95df1e.json"
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/text-fields/specs",
+      "status": 200
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/time-pickers/specs",
+      "status": 200,
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.39f4b152dd9bd292.json"
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/toolbars/specs",
+      "status": 200,
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.2956a7939bf0879c.json"
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/tooltips/specs",
+      "status": 200,
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.37697297db0555a6.json"
+    }
+  ],
+  "sourcePayloads": [
+    {
+      "pageUrl": "https://m3.material.io/components/app-bars/specs",
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.3ec622835c7987b5.json",
+      "hash": "654ca02344b7768d5afbe937420ff14807eab8e6b59ba15a5901d7f8a41d3294",
+      "artifact": "source-payloads\\65\\654ca02344b7768d5afbe937420ff14807eab8e6b59ba15a5901d7f8a41d3294.json.gz",
+      "bytes": 2568037,
+      "retrievedAt": "2026-08-11T18:29:10.2050433Z",
+      "reused": false
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/badges/specs",
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.59a1b3a9a90ca8b3.json",
+      "hash": "f3e4869f64c58201074073fcc535bf218a2da4ed4117ec52aafc6413f8c24c39",
+      "artifact": "source-payloads\\f3\\f3e4869f64c58201074073fcc535bf218a2da4ed4117ec52aafc6413f8c24c39.json.gz",
+      "bytes": 304943,
+      "retrievedAt": "2026-08-11T18:29:11.6895574Z",
+      "reused": false
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/bottom-sheets/specs",
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.75e530a1014802b3.json",
+      "hash": "8174d8bc8186a6af1cf3409868a2a0b9e807d09e26697ed239288d22553df466",
+      "artifact": "source-payloads\\81\\8174d8bc8186a6af1cf3409868a2a0b9e807d09e26697ed239288d22553df466.json.gz",
+      "bytes": 272408,
+      "retrievedAt": "2026-08-11T18:29:12.5030598Z",
+      "reused": false
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/button-groups/specs",
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.082d7fd6e058b011.json",
+      "hash": "522347cc17c2d1056c149150e677fd8d5833d59b30c76261e00ce1157d127112",
+      "artifact": "source-payloads\\52\\522347cc17c2d1056c149150e677fd8d5833d59b30c76261e00ce1157d127112.json.gz",
+      "bytes": 175515,
+      "retrievedAt": "2026-08-11T18:29:13.3217083Z",
+      "reused": false
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/buttons/specs",
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.1c4257f8804f9478.json",
+      "hash": "43f3c99741c78aae61d81299e196ef6d8482cc14799dd84f160afa8874551f43",
+      "artifact": "source-payloads\\43\\43f3c99741c78aae61d81299e196ef6d8482cc14799dd84f160afa8874551f43.json.gz",
+      "bytes": 19430491,
+      "retrievedAt": "2026-08-11T18:29:18.8012726Z",
+      "reused": false
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/cards/specs",
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.100ebfb4332adab1.json",
+      "hash": "eda1c471b8454f11392dc01362a40eb97c371d1b0321078ac6f29ac9e539360c",
+      "artifact": "source-payloads\\ed\\eda1c471b8454f11392dc01362a40eb97c371d1b0321078ac6f29ac9e539360c.json.gz",
+      "bytes": 1963535,
+      "retrievedAt": "2026-08-11T18:29:20.8490521Z",
+      "reused": false
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/carousel/specs",
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.43a124d2adc8a2ef.json",
+      "hash": "c9e5c7eb02f3442c960689701cb02d81e13bd48d8e9dd3f664dc54aef2b40b12",
+      "artifact": "source-payloads\\c9\\c9e5c7eb02f3442c960689701cb02d81e13bd48d8e9dd3f664dc54aef2b40b12.json.gz",
+      "bytes": 758943,
+      "retrievedAt": "2026-08-11T18:29:21.9643567Z",
+      "reused": false
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/checkbox/specs",
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.31f16b44fe03b0c0.json",
+      "hash": "09af996077cdd167e92c489271c9db8e45fc04cbaac540fa574830a2c5615f10",
+      "artifact": "source-payloads\\09\\09af996077cdd167e92c489271c9db8e45fc04cbaac540fa574830a2c5615f10.json.gz",
+      "bytes": 2634463,
+      "retrievedAt": "2026-08-11T18:29:23.675237Z",
+      "reused": false
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/chips/specs",
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.484a63be03b01a17.json",
+      "hash": "f2a88268f02fb0a79d8c66ee0389c733aa2e251730b01b962182e90d600dbd76",
+      "artifact": "source-payloads\\f2\\f2a88268f02fb0a79d8c66ee0389c733aa2e251730b01b962182e90d600dbd76.json.gz",
+      "bytes": 11423504,
+      "retrievedAt": "2026-08-11T18:29:27.6253558Z",
+      "reused": false
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/date-pickers/specs",
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.01c5310367774eb8.json",
+      "hash": "abaa8ae03044c68c34c9ab0d1f7e3551a9bba8fb1c8cb2355e2d925876fb9f83",
+      "artifact": "source-payloads\\ab\\abaa8ae03044c68c34c9ab0d1f7e3551a9bba8fb1c8cb2355e2d925876fb9f83.json.gz",
+      "bytes": 6070386,
+      "retrievedAt": "2026-08-11T18:29:29.9226413Z",
+      "reused": false
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/dialogs/specs",
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.0b1e39a67d5bafdc.json",
+      "hash": "c812727fb428e4b258ce553478a07e02dacdba9a45eb3aec3cc4311d154fca6b",
+      "artifact": "source-payloads\\c8\\c812727fb428e4b258ce553478a07e02dacdba9a45eb3aec3cc4311d154fca6b.json.gz",
+      "bytes": 2723818,
+      "retrievedAt": "2026-08-11T18:29:32.2663633Z",
+      "reused": false
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/divider/specs",
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.77f7657eb270e53d.json",
+      "hash": "e66621779a8a4779c31935cc75b681fa7c8ce2746e763a14ba7728eb95f17d2e",
+      "artifact": "source-payloads\\e6\\e66621779a8a4779c31935cc75b681fa7c8ce2746e763a14ba7728eb95f17d2e.json.gz",
+      "bytes": 89216,
+      "retrievedAt": "2026-08-11T18:29:33.195869Z",
+      "reused": false
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/extended-fab/specs",
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.36500f77b86d20a5.json",
+      "hash": "358bd662d252d3c0b263bc359c030187714ff885d46f698183a6bf516a7899eb",
+      "artifact": "source-payloads\\35\\358bd662d252d3c0b263bc359c030187714ff885d46f698183a6bf516a7899eb.json.gz",
+      "bytes": 8474724,
+      "retrievedAt": "2026-08-11T18:29:36.0218601Z",
+      "reused": false
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/fab-menu/specs",
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.1a076cec8bc202c2.json",
+      "hash": "4542e274591f184e360b3004abdd63ec62491218bf2dade85890030ee1a47ca8",
+      "artifact": "source-payloads\\45\\4542e274591f184e360b3004abdd63ec62491218bf2dade85890030ee1a47ca8.json.gz",
+      "bytes": 4029135,
+      "retrievedAt": "2026-08-11T18:29:39.0717647Z",
+      "reused": false
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/floating-action-button/specs",
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.41587918e51cca98.json",
+      "hash": "58c16bc1eb23140cacacd4b17c3057d427f0dc0c7d966e6681e7166da5303214",
+      "artifact": "source-payloads\\58\\58c16bc1eb23140cacacd4b17c3057d427f0dc0c7d966e6681e7166da5303214.json.gz",
+      "bytes": 10371533,
+      "retrievedAt": "2026-08-11T18:29:42.1444128Z",
+      "reused": false
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/lists/specs",
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.6c818a16475113bd.json",
+      "hash": "1a003c5bbe81160d5d12660aaf7e9a1f855aa7d254a206261e1ae93b85122404",
+      "artifact": "source-payloads\\1a\\1a003c5bbe81160d5d12660aaf7e9a1f855aa7d254a206261e1ae93b85122404.json.gz",
+      "bytes": 5926974,
+      "retrievedAt": "2026-08-11T18:29:44.4224484Z",
+      "reused": false
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/loading-indicator/specs",
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.68895be451a51c31.json",
+      "hash": "1207da24d41f2e6122a6004cf1f0a2684d5b759c9d0dfdece2861b9a8837a9f9",
+      "artifact": "source-payloads\\12\\1207da24d41f2e6122a6004cf1f0a2684d5b759c9d0dfdece2861b9a8837a9f9.json.gz",
+      "bytes": 300049,
+      "retrievedAt": "2026-08-11T18:29:45.3400038Z",
+      "reused": false
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/menus/specs",
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.385a28e5d3bb3dd0.json",
+      "hash": "4e368665c580f13c25d53f271e578e904cb444911896156b75c4bd198f86748b",
+      "artifact": "source-payloads\\4e\\4e368665c580f13c25d53f271e578e904cb444911896156b75c4bd198f86748b.json.gz",
+      "bytes": 9161657,
+      "retrievedAt": "2026-08-11T18:29:48.4408808Z",
+      "reused": false
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/navigation-bar/specs",
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.52865380210a9b69.json",
+      "hash": "6f20e030df1f8a6b568204c71e7c453755e1a60800a5dc4f56af477cbfd29a0e",
+      "artifact": "source-payloads\\6f\\6f20e030df1f8a6b568204c71e7c453755e1a60800a5dc4f56af477cbfd29a0e.json.gz",
+      "bytes": 2658192,
+      "retrievedAt": "2026-08-11T18:29:49.9473047Z",
+      "reused": false
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/navigation-drawer/specs",
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.376969f91547be8e.json",
+      "hash": "49c137af3a0f1e927d7b3e2bf0c3a5ec6ef5e08b49cde4cdc917480cc7848264",
+      "artifact": "source-payloads\\49\\49c137af3a0f1e927d7b3e2bf0c3a5ec6ef5e08b49cde4cdc917480cc7848264.json.gz",
+      "bytes": 2304869,
+      "retrievedAt": "2026-08-11T18:29:51.3262674Z",
+      "reused": false
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/navigation-rail/specs",
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.5b55bd7cc1ea6e29.json",
+      "hash": "cbf6ca5a1eb2963825c2aacffa8cf4efd3c2f4758d80ccdcbbc55d239ddc1fcc",
+      "artifact": "source-payloads\\cb\\cbf6ca5a1eb2963825c2aacffa8cf4efd3c2f4758d80ccdcbbc55d239ddc1fcc.json.gz",
+      "bytes": 3255115,
+      "retrievedAt": "2026-08-11T18:29:53.0166852Z",
+      "reused": false
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/progress-indicators/specs",
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.6f51f7ab7775a392.json",
+      "hash": "c098c159eb95f674ca2ead302e85102cbb1eca1fbba4498e3b51b7c4f19fd020",
+      "artifact": "source-payloads\\c0\\c098c159eb95f674ca2ead302e85102cbb1eca1fbba4498e3b51b7c4f19fd020.json.gz",
+      "bytes": 765427,
+      "retrievedAt": "2026-08-11T18:29:54.0555463Z",
+      "reused": false
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/radio-button/specs",
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.6acb269a58d5f93f.json",
+      "hash": "bdf0007a4d58c2a9994c39d1e56ed5a833192b10983e78be1140c7bbe8221bd4",
+      "artifact": "source-payloads\\bd\\bdf0007a4d58c2a9994c39d1e56ed5a833192b10983e78be1140c7bbe8221bd4.json.gz",
+      "bytes": 1007093,
+      "retrievedAt": "2026-08-11T18:29:55.2903994Z",
+      "reused": false
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/search/specs",
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.07341534518f78d0.json",
+      "hash": "e4f6ba06a226c5897dd02094f09c5ba53aabf80fff3e6720749f890adde6e337",
+      "artifact": "source-payloads\\e4\\e4f6ba06a226c5897dd02094f09c5ba53aabf80fff3e6720749f890adde6e337.json.gz",
+      "bytes": 1488406,
+      "retrievedAt": "2026-08-11T18:29:56.5692288Z",
+      "reused": false
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/segmented-buttons/specs",
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.67e2613d87ca6f98.json",
+      "hash": "6be09cf9ced098391a7cda97c88dd252e080ac28e770df437bc3b34ab1894b9e",
+      "artifact": "source-payloads\\6b\\6be09cf9ced098391a7cda97c88dd252e080ac28e770df437bc3b34ab1894b9e.json.gz",
+      "bytes": 1899768,
+      "retrievedAt": "2026-08-11T18:29:58.9439246Z",
+      "reused": false
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/side-sheets/specs",
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.06c2c925cf96adca.json",
+      "hash": "6e293c4d07ffe23ee33e05957136261abff0c6bfb7784b84539a424dafb22fb4",
+      "artifact": "source-payloads\\6e\\6e293c4d07ffe23ee33e05957136261abff0c6bfb7784b84539a424dafb22fb4.json.gz",
+      "bytes": 820790,
+      "retrievedAt": "2026-08-11T18:30:00.0476961Z",
+      "reused": false
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/sliders/specs",
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.0045edb815f2325e.json",
+      "hash": "23bf93d02b0bc0ee186b3aea7baffd78509fcc406fd6afb2b6b1162132ab485b",
+      "artifact": "source-payloads\\23\\23bf93d02b0bc0ee186b3aea7baffd78509fcc406fd6afb2b6b1162132ab485b.json.gz",
+      "bytes": 2504511,
+      "retrievedAt": "2026-08-11T18:30:01.6819215Z",
+      "reused": false
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/snackbar/specs",
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.346ae12a744b45dd.json",
+      "hash": "",
+      "artifact": "",
+      "bytes": 0,
+      "retrievedAt": "",
+      "reused": false,
+      "error": "404 Not Found"
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/split-button/specs",
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.624e8f2da4007fc8.json",
+      "hash": "c98ba87c9f1732b9bcb7e627b194fa34bb0e270329b18da89ee68fa31fae60b1",
+      "artifact": "source-payloads\\c9\\c98ba87c9f1732b9bcb7e627b194fa34bb0e270329b18da89ee68fa31fae60b1.json.gz",
+      "bytes": 9761789,
+      "retrievedAt": "2026-08-11T18:30:05.8252618Z",
+      "reused": false
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/switch/specs",
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.33b1b2925d9ff561.json",
+      "hash": "3798d69059aff7ae352ee2b4f30a4a084813999988fa7ae5e76b034dfc80b8e8",
+      "artifact": "source-payloads\\37\\3798d69059aff7ae352ee2b4f30a4a084813999988fa7ae5e76b034dfc80b8e8.json.gz",
+      "bytes": 2295722,
+      "retrievedAt": "2026-08-11T18:30:07.2432705Z",
+      "reused": false
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/tabs/specs",
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.6039f0080a95df1e.json",
+      "hash": "00437814dc35df4df26022543035185373f51d945e454c2ceee6915b34be7bd5",
+      "artifact": "source-payloads\\00\\00437814dc35df4df26022543035185373f51d945e454c2ceee6915b34be7bd5.json.gz",
+      "bytes": 2871226,
+      "retrievedAt": "2026-08-11T18:30:08.7077211Z",
+      "reused": false
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/time-pickers/specs",
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.39f4b152dd9bd292.json",
+      "hash": "f6c21b98c9035251a667a47270673cd3fe202f2ba068ca5c5952874c4bfcf348",
+      "artifact": "source-payloads\\f6\\f6c21b98c9035251a667a47270673cd3fe202f2ba068ca5c5952874c4bfcf348.json.gz",
+      "bytes": 5103883,
+      "retrievedAt": "2026-08-11T18:30:10.5895894Z",
+      "reused": false
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/toolbars/specs",
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.2956a7939bf0879c.json",
+      "hash": "84c9b479e066b865a67720d4b091cc0d9a79a10a7ba37d121bbc24735b46fd31",
+      "artifact": "source-payloads\\84\\84c9b479e066b865a67720d4b091cc0d9a79a10a7ba37d121bbc24735b46fd31.json.gz",
+      "bytes": 3926925,
+      "retrievedAt": "2026-08-11T18:30:12.4158466Z",
+      "reused": false
+    },
+    {
+      "pageUrl": "https://m3.material.io/components/tooltips/specs",
+      "tokenTableUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.37697297db0555a6.json",
+      "hash": "c6f73731de2064c6a81ad6089c15a4415593e3785a4b1e5cd5653226fd96b500",
+      "artifact": "source-payloads\\c6\\c6f73731de2064c6a81ad6089c15a4415593e3785a4b1e5cd5653226fd96b500.json.gz",
+      "bytes": 1277295,
+      "retrievedAt": "2026-08-11T18:30:13.6059021Z",
+      "reused": false
+    }
+  ]
+}

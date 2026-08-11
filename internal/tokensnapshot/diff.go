@@ -1,0 +1,325 @@
+package tokensnapshot
+
+import (
+	"compress/gzip"
+	"encoding/json"
+	"fmt"
+	"os"
+	"path/filepath"
+	"sort"
+)
+
+type SnapshotDiff struct {
+	SchemaVersion      int               `json:"schemaVersion"`
+	FromSnapshotID     string            `json:"fromSnapshotId"`
+	ToSnapshotID       string            `json:"toSnapshotId"`
+	Changed            bool              `json:"changed"`
+	PageCatalogChanged bool              `json:"pageCatalogChanged"`
+	CaptureChanged     bool              `json:"captureChanged"`
+	Pages              PageSetDiff       `json:"pages"`
+	SourcePayloads     SourcePayloadDiff `json:"sourcePayloads"`
+	Records            RecordSetDiff     `json:"records"`
+	PageResults        PageResultsDiff   `json:"pageResults"`
+}
+
+type PageSetDiff struct {
+	Added   []string `json:"added,omitempty"`
+	Removed []string `json:"removed,omitempty"`
+}
+
+type SourcePayloadDiff struct {
+	Added   []SourcePayloadChange `json:"added,omitempty"`
+	Removed []SourcePayloadChange `json:"removed,omitempty"`
+	Changed []SourcePayloadChange `json:"changed,omitempty"`
+}
+
+type SourcePayloadChange struct {
+	Key           string `json:"key"`
+	PageURL       string `json:"pageUrl"`
+	TokenTableURL string `json:"tokenTableUrl"`
+	BeforeHash    string `json:"beforeHash,omitempty"`
+	AfterHash     string `json:"afterHash,omitempty"`
+	BeforeError   string `json:"beforeError,omitempty"`
+	AfterError    string `json:"afterError,omitempty"`
+	BeforeBytes   int    `json:"beforeBytes,omitempty"`
+	AfterBytes    int    `json:"afterBytes,omitempty"`
+}
+
+type PageResultsDiff struct {
+	Changed []PageResultChange `json:"changed,omitempty"`
+}
+
+type PageResultChange struct {
+	URL    string     `json:"url"`
+	Before PageResult `json:"before"`
+	After  PageResult `json:"after"`
+}
+
+type RecordSetDiff struct {
+	Added   []RecordChange `json:"added,omitempty"`
+	Removed []RecordChange `json:"removed,omitempty"`
+	Changed []RecordChange `json:"changed,omitempty"`
+}
+
+type RecordChange struct {
+	Key          string `json:"key"`
+	Kind         string `json:"kind"`
+	TokenName    string `json:"tokenName,omitempty"`
+	BeforeSha256 string `json:"beforeSha256,omitempty"`
+	AfterSha256  string `json:"afterSha256,omitempty"`
+}
+
+func Diff(fromDir, toDir string) (SnapshotDiff, error) {
+	fromManifest, err := Verify(fromDir)
+	if err != nil {
+		return SnapshotDiff{}, fmt.Errorf("verify from snapshot: %w", err)
+	}
+	toManifest, err := Verify(toDir)
+	if err != nil {
+		return SnapshotDiff{}, fmt.Errorf("verify to snapshot: %w", err)
+	}
+	fromGraph, err := readGraph(fromDir)
+	if err != nil {
+		return SnapshotDiff{}, fmt.Errorf("read from graph: %w", err)
+	}
+	toGraph, err := readGraph(toDir)
+	if err != nil {
+		return SnapshotDiff{}, fmt.Errorf("read to graph: %w", err)
+	}
+	fromPageResults, err := readPageResults(fromDir)
+	if err != nil {
+		return SnapshotDiff{}, fmt.Errorf("read from page results: %w", err)
+	}
+	toPageResults, err := readPageResults(toDir)
+	if err != nil {
+		return SnapshotDiff{}, fmt.Errorf("read to page results: %w", err)
+	}
+
+	diff := SnapshotDiff{
+		SchemaVersion:      SchemaVersion,
+		FromSnapshotID:     fromManifest.SnapshotID,
+		ToSnapshotID:       toManifest.SnapshotID,
+		PageCatalogChanged: pageCatalogHash(fromManifest.Source) != pageCatalogHash(toManifest.Source),
+		CaptureChanged:     captureChanged(fromManifest.Capture, toManifest.Capture),
+		Pages:              diffPages(fromGraph.Pages, toGraph.Pages),
+		SourcePayloads:     diffSourcePayloads(fromGraph.SourcePayloads, toGraph.SourcePayloads),
+		Records:            diffRecords(fromGraph.Records, toGraph.Records),
+		PageResults:        diffPageResults(fromPageResults.Pages, toPageResults.Pages),
+	}
+	diff.Changed = diff.PageCatalogChanged || diff.CaptureChanged || len(diff.Pages.Added) > 0 || len(diff.Pages.Removed) > 0 || len(diff.SourcePayloads.Added) > 0 || len(diff.SourcePayloads.Removed) > 0 || len(diff.SourcePayloads.Changed) > 0 || len(diff.Records.Added) > 0 || len(diff.Records.Removed) > 0 || len(diff.Records.Changed) > 0 || len(diff.PageResults.Changed) > 0
+	return diff, nil
+}
+
+func pageCatalogHash(source SourceInfo) string {
+	return source.PageCatalogSha256
+}
+
+func captureChanged(from, to CaptureInfo) bool {
+	return from.PagesAttempted != to.PagesAttempted ||
+		from.PagesSucceeded != to.PagesSucceeded ||
+		from.PayloadsObserved != to.PayloadsObserved ||
+		from.PayloadsFetched != to.PayloadsFetched ||
+		from.Complete != to.Complete
+}
+
+func readGraph(directory string) (Graph, error) {
+	file, err := os.Open(filepath.Join(directory, "generated-token-graph.json.gz"))
+	if err != nil {
+		return Graph{}, err
+	}
+	decompressor, err := gzip.NewReader(file)
+	if err != nil {
+		_ = file.Close()
+		return Graph{}, err
+	}
+	var graph Graph
+	err = json.NewDecoder(decompressor).Decode(&graph)
+	closeErr := decompressor.Close()
+	fileCloseErr := file.Close()
+	if err != nil {
+		return Graph{}, err
+	}
+	if closeErr != nil {
+		return Graph{}, closeErr
+	}
+	if fileCloseErr != nil {
+		return Graph{}, fileCloseErr
+	}
+	if graph.SchemaVersion != SchemaVersion {
+		return Graph{}, fmt.Errorf("unsupported graph schema version %d", graph.SchemaVersion)
+	}
+	return graph, nil
+}
+
+func readPageResults(directory string) (PageResults, error) {
+	body, err := os.ReadFile(filepath.Join(directory, "page-results.json"))
+	if err != nil {
+		return PageResults{}, err
+	}
+	var pageResults PageResults
+	if err := json.Unmarshal(body, &pageResults); err != nil {
+		return PageResults{}, err
+	}
+	if pageResults.SchemaVersion != SchemaVersion {
+		return PageResults{}, fmt.Errorf("unsupported page-results schema version %d", pageResults.SchemaVersion)
+	}
+	return pageResults, nil
+}
+
+func diffPages(from, to []string) PageSetDiff {
+	fromSet := stringSet(from)
+	toSet := stringSet(to)
+	diff := PageSetDiff{}
+	for page := range toSet {
+		if !fromSet[page] {
+			diff.Added = append(diff.Added, page)
+		}
+	}
+	for page := range fromSet {
+		if !toSet[page] {
+			diff.Removed = append(diff.Removed, page)
+		}
+	}
+	sort.Strings(diff.Added)
+	sort.Strings(diff.Removed)
+	return diff
+}
+
+func diffSourcePayloads(from, to []GraphPayload) SourcePayloadDiff {
+	fromByKey := payloadMap(from)
+	toByKey := payloadMap(to)
+	diff := SourcePayloadDiff{}
+	for key, payload := range toByKey {
+		before, exists := fromByKey[key]
+		if !exists {
+			diff.Added = append(diff.Added, payloadChange(payload, GraphPayload{}))
+		} else if before.Hash != payload.Hash || before.Error != payload.Error || before.Bytes != payload.Bytes {
+			diff.Changed = append(diff.Changed, payloadChange(payload, before))
+		}
+	}
+	for key, payload := range fromByKey {
+		if _, exists := toByKey[key]; !exists {
+			diff.Removed = append(diff.Removed, payloadChange(GraphPayload{}, payload))
+		}
+	}
+	sortSourcePayloadChanges(diff.Added)
+	sortSourcePayloadChanges(diff.Removed)
+	sortSourcePayloadChanges(diff.Changed)
+	return diff
+}
+
+func diffPageResults(from, to []PageResult) PageResultsDiff {
+	fromByURL := pageResultsMap(from)
+	toByURL := pageResultsMap(to)
+	diff := PageResultsDiff{}
+	for url, after := range toByURL {
+		if before, exists := fromByURL[url]; exists && before != after {
+			diff.Changed = append(diff.Changed, PageResultChange{URL: url, Before: before, After: after})
+		}
+	}
+	sort.Slice(diff.Changed, func(i, j int) bool { return diff.Changed[i].URL < diff.Changed[j].URL })
+	return diff
+}
+
+func diffRecords(from, to []ExtractedRecord) RecordSetDiff {
+	fromByKey := recordMap(from)
+	toByKey := recordMap(to)
+	diff := RecordSetDiff{}
+	for key, after := range toByKey {
+		before, exists := fromByKey[key]
+		if !exists {
+			diff.Added = append(diff.Added, recordChange(after, ExtractedRecord{}))
+		} else if sha256Hex(before.Raw) != sha256Hex(after.Raw) {
+			diff.Changed = append(diff.Changed, recordChange(after, before))
+		}
+	}
+	for key, before := range fromByKey {
+		if _, exists := toByKey[key]; !exists {
+			diff.Removed = append(diff.Removed, recordChange(ExtractedRecord{}, before))
+		}
+	}
+	sortRecordChanges(diff.Added)
+	sortRecordChanges(diff.Removed)
+	sortRecordChanges(diff.Changed)
+	return diff
+}
+
+func stringSet(values []string) map[string]bool {
+	result := make(map[string]bool, len(values))
+	for _, value := range values {
+		result[value] = true
+	}
+	return result
+}
+
+func payloadMap(values []GraphPayload) map[string]GraphPayload {
+	result := make(map[string]GraphPayload, len(values))
+	for _, value := range values {
+		result[payloadKey(value.PageURL, value.TokenTableURL)] = value
+	}
+	return result
+}
+
+func pageResultsMap(values []PageResult) map[string]PageResult {
+	result := make(map[string]PageResult, len(values))
+	for _, value := range values {
+		result[value.URL] = value
+	}
+	return result
+}
+
+func recordMap(values []ExtractedRecord) map[string]ExtractedRecord {
+	result := make(map[string]ExtractedRecord, len(values))
+	for _, value := range values {
+		result[recordKey(value)] = value
+	}
+	return result
+}
+
+func recordKey(value ExtractedRecord) string {
+	return fmt.Sprintf("%s\x00%s\x00%s\x00%04d", value.SourcePayloadID, value.Kind, value.ID, value.Ordinal)
+}
+
+func payloadKey(pageURL, tokenTableURL string) string {
+	return pageURL + "\x00" + tokenTableURL
+}
+
+func payloadChange(after, before GraphPayload) SourcePayloadChange {
+	pageURL, tokenTableURL := after.PageURL, after.TokenTableURL
+	if pageURL == "" {
+		pageURL, tokenTableURL = before.PageURL, before.TokenTableURL
+	}
+	return SourcePayloadChange{
+		Key:           payloadKey(pageURL, tokenTableURL),
+		PageURL:       pageURL,
+		TokenTableURL: tokenTableURL,
+		BeforeHash:    before.Hash,
+		AfterHash:     after.Hash,
+		BeforeError:   before.Error,
+		AfterError:    after.Error,
+		BeforeBytes:   before.Bytes,
+		AfterBytes:    after.Bytes,
+	}
+}
+
+func sortSourcePayloadChanges(values []SourcePayloadChange) {
+	sort.Slice(values, func(i, j int) bool { return values[i].Key < values[j].Key })
+}
+
+func recordChange(after, before ExtractedRecord) RecordChange {
+	value := after
+	if value.ID == "" {
+		value = before
+	}
+	return RecordChange{
+		Key:          recordKey(value),
+		Kind:         value.Kind,
+		TokenName:    value.TokenName,
+		BeforeSha256: sha256Hex(before.Raw),
+		AfterSha256:  sha256Hex(after.Raw),
+	}
+}
+
+func sortRecordChanges(values []RecordChange) {
+	sort.Slice(values, func(i, j int) bool { return values[i].Key < values[j].Key })
+}

@@ -2,8 +2,8 @@
 
 M3 Source captures and explains the design-token data published by Material 3.
 It discovers component specification pages, observes their lazy token-table
-requests, stores payloads by content hash, extracts a loss-preserving graph, and
-publishes immutable evidence snapshots.
+requests, stores source payloads by content hash, generates a loss-preserving
+token graph, and publishes immutable material-token-data snapshots.
 
 M3 Source does not decide which values a component library should support. M3
 Forge consumes a pinned snapshot, reviews its changes, and promotes accepted
@@ -24,46 +24,58 @@ No Node.js, pnpm, Playwright, or `node_modules` directory is required.
 
 ## Crawl
 
-A normal crawl uses the checked-in catalog of component `/specs` pages:
+A normal crawl uses the checked-in page URL catalog. It lists Material
+component specification pages under `/components/<component>/specs`:
 
 ```text
-go run ./cmd/m3source
+go run ./cmd/m3source crawl
 ```
 
-The catalog is the default because it is small, deterministic, and reviewable.
+The page URL catalog is the default because it is small, deterministic, and
+reviewable.
 It avoids repeated sitemap discovery during routine capture.
 
-Audit the live sitemap against the catalog:
+Audit the live sitemap against the page URL catalog:
 
 ```text
-go run ./cmd/m3source --discover --dry-run
+go run ./cmd/m3source crawl --discover --dry-run
 ```
 
-Update the catalog after reviewing the reported additions and removals:
+Update the page URL catalog after reviewing the reported additions and removals:
 
 ```text
-go run ./cmd/m3source --update-catalog --dry-run=false
+go run ./cmd/m3source crawl --update-page-catalog --dry-run=false
 ```
 
 Run a small dry crawl during development:
 
 ```text
-go run ./cmd/m3source --max-pages 10 --page-timeout 8s --dry-run
+go run ./cmd/m3source crawl --max-pages 10 --page-timeout 8s --dry-run
 ```
 
 Refresh payloads even when their URL already exists in the cache:
 
 ```text
-go run ./cmd/m3source --refresh
+go run ./cmd/m3source crawl --refresh
 ```
 
 Show Chromium while debugging one page:
 
 ```text
-go run ./cmd/m3source --headed --max-pages 1 --page-timeout 15s
+go run ./cmd/m3source crawl --headed --max-pages 1 --page-timeout 15s
 ```
 
 Use `--chrome-path` when Chrome cannot be found automatically.
+
+Retry only the failed pages from the newest crawl receipt:
+
+```text
+go run ./cmd/m3source crawl --retry-failed
+```
+
+Use `--retry-failed-from <crawl-receipt>` to select a specific receipt. The
+repair crawl opens only failed pages, then writes a new receipt containing the
+previous successful pages plus the retried results.
 
 ## Discovery
 
@@ -83,64 +95,78 @@ page it:
 3. Fetches each unique payload once.
 4. Hashes the uncompressed response with SHA-256.
 5. Stores a gzip-compressed content-addressed artifact.
-6. Writes a run manifest with pages, observations, URLs, hashes, and metadata.
+6. Writes a crawl receipt with pages, observations, URLs, hashes, and metadata.
 
 ## Local storage
 
 ```text
-.cache/m3/
+.cache/material-token-table-responses/
   index.json
-  payloads/<hash-prefix>/<sha256>.json.gz
-sources/runs/m3/<run-id>.json
+  source-payloads/<hash-prefix>/<sha256>.json.gz
+crawl-results/<crawl-id>.json
 ```
 
-The cache and ordinary run manifests are ignored by Git. They are local evidence
-until a snapshot command deliberately packages them. The hash identifies the
-bytes that M3 Source ingested; the upstream URL records where they came from.
+The cache contains downloaded Material token-table responses. Crawl receipts
+record what one crawl job did. Both are local evidence until a snapshot command
+deliberately packages them. The hash identifies the bytes M3 Source ingested;
+the upstream URL records where they came from.
 
 If upstream publishes a new URL, a later crawl stores a new artifact and leaves
 the old content untouched. If upstream mutates an existing URL, use `--refresh`.
 The new response receives a new content hash.
 
-## Snapshot contract
+## Material token-data snapshots
 
-Snapshots are immutable, content-addressed release artifacts. They contain a
-manifest, curated catalog, loss-preserving extracted graph, provenance, coverage
-report, and checksums. Raw payloads can be distributed as a separate evidence
-bundle when licensing and storage policy permit it.
+Snapshots are immutable, content-addressed bundles of Material token-table
+source payloads and generated token data. They contain a manifest, page URL catalog,
+source payloads, generated token graph, source-payload details, page results, and
+checksums.
 
 M3 Forge pins a specific manifest digest. It never consumes `latest`, runs this
 crawler in its build, or depends on an M3 Source service being online.
 
-See [Snapshot format](docs/snapshot-format.md) and the
+See the [data flow](docs/data-flow.md), [snapshot format](docs/snapshot-format.md), and the
 [M3 Source roadmap](docs/plans/2026-08-11-m3-source-roadmap.md).
 
-Build and verify a snapshot from a completed run:
+Create and verify a snapshot from the newest completed crawl:
 
 ```text
-go run ./cmd/m3source snapshot build \
-  --run-manifest sources/runs/m3/<run-id>.json \
-  --output sources/snapshots/m3-2026-08-11-example \
-  --id m3-2026-08-11-example
+go run ./cmd/m3source snapshot create
 
-go run ./cmd/m3source snapshot verify \
-  --dir sources/snapshots/m3-2026-08-11-example
+go run ./cmd/m3source snapshot verify
+```
+
+`snapshot create` selects the newest crawl receipt, derives a UTC timestamped
+snapshot ID, and writes to `snapshots/material-token-data/<snapshot-id>`. Use
+`--help` on any command for explicit path overrides and validation rules.
+
+Compare the two latest snapshot runs:
+
+```text
+go run ./cmd/m3source snapshot compare
 ```
 
 The output directory must be empty. Snapshot files are immutable after
-publication. The command prints the manifest SHA-256 used by Forge locks.
+publication. The command prints the manifest SHA-256 used by Forge locks. New
+snapshot IDs should include the UTC capture date and hour/minute, for example
+`m3-2026-08-11-2348-curated-specs`.
 
 ## Current limits
 
-- There is no generic loss-preserving extractor yet.
-- There is no semantic snapshot diff or snapshot publisher yet.
-- Run manifests contain volatile timestamps and are not yet deterministic
+- Snapshot records preserve the source payload objects while exposing generic
+  indexes for token, value, component, and reference-tree records.
+- Snapshot comparison reports source-payload and generated-record additions, removals, and
+  changes; it does not publish snapshots.
+- Crawl receipts contain volatile timestamps and are not deterministic
   release manifests.
 - Live crawls require network access and can fail when Material changes its site.
 
-Capture runs now fail when no page succeeds, record page and payload completeness
-in the run manifest, and snapshot builds reject runs with no successful pages or
-payloads. A failed or incomplete capture is evidence for diagnosis, not a
-publishable snapshot.
+Crawl jobs now fail when no page succeeds, record page and source-payload
+completeness in the crawl receipt, and snapshot creation rejects crawls with no
+successful pages or source payloads. A failed or incomplete crawl is evidence
+for diagnosis, not an approved snapshot.
 
 Normal tests must use committed fixtures and remain offline.
+
+See the [CLI guide](docs/cli.md) for command help, defaults, and explicit
+override examples.
