@@ -1,0 +1,258 @@
+{
+  "schemaVersion": 1,
+  "pages": [
+    {
+      "url": "https://m3.material.io/components/app-bars/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 1,
+      "payloadsFetched": 1
+    },
+    {
+      "url": "https://m3.material.io/components/badges/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 1,
+      "payloadsFetched": 1
+    },
+    {
+      "url": "https://m3.material.io/components/bottom-sheets/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 1,
+      "payloadsFetched": 1
+    },
+    {
+      "url": "https://m3.material.io/components/button-groups/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 1,
+      "payloadsFetched": 1
+    },
+    {
+      "url": "https://m3.material.io/components/buttons/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 1,
+      "payloadsFetched": 1
+    },
+    {
+      "url": "https://m3.material.io/components/cards/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 1,
+      "payloadsFetched": 1
+    },
+    {
+      "url": "https://m3.material.io/components/carousel/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 1,
+      "payloadsFetched": 1
+    },
+    {
+      "url": "https://m3.material.io/components/checkbox/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 1,
+      "payloadsFetched": 1
+    },
+    {
+      "url": "https://m3.material.io/components/chips/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 1,
+      "payloadsFetched": 1
+    },
+    {
+      "url": "https://m3.material.io/components/date-pickers/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 1,
+      "payloadsFetched": 1
+    },
+    {
+      "url": "https://m3.material.io/components/dialogs/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 1,
+      "payloadsFetched": 1
+    },
+    {
+      "url": "https://m3.material.io/components/divider/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 1,
+      "payloadsFetched": 1
+    },
+    {
+      "url": "https://m3.material.io/components/extended-fab/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 1,
+      "payloadsFetched": 1
+    },
+    {
+      "url": "https://m3.material.io/components/fab-menu/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 1,
+      "payloadsFetched": 1
+    },
+    {
+      "url": "https://m3.material.io/components/floating-action-button/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 1,
+      "payloadsFetched": 1
+    },
+    {
+      "url": "https://m3.material.io/components/icon-buttons/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 1,
+      "payloadsFetched": 1
+    },
+    {
+      "url": "https://m3.material.io/components/lists/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 1,
+      "payloadsFetched": 1
+    },
+    {
+      "url": "https://m3.material.io/components/loading-indicator/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 1,
+      "payloadsFetched": 1
+    },
+    {
+      "url": "https://m3.material.io/components/menus/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 1,
+      "payloadsFetched": 1
+    },
+    {
+      "url": "https://m3.material.io/components/navigation-bar/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 1,
+      "payloadsFetched": 1
+    },
+    {
+      "url": "https://m3.material.io/components/navigation-drawer/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 1,
+      "payloadsFetched": 1
+    },
+    {
+      "url": "https://m3.material.io/components/navigation-rail/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 1,
+      "payloadsFetched": 1
+    },
+    {
+      "url": "https://m3.material.io/components/progress-indicators/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 1,
+      "payloadsFetched": 1
+    },
+    {
+      "url": "https://m3.material.io/components/radio-button/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 1,
+      "payloadsFetched": 1
+    },
+    {
+      "url": "https://m3.material.io/components/search/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 0,
+      "payloadsFetched": 0
+    },
+    {
+      "url": "https://m3.material.io/components/segmented-buttons/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 1,
+      "payloadsFetched": 1
+    },
+    {
+      "url": "https://m3.material.io/components/side-sheets/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 1,
+      "payloadsFetched": 1
+    },
+    {
+      "url": "https://m3.material.io/components/sliders/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 1,
+      "payloadsFetched": 1
+    },
+    {
+      "url": "https://m3.material.io/components/snackbar/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 1,
+      "payloadsFetched": 0,
+      "payloadError": "404 Not Found"
+    },
+    {
+      "url": "https://m3.material.io/components/split-button/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 1,
+      "payloadsFetched": 1
+    },
+    {
+      "url": "https://m3.material.io/components/switch/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 1,
+      "payloadsFetched": 1
+    },
+    {
+      "url": "https://m3.material.io/components/tabs/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 1,
+      "payloadsFetched": 1
+    },
+    {
+      "url": "https://m3.material.io/components/text-fields/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 1,
+      "payloadsFetched": 1
+    },
+    {
+      "url": "https://m3.material.io/components/time-pickers/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 1,
+      "payloadsFetched": 1
+    },
+    {
+      "url": "https://m3.material.io/components/toolbars/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 1,
+      "payloadsFetched": 1
+    },
+    {
+      "url": "https://m3.material.io/components/tooltips/specs",
+      "status": 200,
+      "tokenTableObserved": true,
+      "payloadsObserved": 1,
+      "payloadsFetched": 1
+    }
+  ]
+}

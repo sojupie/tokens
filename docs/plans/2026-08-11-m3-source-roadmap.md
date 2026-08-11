@@ -1,0 +1,168 @@
+# M3 Source roadmap
+
+**Status:** Draft for execution  
+**Created:** 2026-08-11  
+**Scope:** Material 3 source discovery, capture, extraction, diffing, and snapshots
+
+## 1. Mission
+
+M3 Source reports what Material published. It does not implement components or
+decide what M3 Forge supports.
+
+The project should be useful beyond Forge. Its stable product is an immutable,
+documented source snapshot that any tool can download and verify. A website,
+API, package, or database can make that data easier to explore, but none is the
+canonical store.
+
+## 2. Boundary
+
+M3 Source owns:
+
+- curated and live discovery of component `/specs` pages;
+- browser-assisted token-table observation;
+- content-addressed payload capture;
+- a loss-preserving Material-specific graph;
+- semantic diffs between snapshots;
+- provenance, coverage, and immutable snapshot publication.
+
+M3 Source does not own:
+
+- canonical DTCG design decisions;
+- CSS, components, framework adapters, or application code;
+- automatic promotion into M3 Forge;
+- a runtime service required by library consumers.
+
+## 3. Technical direction
+
+Use Go for the full ingestion pipeline. chromedp is the canonical browser path.
+The retired Playwright prototype and Node package layer are not part of the
+project.
+
+Keep commands conceptually separate even if they initially share one binary:
+
+```text
+m3source catalog audit
+m3source capture
+m3source verify
+m3source extract
+m3source inspect
+m3source diff
+m3source snapshot build
+m3source snapshot verify
+```
+
+Keep implementation packages internal until an external Go API has a concrete
+consumer.
+
+## 4. Storage
+
+Use files and content-addressed artifacts:
+
+- Git: code, schemas, curated catalog, small fixtures, and documentation.
+- Local cache: raw payload CAS and development run manifests.
+- Snapshot bundle: deterministic extracted graph, provenance, coverage, and
+  checksums.
+- Object storage or GitHub Releases: immutable public snapshots and optional raw
+  evidence bundles.
+
+Do not add an operational database. Batch files fit immutable versioning,
+hashing, offline use, and mirroring. A generated SQLite file can later serve
+local queries without becoming a source of truth.
+
+## 5. Versioning
+
+Track these independently:
+
+1. Tool semantic version.
+2. Catalog schema version.
+3. Extracted graph schema version.
+4. Snapshot manifest schema version.
+5. Snapshot ID and manifest SHA-256.
+6. Upstream page, payload URL, revision, and payload SHA-256.
+
+An upstream update creates evidence and a semantic diff. It does not mutate an
+existing snapshot or force a Forge release.
+
+## 6. Phases
+
+### Phase 0: repository cleanup
+
+- Rename project documentation and Go module.
+- Remove the Node and Playwright prototype.
+- Keep the current Go crawler behavior and tests passing.
+- Correct the repository remote after the public M3 Source repository exists.
+
+**Exit:** the repository has one language and one ingestion path.
+
+### Phase 1: deterministic capture
+
+- Remove button-specific inspection from capture.
+- Validate response status, media type, JSON shape, and hash.
+- Separate volatile run reports from deterministic capture records.
+- Add cache verification and portable cache import/export.
+- Test catalog drift, duplicate payloads, corrupt cache entries, and stable
+  manifests with recorded fixtures.
+
+**Exit:** a catalog capture can be reproduced and verified without recrawling.
+
+### Phase 2: generic extraction
+
+- Define versioned graph and provenance schemas.
+- Preserve names, IDs, states, contexts, reference trees, types, units, and
+  unknown source fields.
+- Extract representative foundations and component families without
+  component-specific parser branches.
+- Add human-readable inspection commands.
+
+**Exit:** color, typography, shape, motion, buttons, groups, and icon buttons
+extract through one model.
+
+### Phase 3: semantic diff
+
+- Compare token additions, removals, literals, references, contexts, activation,
+  deprecation, and source-schema changes.
+- Distinguish source metadata churn from design-value changes.
+- Emit machine-readable and review-friendly reports.
+
+**Exit:** a reviewer can understand why two snapshots differ without reading
+raw payloads.
+
+### Phase 4: immutable snapshots
+
+- Implement deterministic bundle assembly and verification.
+- Generate manifest, catalog, graph, provenance, coverage, and checksums.
+- Publish to static storage and mirror to a durable release channel.
+- Document retention and raw-evidence redistribution policy.
+
+**Exit:** a consumer can pin, download, and verify a snapshot offline.
+
+### Phase 5: public access
+
+- Add a static documentation browser for snapshots and diffs.
+- Add a downloadable SQLite index only if query use justifies it.
+- Add an API or package only when a real consumer needs one.
+
+**Exit:** people can explore the data without changing the canonical storage
+model.
+
+## 7. Tests and operations
+
+Ordinary tests are offline and use small committed fixtures. Test discovery and
+URL filtering, cache integrity, schema drift, extraction fidelity, semantic
+diffs, deterministic serialization, bundle verification, and corrupt inputs.
+
+Run live crawling manually or on a scheduled audit. A scheduled job can report
+catalog or token drift and publish an evidence candidate. It must not rewrite a
+catalog, publish over an existing snapshot, or promote Forge tokens without
+review.
+
+## 8. Immediate work
+
+1. Rename the Go module and command from the feasibility-spike names.
+2. Define the extracted graph, provenance, coverage, and manifest schemas.
+3. Refactor capture so it records generic payload metadata only.
+4. Build the first deterministic full-catalog capture record.
+5. Implement loss-preserving extraction.
+6. Implement semantic diffing.
+7. Build and verify the first immutable snapshot.
+8. Decide public object storage, mirroring, and retention policy.

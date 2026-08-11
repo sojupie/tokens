@@ -1,4 +1,4 @@
-module material-pain-3
+module github.com/sojupie/m3-source
 
 go 1.26
 

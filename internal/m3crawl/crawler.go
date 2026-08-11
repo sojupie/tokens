@@ -21,6 +21,7 @@ import (
 	"time"
 
 	"github.com/chromedp/cdproto/network"
+	"github.com/chromedp/cdproto/page"
 	"github.com/chromedp/chromedp"
 	"golang.org/x/net/html"
 )
@@ -91,9 +92,6 @@ type PayloadRecord struct {
 	ETag          string `json:"etag,omitempty"`
 	LastModified  string `json:"lastModified,omitempty"`
 	Reused        bool   `json:"reused"`
-	DerivedHash   string `json:"derivedHash,omitempty"`
-	TokenSetCount int    `json:"tokenSetCount,omitempty"`
-	TokenCount    int    `json:"tokenCount,omitempty"`
 	Error         string `json:"error,omitempty"`
 }
 
@@ -110,9 +108,19 @@ type RunManifest struct {
 	Mode          string          `json:"mode"`
 	Options       ManifestOptions `json:"options"`
 	Discovery     DiscoveryReport `json:"discovery"`
+	Capture       CaptureReport   `json:"capture"`
 	Pages         []string        `json:"pages"`
 	Observations  []Observation   `json:"observations"`
 	Payloads      []PayloadRecord `json:"payloads"`
+}
+
+type CaptureReport struct {
+	PagesAttempted   int  `json:"pagesAttempted"`
+	PagesSucceeded   int  `json:"pagesSucceeded"`
+	PagesFailed      int  `json:"pagesFailed"`
+	PayloadsObserved int  `json:"payloadsObserved"`
+	PayloadsFetched  int  `json:"payloadsFetched"`
+	Complete         bool `json:"complete"`
 }
 
 type CatalogPage struct {
@@ -149,20 +157,6 @@ type sitemapDocument struct {
 	} `xml:"url"`
 }
 
-type tokenTable struct {
-	System struct {
-		TokenSets []struct {
-			Name         string `json:"name"`
-			TokenSetName string `json:"tokenSetName"`
-			DisplayName  string `json:"displayName"`
-			State        string `json:"state"`
-		} `json:"tokenSets"`
-		Tokens []struct {
-			TokenName string `json:"tokenName"`
-		} `json:"tokens"`
-	} `json:"system"`
-}
-
 func Run(ctx context.Context, config Config) error {
 	if err := config.validate(); err != nil {
 		return err
@@ -188,6 +182,14 @@ func Run(ctx context.Context, config Config) error {
 	if err != nil {
 		return fmt.Errorf("observe pages: %w", err)
 	}
+	if successfulPageCount(observations) == 0 {
+		for _, observation := range observations {
+			if observation.Error != "" {
+				return fmt.Errorf("capture produced no successful pages: %s", observation.Error)
+			}
+		}
+		return errors.New("capture produced no successful pages")
+	}
 	sources := uniqueSources(observations)
 	fmt.Printf("Discovered %d unique token-table payloads.\n", len(sources))
 
@@ -202,8 +204,6 @@ func Run(ctx context.Context, config Config) error {
 			record, err := persistPayload(ctx, config, index, source)
 			if err != nil {
 				record = PayloadRecord{PageURL: source.PageURL, TokenTableURL: source.TokenTableURL, Error: err.Error()}
-			} else {
-				record.TokenSetCount, record.TokenCount = inspectTokenTable(record, config.CacheDir)
 			}
 			payloads = append(payloads, record)
 		}
@@ -221,6 +221,7 @@ func Run(ctx context.Context, config Config) error {
 		Mode:          "all",
 		Options:       manifestOptions(config),
 		Discovery:     discovery,
+		Capture:       captureReport(pages, observations, payloads, config.DryRun),
 		Pages:         pages,
 		Observations:  observations,
 		Payloads:      payloads,
@@ -231,6 +232,34 @@ func Run(ctx context.Context, config Config) error {
 	}
 	fmt.Printf("Wrote run manifest to %s\n", manifestPath)
 	return nil
+}
+
+func successfulPageCount(observations []Observation) int {
+	count := 0
+	for _, observation := range observations {
+		if observation.Status >= http.StatusOK && observation.Status < http.StatusBadRequest && observation.Error == "" {
+			count++
+		}
+	}
+	return count
+}
+
+func captureReport(pages []string, observations []Observation, payloads []PayloadRecord, dryRun bool) CaptureReport {
+	fetched := 0
+	for _, payload := range payloads {
+		if payload.Hash != "" && payload.Error == "" {
+			fetched++
+		}
+	}
+	observed := len(uniqueSources(observations))
+	return CaptureReport{
+		PagesAttempted:   len(pages),
+		PagesSucceeded:   successfulPageCount(observations),
+		PagesFailed:      len(pages) - successfulPageCount(observations),
+		PayloadsObserved: observed,
+		PayloadsFetched:  fetched,
+		Complete:         !dryRun && len(pages) > 0 && successfulPageCount(observations) == len(pages) && observed > 0 && fetched == observed,
+	}
 }
 
 func (config Config) validate() error {
@@ -614,7 +643,21 @@ func uniqueSources(observations []Observation) []pageSource {
 }
 
 func observePages(parent context.Context, config Config, pages []string) ([]Observation, error) {
-	allocatorOptions := append(chromedp.DefaultExecAllocatorOptions[:], chromedp.Flag("headless", !config.Headed))
+	headless := chromedp.Flag("headless", "new")
+	if config.Headed {
+		headless = chromedp.Flag("headless", false)
+	}
+	allocatorOptions := []chromedp.ExecAllocatorOption{
+		chromedp.NoFirstRun,
+		chromedp.NoDefaultBrowserCheck,
+		headless,
+		chromedp.Flag("disable-gpu", true),
+		chromedp.Flag("disable-gpu-compositing", true),
+		chromedp.Flag("disable-gpu-rasterization", true),
+		chromedp.Flag("disable-gpu-sandbox", true),
+		chromedp.Flag("disable-3d-apis", true),
+		chromedp.Flag("disable-dev-shm-usage", true),
+	}
 	if config.ChromePath != "" {
 		allocatorOptions = append(allocatorOptions, chromedp.ExecPath(config.ChromePath))
 	}
@@ -651,24 +694,35 @@ func observePage(browserContext context.Context, pageURL string, timeout time.Du
 
 	operationContext, cancelOperation := context.WithTimeout(pageContext, timeout+5*time.Second)
 	defer cancelOperation()
-	var title string
 	err := chromedp.Run(operationContext,
 		network.Enable(),
-		chromedp.Navigate(pageURL),
-		chromedp.Sleep(timeout),
-		chromedp.Title(&title),
+		chromedp.ActionFunc(func(ctx context.Context) error {
+			_, _, errorText, _, err := page.Navigate(pageURL).Do(ctx)
+			if err != nil {
+				return err
+			}
+			if errorText != "" {
+				return fmt.Errorf("page load error %s", errorText)
+			}
+			return nil
+		}),
 	)
-	if err != nil && !errors.Is(err, context.DeadlineExceeded) {
+	if err != nil {
 		observation.Error = err.Error()
+	}
+	if err == nil {
+		timer := time.NewTimer(timeout)
+		defer timer.Stop()
+		select {
+		case observation.TokenTableURL = <-responseURL:
+		case <-timer.C:
+		case <-operationContext.Done():
+			observation.Error = operationContext.Err().Error()
+		}
 	}
 	statusMu.Lock()
 	observation.Status = mainStatus
 	statusMu.Unlock()
-	observation.Title = title
-	select {
-	case observation.TokenTableURL = <-responseURL:
-	default:
-	}
 	return observation
 }
 
@@ -795,44 +849,6 @@ func writeGzipIfAbsent(path string, body []byte) error {
 		return err
 	}
 	return nil
-}
-
-func inspectTokenTable(record PayloadRecord, cacheDir string) (int, int) {
-	path := record.Artifact
-	if !filepath.IsAbs(path) {
-		path = filepath.Join(cacheDir, path)
-	}
-	file, err := os.Open(path)
-	if err != nil {
-		return 0, 0
-	}
-	defer file.Close()
-	reader, err := gzip.NewReader(file)
-	if err != nil {
-		return 0, 0
-	}
-	defer reader.Close()
-	body, err := io.ReadAll(reader)
-	if err != nil {
-		return 0, 0
-	}
-	var table tokenTable
-	if json.Unmarshal(body, &table) != nil {
-		return 0, 0
-	}
-	sets := 0
-	for _, tokenSet := range table.System.TokenSets {
-		if tokenSet.State == "ACTIVE" && strings.HasPrefix(tokenSet.TokenSetName, "md.comp.button") && !strings.HasPrefix(tokenSet.DisplayName, "[Deprecated]") {
-			sets++
-		}
-	}
-	tokens := 0
-	for _, token := range table.System.Tokens {
-		if strings.HasPrefix(token.TokenName, "md.comp.button") {
-			tokens++
-		}
-	}
-	return sets, tokens
 }
 
 func writeJSONAtomic(path string, value interface{}) error {

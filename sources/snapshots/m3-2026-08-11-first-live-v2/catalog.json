@@ -1,0 +1,152 @@
+{
+  "generatedAt": "2026-08-10T00:00:00Z",
+  "pages": [
+    {
+      "component": "app-bars",
+      "url": "https://m3.material.io/components/app-bars/specs"
+    },
+    {
+      "component": "badges",
+      "url": "https://m3.material.io/components/badges/specs"
+    },
+    {
+      "component": "bottom-sheets",
+      "url": "https://m3.material.io/components/bottom-sheets/specs"
+    },
+    {
+      "component": "button-groups",
+      "url": "https://m3.material.io/components/button-groups/specs"
+    },
+    {
+      "component": "buttons",
+      "url": "https://m3.material.io/components/buttons/specs"
+    },
+    {
+      "component": "cards",
+      "url": "https://m3.material.io/components/cards/specs"
+    },
+    {
+      "component": "carousel",
+      "url": "https://m3.material.io/components/carousel/specs"
+    },
+    {
+      "component": "checkbox",
+      "url": "https://m3.material.io/components/checkbox/specs"
+    },
+    {
+      "component": "chips",
+      "url": "https://m3.material.io/components/chips/specs"
+    },
+    {
+      "component": "date-pickers",
+      "url": "https://m3.material.io/components/date-pickers/specs"
+    },
+    {
+      "component": "dialogs",
+      "url": "https://m3.material.io/components/dialogs/specs"
+    },
+    {
+      "component": "divider",
+      "url": "https://m3.material.io/components/divider/specs"
+    },
+    {
+      "component": "extended-fab",
+      "url": "https://m3.material.io/components/extended-fab/specs"
+    },
+    {
+      "component": "fab-menu",
+      "url": "https://m3.material.io/components/fab-menu/specs"
+    },
+    {
+      "component": "floating-action-button",
+      "url": "https://m3.material.io/components/floating-action-button/specs"
+    },
+    {
+      "component": "icon-buttons",
+      "url": "https://m3.material.io/components/icon-buttons/specs"
+    },
+    {
+      "component": "lists",
+      "url": "https://m3.material.io/components/lists/specs"
+    },
+    {
+      "component": "loading-indicator",
+      "url": "https://m3.material.io/components/loading-indicator/specs"
+    },
+    {
+      "component": "menus",
+      "url": "https://m3.material.io/components/menus/specs"
+    },
+    {
+      "component": "navigation-bar",
+      "url": "https://m3.material.io/components/navigation-bar/specs"
+    },
+    {
+      "component": "navigation-drawer",
+      "url": "https://m3.material.io/components/navigation-drawer/specs"
+    },
+    {
+      "component": "navigation-rail",
+      "url": "https://m3.material.io/components/navigation-rail/specs"
+    },
+    {
+      "component": "progress-indicators",
+      "url": "https://m3.material.io/components/progress-indicators/specs"
+    },
+    {
+      "component": "radio-button",
+      "url": "https://m3.material.io/components/radio-button/specs"
+    },
+    {
+      "component": "search",
+      "url": "https://m3.material.io/components/search/specs"
+    },
+    {
+      "component": "segmented-buttons",
+      "url": "https://m3.material.io/components/segmented-buttons/specs"
+    },
+    {
+      "component": "side-sheets",
+      "url": "https://m3.material.io/components/side-sheets/specs"
+    },
+    {
+      "component": "sliders",
+      "url": "https://m3.material.io/components/sliders/specs"
+    },
+    {
+      "component": "snackbar",
+      "url": "https://m3.material.io/components/snackbar/specs"
+    },
+    {
+      "component": "split-button",
+      "url": "https://m3.material.io/components/split-button/specs"
+    },
+    {
+      "component": "switch",
+      "url": "https://m3.material.io/components/switch/specs"
+    },
+    {
+      "component": "tabs",
+      "url": "https://m3.material.io/components/tabs/specs"
+    },
+    {
+      "component": "text-fields",
+      "url": "https://m3.material.io/components/text-fields/specs"
+    },
+    {
+      "component": "time-pickers",
+      "url": "https://m3.material.io/components/time-pickers/specs"
+    },
+    {
+      "component": "toolbars",
+      "url": "https://m3.material.io/components/toolbars/specs"
+    },
+    {
+      "component": "tooltips",
+      "url": "https://m3.material.io/components/tooltips/specs"
+    }
+  ],
+  "schemaVersion": 1,
+  "scope": "/components/\u003ccomponent\u003e/specs",
+  "source": "https://m3.material.io/sitemap.xml"
+}
