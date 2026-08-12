@@ -3,6 +3,7 @@ package tokensnapshot
 import (
 	"compress/gzip"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -10,16 +11,17 @@ import (
 )
 
 type SnapshotDiff struct {
-	SchemaVersion      int               `json:"schemaVersion"`
-	FromSnapshotID     string            `json:"fromSnapshotId"`
-	ToSnapshotID       string            `json:"toSnapshotId"`
-	Changed            bool              `json:"changed"`
-	PageCatalogChanged bool              `json:"pageCatalogChanged"`
-	CaptureChanged     bool              `json:"captureChanged"`
-	Pages              PageSetDiff       `json:"pages"`
-	SourcePayloads     SourcePayloadDiff `json:"sourcePayloads"`
-	Records            RecordSetDiff     `json:"records"`
-	PageResults        PageResultsDiff   `json:"pageResults"`
+	SchemaVersion      int                 `json:"schemaVersion"`
+	FromSnapshotID     string              `json:"fromSnapshotId"`
+	ToSnapshotID       string              `json:"toSnapshotId"`
+	Changed            bool                `json:"changed"`
+	PageCatalogChanged bool                `json:"pageCatalogChanged"`
+	CaptureChanged     bool                `json:"captureChanged"`
+	Pages              PageSetDiff         `json:"pages"`
+	SourcePayloads     SourcePayloadDiff   `json:"sourcePayloads"`
+	Records            RecordSetDiff       `json:"records"`
+	PageResults        PageResultsDiff     `json:"pageResults"`
+	LifecycleNotices   LifecycleNoticeDiff `json:"lifecycleNotices"`
 }
 
 type PageSetDiff struct {
@@ -47,6 +49,11 @@ type SourcePayloadChange struct {
 
 type PageResultsDiff struct {
 	Changed []PageResultChange `json:"changed,omitempty"`
+}
+
+type LifecycleNoticeDiff struct {
+	Added   []LifecycleNotice `json:"added,omitempty"`
+	Removed []LifecycleNotice `json:"removed,omitempty"`
 }
 
 type PageResultChange struct {
@@ -94,6 +101,14 @@ func Diff(fromDir, toDir string) (SnapshotDiff, error) {
 	if err != nil {
 		return SnapshotDiff{}, fmt.Errorf("read to page results: %w", err)
 	}
+	fromLifecycle, err := readLifecycleNotices(fromDir)
+	if err != nil {
+		return SnapshotDiff{}, fmt.Errorf("read from lifecycle notices: %w", err)
+	}
+	toLifecycle, err := readLifecycleNotices(toDir)
+	if err != nil {
+		return SnapshotDiff{}, fmt.Errorf("read to lifecycle notices: %w", err)
+	}
 
 	diff := SnapshotDiff{
 		SchemaVersion:      SchemaVersion,
@@ -105,8 +120,9 @@ func Diff(fromDir, toDir string) (SnapshotDiff, error) {
 		SourcePayloads:     diffSourcePayloads(fromGraph.SourcePayloads, toGraph.SourcePayloads),
 		Records:            diffRecords(fromGraph.Records, toGraph.Records),
 		PageResults:        diffPageResults(fromPageResults.Pages, toPageResults.Pages),
+		LifecycleNotices:   diffLifecycleNotices(fromLifecycle.Notices, toLifecycle.Notices),
 	}
-	diff.Changed = diff.PageCatalogChanged || diff.CaptureChanged || len(diff.Pages.Added) > 0 || len(diff.Pages.Removed) > 0 || len(diff.SourcePayloads.Added) > 0 || len(diff.SourcePayloads.Removed) > 0 || len(diff.SourcePayloads.Changed) > 0 || len(diff.Records.Added) > 0 || len(diff.Records.Removed) > 0 || len(diff.Records.Changed) > 0 || len(diff.PageResults.Changed) > 0
+	diff.Changed = diff.PageCatalogChanged || diff.CaptureChanged || len(diff.Pages.Added) > 0 || len(diff.Pages.Removed) > 0 || len(diff.SourcePayloads.Added) > 0 || len(diff.SourcePayloads.Removed) > 0 || len(diff.SourcePayloads.Changed) > 0 || len(diff.Records.Added) > 0 || len(diff.Records.Removed) > 0 || len(diff.Records.Changed) > 0 || len(diff.PageResults.Changed) > 0 || len(diff.LifecycleNotices.Added) > 0 || len(diff.LifecycleNotices.Removed) > 0
 	return diff, nil
 }
 
@@ -164,6 +180,49 @@ func readPageResults(directory string) (PageResults, error) {
 		return PageResults{}, fmt.Errorf("unsupported page-results schema version %d", pageResults.SchemaVersion)
 	}
 	return pageResults, nil
+}
+
+func readLifecycleNotices(directory string) (LifecycleNotices, error) {
+	body, err := os.ReadFile(filepath.Join(directory, "lifecycle-notices.json"))
+	if errors.Is(err, os.ErrNotExist) {
+		return LifecycleNotices{SchemaVersion: 1, Notices: []LifecycleNotice{}}, nil
+	}
+	if err != nil {
+		return LifecycleNotices{}, err
+	}
+	var notices LifecycleNotices
+	if err := json.Unmarshal(body, &notices); err != nil {
+		return LifecycleNotices{}, err
+	}
+	if notices.SchemaVersion != 1 {
+		return LifecycleNotices{}, fmt.Errorf("unsupported lifecycle-notices schema version %d", notices.SchemaVersion)
+	}
+	return notices, nil
+}
+
+func diffLifecycleNotices(from, to []LifecycleNotice) LifecycleNoticeDiff {
+	fromByID := make(map[string]LifecycleNotice, len(from))
+	toByID := make(map[string]LifecycleNotice, len(to))
+	for _, notice := range from {
+		fromByID[notice.ID] = notice
+	}
+	for _, notice := range to {
+		toByID[notice.ID] = notice
+	}
+	diff := LifecycleNoticeDiff{}
+	for id, notice := range toByID {
+		if _, exists := fromByID[id]; !exists {
+			diff.Added = append(diff.Added, notice)
+		}
+	}
+	for id, notice := range fromByID {
+		if _, exists := toByID[id]; !exists {
+			diff.Removed = append(diff.Removed, notice)
+		}
+	}
+	sort.Slice(diff.Added, func(i, j int) bool { return diff.Added[i].ID < diff.Added[j].ID })
+	sort.Slice(diff.Removed, func(i, j int) bool { return diff.Removed[i].ID < diff.Removed[j].ID })
+	return diff
 }
 
 func diffPages(from, to []string) PageSetDiff {

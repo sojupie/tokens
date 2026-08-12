@@ -18,11 +18,12 @@ value is correct for a consumer or approved for a design-system release.
 ```text
 m3-material-token-data-<snapshot-id>/
 |-- manifest.json
-|-- page-catalog.json             # Material specification page URL catalog
+|-- page-catalog.json             # Material token-source page URL catalog
 |-- source-payloads/<hash-prefix>/<sha256>.json.gz
 |-- generated-token-graph.json.gz
 |-- source-payload-details.json
 |-- page-results.json
+|-- lifecycle-notices.json
 `-- checksums.txt
 ```
 
@@ -120,6 +121,25 @@ The page-results file lists each page and whether it produced source payloads,
 generated records, warnings, or errors. A missing token table is visible
 evidence, not a silently dropped page.
 
+## Lifecycle notices
+
+`lifecycle-notices.json` preserves explicit Material notices about the
+lifecycle or recommendation status of source records. It does not infer that a
+component is active or deprecated from a missing payload, a 404, or the absence
+of a warning.
+
+The notice scope is separate from capture status:
+
+- `component` applies to a component-level notice;
+- `style` applies to a token-set or style group;
+- `token` applies to an individual token;
+- `record` preserves a notice whose source shape does not map to one of those
+  scopes.
+
+`deprecated` and `not-recommended` remain separate states. The raw message and
+source record identifiers are retained so Forge can make a support decision
+without treating Source's evidence as policy.
+
 ## Publishing and storage
 
 Publish static files to content-addressable object storage, GitHub Releases, or
@@ -148,7 +168,7 @@ A consumer must not rely on mutable `latest` URLs for reproducible builds.
 
 `snapshot compare` verifies both input directories, then compares their page
 page URL catalogs, page results, capture completeness, content-addressed source payloads, and
-generic extracted records. Record changes are keyed by source payload, record
+generic extracted records and lifecycle notices. Record changes are keyed by source payload, record
 kind, upstream record ID, and occurrence ordinal; the complete upstream object
 is compared through the record's loss-preserving `raw` field. It ignores
 snapshot IDs, crawl IDs,

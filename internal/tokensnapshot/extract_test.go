@@ -51,3 +51,35 @@ func TestExtractPayloadPreservesGenericRecords(t *testing.T) {
 		t.Fatalf("system record lost unknown fields: %#v", system)
 	}
 }
+
+func TestLifecycleNoticesPreserveScopeAndEvidence(t *testing.T) {
+	records := []ExtractedRecord{
+		{
+			ID:              "component-1",
+			Kind:            "component",
+			SourcePayloadID: "payload-1",
+			Raw:             []byte(`{"name":"segmented-buttons","description":"No longer recommended; use connected button group."}`),
+		},
+		{
+			ID:              "token-1",
+			Kind:            "token",
+			SourcePayloadID: "payload-1",
+			Raw:             []byte(`{"tokenName":"md.comp.fab.enabled","deprecationMessage":{"message":"Token is deprecated."}}`),
+		},
+	}
+	notices := lifecycleNotices(records)
+	if len(notices) != 2 {
+		t.Fatalf("got %d lifecycle notices, want 2: %#v", len(notices), notices)
+	}
+	for _, notice := range notices {
+		if notice.ID == "" || notice.Message == "" || notice.SourcePayloadID != "payload-1" || notice.SourceRecordID == "" {
+			t.Fatalf("notice lost evidence: %#v", notice)
+		}
+		if notice.Scope == "component" && notice.State != "not-recommended" {
+			t.Fatalf("unexpected component notice: %#v", notice)
+		}
+		if notice.Scope == "token" && notice.State != "deprecated" {
+			t.Fatalf("unexpected token notice: %#v", notice)
+		}
+	}
+}

@@ -113,6 +113,23 @@ type PageResults struct {
 	Pages         []PageResult `json:"pages"`
 }
 
+type LifecycleNotices struct {
+	SchemaVersion int               `json:"schemaVersion"`
+	Notices       []LifecycleNotice `json:"notices"`
+}
+
+type LifecycleNotice struct {
+	ID              string `json:"id"`
+	Scope           string `json:"scope"`
+	State           string `json:"state"`
+	Subject         string `json:"subject"`
+	Message         string `json:"message"`
+	SourcePayloadID string `json:"sourcePayloadId"`
+	SourceRecordID  string `json:"sourceRecordId"`
+	RecordKind      string `json:"recordKind"`
+	SourceField     string `json:"sourceField"`
+}
+
 type PageResult struct {
 	URL                string `json:"url"`
 	Status             int    `json:"status"`
@@ -151,7 +168,7 @@ func Build(config BuildConfig) (Manifest, error) {
 	if err != nil {
 		return Manifest{}, fmt.Errorf("read page catalog: %w", err)
 	}
-	graph, payloadDetails, pageResults := buildDocuments(config.SnapshotID, run)
+	graph, payloadDetails, pageResults, lifecycleNotices := buildDocuments(config.SnapshotID, run)
 	graphJSON, err := marshalDocument(graph)
 	if err != nil {
 		return Manifest{}, fmt.Errorf("encode graph: %w", err)
@@ -163,6 +180,10 @@ func Build(config BuildConfig) (Manifest, error) {
 	pageResultsJSON, err := marshalDocument(pageResults)
 	if err != nil {
 		return Manifest{}, fmt.Errorf("encode page results: %w", err)
+	}
+	lifecycleNoticesJSON, err := marshalDocument(lifecycleNotices)
+	if err != nil {
+		return Manifest{}, fmt.Errorf("encode lifecycle notices: %w", err)
 	}
 	graphGzip, err := gzipJSON(graphJSON)
 	if err != nil {
@@ -180,6 +201,7 @@ func Build(config BuildConfig) (Manifest, error) {
 		"generated-token-graph.json.gz": graphGzip,
 		"source-payload-details.json":   payloadDetailsJSON,
 		"page-results.json":             pageResultsJSON,
+		"lifecycle-notices.json":        lifecycleNoticesJSON,
 	}
 	for path, body := range payloadFiles {
 		files[path] = body
@@ -333,7 +355,7 @@ func validateCapture(run crawl.CrawlReceipt) error {
 	return nil
 }
 
-func buildDocuments(snapshotID string, run crawl.CrawlReceipt) (Graph, SourcePayloadDetails, PageResults) {
+func buildDocuments(snapshotID string, run crawl.CrawlReceipt) (Graph, SourcePayloadDetails, PageResults, LifecycleNotices) {
 	graphPayloads := make([]GraphPayload, 0, len(run.SourcePayloads))
 	graphRecords := make([]ExtractedRecord, 0)
 	payloadDetails := make([]SourcePayloadDetail, 0, len(run.SourcePayloads))
@@ -418,7 +440,7 @@ func buildDocuments(snapshotID string, run crawl.CrawlReceipt) (Graph, SourcePay
 		Observations:   append([]crawl.Observation(nil), run.Observations...),
 		SourcePayloads: graphPayloads,
 		Records:        graphRecords,
-	}, SourcePayloadDetails{SchemaVersion: SchemaVersion, Records: payloadDetails}, PageResults{SchemaVersion: SchemaVersion, Pages: pageResults}
+	}, SourcePayloadDetails{SchemaVersion: SchemaVersion, Records: payloadDetails}, PageResults{SchemaVersion: SchemaVersion, Pages: pageResults}, LifecycleNotices{SchemaVersion: 1, Notices: lifecycleNotices(graphRecords)}
 }
 
 func sourcePayloadID(payload crawl.SourcePayloadRecord) string {

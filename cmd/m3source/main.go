@@ -66,14 +66,14 @@ func runCrawl(args []string) error {
 	flags.SetOutput(os.Stderr)
 	flags.Usage = func() {
 		_, _ = fmt.Fprintln(flags.Output(), "Usage: m3source crawl [flags]")
-		_, _ = fmt.Fprintln(flags.Output(), "\nCrawls Material specification pages and downloads source payloads.")
+		_, _ = fmt.Fprintln(flags.Output(), "\nCrawls reviewed Material token-source pages and downloads source payloads.")
 		_, _ = fmt.Fprintln(flags.Output(), "")
 		flags.PrintDefaults()
 	}
 	flags.StringVar(&config.Seed, "seed", crawl.DefaultSeed, "starting Material page")
 	flags.StringVar(&config.Sitemap, "sitemap", "", "sitemap or sitemap-index URL override")
-	flags.StringVar(&config.PathPrefix, "path-prefix", "/components/", "same-origin page path prefix")
-	flags.BoolVar(&config.SpecsOnly, "specs-only", true, "only open component /specs pages")
+	flags.StringVar(&config.PathPrefix, "path-prefix", "/", "same-origin page path prefix used during live discovery")
+	flags.StringVar(&config.Scope, "scope", crawl.ScopeComponentSpecs, "live discovery scope: component-specs or token-source-pages")
 	flags.StringVar(&config.PageCatalogPath, "page-catalog", crawl.DefaultPageCatalogPath, "page URL catalog used by default")
 	flags.BoolVar(&config.Discover, "discover", false, "bypass the page URL catalog and report page-catalog drift")
 	flags.BoolVar(&config.UpdatePageCatalog, "update-page-catalog", false, "replace the page URL catalog with reviewed live discovery")
@@ -266,6 +266,7 @@ func runSnapshotCompare(args []string) error {
 	fmt.Printf("Source payloads: +%d -%d changed %d\n", len(diff.SourcePayloads.Added), len(diff.SourcePayloads.Removed), len(diff.SourcePayloads.Changed))
 	fmt.Printf("Records: +%d -%d changed %d\n", len(diff.Records.Added), len(diff.Records.Removed), len(diff.Records.Changed))
 	fmt.Printf("Page-result changes: %d\n", len(diff.PageResults.Changed))
+	fmt.Printf("Lifecycle notices: +%d -%d\n", len(diff.LifecycleNotices.Added), len(diff.LifecycleNotices.Removed))
 	fmt.Printf("Page catalog changed: %t; capture changed: %t\n", diff.PageCatalogChanged, diff.CaptureChanged)
 	return nil
 }

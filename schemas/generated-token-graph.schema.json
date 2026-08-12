@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/sojupie/m3-source/schemas/generated-token-graph.schema.json",
+  "title": "M3 Source generated token graph",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "snapshotId", "crawlId", "pages", "observations", "sourcePayloads", "records"],
+  "properties": {
+    "schemaVersion": {"type": "integer", "const": 2},
+    "snapshotId": {"type": "string", "minLength": 1},
+    "crawlId": {"type": "string", "minLength": 1},
+    "pages": {"type": "array", "items": {"type": "string", "format": "uri"}},
+    "observations": {"type": "array", "items": {"$ref": "#/$defs/observation"}},
+    "sourcePayloads": {"type": "array", "items": {"$ref": "#/$defs/sourcePayload"}},
+    "records": {"type": "array", "items": {"$ref": "#/$defs/record"}}
+  },
+  "$defs": {
+    "observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pageUrl", "status"],
+      "properties": {
+        "pageUrl": {"type": "string", "format": "uri"},
+        "status": {"type": "integer", "minimum": 0, "maximum": 999},
+        "tokenTableUrl": {"type": "string", "format": "uri"},
+        "title": {"type": "string"},
+        "error": {"type": "string"}
+      }
+    },
+    "sourcePayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pageUrl", "tokenTableUrl", "records"],
+      "properties": {
+        "pageUrl": {"type": "string", "format": "uri"},
+        "tokenTableUrl": {"type": "string", "format": "uri"},
+        "hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "artifact": {"type": "string"},
+        "bytes": {"type": "integer", "minimum": 0},
+        "records": {"type": "integer", "minimum": 0},
+        "extractionError": {"type": "string"},
+        "error": {"type": "string"}
+      }
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "sourcePayloadId", "ordinal", "raw"],
+      "properties": {
+        "id": {"type": "string"},
+        "kind": {"type": "string"},
+        "sourcePayloadId": {"type": "string"},
+        "ordinal": {"type": "integer", "minimum": 0},
+        "name": {"type": "string"},
+        "tokenName": {"type": "string"},
+        "displayName": {"type": "string"},
+        "tokenSetName": {"type": "string"},
+        "state": {"type": "string"},
+        "valueType": {"type": "string"},
+        "raw": {}
+      }
+    }
+  }
+}

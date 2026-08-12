@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/sojupie/m3-source/schemas/lifecycle-notices.schema.json",
+  "title": "M3 Source lifecycle notices",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "notices"],
+  "properties": {
+    "schemaVersion": {"type": "integer", "const": 1},
+    "notices": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "scope", "state", "subject", "message", "sourcePayloadId", "sourceRecordId", "recordKind", "sourceField"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "scope": {"enum": ["component", "style", "token", "record"]},
+          "state": {"enum": ["deprecated", "not-recommended"]},
+          "subject": {"type": "string", "minLength": 1},
+          "message": {"type": "string", "minLength": 1},
+          "sourcePayloadId": {"type": "string", "minLength": 1},
+          "sourceRecordId": {"type": "string", "minLength": 1},
+          "recordKind": {"type": "string", "minLength": 1},
+          "sourceField": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}

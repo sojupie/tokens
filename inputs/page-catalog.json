@@ -1,44 +1,254 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "source": "https://m3.material.io/sitemap.xml",
-  "scope": "/components/<component>/specs",
-  "generatedAt": "2026-08-10T00:00:00Z",
+  "scope": "component specs and style/foundation token pages",
+  "generatedAt": "2026-08-12T02:36:13.2646851Z",
   "pages": [
-    { "url": "https://m3.material.io/components/app-bars/specs", "component": "app-bars" },
-    { "url": "https://m3.material.io/components/badges/specs", "component": "badges" },
-    { "url": "https://m3.material.io/components/bottom-sheets/specs", "component": "bottom-sheets" },
-    { "url": "https://m3.material.io/components/button-groups/specs", "component": "button-groups" },
-    { "url": "https://m3.material.io/components/buttons/specs", "component": "buttons" },
-    { "url": "https://m3.material.io/components/cards/specs", "component": "cards" },
-    { "url": "https://m3.material.io/components/carousel/specs", "component": "carousel" },
-    { "url": "https://m3.material.io/components/checkbox/specs", "component": "checkbox" },
-    { "url": "https://m3.material.io/components/chips/specs", "component": "chips" },
-    { "url": "https://m3.material.io/components/date-pickers/specs", "component": "date-pickers" },
-    { "url": "https://m3.material.io/components/dialogs/specs", "component": "dialogs" },
-    { "url": "https://m3.material.io/components/divider/specs", "component": "divider" },
-    { "url": "https://m3.material.io/components/extended-fab/specs", "component": "extended-fab" },
-    { "url": "https://m3.material.io/components/fab-menu/specs", "component": "fab-menu" },
-    { "url": "https://m3.material.io/components/floating-action-button/specs", "component": "floating-action-button" },
-    { "url": "https://m3.material.io/components/icon-buttons/specs", "component": "icon-buttons" },
-    { "url": "https://m3.material.io/components/lists/specs", "component": "lists" },
-    { "url": "https://m3.material.io/components/loading-indicator/specs", "component": "loading-indicator" },
-    { "url": "https://m3.material.io/components/menus/specs", "component": "menus" },
-    { "url": "https://m3.material.io/components/navigation-bar/specs", "component": "navigation-bar" },
-    { "url": "https://m3.material.io/components/navigation-drawer/specs", "component": "navigation-drawer" },
-    { "url": "https://m3.material.io/components/navigation-rail/specs", "component": "navigation-rail" },
-    { "url": "https://m3.material.io/components/progress-indicators/specs", "component": "progress-indicators" },
-    { "url": "https://m3.material.io/components/radio-button/specs", "component": "radio-button" },
-    { "url": "https://m3.material.io/components/search/specs", "component": "search" },
-    { "url": "https://m3.material.io/components/segmented-buttons/specs", "component": "segmented-buttons" },
-    { "url": "https://m3.material.io/components/side-sheets/specs", "component": "side-sheets" },
-    { "url": "https://m3.material.io/components/sliders/specs", "component": "sliders" },
-    { "url": "https://m3.material.io/components/snackbar/specs", "component": "snackbar" },
-    { "url": "https://m3.material.io/components/split-button/specs", "component": "split-button" },
-    { "url": "https://m3.material.io/components/switch/specs", "component": "switch" },
-    { "url": "https://m3.material.io/components/tabs/specs", "component": "tabs" },
-    { "url": "https://m3.material.io/components/text-fields/specs", "component": "text-fields" },
-    { "url": "https://m3.material.io/components/time-pickers/specs", "component": "time-pickers" },
-    { "url": "https://m3.material.io/components/toolbars/specs", "component": "toolbars" },
-    { "url": "https://m3.material.io/components/tooltips/specs", "component": "tooltips" }
+    {
+      "url": "https://m3.material.io/components/app-bars/specs",
+      "area": "components",
+      "subject": "app-bars",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/components/badges/specs",
+      "area": "components",
+      "subject": "badges",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/components/bottom-sheets/specs",
+      "area": "components",
+      "subject": "bottom-sheets",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/components/button-groups/specs",
+      "area": "components",
+      "subject": "button-groups",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/components/buttons/specs",
+      "area": "components",
+      "subject": "buttons",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/components/cards/specs",
+      "area": "components",
+      "subject": "cards",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/components/carousel/specs",
+      "area": "components",
+      "subject": "carousel",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/components/checkbox/specs",
+      "area": "components",
+      "subject": "checkbox",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/components/chips/specs",
+      "area": "components",
+      "subject": "chips",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/components/date-pickers/specs",
+      "area": "components",
+      "subject": "date-pickers",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/components/dialogs/specs",
+      "area": "components",
+      "subject": "dialogs",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/components/divider/specs",
+      "area": "components",
+      "subject": "divider",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/components/extended-fab/specs",
+      "area": "components",
+      "subject": "extended-fab",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/components/fab-menu/specs",
+      "area": "components",
+      "subject": "fab-menu",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/components/floating-action-button/specs",
+      "area": "components",
+      "subject": "floating-action-button",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/components/icon-buttons/specs",
+      "area": "components",
+      "subject": "icon-buttons",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/components/lists/specs",
+      "area": "components",
+      "subject": "lists",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/components/loading-indicator/specs",
+      "area": "components",
+      "subject": "loading-indicator",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/components/menus/specs",
+      "area": "components",
+      "subject": "menus",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/components/navigation-bar/specs",
+      "area": "components",
+      "subject": "navigation-bar",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/components/navigation-drawer/specs",
+      "area": "components",
+      "subject": "navigation-drawer",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/components/navigation-rail/specs",
+      "area": "components",
+      "subject": "navigation-rail",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/components/progress-indicators/specs",
+      "area": "components",
+      "subject": "progress-indicators",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/components/radio-button/specs",
+      "area": "components",
+      "subject": "radio-button",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/components/search/specs",
+      "area": "components",
+      "subject": "search",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/components/segmented-buttons/specs",
+      "area": "components",
+      "subject": "segmented-buttons",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/components/side-sheets/specs",
+      "area": "components",
+      "subject": "side-sheets",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/components/sliders/specs",
+      "area": "components",
+      "subject": "sliders",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/components/snackbar/specs",
+      "area": "components",
+      "subject": "snackbar",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/components/split-button/specs",
+      "area": "components",
+      "subject": "split-button",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/components/switch/specs",
+      "area": "components",
+      "subject": "switch",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/components/tabs/specs",
+      "area": "components",
+      "subject": "tabs",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/components/text-fields/specs",
+      "area": "components",
+      "subject": "text-fields",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/components/time-pickers/specs",
+      "area": "components",
+      "subject": "time-pickers",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/components/toolbars/specs",
+      "area": "components",
+      "subject": "toolbars",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/components/tooltips/specs",
+      "area": "components",
+      "subject": "tooltips",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/styles/elevation/tokens",
+      "area": "styles",
+      "subject": "elevation",
+      "pageType": "tokens"
+    },
+    {
+      "url": "https://m3.material.io/styles/motion/overview/specs",
+      "area": "styles",
+      "subject": "motion/overview",
+      "pageType": "specs"
+    },
+    {
+      "url": "https://m3.material.io/styles/shape/corner-radius-scale",
+      "area": "styles",
+      "subject": "shape/corner-radius",
+      "pageType": "tokens"
+    },
+    {
+      "url": "https://m3.material.io/styles/spacing/tokens",
+      "area": "styles",
+      "subject": "spacing",
+      "pageType": "tokens"
+    },
+    {
+      "url": "https://m3.material.io/styles/typography/type-scale-tokens",
+      "area": "styles",
+      "subject": "typography/type-scale",
+      "pageType": "tokens"
+    }
   ]
 }

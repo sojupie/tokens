@@ -1,8 +1,9 @@
 # Go build cache, crawler payload cache, and other generated caches.
 .cache/
 
-# Generated crawler evidence. Curated, reviewed snapshots should live in a
-# separately named directory so they are intentionally added to Git.
+# Generated crawler evidence. Crawl receipts are local run output; curated,
+# reviewed snapshots are intentionally added to Git.
+crawl-results/*.json
 sources/raw/
 sources/normalized/
 sources/runs/

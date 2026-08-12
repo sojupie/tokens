@@ -27,12 +27,37 @@ func TestCanonicalPageURL(t *testing.T) {
 	}
 }
 
-func TestIsSpecsPage(t *testing.T) {
+func TestSourcePayloadPattern(t *testing.T) {
+	for _, target := range []string{
+		"https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.52865380210a9b69.json",
+		"https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TYPE_UNSPECIFIED.20543ce1889f27d9.json",
+		"https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TYPE_COLOR.json?alt=media",
+		"https://m3.material.io/_dsm/data/dsdb-m3/ELEVATION.20543ce18892f7d9.json",
+		"https://m3.material.io/_dsm/data/dsdb-m3/SPACING.20543ce18892f7d9.json",
+		"https://m3.material.io/_dsm/data/dsdb-m3/TYPE_SCALE.20543ce18892f7d9.json",
+	} {
+		if !sourcePayloadRE.MatchString(target) {
+			t.Fatalf("expected source payload URL to match: %s", target)
+		}
+	}
+	for _, target := range []string{
+		"https://m3.material.io/_dsm/data/OTHER.json",
+		"https://m3.material.io/_dsm/data/TOKEN_TYPE_UNSPECIFIED.txt",
+		"https://m3.material.io/_dsm/data/dsdb-m3/ordinary-page-data.json",
+		"https://m3.material.io/api/ELEVATION.20543ce18892f7d9.json",
+	} {
+		if sourcePayloadRE.MatchString(target) {
+			t.Fatalf("did not expect source payload URL to match: %s", target)
+		}
+	}
+}
+
+func TestPageScopes(t *testing.T) {
 	for _, page := range []string{
 		"https://m3.material.io/components/buttons/specs",
 		"https://m3.material.io/components/buttons/specs/",
 	} {
-		if !isSpecsPage(page) {
+		if !isComponentSpecsPage(page) || !isPageInScope(page, ScopeComponentSpecs) || !isPageInScope(page, ScopeTokenSourcePages) {
 			t.Fatalf("expected specs page: %s", page)
 		}
 	}
@@ -40,9 +65,22 @@ func TestIsSpecsPage(t *testing.T) {
 		"https://m3.material.io/components/buttons/overview",
 		"https://m3.material.io/components/buttons/specs/details",
 	} {
-		if isSpecsPage(page) {
+		if isComponentSpecsPage(page) || isPageInScope(page, ScopeTokenSourcePages) {
 			t.Fatalf("did not expect specs page: %s", page)
 		}
+	}
+	for _, page := range []string{
+		"https://m3.material.io/styles/elevation/tokens",
+		"https://m3.material.io/styles/motion/overview/specs",
+		"https://m3.material.io/styles/typography/type-scale-tokens",
+		"https://m3.material.io/styles/shape/corner-radius-scale",
+	} {
+		if !isStyleTokenSourcePage(page) || !isPageInScope(page, ScopeTokenSourcePages) || isPageInScope(page, ScopeComponentSpecs) {
+			t.Fatalf("expected style token-source page: %s", page)
+		}
+	}
+	if isStyleTokenSourcePage("https://m3.material.io/styles/motion/overview") {
+		t.Fatal("did not expect style overview page")
 	}
 }
 
@@ -50,7 +88,7 @@ func TestCatalogRoundTripAndDiff(t *testing.T) {
 	path := t.TempDir() + "/pages.json"
 	pages := []string{
 		"https://m3.material.io/components/buttons/specs",
-		"https://m3.material.io/components/cards/specs",
+		"https://m3.material.io/styles/elevation/tokens",
 	}
 	if err := writePageCatalog(path, "https://m3.material.io/sitemap.xml", pages); err != nil {
 		t.Fatal(err)
@@ -69,8 +107,26 @@ func TestCatalogRoundTripAndDiff(t *testing.T) {
 	if len(added) != 1 || added[0] != "https://m3.material.io/components/dialogs/specs" {
 		t.Fatalf("unexpected additions: %#v", added)
 	}
-	if len(removed) != 1 || removed[0] != "https://m3.material.io/components/cards/specs" {
+	if len(removed) != 1 || removed[0] != "https://m3.material.io/styles/elevation/tokens" {
 		t.Fatalf("unexpected removals: %#v", removed)
+	}
+}
+
+func TestPageMetadata(t *testing.T) {
+	tests := []struct {
+		page, area, subject, pageType string
+	}{
+		{"https://m3.material.io/components/navigation-bar/specs", "components", "navigation-bar", "specs"},
+		{"https://m3.material.io/styles/motion/overview/specs", "styles", "motion/overview", "specs"},
+		{"https://m3.material.io/styles/spacing/tokens", "styles", "spacing", "tokens"},
+		{"https://m3.material.io/styles/typography/type-scale-tokens", "styles", "typography/type-scale", "tokens"},
+		{"https://m3.material.io/styles/shape/corner-radius-scale", "styles", "shape/corner-radius", "tokens"},
+	}
+	for _, test := range tests {
+		area, subject, pageType := pageMetadata(test.page)
+		if area != test.area || subject != test.subject || pageType != test.pageType {
+			t.Fatalf("pageMetadata(%q) = %q, %q, %q", test.page, area, subject, pageType)
+		}
 	}
 }
 

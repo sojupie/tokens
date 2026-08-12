@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/sojupie/m3-source/schemas/manifest.schema.json",
+  "title": "M3 Source material token-data snapshot manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["type", "schemaVersion", "snapshotId", "createdAt", "source", "capture", "extractor", "artifacts"],
+  "properties": {
+    "type": {"const": "material-token-data-snapshot"},
+    "schemaVersion": {"type": "integer", "const": 2},
+    "snapshotId": {"type": "string", "minLength": 1},
+    "createdAt": {"type": "string", "format": "date-time"},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["system", "pageCatalogSha256", "pageCount"],
+      "properties": {
+        "system": {"const": "material-3"},
+        "pageCatalogSha256": {"$ref": "#/$defs/sha256"},
+        "pageCount": {"type": "integer", "minimum": 0}
+      }
+    },
+    "capture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["crawlId", "crawlReceipt", "pagesAttempted", "pagesSucceeded", "payloadsObserved", "payloadsFetched", "complete"],
+      "properties": {
+        "crawlId": {"type": "string", "minLength": 1},
+        "crawlReceipt": {"type": "string", "minLength": 1},
+        "pagesAttempted": {"type": "integer", "minimum": 0},
+        "pagesSucceeded": {"type": "integer", "minimum": 0},
+        "payloadsObserved": {"type": "integer", "minimum": 0},
+        "payloadsFetched": {"type": "integer", "minimum": 0},
+        "complete": {"type": "boolean"}
+      }
+    },
+    "extractor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version", "schemaVersion"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "version": {"type": "string", "minLength": 1},
+        "schemaVersion": {"type": "integer", "const": 2}
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "mediaType", "sha256", "bytes"],
+        "properties": {
+          "path": {"type": "string", "minLength": 1},
+          "mediaType": {"type": "string", "minLength": 1},
+          "contentEncoding": {"type": "string", "minLength": 1},
+          "sha256": {"$ref": "#/$defs/sha256"},
+          "bytes": {"type": "integer", "minimum": 0}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+  }
+}

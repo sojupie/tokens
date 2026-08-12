@@ -67,7 +67,7 @@ func TestBuildIsDeterministicAndVerifiable(t *testing.T) {
 	if _, err := Build(config); err != nil {
 		t.Fatal(err)
 	}
-	for _, name := range []string{"manifest.json", "page-catalog.json", "generated-token-graph.json.gz", "source-payload-details.json", "page-results.json", "checksums.txt"} {
+	for _, name := range []string{"manifest.json", "page-catalog.json", "generated-token-graph.json.gz", "source-payload-details.json", "page-results.json", "lifecycle-notices.json", "checksums.txt"} {
 		left, err := os.ReadFile(filepath.Join(first, name))
 		if err != nil {
 			t.Fatal(err)

@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
+	"strings"
 )
 
 // ExtractedRecord keeps the upstream object intact while exposing the fields
@@ -130,6 +131,90 @@ func newExtractedRecord(kind, sourcePayloadID, id string, ordinal int, raw json.
 		record.ID = record.Name
 	}
 	return record
+}
+
+func lifecycleNotices(records []ExtractedRecord) []LifecycleNotice {
+	notices := make([]LifecycleNotice, 0)
+	for _, record := range records {
+		var fields map[string]json.RawMessage
+		if json.Unmarshal(record.Raw, &fields) != nil {
+			continue
+		}
+		if message := deprecationMessage(fields["deprecationMessage"]); message != "" {
+			notices = append(notices, newLifecycleNotice(record, "deprecationMessage", "deprecated", message))
+		}
+		for _, field := range []string{"description", "displayName", "name", "tokenName", "tokenSetName"} {
+			message := jsonString(fields[field])
+			state := lifecycleState(message)
+			if state == "" {
+				continue
+			}
+			notices = append(notices, newLifecycleNotice(record, field, state, message))
+		}
+	}
+	sort.Slice(notices, func(i, j int) bool { return notices[i].ID < notices[j].ID })
+	return notices
+}
+
+func deprecationMessage(raw json.RawMessage) string {
+	if len(raw) == 0 {
+		return ""
+	}
+	var object struct {
+		Message string `json:"message"`
+	}
+	if json.Unmarshal(raw, &object) == nil && object.Message != "" {
+		return object.Message
+	}
+	return jsonString(raw)
+}
+
+func lifecycleState(message string) string {
+	lower := strings.ToLower(message)
+	if strings.Contains(lower, "not recommended") || strings.Contains(lower, "no longer recommended") {
+		return "not-recommended"
+	}
+	if strings.Contains(lower, "deprecated") {
+		return "deprecated"
+	}
+	return ""
+}
+
+func newLifecycleNotice(record ExtractedRecord, sourceField, state, message string) LifecycleNotice {
+	subject := record.TokenName
+	if subject == "" {
+		subject = record.TokenSetName
+	}
+	if subject == "" {
+		subject = record.Name
+	}
+	if subject == "" {
+		subject = record.ID
+	}
+	return LifecycleNotice{
+		ID:              "notice-" + sha256Hex([]byte(record.SourcePayloadID+"\x00"+record.Kind+"\x00"+record.ID+"\x00"+sourceField+"\x00"+message)),
+		Scope:           lifecycleScope(record.Kind),
+		State:           state,
+		Subject:         subject,
+		Message:         message,
+		SourcePayloadID: record.SourcePayloadID,
+		SourceRecordID:  record.ID,
+		RecordKind:      record.Kind,
+		SourceField:     sourceField,
+	}
+}
+
+func lifecycleScope(kind string) string {
+	switch kind {
+	case "component":
+		return "component"
+	case "tokenSet":
+		return "style"
+	case "token":
+		return "token"
+	default:
+		return "record"
+	}
 }
 
 func recordID(raw json.RawMessage, index int) string {

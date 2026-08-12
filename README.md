@@ -1,7 +1,7 @@
 # M3 Source
 
 M3 Source captures and explains the design-token data published by Material 3.
-It discovers component specification pages, observes their lazy token-table
+It discovers reviewed token-source pages, observes their lazy token-table
 requests, stores source payloads by content hash, generates a loss-preserving
 token graph, and publishes immutable material-token-data snapshots.
 
@@ -24,8 +24,9 @@ No Node.js, pnpm, Playwright, or `node_modules` directory is required.
 
 ## Crawl
 
-A normal crawl uses the checked-in page URL catalog. It lists Material
-component specification pages under `/components/<component>/specs`:
+A normal crawl uses the checked-in page URL catalog. It lists reviewed Material
+token-source pages, including component specification pages and foundation or
+style token pages:
 
 ```text
 go run ./cmd/m3source crawl
@@ -41,6 +42,17 @@ Audit the live sitemap against the page URL catalog:
 go run ./cmd/m3source crawl --discover --dry-run
 ```
 
+Run the broader inventory scope when reviewing pages outside the current
+catalog:
+
+```text
+go run ./cmd/m3source crawl --discover --scope token-source-pages --dry-run
+```
+
+This scope considers component `/specs` pages and style or foundation token
+pages ending in `/tokens`, `/specs`, `-tokens`, or `-scale`. It reports candidates and page-catalog drift;
+it does not prove that every Material page publishes a token table.
+
 Update the page URL catalog after reviewing the reported additions and removals:
 
 ```text
@@ -53,7 +65,8 @@ Run a small dry crawl during development:
 go run ./cmd/m3source crawl --max-pages 10 --page-timeout 8s --dry-run
 ```
 
-Refresh payloads even when their URL already exists in the cache:
+By default, valid cached source payloads are reused without an HTTP download.
+Force a fresh download when needed:
 
 ```text
 go run ./cmd/m3source crawl --refresh
@@ -77,11 +90,22 @@ Use `--retry-failed-from <crawl-receipt>` to select a specific receipt. The
 repair crawl opens only failed pages, then writes a new receipt containing the
 previous successful pages plus the retried results.
 
+To rerun snapshot extraction without opening Chrome or crawling pages again, use
+`snapshot create`. It reads the selected crawl receipt and cached source-payload
+artifacts. A normal `crawl` still re-observes pages so it can detect new, removed,
+or changed source-payload URLs; valid payload bytes are reused unless `--refresh`
+is supplied.
+
 ## Discovery
 
-Material currently exposes token tables on
-`/components/<component>/specs`. M3 Source therefore filters live discovery to
-specification pages before launching Chromium.
+The default live discovery scope is `component-specs`. The
+`token-source-pages` scope also considers style and foundation pages such as
+`/styles/elevation/tokens`, `/styles/motion/overview/specs`,
+`/styles/typography/type-scale-tokens`, and `/styles/shape/corner-radius-scale`.
+
+The page URL catalog is the reviewed source of truth for normal crawls. Broad
+discovery is an inventory aid. Review its additions before updating the page
+catalog.
 
 Live discovery reads `robots.txt`, follows sitemap indexes, filters same-origin
 URLs, and falls back to same-origin link discovery only when no sitemap yields
@@ -91,7 +115,7 @@ The crawler does not need manually copied token-table URLs. For each selected
 page it:
 
 1. Opens the page through chromedp.
-2. Observes matching `TOKEN_TABLE*.json` network responses.
+2. Observes matching `TOKEN_TABLE*.json` and `TOKEN_TYPE_*.json` network responses.
 3. Fetches each unique payload once.
 4. Hashes the uncompressed response with SHA-256.
 5. Stores a gzip-compressed content-addressed artifact.
@@ -120,7 +144,8 @@ The new response receives a new content hash.
 Snapshots are immutable, content-addressed bundles of Material token-table
 source payloads and generated token data. They contain a manifest, page URL catalog,
 source payloads, generated token graph, source-payload details, page results, and
-checksums.
+checksums. Lifecycle notices preserve explicit upstream deprecation and
+recommendation statements without turning them into Forge support decisions.
 
 M3 Forge pins a specific manifest digest. It never consumes `latest`, runs this
 crawler in its build, or depends on an M3 Source service being online.
@@ -169,4 +194,5 @@ for diagnosis, not an approved snapshot.
 Normal tests must use committed fixtures and remain offline.
 
 See the [CLI guide](docs/cli.md) for command help, defaults, and explicit
-override examples.
+override examples. See the [pre-compiler worklist](docs/plans/2026-08-11-m3-source-precompiler-worklist.md)
+for the remaining Source contract and Forge policy decisions.

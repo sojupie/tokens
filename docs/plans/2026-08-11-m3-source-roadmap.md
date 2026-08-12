@@ -41,7 +41,8 @@ project.
 Keep commands conceptually separate even if they initially share one binary:
 
 ```text
-m3source crawl --discover --dry-run  # audit the page URL catalog
+m3source crawl --discover --dry-run  # audit component-spec page drift
+m3source crawl --discover --scope token-source-pages --dry-run  # inventory broader token-source pages
 m3source crawl
 m3source snapshot create
 m3source snapshot verify
@@ -65,6 +66,21 @@ Use files and content-addressed artifacts:
 Do not add an operational database. Batch files fit immutable versioning,
 hashing, offline use, and mirroring. A generated SQLite file can later serve
 local queries without becoming a source of truth.
+
+### Deferred: rendered measurements and component preview images
+
+Do not make measurement-diagram extraction part of the first token snapshot or
+the first Forge compiler milestone. The diagrams are difficult to interpret
+reliably, and their labels may describe geometry, relationships, or guidance
+rather than tokens. Revisit this only when a concrete component or conformance
+requirement needs the data and the source representation can be verified.
+
+Token-table component images are different. They are useful representative
+previews, but they do not show every variant and are not measurement evidence.
+For now, preserve their upstream URL in the loss-preserving source payload.
+If offline image access becomes useful later, add an optional, separately
+provenanced component-preview artifact. Do not use preview images as compiler
+input or as evidence of variant coverage.
 
 ## 5. Versioning
 

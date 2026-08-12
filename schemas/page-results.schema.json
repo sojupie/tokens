@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/sojupie/m3-source/schemas/page-results.schema.json",
+  "title": "M3 Source page capture results",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "pages"],
+  "properties": {
+    "schemaVersion": {"type": "integer", "const": 2},
+    "pages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["url", "status", "tokenTableObserved", "payloadsObserved", "payloadsFetched", "recordsExtracted"],
+        "properties": {
+          "url": {"type": "string", "format": "uri"},
+          "status": {"type": "integer", "minimum": 0, "maximum": 999},
+          "tokenTableObserved": {"type": "boolean"},
+          "payloadsObserved": {"type": "integer", "minimum": 0},
+          "payloadsFetched": {"type": "integer", "minimum": 0},
+          "recordsExtracted": {"type": "integer", "minimum": 0},
+          "payloadError": {"type": "string"},
+          "extractionError": {"type": "string"},
+          "error": {"type": "string"}
+        }
+      }
+    }
+  }
+}

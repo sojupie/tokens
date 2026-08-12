@@ -70,6 +70,25 @@ retained from the earlier crawl. `complete` describes the merged receipt. If
 the retry cannot capture any page successfully, it exits without writing a
 new receipt.
 
+## Broad token-source inventory
+
+Use the broader discovery scope when reviewing foundation and style pages in
+addition to component specification pages:
+
+```text
+go run ./cmd/m3source crawl \
+  --discover \
+  --scope token-source-pages \
+  --dry-run
+```
+
+The scope considers component pages ending in `/specs` and style token pages
+ending in `/tokens`, `/specs`, `-tokens`, or `-scale`. It produces candidate page results and drift. It
+does not automatically make unreviewed pages part of the normal catalog.
+After reviewing the additions, `--discover` and `--update-page-catalog` may be
+combined for one live discovery and capture. The update writes the reviewed
+candidate catalog before the crawl continues.
+
 ## Explicit paths
 
 Every automatic choice can be overridden when working with a specific receipt
@@ -101,6 +120,7 @@ directories fail before snapshot assembly proceeds.
 The crawl command uses these defaults:
 
 - page URL catalog: `inputs/page-catalog.json`;
+- live discovery scope: `component-specs`;
 - source-payload cache: `.cache/material-token-table-responses`;
 - crawl receipts: `crawl-results`;
 - page timeout: 10 seconds;
@@ -109,6 +129,20 @@ The crawl command uses these defaults:
 `--max-pages` limits how many failed pages a repair crawl retries. Unretried
 failures remain in the merged crawl receipt and keep its capture incomplete.
 
-Use `--refresh` to re-download source payloads whose token-table URL is already
-in the cache. Without it, the crawl observes the page but reuses the cached
-source payload when its artifact is present.
+Use `--scope token-source-pages` with `--discover` for a deliberate inventory
+of component, foundation, and style token-source pages. The scope does not
+mean every page on the Material site.
+
+During a crawl, the command reports page selection, Chromium startup, page
+progress, source-payload observations, and source-payload reuse, storage, or
+failure. A dry run reports observed payload URLs but explicitly skips payload
+persistence, so its receipt cannot create a snapshot.
+
+By default, the crawl observes each page but reuses a valid cached source
+payload without an HTTP download. Use `--refresh` to re-download source
+payloads whose URL is already in the cache. Cached payloads still appear in the
+receipt because a complete crawl needs them for offline snapshot assembly.
+
+If only the generated snapshot needs to be rerun, use `snapshot create` again
+with the existing crawl receipt. That path reads cached source-payload artifacts
+and does not open Chrome or crawl pages.

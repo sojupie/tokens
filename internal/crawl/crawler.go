@@ -29,16 +29,18 @@ import (
 const (
 	DefaultSeed            = "https://m3.material.io/components/buttons/specs"
 	DefaultPageCatalogPath = "inputs/page-catalog.json"
-	tokenTablePattern      = `(?i)/TOKEN_TABLE(?:\.[^/]+)?\.json(?:\?.*)?$`
+	ScopeComponentSpecs    = "component-specs"
+	ScopeTokenSourcePages  = "token-source-pages"
+	sourcePayloadPattern   = `(?i:/_dsm/data/)(?:[^/]+/)+[A-Z][A-Z0-9_-]*(?:\.[A-Za-z0-9_-]+)?\.json(?:\?.*)?$`
 )
 
-var tokenTableRE = regexp.MustCompile(tokenTablePattern)
+var sourcePayloadRE = regexp.MustCompile(sourcePayloadPattern)
 
 type Config struct {
 	Seed              string        `json:"seed"`
 	Sitemap           string        `json:"sitemap,omitempty"`
 	PathPrefix        string        `json:"pathPrefix"`
-	SpecsOnly         bool          `json:"specsOnly"`
+	Scope             string        `json:"scope"`
 	PageCatalogPath   string        `json:"pageCatalogPath"`
 	Discover          bool          `json:"discover"`
 	UpdatePageCatalog bool          `json:"updatePageCatalog"`
@@ -60,7 +62,7 @@ type CrawlOptions struct {
 	Seed              string `json:"seed"`
 	Sitemap           string `json:"sitemap,omitempty"`
 	PathPrefix        string `json:"pathPrefix"`
-	SpecsOnly         bool   `json:"specsOnly"`
+	Scope             string `json:"scope"`
 	PageCatalogPath   string `json:"pageCatalogPath"`
 	Discover          bool   `json:"discover"`
 	UpdatePageCatalog bool   `json:"updatePageCatalog"`
@@ -130,8 +132,10 @@ type CaptureReport struct {
 }
 
 type PageCatalogEntry struct {
-	URL       string `json:"url"`
-	Component string `json:"component"`
+	URL      string `json:"url"`
+	Area     string `json:"area"`
+	Subject  string `json:"subject"`
+	PageType string `json:"pageType"`
 }
 
 type PageCatalog struct {
@@ -167,11 +171,14 @@ func Run(ctx context.Context, config Config) error {
 	if config.RetryFailedFrom != "" {
 		config.RetryFailed = true
 	}
-	if err := config.validate(); err != nil {
-		return err
+	if config.Scope == "" {
+		config.Scope = ScopeComponentSpecs
 	}
 	if config.PathPrefix == "" {
 		config.PathPrefix = "/"
+	}
+	if err := config.validate(); err != nil {
+		return err
 	}
 	if config.PageCatalogPath == "" {
 		config.PageCatalogPath = DefaultPageCatalogPath
@@ -204,6 +211,7 @@ func Run(ctx context.Context, config Config) error {
 		fmt.Printf("Retrying %d failed pages; retaining %d total pages.\n", len(pagesToObserve), len(pages))
 	} else {
 		var err error
+		fmt.Printf("Selecting pages (scope %s)...\n", config.Scope)
 		pages, discovery, err = discoverPages(ctx, config)
 		if err != nil {
 			return fmt.Errorf("discover pages: %w", err)
@@ -229,7 +237,7 @@ func Run(ctx context.Context, config Config) error {
 		return errors.New("capture produced no successful pages")
 	}
 	sources := uniqueSources(observations)
-	fmt.Printf("Discovered %d unique token-table payloads.\n", len(sources))
+	fmt.Printf("Discovered %d unique source payloads.\n", len(sources))
 
 	indexPath := filepath.Join(config.CacheDir, "index.json")
 	index, err := loadIndex(indexPath)
@@ -238,16 +246,26 @@ func Run(ctx context.Context, config Config) error {
 	}
 	sourcePayloads := make([]SourcePayloadRecord, 0, len(sources))
 	if !config.DryRun {
-		for _, source := range sources {
+		fmt.Printf("Persisting %d unique source payloads...\n", len(sources))
+		for payloadNumber, source := range sources {
+			started := time.Now()
+			fmt.Printf("  [payload %d/%d] processing %s\n", payloadNumber+1, len(sources), source.TokenTableURL)
 			record, err := persistPayload(ctx, config, index, source)
 			if err != nil {
 				record = SourcePayloadRecord{PageURL: source.PageURL, TokenTableURL: source.TokenTableURL, Error: err.Error()}
+				fmt.Printf("  [payload %d/%d] failed after %s: %s\n", payloadNumber+1, len(sources), elapsed(time.Since(started)), err)
+			} else if record.Reused {
+				fmt.Printf("  [payload %d/%d] reused after %s\n", payloadNumber+1, len(sources), elapsed(time.Since(started)))
+			} else {
+				fmt.Printf("  [payload %d/%d] stored %d bytes after %s\n", payloadNumber+1, len(sources), record.Bytes, elapsed(time.Since(started)))
 			}
 			sourcePayloads = append(sourcePayloads, record)
 		}
 		if err := writeJSONAtomic(indexPath, index); err != nil {
 			return fmt.Errorf("write cache index: %w", err)
 		}
+	} else {
+		fmt.Printf("Dry run: skipping persistence of %d source payloads.\n", len(sources))
 	}
 	var captureReportValue CaptureReport
 	if previous != nil {
@@ -457,14 +475,11 @@ func (config Config) validate() error {
 	if _, err := url.ParseRequestURI(config.Seed); err != nil {
 		return fmt.Errorf("invalid seed URL: %w", err)
 	}
-	if config.Discover && config.UpdatePageCatalog {
-		return errors.New("discover and update-page-catalog cannot be used together")
-	}
 	if config.NoPageCatalog && config.UpdatePageCatalog {
 		return errors.New("no-page-catalog and update-page-catalog cannot be used together")
 	}
-	if !config.SpecsOnly && config.UpdatePageCatalog {
-		return errors.New("update-page-catalog requires specs-only discovery")
+	if config.Scope != ScopeComponentSpecs && config.Scope != ScopeTokenSourcePages {
+		return fmt.Errorf("unsupported discovery scope %q (use %q or %q)", config.Scope, ScopeComponentSpecs, ScopeTokenSourcePages)
 	}
 	if config.RetryFailed && config.DryRun {
 		return errors.New("retry-failed cannot be combined with dry-run")
@@ -487,7 +502,7 @@ func crawlOptions(config Config) CrawlOptions {
 		Seed:              config.Seed,
 		Sitemap:           config.Sitemap,
 		PathPrefix:        pathPrefix,
-		SpecsOnly:         config.SpecsOnly,
+		Scope:             config.Scope,
 		PageCatalogPath:   config.PageCatalogPath,
 		Discover:          config.Discover,
 		UpdatePageCatalog: config.UpdatePageCatalog,
@@ -512,13 +527,16 @@ func DiscoverPages(ctx context.Context, config Config) ([]string, error) {
 }
 
 func discoverPages(ctx context.Context, config Config) ([]string, DiscoveryReport, error) {
+	if config.Scope == "" {
+		config.Scope = ScopeComponentSpecs
+	}
+	if config.PathPrefix == "" {
+		config.PathPrefix = "/"
+	}
 	if config.PageCatalogPath == "" {
 		config.PageCatalogPath = DefaultPageCatalogPath
 	}
 	if !config.NoPageCatalog && !config.Discover && !config.UpdatePageCatalog {
-		if !config.SpecsOnly {
-			return nil, DiscoveryReport{}, errors.New("the curated page catalog contains specification pages; use --no-page-catalog for non-spec discovery")
-		}
 		pages, err := loadPageCatalog(config.PageCatalogPath, config.MaxPages)
 		if err != nil {
 			return nil, DiscoveryReport{}, err
@@ -563,15 +581,19 @@ func loadPageCatalog(path string, maxPages int) ([]string, error) {
 	if err := json.Unmarshal(body, &pageCatalog); err != nil {
 		return nil, fmt.Errorf("parse page catalog: %w", err)
 	}
-	if pageCatalog.SchemaVersion != 1 {
+	if pageCatalog.SchemaVersion != 2 {
 		return nil, fmt.Errorf("unsupported page catalog schema version %d", pageCatalog.SchemaVersion)
 	}
 	seen := map[string]bool{}
 	pages := make([]string, 0, len(pageCatalog.Pages))
 	for _, pageEntry := range pageCatalog.Pages {
 		parsed, err := url.Parse(pageEntry.URL)
-		if err != nil || parsed.Scheme == "" || parsed.Host == "" || !isSpecsPage(pageEntry.URL) {
-			return nil, fmt.Errorf("invalid specification page in page catalog: %q", pageEntry.URL)
+		area, subject, pageType := pageMetadata(pageEntry.URL)
+		if err != nil || parsed.Scheme == "" || parsed.Host == "" || !isTokenSourcePage(pageEntry.URL) {
+			return nil, fmt.Errorf("invalid token-source page in page catalog: %q", pageEntry.URL)
+		}
+		if pageEntry.Area != area || pageEntry.Subject != subject || pageEntry.PageType != pageType {
+			return nil, fmt.Errorf("page catalog metadata does not match URL %q", pageEntry.URL)
 		}
 		if !seen[pageEntry.URL] {
 			seen[pageEntry.URL] = true
@@ -585,28 +607,49 @@ func loadPageCatalog(path string, maxPages int) ([]string, error) {
 func writePageCatalog(path, source string, pages []string) error {
 	entries := make([]PageCatalogEntry, 0, len(pages))
 	for _, pageURL := range pages {
-		entries = append(entries, PageCatalogEntry{URL: pageURL, Component: componentName(pageURL)})
+		area, subject, pageType := pageMetadata(pageURL)
+		entries = append(entries, PageCatalogEntry{URL: pageURL, Area: area, Subject: subject, PageType: pageType})
 	}
 	pageCatalog := PageCatalog{
-		SchemaVersion: 1,
+		SchemaVersion: 2,
 		Source:        source,
-		Scope:         "/components/<component>/specs",
+		Scope:         "component specs and style/foundation token pages",
 		GeneratedAt:   time.Now().UTC().Format(time.RFC3339Nano),
 		Pages:         entries,
 	}
 	return writeJSONAtomic(path, pageCatalog)
 }
 
-func componentName(page string) string {
+func pageMetadata(page string) (area, subject, pageType string) {
 	parsed, err := url.Parse(page)
 	if err != nil {
-		return ""
+		return "", "", ""
 	}
 	parts := strings.Split(strings.Trim(parsed.Path, "/"), "/")
-	if len(parts) >= 3 && parts[len(parts)-1] == "specs" {
-		return parts[len(parts)-2]
+	if len(parts) >= 3 && parts[0] == "components" && parts[len(parts)-1] == "specs" {
+		return "components", strings.Join(parts[1:len(parts)-1], "/"), "specs"
 	}
-	return ""
+	if len(parts) >= 3 && parts[0] == "styles" {
+		last := parts[len(parts)-1]
+		pageType := ""
+		subject := parts[1 : len(parts)-1]
+		switch {
+		case last == "specs":
+			pageType = "specs"
+		case last == "tokens":
+			pageType = "tokens"
+		case strings.HasSuffix(last, "-tokens"):
+			pageType = "tokens"
+			subject = append(subject, strings.TrimSuffix(last, "-tokens"))
+		case strings.HasSuffix(last, "-scale"):
+			pageType = "tokens"
+			subject = append(subject, strings.TrimSuffix(last, "-scale"))
+		default:
+			return "", "", ""
+		}
+		return "styles", strings.Join(subject, "/"), pageType
+	}
+	return "", "", ""
 }
 
 func pageDiff(previous, current []string) (added, removed []string) {
@@ -661,14 +704,14 @@ func discoverLivePages(ctx context.Context, config Config) ([]string, string, er
 	if seedPage == "" {
 		seedPage = config.Seed
 	}
-	if config.SpecsOnly && !isSpecsPage(seedPage) {
-		return nil, "", fmt.Errorf("seed page must end with /specs when specs-only discovery is enabled: %s", seedPage)
+	if !isPageInScope(seedPage, config.Scope) {
+		return nil, "", fmt.Errorf("seed page is outside discovery scope %q: %s", config.Scope, seedPage)
 	}
 	pages[seedPage] = true
 	for _, sitemap := range sitemaps {
 		for _, candidate := range collectSitemap(ctx, client, sitemap, 3, map[string]bool{}) {
 			canonical := canonicalPageURL(candidate, seed, config.PathPrefix)
-			if canonical != "" && (!config.SpecsOnly || isSpecsPage(canonical)) {
+			if canonical != "" && isPageInScope(canonical, config.Scope) {
 				pages[canonical] = true
 			}
 			if config.MaxPages > 0 && len(pages) >= config.MaxPages {
@@ -680,7 +723,7 @@ func discoverLivePages(ctx context.Context, config Config) ([]string, string, er
 		}
 	}
 	if len(pages) == 1 {
-		pages = crawlLinks(ctx, client, pages, seed, config.PathPrefix, config.SpecsOnly, config.MaxPages)
+		pages = crawlLinks(ctx, client, pages, seed, config.PathPrefix, config.Scope, config.MaxPages)
 	}
 
 	result := make([]string, 0, len(pages))
@@ -762,15 +805,44 @@ func canonicalPageURL(candidate string, origin *url.URL, pathPrefix string) stri
 	return resolved.String()
 }
 
-func isSpecsPage(page string) bool {
+func isComponentSpecsPage(page string) bool {
 	parsed, err := url.Parse(page)
 	if err != nil {
 		return false
 	}
-	return strings.HasSuffix(strings.TrimSuffix(parsed.Path, "/"), "/specs")
+	parts := strings.Split(strings.Trim(parsed.Path, "/"), "/")
+	return len(parts) >= 3 && parts[0] == "components" && parts[len(parts)-1] == "specs"
 }
 
-func crawlLinks(ctx context.Context, client *http.Client, pages map[string]bool, origin *url.URL, pathPrefix string, specsOnly bool, maxPages int) map[string]bool {
+func isStyleTokenSourcePage(page string) bool {
+	parsed, err := url.Parse(page)
+	if err != nil {
+		return false
+	}
+	parts := strings.Split(strings.Trim(parsed.Path, "/"), "/")
+	if len(parts) < 3 || parts[0] != "styles" {
+		return false
+	}
+	last := parts[len(parts)-1]
+	return last == "tokens" || last == "specs" || strings.HasSuffix(last, "-tokens") || strings.HasSuffix(last, "-scale")
+}
+
+func isTokenSourcePage(page string) bool {
+	return isComponentSpecsPage(page) || isStyleTokenSourcePage(page)
+}
+
+func isPageInScope(page, scope string) bool {
+	switch scope {
+	case ScopeComponentSpecs:
+		return isComponentSpecsPage(page)
+	case ScopeTokenSourcePages:
+		return isTokenSourcePage(page)
+	default:
+		return false
+	}
+}
+
+func crawlLinks(ctx context.Context, client *http.Client, pages map[string]bool, origin *url.URL, pathPrefix, scope string, maxPages int) map[string]bool {
 	queue := []string{}
 	for catalogPage := range pages {
 		queue = append(queue, catalogPage)
@@ -793,7 +865,7 @@ func crawlLinks(ctx context.Context, client *http.Client, pages map[string]bool,
 		}
 		for _, link := range documentLinks(document) {
 			canonical := canonicalPageURL(link, origin, pathPrefix)
-			if canonical != "" && (!specsOnly || isSpecsPage(canonical)) && !pages[canonical] {
+			if canonical != "" && isPageInScope(canonical, scope) && !pages[canonical] {
 				pages[canonical] = true
 				queue = append(queue, canonical)
 				if maxPages > 0 && len(pages) >= maxPages {
@@ -841,7 +913,44 @@ func uniqueSources(observations []Observation) []pageSource {
 	return result
 }
 
+type pageProgress struct {
+	mu        sync.Mutex
+	total     int
+	started   int
+	completed int
+}
+
+func (progress *pageProgress) start(pageURL string) {
+	progress.mu.Lock()
+	defer progress.mu.Unlock()
+	progress.started++
+	fmt.Printf("  [page %d/%d] observing %s\n", progress.started, progress.total, pageURL)
+}
+
+func (progress *pageProgress) finish(observation Observation, duration time.Duration) {
+	progress.mu.Lock()
+	defer progress.mu.Unlock()
+	progress.completed++
+	status := fmt.Sprintf("HTTP %d", observation.Status)
+	if observation.Status == 0 {
+		status = "no HTTP status"
+	}
+	if observation.Error != "" {
+		status = "failed: " + observation.Error
+	} else if observation.TokenTableURL == "" {
+		status += ", no source payload"
+	} else {
+		status += ", source payload observed"
+	}
+	fmt.Printf("  [page %d/%d] %s (%s)\n", progress.completed, progress.total, status, elapsed(duration))
+}
+
+func elapsed(duration time.Duration) string {
+	return duration.Round(10 * time.Millisecond).String()
+}
+
 func observePages(parent context.Context, config Config, pages []string) ([]Observation, error) {
+	fmt.Printf("Starting Chromium for %d pages...\n", len(pages))
 	headless := chromedp.Flag("headless", "new")
 	if config.Headed {
 		headless = chromedp.Flag("headless", false)
@@ -865,8 +974,14 @@ func observePages(parent context.Context, config Config, pages []string) ([]Obse
 	browserContext, cancelBrowser := chromedp.NewContext(allocatorContext)
 	defer cancelBrowser()
 
+	fmt.Printf("Observing %d pages with concurrency %d...\n", len(pages), config.Concurrency)
+	progress := &pageProgress{total: len(pages)}
 	return mapLimit(pages, config.Concurrency, func(pageURL string) Observation {
-		return observePage(browserContext, pageURL, config.PageTimeout)
+		started := time.Now()
+		progress.start(pageURL)
+		observation := observePage(browserContext, pageURL, config.PageTimeout)
+		progress.finish(observation, time.Since(started))
+		return observation
 	})
 }
 
@@ -885,7 +1000,7 @@ func observePage(browserContext context.Context, pageURL string, timeout time.Du
 				mainStatus = int(response.Response.Status)
 				statusMu.Unlock()
 			}
-			if tokenTableRE.MatchString(response.Response.URL) {
+			if sourcePayloadRE.MatchString(response.Response.URL) {
 				responseOnce.Do(func() { responseURL <- response.Response.URL })
 			}
 		}
