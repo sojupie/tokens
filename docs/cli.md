@@ -1,21 +1,21 @@
-# M3 Source CLI
+# Source Loom CLI
 
 The command is organized around the work being done:
 
 ```text
-m3source crawl
-m3source snapshot create
-m3source snapshot verify
-m3source snapshot compare
+sourceloom crawl
+sourceloom snapshot create
+sourceloom snapshot verify
+sourceloom snapshot compare
 ```
 
 Show help at any level:
 
 ```text
-go run ./cmd/m3source --help
-go run ./cmd/m3source crawl --help
-go run ./cmd/m3source snapshot --help
-go run ./cmd/m3source snapshot create --help
+go run ./cmd/sourceloom --help
+go run ./cmd/sourceloom crawl --help
+go run ./cmd/sourceloom snapshot --help
+go run ./cmd/sourceloom snapshot create --help
 ```
 
 ## Normal workflow
@@ -23,13 +23,13 @@ go run ./cmd/m3source snapshot create --help
 Run a crawl using the checked-in page URL catalog:
 
 ```text
-go run ./cmd/m3source crawl
+go run ./cmd/sourceloom crawl
 ```
 
 Create a snapshot from the newest crawl receipt:
 
 ```text
-go run ./cmd/m3source snapshot create
+go run ./cmd/sourceloom snapshot create
 ```
 
 The command derives the snapshot ID from the crawl start time in UTC and uses
@@ -39,25 +39,25 @@ refuses to use an existing non-empty output directory.
 Verify the newest snapshot:
 
 ```text
-go run ./cmd/m3source snapshot verify
+go run ./cmd/sourceloom snapshot verify
 ```
 
 Compare the two latest snapshot runs:
 
 ```text
-go run ./cmd/m3source snapshot compare
+go run ./cmd/sourceloom snapshot compare
 ```
 
 Retry only the failed pages from the newest crawl receipt:
 
 ```text
-go run ./cmd/m3source crawl --retry-failed
+go run ./cmd/sourceloom crawl --retry-failed
 ```
 
 Select a specific receipt when needed:
 
 ```text
-go run ./cmd/m3source crawl \
+go run ./cmd/sourceloom crawl \
   --retry-failed-from crawl-results/20260811T143000.000000000Z.json
 ```
 
@@ -76,7 +76,7 @@ Use the broader discovery scope when reviewing foundation and style pages in
 addition to component specification pages:
 
 ```text
-go run ./cmd/m3source crawl \
+go run ./cmd/sourceloom crawl \
   --discover \
   --scope token-source-pages \
   --dry-run
@@ -95,18 +95,18 @@ Every automatic choice can be overridden when working with a specific receipt
 or snapshot:
 
 ```text
-go run ./cmd/m3source snapshot create \
+go run ./cmd/sourceloom snapshot create \
   --crawl-receipt crawl-results/20260811T143000.000000000Z.json \
   --page-catalog inputs/page-catalog.json \
-  --output snapshots/material-token-data/m3-2026-08-11-1430-example \
-  --id m3-2026-08-11-1430-example
+  --output snapshots/material-token-data/material-2026-08-11-1430-example \
+  --id material-2026-08-11-1430-example
 
-go run ./cmd/m3source snapshot verify \
-  snapshots/material-token-data/m3-2026-08-11-1430-example
+go run ./cmd/sourceloom snapshot verify \
+  snapshots/material-token-data/material-2026-08-11-1430-example
 
-go run ./cmd/m3source snapshot compare \
-  snapshots/material-token-data/m3-2026-08-11-1430-older \
-  snapshots/material-token-data/m3-2026-08-11-1500-newer
+go run ./cmd/sourceloom snapshot compare \
+  snapshots/material-token-data/material-2026-08-11-1430-older \
+  snapshots/material-token-data/material-2026-08-11-1500-newer
 ```
 
 With no paths, `snapshot compare` selects the two latest snapshot runs by the

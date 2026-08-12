@@ -1,4 +1,4 @@
-# M3 Source snapshot format
+# Source Loom snapshot format
 
 **Status:** Proposed version 2
 **Date:** 2026-08-11
@@ -7,7 +7,7 @@
 
 A snapshot is an immutable bundle of Material's fetched token-table source
 payloads and the generated token data extracted from them at one point in time.
-It gives M3 Forge and other consumers a stable input without requiring the
+It gives Token Forge and other consumers a stable input without requiring the
 crawl tool, a browser, a live API, or Material's website.
 
 The snapshot preserves source meaning. It does not claim that every upstream
@@ -16,7 +16,7 @@ value is correct for a consumer or approved for a design-system release.
 ## Bundle layout
 
 ```text
-m3-material-token-data-<snapshot-id>/
+material-token-data-<snapshot-id>/
 |-- manifest.json
 |-- page-catalog.json             # Material token-source page URL catalog
 |-- source-payloads/<hash-prefix>/<sha256>.json.gz
@@ -39,7 +39,7 @@ identity used by consumers. A human-readable snapshot ID contains the source
 family, capture date, capture time in UTC (`HHMM`), and a digest prefix:
 
 ```text
-m3-2026-08-11-2348-a1b2c3d4e5f6
+material-2026-08-11-2348-a1b2c3d4e5f6
 ```
 
 Never replace files under a published snapshot ID. Publish a new snapshot when
@@ -53,7 +53,7 @@ Version 2 has this logical shape:
 {
   "type": "material-token-data-snapshot",
   "schemaVersion": 2,
-  "snapshotId": "m3-2026-08-11-a1b2c3d4e5f6",
+  "snapshotId": "material-2026-08-11-a1b2c3d4e5f6",
   "createdAt": "2026-08-11T00:00:00Z",
   "source": {
     "system": "material-3",
@@ -70,7 +70,7 @@ Version 2 has this logical shape:
     "complete": true
   },
   "extractor": {
-    "name": "m3source",
+    "name": "sourceloom",
     "version": "0.1.0",
     "schemaVersion": 2
   },
@@ -137,8 +137,8 @@ The notice scope is separate from capture status:
   scopes.
 
 `deprecated` and `not-recommended` remain separate states. The raw message and
-source record identifiers are retained so Forge can make a support decision
-without treating Source's evidence as policy.
+source record identifiers are retained so Token Forge can make a support
+decision without treating Source Loom's evidence as policy.
 
 ## Publishing and storage
 

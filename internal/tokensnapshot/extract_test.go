@@ -27,7 +27,7 @@ func TestExtractPayloadPreservesGenericRecords(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	records, err := extractPayload(cacheDir, m3Payload{Artifact: artifact, Hash: "payload-hash"}, "payload-0001")
+	records, err := extractPayload(cacheDir, sourcePayload{Artifact: artifact, Hash: "payload-hash"}, "payload-0001")
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -245,7 +245,7 @@ func Build(config BuildConfig) (Manifest, error) {
 			Complete:         successfulPageCount(run) == len(run.Pages) && len(run.Pages) > 0 && successfulPayloadCount(run) == len(run.SourcePayloads) && len(run.SourcePayloads) > 0,
 		},
 		Extractor: ExtractorInfo{
-			Name:          valueOr(config.ExtractorName, "m3source"),
+			Name:          valueOr(config.ExtractorName, "sourceloom"),
 			Version:       valueOr(config.ExtractorVersion, "0.1.0"),
 			SchemaVersion: SchemaVersion,
 		},
@@ -366,7 +366,7 @@ func buildDocuments(snapshotID string, run crawl.CrawlReceipt) (Graph, SourcePay
 		var records []ExtractedRecord
 		extractionErr := artifactErr
 		if extractionErr == nil {
-			records, extractionErr = extractPayload(run.Options.CacheDir, m3Payload{
+			records, extractionErr = extractPayload(run.Options.CacheDir, sourcePayload{
 				Artifact: payload.Artifact,
 				Hash:     payload.Hash,
 				Error:    payload.Error,

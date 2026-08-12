@@ -47,14 +47,14 @@ func run(args []string) error {
 }
 
 const topHelp = `Usage:
-  m3source crawl [flags]
-  m3source snapshot create [flags]
-  m3source snapshot verify [flags]
-  m3source snapshot compare [flags]
+  sourceloom crawl [flags]
+  sourceloom snapshot create [flags]
+  sourceloom snapshot verify [flags]
+  sourceloom snapshot compare [flags]
 
-Run "m3source <command> --help" for command-specific options.
+Run "sourceloom <command> --help" for command-specific options.
 
-With no arguments, m3source runs crawl.`
+With no arguments, sourceloom runs crawl.`
 
 func printTopHelp() {
 	fmt.Println(topHelp)
@@ -62,10 +62,10 @@ func printTopHelp() {
 
 func runCrawl(args []string) error {
 	var config crawl.Config
-	flags := flag.NewFlagSet("m3source crawl", flag.ContinueOnError)
+	flags := flag.NewFlagSet("sourceloom crawl", flag.ContinueOnError)
 	flags.SetOutput(os.Stderr)
 	flags.Usage = func() {
-		_, _ = fmt.Fprintln(flags.Output(), "Usage: m3source crawl [flags]")
+		_, _ = fmt.Fprintln(flags.Output(), "Usage: sourceloom crawl [flags]")
 		_, _ = fmt.Fprintln(flags.Output(), "\nCrawls reviewed Material token-source pages and downloads source payloads.")
 		_, _ = fmt.Fprintln(flags.Output(), "")
 		flags.PrintDefaults()
@@ -123,9 +123,9 @@ func runSnapshot(args []string) error {
 }
 
 const snapshotHelp = `Usage:
-  m3source snapshot create [flags]
-  m3source snapshot verify [flags]
-  m3source snapshot compare [flags]
+  sourceloom snapshot create [flags]
+  sourceloom snapshot verify [flags]
+  sourceloom snapshot compare [flags]
 
 Defaults:
   create  uses the newest crawl receipt and creates a timestamped snapshot
@@ -137,10 +137,10 @@ func printSnapshotHelp() {
 }
 
 func runSnapshotCreate(args []string) error {
-	flags := flag.NewFlagSet("m3source snapshot create", flag.ContinueOnError)
+	flags := flag.NewFlagSet("sourceloom snapshot create", flag.ContinueOnError)
 	flags.SetOutput(os.Stderr)
 	flags.Usage = func() {
-		_, _ = fmt.Fprintln(flags.Output(), "Usage: m3source snapshot create [flags]")
+		_, _ = fmt.Fprintln(flags.Output(), "Usage: sourceloom snapshot create [flags]")
 		_, _ = fmt.Fprintln(flags.Output(), "\nCreates an immutable snapshot from a crawl receipt.")
 		_, _ = fmt.Fprintln(flags.Output(), "Without flags, the newest crawl receipt is used and the ID/output are generated.")
 		_, _ = fmt.Fprintln(flags.Output(), "")
@@ -152,7 +152,7 @@ func runSnapshotCreate(args []string) error {
 	flags.StringVar(&config.OutputDir, "output", "", "empty output directory (default: snapshots/material-token-data/<id>)")
 	flags.StringVar(&config.SnapshotID, "id", "", "snapshot identifier (default: UTC crawl date and HHMM)")
 	flags.StringVar(&config.CreatedAt, "created-at", "", "snapshot creation time (default: crawl start time)")
-	flags.StringVar(&config.ExtractorName, "extractor", "m3source", "extractor name")
+	flags.StringVar(&config.ExtractorName, "extractor", "sourceloom", "extractor name")
 	flags.StringVar(&config.ExtractorVersion, "extractor-version", "0.1.0", "extractor version")
 	if err := flags.Parse(args); err != nil {
 		if errors.Is(err, flag.ErrHelp) {
@@ -178,10 +178,10 @@ func runSnapshotCreate(args []string) error {
 }
 
 func runSnapshotVerify(args []string) error {
-	flags := flag.NewFlagSet("m3source snapshot verify", flag.ContinueOnError)
+	flags := flag.NewFlagSet("sourceloom snapshot verify", flag.ContinueOnError)
 	flags.SetOutput(os.Stderr)
 	flags.Usage = func() {
-		_, _ = fmt.Fprintln(flags.Output(), "Usage: m3source snapshot verify [snapshot-directory]")
+		_, _ = fmt.Fprintln(flags.Output(), "Usage: sourceloom snapshot verify [snapshot-directory]")
 		_, _ = fmt.Fprintln(flags.Output(), "\nVerifies the newest snapshot unless a directory is supplied.")
 		_, _ = fmt.Fprintln(flags.Output(), "")
 		flags.PrintDefaults()
@@ -220,10 +220,10 @@ func runSnapshotVerify(args []string) error {
 }
 
 func runSnapshotCompare(args []string) error {
-	flags := flag.NewFlagSet("m3source snapshot compare", flag.ContinueOnError)
+	flags := flag.NewFlagSet("sourceloom snapshot compare", flag.ContinueOnError)
 	flags.SetOutput(os.Stderr)
 	flags.Usage = func() {
-		_, _ = fmt.Fprintln(flags.Output(), "Usage: m3source snapshot compare [older newer]")
+		_, _ = fmt.Fprintln(flags.Output(), "Usage: sourceloom snapshot compare [older newer]")
 		_, _ = fmt.Fprintln(flags.Output(), "\nCompares the two latest snapshot runs unless directories are supplied.")
 		_, _ = fmt.Fprintln(flags.Output(), "")
 		flags.PrintDefaults()
@@ -315,7 +315,7 @@ func defaultSnapshotID(receipt crawl.CrawlReceipt) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("crawl receipt has invalid startedAt: %w", err)
 	}
-	return "m3-" + started.UTC().Format("2006-01-02-1504"), nil
+	return "material-" + started.UTC().Format("2006-01-02-1504"), nil
 }
 
 func newestJSONFile(directory string) (string, error) {

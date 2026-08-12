@@ -1,11 +1,11 @@
-# M3 Source data flow
+# Source Loom data flow
 
-M3 Source has two jobs:
+Source Loom has two jobs:
 
 1. crawl Material's pages and save the source data it publishes;
 2. create and verify an immutable material-token-data snapshot.
 
-It does not decide which tokens M3 Forge supports.
+It does not decide which tokens Token Forge supports.
 
 ## The flow
 
@@ -13,7 +13,7 @@ It does not decide which tokens M3 Forge supports.
 inputs/page-catalog.json
         |
         v
-    m3source crawl
+    sourceloom crawl
         |
         +--> .cache/material-token-table-responses/
         |      downloaded source-payload files
@@ -22,7 +22,7 @@ inputs/page-catalog.json
                crawl receipt
         |
         v
-    m3source snapshot create
+    sourceloom snapshot create
         |
         v
 snapshots/material-token-data/<snapshot-id>/
@@ -36,11 +36,11 @@ snapshots/material-token-data/<snapshot-id>/
         +--> lifecycle-notices.json
         +--> checksums.txt
         |
-        +--> m3source snapshot verify
-        +--> m3source snapshot compare
+        +--> sourceloom snapshot verify
+        +--> sourceloom snapshot compare
 ```
 
-To repair a partial crawl, `m3source crawl --retry-failed` reads the newest
+To repair a partial crawl, `sourceloom crawl --retry-failed` reads the newest
 crawl receipt, opens only its failed pages, and writes another merged crawl
 receipt. Successful pages and source payloads are carried forward; retried
 pages replace their earlier results.
@@ -51,7 +51,7 @@ The crawler opens each selected Material token-source page with Chrome. Normal
 crawls select pages from the reviewed page catalog. Broad discovery can also
 consider component pages ending in `/specs` and style or foundation pages
 ending in `/tokens` or `/specs`. The crawler watches each page's network
-traffic for `TOKEN_TABLE*.json` and `TOKEN_TYPE_*.json` responses. It then
+traffic for uppercase source-payload JSON responses. It then
 downloads each unique source payload and stores the compressed response in the
 source-payload cache.
 
@@ -103,9 +103,10 @@ not decide whether the Material data is complete or suitable for Forge.
 Capture status and review status are separate. A snapshot can be successfully
 assembled while still being partial and provisional.
 
-## Forge boundary
+## Token Forge boundary
 
-Forge consumes a pinned snapshot bundle. It does not run the crawler, access
-Material's website, or depend on the Source executable during normal builds.
-Forge candidates point to the snapshot ID, manifest hash, source-payload ID, and
-source record ID. Canonical Forge tokens require a separate review decision.
+Token Forge consumes a pinned snapshot bundle. It does not run the crawler,
+access Material's website, or depend on the Source Loom executable during normal
+builds. Token Forge candidates point to the snapshot ID, manifest hash,
+source-payload ID, and source record ID. Canonical Token Forge tokens require a
+separate review decision.

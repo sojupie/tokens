@@ -1,12 +1,12 @@
-# M3 Source
+# Source Loom
 
-M3 Source captures and explains the design-token data published by Material 3.
+Source Loom captures and explains the design-token data published by Material 3.
 It discovers reviewed token-source pages, observes their lazy token-table
 requests, stores source payloads by content hash, generates a loss-preserving
 token graph, and publishes immutable material-token-data snapshots.
 
-M3 Source does not decide which values a component library should support. M3
-Forge consumes a pinned snapshot, reviews its changes, and promotes accepted
+Source Loom does not decide which values a component library should support.
+Token Forge consumes a pinned snapshot, reviews its changes, and promotes accepted
 values into canonical DTCG tokens.
 
 ## Requirements
@@ -29,7 +29,7 @@ token-source pages, including component specification pages and foundation or
 style token pages:
 
 ```text
-go run ./cmd/m3source crawl
+go run ./cmd/sourceloom crawl
 ```
 
 The page URL catalog is the default because it is small, deterministic, and
@@ -39,14 +39,14 @@ It avoids repeated sitemap discovery during routine capture.
 Audit the live sitemap against the page URL catalog:
 
 ```text
-go run ./cmd/m3source crawl --discover --dry-run
+go run ./cmd/sourceloom crawl --discover --dry-run
 ```
 
 Run the broader inventory scope when reviewing pages outside the current
 catalog:
 
 ```text
-go run ./cmd/m3source crawl --discover --scope token-source-pages --dry-run
+go run ./cmd/sourceloom crawl --discover --scope token-source-pages --dry-run
 ```
 
 This scope considers component `/specs` pages and style or foundation token
@@ -56,26 +56,26 @@ it does not prove that every Material page publishes a token table.
 Update the page URL catalog after reviewing the reported additions and removals:
 
 ```text
-go run ./cmd/m3source crawl --update-page-catalog --dry-run=false
+go run ./cmd/sourceloom crawl --update-page-catalog --dry-run=false
 ```
 
 Run a small dry crawl during development:
 
 ```text
-go run ./cmd/m3source crawl --max-pages 10 --page-timeout 8s --dry-run
+go run ./cmd/sourceloom crawl --max-pages 10 --page-timeout 8s --dry-run
 ```
 
 By default, valid cached source payloads are reused without an HTTP download.
 Force a fresh download when needed:
 
 ```text
-go run ./cmd/m3source crawl --refresh
+go run ./cmd/sourceloom crawl --refresh
 ```
 
 Show Chromium while debugging one page:
 
 ```text
-go run ./cmd/m3source crawl --headed --max-pages 1 --page-timeout 15s
+go run ./cmd/sourceloom crawl --headed --max-pages 1 --page-timeout 15s
 ```
 
 Use `--chrome-path` when Chrome cannot be found automatically.
@@ -83,7 +83,7 @@ Use `--chrome-path` when Chrome cannot be found automatically.
 Retry only the failed pages from the newest crawl receipt:
 
 ```text
-go run ./cmd/m3source crawl --retry-failed
+go run ./cmd/sourceloom crawl --retry-failed
 ```
 
 Use `--retry-failed-from <crawl-receipt>` to select a specific receipt. The
@@ -132,7 +132,7 @@ crawl-results/<crawl-id>.json
 
 The cache contains downloaded Material token-table responses. Crawl receipts
 record what one crawl job did. Both are local evidence until a snapshot command
-deliberately packages them. The hash identifies the bytes M3 Source ingested;
+deliberately packages them. The hash identifies the bytes Source Loom ingested;
 the upstream URL records where they came from.
 
 If upstream publishes a new URL, a later crawl stores a new artifact and leaves
@@ -145,20 +145,20 @@ Snapshots are immutable, content-addressed bundles of Material token-table
 source payloads and generated token data. They contain a manifest, page URL catalog,
 source payloads, generated token graph, source-payload details, page results, and
 checksums. Lifecycle notices preserve explicit upstream deprecation and
-recommendation statements without turning them into Forge support decisions.
+recommendation statements without turning them into Token Forge support decisions.
 
-M3 Forge pins a specific manifest digest. It never consumes `latest`, runs this
-crawler in its build, or depends on an M3 Source service being online.
+Token Forge pins a specific manifest digest. It never consumes `latest`, runs this
+crawler in its build, or depends on a Source Loom service being online.
 
 See the [data flow](docs/data-flow.md), [snapshot format](docs/snapshot-format.md), and the
-[M3 Source roadmap](docs/plans/2026-08-11-m3-source-roadmap.md).
+[Source Loom roadmap](docs/plans/2026-08-11-source-loom-roadmap.md).
 
 Create and verify a snapshot from the newest completed crawl:
 
 ```text
-go run ./cmd/m3source snapshot create
+go run ./cmd/sourceloom snapshot create
 
-go run ./cmd/m3source snapshot verify
+go run ./cmd/sourceloom snapshot verify
 ```
 
 `snapshot create` selects the newest crawl receipt, derives a UTC timestamped
@@ -168,13 +168,13 @@ snapshot ID, and writes to `snapshots/material-token-data/<snapshot-id>`. Use
 Compare the two latest snapshot runs:
 
 ```text
-go run ./cmd/m3source snapshot compare
+go run ./cmd/sourceloom snapshot compare
 ```
 
 The output directory must be empty. Snapshot files are immutable after
-publication. The command prints the manifest SHA-256 used by Forge locks. New
-snapshot IDs should include the UTC capture date and hour/minute, for example
-`m3-2026-08-11-2348-curated-specs`.
+publication. The command prints the manifest SHA-256 used by Token Forge locks.
+Historical snapshot IDs retain their original `m3-` prefix; new IDs should use
+the Material source date and hour/minute.
 
 ## Current limits
 
@@ -194,5 +194,5 @@ for diagnosis, not an approved snapshot.
 Normal tests must use committed fixtures and remain offline.
 
 See the [CLI guide](docs/cli.md) for command help, defaults, and explicit
-override examples. See the [pre-compiler worklist](docs/plans/2026-08-11-m3-source-precompiler-worklist.md)
-for the remaining Source contract and Forge policy decisions.
+override examples. See the [pre-compiler worklist](docs/plans/2026-08-11-source-loom-precompiler-worklist.md)
+for the remaining Source Loom contract and Token Forge policy decisions.

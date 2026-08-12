@@ -1,22 +1,22 @@
-# M3 Source roadmap
+# Source Loom roadmap
 
 **Status:** Draft for execution  
 **Created:** 2026-08-11  
-**Scope:** Material 3 source discovery, capture, extraction, diffing, and snapshots
+**Scope:** Material source discovery, capture, extraction, diffing, and snapshots
 
 ## 1. Mission
 
-M3 Source reports what Material published. It does not implement components or
-decide what M3 Forge supports.
+Source Loom reports what Material published. It does not implement components or
+decide what Token Forge supports.
 
-The project should be useful beyond Forge. Its stable product is an immutable,
+The project should be useful beyond Token Forge. Its stable product is an immutable,
 documented source snapshot that any tool can download and verify. A website,
 API, package, or database can make that data easier to explore, but none is the
 canonical store.
 
 ## 2. Boundary
 
-M3 Source owns:
+Source Loom owns:
 
 - curated and live discovery of component `/specs` pages;
 - browser-assisted token-table observation;
@@ -25,11 +25,11 @@ M3 Source owns:
 - semantic diffs between snapshots;
 - source-payload details, page results, and immutable snapshot publication.
 
-M3 Source does not own:
+Source Loom does not own:
 
 - canonical DTCG design decisions;
 - CSS, components, framework adapters, or application code;
-- automatic promotion into M3 Forge;
+- automatic promotion into Token Forge;
 - a runtime service required by library consumers.
 
 ## 3. Technical direction
@@ -41,12 +41,12 @@ project.
 Keep commands conceptually separate even if they initially share one binary:
 
 ```text
-m3source crawl --discover --dry-run  # audit component-spec page drift
-m3source crawl --discover --scope token-source-pages --dry-run  # inventory broader token-source pages
-m3source crawl
-m3source snapshot create
-m3source snapshot verify
-m3source snapshot compare
+sourceloom crawl --discover --dry-run  # audit component-spec page drift
+sourceloom crawl --discover --scope token-source-pages --dry-run  # inventory broader token-source pages
+sourceloom crawl
+sourceloom snapshot create
+sourceloom snapshot verify
+sourceloom snapshot compare
 ```
 
 Keep implementation packages internal until an external Go API has a concrete
@@ -70,7 +70,7 @@ local queries without becoming a source of truth.
 ### Deferred: rendered measurements and component preview images
 
 Do not make measurement-diagram extraction part of the first token snapshot or
-the first Forge compiler milestone. The diagrams are difficult to interpret
+the first Token Forge compiler milestone. The diagrams are difficult to interpret
 reliably, and their labels may describe geometry, relationships, or guidance
 rather than tokens. Revisit this only when a concrete component or conformance
 requirement needs the data and the source representation can be verified.
@@ -94,16 +94,16 @@ Track these independently:
 6. Upstream page, payload URL, revision, and payload SHA-256.
 
 An upstream update creates evidence and a semantic diff. It does not mutate an
-existing snapshot or force a Forge release.
+existing snapshot or force a Token Forge release.
 
 ## 6. Phases
 
 ### Phase 0: repository cleanup
 
-- Rename project documentation and Go module.
+- Rename project documentation and the public command name.
 - Remove the Node and Playwright prototype.
 - Keep the current Go crawler behavior and tests passing.
-- Correct the repository remote after the public M3 Source repository exists.
+- Correct the repository remote after the public Source Loom repository exists.
 
 **Exit:** the repository has one language and one ingestion path.
 
@@ -167,7 +167,7 @@ diffs, deterministic serialization, bundle verification, and corrupt inputs.
 
 Run live crawling manually or on a scheduled audit. A scheduled job can report
 page URL catalog or token drift and publish an evidence candidate. It must not rewrite a
-page URL catalog, publish over an existing snapshot, or promote Forge tokens without
+page URL catalog, publish over an existing snapshot, or promote Token Forge tokens without
 review.
 
 ## 8. Immediate work

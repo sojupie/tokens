@@ -1,12 +1,12 @@
-# M3 Source pre-compiler worklist
+# Source Loom pre-compiler worklist
 
 **Status:** Open review list
-**Purpose:** Keep the remaining Source contract and Forge policy decisions in one place.
-**Compiler gate:** Do not start the Forge compiler until the items marked as gates are closed.
+**Purpose:** Keep the remaining Source Loom contract and Token Forge policy decisions in one place.
+**Compiler gate:** Do not start the Token Forge compiler until the items marked as gates are closed.
 
 ## Current position
 
-M3 Source has:
+Source Loom has:
 
 - a Go-only crawl and snapshot pipeline;
 - a checked-in page URL catalog;
@@ -34,7 +34,7 @@ to accept the exception.
 
 ## 1. Source page scope
 
-M3 Source must capture more than component specification pages. Material also
+Source Loom must capture more than component specification pages. Material also
 publishes token tables on foundation and style pages such as elevation, motion,
 spacing, typography, shape, and color.
 
@@ -44,7 +44,7 @@ a component. The current limitation is in page selection and catalog
 validation: the crawler defaults to `/components/`, requires `/specs`, and the
 page catalog stores a component-only field.
 
-### Required before the first Forge-bound snapshot
+### Required before the first Token Forge-bound snapshot
 
 - [ ] Expand the curated page catalog to include component and foundation/style
   token-source pages.
@@ -59,7 +59,7 @@ page catalog stores a component-only field.
 - [ ] Recrawl the expanded catalog and create a new immutable snapshot. Do not
   modify the existing component-focused snapshots.
 - [ ] Review whether the expanded snapshot contains the foundation records
-  Forge needs for `md.ref`, `md.sys`, and component references.
+  Token Forge needs for `md.ref`, `md.sys`, and component references.
 
 Static recommendation tables and explanatory motion tables remain separate page
 evidence. They must not be merged into the generated token graph unless a
@@ -153,7 +153,7 @@ separate evidence document.
 Recommendation: defer page-text capture for the first compiler milestone. Do
 not infer a component lifecycle state from token data alone.
 
-## 5. Baseline and M3 Expressive
+## 5. Baseline and Expressive
 
 ### What the current snapshot shows
 
@@ -192,7 +192,7 @@ context.
 
 ### Current answer
 
-M3 Source does not currently distinguish baseline and Expressive as a first-
+Source Loom does not currently distinguish baseline and Expressive as a first-
 class normalized dimension. It preserves enough raw evidence to investigate
 the distinction, but Forge cannot yet query it reliably without knowing the
 upstream relationships.
@@ -221,7 +221,7 @@ The preferred shape is a generic context relation, for example:
 ```
 
 The relation must include enough source identity to show why it was created.
-M3 Source must not guess a relation only because a token name contains a word
+Source Loom must not guess a relation only because a token name contains a word
 such as `expressive`.
 
 ## 6. Static recommendation and availability tables
@@ -284,8 +284,8 @@ The compiler must not decide policy by accident. Define these rules first:
 
 ## 9. Required commits and locks
 
-- [ ] Review and commit the current schema and lifecycle-notice work in M3
-  Source.
+- [ ] Review and commit the current schema and lifecycle-notice work in Source
+  Loom.
 - [ ] Select the provisional baseline snapshot.
 - [ ] Update the Forge source lock to that snapshot ID and manifest digest.
 - [ ] Update the Forge review candidate to reference the selected snapshot.

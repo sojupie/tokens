@@ -27,13 +27,13 @@ type ExtractedRecord struct {
 	Raw             json.RawMessage `json:"raw"`
 }
 
-type m3Payload struct {
+type sourcePayload struct {
 	Artifact string
 	Hash     string
 	Error    string
 }
 
-func extractPayload(cacheDir string, payload m3Payload, sourcePayloadID string) ([]ExtractedRecord, error) {
+func extractPayload(cacheDir string, payload sourcePayload, sourcePayloadID string) ([]ExtractedRecord, error) {
 	if cacheDir == "" || payload.Artifact == "" || payload.Hash == "" || payload.Error != "" {
 		return nil, nil
 	}
