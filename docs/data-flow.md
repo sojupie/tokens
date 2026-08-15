@@ -48,15 +48,17 @@ pages replace their earlier results.
 ## What is fetched?
 
 The crawler opens each selected Material token-source page with Chrome. Normal
-crawls select pages from the reviewed page catalog. Broad discovery can also
-consider component pages ending in `/specs` and style or foundation pages
-ending in `/tokens` or `/specs`. The crawler watches each page's network
-traffic for uppercase source-payload JSON responses. It then
+crawls select pages from the reviewed page URL catalog. Broad discovery can
+also consider component pages ending in `/specs` and style or foundation pages
+ending in `/tokens`, `/specs`, `-tokens`, or `-scale`. The crawler watches each
+page's network traffic for uppercase source-payload JSON responses. It then
 downloads each unique source payload and stores the compressed response in the
 source-payload cache.
 
-The page HTML is observed but is not a snapshot input. The token-table response
-is the fetched source data.
+The page HTML is observed but is not a snapshot input. The matching
+source-payload response is the fetched source data. Different Material areas
+use different payload filename stems, so Source Loom does not assume that
+every source payload is named `TOKEN_TABLE`.
 
 ## What is generated?
 

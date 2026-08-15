@@ -16,27 +16,27 @@ func TestBuildIsDeterministicAndVerifiable(t *testing.T) {
 	root := t.TempDir()
 	catalogPath := filepath.Join(root, "catalog.json")
 	runPath := filepath.Join(root, "run.json")
-	catalog := []byte(`{"schemaVersion":1,"source":"fixture","scope":"/components/<component>/specs","generatedAt":"2026-08-11T00:00:00Z","pages":[{"url":"https://m3.material.io/components/buttons/specs","component":"buttons"}]}` + "\n")
+	catalog := []byte(`{"schemaVersion":2,"source":"fixture","scope":"component specs","generatedAt":"2026-08-11T00:00:00Z","pages":[{"url":"https://m3.material.io/components/buttons/specs","area":"components","subject":"buttons","pageType":"specs"}]}` + "\n")
 	if err := os.WriteFile(catalogPath, catalog, 0o644); err != nil {
 		t.Fatal(err)
 	}
 	run := crawl.CrawlReceipt{
-		SchemaVersion: 1,
+		SchemaVersion: 2,
 		CrawlID:       "20260811T000000.000000000Z",
 		StartedAt:     "2026-08-11T00:00:00Z",
 		CompletedAt:   "2026-08-11T00:01:00Z",
 		Options:       crawl.CrawlOptions{PageCatalogPath: catalogPath},
 		Pages:         []string{"https://m3.material.io/components/buttons/specs"},
 		Observations: []crawl.Observation{{
-			PageURL:       "https://m3.material.io/components/buttons/specs",
-			Status:        200,
-			TokenTableURL: "https://m3.material.io/components/buttons/TOKEN_TABLE.json",
+			PageURL:           "https://m3.material.io/components/buttons/specs",
+			Status:            200,
+			SourcePayloadURLs: []string{"https://m3.material.io/components/buttons/TOKEN_TABLE.json"},
 		}},
 		SourcePayloads: []crawl.SourcePayloadRecord{{
-			PageURL:       "https://m3.material.io/components/buttons/specs",
-			TokenTableURL: "https://m3.material.io/components/buttons/TOKEN_TABLE.json",
-			Hash:          "fixture-hash",
-			Artifact:      "source-payloads/fi/fixture.json.gz",
+			PageURLs:         []string{"https://m3.material.io/components/buttons/specs"},
+			SourcePayloadURL: "https://m3.material.io/components/buttons/TOKEN_TABLE.json",
+			Hash:             "fixture-hash",
+			Artifact:         "source-payloads/fi/fixture.json.gz",
 		}},
 	}
 	runBody, err := json.Marshal(run)
@@ -47,7 +47,10 @@ func TestBuildIsDeterministicAndVerifiable(t *testing.T) {
 		t.Fatal(err)
 	}
 	cacheDir := filepath.Join(root, "cache")
-	writeGzipArtifact(t, cacheDir, "source-payloads/fi/fixture.json.gz", `{"system":{"tokens":[{"name":"fixture-token","tokenName":"md.sys.color.primary"}]}}`)
+	payloadBody := `{"system":{"tokens":[{"name":"fixture-token","tokenName":"md.sys.color.primary"}]}}`
+	writeGzipArtifact(t, cacheDir, "source-payloads/fi/fixture.json.gz", payloadBody)
+	run.SourcePayloads[0].Hash = sha256Hex([]byte(payloadBody))
+	run.SourcePayloads[0].Bytes = len(payloadBody)
 	run.Options.CacheDir = cacheDir
 	runBody, err = json.Marshal(run)
 	if err != nil {
@@ -109,7 +112,7 @@ func TestBuildIsDeterministicAndVerifiable(t *testing.T) {
 func TestBuildRejectsIncompleteCapture(t *testing.T) {
 	root := t.TempDir()
 	catalogPath := filepath.Join(root, "catalog.json")
-	if err := os.WriteFile(catalogPath, []byte(`{"schemaVersion":1,"pages":[]}`+"\n"), 0o644); err != nil {
+	if err := os.WriteFile(catalogPath, []byte(`{"schemaVersion":2,"source":"fixture","scope":"component specs","generatedAt":"2026-08-11T00:00:00Z","pages":[]}`+"\n"), 0o644); err != nil {
 		t.Fatal(err)
 	}
 	tests := []struct {
@@ -120,7 +123,7 @@ func TestBuildRejectsIncompleteCapture(t *testing.T) {
 		{
 			name: "error-only",
 			run: crawl.CrawlReceipt{
-				SchemaVersion: 1,
+				SchemaVersion: 2,
 				StartedAt:     "2026-08-11T00:00:00Z",
 				Observations:  []crawl.Observation{{PageURL: "https://example.test/specs", Status: 0, Error: "context canceled"}},
 			},
@@ -129,7 +132,7 @@ func TestBuildRejectsIncompleteCapture(t *testing.T) {
 		{
 			name: "no-payload",
 			run: crawl.CrawlReceipt{
-				SchemaVersion: 1,
+				SchemaVersion: 2,
 				StartedAt:     "2026-08-11T00:00:00Z",
 				Observations:  []crawl.Observation{{PageURL: "https://example.test/specs", Status: 200}},
 			},
@@ -138,13 +141,14 @@ func TestBuildRejectsIncompleteCapture(t *testing.T) {
 		{
 			name: "partial",
 			run: crawl.CrawlReceipt{
-				SchemaVersion: 1,
+				SchemaVersion: 2,
+				CrawlID:       "partial-run",
 				StartedAt:     "2026-08-11T00:00:00Z",
 				Observations: []crawl.Observation{
 					{PageURL: "https://example.test/ok/specs", Status: 200},
 					{PageURL: "https://example.test/failed/specs", Status: 0, Error: "timeout"},
 				},
-				SourcePayloads: []crawl.SourcePayloadRecord{{Hash: "fixture-hash", TokenTableURL: "https://example.test/TOKEN_TABLE.json"}},
+				SourcePayloads: []crawl.SourcePayloadRecord{{Hash: "fixture-hash", SourcePayloadURL: "https://example.test/TOKEN_TABLE.json", PageURLs: []string{"https://example.test/ok/specs"}}},
 			},
 		},
 	}
@@ -153,7 +157,10 @@ func TestBuildRejectsIncompleteCapture(t *testing.T) {
 			if test.name == "partial" {
 				test.run.Options.CacheDir = filepath.Join(root, "partial-cache")
 				test.run.SourcePayloads[0].Artifact = "source-payloads/partial.json.gz"
-				writeGzipArtifact(t, test.run.Options.CacheDir, test.run.SourcePayloads[0].Artifact, `{"system":{"tokens":[]}}`)
+				partialBody := `{"system":{"tokens":[]}}`
+				writeGzipArtifact(t, test.run.Options.CacheDir, test.run.SourcePayloads[0].Artifact, partialBody)
+				test.run.SourcePayloads[0].Hash = sha256Hex([]byte(partialBody))
+				test.run.SourcePayloads[0].Bytes = len(partialBody)
 			}
 			runPath := filepath.Join(root, test.name+".json")
 			body, err := json.Marshal(test.run)

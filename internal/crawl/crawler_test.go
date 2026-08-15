@@ -1,8 +1,15 @@
 package crawl
 
 import (
+	"bytes"
+	"compress/gzip"
+	"context"
+	"io"
 	"net/http"
+	"net/http/httptest"
 	"net/url"
+	"os"
+	"path/filepath"
 	"testing"
 )
 
@@ -24,6 +31,66 @@ func TestCanonicalPageURL(t *testing.T) {
 	}
 	if got := canonicalPageURL("/static/app.js", origin, "/components/"); got != "" {
 		t.Fatalf("asset URL should be rejected: %q", got)
+	}
+	if got := canonicalPageURL("/components-extra/buttons/specs", origin, "/components/"); got != "" {
+		t.Fatalf("sibling path should be rejected: %q", got)
+	}
+}
+
+func TestUniqueSourcesPreservesPayloadsAndContext(t *testing.T) {
+	shared := "https://m3.material.io/_dsm/data/dsdb-m3/ELEVATION.json"
+	component := "https://m3.material.io/_dsm/data/dsdb-m3/TOKEN_TABLE.json"
+	sources := uniqueSources([]Observation{
+		{PageURL: "https://m3.material.io/components/buttons/specs", SourcePayloadURLs: []string{component, shared}},
+		{PageURL: "https://m3.material.io/styles/elevation/tokens", SourcePayloadURLs: []string{shared}},
+	})
+	if len(sources) != 2 {
+		t.Fatalf("got %d sources, want 2: %#v", len(sources), sources)
+	}
+	for _, source := range sources {
+		if source.SourcePayloadURL == shared {
+			if len(source.PageURLs) != 2 || source.SourcePayloadKind != "component" {
+				t.Fatalf("shared source lost page context: %#v", source)
+			}
+		}
+	}
+}
+
+func TestPersistPayloadRedownloadsCorruptCache(t *testing.T) {
+	body := []byte(`{"system":{"tokens":[]}}`)
+	server := httptest.NewServer(http.HandlerFunc(func(response http.ResponseWriter, request *http.Request) {
+		_, _ = response.Write(body)
+	}))
+	defer server.Close()
+
+	cacheDir := t.TempDir()
+	artifact := "source-payloads/aa/payload.json.gz"
+	artifactPath := filepath.Join(cacheDir, filepath.FromSlash(artifact))
+	if err := os.MkdirAll(filepath.Dir(artifactPath), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	var compressed bytes.Buffer
+	writer := gzip.NewWriter(&compressed)
+	_, _ = io.WriteString(writer, `{"system":{"tokens":[{"corrupt":true}]}}`)
+	if err := writer.Close(); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(artifactPath, compressed.Bytes(), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	index := CacheIndex{SchemaVersion: 2, SourcePayloads: map[string]SourcePayloadRecord{
+		server.URL: {SourcePayloadURL: server.URL, Artifact: artifact, Hash: sha256Hex(body), Bytes: len(body)},
+	}}
+	record, err := persistPayload(context.Background(), Config{CacheDir: cacheDir}, index, pageSource{
+		PageURLs:          []string{"https://m3.material.io/styles/elevation/tokens"},
+		SourcePayloadURL:  server.URL,
+		SourcePayloadKind: "elevation",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if record.Reused || record.Hash != sha256Hex(body) || record.SourcePayloadKind != "elevation" {
+		t.Fatalf("corrupt cache was reused or context was lost: %#v", record)
 	}
 }
 
@@ -135,14 +202,14 @@ func TestFailedPagesIncludesPageAndPayloadFailures(t *testing.T) {
 	receipt := CrawlReceipt{
 		Pages: pages,
 		Observations: []Observation{
-			{PageURL: pages[0], Status: http.StatusOK, TokenTableURL: "https://example.test/a.json"},
+			{PageURL: pages[0], Status: http.StatusOK, SourcePayloadURLs: []string{"https://example.test/a.json"}},
 			{PageURL: pages[1], Status: http.StatusInternalServerError},
-			{PageURL: pages[2], Status: http.StatusOK, TokenTableURL: "https://example.test/c.json"},
+			{PageURL: pages[2], Status: http.StatusOK, SourcePayloadURLs: []string{"https://example.test/c.json"}},
 			{PageURL: pages[3], Status: http.StatusOK},
 		},
 		SourcePayloads: []SourcePayloadRecord{
-			{PageURL: pages[0], TokenTableURL: "https://example.test/a.json", Hash: "hash-a"},
-			{PageURL: pages[2], TokenTableURL: "https://example.test/c.json", Error: "404 Not Found"},
+			{PageURLs: []string{pages[0]}, SourcePayloadURL: "https://example.test/a.json", Hash: "hash-a"},
+			{PageURLs: []string{pages[2]}, SourcePayloadURL: "https://example.test/c.json", Error: "404 Not Found"},
 		},
 	}
 	got, err := failedPages(receipt)
@@ -160,11 +227,11 @@ func TestFailedPagesAcceptsPayloadAttributedToAnotherPage(t *testing.T) {
 	receipt := CrawlReceipt{
 		Pages: pages,
 		Observations: []Observation{
-			{PageURL: pages[0], Status: http.StatusOK, TokenTableURL: sharedPayload},
-			{PageURL: pages[1], Status: http.StatusOK, TokenTableURL: sharedPayload},
+			{PageURL: pages[0], Status: http.StatusOK, SourcePayloadURLs: []string{sharedPayload}},
+			{PageURL: pages[1], Status: http.StatusOK, SourcePayloadURLs: []string{sharedPayload}},
 		},
 		SourcePayloads: []SourcePayloadRecord{
-			{PageURL: pages[0], TokenTableURL: sharedPayload, Hash: "shared-hash"},
+			{PageURLs: pages, SourcePayloadURL: sharedPayload, Hash: "shared-hash"},
 		},
 	}
 	got, err := failedPages(receipt)
@@ -179,19 +246,19 @@ func TestFailedPagesAcceptsPayloadAttributedToAnotherPage(t *testing.T) {
 func TestMergeRetryResultsKeepsSuccessfulPages(t *testing.T) {
 	pages := []string{"https://example.test/a/specs", "https://example.test/b/specs"}
 	previousObservations := []Observation{
-		{PageURL: pages[0], Status: http.StatusOK, TokenTableURL: "https://example.test/a.json"},
+		{PageURL: pages[0], Status: http.StatusOK, SourcePayloadURLs: []string{"https://example.test/a.json"}},
 		{PageURL: pages[1], Status: http.StatusInternalServerError},
 	}
 	retriedObservations := []Observation{
-		{PageURL: pages[1], Status: http.StatusOK, TokenTableURL: "https://example.test/b.json"},
+		{PageURL: pages[1], Status: http.StatusOK, SourcePayloadURLs: []string{"https://example.test/b.json"}},
 	}
 	mergedObservations := mergeObservations(previousObservations, retriedObservations, []string{pages[1]})
 	if len(mergedObservations) != 2 || mergedObservations[0].Status != http.StatusOK || mergedObservations[1].Status != http.StatusOK {
 		t.Fatalf("unexpected merged observations: %#v", mergedObservations)
 	}
 	mergedPayloads := mergeSourcePayloads(
-		[]SourcePayloadRecord{{PageURL: pages[0], Hash: "hash-a"}, {PageURL: pages[1], Hash: "old-hash"}},
-		[]SourcePayloadRecord{{PageURL: pages[1], Hash: "new-hash"}},
+		[]SourcePayloadRecord{{PageURLs: []string{pages[0]}, SourcePayloadURL: "https://example.test/a.json", Hash: "hash-a"}, {PageURLs: []string{pages[1]}, SourcePayloadURL: "https://example.test/b.json", Hash: "old-hash"}},
+		[]SourcePayloadRecord{{PageURLs: []string{pages[1]}, SourcePayloadURL: "https://example.test/b.json", Hash: "new-hash"}},
 		[]string{pages[1]},
 	)
 	if len(mergedPayloads) != 2 || mergedPayloads[0].Hash != "hash-a" || mergedPayloads[1].Hash != "new-hash" {

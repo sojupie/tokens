@@ -9,6 +9,7 @@ sources/normalized/
 sources/runs/
 
 # Local diagnostics and build output.
+bin/
 inspect.txt
 coverage/
 dist/

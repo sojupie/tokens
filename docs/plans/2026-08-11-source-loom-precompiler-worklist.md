@@ -20,12 +20,12 @@ Source Loom has:
 - committed provisional snapshots;
 - an accepted upstream 404 for the Snackbar token-table payload.
 
-The latest lifecycle-aware snapshot is:
+The latest committed lifecycle-aware snapshot is:
 
 ```text
-m3-2026-08-11-1921-lifecycle
+m3-2026-08-12-0201
 manifest SHA-256:
-6c28a66d8082f336b038ebe64cdeed1d024fe1b59ee4a6ca4b808394cdead4f5
+a2a4b5772dab9606d876b3dfeada6e095a729b2d293755421ffbe9d1d541f5cb
 ```
 
 Its capture is still incomplete because the Snackbar source payload returns
@@ -46,7 +46,7 @@ page catalog stores a component-only field.
 
 ### Required before the first Token Forge-bound snapshot
 
-- [ ] Expand the curated page catalog to include component and foundation/style
+- [x] Expand the curated page catalog to include component and foundation/style
   token-source pages.
 - [x] Replace component-only catalog metadata with explicit page metadata such
   as `area`, `subject`, and `pageType`.
@@ -56,7 +56,7 @@ page catalog stores a component-only field.
   payloads. Do not add every Material documentation page.
 - [ ] Add representative foundation/style fixtures and confirm the generic
   extractor handles them without component-specific parser branches.
-- [ ] Recrawl the expanded catalog and create a new immutable snapshot. Do not
+- [x] Recrawl the expanded catalog and create a new immutable snapshot. Do not
   modify the existing component-focused snapshots.
 - [ ] Review whether the expanded snapshot contains the foundation records
   Token Forge needs for `md.ref`, `md.sys`, and component references.
@@ -78,13 +78,14 @@ separate evidence contract is approved.
 
 ### Open: Source contract gate
 
-- [ ] Validate committed snapshot documents with a JSON Schema validator in
-  tests or CI. Parsing the schema files as JSON is not enough.
+- [x] Validate current snapshot documents with an offline JSON Schema validator
+  during snapshot creation and verification. Historical version-2 snapshots
+  remain integrity-verifiable but are not rewritten to version 3.
 - [ ] Rebuild the lifecycle snapshot twice with a fixed snapshot ID and
   creation time. Confirm byte-identical output for every artifact.
-- [ ] Check that schema changes have clear version rules. Additive lifecycle
-  evidence currently uses its own schema version so old snapshot IDs remain
-  immutable.
+- [x] Check that schema changes have clear version rules. The current manifest,
+  graph, source-payload-details, and page-results documents use version 3;
+  lifecycle evidence retains its own schema version.
 - [ ] Review whether the manifest should list a role for each artifact. The
   current Go output does not have that field, although the draft documentation
   shows one.
@@ -122,7 +123,7 @@ Source must keep these facts separate:
 `lifecycle-notices.json` currently contains explicit notices found in source
 payload records. The latest snapshot contains:
 
-- 1,667 `deprecated` notices;
+- 2,307 `deprecated` matches;
 - 7 `not-recommended` notices;
 - token, style, and record scopes.
 
@@ -133,8 +134,9 @@ payload records. The latest snapshot contains:
 - [x] Keep `deprecated` separate from `not-recommended`.
 - [x] Do not infer `active` from the absence of a notice.
 - [x] Do not infer deprecation from a 404, missing payload, or missing table.
-- [ ] Review the 458 `record`-scoped notices for useful source kinds and
-  possible false positives.
+- [ ] Review the record-scoped notices for useful source kinds and possible
+  false positives. The current extractor output is broad enough that the
+  count should not be treated as a policy decision.
 - [ ] Decide whether messages that name replacement tokens need a separate
   relationship record or whether the raw message is enough for Phase 1.
 
@@ -194,13 +196,15 @@ context.
 
 Source Loom does not currently distinguish baseline and Expressive as a first-
 class normalized dimension. It preserves enough raw evidence to investigate
-the distinction, but Forge cannot yet query it reliably without knowing the
-upstream relationships.
+the distinction, and now also records generic source-payload kind and page
+context, but Forge cannot yet query baseline/Expressive reliably without
+knowing the upstream relationships.
 
 ### Recommended model
 
-- [ ] Preserve upstream context groups and tags as generic context data.
-- [ ] Preserve token-set display names and descriptions.
+- [x] Preserve upstream context groups and tags as generic context data in the
+  loss-preserving record objects.
+- [x] Preserve token-set display names and descriptions.
 - [ ] Add a normalized context relation only when the source provides a direct
   relationship.
 - [ ] Do not add a simple `isExpressive` boolean. It would hide other context
@@ -284,13 +288,84 @@ The compiler must not decide policy by accident. Define these rules first:
 
 ## 9. Required commits and locks
 
-- [ ] Review and commit the current schema and lifecycle-notice work in Source
-  Loom.
+- [ ] Review and commit the current schema, integrity, multi-payload, and
+  lifecycle-notice work in Source Loom.
 - [ ] Select the provisional baseline snapshot.
 - [ ] Update the Forge source lock to that snapshot ID and manifest digest.
 - [ ] Update the Forge review candidate to reference the selected snapshot.
 - [ ] Keep the lock status provisional until the coverage and context policy is
   approved.
+
+## 10. CLI distribution and documentation
+
+- [ ] Make normal CLI documentation use the compiled `sourceloom` binary.
+- [ ] Keep `go run ./cmd/sourceloom` examples limited to contributor and local
+  development instructions.
+- [ ] Document building the binary, checking `sourceloom --version`, and using
+  `sourceloom --help`.
+- [ ] Define the supported operating systems, architectures, archive layout,
+  and release naming before publishing binaries.
+- [ ] Replace machine-specific absolute paths in user-facing examples with
+  repository-relative paths or placeholders.
+
+## 11. Deferred improvements and CLI shoulds
+
+These are useful improvements, but they are not reasons to start the Token
+Forge compiler or to reopen the current source contract.
+
+### Snapshot selection
+
+- [ ] Make default newest-snapshot selection unambiguous when two snapshots
+  have the same `createdAt` value. Same-minute rebuilds currently use a
+  directory-name tie-breaker, which can make `verify` select a sibling rebuild
+  rather than the directory just created.
+- [ ] Make `snapshot compare` explain which directories it selected when no
+  explicit `--from` and `--to` values are supplied.
+- [ ] Consider warning when two snapshots have different IDs but equivalent
+  semantic contents, as happens when the same crawl is rebuilt under two IDs.
+- [ ] Keep explicit `snapshot verify --dir`, `snapshot compare --from`, and
+  `snapshot compare --to` as the reliable path for same-input rebuild tests.
+
+### Crawl command ergonomics
+
+- [ ] When `crawl --no-page-catalog` receives an explicit `--seed`, infer a
+  compatible scope from the seed or provide an `--scope auto` option. The
+  current default scope is `component-specs`, so a style seed requires the
+  user to add `--scope token-source-pages`.
+- [ ] Keep the error for an incompatible explicit scope, but explain the valid
+  scope in the error and show the corrected command.
+- [x] Keep snapshot creation side-effect safe: validate generated documents
+  before creating the output directory, so a failed build does not leave a
+  misleading partial snapshot behind.
+- [ ] Add a `--version` command or flag before publishing binaries, and keep
+  `--help` output synchronized with the binary-first documentation.
+- [ ] Consider a machine-readable summary mode for crawl and snapshot commands
+  if automation needs to consume progress without parsing human output.
+
+### Source evidence and review
+
+- [ ] Sample lifecycle notices and record-scoped matches before using them for
+  support or removal policy.
+- [ ] Review representative `md.ref`, `md.sys`, `md.comp`, foundation, and
+  component records from the version-3 graph.
+- [ ] Decide how baseline, Expressive, theme, light/dark, and other context
+  dimensions should be represented before Forge candidate selection.
+- [ ] Decide whether the known Snackbar 404 can be explicitly waived in a
+  Forge source lock while Source continues to report the capture as partial.
+- [ ] Rebuild a fixed-input snapshot twice and compare every artifact, not only
+  the semantic diff.
+
+### Distribution and maintenance
+
+- [ ] Document binary build, supported platforms, archive layout, and release
+  naming before distributing Source Loom.
+- [ ] Decide public snapshot storage, mirroring, retention, and raw-evidence
+  redistribution policy.
+- [ ] Keep monitoring snapshot repetition and repository growth before adding
+  many standalone bundles.
+- [ ] Split cache-integrity and snapshot-verification concerns into smaller
+  files only when the current files become difficult to review; do not split
+  helpers merely for file-size symmetry.
 
 ## Compiler gate
 

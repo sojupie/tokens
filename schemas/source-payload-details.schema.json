@@ -6,17 +6,21 @@
   "additionalProperties": false,
   "required": ["schemaVersion", "records"],
   "properties": {
-    "schemaVersion": {"type": "integer", "const": 2},
+    "schemaVersion": {"type": "integer", "const": 3},
     "records": {
       "type": "array",
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["id", "pageUrl", "payloadUrl"],
+        "required": ["id", "pageUrls", "sourcePayloadUrl"],
         "properties": {
           "id": {"type": "string", "minLength": 1},
-          "pageUrl": {"type": "string", "format": "uri"},
-          "payloadUrl": {"type": "string", "format": "uri"},
+          "pageUrls": {"type": "array", "items": {"type": "string", "format": "uri"}},
+          "sourcePayloadUrl": {"type": "string", "format": "uri"},
+          "sourcePayloadKind": {"type": "string"},
+          "sourceArea": {"type": "string"},
+          "sourceSubject": {"type": "string"},
+          "sourcePageType": {"type": "string"},
           "payloadSha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
           "artifact": {"type": "string"},
           "retrievedAt": {"type": "string", "format": "date-time"},

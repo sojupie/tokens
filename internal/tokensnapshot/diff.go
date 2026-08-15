@@ -36,18 +36,24 @@ type SourcePayloadDiff struct {
 }
 
 type SourcePayloadChange struct {
-	Key           string `json:"key"`
-	PageURL       string `json:"pageUrl"`
-	TokenTableURL string `json:"tokenTableUrl"`
-	BeforeHash    string `json:"beforeHash,omitempty"`
-	AfterHash     string `json:"afterHash,omitempty"`
-	BeforeError   string `json:"beforeError,omitempty"`
-	AfterError    string `json:"afterError,omitempty"`
-	BeforeBytes   int    `json:"beforeBytes,omitempty"`
-	AfterBytes    int    `json:"afterBytes,omitempty"`
+	Key              string   `json:"key"`
+	PageURLs         []string `json:"pageUrls,omitempty"`
+	SourcePayloadURL string   `json:"sourcePayloadUrl"`
+	BeforePageURLs   []string `json:"beforePageUrls,omitempty"`
+	AfterPageURLs    []string `json:"afterPageUrls,omitempty"`
+	BeforeKind       string   `json:"beforeKind,omitempty"`
+	AfterKind        string   `json:"afterKind,omitempty"`
+	BeforeHash       string   `json:"beforeHash,omitempty"`
+	AfterHash        string   `json:"afterHash,omitempty"`
+	BeforeError      string   `json:"beforeError,omitempty"`
+	AfterError       string   `json:"afterError,omitempty"`
+	BeforeBytes      int      `json:"beforeBytes,omitempty"`
+	AfterBytes       int      `json:"afterBytes,omitempty"`
 }
 
 type PageResultsDiff struct {
+	Added   []PageResultChange `json:"added,omitempty"`
+	Removed []PageResultChange `json:"removed,omitempty"`
 	Changed []PageResultChange `json:"changed,omitempty"`
 }
 
@@ -122,7 +128,7 @@ func Diff(fromDir, toDir string) (SnapshotDiff, error) {
 		PageResults:        diffPageResults(fromPageResults.Pages, toPageResults.Pages),
 		LifecycleNotices:   diffLifecycleNotices(fromLifecycle.Notices, toLifecycle.Notices),
 	}
-	diff.Changed = diff.PageCatalogChanged || diff.CaptureChanged || len(diff.Pages.Added) > 0 || len(diff.Pages.Removed) > 0 || len(diff.SourcePayloads.Added) > 0 || len(diff.SourcePayloads.Removed) > 0 || len(diff.SourcePayloads.Changed) > 0 || len(diff.Records.Added) > 0 || len(diff.Records.Removed) > 0 || len(diff.Records.Changed) > 0 || len(diff.PageResults.Changed) > 0 || len(diff.LifecycleNotices.Added) > 0 || len(diff.LifecycleNotices.Removed) > 0
+	diff.Changed = diff.PageCatalogChanged || diff.CaptureChanged || len(diff.Pages.Added) > 0 || len(diff.Pages.Removed) > 0 || len(diff.SourcePayloads.Added) > 0 || len(diff.SourcePayloads.Removed) > 0 || len(diff.SourcePayloads.Changed) > 0 || len(diff.Records.Added) > 0 || len(diff.Records.Removed) > 0 || len(diff.Records.Changed) > 0 || len(diff.PageResults.Added) > 0 || len(diff.PageResults.Removed) > 0 || len(diff.PageResults.Changed) > 0 || len(diff.LifecycleNotices.Added) > 0 || len(diff.LifecycleNotices.Removed) > 0
 	return diff, nil
 }
 
@@ -161,7 +167,7 @@ func readGraph(directory string) (Graph, error) {
 	if fileCloseErr != nil {
 		return Graph{}, fileCloseErr
 	}
-	if graph.SchemaVersion != SchemaVersion {
+	if graph.SchemaVersion != 2 && graph.SchemaVersion != SchemaVersion {
 		return Graph{}, fmt.Errorf("unsupported graph schema version %d", graph.SchemaVersion)
 	}
 	return graph, nil
@@ -176,7 +182,7 @@ func readPageResults(directory string) (PageResults, error) {
 	if err := json.Unmarshal(body, &pageResults); err != nil {
 		return PageResults{}, err
 	}
-	if pageResults.SchemaVersion != SchemaVersion {
+	if pageResults.SchemaVersion != 2 && pageResults.SchemaVersion != SchemaVersion {
 		return PageResults{}, fmt.Errorf("unsupported page-results schema version %d", pageResults.SchemaVersion)
 	}
 	return pageResults, nil
@@ -252,7 +258,7 @@ func diffSourcePayloads(from, to []GraphPayload) SourcePayloadDiff {
 		before, exists := fromByKey[key]
 		if !exists {
 			diff.Added = append(diff.Added, payloadChange(payload, GraphPayload{}))
-		} else if before.Hash != payload.Hash || before.Error != payload.Error || before.Bytes != payload.Bytes {
+		} else if before.Hash != payload.Hash || before.Error != payload.Error || before.Bytes != payload.Bytes || before.SourcePayloadKind != payload.SourcePayloadKind || before.SourceArea != payload.SourceArea || before.SourceSubject != payload.SourceSubject || before.SourcePageType != payload.SourcePageType || !sameStrings(before.PageURLs, payload.PageURLs) {
 			diff.Changed = append(diff.Changed, payloadChange(payload, before))
 		}
 	}
@@ -272,10 +278,20 @@ func diffPageResults(from, to []PageResult) PageResultsDiff {
 	toByURL := pageResultsMap(to)
 	diff := PageResultsDiff{}
 	for url, after := range toByURL {
-		if before, exists := fromByURL[url]; exists && before != after {
+		before, exists := fromByURL[url]
+		if !exists {
+			diff.Added = append(diff.Added, PageResultChange{URL: url, After: after})
+		} else if before != after {
 			diff.Changed = append(diff.Changed, PageResultChange{URL: url, Before: before, After: after})
 		}
 	}
+	for url, before := range fromByURL {
+		if _, exists := toByURL[url]; !exists {
+			diff.Removed = append(diff.Removed, PageResultChange{URL: url, Before: before})
+		}
+	}
+	sort.Slice(diff.Added, func(i, j int) bool { return diff.Added[i].URL < diff.Added[j].URL })
+	sort.Slice(diff.Removed, func(i, j int) bool { return diff.Removed[i].URL < diff.Removed[j].URL })
 	sort.Slice(diff.Changed, func(i, j int) bool { return diff.Changed[i].URL < diff.Changed[j].URL })
 	return diff
 }
@@ -311,10 +327,22 @@ func stringSet(values []string) map[string]bool {
 	return result
 }
 
+func sameStrings(left, right []string) bool {
+	if len(left) != len(right) {
+		return false
+	}
+	for index := range left {
+		if left[index] != right[index] {
+			return false
+		}
+	}
+	return true
+}
+
 func payloadMap(values []GraphPayload) map[string]GraphPayload {
 	result := make(map[string]GraphPayload, len(values))
 	for _, value := range values {
-		result[payloadKey(value.PageURL, value.TokenTableURL)] = value
+		result[value.SourcePayloadURL] = value
 	}
 	return result
 }
@@ -339,25 +367,25 @@ func recordKey(value ExtractedRecord) string {
 	return fmt.Sprintf("%s\x00%s\x00%s\x00%04d", value.SourcePayloadID, value.Kind, value.ID, value.Ordinal)
 }
 
-func payloadKey(pageURL, tokenTableURL string) string {
-	return pageURL + "\x00" + tokenTableURL
-}
-
 func payloadChange(after, before GraphPayload) SourcePayloadChange {
-	pageURL, tokenTableURL := after.PageURL, after.TokenTableURL
-	if pageURL == "" {
-		pageURL, tokenTableURL = before.PageURL, before.TokenTableURL
+	pageURLs, sourcePayloadURL := after.PageURLs, after.SourcePayloadURL
+	if sourcePayloadURL == "" {
+		pageURLs, sourcePayloadURL = before.PageURLs, before.SourcePayloadURL
 	}
 	return SourcePayloadChange{
-		Key:           payloadKey(pageURL, tokenTableURL),
-		PageURL:       pageURL,
-		TokenTableURL: tokenTableURL,
-		BeforeHash:    before.Hash,
-		AfterHash:     after.Hash,
-		BeforeError:   before.Error,
-		AfterError:    after.Error,
-		BeforeBytes:   before.Bytes,
-		AfterBytes:    after.Bytes,
+		Key:              sourcePayloadURL,
+		PageURLs:         pageURLs,
+		SourcePayloadURL: sourcePayloadURL,
+		BeforePageURLs:   before.PageURLs,
+		AfterPageURLs:    after.PageURLs,
+		BeforeKind:       before.SourcePayloadKind,
+		AfterKind:        after.SourcePayloadKind,
+		BeforeHash:       before.Hash,
+		AfterHash:        after.Hash,
+		BeforeError:      before.Error,
+		AfterError:       after.Error,
+		BeforeBytes:      before.Bytes,
+		AfterBytes:       after.Bytes,
 	}
 }
 

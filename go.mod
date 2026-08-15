@@ -6,6 +6,8 @@ require (
 	github.com/chromedp/cdproto v0.0.0-20250724212937-08a3db8b4327
 	github.com/chromedp/chromedp v0.14.2
 	golang.org/x/net v0.47.0
+	github.com/santhosh-tekuri/jsonschema/v6 v6.0.2
+	golang.org/x/text v0.36.0
 )
 
 require (

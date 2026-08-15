@@ -81,24 +81,28 @@ type CrawlOptions struct {
 }
 
 type Observation struct {
-	PageURL       string `json:"pageUrl"`
-	Status        int    `json:"status"`
-	TokenTableURL string `json:"tokenTableUrl,omitempty"`
-	Title         string `json:"title,omitempty"`
-	Error         string `json:"error,omitempty"`
+	PageURL           string   `json:"pageUrl"`
+	Status            int      `json:"status"`
+	SourcePayloadURLs []string `json:"sourcePayloadUrls,omitempty"`
+	Title             string   `json:"title,omitempty"`
+	Error             string   `json:"error,omitempty"`
 }
 
 type SourcePayloadRecord struct {
-	PageURL       string `json:"pageUrl"`
-	TokenTableURL string `json:"tokenTableUrl"`
-	Hash          string `json:"hash"`
-	Artifact      string `json:"artifact"`
-	Bytes         int    `json:"bytes"`
-	RetrievedAt   string `json:"retrievedAt"`
-	ETag          string `json:"etag,omitempty"`
-	LastModified  string `json:"lastModified,omitempty"`
-	Reused        bool   `json:"reused"`
-	Error         string `json:"error,omitempty"`
+	PageURLs          []string `json:"pageUrls"`
+	SourcePayloadURL  string   `json:"sourcePayloadUrl"`
+	SourcePayloadKind string   `json:"sourcePayloadKind,omitempty"`
+	SourceArea        string   `json:"sourceArea,omitempty"`
+	SourceSubject     string   `json:"sourceSubject,omitempty"`
+	SourcePageType    string   `json:"sourcePageType,omitempty"`
+	Hash              string   `json:"hash"`
+	Artifact          string   `json:"artifact"`
+	Bytes             int      `json:"bytes"`
+	RetrievedAt       string   `json:"retrievedAt"`
+	ETag              string   `json:"etag,omitempty"`
+	LastModified      string   `json:"lastModified,omitempty"`
+	Reused            bool     `json:"reused"`
+	Error             string   `json:"error,omitempty"`
 }
 
 type CacheIndex struct {
@@ -249,10 +253,18 @@ func Run(ctx context.Context, config Config) error {
 		fmt.Printf("Persisting %d unique source payloads...\n", len(sources))
 		for payloadNumber, source := range sources {
 			started := time.Now()
-			fmt.Printf("  [payload %d/%d] processing %s\n", payloadNumber+1, len(sources), source.TokenTableURL)
+			fmt.Printf("  [payload %d/%d] processing %s\n", payloadNumber+1, len(sources), source.SourcePayloadURL)
 			record, err := persistPayload(ctx, config, index, source)
 			if err != nil {
-				record = SourcePayloadRecord{PageURL: source.PageURL, TokenTableURL: source.TokenTableURL, Error: err.Error()}
+				record = SourcePayloadRecord{
+					PageURLs:          append([]string(nil), source.PageURLs...),
+					SourcePayloadURL:  source.SourcePayloadURL,
+					SourcePayloadKind: source.SourcePayloadKind,
+					SourceArea:        source.SourceArea,
+					SourceSubject:     source.SourceSubject,
+					SourcePageType:    source.SourcePageType,
+					Error:             err.Error(),
+				}
 				fmt.Printf("  [payload %d/%d] failed after %s: %s\n", payloadNumber+1, len(sources), elapsed(time.Since(started)), err)
 			} else if record.Reused {
 				fmt.Printf("  [payload %d/%d] reused after %s\n", payloadNumber+1, len(sources), elapsed(time.Since(started)))
@@ -285,7 +297,7 @@ func Run(ctx context.Context, config Config) error {
 		captureReportValue = captureReport(pages, observations, sourcePayloads, config.DryRun)
 	}
 	receipt := CrawlReceipt{
-		SchemaVersion:  1,
+		SchemaVersion:  2,
 		CrawlID:        crawlID,
 		StartedAt:      started.Format(time.RFC3339Nano),
 		CompletedAt:    time.Now().UTC().Format(time.RFC3339Nano),
@@ -346,7 +358,7 @@ func readCrawlReceipt(path string) (CrawlReceipt, error) {
 	if err := json.Unmarshal(body, &receipt); err != nil {
 		return CrawlReceipt{}, fmt.Errorf("parse crawl receipt: %w", err)
 	}
-	if receipt.SchemaVersion != 1 {
+	if receipt.SchemaVersion != 2 {
 		return CrawlReceipt{}, fmt.Errorf("unsupported crawl receipt schema version %d", receipt.SchemaVersion)
 	}
 	if receipt.Options.DryRun {
@@ -357,15 +369,13 @@ func readCrawlReceipt(path string) (CrawlReceipt, error) {
 
 func failedPages(receipt CrawlReceipt) ([]string, error) {
 	observations := make(map[string]Observation, len(receipt.Observations))
-	payloadsByPage := make(map[string][]SourcePayloadRecord)
 	successfulPayloads := make(map[string]bool)
 	for _, observation := range receipt.Observations {
 		observations[observation.PageURL] = observation
 	}
 	for _, payload := range receipt.SourcePayloads {
-		payloadsByPage[payload.PageURL] = append(payloadsByPage[payload.PageURL], payload)
-		if payload.TokenTableURL != "" && payload.Error == "" && payload.Hash != "" {
-			successfulPayloads[payload.TokenTableURL] = true
+		if payload.SourcePayloadURL != "" && payload.Error == "" && payload.Hash != "" {
+			successfulPayloads[payload.SourcePayloadURL] = true
 		}
 	}
 	failed := make([]string, 0)
@@ -376,9 +386,14 @@ func failedPages(receipt CrawlReceipt) ([]string, error) {
 		}
 		seen[pageURL] = true
 		observation, observed := observations[pageURL]
-		pageFailed := !observed || observation.Error != "" || observation.Status < http.StatusOK || observation.Status >= http.StatusBadRequest || observation.TokenTableURL == ""
-		if !pageFailed && !successfulPayloads[observation.TokenTableURL] {
-			pageFailed = true
+		pageFailed := !observed || observation.Error != "" || observation.Status < http.StatusOK || observation.Status >= http.StatusBadRequest || len(observation.SourcePayloadURLs) == 0
+		if !pageFailed {
+			for _, payloadURL := range observation.SourcePayloadURLs {
+				if !successfulPayloads[payloadURL] {
+					pageFailed = true
+					break
+				}
+			}
 		}
 		if pageFailed {
 			failed = append(failed, pageURL)
@@ -423,13 +438,51 @@ func mergeSourcePayloads(previous, retried []SourcePayloadRecord, retriedPages [
 	for _, pageURL := range retriedPages {
 		retriedSet[pageURL] = true
 	}
-	merged := make([]SourcePayloadRecord, 0, len(previous)+len(retried))
+	byURL := make(map[string]SourcePayloadRecord, len(previous)+len(retried))
+	order := make([]string, 0, len(previous)+len(retried))
 	for _, payload := range previous {
-		if !retriedSet[payload.PageURL] {
-			merged = append(merged, payload)
+		if payload.SourcePayloadURL == "" {
+			continue
+		}
+		filteredPages := make([]string, 0, len(payload.PageURLs))
+		for _, pageURL := range payload.PageURLs {
+			if !retriedSet[pageURL] {
+				filteredPages = append(filteredPages, pageURL)
+			}
+		}
+		payload.PageURLs = filteredPages
+		if len(filteredPages) > 0 {
+			byURL[payload.SourcePayloadURL] = payload
+			order = append(order, payload.SourcePayloadURL)
 		}
 	}
-	return append(merged, retried...)
+	for _, payload := range retried {
+		if payload.SourcePayloadURL == "" {
+			continue
+		}
+		if existing, ok := byURL[payload.SourcePayloadURL]; ok {
+			existing.PageURLs = mergeStrings(existing.PageURLs, payload.PageURLs)
+			if payload.Error == "" || existing.Error != "" {
+				payload.PageURLs = existing.PageURLs
+				byURL[payload.SourcePayloadURL] = payload
+			} else {
+				byURL[payload.SourcePayloadURL] = existing
+			}
+			continue
+		}
+		byURL[payload.SourcePayloadURL] = payload
+		order = append(order, payload.SourcePayloadURL)
+	}
+	merged := make([]SourcePayloadRecord, 0, len(byURL))
+	for _, payloadURL := range order {
+		payload := byURL[payloadURL]
+		if len(payload.PageURLs) == 0 {
+			continue
+		}
+		sort.Strings(payload.PageURLs)
+		merged = append(merged, payload)
+	}
+	return merged
 }
 
 func successfulPageCount(observations []Observation) int {
@@ -443,12 +496,7 @@ func successfulPageCount(observations []Observation) int {
 }
 
 func captureReport(pages []string, observations []Observation, payloads []SourcePayloadRecord, dryRun bool) CaptureReport {
-	fetched := 0
-	for _, payload := range payloads {
-		if payload.Hash != "" && payload.Error == "" {
-			fetched++
-		}
-	}
+	fetched := successfulPayloadCount(payloads)
 	observed := len(uniqueSources(observations))
 	return CaptureReport{
 		PagesAttempted:   len(pages),
@@ -461,14 +509,34 @@ func captureReport(pages []string, observations []Observation, payloads []Source
 }
 
 func captureComplete(pages []string, observations []Observation, payloads []SourcePayloadRecord) bool {
-	fetched := 0
-	for _, payload := range payloads {
-		if payload.Hash != "" && payload.Error == "" {
-			fetched++
-		}
-	}
+	fetched := successfulPayloadCount(payloads)
 	observed := len(uniqueSources(observations))
 	return len(pages) > 0 && successfulPageCount(observations) == len(pages) && observed > 0 && fetched == observed
+}
+
+func successfulPayloadCount(payloads []SourcePayloadRecord) int {
+	seen := make(map[string]bool, len(payloads))
+	count := 0
+	for _, payload := range payloads {
+		if payload.SourcePayloadURL != "" && payload.Hash != "" && payload.Error == "" && !seen[payload.SourcePayloadURL] {
+			seen[payload.SourcePayloadURL] = true
+			count++
+		}
+	}
+	return count
+}
+
+func mergeStrings(left, right []string) []string {
+	seen := make(map[string]bool, len(left)+len(right))
+	merged := make([]string, 0, len(left)+len(right))
+	for _, value := range append(append([]string(nil), left...), right...) {
+		if value != "" && !seen[value] {
+			seen[value] = true
+			merged = append(merged, value)
+		}
+	}
+	sort.Strings(merged)
+	return merged
 }
 
 func (config Config) validate() error {
@@ -578,23 +646,15 @@ func loadPageCatalog(path string, maxPages int) ([]string, error) {
 		return nil, err
 	}
 	var pageCatalog PageCatalog
+	if err := ValidatePageCatalog(body); err != nil {
+		return nil, err
+	}
 	if err := json.Unmarshal(body, &pageCatalog); err != nil {
 		return nil, fmt.Errorf("parse page catalog: %w", err)
-	}
-	if pageCatalog.SchemaVersion != 2 {
-		return nil, fmt.Errorf("unsupported page catalog schema version %d", pageCatalog.SchemaVersion)
 	}
 	seen := map[string]bool{}
 	pages := make([]string, 0, len(pageCatalog.Pages))
 	for _, pageEntry := range pageCatalog.Pages {
-		parsed, err := url.Parse(pageEntry.URL)
-		area, subject, pageType := pageMetadata(pageEntry.URL)
-		if err != nil || parsed.Scheme == "" || parsed.Host == "" || !isTokenSourcePage(pageEntry.URL) {
-			return nil, fmt.Errorf("invalid token-source page in page catalog: %q", pageEntry.URL)
-		}
-		if pageEntry.Area != area || pageEntry.Subject != subject || pageEntry.PageType != pageType {
-			return nil, fmt.Errorf("page catalog metadata does not match URL %q", pageEntry.URL)
-		}
 		if !seen[pageEntry.URL] {
 			seen[pageEntry.URL] = true
 			pages = append(pages, pageEntry.URL)
@@ -602,6 +662,27 @@ func loadPageCatalog(path string, maxPages int) ([]string, error) {
 	}
 	sort.Strings(pages)
 	return limitPages(pages, maxPages), nil
+}
+
+func ValidatePageCatalog(body []byte) error {
+	var pageCatalog PageCatalog
+	if err := json.Unmarshal(body, &pageCatalog); err != nil {
+		return fmt.Errorf("parse page catalog: %w", err)
+	}
+	if pageCatalog.SchemaVersion != 2 {
+		return fmt.Errorf("unsupported page catalog schema version %d", pageCatalog.SchemaVersion)
+	}
+	for _, pageEntry := range pageCatalog.Pages {
+		parsed, err := url.Parse(pageEntry.URL)
+		area, subject, pageType := pageMetadata(pageEntry.URL)
+		if err != nil || parsed.Scheme == "" || parsed.Host == "" || !isTokenSourcePage(pageEntry.URL) {
+			return fmt.Errorf("invalid token-source page in page catalog: %q", pageEntry.URL)
+		}
+		if pageEntry.Area != area || pageEntry.Subject != subject || pageEntry.PageType != pageType {
+			return fmt.Errorf("page catalog metadata does not match URL %q", pageEntry.URL)
+		}
+	}
+	return nil
 }
 
 func writePageCatalog(path, source string, pages []string) error {
@@ -797,7 +878,9 @@ func canonicalPageURL(candidate string, origin *url.URL, pathPrefix string) stri
 		return ""
 	}
 	resolved := origin.ResolveReference(parsed)
-	if resolved.Scheme != origin.Scheme || resolved.Host != origin.Host || !strings.HasPrefix(resolved.Path, pathPrefix) || strings.Contains(resolved.Path, ".") {
+	prefix := strings.TrimSuffix(pathPrefix, "/")
+	inPrefix := prefix == "" || resolved.Path == prefix || strings.HasPrefix(resolved.Path, prefix+"/")
+	if resolved.Scheme != origin.Scheme || resolved.Host != origin.Host || !inPrefix || strings.Contains(resolved.Path, ".") {
 		return ""
 	}
 	resolved.Fragment = ""
@@ -897,20 +980,74 @@ func documentLinks(root *html.Node) []string {
 }
 
 type pageSource struct {
-	PageURL       string
-	TokenTableURL string
+	PageURLs          []string
+	SourcePayloadURL  string
+	SourcePayloadKind string
+	SourceArea        string
+	SourceSubject     string
+	SourcePageType    string
 }
 
 func uniqueSources(observations []Observation) []pageSource {
-	seen := map[string]bool{}
-	result := []pageSource{}
+	byURL := map[string]*pageSource{}
 	for _, observation := range observations {
-		if observation.TokenTableURL != "" && !seen[observation.TokenTableURL] {
-			seen[observation.TokenTableURL] = true
-			result = append(result, pageSource{PageURL: observation.PageURL, TokenTableURL: observation.TokenTableURL})
+		for _, payloadURL := range observation.SourcePayloadURLs {
+			if payloadURL == "" {
+				continue
+			}
+			source := byURL[payloadURL]
+			if source == nil {
+				area, subject, pageType, kind := sourcePayloadContext(observation.PageURL, payloadURL)
+				source = &pageSource{
+					SourcePayloadURL:  payloadURL,
+					SourcePayloadKind: kind,
+					SourceArea:        area,
+					SourceSubject:     subject,
+					SourcePageType:    pageType,
+				}
+				byURL[payloadURL] = source
+			}
+			source.PageURLs = mergeStrings(source.PageURLs, []string{observation.PageURL})
 		}
 	}
+	urls := make([]string, 0, len(byURL))
+	for payloadURL := range byURL {
+		urls = append(urls, payloadURL)
+	}
+	sort.Strings(urls)
+	result := make([]pageSource, 0, len(urls))
+	for _, payloadURL := range urls {
+		result = append(result, *byURL[payloadURL])
+	}
 	return result
+}
+
+func sourcePayloadContext(pageURL, payloadURL string) (area, subject, pageType, kind string) {
+	area, subject, pageType = pageMetadata(pageURL)
+	if area == "components" {
+		return area, subject, pageType, "component"
+	}
+	if area == "styles" {
+		parts := strings.Split(subject, "/")
+		if len(parts) > 0 && parts[0] != "" {
+			return area, subject, pageType, strings.ToLower(parts[0])
+		}
+	}
+	parsedPayload, err := url.Parse(payloadURL)
+	if err != nil {
+		return area, subject, pageType, "unknown"
+	}
+	stem := strings.ToLower(strings.TrimSuffix(filepath.Base(parsedPayload.Path), filepath.Ext(parsedPayload.Path)))
+	if index := strings.IndexByte(stem, '.'); index >= 0 {
+		stem = stem[:index]
+	}
+	if strings.HasPrefix(stem, "token_type_") {
+		stem = strings.TrimPrefix(stem, "token_type_")
+	}
+	if stem == "token_table" || stem == "" {
+		stem = "unknown"
+	}
+	return area, subject, pageType, stem
 }
 
 type pageProgress struct {
@@ -937,10 +1074,10 @@ func (progress *pageProgress) finish(observation Observation, duration time.Dura
 	}
 	if observation.Error != "" {
 		status = "failed: " + observation.Error
-	} else if observation.TokenTableURL == "" {
+	} else if len(observation.SourcePayloadURLs) == 0 {
 		status += ", no source payload"
 	} else {
-		status += ", source payload observed"
+		status += fmt.Sprintf(", %d source payloads observed", len(observation.SourcePayloadURLs))
 	}
 	fmt.Printf("  [page %d/%d] %s (%s)\n", progress.completed, progress.total, status, elapsed(duration))
 }
@@ -989,19 +1126,21 @@ func observePage(browserContext context.Context, pageURL string, timeout time.Du
 	pageContext, cancel := chromedp.NewContext(browserContext)
 	defer cancel()
 	observation := Observation{PageURL: pageURL}
-	responseURL := make(chan string, 1)
-	var responseOnce sync.Once
+	seenPayloadURLs := map[string]bool{}
+	var payloadMu sync.Mutex
 	var statusMu sync.Mutex
 	mainStatus := 0
 	chromedp.ListenTarget(pageContext, func(event interface{}) {
 		if response, ok := event.(*network.EventResponseReceived); ok {
-			if response.Response.URL == pageURL {
+			if response.Response.MimeType == "text/html" || response.Response.URL == pageURL {
 				statusMu.Lock()
 				mainStatus = int(response.Response.Status)
 				statusMu.Unlock()
 			}
 			if sourcePayloadRE.MatchString(response.Response.URL) {
-				responseOnce.Do(func() { responseURL <- response.Response.URL })
+				payloadMu.Lock()
+				seenPayloadURLs[response.Response.URL] = true
+				payloadMu.Unlock()
 			}
 		}
 	})
@@ -1028,12 +1167,18 @@ func observePage(browserContext context.Context, pageURL string, timeout time.Du
 		timer := time.NewTimer(timeout)
 		defer timer.Stop()
 		select {
-		case observation.TokenTableURL = <-responseURL:
 		case <-timer.C:
 		case <-operationContext.Done():
 			observation.Error = operationContext.Err().Error()
 		}
 	}
+	payloadMu.Lock()
+	observation.SourcePayloadURLs = make([]string, 0, len(seenPayloadURLs))
+	for payloadURL := range seenPayloadURLs {
+		observation.SourcePayloadURLs = append(observation.SourcePayloadURLs, payloadURL)
+	}
+	payloadMu.Unlock()
+	sort.Strings(observation.SourcePayloadURLs)
 	statusMu.Lock()
 	observation.Status = mainStatus
 	statusMu.Unlock()
@@ -1066,7 +1211,7 @@ func mapLimit(values []string, concurrency int, worker func(string) Observation)
 }
 
 func loadIndex(path string) (CacheIndex, error) {
-	index := CacheIndex{SchemaVersion: 1, SourcePayloads: map[string]SourcePayloadRecord{}}
+	index := CacheIndex{SchemaVersion: 2, SourcePayloads: map[string]SourcePayloadRecord{}}
 	body, err := os.ReadFile(path)
 	if errors.Is(err, os.ErrNotExist) {
 		return index, nil
@@ -1084,16 +1229,21 @@ func loadIndex(path string) (CacheIndex, error) {
 }
 
 func persistPayload(ctx context.Context, config Config, index CacheIndex, source pageSource) (SourcePayloadRecord, error) {
-	if cached, ok := index.SourcePayloads[source.TokenTableURL]; ok && !config.Refresh {
+	if cached, ok := index.SourcePayloads[source.SourcePayloadURL]; ok && !config.Refresh {
 		path := filepath.Join(config.CacheDir, cached.Artifact)
-		if _, err := os.Stat(path); err == nil {
-			cached.PageURL = source.PageURL
+		if raw, err := readGzip(path); err == nil && sha256Hex(raw) == cached.Hash && len(raw) == cached.Bytes {
+			cached.PageURLs = append([]string(nil), source.PageURLs...)
+			cached.SourcePayloadURL = source.SourcePayloadURL
+			cached.SourcePayloadKind = source.SourcePayloadKind
+			cached.SourceArea = source.SourceArea
+			cached.SourceSubject = source.SourceSubject
+			cached.SourcePageType = source.SourcePageType
 			cached.Reused = true
 			return cached, nil
 		}
 	}
 
-	request, err := http.NewRequestWithContext(ctx, http.MethodGet, source.TokenTableURL, nil)
+	request, err := http.NewRequestWithContext(ctx, http.MethodGet, source.SourcePayloadURL, nil)
 	if err != nil {
 		return SourcePayloadRecord{}, err
 	}
@@ -1117,17 +1267,51 @@ func persistPayload(ctx context.Context, config Config, index CacheIndex, source
 		return SourcePayloadRecord{}, err
 	}
 	record := SourcePayloadRecord{
-		PageURL:       source.PageURL,
-		TokenTableURL: source.TokenTableURL,
-		Hash:          hash,
-		Artifact:      artifact,
-		Bytes:         len(raw),
-		RetrievedAt:   time.Now().UTC().Format(time.RFC3339Nano),
-		ETag:          response.Header.Get("ETag"),
-		LastModified:  response.Header.Get("Last-Modified"),
+		PageURLs:          append([]string(nil), source.PageURLs...),
+		SourcePayloadURL:  source.SourcePayloadURL,
+		SourcePayloadKind: source.SourcePayloadKind,
+		SourceArea:        source.SourceArea,
+		SourceSubject:     source.SourceSubject,
+		SourcePageType:    source.SourcePageType,
+		Hash:              hash,
+		Artifact:          artifact,
+		Bytes:             len(raw),
+		RetrievedAt:       time.Now().UTC().Format(time.RFC3339Nano),
+		ETag:              response.Header.Get("ETag"),
+		LastModified:      response.Header.Get("Last-Modified"),
 	}
-	index.SourcePayloads[source.TokenTableURL] = record
+	index.SourcePayloads[source.SourcePayloadURL] = record
 	return record, nil
+}
+
+func readGzip(path string) ([]byte, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	reader, err := gzip.NewReader(file)
+	if err != nil {
+		_ = file.Close()
+		return nil, err
+	}
+	body, readErr := io.ReadAll(reader)
+	closeReaderErr := reader.Close()
+	closeFileErr := file.Close()
+	if readErr != nil {
+		return nil, readErr
+	}
+	if closeReaderErr != nil {
+		return nil, closeReaderErr
+	}
+	if closeFileErr != nil {
+		return nil, closeFileErr
+	}
+	return body, nil
+}
+
+func sha256Hex(body []byte) string {
+	hash := sha256.Sum256(body)
+	return hex.EncodeToString(hash[:])
 }
 
 func writeGzipIfAbsent(path string, body []byte) error {

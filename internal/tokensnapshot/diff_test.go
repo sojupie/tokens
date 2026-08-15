@@ -9,10 +9,23 @@ import (
 	"github.com/sojupie/m3-source/internal/crawl"
 )
 
+func TestDiffReportsAddedAndRemovedPageResults(t *testing.T) {
+	diff := diffPageResults(
+		[]PageResult{{URL: "https://example.test/removed", Status: 200}},
+		[]PageResult{{URL: "https://example.test/added", Status: 200}},
+	)
+	if len(diff.Added) != 1 || diff.Added[0].URL != "https://example.test/added" {
+		t.Fatalf("added page result missing: %#v", diff)
+	}
+	if len(diff.Removed) != 1 || diff.Removed[0].URL != "https://example.test/removed" {
+		t.Fatalf("removed page result missing: %#v", diff)
+	}
+}
+
 func TestDiffReportsPayloadChanges(t *testing.T) {
 	root := t.TempDir()
 	catalogPath := filepath.Join(root, "catalog.json")
-	catalog := []byte(`{"schemaVersion":1,"pages":[{"url":"https://example.test/specs","component":"example"}]}\n`)
+	catalog := []byte(`{"schemaVersion":2,"source":"fixture","scope":"component specs","generatedAt":"2026-08-11T00:00:00Z","pages":[{"url":"https://m3.material.io/components/example/specs","area":"components","subject":"example","pageType":"specs"}]}` + "\n")
 	if err := os.WriteFile(catalogPath, catalog, 0o644); err != nil {
 		t.Fatal(err)
 	}
@@ -20,24 +33,25 @@ func TestDiffReportsPayloadChanges(t *testing.T) {
 	writeRun := func(path, hash string, status int) {
 		cacheDir := filepath.Join(root, filepath.Base(path)+"-cache")
 		artifact := "source-payloads/fixture.json.gz"
-		writeGzipArtifact(t, cacheDir, artifact, `{"system":{"tokens":[{"name":"`+hash+`","tokenName":"md.sys.color.primary"}]}}`)
+		payloadBody := `{"system":{"tokens":[{"name":"` + hash + `","tokenName":"md.sys.color.primary"}]}}`
+		writeGzipArtifact(t, cacheDir, artifact, payloadBody)
 		run := crawl.CrawlReceipt{
-			SchemaVersion: 1,
+			SchemaVersion: 2,
 			CrawlID:       filepath.Base(path),
 			StartedAt:     "2026-08-11T00:00:00Z",
 			Options:       crawl.CrawlOptions{PageCatalogPath: catalogPath, CacheDir: cacheDir},
 			Pages:         []string{"https://example.test/specs"},
 			Observations: []crawl.Observation{{
-				PageURL:       "https://example.test/specs",
-				Status:        status,
-				TokenTableURL: "https://example.test/TOKEN_TABLE.json",
+				PageURL:           "https://m3.material.io/components/example/specs",
+				Status:            status,
+				SourcePayloadURLs: []string{"https://example.test/TOKEN_TABLE.json"},
 			}},
 			SourcePayloads: []crawl.SourcePayloadRecord{{
-				PageURL:       "https://example.test/specs",
-				TokenTableURL: "https://example.test/TOKEN_TABLE.json",
-				Hash:          hash,
-				Artifact:      artifact,
-				Bytes:         len(hash),
+				PageURLs:         []string{"https://m3.material.io/components/example/specs"},
+				SourcePayloadURL: "https://example.test/TOKEN_TABLE.json",
+				Hash:             sha256Hex([]byte(payloadBody)),
+				Artifact:         artifact,
+				Bytes:            len(payloadBody),
 			}},
 		}
 		body, err := json.Marshal(run)

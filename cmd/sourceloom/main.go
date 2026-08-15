@@ -304,7 +304,7 @@ func readCrawlReceipt(path string) (crawl.CrawlReceipt, error) {
 	if err := json.Unmarshal(body, &receipt); err != nil {
 		return crawl.CrawlReceipt{}, fmt.Errorf("parse crawl receipt: %w", err)
 	}
-	if receipt.SchemaVersion != 1 {
+	if receipt.SchemaVersion != 2 {
 		return crawl.CrawlReceipt{}, fmt.Errorf("unsupported crawl receipt schema version %d", receipt.SchemaVersion)
 	}
 	return receipt, nil

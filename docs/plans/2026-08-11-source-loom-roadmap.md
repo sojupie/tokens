@@ -18,7 +18,8 @@ canonical store.
 
 Source Loom owns:
 
-- curated and live discovery of component `/specs` pages;
+- curated and live discovery of component, foundation, and style token-source
+  pages;
 - browser-assisted token-table observation;
 - content-addressed payload capture;
 - a loss-preserving Material-specific graph;
@@ -100,19 +101,24 @@ existing snapshot or force a Token Forge release.
 
 ### Phase 0: repository cleanup
 
-- Rename project documentation and the public command name.
-- Remove the Node and Playwright prototype.
-- Keep the current Go crawler behavior and tests passing.
+- Rename project documentation and the public command name. **Done:** the
+  product is Source Loom and the executable is `sourceloom`.
+- Remove the Node and Playwright prototype. **Done.**
+- Keep the current Go crawler behavior and tests passing. **Done for the
+  current implementation.**
 - Correct the repository remote after the public Source Loom repository exists.
 
 **Exit:** the repository has one language and one ingestion path.
 
 ### Phase 1: deterministic capture
 
-- Remove button-specific inspection from capture.
-- Validate response status, media type, JSON shape, and hash.
-- Separate volatile run reports from deterministic capture records.
-- Add cache verification and portable cache import/export.
+- Remove button-specific inspection from capture. **Done.**
+- Validate response status, media type, JSON shape, and hash. **Partially
+  done; source-payload variants are classified and uncompressed hashes are
+  checked, but full upstream semantic validation remains open.**
+- Separate volatile run reports from deterministic capture records. **Done.**
+- Add cache verification and portable cache import/export. **Cache integrity
+  verification done; portable cache import/export remains open.**
 - Test page URL catalog drift, duplicate source payloads, corrupt cache entries, and stable
   manifests with recorded fixtures.
 
@@ -121,6 +127,7 @@ existing snapshot or force a Token Forge release.
 ### Phase 2: generic token extraction
 
 - Define versioned generated-token-graph and source-payload-detail schemas.
+  **Done for the current version-3 documents and standalone schema files.**
 - Preserve names, IDs, states, contexts, reference trees, types, units, and
   unknown source fields.
 - Extract representative foundations and component families without
@@ -142,7 +149,9 @@ raw payloads.
 
 ### Phase 4: immutable snapshots
 
-- Implement deterministic bundle assembly and verification.
+- Implement deterministic bundle assembly and verification. **Done locally;
+  source-payload bytes, gzip contents, safe artifact paths, catalog data, and
+  current schemas are verified.**
 - Generate the manifest, page URL catalog, source payloads, generated token graph,
   source-payload details, page results, and checksums.
 - Publish to static storage and mirror to a durable release channel.
@@ -172,11 +181,17 @@ review.
 
 ## 8. Immediate work
 
-1. Rename the Go module and command from the feasibility-spike names.
-2. Define the generated token graph, source-payload details, page results, and manifest schemas.
-3. Refactor capture so it records generic source-payload metadata only.
-4. Build the first deterministic full page-URL-catalog crawl result.
-5. Implement loss-preserving token extraction.
-6. Implement semantic snapshot comparison.
-7. Build and verify the first immutable material-token-data snapshot.
-8. Decide public object storage, mirroring, and retention policy.
+1. Rebuild the current provisional snapshot from fixed inputs and confirm
+   byte-identical artifacts for every version-3 document.
+2. Review lifecycle notices for duplicates and false positives.
+3. Decide the explicit policy for a known unavailable upstream payload such as
+   Snackbar before creating a Token Forge source lock.
+4. Review baseline, Expressive, theme, and other context evidence without
+   collapsing it into a guessed boolean.
+5. Review representative `md.ref`, `md.sys`, `md.comp`, foundation, and
+   component records before defining Forge candidates.
+6. Decide public object storage, mirroring, and retention policy.
+7. Make CLI documentation and distribution binary-first: use `sourceloom` in
+   normal examples, keep `go run ./cmd/sourceloom` in contributor-only
+   instructions, document local binary builds, and define versioned release
+   artifacts for supported platforms.

@@ -4,12 +4,13 @@
   "title": "Source Loom Material token-data snapshot manifest",
   "type": "object",
   "additionalProperties": false,
-  "required": ["type", "schemaVersion", "snapshotId", "createdAt", "source", "capture", "extractor", "artifacts"],
+  "required": ["type", "schemaVersion", "snapshotId", "createdAt", "reviewStatus", "source", "capture", "extractor", "artifacts"],
   "properties": {
     "type": {"const": "material-token-data-snapshot"},
-    "schemaVersion": {"type": "integer", "const": 2},
+    "schemaVersion": {"type": "integer", "const": 3},
     "snapshotId": {"type": "string", "minLength": 1},
     "createdAt": {"type": "string", "format": "date-time"},
+    "reviewStatus": {"enum": ["provisional", "approved", "rejected"]},
     "source": {
       "type": "object",
       "additionalProperties": false,
@@ -41,7 +42,7 @@
       "properties": {
         "name": {"type": "string", "minLength": 1},
         "version": {"type": "string", "minLength": 1},
-        "schemaVersion": {"type": "integer", "const": 2}
+        "schemaVersion": {"type": "integer", "const": 3}
       }
     },
     "artifacts": {

@@ -1,7 +1,7 @@
 # Source Loom snapshot format
 
-**Status:** Proposed version 2
-**Date:** 2026-08-11
+**Status:** Current implementation contract, version 3
+**Date:** 2026-08-12
 
 ## Purpose
 
@@ -35,26 +35,31 @@ must contain the same verified payload bytes.
 
 The publisher serializes release files deterministically, calculates their
 SHA-256 hashes, then writes the manifest. The manifest digest is the integrity
-identity used by consumers. A human-readable snapshot ID contains the source
-family, capture date, capture time in UTC (`HHMM`), and a digest prefix:
+identity used by consumers. Current Source Loom-generated IDs use the source
+family, capture date, and capture time in UTC (`HHMM`):
 
 ```text
-material-2026-08-11-2348-a1b2c3d4e5f6
+material-2026-08-11-2348
 ```
+
+The manifest SHA-256, not the human-readable ID, provides content identity.
+Existing immutable snapshots may retain historical `m3-...` IDs and the
+historical extractor name `m3source`; they must not be rewritten.
 
 Never replace files under a published snapshot ID. Publish a new snapshot when
 content, extraction rules, or source metadata changes.
 
 ## Manifest
 
-Version 2 has this logical shape:
+Version 3 has this logical shape:
 
 ```json
 {
   "type": "material-token-data-snapshot",
-  "schemaVersion": 2,
-  "snapshotId": "material-2026-08-11-a1b2c3d4e5f6",
+  "schemaVersion": 3,
+  "snapshotId": "material-2026-08-11-2348",
   "createdAt": "2026-08-11T00:00:00Z",
+  "reviewStatus": "provisional",
   "source": {
     "system": "material-3",
     "pageCatalogSha256": "<sha256>",
@@ -72,7 +77,7 @@ Version 2 has this logical shape:
   "extractor": {
     "name": "sourceloom",
     "version": "0.1.0",
-    "schemaVersion": 2
+    "schemaVersion": 3
   },
   "artifacts": [
     {
@@ -104,22 +109,36 @@ Material-specific and loss-preserving. It retains:
 - unknown fields required to diagnose source-schema drift;
 - source record IDs that join to source-payload details.
 
-It is not DTCG source and does not flatten themes or contexts into one value.
+Each source-payload and extracted record also carries the source classification
+available at capture time:
+
+- `sourcePayloadURL` — the upstream JSON payload URL;
+- `pageURLs` — every reviewed page that observed that payload;
+- `sourcePayloadKind` — for example `component`, `elevation`, `motion`,
+  `spacing`, `typography`, `shape`, `color`, or `unknown`;
+- `sourceArea`, `sourceSubject`, and `sourcePageType` — page-catalog context.
+
+These fields describe what the payload represents. They are not Forge support
+decisions. A component payload may contain references to foundation or style
+tokens, and one payload may be observed by more than one page.
+
+The graph is not DTCG source and does not flatten themes or contexts into one value.
 Consumers may generate DTCG candidates, platform inputs, documentation, or
 queries from it.
 
 ## Source-payload details
 
-Source-payload details record page and source-payload URLs, source-payload
-hashes, retrieval metadata, upstream revision details, and extraction notes. Use
-stable source IDs so generated records can refer to source-payload details
-without duplicating long strings.
+Source-payload details record page and source-payload URLs, the same source
+classification fields, source-payload hashes, retrieval metadata, upstream
+revision details, and extraction notes. Use stable source IDs so generated
+records can refer to source-payload details without duplicating long strings.
 
 ## Page results
 
-The page-results file lists each page and whether it produced source payloads,
-generated records, warnings, or errors. A missing token table is visible
-evidence, not a silently dropped page.
+The page-results file lists each page and whether it observed source payloads,
+generated records, warnings, or errors. A missing source payload is visible
+evidence, not a silently dropped page. The field is plural because a page may
+expose more than one payload.
 
 ## Lifecycle notices
 
@@ -166,11 +185,18 @@ A consumer must not rely on mutable `latest` URLs for reproducible builds.
 
 ## Diffing
 
-`snapshot compare` verifies both input directories, then compares their page
-page URL catalogs, page results, capture completeness, content-addressed source payloads, and
-generic extracted records and lifecycle notices. Record changes are keyed by source payload, record
-kind, upstream record ID, and occurrence ordinal; the complete upstream object
-is compared through the record's loss-preserving `raw` field. It ignores
-snapshot IDs, crawl IDs,
-retrieval timestamps, and artifact paths when deciding whether capture metadata
-changed.
+`snapshot compare` verifies both input directories, then compares their page URL
+catalogs, page results, capture completeness, content-addressed source payloads,
+generic extracted records, and lifecycle notices. It reports added, removed, and
+changed page results. Record changes are keyed by source payload, record kind,
+upstream record ID, and occurrence ordinal; the complete upstream object is
+compared through the record's loss-preserving `raw` field. It ignores snapshot
+IDs, crawl IDs, retrieval timestamps, and artifact paths when deciding whether
+capture metadata changed.
+
+## Historical snapshots
+
+Snapshots created before version 3 retain their original names and fields. They
+are immutable evidence and are not rewritten to match this contract. Current
+verification continues to check their file integrity; new snapshots use the
+version-3 schemas and source-payload terminology.

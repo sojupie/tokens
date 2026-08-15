@@ -6,17 +6,17 @@
   "additionalProperties": false,
   "required": ["schemaVersion", "pages"],
   "properties": {
-    "schemaVersion": {"type": "integer", "const": 2},
+    "schemaVersion": {"type": "integer", "const": 3},
     "pages": {
       "type": "array",
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["url", "status", "tokenTableObserved", "payloadsObserved", "payloadsFetched", "recordsExtracted"],
+        "required": ["url", "status", "sourcePayloadsObserved", "payloadsObserved", "payloadsFetched", "recordsExtracted"],
         "properties": {
           "url": {"type": "string", "format": "uri"},
           "status": {"type": "integer", "minimum": 0, "maximum": 999},
-          "tokenTableObserved": {"type": "boolean"},
+          "sourcePayloadsObserved": {"type": "boolean"},
           "payloadsObserved": {"type": "integer", "minimum": 0},
           "payloadsFetched": {"type": "integer", "minimum": 0},
           "recordsExtracted": {"type": "integer", "minimum": 0},

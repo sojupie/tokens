@@ -14,17 +14,21 @@ import (
 // ExtractedRecord keeps the upstream object intact while exposing the fields
 // needed to index the graph without knowing every Material object shape.
 type ExtractedRecord struct {
-	ID              string          `json:"id"`
-	Kind            string          `json:"kind"`
-	SourcePayloadID string          `json:"sourcePayloadId"`
-	Ordinal         int             `json:"ordinal"`
-	Name            string          `json:"name,omitempty"`
-	TokenName       string          `json:"tokenName,omitempty"`
-	DisplayName     string          `json:"displayName,omitempty"`
-	TokenSetName    string          `json:"tokenSetName,omitempty"`
-	State           string          `json:"state,omitempty"`
-	ValueType       string          `json:"valueType,omitempty"`
-	Raw             json.RawMessage `json:"raw"`
+	ID                string          `json:"id"`
+	Kind              string          `json:"kind"`
+	SourcePayloadID   string          `json:"sourcePayloadId"`
+	SourcePayloadKind string          `json:"sourcePayloadKind,omitempty"`
+	SourceArea        string          `json:"sourceArea,omitempty"`
+	SourceSubject     string          `json:"sourceSubject,omitempty"`
+	SourcePageType    string          `json:"sourcePageType,omitempty"`
+	Ordinal           int             `json:"ordinal"`
+	Name              string          `json:"name,omitempty"`
+	TokenName         string          `json:"tokenName,omitempty"`
+	DisplayName       string          `json:"displayName,omitempty"`
+	TokenSetName      string          `json:"tokenSetName,omitempty"`
+	State             string          `json:"state,omitempty"`
+	ValueType         string          `json:"valueType,omitempty"`
+	Raw               json.RawMessage `json:"raw"`
 }
 
 type sourcePayload struct {
@@ -143,7 +147,7 @@ func lifecycleNotices(records []ExtractedRecord) []LifecycleNotice {
 		if message := deprecationMessage(fields["deprecationMessage"]); message != "" {
 			notices = append(notices, newLifecycleNotice(record, "deprecationMessage", "deprecated", message))
 		}
-		for _, field := range []string{"description", "displayName", "name", "tokenName", "tokenSetName"} {
+		for _, field := range []string{"description", "displayName", "name", "tokenSetName"} {
 			message := jsonString(fields[field])
 			state := lifecycleState(message)
 			if state == "" {

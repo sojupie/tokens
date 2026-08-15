@@ -17,7 +17,7 @@ import (
 	"github.com/sojupie/m3-source/internal/crawl"
 )
 
-const SchemaVersion = 2
+const SchemaVersion = 3
 
 type BuildConfig struct {
 	CrawlReceiptPath string
@@ -34,6 +34,7 @@ type Manifest struct {
 	SchemaVersion int           `json:"schemaVersion"`
 	SnapshotID    string        `json:"snapshotId"`
 	CreatedAt     string        `json:"createdAt"`
+	ReviewStatus  string        `json:"reviewStatus"`
 	Source        SourceInfo    `json:"source"`
 	Capture       CaptureInfo   `json:"capture"`
 	Extractor     ExtractorInfo `json:"extractor"`
@@ -81,14 +82,18 @@ type Graph struct {
 }
 
 type GraphPayload struct {
-	PageURL         string `json:"pageUrl"`
-	TokenTableURL   string `json:"tokenTableUrl"`
-	Hash            string `json:"hash,omitempty"`
-	Artifact        string `json:"artifact,omitempty"`
-	Bytes           int    `json:"bytes,omitempty"`
-	Records         int    `json:"records,omitempty"`
-	ExtractionError string `json:"extractionError,omitempty"`
-	Error           string `json:"error,omitempty"`
+	PageURLs          []string `json:"pageUrls"`
+	SourcePayloadURL  string   `json:"sourcePayloadUrl"`
+	SourcePayloadKind string   `json:"sourcePayloadKind,omitempty"`
+	SourceArea        string   `json:"sourceArea,omitempty"`
+	SourceSubject     string   `json:"sourceSubject,omitempty"`
+	SourcePageType    string   `json:"sourcePageType,omitempty"`
+	Hash              string   `json:"hash,omitempty"`
+	Artifact          string   `json:"artifact,omitempty"`
+	Bytes             int      `json:"bytes,omitempty"`
+	Records           int      `json:"records"`
+	ExtractionError   string   `json:"extractionError,omitempty"`
+	Error             string   `json:"error,omitempty"`
 }
 
 type SourcePayloadDetails struct {
@@ -97,15 +102,19 @@ type SourcePayloadDetails struct {
 }
 
 type SourcePayloadDetail struct {
-	ID            string `json:"id"`
-	PageURL       string `json:"pageUrl"`
-	PayloadURL    string `json:"payloadUrl"`
-	PayloadSha256 string `json:"payloadSha256,omitempty"`
-	Artifact      string `json:"artifact,omitempty"`
-	RetrievedAt   string `json:"retrievedAt,omitempty"`
-	ETag          string `json:"etag,omitempty"`
-	LastModified  string `json:"lastModified,omitempty"`
-	Error         string `json:"error,omitempty"`
+	ID                string   `json:"id"`
+	PageURLs          []string `json:"pageUrls"`
+	SourcePayloadURL  string   `json:"sourcePayloadUrl"`
+	SourcePayloadKind string   `json:"sourcePayloadKind,omitempty"`
+	SourceArea        string   `json:"sourceArea,omitempty"`
+	SourceSubject     string   `json:"sourceSubject,omitempty"`
+	SourcePageType    string   `json:"sourcePageType,omitempty"`
+	PayloadSha256     string   `json:"payloadSha256,omitempty"`
+	Artifact          string   `json:"artifact,omitempty"`
+	RetrievedAt       string   `json:"retrievedAt,omitempty"`
+	ETag              string   `json:"etag,omitempty"`
+	LastModified      string   `json:"lastModified,omitempty"`
+	Error             string   `json:"error,omitempty"`
 }
 
 type PageResults struct {
@@ -131,15 +140,15 @@ type LifecycleNotice struct {
 }
 
 type PageResult struct {
-	URL                string `json:"url"`
-	Status             int    `json:"status"`
-	TokenTableObserved bool   `json:"tokenTableObserved"`
-	PayloadsObserved   int    `json:"payloadsObserved"`
-	PayloadsFetched    int    `json:"payloadsFetched"`
-	RecordsExtracted   int    `json:"recordsExtracted"`
-	PayloadError       string `json:"payloadError,omitempty"`
-	ExtractionError    string `json:"extractionError,omitempty"`
-	Error              string `json:"error,omitempty"`
+	URL                    string `json:"url"`
+	Status                 int    `json:"status"`
+	SourcePayloadsObserved bool   `json:"sourcePayloadsObserved"`
+	PayloadsObserved       int    `json:"payloadsObserved"`
+	PayloadsFetched        int    `json:"payloadsFetched"`
+	RecordsExtracted       int    `json:"recordsExtracted"`
+	PayloadError           string `json:"payloadError,omitempty"`
+	ExtractionError        string `json:"extractionError,omitempty"`
+	Error                  string `json:"error,omitempty"`
 }
 
 func Build(config BuildConfig) (Manifest, error) {
@@ -167,6 +176,9 @@ func Build(config BuildConfig) (Manifest, error) {
 	pageCatalog, err := readCanonicalJSON(pageCatalogPath)
 	if err != nil {
 		return Manifest{}, fmt.Errorf("read page catalog: %w", err)
+	}
+	if err := crawl.ValidatePageCatalog(pageCatalog); err != nil {
+		return Manifest{}, fmt.Errorf("validate page catalog: %w", err)
 	}
 	graph, payloadDetails, pageResults, lifecycleNotices := buildDocuments(config.SnapshotID, run)
 	graphJSON, err := marshalDocument(graph)
@@ -206,6 +218,9 @@ func Build(config BuildConfig) (Manifest, error) {
 	for path, body := range payloadFiles {
 		files[path] = body
 	}
+	if err := validateSnapshotDocuments(files); err != nil {
+		return Manifest{}, err
+	}
 	artifacts := make([]Artifact, 0, len(files))
 	paths := make([]string, 0, len(files))
 	for path := range files {
@@ -230,6 +245,7 @@ func Build(config BuildConfig) (Manifest, error) {
 		SchemaVersion: SchemaVersion,
 		SnapshotID:    config.SnapshotID,
 		CreatedAt:     createdAt,
+		ReviewStatus:  "provisional",
 		Source: SourceInfo{
 			System:            "material-3",
 			PageCatalogSha256: sha256Hex(pageCatalog),
@@ -240,9 +256,9 @@ func Build(config BuildConfig) (Manifest, error) {
 			CrawlReceipt:     filepath.Base(config.CrawlReceiptPath),
 			PagesAttempted:   len(run.Pages),
 			PagesSucceeded:   successfulPageCount(run),
-			PayloadsObserved: len(run.SourcePayloads),
+			PayloadsObserved: uniqueSuccessfulPayloadURLs(run),
 			PayloadsFetched:  successfulPayloadCount(run),
-			Complete:         successfulPageCount(run) == len(run.Pages) && len(run.Pages) > 0 && successfulPayloadCount(run) == len(run.SourcePayloads) && len(run.SourcePayloads) > 0,
+			Complete:         successfulPageCount(run) == len(run.Pages) && len(run.Pages) > 0 && successfulPayloadCount(run) == uniqueSuccessfulPayloadURLs(run) && uniqueSuccessfulPayloadURLs(run) > 0,
 		},
 		Extractor: ExtractorInfo{
 			Name:          valueOr(config.ExtractorName, "sourceloom"),
@@ -254,6 +270,9 @@ func Build(config BuildConfig) (Manifest, error) {
 	manifestJSON, err := marshalDocument(manifest)
 	if err != nil {
 		return Manifest{}, fmt.Errorf("encode manifest: %w", err)
+	}
+	if err := validateJSONSchema("manifest.schema.json", manifestJSON); err != nil {
+		return Manifest{}, err
 	}
 	if err := writeFile(filepath.Join(config.OutputDir, "manifest.json"), manifestJSON); err != nil {
 		return Manifest{}, fmt.Errorf("write manifest: %w", err)
@@ -276,13 +295,25 @@ func successfulPageCount(run crawl.CrawlReceipt) int {
 }
 
 func successfulPayloadCount(run crawl.CrawlReceipt) int {
+	seen := map[string]bool{}
 	count := 0
 	for _, payload := range run.SourcePayloads {
-		if payload.Hash != "" && payload.Error == "" {
+		if payload.SourcePayloadURL != "" && payload.Hash != "" && payload.Error == "" && !seen[payload.SourcePayloadURL] {
+			seen[payload.SourcePayloadURL] = true
 			count++
 		}
 	}
 	return count
+}
+
+func uniqueSuccessfulPayloadURLs(run crawl.CrawlReceipt) int {
+	seen := map[string]bool{}
+	for _, payload := range run.SourcePayloads {
+		if payload.SourcePayloadURL != "" {
+			seen[payload.SourcePayloadURL] = true
+		}
+	}
+	return len(seen)
 }
 
 func Verify(directory string) (Manifest, error) {
@@ -294,11 +325,20 @@ func Verify(directory string) (Manifest, error) {
 	if err := json.Unmarshal(manifestBody, &manifest); err != nil {
 		return Manifest{}, fmt.Errorf("parse manifest: %w", err)
 	}
-	if manifest.SchemaVersion != SchemaVersion {
+	if manifest.SchemaVersion != 2 && manifest.SchemaVersion != SchemaVersion {
 		return Manifest{}, fmt.Errorf("unsupported snapshot schema version %d", manifest.SchemaVersion)
 	}
+	seenPaths := make(map[string]bool, len(manifest.Artifacts))
 	for _, artifact := range manifest.Artifacts {
-		body, err := os.ReadFile(filepath.Join(directory, filepath.FromSlash(artifact.Path)))
+		path, err := snapshotArtifactPath(artifact.Path)
+		if err != nil || path != filepath.ToSlash(artifact.Path) {
+			return Manifest{}, fmt.Errorf("invalid artifact path %q", artifact.Path)
+		}
+		if seenPaths[path] {
+			return Manifest{}, fmt.Errorf("duplicate artifact path %q", artifact.Path)
+		}
+		seenPaths[path] = true
+		body, err := os.ReadFile(filepath.Join(directory, filepath.FromSlash(path)))
 		if err != nil {
 			return Manifest{}, fmt.Errorf("read artifact %s: %w", artifact.Path, err)
 		}
@@ -308,6 +348,11 @@ func Verify(directory string) (Manifest, error) {
 		if len(body) != artifact.Bytes {
 			return Manifest{}, fmt.Errorf("artifact %s byte count mismatch", artifact.Path)
 		}
+		if artifact.ContentEncoding == "gzip" {
+			if _, err := readGzip(filepath.Join(directory, filepath.FromSlash(path))); err != nil {
+				return Manifest{}, fmt.Errorf("read gzip artifact %s: %w", artifact.Path, err)
+			}
+		}
 	}
 	checksums, err := os.ReadFile(filepath.Join(directory, "checksums.txt"))
 	if err != nil {
@@ -316,6 +361,49 @@ func Verify(directory string) (Manifest, error) {
 	want := checksumFile(manifestBody, manifest.Artifacts)
 	if string(checksums) != want {
 		return Manifest{}, errors.New("checksums.txt does not match snapshot artifacts")
+	}
+	if manifest.SchemaVersion == SchemaVersion {
+		if err := validateJSONSchema("manifest.schema.json", manifestBody); err != nil {
+			return Manifest{}, err
+		}
+		documents := make(map[string][]byte)
+		for _, name := range []string{"generated-token-graph.json.gz", "source-payload-details.json", "page-results.json", "lifecycle-notices.json"} {
+			body, err := os.ReadFile(filepath.Join(directory, name))
+			if err != nil {
+				return Manifest{}, fmt.Errorf("read required document %s: %w", name, err)
+			}
+			documents[name] = body
+		}
+		if err := validateSnapshotDocuments(documents); err != nil {
+			return Manifest{}, err
+		}
+	}
+	pageCatalogBody, err := os.ReadFile(filepath.Join(directory, "page-catalog.json"))
+	if err != nil {
+		return Manifest{}, fmt.Errorf("read page catalog: %w", err)
+	}
+	if err := crawl.ValidatePageCatalog(pageCatalogBody); err != nil {
+		return Manifest{}, fmt.Errorf("validate page catalog: %w", err)
+	}
+	graph, err := readGraph(directory)
+	if err != nil {
+		return Manifest{}, fmt.Errorf("read generated graph: %w", err)
+	}
+	for _, payload := range graph.SourcePayloads {
+		if payload.Hash == "" || payload.Error != "" {
+			continue
+		}
+		path, err := snapshotArtifactPath(payload.Artifact)
+		if err != nil {
+			return Manifest{}, err
+		}
+		raw, err := readGzip(filepath.Join(directory, filepath.FromSlash(path)))
+		if err != nil {
+			return Manifest{}, fmt.Errorf("read source payload %s: %w", payload.SourcePayloadURL, err)
+		}
+		if sha256Hex(raw) != payload.Hash || len(raw) != payload.Bytes {
+			return Manifest{}, fmt.Errorf("source payload %s hash or byte count mismatch", payload.SourcePayloadURL)
+		}
 	}
 	return manifest, nil
 }
@@ -339,7 +427,7 @@ func readCrawlReceipt(path string) (crawl.CrawlReceipt, error) {
 	if err := json.Unmarshal(body, &run); err != nil {
 		return crawl.CrawlReceipt{}, fmt.Errorf("parse crawl receipt: %w", err)
 	}
-	if run.SchemaVersion != 1 {
+	if run.SchemaVersion != 2 {
 		return crawl.CrawlReceipt{}, fmt.Errorf("unsupported crawl receipt schema version %d", run.SchemaVersion)
 	}
 	return run, nil
@@ -360,6 +448,7 @@ func buildDocuments(snapshotID string, run crawl.CrawlReceipt) (Graph, SourcePay
 	graphRecords := make([]ExtractedRecord, 0)
 	payloadDetails := make([]SourcePayloadDetail, 0, len(run.SourcePayloads))
 	payloadsByPage := map[string][]crawl.SourcePayloadRecord{}
+	graphPayloadByURL := map[string]GraphPayload{}
 	for _, payload := range run.SourcePayloads {
 		sourcePayloadID := sourcePayloadID(payload)
 		artifactPath, artifactErr := snapshotSourcePayloadPath(payload.Artifact)
@@ -372,29 +461,46 @@ func buildDocuments(snapshotID string, run crawl.CrawlReceipt) (Graph, SourcePay
 				Error:    payload.Error,
 			}, sourcePayloadID)
 		}
+		for index := range records {
+			records[index].SourcePayloadKind = payload.SourcePayloadKind
+			records[index].SourceArea = payload.SourceArea
+			records[index].SourceSubject = payload.SourceSubject
+			records[index].SourcePageType = payload.SourcePageType
+		}
 		graphPayloads = append(graphPayloads, GraphPayload{
-			PageURL:         payload.PageURL,
-			TokenTableURL:   payload.TokenTableURL,
-			Hash:            payload.Hash,
-			Artifact:        artifactPath,
-			Bytes:           payload.Bytes,
-			Records:         len(records),
-			ExtractionError: errorString(extractionErr),
-			Error:           payload.Error,
+			PageURLs:          append([]string(nil), payload.PageURLs...),
+			SourcePayloadURL:  payload.SourcePayloadURL,
+			SourcePayloadKind: payload.SourcePayloadKind,
+			SourceArea:        payload.SourceArea,
+			SourceSubject:     payload.SourceSubject,
+			SourcePageType:    payload.SourcePageType,
+			Hash:              payload.Hash,
+			Artifact:          artifactPath,
+			Bytes:             payload.Bytes,
+			Records:           len(records),
+			ExtractionError:   errorString(extractionErr),
+			Error:             payload.Error,
 		})
+		graphPayloadByURL[payload.SourcePayloadURL] = graphPayloads[len(graphPayloads)-1]
 		graphRecords = append(graphRecords, records...)
 		payloadDetails = append(payloadDetails, SourcePayloadDetail{
-			ID:            sourcePayloadID,
-			PageURL:       payload.PageURL,
-			PayloadURL:    payload.TokenTableURL,
-			PayloadSha256: payload.Hash,
-			Artifact:      artifactPath,
-			RetrievedAt:   payload.RetrievedAt,
-			ETag:          payload.ETag,
-			LastModified:  payload.LastModified,
-			Error:         payload.Error,
+			ID:                sourcePayloadID,
+			PageURLs:          append([]string(nil), payload.PageURLs...),
+			SourcePayloadURL:  payload.SourcePayloadURL,
+			SourcePayloadKind: payload.SourcePayloadKind,
+			SourceArea:        payload.SourceArea,
+			SourceSubject:     payload.SourceSubject,
+			SourcePageType:    payload.SourcePageType,
+			PayloadSha256:     payload.Hash,
+			Artifact:          artifactPath,
+			RetrievedAt:       payload.RetrievedAt,
+			ETag:              payload.ETag,
+			LastModified:      payload.LastModified,
+			Error:             payload.Error,
 		})
-		payloadsByPage[payload.PageURL] = append(payloadsByPage[payload.PageURL], payload)
+		for _, pageURL := range payload.PageURLs {
+			payloadsByPage[pageURL] = append(payloadsByPage[pageURL], payload)
+		}
 	}
 	pageResults := make([]PageResult, 0, len(run.Observations))
 	for _, observation := range run.Observations {
@@ -410,41 +516,38 @@ func buildDocuments(snapshotID string, run crawl.CrawlReceipt) (Graph, SourcePay
 			if payload.Error != "" {
 				payloadErrors = append(payloadErrors, payload.Error)
 			}
-			for _, graphPayload := range graphPayloads {
-				if graphPayload.PageURL == payload.PageURL && graphPayload.TokenTableURL == payload.TokenTableURL {
-					recordsExtracted += graphPayload.Records
-					if graphPayload.ExtractionError != "" {
-						extractionErrors = append(extractionErrors, graphPayload.ExtractionError)
-					}
-					break
+			if graphPayload, ok := graphPayloadByURL[payload.SourcePayloadURL]; ok {
+				recordsExtracted += graphPayload.Records
+				if graphPayload.ExtractionError != "" {
+					extractionErrors = append(extractionErrors, graphPayload.ExtractionError)
 				}
 			}
 		}
 		pageResults = append(pageResults, PageResult{
-			URL:                observation.PageURL,
-			Status:             observation.Status,
-			TokenTableObserved: observation.TokenTableURL != "",
-			PayloadsObserved:   len(pagePayloads),
-			PayloadsFetched:    payloadsFetched,
-			RecordsExtracted:   recordsExtracted,
-			PayloadError:       strings.Join(payloadErrors, "; "),
-			ExtractionError:    strings.Join(extractionErrors, "; "),
-			Error:              observation.Error,
+			URL:                    observation.PageURL,
+			Status:                 observation.Status,
+			SourcePayloadsObserved: len(observation.SourcePayloadURLs) > 0,
+			PayloadsObserved:       len(pagePayloads),
+			PayloadsFetched:        payloadsFetched,
+			RecordsExtracted:       recordsExtracted,
+			PayloadError:           strings.Join(payloadErrors, "; "),
+			ExtractionError:        strings.Join(extractionErrors, "; "),
+			Error:                  observation.Error,
 		})
 	}
 	return Graph{
 		SchemaVersion:  SchemaVersion,
 		SnapshotID:     snapshotID,
 		CrawlID:        run.CrawlID,
-		Pages:          append([]string(nil), run.Pages...),
-		Observations:   append([]crawl.Observation(nil), run.Observations...),
+		Pages:          append([]string{}, run.Pages...),
+		Observations:   append([]crawl.Observation{}, run.Observations...),
 		SourcePayloads: graphPayloads,
 		Records:        graphRecords,
 	}, SourcePayloadDetails{SchemaVersion: SchemaVersion, Records: payloadDetails}, PageResults{SchemaVersion: SchemaVersion, Pages: pageResults}, LifecycleNotices{SchemaVersion: 1, Notices: lifecycleNotices(graphRecords)}
 }
 
 func sourcePayloadID(payload crawl.SourcePayloadRecord) string {
-	return "payload-" + sha256Hex([]byte(payload.PageURL+"\x00"+payload.TokenTableURL))
+	return "payload-" + sha256Hex([]byte(payload.SourcePayloadURL+"\x00"+payload.Hash))
 }
 
 func readPayloadArtifacts(run crawl.CrawlReceipt) (map[string][]byte, error) {
@@ -464,9 +567,17 @@ func readPayloadArtifacts(run crawl.CrawlReceipt) (map[string][]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		body, err := os.ReadFile(filepath.Join(run.Options.CacheDir, filepath.FromSlash(cachePath)))
+		compressedPath := filepath.Join(run.Options.CacheDir, filepath.FromSlash(cachePath))
+		body, err := os.ReadFile(compressedPath)
 		if err != nil {
 			return nil, fmt.Errorf("read %s: %w", payload.Artifact, err)
+		}
+		raw, err := readGzip(compressedPath)
+		if err != nil {
+			return nil, fmt.Errorf("read gzip %s: %w", payload.Artifact, err)
+		}
+		if sha256Hex(raw) != payload.Hash || len(raw) != payload.Bytes {
+			return nil, fmt.Errorf("source payload %s does not match recorded hash or byte count", payload.SourcePayloadURL)
 		}
 		if existing, ok := files[path]; ok && sha256Hex(existing) != sha256Hex(body) {
 			return nil, fmt.Errorf("payload artifact path %s has conflicting contents", path)
@@ -481,7 +592,7 @@ func snapshotArtifactPath(path string) (string, error) {
 		return "", errors.New("successful payload has no artifact path")
 	}
 	clean := filepath.ToSlash(filepath.Clean(filepath.FromSlash(path)))
-	if filepath.IsAbs(filepath.FromSlash(path)) || clean == "." || clean == ".." || strings.HasPrefix(clean, "../") {
+	if filepath.IsAbs(filepath.FromSlash(path)) || clean == "." || clean == ".." || strings.HasPrefix(clean, "../") || clean != filepath.ToSlash(path) {
 		return "", fmt.Errorf("payload artifact path escapes snapshot: %s", path)
 	}
 	return clean, nil

@@ -6,7 +6,7 @@
   "additionalProperties": false,
   "required": ["schemaVersion", "snapshotId", "crawlId", "pages", "observations", "sourcePayloads", "records"],
   "properties": {
-    "schemaVersion": {"type": "integer", "const": 2},
+    "schemaVersion": {"type": "integer", "const": 3},
     "snapshotId": {"type": "string", "minLength": 1},
     "crawlId": {"type": "string", "minLength": 1},
     "pages": {"type": "array", "items": {"type": "string", "format": "uri"}},
@@ -22,7 +22,7 @@
       "properties": {
         "pageUrl": {"type": "string", "format": "uri"},
         "status": {"type": "integer", "minimum": 0, "maximum": 999},
-        "tokenTableUrl": {"type": "string", "format": "uri"},
+        "sourcePayloadUrls": {"type": "array", "items": {"type": "string", "format": "uri"}},
         "title": {"type": "string"},
         "error": {"type": "string"}
       }
@@ -30,10 +30,14 @@
     "sourcePayload": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["pageUrl", "tokenTableUrl", "records"],
+      "required": ["pageUrls", "sourcePayloadUrl", "records"],
       "properties": {
-        "pageUrl": {"type": "string", "format": "uri"},
-        "tokenTableUrl": {"type": "string", "format": "uri"},
+        "pageUrls": {"type": "array", "items": {"type": "string", "format": "uri"}},
+        "sourcePayloadUrl": {"type": "string", "format": "uri"},
+        "sourcePayloadKind": {"type": "string"},
+        "sourceArea": {"type": "string"},
+        "sourceSubject": {"type": "string"},
+        "sourcePageType": {"type": "string"},
         "hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
         "artifact": {"type": "string"},
         "bytes": {"type": "integer", "minimum": 0},
@@ -50,6 +54,10 @@
         "id": {"type": "string"},
         "kind": {"type": "string"},
         "sourcePayloadId": {"type": "string"},
+        "sourcePayloadKind": {"type": "string"},
+        "sourceArea": {"type": "string"},
+        "sourceSubject": {"type": "string"},
+        "sourcePageType": {"type": "string"},
         "ordinal": {"type": "integer", "minimum": 0},
         "name": {"type": "string"},
         "tokenName": {"type": "string"},

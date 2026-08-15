@@ -1,0 +1,565 @@
+{
+  "schemaVersion": 3,
+  "records": [
+    {
+      "id": "payload-40f2e1e83c4c35851c0ef65cbecddeca9572a1d6a442f73702a99b1560f1bebd",
+      "pageUrls": [
+        "https://m3.material.io/styles/elevation/tokens"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/ELEVATION.20543ce18892f7d9.json",
+      "sourcePayloadKind": "elevation",
+      "sourceArea": "styles",
+      "sourceSubject": "elevation",
+      "sourcePageType": "tokens",
+      "payloadSha256": "cda00b31c592dd085be66832cca514df22b3839e96efaa58ee9d1b4f2e697745",
+      "artifact": "source-payloads/cd/cda00b31c592dd085be66832cca514df22b3839e96efaa58ee9d1b4f2e697745.json.gz",
+      "retrievedAt": "2026-08-12T02:39:34.746116Z"
+    },
+    {
+      "id": "payload-5d9675ec4e292f1d50f0a5739e12793556789697137609684f288d92b9a84c2d",
+      "pageUrls": [
+        "https://m3.material.io/styles/spacing/tokens"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/MEASUREMENT.20543ce18892f7d9.json",
+      "sourcePayloadKind": "spacing",
+      "sourceArea": "styles",
+      "sourceSubject": "spacing",
+      "sourcePageType": "tokens",
+      "payloadSha256": "4b4572282b8caf4414244f42ad10d791420a9312d50333cad7f48e9561c91aa3",
+      "artifact": "source-payloads/4b/4b4572282b8caf4414244f42ad10d791420a9312d50333cad7f48e9561c91aa3.json.gz",
+      "retrievedAt": "2026-08-12T02:39:36.6277795Z"
+    },
+    {
+      "id": "payload-609eb0c5684771f3a78933a1263fb606601b164c9bc2d68ec22f0376fa579f6a",
+      "pageUrls": [
+        "https://m3.material.io/components/sliders/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.0045edb815f2325e.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "sliders",
+      "sourcePageType": "specs",
+      "payloadSha256": "23bf93d02b0bc0ee186b3aea7baffd78509fcc406fd6afb2b6b1162132ab485b",
+      "artifact": "source-payloads/23/23bf93d02b0bc0ee186b3aea7baffd78509fcc406fd6afb2b6b1162132ab485b.json.gz",
+      "retrievedAt": "2026-08-12T02:39:14.4695427Z"
+    },
+    {
+      "id": "payload-b97f658087b1815bc80104071fcaf222ac98cb116be25e52b47cbfbb147f0c73",
+      "pageUrls": [
+        "https://m3.material.io/components/date-pickers/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.01c5310367774eb8.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "date-pickers",
+      "sourcePageType": "specs",
+      "payloadSha256": "abaa8ae03044c68c34c9ab0d1f7e3551a9bba8fb1c8cb2355e2d925876fb9f83",
+      "artifact": "source-payloads/ab/abaa8ae03044c68c34c9ab0d1f7e3551a9bba8fb1c8cb2355e2d925876fb9f83.json.gz",
+      "retrievedAt": "2026-08-12T02:38:41.4823079Z"
+    },
+    {
+      "id": "payload-4b24ed35abc704305d0fc50a8da90be3120d50b0c4752ae8c61162db1e956ac8",
+      "pageUrls": [
+        "https://m3.material.io/components/side-sheets/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.06c2c925cf96adca.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "side-sheets",
+      "sourcePageType": "specs",
+      "payloadSha256": "6e293c4d07ffe23ee33e05957136261abff0c6bfb7784b84539a424dafb22fb4",
+      "artifact": "source-payloads/6e/6e293c4d07ffe23ee33e05957136261abff0c6bfb7784b84539a424dafb22fb4.json.gz",
+      "retrievedAt": "2026-08-12T02:39:12.9395212Z"
+    },
+    {
+      "id": "payload-fa4f9f1dffef46750219ebf91edd02cc466bb38eeaf547a8c70ad5b70cc36761",
+      "pageUrls": [
+        "https://m3.material.io/components/app-bars/specs",
+        "https://m3.material.io/components/search/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.07341534518f78d0.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "app-bars",
+      "sourcePageType": "specs",
+      "payloadSha256": "e4f6ba06a226c5897dd02094f09c5ba53aabf80fff3e6720749f890adde6e337",
+      "artifact": "source-payloads/e4/e4f6ba06a226c5897dd02094f09c5ba53aabf80fff3e6720749f890adde6e337.json.gz",
+      "retrievedAt": "2026-08-12T02:38:22.8343264Z"
+    },
+    {
+      "id": "payload-2f8502eb839c930ac14a4d81b4d498ee2af2bd78000e35e497702b06e536b564",
+      "pageUrls": [
+        "https://m3.material.io/components/button-groups/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.082d7fd6e058b011.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "button-groups",
+      "sourcePageType": "specs",
+      "payloadSha256": "522347cc17c2d1056c149150e677fd8d5833d59b30c76261e00ce1157d127112",
+      "artifact": "source-payloads/52/522347cc17c2d1056c149150e677fd8d5833d59b30c76261e00ce1157d127112.json.gz",
+      "retrievedAt": "2026-08-12T02:38:26.8887531Z"
+    },
+    {
+      "id": "payload-1e0b0cd2afa0862a0b6b221070ce0df76f9bd20fa68862bc49bac0593e36c530",
+      "pageUrls": [
+        "https://m3.material.io/components/dialogs/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.0b1e39a67d5bafdc.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "dialogs",
+      "sourcePageType": "specs",
+      "payloadSha256": "c812727fb428e4b258ce553478a07e02dacdba9a45eb3aec3cc4311d154fca6b",
+      "artifact": "source-payloads/c8/c812727fb428e4b258ce553478a07e02dacdba9a45eb3aec3cc4311d154fca6b.json.gz",
+      "retrievedAt": "2026-08-12T02:38:43.056399Z"
+    },
+    {
+      "id": "payload-2cef54289118e2233190e94bcb2a90ddb49e25dd1a778c6be33f6c409c497e6f",
+      "pageUrls": [
+        "https://m3.material.io/components/icon-buttons/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.0fe2282006ae098b.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "icon-buttons",
+      "sourcePageType": "specs",
+      "payloadSha256": "e376c0355da69ae6ac0abf0e307ff1fce6e6409c254447c54d70c5193df3a290",
+      "artifact": "source-payloads/e3/e376c0355da69ae6ac0abf0e307ff1fce6e6409c254447c54d70c5193df3a290.json.gz",
+      "retrievedAt": "2026-08-12T02:38:57.1067627Z"
+    },
+    {
+      "id": "payload-c7adee5f969aa8a73ffa23358cc6d9d44fd9fa5843fe48ccf30fe1e46c8dc890",
+      "pageUrls": [
+        "https://m3.material.io/components/cards/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.100ebfb4332adab1.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "cards",
+      "sourcePageType": "specs",
+      "payloadSha256": "eda1c471b8454f11392dc01362a40eb97c371d1b0321078ac6f29ac9e539360c",
+      "artifact": "source-payloads/ed/eda1c471b8454f11392dc01362a40eb97c371d1b0321078ac6f29ac9e539360c.json.gz",
+      "retrievedAt": "2026-08-12T02:38:33.1630768Z"
+    },
+    {
+      "id": "payload-8102e689bc7f7bcf91955a1ad63f1a41d7b7819adf2a6c2f76b71d0e71390072",
+      "pageUrls": [
+        "https://m3.material.io/components/fab-menu/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.1a076cec8bc202c2.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "fab-menu",
+      "sourcePageType": "specs",
+      "payloadSha256": "4542e274591f184e360b3004abdd63ec62491218bf2dade85890030ee1a47ca8",
+      "artifact": "source-payloads/45/4542e274591f184e360b3004abdd63ec62491218bf2dade85890030ee1a47ca8.json.gz",
+      "retrievedAt": "2026-08-12T02:38:48.8253372Z"
+    },
+    {
+      "id": "payload-df099a9bb6f17fafac394e6e4d443e71679f324f23f6fbfa7309b538ab939553",
+      "pageUrls": [
+        "https://m3.material.io/components/buttons/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.1c4257f8804f9478.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "buttons",
+      "sourcePageType": "specs",
+      "payloadSha256": "43f3c99741c78aae61d81299e196ef6d8482cc14799dd84f160afa8874551f43",
+      "artifact": "source-payloads/43/43f3c99741c78aae61d81299e196ef6d8482cc14799dd84f160afa8874551f43.json.gz",
+      "retrievedAt": "2026-08-12T02:38:32.0417892Z"
+    },
+    {
+      "id": "payload-e71290bc097cb31bba90524d23cc544bff47bdcbba34d738aa4a2933879e614c",
+      "pageUrls": [
+        "https://m3.material.io/components/toolbars/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.2956a7939bf0879c.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "toolbars",
+      "sourcePageType": "specs",
+      "payloadSha256": "84c9b479e066b865a67720d4b091cc0d9a79a10a7ba37d121bbc24735b46fd31",
+      "artifact": "source-payloads/84/84c9b479e066b865a67720d4b091cc0d9a79a10a7ba37d121bbc24735b46fd31.json.gz",
+      "retrievedAt": "2026-08-12T02:39:32.6766738Z"
+    },
+    {
+      "id": "payload-feed92ab8d004604d0096b7d07a6e2e36a1cf8ce257101e8a2235c0da79bdbd5",
+      "pageUrls": [
+        "https://m3.material.io/components/checkbox/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.31f16b44fe03b0c0.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "checkbox",
+      "sourcePageType": "specs",
+      "payloadSha256": "09af996077cdd167e92c489271c9db8e45fc04cbaac540fa574830a2c5615f10",
+      "artifact": "source-payloads/09/09af996077cdd167e92c489271c9db8e45fc04cbaac540fa574830a2c5615f10.json.gz",
+      "retrievedAt": "2026-08-12T02:38:35.8497938Z"
+    },
+    {
+      "id": "payload-c8c75d6b9882f1f1649bc5b6ab6cbff0ed72b76febc4b5bb4926ecc924ed7b91",
+      "pageUrls": [
+        "https://m3.material.io/components/switch/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.33b1b2925d9ff561.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "switch",
+      "sourcePageType": "specs",
+      "payloadSha256": "3798d69059aff7ae352ee2b4f30a4a084813999988fa7ae5e76b034dfc80b8e8",
+      "artifact": "source-payloads/37/3798d69059aff7ae352ee2b4f30a4a084813999988fa7ae5e76b034dfc80b8e8.json.gz",
+      "retrievedAt": "2026-08-12T02:39:22.1482712Z"
+    },
+    {
+      "id": "payload-99b8a951a3ea7c9b7975a486fe087526846cb17ade99410b040d628695970eb6",
+      "pageUrls": [
+        "https://m3.material.io/components/snackbar/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.346ae12a744b45dd.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "snackbar",
+      "sourcePageType": "specs",
+      "error": "404 Not Found"
+    },
+    {
+      "id": "payload-e3b56bf224a54bd7ec1874bb46d78a82ea835d241e664d81fbe742a92ff71ae7",
+      "pageUrls": [
+        "https://m3.material.io/components/extended-fab/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.36500f77b86d20a5.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "extended-fab",
+      "sourcePageType": "specs",
+      "payloadSha256": "358bd662d252d3c0b263bc359c030187714ff885d46f698183a6bf516a7899eb",
+      "artifact": "source-payloads/35/358bd662d252d3c0b263bc359c030187714ff885d46f698183a6bf516a7899eb.json.gz",
+      "retrievedAt": "2026-08-12T02:38:46.9238315Z"
+    },
+    {
+      "id": "payload-ae60668a0b86f2eede3eb88a1794a9fb9d212ec6a36a1f4845d35ef2177c69db",
+      "pageUrls": [
+        "https://m3.material.io/components/navigation-drawer/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.376969f91547be8e.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "navigation-drawer",
+      "sourcePageType": "specs",
+      "payloadSha256": "49c137af3a0f1e927d7b3e2bf0c3a5ec6ef5e08b49cde4cdc917480cc7848264",
+      "artifact": "source-payloads/49/49c137af3a0f1e927d7b3e2bf0c3a5ec6ef5e08b49cde4cdc917480cc7848264.json.gz",
+      "retrievedAt": "2026-08-12T02:39:06.9328809Z"
+    },
+    {
+      "id": "payload-aa06ea4a3a551b94bf5572222a8e1254bd012798981650b00852452bd8e69cc2",
+      "pageUrls": [
+        "https://m3.material.io/components/tooltips/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.37697297db0555a6.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "tooltips",
+      "sourcePageType": "specs",
+      "payloadSha256": "c6f73731de2064c6a81ad6089c15a4415593e3785a4b1e5cd5653226fd96b500",
+      "artifact": "source-payloads/c6/c6f73731de2064c6a81ad6089c15a4415593e3785a4b1e5cd5653226fd96b500.json.gz",
+      "retrievedAt": "2026-08-12T02:39:33.8317571Z"
+    },
+    {
+      "id": "payload-0002463aa3e3143cfc22c20ecaabc3239ad5ea3f2a7663e4b234172e4833cf5f",
+      "pageUrls": [
+        "https://m3.material.io/components/menus/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.385a28e5d3bb3dd0.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "menus",
+      "sourcePageType": "specs",
+      "payloadSha256": "4e368665c580f13c25d53f271e578e904cb444911896156b75c4bd198f86748b",
+      "artifact": "source-payloads/4e/4e368665c580f13c25d53f271e578e904cb444911896156b75c4bd198f86748b.json.gz",
+      "retrievedAt": "2026-08-12T02:39:04.0124338Z"
+    },
+    {
+      "id": "payload-87cad327080b187cd19b2dc3b8c2f7053e45b961481191d59cf7db3cc5e4adf2",
+      "pageUrls": [
+        "https://m3.material.io/components/time-pickers/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.39f4b152dd9bd292.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "time-pickers",
+      "sourcePageType": "specs",
+      "payloadSha256": "f6c21b98c9035251a667a47270673cd3fe202f2ba068ca5c5952874c4bfcf348",
+      "artifact": "source-payloads/f6/f6c21b98c9035251a667a47270673cd3fe202f2ba068ca5c5952874c4bfcf348.json.gz",
+      "retrievedAt": "2026-08-12T02:39:30.9519694Z"
+    },
+    {
+      "id": "payload-f50b14f0df0e899e5be047a19b96d03a9c3dd47633683e81edabc2543c774b2f",
+      "pageUrls": [
+        "https://m3.material.io/components/app-bars/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.3ec622835c7987b5.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "app-bars",
+      "sourcePageType": "specs",
+      "payloadSha256": "654ca02344b7768d5afbe937420ff14807eab8e6b59ba15a5901d7f8a41d3294",
+      "artifact": "source-payloads/65/654ca02344b7768d5afbe937420ff14807eab8e6b59ba15a5901d7f8a41d3294.json.gz",
+      "retrievedAt": "2026-08-11T18:29:10.2050433Z"
+    },
+    {
+      "id": "payload-6cb60c1c6e7cc873ed8041c81fa2362d36f75b54acabb5b9ff523e5fea1ab918",
+      "pageUrls": [
+        "https://m3.material.io/components/floating-action-button/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.41587918e51cca98.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "floating-action-button",
+      "sourcePageType": "specs",
+      "payloadSha256": "58c16bc1eb23140cacacd4b17c3057d427f0dc0c7d966e6681e7166da5303214",
+      "artifact": "source-payloads/58/58c16bc1eb23140cacacd4b17c3057d427f0dc0c7d966e6681e7166da5303214.json.gz",
+      "retrievedAt": "2026-08-12T02:38:51.998747Z"
+    },
+    {
+      "id": "payload-96602510cb73fd8da61c979f0531e9412bb39af6a0dace80ed9fb1829dcb951c",
+      "pageUrls": [
+        "https://m3.material.io/components/carousel/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.43a124d2adc8a2ef.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "carousel",
+      "sourcePageType": "specs",
+      "payloadSha256": "c9e5c7eb02f3442c960689701cb02d81e13bd48d8e9dd3f664dc54aef2b40b12",
+      "artifact": "source-payloads/c9/c9e5c7eb02f3442c960689701cb02d81e13bd48d8e9dd3f664dc54aef2b40b12.json.gz",
+      "retrievedAt": "2026-08-12T02:38:34.1953269Z"
+    },
+    {
+      "id": "payload-fc566a76f3bebcfffa13f1b20b450420cdeed1117c242e6eb4dff04312b620c4",
+      "pageUrls": [
+        "https://m3.material.io/components/chips/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.484a63be03b01a17.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "chips",
+      "sourcePageType": "specs",
+      "payloadSha256": "f2a88268f02fb0a79d8c66ee0389c733aa2e251730b01b962182e90d600dbd76",
+      "artifact": "source-payloads/f2/f2a88268f02fb0a79d8c66ee0389c733aa2e251730b01b962182e90d600dbd76.json.gz",
+      "retrievedAt": "2026-08-12T02:38:39.3142813Z"
+    },
+    {
+      "id": "payload-412bfd4566f17ce49d396198e7389b9cad4c50418326fb7a435d671d791e8fb8",
+      "pageUrls": [
+        "https://m3.material.io/components/navigation-bar/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.52865380210a9b69.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "navigation-bar",
+      "sourcePageType": "specs",
+      "payloadSha256": "6f20e030df1f8a6b568204c71e7c453755e1a60800a5dc4f56af477cbfd29a0e",
+      "artifact": "source-payloads/6f/6f20e030df1f8a6b568204c71e7c453755e1a60800a5dc4f56af477cbfd29a0e.json.gz",
+      "retrievedAt": "2026-08-12T02:39:05.4999019Z"
+    },
+    {
+      "id": "payload-b0e820371a1512047c522cbc5cd8c09071ba4c895c7067f798503b34949e60e7",
+      "pageUrls": [
+        "https://m3.material.io/components/badges/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.59a1b3a9a90ca8b3.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "badges",
+      "sourcePageType": "specs",
+      "payloadSha256": "f3e4869f64c58201074073fcc535bf218a2da4ed4117ec52aafc6413f8c24c39",
+      "artifact": "source-payloads/f3/f3e4869f64c58201074073fcc535bf218a2da4ed4117ec52aafc6413f8c24c39.json.gz",
+      "retrievedAt": "2026-08-12T02:38:23.6410202Z"
+    },
+    {
+      "id": "payload-2bb2888e291dece64519f9905ac7367de2e3425a0903ffab9889710564735f9f",
+      "pageUrls": [
+        "https://m3.material.io/components/navigation-rail/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.5b55bd7cc1ea6e29.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "navigation-rail",
+      "sourcePageType": "specs",
+      "payloadSha256": "cbf6ca5a1eb2963825c2aacffa8cf4efd3c2f4758d80ccdcbbc55d239ddc1fcc",
+      "artifact": "source-payloads/cb/cbf6ca5a1eb2963825c2aacffa8cf4efd3c2f4758d80ccdcbbc55d239ddc1fcc.json.gz",
+      "retrievedAt": "2026-08-12T02:39:08.5749452Z"
+    },
+    {
+      "id": "payload-66ab0392ae104833d68b1689fb2ce4c5e45cba8d438bb9d20a5284704402d431",
+      "pageUrls": [
+        "https://m3.material.io/components/tabs/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.6039f0080a95df1e.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "tabs",
+      "sourcePageType": "specs",
+      "payloadSha256": "00437814dc35df4df26022543035185373f51d945e454c2ceee6915b34be7bd5",
+      "artifact": "source-payloads/00/00437814dc35df4df26022543035185373f51d945e454c2ceee6915b34be7bd5.json.gz",
+      "retrievedAt": "2026-08-12T02:39:23.4945224Z"
+    },
+    {
+      "id": "payload-8cad58d1ddd24bc1c4791944c4dc9222e4f75ba7739fb88893c0c807a271970b",
+      "pageUrls": [
+        "https://m3.material.io/components/text-fields/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.60990dd98dea0998.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "text-fields",
+      "sourcePageType": "specs",
+      "payloadSha256": "9af119725eee147bf0130620f7b7570bb11110213dc22b1310e6a6bb67bffdb1",
+      "artifact": "source-payloads/9a/9af119725eee147bf0130620f7b7570bb11110213dc22b1310e6a6bb67bffdb1.json.gz",
+      "retrievedAt": "2026-08-12T02:39:28.9550148Z"
+    },
+    {
+      "id": "payload-42b3d9fc92dde51824c1a3f4e486d9bc3d94d74b265d87ddd625531d9e569da2",
+      "pageUrls": [
+        "https://m3.material.io/components/split-button/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.624e8f2da4007fc8.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "split-button",
+      "sourcePageType": "specs",
+      "payloadSha256": "c98ba87c9f1732b9bcb7e627b194fa34bb0e270329b18da89ee68fa31fae60b1",
+      "artifact": "source-payloads/c9/c98ba87c9f1732b9bcb7e627b194fa34bb0e270329b18da89ee68fa31fae60b1.json.gz",
+      "retrievedAt": "2026-08-12T02:39:19.7794566Z"
+    },
+    {
+      "id": "payload-61b9f0f08167c93db00610065aa5ae17e9715a8947fce247ee199f3d42a4a2a7",
+      "pageUrls": [
+        "https://m3.material.io/components/segmented-buttons/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.67e2613d87ca6f98.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "segmented-buttons",
+      "sourcePageType": "specs",
+      "payloadSha256": "6be09cf9ced098391a7cda97c88dd252e080ac28e770df437bc3b34ab1894b9e",
+      "artifact": "source-payloads/6b/6be09cf9ced098391a7cda97c88dd252e080ac28e770df437bc3b34ab1894b9e.json.gz",
+      "retrievedAt": "2026-08-12T02:39:11.7483698Z"
+    },
+    {
+      "id": "payload-67c141f4bf9805a674a3cee3fdbcf697adcbfff4906e2fa10dbc4b615adb5ac4",
+      "pageUrls": [
+        "https://m3.material.io/components/loading-indicator/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.68895be451a51c31.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "loading-indicator",
+      "sourcePageType": "specs",
+      "payloadSha256": "1207da24d41f2e6122a6004cf1f0a2684d5b759c9d0dfdece2861b9a8837a9f9",
+      "artifact": "source-payloads/12/1207da24d41f2e6122a6004cf1f0a2684d5b759c9d0dfdece2861b9a8837a9f9.json.gz",
+      "retrievedAt": "2026-08-12T02:39:01.3753072Z"
+    },
+    {
+      "id": "payload-345201c1596b97842990e639abb79455b26da50e9d4ff6e0acfe946076c66355",
+      "pageUrls": [
+        "https://m3.material.io/components/radio-button/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.6acb269a58d5f93f.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "radio-button",
+      "sourcePageType": "specs",
+      "payloadSha256": "bdf0007a4d58c2a9994c39d1e56ed5a833192b10983e78be1140c7bbe8221bd4",
+      "artifact": "source-payloads/bd/bdf0007a4d58c2a9994c39d1e56ed5a833192b10983e78be1140c7bbe8221bd4.json.gz",
+      "retrievedAt": "2026-08-12T02:39:10.5063455Z"
+    },
+    {
+      "id": "payload-1e2fb343ab1ad7bde98286d0d2f1fde23d7c2b8c52a0b183854df69f3e8bc1d2",
+      "pageUrls": [
+        "https://m3.material.io/components/lists/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.6c818a16475113bd.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "lists",
+      "sourcePageType": "specs",
+      "payloadSha256": "1a003c5bbe81160d5d12660aaf7e9a1f855aa7d254a206261e1ae93b85122404",
+      "artifact": "source-payloads/1a/1a003c5bbe81160d5d12660aaf7e9a1f855aa7d254a206261e1ae93b85122404.json.gz",
+      "retrievedAt": "2026-08-12T02:39:00.0594606Z"
+    },
+    {
+      "id": "payload-fc42aa1f8ef9df800b0735c1421c8715ed5ca8a740f217d436a275f9ced37636",
+      "pageUrls": [
+        "https://m3.material.io/components/progress-indicators/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.6f51f7ab7775a392.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "progress-indicators",
+      "sourcePageType": "specs",
+      "payloadSha256": "c098c159eb95f674ca2ead302e85102cbb1eca1fbba4498e3b51b7c4f19fd020",
+      "artifact": "source-payloads/c0/c098c159eb95f674ca2ead302e85102cbb1eca1fbba4498e3b51b7c4f19fd020.json.gz",
+      "retrievedAt": "2026-08-12T02:39:09.4819073Z"
+    },
+    {
+      "id": "payload-d86350d3d4da4c63aa25b7ca0df67d7f7542a677cf7f4102b26fbeb11651451d",
+      "pageUrls": [
+        "https://m3.material.io/components/bottom-sheets/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.75e530a1014802b3.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "bottom-sheets",
+      "sourcePageType": "specs",
+      "payloadSha256": "8174d8bc8186a6af1cf3409868a2a0b9e807d09e26697ed239288d22553df466",
+      "artifact": "source-payloads/81/8174d8bc8186a6af1cf3409868a2a0b9e807d09e26697ed239288d22553df466.json.gz",
+      "retrievedAt": "2026-08-12T02:38:24.9282459Z"
+    },
+    {
+      "id": "payload-f9585318a578bfd12b7779a550d1a375048662486d62d8acb431291e1b4b8e54",
+      "pageUrls": [
+        "https://m3.material.io/components/divider/specs"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.77f7657eb270e53d.json",
+      "sourcePayloadKind": "component",
+      "sourceArea": "components",
+      "sourceSubject": "divider",
+      "sourcePageType": "specs",
+      "payloadSha256": "e66621779a8a4779c31935cc75b681fa7c8ce2746e763a14ba7728eb95f17d2e",
+      "artifact": "source-payloads/e6/e66621779a8a4779c31935cc75b681fa7c8ce2746e763a14ba7728eb95f17d2e.json.gz",
+      "retrievedAt": "2026-08-12T02:38:43.9908967Z"
+    },
+    {
+      "id": "payload-00d2089f8912862ac0100d6f1f3dc6424615163ad1866defe93272908dbfd3e7",
+      "pageUrls": [
+        "https://m3.material.io/styles/motion/overview/specs",
+        "https://m3.material.io/styles/shape/corner-radius-scale"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TYPE_UNSPECIFIED.20543ce18892f7d9.json",
+      "sourcePayloadKind": "motion",
+      "sourceArea": "styles",
+      "sourceSubject": "motion/overview",
+      "sourcePageType": "specs",
+      "payloadSha256": "a8f18000842628dc6b374d47673a42f4eac179b9637f8a6b1b0a6d12526341c3",
+      "artifact": "source-payloads/a8/a8f18000842628dc6b374d47673a42f4eac179b9637f8a6b1b0a6d12526341c3.json.gz",
+      "retrievedAt": "2026-08-12T02:39:35.5400537Z"
+    },
+    {
+      "id": "payload-c6b1ee8f9cc59b717eb8d198332af415b2c26a975533b99fc73d3bf4c5538c06",
+      "pageUrls": [
+        "https://m3.material.io/styles/typography/type-scale-tokens"
+      ],
+      "sourcePayloadUrl": "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TYPOGRAPHY.20543ce18892f7d9.json",
+      "sourcePayloadKind": "typography",
+      "sourceArea": "styles",
+      "sourceSubject": "typography/type-scale",
+      "sourcePageType": "tokens",
+      "payloadSha256": "8fb2ae590ad995df3dfadfe42d1d0aaebb604f1d460d1d32d54ba5f8062ebb28",
+      "artifact": "source-payloads/8f/8fb2ae590ad995df3dfadfe42d1d0aaebb604f1d460d1d32d54ba5f8062ebb28.json.gz",
+      "retrievedAt": "2026-08-12T02:39:39.8952371Z"
+    }
+  ]
+}
