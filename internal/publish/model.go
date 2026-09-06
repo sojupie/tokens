@@ -1,0 +1,84 @@
+package publish
+
+import "encoding/json"
+
+const SchemaVersion = 1
+
+type SubjectKind string
+
+const (
+	SubjectComponent      SubjectKind = "component"
+	SubjectStyle          SubjectKind = "style"
+	SubjectFoundation     SubjectKind = "foundation"
+	SubjectReferenceSet   SubjectKind = "reference-token-set"
+	SubjectSystemTokenSet SubjectKind = "system-token-set"
+)
+
+type SubjectKey struct {
+	Kind SubjectKind
+	Slug string
+}
+
+func (key SubjectKey) String() string {
+	return string(key.Kind) + ":" + key.Slug
+}
+
+type Publication struct {
+	SchemaVersion   int                 `json:"schemaVersion"`
+	PublicationID   string              `json:"publicationId"`
+	GeneratedAt     string              `json:"generatedAt"`
+	CurrentSnapshot SnapshotView        `json:"currentSnapshot"`
+	Snapshots       []SnapshotView      `json:"snapshots"`
+	Subjects        []SubjectView       `json:"subjects"`
+	SourcePayloads  []SourcePayloadView `json:"sourcePayloads"`
+}
+
+type SnapshotView struct {
+	ID            string `json:"id"`
+	CreatedAt     string `json:"createdAt"`
+	ManifestHash  string `json:"manifestHash"`
+	CaptureStatus string `json:"captureStatus"`
+	ReviewStatus  string `json:"reviewStatus"`
+}
+
+type SubjectView struct {
+	Key              SubjectKey            `json:"key"`
+	Name             string                `json:"name"`
+	SourcePageURLs   []string              `json:"sourcePageUrls"`
+	Tokens           []TokenView           `json:"tokens"`
+	LifecycleNotices []LifecycleNoticeView `json:"lifecycleNotices"`
+}
+
+type TokenView struct {
+	SourceName string            `json:"sourceName"`
+	Category   string            `json:"category,omitempty"`
+	Value      json.RawMessage   `json:"value,omitempty"`
+	Raw        json.RawMessage   `json:"raw,omitempty"`
+	Lifecycle  string            `json:"lifecycle,omitempty"`
+	Sources    []TokenSourceView `json:"sources"`
+}
+
+type TokenSourceView struct {
+	PayloadID      string `json:"payloadId"`
+	SourceRecordID string `json:"sourceRecordId"`
+}
+
+type LifecycleNoticeView struct {
+	ID              string `json:"id"`
+	State           string `json:"state"`
+	Subject         string `json:"subject"`
+	Message         string `json:"message"`
+	SourcePayloadID string `json:"sourcePayloadId"`
+	SourceRecordID  string `json:"sourceRecordId"`
+}
+
+type SourcePayloadView struct {
+	ID            string   `json:"id"`
+	URL           string   `json:"url"`
+	Hash          string   `json:"hash"`
+	Kind          string   `json:"kind,omitempty"`
+	Area          string   `json:"area,omitempty"`
+	SourceSubject string   `json:"sourceSubject,omitempty"`
+	PageType      string   `json:"pageType,omitempty"`
+	PageURLs      []string `json:"pageUrls"`
+}
