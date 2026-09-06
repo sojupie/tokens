@@ -28,12 +28,24 @@ CREATE TABLE tokens (
     subject_slug TEXT NOT NULL,
     source_name TEXT NOT NULL,
     category TEXT NOT NULL,
-    value_json TEXT,
     raw_json TEXT,
     lifecycle TEXT NOT NULL,
     PRIMARY KEY (subject_kind, subject_slug, source_name),
     FOREIGN KEY (subject_kind, subject_slug)
         REFERENCES subjects(kind, slug)
+);
+
+CREATE TABLE token_values (
+    subject_kind TEXT NOT NULL,
+    subject_slug TEXT NOT NULL,
+    source_name TEXT NOT NULL,
+    context_tags_json TEXT NOT NULL,
+    value_json TEXT NOT NULL,
+    raw_json TEXT,
+    sources_json TEXT NOT NULL,
+    PRIMARY KEY (subject_kind, subject_slug, source_name, context_tags_json),
+    FOREIGN KEY (subject_kind, subject_slug, source_name)
+        REFERENCES tokens(subject_kind, subject_slug, source_name)
 );
 
 CREATE TABLE source_payloads (

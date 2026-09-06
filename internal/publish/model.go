@@ -15,8 +15,8 @@ const (
 )
 
 type SubjectKey struct {
-	Kind SubjectKind
-	Slug string
+	Kind SubjectKind `json:"kind"`
+	Slug string      `json:"slug"`
 }
 
 func (key SubjectKey) String() string {
@@ -52,10 +52,17 @@ type SubjectView struct {
 type TokenView struct {
 	SourceName string            `json:"sourceName"`
 	Category   string            `json:"category,omitempty"`
-	Value      json.RawMessage   `json:"value,omitempty"`
+	Values     []TokenValueView  `json:"values"`
 	Raw        json.RawMessage   `json:"raw,omitempty"`
 	Lifecycle  string            `json:"lifecycle,omitempty"`
 	Sources    []TokenSourceView `json:"sources"`
+}
+
+type TokenValueView struct {
+	ContextTags []string          `json:"contextTags,omitempty"`
+	Value       json.RawMessage   `json:"value"`
+	Raw         json.RawMessage   `json:"raw,omitempty"`
+	Sources     []TokenSourceView `json:"sources"`
 }
 
 type TokenSourceView struct {
