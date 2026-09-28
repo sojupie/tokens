@@ -38,7 +38,32 @@ snapshots/material-token-data/<snapshot-id>/
         |
         +--> sourceloom snapshot verify
         +--> sourceloom snapshot compare
+
+Verified snapshots can then be published for read-only browsing:
+
+```text
+verified snapshot(s)
+        |
+        v
+    sourceloom publish
+        |
+        +--> published/tokens.sqlite
+        +--> published/publication.json
+        +--> published/downloads/
+        |
+        v
+    sourceloom serve
+        |
+        +--> in-memory published views
+        +--> Templ HTML pages
+        +--> HTMX fragments
+        +--> JSON API
+        +--> downloads
 ```
+
+The generated SQLite file and downloads are derived publication data. They can
+be deleted and rebuilt from verified snapshots. The web server is read-only and
+does not crawl Material or modify snapshots.
 
 To repair a partial crawl, `sourceloom crawl --retry-failed` reads the newest
 crawl receipt, opens only its failed pages, and writes another merged crawl
