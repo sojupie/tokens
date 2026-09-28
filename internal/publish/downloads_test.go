@@ -12,7 +12,16 @@ func TestWriteDownloadsIsDeterministicAndSubjectScoped(t *testing.T) {
 		PublicationID:   "publication-1",
 		CurrentSnapshot: SnapshotView{ID: "snapshot-1"},
 		Subjects: []SubjectView{
-			{Key: SubjectKey{Kind: SubjectStyle, Slug: "spacing"}, Name: "Spacing"},
+			{Key: SubjectKey{Kind: SubjectStyle, Slug: "spacing"}, Name: "Spacing", Tokens: []TokenView{{
+				SourceName: "md.ref.spacing.1",
+				Raw:        []byte(`{"tokenName":"internal"}`),
+				Sources:    []TokenSourceView{{PayloadID: "payload", SourceRecordID: "record"}},
+				Values: []TokenValueView{{
+					Value:   []byte(`{"dimension":{"value":4,"unit":"DIPS"}}`),
+					Raw:     []byte(`{"resolvedValue":"internal"}`),
+					Sources: []TokenSourceView{{PayloadID: "payload", SourceRecordID: "record"}},
+				}},
+			}}},
 			{Key: SubjectKey{Kind: SubjectStyle, Slug: "motion/overview"}, Name: "Motion"},
 			{Key: SubjectKey{Kind: SubjectComponent, Slug: "button"}, Name: "Button"},
 		},
@@ -53,6 +62,11 @@ func TestWriteDownloadsIsDeterministicAndSubjectScoped(t *testing.T) {
 	spacingIndex := strings.Index(string(allTokens), `"slug": "spacing"`)
 	if buttonIndex == -1 || spacingIndex == -1 || buttonIndex > spacingIndex {
 		t.Fatalf("subjects are not deterministically ordered: %s", allTokens)
+	}
+	for _, unwanted := range []string{"internal", "payload", "record", "raw", "sources", "publicationId"} {
+		if strings.Contains(string(allTokens), unwanted) {
+			t.Fatalf("normalized download contains internal field %q: %s", unwanted, allTokens)
+		}
 	}
 }
 

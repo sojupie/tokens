@@ -99,8 +99,6 @@ templ subjectPage(snapshot publish.SnapshotView, subject publish.SubjectView, ch
 @layout(subject.Name) {
 		<p class="sl-back-link"><a class="sl-link" href={ subjectURL(subject) }>← { subjectKindLabel(subject.Key.Kind) }</a></p>
 		<h1 class="typo-page-title">{ subject.Name }</h1>
-		<p class="sl-metadata">Subject kind: <code class="sl-code">{ string(subject.Key.Kind) }</code></p>
-		<p class="sl-metadata">Detected in snapshot: <code class="sl-code">{ snapshot.ID }</code></p>
 		<p class="sl-actions"><a class="sl-link" href={ subjectDownloadURL(subject) }>Download normalized token data</a></p>
 		if len(changes) > 0 {
 			<p class="sl-actions"><a class="sl-link" href={ subjectChangesURL(subject) }>View { len(changes) } changes</a></p>
@@ -117,43 +115,29 @@ templ subjectPage(snapshot publish.SnapshotView, subject publish.SubjectView, ch
 
 		<section class="sl-section" aria-labelledby="tokens-heading">
 			<h2 class="typo-section-header" id="tokens-heading">Tokens</h2>
-			for _, token := range subject.Tokens {
-				<article class="sl-token-card">
-					<h3><code class="sl-code sl-token-name">{ token.SourceName }</code></h3>
-					if token.Category != "" {
-						<p>Category: { token.Category }</p>
-					}
-					if token.Lifecycle != "" {
-						<p>Lifecycle: { token.Lifecycle }</p>
-					}
-					for _, value := range token.Values {
-						<details class="sl-token-value">
-							<summary>{ tokenContextLabel(value.ContextTags) }</summary>
-							<pre class="sl-value">{ tokenValueText(value.Value) }</pre>
-							if len(value.ContextTags) > 0 && opaqueContextTags(value.ContextTags) {
-								<details class="sl-technical">
-									<summary>Technical context</summary>
-									<ul class="sl-technical-list">
-										for _, tag := range value.ContextTags {
-											<li><code>{ tag }</code></li>
-										}
-									</ul>
-								</details>
+			<div class="sl-token-list">
+				for _, token := range subject.Tokens {
+					<article class="sl-token-card">
+						<div class="sl-token-heading">
+							<h3><code class="sl-code sl-token-name">{ token.SourceName }</code></h3>
+							if token.Category != "" {
+								<span class="typo-sublabel">{ token.Category }</span>
 							}
-							if len(value.Sources) > 0 {
-								<details class="sl-technical">
-									<summary>Technical provenance ({ len(value.Sources) } source records)</summary>
-									<ul class="sl-technical-list">
-										for _, source := range value.Sources {
-											<li><code>{ source.PayloadID }</code> / <code>{ source.SourceRecordID }</code></li>
-										}
-									</ul>
-								</details>
+						</div>
+						if token.Lifecycle != "" {
+							<p class="typo-sublabel">{ token.Lifecycle }</p>
+						}
+						<dl class="sl-token-values">
+							for _, value := range token.Values {
+								<div class="sl-token-value-row">
+									<dt class="typo-sublabel">{ tokenContextLabel(value.ContextTags) }</dt>
+									<dd><code class="sl-token-value-text">{ tokenValueText(value.Value) }</code></dd>
+								</div>
 							}
-						</details>
-					}
-				</article>
-			}
+						</dl>
+					</article>
+				}
+			</div>
 		</section>
 
 		if len(subject.LifecycleNotices) > 0 {
@@ -185,7 +169,6 @@ templ changesPage(snapshot publish.SnapshotView, subject string, baseURL string,
 				if change.Subject != "" {
 					<p>Subject: <code>{ change.Subject }</code></p>
 				}
-				<p>Compared with snapshot: <code>{ change.PreviousSnapshotID }</code></p>
 				<div class="sl-change-values sl-change-summary">
 					<div>
 						<p class="typo-sublabel">Before</p>
@@ -197,13 +180,6 @@ templ changesPage(snapshot publish.SnapshotView, subject string, baseURL string,
 						<code>{ changeSummaryValue(change.After) }</code>
 					</div>
 				</div>
-				<details class="sl-technical">
-					<summary>Raw change values</summary>
-					<div class="sl-change-values">
-						<pre class="sl-value">{ changeValue(change.Before) }</pre>
-						<pre class="sl-value">{ changeValue(change.After) }</pre>
-					</div>
-				</details>
 			</article>
 		}
 		if hasPrevious || hasNext {

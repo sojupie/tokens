@@ -284,53 +284,35 @@ button:not(:disabled),
   font-weight: 500;
 }
 
-.sl-token-value {
-  margin-top: 0.75rem;
-  padding: 0.75rem;
-  border: 1px solid var(--sl-rule);
+.sl-token-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
-.sl-token-value summary {
-  cursor: pointer;
-  color: var(--sl-ink-muted);
-}
-
-.sl-value {
-  max-width: 100%;
-  margin: 0.5rem 0 0;
-  overflow-x: auto;
-  padding: 0.75rem;
-  background: var(--sl-page-muted);
-  color: var(--sl-ink-main);
-  font-family: var(--sl-font-mono);
-  font-size: 0.9375rem;
-  line-height: 1.4;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-}
-
-.sl-technical {
-  margin-top: 0.75rem;
-  padding-top: 0.5rem;
-  border-top: 1px solid var(--sl-rule);
-  color: var(--sl-ink-muted);
-  font-size: 0.8125rem;
-  line-height: 1.25rem;
-}
-
-.sl-technical summary {
-  cursor: pointer;
-}
-
-.sl-technical-list {
+.sl-token-values {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
-  margin: 0.5rem 0 0;
-  padding-left: 1.25rem;
+  gap: 0.5rem;
+  margin: 1rem 0 0;
 }
 
-.sl-technical-list code {
+.sl-token-value-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--sl-rule);
+}
+
+.sl-token-value-row dt,
+.sl-token-value-row dd {
+  margin: 0;
+}
+
+.sl-token-value-text {
   font-family: var(--sl-font-mono);
   overflow-wrap: anywhere;
 }
@@ -402,6 +384,13 @@ button:not(:disabled),
 
   .sl-change-arrow {
     transform: rotate(90deg);
+  }
+
+  .sl-token-heading,
+  .sl-token-value-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.25rem;
   }
 }
 

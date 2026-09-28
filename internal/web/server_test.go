@@ -6,6 +6,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/sojupie/m3-source/internal/publish"
@@ -138,5 +139,40 @@ func TestHandlerServesEmbeddedStaticAssets(t *testing.T) {
 				t.Fatal("asset response is empty")
 			}
 		})
+	}
+}
+
+func TestComponentAPIOmitsInternalSourceData(t *testing.T) {
+	state := publish.PublishedState{Subjects: map[publish.SubjectKey]publish.SubjectView{
+		{Kind: publish.SubjectComponent, Slug: "button"}: {
+			Key:  publish.SubjectKey{Kind: publish.SubjectComponent, Slug: "button"},
+			Name: "Button",
+			Tokens: []publish.TokenView{{
+				SourceName: "md.comp.button.container.color",
+				Raw:        []byte(`{"tokenName":"internal"}`),
+				Sources:    []publish.TokenSourceView{{PayloadID: "payload", SourceRecordID: "record"}},
+				Values: []publish.TokenValueView{{
+					Value:   []byte(`{"color":{"red":1}}`),
+					Raw:     []byte(`{"resolvedValue":"internal"}`),
+					Sources: []publish.TokenSourceView{{PayloadID: "payload", SourceRecordID: "record"}},
+				}},
+			}},
+		},
+	}}
+	recorder := httptest.NewRecorder()
+	New(state, "").Handler().ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, "/api/v1/components/button", nil))
+	if recorder.Code != http.StatusOK {
+		t.Fatalf("status = %d, want %d", recorder.Code, http.StatusOK)
+	}
+	body := recorder.Body.String()
+	for _, unwanted := range []string{"internal", "payload", "record", "raw", "sources"} {
+		if strings.Contains(body, unwanted) {
+			t.Fatalf("response contains internal field %q: %s", unwanted, body)
+		}
+	}
+	for _, wanted := range []string{"md.comp.button.container.color", "color"} {
+		if !strings.Contains(body, wanted) {
+			t.Fatalf("response does not contain %q: %s", wanted, body)
+		}
 	}
 }

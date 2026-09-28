@@ -134,7 +134,7 @@ func (server *Server) handleComponent(response http.ResponseWriter, request *htt
 		http.Error(response, "subject slug is ambiguous", http.StatusConflict)
 		return
 	}
-	writeJSON(response, http.StatusOK, matches[0])
+	writeJSON(response, http.StatusOK, matches[0].Public())
 }
 
 func (server *Server) handleChanges(response http.ResponseWriter, _ *http.Request) {

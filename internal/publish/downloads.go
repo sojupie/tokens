@@ -10,17 +10,15 @@ import (
 )
 
 type tokenDownload struct {
-	SchemaVersion int           `json:"schemaVersion"`
-	PublicationID string        `json:"publicationId"`
-	SnapshotID    string        `json:"snapshotId"`
-	Subjects      []SubjectView `json:"subjects"`
+	SchemaVersion int             `json:"schemaVersion"`
+	SnapshotID    string          `json:"snapshotId"`
+	Subjects      []PublicSubject `json:"subjects"`
 }
 
 type subjectDownload struct {
-	SchemaVersion int         `json:"schemaVersion"`
-	PublicationID string      `json:"publicationId"`
-	SnapshotID    string      `json:"snapshotId"`
-	Subject       SubjectView `json:"subject"`
+	SchemaVersion int           `json:"schemaVersion"`
+	SnapshotID    string        `json:"snapshotId"`
+	Subject       PublicSubject `json:"subject"`
 }
 
 func writeDownloads(directory string, publication Publication) error {
@@ -41,24 +39,18 @@ func writeDownloads(directory string, publication Publication) error {
 		}
 		subjectPaths[subject.Key] = path
 	}
-	allTokens := tokenDownload{
-		SchemaVersion: SchemaVersion,
-		PublicationID: publication.PublicationID,
-		SnapshotID:    publication.CurrentSnapshot.ID,
-		Subjects:      subjects,
+	publicSubjects := make([]PublicSubject, 0, len(subjects))
+	for _, subject := range subjects {
+		publicSubjects = append(publicSubjects, subject.Public())
 	}
+	allTokens := tokenDownload{SchemaVersion: SchemaVersion, SnapshotID: publication.CurrentSnapshot.ID, Subjects: publicSubjects}
 	if err := writeDownloadJSON(filepath.Join(downloadsDirectory, "tokens.json"), allTokens); err != nil {
 		return err
 	}
 
 	for _, subject := range subjects {
 		path := subjectPaths[subject.Key]
-		if err := writeDownloadJSON(path, subjectDownload{
-			SchemaVersion: SchemaVersion,
-			PublicationID: publication.PublicationID,
-			SnapshotID:    publication.CurrentSnapshot.ID,
-			Subject:       subject,
-		}); err != nil {
+		if err := writeDownloadJSON(path, subjectDownload{SchemaVersion: SchemaVersion, SnapshotID: publication.CurrentSnapshot.ID, Subject: subject.Public()}); err != nil {
 			return err
 		}
 	}

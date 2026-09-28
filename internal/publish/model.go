@@ -63,6 +63,66 @@ type SubjectView struct {
 	LifecycleNotices []LifecycleNoticeView `json:"lifecycleNotices"`
 }
 
+// PublicSubject is the small token document exposed to API and download users.
+// SubjectView remains the internal publication model and keeps source lineage.
+type PublicSubject struct {
+	Key              SubjectKey              `json:"key"`
+	Name             string                  `json:"name"`
+	SourcePageURLs   []string                `json:"sourcePageUrls,omitempty"`
+	Tokens           []PublicToken           `json:"tokens"`
+	LifecycleNotices []PublicLifecycleNotice `json:"lifecycleNotices,omitempty"`
+}
+
+type PublicToken struct {
+	Name      string             `json:"name"`
+	Category  string             `json:"category,omitempty"`
+	Values    []PublicTokenValue `json:"values"`
+	Lifecycle string             `json:"lifecycle,omitempty"`
+}
+
+type PublicTokenValue struct {
+	ContextTags []string        `json:"contextTags,omitempty"`
+	Value       json.RawMessage `json:"value"`
+}
+
+type PublicLifecycleNotice struct {
+	State   string `json:"state"`
+	Subject string `json:"subject"`
+	Message string `json:"message"`
+}
+
+func (subject SubjectView) Public() PublicSubject {
+	public := PublicSubject{
+		Key:            subject.Key,
+		Name:           subject.Name,
+		SourcePageURLs: append([]string(nil), subject.SourcePageURLs...),
+		Tokens:         make([]PublicToken, 0, len(subject.Tokens)),
+	}
+	for _, token := range subject.Tokens {
+		publicToken := PublicToken{
+			Name:      token.SourceName,
+			Category:  token.Category,
+			Lifecycle: token.Lifecycle,
+			Values:    make([]PublicTokenValue, 0, len(token.Values)),
+		}
+		for _, value := range token.Values {
+			publicToken.Values = append(publicToken.Values, PublicTokenValue{
+				ContextTags: append([]string(nil), value.ContextTags...),
+				Value:       append(json.RawMessage(nil), value.Value...),
+			})
+		}
+		public.Tokens = append(public.Tokens, publicToken)
+	}
+	for _, notice := range subject.LifecycleNotices {
+		public.LifecycleNotices = append(public.LifecycleNotices, PublicLifecycleNotice{
+			State:   notice.State,
+			Subject: notice.Subject,
+			Message: notice.Message,
+		})
+	}
+	return public
+}
+
 type TokenView struct {
 	SourceName string            `json:"sourceName"`
 	Category   string            `json:"category,omitempty"`

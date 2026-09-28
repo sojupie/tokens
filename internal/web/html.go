@@ -1,7 +1,6 @@
 package web
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -173,7 +172,7 @@ func tokenContextLabel(tags []string) string {
 		return "Default context"
 	}
 	if opaqueContextTags(tags) {
-		return fmt.Sprintf("Context-specific value (%d technical tags)", len(tags))
+		return "Context-specific value"
 	}
 	return strings.Join(tags, " / ")
 }
@@ -288,17 +287,6 @@ func changeTypeLabel(changeType string) string {
 	default:
 		return changeType
 	}
-}
-
-func changeValue(value string) string {
-	if value == "" {
-		return "—"
-	}
-	var formatted bytes.Buffer
-	if json.Indent(&formatted, []byte(value), "", "  ") == nil {
-		return formatted.String()
-	}
-	return value
 }
 
 func changeSummaryValue(value string) string {

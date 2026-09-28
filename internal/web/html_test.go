@@ -52,11 +52,11 @@ func TestHTMLPagesRenderComponentsAndStyles(t *testing.T) {
 	}{
 		{path: "/", body: []string{"Published Material tokens", "/components/snackbar", "/styles/elevation"}, status: http.StatusOK},
 		{path: "/components/snackbar", body: []string{"Snackbar", "md.comp.snackbar.container.width", "560", "/downloads/component/snackbar.json"}, status: http.StatusOK},
-		{path: "/styles/elevation", body: []string{"Elevation", "Subject kind: <code class=\"sl-code\">style"}, status: http.StatusOK},
-		{path: "/styles/motion/overview", body: []string{"Motion", "Subject kind: <code class=\"sl-code\">style"}, status: http.StatusOK},
+		{path: "/styles/elevation", body: []string{"Elevation", "Download normalized token data"}, status: http.StatusOK},
+		{path: "/styles/motion/overview", body: []string{"Motion", "Download normalized token data"}, status: http.StatusOK},
 		{path: "/components?q=snack", body: []string{"snack", "hx-target=\"#subject-list\""}, status: http.StatusOK},
 		{path: "/changes", body: []string{"Change log", "md.comp.snackbar.container.width", "480", "560"}, status: http.StatusOK},
-		{path: "/components/snackbar/changes", body: []string{"snackbar changes", "Compared with snapshot: <code>snapshot-0"}, status: http.StatusOK},
+		{path: "/components/snackbar/changes", body: []string{"snackbar changes", "480", "560"}, status: http.StatusOK},
 	}
 	for _, check := range checks {
 		t.Run(check.path, func(t *testing.T) {
@@ -108,7 +108,7 @@ func TestHTMLSubjectListSupportsHTMXFiltering(t *testing.T) {
 }
 
 func TestTokenValuesHaveReaderAndTechnicalForms(t *testing.T) {
-	if got := tokenContextLabel([]string{"designSystems/abc/contextTagGroups/def/tags/ghi"}); got != "Context-specific value (1 technical tags)" {
+	if got := tokenContextLabel([]string{"designSystems/abc/contextTagGroups/def/tags/ghi"}); got != "Context-specific value" {
 		t.Fatalf("context label = %q", got)
 	}
 	if got := tokenValueText([]byte(`{"color":{"red":1,"green":0.5,"blue":0,"alpha":1}}`)); got != "rgba(255, 127.5, 0, 1)" {
