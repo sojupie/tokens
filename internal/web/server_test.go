@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/sojupie/m3-source/internal/publish"
@@ -45,7 +47,7 @@ func TestHandlerServesReadAPI(t *testing.T) {
 			},
 		},
 	}
-	server := New(state)
+	server := New(state, "")
 
 	checks := []struct {
 		path       string
@@ -89,7 +91,7 @@ func TestComponentsAreSortedAndIncludeStyles(t *testing.T) {
 	}
 	request := httptest.NewRequest(http.MethodGet, "/api/v1/components", nil)
 	recorder := httptest.NewRecorder()
-	New(state).Handler().ServeHTTP(recorder, request)
+	New(state, "").Handler().ServeHTTP(recorder, request)
 
 	var response componentListResponse
 	if err := json.NewDecoder(recorder.Body).Decode(&response); err != nil {
@@ -100,5 +102,25 @@ func TestComponentsAreSortedAndIncludeStyles(t *testing.T) {
 	}
 	if response.Subjects[0].Kind != publish.SubjectComponent || response.Subjects[1].Kind != publish.SubjectStyle {
 		t.Fatalf("subjects = %#v", response.Subjects)
+	}
+}
+
+func TestHandlerServesOnlyApprovedDownloads(t *testing.T) {
+	downloadsDir := t.TempDir()
+	if err := os.WriteFile(filepath.Join(downloadsDir, "tokens.json"), []byte("published"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	handler := New(publish.PublishedState{}, downloadsDir).Handler()
+
+	recorder := httptest.NewRecorder()
+	handler.ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, "/downloads/tokens.json", nil))
+	if recorder.Code != http.StatusOK || recorder.Body.String() != "published" {
+		t.Fatalf("download response = %d %q", recorder.Code, recorder.Body.String())
+	}
+
+	for _, relativePath := range []string{"../tokens.json", "component\\tokens.json", ""} {
+		if safeDownloadPath(relativePath) {
+			t.Fatalf("safeDownloadPath(%q) = true", relativePath)
+		}
 	}
 }

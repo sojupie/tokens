@@ -42,7 +42,7 @@ func TestHTMLPagesRenderComponentsAndStyles(t *testing.T) {
 			},
 		},
 	}
-	handler := New(state).Handler()
+	handler := New(state, "").Handler()
 
 	checks := []struct {
 		path   string

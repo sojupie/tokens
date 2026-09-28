@@ -3,6 +3,9 @@ package web
 import (
 	"encoding/json"
 	"net/http"
+	"os"
+	"path"
+	"path/filepath"
 	"sort"
 	"strings"
 
@@ -10,7 +13,8 @@ import (
 )
 
 type Server struct {
-	state publish.PublishedState
+	state        publish.PublishedState
+	downloadsDir string
 }
 
 type subjectSummary struct {
@@ -47,8 +51,8 @@ type changesResponse struct {
 	Changes       []publish.ChangeView `json:"changes"`
 }
 
-func New(state publish.PublishedState) *Server {
-	return &Server{state: state}
+func New(state publish.PublishedState, downloadsDir string) *Server {
+	return &Server{state: state, downloadsDir: downloadsDir}
 }
 
 func (server *Server) Handler() http.Handler {
@@ -58,6 +62,7 @@ func (server *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /api/v1/changes", server.handleChanges)
 	mux.HandleFunc("GET /api/v1/components", server.handleComponents)
 	mux.HandleFunc("GET /api/v1/components/{slug...}", server.handleComponent)
+	mux.HandleFunc("GET /downloads/{path...}", server.handleDownload)
 	mux.HandleFunc("GET /", server.handleOverview)
 	mux.HandleFunc("GET /changes", server.handleGlobalChanges)
 	mux.HandleFunc("GET /components", server.handleOverview)
@@ -156,6 +161,33 @@ func (server *Server) writeSubjectChanges(response http.ResponseWriter, request 
 		Subject:       subject,
 		Changes:       changes,
 	})
+}
+
+func (server *Server) handleDownload(response http.ResponseWriter, request *http.Request) {
+	if server.downloadsDir == "" {
+		http.NotFound(response, request)
+		return
+	}
+	relativePath := request.PathValue("path")
+	if !safeDownloadPath(relativePath) {
+		http.NotFound(response, request)
+		return
+	}
+	filePath := filepath.Join(server.downloadsDir, filepath.FromSlash(relativePath))
+	info, err := os.Stat(filePath)
+	if err != nil || info.IsDir() {
+		http.NotFound(response, request)
+		return
+	}
+	http.ServeFile(response, request, filePath)
+}
+
+func safeDownloadPath(relativePath string) bool {
+	if relativePath == "" || strings.Contains(relativePath, `\`) || path.IsAbs(relativePath) {
+		return false
+	}
+	cleaned := path.Clean(relativePath)
+	return cleaned == relativePath && cleaned != "." && cleaned != ".." && !strings.HasPrefix(cleaned, "../")
 }
 
 func writeJSON(response http.ResponseWriter, status int, value any) {

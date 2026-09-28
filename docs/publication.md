@@ -88,8 +88,8 @@ read first.
   change records.
 - A publication compares only the explicitly supplied previous snapshot; it
   does not search the filesystem for history automatically.
-- The web server currently exposes the read-only API and basic HTML subject
-  pages; changelog and download routes are still pending.
+- The web server exposes the read-only API, HTML subject pages, change history,
+  and normalized downloads. Styling and richer interactions are still pending.
 
 These are later publication steps. They do not change the immutable snapshot
 contract.

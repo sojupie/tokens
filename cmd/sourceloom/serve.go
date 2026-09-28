@@ -42,7 +42,7 @@ func runServe(args []string) error {
 	}
 	server := &http.Server{
 		Addr:              listenAddress,
-		Handler:           web.New(state).Handler(),
+		Handler:           web.New(state, filepath.Join(publishedDir, "downloads")).Handler(),
 		ReadHeaderTimeout: 5 * time.Second,
 	}
 	fmt.Printf("Serving publication %s on http://%s\n", state.PublicationID, listenAddress)
