@@ -29,9 +29,9 @@ sourceloom publish \
   --output published
 ```
 
-The command verifies the snapshot before reading it. The output directory must
-be empty or not exist. A failed publication must not be treated as valid
-published data.
+The command verifies the snapshot before reading it. It builds into a staging
+directory and replaces the output only after all artifacts succeed. A failed
+publication leaves an existing output directory untouched.
 
 For local contributor development, the same command can be run with:
 

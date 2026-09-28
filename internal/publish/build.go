@@ -60,18 +60,29 @@ func Build(config BuildConfig) (Publication, error) {
 			snapshotView(input.Manifest, input.ManifestHash),
 		}
 	}
-	if err := ensureEmptyDir(config.OutputDir); err != nil {
+	stagingDir, err := createStagingDir(config.OutputDir)
+	if err != nil {
 		return Publication{}, err
 	}
-	if err := writePublicationJSON(config.OutputDir, publication); err != nil {
+	committed := false
+	defer func() {
+		if !committed {
+			_ = os.RemoveAll(stagingDir)
+		}
+	}()
+	if err := writePublicationJSON(stagingDir, publication); err != nil {
 		return Publication{}, err
 	}
-	if err := writeDatabase(filepath.Join(config.OutputDir, "tokens.sqlite"), publication); err != nil {
+	if err := writeDatabase(filepath.Join(stagingDir, "tokens.sqlite"), publication); err != nil {
 		return Publication{}, err
 	}
-	if err := writeDownloads(config.OutputDir, publication); err != nil {
+	if err := writeDownloads(stagingDir, publication); err != nil {
 		return Publication{}, err
 	}
+	if err := replaceOutput(stagingDir, config.OutputDir); err != nil {
+		return Publication{}, err
+	}
+	committed = true
 	return publication, nil
 }
 
@@ -97,16 +108,46 @@ func writePublicationJSON(directory string, publication Publication) error {
 	return nil
 }
 
-func ensureEmptyDir(path string) error {
-	if err := os.MkdirAll(path, 0o755); err != nil {
-		return fmt.Errorf("create publication output directory: %w", err)
+func createStagingDir(outputPath string) (string, error) {
+	parent := filepath.Dir(filepath.Clean(outputPath))
+	if err := os.MkdirAll(parent, 0o755); err != nil {
+		return "", fmt.Errorf("create publication parent directory: %w", err)
 	}
-	entries, err := os.ReadDir(path)
+	return os.MkdirTemp(parent, ".sourceloom-publication-")
+}
+
+func replaceOutput(stagingPath, outputPath string) error {
+	outputInfo, err := os.Stat(outputPath)
+	if os.IsNotExist(err) {
+		if err := os.Rename(stagingPath, outputPath); err != nil {
+			return fmt.Errorf("install publication: %w", err)
+		}
+		return nil
+	}
 	if err != nil {
-		return fmt.Errorf("read publication output directory: %w", err)
+		return fmt.Errorf("inspect publication output: %w", err)
 	}
-	if len(entries) > 0 {
-		return fmt.Errorf("publication output directory is not empty: %s", path)
+	if !outputInfo.IsDir() {
+		return fmt.Errorf("publication output is not a directory: %s", outputPath)
+	}
+
+	parent := filepath.Dir(filepath.Clean(outputPath))
+	backupPath, err := os.MkdirTemp(parent, ".sourceloom-publication-backup-")
+	if err != nil {
+		return fmt.Errorf("create publication backup path: %w", err)
+	}
+	if err := os.Remove(backupPath); err != nil {
+		return fmt.Errorf("prepare publication backup path: %w", err)
+	}
+	if err := os.Rename(outputPath, backupPath); err != nil {
+		return fmt.Errorf("stage existing publication: %w", err)
+	}
+	if err := os.Rename(stagingPath, outputPath); err != nil {
+		_ = os.Rename(backupPath, outputPath)
+		return fmt.Errorf("install publication: %w", err)
+	}
+	if err := os.RemoveAll(backupPath); err != nil {
+		return fmt.Errorf("remove previous publication: %w", err)
 	}
 	return nil
 }

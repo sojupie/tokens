@@ -25,7 +25,7 @@ func runPublish(args []string) error {
 	publicationID := ""
 	flags.StringVar(&snapshotDir, "snapshot-dir", "", "verified snapshot directory (default: newest snapshot)")
 	flags.StringVar(&previousSnapshotDir, "previous-snapshot", previousSnapshotDir, "verified snapshot to compare for change history")
-	flags.StringVar(&outputDir, "output", outputDir, "empty publication output directory")
+	flags.StringVar(&outputDir, "output", outputDir, "publication output directory; replaced after a successful build")
 	flags.StringVar(&publicationID, "id", "", "publication identifier (default: snapshot identifier)")
 	if err := flags.Parse(args); err != nil {
 		if errors.Is(err, flag.ErrHelp) {
