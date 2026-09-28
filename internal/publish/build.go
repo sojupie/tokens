@@ -50,6 +50,9 @@ func Build(config BuildConfig) (Publication, error) {
 	if err := writeDatabase(filepath.Join(config.OutputDir, "tokens.sqlite"), publication); err != nil {
 		return Publication{}, err
 	}
+	if err := writeDownloads(config.OutputDir, publication); err != nil {
+		return Publication{}, err
+	}
 	return publication, nil
 }
 

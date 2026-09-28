@@ -39,6 +39,7 @@ binary.
 published/
   publication.json
   tokens.sqlite
+  downloads/
 ```
 
 `publication.json` identifies the publication, current snapshot, snapshot
@@ -48,6 +49,11 @@ the public token view.
 `tokens.sqlite` is a generated read index. It stores subjects, tokens, context-
 specific values, lifecycle notices, source payloads, and provenance links.
 It can be deleted and rebuilt from the verified snapshot.
+
+`downloads/tokens.json` contains all normalized subjects. Each subject also has
+a scoped download under `downloads/<subject-kind>/<subject-slug>.json`. These
+files carry the publication and snapshot identifiers so a downloaded token set
+does not lose its source context.
 
 The current publication does not replace or copy the immutable snapshot's raw
 evidence. Raw graph data and source payloads remain available from the
@@ -71,7 +77,6 @@ read first.
 
 - The publication currently contains one snapshot.
 - Change history across snapshots is not generated yet.
-- Normalized download files are not generated yet.
 - The web server is not implemented yet.
 
 These are later publication steps. They do not change the immutable snapshot
