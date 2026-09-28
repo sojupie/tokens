@@ -1,6 +1,8 @@
 package web
 
 import (
+	"bytes"
+	"encoding/json"
 	"net/http"
 	"net/url"
 	"sort"
@@ -15,15 +17,26 @@ func (server *Server) handleOverview(response http.ResponseWriter, request *http
 		http.NotFound(response, request)
 		return
 	}
-	if err := renderHTML(response, request, overviewPage(server.state.CurrentSnapshot, sortedSubjects(server.state))); err != nil {
+	if request.URL.Path == "/" {
+		if err := renderHTML(response, request, overviewPage(server.state.CurrentSnapshot, sortedSubjects(server.state))); err != nil {
+			http.Error(response, err.Error(), http.StatusInternalServerError)
+		}
+		return
+	}
+	if err := renderHTML(response, request, subjectListPage(server.state.CurrentSnapshot, sortedSubjects(server.state), request.URL.Path == "/styles")); err != nil {
 		http.Error(response, err.Error(), http.StatusInternalServerError)
 	}
 }
 
 func (server *Server) handleHTMLSubject(response http.ResponseWriter, request *http.Request) {
+	slug := request.PathValue("slug")
+	if strings.HasSuffix(slug, "/changes") {
+		server.handleHTMLChanges(response, request, strings.TrimSuffix(slug, "/changes"))
+		return
+	}
 	subjects := make([]publish.SubjectView, 0, 1)
 	for _, subject := range server.state.Subjects {
-		if subject.Key.Slug != request.PathValue("slug") {
+		if subject.Key.Slug != slug {
 			continue
 		}
 		if strings.HasPrefix(request.URL.Path, "/components/") && subject.Key.Kind != publish.SubjectComponent {
@@ -42,7 +55,24 @@ func (server *Server) handleHTMLSubject(response http.ResponseWriter, request *h
 		http.Error(response, "subject slug is ambiguous", http.StatusConflict)
 		return
 	}
-	if err := renderHTML(response, request, subjectPage(server.state.CurrentSnapshot, subjects[0])); err != nil {
+	if err := renderHTML(response, request, subjectPage(server.state.CurrentSnapshot, subjects[0], subjectChanges(server.state, subjects[0].Key.Slug))); err != nil {
+		http.Error(response, err.Error(), http.StatusInternalServerError)
+	}
+}
+
+func (server *Server) handleHTMLChanges(response http.ResponseWriter, request *http.Request, subject string) {
+	changes := subjectChanges(server.state, subject)
+	if len(changes) == 0 {
+		http.NotFound(response, request)
+		return
+	}
+	if err := renderHTML(response, request, changesPage(server.state.CurrentSnapshot, subject, changes)); err != nil {
+		http.Error(response, err.Error(), http.StatusInternalServerError)
+	}
+}
+
+func (server *Server) handleGlobalChanges(response http.ResponseWriter, request *http.Request) {
+	if err := renderHTML(response, request, changesPage(server.state.CurrentSnapshot, "", server.state.Changes)); err != nil {
 		http.Error(response, err.Error(), http.StatusInternalServerError)
 	}
 }
@@ -78,6 +108,10 @@ func subjectURL(subject publish.SubjectView) string {
 	return "/" + section + "/" + strings.Join(parts, "/")
 }
 
+func subjectChangesURL(subject publish.SubjectView) string {
+	return subjectURL(subject) + "/changes"
+}
+
 func subjectKindLabel(kind publish.SubjectKind) string {
 	if kind == publish.SubjectComponent {
 		return "Component"
@@ -93,4 +127,45 @@ func tokenContextLabel(tags []string) string {
 		return "Default context"
 	}
 	return strings.Join(tags, " / ")
+}
+
+func subjectChanges(state publish.PublishedState, subject string) []publish.ChangeView {
+	changes := make([]publish.ChangeView, 0)
+	for _, change := range state.Changes {
+		if change.Subject == subject {
+			changes = append(changes, change)
+		}
+	}
+	return changes
+}
+
+func changePageTitle(subject string) string {
+	if subject == "" {
+		return "Change log"
+	}
+	return subject + " changes"
+}
+
+func changeTypeLabel(changeType string) string {
+	switch changeType {
+	case "added":
+		return "Added"
+	case "removed":
+		return "Removed"
+	case "changed":
+		return "Changed"
+	default:
+		return changeType
+	}
+}
+
+func changeValue(value string) string {
+	if value == "" {
+		return "—"
+	}
+	var formatted bytes.Buffer
+	if json.Indent(&formatted, []byte(value), "", "  ") == nil {
+		return formatted.String()
+	}
+	return value
 }

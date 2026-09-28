@@ -12,6 +12,17 @@ import (
 func TestHTMLPagesRenderComponentsAndStyles(t *testing.T) {
 	state := publish.PublishedState{
 		CurrentSnapshot: publish.SnapshotView{ID: "snapshot-1", CreatedAt: "2026-09-07T00:00:00Z"},
+		Changes: []publish.ChangeView{{
+			ID:                 "change-1",
+			Type:               "changed",
+			Subject:            "snackbar",
+			Kind:               "contextualReferenceTree",
+			Name:               "md.comp.snackbar.container.width",
+			Before:             `{"dimension":{"value":480,"unit":"DIPS"}}`,
+			After:              `{"dimension":{"value":560,"unit":"DIPS"}}`,
+			PreviousSnapshotID: "snapshot-0",
+			SnapshotID:         "snapshot-1",
+		}},
 		Subjects: map[publish.SubjectKey]publish.SubjectView{
 			{Kind: publish.SubjectComponent, Slug: "snackbar"}: {
 				Key:  publish.SubjectKey{Kind: publish.SubjectComponent, Slug: "snackbar"},
@@ -42,6 +53,8 @@ func TestHTMLPagesRenderComponentsAndStyles(t *testing.T) {
 		{path: "/components/snackbar", body: []string{"Snackbar", "md.comp.snackbar.container.width", "560"}, status: http.StatusOK},
 		{path: "/styles/elevation", body: []string{"Elevation", "Subject kind: <code>style"}, status: http.StatusOK},
 		{path: "/styles/motion/overview", body: []string{"Motion", "Subject kind: <code>style"}, status: http.StatusOK},
+		{path: "/changes", body: []string{"Change log", "md.comp.snackbar.container.width", "480", "560"}, status: http.StatusOK},
+		{path: "/components/snackbar/changes", body: []string{"snackbar changes", "Compared with snapshot: <code>snapshot-0"}, status: http.StatusOK},
 	}
 	for _, check := range checks {
 		t.Run(check.path, func(t *testing.T) {

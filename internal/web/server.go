@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"sort"
+	"strings"
 
 	"github.com/sojupie/m3-source/internal/publish"
 )
@@ -39,6 +40,13 @@ type releasesResponse struct {
 	Snapshots     []publish.SnapshotView `json:"snapshots"`
 }
 
+type changesResponse struct {
+	PublicationID string               `json:"publicationId"`
+	Snapshot      publish.SnapshotView `json:"snapshot"`
+	Subject       string               `json:"subject,omitempty"`
+	Changes       []publish.ChangeView `json:"changes"`
+}
+
 func New(state publish.PublishedState) *Server {
 	return &Server{state: state}
 }
@@ -47,9 +55,11 @@ func (server *Server) Handler() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /api/v1/health", server.handleHealth)
 	mux.HandleFunc("GET /api/v1/releases", server.handleReleases)
+	mux.HandleFunc("GET /api/v1/changes", server.handleChanges)
 	mux.HandleFunc("GET /api/v1/components", server.handleComponents)
 	mux.HandleFunc("GET /api/v1/components/{slug...}", server.handleComponent)
 	mux.HandleFunc("GET /", server.handleOverview)
+	mux.HandleFunc("GET /changes", server.handleGlobalChanges)
 	mux.HandleFunc("GET /components", server.handleOverview)
 	mux.HandleFunc("GET /components/{slug...}", server.handleHTMLSubject)
 	mux.HandleFunc("GET /styles", server.handleOverview)
@@ -100,6 +110,10 @@ func (server *Server) handleComponents(response http.ResponseWriter, _ *http.Req
 
 func (server *Server) handleComponent(response http.ResponseWriter, request *http.Request) {
 	slug := request.PathValue("slug")
+	if strings.HasSuffix(slug, "/changes") {
+		server.writeSubjectChanges(response, request, strings.TrimSuffix(slug, "/changes"))
+		return
+	}
 	matches := make([]publish.SubjectView, 0, 1)
 	for key, subject := range server.state.Subjects {
 		if key.Slug == slug {
@@ -115,6 +129,33 @@ func (server *Server) handleComponent(response http.ResponseWriter, request *htt
 		return
 	}
 	writeJSON(response, http.StatusOK, matches[0])
+}
+
+func (server *Server) handleChanges(response http.ResponseWriter, _ *http.Request) {
+	writeJSON(response, http.StatusOK, changesResponse{
+		PublicationID: server.state.PublicationID,
+		Snapshot:      server.state.CurrentSnapshot,
+		Changes:       server.state.Changes,
+	})
+}
+
+func (server *Server) writeSubjectChanges(response http.ResponseWriter, request *http.Request, subject string) {
+	changes := make([]publish.ChangeView, 0)
+	for _, change := range server.state.Changes {
+		if change.Subject == subject {
+			changes = append(changes, change)
+		}
+	}
+	if len(changes) == 0 {
+		http.NotFound(response, request)
+		return
+	}
+	writeJSON(response, http.StatusOK, changesResponse{
+		PublicationID: server.state.PublicationID,
+		Snapshot:      server.state.CurrentSnapshot,
+		Subject:       subject,
+		Changes:       changes,
+	})
 }
 
 func writeJSON(response http.ResponseWriter, status int, value any) {

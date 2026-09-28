@@ -20,6 +20,17 @@ func TestHandlerServesReadAPI(t *testing.T) {
 			ReviewStatus:  "provisional",
 		},
 		Snapshots: []publish.SnapshotView{{ID: "snapshot-1"}},
+		Changes: []publish.ChangeView{{
+			ID:                 "change-1",
+			Type:               "changed",
+			Subject:            "snackbar",
+			Kind:               "contextualReferenceTree",
+			Name:               "md.comp.snackbar.container.width",
+			Before:             `{"dimension":{"value":480,"unit":"DIPS"}}`,
+			After:              `{"dimension":{"value":560,"unit":"DIPS"}}`,
+			PreviousSnapshotID: "snapshot-0",
+			SnapshotID:         "snapshot-1",
+		}},
 		Subjects: map[publish.SubjectKey]publish.SubjectView{
 			{Kind: publish.SubjectStyle, Slug: "elevation"}: {
 				Key:  publish.SubjectKey{Kind: publish.SubjectStyle, Slug: "elevation"},
@@ -42,8 +53,10 @@ func TestHandlerServesReadAPI(t *testing.T) {
 	}{
 		{path: "/api/v1/health", statusCode: http.StatusOK},
 		{path: "/api/v1/releases", statusCode: http.StatusOK},
+		{path: "/api/v1/changes", statusCode: http.StatusOK},
 		{path: "/api/v1/components", statusCode: http.StatusOK},
 		{path: "/api/v1/components/snackbar", statusCode: http.StatusOK},
+		{path: "/api/v1/components/snackbar/changes", statusCode: http.StatusOK},
 		{path: "/api/v1/components/missing", statusCode: http.StatusNotFound},
 	}
 	for _, check := range checks {

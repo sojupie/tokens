@@ -18,6 +18,7 @@ templ layout(title string) {
 				<a href="/">Source Loom</a>
 				<a href="/components">Components</a>
 				<a href="/styles">Styles and token sources</a>
+				<a href="/changes">Change log</a>
 			</nav>
 		</header>
 		<main>
@@ -57,12 +58,36 @@ templ overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView
 }
 }
 
-templ subjectPage(snapshot publish.SnapshotView, subject publish.SubjectView) {
+templ subjectListPage(snapshot publish.SnapshotView, subjects []publish.SubjectView, styles bool) {
+@layout("Published Material subjects") {
+		if styles {
+			<h1>Styles and token sources</h1>
+		} else {
+			<h1>Components</h1>
+		}
+		<p>Current snapshot: <code>{ snapshot.ID }</code></p>
+		<ul>
+			for _, subject := range subjects {
+				if styles && subject.Key.Kind != publish.SubjectComponent {
+					<li><a href={ subjectURL(subject) }>{ subject.Name }</a> <small>{ subjectKindLabel(subject.Key.Kind) } · { len(subject.Tokens) } tokens</small></li>
+				}
+				if !styles && subject.Key.Kind == publish.SubjectComponent {
+					<li><a href={ subjectURL(subject) }>{ subject.Name }</a> <small>({ len(subject.Tokens) } tokens)</small></li>
+				}
+			}
+		</ul>
+}
+}
+
+templ subjectPage(snapshot publish.SnapshotView, subject publish.SubjectView, changes []publish.ChangeView) {
 @layout(subject.Name) {
 		<p><a href={ subjectURL(subject) }>← { subjectKindLabel(subject.Key.Kind) }</a></p>
 		<h1>{ subject.Name }</h1>
 		<p>Subject kind: <code>{ string(subject.Key.Kind) }</code></p>
 		<p>Detected in snapshot: <code>{ snapshot.ID }</code></p>
+		if len(changes) > 0 {
+			<p><a href={ subjectChangesURL(subject) }>View { len(changes) } changes</a></p>
+		}
 
 		<section aria-labelledby="source-pages-heading">
 			<h2 id="source-pages-heading">Source pages</h2>
@@ -111,6 +136,26 @@ templ subjectPage(snapshot publish.SnapshotView, subject publish.SubjectView) {
 					}
 				</ul>
 			</section>
+		}
+}
+}
+
+templ changesPage(snapshot publish.SnapshotView, subject string, changes []publish.ChangeView) {
+@layout(changePageTitle(subject)) {
+		<h1>{ changePageTitle(subject) }</h1>
+		<p>Detected in snapshot: <code>{ snapshot.ID }</code></p>
+		if len(changes) == 0 {
+			<p>No change records are available for this publication.</p>
+		}
+		for _, change := range changes {
+			<article>
+				<h2>{ changeTypeLabel(change.Type) }: <code>{ change.Name }</code></h2>
+				if change.Subject != "" {
+					<p>Subject: <code>{ change.Subject }</code></p>
+				}
+				<p>Compared with snapshot: <code>{ change.PreviousSnapshotID }</code></p>
+				<pre>{ changeValue(change.Before) } -> { changeValue(change.After) }</pre>
+			</article>
 		}
 }
 }
