@@ -29,6 +29,7 @@ type Publication struct {
 	GeneratedAt     string              `json:"generatedAt"`
 	CurrentSnapshot SnapshotView        `json:"currentSnapshot"`
 	Snapshots       []SnapshotView      `json:"snapshots"`
+	Changes         []ChangeView        `json:"changes,omitempty"`
 	Subjects        []SubjectView       `json:"subjects"`
 	SourcePayloads  []SourcePayloadView `json:"sourcePayloads"`
 }
@@ -39,6 +40,19 @@ type SnapshotView struct {
 	ManifestHash  string `json:"manifestHash"`
 	CaptureStatus string `json:"captureStatus"`
 	ReviewStatus  string `json:"reviewStatus"`
+}
+
+type ChangeView struct {
+	ID                 string `json:"id"`
+	Type               string `json:"type"`
+	Subject            string `json:"subject,omitempty"`
+	SourcePayloadKind  string `json:"sourcePayloadKind,omitempty"`
+	Kind               string `json:"kind"`
+	Name               string `json:"name"`
+	Before             string `json:"before,omitempty"`
+	After              string `json:"after,omitempty"`
+	PreviousSnapshotID string `json:"previousSnapshotId"`
+	SnapshotID         string `json:"snapshotId"`
 }
 
 type SubjectView struct {

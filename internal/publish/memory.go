@@ -11,6 +11,7 @@ type PublishedState struct {
 	GeneratedAt     string
 	CurrentSnapshot SnapshotView
 	Snapshots       []SnapshotView
+	Changes         []ChangeView
 	Subjects        map[SubjectKey]SubjectView
 	SourcePayloads  map[string]SourcePayloadView
 }
@@ -34,6 +35,9 @@ func Load(databasePath string) (PublishedState, error) {
 		return PublishedState{}, err
 	}
 	if err := loadSourcePayloads(database, &state); err != nil {
+		return PublishedState{}, err
+	}
+	if err := loadChanges(database, &state); err != nil {
 		return PublishedState{}, err
 	}
 	if err := loadSubjects(database, &state); err != nil {

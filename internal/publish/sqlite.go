@@ -55,6 +55,14 @@ func insertPublication(transaction *sql.Tx, publication Publication) error {
 			return fmt.Errorf("insert snapshot %s: %w", snapshot.ID, err)
 		}
 	}
+	for _, change := range publication.Changes {
+		if _, err := transaction.Exec(
+			"INSERT INTO token_changes (id, type, subject, source_payload_kind, kind, name, before_json, after_json, previous_snapshot_id, snapshot_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+			change.ID, change.Type, change.Subject, change.SourcePayloadKind, change.Kind, change.Name, nullableText(change.Before), nullableText(change.After), change.PreviousSnapshotID, change.SnapshotID,
+		); err != nil {
+			return fmt.Errorf("insert token change %s: %w", change.ID, err)
+		}
+	}
 
 	payloads := append([]SourcePayloadView(nil), publication.SourcePayloads...)
 	sort.Slice(payloads, func(i, j int) bool { return payloads[i].ID < payloads[j].ID })
@@ -153,4 +161,11 @@ func jsonText(value json.RawMessage) any {
 		return nil
 	}
 	return string(value)
+}
+
+func nullableText(value string) any {
+	if value == "" {
+		return nil
+	}
+	return value
 }

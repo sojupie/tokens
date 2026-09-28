@@ -15,6 +15,21 @@ CREATE TABLE snapshots (
     review_status TEXT NOT NULL
 );
 
+CREATE TABLE token_changes (
+    id TEXT PRIMARY KEY,
+    type TEXT NOT NULL,
+    subject TEXT NOT NULL,
+    source_payload_kind TEXT NOT NULL,
+    kind TEXT NOT NULL,
+    name TEXT NOT NULL,
+    before_json TEXT,
+    after_json TEXT,
+    previous_snapshot_id TEXT NOT NULL,
+    snapshot_id TEXT NOT NULL,
+    FOREIGN KEY (previous_snapshot_id) REFERENCES snapshots(id),
+    FOREIGN KEY (snapshot_id) REFERENCES snapshots(id)
+);
+
 CREATE TABLE subjects (
     kind TEXT NOT NULL,
     slug TEXT NOT NULL,

@@ -25,6 +25,18 @@ func TestLoadReconstructsPublishedState(t *testing.T) {
 			CaptureStatus: "complete",
 			ReviewStatus:  "provisional",
 		}},
+		Changes: []ChangeView{{
+			ID:                 "change-1",
+			Type:               "changed",
+			Subject:            "snackbar",
+			SourcePayloadKind:  "component",
+			Kind:               "contextualReferenceTree",
+			Name:               "md.comp.snackbar.container.width",
+			Before:             `{"dimension":{"value":480,"unit":"DIPS"}}`,
+			After:              `{"dimension":{"value":560,"unit":"DIPS"}}`,
+			PreviousSnapshotID: "snapshot-1",
+			SnapshotID:         "snapshot-1",
+		}},
 		SourcePayloads: []SourcePayloadView{{
 			ID:       "payload-1",
 			URL:      "https://example.test/TOKEN_TABLE.json",
@@ -71,6 +83,9 @@ func TestLoadReconstructsPublishedState(t *testing.T) {
 	}
 	if state.CurrentSnapshot.ID != "snapshot-1" || len(state.Snapshots) != 1 {
 		t.Fatalf("snapshots = %#v", state.Snapshots)
+	}
+	if len(state.Changes) != 1 || state.Changes[0].Name != "md.comp.snackbar.container.width" {
+		t.Fatalf("changes = %#v", state.Changes)
 	}
 	if len(state.SourcePayloads) != 1 {
 		t.Fatalf("source payload count = %d, want 1", len(state.SourcePayloads))

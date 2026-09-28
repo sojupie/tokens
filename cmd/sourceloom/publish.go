@@ -20,9 +20,11 @@ func runPublish(args []string) error {
 		flags.PrintDefaults()
 	}
 	snapshotDir := ""
+	previousSnapshotDir := ""
 	outputDir := "published"
 	publicationID := ""
 	flags.StringVar(&snapshotDir, "snapshot-dir", "", "verified snapshot directory (default: newest snapshot)")
+	flags.StringVar(&previousSnapshotDir, "previous-snapshot", previousSnapshotDir, "verified snapshot to compare for change history")
 	flags.StringVar(&outputDir, "output", outputDir, "empty publication output directory")
 	flags.StringVar(&publicationID, "id", "", "publication identifier (default: snapshot identifier)")
 	if err := flags.Parse(args); err != nil {
@@ -44,9 +46,10 @@ func runPublish(args []string) error {
 	fmt.Printf("Using verified snapshot: %s\n", snapshotDir)
 	fmt.Printf("Publication output: %s\n", outputDir)
 	publicationResult, err := publish.Build(publish.BuildConfig{
-		SnapshotDir:   snapshotDir,
-		OutputDir:     outputDir,
-		PublicationID: publicationID,
+		SnapshotDir:         snapshotDir,
+		PreviousSnapshotDir: previousSnapshotDir,
+		OutputDir:           outputDir,
+		PublicationID:       publicationID,
 	})
 	if err != nil {
 		return err

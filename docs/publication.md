@@ -20,6 +20,15 @@ sourceloom publish \
   --output published
 ```
 
+To include change records against a previous verified snapshot:
+
+```text
+sourceloom publish \
+  --snapshot-dir snapshots/material-token-data/material-2026-09-05-1816 \
+  --previous-snapshot snapshots/material-token-data/material-2026-08-12-1605-fixed \
+  --output published
+```
+
 The command verifies the snapshot before reading it. The output directory must
 be empty or not exist. A failed publication must not be treated as valid
 published data.
@@ -43,8 +52,8 @@ published/
 ```
 
 `publication.json` identifies the publication, current snapshot, snapshot
-manifest hash, capture status, review status, subjects, source payloads, and
-the public token view.
+manifest hash, capture status, review status, subjects, source payloads, the
+public token view, and any changes derived from the supplied previous snapshot.
 
 `tokens.sqlite` is a generated read index. It stores subjects, tokens, context-
 specific values, lifecycle notices, source payloads, and provenance links.
@@ -75,9 +84,12 @@ read first.
 
 ## Current limitations
 
-- The publication currently contains one snapshot.
-- Change history across snapshots is not generated yet.
-- The web server is not implemented yet.
+- Without `--previous-snapshot`, the publication contains one snapshot and no
+  change records.
+- A publication compares only the explicitly supplied previous snapshot; it
+  does not search the filesystem for history automatically.
+- The web server currently exposes the read-only API and basic HTML subject
+  pages; changelog and download routes are still pending.
 
 These are later publication steps. They do not change the immutable snapshot
 contract.
