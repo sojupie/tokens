@@ -36,6 +36,8 @@ func run(args []string) error {
 		return nil
 	case "crawl":
 		return runCrawl(args[1:])
+	case "publish":
+		return runPublish(args[1:])
 	case "snapshot":
 		return runSnapshot(args[1:])
 	default:
@@ -48,6 +50,7 @@ func run(args []string) error {
 
 const topHelp = `Usage:
   sourceloom crawl [flags]
+  sourceloom publish [flags]
   sourceloom snapshot create [flags]
   sourceloom snapshot verify [flags]
   sourceloom snapshot compare [flags]

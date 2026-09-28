@@ -31,6 +31,9 @@ func Build(config BuildConfig) (Publication, error) {
 		return Publication{}, err
 	}
 	publication.PublicationID = config.PublicationID
+	if publication.PublicationID == "" {
+		publication.PublicationID = input.Manifest.SnapshotID
+	}
 	publication.GeneratedAt = config.GeneratedAt
 	if publication.GeneratedAt == "" {
 		publication.GeneratedAt = input.Manifest.CreatedAt
@@ -53,9 +56,6 @@ func Build(config BuildConfig) (Publication, error) {
 func (config BuildConfig) validate() error {
 	if config.SnapshotDir == "" || config.OutputDir == "" {
 		return errors.New("snapshot directory and output directory are required")
-	}
-	if config.PublicationID == "" {
-		return errors.New("publication ID is required")
 	}
 	if filepath.Clean(config.SnapshotDir) == filepath.Clean(config.OutputDir) {
 		return errors.New("snapshot directory and output directory must differ")
