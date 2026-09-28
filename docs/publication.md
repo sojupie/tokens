@@ -68,6 +68,19 @@ The current publication does not replace or copy the immutable snapshot's raw
 evidence. Raw graph data and source payloads remain available from the
 snapshot directory.
 
+## Web assets
+
+The read-only web server embeds its assets in the `sourceloom` binary. The
+stylesheet is generated from `internal/web/static/tailwind.css` with the
+standalone Tailwind CLI:
+
+```text
+tailwindcss -i internal/web/static/tailwind.css -o internal/web/static/app.css --content "internal/web/**/*.templ" --minify
+```
+
+HTMX is pinned in `internal/web/static/htmx.min.js`; the server does not need a
+CDN at runtime.
+
 ## What is preserved
 
 The publication keeps the distinction between:
@@ -89,7 +102,8 @@ read first.
 - A publication compares only the explicitly supplied previous snapshot; it
   does not search the filesystem for history automatically.
 - The web server exposes the read-only API, HTML subject pages, change history,
-  and normalized downloads. Styling and richer interactions are still pending.
+  normalized downloads, embedded styling, and HTMX subject filtering. More
+  discovery and presentation features can be added later.
 
 These are later publication steps. They do not change the immutable snapshot
 contract.

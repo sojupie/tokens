@@ -124,3 +124,19 @@ func TestHandlerServesOnlyApprovedDownloads(t *testing.T) {
 		}
 	}
 }
+
+func TestHandlerServesEmbeddedStaticAssets(t *testing.T) {
+	handler := New(publish.PublishedState{}, "").Handler()
+	for _, path := range []string{"/static/app.css", "/static/htmx.min.js"} {
+		t.Run(path, func(t *testing.T) {
+			recorder := httptest.NewRecorder()
+			handler.ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, path, nil))
+			if recorder.Code != http.StatusOK {
+				t.Fatalf("status = %d, want %d", recorder.Code, http.StatusOK)
+			}
+			if recorder.Body.Len() == 0 {
+				t.Fatal("asset response is empty")
+			}
+		})
+	}
+}

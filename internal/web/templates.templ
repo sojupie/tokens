@@ -10,18 +10,20 @@ templ layout(title string) {
 	<head>
 		<meta charset="utf-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<link rel="stylesheet" href="/static/app.css"/>
+		<script src="/static/htmx.min.js" defer></script>
 		<title>{ title } · Source Loom</title>
 	</head>
-	<body>
-		<header>
-			<nav aria-label="Primary">
-				<a href="/">Source Loom</a>
-				<a href="/components">Components</a>
-				<a href="/styles">Styles and token sources</a>
-				<a href="/changes">Change log</a>
+	<body class="min-h-screen bg-slate-950 text-slate-100">
+		<header class="border-b border-slate-800 bg-slate-900">
+			<nav class="mx-auto flex max-w-6xl flex-wrap gap-5 px-6 py-4" aria-label="Primary">
+				<a class="font-semibold text-white" href="/">Source Loom</a>
+				<a class="text-slate-300 hover:text-white" href="/components">Components</a>
+				<a class="text-slate-300 hover:text-white" href="/styles">Styles and token sources</a>
+				<a class="text-slate-300 hover:text-white" href="/changes">Change log</a>
 			</nav>
 		</header>
-		<main>
+		<main class="mx-auto max-w-6xl space-y-8 px-6 py-10">
 			{ children... }
 		</main>
 	</body>
@@ -30,27 +32,27 @@ templ layout(title string) {
 
 templ overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView) {
 @layout("Published Material tokens") {
-		<h1>Published Material tokens</h1>
-		<p>Current snapshot: <code>{ snapshot.ID }</code></p>
-		<p>Detected: { snapshot.CreatedAt }</p>
+		<h1 class="text-4xl font-semibold tracking-tight">Published Material tokens</h1>
+		<p class="text-slate-400">Current snapshot: <code class="rounded bg-slate-900 px-2 py-1 text-sm text-slate-200">{ snapshot.ID }</code></p>
+		<p class="text-slate-400">Detected: { snapshot.CreatedAt }</p>
 
-		<section aria-labelledby="components-heading">
-			<h2 id="components-heading">Components</h2>
-			<ul>
+		<section class="space-y-3" aria-labelledby="components-heading">
+			<h2 class="text-2xl font-semibold" id="components-heading">Components</h2>
+			<ul class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
 				for _, subject := range subjects {
 					if subject.Key.Kind == publish.SubjectComponent {
-						<li><a href={ subjectURL(subject) }>{ subject.Name }</a> <small>({ len(subject.Tokens) } tokens)</small></li>
+						<li class="rounded border border-slate-800 bg-slate-900 p-3"><a class="text-cyan-300 hover:text-cyan-200" href={ subjectURL(subject) }>{ subject.Name }</a> <small class="text-slate-500">({ len(subject.Tokens) } tokens)</small></li>
 					}
 				}
 			</ul>
 		</section>
 
-		<section aria-labelledby="styles-heading">
-			<h2 id="styles-heading">Styles and token sources</h2>
-			<ul>
+		<section class="space-y-3" aria-labelledby="styles-heading">
+			<h2 class="text-2xl font-semibold" id="styles-heading">Styles and token sources</h2>
+			<ul class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
 				for _, subject := range subjects {
 					if subject.Key.Kind != publish.SubjectComponent {
-						<li><a href={ subjectURL(subject) }>{ subject.Name }</a> <small>{ subjectKindLabel(subject.Key.Kind) } · { len(subject.Tokens) } tokens</small></li>
+						<li class="rounded border border-slate-800 bg-slate-900 p-3"><a class="text-cyan-300 hover:text-cyan-200" href={ subjectURL(subject) }>{ subject.Name }</a> <small class="text-slate-500">{ subjectKindLabel(subject.Key.Kind) } · { len(subject.Tokens) } tokens</small></li>
 					}
 				}
 			</ul>
@@ -61,60 +63,60 @@ templ overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView
 templ subjectListPage(snapshot publish.SnapshotView, subjects []publish.SubjectView, styles bool, query string) {
 @layout("Published Material subjects") {
 		if styles {
-			<h1>Styles and token sources</h1>
+			<h1 class="text-4xl font-semibold tracking-tight">Styles and token sources</h1>
 		} else {
-			<h1>Components</h1>
+			<h1 class="text-4xl font-semibold tracking-tight">Components</h1>
 		}
-		<p>Current snapshot: <code>{ snapshot.ID }</code></p>
-		<form method="get" action={ subjectListPath(styles) } role="search">
-			<label for="subject-search">Search</label>
-			<input id="subject-search" type="search" name="q" value={ query } autocomplete="off"
+		<p class="text-slate-400">Current snapshot: <code class="rounded bg-slate-900 px-2 py-1 text-sm text-slate-200">{ snapshot.ID }</code></p>
+		<form class="flex max-w-xl flex-col gap-2" method="get" action={ subjectListPath(styles) } role="search">
+			<label class="text-sm font-medium text-slate-300" for="subject-search">Search by name or slug</label>
+			<input class="rounded border border-slate-700 bg-slate-900 px-3 py-2 text-slate-100 outline-none focus:border-cyan-400" id="subject-search" type="search" name="q" value={ query } autocomplete="off"
 				hx-get={ subjectListPath(styles) }
 				hx-target="#subject-list"
 				hx-trigger="input changed delay:250ms"
 				hx-push-url="true"/>
 		</form>
-		<div id="subject-list">
-			@subjectList(subjects, styles)
+		<div id="subject-list" class="rounded border border-slate-800 bg-slate-900 p-4">
+			@subjectList(subjects)
 		</div>
 }
 }
 
-templ subjectList(subjects []publish.SubjectView, styles bool) {
-	<ul>
+templ subjectList(subjects []publish.SubjectView) {
+	<ul class="space-y-2">
 		for _, subject := range subjects {
-			<li><a href={ subjectURL(subject) }>{ subject.Name }</a> <small>{ subjectKindLabel(subject.Key.Kind) } · { len(subject.Tokens) } tokens</small></li>
+			<li><a class="text-cyan-300 hover:text-cyan-200" href={ subjectURL(subject) }>{ subject.Name }</a> <small class="text-slate-500">{ subjectKindLabel(subject.Key.Kind) } · { len(subject.Tokens) } tokens</small></li>
 		}
 		if len(subjects) == 0 {
-			<li>No matching subjects.</li>
+			<li class="text-slate-400">No matching subjects.</li>
 		}
 	</ul>
 }
 
 templ subjectPage(snapshot publish.SnapshotView, subject publish.SubjectView, changes []publish.ChangeView) {
 @layout(subject.Name) {
-		<p><a href={ subjectURL(subject) }>← { subjectKindLabel(subject.Key.Kind) }</a></p>
-		<h1>{ subject.Name }</h1>
-		<p>Subject kind: <code>{ string(subject.Key.Kind) }</code></p>
-		<p>Detected in snapshot: <code>{ snapshot.ID }</code></p>
+		<p><a class="text-cyan-300 hover:text-cyan-200" href={ subjectURL(subject) }>← { subjectKindLabel(subject.Key.Kind) }</a></p>
+		<h1 class="text-4xl font-semibold tracking-tight">{ subject.Name }</h1>
+		<p class="text-slate-400">Subject kind: <code>{ string(subject.Key.Kind) }</code></p>
+		<p class="text-slate-400">Detected in snapshot: <code>{ snapshot.ID }</code></p>
 		if len(changes) > 0 {
-			<p><a href={ subjectChangesURL(subject) }>View { len(changes) } changes</a></p>
+			<p><a class="text-cyan-300 hover:text-cyan-200" href={ subjectChangesURL(subject) }>View { len(changes) } changes</a></p>
 		}
 
-		<section aria-labelledby="source-pages-heading">
-			<h2 id="source-pages-heading">Source pages</h2>
+		<section class="space-y-3" aria-labelledby="source-pages-heading">
+			<h2 class="text-2xl font-semibold" id="source-pages-heading">Source pages</h2>
 			<ul>
 				for _, pageURL := range subject.SourcePageURLs {
-					<li><a href={ pageURL }>{ pageURL }</a></li>
+					<li><a class="break-all text-cyan-300 hover:text-cyan-200" href={ pageURL }>{ pageURL }</a></li>
 				}
 			</ul>
 		</section>
 
-		<section aria-labelledby="tokens-heading">
-			<h2 id="tokens-heading">Tokens</h2>
+		<section class="space-y-4" aria-labelledby="tokens-heading">
+			<h2 class="text-2xl font-semibold" id="tokens-heading">Tokens</h2>
 			for _, token := range subject.Tokens {
-				<article>
-					<h3><code>{ token.SourceName }</code></h3>
+				<article class="rounded border border-slate-800 bg-slate-900 p-4">
+					<h3><code class="text-cyan-200">{ token.SourceName }</code></h3>
 					if token.Category != "" {
 						<p>Category: { token.Category }</p>
 					}
@@ -122,9 +124,9 @@ templ subjectPage(snapshot publish.SnapshotView, subject publish.SubjectView, ch
 						<p>Lifecycle: { token.Lifecycle }</p>
 					}
 					for _, value := range token.Values {
-						<details>
+						<details class="mt-3 rounded border border-slate-800 p-3">
 							<summary>{ tokenContextLabel(value.ContextTags) }</summary>
-							<pre>{ string(value.Value) }</pre>
+							<pre class="mt-2 overflow-x-auto rounded bg-slate-950 p-3 text-sm text-slate-300">{ string(value.Value) }</pre>
 							if len(value.Sources) > 0 {
 								<p>Source records:</p>
 								<ul>
@@ -140,8 +142,8 @@ templ subjectPage(snapshot publish.SnapshotView, subject publish.SubjectView, ch
 		</section>
 
 		if len(subject.LifecycleNotices) > 0 {
-			<section aria-labelledby="lifecycle-heading">
-				<h2 id="lifecycle-heading">Lifecycle notices</h2>
+			<section class="space-y-3" aria-labelledby="lifecycle-heading">
+				<h2 class="text-2xl font-semibold" id="lifecycle-heading">Lifecycle notices</h2>
 				<ul>
 					for _, notice := range subject.LifecycleNotices {
 						<li><strong>{ notice.State }</strong>: { notice.Message }</li>
@@ -154,19 +156,19 @@ templ subjectPage(snapshot publish.SnapshotView, subject publish.SubjectView, ch
 
 templ changesPage(snapshot publish.SnapshotView, subject string, changes []publish.ChangeView) {
 @layout(changePageTitle(subject)) {
-		<h1>{ changePageTitle(subject) }</h1>
-		<p>Detected in snapshot: <code>{ snapshot.ID }</code></p>
+		<h1 class="text-4xl font-semibold tracking-tight">{ changePageTitle(subject) }</h1>
+		<p class="text-slate-400">Detected in snapshot: <code>{ snapshot.ID }</code></p>
 		if len(changes) == 0 {
 			<p>No change records are available for this publication.</p>
 		}
 		for _, change := range changes {
-			<article>
+			<article class="rounded border border-slate-800 bg-slate-900 p-4">
 				<h2>{ changeTypeLabel(change.Type) }: <code>{ change.Name }</code></h2>
 				if change.Subject != "" {
 					<p>Subject: <code>{ change.Subject }</code></p>
 				}
 				<p>Compared with snapshot: <code>{ change.PreviousSnapshotID }</code></p>
-				<pre>{ changeValue(change.Before) } -> { changeValue(change.After) }</pre>
+				<pre class="mt-3 overflow-x-auto rounded bg-slate-950 p-3 text-sm text-slate-300">{ changeValue(change.Before) } -> { changeValue(change.After) }</pre>
 			</article>
 		}
 }
