@@ -50,7 +50,7 @@ func TestHTMLPagesRenderComponentsAndStyles(t *testing.T) {
 		status int
 	}{
 		{path: "/", body: []string{"Published Material tokens", "/components/snackbar", "/styles/elevation"}, status: http.StatusOK},
-		{path: "/components/snackbar", body: []string{"Snackbar", "md.comp.snackbar.container.width", "560"}, status: http.StatusOK},
+		{path: "/components/snackbar", body: []string{"Snackbar", "md.comp.snackbar.container.width", "560", "/downloads/component/snackbar.json"}, status: http.StatusOK},
 		{path: "/styles/elevation", body: []string{"Elevation", "Subject kind: <code>style"}, status: http.StatusOK},
 		{path: "/styles/motion/overview", body: []string{"Motion", "Subject kind: <code>style"}, status: http.StatusOK},
 		{path: "/components?q=snack", body: []string{"snack", "hx-target=\"#subject-list\""}, status: http.StatusOK},

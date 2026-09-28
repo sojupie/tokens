@@ -99,6 +99,7 @@ templ subjectPage(snapshot publish.SnapshotView, subject publish.SubjectView, ch
 		<h1 class="text-4xl font-semibold tracking-tight">{ subject.Name }</h1>
 		<p class="text-slate-400">Subject kind: <code>{ string(subject.Key.Kind) }</code></p>
 		<p class="text-slate-400">Detected in snapshot: <code>{ snapshot.ID }</code></p>
+		<p><a class="text-cyan-300 hover:text-cyan-200" href={ subjectDownloadURL(subject) }>Download normalized token data</a></p>
 		if len(changes) > 0 {
 			<p><a class="text-cyan-300 hover:text-cyan-200" href={ subjectChangesURL(subject) }>View { len(changes) } changes</a></p>
 		}

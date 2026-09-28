@@ -28,7 +28,7 @@ func (server *Server) handleOverview(response http.ResponseWriter, request *http
 	subjects := filterSubjects(sortedSubjects(server.state), query, styles)
 	if request.Header.Get("HX-Request") == "true" {
 		response.Header().Set("Vary", "HX-Request")
-		if err := renderHTML(response, request, subjectList(subjects, styles)); err != nil {
+		if err := renderHTML(response, request, subjectList(subjects)); err != nil {
 			http.Error(response, err.Error(), http.StatusInternalServerError)
 		}
 		return
@@ -142,6 +142,14 @@ func subjectURL(subject publish.SubjectView) string {
 
 func subjectChangesURL(subject publish.SubjectView) string {
 	return subjectURL(subject) + "/changes"
+}
+
+func subjectDownloadURL(subject publish.SubjectView) string {
+	parts := strings.Split(subject.Key.Slug, "/")
+	for index, part := range parts {
+		parts[index] = url.PathEscape(part)
+	}
+	return "/downloads/" + url.PathEscape(string(subject.Key.Kind)) + "/" + strings.Join(parts, "/") + ".json"
 }
 
 func subjectKindLabel(kind publish.SubjectKind) string {
