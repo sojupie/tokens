@@ -25,6 +25,10 @@ func TestHTMLPagesRenderComponentsAndStyles(t *testing.T) {
 				Key:  publish.SubjectKey{Kind: publish.SubjectStyle, Slug: "elevation"},
 				Name: "Elevation",
 			},
+			{Kind: publish.SubjectStyle, Slug: "motion/overview"}: {
+				Key:  publish.SubjectKey{Kind: publish.SubjectStyle, Slug: "motion/overview"},
+				Name: "Motion",
+			},
 		},
 	}
 	handler := New(state).Handler()
@@ -37,6 +41,7 @@ func TestHTMLPagesRenderComponentsAndStyles(t *testing.T) {
 		{path: "/", body: []string{"Published Material tokens", "/components/snackbar", "/styles/elevation"}, status: http.StatusOK},
 		{path: "/components/snackbar", body: []string{"Snackbar", "md.comp.snackbar.container.width", "560"}, status: http.StatusOK},
 		{path: "/styles/elevation", body: []string{"Elevation", "Subject kind: <code>style"}, status: http.StatusOK},
+		{path: "/styles/motion/overview", body: []string{"Motion", "Subject kind: <code>style"}, status: http.StatusOK},
 	}
 	for _, check := range checks {
 		t.Run(check.path, func(t *testing.T) {

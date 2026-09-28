@@ -48,12 +48,12 @@ func (server *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /api/v1/health", server.handleHealth)
 	mux.HandleFunc("GET /api/v1/releases", server.handleReleases)
 	mux.HandleFunc("GET /api/v1/components", server.handleComponents)
-	mux.HandleFunc("GET /api/v1/components/{slug}", server.handleComponent)
+	mux.HandleFunc("GET /api/v1/components/{slug...}", server.handleComponent)
 	mux.HandleFunc("GET /", server.handleOverview)
 	mux.HandleFunc("GET /components", server.handleOverview)
-	mux.HandleFunc("GET /components/{slug}", server.handleHTMLSubject)
+	mux.HandleFunc("GET /components/{slug...}", server.handleHTMLSubject)
 	mux.HandleFunc("GET /styles", server.handleOverview)
-	mux.HandleFunc("GET /styles/{slug}", server.handleHTMLSubject)
+	mux.HandleFunc("GET /styles/{slug...}", server.handleHTMLSubject)
 	return mux
 }
 

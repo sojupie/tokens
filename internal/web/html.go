@@ -71,7 +71,11 @@ func subjectURL(subject publish.SubjectView) string {
 	if subject.Key.Kind == publish.SubjectComponent {
 		section = "components"
 	}
-	return "/" + section + "/" + url.PathEscape(subject.Key.Slug)
+	parts := strings.Split(subject.Key.Slug, "/")
+	for index, part := range parts {
+		parts[index] = url.PathEscape(part)
+	}
+	return "/" + section + "/" + strings.Join(parts, "/")
 }
 
 func subjectKindLabel(kind publish.SubjectKind) string {
