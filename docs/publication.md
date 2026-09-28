@@ -42,6 +42,18 @@ go run ./cmd/sourceloom publish
 Normal documentation and deployment should use the compiled `sourceloom`
 binary.
 
+## Serve a publication
+
+Start the read-only server against the generated directory:
+
+```text
+sourceloom serve --published published --listen 127.0.0.1:8080
+```
+
+The server loads the SQLite read index into ordinary Go structs at startup.
+It does not crawl, publish, or write through HTTP. A new publication becomes
+visible after restarting the server.
+
 ## Generated output
 
 ```text
