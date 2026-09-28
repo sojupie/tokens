@@ -1,6 +1,7 @@
 package web
 
 import (
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -103,5 +104,51 @@ func TestHTMLSubjectListSupportsHTMXFiltering(t *testing.T) {
 	}
 	if strings.Contains(recorder.Body.String(), "<!doctype html>") {
 		t.Fatalf("HTMX response unexpectedly rendered the full page: %s", recorder.Body.String())
+	}
+}
+
+func TestTokenValuesHaveReaderAndTechnicalForms(t *testing.T) {
+	if got := tokenContextLabel([]string{"designSystems/abc/contextTagGroups/def/tags/ghi"}); got != "Context-specific value (1 technical tags)" {
+		t.Fatalf("context label = %q", got)
+	}
+	if got := tokenValueText([]byte(`{"color":{"red":1,"green":0.5,"blue":0,"alpha":1}}`)); got != "rgba(255, 127.5, 0, 1)" {
+		t.Fatalf("color value = %q", got)
+	}
+	if got := tokenValueText([]byte(`{"dimension":{"value":480,"unit":"DIPS"}}`)); got != "480dp" {
+		t.Fatalf("dimension value = %q", got)
+	}
+}
+
+func TestHTMLChangeLogIsPaginated(t *testing.T) {
+	changes := make([]publish.ChangeView, 51)
+	for index := range changes {
+		changes[index] = publish.ChangeView{
+			ID:                 fmt.Sprintf("change-%02d", index),
+			Type:               "changed",
+			Subject:            "carousel",
+			Name:               fmt.Sprintf("token-%02d", index),
+			Before:             `{"dimension":{"value":1,"unit":"DIPS"}}`,
+			After:              `{"dimension":{"value":2,"unit":"DIPS"}}`,
+			PreviousSnapshotID: "snapshot-0",
+		}
+	}
+	handler := New(publish.PublishedState{
+		CurrentSnapshot: publish.SnapshotView{ID: "snapshot-1"},
+		Changes:         changes,
+	}, "").Handler()
+
+	firstPage := httptest.NewRecorder()
+	handler.ServeHTTP(firstPage, httptest.NewRequest(http.MethodGet, "/changes", nil))
+	if !strings.Contains(firstPage.Body.String(), "Showing page 1 of 2 · 51 total changes") || !strings.Contains(firstPage.Body.String(), "token-49") || strings.Contains(firstPage.Body.String(), "token-50") {
+		t.Fatalf("unexpected first change page:\n%s", firstPage.Body.String())
+	}
+	if !strings.Contains(firstPage.Body.String(), `href="/changes?page=2"`) {
+		t.Fatalf("first page has no next link:\n%s", firstPage.Body.String())
+	}
+
+	secondPage := httptest.NewRecorder()
+	handler.ServeHTTP(secondPage, httptest.NewRequest(http.MethodGet, "/changes?page=2", nil))
+	if !strings.Contains(secondPage.Body.String(), "token-50") || !strings.Contains(secondPage.Body.String(), `href="/changes"`) {
+		t.Fatalf("unexpected second change page:\n%s", secondPage.Body.String())
 	}
 }

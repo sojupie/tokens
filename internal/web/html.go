@@ -3,9 +3,11 @@ package web
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/url"
 	"sort"
+	"strconv"
 	"strings"
 
 	"github.com/a-h/templ"
@@ -76,13 +78,17 @@ func (server *Server) handleHTMLChanges(response http.ResponseWriter, request *h
 		http.NotFound(response, request)
 		return
 	}
-	if err := renderHTML(response, request, changesPage(server.state.CurrentSnapshot, subject, changes)); err != nil {
+	page := requestedPage(request)
+	pageChanges, page, hasPrevious, hasNext := paginateChanges(changes, page)
+	if err := renderHTML(response, request, changesPage(server.state.CurrentSnapshot, subject, request.URL.Path, pageChanges, page, len(changes), hasPrevious, hasNext)); err != nil {
 		http.Error(response, err.Error(), http.StatusInternalServerError)
 	}
 }
 
 func (server *Server) handleGlobalChanges(response http.ResponseWriter, request *http.Request) {
-	if err := renderHTML(response, request, changesPage(server.state.CurrentSnapshot, "", server.state.Changes)); err != nil {
+	page := requestedPage(request)
+	pageChanges, page, hasPrevious, hasNext := paginateChanges(server.state.Changes, page)
+	if err := renderHTML(response, request, changesPage(server.state.CurrentSnapshot, "", request.URL.Path, pageChanges, page, len(server.state.Changes), hasPrevious, hasNext)); err != nil {
 		http.Error(response, err.Error(), http.StatusInternalServerError)
 	}
 }
@@ -166,7 +172,92 @@ func tokenContextLabel(tags []string) string {
 	if len(tags) == 0 {
 		return "Default context"
 	}
+	if opaqueContextTags(tags) {
+		return fmt.Sprintf("Context-specific value (%d technical tags)", len(tags))
+	}
 	return strings.Join(tags, " / ")
+}
+
+func opaqueContextTags(tags []string) bool {
+	for _, tag := range tags {
+		if strings.Contains(tag, "/") || len(tag) > 48 {
+			return true
+		}
+	}
+	return false
+}
+
+func tokenValueText(value json.RawMessage) string {
+	var decoded any
+	if json.Unmarshal(value, &decoded) != nil {
+		return string(value)
+	}
+	switch typed := decoded.(type) {
+	case string:
+		return typed
+	case float64:
+		return strconv.FormatFloat(typed, 'g', -1, 64)
+	case bool:
+		return strconv.FormatBool(typed)
+	case map[string]any:
+		if color, ok := typed["color"].(map[string]any); ok {
+			if formatted, ok := colorValueText(color); ok {
+				return formatted
+			}
+		}
+		if dimension, ok := typed["dimension"].(map[string]any); ok {
+			if formatted, ok := dimensionValueText(dimension); ok {
+				return formatted
+			}
+		}
+	}
+	compact, err := json.Marshal(decoded)
+	if err != nil {
+		return string(value)
+	}
+	return string(compact)
+}
+
+func colorValueText(color map[string]any) (string, bool) {
+	red, redOK := numberValue(color["red"])
+	green, greenOK := numberValue(color["green"])
+	blue, blueOK := numberValue(color["blue"])
+	alpha, alphaOK := numberValue(color["alpha"])
+	if !redOK || !greenOK || !blueOK {
+		return "", false
+	}
+	if red <= 1 && green <= 1 && blue <= 1 {
+		red *= 255
+		green *= 255
+		blue *= 255
+	}
+	if !alphaOK {
+		alpha = 1
+	}
+	return fmt.Sprintf("rgba(%s, %s, %s, %s)",
+		formatNumber(red), formatNumber(green), formatNumber(blue), formatNumber(alpha)), true
+}
+
+func dimensionValueText(dimension map[string]any) (string, bool) {
+	value, valueOK := numberValue(dimension["value"])
+	unit, unitOK := dimension["unit"].(string)
+	if !valueOK || !unitOK {
+		return "", false
+	}
+	unit = strings.TrimSpace(unit)
+	if unit == "DIPS" {
+		unit = "dp"
+	}
+	return formatNumber(value) + unit, true
+}
+
+func numberValue(value any) (float64, bool) {
+	number, ok := value.(float64)
+	return number, ok
+}
+
+func formatNumber(value float64) string {
+	return strconv.FormatFloat(value, 'f', -1, 64)
 }
 
 func subjectChanges(state publish.PublishedState, subject string) []publish.ChangeView {
@@ -208,4 +299,43 @@ func changeValue(value string) string {
 		return formatted.String()
 	}
 	return value
+}
+
+func changeSummaryValue(value string) string {
+	if value == "" {
+		return "—"
+	}
+	return tokenValueText(json.RawMessage(value))
+}
+
+func requestedPage(request *http.Request) int {
+	page, err := strconv.Atoi(request.URL.Query().Get("page"))
+	if err != nil || page < 1 {
+		return 1
+	}
+	return page
+}
+
+func paginateChanges(changes []publish.ChangeView, page int) (pageChanges []publish.ChangeView, actualPage int, hasPrevious, hasNext bool) {
+	const pageSize = 50
+	pageCount := (len(changes) + pageSize - 1) / pageSize
+	if pageCount == 0 {
+		return nil, 1, false, false
+	}
+	if page > pageCount {
+		page = pageCount
+	}
+	start := (page - 1) * pageSize
+	end := start + pageSize
+	if end > len(changes) {
+		end = len(changes)
+	}
+	return changes[start:end], page, page > 1, page < pageCount
+}
+
+func changesPageURL(base string, page int) string {
+	if page <= 1 {
+		return base
+	}
+	return base + "?page=" + strconv.Itoa(page)
 }

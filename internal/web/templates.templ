@@ -129,14 +129,26 @@ templ subjectPage(snapshot publish.SnapshotView, subject publish.SubjectView, ch
 					for _, value := range token.Values {
 						<details class="sl-token-value">
 							<summary>{ tokenContextLabel(value.ContextTags) }</summary>
-							<pre class="sl-value">{ string(value.Value) }</pre>
+							<pre class="sl-value">{ tokenValueText(value.Value) }</pre>
+							if len(value.ContextTags) > 0 && opaqueContextTags(value.ContextTags) {
+								<details class="sl-technical">
+									<summary>Technical context</summary>
+									<ul class="sl-technical-list">
+										for _, tag := range value.ContextTags {
+											<li><code>{ tag }</code></li>
+										}
+									</ul>
+								</details>
+							}
 							if len(value.Sources) > 0 {
-								<p>Source records:</p>
-								<ul>
-									for _, source := range value.Sources {
-										<li><code>{ source.PayloadID }</code> / <code>{ source.SourceRecordID }</code></li>
-									}
-								</ul>
+								<details class="sl-technical">
+									<summary>Technical provenance ({ len(value.Sources) } source records)</summary>
+									<ul class="sl-technical-list">
+										for _, source := range value.Sources {
+											<li><code>{ source.PayloadID }</code> / <code>{ source.SourceRecordID }</code></li>
+										}
+									</ul>
+								</details>
 							}
 						</details>
 					}
@@ -157,10 +169,13 @@ templ subjectPage(snapshot publish.SnapshotView, subject publish.SubjectView, ch
 }
 }
 
-templ changesPage(snapshot publish.SnapshotView, subject string, changes []publish.ChangeView) {
+templ changesPage(snapshot publish.SnapshotView, subject string, baseURL string, changes []publish.ChangeView, page int, total int, hasPrevious bool, hasNext bool) {
 @layout(changePageTitle(subject)) {
 		<h1 class="typo-page-title">{ changePageTitle(subject) }</h1>
 		<p class="sl-metadata">Detected in snapshot: <code class="sl-code">{ snapshot.ID }</code></p>
+		if total > 0 {
+			<p class="sl-metadata">Showing page { page } of { (total + 49) / 50 } · { total } total changes</p>
+		}
 		if len(changes) == 0 {
 			<p>No change records are available for this publication.</p>
 		}
@@ -171,18 +186,36 @@ templ changesPage(snapshot publish.SnapshotView, subject string, changes []publi
 					<p>Subject: <code>{ change.Subject }</code></p>
 				}
 				<p>Compared with snapshot: <code>{ change.PreviousSnapshotID }</code></p>
-				<div class="sl-change-values">
+				<div class="sl-change-values sl-change-summary">
 					<div>
 						<p class="typo-sublabel">Before</p>
-						<pre class="sl-value">{ changeValue(change.Before) }</pre>
+						<code>{ changeSummaryValue(change.Before) }</code>
 					</div>
 					<div class="sl-change-arrow" aria-hidden="true">→</div>
 					<div>
 						<p class="typo-sublabel">After</p>
-						<pre class="sl-value">{ changeValue(change.After) }</pre>
+						<code>{ changeSummaryValue(change.After) }</code>
 					</div>
 				</div>
+				<details class="sl-technical">
+					<summary>Raw change values</summary>
+					<div class="sl-change-values">
+						<pre class="sl-value">{ changeValue(change.Before) }</pre>
+						<pre class="sl-value">{ changeValue(change.After) }</pre>
+					</div>
+				</details>
 			</article>
+		}
+		if hasPrevious || hasNext {
+			<nav class="sl-pagination" aria-label="Change log pages">
+				if hasPrevious {
+					<a class="sl-link" href={ changesPageURL(baseURL, page - 1) }>Previous</a>
+				}
+				<span class="typo-sublabel">Page { page }</span>
+				if hasNext {
+					<a class="sl-link" href={ changesPageURL(baseURL, page + 1) }>Next</a>
+				}
+			</nav>
 		}
 }
 }

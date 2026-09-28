@@ -309,6 +309,32 @@ button:not(:disabled),
   overflow-wrap: anywhere;
 }
 
+.sl-technical {
+  margin-top: 0.75rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--sl-rule);
+  color: var(--sl-ink-muted);
+  font-size: 0.8125rem;
+  line-height: 1.25rem;
+}
+
+.sl-technical summary {
+  cursor: pointer;
+}
+
+.sl-technical-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin: 0.5rem 0 0;
+  padding-left: 1.25rem;
+}
+
+.sl-technical-list code {
+  font-family: var(--sl-font-mono);
+  overflow-wrap: anywhere;
+}
+
 .sl-change-values {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
@@ -324,6 +350,24 @@ button:not(:disabled),
 .sl-change-arrow {
   color: var(--sl-accent);
   font-size: 1.25rem;
+}
+
+.sl-change-summary code {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--sl-ink-main);
+  font-family: var(--sl-font-mono);
+  font-size: 0.9375rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.sl-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem 0;
 }
 
 @media (min-width: 640px) {
