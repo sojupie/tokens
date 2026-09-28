@@ -3,6 +3,7 @@ module github.com/sojupie/m3-source
 go 1.26
 
 require (
+	github.com/a-h/templ v0.3.960
 	github.com/chromedp/cdproto v0.0.0-20250724212937-08a3db8b4327
 	github.com/chromedp/chromedp v0.14.2
 	github.com/santhosh-tekuri/jsonschema/v6 v6.0.2

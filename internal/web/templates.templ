@@ -1,0 +1,116 @@
+package web
+
+import (
+	"github.com/sojupie/m3-source/internal/publish"
+)
+
+templ layout(title string) {
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<title>{ title } · Source Loom</title>
+	</head>
+	<body>
+		<header>
+			<nav aria-label="Primary">
+				<a href="/">Source Loom</a>
+				<a href="/components">Components</a>
+				<a href="/styles">Styles and token sources</a>
+			</nav>
+		</header>
+		<main>
+			{ children... }
+		</main>
+	</body>
+</html>
+}
+
+templ overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView) {
+@layout("Published Material tokens") {
+		<h1>Published Material tokens</h1>
+		<p>Current snapshot: <code>{ snapshot.ID }</code></p>
+		<p>Detected: { snapshot.CreatedAt }</p>
+
+		<section aria-labelledby="components-heading">
+			<h2 id="components-heading">Components</h2>
+			<ul>
+				for _, subject := range subjects {
+					if subject.Key.Kind == publish.SubjectComponent {
+						<li><a href={ subjectURL(subject) }>{ subject.Name }</a> <small>({ len(subject.Tokens) } tokens)</small></li>
+					}
+				}
+			</ul>
+		</section>
+
+		<section aria-labelledby="styles-heading">
+			<h2 id="styles-heading">Styles and token sources</h2>
+			<ul>
+				for _, subject := range subjects {
+					if subject.Key.Kind != publish.SubjectComponent {
+						<li><a href={ subjectURL(subject) }>{ subject.Name }</a> <small>{ subjectKindLabel(subject.Key.Kind) } · { len(subject.Tokens) } tokens</small></li>
+					}
+				}
+			</ul>
+		</section>
+}
+}
+
+templ subjectPage(snapshot publish.SnapshotView, subject publish.SubjectView) {
+@layout(subject.Name) {
+		<p><a href={ subjectURL(subject) }>← { subjectKindLabel(subject.Key.Kind) }</a></p>
+		<h1>{ subject.Name }</h1>
+		<p>Subject kind: <code>{ string(subject.Key.Kind) }</code></p>
+		<p>Detected in snapshot: <code>{ snapshot.ID }</code></p>
+
+		<section aria-labelledby="source-pages-heading">
+			<h2 id="source-pages-heading">Source pages</h2>
+			<ul>
+				for _, pageURL := range subject.SourcePageURLs {
+					<li><a href={ pageURL }>{ pageURL }</a></li>
+				}
+			</ul>
+		</section>
+
+		<section aria-labelledby="tokens-heading">
+			<h2 id="tokens-heading">Tokens</h2>
+			for _, token := range subject.Tokens {
+				<article>
+					<h3><code>{ token.SourceName }</code></h3>
+					if token.Category != "" {
+						<p>Category: { token.Category }</p>
+					}
+					if token.Lifecycle != "" {
+						<p>Lifecycle: { token.Lifecycle }</p>
+					}
+					for _, value := range token.Values {
+						<details>
+							<summary>{ tokenContextLabel(value.ContextTags) }</summary>
+							<pre>{ string(value.Value) }</pre>
+							if len(value.Sources) > 0 {
+								<p>Source records:</p>
+								<ul>
+									for _, source := range value.Sources {
+										<li><code>{ source.PayloadID }</code> / <code>{ source.SourceRecordID }</code></li>
+									}
+								</ul>
+							}
+						</details>
+					}
+				</article>
+			}
+		</section>
+
+		if len(subject.LifecycleNotices) > 0 {
+			<section aria-labelledby="lifecycle-heading">
+				<h2 id="lifecycle-heading">Lifecycle notices</h2>
+				<ul>
+					for _, notice := range subject.LifecycleNotices {
+						<li><strong>{ notice.State }</strong>: { notice.Message }</li>
+					}
+				</ul>
+			</section>
+		}
+}
+}
