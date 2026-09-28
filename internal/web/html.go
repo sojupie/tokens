@@ -23,7 +23,17 @@ func (server *Server) handleOverview(response http.ResponseWriter, request *http
 		}
 		return
 	}
-	if err := renderHTML(response, request, subjectListPage(server.state.CurrentSnapshot, sortedSubjects(server.state), request.URL.Path == "/styles")); err != nil {
+	styles := request.URL.Path == "/styles"
+	query := request.URL.Query().Get("q")
+	subjects := filterSubjects(sortedSubjects(server.state), query, styles)
+	if request.Header.Get("HX-Request") == "true" {
+		response.Header().Set("Vary", "HX-Request")
+		if err := renderHTML(response, request, subjectList(subjects, styles)); err != nil {
+			http.Error(response, err.Error(), http.StatusInternalServerError)
+		}
+		return
+	}
+	if err := renderHTML(response, request, subjectListPage(server.state.CurrentSnapshot, subjects, styles, query)); err != nil {
 		http.Error(response, err.Error(), http.StatusInternalServerError)
 	}
 }
@@ -94,6 +104,28 @@ func sortedSubjects(state publish.PublishedState) []publish.SubjectView {
 		return subjects[i].Key.Kind < subjects[j].Key.Kind
 	})
 	return subjects
+}
+
+func filterSubjects(subjects []publish.SubjectView, query string, styles bool) []publish.SubjectView {
+	query = strings.ToLower(strings.TrimSpace(query))
+	filtered := make([]publish.SubjectView, 0, len(subjects))
+	for _, subject := range subjects {
+		if styles != (subject.Key.Kind != publish.SubjectComponent) {
+			continue
+		}
+		if query != "" && !strings.Contains(strings.ToLower(subject.Key.Slug), query) && !strings.Contains(strings.ToLower(subject.Name), query) {
+			continue
+		}
+		filtered = append(filtered, subject)
+	}
+	return filtered
+}
+
+func subjectListPath(styles bool) string {
+	if styles {
+		return "/styles"
+	}
+	return "/components"
 }
 
 func subjectURL(subject publish.SubjectView) string {

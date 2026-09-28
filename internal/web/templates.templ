@@ -58,7 +58,7 @@ templ overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView
 }
 }
 
-templ subjectListPage(snapshot publish.SnapshotView, subjects []publish.SubjectView, styles bool) {
+templ subjectListPage(snapshot publish.SnapshotView, subjects []publish.SubjectView, styles bool, query string) {
 @layout("Published Material subjects") {
 		if styles {
 			<h1>Styles and token sources</h1>
@@ -66,17 +66,29 @@ templ subjectListPage(snapshot publish.SnapshotView, subjects []publish.SubjectV
 			<h1>Components</h1>
 		}
 		<p>Current snapshot: <code>{ snapshot.ID }</code></p>
-		<ul>
-			for _, subject := range subjects {
-				if styles && subject.Key.Kind != publish.SubjectComponent {
-					<li><a href={ subjectURL(subject) }>{ subject.Name }</a> <small>{ subjectKindLabel(subject.Key.Kind) } · { len(subject.Tokens) } tokens</small></li>
-				}
-				if !styles && subject.Key.Kind == publish.SubjectComponent {
-					<li><a href={ subjectURL(subject) }>{ subject.Name }</a> <small>({ len(subject.Tokens) } tokens)</small></li>
-				}
-			}
-		</ul>
+		<form method="get" action={ subjectListPath(styles) } role="search">
+			<label for="subject-search">Search</label>
+			<input id="subject-search" type="search" name="q" value={ query } autocomplete="off"
+				hx-get={ subjectListPath(styles) }
+				hx-target="#subject-list"
+				hx-trigger="input changed delay:250ms"
+				hx-push-url="true"/>
+		</form>
+		<div id="subject-list">
+			@subjectList(subjects, styles)
+		</div>
 }
+}
+
+templ subjectList(subjects []publish.SubjectView, styles bool) {
+	<ul>
+		for _, subject := range subjects {
+			<li><a href={ subjectURL(subject) }>{ subject.Name }</a> <small>{ subjectKindLabel(subject.Key.Kind) } · { len(subject.Tokens) } tokens</small></li>
+		}
+		if len(subjects) == 0 {
+			<li>No matching subjects.</li>
+		}
+	</ul>
 }
 
 templ subjectPage(snapshot publish.SnapshotView, subject publish.SubjectView, changes []publish.ChangeView) {

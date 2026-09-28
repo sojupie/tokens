@@ -53,6 +53,7 @@ func TestHTMLPagesRenderComponentsAndStyles(t *testing.T) {
 		{path: "/components/snackbar", body: []string{"Snackbar", "md.comp.snackbar.container.width", "560"}, status: http.StatusOK},
 		{path: "/styles/elevation", body: []string{"Elevation", "Subject kind: <code>style"}, status: http.StatusOK},
 		{path: "/styles/motion/overview", body: []string{"Motion", "Subject kind: <code>style"}, status: http.StatusOK},
+		{path: "/components?q=snack", body: []string{"snack", "hx-target=\"#subject-list\""}, status: http.StatusOK},
 		{path: "/changes", body: []string{"Change log", "md.comp.snackbar.container.width", "480", "560"}, status: http.StatusOK},
 		{path: "/components/snackbar/changes", body: []string{"snackbar changes", "Compared with snapshot: <code>snapshot-0"}, status: http.StatusOK},
 	}
@@ -72,5 +73,35 @@ func TestHTMLPagesRenderComponentsAndStyles(t *testing.T) {
 				}
 			}
 		})
+	}
+}
+
+func TestHTMLSubjectListSupportsHTMXFiltering(t *testing.T) {
+	state := publish.PublishedState{Subjects: map[publish.SubjectKey]publish.SubjectView{
+		{Kind: publish.SubjectComponent, Slug: "snackbar"}: {
+			Key:  publish.SubjectKey{Kind: publish.SubjectComponent, Slug: "snackbar"},
+			Name: "Snackbar",
+		},
+		{Kind: publish.SubjectComponent, Slug: "button"}: {
+			Key:  publish.SubjectKey{Kind: publish.SubjectComponent, Slug: "button"},
+			Name: "Button",
+		},
+	}}
+	recorder := httptest.NewRecorder()
+	request := httptest.NewRequest(http.MethodGet, "/components?q=snack", nil)
+	request.Header.Set("HX-Request", "true")
+	New(state, "").Handler().ServeHTTP(recorder, request)
+
+	if recorder.Code != http.StatusOK {
+		t.Fatalf("status = %d, want %d", recorder.Code, http.StatusOK)
+	}
+	if !strings.Contains(recorder.Body.String(), "Snackbar") {
+		t.Fatalf("filtered response does not contain Snackbar: %s", recorder.Body.String())
+	}
+	if strings.Contains(recorder.Body.String(), "Button") {
+		t.Fatalf("filtered response contains Button: %s", recorder.Body.String())
+	}
+	if strings.Contains(recorder.Body.String(), "<!doctype html>") {
+		t.Fatalf("HTMX response unexpectedly rendered the full page: %s", recorder.Body.String())
 	}
 }
