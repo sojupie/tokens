@@ -28,13 +28,10 @@ type tokenRow struct {
 func subjectTokenGroups(subject publish.SubjectView, query string) []tokenGroup {
 	query = strings.ToLower(strings.TrimSpace(query))
 	groups := make(map[string][]tokenRow)
-	componentPrefix := ""
-	if subject.Key.Kind == publish.SubjectComponent {
-		componentPrefix = "md.comp." + subject.Key.Slug + "."
-	}
+	isComponent := subject.Key.Kind == publish.SubjectComponent
 
 	for _, token := range subject.Tokens {
-		groupName, displayName := tokenLabels(token.SourceName, componentPrefix)
+		groupName, displayName := tokenLabels(token.SourceName, isComponent)
 		row := tokenRow{
 			Name:       displayName,
 			SourceName: token.SourceName,
@@ -106,20 +103,18 @@ func tokenVariantsURL(subject publish.SubjectView, sourceName string) string {
 	return subjectURL(subject) + "?" + query.Encode()
 }
 
-func tokenLabels(sourceName, componentPrefix string) (group, name string) {
-	if componentPrefix == "" || !strings.HasPrefix(sourceName, componentPrefix) {
+func tokenLabels(sourceName string, isComponent bool) (group, name string) {
+	parts := strings.Split(sourceName, ".")
+	if !isComponent || len(parts) < 4 || parts[0] != "md" || parts[1] != "comp" {
 		return "Tokens", sourceName
 	}
-	parts := strings.Split(strings.TrimPrefix(sourceName, componentPrefix), ".")
-	if len(parts) == 0 || parts[0] == "" {
-		return "Other", sourceName
+	group = displayWords(parts[2])
+	tokenParts := parts[3:]
+	if len(tokenParts) > 1 {
+		group += " · " + displayWords(tokenParts[0])
+		tokenParts = tokenParts[1:]
 	}
-	group = displayWords(parts[0])
-	nameParts := make([]string, 0, len(parts)-1)
-	for _, part := range parts[1:] {
-		nameParts = append(nameParts, displayWords(part))
-	}
-	name = strings.Join(nameParts, " · ")
+	name = displayWords(strings.Join(tokenParts, " · "))
 	if name == "" {
 		name = group
 	}

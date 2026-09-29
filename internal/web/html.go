@@ -3,6 +3,7 @@ package web
 import (
 	"encoding/json"
 	"fmt"
+	"math"
 	"net/http"
 	"net/url"
 	"sort"
@@ -85,7 +86,7 @@ func (server *Server) handleHTMLSubject(response http.ResponseWriter, request *h
 	groups := subjectTokenGroups(subjects[0], query)
 	if request.Header.Get("HX-Request") == "true" {
 		response.Header().Set("Vary", "HX-Request")
-		if err := renderHTML(response, request, subjectTokenGroupsView(groups)); err != nil {
+		if err := renderHTML(response, request, subjectTokenGroupsView(subjects[0], groups)); err != nil {
 			http.Error(response, err.Error(), http.StatusInternalServerError)
 		}
 		return
@@ -218,30 +219,92 @@ func tokenValueText(value json.RawMessage) string {
 	if json.Unmarshal(value, &decoded) != nil {
 		return string(value)
 	}
-	switch typed := decoded.(type) {
+	return formattedTokenValue(decoded)
+}
+
+func formattedTokenValue(value any) string {
+	switch typed := value.(type) {
 	case string:
 		return typed
 	case float64:
 		return strconv.FormatFloat(typed, 'g', -1, 64)
 	case bool:
 		return strconv.FormatBool(typed)
+	case nil:
+		return "No value published"
+	case []any:
+		values := make([]string, 0, len(typed))
+		for _, item := range typed {
+			values = append(values, formattedTokenValue(item))
+		}
+		return strings.Join(values, ", ")
 	case map[string]any:
-		if color, ok := typed["color"].(map[string]any); ok {
-			if formatted, ok := colorValueText(color); ok {
-				return formatted
+		if len(typed) == 1 {
+			for name, value := range typed {
+				if formatted, ok := formattedNamedValue(name, value); ok {
+					return formatted
+				}
+				return displayWords(name) + ": " + formattedTokenValue(value)
 			}
 		}
-		if dimension, ok := typed["dimension"].(map[string]any); ok {
-			if formatted, ok := dimensionValueText(dimension); ok {
-				return formatted
+		keys := make([]string, 0, len(typed))
+		for key := range typed {
+			keys = append(keys, key)
+		}
+		sort.Strings(keys)
+		fields := make([]string, 0, len(keys))
+		for _, key := range keys {
+			value := formattedTokenValue(typed[key])
+			if formatted, ok := formattedNamedValue(key, typed[key]); ok {
+				value = formatted
 			}
+			fields = append(fields, displayWords(key)+": "+value)
+		}
+		return strings.Join(fields, " · ")
+	}
+	return "No value published"
+}
+
+func formattedNamedValue(name string, value any) (string, bool) {
+	fields, ok := value.(map[string]any)
+	switch name {
+	case "color":
+		if color, ok := value.(map[string]any); ok {
+			return colorValueText(color)
+		}
+	case "dimension", "length", "elevation", "fontSize", "fontTracking", "lineHeight", "defaultSize":
+		if ok {
+			if text, ok := dimensionValueText(fields); ok {
+				return text, true
+			}
+			unit, _ := fields["unit"].(string)
+			if unit != "" {
+				return "No value specified (" + displayUnit(unit) + ")", true
+			}
+			return "No numeric value specified", true
+		}
+	case "fontNames":
+		if names, ok := fontNamesValue(value); ok {
+			return names, true
+		}
+	case "fontWeight":
+		if weight, ok := numberValue(value); ok {
+			return formatNumber(weight), true
+		}
+	case "opacity":
+		if opacity, ok := numberValue(value); ok {
+			return formatNumber(opacity*100) + "%", true
+		}
+	case "shape":
+		if ok {
+			return shapeValueText(fields), true
+		}
+	case "type":
+		if ok {
+			return typographyValueText(fields), true
 		}
 	}
-	compact, err := json.Marshal(decoded)
-	if err != nil {
-		return string(value)
-	}
-	return string(compact)
+	return "", false
 }
 
 func colorValueText(color map[string]any) (string, bool) {
@@ -257,9 +320,13 @@ func colorValueText(color map[string]any) (string, bool) {
 		green *= 255
 		blue *= 255
 	}
+	red = tidyColorChannel(red)
+	green = tidyColorChannel(green)
+	blue = tidyColorChannel(blue)
 	if !alphaOK {
 		alpha = 1
 	}
+	alpha = tidyColorChannel(alpha)
 	return fmt.Sprintf("rgba(%s, %s, %s, %s)",
 		formatNumber(red), formatNumber(green), formatNumber(blue), formatNumber(alpha)), true
 }
@@ -270,11 +337,103 @@ func dimensionValueText(dimension map[string]any) (string, bool) {
 	if !valueOK || !unitOK {
 		return "", false
 	}
-	unit = strings.TrimSpace(unit)
-	if unit == "DIPS" {
-		unit = "dp"
+	return formatNumber(value) + displayUnit(unit), true
+}
+
+func typographyValueText(fields map[string]any) string {
+	parts := make([]string, 0, 6)
+	if names, ok := fontNamesValue(fields["fontNames"]); ok {
+		parts = append(parts, names)
 	}
-	return formatNumber(value) + unit, true
+	if size, ok := formattedNamedValue("fontSize", fields["fontSize"]); ok {
+		parts = append(parts, size)
+	}
+	if weight, ok := numberValue(fields["fontWeight"]); ok {
+		parts = append(parts, "weight "+formatNumber(weight))
+	}
+	if lineHeight, ok := formattedNamedValue("lineHeight", fields["lineHeight"]); ok {
+		parts = append(parts, "line height "+lineHeight)
+	}
+	if tracking, ok := formattedNamedValue("fontTracking", fields["fontTracking"]); ok {
+		parts = append(parts, "tracking "+tracking)
+	}
+	known := map[string]bool{"fontNames": true, "fontSize": true, "fontWeight": true, "lineHeight": true, "fontTracking": true}
+	keys := make([]string, 0, len(fields))
+	for key := range fields {
+		if known[key] {
+			continue
+		}
+		keys = append(keys, key)
+	}
+	sort.Strings(keys)
+	for _, key := range keys {
+		parts = append(parts, displayWords(key)+": "+formattedTokenValue(fields[key]))
+	}
+	return strings.Join(parts, " · ")
+}
+
+func fontNamesValue(value any) (string, bool) {
+	fields, ok := value.(map[string]any)
+	if !ok {
+		return "", false
+	}
+	values, ok := fields["values"].([]any)
+	if !ok || len(values) == 0 {
+		return "", false
+	}
+	names := make([]string, 0, len(values))
+	for _, item := range values {
+		if name, ok := item.(string); ok && name != "" {
+			names = append(names, name)
+		}
+	}
+	if len(names) == 0 {
+		return "", false
+	}
+	return strings.Join(names, ", "), true
+}
+
+func shapeValueText(fields map[string]any) string {
+	parts := make([]string, 0, len(fields))
+	if family, ok := fields["family"].(string); ok {
+		family = strings.TrimPrefix(family, "SHAPE_FAMILY_")
+		parts = append(parts, displayWords(strings.ToLower(family)))
+	}
+	keys := make([]string, 0, len(fields))
+	for key := range fields {
+		if key != "family" {
+			keys = append(keys, key)
+		}
+	}
+	sort.Strings(keys)
+	for _, key := range keys {
+		parts = append(parts, displayWords(key)+": "+formattedTokenValue(map[string]any{key: fields[key]}))
+	}
+	if len(parts) == 0 {
+		return "Shape not specified"
+	}
+	return strings.Join(parts, " · ")
+}
+
+func displayUnit(unit string) string {
+	switch strings.TrimSpace(unit) {
+	case "DIPS":
+		return "dp"
+	case "POINTS":
+		return "pt"
+	case "PIXELS":
+		return "px"
+	default:
+		return strings.TrimSpace(unit)
+	}
+}
+
+func tidyColorChannel(value float64) float64 {
+	nearest := math.Round(value)
+	if math.Abs(value-nearest) < 0.001 {
+		return nearest
+	}
+	return value
 }
 
 func numberValue(value any) (float64, bool) {

@@ -120,7 +120,7 @@ templ subjectPage(snapshot publish.SnapshotView, subject publish.SubjectView, ch
 					hx-push-url="true"/>
 			</form>
 			<div id="token-groups">
-				@subjectTokenGroupsView(groups)
+				@subjectTokenGroupsView(subject, groups)
 			</div>
 		</section>
 
@@ -137,7 +137,7 @@ templ subjectPage(snapshot publish.SnapshotView, subject publish.SubjectView, ch
 }
 }
 
-templ subjectTokenGroupsView(groups []tokenGroup) {
+templ subjectTokenGroupsView(subject publish.SubjectView, groups []tokenGroup) {
 	if len(groups) == 0 {
 		<p class="sl-empty typo-sublabel">No matching tokens.</p>
 	}
