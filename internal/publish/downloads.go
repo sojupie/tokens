@@ -10,15 +10,8 @@ import (
 )
 
 type tokenDownload struct {
-	SchemaVersion int             `json:"schemaVersion"`
-	SnapshotID    string          `json:"snapshotId"`
-	Subjects      []PublicSubject `json:"subjects"`
-}
-
-type subjectDownload struct {
-	SchemaVersion int           `json:"schemaVersion"`
-	SnapshotID    string        `json:"snapshotId"`
-	Subject       PublicSubject `json:"subject"`
+	CapturedAt string          `json:"capturedAt"`
+	Subjects   []PublicSubject `json:"subjects"`
 }
 
 func writeDownloads(directory string, publication Publication) error {
@@ -43,14 +36,14 @@ func writeDownloads(directory string, publication Publication) error {
 	for _, subject := range subjects {
 		publicSubjects = append(publicSubjects, subject.Public())
 	}
-	allTokens := tokenDownload{SchemaVersion: SchemaVersion, SnapshotID: publication.CurrentSnapshot.ID, Subjects: publicSubjects}
+	allTokens := tokenDownload{CapturedAt: publication.CurrentSnapshot.CreatedAt, Subjects: publicSubjects}
 	if err := writeDownloadJSON(filepath.Join(downloadsDirectory, "tokens.json"), allTokens); err != nil {
 		return err
 	}
 
 	for _, subject := range subjects {
 		path := subjectPaths[subject.Key]
-		if err := writeDownloadJSON(path, subjectDownload{SchemaVersion: SchemaVersion, SnapshotID: publication.CurrentSnapshot.ID, Subject: subject.Public()}); err != nil {
+		if err := writeDownloadJSON(path, subject.PublicDocument(publication.CurrentSnapshot.CreatedAt)); err != nil {
 			return err
 		}
 	}

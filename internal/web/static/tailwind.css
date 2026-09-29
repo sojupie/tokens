@@ -188,7 +188,6 @@ button:not(:disabled),
 
 .sl-card,
 .sl-list-panel,
-.sl-token-card,
 .sl-change-card {
   border: 1px solid var(--sl-rule);
   background: var(--sl-page-surface);
@@ -258,63 +257,120 @@ button:not(:disabled),
   margin: 0;
 }
 
-.sl-source-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
-
-.sl-break-link {
-  overflow-wrap: anywhere;
-}
-
-.sl-token-card,
 .sl-change-card {
   padding: 1rem;
 }
 
-.sl-token-card + .sl-token-card,
 .sl-change-card + .sl-change-card {
   margin-top: 1rem;
 }
 
-.sl-token-card h3,
 .sl-change-card h2 {
   margin: 0;
   font-weight: 500;
 }
 
-.sl-token-heading {
+.sl-token-group + .sl-token-group {
+  margin-top: 2rem;
+}
+
+.sl-token-group-heading,
+.sl-token-title-line {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 1rem;
 }
 
-.sl-token-values {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin: 1rem 0 0;
+.sl-token-group-heading {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--sl-rule-strong);
 }
 
-.sl-token-value-row {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-  padding-top: 0.5rem;
+.sl-token-group-heading .typo-section-header {
+  text-transform: capitalize;
+}
+
+.sl-token-row {
+  padding: 0.875rem 0;
   border-top: 1px solid var(--sl-rule);
 }
 
-.sl-token-value-row dt,
-.sl-token-value-row dd {
+.sl-token-row h4,
+.sl-token-variant dt,
+.sl-token-variant dd {
   margin: 0;
+}
+
+.sl-token-title-line {
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.sl-token-title-line h4 {
+  font-weight: 500;
+}
+
+.sl-token-type,
+.sl-token-lifecycle {
+  color: var(--sl-ink-muted);
+  font-size: 0.75rem;
+}
+
+.sl-token-lifecycle {
+  color: var(--sl-accent);
+}
+
+.sl-token-id {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--sl-ink-light);
+  font-family: var(--sl-font-mono);
+  font-size: 0.75rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.sl-token-primary-value {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.625rem;
+  padding: 0.5rem 0.625rem;
+  background: var(--sl-page-muted);
 }
 
 .sl-token-value-text {
   font-family: var(--sl-font-mono);
   overflow-wrap: anywhere;
+}
+
+.sl-token-variants {
+  margin-top: 0.5rem;
+  color: var(--sl-ink-muted);
+  font-size: 0.8125rem;
+}
+
+.sl-token-variants summary {
+  width: fit-content;
+  cursor: pointer;
+}
+
+.sl-token-variants dl {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0.5rem 0 0;
+}
+
+.sl-token-variant {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 0.625rem;
+  border-top: 1px solid var(--sl-rule);
 }
 
 .sl-change-values {
@@ -386,8 +442,8 @@ button:not(:disabled),
     transform: rotate(90deg);
   }
 
-  .sl-token-heading,
-  .sl-token-value-row {
+  .sl-token-primary-value,
+  .sl-token-variant {
     align-items: flex-start;
     flex-direction: column;
     gap: 0.25rem;

@@ -22,6 +22,7 @@ func project(input snapshotInput) (Publication, error) {
 	payloads, payloadSubjects := projectPayloads(input.PayloadDetails)
 	builders := make(map[SubjectKey]*subjectBuilder)
 	owners := tokenSetOwners(input.Graph.Records, payloadSubjects)
+	contexts := contextDescriptions(input.Graph.Records)
 
 	for _, record := range sortedRecords(input.Graph.Records) {
 		if record.Kind == "component" && record.SourcePayloadKind == "component" {
@@ -55,7 +56,7 @@ func project(input snapshotInput) (Publication, error) {
 			for _, key := range recordSubjects(record, owners, payloadSubjects) {
 				builder := getSubjectBuilder(builders, key)
 				addPayloadPages(builder, payloads[record.SourcePayloadID])
-				if err := builder.addToken(record.TokenName, record.ValueType, nil, nil, record.Raw, record); err != nil {
+				if err := builder.addToken(record.TokenName, record.ValueType, nil, nil, record.Raw, record, contexts); err != nil {
 					return Publication{}, err
 				}
 			}
@@ -74,7 +75,7 @@ func project(input snapshotInput) (Publication, error) {
 				for _, key := range recordSubjects(record, owners, payloadSubjects) {
 					builder := getSubjectBuilder(builders, key)
 					addPayloadPages(builder, payloads[record.SourcePayloadID])
-					if err := builder.addToken(entry.TokenName, "", entry.ResolvedValue, entry.ContextTags, entry.Raw, record); err != nil {
+					if err := builder.addToken(entry.TokenName, "", entry.ResolvedValue, entry.ContextTags, entry.Raw, record, contexts); err != nil {
 						return Publication{}, err
 					}
 				}
@@ -202,7 +203,7 @@ func getSubjectBuilder(builders map[SubjectKey]*subjectBuilder, key SubjectKey) 
 	return builder
 }
 
-func (builder *subjectBuilder) addToken(name, category string, value json.RawMessage, contextTags []string, raw json.RawMessage, record tokensnapshot.ExtractedRecord) error {
+func (builder *subjectBuilder) addToken(name, category string, value json.RawMessage, contextTags []string, raw json.RawMessage, record tokensnapshot.ExtractedRecord, contexts map[string]resolvedContext) error {
 	token, ok := builder.tokens[name]
 	if !ok {
 		token = &TokenView{SourceName: name, Values: []TokenValueView{}, Sources: []TokenSourceView{}}
@@ -214,13 +215,16 @@ func (builder *subjectBuilder) addToken(name, category string, value json.RawMes
 	if len(value) > 0 {
 		tags := append([]string(nil), contextTags...)
 		sort.Strings(tags)
+		labels, isDefault := resolveContext(tags, contexts)
 		valueView := findTokenValue(token.Values, tags)
 		if valueView == nil {
 			token.Values = append(token.Values, TokenValueView{
-				ContextTags: tags,
-				Value:       append(json.RawMessage(nil), value...),
-				Raw:         append(json.RawMessage(nil), raw...),
-				Sources:     []TokenSourceView{},
+				ContextTags:      tags,
+				ContextLabels:    labels,
+				IsDefaultContext: isDefault,
+				Value:            append(json.RawMessage(nil), value...),
+				Raw:              append(json.RawMessage(nil), raw...),
+				Sources:          []TokenSourceView{},
 			})
 		} else if !jsonEqual(valueView.Value, value) {
 			return fmt.Errorf("conflicting values for published token %s in context %s", name, strings.Join(tags, ","))
@@ -274,6 +278,14 @@ func (builder *subjectBuilder) finish() {
 			return token.Sources[i].SourceRecordID < token.Sources[j].SourceRecordID
 		})
 		sort.Slice(token.Values, func(i, j int) bool {
+			if token.Values[i].IsDefaultContext != token.Values[j].IsDefaultContext {
+				return token.Values[i].IsDefaultContext
+			}
+			left := strings.Join(token.Values[i].ContextLabels, "\x00")
+			right := strings.Join(token.Values[j].ContextLabels, "\x00")
+			if left != right {
+				return left < right
+			}
 			return strings.Join(token.Values[i].ContextTags, "\x00") < strings.Join(token.Values[j].ContextTags, "\x00")
 		})
 		builder.view.Tokens = append(builder.view.Tokens, *token)

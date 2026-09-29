@@ -1,8 +1,11 @@
 package publish
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"strings"
+)
 
-const SchemaVersion = 1
+const SchemaVersion = 2
 
 type SubjectKind string
 
@@ -66,61 +69,70 @@ type SubjectView struct {
 // PublicSubject is the small token document exposed to API and download users.
 // SubjectView remains the internal publication model and keeps source lineage.
 type PublicSubject struct {
-	Key              SubjectKey              `json:"key"`
-	Name             string                  `json:"name"`
-	SourcePageURLs   []string                `json:"sourcePageUrls,omitempty"`
-	Tokens           []PublicToken           `json:"tokens"`
-	LifecycleNotices []PublicLifecycleNotice `json:"lifecycleNotices,omitempty"`
+	Kind   SubjectKind   `json:"kind"`
+	Slug   string        `json:"slug"`
+	Name   string        `json:"name"`
+	Tokens []PublicToken `json:"tokens"`
+}
+
+type PublicTokenDocument struct {
+	CapturedAt string        `json:"capturedAt"`
+	Kind       SubjectKind   `json:"kind"`
+	Slug       string        `json:"slug"`
+	Name       string        `json:"name"`
+	Tokens     []PublicToken `json:"tokens"`
 }
 
 type PublicToken struct {
 	Name      string             `json:"name"`
-	Category  string             `json:"category,omitempty"`
+	Type      string             `json:"type,omitempty"`
 	Values    []PublicTokenValue `json:"values"`
 	Lifecycle string             `json:"lifecycle,omitempty"`
 }
 
 type PublicTokenValue struct {
-	ContextTags []string        `json:"contextTags,omitempty"`
-	Value       json.RawMessage `json:"value"`
-}
-
-type PublicLifecycleNotice struct {
-	State   string `json:"state"`
-	Subject string `json:"subject"`
-	Message string `json:"message"`
+	Context []string        `json:"context,omitempty"`
+	Default bool            `json:"default,omitempty"`
+	Value   json.RawMessage `json:"value"`
 }
 
 func (subject SubjectView) Public() PublicSubject {
 	public := PublicSubject{
-		Key:            subject.Key,
-		Name:           subject.Name,
-		SourcePageURLs: append([]string(nil), subject.SourcePageURLs...),
-		Tokens:         make([]PublicToken, 0, len(subject.Tokens)),
+		Kind:   subject.Key.Kind,
+		Slug:   subject.Key.Slug,
+		Name:   subject.Name,
+		Tokens: make([]PublicToken, 0, len(subject.Tokens)),
 	}
 	for _, token := range subject.Tokens {
 		publicToken := PublicToken{
-			Name:      token.SourceName,
-			Category:  token.Category,
-			Lifecycle: token.Lifecycle,
-			Values:    make([]PublicTokenValue, 0, len(token.Values)),
+			Name:   token.SourceName,
+			Type:   token.Category,
+			Values: make([]PublicTokenValue, 0, len(token.Values)),
+		}
+		if !strings.EqualFold(token.Lifecycle, "active") {
+			publicToken.Lifecycle = token.Lifecycle
 		}
 		for _, value := range token.Values {
 			publicToken.Values = append(publicToken.Values, PublicTokenValue{
-				ContextTags: append([]string(nil), value.ContextTags...),
-				Value:       append(json.RawMessage(nil), value.Value...),
+				Context: append([]string(nil), value.ContextLabels...),
+				Default: value.IsDefaultContext,
+				Value:   append(json.RawMessage(nil), value.Value...),
 			})
 		}
 		public.Tokens = append(public.Tokens, publicToken)
 	}
-	for _, notice := range subject.LifecycleNotices {
-		public.LifecycleNotices = append(public.LifecycleNotices, PublicLifecycleNotice{
-			State:   notice.State,
-			Subject: notice.Subject,
-			Message: notice.Message,
-		})
-	}
 	return public
+}
+
+func (subject SubjectView) PublicDocument(capturedAt string) PublicTokenDocument {
+	public := subject.Public()
+	return PublicTokenDocument{
+		CapturedAt: capturedAt,
+		Kind:       public.Kind,
+		Slug:       public.Slug,
+		Name:       public.Name,
+		Tokens:     public.Tokens,
+	}
 }
 
 type TokenView struct {
@@ -133,10 +145,12 @@ type TokenView struct {
 }
 
 type TokenValueView struct {
-	ContextTags []string          `json:"contextTags,omitempty"`
-	Value       json.RawMessage   `json:"value"`
-	Raw         json.RawMessage   `json:"raw,omitempty"`
-	Sources     []TokenSourceView `json:"sources"`
+	ContextTags      []string          `json:"contextTags,omitempty"`
+	ContextLabels    []string          `json:"contextLabels,omitempty"`
+	IsDefaultContext bool              `json:"isDefaultContext,omitempty"`
+	Value            json.RawMessage   `json:"value"`
+	Raw              json.RawMessage   `json:"raw,omitempty"`
+	Sources          []TokenSourceView `json:"sources"`
 }
 
 type TokenSourceView struct {

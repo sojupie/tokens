@@ -55,6 +55,8 @@ CREATE TABLE token_values (
     subject_slug TEXT NOT NULL,
     source_name TEXT NOT NULL,
     context_tags_json TEXT NOT NULL,
+    context_labels_json TEXT NOT NULL,
+    is_default_context INTEGER NOT NULL,
     value_json TEXT NOT NULL,
     raw_json TEXT,
     sources_json TEXT NOT NULL,

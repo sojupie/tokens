@@ -69,12 +69,45 @@ public token view, and any changes derived from the supplied previous snapshot.
 
 `tokens.sqlite` is a generated read index. It stores subjects, tokens, context-
 specific values, lifecycle notices, source payloads, and provenance links.
-It can be deleted and rebuilt from the verified snapshot.
+It can be deleted and rebuilt from the verified snapshot. Re-run `sourceloom
+publish` after upgrading Source Loom; the SQLite index is rebuilt rather than
+migrated in place.
 
-`downloads/tokens.json` contains all normalized subjects. Each subject also has
-a scoped download under `downloads/<subject-kind>/<subject-slug>.json`. These
-files carry the publication and snapshot identifiers so a downloaded token set
-does not lose its source context.
+`downloads/tokens.json` contains the capture timestamp and all subjects. Each
+subject also has a scoped download under
+`downloads/<subject-kind>/<subject-slug>.json`. A subject download contains its
+kind, slug, display name, and tokens. Each token has its name, type, lifecycle
+when known, and resolved values. Context values use readable labels such as
+`Theme: Dark`; source IDs and raw payload records are not included.
+
+A component token download looks like this:
+
+```json
+{
+  "capturedAt": "2026-09-05T18:16:00Z",
+  "kind": "component",
+  "slug": "fab-menu",
+  "name": "FAB menu",
+  "tokens": [
+    {
+      "name": "md.comp.fab-menu.primary-container.list-item.container.color",
+      "type": "COLOR",
+      "values": [
+        {
+          "context": [
+            "Platform: Android",
+            "Theme: Light",
+            "Audience: 1P Baseline",
+            "Contrast: Default"
+          ],
+          "default": true,
+          "value": {"color": {"red": 0.827451, "green": 0.8901961, "blue": 0.99215686, "alpha": 1}}
+        }
+      ]
+    }
+  ]
+}
+```
 
 The current publication does not replace or copy the immutable snapshot's raw
 evidence. Raw graph data and source payloads remain available from the

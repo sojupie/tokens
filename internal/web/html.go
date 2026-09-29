@@ -8,6 +8,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/a-h/templ"
 	"github.com/sojupie/m3-source/internal/publish"
@@ -66,7 +67,30 @@ func (server *Server) handleHTMLSubject(response http.ResponseWriter, request *h
 		http.Error(response, "subject slug is ambiguous", http.StatusConflict)
 		return
 	}
-	if err := renderHTML(response, request, subjectPage(server.state.CurrentSnapshot, subjects[0], subjectChanges(server.state, subjects[0].Key.Slug))); err != nil {
+	if request.Header.Get("HX-Request") == "true" {
+		if sourceName := request.URL.Query().Get("variants"); sourceName != "" {
+			values := tokenVariantValues(subjects[0], sourceName)
+			if len(values) == 0 {
+				http.NotFound(response, request)
+				return
+			}
+			response.Header().Set("Vary", "HX-Request")
+			if err := renderHTML(response, request, tokenVariants(values)); err != nil {
+				http.Error(response, err.Error(), http.StatusInternalServerError)
+			}
+			return
+		}
+	}
+	query := request.URL.Query().Get("q")
+	groups := subjectTokenGroups(subjects[0], query)
+	if request.Header.Get("HX-Request") == "true" {
+		response.Header().Set("Vary", "HX-Request")
+		if err := renderHTML(response, request, subjectTokenGroupsView(groups)); err != nil {
+			http.Error(response, err.Error(), http.StatusInternalServerError)
+		}
+		return
+	}
+	if err := renderHTML(response, request, subjectPage(server.state.CurrentSnapshot, subjects[0], subjectChanges(server.state, subjects[0].Key.Slug), groups, query)); err != nil {
 		http.Error(response, err.Error(), http.StatusInternalServerError)
 	}
 }
@@ -167,23 +191,26 @@ func subjectKindLabel(kind publish.SubjectKind) string {
 	return string(kind)
 }
 
-func tokenContextLabel(tags []string) string {
-	if len(tags) == 0 {
-		return "Default context"
+func tokenContextLabel(value publish.TokenValueView) string {
+	label := strings.Join(value.ContextLabels, " · ")
+	if value.IsDefaultContext || len(value.ContextTags) == 0 {
+		if label == "" {
+			return "Default"
+		}
+		return "Default · " + label
 	}
-	if opaqueContextTags(tags) {
-		return "Context-specific value"
+	if label == "" {
+		return "Other context"
 	}
-	return strings.Join(tags, " / ")
+	return label
 }
 
-func opaqueContextTags(tags []string) bool {
-	for _, tag := range tags {
-		if strings.Contains(tag, "/") || len(tag) > 48 {
-			return true
-		}
+func snapshotDate(value string) string {
+	createdAt, err := time.Parse(time.RFC3339Nano, value)
+	if err != nil {
+		return value
 	}
-	return false
+	return createdAt.Local().Format("2 Jan 2006")
 }
 
 func tokenValueText(value json.RawMessage) string {
