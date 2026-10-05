@@ -31,9 +31,10 @@ func changeGroups(changes []publish.ChangeView, subjects map[publish.SubjectKey]
 		bySlug[subject.Key.Slug] = subject
 	}
 	var groups []changeGroup
-	lastSubject := ""
+	bySubject := make(map[string]int)
 	for _, change := range changes {
-		if len(groups) == 0 || lastSubject != change.Subject {
+		index, exists := bySubject[change.Subject]
+		if !exists {
 			group := changeGroup{Label: displayWords(change.Subject)}
 			if subject, ok := bySlug[change.Subject]; ok {
 				if subject.Name != "" {
@@ -44,10 +45,11 @@ func changeGroups(changes []publish.ChangeView, subjects map[publish.SubjectKey]
 			if group.Label == "" {
 				group.Label = "Other changes"
 			}
+			index = len(groups)
 			groups = append(groups, group)
-			lastSubject = change.Subject
+			bySubject[change.Subject] = index
 		}
-		group := &groups[len(groups)-1]
+		group := &groups[index]
 		group.Changes = append(group.Changes, labeledChange{ChangeView: change, Hierarchy: changeHierarchy(change.Name)})
 	}
 	return groups

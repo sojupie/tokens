@@ -77,11 +77,8 @@ func TestTimelineUsesExactIdentifiersAndLinkedComponentGroups(t *testing.T) {
 		recorder := httptest.NewRecorder()
 		New(state, "").Handler().ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, path, nil))
 		body := recorder.Body.String()
-		level := "h3"
-		if path == "/changes" {
-			level = "h4"
-		}
-		for _, text := range []string{"<" + level + ">md.comp.button.elevated.label-text.weight</" + level + ">", "md.comp.button.removed.height", "Font weight", "Previous value", "New value", `aria-label="Token hierarchy"`, `<li>Elevated</li>`, `<li>Removed</li>`} {
+		level := "h4"
+		for _, text := range []string{"<" + level + ">md.comp.button.elevated.label-text.weight</" + level + ">", "md.comp.button.removed.height", "Font weight", "Previous value", "New value", `aria-label="Token hierarchy"`, `Elevated</li>`, `Removed</li>`, `<details class="sl-change-group">`, `href="/components/buttons"`, `class="sl-material-symbol"`, `Browse Buttons tokens`} {
 			if !strings.Contains(body, text) {
 				t.Fatalf("%s missing %q", path, text)
 			}
@@ -104,5 +101,16 @@ func TestTimelineDisambiguatesRepeatedSourceDisplayNames(t *testing.T) {
 	groups := changeGroups([]publish.ChangeView{{Subject: "buttons", Name: "md.comp.elevated-button.label-text.type"}, {Subject: "buttons", Name: "md.comp.outlined-button.label-text.type"}}, subjects)
 	if groups[0].Changes[0].Name != "md.comp.elevated-button.label-text.type" || groups[0].Changes[1].Name != "md.comp.outlined-button.label-text.type" {
 		t.Fatalf("ambiguous names: %#v", groups)
+	}
+}
+
+func TestChangeGroupsCombineInterleavedComponents(t *testing.T) {
+	groups := changeGroups([]publish.ChangeView{
+		{Subject: "buttons", Name: "first"},
+		{Subject: "snackbar", Name: "second"},
+		{Subject: "buttons", Name: "third"},
+	}, nil)
+	if len(groups) != 2 || len(groups[0].Changes) != 2 || groups[0].Changes[1].Name != "third" {
+		t.Fatalf("component grouping split or lost records: %#v", groups)
 	}
 }

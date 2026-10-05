@@ -12,7 +12,7 @@ templ layout(title string) {
 		<meta charset="utf-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1"/>
 		<link rel="stylesheet" href="/static/app.css"/>
-		<link rel="stylesheet" href="/static/token-table.css?v=20261005-change-filters"/>
+		<link rel="stylesheet" href="/static/token-table.css?v=20261005-change-groups"/>
 		<script src="/static/htmx.min.js" defer></script>
 		<title>{ title } · Source Loom</title>
 	</head>
@@ -127,8 +127,9 @@ templ changesPage(state publish.PublishedState, subject string, baseURL string, 
 					<p class="sl-metadata">Compared with { observationDate(batch.PreviousAt) }</p>
 				}
 		for _, group := range changeGroups(batch.Changes, state.Subjects) {
-			<section class="sl-change-group">
-				if subject == "" {
+			<details class="sl-change-group">
+				<summary class="sl-change-group-heading">
+					@materialSymbol("expand_more")
 					<h3 class="typo-section-header">
 						if group.URL != "" {
 							<a class="sl-link" href={ group.URL }>{ group.Label }</a>
@@ -136,15 +137,16 @@ templ changesPage(state publish.PublishedState, subject string, baseURL string, 
 							{ group.Label }
 						}
 					</h3>
+					<span class="sl-change-status">{ len(group.Changes) } records on this page</span>
+				</summary>
+				if group.URL != "" {
+					<p class="sl-change-component-link"><a class="sl-link" href={ group.URL }>Browse { group.Label } tokens @materialSymbol("chevron_right")</a></p>
 				}
 		for _, change := range group.Changes {
 			<details class="sl-change-card sl-change-disclosure">
 				<summary class="sl-change-heading">
-					if subject == "" {
-						<h4>{ change.Name }</h4>
-					} else {
-						<h3>{ change.Name }</h3>
-					}
+					@materialSymbol("chevron_right")
+					<h4>{ change.Name }</h4>
 					<span class="sl-change-status" data-change-type={ change.Type }>{ changeTypeLabel(change.Type) }</span>
 					if context := changeContext(change.ChangeView); context != "" {
 						<span class="sl-change-context sl-change-context-summary">{ context }</span>
@@ -152,8 +154,13 @@ templ changesPage(state publish.PublishedState, subject string, baseURL string, 
 				</summary>
 				if len(change.Hierarchy) > 0 {
 					<ol class="sl-change-hierarchy" aria-label="Token hierarchy">
-						for _, part := range change.Hierarchy {
-							<li>{ part }</li>
+						for index, part := range change.Hierarchy {
+							<li>
+								if index > 0 {
+									@materialSymbol("chevron_right")
+								}
+								{ part }
+							</li>
 							}
 					</ol>
 				}
@@ -167,7 +174,7 @@ templ changesPage(state publish.PublishedState, subject string, baseURL string, 
 				</table>
 			</details>
 		}
-			</section>
+			</details>
 		}
 			</section>
 		}
