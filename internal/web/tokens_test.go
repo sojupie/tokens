@@ -32,7 +32,7 @@ func TestReferenceCellUsesAliasesAndPreservesChain(t *testing.T) {
 		t.Fatal(err)
 	}
 	body := output.String()
-	if !strings.Contains(body, `<summary><code>md.sys.color.shadow</code></summary>`) || !strings.Contains(body, "md.ref.palette.neutral0") {
+	if !strings.Contains(body, `<summary><code>md.sys.color.shadow</code>`) || !strings.Contains(body, "md.ref.palette.neutral0") {
 		t.Fatalf("missing primary alias or dependency: %s", body)
 	}
 	if strings.Contains(body, "Color not resolved") {
