@@ -51,7 +51,7 @@ func TestHTMLPagesRenderComponentsAndStyles(t *testing.T) {
 		status int
 	}{
 		{path: "/", body: []string{"Published Material tokens", "/components/snackbar", "/styles/elevation"}, status: http.StatusOK},
-		{path: "/components/snackbar", body: []string{"Snackbar", "Container", "Width", "md.comp.snackbar.container.width", "560", "Download token JSON"}, status: http.StatusOK},
+		{path: "/components/snackbar", body: []string{"Snackbar", "Container", "Snackbar container width", "md.comp.snackbar.container.width", "560", "Download token JSON"}, status: http.StatusOK},
 		{path: "/styles/elevation", body: []string{"Elevation", "Download token JSON"}, status: http.StatusOK},
 		{path: "/styles/motion/overview", body: []string{"Motion", "Download token JSON"}, status: http.StatusOK},
 		{path: "/components?q=snack", body: []string{"snack", "hx-target=\"#subject-list\""}, status: http.StatusOK},
@@ -113,7 +113,7 @@ func TestTokenValuesHaveReadableForms(t *testing.T) {
 		ContextLabels:    []string{"Theme: Dark"},
 		IsDefaultContext: true,
 	}
-	if got := tokenContextLabel(context); got != "Default · Theme: Dark" {
+	if got := tokenContextLabel(context); got != "Default · Dark" {
 		t.Fatalf("context label = %q", got)
 	}
 	if got := tokenValueText([]byte(`{"color":{"red":1,"green":0.5,"blue":0,"alpha":1}}`)); got != "rgba(255, 127.5, 0, 1)" {

@@ -11,6 +11,7 @@ templ layout(title string) {
 		<meta charset="utf-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1"/>
 		<link rel="stylesheet" href="/static/app.css"/>
+		<link rel="stylesheet" href="/static/token-table.css?v=20261005"/>
 		<script src="/static/htmx.min.js" defer></script>
 		<title>{ title } · Source Loom</title>
 	</head>
@@ -95,105 +96,8 @@ templ subjectList(subjects []publish.SubjectView) {
 	</ul>
 }
 
-templ subjectPage(snapshot publish.SnapshotView, subject publish.SubjectView, changes []publish.ChangeView, groups []tokenGroup, query string) {
-@layout(subject.Name) {
-		<p class="sl-back-link"><a class="sl-link" href={ subjectURL(subject) }>← { subjectKindLabel(subject.Key.Kind) }</a></p>
-		<h1 class="typo-page-title">{ subject.Name }</h1>
-		<p class="sl-metadata">Captured { snapshotDate(snapshot.CreatedAt) }</p>
-		<p class="sl-actions"><a class="sl-link" href={ subjectDownloadURL(subject) }>Download token JSON</a></p>
-		if len(changes) > 0 {
-			<p class="sl-actions"><a class="sl-link" href={ subjectChangesURL(subject) }>View change history ({ len(changes) })</a></p>
-		}
-		if len(subject.SourcePageURLs) > 0 {
-			<p class="sl-actions"><a class="sl-link" href={ subject.SourcePageURLs[0] }>Open Material source page ↗</a></p>
-		}
-
-		<section class="sl-section" aria-labelledby="tokens-heading">
-			<h2 class="typo-section-header" id="tokens-heading">Tokens</h2>
-			<form class="sl-search-form" method="get" action={ subjectURL(subject) } role="search">
-				<label class="typo-sublabel" for="token-search">Search this component’s tokens</label>
-				<input class="sl-search-input" id="token-search" type="search" name="q" value={ query } autocomplete="off"
-					hx-get={ subjectURL(subject) }
-					hx-target="#token-groups"
-					hx-include="closest form"
-					hx-trigger="input changed delay:200ms"
-					hx-push-url="true"/>
-			</form>
-			<div id="token-groups">
-				@subjectTokenGroupsView(subject, groups)
-			</div>
-		</section>
-
-		if len(subject.LifecycleNotices) > 0 {
-			<section class="sl-section" aria-labelledby="lifecycle-heading">
-				<h2 class="typo-section-header" id="lifecycle-heading">Lifecycle notices</h2>
-				<ul>
-					for _, notice := range subject.LifecycleNotices {
-						<li><strong>{ notice.State }</strong>: { notice.Message }</li>
-					}
-				</ul>
-			</section>
-		}
-}
-}
-
-templ subjectTokenGroupsView(subject publish.SubjectView, groups []tokenGroup) {
-	if len(groups) == 0 {
-		<p class="sl-empty typo-sublabel">No matching tokens.</p>
-	}
-	for _, group := range groups {
-		<section class="sl-token-group" aria-label={ group.Name }>
-			<div class="sl-token-group-heading">
-				<h3 class="typo-section-header">{ group.Name }</h3>
-				<span class="typo-sublabel">{ len(group.Tokens) }</span>
-			</div>
-			<div class="sl-token-group-list">
-				for _, token := range group.Tokens {
-					<article class="sl-token-row">
-						<div class="sl-token-title-line">
-							<h4>{ token.Name }</h4>
-							if token.Category != "" {
-							<span class="sl-token-type">{ token.Category }</span>
-							}
-							if token.Lifecycle != "" {
-							<span class="sl-token-lifecycle">{ token.Lifecycle }</span>
-							}
-						</div>
-						<code class="sl-token-id">{ token.SourceName }</code>
-						if token.HasValue {
-							<div class="sl-token-primary-value">
-								<span class="typo-sublabel">{ tokenContextLabel(token.Value) }</span>
-								<code class="sl-token-value-text">{ tokenValueText(token.Value.Value) }</code>
-							</div>
-						} else {
-							<p class="typo-sublabel">No resolved value</p>
-						}
-						if len(token.OtherValues) > 0 {
-							<details class="sl-token-variants"
-								hx-get={ tokenVariantsURL(subject, token.SourceName) }
-								hx-trigger="toggle once"
-								hx-target="find .sl-token-variants-body"
-								hx-swap="innerHTML">
-								<summary>Other contexts ({ len(token.OtherValues) })</summary>
-								<div class="sl-token-variants-body"></div>
-							</details>
-						}
-					</article>
-				}
-			</div>
-		</section>
-}
-}
-
-templ tokenVariants(values []publish.TokenValueView) {
-	<dl>
-		for _, value := range values {
-			<div class="sl-token-variant">
-				<dt class="typo-sublabel">{ tokenContextLabel(value) }</dt>
-				<dd><code class="sl-token-value-text">{ tokenValueText(value.Value) }</code></dd>
-			</div>
-		}
-	</dl>
+templ subjectPage(subject publish.SubjectView, changes []publish.ChangeView, browser tokenBrowser) {
+    @subjectPageComponent(subject, changes, browser)
 }
 
 templ changesPage(snapshot publish.SnapshotView, subject string, baseURL string, changes []publish.ChangeView, page int, total int, hasPrevious bool, hasNext bool) {

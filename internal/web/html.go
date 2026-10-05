@@ -9,7 +9,6 @@ import (
 	"sort"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/a-h/templ"
 	"github.com/sojupie/m3-source/internal/publish"
@@ -68,30 +67,8 @@ func (server *Server) handleHTMLSubject(response http.ResponseWriter, request *h
 		http.Error(response, "subject slug is ambiguous", http.StatusConflict)
 		return
 	}
-	if request.Header.Get("HX-Request") == "true" {
-		if sourceName := request.URL.Query().Get("variants"); sourceName != "" {
-			values := tokenVariantValues(subjects[0], sourceName)
-			if len(values) == 0 {
-				http.NotFound(response, request)
-				return
-			}
-			response.Header().Set("Vary", "HX-Request")
-			if err := renderHTML(response, request, tokenVariants(values)); err != nil {
-				http.Error(response, err.Error(), http.StatusInternalServerError)
-			}
-			return
-		}
-	}
-	query := request.URL.Query().Get("q")
-	groups := subjectTokenGroups(subjects[0], query)
-	if request.Header.Get("HX-Request") == "true" {
-		response.Header().Set("Vary", "HX-Request")
-		if err := renderHTML(response, request, subjectTokenGroupsView(subjects[0], groups)); err != nil {
-			http.Error(response, err.Error(), http.StatusInternalServerError)
-		}
-		return
-	}
-	if err := renderHTML(response, request, subjectPage(server.state.CurrentSnapshot, subjects[0], subjectChanges(server.state, subjects[0].Key.Slug), groups, query)); err != nil {
+	browser := buildTokenBrowser(subjects[0], request.URL.Query())
+	if err := renderHTML(response, request, subjectPage(subjects[0], subjectChanges(server.state, subjects[0].Key.Slug), browser)); err != nil {
 		http.Error(response, err.Error(), http.StatusInternalServerError)
 	}
 }
@@ -193,7 +170,17 @@ func subjectKindLabel(kind publish.SubjectKind) string {
 }
 
 func tokenContextLabel(value publish.TokenValueView) string {
-	label := strings.Join(value.ContextLabels, " · ")
+	labels := make([]string, 0, len(value.ContextLabels))
+	for _, contextLabel := range value.ContextLabels {
+		contextLabel = strings.TrimPrefix(contextLabel, "Theme: ")
+		contextLabel = strings.TrimPrefix(contextLabel, "Platform: ")
+		contextLabel = strings.TrimPrefix(contextLabel, "Audience: 1P ")
+		if contextLabel == "Contrast: Default" {
+			continue
+		}
+		labels = append(labels, contextLabel)
+	}
+	label := strings.Join(labels, " · ")
 	if value.IsDefaultContext || len(value.ContextTags) == 0 {
 		if label == "" {
 			return "Default"
@@ -204,14 +191,6 @@ func tokenContextLabel(value publish.TokenValueView) string {
 		return "Other context"
 	}
 	return label
-}
-
-func snapshotDate(value string) string {
-	createdAt, err := time.Parse(time.RFC3339Nano, value)
-	if err != nil {
-		return value
-	}
-	return createdAt.Local().Format("2 Jan 2006")
 }
 
 func tokenValueText(value json.RawMessage) string {
