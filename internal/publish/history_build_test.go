@@ -49,6 +49,25 @@ func TestBuildRetainsTimelineAcrossPublishAndLoad(t *testing.T) {
 	if !strings.Contains(strings.Join(messages, "\n"), "unsupported schema 2") {
 		t.Fatal("excluded history not reported")
 	}
+	if count := strings.Count(strings.Join(messages, "\n"), "Verifying and indexing history snapshot:"); count != 2 {
+		t.Fatalf("historical loads = %d, want one per retained historical snapshot", count)
+	}
+	// The publication's compact path must produce the same timeline as the
+	// complete CLI diagnostic comparison, including stable change IDs.
+	for i, pair := range [][2]string{{"b", "c"}, {"a", "b"}} {
+		diff, err := tokensnapshot.Diff(filepath.Join(root, pair[0]), filepath.Join(root, pair[1]))
+		if err != nil {
+			t.Fatal(err)
+		}
+		expected := changeViews(diff)
+		if len(expected) != 1 {
+			t.Fatalf("diagnostic comparison returned %d changes, want one", len(expected))
+		}
+		expected[0].DetectedAt = publication.Changes[i].DetectedAt
+		if !reflect.DeepEqual(expected[0], publication.Changes[i]) {
+			t.Fatalf("compact comparison differs from diagnostic comparison: %#v != %#v", publication.Changes[i], expected[0])
+		}
+	}
 	again, err := Build(config)
 	if err != nil {
 		t.Fatal(err)

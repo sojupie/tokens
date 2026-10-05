@@ -20,7 +20,7 @@ type historySnapshot struct {
 
 // Rebuild history from retained snapshots, comparing each consecutive pair once.
 // The first snapshot is a baseline, not a batch of invented additions.
-func buildHistory(config BuildConfig, publication *Publication) error {
+func buildHistory(config BuildConfig, publication *Publication, currentIndex map[string]tokensnapshot.SemanticRecord) error {
 	snapshots, err := historySnapshots(config, publication.CurrentSnapshot)
 	if err != nil {
 		return err
@@ -28,17 +28,33 @@ func buildHistory(config BuildConfig, publication *Publication) error {
 	publication.Snapshots = nil
 	publication.Changes = nil
 	owners := historyTokenOwners(publication.Subjects)
+	var previousIndex map[string]tokensnapshot.SemanticRecord
 	for index, snapshot := range snapshots {
+		nextIndex := currentIndex
+		if snapshot.view.ID != publication.CurrentSnapshot.ID {
+			config.report("Verifying and indexing history snapshot: " + snapshot.view.ID)
+			input, err := loadSnapshot(snapshot.directory)
+			if err != nil {
+				return fmt.Errorf("load history snapshot %s: %w", snapshot.view.ID, err)
+			}
+			if input.ManifestHash != snapshot.view.ManifestHash {
+				return fmt.Errorf("history manifest changed during publication: %s", snapshot.view.ID)
+			}
+			nextIndex = tokensnapshot.IndexSemanticRecords(input.Graph.Records)
+		}
 		publication.Snapshots = append(publication.Snapshots, snapshot.view)
 		if index == 0 {
+			previousIndex = nextIndex
 			continue
 		}
 		previous := snapshots[index-1]
 		config.report(fmt.Sprintf("Comparing history %d/%d: %s -> %s", index, len(snapshots)-1, previous.view.ID, snapshot.view.ID))
-		diff, err := tokensnapshot.Diff(previous.directory, snapshot.directory)
-		if err != nil {
-			return fmt.Errorf("compare history %s -> %s: %w", previous.view.ID, snapshot.view.ID, err)
+		diff := tokensnapshot.SnapshotDiff{
+			FromSnapshotID: previous.view.ID,
+			ToSnapshotID:   snapshot.view.ID,
+			Semantic:       tokensnapshot.CompareSemanticIndexes(previousIndex, nextIndex),
 		}
+		previousIndex = nextIndex
 		changes := changeViews(diff)
 		for i := range changes {
 			changes[i].DetectedAt = snapshot.view.CreatedAt
@@ -131,10 +147,6 @@ func historySnapshots(config BuildConfig, current SnapshotView) ([]historySnapsh
 		}
 		if ids[manifest.SnapshotID] {
 			return nil, fmt.Errorf("duplicate history snapshot ID %q", manifest.SnapshotID)
-		}
-		config.report("Verifying history snapshot: " + manifest.SnapshotID)
-		if _, err := tokensnapshot.Verify(path); err != nil {
-			return nil, fmt.Errorf("verify history snapshot %s: %w", entry.Name(), err)
 		}
 		ids[manifest.SnapshotID] = true
 		snapshots = append(snapshots, historySnapshot{path, snapshotView(manifest, sha256Hex(body)), created})

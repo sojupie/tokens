@@ -340,8 +340,12 @@ func diffRecords(from, to []ExtractedRecord) RecordSetDiff {
 }
 
 func diffSemanticRecords(from, to []ExtractedRecord) SemanticDiff {
-	fromByKey := semanticRecordMap(from)
-	toByKey := semanticRecordMap(to)
+	return CompareSemanticIndexes(IndexSemanticRecords(from), IndexSemanticRecords(to))
+}
+
+// CompareSemanticIndexes compares token meaning without building the diagnostic
+// payload, page, and raw-record diffs. Callers must verify snapshots first.
+func CompareSemanticIndexes(fromByKey, toByKey map[string]SemanticRecord) SemanticDiff {
 	diff := SemanticDiff{}
 	for key, after := range toByKey {
 		before, exists := fromByKey[key]
@@ -371,7 +375,8 @@ type SemanticRecord struct {
 	Value             string
 }
 
-func semanticRecordMap(records []ExtractedRecord) map[string]SemanticRecord {
+// IndexSemanticRecords retains only the token meaning needed by a timeline.
+func IndexSemanticRecords(records []ExtractedRecord) map[string]SemanticRecord {
 	result := make(map[string]SemanticRecord)
 	contexts := ContextDescriptions(records)
 	for _, record := range records {
@@ -401,7 +406,7 @@ func semanticRecord(record ExtractedRecord) (SemanticRecord, bool) {
 	}
 	switch record.Kind {
 	case "contextualReferenceTree":
-		return SemanticRecord{}, false // Contextual records are expanded by semanticRecordMap.
+		return SemanticRecord{}, false // Contextual records are expanded by IndexSemanticRecords.
 	case "component":
 		if record.SourcePayloadKind != "component" {
 			return SemanticRecord{}, false

@@ -24,10 +24,12 @@ func Build(config BuildConfig) (Publication, error) {
 	if err := config.validate(); err != nil {
 		return Publication{}, err
 	}
+	config.report("Verifying and loading current snapshot")
 	input, err := loadSnapshot(config.SnapshotDir)
 	if err != nil {
 		return Publication{}, err
 	}
+	config.report("Projecting token data")
 	publication, err := project(input)
 	if err != nil {
 		return Publication{}, err
@@ -43,7 +45,9 @@ func Build(config BuildConfig) (Publication, error) {
 	if _, err := time.Parse(time.RFC3339Nano, publication.GeneratedAt); err != nil {
 		return Publication{}, fmt.Errorf("publication generatedAt is not RFC3339: %w", err)
 	}
-	if err := buildHistory(config, &publication); err != nil {
+	currentIndex := tokensnapshot.IndexSemanticRecords(input.Graph.Records)
+	input = snapshotInput{} // History needs the compact index, not another full graph.
+	if err := buildHistory(config, &publication, currentIndex); err != nil {
 		return Publication{}, err
 	}
 	stagingDir, err := createStagingDir(config.OutputDir)
@@ -56,12 +60,15 @@ func Build(config BuildConfig) (Publication, error) {
 			_ = os.RemoveAll(stagingDir)
 		}
 	}()
+	config.report("Writing publication JSON")
 	if err := writePublicationJSON(stagingDir, publication); err != nil {
 		return Publication{}, err
 	}
+	config.report("Writing SQLite database")
 	if err := writeDatabase(filepath.Join(stagingDir, "tokens.sqlite"), publication); err != nil {
 		return Publication{}, err
 	}
+	config.report("Writing token downloads")
 	if err := writeDownloads(stagingDir, publication); err != nil {
 		return Publication{}, err
 	}
