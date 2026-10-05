@@ -108,6 +108,7 @@
 .sl-change-hierarchy li { display:flex; align-items:center; }
 .sl-change-hierarchy li + li::before { content:"›"; padding:0 8px; }
 .sl-change-hierarchy li:last-child { color:var(--sl-ink); }
+.sl-change-context { margin:8px 0 0; font-size:0.8125rem; color:var(--sl-ink-muted); }
 .sl-change-group + .sl-change-group { margin-top:32px; }
 .sl-change-group > h3 { margin:24px 0 12px; }
 .sl-change-table { width:100%; table-layout:fixed; border-collapse:collapse; margin-top:16px; }

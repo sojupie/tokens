@@ -11,7 +11,7 @@ templ layout(title string) {
 		<meta charset="utf-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1"/>
 		<link rel="stylesheet" href="/static/app.css"/>
-		<link rel="stylesheet" href="/static/token-table.css?v=20261005-change-hierarchy"/>
+		<link rel="stylesheet" href="/static/token-table.css?v=20261005-history-context"/>
 		<script src="/static/htmx.min.js" defer></script>
 		<title>{ title } · Source Loom</title>
 	</head>
@@ -106,7 +106,6 @@ templ changesPage(state publish.PublishedState, subject string, baseURL string, 
 		<p class="sl-metadata">{ historyCoverage(state.Snapshots) }</p>
 		<p class="sl-metadata">Dates show when we detected changes, not when Material published them.</p>
 		if total > 0 {
-			<p class="sl-metadata">Theme, platform and audience were not recorded for these comparisons.</p>
 			<p class="sl-metadata">Showing page { page } of { (total + 49) / 50 } · { total } total changes</p>
 		}
 		if len(changes) == 0 {
@@ -149,6 +148,9 @@ templ changesPage(state publish.PublishedState, subject string, baseURL string, 
 							<li>{ part }</li>
 							}
 					</ol>
+				}
+				if context := changeContext(change.ChangeView); context != "" {
+					<p class="sl-change-context">{ context }</p>
 				}
 				<table class="sl-change-table">
 					<thead><tr><th scope="col">Property</th><th scope="col">Previous value</th><th scope="col">New value</th></tr></thead>

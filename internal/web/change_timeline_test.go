@@ -77,7 +77,7 @@ func TestTimelineUsesMaterialLabelsAndLinkedComponentGroups(t *testing.T) {
 		recorder := httptest.NewRecorder()
 		New(state, "").Handler().ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, path, nil))
 		body := recorder.Body.String()
-		for _, text := range []string{"Button elevated label text weight", "Button removed height", "Font weight", "Previous value", "New value", `title="md.comp.button.elevated.label-text.weight"`, `aria-label="Token hierarchy"`, `<li>Elevated</li>`, `<li>Removed</li>`, "Theme, platform and audience were not recorded"} {
+		for _, text := range []string{"Button elevated label text weight", "Button removed height", "Font weight", "Previous value", "New value", `title="md.comp.button.elevated.label-text.weight"`, `aria-label="Token hierarchy"`, `<li>Elevated</li>`, `<li>Removed</li>`} {
 			if !strings.Contains(body, text) {
 				t.Fatalf("%s missing %q", path, text)
 			}
