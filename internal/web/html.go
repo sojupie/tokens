@@ -76,12 +76,21 @@ func (server *Server) handleHTMLSubject(response http.ResponseWriter, request *h
 func (server *Server) handleHTMLChanges(response http.ResponseWriter, request *http.Request, subject string) {
 	changes := subjectChanges(server.state, subject)
 	if len(changes) == 0 {
-		http.NotFound(response, request)
-		return
+		found := false
+		for _, item := range server.state.Subjects {
+			if item.Key.Slug == subject && (item.Key.Kind == publish.SubjectComponent) == strings.HasPrefix(request.URL.Path, "/components/") {
+				found = true
+				break
+			}
+		}
+		if !found {
+			http.NotFound(response, request)
+			return
+		}
 	}
 	page := requestedPage(request)
 	pageChanges, page, hasPrevious, hasNext := paginateChanges(changes, page)
-	if err := renderHTML(response, request, changesPage(server.state.CurrentSnapshot, subject, request.URL.Path, pageChanges, page, len(changes), hasPrevious, hasNext)); err != nil {
+	if err := renderHTML(response, request, changesPage(server.state.Snapshots, subject, request.URL.Path, pageChanges, page, len(changes), hasPrevious, hasNext)); err != nil {
 		http.Error(response, err.Error(), http.StatusInternalServerError)
 	}
 }
@@ -89,7 +98,7 @@ func (server *Server) handleHTMLChanges(response http.ResponseWriter, request *h
 func (server *Server) handleGlobalChanges(response http.ResponseWriter, request *http.Request) {
 	page := requestedPage(request)
 	pageChanges, page, hasPrevious, hasNext := paginateChanges(server.state.Changes, page)
-	if err := renderHTML(response, request, changesPage(server.state.CurrentSnapshot, "", request.URL.Path, pageChanges, page, len(server.state.Changes), hasPrevious, hasNext)); err != nil {
+	if err := renderHTML(response, request, changesPage(server.state.Snapshots, "", request.URL.Path, pageChanges, page, len(server.state.Changes), hasPrevious, hasNext)); err != nil {
 		http.Error(response, err.Error(), http.StatusInternalServerError)
 	}
 }

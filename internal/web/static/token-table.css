@@ -100,6 +100,9 @@
 .sl-context-dialog footer { display:flex; justify-content:flex-end; gap:24px; border-top:1px solid #cac4d0; margin:0 -24px; padding:20px 32px; }
 .sl-context-dialog footer button { border:0; background:none; color:#6750a4; }
 .sl-empty { padding:24px; }
+.sl-timeline-batch { border-left:2px solid var(--sl-rule); padding-left:24px; }
+.sl-timeline-batch > h2 { margin-bottom:8px; }
+.sl-change-card h3 { margin:0; font-size:inherit; font-weight:500; overflow-wrap:anywhere; }
 @media(max-width:640px) {
   .sl-token-toolbar { flex-wrap:wrap; }
   .sl-token-set { width:100%; }

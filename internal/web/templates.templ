@@ -11,7 +11,7 @@ templ layout(title string) {
 		<meta charset="utf-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1"/>
 		<link rel="stylesheet" href="/static/app.css"/>
-		<link rel="stylesheet" href="/static/token-table.css?v=20261005"/>
+		<link rel="stylesheet" href="/static/token-table.css?v=20261005-timeline"/>
 		<script src="/static/htmx.min.js" defer></script>
 		<title>{ title } · Source Loom</title>
 	</head>
@@ -100,19 +100,30 @@ templ subjectPage(subject publish.SubjectView, changes []publish.ChangeView, bro
     @subjectPageComponent(subject, changes, browser)
 }
 
-templ changesPage(snapshot publish.SnapshotView, subject string, baseURL string, changes []publish.ChangeView, page int, total int, hasPrevious bool, hasNext bool) {
+templ changesPage(snapshots []publish.SnapshotView, subject string, baseURL string, changes []publish.ChangeView, page int, total int, hasPrevious bool, hasNext bool) {
 @layout(changePageTitle(subject)) {
 		<h1 class="typo-page-title">{ changePageTitle(subject) }</h1>
-		<p class="sl-metadata">Detected in snapshot: <code class="sl-code">{ snapshot.ID }</code></p>
+		<p class="sl-metadata">{ historyCoverage(snapshots) }</p>
+		<p>Dates show when Source Loom observed a change, not when Material published it. The first snapshot is the starting point.</p>
 		if total > 0 {
 			<p class="sl-metadata">Showing page { page } of { (total + 49) / 50 } · { total } total changes</p>
 		}
 		if len(changes) == 0 {
-			<p>No change records are available for this publication.</p>
+			if len(snapshots) < 2 {
+				<p>At least two snapshots are needed to detect changes.</p>
+			} else {
+				<p>No changes were detected in the retained snapshot history.</p>
+			}
 		}
-		for _, change := range changes {
+		for _, batch := range changeBatches(changes, snapshots) {
+			<section class="sl-section sl-timeline-batch">
+				<h2 class="typo-section-header">Observed <time datetime={ batch.DetectedAt }>{ observationDate(batch.DetectedAt) }</time></h2>
+				if batch.PreviousAt != "" {
+					<p class="sl-metadata">Compared with { observationDate(batch.PreviousAt) }</p>
+				}
+		for _, change := range batch.Changes {
 			<article class="sl-change-card">
-				<h2>{ changeTypeLabel(change.Type) }: <code>{ change.Name }</code></h2>
+				<h3>{ changeTypeLabel(change.Type) }: <code>{ change.Name }</code></h3>
 				if change.Subject != "" {
 					<p>Subject: <code>{ change.Subject }</code></p>
 				}
@@ -128,6 +139,8 @@ templ changesPage(snapshot publish.SnapshotView, subject string, baseURL string,
 					</div>
 				</div>
 			</article>
+		}
+			</section>
 		}
 		if hasPrevious || hasNext {
 			<nav class="sl-pagination" aria-label="Change log pages">

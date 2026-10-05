@@ -141,10 +141,8 @@ func subjectPageComponent(subject publish.SubjectView, changes []publish.ChangeV
 			if err := writeTokenDownloadMenu(writer, subject, browser); err != nil {
 				return err
 			}
-			if len(changes) > 0 {
-				if err := write(`<a class="sl-link" href="` + html.EscapeString(subjectChangesURL(subject)) + `">Change history (` + strconv.Itoa(len(changes)) + `)</a>`); err != nil {
-					return err
-				}
+			if err := write(`<a class="sl-link" href="` + html.EscapeString(subjectChangesURL(subject)) + `">Change history (` + strconv.Itoa(len(changes)) + `)</a>`); err != nil {
+				return err
 			}
 			if len(subject.SourcePageURLs) > 0 {
 				if sourceURL := safeSourceDocumentationURL(subject.SourcePageURLs[0]); sourceURL != "" {
