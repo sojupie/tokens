@@ -210,6 +210,15 @@ func writeTokenGroup(writer io.Writer, group tokenGroup, state bool) error {
 			if err := write(`</th><td>`); err != nil {
 				return err
 			}
+			if len(token.References) > 0 {
+				if err := writeTokenReferences(writer, token); err != nil {
+					return err
+				}
+				if err := write(`</td></tr>`); err != nil {
+					return err
+				}
+				continue
+			}
 			style := ""
 			if token.Color != "" {
 				style = ` style="--token-color:` + html.EscapeString(token.Color) + `;--token-ink:` + tokenColorInk(token.Color) + `"`
@@ -228,4 +237,54 @@ func writeTokenGroup(writer io.Writer, group tokenGroup, state bool) error {
 		}
 	}
 	return write(`</details>`)
+}
+
+func writeTokenReferences(writer io.Writer, token tokenRow) error {
+	write := func(value string) error { _, err := io.WriteString(writer, value); return err }
+	if err := write(`<details class="sl-token-reference"><summary>`); err != nil {
+		return err
+	}
+	for _, reference := range token.References {
+		if err := write(`<code>` + html.EscapeString(reference.Name) + `</code>`); err != nil {
+			return err
+		}
+	}
+	if err := write(`</summary><div class="sl-reference-chain"><code>` + html.EscapeString(token.SourceName) + `</code>`); err != nil {
+		return err
+	}
+	if err := writeReferenceBranches(writer, token.References); err != nil {
+		return err
+	}
+	if err := write(`</div></details>`); err != nil {
+		return err
+	}
+	if token.Value != "" && token.Value != "Color not resolved" && token.Value != "Undefined: true" {
+		style := ""
+		if token.Color != "" {
+			style = ` style="--token-color:` + html.EscapeString(token.Color) + `"`
+		}
+		return write(`<span class="sl-reference-preview"` + style + `>` + html.EscapeString(token.Value) + `</span>`)
+	}
+	return nil
+}
+
+func writeReferenceBranches(writer io.Writer, references []publish.TokenReference) error {
+	if _, err := io.WriteString(writer, `<ul>`); err != nil {
+		return err
+	}
+	for _, reference := range references {
+		if _, err := io.WriteString(writer, `<li><code>`+html.EscapeString(reference.Name)+`</code>`); err != nil {
+			return err
+		}
+		if len(reference.References) > 0 {
+			if err := writeReferenceBranches(writer, reference.References); err != nil {
+				return err
+			}
+		}
+		if _, err := io.WriteString(writer, `</li>`); err != nil {
+			return err
+		}
+	}
+	_, err := io.WriteString(writer, `</ul>`)
+	return err
 }

@@ -59,6 +59,19 @@
 .sl-token-value { min-height:56px; border-radius:12px; background:#f7f2f8; display:flex; align-items:center; justify-content:center; padding:12px 16px; text-align:center; overflow-wrap:anywhere; }
 .sl-token-color { background:var(--token-color); color:var(--token-ink); border:1px solid #cac4d0; font-weight:600; }
 .sl-token-source-name { display:none; font-size:12px; overflow-wrap:anywhere; }
+.sl-token-reference { background:#f7f2f8; border:1px solid #e7dfea; border-radius:12px; }
+.sl-token-reference>summary { min-height:48px; padding:12px; cursor:pointer; list-style:none; display:flex; flex-direction:column; gap:4px; }
+.sl-token-reference>summary::-webkit-details-marker { display:none; }
+.sl-token-reference code { font-family:var(--sl-font-mono); font-size:12px; overflow-wrap:anywhere; }
+.sl-token-reference>summary::after { content:"Show reference chain ↓"; font-size:11px; color:#6750a4; }
+.sl-token-reference[open]>summary::after { content:"Hide reference chain ↑"; }
+.sl-reference-chain { border-top:1px solid #e7dfea; padding:12px; }
+.sl-reference-chain ul { margin-top:8px; padding-left:12px; border-left:1px solid #cac4d0; }
+.sl-reference-chain li { margin-bottom:8px; }
+.sl-reference-chain li::before { content:"↳ "; color:#6750a4; }
+.sl-reference-preview { display:flex; align-items:center; justify-content:flex-end; gap:6px; font-size:11px; color:#79747e; padding:4px 8px 0; }
+.sl-reference-preview[style]::before { content:""; width:12px; height:12px; border-radius:50%; border:1px solid #cac4d0; background:var(--token-color); }
+.sl-no-previews .sl-reference-preview { display:none; }
 .sl-token-lifecycle { font-size:12px; color:#6750a4; margin-left:8px; }
 .sl-token-no-value { color:#79747e; }
 .sl-token-browser.sl-no-previews .sl-token-value { background:transparent; border:0; color:var(--table-ink); min-height:40px; font-weight:400; }

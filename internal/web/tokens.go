@@ -46,6 +46,7 @@ type tokenRow struct {
 	Color      string
 	Lifecycle  string
 	HasValue   bool
+	References []publish.TokenReference
 }
 
 type tokenFilter struct {
@@ -145,11 +146,7 @@ func buildTokenBrowser(subject publish.SubjectView, query url.Values) tokenBrows
 	for _, token := range browser.Selected.sourceTokens {
 		_, _, state, path := tokenLocation(token, subject.Key.Kind == publish.SubjectComponent)
 		value, hasValue := selectTokenValue(token.Values, selectedFilters)
-		name := displayWords(strings.TrimPrefix(token.SourceName, "md.comp."))
-		if first, rest, ok := strings.Cut(name, " "); ok {
-			name = first + " " + strings.ToLower(rest)
-		}
-		row := tokenRow{Name: name, SourceName: token.SourceName, HasValue: hasValue}
+		row := tokenRow{Name: tokenDisplayName(token), SourceName: token.SourceName, HasValue: hasValue, References: value.References}
 		if hasValue {
 			row.Value = tokenValueDisplay(token.Category, value.Value)
 			if strings.EqualFold(token.Category, "COLOR") {
@@ -405,7 +402,7 @@ func selectTokenValue(values []publish.TokenValueView, filters map[string]string
 	selected, found := publish.TokenValueView{}, false
 	bestMatches, bestDefault := -1, false
 	for _, value := range values {
-		if tokenValueIsUndefined(value.Value) {
+		if tokenValueIsUndefined(value.Value) && len(value.References) == 0 {
 			continue
 		}
 		labels := make(map[string]string, len(value.ContextLabels))
@@ -594,7 +591,41 @@ func tokenRowMatches(query string, token publish.TokenView, row tokenRow, value 
 		strings.Contains(strings.ToLower(token.Category), query) || strings.Contains(strings.ToLower(row.Lifecycle), query) {
 		return true
 	}
+	if referencesMatch(query, row.References) {
+		return true
+	}
 	return hasValue && (strings.Contains(strings.ToLower(row.Value), query) || strings.Contains(strings.ToLower(tokenContextLabel(value)), query))
+}
+
+func referencesMatch(query string, references []publish.TokenReference) bool {
+	for _, reference := range references {
+		if strings.Contains(strings.ToLower(reference.Name), query) || referencesMatch(query, reference.References) {
+			return true
+		}
+	}
+	return false
+}
+
+func tokenDisplayName(token publish.TokenView) string {
+	if token.DisplayName != "" {
+		return token.DisplayName
+	}
+	parts := strings.Split(strings.TrimPrefix(token.SourceName, "md.comp."), ".")
+	selection := ""
+	for index := len(parts) - 1; index >= 0; index-- {
+		if parts[index] == "selected" || parts[index] == "unselected" {
+			selection = parts[index]
+			parts = append(parts[:index], parts[index+1:]...)
+		}
+	}
+	name := displayWords(strings.Join(parts, "."))
+	if first, rest, ok := strings.Cut(name, " "); ok {
+		name = first + " " + strings.ToLower(rest)
+	}
+	if selection != "" {
+		name += " - toggle (" + selection + ")"
+	}
+	return name
 }
 
 func stateOrder(state string) int {

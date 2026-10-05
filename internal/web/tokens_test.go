@@ -1,11 +1,37 @@
 package web
 
 import (
+	"bytes"
+	"encoding/json"
 	"net/url"
+	"strings"
 	"testing"
 
 	"github.com/sojupie/m3-source/internal/publish"
 )
+
+func TestReferenceCellUsesAliasesAndPreservesChain(t *testing.T) {
+	row := tokenRow{SourceName: "md.comp.button.shadow", Value: "Color not resolved", References: []publish.TokenReference{{Name: "md.sys.color.shadow", References: []publish.TokenReference{{Name: "md.ref.palette.neutral0"}}}}}
+	var output bytes.Buffer
+	if err := writeTokenReferences(&output, row); err != nil {
+		t.Fatal(err)
+	}
+	body := output.String()
+	if !strings.Contains(body, `<summary><code>md.sys.color.shadow</code></summary>`) || !strings.Contains(body, "md.ref.palette.neutral0") {
+		t.Fatalf("missing primary alias or dependency: %s", body)
+	}
+	if strings.Contains(body, "Color not resolved") {
+		t.Fatal("an unresolved preview must not obscure a valid reference")
+	}
+	row.References[0].Name = `<script>alert(1)</script>`
+	output.Reset()
+	if err := writeTokenReferences(&output, row); err != nil {
+		t.Fatal(err)
+	}
+	if strings.Contains(output.String(), "<script>") {
+		t.Fatal("reference names must be HTML escaped")
+	}
+}
 
 func TestMaterialColorSetIncludesRelatedValues(t *testing.T) {
 	subject := publish.SubjectView{Key: publish.SubjectKey{Kind: publish.SubjectComponent}, Tokens: []publish.TokenView{
@@ -22,6 +48,28 @@ func TestMaterialColorSetIncludesRelatedValues(t *testing.T) {
 	}
 	if browser.Selected.Groups[0].Open {
 		t.Fatal("state groups should start collapsed")
+	}
+}
+
+func TestUnresolvedReferencesRemainBrowsable(t *testing.T) {
+	references := []publish.TokenReference{{Name: "md.sys.elevation.level1"}}
+	value, ok := selectTokenValue([]publish.TokenValueView{{Value: json.RawMessage(`{"undefined":true}`), References: references}}, nil)
+	if !ok || len(value.References) != 1 {
+		t.Fatal("unresolved alias was dropped")
+	}
+	if !referencesMatch("elevation.level1", value.References) {
+		t.Fatal("reference names must be searchable")
+	}
+}
+
+func TestMaterialDisplayNames(t *testing.T) {
+	token := publish.TokenView{SourceName: "md.comp.button.elevated.selected.container.color", DisplayName: "Button elevated container color - toggle (selected)"}
+	if tokenDisplayName(token) != token.DisplayName {
+		t.Fatal("upstream label should be preserved")
+	}
+	token.DisplayName = ""
+	if tokenDisplayName(token) != "Button elevated container color - toggle (selected)" {
+		t.Fatal("fallback label misplaced toggle state")
 	}
 }
 
