@@ -89,7 +89,7 @@ func changeReferences(refs []tokensnapshot.NamedReference) string {
 
 func changedRawValues(change publish.ChangeView) []changeValue {
 	var before, after any
-	if change.Type != "changed" || json.Unmarshal([]byte(change.Before), &before) != nil || json.Unmarshal([]byte(change.After), &after) != nil {
+	if (change.Before != "" && json.Unmarshal([]byte(change.Before), &before) != nil) || (change.After != "" && json.Unmarshal([]byte(change.After), &after) != nil) {
 		return []changeValue{{"Value", changeSummaryValue(change.Before), changeSummaryValue(change.After)}}
 	}
 	var values []changeValue
@@ -101,7 +101,7 @@ func changedRawValues(change publish.ChangeView) []changeValue {
 		left, leftMap := before.(map[string]any)
 		right, rightMap := after.(map[string]any)
 		// Keep colors and measurements together so their units remain readable.
-		if leftMap && rightMap && left["unit"] == nil && right["unit"] == nil && left["red"] == nil && right["red"] == nil {
+		if (leftMap || rightMap) && (leftMap || before == nil) && (rightMap || after == nil) && left["unit"] == nil && right["unit"] == nil && left["red"] == nil && right["red"] == nil && left["undefined"] == nil && right["undefined"] == nil {
 			keys := make(map[string]bool)
 			for key := range left {
 				keys[key] = true
@@ -133,15 +133,26 @@ func changedRawValues(change publish.ChangeView) []changeValue {
 				return "—"
 			}
 			if fields, ok := value.(map[string]any); ok {
+				if fields["undefined"] == true {
+					return "Not resolved"
+				}
 				if fields["unit"] != nil {
 					if text, ok := dimensionValueText(fields); ok {
 						return text
+					}
+					if unit, ok := fields["unit"].(string); ok {
+						return "Not specified (" + displayUnit(unit) + ")"
 					}
 				}
 				if fields["red"] != nil {
 					if text, ok := colorValueText(fields); ok {
 						return text
 					}
+				}
+			}
+			if field == "Opacity" || strings.HasSuffix(field, " · Opacity") {
+				if text, ok := formattedNamedValue("opacity", value); ok {
+					return text
 				}
 			}
 			return formattedTokenValue(value)
@@ -154,10 +165,16 @@ func changedRawValues(change publish.ChangeView) []changeValue {
 
 func changeFieldLabel(field string) string {
 	switch field {
-	case "type", "values":
+	case "type", "values", "axisValue":
 		return ""
 	case "fontNames":
 		return "Font family"
+	case "fontTracking":
+		return "Letter spacing"
+	case "variationAxes":
+		return "Font axes"
+	case "wght", "wdth", "opsz", "slnt", "GRAD", "CRSV", "FILL", "ROND", "HEXP":
+		return field
 	}
 	var label strings.Builder
 	previous := rune(0)
