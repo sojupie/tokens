@@ -62,7 +62,7 @@ func TestExistingSubjectWithoutChangesHasAnEmptyTimeline(t *testing.T) {
 	}
 }
 
-func TestTimelineUsesMaterialLabelsAndLinkedComponentGroups(t *testing.T) {
+func TestTimelineUsesExactIdentifiersAndLinkedComponentGroups(t *testing.T) {
 	key := publish.SubjectKey{Kind: publish.SubjectComponent, Slug: "buttons"}
 	state := publish.PublishedState{
 		Subjects: map[publish.SubjectKey]publish.SubjectView{key: {
@@ -77,13 +77,17 @@ func TestTimelineUsesMaterialLabelsAndLinkedComponentGroups(t *testing.T) {
 		recorder := httptest.NewRecorder()
 		New(state, "").Handler().ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, path, nil))
 		body := recorder.Body.String()
-		for _, text := range []string{"Button elevated label text weight", "Button removed height", "Font weight", "Previous value", "New value", `title="md.comp.button.elevated.label-text.weight"`, `aria-label="Token hierarchy"`, `<li>Elevated</li>`, `<li>Removed</li>`} {
+		level := "h3"
+		if path == "/changes" {
+			level = "h4"
+		}
+		for _, text := range []string{"<" + level + ">md.comp.button.elevated.label-text.weight</" + level + ">", "md.comp.button.removed.height", "Font weight", "Previous value", "New value", `aria-label="Token hierarchy"`, `<li>Elevated</li>`, `<li>Removed</li>`} {
 			if !strings.Contains(body, text) {
 				t.Fatalf("%s missing %q", path, text)
 			}
 		}
-		if strings.Contains(body, "Subject:") || strings.Contains(body, "Type ·") || strings.Contains(body, "<code>md.comp.") {
-			t.Fatal("machine labels still dominate timeline")
+		if strings.Contains(body, "Button elevated label text weight") {
+			t.Fatal("heading still uses the formatted display name")
 		}
 		if path == "/changes" && !strings.Contains(body, `href="/components/buttons"`) {
 			t.Fatal("component group does not link to token table")
@@ -98,7 +102,7 @@ func TestTimelineDisambiguatesRepeatedSourceDisplayNames(t *testing.T) {
 		{SourceName: "md.comp.outlined-button.label-text.type", DisplayName: "Type style"},
 	}}}
 	groups := changeGroups([]publish.ChangeView{{Subject: "buttons", Name: "md.comp.elevated-button.label-text.type"}, {Subject: "buttons", Name: "md.comp.outlined-button.label-text.type"}}, subjects)
-	if groups[0].Changes[0].Label != "Elevated button label text type" || groups[0].Changes[1].Label != "Outlined button label text type" {
+	if groups[0].Changes[0].Name != "md.comp.elevated-button.label-text.type" || groups[0].Changes[1].Name != "md.comp.outlined-button.label-text.type" {
 		t.Fatalf("ambiguous names: %#v", groups)
 	}
 }

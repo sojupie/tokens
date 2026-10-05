@@ -136,9 +136,9 @@ templ changesPage(state publish.PublishedState, subject string, baseURL string, 
 			<article class="sl-change-card">
 				<header class="sl-change-heading">
 					if subject == "" {
-						<h4 title={ change.Name }>{ change.Label }</h4>
+						<h4>{ change.Name }</h4>
 					} else {
-						<h3 title={ change.Name }>{ change.Label }</h3>
+						<h3>{ change.Name }</h3>
 					}
 					<span class="sl-change-status" data-change-type={ change.Type }>{ changeTypeLabel(change.Type) }</span>
 				</header>
