@@ -88,17 +88,18 @@ func (server *Server) handleHTMLChanges(response http.ResponseWriter, request *h
 			return
 		}
 	}
-	page := requestedPage(request)
-	pageChanges, page, hasPrevious, hasNext := paginateChanges(changes, page)
-	if err := renderHTML(response, request, changesPage(server.state, subject, request.URL.Path, pageChanges, page, len(changes), hasPrevious, hasNext)); err != nil {
-		http.Error(response, err.Error(), http.StatusInternalServerError)
-	}
+	server.renderChangeHistory(response, request, subject)
 }
 
 func (server *Server) handleGlobalChanges(response http.ResponseWriter, request *http.Request) {
+	server.renderChangeHistory(response, request, "")
+}
+
+func (server *Server) renderChangeHistory(response http.ResponseWriter, request *http.Request, subject string) {
+	changes, filters := filterChangeHistory(server.state, subject, request.URL.Query())
 	page := requestedPage(request)
-	pageChanges, page, hasPrevious, hasNext := paginateChanges(server.state.Changes, page)
-	if err := renderHTML(response, request, changesPage(server.state, "", request.URL.Path, pageChanges, page, len(server.state.Changes), hasPrevious, hasNext)); err != nil {
+	pageChanges, page, hasPrevious, hasNext := paginateChanges(changes, page)
+	if err := renderHTML(response, request, changesPage(server.state, subject, request.URL.String(), filters, changeCountSummary(changes), pageChanges, page, len(changes), hasPrevious, hasNext)); err != nil {
 		http.Error(response, err.Error(), http.StatusInternalServerError)
 	}
 }
@@ -489,8 +490,15 @@ func paginateChanges(changes []publish.ChangeView, page int) (pageChanges []publ
 }
 
 func changesPageURL(base string, page int) string {
-	if page <= 1 {
+	address, err := url.Parse(base)
+	if err != nil {
 		return base
 	}
-	return base + "?page=" + strconv.Itoa(page)
+	query := address.Query()
+	query.Del("page")
+	if page > 1 {
+		query.Set("page", strconv.Itoa(page))
+	}
+	address.RawQuery = query.Encode()
+	return address.String()
 }

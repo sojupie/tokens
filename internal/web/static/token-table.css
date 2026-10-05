@@ -112,7 +112,21 @@
 .sl-context-dialog footer { display:flex; justify-content:flex-end; gap:24px; border-top:1px solid #cac4d0; margin:0 -24px; padding:20px 32px; }
 .sl-context-dialog footer button { border:0; background:none; color:#6750a4; }
 .sl-empty { padding:24px; }
-.sl-timeline-batch { border-left:2px solid var(--sl-rule); padding-left:24px; }
+.sl-timeline-batch { border-top:1px solid var(--sl-rule-strong); padding-top:24px; }
+.sl-change-filters { display:flex; flex-wrap:wrap; align-items:flex-end; gap:12px; padding:16px 0; border-block:1px solid var(--sl-rule); }
+.sl-change-filters label { display:flex; flex-direction:column; gap:6px; font-size:.8125rem; }
+.sl-change-filters select, .sl-change-filters input, .sl-change-filters button { font:inherit; color:inherit; background:var(--sl-page-surface); border:1px solid var(--sl-rule-strong); border-radius:4px; padding:8px 10px; min-height:38px; max-width:100%; }
+.sl-change-filters input { width:200px; }
+.sl-change-filters button { cursor:pointer; }
+.sl-change-counts { font-size:.8125rem; color:var(--sl-ink-muted); }
+.sl-change-disclosure > summary { cursor:pointer; display:grid; grid-template-columns:12px minmax(0,1fr) auto; gap:8px 12px; }
+.sl-change-disclosure > summary::before { content:"›"; grid-column:1; grid-row:1; }
+.sl-change-disclosure[open] > summary::before { transform:rotate(90deg); }
+.sl-change-disclosure > summary h3, .sl-change-disclosure > summary h4 { grid-column:2; grid-row:1; }
+.sl-change-disclosure > summary .sl-change-status { grid-column:3; grid-row:1; }
+.sl-change-disclosure > summary .sl-change-context-summary { grid-column:2 / -1; margin:0; }
+.sl-change-disclosure > summary::-webkit-details-marker { display:none; }
+@media(max-width:639px) { .sl-change-filters label { width:100%; } .sl-change-filters input { width:100%; } }
 .sl-timeline-batch > h2 { margin-bottom:8px; }
 .sl-change-heading { display:flex; justify-content:space-between; align-items:baseline; gap:16px; }
 .sl-change-heading h3, .sl-change-heading h4 { margin:0; font-size:inherit; font-weight:500; overflow-wrap:anywhere; }

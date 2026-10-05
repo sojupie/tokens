@@ -1,6 +1,7 @@
 package web
 
 import (
+	"strings"
 	"github.com/sojupie/m3-source/internal/publish"
 )
 
@@ -11,7 +12,7 @@ templ layout(title string) {
 		<meta charset="utf-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1"/>
 		<link rel="stylesheet" href="/static/app.css"/>
-		<link rel="stylesheet" href="/static/token-table.css?v=20261005-history-context"/>
+		<link rel="stylesheet" href="/static/token-table.css?v=20261005-change-filters"/>
 		<script src="/static/htmx.min.js" defer></script>
 		<title>{ title } · Source Loom</title>
 	</head>
@@ -100,17 +101,21 @@ templ subjectPage(subject publish.SubjectView, changes []publish.ChangeView, bro
     @subjectPageComponent(subject, changes, browser)
 }
 
-templ changesPage(state publish.PublishedState, subject string, baseURL string, changes []publish.ChangeView, page int, total int, hasPrevious bool, hasNext bool) {
+templ changesPage(state publish.PublishedState, subject string, baseURL string, filters changeFilters, counts string, changes []publish.ChangeView, page int, total int, hasPrevious bool, hasNext bool) {
 @layout(timelineTitle(subject, state.Subjects)) {
 		<h1 class="typo-page-title">{ timelineTitle(subject, state.Subjects) }</h1>
 		<p class="sl-metadata">{ historyCoverage(state.Snapshots) }</p>
 		<p class="sl-metadata">Dates show when we detected changes, not when Material published them.</p>
+		@changeFilterForm(filters, baseURL)
 		if total > 0 {
 			<p class="sl-metadata">Showing page { page } of { (total + 49) / 50 } · { total } total changes</p>
+			<p class="sl-change-counts">{ counts }. One token can have changes in several settings.</p>
 		}
 		if len(changes) == 0 {
 			if len(state.Snapshots) < 2 {
 				<p>At least two snapshots are needed to detect changes.</p>
+			} else if len(state.Changes) > 0 {
+				<p>No changes match these filters.</p>
 			} else {
 				<p>No changes were detected in the retained snapshot history.</p>
 			}
@@ -133,24 +138,24 @@ templ changesPage(state publish.PublishedState, subject string, baseURL string, 
 					</h3>
 				}
 		for _, change := range group.Changes {
-			<article class="sl-change-card">
-				<header class="sl-change-heading">
+			<details class="sl-change-card sl-change-disclosure">
+				<summary class="sl-change-heading">
 					if subject == "" {
 						<h4>{ change.Name }</h4>
 					} else {
 						<h3>{ change.Name }</h3>
 					}
 					<span class="sl-change-status" data-change-type={ change.Type }>{ changeTypeLabel(change.Type) }</span>
-				</header>
+					if context := changeContext(change.ChangeView); context != "" {
+						<span class="sl-change-context sl-change-context-summary">{ context }</span>
+					}
+				</summary>
 				if len(change.Hierarchy) > 0 {
 					<ol class="sl-change-hierarchy" aria-label="Token hierarchy">
 						for _, part := range change.Hierarchy {
 							<li>{ part }</li>
 							}
 					</ol>
-				}
-				if context := changeContext(change.ChangeView); context != "" {
-					<p class="sl-change-context">{ context }</p>
 				}
 				<table class="sl-change-table">
 					<thead><tr><th scope="col">Property</th><th scope="col">Previous value</th><th scope="col">New value</th></tr></thead>
@@ -160,7 +165,7 @@ templ changesPage(state publish.PublishedState, subject string, baseURL string, 
 						}
 					</tbody>
 				</table>
-			</article>
+			</details>
 		}
 			</section>
 		}
@@ -178,4 +183,30 @@ templ changesPage(state publish.PublishedState, subject string, baseURL string, 
 			</nav>
 		}
 }
+}
+
+templ changeFilterForm(filters changeFilters, baseURL string) {
+	<form class="sl-change-filters" method="get" action={ strings.SplitN(baseURL, "?", 2)[0] }>
+		if !filters.FixedSubject {
+			<label>Component or style<select name="subject"><option value="">All components and styles</option>
+				for _, option := range filters.Subjects {
+					<option value={ option.Value } selected={ option.Value == filters.Subject }>{ option.Label }</option>
+				}
+			</select></label>
+		}
+		<label>Observed<select name="snapshot"><option value="">All dates</option>
+			for _, option := range filters.Snapshots {
+				<option value={ option.Value } selected={ option.Value == filters.Snapshot }>{ option.Label }</option>
+			}
+		</select></label>
+		<label>Change<select name="type">
+			<option value="">All changes</option>
+			<option value="changed" selected={ filters.Type == "changed" }>Updated</option>
+			<option value="added" selected={ filters.Type == "added" }>Added</option>
+			<option value="removed" selected={ filters.Type == "removed" }>Removed</option>
+		</select></label>
+		<label>Token name<input type="search" name="q" value={ filters.Query } placeholder="e.g. width or font"/></label>
+		<button type="submit">Apply filters</button>
+		<a class="sl-link" href={ strings.SplitN(baseURL, "?", 2)[0] }>Reset</a>
+	</form>
 }
