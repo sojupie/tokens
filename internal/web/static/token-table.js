@@ -3,7 +3,45 @@ document.querySelectorAll('.sl-token-browser').forEach(browser => {
   const dialog = browser.querySelector('dialog');
   const groups = [...browser.querySelectorAll('.sl-token-folder')];
   let openGroups = [];
-  let contextValues = [];
+  let contextFields = '';
+  let contextRequest;
+
+  // Ask the server for supported choices; keep one source of context rules.
+  if (dialog) dialog.addEventListener('change', async event => {
+    const changedField = event.target.name;
+    contextRequest?.abort();
+    const request = new AbortController();
+    contextRequest = request;
+    const save = dialog.querySelector('[type="submit"]');
+    const status = dialog.querySelector('[role="status"]');
+    save.disabled = true;
+    status.textContent = 'Checking available contexts…';
+    const url = new URL(form.action);
+    url.search = new URLSearchParams(new FormData(form)).toString();
+    try {
+      const response = await fetch(url, {signal: request.signal, cache: 'no-store'});
+      if (!response.ok) throw new Error('Context request failed');
+      const page = new DOMParser().parseFromString(await response.text(), 'text/html');
+      const fields = page.querySelector('.sl-context-fields');
+      if (!fields) throw new Error('Missing context choices');
+      const advancedOpen = dialog.querySelector('.sl-context-advanced')?.open;
+      dialog.querySelector('.sl-context-fields').replaceWith(fields);
+      const advanced = dialog.querySelector('.sl-context-advanced');
+      if (advanced) advanced.open = advancedOpen;
+      dialog.querySelector(`input[name="${CSS.escape(changedField)}"]:checked`)?.focus();
+      status.textContent = '';
+      save.disabled = false;
+    } catch (error) {
+      if (!request.signal.aborted) status.textContent = 'Could not check contexts. Change a selection to retry, or cancel.';
+    }
+  });
+
+  const cancelContext = () => {
+    contextRequest?.abort();
+    dialog.querySelector('.sl-context-fields').innerHTML = contextFields;
+    dialog.querySelector('[role="status"]').textContent = '';
+    dialog.querySelector('[type="submit"]').disabled = false;
+  };
 
   form.querySelector('[name="set"]').addEventListener('change', () => form.requestSubmit());
   browser.addEventListener('click', event => {
@@ -11,11 +49,11 @@ document.querySelectorAll('.sl-token-browser').forEach(browser => {
     if (!button) return;
     switch (button.dataset.action) {
       case 'context':
-        contextValues = [...dialog.querySelectorAll('input')].map(input => input.checked);
+        contextFields = dialog.querySelector('.sl-context-fields').innerHTML;
         dialog.showModal();
         break;
       case 'cancel':
-        dialog.querySelectorAll('input').forEach((input, index) => { input.checked = contextValues[index]; });
+        cancelContext();
         dialog.close();
         break;
       case 'previews': {
@@ -41,7 +79,5 @@ document.querySelectorAll('.sl-token-browser').forEach(browser => {
       }
     }
   });
-  if (dialog) dialog.addEventListener('cancel', () => {
-    dialog.querySelectorAll('input').forEach((input, index) => { input.checked = contextValues[index]; });
-  });
+  if (dialog) dialog.addEventListener('cancel', cancelContext);
 });

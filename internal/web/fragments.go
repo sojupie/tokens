@@ -52,18 +52,12 @@ func tokenBrowserView(subject publish.SubjectView, browser tokenBrowser) templ.C
 					return err
 				}
 				options := filter.Options
-				if filter.Name != "Theme" && filter.Name != "Contrast" {
-					options = append([]string{""}, options...)
-				}
 				for _, option := range options {
 					selected := ""
 					if option == filter.Selected {
 						selected = ` checked`
 					}
 					label := option
-					if label == "" {
-						label = "Token default"
-					}
 					if err := write(`<label><input type="radio" name="` + html.EscapeString(filter.Key) + `" value="` + html.EscapeString(option) + `"` + selected + `><span>` + html.EscapeString(label) + `</span></label>`); err != nil {
 						return err
 					}
@@ -77,7 +71,7 @@ func tokenBrowserView(subject publish.SubjectView, browser tokenBrowser) templ.C
 					return err
 				}
 			}
-			if err := write(`</div><footer><button type="button" data-action="cancel">Cancel</button><button type="submit">Save</button></footer></dialog>`); err != nil {
+			if err := write(`</div><p class="sl-context-status" role="status" aria-live="polite"></p><footer><button type="button" data-action="cancel">Cancel</button><button type="submit">Save</button></footer></dialog>`); err != nil {
 				return err
 			}
 		} else if err := write(`<span>Value</span></div>`); err != nil {
@@ -87,7 +81,7 @@ func tokenBrowserView(subject publish.SubjectView, browser tokenBrowser) templ.C
 			return err
 		}
 		if browser.Count == 0 {
-			return write(`<p class="sl-empty typo-sublabel">No tokens match these filters.</p></div><script src="/static/token-table.js?v=20261005" defer></script>`)
+			return write(`<p class="sl-empty typo-sublabel">No tokens match these filters.</p></div><script src="/static/token-table.js?v=20261005-contexts" defer></script>`)
 		}
 		if err := write(`<div class="sl-token-groups">`); err != nil {
 			return err
@@ -97,13 +91,13 @@ func tokenBrowserView(subject publish.SubjectView, browser tokenBrowser) templ.C
 				return err
 			}
 		}
-		return write(`</div></div><script src="/static/token-table.js?v=20261005" defer></script>`)
+		return write(`</div></div><script src="/static/token-table.js?v=20261005-contexts" defer></script>`)
 	})
 }
 
 func tableContextLabel(filters []tokenFilter) string {
 	labels := make([]string, 0, len(filters))
-	for _, name := range []string{"Contrast", "Theme"} {
+	for _, name := range []string{"Contrast", "Theme", "Platform", "Audience"} {
 		for _, filter := range filters {
 			if filter.Name == name && filter.Selected != "" {
 				labels = append(labels, filter.Selected)

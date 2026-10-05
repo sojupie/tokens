@@ -306,8 +306,10 @@ func tokenStateLabel(state string) string {
 
 func tokenFilters(tokens []publish.TokenView, query url.Values) []tokenFilter {
 	values := make(map[string]map[string]bool)
+	var contexts []map[string]string
 	for _, token := range tokens {
 		for _, value := range token.Values {
+			context := make(map[string]string)
 			for _, label := range value.ContextLabels {
 				name, option, ok := strings.Cut(label, ":")
 				if !ok {
@@ -321,12 +323,16 @@ func tokenFilters(tokens []publish.TokenView, query url.Values) []tokenFilter {
 					values[name] = make(map[string]bool)
 				}
 				values[name][option] = true
+				context[name] = option
+			}
+			if len(context) > 0 {
+				contexts = append(contexts, context)
 			}
 		}
 	}
 	names := make([]string, 0, len(values))
 	for name, options := range values {
-		if len(options) > 1 {
+		if len(options) > 0 {
 			names = append(names, name)
 		}
 	}
@@ -337,8 +343,12 @@ func tokenFilters(tokens []publish.TokenView, query url.Values) []tokenFilter {
 				return 0
 			case "Contrast":
 				return 1
-			default:
+			case "Platform":
 				return 2
+			case "Audience":
+				return 3
+			default:
+				return 4
 			}
 		}
 		if order(names[i]) != order(names[j]) {
@@ -348,9 +358,18 @@ func tokenFilters(tokens []publish.TokenView, query url.Values) []tokenFilter {
 	})
 	filters := make([]tokenFilter, 0, len(names))
 	for _, name := range names {
+		available := make(map[string]bool)
+		for _, context := range contexts {
+			if option := context[name]; option != "" {
+				available[option] = true
+			}
+		}
 		options := make([]string, 0, len(values[name]))
-		for option := range values[name] {
+		for option := range available {
 			options = append(options, option)
+		}
+		if len(options) == 0 {
+			continue
 		}
 		sort.Slice(options, func(i, j int) bool {
 			left, right := contextOptionOrder(name, options[i]), contextOptionOrder(name, options[j])
@@ -361,15 +380,30 @@ func tokenFilters(tokens []publish.TokenView, query url.Values) []tokenFilter {
 		})
 		selected := query.Get("context." + name)
 		if !containsString(options, selected) {
-			selected = ""
+			selected = options[0]
 			if name == "Theme" && containsString(options, "Light") {
 				selected = "Light"
 			}
 			if name == "Contrast" && containsString(options, "Default") {
 				selected = "Default"
 			}
+			if name == "Platform" && containsString(options, "Web") {
+				selected = "Web"
+			}
+			if name == "Audience" && containsString(options, "3P") {
+				selected = "3P"
+			}
 		}
 		filters = append(filters, tokenFilter{Name: name, Key: "context." + name, Selected: selected, Options: options})
+		// A missing dimension is unspecified, not evidence for additional options.
+		// Retain it for shared values, but derive further options only from explicit tags.
+		remaining := contexts[:0]
+		for _, context := range contexts {
+			if option := context[name]; option == "" || option == selected {
+				remaining = append(remaining, context)
+			}
+		}
+		contexts = remaining
 	}
 	return filters
 }

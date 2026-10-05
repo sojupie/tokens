@@ -92,6 +92,35 @@ func TestMaterialContextDefaultsAndSelection(t *testing.T) {
 	}
 }
 
+func TestContextFiltersOnlyOfferSupportedCombinations(t *testing.T) {
+	tokens := []publish.TokenView{{Values: []publish.TokenValueView{
+		{ContextLabels: []string{"Theme: Light", "Contrast: Default", "Platform: Web", "Audience: 3P"}},
+		{ContextLabels: []string{"Theme: Dark", "Contrast: High contrast", "Platform: iOS", "Audience: 1P Baseline", "iOS dark theme elevation: Elevated"}},
+		{ContextLabels: []string{"Theme: Dark", "Contrast: High contrast", "Platform: iOS", "Audience: 1P Baseline", "iOS dark theme elevation: None"}},
+		{Value: json.RawMessage(`0.38`)}, // Shared literal does not introduce context options.
+	}}}
+	filters := tokenFilters(tokens, url.Values{"context.iOS dark theme elevation": {"Elevated"}})
+	for _, filter := range filters {
+		if filter.Name == "iOS dark theme elevation" {
+			t.Fatal("iOS elevation must not be offered for Light/Web")
+		}
+		if filter.Name == "Platform" && (filter.Selected != "Web" || len(filter.Options) != 1) {
+			t.Fatalf("unsupported platform choices: %#v", filter)
+		}
+		if filter.Selected == "" {
+			t.Fatal("context selection must be explicit")
+		}
+	}
+	filters = tokenFilters(tokens, url.Values{"context.Theme": {"Dark"}, "context.Contrast": {"Default"}, "context.Platform": {"Web"}, "context.Audience": {"3P"}})
+	selected := make(map[string]string)
+	for _, filter := range filters {
+		selected[filter.Name] = filter.Selected
+	}
+	if selected["Contrast"] != "High contrast" || selected["Platform"] != "iOS" || selected["Audience"] != "1P Baseline" || selected["iOS dark theme elevation"] == "" {
+		t.Fatalf("did not normalize to the available dark context: %#v", selected)
+	}
+}
+
 func TestPreviewTextContrast(t *testing.T) {
 	if tokenColorInk("rgba(103, 80, 164, 1)") != "#ffffff" || tokenColorInk("rgba(255, 255, 255, 1)") != "#1d1b20" {
 		t.Fatal("preview labels need contrasting text")
