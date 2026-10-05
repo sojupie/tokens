@@ -20,12 +20,14 @@ sourceloom publish \
   --output published
 ```
 
-To include change records against a previous verified snapshot:
+The timeline includes all supported snapshots in the selected snapshot's parent
+directory, up to the selected capture date. Source Loom verifies them and compares
+each consecutive pair. To use another history directory:
 
 ```text
 sourceloom publish \
   --snapshot-dir snapshots/material-token-data/material-2026-09-05-1816 \
-  --previous-snapshot snapshots/material-token-data/material-2026-08-12-1605-fixed \
+  --history-dir snapshots/material-token-data \
   --output published
 ```
 
@@ -65,7 +67,7 @@ published/
 
 `publication.json` identifies the publication, current snapshot, snapshot
 manifest hash, capture status, review status, subjects, source payloads, the
-public token view, and any changes derived from the supplied previous snapshot.
+public token view, and the changes between consecutive retained snapshots.
 
 `tokens.sqlite` is a generated read index. It stores subjects, tokens, context-
 specific values, lifecycle notices, source payloads, and provenance links.
@@ -140,15 +142,17 @@ A token with several context-specific resolved values is stored as one token
 with several values. It is not collapsed into whichever value happened to be
 read first.
 
-## Current limitations
+## Change history
 
-- Without `--previous-snapshot`, the publication contains one snapshot and no
-  change records.
-- A publication compares only the explicitly supplied previous snapshot; it
-  does not search the filesystem for history automatically.
-- The web server exposes the read-only API, HTML subject pages, change history,
-  normalized downloads, embedded styling, and HTMX subject filtering. More
-  discovery and presentation features can be added later.
+The global change log and each component's history show all detected changes,
+newest first, grouped by observation date. Each group compares a capture with the
+one before it. The first capture is a starting point, not a list of additions.
 
-These are later publication steps. They do not change the immutable snapshot
-contract.
+These are observation dates, not Material's exact change dates. A change can have
+occurred at any point between the two captures. History is limited to snapshots
+you retain. Unsupported snapshot schemas are excluded with a message; corrupt
+supported snapshots stop publication instead of silently leaving a gap.
+
+Publishing again rebuilds the timeline without duplicate change records. Keep
+the older snapshots and re-run `sourceloom publish` after creating a new one, then
+restart the server. No crawl is needed just to rebuild a publication.

@@ -14,6 +14,10 @@ func loadChanges(database *sql.DB, state *PublishedState) error {
 		return fmt.Errorf("query token changes: %w", err)
 	}
 	defer rows.Close()
+	dates := make(map[string]string, len(state.Snapshots))
+	for _, snapshot := range state.Snapshots {
+		dates[snapshot.ID] = snapshot.CreatedAt
+	}
 	for rows.Next() {
 		var change ChangeView
 		var before, after sql.NullString
@@ -26,10 +30,12 @@ func loadChanges(database *sql.DB, state *PublishedState) error {
 		if after.Valid {
 			change.After = after.String
 		}
+		change.DetectedAt = dates[change.SnapshotID]
 		state.Changes = append(state.Changes, change)
 	}
 	if err := rows.Err(); err != nil {
 		return fmt.Errorf("read token changes: %w", err)
 	}
+	sortChanges(state.Changes, state.Snapshots)
 	return nil
 }

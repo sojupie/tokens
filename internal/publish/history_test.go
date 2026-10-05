@@ -44,3 +44,13 @@ func TestChangeViewsAreStableAndSorted(t *testing.T) {
 		t.Fatal("change ID is not stable")
 	}
 }
+
+func TestHistoryTokenOwnersUsePublishedComponentNames(t *testing.T) {
+	owners := historyTokenOwners([]SubjectView{
+		{Key: SubjectKey{Kind: SubjectComponent, Slug: "buttons"}, Tokens: []TokenView{{SourceName: "md.comp.button.height"}, {SourceName: "md.comp.elevated-button.height"}, {SourceName: "shared"}}},
+		{Key: SubjectKey{Kind: SubjectStyle, Slug: "spacing"}, Tokens: []TokenView{{SourceName: "md.sys.spacing.small"}, {SourceName: "shared"}}},
+	})
+	if owners["component:button"] != "buttons" || owners["component:elevated-button"] != "buttons" || owners["md.sys.spacing.small"] != "spacing" || owners["shared"] != "" {
+		t.Fatalf("owners = %#v", owners)
+	}
+}

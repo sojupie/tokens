@@ -46,6 +46,7 @@ type SnapshotView struct {
 }
 
 type ChangeView struct {
+	DetectedAt         string `json:"detectedAt"`
 	ID                 string `json:"id"`
 	Type               string `json:"type"`
 	Subject            string `json:"subject,omitempty"`

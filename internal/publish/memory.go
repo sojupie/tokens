@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"sort"
+	"time"
 )
 
 type PublishedState struct {
@@ -89,6 +91,27 @@ func loadSnapshots(database *sql.DB, state *PublishedState) error {
 	if state.CurrentSnapshot.CreatedAt == "" {
 		return fmt.Errorf("current snapshot %q is not present", state.CurrentSnapshot.ID)
 	}
+	dates := make(map[string]time.Time, len(state.Snapshots))
+	for _, snapshot := range state.Snapshots {
+		date, err := time.Parse(time.RFC3339Nano, snapshot.CreatedAt)
+		if err != nil {
+			return fmt.Errorf("snapshot %s date: %w", snapshot.ID, err)
+		}
+		dates[snapshot.ID] = date
+	}
+	sort.Slice(state.Snapshots, func(i, j int) bool {
+		first, second := state.Snapshots[i], state.Snapshots[j]
+		if dates[first.ID].Equal(dates[second.ID]) {
+			if first.ID == state.CurrentSnapshot.ID {
+				return false
+			}
+			if second.ID == state.CurrentSnapshot.ID {
+				return true
+			}
+			return first.ID < second.ID
+		}
+		return dates[first.ID].Before(dates[second.ID])
+	})
 	return nil
 }
 

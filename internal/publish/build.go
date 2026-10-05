@@ -12,11 +12,12 @@ import (
 )
 
 type BuildConfig struct {
-	SnapshotDir         string
-	PreviousSnapshotDir string
-	OutputDir           string
-	PublicationID       string
-	GeneratedAt         string
+	SnapshotDir   string
+	HistoryDir    string
+	Progress      func(string)
+	OutputDir     string
+	PublicationID string
+	GeneratedAt   string
 }
 
 func Build(config BuildConfig) (Publication, error) {
@@ -42,23 +43,8 @@ func Build(config BuildConfig) (Publication, error) {
 	if _, err := time.Parse(time.RFC3339Nano, publication.GeneratedAt); err != nil {
 		return Publication{}, fmt.Errorf("publication generatedAt is not RFC3339: %w", err)
 	}
-	if config.PreviousSnapshotDir != "" {
-		previous, err := loadSnapshot(config.PreviousSnapshotDir)
-		if err != nil {
-			return Publication{}, fmt.Errorf("load previous snapshot: %w", err)
-		}
-		if previous.Manifest.SnapshotID == input.Manifest.SnapshotID {
-			return Publication{}, errors.New("previous snapshot must have a different snapshot ID")
-		}
-		diff, err := tokensnapshot.Diff(config.PreviousSnapshotDir, config.SnapshotDir)
-		if err != nil {
-			return Publication{}, fmt.Errorf("compare snapshots for publication history: %w", err)
-		}
-		publication.Changes = changeViews(diff)
-		publication.Snapshots = []SnapshotView{
-			snapshotView(previous.Manifest, previous.ManifestHash),
-			snapshotView(input.Manifest, input.ManifestHash),
-		}
+	if err := buildHistory(config, &publication); err != nil {
+		return Publication{}, err
 	}
 	stagingDir, err := createStagingDir(config.OutputDir)
 	if err != nil {
