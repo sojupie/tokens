@@ -65,6 +65,11 @@ func tokenBrowserView(subject publish.SubjectView, browser tokenBrowser) templ.C
 				if err := write(`</div></fieldset>`); err != nil {
 					return err
 				}
+				if filter.Name == "Audience" {
+					if err := write(`<details class="sl-audience-help"><summary>What do 1P and 3P mean?</summary><p>1P means first-party; 3P means third-party. We interpret <strong>1P Baseline</strong> as the configuration for Google&#39;s own products, and <strong>3P</strong> as the configuration for other developers.</p><p>Material supplies these audience labels but does not define them in the captured data. They are not a baseline-versus-Expressive switch.</p></details>`); err != nil {
+						return err
+					}
+				}
 			}
 			if advanced {
 				if err := write(`</details>`); err != nil {

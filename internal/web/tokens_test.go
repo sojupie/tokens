@@ -2,6 +2,7 @@ package web
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"net/url"
 	"strings"
@@ -9,6 +10,20 @@ import (
 
 	"github.com/sojupie/m3-source/internal/publish"
 )
+
+func TestAudienceHelpExplainsSourceLabels(t *testing.T) {
+	subject := publish.SubjectView{Key: publish.SubjectKey{Kind: publish.SubjectComponent, Slug: "buttons"}}
+	browser := tokenBrowser{Sets: []tokenSet{{Key: "color", Label: "Color"}}, Filters: []tokenFilter{{Name: "Audience", Key: "context.Audience", Options: []string{"1P Baseline", "3P"}, Selected: "3P"}}}
+	var output bytes.Buffer
+	if err := tokenBrowserView(subject, browser).Render(context.Background(), &output); err != nil {
+		t.Fatal(err)
+	}
+	for _, text := range []string{"What do 1P and 3P mean?", "first-party", "third-party", "does not define them", "not a baseline-versus-Expressive switch"} {
+		if !strings.Contains(output.String(), text) {
+			t.Fatalf("missing audience explanation: %q", text)
+		}
+	}
+}
 
 func TestReferenceCellUsesAliasesAndPreservesChain(t *testing.T) {
 	row := tokenRow{SourceName: "md.comp.button.shadow", Value: "Color not resolved", References: []publish.TokenReference{{Name: "md.sys.color.shadow", References: []publish.TokenReference{{Name: "md.ref.palette.neutral0"}}}}}
