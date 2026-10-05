@@ -11,11 +11,28 @@ import (
 )
 
 func writeTokenDownloadMenu(writer io.Writer, subject publish.SubjectView, browser tokenBrowser) error {
-	menu := `<form class="sl-token-download" method="get" action="` + html.EscapeString(subjectDownloadURL(subject)) + `"><select name="scope" aria-label="Download scope">`
-	if len(browser.Sets) > 0 {
-		menu += `<option value="view">Current view</option><option value="set">Token set · all contexts</option>`
+	menu := `<div class="sl-token-download"><button type="button" data-download-open aria-haspopup="dialog">Download JSON</button><dialog aria-labelledby="sl-download-title"><form method="get" action="` + html.EscapeString(subjectDownloadURL(subject)) + `"><h2 id="sl-download-title">Download tokens</h2>`
+	if browser.Selected.Label != "" {
+		menu += `<p class="sl-download-table">` + html.EscapeString(browser.Selected.Label) + `</p>`
 	}
-	menu += `<option value="all">All tokens · all contexts</option></select>`
+	menu += `<fieldset><legend>What should the file include?</legend>`
+	option := func(value, label, description string, checked bool) {
+		menu += `<label class="sl-download-option"><input type="radio" name="scope" value="` + value + `"`
+		if checked {
+			menu += ` checked`
+		}
+		menu += `><span><strong>` + html.EscapeString(label) + `</strong><small>` + html.EscapeString(description) + `</small></span></label>`
+	}
+	if len(browser.Sets) > 0 {
+		option("view", "This table, with your filters", "Matches your search and selected values.", true)
+		option("set", "This table, with every value", "Includes all available settings. Ignores search and filters.", false)
+	}
+	allLabel := "All tokens on this page"
+	if subject.Name != "" {
+		allLabel = "All " + subject.Name + " tokens"
+	}
+	option("all", allLabel, "Includes every table and every value. Ignores search and filters.", len(browser.Sets) == 0)
+	menu += `</fieldset>`
 	input := func(name, value string) {
 		menu += `<input type="hidden" name="` + html.EscapeString(name) + `" value="` + html.EscapeString(value) + `">`
 	}
@@ -24,7 +41,7 @@ func writeTokenDownloadMenu(writer io.Writer, subject publish.SubjectView, brows
 	for _, filter := range browser.Filters {
 		input(filter.Key, filter.Selected)
 	}
-	menu += `<button type="submit">Download JSON</button></form>`
+	menu += `<footer><button type="button" data-download-cancel>Cancel</button><button type="submit">Download JSON</button></footer></form></dialog><noscript><style>.sl-token-download>button{display:none}.sl-token-download dialog:not([open]){display:block;position:static}</style></noscript></div>`
 	_, err := io.WriteString(writer, menu)
 	return err
 }

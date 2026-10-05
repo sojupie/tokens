@@ -73,10 +73,23 @@
 .sl-reference-preview[style]::before { content:""; width:12px; height:12px; border-radius:50%; border:1px solid #cac4d0; background:var(--token-color); }
 .sl-no-previews .sl-reference-preview { display:none; }
 .sl-token-lifecycle { font-size:12px; color:#6750a4; margin-left:8px; }
-.sl-token-download { display:flex; align-items:center; flex-wrap:wrap; gap:8px; }
-.sl-token-download select, .sl-token-download button { font:inherit; color:inherit; background:transparent; border:1px solid var(--sl-rule); border-radius:4px; padding:6px 10px; }
+.sl-token-download button { font:inherit; color:inherit; background:transparent; border:1px solid var(--sl-rule); border-radius:4px; padding:8px 12px; }
 .sl-token-download button { cursor:pointer; }
 .sl-token-download button:hover { background:var(--sl-rule); }
+.sl-token-download dialog { color:var(--sl-ink-main); background:var(--sl-page-surface); border:1px solid var(--sl-rule); border-radius:8px; width:440px; max-width:calc(100vw - 32px); max-height:calc(100vh - 32px); overflow:auto; padding:24px; }
+.sl-token-download dialog::backdrop { background:#0004; }
+.sl-token-download h2 { font-size:1.25rem; font-weight:500; margin:0 0 8px; }
+.sl-download-table { font-size:.875rem; color:var(--sl-ink-muted); margin:0 0 24px; }
+.sl-token-download fieldset { border:0; padding:0; margin:0; }
+.sl-token-download legend { font-size:.875rem; margin-bottom:8px; }
+.sl-download-option { display:flex; align-items:baseline; gap:12px; padding:16px 0; cursor:pointer; }
+.sl-download-option + .sl-download-option { border-top:1px solid var(--sl-rule); }
+.sl-download-option input { flex-shrink:0; accent-color:var(--sl-accent); }
+.sl-download-option strong { display:block; font-weight:500; }
+.sl-download-option small { display:block; font-size:.8125rem; line-height:1.5; color:var(--sl-ink-muted); margin-top:4px; }
+.sl-token-download footer { display:flex; justify-content:flex-end; gap:8px; margin-top:16px; padding-top:16px; border-top:1px solid var(--sl-rule); }
+.sl-token-download [type="submit"] { color:var(--sl-page-surface); background:var(--sl-accent); border-color:var(--sl-accent); }
+.sl-token-download [type="submit"]:hover { opacity:.85; background:var(--sl-accent); }
 .sl-token-no-value { color:#79747e; }
 .sl-token-browser.sl-no-previews .sl-token-value { background:transparent; border:0; color:var(--table-ink); min-height:40px; font-weight:400; }
 .sl-token-browser.sl-flat-view .sl-token-folder>summary { display:none; }

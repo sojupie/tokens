@@ -66,19 +66,26 @@ func TestTokenDownloadsMatchTableAndKeepFullContextsOptional(t *testing.T) {
 	}
 }
 
-func TestTokenDownloadControlUsesNativeScopeForm(t *testing.T) {
+func TestTokenDownloadControlExplainsChoices(t *testing.T) {
 	var output bytes.Buffer
-	subject := publish.SubjectView{Key: publish.SubjectKey{Kind: publish.SubjectComponent, Slug: "buttons"}}
-	browser := tokenBrowser{Sets: []tokenSet{{}}, Selected: tokenSet{Key: "button|color|outlined"}, Query: `icon & label`}
+	subject := publish.SubjectView{Key: publish.SubjectKey{Kind: publish.SubjectComponent, Slug: "buttons"}, Name: "Buttons"}
+	browser := tokenBrowser{Sets: []tokenSet{{}}, Selected: tokenSet{Key: "button|color|outlined", Label: "Button - Color - Outlined"}, Query: `icon & label`}
 	if err := writeTokenDownloadMenu(&output, subject, browser); err != nil {
 		t.Fatal(err)
 	}
-	for _, want := range []string{`method="get"`, `aria-label="Download scope"`, `value="view"`, `value="set"`, `value="all"`, `icon &amp; label`, `Download JSON</button>`} {
+	for _, want := range []string{`method="get"`, `aria-labelledby="sl-download-title"`, `value="view" checked`, `value="set"`, `value="all"`, `icon &amp; label`, `Download JSON</button>`, `Button - Color - Outlined`, `This table, with your filters`, `This table, with every value`, `All Buttons tokens`, `Ignores search and filters.`} {
 		if !strings.Contains(output.String(), want) {
 			t.Fatalf("missing %s in %s", want, output.String())
 		}
 	}
-	if strings.Contains(output.String(), "<details") {
-		t.Fatal("download control should not be a popup")
+	if strings.Contains(output.String(), "<select") {
+		t.Fatal("choices should be explained together, not hidden in a scope selector")
+	}
+	output.Reset()
+	if err := writeTokenDownloadMenu(&output, subject, tokenBrowser{}); err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(output.String(), `value="all" checked`) || strings.Contains(output.String(), `value="view"`) {
+		t.Fatal("page without a table must offer only the complete download")
 	}
 }

@@ -1,3 +1,10 @@
+document.querySelectorAll('.sl-token-download').forEach(download => {
+  const dialog = download.querySelector('dialog');
+  download.querySelector('[data-download-open]').addEventListener('click', () => dialog.showModal());
+  download.querySelector('[data-download-cancel]').addEventListener('click', () => dialog.close());
+  dialog.querySelector('form').addEventListener('submit', () => dialog.close());
+});
+
 document.querySelectorAll('.sl-token-browser').forEach(browser => {
   const form = browser.querySelector('form');
   const dialog = browser.querySelector('dialog');
