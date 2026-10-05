@@ -12,7 +12,7 @@ templ layout(title string) {
 		<meta charset="utf-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1"/>
 		<link rel="stylesheet" href="/static/app.css"/>
-		<link rel="stylesheet" href="/static/token-table.css?v=20261005-change-groups"/>
+		<link rel="stylesheet" href="/static/token-table.css?v=20261005-groups-lazy"/>
 		<script src="/static/htmx.min.js" defer></script>
 		<title>{ title } · Source Loom</title>
 	</head>
@@ -101,14 +101,14 @@ templ subjectPage(subject publish.SubjectView, changes []publish.ChangeView, bro
     @subjectPageComponent(subject, changes, browser)
 }
 
-templ changesPage(state publish.PublishedState, subject string, baseURL string, filters changeFilters, counts string, changes []publish.ChangeView, page int, total int, hasPrevious bool, hasNext bool) {
+templ changesPage(state publish.PublishedState, subject string, baseURL string, filters changeFilters, counts string, changes []publish.ChangeView, page int, total int, groups int, hasPrevious bool, hasNext bool) {
 @layout(timelineTitle(subject, state.Subjects)) {
 		<h1 class="typo-page-title">{ timelineTitle(subject, state.Subjects) }</h1>
 		<p class="sl-metadata">{ historyCoverage(state.Snapshots) }</p>
 		<p class="sl-metadata">Dates show when we detected changes, not when Material published them.</p>
 		@changeFilterForm(filters, baseURL)
 		if total > 0 {
-			<p class="sl-metadata">Showing page { page } of { (total + 49) / 50 } · { total } total changes</p>
+			<p class="sl-metadata">Showing page { page } of { (groups + changeGroupsPerPage - 1) / changeGroupsPerPage } · { groups } component groups · { total } total changes</p>
 			<p class="sl-change-counts">{ counts }. One token can have changes in several settings.</p>
 		}
 		if len(changes) == 0 {
@@ -127,7 +127,7 @@ templ changesPage(state publish.PublishedState, subject string, baseURL string, 
 					<p class="sl-metadata">Compared with { observationDate(batch.PreviousAt) }</p>
 				}
 		for _, group := range changeGroups(batch.Changes, state.Subjects) {
-			<details class="sl-change-group">
+			<details class="sl-change-group" hx-get={ changeRecordsURL(baseURL, group.Changes[0].Subject, batch.Changes[0].SnapshotID) } hx-trigger="toggle[event.target.open] once" hx-target="find .sl-change-records">
 				<summary class="sl-change-group-heading">
 					@materialSymbol("expand_more")
 					<h3 class="typo-section-header">
@@ -137,12 +137,63 @@ templ changesPage(state publish.PublishedState, subject string, baseURL string, 
 							{ group.Label }
 						}
 					</h3>
-					<span class="sl-change-status">{ len(group.Changes) } records on this page</span>
+					<span class="sl-change-status">{ len(group.Changes) } change records</span>
 				</summary>
 				if group.URL != "" {
-					<p class="sl-change-component-link"><a class="sl-link" href={ group.URL }>Browse { group.Label } tokens @materialSymbol("chevron_right")</a></p>
+					<p class="sl-change-component-link"><a class="sl-link" href={ group.URL }>Browse { group.Label } tokens
+						@materialSymbol("chevron_right")
+					</a></p>
 				}
-		for _, change := range group.Changes {
+				<div class="sl-change-records">
+					<a class="sl-link" href={ changeRecordsURL(baseURL, group.Changes[0].Subject, batch.Changes[0].SnapshotID) }
+						hx-get={ changeRecordsURL(baseURL, group.Changes[0].Subject, batch.Changes[0].SnapshotID) } hx-target="closest .sl-change-records">Load changes</a>
+				</div>
+			</details>
+		}
+			</section>
+		}
+		if hasPrevious || hasNext {
+			<nav class="sl-pagination" aria-label="Change log pages">
+				if hasPrevious {
+					<a class="sl-link" href={ changesPageURL(baseURL, page - 1) }>Previous</a>
+				}
+				<span class="typo-sublabel">Page { page }</span>
+				if hasNext {
+					<a class="sl-link" href={ changesPageURL(baseURL, page + 1) }>Next</a>
+				}
+			</nav>
+		}
+}
+}
+
+templ changeFilterForm(filters changeFilters, baseURL string) {
+	<form class="sl-change-filters" method="get" action={ strings.SplitN(baseURL, "?", 2)[0] }>
+		if !filters.FixedSubject {
+			<label>Component or style<select name="subject"><option value="">All components and styles</option>
+				for _, option := range filters.Subjects {
+					<option value={ option.Value } selected?={ option.Value == filters.Subject }>{ option.Label }</option>
+				}
+			</select></label>
+		}
+		<label>Observed<select name="snapshot"><option value="">All dates</option>
+			for _, option := range filters.Snapshots {
+				<option value={ option.Value } selected?={ option.Value == filters.Snapshot }>{ option.Label }</option>
+			}
+		</select></label>
+		<label>Change<select name="type">
+			<option value="">All changes</option>
+			<option value="changed" selected?={ filters.Type == "changed" }>Updated</option>
+			<option value="added" selected?={ filters.Type == "added" }>Added</option>
+			<option value="removed" selected?={ filters.Type == "removed" }>Removed</option>
+		</select></label>
+		<label>Token name<input type="search" name="q" value={ filters.Query } placeholder="e.g. width or font"/></label>
+		<button type="submit">Apply filters</button>
+		<a class="sl-link" href={ strings.SplitN(baseURL, "?", 2)[0] }>Reset</a>
+	</form>
+}
+
+templ changeRecordList(changes []labeledChange) {
+		for _, change := range changes {
 			<details class="sl-change-card sl-change-disclosure">
 				<summary class="sl-change-heading">
 					@materialSymbol("chevron_right")
@@ -174,46 +225,32 @@ templ changesPage(state publish.PublishedState, subject string, baseURL string, 
 				</table>
 			</details>
 		}
-			</details>
-		}
-			</section>
-		}
-		if hasPrevious || hasNext {
-			<nav class="sl-pagination" aria-label="Change log pages">
-				if hasPrevious {
-					<a class="sl-link" href={ changesPageURL(baseURL, page - 1) }>Previous</a>
-				}
-				<span class="typo-sublabel">Page { page }</span>
-				if hasNext {
-					<a class="sl-link" href={ changesPageURL(baseURL, page + 1) }>Next</a>
-				}
-			</nav>
-		}
-}
 }
 
-templ changeFilterForm(filters changeFilters, baseURL string) {
-	<form class="sl-change-filters" method="get" action={ strings.SplitN(baseURL, "?", 2)[0] }>
-		if !filters.FixedSubject {
-			<label>Component or style<select name="subject"><option value="">All components and styles</option>
-				for _, option := range filters.Subjects {
-					<option value={ option.Value } selected={ option.Value == filters.Subject }>{ option.Label }</option>
-				}
-			</select></label>
-		}
-		<label>Observed<select name="snapshot"><option value="">All dates</option>
-			for _, option := range filters.Snapshots {
-				<option value={ option.Value } selected={ option.Value == filters.Snapshot }>{ option.Label }</option>
+templ changeRecordsContent(changes []labeledChange, baseURL string, page int, total int, hasPrevious bool, hasNext bool) {
+	<p class="sl-metadata">Record page { page } · { total } matching change records</p>
+	@changeRecordList(changes)
+	if hasPrevious || hasNext {
+		<nav class="sl-pagination" aria-label="Component change records">
+			if hasPrevious {
+				<a class="sl-link" href={ changesPageURL(baseURL, page - 1) } hx-get={ changesPageURL(baseURL, page - 1) } hx-target="closest .sl-change-records">Previous records</a>
 			}
-		</select></label>
-		<label>Change<select name="type">
-			<option value="">All changes</option>
-			<option value="changed" selected={ filters.Type == "changed" }>Updated</option>
-			<option value="added" selected={ filters.Type == "added" }>Added</option>
-			<option value="removed" selected={ filters.Type == "removed" }>Removed</option>
-		</select></label>
-		<label>Token name<input type="search" name="q" value={ filters.Query } placeholder="e.g. width or font"/></label>
-		<button type="submit">Apply filters</button>
-		<a class="sl-link" href={ strings.SplitN(baseURL, "?", 2)[0] }>Reset</a>
-	</form>
+			if hasNext {
+				<a class="sl-link" href={ changesPageURL(baseURL, page + 1) } hx-get={ changesPageURL(baseURL, page + 1) } hx-target="closest .sl-change-records">Next records</a>
+			}
+		</nav>
+	}
+}
+
+templ changeRecordsPage(title string, content templ.Component) {
+	@layout(title) {
+		<p><a class="sl-link" href="/changes">
+			@materialSymbol("arrow_back")
+			Change log
+		</a></p>
+		<h1 class="typo-page-title">{ title }</h1>
+		<div class="sl-change-records">
+			@content
+		</div>
+	}
 }

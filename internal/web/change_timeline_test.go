@@ -22,6 +22,9 @@ func TestChangeTimelineShowsEarlierTransitionsGloballyAndPerSubject(t *testing.T
 		recorder := httptest.NewRecorder()
 		New(state, "").Handler().ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, path, nil))
 		body := recorder.Body.String()
+		if strings.Contains(body, "@materialSymbol") {
+			t.Fatal("template call leaked into visible text")
+		}
 		if recorder.Code != http.StatusOK {
 			t.Fatalf("%s: %d", path, recorder.Code)
 		}
@@ -77,17 +80,20 @@ func TestTimelineUsesExactIdentifiersAndLinkedComponentGroups(t *testing.T) {
 		recorder := httptest.NewRecorder()
 		New(state, "").Handler().ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, path, nil))
 		body := recorder.Body.String()
+		if !strings.Contains(body, `class="sl-change-group"`) || !strings.Contains(body, `href="/components/buttons"`) || strings.Contains(body, "@materialSymbol") {
+			t.Fatal("overview must retain linked component groups without template text")
+		}
+		recorder = httptest.NewRecorder()
+		New(state, "").Handler().ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, "/changes/records?subject=buttons&snapshot=current", nil))
+		body = recorder.Body.String()
 		level := "h4"
-		for _, text := range []string{"<" + level + ">md.comp.button.elevated.label-text.weight</" + level + ">", "md.comp.button.removed.height", "Font weight", "Previous value", "New value", `aria-label="Token hierarchy"`, `Elevated</li>`, `Removed</li>`, `<details class="sl-change-group">`, `href="/components/buttons"`, `class="sl-material-symbol"`, `Browse Buttons tokens`} {
+		for _, text := range []string{"<" + level + ">md.comp.button.elevated.label-text.weight</" + level + ">", "md.comp.button.removed.height", "Font weight", "Previous value", "New value", `aria-label="Token hierarchy"`, `Elevated</li>`, `Removed</li>`, `class="sl-material-symbol"`} {
 			if !strings.Contains(body, text) {
 				t.Fatalf("%s missing %q", path, text)
 			}
 		}
 		if strings.Contains(body, "Button elevated label text weight") {
 			t.Fatal("heading still uses the formatted display name")
-		}
-		if path == "/changes" && !strings.Contains(body, `href="/components/buttons"`) {
-			t.Fatal("component group does not link to token table")
 		}
 	}
 }

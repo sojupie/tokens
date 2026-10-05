@@ -98,8 +98,8 @@ func (server *Server) handleGlobalChanges(response http.ResponseWriter, request 
 func (server *Server) renderChangeHistory(response http.ResponseWriter, request *http.Request, subject string) {
 	changes, filters := filterChangeHistory(server.state, subject, request.URL.Query())
 	page := requestedPage(request)
-	pageChanges, page, hasPrevious, hasNext := paginateChanges(changes, page)
-	if err := renderHTML(response, request, changesPage(server.state, subject, request.URL.String(), filters, changeCountSummary(changes), pageChanges, page, len(changes), hasPrevious, hasNext)); err != nil {
+	pageChanges, page, groups, hasPrevious, hasNext := paginateChangeGroups(changes, page)
+	if err := renderHTML(response, request, changesPage(server.state, subject, request.URL.String(), filters, changeCountSummary(changes), pageChanges, page, len(changes), groups, hasPrevious, hasNext)); err != nil {
 		http.Error(response, err.Error(), http.StatusInternalServerError)
 	}
 }
