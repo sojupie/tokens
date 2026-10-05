@@ -39,7 +39,7 @@ func loadSubjects(database *sql.DB, state *PublishedState) error {
 
 func loadTokens(database *sql.DB, state *PublishedState) error {
 	rows, err := database.Query(`
-		SELECT subject_kind, subject_slug, source_name, category, raw_json, lifecycle
+		SELECT subject_kind, subject_slug, source_name, display_name, category, raw_json, lifecycle
 		FROM tokens
 		ORDER BY subject_kind, subject_slug, source_name`)
 	if err != nil {
@@ -50,7 +50,7 @@ func loadTokens(database *sql.DB, state *PublishedState) error {
 		var key SubjectKey
 		var token TokenView
 		var raw, lifecycle sql.NullString
-		if err := rows.Scan(&key.Kind, &key.Slug, &token.SourceName, &token.Category, &raw, &lifecycle); err != nil {
+		if err := rows.Scan(&key.Kind, &key.Slug, &token.SourceName, &token.DisplayName, &token.Category, &raw, &lifecycle); err != nil {
 			return fmt.Errorf("read token: %w", err)
 		}
 		if _, ok := state.Subjects[key]; !ok {
@@ -77,7 +77,7 @@ func loadTokens(database *sql.DB, state *PublishedState) error {
 
 func loadTokenValues(database *sql.DB, state *PublishedState) error {
 	rows, err := database.Query(`
-		SELECT subject_kind, subject_slug, source_name, context_tags_json, context_labels_json, is_default_context, value_json, raw_json, sources_json
+		SELECT subject_kind, subject_slug, source_name, context_tags_json, context_labels_json, is_default_context, value_json, references_json, raw_json, sources_json
 		FROM token_values
 		ORDER BY subject_kind, subject_slug, source_name, context_tags_json`)
 	if err != nil {
@@ -86,10 +86,10 @@ func loadTokenValues(database *sql.DB, state *PublishedState) error {
 	defer rows.Close()
 	for rows.Next() {
 		var key SubjectKey
-		var sourceName, contextTags, contextLabels, value, sources string
+		var sourceName, contextTags, contextLabels, value, references, sources string
 		var isDefaultContext bool
 		var raw sql.NullString
-		if err := rows.Scan(&key.Kind, &key.Slug, &sourceName, &contextTags, &contextLabels, &isDefaultContext, &value, &raw, &sources); err != nil {
+		if err := rows.Scan(&key.Kind, &key.Slug, &sourceName, &contextTags, &contextLabels, &isDefaultContext, &value, &references, &raw, &sources); err != nil {
 			return fmt.Errorf("read token value: %w", err)
 		}
 		subject, ok := state.Subjects[key]
@@ -109,6 +109,9 @@ func loadTokenValues(database *sql.DB, state *PublishedState) error {
 		}
 		tokenValue.IsDefaultContext = isDefaultContext
 		tokenValue.Value = json.RawMessage(value)
+		if err := json.Unmarshal([]byte(references), &tokenValue.References); err != nil {
+			return fmt.Errorf("decode references for %s: %w", sourceName, err)
+		}
 		if raw.Valid {
 			tokenValue.Raw = json.RawMessage(raw.String)
 		}

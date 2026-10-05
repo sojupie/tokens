@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-const SchemaVersion = 2
+const SchemaVersion = 3
 
 type SubjectKind string
 
@@ -84,16 +84,18 @@ type PublicTokenDocument struct {
 }
 
 type PublicToken struct {
-	Name      string             `json:"name"`
-	Type      string             `json:"type,omitempty"`
-	Values    []PublicTokenValue `json:"values"`
-	Lifecycle string             `json:"lifecycle,omitempty"`
+	Name        string             `json:"name"`
+	DisplayName string             `json:"displayName,omitempty"`
+	Type        string             `json:"type,omitempty"`
+	Values      []PublicTokenValue `json:"values"`
+	Lifecycle   string             `json:"lifecycle,omitempty"`
 }
 
 type PublicTokenValue struct {
-	Context []string        `json:"context,omitempty"`
-	Default bool            `json:"default,omitempty"`
-	Value   json.RawMessage `json:"value"`
+	Context    []string         `json:"context,omitempty"`
+	Default    bool             `json:"default,omitempty"`
+	Value      json.RawMessage  `json:"value"`
+	References []TokenReference `json:"references,omitempty"`
 }
 
 func (subject SubjectView) Public() PublicSubject {
@@ -105,18 +107,20 @@ func (subject SubjectView) Public() PublicSubject {
 	}
 	for _, token := range subject.Tokens {
 		publicToken := PublicToken{
-			Name:   token.SourceName,
-			Type:   token.Category,
-			Values: make([]PublicTokenValue, 0, len(token.Values)),
+			Name:        token.SourceName,
+			DisplayName: token.DisplayName,
+			Type:        token.Category,
+			Values:      make([]PublicTokenValue, 0, len(token.Values)),
 		}
 		if !strings.EqualFold(token.Lifecycle, "active") {
 			publicToken.Lifecycle = token.Lifecycle
 		}
 		for _, value := range token.Values {
 			publicToken.Values = append(publicToken.Values, PublicTokenValue{
-				Context: append([]string(nil), value.ContextLabels...),
-				Default: value.IsDefaultContext,
-				Value:   append(json.RawMessage(nil), value.Value...),
+				Context:    append([]string(nil), value.ContextLabels...),
+				Default:    value.IsDefaultContext,
+				Value:      append(json.RawMessage(nil), value.Value...),
+				References: value.References,
 			})
 		}
 		public.Tokens = append(public.Tokens, publicToken)
@@ -136,12 +140,13 @@ func (subject SubjectView) PublicDocument(capturedAt string) PublicTokenDocument
 }
 
 type TokenView struct {
-	SourceName string            `json:"sourceName"`
-	Category   string            `json:"category,omitempty"`
-	Values     []TokenValueView  `json:"values"`
-	Raw        json.RawMessage   `json:"raw,omitempty"`
-	Lifecycle  string            `json:"lifecycle,omitempty"`
-	Sources    []TokenSourceView `json:"sources"`
+	SourceName  string            `json:"sourceName"`
+	DisplayName string            `json:"displayName,omitempty"`
+	Category    string            `json:"category,omitempty"`
+	Values      []TokenValueView  `json:"values"`
+	Raw         json.RawMessage   `json:"raw,omitempty"`
+	Lifecycle   string            `json:"lifecycle,omitempty"`
+	Sources     []TokenSourceView `json:"sources"`
 }
 
 type TokenValueView struct {
@@ -149,8 +154,16 @@ type TokenValueView struct {
 	ContextLabels    []string          `json:"contextLabels,omitempty"`
 	IsDefaultContext bool              `json:"isDefaultContext,omitempty"`
 	Value            json.RawMessage   `json:"value"`
+	References       []TokenReference  `json:"references,omitempty"`
 	Raw              json.RawMessage   `json:"raw,omitempty"`
 	Sources          []TokenSourceView `json:"sources"`
+}
+
+// TokenReference preserves named dependencies, including branching composite values.
+// It excludes upstream record IDs and revision metadata.
+type TokenReference struct {
+	Name       string           `json:"name"`
+	References []TokenReference `json:"references,omitempty"`
 }
 
 type TokenSourceView struct {

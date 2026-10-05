@@ -56,7 +56,7 @@ func project(input snapshotInput) (Publication, error) {
 			for _, key := range recordSubjects(record, owners, payloadSubjects) {
 				builder := getSubjectBuilder(builders, key)
 				addPayloadPages(builder, payloads[record.SourcePayloadID])
-				if err := builder.addToken(record.TokenName, record.ValueType, nil, nil, record.Raw, record, contexts); err != nil {
+				if err := builder.addToken(record.TokenName, record.ValueType, nil, nil, nil, record.Raw, record, contexts); err != nil {
 					return Publication{}, err
 				}
 			}
@@ -75,7 +75,7 @@ func project(input snapshotInput) (Publication, error) {
 				for _, key := range recordSubjects(record, owners, payloadSubjects) {
 					builder := getSubjectBuilder(builders, key)
 					addPayloadPages(builder, payloads[record.SourcePayloadID])
-					if err := builder.addToken(entry.TokenName, "", entry.ResolvedValue, entry.ContextTags, entry.Raw, record, contexts); err != nil {
+					if err := builder.addToken(entry.TokenName, "", entry.ResolvedValue, entry.ContextTags, entry.References, entry.Raw, record, contexts); err != nil {
 						return Publication{}, err
 					}
 				}
@@ -203,7 +203,7 @@ func getSubjectBuilder(builders map[SubjectKey]*subjectBuilder, key SubjectKey) 
 	return builder
 }
 
-func (builder *subjectBuilder) addToken(name, category string, value json.RawMessage, contextTags []string, raw json.RawMessage, record tokensnapshot.ExtractedRecord, contexts map[string]resolvedContext) error {
+func (builder *subjectBuilder) addToken(name, category string, value json.RawMessage, contextTags []string, references []TokenReference, raw json.RawMessage, record tokensnapshot.ExtractedRecord, contexts map[string]resolvedContext) error {
 	token, ok := builder.tokens[name]
 	if !ok {
 		token = &TokenView{SourceName: name, Values: []TokenValueView{}, Sources: []TokenSourceView{}}
@@ -211,6 +211,9 @@ func (builder *subjectBuilder) addToken(name, category string, value json.RawMes
 	}
 	if category != "" && token.Category == "" {
 		token.Category = category
+	}
+	if record.Kind == "token" && record.DisplayName != "" {
+		token.DisplayName = record.DisplayName
 	}
 	if len(value) > 0 {
 		tags := append([]string(nil), contextTags...)
@@ -223,11 +226,24 @@ func (builder *subjectBuilder) addToken(name, category string, value json.RawMes
 				ContextLabels:    labels,
 				IsDefaultContext: isDefault,
 				Value:            append(json.RawMessage(nil), value...),
+				References:       references,
 				Raw:              append(json.RawMessage(nil), raw...),
 				Sources:          []TokenSourceView{},
 			})
 		} else if !jsonEqual(valueView.Value, value) {
 			return fmt.Errorf("conflicting values for published token %s in context %s", name, strings.Join(tags, ","))
+		} else {
+			existing, err := json.Marshal(valueView.References)
+			if err != nil {
+				return err
+			}
+			incoming, err := json.Marshal(references)
+			if err != nil {
+				return err
+			}
+			if !jsonEqual(existing, incoming) {
+				return fmt.Errorf("conflicting references for published token %s in context %s", name, strings.Join(tags, ","))
+			}
 		}
 		source := TokenSourceView{PayloadID: record.SourcePayloadID, SourceRecordID: record.ID}
 		valueView = findTokenValue(token.Values, tags)
@@ -330,16 +346,33 @@ type contextualEntry struct {
 	TokenName     string
 	ContextTags   []string
 	ResolvedValue json.RawMessage
+	References    []TokenReference
 	Raw           json.RawMessage
+}
+
+type sourceReference struct {
+	TokenName  string            `json:"tokenName"`
+	ChildNodes []sourceReference `json:"childNodes"`
+}
+
+func namedReferences(nodes []sourceReference) []TokenReference {
+	var references []TokenReference
+	for _, node := range nodes {
+		children := namedReferences(node.ChildNodes)
+		if node.TokenName == "" {
+			references = append(references, children...)
+		} else {
+			references = append(references, TokenReference{Name: node.TokenName, References: children})
+		}
+	}
+	return references
 }
 
 func contextualEntries(raw json.RawMessage) ([]contextualEntry, error) {
 	var document struct {
 		Entries []struct {
-			ContextTags   []string `json:"contextTags"`
-			ReferenceTree struct {
-				TokenName string `json:"tokenName"`
-			} `json:"referenceTree"`
+			ContextTags   []string        `json:"contextTags"`
+			ReferenceTree sourceReference `json:"referenceTree"`
 			ResolvedValue json.RawMessage `json:"resolvedValue"`
 		} `json:"contextualReferenceTree"`
 	}
@@ -352,6 +385,7 @@ func contextualEntries(raw json.RawMessage) ([]contextualEntry, error) {
 			TokenName:     entry.ReferenceTree.TokenName,
 			ContextTags:   append([]string(nil), entry.ContextTags...),
 			ResolvedValue: append(json.RawMessage(nil), entry.ResolvedValue...),
+			References:    namedReferences(entry.ReferenceTree.ChildNodes),
 			Raw:           append(json.RawMessage(nil), entry.ResolvedValue...),
 		})
 	}

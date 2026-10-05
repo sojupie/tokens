@@ -109,12 +109,16 @@ func insertSubjectTokens(transaction *sql.Tx, subject SubjectView) error {
 	for _, token := range tokens {
 		raw := jsonText(token.Raw)
 		if _, err := transaction.Exec(
-			"INSERT INTO tokens (subject_kind, subject_slug, source_name, category, raw_json, lifecycle) VALUES (?, ?, ?, ?, ?, ?)",
-			subject.Key.Kind, subject.Key.Slug, token.SourceName, token.Category, raw, token.Lifecycle,
+			"INSERT INTO tokens (subject_kind, subject_slug, source_name, display_name, category, raw_json, lifecycle) VALUES (?, ?, ?, ?, ?, ?, ?)",
+			subject.Key.Kind, subject.Key.Slug, token.SourceName, token.DisplayName, token.Category, raw, token.Lifecycle,
 		); err != nil {
 			return fmt.Errorf("insert token %s/%s: %w", subject.Key.String(), token.SourceName, err)
 		}
 		for _, tokenValue := range token.Values {
+			references, err := json.Marshal(tokenValue.References)
+			if err != nil {
+				return fmt.Errorf("encode references for %s: %w", token.SourceName, err)
+			}
 			contextTags, err := json.Marshal(tokenValue.ContextTags)
 			if err != nil {
 				return fmt.Errorf("encode token context %s/%s: %w", subject.Key.String(), token.SourceName, err)
@@ -128,8 +132,8 @@ func insertSubjectTokens(transaction *sql.Tx, subject SubjectView) error {
 				return fmt.Errorf("encode token context labels %s/%s: %w", subject.Key.String(), token.SourceName, err)
 			}
 			if _, err := transaction.Exec(
-				"INSERT INTO token_values (subject_kind, subject_slug, source_name, context_tags_json, context_labels_json, is_default_context, value_json, raw_json, sources_json) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-				subject.Key.Kind, subject.Key.Slug, token.SourceName, contextTags, contextLabels, tokenValue.IsDefaultContext, string(tokenValue.Value), jsonText(tokenValue.Raw), sources,
+				"INSERT INTO token_values (subject_kind, subject_slug, source_name, context_tags_json, context_labels_json, is_default_context, value_json, references_json, raw_json, sources_json) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+				subject.Key.Kind, subject.Key.Slug, token.SourceName, contextTags, contextLabels, tokenValue.IsDefaultContext, string(tokenValue.Value), references, jsonText(tokenValue.Raw), sources,
 			); err != nil {
 				return fmt.Errorf("insert token value %s/%s: %w", subject.Key.String(), token.SourceName, err)
 			}

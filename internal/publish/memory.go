@@ -56,7 +56,7 @@ func loadPublication(database *sql.DB) (PublishedState, error) {
 		return PublishedState{}, fmt.Errorf("read publication metadata: %w", err)
 	}
 	if schemaVersion != SchemaVersion {
-		return PublishedState{}, fmt.Errorf("unsupported publication schema version %d", schemaVersion)
+		return PublishedState{}, fmt.Errorf("unsupported publication schema version %d; rebuild with sourceloom publish", schemaVersion)
 	}
 	state.Subjects = make(map[SubjectKey]SubjectView)
 	state.SourcePayloads = make(map[string]SourcePayloadView)
