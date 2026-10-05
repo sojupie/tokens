@@ -104,6 +104,10 @@
 .sl-change-heading { display:flex; justify-content:space-between; align-items:baseline; gap:16px; }
 .sl-change-heading h3, .sl-change-heading h4 { margin:0; font-size:inherit; font-weight:500; overflow-wrap:anywhere; }
 .sl-change-status { font-size:0.8125rem; color:var(--sl-ink-muted); white-space:nowrap; }
+.sl-change-hierarchy { display:flex; flex-wrap:wrap; gap:4px 0; list-style:none; padding:0; margin:12px 0 0; font-size:0.8125rem; color:var(--sl-ink-muted); }
+.sl-change-hierarchy li { display:flex; align-items:center; }
+.sl-change-hierarchy li + li::before { content:"›"; padding:0 8px; }
+.sl-change-hierarchy li:last-child { color:var(--sl-ink); }
 .sl-change-group + .sl-change-group { margin-top:32px; }
 .sl-change-group > h3 { margin:24px 0 12px; }
 .sl-change-table { width:100%; table-layout:fixed; border-collapse:collapse; margin-top:16px; }

@@ -3,6 +3,7 @@ package web
 import (
 	"net/http"
 	"net/http/httptest"
+	"reflect"
 	"strings"
 	"testing"
 
@@ -35,6 +36,22 @@ func TestChangeTimelineShowsEarlierTransitionsGloballyAndPerSubject(t *testing.T
 	}
 }
 
+func TestChangeHierarchyPreservesHistoricalPath(t *testing.T) {
+	for _, test := range []struct {
+		name string
+		want []string
+	}{
+		{"md.comp.button.outlined.hover.container.state-layer.color", []string{"Button", "Outlined", "Hovered", "Container", "State Layer", "Color"}},
+		{"md.comp.elevated-button.label-text.type", []string{"Elevated Button", "Label Text", "Type"}},
+		{"md.sys.color.primary", []string{"Color", "Primary"}},
+		{"Width", nil},
+	} {
+		if got := changeHierarchy(test.name); !reflect.DeepEqual(got, test.want) {
+			t.Errorf("%s: got %v, want %v", test.name, got, test.want)
+		}
+	}
+}
+
 func TestExistingSubjectWithoutChangesHasAnEmptyTimeline(t *testing.T) {
 	key := publish.SubjectKey{Kind: publish.SubjectComponent, Slug: "buttons"}
 	state := publish.PublishedState{Subjects: map[publish.SubjectKey]publish.SubjectView{key: {Key: key}}}
@@ -60,7 +77,7 @@ func TestTimelineUsesMaterialLabelsAndLinkedComponentGroups(t *testing.T) {
 		recorder := httptest.NewRecorder()
 		New(state, "").Handler().ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, path, nil))
 		body := recorder.Body.String()
-		for _, text := range []string{"Button elevated label text weight", "Button removed height", "Font weight", "Previous value", "New value", `title="md.comp.button.elevated.label-text.weight"`} {
+		for _, text := range []string{"Button elevated label text weight", "Button removed height", "Font weight", "Previous value", "New value", `title="md.comp.button.elevated.label-text.weight"`, `aria-label="Token hierarchy"`, `<li>Elevated</li>`, `<li>Removed</li>`, "Theme, platform and audience were not recorded"} {
 			if !strings.Contains(body, text) {
 				t.Fatalf("%s missing %q", path, text)
 			}

@@ -16,7 +16,8 @@ type changeBatch struct {
 
 type labeledChange struct {
 	publish.ChangeView
-	Label string
+	Label     string
+	Hierarchy []string
 }
 
 type changeGroup struct {
@@ -67,9 +68,32 @@ func changeGroups(changes []publish.ChangeView, subjects map[publish.SubjectKey]
 			label = readableChangeName(change.Name)
 		}
 		group := &groups[len(groups)-1]
-		group.Changes = append(group.Changes, labeledChange{ChangeView: change, Label: label})
+		group.Changes = append(group.Changes, labeledChange{ChangeView: change, Label: label, Hierarchy: changeHierarchy(change.Name)})
 	}
 	return groups
+}
+
+// Use the historical identifier, not today's token values or context labels.
+// Keeping its segments separate preserves variant, state and part nesting,
+// including for tokens that no longer exist in the current publication.
+func changeHierarchy(name string) []string {
+	parts := strings.Split(name, ".")
+	if len(parts) < 3 || parts[0] != "md" {
+		return nil
+	}
+	switch parts[1] {
+	case "comp", "sys", "ref":
+		parts = parts[2:]
+	default:
+		return nil
+	}
+	labels := make([]string, 0, len(parts))
+	for _, part := range parts {
+		if part != "" {
+			labels = append(labels, tokenStateLabel(part))
+		}
+	}
+	return labels
 }
 
 func readableChangeName(name string) string {
