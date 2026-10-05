@@ -73,6 +73,11 @@
 .sl-reference-preview[style]::before { content:""; width:12px; height:12px; border-radius:50%; border:1px solid #cac4d0; background:var(--token-color); }
 .sl-no-previews .sl-reference-preview { display:none; }
 .sl-token-lifecycle { font-size:12px; color:#6750a4; margin-left:8px; }
+.sl-token-download { position:relative; }
+.sl-token-download>summary { cursor:pointer; }
+.sl-download-options { position:absolute; right:0; z-index:3; width:min(340px,80vw); padding:16px; background:#fff; border:1px solid #e7dfea; border-radius:12px; box-shadow:0 4px 16px #0002; }
+.sl-download-options a { display:block; padding:8px 0; }
+.sl-download-options p { margin:0 0 12px; font-size:12px; color:#49454f; }
 .sl-token-no-value { color:#79747e; }
 .sl-token-browser.sl-no-previews .sl-token-value { background:transparent; border:0; color:var(--table-ink); min-height:40px; font-weight:400; }
 .sl-token-browser.sl-flat-view .sl-token-folder>summary { display:none; }

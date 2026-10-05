@@ -135,7 +135,10 @@ func subjectPageComponent(subject publish.SubjectView, changes []publish.ChangeV
 				_, err := io.WriteString(writer, value)
 				return err
 			}
-			if err := write(`<p class="sl-back-link"><a class="sl-link" href="` + subjectListPath(subject.Key.Kind != publish.SubjectComponent) + `">← ` + html.EscapeString(subjectKindLabel(subject.Key.Kind)) + `</a></p><header class="sl-subject-heading"><h1 class="typo-page-title">` + html.EscapeString(subject.Name) + `</h1><nav class="sl-subject-actions" aria-label="Component links"><a class="sl-link" href="` + html.EscapeString(subjectDownloadURL(subject)) + `">Download token JSON</a>`); err != nil {
+			if err := write(`<p class="sl-back-link"><a class="sl-link" href="` + subjectListPath(subject.Key.Kind != publish.SubjectComponent) + `">← ` + html.EscapeString(subjectKindLabel(subject.Key.Kind)) + `</a></p><header class="sl-subject-heading"><h1 class="typo-page-title">` + html.EscapeString(subject.Name) + `</h1><nav class="sl-subject-actions" aria-label="Component links">`); err != nil {
+				return err
+			}
+			if err := writeTokenDownloadMenu(writer, subject, browser); err != nil {
 				return err
 			}
 			if len(changes) > 0 {

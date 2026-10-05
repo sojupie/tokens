@@ -165,12 +165,16 @@ func (server *Server) writeSubjectChanges(response http.ResponseWriter, request 
 }
 
 func (server *Server) handleDownload(response http.ResponseWriter, request *http.Request) {
-	if server.downloadsDir == "" {
+	relativePath := request.PathValue("path")
+	if !safeDownloadPath(relativePath) {
 		http.NotFound(response, request)
 		return
 	}
-	relativePath := request.PathValue("path")
-	if !safeDownloadPath(relativePath) {
+	if request.URL.Query().Has("scope") {
+		server.handleTokenDownload(response, request, relativePath)
+		return
+	}
+	if server.downloadsDir == "" {
 		http.NotFound(response, request)
 		return
 	}
