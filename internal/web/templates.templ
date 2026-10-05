@@ -124,20 +124,17 @@ templ changesPage(snapshots []publish.SnapshotView, subject string, baseURL stri
 		for _, change := range batch.Changes {
 			<article class="sl-change-card">
 				<h3>{ changeTypeLabel(change.Type) }: <code>{ change.Name }</code></h3>
-				if change.Subject != "" {
+				if subject == "" && change.Subject != "" {
 					<p>Subject: <code>{ change.Subject }</code></p>
 				}
-				<div class="sl-change-values sl-change-summary">
-					<div>
-						<p class="typo-sublabel">Before</p>
-						<code>{ changeSummaryValue(change.Before) }</code>
-					</div>
-					<div class="sl-change-arrow" aria-hidden="true">→</div>
-					<div>
-						<p class="typo-sublabel">After</p>
-						<code>{ changeSummaryValue(change.After) }</code>
-					</div>
-				</div>
+				<table class="sl-change-table">
+					<thead><tr><th scope="col">Property</th><th scope="col">Before</th><th scope="col">After</th></tr></thead>
+					<tbody>
+						for _, value := range changedValues(change) {
+							<tr><th scope="row">{ value.Field }</th><td>{ value.Before }</td><td>{ value.After }</td></tr>
+						}
+					</tbody>
+				</table>
 			</article>
 		}
 			</section>

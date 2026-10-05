@@ -103,6 +103,9 @@
 .sl-timeline-batch { border-left:2px solid var(--sl-rule); padding-left:24px; }
 .sl-timeline-batch > h2 { margin-bottom:8px; }
 .sl-change-card h3 { margin:0; font-size:inherit; font-weight:500; overflow-wrap:anywhere; }
+.sl-change-table { width:100%; table-layout:fixed; border-collapse:collapse; margin-top:16px; }
+.sl-change-table th, .sl-change-table td { text-align:left; vertical-align:top; padding:8px; border-top:1px solid var(--sl-rule); overflow-wrap:anywhere; font-weight:normal; }
+.sl-change-table thead th { color:var(--sl-ink-muted); font-size:0.8125rem; }
 @media(max-width:640px) {
   .sl-token-toolbar { flex-wrap:wrap; }
   .sl-token-set { width:100%; }
