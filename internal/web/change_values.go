@@ -45,7 +45,9 @@ func changedValues(change publish.ChangeView) []changeValue {
 			sort.Strings(ordered)
 			for _, key := range ordered {
 				label := changeFieldLabel(key)
-				if field != "" {
+				if label == "" {
+					label = field
+				} else if field != "" {
 					label = field + " · " + label
 				}
 				compare(label, left[key], right[key])
@@ -80,6 +82,12 @@ func changedValues(change publish.ChangeView) []changeValue {
 }
 
 func changeFieldLabel(field string) string {
+	switch field {
+	case "type", "values":
+		return ""
+	case "fontNames":
+		return "Font family"
+	}
 	var label strings.Builder
 	previous := rune(0)
 	for _, character := range field {
@@ -89,5 +97,9 @@ func changeFieldLabel(field string) string {
 		label.WriteRune(character)
 		previous = character
 	}
-	return displayWords(label.String())
+	text := displayWords(label.String())
+	if first, rest, ok := strings.Cut(text, " "); ok {
+		return first + " " + strings.ToLower(rest)
+	}
+	return text
 }

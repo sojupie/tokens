@@ -9,7 +9,7 @@ import (
 
 func TestChangedValuesOnlyShowDifferencesAndKeepUnits(t *testing.T) {
 	change := publish.ChangeView{Type: "changed", Before: `{"type":{"fontNames":{"values":["Roboto"]},"fontWeight":500,"fontSize":{"unit":"POINTS","value":14}}}`, After: `{"type":{"fontNames":{"values":["Roboto"]},"fontWeight":600,"fontSize":{"unit":"POINTS","value":16}}}`}
-	want := []changeValue{{"Type · Font Size", "14pt", "16pt"}, {"Type · Font Weight", "500", "600"}}
+	want := []changeValue{{"Font size", "14pt", "16pt"}, {"Font weight", "500", "600"}}
 	if got := changedValues(change); !reflect.DeepEqual(got, want) {
 		t.Fatalf("differences = %#v, want %#v", got, want)
 	}

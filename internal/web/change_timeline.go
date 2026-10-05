@@ -2,6 +2,7 @@ package web
 
 import (
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/sojupie/m3-source/internal/publish"
@@ -11,6 +12,84 @@ type changeBatch struct {
 	DetectedAt string
 	PreviousAt string
 	Changes    []publish.ChangeView
+}
+
+type labeledChange struct {
+	publish.ChangeView
+	Label string
+}
+
+type changeGroup struct {
+	Label   string
+	URL     string
+	Changes []labeledChange
+}
+
+func changeGroups(changes []publish.ChangeView, subjects map[publish.SubjectKey]publish.SubjectView) []changeGroup {
+	bySlug := make(map[string]publish.SubjectView, len(subjects))
+	for _, subject := range subjects {
+		bySlug[subject.Key.Slug] = subject
+	}
+	var groups []changeGroup
+	lastSubject := ""
+	var names map[string]string
+	for _, change := range changes {
+		if len(groups) == 0 || lastSubject != change.Subject {
+			group := changeGroup{Label: displayWords(change.Subject)}
+			names = make(map[string]string)
+			if subject, ok := bySlug[change.Subject]; ok {
+				if subject.Name != "" {
+					group.Label = subject.Name
+				}
+				group.URL = subjectURL(subject)
+				labelCounts := make(map[string]int)
+				for _, token := range subject.Tokens {
+					labelCounts[strings.ToLower(tokenDisplayName(token))]++
+				}
+				for _, token := range subject.Tokens {
+					label := tokenDisplayName(token)
+					// Some source labels are just "Type style", or omit the variant.
+					// Use the readable full token path when a label is ambiguous.
+					if labelCounts[strings.ToLower(label)] > 1 {
+						label = readableChangeName(token.SourceName)
+					}
+					names[token.SourceName] = label
+				}
+			}
+			if group.Label == "" {
+				group.Label = "Other changes"
+			}
+			groups = append(groups, group)
+			lastSubject = change.Subject
+		}
+		label := names[change.Name]
+		if label == "" {
+			label = readableChangeName(change.Name)
+		}
+		group := &groups[len(groups)-1]
+		group.Changes = append(group.Changes, labeledChange{ChangeView: change, Label: label})
+	}
+	return groups
+}
+
+func readableChangeName(name string) string {
+	if !strings.HasPrefix(name, "md.") {
+		return name
+	}
+	name = strings.TrimPrefix(strings.TrimPrefix(name, "md.sys."), "md.ref.")
+	return tokenDisplayName(publish.TokenView{SourceName: name})
+}
+
+func timelineTitle(subject string, subjects map[publish.SubjectKey]publish.SubjectView) string {
+	if subject == "" {
+		return "Change log"
+	}
+	for _, item := range subjects {
+		if item.Key.Slug == subject && item.Name != "" {
+			return item.Name + " changes"
+		}
+	}
+	return displayWords(subject) + " changes"
 }
 
 func changeBatches(changes []publish.ChangeView, snapshots []publish.SnapshotView) []changeBatch {

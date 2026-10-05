@@ -90,7 +90,7 @@ func (server *Server) handleHTMLChanges(response http.ResponseWriter, request *h
 	}
 	page := requestedPage(request)
 	pageChanges, page, hasPrevious, hasNext := paginateChanges(changes, page)
-	if err := renderHTML(response, request, changesPage(server.state.Snapshots, subject, request.URL.Path, pageChanges, page, len(changes), hasPrevious, hasNext)); err != nil {
+	if err := renderHTML(response, request, changesPage(server.state, subject, request.URL.Path, pageChanges, page, len(changes), hasPrevious, hasNext)); err != nil {
 		http.Error(response, err.Error(), http.StatusInternalServerError)
 	}
 }
@@ -98,7 +98,7 @@ func (server *Server) handleHTMLChanges(response http.ResponseWriter, request *h
 func (server *Server) handleGlobalChanges(response http.ResponseWriter, request *http.Request) {
 	page := requestedPage(request)
 	pageChanges, page, hasPrevious, hasNext := paginateChanges(server.state.Changes, page)
-	if err := renderHTML(response, request, changesPage(server.state.Snapshots, "", request.URL.Path, pageChanges, page, len(server.state.Changes), hasPrevious, hasNext)); err != nil {
+	if err := renderHTML(response, request, changesPage(server.state, "", request.URL.Path, pageChanges, page, len(server.state.Changes), hasPrevious, hasNext)); err != nil {
 		http.Error(response, err.Error(), http.StatusInternalServerError)
 	}
 }
@@ -441,13 +441,6 @@ func subjectChanges(state publish.PublishedState, subject string) []publish.Chan
 		}
 	}
 	return changes
-}
-
-func changePageTitle(subject string) string {
-	if subject == "" {
-		return "Change log"
-	}
-	return subject + " changes"
 }
 
 func changeTypeLabel(changeType string) string {

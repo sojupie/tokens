@@ -11,7 +11,7 @@ templ layout(title string) {
 		<meta charset="utf-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1"/>
 		<link rel="stylesheet" href="/static/app.css"/>
-		<link rel="stylesheet" href="/static/token-table.css?v=20261005-timeline"/>
+		<link rel="stylesheet" href="/static/token-table.css?v=20261005-timeline-labels"/>
 		<script src="/static/htmx.min.js" defer></script>
 		<title>{ title } · Source Loom</title>
 	</head>
@@ -100,42 +100,59 @@ templ subjectPage(subject publish.SubjectView, changes []publish.ChangeView, bro
     @subjectPageComponent(subject, changes, browser)
 }
 
-templ changesPage(snapshots []publish.SnapshotView, subject string, baseURL string, changes []publish.ChangeView, page int, total int, hasPrevious bool, hasNext bool) {
-@layout(changePageTitle(subject)) {
-		<h1 class="typo-page-title">{ changePageTitle(subject) }</h1>
-		<p class="sl-metadata">{ historyCoverage(snapshots) }</p>
-		<p>Dates show when Source Loom observed a change, not when Material published it. The first snapshot is the starting point.</p>
+templ changesPage(state publish.PublishedState, subject string, baseURL string, changes []publish.ChangeView, page int, total int, hasPrevious bool, hasNext bool) {
+@layout(timelineTitle(subject, state.Subjects)) {
+		<h1 class="typo-page-title">{ timelineTitle(subject, state.Subjects) }</h1>
+		<p class="sl-metadata">{ historyCoverage(state.Snapshots) }</p>
+		<p class="sl-metadata">Dates show when we detected changes, not when Material published them.</p>
 		if total > 0 {
 			<p class="sl-metadata">Showing page { page } of { (total + 49) / 50 } · { total } total changes</p>
 		}
 		if len(changes) == 0 {
-			if len(snapshots) < 2 {
+			if len(state.Snapshots) < 2 {
 				<p>At least two snapshots are needed to detect changes.</p>
 			} else {
 				<p>No changes were detected in the retained snapshot history.</p>
 			}
 		}
-		for _, batch := range changeBatches(changes, snapshots) {
+		for _, batch := range changeBatches(changes, state.Snapshots) {
 			<section class="sl-section sl-timeline-batch">
 				<h2 class="typo-section-header">Observed <time datetime={ batch.DetectedAt }>{ observationDate(batch.DetectedAt) }</time></h2>
 				if batch.PreviousAt != "" {
 					<p class="sl-metadata">Compared with { observationDate(batch.PreviousAt) }</p>
 				}
-		for _, change := range batch.Changes {
-			<article class="sl-change-card">
-				<h3>{ changeTypeLabel(change.Type) }: <code>{ change.Name }</code></h3>
-				if subject == "" && change.Subject != "" {
-					<p>Subject: <code>{ change.Subject }</code></p>
+		for _, group := range changeGroups(batch.Changes, state.Subjects) {
+			<section class="sl-change-group">
+				if subject == "" {
+					<h3 class="typo-section-header">
+						if group.URL != "" {
+							<a class="sl-link" href={ group.URL }>{ group.Label }</a>
+						} else {
+							{ group.Label }
+						}
+					</h3>
 				}
+		for _, change := range group.Changes {
+			<article class="sl-change-card">
+				<header class="sl-change-heading">
+					if subject == "" {
+						<h4 title={ change.Name }>{ change.Label }</h4>
+					} else {
+						<h3 title={ change.Name }>{ change.Label }</h3>
+					}
+					<span class="sl-change-status" data-change-type={ change.Type }>{ changeTypeLabel(change.Type) }</span>
+				</header>
 				<table class="sl-change-table">
-					<thead><tr><th scope="col">Property</th><th scope="col">Before</th><th scope="col">After</th></tr></thead>
+					<thead><tr><th scope="col">Property</th><th scope="col">Previous value</th><th scope="col">New value</th></tr></thead>
 					<tbody>
-						for _, value := range changedValues(change) {
+						for _, value := range changedValues(change.ChangeView) {
 							<tr><th scope="row">{ value.Field }</th><td>{ value.Before }</td><td>{ value.After }</td></tr>
 						}
 					</tbody>
 				</table>
 			</article>
+		}
+			</section>
 		}
 			</section>
 		}
