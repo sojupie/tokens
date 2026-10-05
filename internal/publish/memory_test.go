@@ -32,8 +32,8 @@ func TestLoadReconstructsPublishedState(t *testing.T) {
 			SourcePayloadKind:  "component",
 			Kind:               "contextualReferenceTree",
 			Name:               "md.comp.snackbar.container.width",
-			Before:             `{"dimension":{"value":480,"unit":"DIPS"}}`,
-			After:              `{"dimension":{"value":560,"unit":"DIPS"}}`,
+			Before:             `{"context":["Theme: Dark","Platform: Web"],"default":false,"value":{"dimension":{"value":480,"unit":"DIPS"}},"references":[{"name":"md.sys.spacing.large"}]}`,
+			After:              `{"context":["Theme: Dark","Platform: Web"],"default":false,"value":{"dimension":{"value":560,"unit":"DIPS"}},"references":[{"name":"md.sys.spacing.large"}]}`,
 			PreviousSnapshotID: "snapshot-1",
 			SnapshotID:         "snapshot-1",
 		}},
@@ -86,6 +86,9 @@ func TestLoadReconstructsPublishedState(t *testing.T) {
 	}
 	if len(state.Changes) != 1 || state.Changes[0].Name != "md.comp.snackbar.container.width" {
 		t.Fatalf("changes = %#v", state.Changes)
+	}
+	if state.Changes[0].Before != publication.Changes[0].Before || state.Changes[0].After != publication.Changes[0].After {
+		t.Fatal("historical context or references changed during SQLite round trip")
 	}
 	if len(state.SourcePayloads) != 1 {
 		t.Fatalf("source payload count = %d, want 1", len(state.SourcePayloads))

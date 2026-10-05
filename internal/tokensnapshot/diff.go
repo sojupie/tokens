@@ -1,6 +1,7 @@
 package tokensnapshot
 
 import (
+	"bytes"
 	"compress/gzip"
 	"encoding/json"
 	"errors"
@@ -8,6 +9,7 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
+	"strings"
 )
 
 type SnapshotDiff struct {
@@ -22,6 +24,7 @@ type SnapshotDiff struct {
 	Records            RecordSetDiff       `json:"records"`
 	PageResults        PageResultsDiff     `json:"pageResults"`
 	LifecycleNotices   LifecycleNoticeDiff `json:"lifecycleNotices"`
+	Semantic           SemanticDiff        `json:"semantic"`
 }
 
 type PageSetDiff struct {
@@ -82,6 +85,22 @@ type RecordChange struct {
 	AfterSha256  string `json:"afterSha256,omitempty"`
 }
 
+type SemanticDiff struct {
+	Added   []SemanticChange `json:"added,omitempty"`
+	Removed []SemanticChange `json:"removed,omitempty"`
+	Changed []SemanticChange `json:"changed,omitempty"`
+}
+
+type SemanticChange struct {
+	Key               string `json:"key"`
+	SourcePayloadKind string `json:"sourcePayloadKind,omitempty"`
+	SourceSubject     string `json:"sourceSubject,omitempty"`
+	Kind              string `json:"kind"`
+	Name              string `json:"name"`
+	Before            string `json:"before,omitempty"`
+	After             string `json:"after,omitempty"`
+}
+
 func Diff(fromDir, toDir string) (SnapshotDiff, error) {
 	fromManifest, err := Verify(fromDir)
 	if err != nil {
@@ -127,6 +146,7 @@ func Diff(fromDir, toDir string) (SnapshotDiff, error) {
 		Records:            diffRecords(fromGraph.Records, toGraph.Records),
 		PageResults:        diffPageResults(fromPageResults.Pages, toPageResults.Pages),
 		LifecycleNotices:   diffLifecycleNotices(fromLifecycle.Notices, toLifecycle.Notices),
+		Semantic:           diffSemanticRecords(fromGraph.Records, toGraph.Records),
 	}
 	diff.Changed = diff.PageCatalogChanged || diff.CaptureChanged || len(diff.Pages.Added) > 0 || len(diff.Pages.Removed) > 0 || len(diff.SourcePayloads.Added) > 0 || len(diff.SourcePayloads.Removed) > 0 || len(diff.SourcePayloads.Changed) > 0 || len(diff.Records.Added) > 0 || len(diff.Records.Removed) > 0 || len(diff.Records.Changed) > 0 || len(diff.PageResults.Added) > 0 || len(diff.PageResults.Removed) > 0 || len(diff.PageResults.Changed) > 0 || len(diff.LifecycleNotices.Added) > 0 || len(diff.LifecycleNotices.Removed) > 0
 	return diff, nil
@@ -317,6 +337,175 @@ func diffRecords(from, to []ExtractedRecord) RecordSetDiff {
 	sortRecordChanges(diff.Removed)
 	sortRecordChanges(diff.Changed)
 	return diff
+}
+
+func diffSemanticRecords(from, to []ExtractedRecord) SemanticDiff {
+	fromByKey := semanticRecordMap(from)
+	toByKey := semanticRecordMap(to)
+	diff := SemanticDiff{}
+	for key, after := range toByKey {
+		before, exists := fromByKey[key]
+		if !exists {
+			diff.Added = append(diff.Added, semanticChange(after, SemanticRecord{}))
+		} else if before.Value != after.Value {
+			diff.Changed = append(diff.Changed, semanticChange(after, before))
+		}
+	}
+	for key, before := range fromByKey {
+		if _, exists := toByKey[key]; !exists {
+			diff.Removed = append(diff.Removed, semanticChange(SemanticRecord{}, before))
+		}
+	}
+	sortSemanticChanges(diff.Added)
+	sortSemanticChanges(diff.Removed)
+	sortSemanticChanges(diff.Changed)
+	return diff
+}
+
+type SemanticRecord struct {
+	Key               string
+	SourcePayloadKind string
+	SourceSubject     string
+	Kind              string
+	Name              string
+	Value             string
+}
+
+func semanticRecordMap(records []ExtractedRecord) map[string]SemanticRecord {
+	result := make(map[string]SemanticRecord)
+	contexts := ContextDescriptions(records)
+	for _, record := range records {
+		if record.Kind == "contextualReferenceTree" {
+			for _, semantic := range contextualSemanticRecords(record, contexts) {
+				if current, exists := result[semantic.Key]; !exists || semanticRecordPreferred(semantic, current) {
+					result[semantic.Key] = semantic
+				}
+			}
+			continue
+		}
+		semantic, ok := semanticRecord(record)
+		if ok {
+			if current, exists := result[semantic.Key]; !exists || semanticRecordPreferred(semantic, current) {
+				result[semantic.Key] = semantic
+			}
+		}
+	}
+	return result
+}
+
+func semanticRecord(record ExtractedRecord) (SemanticRecord, bool) {
+	semantic := SemanticRecord{
+		SourcePayloadKind: record.SourcePayloadKind,
+		SourceSubject:     record.SourceSubject,
+		Kind:              record.Kind,
+	}
+	switch record.Kind {
+	case "contextualReferenceTree":
+		return SemanticRecord{}, false // Contextual records are expanded by semanticRecordMap.
+	case "component":
+		if record.SourcePayloadKind != "component" {
+			return SemanticRecord{}, false
+		}
+		if record.DisplayName == "" {
+			return SemanticRecord{}, false
+		}
+		semantic.Name = record.DisplayName
+		semantic.Value = selectedFields(record.Raw, "displayName", "state", "definition")
+	case "tokenSet":
+		name := record.TokenSetName
+		if name == "" {
+			name = record.DisplayName
+		}
+		if name == "" {
+			return SemanticRecord{}, false
+		}
+		semantic.Name = name
+		semantic.Value = selectedFields(record.Raw, "displayName", "state", "description")
+	default:
+		return SemanticRecord{}, false
+	}
+	semantic.SourceSubject = semanticSubject(semantic.Name, record.SourceSubject)
+	semantic.Key = fmt.Sprintf("%s\x00%s", semantic.Kind, semantic.Name)
+	return semantic, true
+}
+
+func semanticRecordPreferred(candidate, current SemanticRecord) bool {
+	if candidate.SourcePayloadKind == current.SourcePayloadKind {
+		return candidate.SourceSubject < current.SourceSubject
+	}
+	return candidate.SourcePayloadKind == "component"
+}
+
+func semanticSubject(name, fallback string) string {
+	parts := strings.Split(name, ".")
+	if len(parts) >= 3 {
+		switch parts[1] {
+		case "comp":
+			return parts[2]
+		case "ref":
+			return "reference tokens"
+		case "sys":
+			return "system tokens"
+		}
+	}
+	return fallback
+}
+
+func selectedFields(raw json.RawMessage, names ...string) string {
+	var fields map[string]json.RawMessage
+	if json.Unmarshal(raw, &fields) != nil {
+		return ""
+	}
+	selected := make(map[string]json.RawMessage, len(names))
+	for _, name := range names {
+		if value, ok := fields[name]; ok {
+			selected[name] = value
+		}
+	}
+	body, err := json.Marshal(selected)
+	if err != nil {
+		return ""
+	}
+	return string(body)
+}
+
+func compactJSON(raw json.RawMessage) string {
+	var compacted bytes.Buffer
+	if json.Compact(&compacted, raw) != nil {
+		return string(raw)
+	}
+	return compacted.String()
+}
+
+func semanticChange(after, before SemanticRecord) SemanticChange {
+	value := after
+	if value.Name == "" {
+		value = before
+	}
+	return SemanticChange{
+		Key:               value.Key,
+		SourcePayloadKind: value.SourcePayloadKind,
+		SourceSubject:     value.SourceSubject,
+		Kind:              value.Kind,
+		Name:              value.Name,
+		Before:            before.Value,
+		After:             after.Value,
+	}
+}
+
+func sortSemanticChanges(values []SemanticChange) {
+	sort.Slice(values, func(i, j int) bool {
+		if values[i].SourceSubject != values[j].SourceSubject {
+			return values[i].SourceSubject < values[j].SourceSubject
+		}
+		if values[i].Kind != values[j].Kind {
+			return values[i].Kind < values[j].Kind
+		}
+		if values[i].Name != values[j].Name {
+			return values[i].Name < values[j].Name
+		}
+		return values[i].Key < values[j].Key
+	})
 }
 
 func stringSet(values []string) map[string]bool {

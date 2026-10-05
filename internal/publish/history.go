@@ -36,7 +36,10 @@ func changeViews(diff tokensnapshot.SnapshotDiff) []ChangeView {
 		if changes[i].Name != changes[j].Name {
 			return changes[i].Name < changes[j].Name
 		}
-		return changes[i].Type < changes[j].Type
+		if changes[i].Type != changes[j].Type {
+			return changes[i].Type < changes[j].Type
+		}
+		return changes[i].ID < changes[j].ID
 	})
 	return changes
 }

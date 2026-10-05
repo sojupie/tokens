@@ -39,7 +39,11 @@ func TestBuildRetainsTimelineAcrossPublishAndLoad(t *testing.T) {
 	if publication.Changes[0].SnapshotID != "c" || publication.Changes[1].SnapshotID != "b" {
 		t.Fatalf("not newest first: %#v", publication.Changes)
 	}
-	if publication.Changes[1].Before != `{"length":{"unit":"DIPS","value":40}}` {
+	var before tokensnapshot.ContextualValue
+	if err := json.Unmarshal([]byte(publication.Changes[1].Before), &before); err != nil {
+		t.Fatal(err)
+	}
+	if string(before.Value) != `{"length":{"unit":"DIPS","value":40}}` {
 		t.Fatalf("earliest transition lost: %#v", publication.Changes[1])
 	}
 	if !strings.Contains(strings.Join(messages, "\n"), "unsupported schema 2") {
