@@ -1,6 +1,7 @@
 package web
 
 import (
+	"bytes"
 	"encoding/json"
 	"net/http/httptest"
 	"net/url"
@@ -23,7 +24,7 @@ func TestTokenDownloadsMatchTableAndKeepFullContextsOptional(t *testing.T) {
 	}}
 	state := publish.PublishedState{Subjects: map[publish.SubjectKey]publish.SubjectView{key: subject}, CurrentSnapshot: publish.SnapshotView{CreatedAt: "2026-09-05T18:16:00Z"}}
 	handler := New(state, "").Handler()
-	for _, scope := range []string{"view", "set"} {
+	for _, scope := range []string{"view", "set", "all"} {
 		t.Run(scope, func(t *testing.T) {
 			query := url.Values{"scope": {scope}, "set": {"button|color|outlined"}, "q": {"icon"}, "context.Theme": {"Light"}}
 			recorder := httptest.NewRecorder()
@@ -38,6 +39,9 @@ func TestTokenDownloadsMatchTableAndKeepFullContextsOptional(t *testing.T) {
 			wantTokens, wantValues := 1, 1
 			if scope == "set" {
 				wantTokens, wantValues = 2, 2
+			}
+			if scope == "all" {
+				wantTokens, wantValues = 3, 2
 			}
 			if len(document.Tokens) != wantTokens || len(document.Tokens[0].Values) != wantValues {
 				t.Fatalf("incorrect export scope: %#v", document)
@@ -59,5 +63,22 @@ func TestTokenDownloadsMatchTableAndKeepFullContextsOptional(t *testing.T) {
 		if recorder.Code != 400 {
 			t.Fatalf("invalid export selection accepted: %s", query)
 		}
+	}
+}
+
+func TestTokenDownloadControlUsesNativeScopeForm(t *testing.T) {
+	var output bytes.Buffer
+	subject := publish.SubjectView{Key: publish.SubjectKey{Kind: publish.SubjectComponent, Slug: "buttons"}}
+	browser := tokenBrowser{Sets: []tokenSet{{}}, Selected: tokenSet{Key: "button|color|outlined"}, Query: `icon & label`}
+	if err := writeTokenDownloadMenu(&output, subject, browser); err != nil {
+		t.Fatal(err)
+	}
+	for _, want := range []string{`method="get"`, `aria-label="Download scope"`, `value="view"`, `value="set"`, `value="all"`, `icon &amp; label`, `Download JSON</button>`} {
+		if !strings.Contains(output.String(), want) {
+			t.Fatalf("missing %s in %s", want, output.String())
+		}
+	}
+	if strings.Contains(output.String(), "<details") {
+		t.Fatal("download control should not be a popup")
 	}
 }

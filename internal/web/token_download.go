@@ -5,18 +5,26 @@ import (
 	"io"
 	"mime"
 	"net/http"
-	"net/url"
 	"strings"
 
 	"github.com/sojupie/m3-source/internal/publish"
 )
 
 func writeTokenDownloadMenu(writer io.Writer, subject publish.SubjectView, browser tokenBrowser) error {
-	menu := `<details class="sl-token-download"><summary class="sl-link">Download JSON</summary><div class="sl-download-options">`
+	menu := `<form class="sl-token-download" method="get" action="` + html.EscapeString(subjectDownloadURL(subject)) + `"><select name="scope" aria-label="Download scope">`
 	if len(browser.Sets) > 0 {
-		menu += `<a class="sl-link" href="` + html.EscapeString(tokenDownloadURL(subject, browser, "view")) + `">Current table — selected context</a><p>Matches the selected token set and search results. Includes tokens in collapsed groups.</p><a class="sl-link" href="` + html.EscapeString(tokenDownloadURL(subject, browser, "set")) + `">Selected token set — all contexts</a>`
+		menu += `<option value="view">Current view</option><option value="set">Token set · all contexts</option>`
 	}
-	menu += `<a class="sl-link" href="` + html.EscapeString(subjectDownloadURL(subject)) + `" download>Full ` + strings.ToLower(html.EscapeString(subjectKindLabel(subject.Key.Kind))) + ` — all token sets and contexts</a></div></details>`
+	menu += `<option value="all">All tokens · all contexts</option></select>`
+	input := func(name, value string) {
+		menu += `<input type="hidden" name="` + html.EscapeString(name) + `" value="` + html.EscapeString(value) + `">`
+	}
+	input("set", browser.Selected.Key)
+	input("q", browser.Query)
+	for _, filter := range browser.Filters {
+		input(filter.Key, filter.Selected)
+	}
+	menu += `<button type="submit">Download JSON</button></form>`
 	_, err := io.WriteString(writer, menu)
 	return err
 }
@@ -24,13 +32,18 @@ func writeTokenDownloadMenu(writer io.Writer, subject publish.SubjectView, brows
 // Filtered downloads use the same token set, search, and value selection as the table.
 func (server *Server) handleTokenDownload(response http.ResponseWriter, request *http.Request, relativePath string) {
 	scope := request.URL.Query().Get("scope")
-	if scope != "view" && scope != "set" {
-		http.Error(response, "download scope must be view or set", http.StatusBadRequest)
+	if scope != "view" && scope != "set" && scope != "all" {
+		http.Error(response, "download scope must be view, set or all", http.StatusBadRequest)
 		return
 	}
 	for key, subject := range server.state.Subjects {
 		if relativePath != string(key.Kind)+"/"+key.Slug+".json" {
 			continue
+		}
+		if scope == "all" {
+			response.Header().Set("Content-Disposition", mime.FormatMediaType("attachment", map[string]string{"filename": strings.ReplaceAll(key.Slug, "/", "-") + ".json"}))
+			writeJSON(response, http.StatusOK, subject.PublicDocument(server.state.CurrentSnapshot.CreatedAt))
+			return
 		}
 		query := request.URL.Query()
 		if scope == "set" {
@@ -91,15 +104,4 @@ func tokenDownloadSubject(subject publish.SubjectView, browser tokenBrowser, sco
 		export.Tokens = append(export.Tokens, token)
 	}
 	return export
-}
-
-func tokenDownloadURL(subject publish.SubjectView, browser tokenBrowser, scope string) string {
-	query := url.Values{"scope": {scope}, "set": {browser.Selected.Key}}
-	if scope == "view" {
-		query.Set("q", browser.Query)
-		for _, filter := range browser.Filters {
-			query.Set(filter.Key, filter.Selected)
-		}
-	}
-	return subjectDownloadURL(subject) + "?" + query.Encode()
 }
