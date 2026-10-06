@@ -73,6 +73,11 @@ func TestHTMLPagesRenderComponentsAndStyles(t *testing.T) {
 					t.Fatalf("body does not contain %q:\n%s", value, recorder.Body.String())
 				}
 			}
+			for _, value := range []string{`<footer class="sl-site-footer">`, `href="https://marmenlind.com"`, "Browse Material Design tokens and track their changes."} {
+				if !strings.Contains(recorder.Body.String(), value) {
+					t.Fatalf("page footer does not contain %q", value)
+				}
+			}
 		})
 	}
 }
