@@ -2,6 +2,7 @@ package web
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 	"time"
 
@@ -12,6 +13,34 @@ type changeBatch struct {
 	DetectedAt string
 	PreviousAt string
 	Changes    []publish.ChangeView
+}
+
+func changedItemCount(changes []labeledChange) int {
+	items := make(map[string]bool)
+	for _, change := range changes {
+		items[change.Kind+"\x00"+change.Name] = true
+	}
+	return len(items)
+}
+
+func groupChangelogURL(base string, group changeGroup, snapshot string) string {
+	address, err := url.Parse(base)
+	if err != nil {
+		return "/changes"
+	}
+	query := address.Query()
+	query.Del("page")
+	query.Del("subject")
+	query.Set("snapshot", snapshot)
+	path := group.URL
+	if path == "" {
+		kind := publish.SubjectComponent
+		if group.Changes[0].SourcePayloadKind != "" && group.Changes[0].SourcePayloadKind != "component" {
+			kind = publish.SubjectStyle
+		}
+		path = subjectURL(publish.SubjectView{Key: publish.SubjectKey{Kind: kind, Slug: group.Changes[0].Subject}})
+	}
+	return path + "/changes?" + query.Encode()
 }
 
 type labeledChange struct {

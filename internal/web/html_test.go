@@ -55,9 +55,8 @@ func TestHTMLPagesRenderComponentsAndStyles(t *testing.T) {
 		{path: "/styles/elevation", body: []string{"Elevation", "Download JSON"}, status: http.StatusOK},
 		{path: "/styles/motion/overview", body: []string{"Motion", "Download JSON"}, status: http.StatusOK},
 		{path: "/components?q=snack", body: []string{"snack", "hx-target=\"#subject-list\""}, status: http.StatusOK},
-		{path: "/changes", body: []string{"Change log", "1 change records", "/components/snackbar", "Load changes"}, status: http.StatusOK},
-		{path: "/components/snackbar/changes", body: []string{"Snackbar changes", "Load changes"}, status: http.StatusOK},
-		{path: "/changes/records?subject=snackbar&snapshot=snapshot-1", body: []string{"md.comp.snackbar.container.width", "480", "560"}, status: http.StatusOK},
+		{path: "/changes", body: []string{"Change log", "1 item changed", "/components/snackbar", "View changes"}, status: http.StatusOK},
+		{path: "/components/snackbar/changes", body: []string{"Snackbar changes", "md.comp.snackbar.container.width", "480", "560"}, status: http.StatusOK},
 	}
 	for _, check := range checks {
 		t.Run(check.path, func(t *testing.T) {
@@ -145,21 +144,21 @@ func TestHTMLChangeLogIsPaginated(t *testing.T) {
 
 	firstPage := httptest.NewRecorder()
 	handler.ServeHTTP(firstPage, httptest.NewRequest(http.MethodGet, "/changes", nil))
-	if !strings.Contains(firstPage.Body.String(), "Showing page 1 of 1 · 1 component groups · 51 total changes") || strings.Contains(firstPage.Body.String(), "token-49") {
+	if !strings.Contains(firstPage.Body.String(), "51 items changed") || strings.Contains(firstPage.Body.String(), "token-49") {
 		t.Fatalf("unexpected first change page:\n%s", firstPage.Body.String())
 	}
 	if strings.Contains(firstPage.Body.String(), `href="/changes?page=2"`) {
 		t.Fatal("record count split a single component across outer pages")
 	}
 	firstPage = httptest.NewRecorder()
-	handler.ServeHTTP(firstPage, httptest.NewRequest(http.MethodGet, "/changes/records?subject=carousel", nil))
+	handler.ServeHTTP(firstPage, httptest.NewRequest(http.MethodGet, "/components/carousel/changes", nil))
 	if !strings.Contains(firstPage.Body.String(), "token-49") || strings.Contains(firstPage.Body.String(), "token-50") {
 		t.Fatal("record page is not bounded")
 	}
 
 	secondPage := httptest.NewRecorder()
-	handler.ServeHTTP(secondPage, httptest.NewRequest(http.MethodGet, "/changes/records?subject=carousel&page=2", nil))
-	if !strings.Contains(secondPage.Body.String(), "token-50") || !strings.Contains(secondPage.Body.String(), `href="/changes/records?subject=carousel"`) {
+	handler.ServeHTTP(secondPage, httptest.NewRequest(http.MethodGet, "/components/carousel/changes?page=2", nil))
+	if !strings.Contains(secondPage.Body.String(), "token-50") || !strings.Contains(secondPage.Body.String(), `href="/components/carousel/changes"`) {
 		t.Fatalf("unexpected second change page:\n%s", secondPage.Body.String())
 	}
 }

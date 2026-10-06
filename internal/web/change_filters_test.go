@@ -30,7 +30,7 @@ func TestChangeFiltersRunBeforePaginationAndPreserveSelection(t *testing.T) {
 	if strings.Contains(body, `selected="false"`) {
 		t.Fatal("false boolean attributes still select an option in HTML")
 	}
-	for _, text := range []string{`value="changed" selected`, "1 total changes", "0 added · 1 updated · 0 removed", `hx-trigger="toggle[event.target.open] once"`, "Load changes"} {
+	for _, text := range []string{`value="changed" selected`, "1 item changed", "/components/snackbar/changes?", "View changes"} {
 		if !strings.Contains(body, text) {
 			t.Fatalf("missing %q", text)
 		}

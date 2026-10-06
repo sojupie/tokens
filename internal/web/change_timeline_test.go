@@ -80,11 +80,11 @@ func TestTimelineUsesExactIdentifiersAndLinkedComponentGroups(t *testing.T) {
 		recorder := httptest.NewRecorder()
 		New(state, "").Handler().ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, path, nil))
 		body := recorder.Body.String()
-		if !strings.Contains(body, `class="sl-change-group"`) || !strings.Contains(body, `href="/components/buttons"`) || strings.Contains(body, "@materialSymbol") {
+		if !strings.Contains(body, `href="/components/buttons"`) || strings.Contains(body, "@materialSymbol") {
 			t.Fatal("overview must retain linked component groups without template text")
 		}
 		recorder = httptest.NewRecorder()
-		New(state, "").Handler().ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, "/changes/records?subject=buttons&snapshot=current", nil))
+		New(state, "").Handler().ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, "/components/buttons/changes?snapshot=current", nil))
 		body = recorder.Body.String()
 		level := "h4"
 		for _, text := range []string{"<" + level + ">md.comp.button.elevated.label-text.weight</" + level + ">", "md.comp.button.removed.height", "Font weight", "Previous value", "New value", `aria-label="Token hierarchy"`, `Elevated</li>`, `Removed</li>`, `class="sl-material-symbol"`} {
