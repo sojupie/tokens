@@ -28,12 +28,25 @@ templ layout(title string) {
 					<a class="sl-nav-link md-typescale-label-large" href="/changes">Change log</a>
 				</div>
 				<div class="sl-theme-controls" role="group" aria-label="Site appearance">
-					<label class="md-typescale-label-large">Theme
-						<select data-app-theme disabled><option value="light">Light</option><option value="dark">Dark</option></select>
-					</label>
-					<label class="md-typescale-label-large">Contrast
-						<select data-app-contrast disabled><option value="default">Standard</option><option value="medium">Medium</option><option value="high">High</option></select>
-					</label>
+					<button type="button" data-app-theme aria-label="Dark mode" aria-pressed="false" title="Dark mode" disabled>
+						<span data-theme-icon="light">
+							@materialSymbol("dark_mode")
+						</span>
+						<span data-theme-icon="dark" hidden>
+							@materialSymbol("light_mode")
+						</span>
+					</button>
+					<div class="sl-contrast-buttons" role="group" aria-label="Contrast">
+						<button type="button" data-app-contrast="default" aria-label="Standard contrast" aria-pressed="true" title="Standard contrast" disabled>
+							@materialSymbol("brightness_low")
+						</button>
+						<button type="button" data-app-contrast="medium" aria-label="Medium contrast" aria-pressed="false" title="Medium contrast" disabled>
+							@materialSymbol("brightness_medium")
+						</button>
+						<button type="button" data-app-contrast="high" aria-label="High contrast" aria-pressed="false" title="High contrast" disabled>
+							@materialSymbol("brightness_high")
+						</button>
+					</div>
 				</div>
 			</nav>
 		</header>

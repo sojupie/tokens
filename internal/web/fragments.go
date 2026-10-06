@@ -21,7 +21,7 @@ func tokenBrowserView(subject publish.SubjectView, browser tokenBrowser) templ.C
 		if len(browser.Sets) == 0 {
 			return write(`<p class="sl-empty md-typescale-body-large">No published tokens for this page.</p>`)
 		}
-		if err := write(`<div class="sl-token-browser"><form class="sl-token-filters" method="get" action="` + html.EscapeString(subjectURL(subject)) + `"><div class="sl-token-toolbar"><label class="sl-token-set"><span class="sl-visually-hidden">Token set</span><select name="set">`); err != nil {
+		if err := write(`<div class="sl-token-browser"><form class="sl-token-filters" method="get" action="` + html.EscapeString(subjectURL(subject)) + `"><div class="sl-token-toolbar"><label class="sl-token-set"><span class="sl-visually-hidden">Token set</span><span class="sl-token-set-width" aria-hidden="true">` + html.EscapeString(browser.Selected.Label) + `</span><select name="set">`); err != nil {
 			return err
 		}
 		for _, set := range browser.Sets {
@@ -33,7 +33,7 @@ func tokenBrowserView(subject publish.SubjectView, browser tokenBrowser) templ.C
 				return err
 			}
 		}
-		if err := write(`</select></label><label class="sl-token-search">` + tableIcon("search") + `<span class="sl-visually-hidden">Search tokens</span><input type="search" name="q" value="` + html.EscapeString(browser.Query) + `" placeholder="Search"></label><button class="sl-icon-button" type="button" data-action="previews" aria-label="Toggle previews" aria-pressed="true">` + tableIcon("eye") + `</button><button class="sl-icon-button" type="button" data-action="view" aria-label="Toggle view" aria-pressed="false">` + tableIcon("grid") + `</button><button class="sl-icon-button" type="button" data-action="expand" aria-label="Expand all groups" aria-expanded="false">` + tableIcon("expand") + `</button></div><div class="sl-token-columns"><span>Token</span>`); err != nil {
+		if err := write(`</select><span class="sl-token-set-arrow" aria-hidden="true">` + tableIcon("dropdown") + `</span></label><label class="sl-token-search">` + tableIcon("search") + `<span class="sl-visually-hidden">Search tokens</span><input type="search" name="q" value="` + html.EscapeString(browser.Query) + `" placeholder="Search"></label><button class="sl-icon-button" type="button" data-action="previews" aria-label="Toggle previews" aria-pressed="true">` + tableIcon("eye") + `</button><button class="sl-icon-button" type="button" data-action="view" aria-label="Toggle view" aria-pressed="false">` + tableIcon("grid") + `</button><button class="sl-icon-button" type="button" data-action="expand" aria-label="Expand all groups" aria-expanded="false">` + tableIcon("expand") + `</button></div><div class="sl-token-columns"><span>Token</span>`); err != nil {
 			return err
 		}
 		if len(browser.Filters) > 0 {

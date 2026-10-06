@@ -1,3 +1,14 @@
+// The backdrop targets the dialog too; its bounds distinguish it from padding.
+document.querySelectorAll('dialog').forEach(dialog => {
+  dialog.addEventListener('click', event => {
+    if (event.target !== dialog) return;
+    const bounds = dialog.getBoundingClientRect();
+    if (event.clientX >= bounds.left && event.clientX <= bounds.right &&
+        event.clientY >= bounds.top && event.clientY <= bounds.bottom) return;
+    if (dialog.dispatchEvent(new Event('cancel', {cancelable: true}))) dialog.close();
+  });
+});
+
 document.querySelectorAll('.sl-token-download').forEach(download => {
   const dialog = download.querySelector('dialog');
   download.querySelector('[data-download-open]').addEventListener('click', () => dialog.showModal());

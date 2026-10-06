@@ -32,9 +32,12 @@ button:not(:disabled), [role=button]:not([aria-disabled=true]) { cursor:pointer;
 .sl-nav-links { display:flex; flex:1; flex-wrap:wrap; justify-content:flex-end; gap:var(--md-sys-measurement-space300); }
 .sl-nav-link { color:var(--sl-ink-muted); text-decoration:none; }
 .sl-nav-link:hover, .sl-nav-link:focus-visible { color:var(--sl-accent); }
-.sl-theme-controls { display:flex; gap:var(--md-sys-measurement-space150); }
-.sl-theme-controls label { display:flex; flex-direction:column; gap:var(--md-sys-measurement-space50); }
-.sl-theme-controls select { min-height:var(--md-comp-filter-chip-container-height); border:var(--md-comp-outlined-text-field-outline-width) solid var(--sl-rule-strong); border-radius:var(--md-comp-filter-chip-container-shape); padding:var(--md-sys-measurement-space50) var(--md-sys-measurement-space100); background:var(--sl-page-surface); }
+.sl-theme-controls { display:flex; align-items:center; gap:var(--md-sys-measurement-space150); }
+.sl-theme-controls button { display:grid; place-items:center; width:var(--md-sys-measurement-space500); height:var(--md-sys-measurement-space500); border:0; border-radius:var(--md-sys-shape-corner-full); background:transparent; color:var(--md-sys-color-on-surface-variant); }
+.sl-theme-controls button:hover { background:var(--md-sys-color-surface-container-high); }
+.sl-contrast-buttons { display:flex; gap:var(--md-sys-measurement-space50); padding:var(--md-sys-measurement-space50); border-radius:var(--md-sys-shape-corner-full); background:var(--md-sys-color-secondary-container); }
+.sl-contrast-buttons button { color:var(--md-sys-color-on-secondary-container); }
+.sl-contrast-buttons button[aria-pressed="true"] { background:var(--md-sys-color-primary); color:var(--md-sys-color-on-primary); }
 .sl-main { display:flex; max-width:72rem; min-height:100vh; margin:0 auto; flex-direction:column; gap:var(--md-sys-measurement-space400); padding:var(--md-sys-measurement-space400) var(--md-sys-measurement-space300); }
 .sl-section { display:flex; flex-direction:column; gap:var(--md-sys-measurement-space150); }
 .md-typescale-headline-medium { margin:0; font-family:var(--md-sys-typescale-headline-medium-font); font-size:var(--md-sys-typescale-headline-medium-size); line-height:var(--md-sys-typescale-headline-medium-line-height); font-weight:var(--md-sys-typescale-headline-medium-weight); letter-spacing:var(--md-sys-typescale-headline-medium-tracking); }
