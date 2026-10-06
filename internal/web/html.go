@@ -79,22 +79,39 @@ func (server *Server) handleHTMLSubject(response http.ResponseWriter, request *h
 	}
 	query := request.URL.Query()
 	if setPath != "" {
-		parts := strings.Split(setPath, "/")
-		if len(parts) < 2 || len(parts) > 3 {
+		query.Del("set")
+		for _, set := range tokenSets(subjects[0]) {
+			if tokenSetPath(set) == setPath {
+				query.Set("set", set.Key)
+				break
+			}
+		}
+		if query.Get("set") == "" {
 			http.NotFound(response, request)
 			return
 		}
-		variant := ""
-		if len(parts) == 3 {
-			variant = parts[2]
-		}
-		query.Set("set", tokenSetKey(parts[0], parts[1], variant))
 	}
 	browser := buildTokenBrowser(subjects[0], query)
+	if query.Get("set") != "" && query.Get("set") != browser.Selected.Key {
+		http.NotFound(response, request)
+		return
+	}
 	if setPath != "" && tokenSetPath(browser.Selected) != setPath {
 		http.NotFound(response, request)
 		return
 	}
+	info := server.basicMetadata(subjectURL(subjects[0]), query)
+	info.Title = "Material Design " + subjects[0].Name + " Tokens"
+	info.Description = subjectTokenDescription(subjects[0])
+	if setPath != "" || query.Get("set") != "" {
+		info.Heading = browser.Selected.Label + " tokens"
+		info.Title = "Material Design " + browser.Selected.Label + " Tokens"
+		info.Description = "Explore Material Design " + browser.Selected.Label + " tokens, including references, values and supported contexts. Download JSON or browse component change history."
+		if !info.NoIndex {
+			info.Canonical = server.publicOrigin + tokenSetURL(subjects[0], browser.Selected)
+		}
+	}
+	request = request.WithContext(context.WithValue(request.Context(), pageMetadataKey{}, info))
 	if err := server.renderHTML(response, request, subjectPage(subjects[0], subjectChanges(server.state, subjects[0].Key.Slug), browser)); err != nil {
 		http.Error(response, err.Error(), http.StatusInternalServerError)
 	}
@@ -129,15 +146,31 @@ func (server *Server) renderChangeHistory(response http.ResponseWriter, request 
 	if subject != "" {
 		pageChanges, page, hasPrevious, hasNext = paginateChanges(changes, page)
 	}
+	query := request.URL.Query()
+	query.Set("page", strconv.Itoa(page))
+	info := server.basicMetadata(request.URL.Path, query)
+	if subject != "" {
+		info.Title = "Material Design " + timelineTitle(subject, server.state.Subjects)
+		info.Description = "Track " + timelineTitle(subject, server.state.Subjects) + " in Material Design tokens, with previous values, new values and context. Dates show when changes were detected."
+		if page > 1 {
+			info.Title += " - Page " + strconv.Itoa(page)
+		}
+	}
+	request = request.WithContext(context.WithValue(request.Context(), pageMetadataKey{}, info))
 	if err := server.renderHTML(response, request, changesPage(server.state, subject, request.URL.String(), filters, changeCountSummary(changes), pageChanges, page, len(changes), hasPrevious, hasNext)); err != nil {
 		http.Error(response, err.Error(), http.StatusInternalServerError)
 	}
 }
 
 func (server *Server) renderHTML(response http.ResponseWriter, request *http.Request, component templ.Component) error {
+	response.Header().Set("Vary", "HX-Request")
 	response.Header().Set("Content-Type", "text/html; charset=utf-8")
 	response.Header().Set("Cache-Control", "no-cache")
-	ctx := context.WithValue(request.Context(), themeVersionKey{}, assetVersion([]byte(server.themeCSS)))
+	ctx := request.Context()
+	if metadata(ctx).Title == "" {
+		ctx = context.WithValue(ctx, pageMetadataKey{}, server.basicMetadata(request.URL.Path, request.URL.Query()))
+	}
+	ctx = context.WithValue(ctx, themeVersionKey{}, assetVersion([]byte(server.themeCSS)))
 	return component.Render(ctx, response)
 }
 

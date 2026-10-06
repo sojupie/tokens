@@ -16,7 +16,14 @@ templ layout(title string) {
 		<link rel="stylesheet" href={ staticURL("app.css") }/>
 		<link rel="stylesheet" href={ staticURL("token-table.css") }/>
 		<script src={ staticURL("htmx.min.js") } defer></script>
-		<title>{ title } · Source Loom</title>
+		<title>{ pageTitle(ctx, title) } · Source Loom</title>
+		<meta name="description" content={ metadata(ctx).Description }/>
+		if metadata(ctx).Canonical != "" {
+			<link rel="canonical" href={ templ.SafeURL(metadata(ctx).Canonical) }/>
+		}
+		if metadata(ctx).NoIndex {
+			<meta name="robots" content="noindex, follow"/>
+		}
 	</head>
 	<body class="sl-body">
 		<header class="sl-site-header">
@@ -138,10 +145,14 @@ templ subjectPage(subject publish.SubjectView, changes []publish.ChangeView, bro
 }
 
 templ tokenSetLinks(subject publish.SubjectView, sets []tokenSet) {
-	<details class="sl-section">
-		<summary class="md-typescale-title-medium">Token sets</summary>
+	<details class="sl-section sl-token-set-links">
+		<summary class="md-typescale-title-medium">
+			@materialSymbol("chevron_right")
+			Token sets
+		</summary>
 		<nav aria-label="Token sets">
 			<ul class="sl-subject-list">
+				<li class="sl-list-item"><a class="sl-link" href={ subjectURL(subject) }>{ subject.Name } overview</a></li>
 				for _, set := range sets {
 					<li class="sl-list-item"><a class="sl-link" href={ tokenSetURL(subject, set) }>{ set.Label }</a></li>
 				}

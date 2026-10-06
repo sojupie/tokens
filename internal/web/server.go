@@ -13,6 +13,7 @@ import (
 )
 
 type Server struct {
+	publicOrigin string
 	state        publish.PublishedState
 	downloadsDir string
 	themeCSS     string
@@ -60,6 +61,8 @@ func New(state publish.PublishedState, downloadsDir string) *Server {
 
 func (server *Server) Handler() http.Handler {
 	mux := http.NewServeMux()
+	mux.HandleFunc("GET /sitemap.xml", server.handleSitemap)
+	mux.HandleFunc("GET /robots.txt", server.handleRobots)
 	mux.HandleFunc("GET /theme.css", server.handleTheme)
 	mux.HandleFunc("GET /api/v1/health", server.handleHealth)
 	mux.HandleFunc("GET /api/v1/releases", server.handleReleases)
@@ -74,7 +77,12 @@ func (server *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /components/{slug...}", server.handleHTMLSubject)
 	mux.HandleFunc("GET /styles", server.handleOverview)
 	mux.HandleFunc("GET /styles/{slug...}", server.handleHTMLSubject)
-	return mux
+	return http.HandlerFunc(func(response http.ResponseWriter, request *http.Request) {
+		if strings.HasPrefix(request.URL.Path, "/api/") || strings.HasPrefix(request.URL.Path, "/downloads/") {
+			response.Header().Set("X-Robots-Tag", "noindex")
+		}
+		mux.ServeHTTP(response, request)
+	})
 }
 
 func (server *Server) handleHealth(response http.ResponseWriter, _ *http.Request) {

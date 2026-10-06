@@ -62,8 +62,8 @@ type tokenFolder struct {
 	children map[string]*tokenFolder
 }
 
-func buildTokenBrowser(subject publish.SubjectView, query url.Values) tokenBrowser {
-	browser := tokenBrowser{Query: strings.TrimSpace(query.Get("q"))}
+func tokenSets(subject publish.SubjectView) []tokenSet {
+	var result []tokenSet
 	sets := make(map[string]*tokenSet)
 	for _, token := range subject.Tokens {
 		isComponent := subject.Key.Kind == publish.SubjectComponent
@@ -102,10 +102,10 @@ func buildTokenBrowser(subject publish.SubjectView, query url.Values) tokenBrows
 		set.sourceTokens = append(set.sourceTokens, token)
 	}
 	for _, set := range sets {
-		browser.Sets = append(browser.Sets, *set)
+		result = append(result, *set)
 	}
-	sort.Slice(browser.Sets, func(i, j int) bool {
-		left, right := browser.Sets[i], browser.Sets[j]
+	sort.Slice(result, func(i, j int) bool {
+		left, right := result[i], result[j]
 		if left.component != right.component {
 			return left.component < right.component
 		}
@@ -120,6 +120,11 @@ func buildTokenBrowser(subject publish.SubjectView, query url.Values) tokenBrows
 		}
 		return left.variant < right.variant
 	})
+	return result
+}
+
+func buildTokenBrowser(subject publish.SubjectView, query url.Values) tokenBrowser {
+	browser := tokenBrowser{Query: strings.TrimSpace(query.Get("q")), Sets: tokenSets(subject)}
 	if len(browser.Sets) == 0 {
 		return browser
 	}

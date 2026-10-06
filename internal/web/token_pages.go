@@ -8,18 +8,19 @@ import (
 )
 
 func tokenSetPath(set tokenSet) string {
-	parts := []string{set.component, strings.ToLower(set.category)}
+	parts := []string{strings.Join(strings.Fields(strings.ToLower(set.component)), "-"), strings.ToLower(set.category)}
 	if set.variant != "" {
 		parts = append(parts, set.variant)
-	}
-	for i := range parts {
-		parts[i] = url.PathEscape(parts[i])
 	}
 	return strings.Join(parts, "/")
 }
 
 func tokenSetURL(subject publish.SubjectView, set tokenSet) string {
-	return subjectURL(subject) + "/sets/" + tokenSetPath(set)
+	parts := strings.Split(tokenSetPath(set), "/")
+	for i := range parts {
+		parts[i] = url.PathEscape(parts[i])
+	}
+	return subjectURL(subject) + "/sets/" + strings.Join(parts, "/")
 }
 
 func subjectTokenDescription(subject publish.SubjectView) string {

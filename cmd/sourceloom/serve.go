@@ -25,8 +25,10 @@ func runServe(args []string) error {
 	}
 	publishedDir := "published"
 	listenAddress := "127.0.0.1:8080"
+	publicOrigin := ""
 	flags.StringVar(&publishedDir, "published", publishedDir, "publication directory")
 	flags.StringVar(&listenAddress, "listen", listenAddress, "HTTP listen address")
+	flags.StringVar(&publicOrigin, "public-origin", publicOrigin, "public http(s) origin for canonical URLs and sitemap; unset disables indexing")
 	if err := flags.Parse(args); err != nil {
 		if errors.Is(err, flag.ErrHelp) {
 			return nil
@@ -40,9 +42,13 @@ func runServe(args []string) error {
 	if err != nil {
 		return err
 	}
+	publicationServer := web.New(state, filepath.Join(publishedDir, "downloads"))
+	if err := publicationServer.SetPublicOrigin(publicOrigin); err != nil {
+		return err
+	}
 	server := &http.Server{
 		Addr:              listenAddress,
-		Handler:           web.New(state, filepath.Join(publishedDir, "downloads")).Handler(),
+		Handler:           publicationServer.Handler(),
 		ReadHeaderTimeout: 5 * time.Second,
 	}
 	fmt.Printf("Serving publication %s on http://%s\n", state.PublicationID, listenAddress)

@@ -130,7 +130,11 @@ func subjectPageComponent(subject publish.SubjectView, changes []publish.ChangeV
 				_, err := io.WriteString(writer, value)
 				return err
 			}
-			if err := write(`<p class="sl-back-link"><a class="sl-link" href="` + subjectListPath(subject.Key.Kind != publish.SubjectComponent) + `">` + materialSymbolSVG("arrow_back") + html.EscapeString(subjectKindLabel(subject.Key.Kind)) + `</a></p><header class="sl-subject-heading"><h1 class="md-typescale-headline-medium">` + html.EscapeString(subject.Name) + `</h1><nav class="sl-subject-actions" aria-label="Component links">`); err != nil {
+			heading := subject.Name
+			if metadata(ctx).Heading != "" {
+				heading = metadata(ctx).Heading
+			}
+			if err := write(`<p class="sl-back-link"><a class="sl-link" href="` + subjectListPath(subject.Key.Kind != publish.SubjectComponent) + `">` + materialSymbolSVG("arrow_back") + html.EscapeString(subjectKindLabel(subject.Key.Kind)) + `</a></p><header class="sl-subject-heading"><h1 class="md-typescale-headline-medium">` + html.EscapeString(heading) + `</h1><nav class="sl-subject-actions" aria-label="Component links">`); err != nil {
 				return err
 			}
 			if err := writeTokenDownloadMenu(writer, subject, browser); err != nil {
@@ -146,7 +150,11 @@ func subjectPageComponent(subject publish.SubjectView, changes []publish.ChangeV
 					}
 				}
 			}
-			if err := write(`</nav></header><p class="md-typescale-body-medium">` + html.EscapeString(subjectTokenDescription(subject)) + `</p>`); err != nil {
+			description := metadata(ctx).Description
+			if description == "" {
+				description = subjectTokenDescription(subject)
+			}
+			if err := write(`</nav></header><p class="md-typescale-body-medium">` + html.EscapeString(description) + `</p>`); err != nil {
 				return err
 			}
 			if len(browser.Sets) > 0 {
