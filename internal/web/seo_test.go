@@ -34,13 +34,13 @@ func TestSEOMetadataAndCanonicalURLs(t *testing.T) {
 		noindex                bool
 	}{
 		{"/", "Material Design Tokens and Change History", "https://tokens.example/", false},
-		{"/components/snackbar", "Material Design Snackbar Tokens", "https://tokens.example/components/snackbar", false},
-		{"/components/snackbar/sets/snackbar/common", "Material Design Snackbar - Common Tokens", "https://tokens.example/components/snackbar/sets/snackbar/common", false},
-		{"/components/snackbar?set=snackbar%7Ccommon%7C", "Material Design Snackbar - Common Tokens", "https://tokens.example/components/snackbar/sets/snackbar/common", false},
-		{"/components/snackbar?utm_source=example", "Material Design Snackbar Tokens", "https://tokens.example/components/snackbar", false},
+		{"/components/snackbar", "Snackbar tokens — Material Design", "https://tokens.example/components/snackbar", false},
+		{"/components/snackbar/sets/snackbar/common", "Snackbar: common tokens — Material Design", "https://tokens.example/components/snackbar/sets/snackbar/common", false},
+		{"/components/snackbar?set=snackbar%7Ccommon%7C", "Snackbar: common tokens — Material Design", "https://tokens.example/components/snackbar/sets/snackbar/common", false},
+		{"/components/snackbar?utm_source=example", "Snackbar tokens — Material Design", "https://tokens.example/components/snackbar", false},
 		{"/components/snackbar/changes?page=2", "Material Design Snackbar changes - Page 2", "https://tokens.example/components/snackbar/changes?page=2", false},
 		{"/components?q=snack", "Material Design Component Tokens", "", true},
-		{"/components/snackbar?context.Theme=Dark", "Material Design Snackbar Tokens", "", true},
+		{"/components/snackbar?context.Theme=Dark", "Snackbar tokens — Material Design", "", true},
 		{"/changes?snapshot=one", "Material Design Token Change History", "", true},
 		{"/changes?type=removed", "Material Design Token Change History", "", true},
 	} {

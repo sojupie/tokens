@@ -63,13 +63,13 @@ func (server *Server) basicMetadata(path string, query url.Values) pageMetadata 
 	switch path {
 	case "/":
 		info.Title = "Material Design Tokens and Change History"
-		info.Description = "Explore Material Design component and system tokens, follow their references, download JSON and track changes across snapshots."
+		info.Description = "Material Design tokens, named references and change history. Find a component or style and download its tokens as JSON."
 	case "/components":
 		info.Title = "Material Design Component Tokens"
-		info.Description = "Find Material Design tokens by component. Browse colors, dimensions and interaction states, download JSON and inspect change history."
+		info.Description = "Find tokens for Material Design components, from buttons to navigation. View references and values, download JSON and see what changed."
 	case "/styles":
 		info.Title = "Material Design Styles and System Tokens"
-		info.Description = "Browse Material Design styles and system tokens, inspect references and values, download JSON and track their changes."
+		info.Description = "Material Design styles and system tokens, with named references, context-specific values, JSON downloads and change history."
 	default:
 		info.Title = "Material Design Token Change History"
 		info.Description = "Track changes to Material Design tokens across captured snapshots, with previous values, new values and context. Dates show when changes were detected."

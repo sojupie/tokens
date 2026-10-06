@@ -101,12 +101,13 @@ func (server *Server) handleHTMLSubject(response http.ResponseWriter, request *h
 		return
 	}
 	info := server.basicMetadata(subjectURL(subjects[0]), query)
-	info.Title = "Material Design " + subjects[0].Name + " Tokens"
+	info.Title = subjects[0].Name + " tokens — Material Design"
+	info.Heading = "Material Design " + tokenPhrase(subjects[0].Name) + " tokens"
 	info.Description = subjectTokenDescription(subjects[0])
 	if setPath != "" || query.Get("set") != "" {
-		info.Heading = browser.Selected.Label + " tokens"
-		info.Title = "Material Design " + browser.Selected.Label + " Tokens"
-		info.Description = "Explore Material Design " + browser.Selected.Label + " tokens, including references, values and supported contexts. Download JSON or browse component change history."
+		info.Heading = "Material Design " + tokenSetComponent(browser.Selected) + " tokens"
+		info.Title = tokenSetTitle(browser.Selected)
+		info.Description = tokenSetDescription(browser.Selected)
 		if !info.NoIndex {
 			info.Canonical = server.publicOrigin + tokenSetURL(subjects[0], browser.Selected)
 		}

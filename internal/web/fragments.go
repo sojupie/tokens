@@ -150,11 +150,7 @@ func subjectPageComponent(subject publish.SubjectView, changes []publish.ChangeV
 					}
 				}
 			}
-			description := metadata(ctx).Description
-			if description == "" {
-				description = subjectTokenDescription(subject)
-			}
-			if err := write(`</nav></header><p class="md-typescale-body-medium">` + html.EscapeString(description) + `</p>`); err != nil {
+			if err := write(`</nav></header>`); err != nil {
 				return err
 			}
 			if len(browser.Sets) > 0 {
