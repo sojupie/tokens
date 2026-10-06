@@ -12,8 +12,11 @@ import (
 )
 
 type BuildConfig struct {
-	SnapshotDir   string
-	HistoryDir    string
+	SnapshotDir     string
+	HistoryDir      string
+	HistoryCacheDir string
+	// HistoryPaths restricts history to explicitly accepted snapshots when non-nil.
+	HistoryPaths  []string
 	Progress      func(string)
 	OutputDir     string
 	PublicationID string

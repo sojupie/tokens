@@ -21,10 +21,12 @@ func runPublish(args []string) error {
 	}
 	snapshotDir := ""
 	historyDir := ""
+	historyCacheDir := ""
 	outputDir := "published"
 	publicationID := ""
 	flags.StringVar(&snapshotDir, "snapshot-dir", "", "verified snapshot directory (default: newest snapshot)")
 	flags.StringVar(&historyDir, "history-dir", "", "directory of snapshots for the timeline (default: snapshot's parent directory)")
+	flags.StringVar(&historyCacheDir, "history-cache", "", "history cache directory (default: .cache/publication-history beside output)")
 	flags.StringVar(&outputDir, "output", outputDir, "publication output directory; replaced after a successful build")
 	flags.StringVar(&publicationID, "id", "", "publication identifier (default: snapshot identifier)")
 	if err := flags.Parse(args); err != nil {
@@ -46,11 +48,12 @@ func runPublish(args []string) error {
 	fmt.Printf("Using verified snapshot: %s\n", snapshotDir)
 	fmt.Printf("Publication output: %s\n", outputDir)
 	publicationResult, err := publish.Build(publish.BuildConfig{
-		SnapshotDir:   snapshotDir,
-		HistoryDir:    historyDir,
-		Progress:      func(message string) { fmt.Println(message) },
-		OutputDir:     outputDir,
-		PublicationID: publicationID,
+		SnapshotDir:     snapshotDir,
+		HistoryDir:      historyDir,
+		HistoryCacheDir: historyCacheDir,
+		Progress:        func(message string) { fmt.Println(message) },
+		OutputDir:       outputDir,
+		PublicationID:   publicationID,
 	})
 	if err != nil {
 		return err

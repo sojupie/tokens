@@ -317,6 +317,16 @@ func uniqueSuccessfulPayloadURLs(run crawl.CrawlReceipt) int {
 }
 
 func Verify(directory string) (Manifest, error) {
+	return verify(directory, true)
+}
+
+// VerifyIntegrity checks bytes against the manifest without decoding documents.
+// Use only when reusing a previously fully validated, versioned cache entry.
+func VerifyIntegrity(directory string) (Manifest, error) {
+	return verify(directory, false)
+}
+
+func verify(directory string, full bool) (Manifest, error) {
 	manifestBody, err := os.ReadFile(filepath.Join(directory, "manifest.json"))
 	if err != nil {
 		return Manifest{}, fmt.Errorf("read manifest: %w", err)
@@ -348,7 +358,7 @@ func Verify(directory string) (Manifest, error) {
 		if len(body) != artifact.Bytes {
 			return Manifest{}, fmt.Errorf("artifact %s byte count mismatch", artifact.Path)
 		}
-		if artifact.ContentEncoding == "gzip" {
+		if full && artifact.ContentEncoding == "gzip" {
 			if _, err := readGzip(filepath.Join(directory, filepath.FromSlash(path))); err != nil {
 				return Manifest{}, fmt.Errorf("read gzip artifact %s: %w", artifact.Path, err)
 			}
@@ -361,6 +371,9 @@ func Verify(directory string) (Manifest, error) {
 	want := checksumFile(manifestBody, manifest.Artifacts)
 	if string(checksums) != want {
 		return Manifest{}, errors.New("checksums.txt does not match snapshot artifacts")
+	}
+	if !full {
+		return manifest, nil
 	}
 	if manifest.SchemaVersion == SchemaVersion {
 		if err := validateJSONSchema("manifest.schema.json", manifestBody); err != nil {

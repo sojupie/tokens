@@ -32,15 +32,30 @@ func buildHistory(config BuildConfig, publication *Publication, currentIndex map
 	for index, snapshot := range snapshots {
 		nextIndex := currentIndex
 		if snapshot.view.ID != publication.CurrentSnapshot.ID {
-			config.report("Verifying and indexing history snapshot: " + snapshot.view.ID)
-			input, err := loadSnapshot(snapshot.directory)
-			if err != nil {
-				return fmt.Errorf("load history snapshot %s: %w", snapshot.view.ID, err)
+			nextIndex = nil
+			if config.readHistoryCache("index", snapshot.view.ManifestHash, &nextIndex) {
+				if _, err := tokensnapshot.VerifyIntegrity(snapshot.directory); err != nil {
+					return err
+				}
+				body, err := os.ReadFile(filepath.Join(snapshot.directory, "manifest.json"))
+				if err != nil || sha256Hex(body) != snapshot.view.ManifestHash {
+					return fmt.Errorf("history manifest changed during publication: %s", snapshot.view.ID)
+				}
+				config.report("Reusing history index: " + snapshot.view.ID)
+			} else {
+				config.report("Verifying and indexing history snapshot: " + snapshot.view.ID)
+				input, err := loadSnapshot(snapshot.directory)
+				if err != nil {
+					return fmt.Errorf("load history snapshot %s: %w", snapshot.view.ID, err)
+				}
+				if input.ManifestHash != snapshot.view.ManifestHash {
+					return fmt.Errorf("history manifest changed during publication: %s", snapshot.view.ID)
+				}
+				nextIndex = tokensnapshot.IndexSemanticRecords(input.Graph.Records)
+				config.writeHistoryCache("index", snapshot.view.ManifestHash, nextIndex)
 			}
-			if input.ManifestHash != snapshot.view.ManifestHash {
-				return fmt.Errorf("history manifest changed during publication: %s", snapshot.view.ID)
-			}
-			nextIndex = tokensnapshot.IndexSemanticRecords(input.Graph.Records)
+		} else {
+			config.writeHistoryCache("index", snapshot.view.ManifestHash, nextIndex)
 		}
 		publication.Snapshots = append(publication.Snapshots, snapshot.view)
 		if index == 0 {
@@ -49,10 +64,18 @@ func buildHistory(config BuildConfig, publication *Publication, currentIndex map
 		}
 		previous := snapshots[index-1]
 		config.report(fmt.Sprintf("Comparing history %d/%d: %s -> %s", index, len(snapshots)-1, previous.view.ID, snapshot.view.ID))
+		var semantic tokensnapshot.SemanticDiff
+		identity := previous.view.ManifestHash + ":" + snapshot.view.ManifestHash
+		if !config.readHistoryCache("diff", identity, &semantic) {
+			semantic = tokensnapshot.CompareSemanticIndexes(previousIndex, nextIndex)
+			config.writeHistoryCache("diff", identity, semantic)
+		} else {
+			config.report("Reusing history comparison: " + previous.view.ID + " -> " + snapshot.view.ID)
+		}
 		diff := tokensnapshot.SnapshotDiff{
 			FromSnapshotID: previous.view.ID,
 			ToSnapshotID:   snapshot.view.ID,
-			Semantic:       tokensnapshot.CompareSemanticIndexes(previousIndex, nextIndex),
+			Semantic:       semantic,
 		}
 		previousIndex = nextIndex
 		changes := changeViews(diff)
@@ -98,9 +121,17 @@ func historySnapshots(config BuildConfig, current SnapshotView) ([]historySnapsh
 	if directory == "" {
 		directory = filepath.Dir(filepath.Clean(config.SnapshotDir))
 	}
-	entries, err := os.ReadDir(directory)
-	if err != nil {
-		return nil, fmt.Errorf("read snapshot history: %w", err)
+	paths := config.HistoryPaths
+	if paths == nil {
+		entries, err := os.ReadDir(directory)
+		if err != nil {
+			return nil, fmt.Errorf("read snapshot history: %w", err)
+		}
+		for _, entry := range entries {
+			if entry.IsDir() {
+				paths = append(paths, filepath.Join(directory, entry.Name()))
+			}
+		}
 	}
 	cutoff, err := time.Parse(time.RFC3339Nano, current.CreatedAt)
 	if err != nil {
@@ -112,11 +143,8 @@ func historySnapshots(config BuildConfig, current SnapshotView) ([]historySnapsh
 	}
 	snapshots := []historySnapshot{{currentPath, current, cutoff}}
 	ids := map[string]bool{current.ID: true}
-	for _, entry := range entries {
-		if !entry.IsDir() {
-			continue
-		}
-		path, err := filepath.Abs(filepath.Join(directory, entry.Name()))
+	for _, historyPath := range paths {
+		path, err := filepath.Abs(historyPath)
 		if err != nil {
 			return nil, err
 		}
@@ -135,12 +163,12 @@ func historySnapshots(config BuildConfig, current SnapshotView) ([]historySnapsh
 			return nil, fmt.Errorf("decode history manifest %s: %w", path, err)
 		}
 		if manifest.SchemaVersion != tokensnapshot.SchemaVersion {
-			config.report(fmt.Sprintf("Excluded history snapshot %s: unsupported schema %d", entry.Name(), manifest.SchemaVersion))
+			config.report(fmt.Sprintf("Excluded history snapshot %s: unsupported schema %d", filepath.Base(path), manifest.SchemaVersion))
 			continue
 		}
 		created, err := time.Parse(time.RFC3339Nano, manifest.CreatedAt)
 		if err != nil {
-			return nil, fmt.Errorf("history snapshot %s date: %w", entry.Name(), err)
+			return nil, fmt.Errorf("history snapshot %s date: %w", filepath.Base(path), err)
 		}
 		if created.After(cutoff) {
 			continue
