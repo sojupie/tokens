@@ -39,6 +39,8 @@ func run(args []string) error {
 		return runCrawl(args[1:])
 	case "publish":
 		return runPublish(args[1:])
+	case "update":
+		return runUpdate(args[1:])
 	case "serve":
 		return runServe(args[1:])
 	case "snapshot":
@@ -54,6 +56,7 @@ func run(args []string) error {
 const topHelp = `Usage:
   tokens crawl [flags]
   tokens publish [flags]
+  tokens update [run|status|inspect|approve|retry|notify] [flags]
   tokens serve [flags]
   tokens snapshot create [flags]
   tokens snapshot verify [flags]

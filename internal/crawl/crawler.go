@@ -405,6 +405,9 @@ func failedPages(receipt CrawlReceipt) ([]string, error) {
 	return failed, nil
 }
 
+// FailedPages returns the exact pages eligible for a targeted retry.
+func FailedPages(receipt CrawlReceipt) ([]string, error) { return failedPages(receipt) }
+
 func mergeObservations(previous, retried []Observation, retriedPages []string) []Observation {
 	retriedSet := make(map[string]bool, len(retriedPages))
 	for _, pageURL := range retriedPages {

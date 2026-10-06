@@ -1,5 +1,6 @@
 # Go build cache, crawler payload cache, and other generated caches.
 .cache/
+.tokens/
 
 # Generated crawler evidence. Crawl receipts are local run output; curated,
 # reviewed snapshots are intentionally added to Git.

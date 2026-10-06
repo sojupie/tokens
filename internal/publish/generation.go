@@ -33,6 +33,9 @@ func Activate(current, generation string) error {
 	if _, err := Load(filepath.Join(generation, "tokens.sqlite")); err != nil {
 		return fmt.Errorf("validate generation: %w", err)
 	}
+	if err := syncGeneration(generation); err != nil {
+		return fmt.Errorf("sync generation before activation: %w", err)
+	}
 	if info, err := os.Lstat(current); err == nil && info.Mode()&os.ModeSymlink == 0 {
 		return errors.New("current publication must be a symlink, not an existing file or directory")
 	} else if err != nil && !os.IsNotExist(err) {
@@ -52,6 +55,9 @@ func Activate(current, generation string) error {
 	}
 	if err := os.Rename(link, current); err != nil {
 		return fmt.Errorf("activate generation (previous link retained): %w", err)
+	}
+	if err := syncActivationDirectory(filepath.Dir(current)); err != nil {
+		return fmt.Errorf("generation activated, but directory sync failed: %w", err)
 	}
 	return nil
 }
