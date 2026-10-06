@@ -215,8 +215,10 @@ templ changeFilterForm(filters changeFilters, baseURL string) {
 			<option value="removed" selected?={ filters.Type == "removed" }>Removed</option>
 		</select></label>
 		<label>Token name<input type="search" name="q" value={ filters.Query } placeholder="e.g. width or font"/></label>
-		<button type="submit">Apply filters</button>
-		<a class="sl-link" href={ strings.SplitN(baseURL, "?", 2)[0] }>Reset</a>
+		<div class="sl-change-filter-actions">
+			<button type="submit">Apply filters</button>
+			<a class="sl-link" href={ strings.SplitN(baseURL, "?", 2)[0] }>Reset</a>
+		</div>
 	</form>
 }
 
