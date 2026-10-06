@@ -10,15 +10,15 @@ import (
 	"strings"
 	"time"
 
-	"github.com/sojupie/m3-source/internal/publish"
-	"github.com/sojupie/m3-source/internal/web"
+	"github.com/sojupie/tokens/internal/publish"
+	"github.com/sojupie/tokens/internal/web"
 )
 
 func runServe(args []string) error {
-	flags := flag.NewFlagSet("sourceloom serve", flag.ContinueOnError)
+	flags := flag.NewFlagSet("tokens serve", flag.ContinueOnError)
 	flags.SetOutput(os.Stderr)
 	flags.Usage = func() {
-		_, _ = fmt.Fprintln(flags.Output(), "Usage: sourceloom serve [flags]")
+		_, _ = fmt.Fprintln(flags.Output(), "Usage: tokens serve [flags]")
 		_, _ = fmt.Fprintln(flags.Output(), "\nServes a read-only publication over HTTP.")
 		_, _ = fmt.Fprintln(flags.Output(), "")
 		flags.PrintDefaults()

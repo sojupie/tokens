@@ -31,5 +31,5 @@ func materialSymbolSVG(name string) string {
 	if !ok {
 		return ""
 	}
-	return `<svg class="sl-material-symbol" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="24" height="24" fill="currentColor" aria-hidden="true" focusable="false"><path d="` + path + `"/></svg>`
+	return `<svg class="tokens-material-symbol" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="24" height="24" fill="currentColor" aria-hidden="true" focusable="false"><path d="` + path + `"/></svg>`
 }

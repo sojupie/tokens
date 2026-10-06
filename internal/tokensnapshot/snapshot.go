@@ -14,7 +14,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/sojupie/m3-source/internal/crawl"
+	"github.com/sojupie/tokens/internal/crawl"
 )
 
 const SchemaVersion = 3
@@ -261,7 +261,7 @@ func Build(config BuildConfig) (Manifest, error) {
 			Complete:         successfulPageCount(run) == len(run.Pages) && len(run.Pages) > 0 && successfulPayloadCount(run) == uniqueSuccessfulPayloadURLs(run) && uniqueSuccessfulPayloadURLs(run) > 0,
 		},
 		Extractor: ExtractorInfo{
-			Name:          valueOr(config.ExtractorName, "sourceloom"),
+			Name:          valueOr(config.ExtractorName, "tokens"),
 			Version:       valueOr(config.ExtractorVersion, "0.1.0"),
 			SchemaVersion: SchemaVersion,
 		},

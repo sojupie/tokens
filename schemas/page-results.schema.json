@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/sojupie/m3-source/schemas/page-results.schema.json",
-  "title": "Source Loom page capture results",
+  "$id": "https://github.com/sojupie/tokens/schemas/page-results.schema.json",
+  "title": "Tokens page capture results",
   "type": "object",
   "additionalProperties": false,
   "required": ["schemaVersion", "pages"],

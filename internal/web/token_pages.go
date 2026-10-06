@@ -6,7 +6,7 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/sojupie/m3-source/internal/publish"
+	"github.com/sojupie/tokens/internal/publish"
 )
 
 func tokenSetPath(set tokenSet) string {

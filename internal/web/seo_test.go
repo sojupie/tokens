@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/sojupie/m3-source/internal/publish"
+	"github.com/sojupie/tokens/internal/publish"
 )
 
 func seoTestState() publish.PublishedState {
@@ -138,7 +138,7 @@ func TestTokenSetPagesAreLinkedAndServerRendered(t *testing.T) {
 			t.Fatalf("%s: status %d", path, response.Code)
 		}
 		body := response.Body.String()
-		if strings.Contains(body, "sl-token-set-links") || strings.Contains(body, `<select name="set">`) || strings.Count(body, `aria-label="Token sets"`) != 1 {
+		if strings.Contains(body, "tokens-token-set-links") || strings.Contains(body, `<select name="set">`) || strings.Count(body, `aria-label="Token sets"`) != 1 {
 			t.Fatal("page has redundant token-set navigation")
 		}
 		if !strings.Contains(body, `popover="auto"`) || !strings.Contains(body, `aria-current="page"`) || !strings.Contains(body, "Material Design snackbar tokens") {

@@ -2,7 +2,7 @@ package web
 
 import (
 	"strings"
-	"github.com/sojupie/m3-source/internal/publish"
+	"github.com/sojupie/tokens/internal/publish"
 )
 
 templ layout(title string) {
@@ -25,16 +25,16 @@ templ layout(title string) {
 			<meta name="robots" content="noindex, follow"/>
 		}
 	</head>
-	<body class="sl-body">
-		<header class="sl-site-header">
-			<nav class="sl-primary-nav" aria-label="Primary">
-				<a class="sl-brand md-typescale-headline-medium" href="/">Tokens</a>
-				<div class="sl-nav-links">
-					<a class="sl-nav-link md-typescale-label-large" href="/components">Components</a>
-					<a class="sl-nav-link md-typescale-label-large" href="/styles">Styles and token sources</a>
-					<a class="sl-nav-link md-typescale-label-large" href="/changes">Change log</a>
+	<body class="tokens-body">
+		<header class="tokens-site-header">
+			<nav class="tokens-primary-nav" aria-label="Primary">
+				<a class="tokens-brand md-typescale-headline-medium" href="/">Tokens</a>
+				<div class="tokens-nav-links">
+					<a class="tokens-nav-link md-typescale-label-large" href="/components">Components</a>
+					<a class="tokens-nav-link md-typescale-label-large" href="/styles">Styles and token sources</a>
+					<a class="tokens-nav-link md-typescale-label-large" href="/changes">Change log</a>
 				</div>
-				<div class="sl-theme-controls" role="group" aria-label="Site appearance">
+				<div class="tokens-theme-controls" role="group" aria-label="Site appearance">
 					<button type="button" data-app-theme aria-label="Dark mode" aria-pressed="false" title="Dark mode" disabled>
 						<span data-theme-icon="light">
 							@materialSymbol("dark_mode")
@@ -43,7 +43,7 @@ templ layout(title string) {
 							@materialSymbol("light_mode")
 						</span>
 					</button>
-					<div class="sl-contrast-buttons" role="group" aria-label="Contrast">
+					<div class="tokens-contrast-buttons" role="group" aria-label="Contrast">
 						<button type="button" data-app-contrast="default" aria-label="Standard contrast" aria-pressed="true" title="Standard contrast" disabled>
 							@materialSymbol("brightness_low")
 						</button>
@@ -57,11 +57,11 @@ templ layout(title string) {
 				</div>
 			</nav>
 		</header>
-		<main class="sl-main">
+		<main class="tokens-main">
 			{ children... }
 		</main>
-		<footer class="sl-site-footer">
-			<div class="sl-footer-content">
+		<footer class="tokens-site-footer">
+			<div class="tokens-footer-content">
 				<div>
 					<p class="md-typescale-title-medium">Tokens</p>
 					<p class="md-typescale-body-medium">Browse Material Design tokens and track their changes.</p>
@@ -69,7 +69,7 @@ templ layout(title string) {
 				</div>
 				<div>
 					<p class="md-typescale-body-medium">Made by Olle Marmenlind</p>
-					<a class="sl-link md-typescale-body-medium" href="https://marmenlind.com">marmenlind.com</a>
+					<a class="tokens-link md-typescale-body-medium" href="https://marmenlind.com">marmenlind.com</a>
 				</div>
 			</div>
 		</footer>
@@ -80,26 +80,26 @@ templ layout(title string) {
 templ overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView) {
 @layout("Published Material tokens") {
 		<h1 class="md-typescale-headline-medium">Published Material tokens</h1>
-		<p class="md-typescale-body-large">Current snapshot: <code class="sl-code">{ snapshot.ID }</code></p>
-		<p class="sl-metadata">Detected: { snapshot.CreatedAt }</p>
+		<p class="md-typescale-body-large">Current snapshot: <code class="tokens-code">{ snapshot.ID }</code></p>
+		<p class="tokens-metadata">Detected: { snapshot.CreatedAt }</p>
 
-		<section class="sl-section" aria-labelledby="components-heading">
+		<section class="tokens-section" aria-labelledby="components-heading">
 			<h2 class="md-typescale-title-medium" id="components-heading">Components</h2>
-			<ul class="sl-card-grid">
+			<ul class="tokens-card-grid">
 				for _, subject := range subjects {
 					if subject.Key.Kind == publish.SubjectComponent {
-						<li class="sl-card"><a class="sl-link" href={ subjectURL(subject) }>{ subject.Name }</a> <small class="md-typescale-body-small">({ len(subject.Tokens) } tokens)</small></li>
+						<li class="tokens-card"><a class="tokens-link" href={ subjectURL(subject) }>{ subject.Name }</a> <small class="md-typescale-body-small">({ len(subject.Tokens) } tokens)</small></li>
 					}
 				}
 			</ul>
 		</section>
 
-		<section class="sl-section" aria-labelledby="styles-heading">
+		<section class="tokens-section" aria-labelledby="styles-heading">
 			<h2 class="md-typescale-title-medium" id="styles-heading">Styles and token sources</h2>
-			<ul class="sl-card-grid">
+			<ul class="tokens-card-grid">
 				for _, subject := range subjects {
 					if subject.Key.Kind != publish.SubjectComponent {
-						<li class="sl-card"><a class="sl-link" href={ subjectURL(subject) }>{ subject.Name }</a> <small class="md-typescale-body-small">{ subjectKindLabel(subject.Key.Kind) } · { len(subject.Tokens) } tokens</small></li>
+						<li class="tokens-card"><a class="tokens-link" href={ subjectURL(subject) }>{ subject.Name }</a> <small class="md-typescale-body-small">{ subjectKindLabel(subject.Key.Kind) } · { len(subject.Tokens) } tokens</small></li>
 					}
 				}
 			</ul>
@@ -114,28 +114,28 @@ templ subjectListPage(snapshot publish.SnapshotView, subjects []publish.SubjectV
 		} else {
 			<h1 class="md-typescale-headline-medium">Components</h1>
 		}
-		<p class="sl-metadata">Current snapshot: <code class="sl-code">{ snapshot.ID }</code></p>
-		<form class="sl-search-form" method="get" action={ subjectListPath(styles) } role="search">
+		<p class="tokens-metadata">Current snapshot: <code class="tokens-code">{ snapshot.ID }</code></p>
+		<form class="tokens-search-form" method="get" action={ subjectListPath(styles) } role="search">
 			<label class="md-typescale-body-medium" for="subject-search">Search by name or slug</label>
-			<input class="sl-search-input" id="subject-search" type="search" name="q" value={ query } autocomplete="off"
+			<input class="tokens-search-input" id="subject-search" type="search" name="q" value={ query } autocomplete="off"
 				hx-get={ subjectListPath(styles) }
 				hx-target="#subject-list"
 				hx-trigger="input changed delay:250ms"
 				hx-push-url="true"/>
 		</form>
-		<div id="subject-list" class="sl-list-panel">
+		<div id="subject-list" class="tokens-list-panel">
 			@subjectList(subjects)
 		</div>
 }
 }
 
 templ subjectList(subjects []publish.SubjectView) {
-	<ul class="sl-subject-list">
+	<ul class="tokens-subject-list">
 		for _, subject := range subjects {
-			<li class="sl-list-item"><a class="sl-link" href={ subjectURL(subject) }>{ subject.Name }</a> <small class="md-typescale-body-small">{ subjectKindLabel(subject.Key.Kind) } · { len(subject.Tokens) } tokens</small></li>
+			<li class="tokens-list-item"><a class="tokens-link" href={ subjectURL(subject) }>{ subject.Name }</a> <small class="md-typescale-body-small">{ subjectKindLabel(subject.Key.Kind) } · { len(subject.Tokens) } tokens</small></li>
 		}
 		if len(subjects) == 0 {
-			<li class="sl-empty md-typescale-body-large">No matching subjects.</li>
+			<li class="tokens-empty md-typescale-body-large">No matching subjects.</li>
 		}
 	</ul>
 }
@@ -145,12 +145,12 @@ templ subjectPage(subject publish.SubjectView, changes []publish.ChangeView, bro
 }
 
 templ tokenSetPicker(subject publish.SubjectView, browser tokenBrowser) {
-	<button class="sl-token-set" type="button" popovertarget="sl-token-set-menu" aria-label={ "Token set: " + tokenSetLabel(browser.Selected) }>
+	<button class="tokens-token-set" type="button" popovertarget="tokens-token-set-menu" aria-label={ "Token set: " + tokenSetLabel(browser.Selected) }>
 		{ tokenSetLabel(browser.Selected) }
 		@materialSymbol("expand_more")
 	</button>
-	<nav class="sl-token-set-menu" id="sl-token-set-menu" popover="auto" aria-label="Token sets">
-		<a class="sl-link sl-token-set-overview" href={ subjectURL(subject) }>{ subject.Name } overview</a>
+	<nav class="tokens-token-set-menu" id="tokens-token-set-menu" popover="auto" aria-label="Token sets">
+		<a class="tokens-link tokens-token-set-overview" href={ subjectURL(subject) }>{ subject.Name } overview</a>
 		for _, group := range tokenSetMenuGroups(browser.Sets) {
 			<section>
 				<h3 class="md-typescale-title-medium">{ group.Label }</h3>
@@ -172,12 +172,12 @@ templ tokenSetPicker(subject publish.SubjectView, browser tokenBrowser) {
 templ changesPage(state publish.PublishedState, subject string, baseURL string, filters changeFilters, counts string, changes []publish.ChangeView, page int, total int, hasPrevious bool, hasNext bool) {
 @layout(timelineTitle(subject, state.Subjects)) {
 		<h1 class="md-typescale-headline-medium">{ timelineTitle(subject, state.Subjects) }</h1>
-		<p class="sl-metadata">{ historyCoverage(state.Snapshots) }</p>
+		<p class="tokens-metadata">{ historyCoverage(state.Snapshots) }</p>
 		<p class="md-typescale-body-medium">Dates show when we detected changes, not when Material published them.</p>
 		@changeFilterForm(filters, baseURL)
 		if total > 0 && subject != "" {
-			<p class="sl-metadata">Showing page { page } of { (total + 49) / 50 } · { total } total changes</p>
-			<p class="sl-change-counts">{ counts }. One token can have changes in several settings.</p>
+			<p class="tokens-metadata">Showing page { page } of { (total + 49) / 50 } · { total } total changes</p>
+			<p class="tokens-change-counts">{ counts }. One token can have changes in several settings.</p>
 		}
 		if len(changes) == 0 {
 			if len(state.Snapshots) < 2 {
@@ -189,17 +189,17 @@ templ changesPage(state publish.PublishedState, subject string, baseURL string, 
 			}
 		}
 		for _, batch := range changeBatches(changes, state.Snapshots) {
-			<section class="sl-section sl-timeline-batch">
+			<section class="tokens-section tokens-timeline-batch">
 				<h2 class="md-typescale-title-medium">Observed <time datetime={ batch.DetectedAt }>{ observationDate(batch.DetectedAt) }</time></h2>
 				if batch.PreviousAt != "" {
-					<p class="sl-metadata">Compared with { observationDate(batch.PreviousAt) }</p>
+					<p class="tokens-metadata">Compared with { observationDate(batch.PreviousAt) }</p>
 				}
 		for _, group := range changeGroups(batch.Changes, state.Subjects) {
 			if subject == "" {
-				<article class="sl-change-summary">
+				<article class="tokens-change-summary">
 					<h3 class="md-typescale-title-medium">
 						if group.URL != "" {
-							<a class="sl-link" href={ group.URL }>{ group.Label }</a>
+							<a class="tokens-link" href={ group.URL }>{ group.Label }</a>
 						} else {
 							{ group.Label }
 						}
@@ -211,14 +211,14 @@ templ changesPage(state publish.PublishedState, subject string, baseURL string, 
 							{ changedItemCount(group.Changes) } items changed
 						}
 					</p>
-					<a class="sl-link" href={ groupChangelogURL(baseURL, group, batch.Changes[0].SnapshotID) }>
+					<a class="tokens-link" href={ groupChangelogURL(baseURL, group, batch.Changes[0].SnapshotID) }>
 						View changes
 						@materialSymbol("chevron_right")
 					</a>
 				</article>
 			} else {
 				if group.URL != "" {
-					<p><a class="sl-link" href={ group.URL }>Browse tokens</a></p>
+					<p><a class="tokens-link" href={ group.URL }>Browse tokens</a></p>
 				}
 				@changeRecordList(group.Changes)
 			}
@@ -226,13 +226,13 @@ templ changesPage(state publish.PublishedState, subject string, baseURL string, 
 			</section>
 		}
 		if hasPrevious || hasNext {
-			<nav class="sl-pagination" aria-label="Change log pages">
+			<nav class="tokens-pagination" aria-label="Change log pages">
 				if hasPrevious {
-					<a class="sl-link" href={ changesPageURL(baseURL, page - 1) }>Previous</a>
+					<a class="tokens-link" href={ changesPageURL(baseURL, page - 1) }>Previous</a>
 				}
 				<span class="md-typescale-body-small">Page { page }</span>
 				if hasNext {
-					<a class="sl-link" href={ changesPageURL(baseURL, page + 1) }>Next</a>
+					<a class="tokens-link" href={ changesPageURL(baseURL, page + 1) }>Next</a>
 				}
 			</nav>
 		}
@@ -240,7 +240,7 @@ templ changesPage(state publish.PublishedState, subject string, baseURL string, 
 }
 
 templ changeFilterForm(filters changeFilters, baseURL string) {
-	<form class="sl-change-filters" method="get" action={ strings.SplitN(baseURL, "?", 2)[0] }>
+	<form class="tokens-change-filters" method="get" action={ strings.SplitN(baseURL, "?", 2)[0] }>
 		if !filters.FixedSubject {
 			<label>Component or style<select name="subject"><option value="">All components and styles</option>
 				for _, option := range filters.Subjects {
@@ -260,26 +260,26 @@ templ changeFilterForm(filters changeFilters, baseURL string) {
 			<option value="removed" selected?={ filters.Type == "removed" }>Removed</option>
 		</select></label>
 		<label>Token name<input type="search" name="q" value={ filters.Query } placeholder="e.g. width or font"/></label>
-		<div class="sl-change-filter-actions">
+		<div class="tokens-change-filter-actions">
 			<button type="submit">Apply filters</button>
-			<a class="sl-link" href={ strings.SplitN(baseURL, "?", 2)[0] }>Reset</a>
+			<a class="tokens-link" href={ strings.SplitN(baseURL, "?", 2)[0] }>Reset</a>
 		</div>
 	</form>
 }
 
 templ changeRecordList(changes []labeledChange) {
 		for _, change := range changes {
-			<details class="sl-change-card sl-change-disclosure">
-				<summary class="sl-change-heading">
+			<details class="tokens-change-card tokens-change-disclosure">
+				<summary class="tokens-change-heading">
 					@materialSymbol("chevron_right")
 					<h4>{ change.Name }</h4>
-					<span class="sl-change-status" data-change-type={ change.Type }>{ changeTypeLabel(change.Type) }</span>
+					<span class="tokens-change-status" data-change-type={ change.Type }>{ changeTypeLabel(change.Type) }</span>
 					if context := changeContext(change.ChangeView); context != "" {
-						<span class="sl-change-context sl-change-context-summary">{ context }</span>
+						<span class="tokens-change-context tokens-change-context-summary">{ context }</span>
 					}
 				</summary>
 				if len(change.Hierarchy) > 0 {
-					<ol class="sl-change-hierarchy" aria-label="Token hierarchy">
+					<ol class="tokens-change-hierarchy" aria-label="Token hierarchy">
 						for index, part := range change.Hierarchy {
 							<li>
 								if index > 0 {
@@ -290,7 +290,7 @@ templ changeRecordList(changes []labeledChange) {
 							}
 					</ol>
 				}
-				<table class="sl-change-table">
+				<table class="tokens-change-table">
 					<thead><tr><th scope="col">Property</th><th scope="col">Previous value</th><th scope="col">New value</th></tr></thead>
 					<tbody>
 						for _, value := range changedValues(change.ChangeView) {

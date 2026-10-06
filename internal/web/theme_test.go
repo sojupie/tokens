@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/sojupie/m3-source/internal/publish"
+	"github.com/sojupie/tokens/internal/publish"
 )
 
 func TestThemeValuesAreTypedCSS(t *testing.T) {
@@ -36,7 +36,7 @@ func TestThemeValuesAreTypedCSS(t *testing.T) {
 }
 
 func TestStylesUseMaterialRolesWithoutLegacyAliases(t *testing.T) {
-	legacy := regexp.MustCompile(`--(?:sl-(?:ink|page|rule|accent|font)|table-|token-(?:ink|color))`)
+	legacy := regexp.MustCompile(`--(?:tokens-(?:ink|page|rule|accent|font)|table-|token-(?:ink|color))`)
 	for _, file := range []string{"static/app.css", "static/token-table.css"} {
 		css, err := embeddedStatic.ReadFile(file)
 		if err != nil {

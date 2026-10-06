@@ -10,8 +10,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/sojupie/m3-source/internal/crawl"
-	"github.com/sojupie/m3-source/internal/tokensnapshot"
+	"github.com/sojupie/tokens/internal/crawl"
+	"github.com/sojupie/tokens/internal/tokensnapshot"
 )
 
 func TestBuildRetainsTimelineAcrossPublishAndLoad(t *testing.T) {

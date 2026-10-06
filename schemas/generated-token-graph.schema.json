@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/sojupie/m3-source/schemas/generated-token-graph.schema.json",
-  "title": "Source Loom generated token graph",
+  "$id": "https://github.com/sojupie/tokens/schemas/generated-token-graph.schema.json",
+  "title": "Tokens generated token graph",
   "type": "object",
   "additionalProperties": false,
   "required": ["schemaVersion", "snapshotId", "crawlId", "pages", "observations", "sourcePayloads", "records"],

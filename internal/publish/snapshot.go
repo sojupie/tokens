@@ -11,7 +11,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/sojupie/m3-source/internal/tokensnapshot"
+	"github.com/sojupie/tokens/internal/tokensnapshot"
 )
 
 func loadSnapshot(directory string) (snapshotInput, error) {

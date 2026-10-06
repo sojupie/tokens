@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/sojupie/m3-source/internal/tokensnapshot"
+	"github.com/sojupie/tokens/internal/tokensnapshot"
 )
 
 type historySnapshot struct {

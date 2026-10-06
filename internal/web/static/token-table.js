@@ -9,17 +9,17 @@ document.querySelectorAll('dialog').forEach(dialog => {
   });
 });
 
-document.querySelectorAll('.sl-token-download').forEach(download => {
+document.querySelectorAll('.tokens-token-download').forEach(download => {
   const dialog = download.querySelector('dialog');
   download.querySelector('[data-download-open]').addEventListener('click', () => dialog.showModal());
   download.querySelector('[data-download-cancel]').addEventListener('click', () => dialog.close());
   dialog.querySelector('form').addEventListener('submit', () => dialog.close());
 });
 
-document.querySelectorAll('.sl-token-browser').forEach(browser => {
+document.querySelectorAll('.tokens-token-browser').forEach(browser => {
   const form = browser.querySelector('form');
   const dialog = browser.querySelector('dialog');
-  const groups = [...browser.querySelectorAll('.sl-token-folder')];
+  const groups = [...browser.querySelectorAll('.tokens-token-folder')];
   let openGroups = [];
   let contextFields = '';
   let contextRequest;
@@ -40,11 +40,11 @@ document.querySelectorAll('.sl-token-browser').forEach(browser => {
       const response = await fetch(url, {signal: request.signal, cache: 'no-store'});
       if (!response.ok) throw new Error('Context request failed');
       const page = new DOMParser().parseFromString(await response.text(), 'text/html');
-      const fields = page.querySelector('.sl-context-fields');
+      const fields = page.querySelector('.tokens-context-fields');
       if (!fields) throw new Error('Missing context choices');
-      const advancedOpen = dialog.querySelector('.sl-context-advanced')?.open;
-      dialog.querySelector('.sl-context-fields').replaceWith(fields);
-      const advanced = dialog.querySelector('.sl-context-advanced');
+      const advancedOpen = dialog.querySelector('.tokens-context-advanced')?.open;
+      dialog.querySelector('.tokens-context-fields').replaceWith(fields);
+      const advanced = dialog.querySelector('.tokens-context-advanced');
       if (advanced) advanced.open = advancedOpen;
       dialog.querySelector(`input[name="${CSS.escape(changedField)}"]:checked`)?.focus();
       status.textContent = '';
@@ -56,13 +56,13 @@ document.querySelectorAll('.sl-token-browser').forEach(browser => {
 
   const cancelContext = () => {
     contextRequest?.abort();
-    dialog.querySelector('.sl-context-fields').innerHTML = contextFields;
+    dialog.querySelector('.tokens-context-fields').innerHTML = contextFields;
     dialog.querySelector('[role="status"]').textContent = '';
     dialog.querySelector('[type="submit"]').disabled = false;
   };
 
-  const picker = browser.querySelector('.sl-token-set');
-  const menu = browser.querySelector('.sl-token-set-menu');
+  const picker = browser.querySelector('.tokens-token-set');
+  const menu = browser.querySelector('.tokens-token-set-menu');
   const placeMenu = () => {
     const bounds = picker.getBoundingClientRect();
     const edge = 16;
@@ -95,7 +95,7 @@ document.querySelectorAll('.sl-token-browser').forEach(browser => {
     if (!button) return;
     switch (button.dataset.action) {
       case 'context':
-        contextFields = dialog.querySelector('.sl-context-fields').innerHTML;
+        contextFields = dialog.querySelector('.tokens-context-fields').innerHTML;
         dialog.showModal();
         break;
       case 'cancel':
@@ -103,12 +103,12 @@ document.querySelectorAll('.sl-token-browser').forEach(browser => {
         dialog.close();
         break;
       case 'previews': {
-        const hidden = browser.classList.toggle('sl-no-previews');
+        const hidden = browser.classList.toggle('tokens-no-previews');
         button.setAttribute('aria-pressed', String(!hidden));
         break;
       }
       case 'view': {
-        const flat = browser.classList.toggle('sl-flat-view');
+        const flat = browser.classList.toggle('tokens-flat-view');
         button.setAttribute('aria-pressed', String(flat));
         if (flat) openGroups = groups.map(group => group.open);
         groups.forEach((group, index) => { group.open = flat || openGroups[index]; });
@@ -117,7 +117,7 @@ document.querySelectorAll('.sl-token-browser').forEach(browser => {
       case 'expand': {
         const open = button.getAttribute('aria-expanded') !== 'true';
         groups.forEach(group => { group.open = open; });
-        browser.classList.remove('sl-flat-view');
+        browser.classList.remove('tokens-flat-view');
         browser.querySelector('[data-action="view"]').setAttribute('aria-pressed', 'false');
         button.setAttribute('aria-expanded', String(open));
         button.setAttribute('aria-label', open ? 'Collapse all groups' : 'Expand all groups');

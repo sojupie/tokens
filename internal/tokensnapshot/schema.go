@@ -9,10 +9,10 @@ import (
 	"path/filepath"
 
 	"github.com/santhosh-tekuri/jsonschema/v6"
-	"github.com/sojupie/m3-source/schemas"
+	"github.com/sojupie/tokens/schemas"
 )
 
-const schemaBaseURL = "https://github.com/sojupie/m3-source/schemas/"
+const schemaBaseURL = "https://github.com/sojupie/tokens/schemas/"
 
 func readGzipBytes(body []byte) ([]byte, error) {
 	reader, err := gzip.NewReader(bytes.NewReader(body))

@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/sojupie/m3-source/internal/tokensnapshot"
+	"github.com/sojupie/tokens/internal/tokensnapshot"
 )
 
 type BuildConfig struct {
@@ -106,7 +106,7 @@ func createStagingDir(outputPath string) (string, error) {
 	if err := os.MkdirAll(parent, 0o755); err != nil {
 		return "", fmt.Errorf("create publication parent directory: %w", err)
 	}
-	return os.MkdirTemp(parent, ".sourceloom-publication-")
+	return os.MkdirTemp(parent, ".tokens-publication-")
 }
 
 func replaceOutput(stagingPath, outputPath string) error {
@@ -125,7 +125,7 @@ func replaceOutput(stagingPath, outputPath string) error {
 	}
 
 	parent := filepath.Dir(filepath.Clean(outputPath))
-	backupPath, err := os.MkdirTemp(parent, ".sourceloom-publication-backup-")
+	backupPath, err := os.MkdirTemp(parent, ".tokens-publication-backup-")
 	if err != nil {
 		return fmt.Errorf("create publication backup path: %w", err)
 	}

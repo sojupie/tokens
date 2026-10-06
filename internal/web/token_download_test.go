@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/sojupie/m3-source/internal/publish"
+	"github.com/sojupie/tokens/internal/publish"
 )
 
 func TestTokenDownloadsMatchTableAndKeepFullContextsOptional(t *testing.T) {
@@ -73,7 +73,7 @@ func TestTokenDownloadControlExplainsChoices(t *testing.T) {
 	if err := writeTokenDownloadMenu(&output, subject, browser); err != nil {
 		t.Fatal(err)
 	}
-	for _, want := range []string{`method="get"`, `aria-labelledby="sl-download-title"`, `value="view" checked`, `value="set"`, `value="all"`, `icon &amp; label`, `Download JSON</button>`, `Button - Color - Outlined`, `This table, with your filters`, `This table, with every value`, `All Buttons tokens`, `Ignores search and filters.`} {
+	for _, want := range []string{`method="get"`, `aria-labelledby="tokens-download-title"`, `value="view" checked`, `value="set"`, `value="all"`, `icon &amp; label`, `Download JSON</button>`, `Button - Color - Outlined`, `This table, with your filters`, `This table, with every value`, `All Buttons tokens`, `Ignores search and filters.`} {
 		if !strings.Contains(output.String(), want) {
 			t.Fatalf("missing %s in %s", want, output.String())
 		}

@@ -3,7 +3,7 @@ package publish
 import (
 	"testing"
 
-	"github.com/sojupie/m3-source/internal/tokensnapshot"
+	"github.com/sojupie/tokens/internal/tokensnapshot"
 )
 
 func TestChangeViewsAreStableAndSorted(t *testing.T) {

@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/sojupie/m3-source/internal/crawl"
+	"github.com/sojupie/tokens/internal/crawl"
 )
 
 func TestBuildIsDeterministicAndVerifiable(t *testing.T) {

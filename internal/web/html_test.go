@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/sojupie/m3-source/internal/publish"
+	"github.com/sojupie/tokens/internal/publish"
 )
 
 func TestHTMLPagesRenderComponentsAndStyles(t *testing.T) {
@@ -73,7 +73,7 @@ func TestHTMLPagesRenderComponentsAndStyles(t *testing.T) {
 					t.Fatalf("body does not contain %q:\n%s", value, recorder.Body.String())
 				}
 			}
-			for _, value := range []string{`<footer class="sl-site-footer">`, `href="https://marmenlind.com"`, "Made by Olle Marmenlind", "Browse Material Design tokens and track their changes."} {
+			for _, value := range []string{`<footer class="tokens-site-footer">`, `href="https://marmenlind.com"`, "Made by Olle Marmenlind", "Browse Material Design tokens and track their changes."} {
 				if !strings.Contains(recorder.Body.String(), value) {
 					t.Fatalf("page footer does not contain %q", value)
 				}

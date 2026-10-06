@@ -10,7 +10,7 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/sojupie/m3-source/internal/publish"
+	"github.com/sojupie/tokens/internal/publish"
 )
 
 type tokenBrowser struct {
@@ -560,7 +560,7 @@ func tokenColorLabel(raw json.RawMessage) string {
 
 func colorCellClass(color string) string {
 	if color != "" {
-		return " sl-token-color"
+		return " tokens-token-color"
 	}
 	return ""
 }
@@ -568,7 +568,7 @@ func colorCellClass(color string) string {
 func tokenColorTextColor(color string) string {
 	var red, green, blue, alpha float64
 	if _, err := fmt.Sscanf(color, "rgba(%f, %f, %f, %f)", &red, &green, &blue, &alpha); err != nil {
-		return "var(--sl-preview-on-light)"
+		return "var(--tokens-preview-on-light)"
 	}
 	red, green, blue = red*alpha+255*(1-alpha), green*alpha+255*(1-alpha), blue*alpha+255*(1-alpha)
 	linear := func(channel float64) float64 {
@@ -579,9 +579,9 @@ func tokenColorTextColor(color string) string {
 		return math.Pow((channel+0.055)/1.055, 2.4)
 	}
 	if 0.2126*linear(red)+0.7152*linear(green)+0.0722*linear(blue) < 0.179 {
-		return "var(--sl-preview-on-dark)"
+		return "var(--tokens-preview-on-dark)"
 	}
-	return "var(--sl-preview-on-light)"
+	return "var(--tokens-preview-on-light)"
 }
 
 func tokenValueDisplay(category string, raw json.RawMessage) string {

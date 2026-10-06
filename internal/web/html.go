@@ -12,7 +12,7 @@ import (
 	"strings"
 
 	"github.com/a-h/templ"
-	"github.com/sojupie/m3-source/internal/publish"
+	"github.com/sojupie/tokens/internal/publish"
 )
 
 func (server *Server) handleOverview(response http.ResponseWriter, request *http.Request) {

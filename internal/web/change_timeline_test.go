@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/sojupie/m3-source/internal/publish"
+	"github.com/sojupie/tokens/internal/publish"
 )
 
 func TestChangeTimelineShowsEarlierTransitionsGloballyAndPerSubject(t *testing.T) {
@@ -87,7 +87,7 @@ func TestTimelineUsesExactIdentifiersAndLinkedComponentGroups(t *testing.T) {
 		New(state, "").Handler().ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, "/components/buttons/changes?snapshot=current", nil))
 		body = recorder.Body.String()
 		level := "h4"
-		for _, text := range []string{"<" + level + ">md.comp.button.elevated.label-text.weight</" + level + ">", "md.comp.button.removed.height", "Font weight", "Previous value", "New value", `aria-label="Token hierarchy"`, `Elevated</li>`, `Removed</li>`, `class="sl-material-symbol"`} {
+		for _, text := range []string{"<" + level + ">md.comp.button.elevated.label-text.weight</" + level + ">", "md.comp.button.removed.height", "Font weight", "Previous value", "New value", `aria-label="Token hierarchy"`, `Elevated</li>`, `Removed</li>`, `class="tokens-material-symbol"`} {
 			if !strings.Contains(body, text) {
 				t.Fatalf("%s missing %q", path, text)
 			}

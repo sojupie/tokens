@@ -6,7 +6,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/sojupie/m3-source/internal/publish"
+	"github.com/sojupie/tokens/internal/publish"
 )
 
 type changeOption struct {

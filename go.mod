@@ -1,4 +1,4 @@
-module github.com/sojupie/m3-source
+module github.com/sojupie/tokens
 
 go 1.26
 

@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/sojupie/m3-source/internal/publish"
+	"github.com/sojupie/tokens/internal/publish"
 )
 
 func TestHandlerServesReadAPI(t *testing.T) {

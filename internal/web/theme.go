@@ -10,7 +10,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/sojupie/m3-source/internal/publish"
+	"github.com/sojupie/tokens/internal/publish"
 )
 
 // The app's theme is independent of the token context a visitor is inspecting.
@@ -102,7 +102,7 @@ func publicationThemeVariant(state publish.PublishedState, theme, contrast strin
 	if theme == "Light" && contrast == "Default" {
 		// Pin preview text colour to the publication's black/white values, rather than
 		// on-surface/on-primary roles whose luminance flips with the app theme.
-		fmt.Fprintf(&css, "  --sl-preview-on-light: %s;\n  --sl-preview-on-dark: %s;\n", cssValues["md-ref-palette-neutral0"], cssValues["md-sys-color-on-primary"])
+		fmt.Fprintf(&css, "  --tokens-preview-on-light: %s;\n  --tokens-preview-on-dark: %s;\n", cssValues["md-ref-palette-neutral0"], cssValues["md-sys-color-on-primary"])
 	}
 	for _, name := range names {
 		fmt.Fprintf(&css, "  --%s: %s;\n", name, cssValues[name])

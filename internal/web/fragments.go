@@ -9,7 +9,7 @@ import (
 	"strings"
 
 	"github.com/a-h/templ"
-	"github.com/sojupie/m3-source/internal/publish"
+	"github.com/sojupie/tokens/internal/publish"
 )
 
 func tokenBrowserView(subject publish.SubjectView, browser tokenBrowser) templ.Component {
@@ -19,30 +19,30 @@ func tokenBrowserView(subject publish.SubjectView, browser tokenBrowser) templ.C
 			return err
 		}
 		if len(browser.Sets) == 0 {
-			return write(`<p class="sl-empty md-typescale-body-large">No published tokens for this page.</p>`)
+			return write(`<p class="tokens-empty md-typescale-body-large">No published tokens for this page.</p>`)
 		}
-		if err := write(`<div class="sl-token-browser"><form class="sl-token-filters" method="get" action="` + html.EscapeString(subjectURL(subject)) + `"><input type="hidden" name="set" value="` + html.EscapeString(browser.Selected.Key) + `"><div class="sl-token-toolbar">`); err != nil {
+		if err := write(`<div class="tokens-token-browser"><form class="tokens-token-filters" method="get" action="` + html.EscapeString(subjectURL(subject)) + `"><input type="hidden" name="set" value="` + html.EscapeString(browser.Selected.Key) + `"><div class="tokens-token-toolbar">`); err != nil {
 			return err
 		}
 		if err := tokenSetPicker(subject, browser).Render(ctx, writer); err != nil {
 			return err
 		}
-		if err := write(`<label class="sl-token-search">` + tableIcon("search") + `<span class="sl-visually-hidden">Search tokens</span><input type="search" name="q" value="` + html.EscapeString(browser.Query) + `" placeholder="Search"></label><div class="sl-token-tools" role="group" aria-label="Table display"><button class="sl-icon-button" type="button" data-action="previews" aria-label="Toggle previews" aria-pressed="true">` + tableIcon("eye") + `</button><button class="sl-icon-button" type="button" data-action="view" aria-label="Toggle view" aria-pressed="false">` + tableIcon("grid") + `</button><button class="sl-icon-button" type="button" data-action="expand" aria-label="Expand all groups" aria-expanded="false">` + tableIcon("expand") + `</button></div></div><div class="sl-token-columns"><span>Token</span>`); err != nil {
+		if err := write(`<label class="tokens-token-search">` + tableIcon("search") + `<span class="tokens-visually-hidden">Search tokens</span><input type="search" name="q" value="` + html.EscapeString(browser.Query) + `" placeholder="Search"></label><div class="tokens-token-tools" role="group" aria-label="Table display"><button class="tokens-icon-button" type="button" data-action="previews" aria-label="Toggle previews" aria-pressed="true">` + tableIcon("eye") + `</button><button class="tokens-icon-button" type="button" data-action="view" aria-label="Toggle view" aria-pressed="false">` + tableIcon("grid") + `</button><button class="tokens-icon-button" type="button" data-action="expand" aria-label="Expand all groups" aria-expanded="false">` + tableIcon("expand") + `</button></div></div><div class="tokens-token-columns"><span>Token</span>`); err != nil {
 			return err
 		}
 		if len(browser.Filters) > 0 {
-			if err := write(`<button class="sl-context-button" type="button" data-action="context" aria-haspopup="dialog">` + html.EscapeString(tableContextLabel(browser.Filters)) + tableIcon("dropdown") + `</button></div><dialog class="sl-context-dialog" aria-labelledby="sl-context-title"><h2 id="sl-context-title">See more values</h2><p>Compare token values by selecting another context</p><div class="sl-context-fields">`); err != nil {
+			if err := write(`<button class="tokens-context-button" type="button" data-action="context" aria-haspopup="dialog">` + html.EscapeString(tableContextLabel(browser.Filters)) + tableIcon("dropdown") + `</button></div><dialog class="tokens-context-dialog" aria-labelledby="tokens-context-title"><h2 id="tokens-context-title">See more values</h2><p>Compare token values by selecting another context</p><div class="tokens-context-fields">`); err != nil {
 				return err
 			}
 			advanced := false
 			for _, filter := range browser.Filters {
 				if !advanced && filter.Name != "Theme" && filter.Name != "Contrast" {
-					if err := write(`<details class="sl-context-advanced"><summary>More contexts</summary>`); err != nil {
+					if err := write(`<details class="tokens-context-advanced"><summary>More contexts</summary>`); err != nil {
 						return err
 					}
 					advanced = true
 				}
-				if err := write(`<fieldset><legend>` + html.EscapeString(filter.Name) + `</legend><div class="sl-context-options">`); err != nil {
+				if err := write(`<fieldset><legend>` + html.EscapeString(filter.Name) + `</legend><div class="tokens-context-options">`); err != nil {
 					return err
 				}
 				options := filter.Options
@@ -60,7 +60,7 @@ func tokenBrowserView(subject publish.SubjectView, browser tokenBrowser) templ.C
 					return err
 				}
 				if filter.Name == "Audience" {
-					if err := write(`<details class="sl-audience-help"><summary>What do 1P and 3P mean?</summary><p>1P means first-party; 3P means third-party. We interpret <strong>1P Baseline</strong> as the configuration for Google&#39;s own products, and <strong>3P</strong> as the configuration for other developers.</p><p>Material supplies these audience labels but does not define them in the captured data. They are not a baseline-versus-Expressive switch.</p></details>`); err != nil {
+					if err := write(`<details class="tokens-audience-help"><summary>What do 1P and 3P mean?</summary><p>1P means first-party; 3P means third-party. We interpret <strong>1P Baseline</strong> as the configuration for Google&#39;s own products, and <strong>3P</strong> as the configuration for other developers.</p><p>Material supplies these audience labels but does not define them in the captured data. They are not a baseline-versus-Expressive switch.</p></details>`); err != nil {
 						return err
 					}
 				}
@@ -70,19 +70,19 @@ func tokenBrowserView(subject publish.SubjectView, browser tokenBrowser) templ.C
 					return err
 				}
 			}
-			if err := write(`</div><p class="sl-context-status" role="status" aria-live="polite"></p><footer><button type="button" data-action="cancel">Cancel</button><button type="submit">Save</button></footer></dialog>`); err != nil {
+			if err := write(`</div><p class="tokens-context-status" role="status" aria-live="polite"></p><footer><button type="button" data-action="cancel">Cancel</button><button type="submit">Save</button></footer></dialog>`); err != nil {
 				return err
 			}
 		} else if err := write(`<span>Value</span></div>`); err != nil {
 			return err
 		}
-		if err := write(`<noscript><button type="submit">Apply filters</button><style>.sl-context-dialog:not([open]){display:block;position:static}</style></noscript></form>`); err != nil {
+		if err := write(`<noscript><button type="submit">Apply filters</button><style>.tokens-context-dialog:not([open]){display:block;position:static}</style></noscript></form>`); err != nil {
 			return err
 		}
 		if browser.Count == 0 {
-			return write(`<p class="sl-empty md-typescale-body-large">No tokens match these filters.</p></div><script src="` + html.EscapeString(staticURL("token-table.js")) + `" defer></script>`)
+			return write(`<p class="tokens-empty md-typescale-body-large">No tokens match these filters.</p></div><script src="` + html.EscapeString(staticURL("token-table.js")) + `" defer></script>`)
 		}
-		if err := write(`<div class="sl-token-groups">`); err != nil {
+		if err := write(`<div class="tokens-token-groups">`); err != nil {
 			return err
 		}
 		for _, group := range browser.Selected.Groups {
@@ -128,18 +128,18 @@ func subjectPageComponent(subject publish.SubjectView, changes []publish.ChangeV
 			if metadata(ctx).Heading != "" {
 				heading = metadata(ctx).Heading
 			}
-			if err := write(`<p class="sl-back-link"><a class="sl-link" href="` + subjectListPath(subject.Key.Kind != publish.SubjectComponent) + `">` + materialSymbolSVG("arrow_back") + html.EscapeString(subjectKindLabel(subject.Key.Kind)) + `</a></p><header class="sl-subject-heading"><h1 class="md-typescale-headline-medium">` + html.EscapeString(heading) + `</h1><nav class="sl-subject-actions" aria-label="Component links">`); err != nil {
+			if err := write(`<p class="tokens-back-link"><a class="tokens-link" href="` + subjectListPath(subject.Key.Kind != publish.SubjectComponent) + `">` + materialSymbolSVG("arrow_back") + html.EscapeString(subjectKindLabel(subject.Key.Kind)) + `</a></p><header class="tokens-subject-heading"><h1 class="md-typescale-headline-medium">` + html.EscapeString(heading) + `</h1><nav class="tokens-subject-actions" aria-label="Component links">`); err != nil {
 				return err
 			}
 			if err := writeTokenDownloadMenu(writer, subject, browser); err != nil {
 				return err
 			}
-			if err := write(`<a class="sl-link" href="` + html.EscapeString(subjectChangesURL(subject)) + `">Change history (` + strconv.Itoa(len(changes)) + `)</a>`); err != nil {
+			if err := write(`<a class="tokens-link" href="` + html.EscapeString(subjectChangesURL(subject)) + `">Change history (` + strconv.Itoa(len(changes)) + `)</a>`); err != nil {
 				return err
 			}
 			if len(subject.SourcePageURLs) > 0 {
 				if sourceURL := safeSourceDocumentationURL(subject.SourcePageURLs[0]); sourceURL != "" {
-					if err := write(`<a class="sl-link" href="` + html.EscapeString(sourceURL) + `">Material documentation ` + materialSymbolSVG("open_in_new") + `</a>`); err != nil {
+					if err := write(`<a class="tokens-link" href="` + html.EscapeString(sourceURL) + `">Material documentation ` + materialSymbolSVG("open_in_new") + `</a>`); err != nil {
 						return err
 					}
 				}
@@ -147,7 +147,7 @@ func subjectPageComponent(subject publish.SubjectView, changes []publish.ChangeV
 			if err := write(`</nav></header>`); err != nil {
 				return err
 			}
-			if err := write(`<section class="sl-section" aria-labelledby="tokens-heading"><h2 class="md-typescale-title-medium" id="tokens-heading">Browse tokens</h2>`); err != nil {
+			if err := write(`<section class="tokens-section" aria-labelledby="tokens-heading"><h2 class="md-typescale-title-medium" id="tokens-heading">Browse tokens</h2>`); err != nil {
 				return err
 			}
 			if err := tokenBrowserView(subject, browser).Render(ctx, writer); err != nil {
@@ -173,9 +173,9 @@ func writeTokenGroup(writer io.Writer, group tokenGroup, state bool) error {
 		_, err := io.WriteString(writer, value)
 		return err
 	}
-	className := "sl-token-folder"
+	className := "tokens-token-folder"
 	if !state {
-		className += " sl-token-subfolder"
+		className += " tokens-token-subfolder"
 	}
 	open := ""
 	if group.Open {
@@ -185,20 +185,20 @@ func writeTokenGroup(writer io.Writer, group tokenGroup, state bool) error {
 		return err
 	}
 	if len(group.Tokens) > 0 {
-		if err := write(`<div class="sl-token-table-wrap"><table class="sl-token-table"><caption class="sl-visually-hidden">` + html.EscapeString(group.Name) + ` tokens</caption><colgroup><col><col class="sl-token-value-column"></colgroup><thead class="sl-visually-hidden"><tr><th scope="col">Token</th><th scope="col">Value</th></tr></thead><tbody>`); err != nil {
+		if err := write(`<div class="tokens-token-table-wrap"><table class="tokens-token-table"><caption class="tokens-visually-hidden">` + html.EscapeString(group.Name) + ` tokens</caption><colgroup><col><col class="tokens-token-value-column"></colgroup><thead class="tokens-visually-hidden"><tr><th scope="col">Token</th><th scope="col">Value</th></tr></thead><tbody>`); err != nil {
 			return err
 		}
 		for _, token := range group.Tokens {
-			if err := write(`<tr><th scope="row"><span class="sl-token-description">` + html.EscapeString(token.Name) + `</span><code class="sl-token-source-name">` + html.EscapeString(token.SourceName) + `</code>`); err != nil {
+			if err := write(`<tr><th scope="row"><span class="tokens-token-description">` + html.EscapeString(token.Name) + `</span><code class="tokens-token-source-name">` + html.EscapeString(token.SourceName) + `</code>`); err != nil {
 				return err
 			}
 			if token.Lifecycle != "" {
-				if err := write(`<span class="sl-token-lifecycle">` + html.EscapeString(token.Lifecycle) + `</span>`); err != nil {
+				if err := write(`<span class="tokens-token-lifecycle">` + html.EscapeString(token.Lifecycle) + `</span>`); err != nil {
 					return err
 				}
 			}
 			if !token.HasValue {
-				if err := write(`</th><td class="sl-token-no-value">—</td></tr>`); err != nil {
+				if err := write(`</th><td class="tokens-token-no-value">—</td></tr>`); err != nil {
 					return err
 				}
 				continue
@@ -217,9 +217,9 @@ func writeTokenGroup(writer io.Writer, group tokenGroup, state bool) error {
 			}
 			style := ""
 			if token.Color != "" {
-				style = ` style="--sl-preview-color:` + html.EscapeString(token.Color) + `;--sl-preview-on-color:` + tokenColorTextColor(token.Color) + `"`
+				style = ` style="--tokens-preview-color:` + html.EscapeString(token.Color) + `;--tokens-preview-on-color:` + tokenColorTextColor(token.Color) + `"`
 			}
-			if err := write(`<span class="sl-token-value` + colorCellClass(token.Color) + `"` + style + `>` + html.EscapeString(token.Value) + `</span></td></tr>`); err != nil {
+			if err := write(`<span class="tokens-token-value` + colorCellClass(token.Color) + `"` + style + `>` + html.EscapeString(token.Value) + `</span></td></tr>`); err != nil {
 				return err
 			}
 		}
@@ -237,7 +237,7 @@ func writeTokenGroup(writer io.Writer, group tokenGroup, state bool) error {
 
 func writeTokenReferences(writer io.Writer, token tokenRow) error {
 	write := func(value string) error { _, err := io.WriteString(writer, value); return err }
-	if err := write(`<details class="sl-token-reference"><summary>`); err != nil {
+	if err := write(`<details class="tokens-token-reference"><summary>`); err != nil {
 		return err
 	}
 	for _, reference := range token.References {
@@ -245,7 +245,7 @@ func writeTokenReferences(writer io.Writer, token tokenRow) error {
 			return err
 		}
 	}
-	if err := write(`<span class="sl-reference-toggle"><span class="sl-reference-show">Show reference chain</span><span class="sl-reference-hide">Hide reference chain</span>` + materialSymbolSVG("expand_more") + `</span></summary><div class="sl-reference-chain"><code>` + html.EscapeString(token.SourceName) + `</code>`); err != nil {
+	if err := write(`<span class="tokens-reference-toggle"><span class="tokens-reference-show">Show reference chain</span><span class="tokens-reference-hide">Hide reference chain</span>` + materialSymbolSVG("expand_more") + `</span></summary><div class="tokens-reference-chain"><code>` + html.EscapeString(token.SourceName) + `</code>`); err != nil {
 		return err
 	}
 	if err := writeReferenceBranches(writer, token.References); err != nil {
@@ -257,9 +257,9 @@ func writeTokenReferences(writer io.Writer, token tokenRow) error {
 	if token.Value != "" && token.Value != "Color not resolved" && token.Value != "Undefined: true" {
 		style := ""
 		if token.Color != "" {
-			style = ` style="--sl-preview-color:` + html.EscapeString(token.Color) + `"`
+			style = ` style="--tokens-preview-color:` + html.EscapeString(token.Color) + `"`
 		}
-		return write(`<span class="sl-reference-preview"` + style + `>` + html.EscapeString(token.Value) + `</span>`)
+		return write(`<span class="tokens-reference-preview"` + style + `>` + html.EscapeString(token.Value) + `</span>`)
 	}
 	return nil
 }

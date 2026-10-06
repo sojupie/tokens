@@ -7,14 +7,14 @@ import (
 	"os"
 	"strings"
 
-	"github.com/sojupie/m3-source/internal/publish"
+	"github.com/sojupie/tokens/internal/publish"
 )
 
 func runPublish(args []string) error {
-	flags := flag.NewFlagSet("sourceloom publish", flag.ContinueOnError)
+	flags := flag.NewFlagSet("tokens publish", flag.ContinueOnError)
 	flags.SetOutput(os.Stderr)
 	flags.Usage = func() {
-		_, _ = fmt.Fprintln(flags.Output(), "Usage: sourceloom publish [flags]")
+		_, _ = fmt.Fprintln(flags.Output(), "Usage: tokens publish [flags]")
 		_, _ = fmt.Fprintln(flags.Output(), "\nBuilds an offline publication with the retained snapshot history.")
 		_, _ = fmt.Fprintln(flags.Output(), "")
 		flags.PrintDefaults()

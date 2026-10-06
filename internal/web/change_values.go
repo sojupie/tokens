@@ -8,8 +8,8 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/sojupie/m3-source/internal/publish"
-	"github.com/sojupie/m3-source/internal/tokensnapshot"
+	"github.com/sojupie/tokens/internal/publish"
+	"github.com/sojupie/tokens/internal/tokensnapshot"
 )
 
 type changeValue struct {

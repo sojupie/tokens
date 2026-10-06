@@ -4,7 +4,7 @@
   const themes = ['light', 'dark'];
   const contrasts = ['default', 'medium', 'high'];
   let saved = {};
-  try { saved = JSON.parse(localStorage.getItem('source-loom-theme')) || {}; } catch {}
+  try { saved = JSON.parse(localStorage.getItem('tokens-theme')) || {}; } catch {}
   root.dataset.theme = themes.includes(saved.theme) ? saved.theme : 'light';
   root.dataset.contrast = contrasts.includes(saved.contrast) ? saved.contrast : 'default';
 
@@ -21,7 +21,7 @@
         button.setAttribute('aria-pressed', String(button.dataset.appContrast === root.dataset.contrast));
       });
       try {
-        localStorage.setItem('source-loom-theme', JSON.stringify({theme: root.dataset.theme, contrast: root.dataset.contrast}));
+        localStorage.setItem('tokens-theme', JSON.stringify({theme: root.dataset.theme, contrast: root.dataset.contrast}));
       } catch {}
     };
     theme.disabled = false;

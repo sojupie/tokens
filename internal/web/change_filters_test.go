@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/sojupie/m3-source/internal/publish"
+	"github.com/sojupie/tokens/internal/publish"
 )
 
 func TestChangeFiltersRunBeforePaginationAndPreserveSelection(t *testing.T) {
@@ -35,7 +35,7 @@ func TestChangeFiltersRunBeforePaginationAndPreserveSelection(t *testing.T) {
 			t.Fatalf("missing %q", text)
 		}
 	}
-	if strings.Contains(body, "font-54") || strings.Contains(body, `sl-change-disclosure" open`) {
+	if strings.Contains(body, "font-54") || strings.Contains(body, `tokens-change-disclosure" open`) {
 		t.Fatal("unwanted or expanded change records rendered")
 	}
 	pageURL, err := url.Parse(changesPageURL("/changes?"+query.Encode(), 2))

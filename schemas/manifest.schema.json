@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/sojupie/m3-source/schemas/manifest.schema.json",
-  "title": "Source Loom Material token-data snapshot manifest",
+  "$id": "https://github.com/sojupie/tokens/schemas/manifest.schema.json",
+  "title": "Tokens Material token-data snapshot manifest",
   "type": "object",
   "additionalProperties": false,
   "required": ["type", "schemaVersion", "snapshotId", "createdAt", "reviewStatus", "source", "capture", "extractor", "artifacts"],

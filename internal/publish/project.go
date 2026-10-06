@@ -8,7 +8,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/sojupie/m3-source/internal/tokensnapshot"
+	"github.com/sojupie/tokens/internal/tokensnapshot"
 )
 
 type subjectBuilder struct {

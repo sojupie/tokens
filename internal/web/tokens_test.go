@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/sojupie/m3-source/internal/publish"
+	"github.com/sojupie/tokens/internal/publish"
 )
 
 func TestAudienceHelpExplainsSourceLabels(t *testing.T) {
@@ -137,7 +137,7 @@ func TestContextFiltersOnlyOfferSupportedCombinations(t *testing.T) {
 }
 
 func TestPreviewTextContrast(t *testing.T) {
-	if tokenColorTextColor("rgba(103, 80, 164, 1)") != "var(--sl-preview-on-dark)" || tokenColorTextColor("rgba(255, 255, 255, 1)") != "var(--sl-preview-on-light)" {
+	if tokenColorTextColor("rgba(103, 80, 164, 1)") != "var(--tokens-preview-on-dark)" || tokenColorTextColor("rgba(255, 255, 255, 1)") != "var(--tokens-preview-on-light)" {
 		t.Fatal("preview labels need contrasting text")
 	}
 }

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/sojupie/m3-source/internal/tokensnapshot"
+	"github.com/sojupie/tokens/internal/tokensnapshot"
 )
 
 func changeViews(diff tokensnapshot.SnapshotDiff) []ChangeView {
