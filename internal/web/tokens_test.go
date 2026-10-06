@@ -137,7 +137,7 @@ func TestContextFiltersOnlyOfferSupportedCombinations(t *testing.T) {
 }
 
 func TestPreviewTextContrast(t *testing.T) {
-	if tokenColorInk("rgba(103, 80, 164, 1)") != "var(--sl-swatch-dark-ink)" || tokenColorInk("rgba(255, 255, 255, 1)") != "var(--sl-swatch-light-ink)" {
+	if tokenColorTextColor("rgba(103, 80, 164, 1)") != "var(--sl-preview-on-dark)" || tokenColorTextColor("rgba(255, 255, 255, 1)") != "var(--sl-preview-on-light)" {
 		t.Fatal("preview labels need contrasting text")
 	}
 }

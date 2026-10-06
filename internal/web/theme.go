@@ -68,7 +68,7 @@ func publicationThemeVariant(state publish.PublishedState, theme, contrast strin
 	for name, value := range values {
 		cssValues[strings.ReplaceAll(name, ".", "-")] = value
 	}
-	// Include preview ink inputs alongside the tokens referenced by the styles.
+	// Include preview text colour inputs alongside the tokens referenced by the styles.
 	wanted := map[string]bool{"md-ref-palette-neutral0": true, "md-sys-color-on-primary": true}
 	pattern := regexp.MustCompile(`var\(--(md-[a-z0-9-]+)\)`)
 	for _, file := range []string{"static/app.css", "static/token-table.css"} {
@@ -100,9 +100,9 @@ func publicationThemeVariant(state publish.PublishedState, theme, contrast strin
 	}
 	fmt.Fprintf(&css, ":root[data-theme=%q][data-contrast=%q] {\n  color-scheme: %s;\n", strings.ToLower(theme), contrastKey, strings.ToLower(theme))
 	if theme == "Light" && contrast == "Default" {
-		// Pin preview ink to the publication's black/white values, rather than
+		// Pin preview text colour to the publication's black/white values, rather than
 		// on-surface/on-primary roles whose luminance flips with the app theme.
-		fmt.Fprintf(&css, "  --sl-swatch-light-ink: %s;\n  --sl-swatch-dark-ink: %s;\n", cssValues["md-ref-palette-neutral0"], cssValues["md-sys-color-on-primary"])
+		fmt.Fprintf(&css, "  --sl-preview-on-light: %s;\n  --sl-preview-on-dark: %s;\n", cssValues["md-ref-palette-neutral0"], cssValues["md-sys-color-on-primary"])
 	}
 	for _, name := range names {
 		fmt.Fprintf(&css, "  --%s: %s;\n", name, cssValues[name])

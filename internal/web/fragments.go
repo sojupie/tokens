@@ -33,7 +33,7 @@ func tokenBrowserView(subject publish.SubjectView, browser tokenBrowser) templ.C
 				return err
 			}
 		}
-		if err := write(`</select><span class="sl-token-set-arrow" aria-hidden="true">` + tableIcon("dropdown") + `</span></label><label class="sl-token-search">` + tableIcon("search") + `<span class="sl-visually-hidden">Search tokens</span><input type="search" name="q" value="` + html.EscapeString(browser.Query) + `" placeholder="Search"></label><button class="sl-icon-button" type="button" data-action="previews" aria-label="Toggle previews" aria-pressed="true">` + tableIcon("eye") + `</button><button class="sl-icon-button" type="button" data-action="view" aria-label="Toggle view" aria-pressed="false">` + tableIcon("grid") + `</button><button class="sl-icon-button" type="button" data-action="expand" aria-label="Expand all groups" aria-expanded="false">` + tableIcon("expand") + `</button></div><div class="sl-token-columns"><span>Token</span>`); err != nil {
+		if err := write(`</select><span class="sl-token-set-arrow" aria-hidden="true">` + tableIcon("dropdown") + `</span></label><label class="sl-token-search">` + tableIcon("search") + `<span class="sl-visually-hidden">Search tokens</span><input type="search" name="q" value="` + html.EscapeString(browser.Query) + `" placeholder="Search"></label><div class="sl-token-tools" role="group" aria-label="Table display"><button class="sl-icon-button" type="button" data-action="previews" aria-label="Toggle previews" aria-pressed="true">` + tableIcon("eye") + `</button><button class="sl-icon-button" type="button" data-action="view" aria-label="Toggle view" aria-pressed="false">` + tableIcon("grid") + `</button><button class="sl-icon-button" type="button" data-action="expand" aria-label="Expand all groups" aria-expanded="false">` + tableIcon("expand") + `</button></div></div><div class="sl-token-columns"><span>Token</span>`); err != nil {
 			return err
 		}
 		if len(browser.Filters) > 0 {
@@ -216,7 +216,7 @@ func writeTokenGroup(writer io.Writer, group tokenGroup, state bool) error {
 			}
 			style := ""
 			if token.Color != "" {
-				style = ` style="--token-color:` + html.EscapeString(token.Color) + `;--token-ink:` + tokenColorInk(token.Color) + `"`
+				style = ` style="--sl-preview-color:` + html.EscapeString(token.Color) + `;--sl-preview-on-color:` + tokenColorTextColor(token.Color) + `"`
 			}
 			if err := write(`<span class="sl-token-value` + colorCellClass(token.Color) + `"` + style + `>` + html.EscapeString(token.Value) + `</span></td></tr>`); err != nil {
 				return err
@@ -256,7 +256,7 @@ func writeTokenReferences(writer io.Writer, token tokenRow) error {
 	if token.Value != "" && token.Value != "Color not resolved" && token.Value != "Undefined: true" {
 		style := ""
 		if token.Color != "" {
-			style = ` style="--token-color:` + html.EscapeString(token.Color) + `"`
+			style = ` style="--sl-preview-color:` + html.EscapeString(token.Color) + `"`
 		}
 		return write(`<span class="sl-reference-preview"` + style + `>` + html.EscapeString(token.Value) + `</span>`)
 	}

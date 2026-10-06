@@ -35,6 +35,19 @@ func TestThemeValuesAreTypedCSS(t *testing.T) {
 	}
 }
 
+func TestStylesUseMaterialRolesWithoutLegacyAliases(t *testing.T) {
+	legacy := regexp.MustCompile(`--(?:sl-(?:ink|page|rule|accent|font)|table-|token-(?:ink|color))`)
+	for _, file := range []string{"static/app.css", "static/token-table.css"} {
+		css, err := embeddedStatic.ReadFile(file)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if match := legacy.Find(css); match != nil {
+			t.Fatalf("%s still uses legacy styling alias %s; use the Material role directly", file, match)
+		}
+	}
+}
+
 func TestThemeReportsMissingTokensWithoutInventingFallbacks(t *testing.T) {
 	server := New(publish.PublishedState{}, "")
 	response := httptest.NewRecorder()
@@ -61,7 +74,7 @@ func TestReadableRolesAndDistinctCardSurface(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if strings.Contains(string(app), "typo-") || !strings.Contains(string(app), "--sl-page-surface: var(--md-sys-color-surface-container-low)") {
+	if strings.Contains(string(app), "typo-") || !strings.Contains(string(app), "background:var(--md-sys-color-surface-container-low)") || !strings.Contains(string(app), "background:var(--md-sys-color-surface);") {
 		t.Fatal("use Material role names and a card surface separate from the page")
 	}
 	table, err := embeddedStatic.ReadFile("static/token-table.css")
