@@ -1,21 +1,21 @@
-# Source Loom CLI
+# Tokens CLI
 
 The command is organized around the work being done:
 
 ```text
-sourceloom crawl
-sourceloom snapshot create
-sourceloom snapshot verify
-sourceloom snapshot compare
+tokens crawl
+tokens snapshot create
+tokens snapshot verify
+tokens snapshot compare
 ```
 
 Show help at any level:
 
 ```text
-go run ./cmd/sourceloom --help
-go run ./cmd/sourceloom crawl --help
-go run ./cmd/sourceloom snapshot --help
-go run ./cmd/sourceloom snapshot create --help
+go run ./cmd/tokens --help
+go run ./cmd/tokens crawl --help
+go run ./cmd/tokens snapshot --help
+go run ./cmd/tokens snapshot create --help
 ```
 
 ## Normal workflow
@@ -23,13 +23,13 @@ go run ./cmd/sourceloom snapshot create --help
 Run a crawl using the checked-in page URL catalog:
 
 ```text
-go run ./cmd/sourceloom crawl
+go run ./cmd/tokens crawl
 ```
 
 Create a snapshot from the newest crawl receipt:
 
 ```text
-go run ./cmd/sourceloom snapshot create
+go run ./cmd/tokens snapshot create
 ```
 
 The command derives the snapshot ID from the crawl start time in UTC and uses
@@ -39,25 +39,25 @@ refuses to use an existing non-empty output directory.
 Verify the newest snapshot:
 
 ```text
-go run ./cmd/sourceloom snapshot verify
+go run ./cmd/tokens snapshot verify
 ```
 
 Compare the two latest snapshot runs:
 
 ```text
-go run ./cmd/sourceloom snapshot compare
+go run ./cmd/tokens snapshot compare
 ```
 
 Retry only the failed pages from the newest crawl receipt:
 
 ```text
-go run ./cmd/sourceloom crawl --retry-failed
+go run ./cmd/tokens crawl --retry-failed
 ```
 
 Select a specific receipt when needed:
 
 ```text
-go run ./cmd/sourceloom crawl \
+go run ./cmd/tokens crawl \
   --retry-failed-from crawl-results/20260811T143000.000000000Z.json
 ```
 
@@ -76,7 +76,7 @@ Use the broader discovery scope when reviewing foundation and style pages in
 addition to component specification pages:
 
 ```text
-go run ./cmd/sourceloom crawl \
+go run ./cmd/tokens crawl \
   --discover \
   --scope token-source-pages \
   --dry-run
@@ -95,16 +95,16 @@ Every automatic choice can be overridden when working with a specific receipt
 or snapshot:
 
 ```text
-go run ./cmd/sourceloom snapshot create \
+go run ./cmd/tokens snapshot create \
   --crawl-receipt crawl-results/20260811T143000.000000000Z.json \
   --page-catalog inputs/page-catalog.json \
   --output snapshots/material-token-data/material-2026-08-11-1430-example \
   --id material-2026-08-11-1430-example
 
-go run ./cmd/sourceloom snapshot verify \
+go run ./cmd/tokens snapshot verify \
   snapshots/material-token-data/material-2026-08-11-1430-example
 
-go run ./cmd/sourceloom snapshot compare \
+go run ./cmd/tokens snapshot compare \
   snapshots/material-token-data/material-2026-08-11-1430-older \
   snapshots/material-token-data/material-2026-08-11-1500-newer
 ```

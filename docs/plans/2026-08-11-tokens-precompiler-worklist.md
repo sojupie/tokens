@@ -1,12 +1,12 @@
-# Source Loom pre-compiler worklist
+# Tokens pre-compiler worklist
 
 **Status:** Open review list
-**Purpose:** Keep the remaining Source Loom contract and Token Forge policy decisions in one place.
+**Purpose:** Keep the remaining Tokens contract and Token Forge policy decisions in one place.
 **Compiler gate:** Do not start the Token Forge compiler until the items marked as gates are closed.
 
 ## Current position
 
-Source Loom has:
+Tokens has:
 
 - a Go-only crawl and snapshot pipeline;
 - a checked-in page URL catalog;
@@ -34,7 +34,7 @@ to accept the exception.
 
 ## 1. Source page scope
 
-Source Loom must capture more than component specification pages. Material also
+Tokens must capture more than component specification pages. Material also
 publishes token tables on foundation and style pages such as elevation, motion,
 spacing, typography, shape, and color.
 
@@ -194,7 +194,7 @@ context.
 
 ### Current answer
 
-Source Loom does not currently distinguish baseline and Expressive as a first-
+Tokens does not currently distinguish baseline and Expressive as a first-
 class normalized dimension. It preserves enough raw evidence to investigate
 the distinction, and now also records generic source-payload kind and page
 context, but Forge cannot yet query baseline/Expressive reliably without
@@ -225,7 +225,7 @@ The preferred shape is a generic context relation, for example:
 ```
 
 The relation must include enough source identity to show why it was created.
-Source Loom must not guess a relation only because a token name contains a word
+Tokens must not guess a relation only because a token name contains a word
 such as `expressive`.
 
 ## 6. Static recommendation and availability tables
@@ -289,7 +289,7 @@ The compiler must not decide policy by accident. Define these rules first:
 ## 9. Required commits and locks
 
 - [ ] Review and commit the current schema, integrity, multi-payload, and
-  lifecycle-notice work in Source Loom.
+  lifecycle-notice work in Tokens.
 - [ ] Select the provisional baseline snapshot.
 - [ ] Update the Forge source lock to that snapshot ID and manifest digest.
 - [ ] Update the Forge review candidate to reference the selected snapshot.
@@ -298,11 +298,11 @@ The compiler must not decide policy by accident. Define these rules first:
 
 ## 10. CLI distribution and documentation
 
-- [ ] Make normal CLI documentation use the compiled `sourceloom` binary.
-- [ ] Keep `go run ./cmd/sourceloom` examples limited to contributor and local
+- [ ] Make normal CLI documentation use the compiled `tokens` binary.
+- [ ] Keep `go run ./cmd/tokens` examples limited to contributor and local
   development instructions.
-- [ ] Document building the binary, checking `sourceloom --version`, and using
-  `sourceloom --help`.
+- [ ] Document building the binary, checking `tokens --version`, and using
+  `tokens --help`.
 - [ ] Define the supported operating systems, architectures, archive layout,
   and release naming before publishing binaries.
 - [ ] Replace machine-specific absolute paths in user-facing examples with
@@ -358,7 +358,7 @@ Forge compiler or to reopen the current source contract.
 ### Distribution and maintenance
 
 - [ ] Document binary build, supported platforms, archive layout, and release
-  naming before distributing Source Loom.
+  naming before distributing Tokens.
 - [ ] Decide public snapshot storage, mirroring, retention, and raw-evidence
   redistribution policy.
 - [ ] Keep monitoring snapshot repetition and repository growth before adding

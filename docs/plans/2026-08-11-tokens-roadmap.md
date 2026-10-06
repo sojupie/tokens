@@ -1,4 +1,4 @@
-# Source Loom roadmap
+# Tokens roadmap
 
 **Status:** Draft for execution  
 **Created:** 2026-08-11  
@@ -6,7 +6,7 @@
 
 ## 1. Mission
 
-Source Loom reports what Material published. It does not implement components or
+Tokens reports what Material published. It does not implement components or
 decide what Token Forge supports.
 
 The project should be useful beyond Token Forge. Its stable product is an immutable,
@@ -16,7 +16,7 @@ canonical store.
 
 ## 2. Boundary
 
-Source Loom owns:
+Tokens owns:
 
 - curated and live discovery of component, foundation, and style token-source
   pages;
@@ -26,7 +26,7 @@ Source Loom owns:
 - semantic diffs between snapshots;
 - source-payload details, page results, and immutable snapshot publication.
 
-Source Loom does not own:
+Tokens does not own:
 
 - canonical DTCG design decisions;
 - CSS, components, framework adapters, or application code;
@@ -42,12 +42,12 @@ project.
 Keep commands conceptually separate even if they initially share one binary:
 
 ```text
-sourceloom crawl --discover --dry-run  # audit component-spec page drift
-sourceloom crawl --discover --scope token-source-pages --dry-run  # inventory broader token-source pages
-sourceloom crawl
-sourceloom snapshot create
-sourceloom snapshot verify
-sourceloom snapshot compare
+tokens crawl --discover --dry-run  # audit component-spec page drift
+tokens crawl --discover --scope token-source-pages --dry-run  # inventory broader token-source pages
+tokens crawl
+tokens snapshot create
+tokens snapshot verify
+tokens snapshot compare
 ```
 
 Keep implementation packages internal until an external Go API has a concrete
@@ -102,11 +102,12 @@ existing snapshot or force a Token Forge release.
 ### Phase 0: repository cleanup
 
 - Rename project documentation and the public command name. **Done:** the
-  product is Source Loom and the executable is `sourceloom`.
+  product is Tokens and the executable is `tokens`.
 - Remove the Node and Playwright prototype. **Done.**
 - Keep the current Go crawler behavior and tests passing. **Done for the
   current implementation.**
-- Correct the repository remote after the public Source Loom repository exists.
+- Correct the repository remote. **Done:** `origin` points to
+  `https://github.com/sojupie/tokens.git`.
 
 **Exit:** the repository has one language and one ingestion path.
 
@@ -191,7 +192,7 @@ review.
 5. Review representative `md.ref`, `md.sys`, `md.comp`, foundation, and
    component records before defining Forge candidates.
 6. Decide public object storage, mirroring, and retention policy.
-7. Make CLI documentation and distribution binary-first: use `sourceloom` in
-   normal examples, keep `go run ./cmd/sourceloom` in contributor-only
+7. Make CLI documentation and distribution binary-first: use `tokens` in
+   normal examples, keep `go run ./cmd/tokens` in contributor-only
    instructions, document local binary builds, and define versioned release
    artifacts for supported platforms.

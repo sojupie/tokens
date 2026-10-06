@@ -3,11 +3,11 @@
 Build and run the server with its public origin:
 
 ```powershell
-go build -o .\bin\sourceloom.exe .\cmd\sourceloom
-.\bin\sourceloom.exe serve --published published --listen 127.0.0.1:8081 --public-origin https://YOUR-DOMAIN
+go build -o .\bin\tokens.exe .\cmd\tokens
+.\bin\tokens.exe serve --published published --listen 127.0.0.1:8081 --public-origin https://tokens.marmenlind.com
 ```
 
-Replace `https://YOUR-DOMAIN` with the site's real public origin. The origin must not include a path, query, fragment or credentials. Use the public HTTPS origin even when cloudflared connects to a local HTTP listener. The server does not trust request or proxy headers to construct SEO URLs.
+The example uses the planned public origin, `https://tokens.marmenlind.com`. Change it if deploying elsewhere. The origin must not include a path, query, fragment or credentials. Use the public HTTPS origin even when cloudflared connects to a local HTTP listener. The server does not trust request or proxy headers to construct SEO URLs.
 
 Without `--public-origin`, HTML pages have `noindex`, robots.txt disallows crawling, and the sitemap returns 503. This keeps local and preview instances out of search results. Set the flag when deploying the public site.
 

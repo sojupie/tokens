@@ -1,4 +1,4 @@
-# Source Loom snapshot format
+# Tokens snapshot format
 
 **Status:** Current implementation contract, version 3
 **Date:** 2026-08-12
@@ -35,7 +35,7 @@ must contain the same verified payload bytes.
 
 The publisher serializes release files deterministically, calculates their
 SHA-256 hashes, then writes the manifest. The manifest digest is the integrity
-identity used by consumers. Current Source Loom-generated IDs use the source
+identity used by consumers. Current Tokens-generated IDs use the source
 family, capture date, and capture time in UTC (`HHMM`):
 
 ```text
@@ -75,7 +75,7 @@ Version 3 has this logical shape:
     "complete": true
   },
   "extractor": {
-    "name": "sourceloom",
+    "name": "tokens",
     "version": "0.1.0",
     "schemaVersion": 3
   },
@@ -157,7 +157,7 @@ The notice scope is separate from capture status:
 
 `deprecated` and `not-recommended` remain separate states. The raw message and
 source record identifiers are retained so Token Forge can make a support
-decision without treating Source Loom's evidence as policy.
+decision without treating Tokens's evidence as policy.
 
 ## Publishing and storage
 

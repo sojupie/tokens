@@ -1,6 +1,6 @@
-# Source Loom data flow
+# Tokens data flow
 
-Source Loom has two jobs:
+Tokens has two jobs:
 
 1. crawl Material's pages and save the source data it publishes;
 2. create and verify an immutable material-token-data snapshot.
@@ -13,7 +13,7 @@ It does not decide which tokens Token Forge supports.
 inputs/page-catalog.json
         |
         v
-    sourceloom crawl
+    tokens crawl
         |
         +--> .cache/material-token-table-responses/
         |      downloaded source-payload files
@@ -22,7 +22,7 @@ inputs/page-catalog.json
                crawl receipt
         |
         v
-    sourceloom snapshot create
+    tokens snapshot create
         |
         v
 snapshots/material-token-data/<snapshot-id>/
@@ -36,8 +36,8 @@ snapshots/material-token-data/<snapshot-id>/
         +--> lifecycle-notices.json
         +--> checksums.txt
         |
-        +--> sourceloom snapshot verify
-        +--> sourceloom snapshot compare
+        +--> tokens snapshot verify
+        +--> tokens snapshot compare
 
 Verified snapshots can then be published for read-only browsing:
 
@@ -45,14 +45,14 @@ Verified snapshots can then be published for read-only browsing:
 verified snapshot(s)
         |
         v
-    sourceloom publish
+    tokens publish
         |
         +--> published/tokens.sqlite
         +--> published/publication.json
         +--> published/downloads/
         |
         v
-    sourceloom serve
+    tokens serve
         |
         +--> in-memory published views
         +--> Templ HTML pages
@@ -65,7 +65,7 @@ The generated SQLite file and downloads are derived publication data. They can
 be deleted and rebuilt from verified snapshots. The web server is read-only and
 does not crawl Material or modify snapshots.
 
-To repair a partial crawl, `sourceloom crawl --retry-failed` reads the newest
+To repair a partial crawl, `tokens crawl --retry-failed` reads the newest
 crawl receipt, opens only its failed pages, and writes another merged crawl
 receipt. Successful pages and source payloads are carried forward; retried
 pages replace their earlier results.
@@ -82,7 +82,7 @@ source-payload cache.
 
 The page HTML is observed but is not a snapshot input. The matching
 source-payload response is the fetched source data. Different Material areas
-use different payload filename stems, so Source Loom does not assume that
+use different payload filename stems, so Tokens does not assume that
 every source payload is named `TOKEN_TABLE`.
 
 ## What is generated?
@@ -133,7 +133,7 @@ assembled while still being partial and provisional.
 ## Token Forge boundary
 
 Token Forge consumes a pinned snapshot bundle. It does not run the crawler,
-access Material's website, or depend on the Source Loom executable during normal
+access Material's website, or depend on the Tokens executable during normal
 builds. Token Forge candidates point to the snapshot ID, manifest hash,
 source-payload ID, and source record ID. Canonical Token Forge tokens require a
 separate review decision.

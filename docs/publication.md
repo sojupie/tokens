@@ -1,6 +1,6 @@
 # Offline publication
 
-Source Loom publishes a verified snapshot into a local read-only data set.
+Tokens publishes a verified snapshot into a local read-only data set.
 The published data is derived from the snapshot. The snapshot remains the
 canonical source and is not modified.
 
@@ -9,23 +9,23 @@ canonical source and is not modified.
 Using the newest verified snapshot:
 
 ```text
-sourceloom publish
+tokens publish
 ```
 
 Using an explicit snapshot and output directory:
 
 ```text
-sourceloom publish \
+tokens publish \
   --snapshot-dir snapshots/material-token-data/material-2026-09-05-1816 \
   --output published
 ```
 
 The timeline includes all supported snapshots in the selected snapshot's parent
-directory, up to the selected capture date. Source Loom verifies them and compares
+directory, up to the selected capture date. Tokens verifies them and compares
 each consecutive pair. To use another history directory:
 
 ```text
-sourceloom publish \
+tokens publish \
   --snapshot-dir snapshots/material-token-data/material-2026-09-05-1816 \
   --history-dir snapshots/material-token-data \
   --output published
@@ -38,10 +38,10 @@ publication leaves an existing output directory untouched.
 For local contributor development, the same command can be run with:
 
 ```text
-go run ./cmd/sourceloom publish
+go run ./cmd/tokens publish
 ```
 
-Normal documentation and deployment should use the compiled `sourceloom`
+Normal documentation and deployment should use the compiled `tokens`
 binary.
 
 ## Serve a publication
@@ -49,7 +49,7 @@ binary.
 Start the read-only server against the generated directory:
 
 ```text
-sourceloom serve --published published --listen 127.0.0.1:8080
+tokens serve --published published --listen 127.0.0.1:8080
 ```
 
 The server loads the SQLite read index into ordinary Go structs at startup.
@@ -71,8 +71,8 @@ public token view, and the changes between consecutive retained snapshots.
 
 `tokens.sqlite` is a generated read index. It stores subjects, tokens, context-
 specific values, lifecycle notices, source payloads, and provenance links.
-It can be deleted and rebuilt from the verified snapshot. Re-run `sourceloom
-publish` after upgrading Source Loom; the SQLite index is rebuilt rather than
+It can be deleted and rebuilt from the verified snapshot. Re-run `tokens
+publish` after upgrading Tokens; the SQLite index is rebuilt rather than
 migrated in place.
 
 `downloads/tokens.json` contains the capture timestamp and all subjects. Each
@@ -117,7 +117,7 @@ snapshot directory.
 
 ## Web assets
 
-The read-only web server embeds its assets in the `sourceloom` binary. The
+The read-only web server embeds its assets in the `tokens` binary. The
 stylesheet is generated from `internal/web/static/tailwind.css` with the
 standalone Tailwind CLI:
 
@@ -154,5 +154,5 @@ you retain. Unsupported snapshot schemas are excluded with a message; corrupt
 supported snapshots stop publication instead of silently leaving a gap.
 
 Publishing again rebuilds the timeline without duplicate change records. Keep
-the older snapshots and re-run `sourceloom publish` after creating a new one, then
+the older snapshots and re-run `tokens publish` after creating a new one, then
 restart the server. No crawl is needed just to rebuild a publication.
