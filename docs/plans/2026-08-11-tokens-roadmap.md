@@ -6,8 +6,13 @@
 
 ## 1. Mission
 
-Tokens reports what Material published. It does not implement components or
-decide what Token Forge supports.
+Tokens captures what Material published, stores it as reliable immutable
+evidence, and makes that evidence available offline and through a read-only web
+service. The crawler and the published token data are the active product.
+
+Token Forge is a separate future consumer. Its compiler, canonical token
+promotion, and component implementation are paused indefinitely. Tokens
+must remain useful without them.
 
 The project should be useful beyond Token Forge. Its stable product is an immutable,
 documented source snapshot that any tool can download and verify. A website,
@@ -25,6 +30,8 @@ Tokens owns:
 - a loss-preserving Material-specific graph;
 - semantic diffs between snapshots;
 - source-payload details, page results, and immutable snapshot publication.
+- a read-only Go web application that serves published snapshots and token
+  records.
 
 Tokens does not own:
 
@@ -32,6 +39,8 @@ Tokens does not own:
 - CSS, components, framework adapters, or application code;
 - automatic promotion into Token Forge;
 - a runtime service required by library consumers.
+- canonical DTCG tokens, a compiler, or component packages while Token Forge is
+  paused.
 
 ## 3. Technical direction
 
@@ -60,13 +69,18 @@ Use files and content-addressed artifacts:
 - Git: code, schemas, curated page URL catalog, small fixtures, and documentation.
 - Local cache: downloaded source-payload files and crawl receipts.
 - Snapshot bundle: source payloads, generated token graph, source-payload details,
-  page results, and checksums.
-- Object storage or GitHub Releases: immutable public snapshots and optional raw
-  evidence bundles.
+  page results, and checksums. This remains the canonical data format.
+- GitHub Releases or S3-compatible object storage: immutable public snapshots
+  and optional raw evidence bundles.
+- Go web application: a derived browser and JSON API view over selected
+  snapshots. It must not become the canonical store.
+- Generated SQLite read index: disposable publication data for efficient
+  queries and change-history pages. It is rebuilt from verified snapshots and
+  is never the canonical store.
 
-Do not add an operational database. Batch files fit immutable versioning,
-hashing, offline use, and mirroring. A generated SQLite file can later serve
-local queries without becoming a source of truth.
+Do not add an externally operated database such as MongoDB for the first
+version. A generated SQLite file is sufficient for the read-only service, and
+frequently used published data can be loaded into application memory.
 
 ### Deferred: rendered measurements and component preview images
 
@@ -162,12 +176,17 @@ raw payloads.
 
 ### Phase 5: public access
 
-- Add a static documentation browser for snapshots and diffs.
-- Add a downloadable SQLite index only if query use justifies it.
-- Add an API or package only when a real consumer needs one.
+- Publish immutable snapshots through GitHub Releases or an S3-compatible
+  object store.
+- Build a read-only Go web application that serves snapshot metadata, source
+  payload classifications, extracted records, lifecycle evidence, and diffs.
+- Generate a local query index only if the web application needs it. Keep the
+  index derived from a verified snapshot.
+- Add authentication or write operations only if a concrete deployment needs
+  them. The first service is read-only.
 
-**Exit:** people can explore the data without changing the canonical storage
-model.
+**Exit:** people can download and explore the same verified snapshot without
+changing the canonical storage model.
 
 ## 7. Tests and operations
 
@@ -182,17 +201,19 @@ review.
 
 ## 8. Immediate work
 
-1. Rebuild the current provisional snapshot from fixed inputs and confirm
+1. Complete crawler coverage for reviewed component, foundation, and style
+   token-source pages.
+2. Rebuild the current provisional snapshot from fixed inputs and confirm
    byte-identical artifacts for every version-3 document.
-2. Review lifecycle notices for duplicates and false positives.
-3. Decide the explicit policy for a known unavailable upstream payload such as
-   Snackbar before creating a Token Forge source lock.
-4. Review baseline, Expressive, theme, and other context evidence without
-   collapsing it into a guessed boolean.
-5. Review representative `md.ref`, `md.sys`, `md.comp`, foundation, and
-   component records before defining Forge candidates.
-6. Decide public object storage, mirroring, and retention policy.
-7. Make CLI documentation and distribution binary-first: use `tokens` in
+3. Review lifecycle notices for duplicates and false positives.
+4. Define the durable publication layout for immutable snapshots, manifests,
+   checksums, and optional raw payloads.
+5. Build the first read-only Go web view over a verified snapshot.
+6. Add a simple update process: crawl, verify, compare, review, publish.
+7. Decide public object storage, mirroring, and retention policy.
+8. Make CLI documentation and distribution binary-first: use `tokens` in
    normal examples, keep `go run ./cmd/tokens` in contributor-only
    instructions, document local binary builds, and define versioned release
    artifacts for supported platforms.
+9. Implement the publication plan in
+   `docs/plans/2026-09-07-tokens-web-publication-plan.md`.

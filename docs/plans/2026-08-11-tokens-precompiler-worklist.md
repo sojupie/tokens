@@ -1,8 +1,8 @@
 # Tokens pre-compiler worklist
 
-**Status:** Open review list
-**Purpose:** Keep the remaining Tokens contract and Token Forge policy decisions in one place.
-**Compiler gate:** Do not start the Token Forge compiler until the items marked as gates are closed.
+**Status:** Open Tokens completion and publication list
+**Purpose:** Keep the remaining crawler, storage, publication, and evidence decisions in one place.
+**Compiler status:** Token Forge compiler work is paused indefinitely. The list no longer gates compiler work.
 
 ## Current position
 
@@ -20,17 +20,25 @@ Tokens has:
 - committed provisional snapshots;
 - an accepted upstream 404 for the Snackbar token-table payload.
 
+The active product is now Tokens: a reliable crawler, immutable token-data
+store, and read-only publication service. Token Forge remains a parked future
+consumer. Do not block Tokens work on a Forge compiler or canonical-token
+promotion.
+
 The latest committed lifecycle-aware snapshot is:
 
 ```text
-m3-2026-08-12-0201
+material-2026-08-12-1605
 manifest SHA-256:
-a2a4b5772dab9606d876b3dfeada6e095a729b2d293755421ffbe9d1d541f5cb
+11dec8852ec88a802ae6cbd1afa532b07d0325109bf689c5ad5c57f547dbd103
 ```
 
-Its capture is still incomplete because the Snackbar source payload returns
-404. Source must continue to report that fact. Forge may later decide whether
-to accept the exception.
+It is a version-3 provisional snapshot with 41 attempted pages, 40 successful
+page observations, 40 observed source payloads, and 39 fetched payloads. Its
+capture is still incomplete because the Snackbar source payload returns 404.
+Source must continue to report that fact.
+
+The earlier `m3-2026-08-12-0201` snapshot remains immutable historical evidence.
 
 ## 1. Source page scope
 
@@ -44,7 +52,7 @@ a component. The current limitation is in page selection and catalog
 validation: the crawler defaults to `/components/`, requires `/specs`, and the
 page catalog stores a component-only field.
 
-### Required before the first Token Forge-bound snapshot
+### Required before the first published snapshot used by other systems
 
 - [x] Expand the curated page catalog to include component and foundation/style
   token-source pages.
@@ -59,7 +67,7 @@ page catalog stores a component-only field.
 - [x] Recrawl the expanded catalog and create a new immutable snapshot. Do not
   modify the existing component-focused snapshots.
 - [ ] Review whether the expanded snapshot contains the foundation records
-  Token Forge needs for `md.ref`, `md.sys`, and component references.
+  future consumers need for references, system roles, and component records.
 
 Static recommendation tables and explanatory motion tables remain separate page
 evidence. They must not be merged into the generated token graph unless a
@@ -109,14 +117,14 @@ Source must keep these facts separate:
 - [x] Source capture remains strict: the Snackbar exception keeps
   `capture.complete` false.
 
-### Open: Forge acceptance gate
+### Deferred consumer policy
 
-- [ ] Decide whether Forge may pin an incomplete snapshot when the missing
-  payload is a reviewed, known upstream exception.
-- [ ] If yes, add an explicit accepted-exception entry to the Forge lock. Do
-  not change Source `capture.complete` to hide the exception.
+- [ ] Decide whether a future consumer may pin an incomplete snapshot when the
+  missing payload is a reviewed, known upstream exception.
+- [ ] If yes, record the accepted exception in the consumer's lock. Do not
+  change Source `capture.complete` to hide the exception.
 - [ ] Decide whether a later successful Snackbar payload should create a new
-  snapshot and a new Forge lock, or only update the next routine snapshot.
+  snapshot and a new consumer lock, or only update the next routine snapshot.
 
 ## 4. Lifecycle notices and deprecation
 
@@ -147,12 +155,12 @@ The token payload may not contain that page message. The current model can
 represent such a notice, but the crawler does not yet capture page text as a
 separate evidence document.
 
-- [ ] Decide whether to capture rendered page notices before the first Forge
-  compiler milestone.
+- [ ] Decide whether to capture rendered page notices before a future consumer
+  relies on component-level lifecycle status.
 - [ ] If deferred, record the limitation: Source reports payload-local
   lifecycle evidence, while component-level page guidance can remain unknown.
 
-Recommendation: defer page-text capture for the first compiler milestone. Do
+Recommendation: defer page-text capture until a concrete consumer needs it. Do
 not infer a component lifecycle state from token data alone.
 
 ## 5. Baseline and Expressive
@@ -253,7 +261,7 @@ but keep the decision on this list. The tables can later provide evidence for
 variant availability and replacement recommendations without changing the
 token graph contract.
 
-## 7. Graph review before Forge
+## 7. Graph review before publication
 
 Review representative records from the lifecycle snapshot:
 
@@ -267,12 +275,14 @@ Review representative records from the lifecycle snapshot:
 - [ ] duplicate records and repeated source values;
 - [ ] records with missing or failed payloads.
 
-The review must answer whether Forge can make decisions from the snapshot
-alone. It must not require crawler internals or a live Material page.
+The review must answer whether a reader can understand and use the published
+snapshot without crawler internals or a live Material page.
 
-## 8. Forge policy before the compiler
+## 8. Token Forge policy (deferred indefinitely)
 
-The compiler must not decide policy by accident. Define these rules first:
+Token Forge compiler and canonical-token policy work is paused indefinitely.
+Keep these questions for a future restart, but do not block Tokens
+publication on them:
 
 - [ ] Which `md.ref`, `md.sys`, and `md.comp` records can become candidates?
 - [ ] How does Forge select light and dark values?
@@ -286,15 +296,14 @@ The compiler must not decide policy by accident. Define these rules first:
 - [ ] What happens when a component is not recommended but remains live?
 - [ ] Which selected Expressive revisions are in scope?
 
-## 9. Required commits and locks
+## 9. Source publication and consumer locks
 
-- [ ] Review and commit the current schema, integrity, multi-payload, and
+- [x] Commit and publish the current schema, integrity, multi-payload, and
   lifecycle-notice work in Tokens.
-- [ ] Select the provisional baseline snapshot.
-- [ ] Update the Forge source lock to that snapshot ID and manifest digest.
-- [ ] Update the Forge review candidate to reference the selected snapshot.
-- [ ] Keep the lock status provisional until the coverage and context policy is
-  approved.
+- [ ] Select the first public provisional snapshot.
+- [ ] Define the public snapshot URL layout and checksum publication.
+- [ ] Update consumer locks only when a real consumer is resumed.
+- [ ] Keep published snapshot status separate from consumer support policy.
 
 ## 10. CLI distribution and documentation
 
@@ -367,15 +376,44 @@ Forge compiler or to reopen the current source contract.
   files only when the current files become difficult to review; do not split
   helpers merely for file-size symmetry.
 
-## Compiler gate
+## 12. Active publication work
 
-Do not begin the Forge compiler until these conditions hold:
+### Reliable storage
 
-1. The published Source documents pass their standalone schemas.
-2. A fixed-input snapshot rebuild is byte-identical.
-3. The baseline/Expressive evidence model is either implemented or explicitly
-   deferred with a documented limitation.
-4. The Snackbar exception policy is recorded in the Forge lock or rejected.
-5. Lifecycle notice semantics are reviewed.
-6. Light/dark and other context-selection rules are approved.
-7. The first candidate mapping has been reviewed by a person.
+- [ ] Keep immutable snapshot directories as the canonical published format.
+- [ ] Publish each snapshot with its manifest and checksums as one versioned
+  release unit.
+- [ ] Choose GitHub Releases, S3-compatible object storage, or both for public
+  distribution.
+- [ ] Keep Git focused on code, schemas, the reviewed page catalog, and only
+  deliberately selected small fixtures or snapshots.
+- [ ] Add a generated index only when it improves queries or web performance.
+  Treat it as disposable and rebuild it from a verified snapshot.
+
+### Go web publication
+
+- [ ] Build a read-only Go backend over verified snapshots.
+- [ ] Serve snapshot metadata, source-payload classifications, extracted token
+  records, lifecycle notices, and snapshot comparisons.
+- [ ] Serve JSON endpoints and a simple server-rendered HTML view from the same
+  read model.
+- [ ] Make the selected snapshot explicit. Do not expose a mutable `latest`
+  value as the only way to address data.
+- [ ] Keep the first deployment read-only. Add authentication and write
+  operations only for a concrete operational need.
+
+### Update workflow
+
+- [ ] Crawl the reviewed page URL catalog.
+- [ ] Retry failed pages and inspect missing or changed source payloads.
+- [ ] Create and verify an immutable snapshot.
+- [ ] Compare it with the previously published snapshot.
+- [ ] Review the diff and coverage report.
+- [ ] Publish the approved evidence bundle and update the web service's
+  available snapshot index.
+
+## Compiler pause
+
+Token Forge compiler work, canonical token promotion, and component
+implementation are paused indefinitely. Reopen that work only after Tokens
+has a reliable publication workflow and a concrete reason to build a consumer.
