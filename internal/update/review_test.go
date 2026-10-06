@@ -128,3 +128,50 @@ func TestAlertRecordsInterruptedRun(t *testing.T) {
 		t.Fatalf("notice: %v", body)
 	}
 }
+
+func TestAlertStillSendsWhenStateIsUnavailable(t *testing.T) {
+	root := filepath.Join(t.TempDir(), "not-a-directory")
+	if err := os.WriteFile(root, []byte("blocked"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	notice := make(chan map[string]any, 1)
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		var body map[string]any
+		if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+			t.Error(err)
+		}
+		notice <- body
+		w.WriteHeader(204)
+	}))
+	defer server.Close()
+	if err := Alert(context.Background(), root, server.URL); err != nil {
+		t.Fatal(err)
+	}
+	if body := <-notice; body["status"] != "service_failed" || body["liveGeneration"] != "unavailable" || body["reportPath"] != "" {
+		t.Fatalf("notice: %v", body)
+	}
+}
+
+func TestCanceledUpdateStillNotifies(t *testing.T) {
+	config := testConfig(t, 40, false)
+	notice := make(chan map[string]any, 1)
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		var body map[string]any
+		if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+			t.Error(err)
+		}
+		notice <- body
+		w.WriteHeader(204)
+	}))
+	defer server.Close()
+	config.Webhook = server.URL
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+	report, err := Run(ctx, config)
+	if err == nil || report.Status != "failed" {
+		t.Fatalf("canceled run: %+v %v", report, err)
+	}
+	if body := <-notice; body["status"] != "failed" || body["runId"] != report.ID {
+		t.Fatalf("notice: %v", body)
+	}
+}

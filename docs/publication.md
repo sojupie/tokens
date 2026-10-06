@@ -1,5 +1,8 @@
 # Offline publication
 
+For automated production updates with saved reports, approval and atomic
+generation switching, see [scheduled updates](updates.md).
+
 Tokens publishes a verified snapshot into a local read-only data set.
 The published data is derived from the snapshot. The snapshot remains the
 canonical source and is not modified.

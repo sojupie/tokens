@@ -33,6 +33,9 @@ For public deployment, add `--public-origin https://tokens.marmenlind.com`.
 See [publication](docs/publication.md) for creating the published data and
 [search indexing](docs/web-seo.md) for deployment checks.
 
+For weekly crawling, review, alerts and atomic publication switching on Debian,
+see [scheduled updates](docs/updates.md).
+
 ## Crawl
 
 A normal crawl uses the checked-in page URL catalog. It lists reviewed Material

@@ -1,0 +1,19 @@
+[Unit]
+Description=Notify the administrator when a token update fails
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=tokens
+Group=tokens
+StateDirectory=tokens
+WorkingDirectory=/var/lib/tokens
+EnvironmentFile=-/etc/tokens/update.env
+ExecStart=/usr/local/bin/tokens update alert --state-dir /var/lib/tokens
+TimeoutStartSec=30s
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+UMask=0077

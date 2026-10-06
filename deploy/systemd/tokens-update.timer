@@ -1,0 +1,10 @@
+[Unit]
+Description=Weekly token update
+
+[Timer]
+OnCalendar=Sun *-*-* 04:00:00 Europe/Stockholm
+Persistent=true
+RandomizedDelaySec=15m
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,19 @@
+[Unit]
+Description=Material token browser
+After=network.target
+ConditionPathExists=/var/lib/tokens/current/tokens.sqlite
+
+[Service]
+User=tokens
+Group=tokens
+WorkingDirectory=/var/lib/tokens
+ExecStart=/usr/local/bin/tokens serve --published /var/lib/tokens/current --listen 127.0.0.1:8080 --public-origin https://tokens.marmenlind.com
+Restart=on-failure
+RestartSec=5s
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

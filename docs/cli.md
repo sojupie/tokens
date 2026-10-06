@@ -7,6 +7,13 @@ tokens crawl
 tokens snapshot create
 tokens snapshot verify
 tokens snapshot compare
+tokens publish
+tokens serve
+tokens update run
+tokens update status
+tokens update inspect RUN_ID
+tokens update approve RUN_ID
+tokens update retry RUN_ID
 ```
 
 Show help at any level:
@@ -19,6 +26,9 @@ go run ./cmd/tokens snapshot create --help
 ```
 
 ## Normal workflow
+
+For unattended updates, review and notifications, see
+[scheduled updates](updates.md).
 
 Run a crawl using the checked-in page URL catalog:
 
