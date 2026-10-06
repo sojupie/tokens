@@ -8,7 +8,7 @@
 :root {
   color-scheme: light;
   --sl-page-bg: var(--md-sys-color-surface);
-  --sl-page-surface: var(--md-sys-color-surface);
+  --sl-page-surface: var(--md-sys-color-surface-container-low);
   --sl-page-muted: var(--md-sys-color-surface-container);
   --sl-rule: var(--md-sys-color-outline-variant);
   --sl-rule-strong: var(--md-sys-color-outline);
@@ -36,12 +36,14 @@ button:not(:disabled), [role=button]:not([aria-disabled=true]) { cursor:pointer;
 .sl-nav-link:hover, .sl-nav-link:focus-visible { color:var(--sl-accent); }
 .sl-main { display:flex; max-width:72rem; min-height:100vh; margin:0 auto; flex-direction:column; gap:var(--md-sys-measurement-space400); padding:var(--md-sys-measurement-space400) var(--md-sys-measurement-space300); }
 .sl-section { display:flex; flex-direction:column; gap:var(--md-sys-measurement-space150); }
-.typo-page-title { margin:0; font-family:var(--md-sys-typescale-headline-medium-font); font-size:var(--md-sys-typescale-headline-medium-size); line-height:var(--md-sys-typescale-headline-medium-line-height); font-weight:var(--md-sys-typescale-headline-medium-weight); letter-spacing:var(--md-sys-typescale-headline-medium-tracking); }
-.typo-page-deck { margin:0; color:var(--sl-ink-muted); }
-.typo-section-header { margin:0; font-size:var(--md-sys-typescale-title-medium-size); line-height:var(--md-sys-typescale-title-medium-line-height); font-weight:var(--md-sys-typescale-title-medium-weight); letter-spacing:var(--md-sys-typescale-title-medium-tracking); }
-.typo-nav { font-size:var(--md-sys-typescale-label-large-size); line-height:var(--md-sys-typescale-label-large-line-height); font-weight:var(--md-sys-typescale-label-large-weight); }
-.typo-sublabel, .sl-metadata, .sl-change-context, .sl-change-status { color:var(--sl-ink-muted); font-size:var(--md-sys-typescale-body-small-size); line-height:var(--md-sys-typescale-body-small-line-height); }
-.sl-metadata { margin:0; }
+.md-typescale-headline-medium { margin:0; font-family:var(--md-sys-typescale-headline-medium-font); font-size:var(--md-sys-typescale-headline-medium-size); line-height:var(--md-sys-typescale-headline-medium-line-height); font-weight:var(--md-sys-typescale-headline-medium-weight); letter-spacing:var(--md-sys-typescale-headline-medium-tracking); }
+.md-typescale-title-medium { margin:0; font-family:var(--md-sys-typescale-title-medium-font); font-size:var(--md-sys-typescale-title-medium-size); line-height:var(--md-sys-typescale-title-medium-line-height); font-weight:var(--md-sys-typescale-title-medium-weight); letter-spacing:var(--md-sys-typescale-title-medium-tracking); }
+.md-typescale-label-large { margin:0; font-family:var(--md-sys-typescale-label-large-font); font-size:var(--md-sys-typescale-label-large-size); line-height:var(--md-sys-typescale-label-large-line-height); font-weight:var(--md-sys-typescale-label-large-weight); letter-spacing:var(--md-sys-typescale-label-large-tracking); }
+.md-typescale-body-large { margin:0; font-family:var(--md-sys-typescale-body-large-font); font-size:var(--md-sys-typescale-body-large-size); line-height:var(--md-sys-typescale-body-large-line-height); font-weight:var(--md-sys-typescale-body-large-weight); letter-spacing:var(--md-sys-typescale-body-large-tracking); }
+.md-typescale-body-medium { margin:0; font-family:var(--md-sys-typescale-body-medium-font); font-size:var(--md-sys-typescale-body-medium-size); line-height:var(--md-sys-typescale-body-medium-line-height); font-weight:var(--md-sys-typescale-body-medium-weight); letter-spacing:var(--md-sys-typescale-body-medium-tracking); }
+.md-typescale-body-small { margin:0; font-family:var(--md-sys-typescale-body-small-font); font-size:var(--md-sys-typescale-body-small-size); line-height:var(--md-sys-typescale-body-small-line-height); font-weight:var(--md-sys-typescale-body-small-weight); letter-spacing:var(--md-sys-typescale-body-small-tracking); }
+.sl-metadata { margin:0; color:var(--sl-ink-muted); font-size:var(--md-sys-typescale-body-small-size); line-height:var(--md-sys-typescale-body-small-line-height); }
+.md-typescale-body-small { color:var(--sl-ink-muted); }
 .sl-code, .sl-token-name { font-family:var(--sl-font-mono); font-size:var(--md-sys-typescale-body-medium-size); }
 .sl-code { padding:var(--md-sys-measurement-space25) var(--md-sys-measurement-space50); border-radius:var(--md-sys-shape-corner-extra-small); background:var(--sl-page-muted); overflow-wrap:anywhere; }
 .sl-link { color:var(--sl-accent); text-decoration:none; }

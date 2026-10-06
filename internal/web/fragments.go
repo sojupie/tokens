@@ -19,7 +19,7 @@ func tokenBrowserView(subject publish.SubjectView, browser tokenBrowser) templ.C
 			return err
 		}
 		if len(browser.Sets) == 0 {
-			return write(`<p class="sl-empty typo-sublabel">No published tokens for this page.</p>`)
+			return write(`<p class="sl-empty md-typescale-body-large">No published tokens for this page.</p>`)
 		}
 		if err := write(`<div class="sl-token-browser"><form class="sl-token-filters" method="get" action="` + html.EscapeString(subjectURL(subject)) + `"><div class="sl-token-toolbar"><label class="sl-token-set"><span class="sl-visually-hidden">Token set</span><select name="set">`); err != nil {
 			return err
@@ -86,7 +86,7 @@ func tokenBrowserView(subject publish.SubjectView, browser tokenBrowser) templ.C
 			return err
 		}
 		if browser.Count == 0 {
-			return write(`<p class="sl-empty typo-sublabel">No tokens match these filters.</p></div><script src="/static/token-table.js?v=20261005-symbols" defer></script>`)
+			return write(`<p class="sl-empty md-typescale-body-large">No tokens match these filters.</p></div><script src="/static/token-table.js?v=20261005-symbols" defer></script>`)
 		}
 		if err := write(`<div class="sl-token-groups">`); err != nil {
 			return err
@@ -130,7 +130,7 @@ func subjectPageComponent(subject publish.SubjectView, changes []publish.ChangeV
 				_, err := io.WriteString(writer, value)
 				return err
 			}
-			if err := write(`<p class="sl-back-link"><a class="sl-link" href="` + subjectListPath(subject.Key.Kind != publish.SubjectComponent) + `">` + materialSymbolSVG("arrow_back") + html.EscapeString(subjectKindLabel(subject.Key.Kind)) + `</a></p><header class="sl-subject-heading"><h1 class="typo-page-title">` + html.EscapeString(subject.Name) + `</h1><nav class="sl-subject-actions" aria-label="Component links">`); err != nil {
+			if err := write(`<p class="sl-back-link"><a class="sl-link" href="` + subjectListPath(subject.Key.Kind != publish.SubjectComponent) + `">` + materialSymbolSVG("arrow_back") + html.EscapeString(subjectKindLabel(subject.Key.Kind)) + `</a></p><header class="sl-subject-heading"><h1 class="md-typescale-headline-medium">` + html.EscapeString(subject.Name) + `</h1><nav class="sl-subject-actions" aria-label="Component links">`); err != nil {
 				return err
 			}
 			if err := writeTokenDownloadMenu(writer, subject, browser); err != nil {
@@ -146,7 +146,7 @@ func subjectPageComponent(subject publish.SubjectView, changes []publish.ChangeV
 					}
 				}
 			}
-			if err := write(`</nav></header><section class="sl-section" aria-labelledby="tokens-heading"><h2 class="typo-section-header" id="tokens-heading">Browse tokens</h2>`); err != nil {
+			if err := write(`</nav></header><section class="sl-section" aria-labelledby="tokens-heading"><h2 class="md-typescale-title-medium" id="tokens-heading">Browse tokens</h2>`); err != nil {
 				return err
 			}
 			if err := tokenBrowserView(subject, browser).Render(ctx, writer); err != nil {

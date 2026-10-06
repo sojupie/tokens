@@ -12,19 +12,19 @@ templ layout(title string) {
 		<meta charset="utf-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1"/>
 		<link rel="stylesheet" href="/theme.css"/>
-		<link rel="stylesheet" href="/static/app.css?v=20261006-material-tokens"/>
-		<link rel="stylesheet" href="/static/token-table.css?v=20261006-material-tokens"/>
+		<link rel="stylesheet" href="/static/app.css?v=20261006-readable-roles"/>
+		<link rel="stylesheet" href="/static/token-table.css?v=20261006-readable-roles"/>
 		<script src="/static/htmx.min.js" defer></script>
 		<title>{ title } · Source Loom</title>
 	</head>
 	<body class="sl-body">
 		<header class="sl-site-header">
 			<nav class="sl-primary-nav" aria-label="Primary">
-				<a class="sl-brand typo-page-title" href="/">Source Loom</a>
+				<a class="sl-brand md-typescale-headline-medium" href="/">Source Loom</a>
 				<div class="sl-nav-links">
-					<a class="sl-nav-link typo-nav" href="/components">Components</a>
-					<a class="sl-nav-link typo-nav" href="/styles">Styles and token sources</a>
-					<a class="sl-nav-link typo-nav" href="/changes">Change log</a>
+					<a class="sl-nav-link md-typescale-label-large" href="/components">Components</a>
+					<a class="sl-nav-link md-typescale-label-large" href="/styles">Styles and token sources</a>
+					<a class="sl-nav-link md-typescale-label-large" href="/changes">Change log</a>
 				</div>
 			</nav>
 		</header>
@@ -37,27 +37,27 @@ templ layout(title string) {
 
 templ overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView) {
 @layout("Published Material tokens") {
-		<h1 class="typo-page-title">Published Material tokens</h1>
-		<p class="typo-page-deck">Current snapshot: <code class="sl-code">{ snapshot.ID }</code></p>
+		<h1 class="md-typescale-headline-medium">Published Material tokens</h1>
+		<p class="md-typescale-body-large">Current snapshot: <code class="sl-code">{ snapshot.ID }</code></p>
 		<p class="sl-metadata">Detected: { snapshot.CreatedAt }</p>
 
 		<section class="sl-section" aria-labelledby="components-heading">
-			<h2 class="typo-section-header" id="components-heading">Components</h2>
+			<h2 class="md-typescale-title-medium" id="components-heading">Components</h2>
 			<ul class="sl-card-grid">
 				for _, subject := range subjects {
 					if subject.Key.Kind == publish.SubjectComponent {
-						<li class="sl-card"><a class="sl-link" href={ subjectURL(subject) }>{ subject.Name }</a> <small class="typo-sublabel">({ len(subject.Tokens) } tokens)</small></li>
+						<li class="sl-card"><a class="sl-link" href={ subjectURL(subject) }>{ subject.Name }</a> <small class="md-typescale-body-small">({ len(subject.Tokens) } tokens)</small></li>
 					}
 				}
 			</ul>
 		</section>
 
 		<section class="sl-section" aria-labelledby="styles-heading">
-			<h2 class="typo-section-header" id="styles-heading">Styles and token sources</h2>
+			<h2 class="md-typescale-title-medium" id="styles-heading">Styles and token sources</h2>
 			<ul class="sl-card-grid">
 				for _, subject := range subjects {
 					if subject.Key.Kind != publish.SubjectComponent {
-						<li class="sl-card"><a class="sl-link" href={ subjectURL(subject) }>{ subject.Name }</a> <small class="typo-sublabel">{ subjectKindLabel(subject.Key.Kind) } · { len(subject.Tokens) } tokens</small></li>
+						<li class="sl-card"><a class="sl-link" href={ subjectURL(subject) }>{ subject.Name }</a> <small class="md-typescale-body-small">{ subjectKindLabel(subject.Key.Kind) } · { len(subject.Tokens) } tokens</small></li>
 					}
 				}
 			</ul>
@@ -68,13 +68,13 @@ templ overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView
 templ subjectListPage(snapshot publish.SnapshotView, subjects []publish.SubjectView, styles bool, query string) {
 @layout("Published Material subjects") {
 		if styles {
-			<h1 class="typo-page-title">Styles and token sources</h1>
+			<h1 class="md-typescale-headline-medium">Styles and token sources</h1>
 		} else {
-			<h1 class="typo-page-title">Components</h1>
+			<h1 class="md-typescale-headline-medium">Components</h1>
 		}
 		<p class="sl-metadata">Current snapshot: <code class="sl-code">{ snapshot.ID }</code></p>
 		<form class="sl-search-form" method="get" action={ subjectListPath(styles) } role="search">
-			<label class="typo-sublabel" for="subject-search">Search by name or slug</label>
+			<label class="md-typescale-body-medium" for="subject-search">Search by name or slug</label>
 			<input class="sl-search-input" id="subject-search" type="search" name="q" value={ query } autocomplete="off"
 				hx-get={ subjectListPath(styles) }
 				hx-target="#subject-list"
@@ -90,10 +90,10 @@ templ subjectListPage(snapshot publish.SnapshotView, subjects []publish.SubjectV
 templ subjectList(subjects []publish.SubjectView) {
 	<ul class="sl-subject-list">
 		for _, subject := range subjects {
-			<li class="sl-list-item"><a class="sl-link" href={ subjectURL(subject) }>{ subject.Name }</a> <small class="typo-sublabel">{ subjectKindLabel(subject.Key.Kind) } · { len(subject.Tokens) } tokens</small></li>
+			<li class="sl-list-item"><a class="sl-link" href={ subjectURL(subject) }>{ subject.Name }</a> <small class="md-typescale-body-small">{ subjectKindLabel(subject.Key.Kind) } · { len(subject.Tokens) } tokens</small></li>
 		}
 		if len(subjects) == 0 {
-			<li class="sl-empty typo-sublabel">No matching subjects.</li>
+			<li class="sl-empty md-typescale-body-large">No matching subjects.</li>
 		}
 	</ul>
 }
@@ -104,9 +104,9 @@ templ subjectPage(subject publish.SubjectView, changes []publish.ChangeView, bro
 
 templ changesPage(state publish.PublishedState, subject string, baseURL string, filters changeFilters, counts string, changes []publish.ChangeView, page int, total int, hasPrevious bool, hasNext bool) {
 @layout(timelineTitle(subject, state.Subjects)) {
-		<h1 class="typo-page-title">{ timelineTitle(subject, state.Subjects) }</h1>
+		<h1 class="md-typescale-headline-medium">{ timelineTitle(subject, state.Subjects) }</h1>
 		<p class="sl-metadata">{ historyCoverage(state.Snapshots) }</p>
-		<p class="sl-metadata">Dates show when we detected changes, not when Material published them.</p>
+		<p class="md-typescale-body-medium">Dates show when we detected changes, not when Material published them.</p>
 		@changeFilterForm(filters, baseURL)
 		if total > 0 && subject != "" {
 			<p class="sl-metadata">Showing page { page } of { (total + 49) / 50 } · { total } total changes</p>
@@ -123,14 +123,14 @@ templ changesPage(state publish.PublishedState, subject string, baseURL string, 
 		}
 		for _, batch := range changeBatches(changes, state.Snapshots) {
 			<section class="sl-section sl-timeline-batch">
-				<h2 class="typo-section-header">Observed <time datetime={ batch.DetectedAt }>{ observationDate(batch.DetectedAt) }</time></h2>
+				<h2 class="md-typescale-title-medium">Observed <time datetime={ batch.DetectedAt }>{ observationDate(batch.DetectedAt) }</time></h2>
 				if batch.PreviousAt != "" {
 					<p class="sl-metadata">Compared with { observationDate(batch.PreviousAt) }</p>
 				}
 		for _, group := range changeGroups(batch.Changes, state.Subjects) {
 			if subject == "" {
 				<article class="sl-change-summary">
-					<h3 class="typo-section-header">
+					<h3 class="md-typescale-title-medium">
 						if group.URL != "" {
 							<a class="sl-link" href={ group.URL }>{ group.Label }</a>
 						} else {
@@ -163,7 +163,7 @@ templ changesPage(state publish.PublishedState, subject string, baseURL string, 
 				if hasPrevious {
 					<a class="sl-link" href={ changesPageURL(baseURL, page - 1) }>Previous</a>
 				}
-				<span class="typo-sublabel">Page { page }</span>
+				<span class="md-typescale-body-small">Page { page }</span>
 				if hasNext {
 					<a class="sl-link" href={ changesPageURL(baseURL, page + 1) }>Next</a>
 				}

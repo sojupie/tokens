@@ -52,6 +52,28 @@ func TestStylesHaveNoSeparatePaletteOrTypeScale(t *testing.T) {
 	}
 }
 
+func TestReadableRolesAndDistinctCardSurface(t *testing.T) {
+	app, err := embeddedStatic.ReadFile("static/app.css")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if strings.Contains(string(app), "typo-") || !strings.Contains(string(app), "--sl-page-surface: var(--md-sys-color-surface-container-low)") {
+		t.Fatal("use Material role names and a card surface separate from the page")
+	}
+	table, err := embeddedStatic.ReadFile("static/token-table.css")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(string(table), "font-size:var(--md-sys-typescale-body-large-size)") || !strings.Contains(string(table), "line-height:var(--md-sys-typescale-body-large-line-height)") {
+		t.Fatal("primary token content must use the readable body-large role")
+	}
+	response := httptest.NewRecorder()
+	New(publish.PublishedState{}, "").Handler().ServeHTTP(response, httptest.NewRequest("GET", "/changes", nil))
+	if strings.Contains(response.Body.String(), "typo-") || !strings.Contains(response.Body.String(), `class="md-typescale-body-medium">Dates show`) {
+		t.Fatal("instructions should be readable body text, not tiny metadata")
+	}
+}
+
 // Opt-in check against the actual served publication, not a mock theme.
 func TestThemeFromPublication(t *testing.T) {
 	path := os.Getenv("SOURCE_LOOM_THEME_DB")
