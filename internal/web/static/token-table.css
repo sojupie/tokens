@@ -1,5 +1,5 @@
 .tokens-subject-heading { display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:var(--md-sys-measurement-space200); }
-.tokens-subject-actions { display:flex; flex-wrap:wrap; gap:var(--md-sys-measurement-space250); }
+.tokens-subject-actions { display:flex; flex-wrap:wrap; gap:var(--md-sys-measurement-space250); align-items: center; }
 
 /* Material system and component tokens supplied by the served publication.
    Custom: table widths, nesting layout, responsive breakpoint and disclosure
@@ -142,7 +142,7 @@
 .tokens-change-disclosure > summary::-webkit-details-marker { display:none; }
 @media(max-width:639px) { .tokens-change-filters label { width:100%; } .tokens-change-filters input { width:100%; } }
 .tokens-timeline-batch > h2 { margin-bottom:var(--md-sys-measurement-space100); }
-.tokens-change-heading { display:flex; justify-content:space-between; align-items:baseline; gap:var(--md-sys-measurement-space200); }
+.tokens-change-heading { display:flex; justify-content:space-between; align-items:center; gap:var(--md-sys-measurement-space200); }
 .tokens-change-heading h3, .tokens-change-heading h4 { margin:0; font-size:inherit; font-weight:var(--md-sys-typescale-label-large-weight); overflow-wrap:anywhere; }
 .tokens-change-status { color:var(--md-sys-color-on-surface-variant); white-space:nowrap; }
 .tokens-change-hierarchy { display:flex; flex-wrap:wrap; gap:var(--md-sys-measurement-space50) 0; list-style:none; padding:0; margin:var(--md-sys-measurement-space150) 0 0; color:var(--md-sys-color-on-surface-variant); }
