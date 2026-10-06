@@ -7,7 +7,9 @@ ConditionPathExists=/var/lib/tokens/current/tokens.sqlite
 User=tokens
 Group=tokens
 WorkingDirectory=/var/lib/tokens
-ExecStart=/usr/local/bin/tokens serve --published /var/lib/tokens/current --listen 127.0.0.1:8080 --public-origin https://tokens.marmenlind.com
+Environment=TOKENS_LISTEN=127.0.0.1:8080
+EnvironmentFile=-/etc/tokens/server.env
+ExecStart=/usr/local/bin/tokens serve --published /var/lib/tokens/current --listen ${TOKENS_LISTEN} --public-origin https://tokens.marmenlind.com
 Restart=on-failure
 RestartSec=5s
 NoNewPrivileges=true
