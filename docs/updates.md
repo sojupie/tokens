@@ -153,65 +153,59 @@ journalctl -u tokens-update.service -u tokens-update-failure.service
 systemctl status tokens-update.timer tokens.service
 ```
 
-## Containerized Cloudflare Tunnel to the host
+## Dedicated Cloudflare Tunnel
 
-Keep Tokens under systemd. Leave nginx, its existing `web:80` tunnel route and
-its GitHub runner deployment unchanged. Add a separate published route for
-`tokens.marmenlind.com` to the same tunnel.
+Keep Tokens under systemd. Create a new Cloudflare Tunnel named `tokens`, with
+its own token and connector. Leave the other project's tunnel, nginx, `web:80`
+route and GitHub runner deployment unchanged.
 
-For a bridge-networked cloudflared container, find its network and gateway on
-the Debian host. Replace `CLOUDFLARED_CONTAINER` with its actual container name:
+The separate Compose project in `deploy/cloudflared.compose.yaml` runs only the
+Tokens connector. It uses host networking on Debian, so it can reach the host's
+loopback listener directly. It does not join the other project's Docker network
+or publish any ports. Host networking shares the host network namespace; this
+separates deployment and tunnel credentials, not network access permissions.
+See [Docker host networking](https://docs.docker.com/engine/network/drivers/host/).
 
-```sh
-docker inspect CLOUDFLARED_CONTAINER --format '{{json .NetworkSettings.Networks}}'
-```
-
-Use the `Gateway` IPv4 address from one of its bridge networks, not the
-container's `IPAddress`. Docker bridge networks have a host-side bridge
-interface; see the [Docker bridge documentation](https://docs.docker.com/engine/network/drivers/bridge/).
-This setup assumes Docker Engine on the same Debian host. If cloudflared uses
-host networking instead, keep the loopback listener and route to
-`http://127.0.0.1:8080`.
-
-Create the host service's configuration file:
+In the Cloudflare dashboard, create a remotely-managed tunnel. Copy the token
+for that new tunnel into a private file on the Debian host:
 
 ```sh
-sudo install -m 0644 deploy/systemd/server.env.example /etc/tokens/server.env
-sudoedit /etc/tokens/server.env
+sudo install -m 0600 deploy/cloudflared.env.example /etc/tokens/cloudflared.env
+sudoedit /etc/tokens/cloudflared.env
 ```
 
-Set the listener to the actual gateway. For example, **only if your inspection
-shows `172.18.0.1`**:
+Replace the example value with the new tunnel's token. Do not reuse the other
+project's token: that would add a connector to its tunnel, not create a separate
+one. Do not commit the real file or paste the token into chat. Docker administrators
+can inspect container environment variables, so keep Docker access restricted.
+See [Cloudflare tunnel tokens](https://developers.cloudflare.com/tunnel/reference/tunnel-tokens/)
+and [token environment configuration](https://developers.cloudflare.com/tunnel/reference/run-parameters/#token).
+
+Keep the host service on loopback. If you previously changed its address, set
+this in `/etc/tokens/server.env` and restart `tokens.service`:
 
 ```text
-TOKENS_LISTEN=172.18.0.1:8080
+TOKENS_LISTEN=127.0.0.1:8080
 ```
 
-This binds the host service to that address, not to every host interface. It is
-not a firewall rule: allow TCP 8080 from cloudflared's bridge network and restrict
-other traffic with your existing host firewall. Do not forward the port on your
-router. No Docker port publishing, extra host mapping or nginx configuration is
-needed. If the runner later recreates the Docker network with a different
-gateway, update both this file and the tunnel route.
-
-Install the updated service and restart it after the baseline is approved:
+Once the baseline is approved and Tokens is running, check its listener and start
+only the dedicated connector:
 
 ```sh
-sudo install -m 0644 deploy/systemd/tokens.service /etc/systemd/system/
-sudo systemctl daemon-reload
-sudo systemctl restart tokens.service
+curl -I http://127.0.0.1:8080/
+sudo docker compose -f deploy/cloudflared.compose.yaml up -d
+sudo docker compose -f deploy/cloudflared.compose.yaml logs --tail 50 cloudflared
 ```
 
-In Cloudflare, add the hostname `tokens.marmenlind.com` with service type `HTTP`
-and URL `GATEWAY_IP:8080`, using the same gateway address. In a tunnel configuration
-file, the equivalent service URL is `http://GATEWAY_IP:8080`. Keep the local hop
-HTTP; Cloudflare handles the public HTTPS connection. See
+In the **new Tokens tunnel**, add the hostname `tokens.marmenlind.com`, service
+type `HTTP`, and URL `127.0.0.1:8080`. The full origin URL is
+`http://127.0.0.1:8080`. Keep the local hop HTTP; Cloudflare handles public HTTPS. See
 [published application protocols](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/routing-to-tunnel/protocols/).
 
-Check the host listener with `curl -I http://GATEWAY_IP:8080/`, then open the public
-hostname to test the full tunnel path. If the tunnel reports a connection error,
-check the service status, gateway address and host firewall. A successful host
-request alone does not prove that the container can connect.
+Open the public hostname to test the full path. No router port forwarding is
+needed. The image is pinned to [cloudflared 2026.10.0](https://github.com/cloudflare/cloudflared/releases/tag/2026.10.0).
+Update its image tag deliberately, then run `pull` and `up -d` for this Compose
+file. Updates and restarts of this project do not restart the other connector.
 
 ## History cache
 
