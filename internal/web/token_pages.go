@@ -29,6 +29,63 @@ func subjectTokenDescription(subject publish.SubjectView) string {
 	return "Material Design tokens for " + subject.Name + ". View named references and values by context, download JSON or see what changed."
 }
 
+type tokenSetMenuGroup struct {
+	Label string
+	Sets  []tokenSet
+}
+
+func tokenSetMenuGroups(sets []tokenSet) []tokenSetMenuGroup {
+	var groups []tokenSetMenuGroup
+	indexes := make(map[string]int)
+	for _, set := range sets {
+		label := sentenceCase(tokenPhrase(set.component))
+		if label == "" {
+			label = "System"
+		}
+		index, found := indexes[label]
+		if !found {
+			index = len(groups)
+			indexes[label] = index
+			groups = append(groups, tokenSetMenuGroup{Label: label})
+		}
+		groups[index].Sets = append(groups[index].Sets, set)
+	}
+	return groups
+}
+
+func tokenSetMenuLabel(set tokenSet) string {
+	if set.variant != "" && set.variant != "toggle" && set.category != "SIZE" {
+		return sentenceCase(tokenPhrase(set.variant)) + " · " + sentenceCase(tokenPhrase(set.category))
+	}
+	return tokenSetLabel(set)
+}
+
+func tokenSetLinkURL(subject publish.SubjectView, set tokenSet, browser tokenBrowser) string {
+	query := make(url.Values)
+	if browser.Query != "" {
+		query.Set("q", browser.Query)
+	}
+	if len(browser.Contexts) > 0 {
+		for _, filter := range tokenFilters(set.sourceTokens, browser.Contexts) {
+			if browser.Contexts.Get(filter.Key) == filter.Selected {
+				query.Set(filter.Key, filter.Selected)
+			}
+		}
+	}
+	path := tokenSetURL(subject, set)
+	if len(query) > 0 {
+		path += "?" + query.Encode()
+	}
+	return path
+}
+
+func currentTokenSet(selected bool) string {
+	if selected {
+		return "page"
+	}
+	return "false"
+}
+
 func tokenPhrase(value string) string {
 	words := strings.Fields(strings.ToLower(displayWords(value)))
 	for i, word := range words {

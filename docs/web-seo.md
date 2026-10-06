@@ -13,7 +13,9 @@ Without `--public-origin`, HTML pages have `noindex`, robots.txt disallows crawl
 
 ## Pages and filters
 
-- Component and style pages link to each token set using ordinary HTML links.
+- The table's token-set selector contains grouped HTML links. It replaces the separate token-set list and native select. Its links exist in the initial HTML; JavaScript only positions the native popover and adds keyboard navigation.
+- Switching sets retains explicit context selections only when the destination supports that combination. Without explicit filters, links use the clean indexable URLs.
+- Main headings name the Material Design component. Titles also identify the subset; descriptions name properties present in the data. Meta descriptions are not repeated as visible introductions.
 - A token-set page such as `/components/buttons/sets/button/color/elevated` renders its tokens on the server. JavaScript is not needed to load the content.
 - Existing `?set=...` links still work and declare the corresponding token-set URL as canonical.
 - Search, context and changelog-filter views have `noindex, follow`. These views contain selected subsets, so they do not claim to duplicate a full page.

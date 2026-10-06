@@ -14,6 +14,7 @@ import (
 )
 
 type tokenBrowser struct {
+	Contexts url.Values
 	Sets     []tokenSet
 	Selected tokenSet
 	Filters  []tokenFilter
@@ -125,6 +126,12 @@ func tokenSets(subject publish.SubjectView) []tokenSet {
 
 func buildTokenBrowser(subject publish.SubjectView, query url.Values) tokenBrowser {
 	browser := tokenBrowser{Query: strings.TrimSpace(query.Get("q")), Sets: tokenSets(subject)}
+	browser.Contexts = make(url.Values)
+	for key, values := range query {
+		if strings.HasPrefix(key, "context.") {
+			browser.Contexts[key] = append([]string(nil), values...)
+		}
+	}
 	if len(browser.Sets) == 0 {
 		return browser
 	}

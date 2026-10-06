@@ -144,21 +144,29 @@ templ subjectPage(subject publish.SubjectView, changes []publish.ChangeView, bro
     @subjectPageComponent(subject, changes, browser)
 }
 
-templ tokenSetLinks(subject publish.SubjectView, sets []tokenSet) {
-	<details class="sl-section sl-token-set-links">
-		<summary class="md-typescale-title-medium">
-			@materialSymbol("chevron_right")
-			Token sets
-		</summary>
-		<nav aria-label="Token sets">
-			<ul class="sl-subject-list">
-				<li class="sl-list-item"><a class="sl-link" href={ subjectURL(subject) }>{ subject.Name } overview</a></li>
-				for _, set := range sets {
-					<li class="sl-list-item"><a class="sl-link" href={ tokenSetURL(subject, set) }>{ set.Label }</a></li>
-				}
-			</ul>
-		</nav>
-	</details>
+templ tokenSetPicker(subject publish.SubjectView, browser tokenBrowser) {
+	<button class="sl-token-set" type="button" popovertarget="sl-token-set-menu" aria-label={ "Token set: " + tokenSetLabel(browser.Selected) }>
+		{ tokenSetLabel(browser.Selected) }
+		@materialSymbol("expand_more")
+	</button>
+	<nav class="sl-token-set-menu" id="sl-token-set-menu" popover="auto" aria-label="Token sets">
+		<a class="sl-link sl-token-set-overview" href={ subjectURL(subject) }>{ subject.Name } overview</a>
+		for _, group := range tokenSetMenuGroups(browser.Sets) {
+			<section>
+				<h3 class="md-typescale-title-medium">{ group.Label }</h3>
+				<ul>
+					for _, set := range group.Sets {
+						<li>
+							<a href={ tokenSetLinkURL(subject, set, browser) } aria-current={ currentTokenSet(set.Key == browser.Selected.Key) }>
+								@materialSymbol("check")
+								{ tokenSetMenuLabel(set) }
+							</a>
+						</li>
+					}
+				</ul>
+			</section>
+		}
+	</nav>
 }
 
 templ changesPage(state publish.PublishedState, subject string, baseURL string, filters changeFilters, counts string, changes []publish.ChangeView, page int, total int, hasPrevious bool, hasNext bool) {
