@@ -166,6 +166,13 @@ func readJSON(path string, value any) error {
 }
 
 func active(root string) (string, error) {
+	info, err := os.Stat(root)
+	if err != nil {
+		return "", err
+	}
+	if !info.IsDir() {
+		return "", errors.New("state path is not a directory")
+	}
 	path := filepath.Join(root, "current")
 	if _, err := os.Lstat(path); os.IsNotExist(err) {
 		return "", nil
