@@ -34,6 +34,10 @@ dist/
 *.env
 !.env.example
 
+# Local deployment documentation.
+/docs/updates.md
+/deploy/README.md
+
 # Platform files.
 .DS_Store
 Thumbs.db
