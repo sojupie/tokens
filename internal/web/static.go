@@ -5,7 +5,7 @@ import (
 	"io/fs"
 )
 
-//go:embed static/app.css static/token-table.css static/token-table.js static/htmx.min.js
+//go:embed static/app.css static/token-table.css static/token-table.js static/htmx.min.js static/fonts
 var embeddedStatic embed.FS
 
 var webStaticFiles = mustStaticFiles()

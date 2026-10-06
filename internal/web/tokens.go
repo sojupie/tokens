@@ -558,7 +558,7 @@ func colorCellClass(color string) string {
 func tokenColorInk(color string) string {
 	var red, green, blue, alpha float64
 	if _, err := fmt.Sscanf(color, "rgba(%f, %f, %f, %f)", &red, &green, &blue, &alpha); err != nil {
-		return "#1d1b20"
+		return "var(--md-sys-color-on-surface)"
 	}
 	red, green, blue = red*alpha+255*(1-alpha), green*alpha+255*(1-alpha), blue*alpha+255*(1-alpha)
 	linear := func(channel float64) float64 {
@@ -569,9 +569,9 @@ func tokenColorInk(color string) string {
 		return math.Pow((channel+0.055)/1.055, 2.4)
 	}
 	if 0.2126*linear(red)+0.7152*linear(green)+0.0722*linear(blue) < 0.179 {
-		return "#ffffff"
+		return "var(--md-sys-color-on-primary)"
 	}
-	return "#1d1b20"
+	return "var(--md-sys-color-on-surface)"
 }
 
 func tokenValueDisplay(category string, raw json.RawMessage) string {

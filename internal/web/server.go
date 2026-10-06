@@ -15,6 +15,8 @@ import (
 type Server struct {
 	state        publish.PublishedState
 	downloadsDir string
+	themeCSS     string
+	themeError   error
 }
 
 type subjectSummary struct {
@@ -52,11 +54,13 @@ type changesResponse struct {
 }
 
 func New(state publish.PublishedState, downloadsDir string) *Server {
-	return &Server{state: state, downloadsDir: downloadsDir}
+	css, err := publicationTheme(state)
+	return &Server{state: state, downloadsDir: downloadsDir, themeCSS: css, themeError: err}
 }
 
 func (server *Server) Handler() http.Handler {
 	mux := http.NewServeMux()
+	mux.HandleFunc("GET /theme.css", server.handleTheme)
 	mux.HandleFunc("GET /api/v1/health", server.handleHealth)
 	mux.HandleFunc("GET /api/v1/releases", server.handleReleases)
 	mux.HandleFunc("GET /api/v1/changes", server.handleChanges)

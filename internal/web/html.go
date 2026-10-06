@@ -109,6 +109,7 @@ func (server *Server) renderChangeHistory(response http.ResponseWriter, request 
 
 func renderHTML(response http.ResponseWriter, request *http.Request, component templ.Component) error {
 	response.Header().Set("Content-Type", "text/html; charset=utf-8")
+	response.Header().Set("Cache-Control", "no-cache")
 	return component.Render(request.Context(), response)
 }
 
