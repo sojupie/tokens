@@ -16,7 +16,7 @@ templ layout(title string) {
 		<link rel="stylesheet" href={ staticURL("app.css") }/>
 		<link rel="stylesheet" href={ staticURL("token-table.css") }/>
 		<script src={ staticURL("htmx.min.js") } defer></script>
-		<title>{ pageTitle(ctx, title) } · Source Loom</title>
+		<title>{ pageTitle(ctx, title) } · Tokens</title>
 		<meta name="description" content={ metadata(ctx).Description }/>
 		if metadata(ctx).Canonical != "" {
 			<link rel="canonical" href={ templ.SafeURL(metadata(ctx).Canonical) }/>
@@ -28,7 +28,7 @@ templ layout(title string) {
 	<body class="sl-body">
 		<header class="sl-site-header">
 			<nav class="sl-primary-nav" aria-label="Primary">
-				<a class="sl-brand md-typescale-headline-medium" href="/">Source Loom</a>
+				<a class="sl-brand md-typescale-headline-medium" href="/">Tokens</a>
 				<div class="sl-nav-links">
 					<a class="sl-nav-link md-typescale-label-large" href="/components">Components</a>
 					<a class="sl-nav-link md-typescale-label-large" href="/styles">Styles and token sources</a>
@@ -63,7 +63,7 @@ templ layout(title string) {
 		<footer class="sl-site-footer">
 			<div class="sl-footer-content">
 				<div>
-					<p class="md-typescale-title-medium">Source Loom</p>
+					<p class="md-typescale-title-medium">Tokens</p>
 					<p class="md-typescale-body-medium">Browse Material Design tokens and track their changes.</p>
 					<p class="md-typescale-body-medium">Independent project. Not affiliated with Google.</p>
 				</div>

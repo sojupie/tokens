@@ -112,7 +112,7 @@ func layout(title string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, " · Source Loom</title><meta name=\"description\" content=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, " · Tokens</title><meta name=\"description\" content=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -154,7 +154,7 @@ func layout(title string) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</head><body class=\"sl-body\"><header class=\"sl-site-header\"><nav class=\"sl-primary-nav\" aria-label=\"Primary\"><a class=\"sl-brand md-typescale-headline-medium\" href=\"/\">Source Loom</a><div class=\"sl-nav-links\"><a class=\"sl-nav-link md-typescale-label-large\" href=\"/components\">Components</a> <a class=\"sl-nav-link md-typescale-label-large\" href=\"/styles\">Styles and token sources</a> <a class=\"sl-nav-link md-typescale-label-large\" href=\"/changes\">Change log</a></div><div class=\"sl-theme-controls\" role=\"group\" aria-label=\"Site appearance\"><button type=\"button\" data-app-theme aria-label=\"Dark mode\" aria-pressed=\"false\" title=\"Dark mode\" disabled><span data-theme-icon=\"light\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</head><body class=\"sl-body\"><header class=\"sl-site-header\"><nav class=\"sl-primary-nav\" aria-label=\"Primary\"><a class=\"sl-brand md-typescale-headline-medium\" href=\"/\">Tokens</a><div class=\"sl-nav-links\"><a class=\"sl-nav-link md-typescale-label-large\" href=\"/components\">Components</a> <a class=\"sl-nav-link md-typescale-label-large\" href=\"/styles\">Styles and token sources</a> <a class=\"sl-nav-link md-typescale-label-large\" href=\"/changes\">Change log</a></div><div class=\"sl-theme-controls\" role=\"group\" aria-label=\"Site appearance\"><button type=\"button\" data-app-theme aria-label=\"Dark mode\" aria-pressed=\"false\" title=\"Dark mode\" disabled><span data-theme-icon=\"light\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -202,7 +202,7 @@ func layout(title string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "</main><footer class=\"sl-site-footer\"><div class=\"sl-footer-content\"><div><p class=\"md-typescale-title-medium\">Source Loom</p><p class=\"md-typescale-body-medium\">Browse Material Design tokens and track their changes.</p><p class=\"md-typescale-body-medium\">Independent project. Not affiliated with Google.</p></div><div><p class=\"md-typescale-body-medium\">Made by Olle Marmenlind</p><a class=\"sl-link md-typescale-body-medium\" href=\"https://marmenlind.com\">marmenlind.com</a></div></div></footer></body></html>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "</main><footer class=\"sl-site-footer\"><div class=\"sl-footer-content\"><div><p class=\"md-typescale-title-medium\">Tokens</p><p class=\"md-typescale-body-medium\">Browse Material Design tokens and track their changes.</p><p class=\"md-typescale-body-medium\">Independent project. Not affiliated with Google.</p></div><div><p class=\"md-typescale-body-medium\">Made by Olle Marmenlind</p><a class=\"sl-link md-typescale-body-medium\" href=\"https://marmenlind.com\">marmenlind.com</a></div></div></footer></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
