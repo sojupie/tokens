@@ -123,7 +123,7 @@
 .sl-context-dialog footer button { border:0; background:none; color:var(--md-sys-color-primary); }
 .sl-empty { padding:var(--md-sys-measurement-space300); }
 .sl-timeline-batch { border-top:var(--md-comp-divider-thickness) solid var(--md-sys-color-outline); padding-top:var(--md-sys-measurement-space300); }
-.sl-change-filters { display:flex; flex-wrap:wrap; align-items:flex-end; gap:var(--md-sys-measurement-space150); padding:var(--md-sys-measurement-space200) 0; border-block:var(--md-comp-divider-thickness) solid var(--md-sys-color-outline-variant); }
+.sl-change-filters { display:flex; flex-wrap:wrap; align-items:flex-end; gap:var(--md-sys-measurement-space150); padding:var(--md-sys-measurement-space200) 0 0; border-top:var(--md-comp-divider-thickness) solid var(--md-sys-color-outline-variant); margin-bottom:calc(-1 * var(--md-sys-measurement-space200)); }
 .sl-change-filters label { min-width:0; max-width:100%; display:flex; flex-direction:column; gap:var(--md-sys-measurement-space75); }
 .sl-change-filters select, .sl-change-filters input, .sl-change-filters button { font:inherit; color:inherit; background:var(--md-sys-color-surface-container-low); border:var(--md-comp-divider-thickness) solid var(--md-sys-color-outline); border-radius:var(--md-sys-shape-corner-extra-small); padding:var(--md-sys-measurement-space100) var(--md-sys-measurement-space125); min-height:var(--md-comp-outlined-text-field-container-height); max-width:100%; }
 .sl-change-filters input { width:200px; }
