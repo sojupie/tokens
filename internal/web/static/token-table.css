@@ -46,6 +46,7 @@
 .sl-context-button { max-width:100%; flex-wrap:wrap; display:flex; align-items:center; justify-content:center; gap:var(--md-sys-measurement-space200); border:var(--md-comp-divider-thickness) solid var(--md-sys-color-outline-variant); border-radius:var(--md-sys-shape-corner-small); min-height:var(--md-sys-measurement-space400); justify-self:center; padding:var(--md-sys-measurement-space50) var(--md-sys-measurement-space150); background:transparent; }
 .sl-context-button svg { height:var(--md-sys-measurement-space200); width:var(--md-sys-measurement-space200); }
 .sl-token-folder { border:0; margin:0; }
+.sl-token-folder[open]:not(:last-child), .sl-token-table-wrap:not(:last-child) { border-bottom:var(--md-comp-divider-thickness) solid var(--md-sys-color-outline-variant); }
 .sl-token-folder>summary {
   display:flex; align-items:center; gap:var(--md-sys-measurement-space150); padding:0 var(--md-sys-measurement-space300); height:var(--md-sys-measurement-space800);
   border-bottom:var(--md-comp-divider-thickness) solid var(--md-sys-color-outline-variant); cursor:pointer; list-style:none;
