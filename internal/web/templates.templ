@@ -137,6 +137,19 @@ templ subjectPage(subject publish.SubjectView, changes []publish.ChangeView, bro
     @subjectPageComponent(subject, changes, browser)
 }
 
+templ tokenSetLinks(subject publish.SubjectView, sets []tokenSet) {
+	<details class="sl-section">
+		<summary class="md-typescale-title-medium">Token sets</summary>
+		<nav aria-label="Token sets">
+			<ul class="sl-subject-list">
+				for _, set := range sets {
+					<li class="sl-list-item"><a class="sl-link" href={ tokenSetURL(subject, set) }>{ set.Label }</a></li>
+				}
+			</ul>
+		</nav>
+	</details>
+}
+
 templ changesPage(state publish.PublishedState, subject string, baseURL string, filters changeFilters, counts string, changes []publish.ChangeView, page int, total int, hasPrevious bool, hasNext bool) {
 @layout(timelineTitle(subject, state.Subjects)) {
 		<h1 class="md-typescale-headline-medium">{ timelineTitle(subject, state.Subjects) }</h1>

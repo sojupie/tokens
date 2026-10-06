@@ -146,7 +146,15 @@ func subjectPageComponent(subject publish.SubjectView, changes []publish.ChangeV
 					}
 				}
 			}
-			if err := write(`</nav></header><section class="sl-section" aria-labelledby="tokens-heading"><h2 class="md-typescale-title-medium" id="tokens-heading">Browse tokens</h2>`); err != nil {
+			if err := write(`</nav></header><p class="md-typescale-body-medium">` + html.EscapeString(subjectTokenDescription(subject)) + `</p>`); err != nil {
+				return err
+			}
+			if len(browser.Sets) > 0 {
+				if err := tokenSetLinks(subject, browser.Sets).Render(ctx, writer); err != nil {
+					return err
+				}
+			}
+			if err := write(`<section class="sl-section" aria-labelledby="tokens-heading"><h2 class="md-typescale-title-medium" id="tokens-heading">Browse tokens</h2>`); err != nil {
 				return err
 			}
 			if err := tokenBrowserView(subject, browser).Render(ctx, writer); err != nil {
