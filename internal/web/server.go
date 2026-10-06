@@ -66,7 +66,7 @@ func (server *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /api/v1/changes", server.handleChanges)
 	mux.HandleFunc("GET /api/v1/components", server.handleComponents)
 	mux.HandleFunc("GET /api/v1/components/{slug...}", server.handleComponent)
-	mux.Handle("GET /static/", http.StripPrefix("/static/", http.FileServer(http.FS(webStaticFiles))))
+	mux.HandleFunc("GET /static/", handleStaticAsset)
 	mux.HandleFunc("GET /downloads/{path...}", server.handleDownload)
 	mux.HandleFunc("GET /", server.handleOverview)
 	mux.HandleFunc("GET /changes", server.handleGlobalChanges)

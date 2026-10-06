@@ -176,12 +176,12 @@ func themeNumber(value float64) string {
 	return strconv.FormatFloat(value, 'f', -1, 64)
 }
 
-func (server *Server) handleTheme(response http.ResponseWriter, _ *http.Request) {
-	response.Header().Set("Cache-Control", "no-cache")
+func (server *Server) handleTheme(response http.ResponseWriter, request *http.Request) {
 	if server.themeError != nil {
+		response.Header().Set("Cache-Control", "no-store")
 		http.Error(response, server.themeError.Error(), http.StatusServiceUnavailable)
 		return
 	}
 	response.Header().Set("Content-Type", "text/css; charset=utf-8")
-	fmt.Fprint(response, server.themeCSS)
+	serveCachedAsset(response, request, "theme.css", []byte(server.themeCSS))
 }

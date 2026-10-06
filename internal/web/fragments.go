@@ -86,7 +86,7 @@ func tokenBrowserView(subject publish.SubjectView, browser tokenBrowser) templ.C
 			return err
 		}
 		if browser.Count == 0 {
-			return write(`<p class="sl-empty md-typescale-body-large">No tokens match these filters.</p></div><script src="/static/token-table.js?v=20261005-symbols" defer></script>`)
+			return write(`<p class="sl-empty md-typescale-body-large">No tokens match these filters.</p></div><script src="` + html.EscapeString(staticURL("token-table.js")) + `" defer></script>`)
 		}
 		if err := write(`<div class="sl-token-groups">`); err != nil {
 			return err
@@ -96,7 +96,7 @@ func tokenBrowserView(subject publish.SubjectView, browser tokenBrowser) templ.C
 				return err
 			}
 		}
-		return write(`</div></div><script src="/static/token-table.js?v=20261005-symbols" defer></script>`)
+		return write(`</div></div><script src="` + html.EscapeString(staticURL("token-table.js")) + `" defer></script>`)
 	})
 }
 

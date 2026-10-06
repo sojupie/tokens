@@ -1,6 +1,7 @@
 package web
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"math"
@@ -20,7 +21,7 @@ func (server *Server) handleOverview(response http.ResponseWriter, request *http
 		return
 	}
 	if request.URL.Path == "/" {
-		if err := renderHTML(response, request, overviewPage(server.state.CurrentSnapshot, sortedSubjects(server.state))); err != nil {
+		if err := server.renderHTML(response, request, overviewPage(server.state.CurrentSnapshot, sortedSubjects(server.state))); err != nil {
 			http.Error(response, err.Error(), http.StatusInternalServerError)
 		}
 		return
@@ -30,12 +31,12 @@ func (server *Server) handleOverview(response http.ResponseWriter, request *http
 	subjects := filterSubjects(sortedSubjects(server.state), query, styles)
 	if request.Header.Get("HX-Request") == "true" {
 		response.Header().Set("Vary", "HX-Request")
-		if err := renderHTML(response, request, subjectList(subjects)); err != nil {
+		if err := server.renderHTML(response, request, subjectList(subjects)); err != nil {
 			http.Error(response, err.Error(), http.StatusInternalServerError)
 		}
 		return
 	}
-	if err := renderHTML(response, request, subjectListPage(server.state.CurrentSnapshot, subjects, styles, query)); err != nil {
+	if err := server.renderHTML(response, request, subjectListPage(server.state.CurrentSnapshot, subjects, styles, query)); err != nil {
 		http.Error(response, err.Error(), http.StatusInternalServerError)
 	}
 }
@@ -68,7 +69,7 @@ func (server *Server) handleHTMLSubject(response http.ResponseWriter, request *h
 		return
 	}
 	browser := buildTokenBrowser(subjects[0], request.URL.Query())
-	if err := renderHTML(response, request, subjectPage(subjects[0], subjectChanges(server.state, subjects[0].Key.Slug), browser)); err != nil {
+	if err := server.renderHTML(response, request, subjectPage(subjects[0], subjectChanges(server.state, subjects[0].Key.Slug), browser)); err != nil {
 		http.Error(response, err.Error(), http.StatusInternalServerError)
 	}
 }
@@ -102,15 +103,16 @@ func (server *Server) renderChangeHistory(response http.ResponseWriter, request 
 	if subject != "" {
 		pageChanges, page, hasPrevious, hasNext = paginateChanges(changes, page)
 	}
-	if err := renderHTML(response, request, changesPage(server.state, subject, request.URL.String(), filters, changeCountSummary(changes), pageChanges, page, len(changes), hasPrevious, hasNext)); err != nil {
+	if err := server.renderHTML(response, request, changesPage(server.state, subject, request.URL.String(), filters, changeCountSummary(changes), pageChanges, page, len(changes), hasPrevious, hasNext)); err != nil {
 		http.Error(response, err.Error(), http.StatusInternalServerError)
 	}
 }
 
-func renderHTML(response http.ResponseWriter, request *http.Request, component templ.Component) error {
+func (server *Server) renderHTML(response http.ResponseWriter, request *http.Request, component templ.Component) error {
 	response.Header().Set("Content-Type", "text/html; charset=utf-8")
 	response.Header().Set("Cache-Control", "no-cache")
-	return component.Render(request.Context(), response)
+	ctx := context.WithValue(request.Context(), themeVersionKey{}, assetVersion([]byte(server.themeCSS)))
+	return component.Render(ctx, response)
 }
 
 func sortedSubjects(state publish.PublishedState) []publish.SubjectView {

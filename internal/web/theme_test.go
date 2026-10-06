@@ -39,7 +39,7 @@ func TestThemeReportsMissingTokensWithoutInventingFallbacks(t *testing.T) {
 	server := New(publish.PublishedState{}, "")
 	response := httptest.NewRecorder()
 	server.Handler().ServeHTTP(response, httptest.NewRequest("GET", "/theme.css", nil))
-	if response.Code != 503 || !strings.Contains(response.Body.String(), "md-sys-color-primary") || response.Header().Get("Cache-Control") != "no-cache" {
+	if response.Code != 503 || !strings.Contains(response.Body.String(), "md-sys-color-primary") || response.Header().Get("Cache-Control") != "no-store" {
 		t.Fatal("missing theme tokens must be reported, not replaced with a hard-coded palette")
 	}
 }
@@ -117,6 +117,25 @@ func TestThemeFromPublication(t *testing.T) {
 	New(state, "").Handler().ServeHTTP(response, httptest.NewRequest("GET", "/theme.css", nil))
 	if response.Code != 200 || response.Body.String() != css || response.Header().Get("Content-Type") != "text/css; charset=utf-8" {
 		t.Fatal("theme endpoint did not serve the current publication's CSS")
+	}
+	response = httptest.NewRecorder()
+	server := New(state, "")
+	server.Handler().ServeHTTP(response, httptest.NewRequest("GET", "/changes", nil))
+	if !strings.Contains(response.Body.String(), "/theme.css?v="+assetVersion([]byte(css))) || !strings.Contains(response.Body.String(), staticURL("app.css")) {
+		t.Fatal("HTML must reference the current theme and stylesheet content versions")
+	}
+	response = httptest.NewRecorder()
+	request := httptest.NewRequest("GET", "/theme.css?v="+assetVersion([]byte(css)), nil)
+	server.Handler().ServeHTTP(response, request)
+	if response.Header().Get("Cache-Control") != "public, max-age=31536000, immutable" {
+		t.Fatal("publication theme should be browser-cached")
+	}
+	etag := response.Header().Get("ETag")
+	request.Header.Set("If-None-Match", etag)
+	response = httptest.NewRecorder()
+	server.Handler().ServeHTTP(response, request)
+	if response.Code != 304 || response.Body.Len() != 0 {
+		t.Fatal("unchanged theme should not transfer CSS again")
 	}
 	for _, file := range []string{"roboto-latin.woff2", "roboto-latin-ext.woff2"} {
 		font, err := embeddedStatic.ReadFile("static/fonts/" + file)
