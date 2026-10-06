@@ -8,6 +8,15 @@ sources/raw/
 sources/normalized/
 sources/runs/
 
+# New captures stay local; deliberately selected snapshot fixtures may be
+# force-added. Existing tracked snapshots remain tracked.
+/snapshots/material-token-data/*/
+
+# Rebuildable publications and local review output.
+/published/
+/published-*/
+/review/
+
 # Local diagnostics and build output.
 bin/
 inspect.txt
