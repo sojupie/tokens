@@ -58,7 +58,7 @@
 .sl-token-table th { padding-left:var(--md-sys-measurement-space400); }
 .sl-token-description { display:block; }
 .sl-token-value { min-height:var(--md-sys-measurement-space700); border-radius:var(--md-sys-shape-corner-medium); background:var(--md-sys-color-surface-container-low); display:flex; align-items:center; justify-content:center; padding:var(--md-sys-measurement-space150) var(--md-sys-measurement-space200); text-align:center; overflow-wrap:anywhere; }
-.sl-token-color { background:var(--token-color); color:var(--token-ink); border:var(--md-comp-divider-thickness) solid var(--md-sys-color-outline); font-weight:var(--md-sys-typescale-label-large-weight); }
+.sl-token-color { background:linear-gradient(var(--token-color),var(--token-color)),var(--sl-swatch-dark-ink); color:var(--token-ink); border:var(--md-comp-divider-thickness) solid var(--md-sys-color-outline); font-weight:var(--md-sys-typescale-label-large-weight); }
 .sl-token-source-name { display:none; overflow-wrap:anywhere; }
 .sl-token-reference { background:var(--md-sys-color-surface-container-low); border:var(--md-comp-divider-thickness) solid var(--md-sys-color-outline-variant); border-radius:var(--md-sys-shape-corner-medium); }
 .sl-token-reference>summary { min-height:var(--md-sys-measurement-space600); padding:var(--md-sys-measurement-space150); cursor:pointer; list-style:none; display:flex; flex-direction:column; gap:var(--md-sys-measurement-space50); }

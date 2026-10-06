@@ -6,7 +6,6 @@
    breakpoint, stacking order, column proportions and identifier monospace.
    Structural 0/1px rules and viewport sizing are not design tokens. */
 :root {
-  color-scheme: light;
   --sl-page-bg: var(--md-sys-color-surface);
   --sl-page-surface: var(--md-sys-color-surface-container-low);
   --sl-page-muted: var(--md-sys-color-surface-container);
@@ -16,7 +15,6 @@
   --sl-ink-muted: var(--md-sys-color-on-surface-variant);
   --sl-ink-light: var(--md-sys-color-on-surface-variant);
   --sl-accent: var(--md-sys-color-primary);
-  --sl-on-primary: var(--md-sys-color-on-primary);
   --sl-accent-soft: var(--md-sys-color-primary-container);
   --sl-font-sans: var(--md-sys-typescale-body-large-font);
   --sl-font-mono: ui-monospace, monospace;
@@ -34,6 +32,9 @@ button:not(:disabled), [role=button]:not([aria-disabled=true]) { cursor:pointer;
 .sl-nav-links { display:flex; flex:1; flex-wrap:wrap; justify-content:flex-end; gap:var(--md-sys-measurement-space300); }
 .sl-nav-link { color:var(--sl-ink-muted); text-decoration:none; }
 .sl-nav-link:hover, .sl-nav-link:focus-visible { color:var(--sl-accent); }
+.sl-theme-controls { display:flex; gap:var(--md-sys-measurement-space150); }
+.sl-theme-controls label { display:flex; flex-direction:column; gap:var(--md-sys-measurement-space50); }
+.sl-theme-controls select { min-height:var(--md-comp-filter-chip-container-height); border:var(--md-comp-outlined-text-field-outline-width) solid var(--sl-rule-strong); border-radius:var(--md-comp-filter-chip-container-shape); padding:var(--md-sys-measurement-space50) var(--md-sys-measurement-space100); background:var(--sl-page-surface); }
 .sl-main { display:flex; max-width:72rem; min-height:100vh; margin:0 auto; flex-direction:column; gap:var(--md-sys-measurement-space400); padding:var(--md-sys-measurement-space400) var(--md-sys-measurement-space300); }
 .sl-section { display:flex; flex-direction:column; gap:var(--md-sys-measurement-space150); }
 .md-typescale-headline-medium { margin:0; font-family:var(--md-sys-typescale-headline-medium-font); font-size:var(--md-sys-typescale-headline-medium-size); line-height:var(--md-sys-typescale-headline-medium-line-height); font-weight:var(--md-sys-typescale-headline-medium-weight); letter-spacing:var(--md-sys-typescale-headline-medium-tracking); }

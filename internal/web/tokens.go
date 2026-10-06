@@ -521,10 +521,8 @@ func tokenColorLabel(raw json.RawMessage) string {
 	if !ok {
 		color = value
 	}
-	red, redOK := numberValue(color["red"])
-	green, greenOK := numberValue(color["green"])
-	blue, blueOK := numberValue(color["blue"])
-	if !redOK || !greenOK || !blueOK {
+	red, green, blue, resolved := colorChannels(color)
+	if !resolved {
 		return ""
 	}
 	if red <= 1 && green <= 1 && blue <= 1 {
@@ -558,7 +556,7 @@ func colorCellClass(color string) string {
 func tokenColorInk(color string) string {
 	var red, green, blue, alpha float64
 	if _, err := fmt.Sscanf(color, "rgba(%f, %f, %f, %f)", &red, &green, &blue, &alpha); err != nil {
-		return "var(--md-sys-color-on-surface)"
+		return "var(--sl-swatch-light-ink)"
 	}
 	red, green, blue = red*alpha+255*(1-alpha), green*alpha+255*(1-alpha), blue*alpha+255*(1-alpha)
 	linear := func(channel float64) float64 {
@@ -569,9 +567,9 @@ func tokenColorInk(color string) string {
 		return math.Pow((channel+0.055)/1.055, 2.4)
 	}
 	if 0.2126*linear(red)+0.7152*linear(green)+0.0722*linear(blue) < 0.179 {
-		return "var(--md-sys-color-on-primary)"
+		return "var(--sl-swatch-dark-ink)"
 	}
-	return "var(--md-sys-color-on-surface)"
+	return "var(--sl-swatch-light-ink)"
 }
 
 func tokenValueDisplay(category string, raw json.RawMessage) string {

@@ -15,16 +15,29 @@ import (
 
 // The app's theme is independent of the token context a visitor is inspecting.
 // Web maps Material's logical DIPS and type-scale POINTS to CSS pixels.
-var appThemeContext = map[string]string{
-	"Theme": "Light", "Contrast": "Default", "Platform": "Web", "Audience": "3P", "Font": "Static",
+func publicationTheme(state publish.PublishedState) (string, error) {
+	var css strings.Builder
+	for _, theme := range []string{"Light", "Dark"} {
+		for _, contrast := range []string{"Default", "Medium contrast", "High contrast"} {
+			variant, err := publicationThemeVariant(state, theme, contrast)
+			if err != nil {
+				return "", fmt.Errorf("%s / %s: %w", theme, contrast, err)
+			}
+			css.WriteString(variant)
+		}
+	}
+	return css.String(), nil
 }
 
-func publicationTheme(state publish.PublishedState) (string, error) {
+func publicationThemeVariant(state publish.PublishedState, theme, contrast string) (string, error) {
+	context := map[string]string{
+		"Theme": theme, "Contrast": contrast, "Platform": "Web", "Audience": "3P", "Font": "Static",
+	}
 	values := make(map[string]string)
 	aliases := make(map[string]string)
 	for _, subject := range sortedSubjects(state) {
 		for _, token := range subject.Tokens {
-			value, ok := selectTokenValue(token.Values, appThemeContext)
+			value, ok := selectTokenValue(token.Values, context)
 			if !ok {
 				continue
 			}
@@ -55,8 +68,8 @@ func publicationTheme(state publish.PublishedState) (string, error) {
 	for name, value := range values {
 		cssValues[strings.ReplaceAll(name, ".", "-")] = value
 	}
-	// Export only the tokens the styles actually use, not the full dataset.
-	wanted := make(map[string]bool)
+	// Include preview ink inputs alongside the tokens referenced by the styles.
+	wanted := map[string]bool{"md-ref-palette-neutral0": true, "md-sys-color-on-primary": true}
 	pattern := regexp.MustCompile(`var\(--(md-[a-z0-9-]+)\)`)
 	for _, file := range []string{"static/app.css", "static/token-table.css"} {
 		data, err := embeddedStatic.ReadFile(file)
@@ -81,7 +94,16 @@ func publicationTheme(state publish.PublishedState) (string, error) {
 	}
 	sort.Strings(names)
 	var css strings.Builder
-	css.WriteString("/* Served publication; Light / Default contrast / Web / 3P / Static font. */\n:root {\n")
+	contrastKey := strings.ToLower(strings.TrimSuffix(contrast, " contrast"))
+	if theme == "Light" && contrast == "Default" {
+		css.WriteString(":root, ")
+	}
+	fmt.Fprintf(&css, ":root[data-theme=%q][data-contrast=%q] {\n  color-scheme: %s;\n", strings.ToLower(theme), contrastKey, strings.ToLower(theme))
+	if theme == "Light" && contrast == "Default" {
+		// Pin preview ink to the publication's black/white values, rather than
+		// on-surface/on-primary roles whose luminance flips with the app theme.
+		fmt.Fprintf(&css, "  --sl-swatch-light-ink: %s;\n  --sl-swatch-dark-ink: %s;\n", cssValues["md-ref-palette-neutral0"], cssValues["md-sys-color-on-primary"])
+	}
 	for _, name := range names {
 		fmt.Fprintf(&css, "  --%s: %s;\n", name, cssValues[name])
 	}

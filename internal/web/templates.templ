@@ -11,9 +11,10 @@ templ layout(title string) {
 	<head>
 		<meta charset="utf-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<script src="/static/theme.js?v=20261006-runtime-theme"></script>
 		<link rel="stylesheet" href="/theme.css"/>
-		<link rel="stylesheet" href="/static/app.css?v=20261006-readable-roles"/>
-		<link rel="stylesheet" href="/static/token-table.css?v=20261006-readable-roles"/>
+		<link rel="stylesheet" href="/static/app.css?v=20261006-runtime-theme"/>
+		<link rel="stylesheet" href="/static/token-table.css?v=20261006-runtime-theme"/>
 		<script src="/static/htmx.min.js" defer></script>
 		<title>{ title } · Source Loom</title>
 	</head>
@@ -25,6 +26,14 @@ templ layout(title string) {
 					<a class="sl-nav-link md-typescale-label-large" href="/components">Components</a>
 					<a class="sl-nav-link md-typescale-label-large" href="/styles">Styles and token sources</a>
 					<a class="sl-nav-link md-typescale-label-large" href="/changes">Change log</a>
+				</div>
+				<div class="sl-theme-controls" role="group" aria-label="Site appearance">
+					<label class="md-typescale-label-large">Theme
+						<select data-app-theme disabled><option value="light">Light</option><option value="dark">Dark</option></select>
+					</label>
+					<label class="md-typescale-label-large">Contrast
+						<select data-app-contrast disabled><option value="default">Standard</option><option value="medium">Medium</option><option value="high">High</option></select>
+					</label>
 				</div>
 			</nav>
 		</header>

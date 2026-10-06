@@ -13,6 +13,10 @@ import (
 
 func TestThemeValuesAreTypedCSS(t *testing.T) {
 	for raw, expected := range map[string]string{
+		`{"color":{"alpha":1}}`:                     "rgba(0, 0, 0, 1)",
+		`{"color":{"green":1,"alpha":1}}`:           "rgba(0, 255, 0, 1)",
+		`{"color":{}}`:                              "",
+		`{"color":{"alpha":null}}`:                  "",
 		`{"fontWeight":null}`:                       "",
 		`{"fontTracking":{"unit":"POINTS"}}`:        "normal",
 		`{"length":{"value":24,"unit":"DIPS"}}`:     "24px",
@@ -90,6 +94,24 @@ func TestThemeFromPublication(t *testing.T) {
 	}
 	if !strings.Contains(css, "--md-sys-color-primary:") || !strings.Contains(css, "--md-sys-typescale-body-large-font:") {
 		t.Fatal("publication did not provide color and typography")
+	}
+	variants := make(map[string]bool)
+	for _, theme := range []string{"light", "dark"} {
+		for _, contrast := range []string{"default", "medium", "high"} {
+			selector := `:root[data-theme="` + theme + `"][data-contrast="` + contrast + `"]`
+			start := strings.Index(css, selector)
+			if start < 0 {
+				t.Fatalf("missing runtime theme %s / %s", theme, contrast)
+			}
+			block := strings.SplitN(css[start:], "}", 2)[0]
+			if !strings.Contains(block, "color-scheme: "+theme) {
+				t.Fatal("native controls do not follow the selected theme")
+			}
+			variants[strings.SplitN(block, "{", 2)[1]] = true
+		}
+	}
+	if len(variants) != 6 {
+		t.Fatal("the six appearance settings must use distinct published values")
 	}
 	response := httptest.NewRecorder()
 	New(state, "").Handler().ServeHTTP(response, httptest.NewRequest("GET", "/theme.css", nil))

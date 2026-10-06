@@ -301,11 +301,9 @@ func formattedNamedValue(name string, value any) (string, bool) {
 }
 
 func colorValueText(color map[string]any) (string, bool) {
-	red, redOK := numberValue(color["red"])
-	green, greenOK := numberValue(color["green"])
-	blue, blueOK := numberValue(color["blue"])
+	red, green, blue, ok := colorChannels(color)
 	alpha, alphaOK := numberValue(color["alpha"])
-	if !redOK || !greenOK || !blueOK {
+	if !ok {
 		return "", false
 	}
 	if red <= 1 && green <= 1 && blue <= 1 {
@@ -322,6 +320,37 @@ func colorValueText(color map[string]any) (string, bool) {
 	alpha = tidyColorChannel(alpha)
 	return fmt.Sprintf("rgba(%s, %s, %s, %s)",
 		formatNumber(red), formatNumber(green), formatNumber(blue), formatNumber(alpha)), true
+}
+
+// Source color messages omit zero-valued channels. An empty placeholder is
+// still unresolved; alpha (or any channel) must establish a concrete color.
+func colorChannels(color map[string]any) (float64, float64, float64, bool) {
+	concrete := false
+	for _, name := range []string{"red", "green", "blue", "alpha"} {
+		if _, exists := color[name]; exists {
+			concrete = true
+		}
+	}
+	if !concrete {
+		return 0, 0, 0, false
+	}
+	if value, exists := color["alpha"]; exists {
+		alpha, ok := numberValue(value)
+		if !ok || alpha < 0 || alpha > 1 {
+			return 0, 0, 0, false
+		}
+	}
+	channels := [3]float64{}
+	for index, name := range []string{"red", "green", "blue"} {
+		if value, exists := color[name]; exists {
+			channel, ok := numberValue(value)
+			if !ok || channel < 0 || channel > 255 {
+				return 0, 0, 0, false
+			}
+			channels[index] = channel
+		}
+	}
+	return channels[0], channels[1], channels[2], true
 }
 
 func dimensionValueText(dimension map[string]any) (string, bool) {
