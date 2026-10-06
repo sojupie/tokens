@@ -34,7 +34,7 @@
 }
 .sl-token-set-arrow { position:absolute; right:var(--md-sys-measurement-space100); top:50%; transform:translateY(-50%); display:flex; pointer-events:none; color:var(--md-sys-color-on-secondary-container); }
 .sl-token-browser .sl-token-set-arrow svg { width:var(--md-sys-measurement-space200); height:var(--md-sys-measurement-space200); }
-.sl-token-tools { display:flex; gap:var(--md-sys-measurement-space100); flex-shrink:0; }
+.sl-token-tools { display:flex; gap:var(--md-sys-measurement-space50); flex-shrink:0; }
 .sl-token-search { min-width:0; background:var(--md-sys-color-surface); border:var(--md-comp-divider-thickness) solid var(--md-sys-color-outline); border-radius:var(--md-sys-shape-corner-full); width:234px; height:var(--md-sys-measurement-space500); display:flex; align-items:center; gap:var(--md-sys-measurement-space150); padding:0 var(--md-sys-measurement-space175); }
 .sl-token-search input { border:0; outline:0; background:transparent; width:100%; min-width:0; }
 .sl-token-search input::placeholder { color:var(--md-sys-color-on-surface); opacity:1; }
