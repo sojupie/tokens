@@ -38,6 +38,11 @@ func runServe(args []string) error {
 	if flags.NArg() > 0 {
 		return fmt.Errorf("serve does not accept positional arguments: %s", strings.Join(flags.Args(), " "))
 	}
+	// Resolve once: a later activation must not mix old SQL with new downloads.
+	publishedDir, err := publish.ResolveGeneration(publishedDir)
+	if err != nil {
+		return err
+	}
 	state, err := publish.Load(filepath.Join(publishedDir, "tokens.sqlite"))
 	if err != nil {
 		return err
