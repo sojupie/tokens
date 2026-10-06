@@ -188,11 +188,21 @@ A consumer must not rely on mutable `latest` URLs for reproducible builds.
 `snapshot compare` verifies both input directories, then compares their page URL
 catalogs, page results, capture completeness, content-addressed source payloads,
 generic extracted records, and lifecycle notices. It reports added, removed, and
-changed page results. Record changes are keyed by source payload, record kind,
-upstream record ID, and occurrence ordinal; the complete upstream object is
-compared through the record's loss-preserving `raw` field. It ignores snapshot
-IDs, crawl IDs, retrieval timestamps, and artifact paths when deciding whether
-capture metadata changed.
+changed page results. Source payloads are matched by their stable upstream
+filename, not by the release directory in the URL. A release-directory change
+therefore appears as one changed payload with before/after URLs and hashes,
+rather than as a removal and an addition. Record changes are keyed by source
+payload, record kind, and upstream record ID. Occurrence order is ignored for
+unique records and is used only to distinguish duplicate upstream IDs; the
+complete upstream object is compared through the record's loss-preserving
+`raw` field. It ignores snapshot IDs, crawl IDs, retrieval timestamps, and
+artifact paths when deciding whether capture metadata changed.
+
+The diff also contains a semantic view for human review. It compares resolved
+token values and selected component or token-set fields, ignores volatile
+internal version identifiers, and deduplicates records repeated in shared
+Material payloads. The CLI uses this semantic view by default; structural
+record and payload details remain available to programmatic consumers.
 
 ## Historical snapshots
 

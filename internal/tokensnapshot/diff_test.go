@@ -88,6 +88,71 @@ func TestDiffReportsPayloadChanges(t *testing.T) {
 	}
 }
 
+func TestDiffMatchesPayloadsAcrossReleaseDirectories(t *testing.T) {
+	fromURL := "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/TOKEN_TABLE.01c5310367774eb8.json"
+	toURL := "https://m3.material.io/_dsm/data/dsdb-m3/2026-09-02_06-10-10/TOKEN_TABLE.01c5310367774eb8.json"
+	diff := diffSourcePayloads(
+		[]GraphPayload{{SourcePayloadURL: fromURL, Hash: "old"}},
+		[]GraphPayload{{SourcePayloadURL: toURL, Hash: "new"}},
+	)
+	if len(diff.Added) != 0 || len(diff.Removed) != 0 || len(diff.Changed) != 1 {
+		t.Fatalf("release-directory rollover was not treated as a payload change: %#v", diff)
+	}
+	change := diff.Changed[0]
+	if change.Key != "m3.material.io/TOKEN_TABLE.01c5310367774eb8.json" {
+		t.Fatalf("unexpected stable payload key: %#v", change)
+	}
+	if change.BeforeSourcePayloadURL != fromURL || change.AfterSourcePayloadURL != toURL {
+		t.Fatalf("payload URL history was not preserved: %#v", change)
+	}
+}
+
+func TestSourcePayloadIDMatchesAcrossReleaseDirectories(t *testing.T) {
+	from := crawl.SourcePayloadRecord{
+		SourcePayloadURL: "https://m3.material.io/_dsm/data/dsdb-m3/2026-08-05_09-00-19/ELEVATION.20543ce18892f7d9.json",
+		Hash:             "old",
+	}
+	to := crawl.SourcePayloadRecord{
+		SourcePayloadURL: "https://m3.material.io/_dsm/data/dsdb-m3/2026-09-02_06-10-10/ELEVATION.20543ce18892f7d9.json",
+		Hash:             "new",
+	}
+	if sourcePayloadID(from) != sourcePayloadID(to) {
+		t.Fatalf("payload ID changed across release directories: %q != %q", sourcePayloadID(from), sourcePayloadID(to))
+	}
+}
+
+func TestNormalizeHistoricalRecordPayloadIDs(t *testing.T) {
+	records := []ExtractedRecord{{SourcePayloadID: "payload-old"}}
+	normalized := normalizeRecordPayloadIDs(records, map[string]string{"payload-old": "m3.material.io/TOKEN_TABLE.json"})
+	if normalized[0].SourcePayloadID != "m3.material.io/TOKEN_TABLE.json" {
+		t.Fatalf("historical payload ID was not normalized: %#v", normalized)
+	}
+	if records[0].SourcePayloadID != "payload-old" {
+		t.Fatalf("normalization mutated input records: %#v", records)
+	}
+}
+
+func TestNormalizeHistoricalLifecycleNoticePayloadIDs(t *testing.T) {
+	notices := []LifecycleNotice{{
+		ID:              "notice-old",
+		SourcePayloadID: "payload-old",
+		SourceRecordID:  "record-1",
+		RecordKind:      "token",
+		SourceField:     "description",
+		Message:         "Deprecated token",
+	}}
+	normalized := normalizeLifecycleNoticePayloadIDs(notices, map[string]string{"payload-old": "m3.material.io/TOKEN_TABLE.json"})
+	if normalized[0].SourcePayloadID != "m3.material.io/TOKEN_TABLE.json" {
+		t.Fatalf("historical notice payload ID was not normalized: %#v", normalized)
+	}
+	if normalized[0].ID != lifecycleNoticeID("m3.material.io/TOKEN_TABLE.json", "token", "record-1", "description", "Deprecated token") {
+		t.Fatalf("historical notice ID was not regenerated: %#v", normalized)
+	}
+	if notices[0].ID != "notice-old" {
+		t.Fatalf("normalization mutated input notices: %#v", notices)
+	}
+}
+
 func TestDiffPreservesDuplicateRecords(t *testing.T) {
 	diff := diffRecords(nil, []ExtractedRecord{
 		{SourcePayloadID: "payload-a", Kind: "token", ID: "same", Ordinal: 0, Raw: []byte(`{"value":1}`)},
@@ -95,5 +160,60 @@ func TestDiffPreservesDuplicateRecords(t *testing.T) {
 	})
 	if len(diff.Added) != 2 {
 		t.Fatalf("duplicate records were collapsed: %#v", diff)
+	}
+}
+
+func TestDiffIgnoresRecordReordering(t *testing.T) {
+	from := []ExtractedRecord{{SourcePayloadID: "payload-a", Kind: "token", ID: "same", Ordinal: 0, Raw: []byte(`{"value":1}`)}}
+	to := []ExtractedRecord{{SourcePayloadID: "payload-a", Kind: "token", ID: "same", Ordinal: 37, Raw: []byte(`{"value":1}`)}}
+	diff := diffRecords(from, to)
+	if len(diff.Added) != 0 || len(diff.Removed) != 0 || len(diff.Changed) != 0 {
+		t.Fatalf("record reordering was reported as a change: %#v", diff)
+	}
+}
+
+func TestSemanticDiffIgnoresContextualVersionIDs(t *testing.T) {
+	oldRecord := ExtractedRecord{
+		SourcePayloadKind: "elevation",
+		SourceSubject:     "elevation",
+		Kind:              "contextualReferenceTree",
+		ID:                "token-1",
+		Raw:               []byte(`{"contextualReferenceTree":[{"referenceTree":{"value":{"version":"old"},"tokenName":"md.sys.elevation.level4"},"resolvedValue":{"elevation":{"value":8,"unit":"DIPS"}}}]}`),
+	}
+	newRecord := oldRecord
+	newRecord.Raw = []byte(`{"contextualReferenceTree":[{"referenceTree":{"value":{"version":"new"},"tokenName":"md.sys.elevation.level4"},"resolvedValue":{"elevation":{"value":8,"unit":"DIPS"}}}]}`)
+	diff := diffSemanticRecords([]ExtractedRecord{oldRecord}, []ExtractedRecord{newRecord})
+	if len(diff.Added) != 0 || len(diff.Removed) != 0 || len(diff.Changed) != 0 {
+		t.Fatalf("version-only change was treated as semantic: %#v", diff)
+	}
+}
+
+func TestSemanticDiffReportsResolvedValueChange(t *testing.T) {
+	oldRecord := ExtractedRecord{
+		SourcePayloadKind: "elevation",
+		SourceSubject:     "elevation",
+		Kind:              "contextualReferenceTree",
+		ID:                "token-1",
+		Raw:               []byte(`{"contextualReferenceTree":[{"referenceTree":{"tokenName":"md.sys.elevation.level4"},"resolvedValue":{"elevation":{"value":8,"unit":"DIPS"}}}]}`),
+	}
+	newRecord := oldRecord
+	newRecord.Raw = []byte(`{"contextualReferenceTree":[{"referenceTree":{"tokenName":"md.sys.elevation.level4"},"resolvedValue":{"elevation":{"value":12,"unit":"DIPS"}}}]}`)
+	diff := diffSemanticRecords([]ExtractedRecord{oldRecord}, []ExtractedRecord{newRecord})
+	if len(diff.Changed) != 1 || diff.Changed[0].Name != "md.sys.elevation.level4" {
+		t.Fatalf("resolved value change was not reported: %#v", diff)
+	}
+}
+
+func TestSemanticDiffIgnoresRepeatedComponentsInStylePayloads(t *testing.T) {
+	record := ExtractedRecord{
+		SourcePayloadKind: "elevation",
+		SourceSubject:     "elevation",
+		Kind:              "component",
+		DisplayName:       "Date pickers",
+		Raw:               []byte(`{"displayName":"Date pickers","state":"ACTIVE"}`),
+	}
+	diff := diffSemanticRecords(nil, []ExtractedRecord{record})
+	if len(diff.Added) != 0 {
+		t.Fatalf("shared component copy was reported as a component change: %#v", diff)
 	}
 }

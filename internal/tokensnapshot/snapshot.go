@@ -547,7 +547,7 @@ func buildDocuments(snapshotID string, run crawl.CrawlReceipt) (Graph, SourcePay
 }
 
 func sourcePayloadID(payload crawl.SourcePayloadRecord) string {
-	return "payload-" + sha256Hex([]byte(payload.SourcePayloadURL+"\x00"+payload.Hash))
+	return "payload-" + sha256Hex([]byte(sourcePayloadKey(payload.SourcePayloadURL)))
 }
 
 func readPayloadArtifacts(run crawl.CrawlReceipt) (map[string][]byte, error) {

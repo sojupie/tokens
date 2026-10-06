@@ -6,7 +6,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/url"
 	"os"
+	"path"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -39,19 +41,21 @@ type SourcePayloadDiff struct {
 }
 
 type SourcePayloadChange struct {
-	Key              string   `json:"key"`
-	PageURLs         []string `json:"pageUrls,omitempty"`
-	SourcePayloadURL string   `json:"sourcePayloadUrl"`
-	BeforePageURLs   []string `json:"beforePageUrls,omitempty"`
-	AfterPageURLs    []string `json:"afterPageUrls,omitempty"`
-	BeforeKind       string   `json:"beforeKind,omitempty"`
-	AfterKind        string   `json:"afterKind,omitempty"`
-	BeforeHash       string   `json:"beforeHash,omitempty"`
-	AfterHash        string   `json:"afterHash,omitempty"`
-	BeforeError      string   `json:"beforeError,omitempty"`
-	AfterError       string   `json:"afterError,omitempty"`
-	BeforeBytes      int      `json:"beforeBytes,omitempty"`
-	AfterBytes       int      `json:"afterBytes,omitempty"`
+	Key                    string   `json:"key"`
+	PageURLs               []string `json:"pageUrls,omitempty"`
+	SourcePayloadURL       string   `json:"sourcePayloadUrl"`
+	BeforeSourcePayloadURL string   `json:"beforeSourcePayloadUrl,omitempty"`
+	AfterSourcePayloadURL  string   `json:"afterSourcePayloadUrl,omitempty"`
+	BeforePageURLs         []string `json:"beforePageUrls,omitempty"`
+	AfterPageURLs          []string `json:"afterPageUrls,omitempty"`
+	BeforeKind             string   `json:"beforeKind,omitempty"`
+	AfterKind              string   `json:"afterKind,omitempty"`
+	BeforeHash             string   `json:"beforeHash,omitempty"`
+	AfterHash              string   `json:"afterHash,omitempty"`
+	BeforeError            string   `json:"beforeError,omitempty"`
+	AfterError             string   `json:"afterError,omitempty"`
+	BeforeBytes            int      `json:"beforeBytes,omitempty"`
+	AfterBytes             int      `json:"afterBytes,omitempty"`
 }
 
 type PageResultsDiff struct {
@@ -134,6 +138,16 @@ func Diff(fromDir, toDir string) (SnapshotDiff, error) {
 	if err != nil {
 		return SnapshotDiff{}, fmt.Errorf("read to lifecycle notices: %w", err)
 	}
+	fromPayloadIDs, err := readSourcePayloadIDMap(fromDir)
+	if err != nil {
+		return SnapshotDiff{}, fmt.Errorf("read from source-payload details: %w", err)
+	}
+	toPayloadIDs, err := readSourcePayloadIDMap(toDir)
+	if err != nil {
+		return SnapshotDiff{}, fmt.Errorf("read to source-payload details: %w", err)
+	}
+	fromRecords := normalizeRecordPayloadIDs(fromGraph.Records, fromPayloadIDs)
+	toRecords := normalizeRecordPayloadIDs(toGraph.Records, toPayloadIDs)
 
 	diff := SnapshotDiff{
 		SchemaVersion:      SchemaVersion,
@@ -143,10 +157,10 @@ func Diff(fromDir, toDir string) (SnapshotDiff, error) {
 		CaptureChanged:     captureChanged(fromManifest.Capture, toManifest.Capture),
 		Pages:              diffPages(fromGraph.Pages, toGraph.Pages),
 		SourcePayloads:     diffSourcePayloads(fromGraph.SourcePayloads, toGraph.SourcePayloads),
-		Records:            diffRecords(fromGraph.Records, toGraph.Records),
+		Records:            diffRecords(fromRecords, toRecords),
 		PageResults:        diffPageResults(fromPageResults.Pages, toPageResults.Pages),
-		LifecycleNotices:   diffLifecycleNotices(fromLifecycle.Notices, toLifecycle.Notices),
-		Semantic:           diffSemanticRecords(fromGraph.Records, toGraph.Records),
+		LifecycleNotices:   diffLifecycleNotices(normalizeLifecycleNoticePayloadIDs(fromLifecycle.Notices, fromPayloadIDs), normalizeLifecycleNoticePayloadIDs(toLifecycle.Notices, toPayloadIDs)),
+		Semantic:           diffSemanticRecords(fromRecords, toRecords),
 	}
 	diff.Changed = diff.PageCatalogChanged || diff.CaptureChanged || len(diff.Pages.Added) > 0 || len(diff.Pages.Removed) > 0 || len(diff.SourcePayloads.Added) > 0 || len(diff.SourcePayloads.Removed) > 0 || len(diff.SourcePayloads.Changed) > 0 || len(diff.Records.Added) > 0 || len(diff.Records.Removed) > 0 || len(diff.Records.Changed) > 0 || len(diff.PageResults.Added) > 0 || len(diff.PageResults.Removed) > 0 || len(diff.PageResults.Changed) > 0 || len(diff.LifecycleNotices.Added) > 0 || len(diff.LifecycleNotices.Removed) > 0
 	return diff, nil
@@ -226,6 +240,58 @@ func readLifecycleNotices(directory string) (LifecycleNotices, error) {
 	return notices, nil
 }
 
+func readSourcePayloadIDMap(directory string) (map[string]string, error) {
+	body, err := os.ReadFile(filepath.Join(directory, "source-payload-details.json"))
+	if err != nil {
+		return nil, err
+	}
+	var details SourcePayloadDetails
+	if err := json.Unmarshal(body, &details); err != nil {
+		return nil, err
+	}
+	if details.SchemaVersion != 2 && details.SchemaVersion != SchemaVersion {
+		return nil, fmt.Errorf("unsupported source-payload-details schema version %d", details.SchemaVersion)
+	}
+	result := make(map[string]string, len(details.Records))
+	for _, detail := range details.Records {
+		if detail.ID != "" && detail.SourcePayloadURL != "" {
+			result[detail.ID] = sourcePayloadKey(detail.SourcePayloadURL)
+		}
+	}
+	return result, nil
+}
+
+func normalizeRecordPayloadIDs(records []ExtractedRecord, payloadIDs map[string]string) []ExtractedRecord {
+	if len(payloadIDs) == 0 {
+		return records
+	}
+	normalized := make([]ExtractedRecord, len(records))
+	copy(normalized, records)
+	for index := range normalized {
+		if key, ok := payloadIDs[normalized[index].SourcePayloadID]; ok {
+			normalized[index].SourcePayloadID = key
+		}
+	}
+	return normalized
+}
+
+func normalizeLifecycleNoticePayloadIDs(notices []LifecycleNotice, payloadIDs map[string]string) []LifecycleNotice {
+	if len(payloadIDs) == 0 {
+		return notices
+	}
+	normalized := make([]LifecycleNotice, len(notices))
+	copy(normalized, notices)
+	for index := range normalized {
+		key, ok := payloadIDs[normalized[index].SourcePayloadID]
+		if !ok {
+			continue
+		}
+		normalized[index].SourcePayloadID = key
+		normalized[index].ID = lifecycleNoticeID(key, normalized[index].RecordKind, normalized[index].SourceRecordID, normalized[index].SourceField, normalized[index].Message)
+	}
+	return normalized
+}
+
 func diffLifecycleNotices(from, to []LifecycleNotice) LifecycleNoticeDiff {
 	fromByID := make(map[string]LifecycleNotice, len(from))
 	toByID := make(map[string]LifecycleNotice, len(to))
@@ -278,7 +344,7 @@ func diffSourcePayloads(from, to []GraphPayload) SourcePayloadDiff {
 		before, exists := fromByKey[key]
 		if !exists {
 			diff.Added = append(diff.Added, payloadChange(payload, GraphPayload{}))
-		} else if before.Hash != payload.Hash || before.Error != payload.Error || before.Bytes != payload.Bytes || before.SourcePayloadKind != payload.SourcePayloadKind || before.SourceArea != payload.SourceArea || before.SourceSubject != payload.SourceSubject || before.SourcePageType != payload.SourcePageType || !sameStrings(before.PageURLs, payload.PageURLs) {
+		} else if before.SourcePayloadURL != payload.SourcePayloadURL || before.Hash != payload.Hash || before.Error != payload.Error || before.Bytes != payload.Bytes || before.SourcePayloadKind != payload.SourcePayloadKind || before.SourceArea != payload.SourceArea || before.SourceSubject != payload.SourceSubject || before.SourcePageType != payload.SourcePageType || !sameStrings(before.PageURLs, payload.PageURLs) {
 			diff.Changed = append(diff.Changed, payloadChange(payload, before))
 		}
 	}
@@ -323,14 +389,14 @@ func diffRecords(from, to []ExtractedRecord) RecordSetDiff {
 	for key, after := range toByKey {
 		before, exists := fromByKey[key]
 		if !exists {
-			diff.Added = append(diff.Added, recordChange(after, ExtractedRecord{}))
+			diff.Added = append(diff.Added, recordChange(key, after, ExtractedRecord{}))
 		} else if sha256Hex(before.Raw) != sha256Hex(after.Raw) {
-			diff.Changed = append(diff.Changed, recordChange(after, before))
+			diff.Changed = append(diff.Changed, recordChange(key, after, before))
 		}
 	}
 	for key, before := range fromByKey {
 		if _, exists := toByKey[key]; !exists {
-			diff.Removed = append(diff.Removed, recordChange(ExtractedRecord{}, before))
+			diff.Removed = append(diff.Removed, recordChange(key, ExtractedRecord{}, before))
 		}
 	}
 	sortRecordChanges(diff.Added)
@@ -536,9 +602,19 @@ func sameStrings(left, right []string) bool {
 func payloadMap(values []GraphPayload) map[string]GraphPayload {
 	result := make(map[string]GraphPayload, len(values))
 	for _, value := range values {
-		result[value.SourcePayloadURL] = value
+		result[sourcePayloadKey(value.SourcePayloadURL)] = value
 	}
 	return result
+}
+
+// sourcePayloadKey identifies the upstream payload independently of the
+// release directory that Material changes between crawls.
+func sourcePayloadKey(sourcePayloadURL string) string {
+	parsed, err := url.Parse(sourcePayloadURL)
+	if err != nil || parsed.Host == "" || parsed.Path == "" {
+		return sourcePayloadURL
+	}
+	return parsed.Host + "/" + path.Base(parsed.Path)
 }
 
 func pageResultsMap(values []PageResult) map[string]PageResult {
@@ -550,15 +626,33 @@ func pageResultsMap(values []PageResult) map[string]PageResult {
 }
 
 func recordMap(values []ExtractedRecord) map[string]ExtractedRecord {
-	result := make(map[string]ExtractedRecord, len(values))
+	groups := make(map[string][]ExtractedRecord, len(values))
 	for _, value := range values {
-		result[recordKey(value)] = value
+		baseKey := recordBaseKey(value)
+		groups[baseKey] = append(groups[baseKey], value)
+	}
+	result := make(map[string]ExtractedRecord, len(values))
+	for baseKey, group := range groups {
+		sort.SliceStable(group, func(i, j int) bool {
+			left, right := sha256Hex(group[i].Raw), sha256Hex(group[j].Raw)
+			if left != right {
+				return left < right
+			}
+			return group[i].Ordinal < group[j].Ordinal
+		})
+		for index, value := range group {
+			key := baseKey
+			if len(group) > 1 {
+				key = fmt.Sprintf("%s\x00%04d", baseKey, index)
+			}
+			result[key] = value
+		}
 	}
 	return result
 }
 
-func recordKey(value ExtractedRecord) string {
-	return fmt.Sprintf("%s\x00%s\x00%s\x00%04d", value.SourcePayloadID, value.Kind, value.ID, value.Ordinal)
+func recordBaseKey(value ExtractedRecord) string {
+	return fmt.Sprintf("%s\x00%s\x00%s", value.SourcePayloadID, value.Kind, value.ID)
 }
 
 func payloadChange(after, before GraphPayload) SourcePayloadChange {
@@ -567,19 +661,21 @@ func payloadChange(after, before GraphPayload) SourcePayloadChange {
 		pageURLs, sourcePayloadURL = before.PageURLs, before.SourcePayloadURL
 	}
 	return SourcePayloadChange{
-		Key:              sourcePayloadURL,
-		PageURLs:         pageURLs,
-		SourcePayloadURL: sourcePayloadURL,
-		BeforePageURLs:   before.PageURLs,
-		AfterPageURLs:    after.PageURLs,
-		BeforeKind:       before.SourcePayloadKind,
-		AfterKind:        after.SourcePayloadKind,
-		BeforeHash:       before.Hash,
-		AfterHash:        after.Hash,
-		BeforeError:      before.Error,
-		AfterError:       after.Error,
-		BeforeBytes:      before.Bytes,
-		AfterBytes:       after.Bytes,
+		Key:                    sourcePayloadKey(sourcePayloadURL),
+		PageURLs:               pageURLs,
+		SourcePayloadURL:       sourcePayloadURL,
+		BeforeSourcePayloadURL: before.SourcePayloadURL,
+		AfterSourcePayloadURL:  after.SourcePayloadURL,
+		BeforePageURLs:         before.PageURLs,
+		AfterPageURLs:          after.PageURLs,
+		BeforeKind:             before.SourcePayloadKind,
+		AfterKind:              after.SourcePayloadKind,
+		BeforeHash:             before.Hash,
+		AfterHash:              after.Hash,
+		BeforeError:            before.Error,
+		AfterError:             after.Error,
+		BeforeBytes:            before.Bytes,
+		AfterBytes:             after.Bytes,
 	}
 }
 
@@ -587,13 +683,13 @@ func sortSourcePayloadChanges(values []SourcePayloadChange) {
 	sort.Slice(values, func(i, j int) bool { return values[i].Key < values[j].Key })
 }
 
-func recordChange(after, before ExtractedRecord) RecordChange {
+func recordChange(key string, after, before ExtractedRecord) RecordChange {
 	value := after
 	if value.ID == "" {
 		value = before
 	}
 	return RecordChange{
-		Key:          recordKey(value),
+		Key:          key,
 		Kind:         value.Kind,
 		TokenName:    value.TokenName,
 		BeforeSha256: sha256Hex(before.Raw),

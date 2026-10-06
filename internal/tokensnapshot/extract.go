@@ -196,7 +196,7 @@ func newLifecycleNotice(record ExtractedRecord, sourceField, state, message stri
 		subject = record.ID
 	}
 	return LifecycleNotice{
-		ID:              "notice-" + sha256Hex([]byte(record.SourcePayloadID+"\x00"+record.Kind+"\x00"+record.ID+"\x00"+sourceField+"\x00"+message)),
+		ID:              lifecycleNoticeID(record.SourcePayloadID, record.Kind, record.ID, sourceField, message),
 		Scope:           lifecycleScope(record.Kind),
 		State:           state,
 		Subject:         subject,
@@ -206,6 +206,10 @@ func newLifecycleNotice(record ExtractedRecord, sourceField, state, message stri
 		RecordKind:      record.Kind,
 		SourceField:     sourceField,
 	}
+}
+
+func lifecycleNoticeID(sourcePayloadID, recordKind, sourceRecordID, sourceField, message string) string {
+	return "notice-" + sha256Hex([]byte(sourcePayloadID+"\x00"+recordKind+"\x00"+sourceRecordID+"\x00"+sourceField+"\x00"+message))
 }
 
 func lifecycleScope(kind string) string {
