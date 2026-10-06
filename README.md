@@ -24,11 +24,6 @@ No Node.js, pnpm, Playwright, or `node_modules` directory is required.
 
 ## Build and run
 
-The repository is `sojupie/tokens`, the Go module is
-`github.com/sojupie/tokens`, and the command is `tokens`.
-
-From the `tokens` project directory on Windows:
-
 ```powershell
 go build -o .\bin\tokens.exe .\cmd\tokens
 .\bin\tokens.exe serve --published published --listen 127.0.0.1:8081
@@ -37,9 +32,6 @@ go build -o .\bin\tokens.exe .\cmd\tokens
 For public deployment, add `--public-origin https://tokens.marmenlind.com`.
 See [publication](docs/publication.md) for creating the published data and
 [search indexing](docs/web-seo.md) for deployment checks.
-
-Existing snapshot bundles keep their original extractor metadata and checksums.
-The project rename does not require rebuilding or editing those bundles.
 
 ## Crawl
 
