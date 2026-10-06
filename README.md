@@ -33,8 +33,8 @@ For public deployment, add `--public-origin https://tokens.marmenlind.com`.
 See [publication](docs/publication.md) for creating the published data and
 [search indexing](docs/web-seo.md) for deployment checks.
 
-For weekly crawling, review, alerts and atomic publication switching on Debian,
-see [scheduled updates](docs/updates.md).
+For a Docker Compose deployment with Chromium, a dedicated tunnel, weekly
+updates and administrator review on Debian, see [scheduled updates](docs/updates.md).
 
 ## Crawl
 

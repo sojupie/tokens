@@ -1,19 +1,15 @@
 [Unit]
 Description=Notify the administrator when a token update fails
 Wants=network-online.target
-After=network-online.target
+Requires=docker.service
+After=docker.service network-online.target
 
 [Service]
 Type=oneshot
-User=tokens
-Group=tokens
-StateDirectory=tokens
-WorkingDirectory=/var/lib/tokens
-EnvironmentFile=-/etc/tokens/update.env
-ExecStart=/usr/local/bin/tokens update alert --state-dir /var/lib/tokens
+WorkingDirectory=/opt/tokens
+ExecStart=/usr/bin/docker compose -f /opt/tokens/deploy/compose.yaml run --rm --no-deps --name tokens-update-alert updater update alert --state-dir /var/lib/tokens
+ExecStopPost=-/usr/bin/docker stop --time 10 tokens-update-alert
+ExecStopPost=-/usr/bin/docker rm -f tokens-update-alert
 TimeoutStartSec=30s
-NoNewPrivileges=true
-ProtectSystem=strict
-ProtectHome=true
-PrivateTmp=true
+TimeoutStopSec=30s
 UMask=0077

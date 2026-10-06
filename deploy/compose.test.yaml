@@ -1,0 +1,14 @@
+services:
+  tokens:
+    restart: "no"
+    volumes: !override
+      - test-state:/var/lib/tokens:ro
+  updater:
+    image: tokens-updater-check:local
+    build:
+      target: container-test
+    volumes: !override
+      - test-state:/var/lib/tokens
+    env_file: !reset []
+volumes:
+  test-state:

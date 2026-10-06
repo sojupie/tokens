@@ -7,12 +7,21 @@ Failed and unchanged runs remain available for inspection.
 
 ## Review and retry
 
+On the Debian host, define this helper to run administrator commands in the
+updater container:
+
 ```sh
-tokens update run --state-dir /var/lib/tokens --page-catalog /etc/tokens/page-catalog.json
-tokens update status --state-dir /var/lib/tokens
-tokens update inspect RUN_ID --state-dir /var/lib/tokens
-tokens update approve RUN_ID --state-dir /var/lib/tokens
-tokens update retry RUN_ID --state-dir /var/lib/tokens
+tokens-admin() {
+    sudo docker compose -f /opt/tokens/deploy/compose.yaml run --rm --no-deps updater "$@"
+}
+```
+
+```sh
+tokens-admin update run --state-dir /var/lib/tokens --page-catalog /etc/tokens/page-catalog.json
+tokens-admin update status --state-dir /var/lib/tokens
+tokens-admin update inspect RUN_ID --state-dir /var/lib/tokens
+tokens-admin update approve RUN_ID --state-dir /var/lib/tokens
+tokens-admin update retry RUN_ID --state-dir /var/lib/tokens
 ```
 
 The first complete capture always needs approval. Later runs publish automatically
@@ -44,13 +53,13 @@ on `snapshotId` equal to the run ID to isolate that observation.
 To reuse existing capture evidence without another crawl:
 
 ```sh
-tokens update run --receipt /path/to/crawl-receipt.json --state-dir /var/lib/tokens
+tokens-admin update run --receipt /var/lib/tokens/import/crawl-receipt.json --state-dir /var/lib/tokens
 ```
 
-On the first run, use `--history-dir /path/to/retained-snapshots` to preserve an
+On the first run, use `--history-dir /var/lib/tokens/retained-snapshots` to preserve an
 existing timeline. Later runs inherit that directory. Keep those snapshots in
 place and include them in backups. Do not point it at pending update runs.
-Keep retained history outside home directories, which the service hides.
+Keep retained history inside the state mount so the updater can read it.
 
 ## Publication switching
 
@@ -62,7 +71,7 @@ The server resolves the symlink once at startup. Its database and downloads
 therefore stay on the same generation. Restart it after manual approval:
 
 ```sh
-sudo systemctl restart tokens.service
+sudo docker compose -f /opt/tokens/deploy/compose.yaml restart tokens
 ```
 
 An interrupted run can leave a `running` report. The operating system releases
@@ -87,7 +96,7 @@ successful weekly run. A delivery failure is saved as `notificationError` and
 makes the command fail. Resend with:
 
 ```sh
-tokens update notify RUN_ID --state-dir /var/lib/tokens
+tokens-admin update notify RUN_ID --state-dir /var/lib/tokens
 ```
 
 This is a generic webhook, not a Slack, Discord or ntfy-specific format. Use a
@@ -102,110 +111,129 @@ notification service separately if missed weekly runs must trigger an alert.
 
 ## Debian setup
 
-Install Go 1.26 or newer and Chromium, then build:
+Use Docker Engine with the Compose plugin (2.24.4 or newer). No host Go or Chromium
+installation is needed. Place this checkout at `/opt/tokens`.
+
+If replacing the earlier host deployment, stop `tokens-update.timer` and wait
+for any active update to finish. Stop `tokens.service` before installing the
+new units. Back up `/var/lib/tokens`, then give the container user (UID/GID
+10001) ownership of that directory and its existing contents. Do not move the
+state: saved reports and symlinks contain absolute paths.
+
+If the earlier `tokens-tunnel` Compose project is running, stop only that
+connector before starting the new one:
 
 ```sh
-go build -o bin/tokens ./cmd/tokens
-sudo install -m 0755 bin/tokens /usr/local/bin/tokens
-sudo useradd --system --home-dir /var/lib/tokens --shell /usr/sbin/nologin tokens
-sudo install -d -o tokens -g tokens -m 0700 /var/lib/tokens
-sudo install -d -m 0755 /etc/tokens
-sudo install -m 0644 inputs/page-catalog.json /etc/tokens/page-catalog.json
-sudo install -m 0644 deploy/systemd/tokens*.service deploy/systemd/tokens-update.timer /etc/systemd/system/
-sudo systemctl daemon-reload
+sudo docker stop tokens-tunnel-cloudflared-1
 ```
 
-Skip `useradd` if the account already exists. Confirm Chromium is at
-`/usr/bin/chromium`; change the update service if it is elsewhere. Adjust the
-server's public origin before starting it. The listener defaults to loopback.
-For a containerized Cloudflare Tunnel, use the host connection below; nginx is
-not involved.
+Leave all containers and units belonging to other projects alone.
 
-For notifications, create `/etc/tokens/update.env` using
-`deploy/systemd/update.env.example` as the format. Set its real endpoint and make
-the file root-owned with mode `0600`. Do not enable the example endpoint.
+Install the configuration and build both images:
 
-Run once, inspect the report, and approve the baseline:
+```sh
+cd /opt/tokens
+sudo sh deploy/install.sh
+sudoedit /etc/tokens/cloudflared.env
+sudo docker compose -f deploy/compose.yaml --profile update build --pull
+```
+
+Set `TUNNEL_TOKEN` to the token of a **new, dedicated Tokens tunnel**.
+The installer preserves existing environment files. For notifications, edit
+`/etc/tokens/update.env` and set `TOKENS_NOTIFY_WEBHOOK`. Leave it empty if no
+receiver is configured. Real environment files stay outside the checkout and
+must be root-owned with mode `0600`.
+
+In that tunnel, set the hostname to `tokens.marmenlind.com`, service type to
+**HTTP**, and service URL to **`tokens:8080`**. The full origin URL is
+`http://tokens:8080`, not localhost. Compose provides the service name on the
+private web network. No nginx, host networking or host port publishing is needed.
+See [Compose networking](https://docs.docker.com/compose/how-tos/networking/).
+
+### Check Chromium and approve the baseline
+
+Before crawling, test sandboxed Chromium without requesting an upstream page:
+
+```sh
+sudo docker compose -f deploy/compose.yaml run --rm --no-deps --entrypoint /usr/bin/chromium updater --headless=new --disable-gpu --disable-dev-shm-usage --dump-dom about:blank
+```
+
+This must print an HTML document and exit successfully. The updater runs
+non-root and uses a syscall profile that permits Chromium's namespace sandbox.
+If it fails, check the host's user-namespace and security policy before enabling
+the timer. Do not disable the sandbox. See [container details](../deploy/README.md).
+
+Define `tokens-admin` as shown above, then create and inspect the first run:
 
 ```sh
 sudo systemctl start tokens-update.service
-sudo -u tokens /usr/local/bin/tokens update status --state-dir /var/lib/tokens
-sudo -u tokens /usr/local/bin/tokens update inspect RUN_ID --state-dir /var/lib/tokens
-sudo -u tokens /usr/local/bin/tokens update approve RUN_ID --state-dir /var/lib/tokens
-sudo systemctl enable --now tokens.service
-sudo systemctl enable --now tokens-update.timer
+tokens-admin update status --state-dir /var/lib/tokens
+tokens-admin update inspect RUN_ID --state-dir /var/lib/tokens
+tokens-admin update approve RUN_ID --state-dir /var/lib/tokens
+sudo systemctl enable --now tokens.service tokens-update.timer
 systemctl list-timers tokens-update.timer
 ```
 
-The first `start` reports failure because review is required; the live site is
-not changed. A successful scheduled run restarts an already-running token server,
-including when data is unchanged. A held or failed run does not restart it.
-The application checks its one-hour deadline during capture and at phase
-boundaries; systemd enforces a 75-minute process limit.
+The first update service reports failure because baseline review is required.
+This does not publish the candidate. Inspect it before approving it. The web
+container cannot start until an approved publication exists.
 
-The timer runs on Sundays at 04:00 Stockholm time, with a 15-minute random delay
-window. `Persistent=true` runs a missed update after the timer starts again; it
-does not replay every missed week. See Debian's
-[timer documentation](https://manpages.debian.org/trixie/systemd/systemd.timer.5.en.html).
+To include older snapshots in the first run, put them under
+`/var/lib/tokens/retained-snapshots` and add
+`--history-dir /var/lib/tokens/retained-snapshots` to a manual updater run.
+Paths passed to container commands must exist inside the state mount; arbitrary
+host paths are not visible. All later runs inherit the retained history path.
+
+### Weekly operation
+
+The timer runs on Sundays at 04:00 Stockholm time, with a random delay of up to
+15 minutes. `Persistent=true` runs one missed update after the timer starts
+again, not every missed week. See [systemd timers](https://manpages.debian.org/trixie/systemd/systemd.timer.5.en.html).
+
+Each run starts a disposable updater container. A successful run restarts only
+the web container to load its accepted generation; this also happens for
+unchanged data. Failed or held runs leave the web container and tunnel running.
+Manual approval needs the web-container restart shown above.
+
+The application has a one-hour deadline. Systemd enforces a 75-minute limit and
+stops/removes the named weekly container on exit, including on timeout. The
+failure unit runs a separate alert container. Reports and generations persist
+in `/var/lib/tokens`; the server mounts that directory read-only. Back it up.
 
 ```sh
 journalctl -u tokens-update.service -u tokens-update-failure.service
 systemctl status tokens-update.timer tokens.service
+sudo docker compose -f /opt/tokens/deploy/compose.yaml ps
+sudo docker compose -f /opt/tokens/deploy/compose.yaml logs --tail 50 tokens cloudflared
 ```
 
-## Dedicated Cloudflare Tunnel
+The units call the root-owned Docker daemon; container processes run non-root.
+Do not grant the updater Docker socket access. Keep the checkout at
+`/opt/tokens` writable only by trusted administrators because systemd reads its
+Compose configuration as root.
 
-Keep Tokens under systemd. Create a new Cloudflare Tunnel named `tokens`, with
-its own token and connector. Leave the other project's tunnel, nginx, `web:80`
-route and GitHub runner deployment unchanged.
+A container health check detects an unhealthy web server but Docker does not
+restart a process merely because it becomes unhealthy. Monitor health and the
+timer externally if you need alerts when the host or Docker itself is down.
 
-The separate Compose project in `deploy/cloudflared.compose.yaml` runs only the
-Tokens connector. It uses host networking on Debian, so it can reach the host's
-loopback listener directly. It does not join the other project's Docker network
-or publish any ports. Host networking shares the host network namespace; this
-separates deployment and tunnel credentials, not network access permissions.
-See [Docker host networking](https://docs.docker.com/engine/network/drivers/host/).
+### Updating the deployment
 
-In the Cloudflare dashboard, create a remotely-managed tunnel. Copy the token
-for that new tunnel into a private file on the Debian host:
+After pulling reviewed code changes:
 
 ```sh
-sudo install -m 0600 deploy/cloudflared.env.example /etc/tokens/cloudflared.env
-sudoedit /etc/tokens/cloudflared.env
+cd /opt/tokens
+sudo docker compose -f deploy/compose.yaml --profile update build --pull
+sudo systemctl restart tokens.service
 ```
 
-Replace the example value with the new tunnel's token. Do not reuse the other
-project's token: that would add a connector to its tunnel, not create a separate
-one. Do not commit the real file or paste the token into chat. Docker administrators
-can inspect container environment variables, so keep Docker access restricted.
-See [Cloudflare tunnel tokens](https://developers.cloudflare.com/tunnel/reference/tunnel-tokens/)
-and [token environment configuration](https://developers.cloudflare.com/tunnel/reference/run-parameters/#token).
+Build the new images while no update is running. Reinstall the units with
+`sudo sh deploy/install.sh` if those files changed. Image rebuilds include
+Chromium security updates; weekly data updates do not update images.
 
-Keep the host service on loopback. If you previously changed its address, set
-this in `/etc/tokens/server.env` and restart `tokens.service`:
-
-```text
-TOKENS_LISTEN=127.0.0.1:8080
-```
-
-Once the baseline is approved and Tokens is running, check its listener and start
-only the dedicated connector:
-
-```sh
-curl -I http://127.0.0.1:8080/
-sudo docker compose -f deploy/cloudflared.compose.yaml up -d
-sudo docker compose -f deploy/cloudflared.compose.yaml logs --tail 50 cloudflared
-```
-
-In the **new Tokens tunnel**, add the hostname `tokens.marmenlind.com`, service
-type `HTTP`, and URL `127.0.0.1:8080`. The full origin URL is
-`http://127.0.0.1:8080`. Keep the local hop HTTP; Cloudflare handles public HTTPS. See
-[published application protocols](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/routing-to-tunnel/protocols/).
-
-Open the public hostname to test the full path. No router port forwarding is
-needed. The image is pinned to [cloudflared 2026.10.0](https://github.com/cloudflare/cloudflared/releases/tag/2026.10.0).
-Update its image tag deliberately, then run `pull` and `up -d` for this Compose
-file. Updates and restarts of this project do not restart the other connector.
+The tunnel uses its own token and connector. Reusing another tunnel's token
+creates a replica of that tunnel, not a separate tunnel. Keep the token private:
+Docker administrators can inspect container environment variables.
+See [Cloudflare tunnel tokens](https://developers.cloudflare.com/tunnel/reference/tunnel-tokens/).
 
 ## History cache
 

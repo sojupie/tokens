@@ -1,0 +1,8 @@
+**
+!go.mod
+!go.sum
+!cmd/**
+!internal/**
+!schemas/**
+!inputs/page-catalog.json
+!deploy/testdata/**

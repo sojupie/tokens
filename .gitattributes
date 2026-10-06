@@ -1,0 +1,6 @@
+Dockerfile text eol=lf
+deploy/*.sh text eol=lf
+deploy/testdata/*.sh text eol=lf
+deploy/*.yaml text eol=lf
+deploy/systemd/*.service text eol=lf
+deploy/systemd/*.timer text eol=lf

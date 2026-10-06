@@ -1,21 +1,16 @@
 [Unit]
 Description=Material token browser
-After=network.target
+Requires=docker.service
+After=docker.service network-online.target
 ConditionPathExists=/var/lib/tokens/current/tokens.sqlite
 
 [Service]
-User=tokens
-Group=tokens
-WorkingDirectory=/var/lib/tokens
-Environment=TOKENS_LISTEN=127.0.0.1:8080
-EnvironmentFile=-/etc/tokens/server.env
-ExecStart=/usr/local/bin/tokens serve --published /var/lib/tokens/current --listen ${TOKENS_LISTEN} --public-origin https://tokens.marmenlind.com
-Restart=on-failure
-RestartSec=5s
-NoNewPrivileges=true
-ProtectSystem=strict
-ProtectHome=true
-PrivateTmp=true
+Type=oneshot
+RemainAfterExit=true
+WorkingDirectory=/opt/tokens
+ExecStart=/usr/bin/docker compose -f /opt/tokens/deploy/compose.yaml up -d --wait tokens cloudflared
+ExecStop=/usr/bin/docker compose -f /opt/tokens/deploy/compose.yaml stop tokens cloudflared
+TimeoutStartSec=3min
 
 [Install]
 WantedBy=multi-user.target

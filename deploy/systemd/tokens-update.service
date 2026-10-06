@@ -1,21 +1,17 @@
 [Unit]
 Description=Crawl and publish Material tokens
 Wants=network-online.target
-After=network-online.target
+Requires=docker.service
+After=docker.service network-online.target
 OnFailure=tokens-update-failure.service
 
 [Service]
 Type=oneshot
-User=tokens
-Group=tokens
-StateDirectory=tokens
-WorkingDirectory=/var/lib/tokens
-EnvironmentFile=-/etc/tokens/update.env
-ExecStart=/usr/local/bin/tokens update run --state-dir /var/lib/tokens --page-catalog /etc/tokens/page-catalog.json --chrome-path /usr/bin/chromium --timeout 1h
-ExecStartPost=+/usr/bin/systemctl try-restart tokens.service
+WorkingDirectory=/opt/tokens
+ExecStart=/usr/bin/docker compose -f /opt/tokens/deploy/compose.yaml run --rm --no-deps --name tokens-weekly-update updater
+ExecStartPost=/usr/bin/docker compose -f /opt/tokens/deploy/compose.yaml restart tokens
+ExecStopPost=-/usr/bin/docker stop --time 30 tokens-weekly-update
+ExecStopPost=-/usr/bin/docker rm -f tokens-weekly-update
 TimeoutStartSec=75min
-NoNewPrivileges=true
-ProtectSystem=strict
-ProtectHome=true
-PrivateTmp=true
+TimeoutStopSec=60s
 UMask=0077

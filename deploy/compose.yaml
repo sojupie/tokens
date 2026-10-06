@@ -1,0 +1,78 @@
+name: tokens
+
+services:
+  tokens:
+    image: tokens:local
+    build:
+      context: ..
+      target: server
+    restart: unless-stopped
+    init: true
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    tmpfs: [/tmp]
+    volumes:
+      - type: bind
+        source: ${TOKENS_STATE_DIR:-/var/lib/tokens}
+        target: /var/lib/tokens
+        read_only: true
+        bind:
+          create_host_path: false
+    healthcheck:
+      test: [CMD, curl, --fail, --silent, --output, /dev/null, http://127.0.0.1:8080/]
+      interval: 30s
+      timeout: 5s
+      start_period: 15s
+      retries: 3
+    networks: [web]
+
+  cloudflared:
+    image: cloudflare/cloudflared:2026.10.0
+    command: tunnel --no-autoupdate run
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    env_file:
+      - path: /etc/tokens/cloudflared.env
+        required: false
+    depends_on:
+      tokens:
+        condition: service_healthy
+    networks: [web]
+
+  updater:
+    image: tokens-updater:local
+    build:
+      context: ..
+      target: updater
+    profiles: [update]
+    init: true
+    read_only: true
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+      - seccomp=./chromium-seccomp.json
+    tmpfs:
+      - /tmp:size=1g,mode=1777
+    shm_size: 256m
+    pids_limit: 256
+    mem_limit: 2g
+    cpus: 2
+    stop_grace_period: 30s
+    env_file:
+      - path: /etc/tokens/update.env
+        required: false
+    volumes:
+      - type: bind
+        source: ${TOKENS_STATE_DIR:-/var/lib/tokens}
+        target: /var/lib/tokens
+        bind:
+          create_host_path: false
+    command: [update, run, --state-dir, /var/lib/tokens, --page-catalog, /etc/tokens/page-catalog.json, --chrome-path, /usr/bin/chromium, --timeout, 1h]
+    networks: [crawl]
+
+networks:
+  web:
+  crawl:
