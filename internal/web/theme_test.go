@@ -48,6 +48,22 @@ func TestStylesUseMaterialRolesWithoutLegacyAliases(t *testing.T) {
 	}
 }
 
+func TestAppearanceHoverKeepsMatchingForegroundAndContainer(t *testing.T) {
+	css, err := embeddedStatic.ReadFile("static/app.css")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, rule := range []string{
+		"transparent, currentColor calc(var(--md-sys-state-hover-state-layer-opacity) * 100%)",
+		`button[aria-pressed="true"]:hover`,
+		"var(--md-sys-color-primary), var(--md-sys-color-on-primary) calc(var(--md-sys-state-hover-state-layer-opacity) * 100%)",
+	} {
+		if !strings.Contains(string(css), rule) {
+			t.Fatalf("missing paired hover state layer: %s", rule)
+		}
+	}
+}
+
 func TestThemeReportsMissingTokensWithoutInventingFallbacks(t *testing.T) {
 	server := New(publish.PublishedState{}, "")
 	response := httptest.NewRecorder()
