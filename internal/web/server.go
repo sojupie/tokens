@@ -178,6 +178,10 @@ func (server *Server) writeSubjectChanges(response http.ResponseWriter, request 
 
 func (server *Server) handleDownload(response http.ResponseWriter, request *http.Request) {
 	relativePath := request.PathValue("path")
+	if relativePath == "tokens.json" && (request.URL.Query().Has("scope") || server.downloadsDir == "") {
+		server.handleCollectionDownload(response, request)
+		return
+	}
 	if !safeDownloadPath(relativePath) {
 		http.NotFound(response, request)
 		return
@@ -195,6 +199,9 @@ func (server *Server) handleDownload(response http.ResponseWriter, request *http
 	if err != nil || info.IsDir() {
 		http.NotFound(response, request)
 		return
+	}
+	if strings.HasSuffix(relativePath, ".json") {
+		response.Header().Set("Content-Disposition", "attachment")
 	}
 	http.ServeFile(response, request, filePath)
 }

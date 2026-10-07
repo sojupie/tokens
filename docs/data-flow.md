@@ -5,8 +5,6 @@ Tokens has two jobs:
 1. crawl Material's pages and save the source data it publishes;
 2. create and verify an immutable material-token-data snapshot.
 
-It does not decide which tokens Token Forge supports.
-
 ## The flow
 
 ```text
@@ -38,6 +36,7 @@ snapshots/material-token-data/<snapshot-id>/
         |
         +--> tokens snapshot verify
         +--> tokens snapshot compare
+```
 
 Verified snapshots can then be published for read-only browsing:
 
@@ -111,8 +110,8 @@ They are not regenerated from the graph.
 `snapshot create` means assembling source payloads and generated token data into
 one immutable bundle.
 
-`snapshot verify` means checking the bundle's file hashes and checksums. It does
-not decide whether the Material data is complete or suitable for Forge.
+`snapshot verify` checks file hashes, checksums, JSON schemas, and bundled source
+payloads. Capture completeness and publication approval are separate checks.
 
 `snapshot compare` means comparing two verified bundles.
 
@@ -121,19 +120,11 @@ not decide whether the Material data is complete or suitable for Forge.
 - `complete` — all expected pages and source payloads succeeded;
 - `partial` — some expected data is missing or failed.
 
-`reviewStatus` describes whether a person has approved the snapshot for Forge:
+`reviewStatus` records the snapshot's review state:
 
 - `provisional` — evidence only;
-- `approved` — accepted as a Forge input;
+- `approved` — accepted after review;
 - `rejected` — not accepted.
 
 Capture status and review status are separate. A snapshot can be successfully
 assembled while still being partial and provisional.
-
-## Token Forge boundary
-
-Token Forge consumes a pinned snapshot bundle. It does not run the crawler,
-access Material's website, or depend on the Tokens executable during normal
-builds. Token Forge candidates point to the snapshot ID, manifest hash,
-source-payload ID, and source record ID. Canonical Token Forge tokens require a
-separate review decision.

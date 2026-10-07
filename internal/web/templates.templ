@@ -16,6 +16,9 @@ templ layout(title string) {
 		<link rel="stylesheet" href={ staticURL("app.css") }/>
 		<link rel="stylesheet" href={ staticURL("token-table.css") }/>
 		<script src={ staticURL("htmx.min.js") } defer></script>
+		<script src={ staticURL("token-table.js") } defer></script>
+		<link rel="icon" type="image/png" sizes="250x250" href={ staticURL("logo-250x250.png") }/>
+		<link rel="apple-touch-icon" href={ staticURL("logo-250x250.png") }/>
 		<title>{ pageTitle(ctx, title) } · Tokens</title>
 		<meta name="description" content={ metadata(ctx).Description }/>
 		if metadata(ctx).Canonical != "" {
@@ -28,7 +31,7 @@ templ layout(title string) {
 	<body class="tokens-body">
 		<header class="tokens-site-header">
 			<nav class="tokens-primary-nav" aria-label="Primary">
-				<a class="tokens-brand md-typescale-headline-medium" href="/">Tokens</a>
+				<a class="tokens-brand md-typescale-headline-medium" href="/"><img class="tokens-brand-logo" src={ staticURL("logo-250x250.png") } alt="" width="40" height="40"/>Tokens</a>
 				<div class="tokens-nav-links">
 					<a class="tokens-nav-link md-typescale-label-large" href="/components">Components</a>
 					<a class="tokens-nav-link md-typescale-label-large" href="/styles">Styles and token sources</a>
@@ -66,6 +69,7 @@ templ layout(title string) {
 					<p class="md-typescale-title-medium">Tokens</p>
 					<p class="md-typescale-body-medium">Browse Material Design tokens and track their changes.</p>
 					<p class="md-typescale-body-medium">Independent project. Not affiliated with Google.</p>
+					@siteDownloadMenu()
 				</div>
 				<div>
 					<p class="md-typescale-body-medium">Made by Olle Marmenlind</p>
@@ -79,7 +83,10 @@ templ layout(title string) {
 
 templ overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView) {
 @layout("Published Material tokens") {
-		<h1 class="md-typescale-headline-medium">Published Material tokens</h1>
+		<header class="tokens-subject-heading">
+			<h1 class="md-typescale-headline-medium">Published Material tokens</h1>
+			@siteDownloadButton("all")
+		</header>
 		<p class="md-typescale-body-large">Current snapshot: <code class="tokens-code">{ snapshot.ID }</code></p>
 		<p class="tokens-metadata">Detected: { snapshot.CreatedAt }</p>
 
@@ -109,11 +116,15 @@ templ overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView
 
 templ subjectListPage(snapshot publish.SnapshotView, subjects []publish.SubjectView, styles bool, query string) {
 @layout("Published Material subjects") {
+		<header class="tokens-subject-heading">
 		if styles {
 			<h1 class="md-typescale-headline-medium">Styles and token sources</h1>
+			@siteDownloadButton("styles")
 		} else {
 			<h1 class="md-typescale-headline-medium">Components</h1>
+			@siteDownloadButton("components")
 		}
+		</header>
 		<p class="tokens-metadata">Current snapshot: <code class="tokens-code">{ snapshot.ID }</code></p>
 		<form class="tokens-search-form" method="get" action={ subjectListPath(styles) } role="search">
 			<label class="md-typescale-body-medium" for="subject-search">Search by name or slug</label>
@@ -127,6 +138,35 @@ templ subjectListPage(snapshot publish.SnapshotView, subjects []publish.SubjectV
 			@subjectList(subjects)
 		</div>
 }
+}
+
+templ siteDownloadButton(scope string) {
+	<div class="tokens-token-download">
+		<button type="button" data-site-download-open={ scope } aria-haspopup="dialog" aria-controls="tokens-site-download">Download JSON</button>
+	</div>
+}
+
+templ siteDownloadMenu() {
+	<div class="tokens-token-download">
+		<button type="button" data-download-open aria-haspopup="dialog" aria-controls="tokens-site-download">Download JSON</button>
+		<dialog id="tokens-site-download" aria-labelledby="tokens-site-download-title">
+			<form method="get" action="/downloads/tokens.json">
+				<h2 id="tokens-site-download-title">Download tokens</h2>
+				<fieldset>
+					<legend>What should the file include?</legend>
+					<label class="tokens-download-option"><input type="radio" name="scope" value="components"/><span><strong>Components</strong><small>Every component, token set and supported context.</small></span></label>
+					<label class="tokens-download-option"><input type="radio" name="scope" value="styles"/><span><strong>Styles and token sources</strong><small>All style and foundation tokens, with every supported context.</small></span></label>
+					<label class="tokens-download-option"><input type="radio" name="scope" value="all" checked/><span><strong>All tokens</strong><small>Everything in the current publication, including components and styles.</small></span></label>
+				</fieldset>
+				<footer><button type="button" data-download-cancel>Cancel</button><button type="submit">Download JSON</button></footer>
+			</form>
+		</dialog>
+		<noscript>
+			<a class="tokens-link" href="/downloads/tokens.json?scope=components">Download components</a>
+			<a class="tokens-link" href="/downloads/tokens.json?scope=styles">Download styles</a>
+			<a class="tokens-link" href="/downloads/tokens.json?scope=all">Download all tokens</a>
+		</noscript>
+	</div>
 }
 
 templ subjectList(subjects []publish.SubjectView) {

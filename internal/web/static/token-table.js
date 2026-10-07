@@ -11,9 +11,18 @@ document.querySelectorAll('dialog').forEach(dialog => {
 
 document.querySelectorAll('.tokens-token-download').forEach(download => {
   const dialog = download.querySelector('dialog');
+  if (!dialog) return;
   download.querySelector('[data-download-open]').addEventListener('click', () => dialog.showModal());
   download.querySelector('[data-download-cancel]').addEventListener('click', () => dialog.close());
   dialog.querySelector('form').addEventListener('submit', () => dialog.close());
+});
+
+document.querySelectorAll('[data-site-download-open]').forEach(button => {
+  button.addEventListener('click', () => {
+    const dialog = document.querySelector('#tokens-site-download');
+    dialog.querySelector(`input[value="${button.dataset.siteDownloadOpen}"]`).checked = true;
+    dialog.showModal();
+  });
 });
 
 document.querySelectorAll('.tokens-token-browser').forEach(browser => {

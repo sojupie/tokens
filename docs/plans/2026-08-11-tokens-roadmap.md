@@ -10,12 +10,8 @@ Tokens captures what Material published, stores it as reliable immutable
 evidence, and makes that evidence available offline and through a read-only web
 service. The crawler and the published token data are the active product.
 
-Token Forge is a separate future consumer. Its compiler, canonical token
-promotion, and component implementation are paused indefinitely. Tokens
-must remain useful without them.
-
-The project should be useful beyond Token Forge. Its stable product is an immutable,
-documented source snapshot that any tool can download and verify. A website,
+Its stable data format is an immutable, documented source snapshot that any
+tool can download and verify. A website,
 API, package, or database can make that data easier to explore, but none is the
 canonical store.
 
@@ -32,15 +28,6 @@ Tokens owns:
 - source-payload details, page results, and immutable snapshot publication.
 - a read-only Go web application that serves published snapshots and token
   records.
-
-Tokens does not own:
-
-- canonical DTCG design decisions;
-- CSS, components, framework adapters, or application code;
-- automatic promotion into Token Forge;
-- a runtime service required by library consumers.
-- canonical DTCG tokens, a compiler, or component packages while Token Forge is
-  paused.
 
 ## 3. Technical direction
 
@@ -84,8 +71,8 @@ frequently used published data can be loaded into application memory.
 
 ### Deferred: rendered measurements and component preview images
 
-Do not make measurement-diagram extraction part of the first token snapshot or
-the first Token Forge compiler milestone. The diagrams are difficult to interpret
+Do not make measurement-diagram extraction part of the first token snapshot.
+The diagrams are difficult to interpret
 reliably, and their labels may describe geometry, relationships, or guidance
 rather than tokens. Revisit this only when a concrete component or conformance
 requirement needs the data and the source representation can be verified.
@@ -94,8 +81,8 @@ Token-table component images are different. They are useful representative
 previews, but they do not show every variant and are not measurement evidence.
 For now, preserve their upstream URL in the loss-preserving source payload.
 If offline image access becomes useful later, add an optional, separately
-provenanced component-preview artifact. Do not use preview images as compiler
-input or as evidence of variant coverage.
+provenanced component-preview artifact. Do not use preview images as
+measurement data or as evidence of variant coverage.
 
 ## 5. Versioning
 
@@ -109,7 +96,7 @@ Track these independently:
 6. Upstream page, payload URL, revision, and payload SHA-256.
 
 An upstream update creates evidence and a semantic diff. It does not mutate an
-existing snapshot or force a Token Forge release.
+existing snapshot.
 
 ## 6. Phases
 
@@ -196,8 +183,7 @@ diffs, deterministic serialization, bundle verification, and corrupt inputs.
 
 Run live crawling manually or on a scheduled audit. A scheduled job can report
 page URL catalog or token drift and publish an evidence candidate. It must not rewrite a
-page URL catalog, publish over an existing snapshot, or promote Token Forge tokens without
-review.
+page URL catalog without review or publish over an existing snapshot.
 
 ## 8. Immediate work
 

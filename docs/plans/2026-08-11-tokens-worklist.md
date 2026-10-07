@@ -1,8 +1,7 @@
-# Tokens pre-compiler worklist
+# Tokens worklist
 
 **Status:** Open Tokens completion and publication list
 **Purpose:** Keep the remaining crawler, storage, publication, and evidence decisions in one place.
-**Compiler status:** Token Forge compiler work is paused indefinitely. The list no longer gates compiler work.
 
 ## Current position
 
@@ -20,10 +19,8 @@ Tokens has:
 - committed provisional snapshots;
 - an accepted upstream 404 for the Snackbar token-table payload.
 
-The active product is now Tokens: a reliable crawler, immutable token-data
-store, and read-only publication service. Token Forge remains a parked future
-consumer. Do not block Tokens work on a Forge compiler or canonical-token
-promotion.
+Tokens provides a crawler, immutable token-data storage, and a read-only
+publication service.
 
 The latest committed lifecycle-aware snapshot is:
 
@@ -106,8 +103,7 @@ Source must keep these facts separate:
 - token-table URL was observed;
 - source payload was fetched or reused;
 - source payload was unavailable or failed;
-- Material explicitly marked something as deprecated or not recommended;
-- Forge chose to support or reject it.
+- Material explicitly marked something as deprecated or not recommended.
 
 ### Decision
 
@@ -116,15 +112,6 @@ Source must keep these facts separate:
   previously successful payload artifact.
 - [x] Source capture remains strict: the Snackbar exception keeps
   `capture.complete` false.
-
-### Deferred consumer policy
-
-- [ ] Decide whether a future consumer may pin an incomplete snapshot when the
-  missing payload is a reviewed, known upstream exception.
-- [ ] If yes, record the accepted exception in the consumer's lock. Do not
-  change Source `capture.complete` to hide the exception.
-- [ ] Decide whether a later successful Snackbar payload should create a new
-  snapshot and a new consumer lock, or only update the next routine snapshot.
 
 ## 4. Lifecycle notices and deprecation
 
@@ -205,8 +192,8 @@ context.
 Tokens does not currently distinguish baseline and Expressive as a first-
 class normalized dimension. It preserves enough raw evidence to investigate
 the distinction, and now also records generic source-payload kind and page
-context, but Forge cannot yet query baseline/Expressive reliably without
-knowing the upstream relationships.
+context. Reliable queries for baseline and Expressive still require the
+upstream relationships.
 
 ### Recommended model
 
@@ -217,8 +204,7 @@ knowing the upstream relationships.
   relationship.
 - [ ] Do not add a simple `isExpressive` boolean. It would hide other context
   dimensions such as theme, platform, audience, contrast, and motion scheme.
-- [ ] Keep `baseline` and `Expressive` as source labels or context tags, not as
-  Forge support decisions.
+- [ ] Keep `baseline` and `Expressive` as source labels or context tags.
 - [ ] Add tests for the navigation-bar payload and similar pages.
 
 The preferred shape is a generic context relation, for example:
@@ -251,15 +237,12 @@ They should not be merged into the generated token graph.
 ### Recommended boundary
 
 - [x] Keep token values and references in the generated token graph.
-- [x] Keep lifecycle evidence separate from Forge support policy.
 - [ ] Decide whether Source should capture static recommendation tables as a
   separate `page-guidance.json` evidence document.
-- [ ] If deferred, let Forge use manual review for the first candidate set.
 
-Recommendation: defer static-table capture for the first compiler milestone,
-but keep the decision on this list. The tables can later provide evidence for
-variant availability and replacement recommendations without changing the
-token graph contract.
+Defer static-table capture until a concrete use needs it. The tables can later
+provide evidence for variant availability and replacement recommendations
+without changing the token graph contract.
 
 ## 7. Graph review before publication
 
@@ -278,34 +261,14 @@ Review representative records from the lifecycle snapshot:
 The review must answer whether a reader can understand and use the published
 snapshot without crawler internals or a live Material page.
 
-## 8. Token Forge policy (deferred indefinitely)
-
-Token Forge compiler and canonical-token policy work is paused indefinitely.
-Keep these questions for a future restart, but do not block Tokens
-publication on them:
-
-- [ ] Which `md.ref`, `md.sys`, and `md.comp` records can become candidates?
-- [ ] How does Forge select light and dark values?
-- [ ] How does Forge represent other context dimensions?
-- [ ] Are deprecated source tokens retained as candidates?
-- [ ] Are deprecated source tokens blocked from canonical promotion by default?
-- [ ] Does `not-recommended` produce a warning, an exclusion, or a manual
-  review item?
-- [ ] How are replacement-token messages represented?
-- [ ] What happens when a component is current but one style is deprecated?
-- [ ] What happens when a component is not recommended but remains live?
-- [ ] Which selected Expressive revisions are in scope?
-
-## 9. Source publication and consumer locks
+## 8. Snapshot publication
 
 - [x] Commit and publish the current schema, integrity, multi-payload, and
   lifecycle-notice work in Tokens.
 - [ ] Select the first public provisional snapshot.
 - [ ] Define the public snapshot URL layout and checksum publication.
-- [ ] Update consumer locks only when a real consumer is resumed.
-- [ ] Keep published snapshot status separate from consumer support policy.
 
-## 10. CLI distribution and documentation
+## 9. CLI distribution and documentation
 
 - [ ] Make normal CLI documentation use the compiled `tokens` binary.
 - [ ] Keep `go run ./cmd/tokens` examples limited to contributor and local
@@ -317,10 +280,7 @@ publication on them:
 - [ ] Replace machine-specific absolute paths in user-facing examples with
   repository-relative paths or placeholders.
 
-## 11. Deferred improvements and CLI shoulds
-
-These are useful improvements, but they are not reasons to start the Token
-Forge compiler or to reopen the current source contract.
+## 10. Deferred improvements
 
 ### Snapshot selection
 
@@ -358,9 +318,7 @@ Forge compiler or to reopen the current source contract.
 - [ ] Review representative `md.ref`, `md.sys`, `md.comp`, foundation, and
   component records from the version-3 graph.
 - [ ] Decide how baseline, Expressive, theme, light/dark, and other context
-  dimensions should be represented before Forge candidate selection.
-- [ ] Decide whether the known Snackbar 404 can be explicitly waived in a
-  Forge source lock while Source continues to report the capture as partial.
+  dimensions should be represented in the published data.
 - [ ] Rebuild a fixed-input snapshot twice and compare every artifact, not only
   the semantic diff.
 
@@ -376,7 +334,7 @@ Forge compiler or to reopen the current source contract.
   files only when the current files become difficult to review; do not split
   helpers merely for file-size symmetry.
 
-## 12. Active publication work
+## 11. Active publication work
 
 ### Reliable storage
 
@@ -411,9 +369,3 @@ Forge compiler or to reopen the current source contract.
 - [ ] Review the diff and coverage report.
 - [ ] Publish the approved evidence bundle and update the web service's
   available snapshot index.
-
-## Compiler pause
-
-Token Forge compiler work, canonical token promotion, and component
-implementation are paused indefinitely. Reopen that work only after Tokens
-has a reliable publication workflow and a concrete reason to build a consumer.

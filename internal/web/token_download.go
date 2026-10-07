@@ -32,6 +32,7 @@ func writeTokenDownloadMenu(writer io.Writer, subject publish.SubjectView, brows
 		allLabel = "All " + subject.Name + " tokens"
 	}
 	option("all", allLabel, "Includes every table and every value. Ignores search and filters.", len(browser.Sets) == 0)
+	option("everything", "All tokens on this site", "Includes all components and styles, with every supported context.", false)
 	menu += `</fieldset>`
 	input := func(name, value string) {
 		menu += `<input type="hidden" name="` + html.EscapeString(name) + `" value="` + html.EscapeString(value) + `">`
@@ -49,6 +50,10 @@ func writeTokenDownloadMenu(writer io.Writer, subject publish.SubjectView, brows
 // Filtered downloads use the same token set, search, and value selection as the table.
 func (server *Server) handleTokenDownload(response http.ResponseWriter, request *http.Request, relativePath string) {
 	scope := request.URL.Query().Get("scope")
+	if scope == "everything" {
+		http.Redirect(response, request, "/downloads/tokens.json?scope=all", http.StatusSeeOther)
+		return
+	}
 	if scope != "view" && scope != "set" && scope != "all" {
 		http.Error(response, "download scope must be view, set or all", http.StatusBadRequest)
 		return
@@ -88,6 +93,30 @@ func (server *Server) handleTokenDownload(response http.ResponseWriter, request 
 		return
 	}
 	http.NotFound(response, request)
+}
+
+func (server *Server) handleCollectionDownload(response http.ResponseWriter, request *http.Request) {
+	scope := request.URL.Query().Get("scope")
+	if scope == "" {
+		scope = "all"
+	}
+	if scope != "all" && scope != "components" && scope != "styles" {
+		http.Error(response, "download scope must be components, styles or all", http.StatusBadRequest)
+		return
+	}
+	subjects := []publish.PublicSubject{}
+	for _, subject := range sortedSubjects(server.state) {
+		component := subject.Key.Kind == publish.SubjectComponent
+		if (scope == "components" && !component) || (scope == "styles" && component) {
+			continue
+		}
+		subjects = append(subjects, subject.Public())
+	}
+	response.Header().Set("Content-Disposition", mime.FormatMediaType("attachment", map[string]string{"filename": "tokens-" + scope + ".json"}))
+	writeJSON(response, http.StatusOK, struct {
+		CapturedAt string                  `json:"capturedAt"`
+		Subjects   []publish.PublicSubject `json:"subjects"`
+	}{server.state.CurrentSnapshot.CreatedAt, subjects})
 }
 
 func tokenDownloadSubject(subject publish.SubjectView, browser tokenBrowser, scope string) publish.SubjectView {

@@ -175,10 +175,7 @@ Snapshots are immutable, content-addressed bundles of Material token-table
 source payloads and generated token data. They contain a manifest, page URL catalog,
 source payloads, generated token graph, source-payload details, page results, and
 checksums. Lifecycle notices preserve explicit upstream deprecation and
-recommendation statements without turning them into Token Forge support decisions.
-
-Token Forge pins a specific manifest digest. It never consumes `latest`, runs this
-crawler in its build, or depends on a Tokens service being online.
+recommendation statements from Material.
 
 See the [data flow](docs/data-flow.md), [snapshot format](docs/snapshot-format.md), and the
 [Tokens roadmap](docs/plans/2026-08-11-tokens-roadmap.md).
@@ -202,7 +199,7 @@ go run ./cmd/tokens snapshot compare
 ```
 
 The output directory must be empty. Snapshot files are immutable after
-publication. The command prints the manifest SHA-256 used by Token Forge locks.
+publication. The command prints the manifest SHA-256 for integrity verification.
 Historical snapshot IDs retain their original `m3-` prefix; new IDs should use
 the Material source date and hour/minute.
 
@@ -224,5 +221,5 @@ for diagnosis, not an approved snapshot.
 Normal tests must use committed fixtures and remain offline.
 
 See the [CLI guide](docs/cli.md) for command help, defaults, and explicit
-override examples. See the [pre-compiler worklist](docs/plans/2026-08-11-tokens-precompiler-worklist.md)
-for the remaining Tokens contract and Token Forge policy decisions.
+override examples. See the [worklist](docs/plans/2026-08-11-tokens-worklist.md)
+for remaining capture, snapshot, and publication tasks.

@@ -7,11 +7,11 @@
 
 A snapshot is an immutable bundle of Material's fetched token-table source
 payloads and the generated token data extracted from them at one point in time.
-It gives Token Forge and other consumers a stable input without requiring the
+It provides a stable data source without requiring the
 crawl tool, a browser, a live API, or Material's website.
 
-The snapshot preserves source meaning. It does not claim that every upstream
-value is correct for a consumer or approved for a design-system release.
+The snapshot preserves source meaning, including unresolved references and
+unknown fields.
 
 ## Bundle layout
 
@@ -118,13 +118,12 @@ available at capture time:
   `spacing`, `typography`, `shape`, `color`, or `unknown`;
 - `sourceArea`, `sourceSubject`, and `sourcePageType` — page-catalog context.
 
-These fields describe what the payload represents. They are not Forge support
-decisions. A component payload may contain references to foundation or style
-tokens, and one payload may be observed by more than one page.
+These fields describe what the payload represents. A component payload may
+contain references to foundation or style tokens, and one payload may be
+observed by more than one page.
 
-The graph is not DTCG source and does not flatten themes or contexts into one value.
-Consumers may generate DTCG candidates, platform inputs, documentation, or
-queries from it.
+The graph preserves themes and contexts rather than flattening them into one
+value. The token browser, downloads, and change history use this data.
 
 ## Source-payload details
 
@@ -156,8 +155,8 @@ The notice scope is separate from capture status:
   scopes.
 
 `deprecated` and `not-recommended` remain separate states. The raw message and
-source record identifiers are retained so Token Forge can make a support
-decision without treating Tokens's evidence as policy.
+source record identifiers are retained so readers can trace each notice to its
+source.
 
 ## Publishing and storage
 
@@ -165,7 +164,7 @@ Publish static files to content-addressable object storage, GitHub Releases, or
 both. Static HTTP files are the stable contract. Documentation sites, APIs,
 packages, and SQLite databases are derived views.
 
-Git stores code, schemas, the curated page URL catalog, fixtures, and small lock records.
+Git stores code, schemas, the curated page URL catalog, fixtures, and documentation.
 Object storage holds full snapshot bundles and optional raw evidence. A
 per-snapshot SQLite file may provide local query convenience, but it is generated
 from the snapshot and is never canonical.

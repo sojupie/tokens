@@ -15,7 +15,9 @@ button:not(:disabled), [role=button]:not([aria-disabled=true]) { cursor:pointer;
 :focus-visible { outline:var(--md-sys-state-focus-indicator-thickness) solid var(--md-sys-color-primary); outline-offset:var(--md-sys-state-focus-indicator-outer-offset); }
 .tokens-site-header { position:sticky; top:0; z-index:10; border-bottom:var(--md-comp-divider-thickness) solid var(--md-sys-color-outline-variant); background:var(--md-sys-color-surface); }
 .tokens-primary-nav { min-width:0; display:flex; max-width:72rem; margin:0 auto; align-items:center; flex-wrap:wrap; gap:var(--md-sys-measurement-space400); padding:var(--md-sys-measurement-space200) var(--md-sys-measurement-space300); }
-.tokens-brand { text-decoration:none; }
+.tokens-brand { display:inline-flex; align-items:center; gap:var(--md-sys-measurement-space150); text-decoration:none; flex-shrink:0; }
+.tokens-brand-logo { width:var(--md-sys-measurement-space500); height:var(--md-sys-measurement-space500); object-fit:contain; flex-shrink:0; }
+.tokens-site-footer .tokens-token-download { margin-top:var(--md-sys-measurement-space150); }
 .tokens-nav-links { min-width:0; display:flex; flex:1; flex-wrap:wrap; justify-content:flex-end; gap:var(--md-sys-measurement-space300); }
 .tokens-nav-link { color:var(--md-sys-color-on-surface-variant); text-decoration:none; }
 .tokens-nav-link:hover, .tokens-nav-link:focus-visible { color:var(--md-sys-color-primary); }

@@ -9,6 +9,31 @@ function runScript(name, globals) {
   runInNewContext(readFileSync(join(__dirname, 'static', name), 'utf8'), globals);
 }
 
+test('collection download buttons select the matching scope', () => {
+  const buttons = ['all', 'components', 'styles'].map(scope => {
+    const button = new EventTarget();
+    button.dataset = {siteDownloadOpen: scope};
+    return button;
+  });
+  let selected;
+  let opened = 0;
+  const dialog = {
+    querySelector: selector => ({set checked(value) { if (value) selected = selector; }}),
+    showModal: () => { opened++; },
+  };
+  runScript('token-table.js', {
+    document: {
+      querySelectorAll: selector => selector === '[data-site-download-open]' ? buttons : [],
+      querySelector: selector => { assert.equal(selector, '#tokens-site-download'); return dialog; },
+    },
+  });
+  for (const button of buttons) {
+    button.dispatchEvent(new Event('click'));
+    assert.equal(selected, `input[value="${button.dataset.siteDownloadOpen}"]`);
+  }
+  assert.equal(opened, 3);
+});
+
 test('theme buttons restore, switch and persist settings independently', () => {
   class Button extends EventTarget {
     constructor(dataset = {}) { super(); this.dataset = dataset; this.disabled = true; this.attributes = {}; }
