@@ -46,8 +46,8 @@ func runUpdate(args []string) error {
 		flags.StringVar(&config.Crawl.ChromePath, "chrome-path", "", "Chrome or Chromium executable")
 		flags.StringVar(&config.Crawl.CacheDir, "cache-dir", "", "payload cache (default: inside state directory)")
 		flags.IntVar(&config.Crawl.MaxPages, "max-pages", 500, "maximum pages")
-		flags.IntVar(&config.Crawl.Concurrency, "concurrency", 2, "parallel browser pages")
-		flags.DurationVar(&config.Crawl.PageTimeout, "page-timeout", 15*time.Second, "time to observe each page")
+		flags.IntVar(&config.Crawl.Concurrency, "concurrency", 1, "parallel browser pages (1 avoids background-tab capture gaps)")
+		flags.DurationVar(&config.Crawl.PageTimeout, "page-timeout", 30*time.Second, "maximum observation time per page; finishes early after network activity settles")
 		flags.Float64Var(&config.MaxChangeFraction, "max-change-fraction", 0.25, "hold changes above this fraction of previous contextual values")
 		config.Crawl.PathPrefix = "/"
 		config.Crawl.Refresh = true

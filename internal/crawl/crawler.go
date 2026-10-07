@@ -1105,6 +1105,9 @@ func observePages(parent context.Context, config Config, pages []string) ([]Obse
 		chromedp.Flag("disable-gpu-sandbox", true),
 		chromedp.Flag("disable-3d-apis", true),
 		chromedp.Flag("disable-dev-shm-usage", true),
+		chromedp.Flag("disable-background-timer-throttling", true),
+		chromedp.Flag("disable-backgrounding-occluded-windows", true),
+		chromedp.Flag("disable-renderer-backgrounding", true),
 	}
 	if config.ChromePath != "" {
 		allocatorOptions = append(allocatorOptions, chromedp.ExecPath(config.ChromePath))
@@ -1113,6 +1116,11 @@ func observePages(parent context.Context, config Config, pages []string) ([]Obse
 	defer cancelAllocator()
 	browserContext, cancelBrowser := chromedp.NewContext(allocatorContext)
 	defer cancelBrowser()
+	// Initialize the parent so page contexts reuse one browser instead of
+	// allocating a separate Chromium process for each page.
+	if err := chromedp.Run(browserContext); err != nil {
+		return nil, err
+	}
 
 	fmt.Printf("Observing %d pages with concurrency %d...\n", len(pages), config.Concurrency)
 	progress := &pageProgress{total: len(pages)}
@@ -1131,9 +1139,13 @@ func observePage(browserContext context.Context, pageURL string, timeout time.Du
 	observation := Observation{PageURL: pageURL}
 	seenPayloadURLs := map[string]bool{}
 	var payloadMu sync.Mutex
+	activity := captureActivity{pageURL: pageURL, pending: map[network.RequestID]bool{}}
 	var statusMu sync.Mutex
 	mainStatus := 0
 	chromedp.ListenTarget(pageContext, func(event interface{}) {
+		payloadMu.Lock()
+		activity.observe(event, time.Now())
+		payloadMu.Unlock()
 		if response, ok := event.(*network.EventResponseReceived); ok {
 			if response.Response.MimeType == "text/html" || response.Response.URL == pageURL {
 				statusMu.Lock()
@@ -1169,10 +1181,39 @@ func observePage(browserContext context.Context, pageURL string, timeout time.Du
 	if err == nil {
 		timer := time.NewTimer(timeout)
 		defer timer.Stop()
-		select {
-		case <-timer.C:
-		case <-operationContext.Done():
-			observation.Error = operationContext.Err().Error()
+		poll := time.NewTicker(250 * time.Millisecond)
+		defer poll.Stop()
+		started := time.Now()
+	waitForCapture:
+		for {
+			select {
+			case <-timer.C:
+				break waitForCapture
+			case <-operationContext.Done():
+				observation.Error = operationContext.Err().Error()
+				break waitForCapture
+			case now := <-poll.C:
+				payloadMu.Lock()
+				settled := activity.settled(now, started)
+				payloadMu.Unlock()
+				if !settled {
+					continue
+				}
+				var loaded bool
+				// DOM readiness plus main-frame network quiet avoids waiting for
+				// unrelated third-party iframe load events.
+				if err := chromedp.Run(operationContext, chromedp.Evaluate(`document.readyState !== "loading"`, &loaded)); err != nil {
+					observation.Error = err.Error()
+					break waitForCapture
+				}
+				// Recheck: evaluation can race with another payload request.
+				payloadMu.Lock()
+				settled = activity.settled(time.Now(), started)
+				payloadMu.Unlock()
+				if loaded && settled {
+					break waitForCapture
+				}
+			}
 		}
 	}
 	payloadMu.Lock()
@@ -1186,6 +1227,53 @@ func observePage(browserContext context.Context, pageURL string, timeout time.Du
 	observation.Status = mainStatus
 	statusMu.Unlock()
 	return observation
+}
+
+// captureActivity is guarded by observePage's payload mutex.
+type captureActivity struct {
+	pageURL      string
+	mainFrame    string
+	pending      map[network.RequestID]bool
+	lastActivity time.Time
+	sawPayload   bool
+}
+
+func (activity *captureActivity) observe(event interface{}, now time.Time) {
+	switch event := event.(type) {
+	case *network.EventRequestWillBeSent:
+		if event.Type == network.ResourceTypeDocument && event.Request.URL == activity.pageURL {
+			activity.mainFrame = string(event.FrameID)
+		}
+		// Scripts and fetches in the main frame can discover more tables.
+		// Iframes must not hold up capture, but always wait for token data.
+		if (string(event.FrameID) == activity.mainFrame || sourcePayloadRE.MatchString(event.Request.URL)) &&
+			(strings.HasPrefix(event.Request.URL, "http://") || strings.HasPrefix(event.Request.URL, "https://")) {
+			activity.pending[event.RequestID] = true
+			activity.lastActivity = now
+		}
+	case *network.EventResponseReceived:
+		if sourcePayloadRE.MatchString(event.Response.URL) {
+			activity.sawPayload = true
+			activity.lastActivity = now
+		}
+	case *network.EventLoadingFinished:
+		if activity.pending[event.RequestID] {
+			delete(activity.pending, event.RequestID)
+			activity.lastActivity = now
+		}
+	case *network.EventLoadingFailed:
+		if activity.pending[event.RequestID] {
+			delete(activity.pending, event.RequestID)
+			activity.lastActivity = now
+		}
+	}
+}
+
+func (activity *captureActivity) settled(now, started time.Time) bool {
+	// ponytail: quiet is a heuristic, not proof that no later timer can fetch
+	// another table. Keep coverage checks; add source-specific readiness if needed.
+	return activity.sawPayload && len(activity.pending) == 0 &&
+		now.Sub(started) >= 3*time.Second && now.Sub(activity.lastActivity) >= 2*time.Second
 }
 
 func mapLimit(values []string, concurrency int, worker func(string) Observation) ([]Observation, error) {

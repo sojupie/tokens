@@ -79,6 +79,14 @@ Run a small dry crawl during development:
 go run ./cmd/tokens crawl --max-pages 10 --page-timeout 8s --dry-run
 ```
 
+Pages are observed one at a time in a shared browser. `--page-timeout` is a
+maximum wait, not a delay applied to every page. Capture finishes early once
+the DOM is ready, a token payload has appeared, and relevant requests have
+finished and stayed quiet for two seconds. Unrelated iframe traffic does not
+extend the wait. Pages with no payload use the full timeout (30 seconds by
+default). Capture checks still run before publication; network quiet alone
+does not prove that every table was found.
+
 By default, valid cached source payloads are reused without an HTTP download.
 Force a fresh download when needed:
 

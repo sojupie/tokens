@@ -70,7 +70,7 @@ services:
         target: /var/lib/tokens
         bind:
           create_host_path: false
-    command: [update, run, --state-dir, /var/lib/tokens, --page-catalog, /etc/tokens/page-catalog.json, --chrome-path, /usr/bin/chromium, --timeout, 1h]
+    command: [update, run, --state-dir, /var/lib/tokens, --page-catalog, /etc/tokens/page-catalog.json, --chrome-path, /usr/bin/chromium, --concurrency, "1", --page-timeout, 30s, --timeout, 1h]
     networks: [crawl]
 
 networks:
