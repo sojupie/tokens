@@ -14,6 +14,8 @@ tokens update status
 tokens update inspect RUN_ID
 tokens update approve RUN_ID
 tokens update retry RUN_ID
+tokens update notify RUN_ID
+tokens update test-notification
 ```
 
 Show help at any level:
@@ -26,6 +28,25 @@ go run ./cmd/tokens snapshot create --help
 ```
 
 ## Normal workflow
+
+### Notifications
+
+Set `TOKENS_SMTP_HOST`, `TOKENS_SMTP_FROM`, and `TOKENS_SMTP_TO` to send
+failure and review notices by email. Set `TOKENS_SMTP_USERNAME` and
+`TOKENS_SMTP_PASSWORD` together when the server requires authentication.
+`TOKENS_SMTP_PORT` defaults to 587 with required STARTTLS; port 465 uses
+TLS from the start. Both modes verify the server certificate.
+
+`tokens update test-notification --state-dir STATE_DIR` sends a test without
+crawling or changing a publication. SMTP acceptance does not guarantee inbox
+delivery, so check the inbox. `tokens update notify RUN_ID --state-dir STATE_DIR`
+resends a saved run report. Delivery failures are saved as `notificationError`.
+Credentials stay in the environment and are not saved in run reports.
+
+`TOKENS_NOTIFY_WEBHOOK` remains optional. If email and a webhook are configured,
+the notifier attempts both. Successful and unchanged runs do not send alerts.
+
+### Capture and publication
 
 For unattended updates, review and notifications, see
 [scheduled updates](updates.md).
@@ -155,7 +176,7 @@ The crawl command uses these defaults:
 - live discovery scope: `component-specs`;
 - source-payload cache: `.cache/material-token-table-responses`;
 - crawl receipts: `crawl-results`;
-- page timeout: 10 seconds;
+- page timeout: up to 30 seconds, with early completion after relevant requests settle;
 - maximum pages: 500.
 
 `--max-pages` limits how many failed pages a repair crawl retries. Unretried

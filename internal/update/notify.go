@@ -13,10 +13,10 @@ import (
 	"time"
 )
 
-// Notify posts a small JSON report to an administrator-configured endpoint.
+// Notify delivers a configured notification and records delivery failures.
 // Credentials stay in the process environment, not in saved reports.
 func Notify(ctx context.Context, root, id, webhook string) error {
-	if webhook == "" {
+	if !NotificationsConfigured(webhook) {
 		return nil
 	}
 	report, err := Read(root, id)
@@ -90,6 +90,29 @@ func Alert(ctx context.Context, root, webhook string) error {
 }
 
 func sendNotification(ctx context.Context, root string, report Report, webhook string) error {
+	var deliveryErrors []error
+	if smtpConfigured() {
+		config, err := smtpEnvironment()
+		if err == nil {
+			// Failure notifications must survive cancellation of the update.
+			mailContext, cancel := context.WithTimeout(context.WithoutCancel(ctx), 10*time.Second)
+			err = sendEmail(mailContext, config, root, report)
+			cancel()
+		}
+		deliveryErrors = append(deliveryErrors, err)
+	}
+	if webhook != "" {
+		deliveryErrors = append(deliveryErrors, sendWebhook(ctx, root, report, webhook))
+	}
+	return errors.Join(deliveryErrors...)
+}
+
+// TestNotification sends a test message without changing saved runs.
+func TestNotification(ctx context.Context, root, webhook string) error {
+	return sendNotification(ctx, root, Report{Status: "test", Phase: "notifications"}, webhook)
+}
+
+func sendWebhook(ctx context.Context, root string, report Report, webhook string) error {
 	target, err := url.Parse(webhook)
 	if err != nil || target.Host == "" || (target.Scheme != "https" && target.Scheme != "http") {
 		return errors.New("notification endpoint must be an http(s) URL")

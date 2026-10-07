@@ -30,4 +30,4 @@ COPY deploy/testdata /fixtures
 
 FROM runtime AS server
 EXPOSE 8080
-CMD ["serve", "--published", "/var/lib/tokens/current", "--listen", "0.0.0.0:8080", "--public-origin", "https://tokens.marmenlind.com"]
+CMD ["serve", "--published", "/var/lib/tokens/current", "--listen", "0.0.0.0:8080"]

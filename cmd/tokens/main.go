@@ -89,7 +89,7 @@ func runCrawl(args []string) error {
 	flags.BoolVar(&config.UpdatePageCatalog, "update-page-catalog", false, "replace the page URL catalog with reviewed live discovery")
 	flags.BoolVar(&config.NoPageCatalog, "no-page-catalog", false, "bypass the page URL catalog without comparing or updating it")
 	flags.IntVar(&config.MaxPages, "max-pages", 500, "maximum candidate pages")
-	flags.IntVar(&config.Concurrency, "concurrency", 1, "parallel browser pages (1 avoids background-tab capture gaps)")
+	flags.IntVar(&config.Concurrency, "concurrency", 1, "parallel browser pages")
 	flags.DurationVar(&config.PageTimeout, "page-timeout", 30*time.Second, "maximum observation time per page; finishes early after network activity settles")
 	flags.StringVar(&config.CacheDir, "cache-dir", ".cache/material-token-table-responses", "source-payload cache directory")
 	flags.StringVar(&config.ResultsDir, "results-dir", "crawl-results", "crawl-receipt directory")

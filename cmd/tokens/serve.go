@@ -25,7 +25,7 @@ func runServe(args []string) error {
 	}
 	publishedDir := "published"
 	listenAddress := "127.0.0.1:8080"
-	publicOrigin := ""
+	publicOrigin := os.Getenv("TOKENS_PUBLIC_ORIGIN")
 	flags.StringVar(&publishedDir, "published", publishedDir, "publication directory")
 	flags.StringVar(&listenAddress, "listen", listenAddress, "HTTP listen address")
 	flags.StringVar(&publicOrigin, "public-origin", publicOrigin, "public http(s) origin for canonical URLs and sitemap; unset disables indexing")

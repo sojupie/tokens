@@ -31,11 +31,15 @@ fi
 if [ ! -e /etc/tokens/update.env ]; then
     install -m 0600 /opt/tokens/deploy/systemd/update.env.example /etc/tokens/update.env
 fi
-chown root:root /etc/tokens/cloudflared.env /etc/tokens/update.env
-chmod 0600 /etc/tokens/cloudflared.env /etc/tokens/update.env
+if [ ! -e /etc/tokens/server.env ]; then
+    install -m 0600 /opt/tokens/deploy/server.env.example /etc/tokens/server.env
+fi
+chown root:root /etc/tokens/cloudflared.env /etc/tokens/update.env /etc/tokens/server.env
+chmod 0600 /etc/tokens/cloudflared.env /etc/tokens/update.env /etc/tokens/server.env
 install -m 0644 /opt/tokens/deploy/systemd/tokens.service \
     /opt/tokens/deploy/systemd/tokens-update.service \
     /opt/tokens/deploy/systemd/tokens-update-failure.service \
     /opt/tokens/deploy/systemd/tokens-update.timer /etc/systemd/system/
 systemctl daemon-reload
-echo 'Installed. Set the tunnel token, build the images, then create and approve the baseline before enabling services.'
+echo 'Configuration: /etc/tokens/server.env, cloudflared.env, update.env'
+echo 'Setup instructions: /opt/tokens/deploy/README.md'

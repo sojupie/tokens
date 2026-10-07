@@ -1,0 +1,188 @@
+# Deploy Tokens
+
+Use a Linux host with systemd, Git, Docker Engine and Docker Compose 2.24.4 or
+newer. The updater can use up to 4 GiB of RAM. Go and Chromium run inside the
+images; they do not need to be installed on the host.
+
+This setup publishes the site through a Cloudflare Tunnel. Have a Cloudflare
+account and a domain configured there before starting. Email alerts need an
+SMTP account; they are optional.
+
+## 1. Install
+
+Keep the checkout at `/opt/tokens`. Run these commands from that directory:
+
+```sh
+sudo sh deploy/install.sh
+```
+
+The installer creates the data directory and configuration files. It preserves
+existing settings. It installs the services but does not start them.
+
+## 2. Set the public URL and tunnel
+
+```sh
+sudoedit /etc/tokens/server.env
+```
+
+Set the URL where the site will be reachable:
+
+```dotenv
+TOKENS_PUBLIC_ORIGIN=https://tokens.example.com
+```
+
+Replace the example with your hostname. Use HTTPS, without a path or trailing
+slash. This controls canonical URLs and the sitemap. An empty setting disables
+search indexing.
+
+Create a Cloudflare Tunnel for this site. Add a public hostname with:
+
+- Hostname: the hostname from the public URL.
+- Service type: HTTP.
+- Service URL: `tokens:8080`.
+
+Copy the tunnel token into this file:
+
+```sh
+sudoedit /etc/tokens/cloudflared.env
+```
+
+```dotenv
+TUNNEL_TOKEN='YOUR_TUNNEL_TOKEN'
+```
+
+Use a separate tunnel token, not a token belonging to another site.
+
+## 3. Set up email
+
+```sh
+sudoedit /etc/tokens/update.env
+```
+
+Fill in your email provider's SMTP settings and the recipient for alerts:
+
+```dotenv
+TOKENS_SMTP_HOST=smtp.example.com
+TOKENS_SMTP_PORT=465
+TOKENS_SMTP_USERNAME=sender@example.com
+TOKENS_SMTP_PASSWORD='YOUR_SMTP_PASSWORD'
+TOKENS_SMTP_FROM=sender@example.com
+TOKENS_SMTP_TO=recipient@example.com
+```
+
+Port 465 uses TLS. Port 587 uses STARTTLS. Both verify the server certificate.
+For Purelymail, use `smtp.purelymail.com`, port `465`, and your full email
+address as the username. Use an app password if two-factor authentication is enabled.
+
+Leave all SMTP settings empty to disable email. No webhook is needed for email.
+Keep the files in `/etc/tokens` private.
+
+## 4. Build and test email
+
+```sh
+sudo docker compose -f deploy/compose.yaml --profile update build --pull
+sudo sh deploy/update.sh test-notification
+```
+
+Check the recipient's inbox and spam folder. SMTP acceptance alone does not
+prove inbox delivery. Skip the test if email is disabled.
+
+## 5. Capture and approve the first data
+
+```sh
+sudo sh deploy/update.sh run
+sudo sh deploy/update.sh status
+```
+
+The first complete capture stops at `needs_review`. This is expected.
+It does not start the website or publish the data yet.
+
+Copy the run ID from the status output when prompted:
+
+```sh
+printf 'Run ID: '
+read -r run_id
+sudo sh deploy/update.sh inspect "$run_id"
+```
+
+Check the capture counts and `issues`. A complete first capture normally has
+only the non-blocking `initial_baseline` issue. Do not approve a failed or
+incomplete capture.
+
+If the report is acceptable:
+
+```sh
+sudo sh deploy/update.sh approve "$run_id"
+```
+
+Approval selects the data to serve. It does not crawl again.
+
+## 6. Start the website and weekly updates
+
+```sh
+sudo systemctl enable --now tokens.service tokens-update.timer
+sudo docker compose -f deploy/compose.yaml ps
+sudo systemctl list-timers --all tokens-update.timer
+```
+
+The website should be healthy, the tunnel should be running, and the timer
+should show its next run. Open the public URL. `tokens.service` showing
+`active (exited)` is normal: it starts the containers and then finishes.
+
+The default schedule is Sunday at 04:00 in Europe/Stockholm, plus up to
+15 minutes of delay. A missed run is caught up when the timer starts again.
+To change the schedule, run `sudo systemctl edit tokens-update.timer` and add
+an override with the desired time and timezone:
+
+```ini
+[Timer]
+OnCalendar=
+OnCalendar=Sun *-*-* 04:00:00 Europe/Stockholm
+```
+
+Then run `sudo systemctl restart tokens-update.timer`. Overrides survive
+reinstalling the service files.
+
+## Update the application
+
+Pause scheduled updates and wait for a running update to finish:
+
+```sh
+sudo systemctl stop tokens-update.timer
+sudo systemctl is-active tokens-update.service
+```
+
+Continue when the update service is no longer active or activating:
+
+```sh
+git pull
+sudo sh deploy/install.sh
+sudoedit /etc/tokens/server.env
+sudo docker compose -f deploy/compose.yaml --profile update build --pull
+sudo systemctl restart tokens.service
+sudo systemctl start tokens-update.timer
+```
+
+This updates the application and Chromium. Weekly data captures do not update
+the images. Settings in `/etc/tokens` survive installation and image rebuilds.
+Before restarting, make sure `server.env` contains the public URL. Older
+installations may not have had this file.
+
+## Check a problem
+
+```sh
+sudo docker compose -f deploy/compose.yaml ps -a
+sudo docker compose -f deploy/compose.yaml logs --tail=80 tokens cloudflared
+sudo journalctl -u tokens-update.service -u tokens-update-failure.service -n 100 --no-pager
+```
+
+- Website missing: approve the first capture, then start `tokens.service`.
+- Tunnel errors: check the token and the `tokens:8080` service URL.
+- Exit 137: the process was killed. Check kernel logs for an out-of-memory
+  event. The updater's default memory limit is 4 GiB.
+- Chromium startup errors: run `sudo sh deploy/test-containers.sh` to test
+  the container setup without contacting Material. Do not disable its sandbox.
+- No next scheduled run: enable `tokens-update.timer`.
+- No email: run the notification test and check the SMTP settings.
+
+See [updates and recovery](../docs/updates.md) for review, retries and backups.

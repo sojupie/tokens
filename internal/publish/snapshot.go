@@ -1,13 +1,10 @@
 package publish
 
 import (
-	"bytes"
-	"compress/gzip"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"io"
 	"os"
 	"path/filepath"
 
@@ -19,23 +16,17 @@ func loadSnapshot(directory string) (snapshotInput, error) {
 	if err != nil {
 		return snapshotInput{}, fmt.Errorf("read manifest: %w", err)
 	}
-	manifest, err := tokensnapshot.Verify(directory)
+	manifest, graph, err := tokensnapshot.VerifyAndLoad(directory)
 	if err != nil {
 		return snapshotInput{}, fmt.Errorf("verify snapshot: %w", err)
 	}
 	if manifest.SchemaVersion != tokensnapshot.SchemaVersion {
 		return snapshotInput{}, fmt.Errorf("unsupported snapshot schema version %d", manifest.SchemaVersion)
 	}
-	graphBody, err := readGzipFile(filepath.Join(directory, "generated-token-graph.json.gz"))
-	if err != nil {
-		return snapshotInput{}, fmt.Errorf("read generated token graph: %w", err)
-	}
 	var input snapshotInput
 	input.Manifest = manifest
 	input.ManifestHash = sha256Hex(manifestBody)
-	if err := json.Unmarshal(graphBody, &input.Graph); err != nil {
-		return snapshotInput{}, fmt.Errorf("decode generated token graph: %w", err)
-	}
+	input.Graph = graph
 	if err := readJSONFile(filepath.Join(directory, "source-payload-details.json"), &input.PayloadDetails); err != nil {
 		return snapshotInput{}, fmt.Errorf("read source-payload details: %w", err)
 	}
@@ -56,21 +47,4 @@ func readJSONFile(path string, destination any) error {
 		return err
 	}
 	return json.Unmarshal(body, destination)
-}
-
-func readGzipFile(path string) ([]byte, error) {
-	body, err := os.ReadFile(path)
-	if err != nil {
-		return nil, err
-	}
-	reader, err := gzip.NewReader(bytes.NewReader(body))
-	if err != nil {
-		return nil, err
-	}
-	decoded, readErr := io.ReadAll(reader)
-	closeErr := reader.Close()
-	if readErr != nil {
-		return nil, readErr
-	}
-	return decoded, closeErr
 }

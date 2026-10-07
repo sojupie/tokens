@@ -1,6 +1,10 @@
 services:
   tokens:
+    image: tokens-server-check:local
     restart: "no"
+    env_file: !reset []
+    environment:
+      TOKENS_PUBLIC_ORIGIN: https://tokens.example.com
     volumes: !override
       - test-state:/var/lib/tokens:ro
   updater:

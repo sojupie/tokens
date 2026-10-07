@@ -93,6 +93,21 @@ func TestBuildIsDeterministicAndVerifiable(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	_, verifiedGraph, err := VerifyAndLoad(first)
+	if err != nil {
+		t.Fatal(err)
+	}
+	wantGraph, err := json.Marshal(graph)
+	if err != nil {
+		t.Fatal(err)
+	}
+	gotGraph, err := json.Marshal(verifiedGraph)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(wantGraph, gotGraph) {
+		t.Fatal("verified graph differs from snapshot graph")
+	}
 	if len(graph.Records) == 0 || strings.HasPrefix(graph.Records[0].SourcePayloadID, "payload-0001") {
 		t.Fatalf("payload provenance ID is not stable: %#v", graph.Records)
 	}

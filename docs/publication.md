@@ -44,9 +44,6 @@ For local contributor development, the same command can be run with:
 go run ./cmd/tokens publish
 ```
 
-Normal documentation and deployment should use the compiled `tokens`
-binary.
-
 ## Serve a publication
 
 Start the read-only server against the generated directory:

@@ -12,6 +12,9 @@ services:
     cap_drop: [ALL]
     security_opt: [no-new-privileges:true]
     tmpfs: [/tmp]
+    env_file:
+      - path: /etc/tokens/server.env
+        required: false
     volumes:
       - type: bind
         source: ${TOKENS_STATE_DIR:-/var/lib/tokens}
@@ -58,7 +61,7 @@ services:
       - /tmp:size=1g,mode=1777
     shm_size: 256m
     pids_limit: 256
-    mem_limit: 2g
+    mem_limit: ${TOKENS_UPDATE_MEMORY:-4g}
     cpus: 2
     stop_grace_period: 30s
     env_file:

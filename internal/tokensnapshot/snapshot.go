@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"sort"
@@ -181,7 +182,7 @@ func Build(config BuildConfig) (Manifest, error) {
 		return Manifest{}, fmt.Errorf("validate page catalog: %w", err)
 	}
 	graph, payloadDetails, pageResults, lifecycleNotices := buildDocuments(config.SnapshotID, run)
-	graphJSON, err := marshalDocument(graph)
+	graphJSON, err := json.Marshal(graph)
 	if err != nil {
 		return Manifest{}, fmt.Errorf("encode graph: %w", err)
 	}
@@ -317,16 +318,24 @@ func uniqueSuccessfulPayloadURLs(run crawl.CrawlReceipt) int {
 }
 
 func Verify(directory string) (Manifest, error) {
-	return verify(directory, true)
+	manifest, _, err := VerifyAndLoad(directory)
+	return manifest, err
+}
+
+// VerifyAndLoad returns the graph already decoded during full verification.
+func VerifyAndLoad(directory string) (Manifest, Graph, error) {
+	var graph Graph
+	manifest, err := verify(directory, true, &graph)
+	return manifest, graph, err
 }
 
 // VerifyIntegrity checks bytes against the manifest without decoding documents.
 // Use only when reusing a previously fully validated, versioned cache entry.
 func VerifyIntegrity(directory string) (Manifest, error) {
-	return verify(directory, false)
+	return verify(directory, false, nil)
 }
 
-func verify(directory string, full bool) (Manifest, error) {
+func verify(directory string, full bool, loaded *Graph) (Manifest, error) {
 	manifestBody, err := os.ReadFile(filepath.Join(directory, "manifest.json"))
 	if err != nil {
 		return Manifest{}, fmt.Errorf("read manifest: %w", err)
@@ -348,18 +357,27 @@ func verify(directory string, full bool) (Manifest, error) {
 			return Manifest{}, fmt.Errorf("duplicate artifact path %q", artifact.Path)
 		}
 		seenPaths[path] = true
-		body, err := os.ReadFile(filepath.Join(directory, filepath.FromSlash(path)))
+		file, err := os.Open(filepath.Join(directory, filepath.FromSlash(path)))
 		if err != nil {
 			return Manifest{}, fmt.Errorf("read artifact %s: %w", artifact.Path, err)
 		}
-		if got := sha256Hex(body); got != artifact.Sha256 {
+		hash := sha256.New()
+		size, copyErr := io.Copy(hash, file)
+		closeErr := file.Close()
+		if copyErr != nil {
+			return Manifest{}, copyErr
+		}
+		if closeErr != nil {
+			return Manifest{}, closeErr
+		}
+		if got := hex.EncodeToString(hash.Sum(nil)); got != artifact.Sha256 {
 			return Manifest{}, fmt.Errorf("artifact %s hash mismatch: got %s, want %s", artifact.Path, got, artifact.Sha256)
 		}
-		if len(body) != artifact.Bytes {
+		if size != int64(artifact.Bytes) {
 			return Manifest{}, fmt.Errorf("artifact %s byte count mismatch", artifact.Path)
 		}
 		if full && artifact.ContentEncoding == "gzip" {
-			if _, err := readGzip(filepath.Join(directory, filepath.FromSlash(path))); err != nil {
+			if _, _, err := gzipDigest(filepath.Join(directory, filepath.FromSlash(path))); err != nil {
 				return Manifest{}, fmt.Errorf("read gzip artifact %s: %w", artifact.Path, err)
 			}
 		}
@@ -380,15 +398,21 @@ func verify(directory string, full bool) (Manifest, error) {
 			return Manifest{}, err
 		}
 		documents := make(map[string][]byte)
-		for _, name := range []string{"generated-token-graph.json.gz", "source-payload-details.json", "page-results.json", "lifecycle-notices.json"} {
+		for _, name := range []string{"source-payload-details.json", "page-results.json", "lifecycle-notices.json"} {
 			body, err := os.ReadFile(filepath.Join(directory, name))
 			if err != nil {
 				return Manifest{}, fmt.Errorf("read required document %s: %w", name, err)
 			}
 			documents[name] = body
 		}
-		if err := validateSnapshotDocuments(documents); err != nil {
-			return Manifest{}, err
+		for name, schema := range map[string]string{
+			"source-payload-details.json": "source-payload-details.schema.json",
+			"page-results.json":           "page-results.schema.json",
+			"lifecycle-notices.json":      "lifecycle-notices.schema.json",
+		} {
+			if err := validateJSONSchema(schema, documents[name]); err != nil {
+				return Manifest{}, err
+			}
 		}
 	}
 	pageCatalogBody, err := os.ReadFile(filepath.Join(directory, "page-catalog.json"))
@@ -398,7 +422,7 @@ func verify(directory string, full bool) (Manifest, error) {
 	if err := crawl.ValidatePageCatalog(pageCatalogBody); err != nil {
 		return Manifest{}, fmt.Errorf("validate page catalog: %w", err)
 	}
-	graph, err := readGraph(directory)
+	graph, err := readGraphValidated(directory, manifest.SchemaVersion == SchemaVersion)
 	if err != nil {
 		return Manifest{}, fmt.Errorf("read generated graph: %w", err)
 	}
@@ -410,15 +434,40 @@ func verify(directory string, full bool) (Manifest, error) {
 		if err != nil {
 			return Manifest{}, err
 		}
-		raw, err := readGzip(filepath.Join(directory, filepath.FromSlash(path)))
+		hash, size, err := gzipDigest(filepath.Join(directory, filepath.FromSlash(path)))
 		if err != nil {
 			return Manifest{}, fmt.Errorf("read source payload %s: %w", payload.SourcePayloadURL, err)
 		}
-		if sha256Hex(raw) != payload.Hash || len(raw) != payload.Bytes {
+		if hash != payload.Hash || size != int64(payload.Bytes) {
 			return Manifest{}, fmt.Errorf("source payload %s hash or byte count mismatch", payload.SourcePayloadURL)
 		}
 	}
+	if loaded != nil {
+		*loaded = graph
+	}
 	return manifest, nil
+}
+
+func gzipDigest(path string) (string, int64, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return "", 0, err
+	}
+	defer file.Close()
+	reader, err := gzip.NewReader(file)
+	if err != nil {
+		return "", 0, err
+	}
+	hash := sha256.New()
+	size, readErr := io.Copy(hash, reader)
+	closeErr := reader.Close()
+	if readErr != nil {
+		return "", 0, readErr
+	}
+	if closeErr != nil {
+		return "", 0, closeErr
+	}
+	return hex.EncodeToString(hash.Sum(nil)), size, nil
 }
 
 func (config BuildConfig) validate() error {

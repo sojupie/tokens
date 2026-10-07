@@ -1,40 +1,48 @@
 # Tokens
 
-Tokens captures and explains the design-token data published by Material 3.
-It discovers reviewed token-source pages, observes their lazy token-table
-requests, stores source payloads by content hash, generates a loss-preserving
-token graph, and publishes immutable material-token-data snapshots.
+Tokens is a browser for Material Design 3 tokens. Find tokens by component,
+compare their values and references, download JSON, and browse changes over time.
 
-Tokens does not decide which values a component library should support.
-Token Forge consumes a pinned snapshot, reviews its changes, and promotes accepted
-values into canonical DTCG tokens.
+The updater collects Material's source data, saves each capture, and publishes
+approved changes. The website serves the saved data without crawling on requests.
 
-## Requirements
+## Deploy
+
+Follow [Deploy Tokens](deploy/README.md) to configure the site, capture the first
+data, enable weekly updates, and test email alerts.
+
+## Run locally
 
 - Go 1.26 or newer.
 - Chrome or Chromium for pages that lazy-load token tables.
 
-Download dependencies:
+Build, collect the initial data, then start the website:
 
-```text
-go mod download
+```sh
+go build -o ./bin/tokens ./cmd/tokens
+./bin/tokens crawl --scope token-source-pages
+./bin/tokens snapshot create
+./bin/tokens publish
+./bin/tokens serve --published published --listen 127.0.0.1:8081
 ```
 
-No Node.js, pnpm, Playwright, or `node_modules` directory is required.
-
-## Build and run
+On Windows, use:
 
 ```powershell
 go build -o .\bin\tokens.exe .\cmd\tokens
+.\bin\tokens.exe crawl --scope token-source-pages
+.\bin\tokens.exe snapshot create
+.\bin\tokens.exe publish
 .\bin\tokens.exe serve --published published --listen 127.0.0.1:8081
 ```
 
-For public deployment, add `--public-origin https://tokens.marmenlind.com`.
+Open `http://127.0.0.1:8081`. On later starts, only the serve command is needed.
+Use `--chrome-path` on the crawl command if Chrome cannot be found automatically.
+
+For a public site, add `--public-origin https://tokens.example.com` with your
+site's actual URL, or set `TOKENS_PUBLIC_ORIGIN` in the environment.
 See [publication](docs/publication.md) for creating the published data and
 [search indexing](docs/web-seo.md) for deployment checks.
-
-For a Docker Compose deployment with Chromium, a dedicated tunnel, weekly
-updates and administrator review on Debian, see [scheduled updates](docs/updates.md).
 
 ## Crawl
 

@@ -46,14 +46,14 @@ func runUpdate(args []string) error {
 		flags.StringVar(&config.Crawl.ChromePath, "chrome-path", "", "Chrome or Chromium executable")
 		flags.StringVar(&config.Crawl.CacheDir, "cache-dir", "", "payload cache (default: inside state directory)")
 		flags.IntVar(&config.Crawl.MaxPages, "max-pages", 500, "maximum pages")
-		flags.IntVar(&config.Crawl.Concurrency, "concurrency", 1, "parallel browser pages (1 avoids background-tab capture gaps)")
+		flags.IntVar(&config.Crawl.Concurrency, "concurrency", 1, "parallel browser pages")
 		flags.DurationVar(&config.Crawl.PageTimeout, "page-timeout", 30*time.Second, "maximum observation time per page; finishes early after network activity settles")
 		flags.Float64Var(&config.MaxChangeFraction, "max-change-fraction", 0.25, "hold changes above this fraction of previous contextual values")
 		config.Crawl.PathPrefix = "/"
 		config.Crawl.Refresh = true
 	}
 	flags.Usage = func() {
-		fmt.Fprintf(flags.Output(), "Usage: tokens update %s [flags]\n\nCommands: run, status, inspect <id>, approve <id>, retry <id>, notify <id>, alert\n\n", command)
+		fmt.Fprintf(flags.Output(), "Usage: tokens update %s [flags]\n\nCommands: run, status, inspect <id>, approve <id>, retry <id>, notify <id>, test-notification, alert\n\n", command)
 		flags.PrintDefaults()
 	}
 	if err := flags.Parse(args); err != nil {
@@ -69,9 +69,18 @@ func runUpdate(args []string) error {
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer cancel()
 	switch command {
+	case "test-notification":
+		if !update.NotificationsConfigured(config.Webhook) {
+			return errors.New("configure SMTP or TOKENS_NOTIFY_WEBHOOK first")
+		}
+		if err := update.TestNotification(ctx, config.StateDir, config.Webhook); err != nil {
+			return err
+		}
+		fmt.Println("Test notification accepted by the configured delivery service(s). Check your inbox or receiver.")
+		return nil
 	case "alert":
-		if config.Webhook == "" {
-			return errors.New("set TOKENS_NOTIFY_WEBHOOK to receive service failure alerts")
+		if !update.NotificationsConfigured(config.Webhook) {
+			return errors.New("configure SMTP or TOKENS_NOTIFY_WEBHOOK to receive service failure alerts")
 		}
 		return update.Alert(ctx, config.StateDir, config.Webhook)
 	case "status":
@@ -102,8 +111,8 @@ func runUpdate(args []string) error {
 		fmt.Printf("Activated %s. Restart the server to load this generation.\n", report.ID)
 		return nil
 	case "notify":
-		if config.Webhook == "" {
-			return errors.New("set TOKENS_NOTIFY_WEBHOOK before resending notifications")
+		if !update.NotificationsConfigured(config.Webhook) {
+			return errors.New("configure SMTP or TOKENS_NOTIFY_WEBHOOK before resending notifications")
 		}
 		return update.NotifyRun(ctx, config.StateDir, id, config.Webhook)
 	case "run", "retry":

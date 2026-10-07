@@ -179,6 +179,10 @@ func captureChanged(from, to CaptureInfo) bool {
 }
 
 func readGraph(directory string) (Graph, error) {
+	return readGraphValidated(directory, false)
+}
+
+func readGraphValidated(directory string, validate bool) (Graph, error) {
 	file, err := os.Open(filepath.Join(directory, "generated-token-graph.json.gz"))
 	if err != nil {
 		return Graph{}, err
@@ -188,8 +192,7 @@ func readGraph(directory string) (Graph, error) {
 		_ = file.Close()
 		return Graph{}, err
 	}
-	var graph Graph
-	err = json.NewDecoder(decompressor).Decode(&graph)
+	graph, err := decodeGraph(decompressor, validate, true)
 	closeErr := decompressor.Close()
 	fileCloseErr := file.Close()
 	if err != nil {
