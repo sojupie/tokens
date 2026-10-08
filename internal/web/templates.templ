@@ -21,6 +21,14 @@ templ layout(title string) {
 		<link rel="apple-touch-icon" href={ staticURL("logo-250x250.png") }/>
 		<title>{ pageTitle(ctx, title) } · Tokens</title>
 		<meta name="description" content={ metadata(ctx).Description }/>
+		if metadata(ctx).AgentDiscovery {
+			<link rel="describedby" href="/agents.json" type="application/json"/>
+			<link rel="describedby" href="/llms.txt" type="text/plain"/>
+			<link rel="service-desc" href="/openapi.json" type="application/json"/>
+		}
+		if metadata(ctx).JSONAlternate != "" {
+			<link rel="alternate" href={ templ.SafeURL(metadata(ctx).JSONAlternate) } type="application/json" title="Token data for this view"/>
+		}
 		if metadata(ctx).Canonical != "" {
 			<link rel="canonical" href={ templ.SafeURL(metadata(ctx).Canonical) }/>
 		}
@@ -69,6 +77,9 @@ templ layout(title string) {
 					<p class="md-typescale-title-medium">Tokens</p>
 					<p class="md-typescale-body-medium">Browse Material Design tokens and track their changes.</p>
 					<p class="md-typescale-body-medium">Independent project. Not affiliated with Google.</p>
+					if metadata(ctx).AgentDiscovery {
+						<a class="tokens-link md-typescale-body-medium" href="/llms-full.txt">API and agent guide</a>
+					}
 					@siteDownloadMenu()
 				</div>
 				<div>

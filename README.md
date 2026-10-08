@@ -44,6 +44,20 @@ site's actual URL, or set `TOKENS_PUBLIC_ORIGIN` in the environment.
 See [publication](docs/publication.md) for creating the published data and
 [search indexing](docs/web-seo.md) for deployment checks.
 
+## Read the site with an agent
+
+Start with `/agents.json` or `/llms.txt`. The usage guide links to the public
+read-only API and explains token references, contexts and capture dates.
+`/openapi.json` describes its requests and responses.
+
+Use `/api/v1/subjects` to find components and styles, then follow a subject's
+`jsonUrl`. For a bulk export, use `/downloads/tokens.json?scope=all`.
+No account or JavaScript is required. Public JSON endpoints allow cross-origin
+reads. Set the public origin to enable the discovery files and sitemap.
+
+If a proxy or Cloudflare blocks automated requests, allow access to these public
+read-only routes there too. The application cannot override proxy rules.
+
 ## Crawl
 
 A normal crawl uses the checked-in page URL catalog. It lists reviewed Material

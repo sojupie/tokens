@@ -27,6 +27,8 @@ type subjectSummary struct {
 	TokenCount           int                 `json:"tokenCount"`
 	LifecycleNoticeCount int                 `json:"lifecycleNoticeCount"`
 	SourcePageURLs       []string            `json:"sourcePageUrls"`
+	URL                  string              `json:"url"`
+	JSONURL              string              `json:"jsonUrl"`
 }
 
 type componentListResponse struct {
@@ -62,12 +64,20 @@ func New(state publish.PublishedState, downloadsDir string) *Server {
 func (server *Server) Handler() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /sitemap.xml", server.handleSitemap)
+	mux.HandleFunc("GET /sitemap.css", handleSitemapCSS)
 	mux.HandleFunc("GET /robots.txt", server.handleRobots)
+	mux.HandleFunc("GET /agents.txt", server.handleAgentDiscovery)
+	mux.HandleFunc("GET /agents.json", server.handleAgentDiscovery)
+	mux.HandleFunc("GET /openapi.json", server.handleAgentDiscovery)
+	mux.HandleFunc("GET /llms.txt", server.handleAgentDiscovery)
+	mux.HandleFunc("GET /llms-full.txt", server.handleAgentDiscovery)
+	mux.HandleFunc("GET /skills/material-tokens/SKILL.md", server.handleAgentDiscovery)
 	mux.HandleFunc("GET /theme.css", server.handleTheme)
 	mux.HandleFunc("GET /api/v1/health", server.handleHealth)
 	mux.HandleFunc("GET /api/v1/releases", server.handleReleases)
 	mux.HandleFunc("GET /api/v1/changes", server.handleChanges)
 	mux.HandleFunc("GET /api/v1/components", server.handleComponents)
+	mux.HandleFunc("GET /api/v1/subjects", server.handleComponents)
 	mux.HandleFunc("GET /api/v1/components/{slug...}", server.handleComponent)
 	mux.HandleFunc("GET /static/", handleStaticAsset)
 	mux.HandleFunc("GET /downloads/{path...}", server.handleDownload)
@@ -78,6 +88,18 @@ func (server *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /styles", server.handleOverview)
 	mux.HandleFunc("GET /styles/{slug...}", server.handleHTMLSubject)
 	return http.HandlerFunc(func(response http.ResponseWriter, request *http.Request) {
+		publicData := strings.HasPrefix(request.URL.Path, "/api/") || strings.HasPrefix(request.URL.Path, "/downloads/") || agentDiscoveryPath(request.URL.Path)
+		if publicData {
+			response.Header().Set("Access-Control-Allow-Origin", "*")
+			response.Header().Set("Access-Control-Allow-Methods", "GET, HEAD, OPTIONS")
+			if request.Method == http.MethodOptions {
+				response.WriteHeader(http.StatusNoContent)
+				return
+			}
+		}
+		if server.publicOrigin != "" {
+			response.Header().Add("Link", `</agents.json>; rel="describedby"; type="application/json", </llms.txt>; rel="describedby"; type="text/plain", </openapi.json>; rel="service-desc"; type="application/json"`)
+		}
 		if strings.HasPrefix(request.URL.Path, "/api/") || strings.HasPrefix(request.URL.Path, "/downloads/") {
 			response.Header().Set("X-Robots-Tag", "noindex")
 		}
@@ -111,6 +133,8 @@ func (server *Server) handleComponents(response http.ResponseWriter, _ *http.Req
 			TokenCount:           len(subject.Tokens),
 			LifecycleNoticeCount: len(subject.LifecycleNotices),
 			SourcePageURLs:       append([]string(nil), subject.SourcePageURLs...),
+			URL:                  server.publicOrigin + subjectURL(subject),
+			JSONURL:              server.publicOrigin + subjectDownloadURL(subject) + "?scope=all",
 		})
 	}
 	sort.Slice(subjects, func(i, j int) bool {

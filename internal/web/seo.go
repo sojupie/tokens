@@ -9,11 +9,13 @@ import (
 )
 
 type pageMetadata struct {
-	Title       string
-	Description string
-	Canonical   string
-	NoIndex     bool
-	Heading     string
+	Title          string
+	Description    string
+	Canonical      string
+	NoIndex        bool
+	Heading        string
+	AgentDiscovery bool
+	JSONAlternate  string
 }
 
 type pageMetadataKey struct{}
@@ -59,7 +61,7 @@ func hasContentFilters(query url.Values) bool {
 }
 
 func (server *Server) basicMetadata(path string, query url.Values) pageMetadata {
-	info := pageMetadata{NoIndex: server.publicOrigin == "" || hasContentFilters(query)}
+	info := pageMetadata{NoIndex: server.publicOrigin == "" || hasContentFilters(query), AgentDiscovery: server.publicOrigin != ""}
 	switch path {
 	case "/":
 		info.Title = "Material Design Tokens and Change History"

@@ -104,6 +104,18 @@ func (server *Server) handleHTMLSubject(response http.ResponseWriter, request *h
 	info.Title = subjects[0].Name + " tokens — Material Design"
 	info.Heading = "Material Design " + tokenPhrase(subjects[0].Name) + " tokens"
 	info.Description = subjectTokenDescription(subjects[0])
+	downloadQuery := url.Values{"scope": {"all"}}
+	if len(browser.Sets) > 0 {
+		downloadQuery.Set("scope", "view")
+		downloadQuery.Set("set", browser.Selected.Key)
+		if browser.Query != "" {
+			downloadQuery.Set("q", browser.Query)
+		}
+		for _, filter := range browser.Filters {
+			downloadQuery.Set(filter.Key, filter.Selected)
+		}
+	}
+	info.JSONAlternate = subjectDownloadURL(subjects[0]) + "?" + downloadQuery.Encode()
 	if setPath != "" || query.Get("set") != "" {
 		info.Heading = "Material Design " + tokenSetComponent(browser.Selected) + " tokens"
 		info.Title = tokenSetTitle(browser.Selected)

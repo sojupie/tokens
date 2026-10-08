@@ -1,0 +1,77 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Tokens read-only API",
+    "version": "1.0.0",
+    "description": "Independent Material Design token captures and observed changes. Public GET endpoints; no authentication. Source references and contexts should be preserved. Observation dates are not upstream release dates."
+  },
+  "security": [],
+  "paths": {
+    "/api/v1/health": {"get": {
+      "operationId": "getHealth", "summary": "Read the active publication identifiers",
+      "responses": {"200": {"description": "Server status", "content": {"application/json": {"schema": {"type": "object", "required": ["status", "publicationId", "snapshotId"], "properties": {"status": {"type": "string"}, "publicationId": {"type": "string"}, "snapshotId": {"type": "string"}}}}}}}
+    }},
+    "/api/v1/subjects": {"get": {
+      "operationId": "listSubjects", "summary": "List every component and non-component subject",
+      "description": "No pagination. Follow jsonUrl to fetch one subject with all contexts; slugs can contain slashes. The legacy /api/v1/components index has the same response.",
+      "responses": {"200": {"description": "Subject index", "content": {"application/json": {"schema": {"type": "object", "required": ["publicationId", "snapshot", "subjects"], "properties": {"publicationId": {"type": "string"}, "snapshot": {"$ref": "#/components/schemas/Snapshot"}, "subjects": {"type": "array", "items": {"$ref": "#/components/schemas/SubjectSummary"}}}}}}}}
+    }},
+    "/api/v1/releases": {"get": {
+      "operationId": "listSnapshots", "summary": "Read the current and retained snapshots",
+      "responses": {"200": {"description": "Snapshot inventory", "content": {"application/json": {"schema": {"type": "object", "required": ["publicationId", "current", "snapshots"], "properties": {"publicationId": {"type": "string"}, "current": {"$ref": "#/components/schemas/Snapshot"}, "snapshots": {"type": ["array", "null"], "items": {"$ref": "#/components/schemas/Snapshot"}}}}}}}}
+    }},
+    "/api/v1/changes": {"get": {
+      "operationId": "listChanges", "summary": "Read all retained observed changes",
+      "description": "No pagination or server-side filters. Filter records locally by subject or snapshotId. Counts represent records, not unique tokens.",
+      "responses": {"200": {"description": "Change history", "content": {"application/json": {"schema": {"type": "object", "required": ["publicationId", "snapshot", "changes"], "properties": {"publicationId": {"type": "string"}, "snapshot": {"$ref": "#/components/schemas/Snapshot"}, "changes": {"type": ["array", "null"], "items": {"$ref": "#/components/schemas/Change"}}}}}}}}
+    }},
+    "/downloads/tokens.json": {"get": {
+      "operationId": "downloadCollection", "summary": "Download components, styles or the whole collection",
+      "parameters": [{"name": "scope", "in": "query", "required": true, "schema": {"type": "string", "enum": ["components", "styles", "all"]}, "description": "styles includes all non-component subject kinds. Every scope includes all supported contexts."}],
+      "responses": {
+        "200": {"description": "JSON attachment", "content": {"application/json": {"schema": {"type": "object", "required": ["capturedAt", "subjects"], "properties": {"capturedAt": {"type": "string"}, "subjects": {"type": "array", "items": {"$ref": "#/components/schemas/Subject"}}}}}}},
+        "400": {"$ref": "#/components/responses/BadRequest"}
+      }
+    }},
+    "/downloads/{kind}/{slug}.json": {"get": {
+      "operationId": "downloadSubject", "summary": "Download one subject with all supported contexts",
+      "description": "Use jsonUrl from the subject index. The slug path parameter can span multiple path segments. This operation documents the all-context export; filtered table exports are available through the HTML form.",
+      "parameters": [
+        {"name": "kind", "in": "path", "required": true, "schema": {"type": "string"}},
+        {"name": "slug", "in": "path", "required": true, "schema": {"type": "string"}},
+        {"name": "scope", "in": "query", "required": true, "schema": {"type": "string", "const": "all"}}
+      ],
+      "responses": {
+        "200": {"description": "JSON attachment", "content": {"application/json": {"schema": {"allOf": [{"$ref": "#/components/schemas/Subject"}, {"type": "object", "required": ["capturedAt"], "properties": {"capturedAt": {"type": "string"}}}]}}}},
+        "400": {"$ref": "#/components/responses/BadRequest"},
+        "404": {"description": "Subject not found", "content": {"text/plain": {"schema": {"type": "string"}}}}
+      }
+    }}
+  },
+  "components": {
+    "responses": {"BadRequest": {"description": "Invalid download scope", "content": {"text/plain": {"schema": {"type": "string"}}}}},
+    "schemas": {
+      "Snapshot": {"type": "object", "required": ["id", "createdAt", "manifestHash", "captureStatus", "reviewStatus"], "properties": {
+        "id": {"type": "string"}, "createdAt": {"type": "string"}, "manifestHash": {"type": "string"}, "captureStatus": {"type": "string"}, "reviewStatus": {"type": "string"}
+      }},
+      "SubjectSummary": {"type": "object", "required": ["kind", "slug", "name", "tokenCount", "lifecycleNoticeCount", "sourcePageUrls", "url", "jsonUrl"], "properties": {
+        "kind": {"type": "string"}, "slug": {"type": "string"}, "name": {"type": "string"}, "tokenCount": {"type": "integer"}, "lifecycleNoticeCount": {"type": "integer"}, "sourcePageUrls": {"type": ["array", "null"], "items": {"type": "string", "format": "uri"}}, "url": {"type": "string", "format": "uri-reference"}, "jsonUrl": {"type": "string", "format": "uri-reference"}
+      }},
+      "Subject": {"type": "object", "required": ["kind", "slug", "name", "tokens"], "properties": {
+        "kind": {"type": "string"}, "slug": {"type": "string"}, "name": {"type": "string"}, "tokens": {"type": "array", "items": {"$ref": "#/components/schemas/Token"}}
+      }},
+      "Token": {"type": "object", "required": ["name", "values"], "properties": {
+        "name": {"type": "string"}, "displayName": {"type": "string"}, "type": {"type": "string"}, "lifecycle": {"type": "string"}, "values": {"type": "array", "items": {"$ref": "#/components/schemas/TokenValue"}}
+      }},
+      "TokenValue": {"type": "object", "required": ["value"], "properties": {
+        "context": {"type": "array", "items": {"type": "string"}}, "default": {"type": "boolean"}, "value": {"description": "Source-structured JSON, including references or typed compound values; may be null. Do not assume a hex color or scalar."}, "references": {"type": "array", "items": {"$ref": "#/components/schemas/TokenReference"}}
+      }},
+      "TokenReference": {"type": "object", "required": ["name"], "properties": {
+        "name": {"type": "string"}, "references": {"type": "array", "items": {"$ref": "#/components/schemas/TokenReference"}}
+      }},
+      "Change": {"type": "object", "required": ["detectedAt", "id", "type", "kind", "name", "previousSnapshotId", "snapshotId"], "properties": {
+        "detectedAt": {"type": "string"}, "id": {"type": "string"}, "type": {"type": "string"}, "subject": {"type": "string"}, "sourcePayloadKind": {"type": "string"}, "kind": {"type": "string"}, "name": {"type": "string"}, "before": {"type": "string", "description": "Can contain serialized JSON."}, "after": {"type": "string", "description": "Can contain serialized JSON."}, "previousSnapshotId": {"type": "string"}, "snapshotId": {"type": "string"}
+      }}
+    }
+  }
+}

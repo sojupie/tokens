@@ -35,14 +35,20 @@ func (server *Server) handleSitemap(response http.ResponseWriter, request *http.
 			add(tokenSetURL(subject, set))
 		}
 	}
-	data, err := xml.Marshal(document)
+	data, err := xml.MarshalIndent(document, "", "  ")
 	if err != nil {
 		http.Error(response, "Could not build sitemap.", http.StatusInternalServerError)
 		return
 	}
 	response.Header().Set("Content-Type", "application/xml; charset=utf-8")
 	response.Header().Set("Cache-Control", "no-cache")
-	_, _ = response.Write(append([]byte(xml.Header), data...))
+	_, _ = fmt.Fprint(response, xml.Header, "<?xml-stylesheet type=\"text/css\" href=\"/sitemap.css\"?>\n", string(data), "\n")
+}
+
+func handleSitemapCSS(response http.ResponseWriter, _ *http.Request) {
+	response.Header().Set("Content-Type", "text/css; charset=utf-8")
+	response.Header().Set("Cache-Control", "public, max-age=3600")
+	_, _ = fmt.Fprint(response, "urlset { display: block; padding: 1em; } url { display: block; margin-bottom: .5em; overflow-wrap: anywhere; } loc { display: block; }")
 }
 
 func (server *Server) handleRobots(response http.ResponseWriter, _ *http.Request) {
@@ -52,5 +58,5 @@ func (server *Server) handleRobots(response http.ResponseWriter, _ *http.Request
 		_, _ = fmt.Fprint(response, "User-agent: *\nDisallow: /\n")
 		return
 	}
-	_, _ = fmt.Fprintf(response, "User-agent: *\nAllow: /\nSitemap: %s/sitemap.xml\n", server.publicOrigin)
+	_, _ = fmt.Fprintf(response, "User-agent: *\nAllow: /agents.txt\nAllow: /agents.json\nAllow: /llms.txt\nAllow: /\nSitemap: %s/sitemap.xml\n", server.publicOrigin)
 }
