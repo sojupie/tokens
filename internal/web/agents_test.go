@@ -39,12 +39,32 @@ func TestHTMLAgentHintsAndJSONAlternate(t *testing.T) {
 		links := map[string]string{}
 		alternate := ""
 		footerLink := false
+		footerColumns := []string{}
 		var walk func(*html.Node, bool)
 		walk = func(node *html.Node, inFooter bool) {
 			inFooter = inFooter || node.Type == html.ElementNode && node.Data == "footer"
 			attrs := map[string]string{}
 			for _, attr := range node.Attr {
 				attrs[attr.Key] = attr.Val
+			}
+			if attrs["class"] == "tokens-footer-content" {
+				for child := node.FirstChild; child != nil; child = child.NextSibling {
+					if child.Type != html.ElementNode || child.Data != "div" {
+						continue
+					}
+					var text strings.Builder
+					var collectText func(*html.Node)
+					collectText = func(item *html.Node) {
+						if item.Type == html.TextNode {
+							text.WriteString(item.Data)
+						}
+						for nested := item.FirstChild; nested != nil; nested = nested.NextSibling {
+							collectText(nested)
+						}
+					}
+					collectText(child)
+					footerColumns = append(footerColumns, text.String())
+				}
 			}
 			if node.Type == html.ElementNode && node.Data == "link" {
 				links[attrs["href"]] = attrs["rel"]
@@ -60,6 +80,9 @@ func TestHTMLAgentHintsAndJSONAlternate(t *testing.T) {
 			}
 		}
 		walk(document, false)
+		if len(footerColumns) != 3 || strings.Contains(footerColumns[0], "Download JSON") || !strings.Contains(footerColumns[1], "API and agent guide") || !strings.Contains(footerColumns[1], "Download JSON") || !strings.HasPrefix(footerColumns[2], "About") || !strings.Contains(footerColumns[2], "Made by Olle Marmenlind") {
+			t.Fatalf("wrong footer columns: %v", footerColumns)
+		}
 		if links["/agents.json"] != "describedby" || links["/llms.txt"] != "describedby" || links["/openapi.json"] != "service-desc" || !footerLink {
 			t.Fatalf("%s missing HTML hints/footer guide", path)
 		}
