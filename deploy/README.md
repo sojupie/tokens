@@ -168,6 +168,71 @@ the images. Settings in `/etc/tokens` survive installation and image rebuilds.
 Before restarting, make sure `server.env` contains the public URL. Older
 installations may not have had this file.
 
+## Manage from GitHub Actions
+
+Open **Actions → Manage Tokens → Run workflow**, select `main`, and choose a
+command:
+
+| Command | What it does |
+| --- | --- |
+| `status` | Show containers, the next scheduled update and saved run reports. |
+| `logs` | Show recent website, tunnel and update logs. |
+| `deploy` | Update `/opt/tokens` to the selected main commit, rebuild both images and restart the website. |
+| `restart` | Restart the website and tunnel without rebuilding or crawling. |
+| `crawl` | Start the existing update service, including alerts and restart after publication. |
+| `inspect` | Show a saved run report. Requires a run ID. |
+| `approve` | Publish a reviewed capture and restart the website. Requires a run ID. |
+| `retry` | Retry a saved capture and restart the website if it publishes. Requires a run ID. |
+| `test-notification` | Send a test email or webhook using the host's settings. |
+
+Deploy does not crawl. It refuses local edits, local commits or a move to an
+older commit. Settings stay in `/etc/tokens`; do not add SMTP passwords or
+tunnel tokens to GitHub.
+
+A capture that needs review marks the workflow as failed. Read the run report,
+then use `inspect` and `approve` when appropriate. Failed captures must not be
+approved. Weekly updates still use `tokens-update.timer`, not GitHub's scheduler.
+
+Workflows run one at a time. Commands that change the site pause the timer and
+refuse to run while an updater is active. The cleanup step restores the timer
+if it was running before. If the runner loses power or is forcibly stopped,
+check `systemctl list-timers --all tokens-update.timer` afterwards.
+
+### Add the runner
+
+1. Open this repository's **Settings → Actions → Runners → New self-hosted
+   runner** and select **Linux / x64**.
+2. Download and extract the runner into `~/actions-runner-tokens`.
+3. Run GitHub's `./config.sh` command as your normal user. Add
+   `--name tokens-prod --labels tokens-prod` to it.
+4. Install and start its service from that directory:
+
+```sh
+sudo ./svc.sh install "$(id -un)"
+sudo ./svc.sh start
+sudo ./svc.sh status
+```
+
+The runner's user must be able to update `/opt/tokens` and fetch the repository.
+Run the service as the checkout's owner. Create a `production` environment in
+the repository settings and restrict deployment branches to `main`. Add required
+reviewers if your GitHub plan supports them.
+
+### Allow the management commands
+
+Run `sudo visudo -f /etc/sudoers.d/tokens-actions`. Add this rule, replacing
+`runner` with the runner's Linux username:
+
+```sudoers
+runner ALL=(root) NOPASSWD: /usr/bin/docker, /usr/bin/sh /opt/tokens/deploy/install.sh, /usr/bin/sh /opt/tokens/deploy/update.sh *, /usr/bin/systemctl stop tokens-update.timer, /usr/bin/systemctl start tokens-update.timer, /usr/bin/systemctl start tokens-update.service, /usr/bin/systemctl restart tokens.service, /usr/bin/journalctl -u tokens-update.service -u tokens-update-failure.service -n 100 --no-pager
+```
+
+This grants root-level access to the host. Restrict workflow and deployment
+script changes to trusted maintainers. Do not run pull-request code on this
+runner.
+
+Run `status` to check the setup.
+
 ## Check a problem
 
 ```sh

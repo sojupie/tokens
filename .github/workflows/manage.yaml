@@ -1,0 +1,146 @@
+name: Manage Tokens
+run-name: Tokens · ${{ inputs.operation }} ${{ inputs.run_id }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      operation:
+        description: What to do
+        type: choice
+        required: true
+        default: status
+        options:
+          - status
+          - logs
+          - deploy
+          - restart
+          - crawl
+          - inspect
+          - approve
+          - retry
+          - test-notification
+      run_id:
+        description: Run ID (required for inspect, approve and retry)
+        type: string
+        required: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tokens-production
+  cancel-in-progress: false
+
+jobs:
+  manage:
+    name: ${{ inputs.operation }}
+    if: github.ref == 'refs/heads/main'
+    runs-on: [self-hosted, linux, x64, tokens-prod]
+    environment: production
+    timeout-minutes: 90
+    defaults:
+      run:
+        shell: bash
+        working-directory: /opt/tokens
+    env:
+      OPERATION: ${{ inputs.operation }}
+      RUN_ID: ${{ inputs.run_id }}
+    steps:
+      - name: Check inputs and installation
+        run: |
+          set -euo pipefail
+          case "$OPERATION" in
+            inspect|approve|retry)
+              if [[ ! "$RUN_ID" =~ ^[A-Za-z0-9][A-Za-z0-9-]*$ ]]; then
+                echo 'A valid run ID is required.' >&2
+                exit 1
+              fi
+              ;;
+            status|logs|deploy|restart|crawl|test-notification) ;;
+            *) echo 'Unknown operation.' >&2; exit 1 ;;
+          esac
+          test -f deploy/compose.yaml
+          sudo -n /usr/bin/docker compose -f deploy/compose.yaml config --quiet
+
+      - name: Pause scheduled updates
+        id: pause
+        if: contains(fromJSON('["deploy","restart","crawl","approve","retry"]'), inputs.operation)
+        run: |
+          set -euo pipefail
+          if /usr/bin/systemctl is-active --quiet tokens-update.timer; then
+            echo 'resume_timer=true' >> "$GITHUB_OUTPUT"
+            sudo -n /usr/bin/systemctl stop tokens-update.timer
+          fi
+          state=$(/usr/bin/systemctl show tokens-update.service --property=ActiveState --value)
+          case "$state" in
+            active|activating|deactivating)
+              echo 'An update is running. Let it finish, then run this workflow again.' >&2
+              exit 1
+              ;;
+          esac
+          running=$(sudo -n /usr/bin/docker ps \
+            --filter label=com.docker.compose.project=tokens \
+            --filter label=com.docker.compose.service=updater --format '{{.ID}}')
+          if [[ -n "$running" ]]; then
+            echo 'An updater container is running. Let it finish first.' >&2
+            exit 1
+          fi
+
+      - name: Run management command
+        run: |
+          set -euo pipefail
+          compose() { sudo -n /usr/bin/docker compose -f deploy/compose.yaml "$@"; }
+          update() { sudo -n /usr/bin/sh /opt/tokens/deploy/update.sh "$@"; }
+          case "$OPERATION" in
+            deploy)
+              [[ "$(git branch --show-current)" == main ]]
+              if [[ -n "$(git status --porcelain)" ]]; then
+                echo 'The deployment checkout has local changes. Resolve them first.' >&2
+                exit 1
+              fi
+              case "$(git remote get-url origin)" in
+                https://github.com/sojupie/tokens.git|git@github.com:sojupie/tokens.git) ;;
+                *) echo 'Unexpected origin in /opt/tokens.' >&2; exit 1 ;;
+              esac
+              git fetch origin main
+              git merge-base --is-ancestor "$GITHUB_SHA" origin/main
+              if ! git merge-base --is-ancestor HEAD "$GITHUB_SHA"; then
+                echo 'This deployment would go backwards or overwrite local commits.' >&2
+                exit 1
+              fi
+              git merge --ff-only "$GITHUB_SHA"
+              sudo -n /usr/bin/sh /opt/tokens/deploy/install.sh
+              compose --profile update build --pull
+              sudo -n /usr/bin/systemctl restart tokens.service
+              ;;
+            restart) sudo -n /usr/bin/systemctl restart tokens.service ;;
+            crawl) sudo -n /usr/bin/systemctl start tokens-update.service ;;
+            inspect) update inspect "$RUN_ID" ;;
+            approve|retry)
+              update "$OPERATION" "$RUN_ID"
+              sudo -n /usr/bin/systemctl restart tokens.service
+              ;;
+            test-notification) update test-notification ;;
+            status)
+              compose ps -a
+              /usr/bin/systemctl list-timers --all tokens-update.timer
+              update status
+              ;;
+            logs)
+              compose logs --tail=100 tokens cloudflared
+              sudo -n /usr/bin/journalctl -u tokens-update.service -u tokens-update-failure.service -n 100 --no-pager
+              ;;
+          esac
+          if [[ "$OPERATION" == deploy || "$OPERATION" == restart || "$OPERATION" == approve || "$OPERATION" == retry ]]; then
+            compose ps
+          fi
+
+      - name: Show failure details
+        if: failure()
+        run: |
+          sudo -n /usr/bin/docker compose -f deploy/compose.yaml ps -a
+          sudo -n /usr/bin/journalctl -u tokens-update.service -u tokens-update-failure.service -n 100 --no-pager
+
+      - name: Resume scheduled updates
+        if: always() && steps.pause.outputs.resume_timer == 'true'
+        run: sudo -n /usr/bin/systemctl start tokens-update.timer
