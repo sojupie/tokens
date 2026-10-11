@@ -11,14 +11,15 @@ templ layout(title string) {
 	<head>
 		<meta charset="utf-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1"/>
-		<script src={ staticURL("theme.js") }></script>
+		@initialThemeScript()
+		<script src={ staticURL("theme.js") } defer></script>
 		<link rel="stylesheet" href={ themeURL(ctx) }/>
 		<link rel="stylesheet" href={ staticURL("app.css") }/>
 		<link rel="stylesheet" href={ staticURL("token-table.css") }/>
 		<script src={ staticURL("htmx.min.js") } defer></script>
 		<script src={ staticURL("token-table.js") } defer></script>
 		<script src={ staticURL("webmcp.js") } defer></script>
-		<link rel="icon" type="image/png" sizes="250x250" href={ staticURL("logo-250x250.png") }/>
+		<link rel="icon" type="image/webp" sizes="250x250" href={ staticURL("logo-250x250.webp") }/>
 		<link rel="apple-touch-icon" href={ staticURL("logo-250x250.png") }/>
 		<title>{ pageTitle(ctx, title) } · Token Catalog</title>
 		<meta name="description" content={ metadata(ctx).Description }/>
@@ -42,7 +43,7 @@ templ layout(title string) {
 	<body class="tokens-body">
 		<header class="tokens-site-header">
 			<nav class="tokens-primary-nav" aria-label="Primary">
-				<a class="tokens-brand md-typescale-headline-medium" href="/"><img class="tokens-brand-logo" src={ staticURL("logo-250x250.png") } alt="" width="40" height="40"/>Token Catalog</a>
+				<a class="tokens-brand md-typescale-headline-medium" href="/"><img class="tokens-brand-logo" src={ staticURL("logo-250x250.webp") } alt="" width="40" height="40"/>Token Catalog</a>
 				<div class="tokens-nav-links">
 					<a class="tokens-nav-link md-typescale-label-large" href="/components">Components</a>
 					<a class="tokens-nav-link md-typescale-label-large" href="/styles">Styles and token sources</a>

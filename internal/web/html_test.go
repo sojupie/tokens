@@ -73,6 +73,15 @@ func TestHTMLPagesRenderComponentsAndStyles(t *testing.T) {
 					t.Fatalf("body does not contain %q:\n%s", value, recorder.Body.String())
 				}
 			}
+			body := recorder.Body.String()
+			initial := strings.Index(body, "localStorage.getItem('tokens-theme')")
+			styles := strings.Index(body, `rel="stylesheet"`)
+			if initial < 0 || styles < initial || !strings.Contains(body, `<script src="`+staticURL("theme.js")+`" defer></script>`) {
+				t.Fatal("saved theme must be inline before styles; controls must be deferred")
+			}
+			if !strings.Contains(body, `src="`+staticURL("logo-250x250.webp")+`"`) {
+				t.Fatal("header must use the smaller WebP logo")
+			}
 			for _, value := range []string{`<footer class="tokens-site-footer">`, `href="https://marmenlind.com"`, "Made by Olle Marmenlind", "Browse Material Design 3 tokens and track their changes."} {
 				if !strings.Contains(recorder.Body.String(), value) {
 					t.Fatalf("page footer does not contain %q", value)

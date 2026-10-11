@@ -10,10 +10,20 @@ import (
 	"net/http"
 	"strings"
 	"time"
+
+	"github.com/a-h/templ"
 )
 
-//go:embed static/app.css static/token-table.css static/token-table.js static/theme.js static/webmcp.js static/htmx.min.js static/fonts static/logo.png static/logo-250x250.png
+//go:embed static/app.css static/token-table.css static/token-table.js static/theme.js static/webmcp.js static/htmx.min.js static/fonts static/logo.png static/logo-250x250.png static/logo-250x250.webp
 var embeddedStatic embed.FS
+
+//go:embed static/theme-init.js
+var themeInitialization string
+
+// This trusted, embedded script must run before styles to avoid a theme flash.
+func initialThemeScript() templ.Component {
+	return templ.Raw("<script>" + themeInitialization + "</script>")
+}
 
 var webStaticFiles = mustStaticFiles()
 
