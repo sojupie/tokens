@@ -105,6 +105,7 @@ func (server *Server) handleMCP(response http.ResponseWriter, request *http.Requ
 	if server.usage != nil {
 		defer func() {
 			observed.DurationMS = float64(time.Since(observed.Time)) / float64(time.Millisecond)
+			observed.Time = time.Now().UTC()
 			server.usage.Record(observed)
 		}()
 	}

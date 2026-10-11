@@ -337,7 +337,8 @@ sudo systemctl list-timers --all tokens-usage.timer
 
 The digest runs Mondays at 09:00 Europe/Stockholm and uses the SMTP settings in
 `/etc/tokens/update.env`, including the existing sender and recipient. Weekly
-periods end at the last complete UTC hour. The first report covers the previous
+periods end at the last complete UTC hour. Events use request completion times;
+the scheduled service waits two seconds for the logging queue to flush. The first report covers the previous
 seven days and states when tracking started. Later reports resume from the last
 successfully emailed period, including delayed deliveries. Persistent timers
 catch missed runs; delivery failures retry hourly. A database lease prevents

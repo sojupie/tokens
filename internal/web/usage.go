@@ -55,7 +55,7 @@ func (server *Server) observe(next http.Handler) http.Handler {
 		if response.status < 400 && (strings.HasPrefix(p, "/static/") || p == "/theme.css" || r.Method == http.MethodOptions) {
 			return
 		}
-		event := usage.Event{Time: start.UTC(), Event: "http_request", Route: "unmatched", Kind: "other", Method: "other", Status: response.status, Success: response.status < 400, Bytes: response.bytes, DurationMS: float64(time.Since(start)) / float64(time.Millisecond)}
+		event := usage.Event{Time: time.Now().UTC(), Event: "http_request", Route: "unmatched", Kind: "other", Method: "other", Status: response.status, Success: response.status < 400, Bytes: response.bytes, DurationMS: float64(time.Since(start)) / float64(time.Millisecond)}
 		for _, method := range []string{"GET", "HEAD", "POST", "OPTIONS"} {
 			if r.Method == method {
 				event.Method = method
