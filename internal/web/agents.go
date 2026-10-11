@@ -42,8 +42,8 @@ func (server *Server) handleAgentDiscovery(response http.ResponseWriter, request
 		writeJSON(response, http.StatusOK, map[string]any{
 			"$schema": "https://agents-txt.com/schema/agents-json/v1.0.json",
 			"version": "1.0", "standard": "https://agents-txt.com",
-			"site":   map[string]string{"name": "Tokens", "url": origin, "description": "Material Design token references, values, supported contexts and observed changes. An independent site, not a Google service."},
-			"skills": []map[string]string{{"url": origin + tokenSkillPath, "description": "Find and read Material Design tokens and their observed change history through public JSON endpoints."}},
+			"site":   map[string]string{"name": "Token Catalog", "url": origin, "description": "Material Design 3 token references, values, supported contexts and observed changes. An independent site, not a Google service."},
+			"skills": []map[string]string{{"url": origin + tokenSkillPath, "description": "Find and read Material Design 3 tokens and their observed change history through public JSON endpoints."}},
 		})
 		return
 	}
@@ -57,7 +57,7 @@ func (server *Server) handleAgentDiscovery(response http.ResponseWriter, request
 		return
 	}
 	var body strings.Builder
-	body.WriteString("# Tokens\n\n> An independent reference for Material Design tokens and observed changes. Not affiliated with Google.\n\n")
+	body.WriteString("# Token Catalog\n\n> An independent reference for Material Design 3 tokens and observed changes. Not affiliated with Google.\n\n")
 	fmt.Fprintf(&body, "Current snapshot: %s. Captured at: %s.\n\n", server.state.CurrentSnapshot.ID, server.state.CurrentSnapshot.CreatedAt)
 	body.WriteString("## Read the data\n\n")
 	for _, link := range []struct{ label, path, description string }{
@@ -90,7 +90,7 @@ func (server *Server) handleAgentDiscovery(response http.ResponseWriter, request
 
 func (server *Server) agentGuide() string {
 	origin := server.publicOrigin
-	return `# Read Material Design tokens
+	return `# Read Material Design 3 tokens
 
 The JSON data endpoints below use GET. MCP uses POST.
 No account, API key, cookies or JavaScript are required to read the data.

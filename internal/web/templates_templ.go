@@ -164,7 +164,7 @@ func layout(title string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, " · Tokens</title><meta name=\"description\" content=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, " · Token Catalog</title><meta name=\"description\" content=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -244,7 +244,7 @@ func layout(title string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "\" alt=\"\" width=\"40\" height=\"40\">Tokens</a><div class=\"tokens-nav-links\"><a class=\"tokens-nav-link md-typescale-label-large\" href=\"/components\">Components</a> <a class=\"tokens-nav-link md-typescale-label-large\" href=\"/styles\">Styles and token sources</a> <a class=\"tokens-nav-link md-typescale-label-large\" href=\"/changes\">Change log</a></div><div class=\"tokens-theme-controls\" role=\"group\" aria-label=\"Site appearance\"><button type=\"button\" data-app-theme aria-label=\"Dark mode\" aria-pressed=\"false\" title=\"Dark mode\" disabled><span data-theme-icon=\"light\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "\" alt=\"\" width=\"40\" height=\"40\">Token Catalog</a><div class=\"tokens-nav-links\"><a class=\"tokens-nav-link md-typescale-label-large\" href=\"/components\">Components</a> <a class=\"tokens-nav-link md-typescale-label-large\" href=\"/styles\">Styles and token sources</a> <a class=\"tokens-nav-link md-typescale-label-large\" href=\"/changes\">Change log</a></div><div class=\"tokens-theme-controls\" role=\"group\" aria-label=\"Site appearance\"><button type=\"button\" data-app-theme aria-label=\"Dark mode\" aria-pressed=\"false\" title=\"Dark mode\" disabled><span data-theme-icon=\"light\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -292,7 +292,7 @@ func layout(title string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "</main><footer class=\"tokens-site-footer\"><div class=\"tokens-footer-content\"><div><p class=\"md-typescale-title-medium\">Tokens</p><p class=\"md-typescale-body-medium\">Browse Material Design tokens and track their changes.</p><p class=\"md-typescale-body-medium\">Independent project. Not affiliated with Google.</p></div><div><p class=\"md-typescale-title-medium\">Resources</p>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "</main><footer class=\"tokens-site-footer\"><div class=\"tokens-footer-content\"><div><p class=\"md-typescale-title-medium\">Token Catalog</p><p class=\"md-typescale-body-medium\">Browse Material Design 3 tokens and track their changes.</p><p class=\"md-typescale-body-medium\">Independent project. Not affiliated with Google.</p></div><div><p class=\"md-typescale-title-medium\">Resources</p>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -347,7 +347,7 @@ func overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView)
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "<header class=\"tokens-subject-heading\"><h1 class=\"md-typescale-headline-medium\">Published Material tokens</h1>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "<header class=\"tokens-subject-heading\"><h1 class=\"md-typescale-headline-medium\">Published Material Design 3 tokens</h1>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -502,7 +502,7 @@ func overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView)
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = layout("Published Material tokens").Render(templ.WithChildren(ctx, templ_7745c5c3_Var17), templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = layout("Published Material Design 3 tokens").Render(templ.WithChildren(ctx, templ_7745c5c3_Var17), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -632,7 +632,7 @@ func subjectListPage(snapshot publish.SnapshotView, subjects []publish.SubjectVi
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = layout("Published Material subjects").Render(templ.WithChildren(ctx, templ_7745c5c3_Var28), templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = layout("Published Material Design 3 subjects").Render(templ.WithChildren(ctx, templ_7745c5c3_Var28), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

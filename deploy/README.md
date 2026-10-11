@@ -1,4 +1,4 @@
-# Deploy Tokens
+# Deploy Token Catalog
 
 Use a Linux host with systemd, Git, Docker Engine and Docker Compose 2.24.4 or
 newer. The updater can use up to 4 GiB of RAM. Go and Chromium run inside the
@@ -174,7 +174,7 @@ The first build after changing the Dockerfile or base images can still be slow.
 
 ## Manage from GitHub Actions
 
-Open **Actions → Manage Tokens → Run workflow**, select `main`, and choose a
+Open **Actions → Manage Token Catalog → Run workflow**, select `main`, and choose a
 command:
 
 | Command | What it does |

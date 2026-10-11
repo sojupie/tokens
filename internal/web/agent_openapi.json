@@ -1,9 +1,9 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "Tokens read-only API",
+    "title": "Token Catalog read-only API",
     "version": "1.0.0",
-    "description": "Independent Material Design token captures and observed changes. Public GET endpoints; no authentication. Source references and contexts should be preserved. Observation dates are not upstream release dates."
+    "description": "Independent Material Design 3 token captures and observed changes. Public GET endpoints; no authentication. Source references and contexts should be preserved. Observation dates are not upstream release dates."
   },
   "security": [],
   "paths": {

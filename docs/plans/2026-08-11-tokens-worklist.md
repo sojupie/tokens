@@ -1,11 +1,11 @@
-# Tokens worklist
+# Token Catalog worklist
 
-**Status:** Open Tokens completion and publication list
+**Status:** Open Token Catalog completion and publication list
 **Purpose:** Keep the remaining crawler, storage, publication, and evidence decisions in one place.
 
 ## Current position
 
-Tokens has:
+Token Catalog has:
 
 - a Go-only crawl and snapshot pipeline;
 - a checked-in page URL catalog;
@@ -19,7 +19,7 @@ Tokens has:
 - committed provisional snapshots;
 - an accepted upstream 404 for the Snackbar token-table payload.
 
-Tokens provides a crawler, immutable token-data storage, and a read-only
+Token Catalog provides a crawler, immutable token-data storage, and a read-only
 publication service.
 
 The latest committed lifecycle-aware snapshot is:
@@ -39,7 +39,7 @@ The earlier `m3-2026-08-12-0201` snapshot remains immutable historical evidence.
 
 ## 1. Source page scope
 
-Tokens must capture more than component specification pages. Material also
+Token Catalog must capture more than component specification pages. Material also
 publishes token tables on foundation and style pages such as elevation, motion,
 spacing, typography, shape, and color.
 
@@ -189,7 +189,7 @@ context.
 
 ### Current answer
 
-Tokens does not currently distinguish baseline and Expressive as a first-
+Token Catalog does not currently distinguish baseline and Expressive as a first-
 class normalized dimension. It preserves enough raw evidence to investigate
 the distinction, and now also records generic source-payload kind and page
 context. Reliable queries for baseline and Expressive still require the
@@ -219,7 +219,7 @@ The preferred shape is a generic context relation, for example:
 ```
 
 The relation must include enough source identity to show why it was created.
-Tokens must not guess a relation only because a token name contains a word
+Token Catalog must not guess a relation only because a token name contains a word
 such as `expressive`.
 
 ## 6. Static recommendation and availability tables
@@ -264,7 +264,7 @@ snapshot without crawler internals or a live Material page.
 ## 8. Snapshot publication
 
 - [x] Commit and publish the current schema, integrity, multi-payload, and
-  lifecycle-notice work in Tokens.
+  lifecycle-notice work in Token Catalog.
 - [ ] Select the first public provisional snapshot.
 - [ ] Define the public snapshot URL layout and checksum publication.
 
@@ -325,7 +325,7 @@ snapshot without crawler internals or a live Material page.
 ### Distribution and maintenance
 
 - [ ] Document binary build, supported platforms, archive layout, and release
-  naming before distributing Tokens.
+  naming before distributing Token Catalog.
 - [ ] Decide public snapshot storage, mirroring, retention, and raw-evidence
   redistribution policy.
 - [ ] Keep monitoring snapshot repetition and repository growth before adding

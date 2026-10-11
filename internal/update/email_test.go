@@ -122,7 +122,7 @@ func TestEmailSMTP(t *testing.T) {
 				t.Fatal(err)
 			}
 			body, _ := io.ReadAll(quotedprintable.NewReader(message.Body))
-			if message.Header.Get("Subject") != "Tokens: update needs review" || !strings.Contains(string(body), "update inspect run-123") || !strings.Contains(string(body), "Review the first capture.") || strings.Contains(string(body), "password") {
+			if message.Header.Get("Subject") != "Token Catalog: update needs review" || !strings.Contains(string(body), "update inspect run-123") || !strings.Contains(string(body), "Review the first capture.") || strings.Contains(string(body), "password") {
 				t.Fatalf("unexpected notification: %s", body)
 			}
 		})

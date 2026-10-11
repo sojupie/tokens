@@ -139,7 +139,7 @@ func subjectPageComponent(subject publish.SubjectView, changes []publish.ChangeV
 			}
 			if len(subject.SourcePageURLs) > 0 {
 				if sourceURL := safeSourceDocumentationURL(subject.SourcePageURLs[0]); sourceURL != "" {
-					if err := write(`<a class="tokens-link" href="` + html.EscapeString(sourceURL) + `">Material documentation ` + materialSymbolSVG("open_in_new") + `</a>`); err != nil {
+					if err := write(`<a class="tokens-link" href="` + html.EscapeString(sourceURL) + `">Material Design 3 documentation ` + materialSymbolSVG("open_in_new") + `</a>`); err != nil {
 						return err
 					}
 				}

@@ -103,8 +103,8 @@ func (server *Server) handleHTMLSubject(response http.ResponseWriter, request *h
 	}
 	info := server.basicMetadata(subjectURL(subjects[0]), query)
 	info.SiteDownload = server.siteDownload
-	info.Title = subjects[0].Name + " tokens — Material Design"
-	info.Heading = "Material Design " + tokenPhrase(subjects[0].Name) + " tokens"
+	info.Title = subjects[0].Name + " tokens — Material Design 3"
+	info.Heading = "Material Design 3 " + tokenPhrase(subjects[0].Name) + " tokens"
 	info.Description = subjectTokenDescription(subjects[0])
 	downloadQuery := url.Values{"scope": {"all"}}
 	if len(browser.Sets) > 0 {
@@ -119,7 +119,7 @@ func (server *Server) handleHTMLSubject(response http.ResponseWriter, request *h
 	}
 	info.JSONAlternate = subjectDownloadURL(subjects[0]) + "?" + downloadQuery.Encode()
 	if setPath != "" || query.Get("set") != "" {
-		info.Heading = "Material Design " + tokenSetComponent(browser.Selected) + " tokens"
+		info.Heading = "Material Design 3 " + tokenSetComponent(browser.Selected) + " tokens"
 		info.Title = tokenSetTitle(browser.Selected)
 		info.Description = tokenSetDescription(browser.Selected)
 		if !info.NoIndex {
@@ -165,8 +165,8 @@ func (server *Server) renderChangeHistory(response http.ResponseWriter, request 
 	query.Set("page", strconv.Itoa(page))
 	info := server.basicMetadata(request.URL.Path, query)
 	if subject != "" {
-		info.Title = "Material Design " + timelineTitle(subject, server.state.Subjects)
-		info.Description = "Track " + timelineTitle(subject, server.state.Subjects) + " in Material Design tokens, with previous values, new values and context. Dates show when changes were detected."
+		info.Title = "Material Design 3 " + timelineTitle(subject, server.state.Subjects)
+		info.Description = "Track " + timelineTitle(subject, server.state.Subjects) + " in Material Design 3 tokens, with previous values, new values and context. Dates show when changes were detected."
 		if page > 1 {
 			info.Title += " - Page " + strconv.Itoa(page)
 		}

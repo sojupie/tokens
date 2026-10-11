@@ -26,7 +26,7 @@ func tokenSetURL(subject publish.SubjectView, set tokenSet) string {
 }
 
 func subjectTokenDescription(subject publish.SubjectView) string {
-	return "Material Design tokens for " + subject.Name + ". View named references and values by context, download JSON or see what changed."
+	return "Material Design 3 tokens for " + subject.Name + ". View named references and values by context, download JSON or see what changed."
 }
 
 type tokenSetMenuGroup struct {
@@ -133,7 +133,7 @@ func tokenSetTitle(set tokenSet) string {
 	if set.variant == "toggle" || set.category == "SIZE" && set.variant != "" {
 		subset = tokenPhrase(set.variant) + " " + subset
 	}
-	return sentenceCase(tokenSetComponent(set)) + ": " + subset + " — Material Design"
+	return sentenceCase(tokenSetComponent(set)) + ": " + subset + " — Material Design 3"
 }
 
 func tokenSetDescription(set tokenSet) string {
@@ -157,7 +157,7 @@ func tokenSetDescription(set tokenSet) string {
 			kind = strings.Join(labels[:len(labels)-1], ", ") + " and " + labels[len(labels)-1]
 		}
 	}
-	text := sentenceCase(kind) + " tokens for the Material Design " + tokenSetComponent(set)
+	text := sentenceCase(kind) + " tokens for the Material Design 3 " + tokenSetComponent(set)
 	if set.category == "SIZE" && set.variant != "" {
 		text += " in " + tokenPhrase(set.variant) + " size"
 	}

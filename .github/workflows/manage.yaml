@@ -1,5 +1,5 @@
-name: Manage Tokens
-run-name: Tokens · ${{ inputs.operation }} ${{ inputs.run_id }}
+name: Manage Token Catalog
+run-name: Token Catalog · ${{ inputs.operation }} ${{ inputs.run_id }}
 
 on:
   workflow_dispatch:

@@ -19,10 +19,10 @@ func TestTokenSetCopySeparatesComponentAndSubset(t *testing.T) {
 	if got := tokenSetLabel(set); got != "Toggle · Color" {
 		t.Fatal(got)
 	}
-	if got := tokenSetTitle(set); got != "Filled tonal icon button: toggle colors — Material Design" {
+	if got := tokenSetTitle(set); got != "Filled tonal icon button: toggle colors — Material Design 3" {
 		t.Fatal(got)
 	}
-	if got := tokenSetDescription(set); got != "Color tokens for the Material Design filled tonal icon button when used as a toggle, in selected and unselected states. View references and values by context, or download JSON." {
+	if got := tokenSetDescription(set); got != "Color tokens for the Material Design 3 filled tonal icon button when used as a toggle, in selected and unselected states. View references and values by context, or download JSON." {
 		t.Fatal(got)
 	}
 	set.sourceTokens = set.sourceTokens[:1]

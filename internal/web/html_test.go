@@ -50,7 +50,7 @@ func TestHTMLPagesRenderComponentsAndStyles(t *testing.T) {
 		body   []string
 		status int
 	}{
-		{path: "/", body: []string{"Published Material tokens", "/components/snackbar", "/styles/elevation"}, status: http.StatusOK},
+		{path: "/", body: []string{"Published Material Design 3 tokens", "/components/snackbar", "/styles/elevation"}, status: http.StatusOK},
 		{path: "/components/snackbar", body: []string{"Snackbar", "Container", "Snackbar container width", "md.comp.snackbar.container.width", "560", "Download JSON"}, status: http.StatusOK},
 		{path: "/styles/elevation", body: []string{"Elevation", "Download JSON"}, status: http.StatusOK},
 		{path: "/styles/motion/overview", body: []string{"Motion", "Download JSON"}, status: http.StatusOK},
@@ -73,7 +73,7 @@ func TestHTMLPagesRenderComponentsAndStyles(t *testing.T) {
 					t.Fatalf("body does not contain %q:\n%s", value, recorder.Body.String())
 				}
 			}
-			for _, value := range []string{`<footer class="tokens-site-footer">`, `href="https://marmenlind.com"`, "Made by Olle Marmenlind", "Browse Material Design tokens and track their changes."} {
+			for _, value := range []string{`<footer class="tokens-site-footer">`, `href="https://marmenlind.com"`, "Made by Olle Marmenlind", "Browse Material Design 3 tokens and track their changes."} {
 				if !strings.Contains(recorder.Body.String(), value) {
 					t.Fatalf("page footer does not contain %q", value)
 				}

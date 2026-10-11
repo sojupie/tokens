@@ -1,6 +1,6 @@
-# Tokens data flow
+# Token Catalog data flow
 
-Tokens has two jobs:
+Token Catalog has two jobs:
 
 1. crawl Material's pages and save the source data it publishes;
 2. create and verify an immutable material-token-data snapshot.
@@ -81,7 +81,7 @@ source-payload cache.
 
 The page HTML is observed but is not a snapshot input. The matching
 source-payload response is the fetched source data. Different Material areas
-use different payload filename stems, so Tokens does not assume that
+use different payload filename stems, so Token Catalog does not assume that
 every source payload is named `TOKEN_TABLE`.
 
 ## What is generated?

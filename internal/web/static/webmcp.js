@@ -6,7 +6,7 @@
   const options = {signal: lifecycle.signal};
   async function read(path) {
     const response = await fetch(path, {headers: {Accept: 'application/json'}, signal: lifecycle.signal});
-    if (!response.ok) throw new Error(`Tokens request failed (${response.status})`);
+    if (!response.ok) throw new Error(`Token Catalog request failed (${response.status})`);
     return response.json();
   }
   function result(value) {
@@ -16,7 +16,7 @@
   const tools = [
     {
       name: 'list_subjects',
-      description: 'Find Material Design components and styles with exact token download URLs.',
+      description: 'Find Material Design 3 components and styles with exact token download URLs.',
       inputSchema: {type: 'object', properties: {query: {type: 'string', description: 'Optional name or slug filter.'}}, additionalProperties: false},
       execute: async ({query = ''} = {}) => {
         const index = await read(base + '/api/v1/subjects');

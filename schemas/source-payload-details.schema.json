@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/sojupie/tokens/schemas/source-payload-details.schema.json",
-  "title": "Tokens source-payload details",
+  "title": "Token Catalog source-payload details",
   "type": "object",
   "additionalProperties": false,
   "required": ["schemaVersion", "records"],

@@ -33,16 +33,16 @@ func TestSEOMetadataAndCanonicalURLs(t *testing.T) {
 		path, title, canonical string
 		noindex                bool
 	}{
-		{"/", "Material Design Tokens and Change History", "https://tokens.example/", false},
-		{"/components/snackbar", "Snackbar tokens — Material Design", "https://tokens.example/components/snackbar", false},
-		{"/components/snackbar/sets/snackbar/common", "Snackbar: common tokens — Material Design", "https://tokens.example/components/snackbar/sets/snackbar/common", false},
-		{"/components/snackbar?set=snackbar%7Ccommon%7C", "Snackbar: common tokens — Material Design", "https://tokens.example/components/snackbar/sets/snackbar/common", false},
-		{"/components/snackbar?utm_source=example", "Snackbar tokens — Material Design", "https://tokens.example/components/snackbar", false},
-		{"/components/snackbar/changes?page=2", "Material Design Snackbar changes - Page 2", "https://tokens.example/components/snackbar/changes?page=2", false},
-		{"/components?q=snack", "Material Design Component Tokens", "", true},
-		{"/components/snackbar?context.Theme=Dark", "Snackbar tokens — Material Design", "", true},
-		{"/changes?snapshot=one", "Material Design Token Change History", "", true},
-		{"/changes?type=removed", "Material Design Token Change History", "", true},
+		{"/", "Material Design 3 Tokens and Change History", "https://tokens.example/", false},
+		{"/components/snackbar", "Snackbar tokens — Material Design 3", "https://tokens.example/components/snackbar", false},
+		{"/components/snackbar/sets/snackbar/common", "Snackbar: common tokens — Material Design 3", "https://tokens.example/components/snackbar/sets/snackbar/common", false},
+		{"/components/snackbar?set=snackbar%7Ccommon%7C", "Snackbar: common tokens — Material Design 3", "https://tokens.example/components/snackbar/sets/snackbar/common", false},
+		{"/components/snackbar?utm_source=example", "Snackbar tokens — Material Design 3", "https://tokens.example/components/snackbar", false},
+		{"/components/snackbar/changes?page=2", "Material Design 3 Snackbar changes - Page 2", "https://tokens.example/components/snackbar/changes?page=2", false},
+		{"/components?q=snack", "Material Design 3 Component Tokens", "", true},
+		{"/components/snackbar?context.Theme=Dark", "Snackbar tokens — Material Design 3", "", true},
+		{"/changes?snapshot=one", "Material Design 3 Token Change History", "", true},
+		{"/changes?type=removed", "Material Design 3 Token Change History", "", true},
 	} {
 		t.Run(check.path, func(t *testing.T) {
 			response := httptest.NewRecorder()
@@ -51,7 +51,7 @@ func TestSEOMetadataAndCanonicalURLs(t *testing.T) {
 			request.Header.Set("X-Forwarded-Host", "untrusted.example")
 			server.Handler().ServeHTTP(response, request)
 			body := response.Body.String()
-			if response.Code != http.StatusOK || !strings.Contains(body, "<title>"+check.title+" · Tokens</title>") || !strings.Contains(body, `<meta name="description" content="`) {
+			if response.Code != http.StatusOK || !strings.Contains(body, "<title>"+check.title+" · Token Catalog</title>") || !strings.Contains(body, `<meta name="description" content="`) {
 				t.Fatalf("%s: unexpected metadata/status %d", check.path, response.Code)
 			}
 			if check.canonical != "" && !strings.Contains(body, `rel="canonical" href="`+check.canonical+`"`) {
@@ -141,7 +141,7 @@ func TestTokenSetPagesAreLinkedAndServerRendered(t *testing.T) {
 		if strings.Contains(body, "tokens-token-set-links") || strings.Contains(body, `<select name="set">`) || strings.Count(body, `aria-label="Token sets"`) != 1 {
 			t.Fatal("page has redundant token-set navigation")
 		}
-		if !strings.Contains(body, `popover="auto"`) || !strings.Contains(body, `aria-current="page"`) || !strings.Contains(body, "Material Design snackbar tokens") {
+		if !strings.Contains(body, `popover="auto"`) || !strings.Contains(body, `aria-current="page"`) || !strings.Contains(body, "Material Design 3 snackbar tokens") {
 			t.Fatal("missing native popover, current selection or clear main heading")
 		}
 		for _, link := range []string{"/sets/snackbar/color", "/sets/snackbar/common"} {

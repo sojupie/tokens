@@ -18,14 +18,14 @@ const mcpProtocol = "2025-11-25"
 var errMCPArguments = errors.New("Invalid tool parameters")
 
 func (server *Server) mcpInfo() map[string]string {
-	return map[string]string{"name": "io.github.sojupie/material-tokens", "title": "Material Tokens", "version": mcpVersion}
+	return map[string]string{"name": "io.github.sojupie/material-tokens", "title": "Token Catalog", "version": mcpVersion}
 }
 
 func (server *Server) mcpCard() map[string]any {
 	return map[string]any{
 		"$schema": "https://static.modelcontextprotocol.io/schemas/v1/server-card.schema.json",
-		"name":    "io.github.sojupie/material-tokens", "title": "Material Tokens", "version": mcpVersion,
-		"description": "Read Material Design tokens, context-specific values, references and observed changes.",
+		"name":    "io.github.sojupie/material-tokens", "title": "Token Catalog", "version": mcpVersion,
+		"description": "Read Material Design 3 tokens, context-specific values, references and observed changes.",
 		"websiteUrl":  server.publicOrigin,
 		"remotes":     []any{map[string]any{"type": "streamable-http", "url": server.publicOrigin + "/mcp", "supportedProtocolVersions": []string{mcpProtocol, "2025-06-18", "2025-03-26"}}},
 	}
@@ -41,7 +41,7 @@ func mcpTools() []any {
 			"annotations": map[string]bool{"readOnlyHint": true, "destructiveHint": false, "idempotentHint": true, "openWorldHint": false}}
 	}
 	return []any{
-		tool("list_subjects", "Find Material Design components and styles with exact token download URLs.", map[string]any{"query": map[string]string{"type": "string", "description": "Optional case-insensitive name or slug filter."}}),
+		tool("list_subjects", "Find Material Design 3 components and styles with exact token download URLs.", map[string]any{"query": map[string]string{"type": "string", "description": "Optional case-insensitive name or slug filter."}}),
 		tool("get_tokens", "Read every table, token and supported context for one subject from list_subjects. Ignores browser search and filters. For filtered table downloads, use the HTTP API documented in OpenAPI.", map[string]any{
 			"kind": map[string]any{"type": "string", "enum": []string{"component", "style", "foundation", "reference-token-set", "system-token-set"}},
 			"slug": map[string]string{"type": "string", "description": "Exact subject slug returned by list_subjects."},
@@ -137,7 +137,7 @@ func (server *Server) handleMCP(response http.ResponseWriter, request *http.Requ
 		if params.ProtocolVersion == "2025-06-18" || params.ProtocolVersion == "2025-03-26" {
 			negotiated = params.ProtocolVersion
 		}
-		result = map[string]any{"protocolVersion": negotiated, "serverInfo": server.mcpInfo(), "capabilities": map[string]any{"tools": map[string]bool{"listChanged": false}}, "instructions": "Public read-only Material Design token data. No registration required. Start with list_subjects; use exact kind and slug for get_tokens. get_tokens returns the entire subject in all contexts. For filtered tables, read " + server.publicOrigin + "/openapi.json and " + server.publicOrigin + "/llms-full.txt."}
+		result = map[string]any{"protocolVersion": negotiated, "serverInfo": server.mcpInfo(), "capabilities": map[string]any{"tools": map[string]bool{"listChanged": false}}, "instructions": "Public read-only Material Design 3 token data. No registration required. Start with list_subjects; use exact kind and slug for get_tokens. get_tokens returns the entire subject in all contexts. For filtered tables, read " + server.publicOrigin + "/openapi.json and " + server.publicOrigin + "/llms-full.txt."}
 	case "ping":
 		result = map[string]any{}
 	case "tools/list":

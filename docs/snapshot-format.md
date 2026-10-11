@@ -1,4 +1,4 @@
-# Tokens snapshot format
+# Token Catalog snapshot format
 
 **Status:** Current implementation contract, version 3
 **Date:** 2026-08-12
@@ -35,7 +35,7 @@ must contain the same verified payload bytes.
 
 The publisher serializes release files deterministically, calculates their
 SHA-256 hashes, then writes the manifest. The manifest digest is the integrity
-identity used by consumers. Current Tokens-generated IDs use the source
+identity used by consumers. Current Token Catalog-generated IDs use the source
 family, capture date, and capture time in UTC (`HHMM`):
 
 ```text

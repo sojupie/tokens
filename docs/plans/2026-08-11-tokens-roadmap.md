@@ -1,4 +1,4 @@
-# Tokens roadmap
+# Token Catalog roadmap
 
 **Status:** Draft for execution  
 **Created:** 2026-08-11  
@@ -6,7 +6,7 @@
 
 ## 1. Mission
 
-Tokens captures what Material published, stores it as reliable immutable
+Token Catalog captures what Material published, stores it as reliable immutable
 evidence, and makes that evidence available offline and through a read-only web
 service. The crawler and the published token data are the active product.
 
@@ -17,7 +17,7 @@ canonical store.
 
 ## 2. Boundary
 
-Tokens owns:
+Token Catalog owns:
 
 - curated and live discovery of component, foundation, and style token-source
   pages;
@@ -103,7 +103,7 @@ existing snapshot.
 ### Phase 0: repository cleanup
 
 - Rename project documentation and the public command name. **Done:** the
-  product is Tokens and the executable is `tokens`.
+  product is Token Catalog and the executable is `tokens`.
 - Remove the Node and Playwright prototype. **Done.**
 - Keep the current Go crawler behavior and tests passing. **Done for the
   current implementation.**

@@ -3,7 +3,7 @@
 For automated production updates with saved reports, approval and atomic
 generation switching, see [scheduled updates](updates.md).
 
-Tokens publishes a verified snapshot into a local read-only data set.
+Token Catalog publishes a verified snapshot into a local read-only data set.
 The published data is derived from the snapshot. The snapshot remains the
 canonical source and is not modified.
 
@@ -24,7 +24,7 @@ tokens publish \
 ```
 
 The timeline includes all supported snapshots in the selected snapshot's parent
-directory, up to the selected capture date. Tokens verifies them and compares
+directory, up to the selected capture date. Token Catalog verifies them and compares
 each consecutive pair. To use another history directory:
 
 ```text
@@ -72,7 +72,7 @@ public token view, and the changes between consecutive retained snapshots.
 `tokens.sqlite` is a generated read index. It stores subjects, tokens, context-
 specific values, lifecycle notices, source payloads, and provenance links.
 It can be deleted and rebuilt from the verified snapshot. Re-run `tokens
-publish` after upgrading Tokens; the SQLite index is rebuilt rather than
+publish` after upgrading Token Catalog; the SQLite index is rebuilt rather than
 migrated in place.
 
 `downloads/tokens.json` contains the capture timestamp and all subjects. Each

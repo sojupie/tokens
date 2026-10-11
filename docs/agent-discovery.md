@@ -52,7 +52,7 @@ Change `contentSignal` in `internal/web/discovery.go` if a different policy is w
 
 In the **tokencatalog.dev** zone, confirm the domain uses the Cloudflare
 nameservers shown in Overview. In **Zero Trust → Networks → Connectors →
-Cloudflare Tunnels**, open the existing Tokens tunnel and add a published
+Cloudflare Tunnels**, open the existing tunnel and add a published
 application route: hostname `tokencatalog.dev` (leave subdomain and path empty),
 service `HTTP`, URL `tokens:8080`. Route the whole hostname because robots.txt
 and discovery files also live at the root. Do not strip `/md3` or put it in the

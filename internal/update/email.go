@@ -70,13 +70,13 @@ func smtpEnvironment() (smtpConfig, error) {
 }
 
 func emailMessage(config smtpConfig, root string, report Report) []byte {
-	subject := "Tokens: update failed"
+	subject := "Token Catalog: update failed"
 	intro := "The token update did not finish successfully. Check the report and service logs before retrying."
 	if report.Status == "needs_review" {
-		subject = "Tokens: update needs review"
+		subject = "Token Catalog: update needs review"
 		intro = "A token update needs your review before it can be published."
 	} else if report.Status == "test" {
-		subject = "Tokens: test notification"
+		subject = "Token Catalog: test notification"
 		intro = "Email notifications are working. This test did not run a crawl or change the publication."
 	} else if report.Status == "service_failed" {
 		intro = "The token update service failed. Check its logs to see what happened."

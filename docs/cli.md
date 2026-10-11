@@ -1,4 +1,4 @@
-# Tokens CLI
+# Token Catalog CLI
 
 The command is organized around the work being done:
 

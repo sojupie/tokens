@@ -1,7 +1,7 @@
 # Updates and recovery
 
 Run these commands from `/opt/tokens`. For first-time installation, use
-[Deploy Tokens](../deploy/README.md).
+[Deploy Token Catalog](../deploy/README.md).
 
 ## Run an update
 

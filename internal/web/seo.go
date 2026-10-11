@@ -70,17 +70,17 @@ func (server *Server) basicMetadata(path string, query url.Values) pageMetadata 
 	info := pageMetadata{NoIndex: server.publicOrigin == "" || hasContentFilters(query), AgentDiscovery: server.publicOrigin != ""}
 	switch path {
 	case "/":
-		info.Title = "Material Design Tokens and Change History"
-		info.Description = "Material Design tokens, named references and change history. Find a component or style and download its tokens as JSON."
+		info.Title = "Material Design 3 Tokens and Change History"
+		info.Description = "Material Design 3 tokens, named references and change history. Find a component or style and download its tokens as JSON."
 	case "/components":
-		info.Title = "Material Design Component Tokens"
-		info.Description = "Find tokens for Material Design components, from buttons to navigation. View references and values, download JSON and see what changed."
+		info.Title = "Material Design 3 Component Tokens"
+		info.Description = "Find tokens for Material Design 3 components, from buttons to navigation. View references and values, download JSON and see what changed."
 	case "/styles":
-		info.Title = "Material Design Styles and System Tokens"
-		info.Description = "Material Design styles and system tokens, with named references, context-specific values, JSON downloads and change history."
+		info.Title = "Material Design 3 Styles and System Tokens"
+		info.Description = "Material Design 3 styles and system tokens, with named references, context-specific values, JSON downloads and change history."
 	default:
-		info.Title = "Material Design Token Change History"
-		info.Description = "Track changes to Material Design tokens across captured snapshots, with previous values, new values and context. Dates show when changes were detected."
+		info.Title = "Material Design 3 Token Change History"
+		info.Description = "Track changes to Material Design 3 tokens across captured snapshots, with previous values, new values and context. Dates show when changes were detected."
 	}
 	if !info.NoIndex {
 		info.Canonical = server.publicOrigin + path

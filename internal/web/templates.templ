@@ -20,7 +20,7 @@ templ layout(title string) {
 		<script src={ staticURL("webmcp.js") } defer></script>
 		<link rel="icon" type="image/png" sizes="250x250" href={ staticURL("logo-250x250.png") }/>
 		<link rel="apple-touch-icon" href={ staticURL("logo-250x250.png") }/>
-		<title>{ pageTitle(ctx, title) } · Tokens</title>
+		<title>{ pageTitle(ctx, title) } · Token Catalog</title>
 		<meta name="description" content={ metadata(ctx).Description }/>
 		if metadata(ctx).AgentDiscovery {
 			<link rel="describedby" href="/agents.json" type="application/json"/>
@@ -42,7 +42,7 @@ templ layout(title string) {
 	<body class="tokens-body">
 		<header class="tokens-site-header">
 			<nav class="tokens-primary-nav" aria-label="Primary">
-				<a class="tokens-brand md-typescale-headline-medium" href="/"><img class="tokens-brand-logo" src={ staticURL("logo-250x250.png") } alt="" width="40" height="40"/>Tokens</a>
+				<a class="tokens-brand md-typescale-headline-medium" href="/"><img class="tokens-brand-logo" src={ staticURL("logo-250x250.png") } alt="" width="40" height="40"/>Token Catalog</a>
 				<div class="tokens-nav-links">
 					<a class="tokens-nav-link md-typescale-label-large" href="/components">Components</a>
 					<a class="tokens-nav-link md-typescale-label-large" href="/styles">Styles and token sources</a>
@@ -77,8 +77,8 @@ templ layout(title string) {
 		<footer class="tokens-site-footer">
 			<div class="tokens-footer-content">
 				<div>
-					<p class="md-typescale-title-medium">Tokens</p>
-					<p class="md-typescale-body-medium">Browse Material Design tokens and track their changes.</p>
+					<p class="md-typescale-title-medium">Token Catalog</p>
+					<p class="md-typescale-body-medium">Browse Material Design 3 tokens and track their changes.</p>
 					<p class="md-typescale-body-medium">Independent project. Not affiliated with Google.</p>
 				</div>
 				<div>
@@ -100,9 +100,9 @@ templ layout(title string) {
 }
 
 templ overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView) {
-@layout("Published Material tokens") {
+@layout("Published Material Design 3 tokens") {
 		<header class="tokens-subject-heading">
-			<h1 class="md-typescale-headline-medium">Published Material tokens</h1>
+			<h1 class="md-typescale-headline-medium">Published Material Design 3 tokens</h1>
 			@siteDownloadButton("all")
 		</header>
 		<p class="md-typescale-body-large">Current snapshot: <code class="tokens-code">{ snapshot.ID }</code></p>
@@ -133,7 +133,7 @@ templ overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView
 }
 
 templ subjectListPage(snapshot publish.SnapshotView, subjects []publish.SubjectView, styles bool, query string) {
-@layout("Published Material subjects") {
+@layout("Published Material Design 3 subjects") {
 		<header class="tokens-subject-heading">
 		if styles {
 			<h1 class="md-typescale-headline-medium">Styles and token sources</h1>

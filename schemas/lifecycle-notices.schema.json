@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/sojupie/tokens/schemas/lifecycle-notices.schema.json",
-  "title": "Tokens lifecycle notices",
+  "title": "Token Catalog lifecycle notices",
   "type": "object",
   "additionalProperties": false,
   "required": ["schemaVersion", "notices"],

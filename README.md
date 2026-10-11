@@ -1,6 +1,6 @@
-# Tokens
+# Token Catalog
 
-Tokens is a browser for Material Design 3 tokens. Find tokens by component,
+Token Catalog is a browser for Material Design 3 tokens. Find tokens by component,
 compare their values and references, download JSON, and browse changes over time.
 
 The updater collects Material's source data, saves each capture, and publishes
@@ -8,7 +8,7 @@ approved changes. The website serves the saved data without crawling on requests
 
 ## Deploy
 
-Follow [Deploy Tokens](deploy/README.md) to configure the site, capture the first
+Follow [Deploy Token Catalog](deploy/README.md) to configure the site, capture the first
 data, enable weekly updates, and test email alerts.
 
 ## Run locally
@@ -181,7 +181,7 @@ crawl-results/<crawl-id>.json
 
 The cache contains downloaded Material token-table responses. Crawl receipts
 record what one crawl job did. Both are local evidence until a snapshot command
-deliberately packages them. The hash identifies the bytes Tokens ingested;
+deliberately packages them. The hash identifies the bytes Token Catalog ingested;
 the upstream URL records where they came from.
 
 If upstream publishes a new URL, a later crawl stores a new artifact and leaves
@@ -197,7 +197,7 @@ checksums. Lifecycle notices preserve explicit upstream deprecation and
 recommendation statements from Material.
 
 See the [data flow](docs/data-flow.md), [snapshot format](docs/snapshot-format.md), and the
-[Tokens roadmap](docs/plans/2026-08-11-tokens-roadmap.md).
+[Token Catalog roadmap](docs/plans/2026-08-11-tokens-roadmap.md).
 
 Create and verify a snapshot from the newest completed crawl:
 
