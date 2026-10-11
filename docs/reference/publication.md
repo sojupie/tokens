@@ -1,7 +1,7 @@
 # Offline publication
 
 For automated production updates with saved reports, approval and atomic
-generation switching, see [scheduled updates](updates.md).
+generation switching, see [scheduled updates](../operations/updates.md).
 
 Token Catalog publishes a verified snapshot into a local read-only data set.
 The published data is derived from the snapshot. The snapshot remains the
@@ -117,16 +117,14 @@ snapshot directory.
 
 ## Web assets
 
-The read-only web server embeds its assets in the `tokens` binary. The
-stylesheet is generated from `internal/web/static/tailwind.css` with the
-standalone Tailwind CLI:
+The server embeds CSS, JavaScript, fonts and logos in the Go binary. CSS is
+maintained in `internal/web/static/app.css` and `token-table.css`. HTML templates
+are written in templ; generated Go files are committed alongside them.
+See [development](../development.md) for regeneration and checks.
 
-```text
-tailwindcss -i internal/web/static/tailwind.css -o internal/web/static/app.css --content "internal/web/**/*.templ" --minify
-```
-
-HTMX is pinned in `internal/web/static/htmx.min.js`; the server does not need a
-CDN at runtime.
+HTMX is bundled in `internal/web/static/htmx.min.js`, and Roboto is self-hosted.
+The server does not need a CDN. Their licenses are listed in
+[third-party notices](../../THIRD_PARTY_NOTICES.md).
 
 ## What is preserved
 

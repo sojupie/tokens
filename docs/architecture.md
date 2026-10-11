@@ -1,9 +1,21 @@
-# Token Catalog data flow
+# Architecture
 
-Token Catalog has two jobs:
+Token Catalog separates capture, verification, publication and serving. The
+current source implementation reads Material Design 3 pages. A publication
+contains the data needed for browsing, API reads and downloads.
 
-1. crawl Material's pages and save the source data it publishes;
-2. create and verify an immutable material-token-data snapshot.
+## Design decisions
+
+- Capture records pages, payloads and failures separately, so a successful page
+  request does not hide a missing token payload.
+- Source payloads are stored by their SHA-256 hash, preserving the bytes behind
+  an extracted value. Snapshots carry their own source evidence and checksums.
+- Comparisons use token values, references and contexts. Release URLs and
+  refreshed source hashes do not create token change entries.
+- Publication builds into a staging directory. Activation switches the current
+  generation only after the candidate passes the update checks or is approved.
+- The HTTP server resolves and loads one publication at startup. Chromium runs
+  during capture, independently of the serving process.
 
 ## The flow
 
@@ -128,3 +140,16 @@ payloads. Capture completeness and publication approval are separate checks.
 
 Capture status and review status are separate. A snapshot can be successfully
 assembled while still being partial and provisional.
+
+## Collection boundaries
+
+The hosted Material Design 3 collection lives at `/md3`. Root discovery files
+advertise that collection's routes. Source catalogs, capture rules, extraction,
+theme generation and several stored names currently assume Material Design 3.
+Supporting another collection requires changes at those boundaries. The current
+server hosts one loaded publication.
+
+[Development](development.md) maps these stages to packages.
+[Updates and recovery](operations/updates.md) describes automated capture,
+review and activation. [Snapshot format](reference/snapshot-format.md) and
+[publication](reference/publication.md) describe the stored artifacts.

@@ -1,244 +1,88 @@
 # Token Catalog
 
-Token Catalog is a browser for Material Design 3 tokens. Find tokens by component,
-compare their values and references, download JSON, and browse changes over time.
+Token Catalog collects design tokens and makes them easier to browse, compare
+and download. [Material Design 3](https://tokencatalog.dev/md3/) is the first
+supported collection.
 
-The updater collects Material's source data, saves each capture, and publishes
-approved changes. The website serves the saved data without crawling on requests.
+![Token Catalog showing the Material Design 3 component catalog](docs/images/catalog.png)
 
-## Deploy
+## Browse and download
 
-Follow [Deploy Token Catalog](deploy/README.md) to configure the site, capture the first
-data, enable weekly updates, and test email alerts.
+Find tokens by component or style, inspect their references, and filter values
+by platform, theme and other settings. Downloads can include the filtered table,
+all values in a table, a whole component, or the collection.
+
+For example, select a Buttons table, choose a platform and theme, then download
+“This table, with your filters” to export that selection. Broader download
+options include values outside the selected table and filters.
+
+The change log compares retained captures. It shows added, removed and changed
+values, including changes to individual settings. Dates record when a change
+was observed. Incomplete captures remain marked as partial.
+
+The same data is available through a public JSON API, Markdown responses and
+read-only MCP tools. See [usage](docs/usage.md) and
+[API and agent access](docs/reference/agents.md).
+
+## How it works
+
+A Go pipeline opens source pages with Chromium, captures their token payloads,
+and saves the source URLs, coverage results and SHA-256 hashes. Each snapshot
+contains the captured data and the files needed to verify it later.
+
+Publication runs offline. It compares snapshots and builds a SQLite read index
+and JSON downloads. The Go server renders pages with templ and HTMX, serving
+saved data independently of the crawler and upstream website.
+
+The project grew out of using Material Design in a web application and needing
+its token values in a form that could be inspected and consumed directly.
+[Architecture](docs/architecture.md) explains the pipeline and its boundaries.
 
 ## Run locally
 
-- Go 1.26 or newer.
-- Chrome or Chromium for pages that lazy-load token tables.
-
-Build, collect the initial data, then start the website:
+Install Go 1.26 or newer and Chrome or Chromium, then run:
 
 ```sh
 go build -o ./bin/tokens ./cmd/tokens
-./bin/tokens crawl --scope token-source-pages
+./bin/tokens crawl
 ./bin/tokens snapshot create
 ./bin/tokens publish
 ./bin/tokens serve --published published --listen 127.0.0.1:8081
 ```
 
-On Windows, use:
+Open [localhost:8081](http://127.0.0.1:8081). The initial crawl needs network
+access. Later starts only need the serve command. On Windows, build
+`bin/tokens.exe` and use that executable for the same commands.
 
-```powershell
-go build -o .\bin\tokens.exe .\cmd\tokens
-.\bin\tokens.exe crawl --scope token-source-pages
-.\bin\tokens.exe snapshot create
-.\bin\tokens.exe publish
-.\bin\tokens.exe serve --published published --listen 127.0.0.1:8081
-```
+See [development](docs/development.md) for tests and template changes, or
+[deployment](docs/operations/deployment.md) for Docker and scheduled updates.
 
-Open `http://127.0.0.1:8081`. On later starts, only the serve command is needed.
-Use `--chrome-path` on the crawl command if Chrome cannot be found automatically.
+## Scope
 
-For a public site, add `--public-origin https://tokencatalog.dev/md3` with your
-site's actual URL, or set `TOKENS_PUBLIC_ORIGIN` in the environment.
-See [publication](docs/publication.md) for creating the published data and
-[search indexing](docs/web-seo.md) for deployment checks.
+The current crawler, extractor and publication format are specific to Material
+Design 3. Other design systems would need source adapters, extraction rules and
+their own attribution. The catalog can grow to include further collections;
+only Material Design 3 is implemented today.
 
-## Read the site with an agent
+Captures cover the reviewed source-page catalog. Upstream failures and missing
+payloads affect coverage. A token's appearance or disappearance in a partial
+capture does not establish that its source added or removed it.
 
-Start with `/agents.json` or `/llms.txt`. The usage guide links to the public
-read-only API and explains token references, contexts and capture dates.
-`/openapi.json` describes its requests and responses.
+## Documentation
 
-Use `/api/v1/subjects` to find components and styles, then follow a subject's
-`jsonUrl`. For a bulk export, use `/downloads/tokens.json?scope=all`.
-No account or JavaScript is required. Public JSON endpoints allow cross-origin
-reads. Set the public origin to enable the discovery files and sitemap.
+- [Using the catalog](docs/usage.md)
+- [Developing and contributing](CONTRIBUTING.md)
+- [Architecture](docs/architecture.md)
+- [CLI, snapshots and publication](docs/README.md#reference)
+- [Deployment and recovery](docs/README.md#operations)
+- [Project history](docs/history/README.md)
 
-If a proxy or Cloudflare blocks automated requests, allow access to these public
-read-only routes there too. The application cannot override proxy rules.
+## License and attribution
 
-The site also supports Markdown negotiation, API and skill catalogs, ARD,
-a public read-only MCP endpoint at `/mcp`, and WebMCP in supporting browsers.
-See [agent discovery and Cloudflare setup](docs/agent-discovery.md) for the
-implemented features, DNS records, DNSSEC and proxy settings.
+Project code and original documentation are licensed under [MIT](LICENSE).
+Material Design 3 data comes from Google and retains its upstream terms.
+Bundled fonts, icons and dependencies retain their own licenses.
 
-## Crawl
-
-A normal crawl uses the checked-in page URL catalog. It lists reviewed Material
-token-source pages, including component specification pages and foundation or
-style token pages:
-
-```text
-go run ./cmd/tokens crawl
-```
-
-The page URL catalog is the default because it is small, deterministic, and
-reviewable.
-It avoids repeated sitemap discovery during routine capture.
-
-Audit the live sitemap against the page URL catalog:
-
-```text
-go run ./cmd/tokens crawl --discover --dry-run
-```
-
-Run the broader inventory scope when reviewing pages outside the current
-catalog:
-
-```text
-go run ./cmd/tokens crawl --discover --scope token-source-pages --dry-run
-```
-
-This scope considers component `/specs` pages and style or foundation token
-pages ending in `/tokens`, `/specs`, `-tokens`, or `-scale`. It reports candidates and page-catalog drift;
-it does not prove that every Material page publishes a token table.
-
-Update the page URL catalog after reviewing the reported additions and removals:
-
-```text
-go run ./cmd/tokens crawl --update-page-catalog --dry-run=false
-```
-
-Run a small dry crawl during development:
-
-```text
-go run ./cmd/tokens crawl --max-pages 10 --page-timeout 8s --dry-run
-```
-
-Pages are observed one at a time in a shared browser. `--page-timeout` is a
-maximum wait, not a delay applied to every page. Capture finishes early once
-the DOM is ready, a token payload has appeared, and relevant requests have
-finished and stayed quiet for two seconds. Unrelated iframe traffic does not
-extend the wait. Pages with no payload use the full timeout (30 seconds by
-default). Capture checks still run before publication; network quiet alone
-does not prove that every table was found.
-
-By default, valid cached source payloads are reused without an HTTP download.
-Force a fresh download when needed:
-
-```text
-go run ./cmd/tokens crawl --refresh
-```
-
-Show Chromium while debugging one page:
-
-```text
-go run ./cmd/tokens crawl --headed --max-pages 1 --page-timeout 15s
-```
-
-Use `--chrome-path` when Chrome cannot be found automatically.
-
-Retry only the failed pages from the newest crawl receipt:
-
-```text
-go run ./cmd/tokens crawl --retry-failed
-```
-
-Use `--retry-failed-from <crawl-receipt>` to select a specific receipt. The
-repair crawl opens only failed pages, then writes a new receipt containing the
-previous successful pages plus the retried results.
-
-To rerun snapshot extraction without opening Chrome or crawling pages again, use
-`snapshot create`. It reads the selected crawl receipt and cached source-payload
-artifacts. A normal `crawl` still re-observes pages so it can detect new, removed,
-or changed source-payload URLs; valid payload bytes are reused unless `--refresh`
-is supplied.
-
-## Discovery
-
-The default live discovery scope is `component-specs`. The
-`token-source-pages` scope also considers style and foundation pages such as
-`/styles/elevation/tokens`, `/styles/motion/overview/specs`,
-`/styles/typography/type-scale-tokens`, and `/styles/shape/corner-radius-scale`.
-
-The page URL catalog is the reviewed source of truth for normal crawls. Broad
-discovery is an inventory aid. Review its additions before updating the page
-catalog.
-
-Live discovery reads `robots.txt`, follows sitemap indexes, filters same-origin
-URLs, and falls back to same-origin link discovery only when no sitemap yields
-usable pages. The seed page is included when it matches the configured scope.
-
-The crawler does not need manually copied token-table URLs. For each selected
-page it:
-
-1. Opens the page through chromedp.
-2. Observes matching `TOKEN_TABLE*.json` and `TOKEN_TYPE_*.json` network responses.
-3. Fetches each unique payload once.
-4. Hashes the uncompressed response with SHA-256.
-5. Stores a gzip-compressed content-addressed artifact.
-6. Writes a crawl receipt with pages, observations, URLs, hashes, and metadata.
-
-## Local storage
-
-```text
-.cache/material-token-table-responses/
-  index.json
-  source-payloads/<hash-prefix>/<sha256>.json.gz
-crawl-results/<crawl-id>.json
-```
-
-The cache contains downloaded Material token-table responses. Crawl receipts
-record what one crawl job did. Both are local evidence until a snapshot command
-deliberately packages them. The hash identifies the bytes Token Catalog ingested;
-the upstream URL records where they came from.
-
-If upstream publishes a new URL, a later crawl stores a new artifact and leaves
-the old content untouched. If upstream mutates an existing URL, use `--refresh`.
-The new response receives a new content hash.
-
-## Material token-data snapshots
-
-Snapshots are immutable, content-addressed bundles of Material token-table
-source payloads and generated token data. They contain a manifest, page URL catalog,
-source payloads, generated token graph, source-payload details, page results, and
-checksums. Lifecycle notices preserve explicit upstream deprecation and
-recommendation statements from Material.
-
-See the [data flow](docs/data-flow.md), [snapshot format](docs/snapshot-format.md), and the
-[Token Catalog roadmap](docs/plans/2026-08-11-tokens-roadmap.md).
-
-Create and verify a snapshot from the newest completed crawl:
-
-```text
-go run ./cmd/tokens snapshot create
-
-go run ./cmd/tokens snapshot verify
-```
-
-`snapshot create` selects the newest crawl receipt, derives a UTC timestamped
-snapshot ID, and writes to `snapshots/material-token-data/<snapshot-id>`. Use
-`--help` on any command for explicit path overrides and validation rules.
-
-Compare the two latest snapshot runs:
-
-```text
-go run ./cmd/tokens snapshot compare
-```
-
-The output directory must be empty. Snapshot files are immutable after
-publication. The command prints the manifest SHA-256 for integrity verification.
-Historical snapshot IDs retain their original `m3-` prefix; new IDs should use
-the Material source date and hour/minute.
-
-## Current limits
-
-- Snapshot records preserve the source payload objects while exposing generic
-  indexes for token, value, component, and reference-tree records.
-- Snapshot comparison reports source-payload and generated-record additions, removals, and
-  changes; it does not publish snapshots.
-- Crawl receipts contain volatile timestamps and are not deterministic
-  release manifests.
-- Live crawls require network access and can fail when Material changes its site.
-
-Crawl jobs now fail when no page succeeds, record page and source-payload
-completeness in the crawl receipt, and snapshot creation rejects crawls with no
-successful pages or source payloads. A failed or incomplete crawl is evidence
-for diagnosis, not an approved snapshot.
-
-Normal tests must use committed fixtures and remain offline.
-
-See the [CLI guide](docs/cli.md) for command help, defaults, and explicit
-override examples. See the [worklist](docs/plans/2026-08-11-tokens-worklist.md)
-for remaining capture, snapshot, and publication tasks.
+Token Catalog is an independent project. See [third-party notices](THIRD_PARTY_NOTICES.md)
+and [licensing and source attribution](docs/licensing.md) for the distinction
+between the software and the data it publishes.

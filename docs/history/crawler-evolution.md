@@ -35,7 +35,7 @@ The same initial commit had `cmd/m3crawl` and `internal/m3crawl`. It already use
 3. Observe the page's main-frame network activity and collect all matching source-payload URLs. A page is considered settled after payload activity and relevant requests quiet down; a per-page timeout still bounds the wait.
 4. Fetch each unique payload, validate/reuse the content-addressed gzip cache when possible, and write a receipt with page status, payload provenance, hashes, sizes and failures.
 5. Verify the captured set and build a candidate snapshot/publication. Incomplete or suspicious results are not silently activated: an administrator can inspect, retry failed pages, and approve a candidate.
-6. Switch the served publication only after approval; the public server itself does not run the crawler.
+6. Activate complete captures that pass review automatically, and hold suspicious results for approval; the public server itself does not run the crawler.
 
 ## Main differences
 

@@ -1,50 +1,17 @@
-# Agent discovery and Cloudflare setup
+# Cloudflare setup
 
-Deploy the application changes using the normal [deployment workflow](../deploy/README.md).
-For GitHub deployments, set `TOKENS_PUBLIC_ORIGIN` to `https://tokencatalog.dev/md3`
-in the repository’s **Settings → Environments → production → Environment variables**.
-The deploy action saves it in `/etc/tokens/server.env` for Docker and systemd.
-For manual deployments, set it directly in that file. Discovery files and MCP
-return 503 until this is configured. DNS and Cloudflare account settings are
-separate from the application deployment and have not been changed by this patch.
+The application serves the public interfaces described in [APIs and agent
+access](../reference/agents.md). DNS records, tunnel routing and crawler settings
+are configured in Cloudflare.
 
-## Implemented
+Follow [deployment](deployment.md) to build and start the application. Set
+`TOKENS_PUBLIC_ORIGIN` to your collection URL, such as
+`https://tokencatalog.dev/md3`. GitHub Actions reads this from the production
+environment variable and saves it in `/etc/tokens/server.env`. Manual deployments
+can set the value in that file. Discovery and MCP return 503 when it is unset.
 
-| Feature | Route or behavior |
-| --- | --- |
-| Markdown negotiation | HTML pages return `text/markdown; charset=utf-8` when explicitly preferred through `Accept`. HTML remains the default. Both variants include `Vary: HX-Request, Accept`. |
-| Content Signals | `robots.txt` and the `Content-Signal` response header declare `ai-train=no, search=yes, ai-input=yes`. |
-| API catalog | `/.well-known/api-catalog`, `application/linkset+json`, links to OpenAPI, the usage skill and health. |
-| Agent skill index | `/.well-known/agent-skills/index.json`, v0.2.0 schema and SHA-256 of the exact served skill bytes. |
-| ARD / AI catalog | `/.well-known/ai-catalog.json`, public CORS, API, skill and MCP entries with representative queries. |
-| MCP | `/mcp`, stateless Streamable HTTP, JSON responses, `initialize`, `ping`, `tools/list`, `tools/call`, and notification acceptance. |
-| MCP server card | `/mcp/server-card`, current SEP-2127 shape; `/.well-known/mcp/server-card.json` also includes legacy scanner fields. |
-| WebMCP | Feature-detected browser registration on page load: `list_subjects`, `get_tokens`, `list_changes`. Unsupported browsers keep the existing UI. |
-| Access instructions | `/auth.md` describes public, credential-free access. |
-
-MCP exposes the same three read-only tools as WebMCP. `get_tokens` requires a
-subject's exact `kind` and `slug` from `list_subjects`. All contexts are returned.
-The server advertises only tools, with no resources, prompts, server events or
-sessions. MCP clients must send `Accept: application/json, text/event-stream`
-and `Content-Type: application/json`. Supported protocol versions are
-2025-11-25, 2025-06-18 and 2025-03-26. Browser MCP requests must have the configured
-public origin; native clients may omit Origin. The API remains public with `*`
-CORS, while MCP allows same-origin browser use.
-
-Markdown comes from the rendered page, preserving table selection, search,
-contexts and pagination. It omits navigation, scripts and interactive controls.
-No `x-markdown-tokens` count is claimed because no tokenizer is configured.
-
-OAuth/OIDC discovery, OAuth Protected Resource Metadata and registration
-metadata are intentionally absent: there is no issuer, protected API or account
-provisioning flow. `/auth.md` documents this but does not claim Auth.md agent
-registration support. Scanners may continue reporting these checks as absent.
-Adding discovery metadata alone would advertise authentication that does not exist.
-No A2A agent is implemented or advertised.
-
-The content policy permits search and agent input, and declines model training.
-The supplied `ai-input=no` example would conflict with this site's agent API use.
-Change `contentSignal` in `internal/web/discovery.go` if a different policy is wanted.
+The examples below use the hosted Material Design 3 collection. Substitute your
+own hostname when deploying a fork.
 
 ## Cloudflare changes
 
@@ -71,7 +38,7 @@ Then add these DNS-only discovery records, TTL 3600:
 | SVCB | `_mcp._agents` | 1 | `tokencatalog.dev` | `alpn="mcp,h2" port=443 mandatory=alpn,port key65400="https://tokencatalog.dev/md3/mcp/server-card" key65402="mcp"` |
 | TXT | `_catalog._agents` | — | — | `url=https://tokencatalog.dev/.well-known/ai-catalog.json` |
 
-[Copyable zone records](../deploy/dns-aid.zone.example). DNS names contain only
+[Copyable zone records](../../deploy/dns-aid.zone.example). DNS names contain only
 the hostname; `/md3` belongs in URLs. The numbered SVCB keys and `mcp` ALPN
 label are experimental. The server card advertises the actual MCP endpoint.
 Enable HTTP/2 in the zone. No A2A records are needed.
@@ -168,34 +135,6 @@ exercise registration, API reads and cleanup, but cannot provide browser support
 Rerun the readiness scan after DNS propagation and deployment; authentication
 and registration checks can remain absent for this public service.
 
-## URL layout
 
-`https://tokencatalog.dev/md3/` is the canonical Material Design 3 collection.
-All pages, static assets, API requests, downloads, OpenAPI and MCP use `/md3/`.
-The root `/` redirects to `/md3/`. Unprefixed component and download routes are
-not served. `/robots.txt`, `/sitemap.xml`, `/agents.txt`, `/agents.json`,
-`/llms.txt`, `/llms-full.txt`, `/openapi.json`, `/auth.md`, `/skills/` (the published
-skill file only), and the supported `/.well-known/` files also work at the
-root so discovery clients can find the collection. Their contents advertise
-canonical `/md3/` URLs. `/api/v1/health` remains a root alias for internal checks.
-The same discovery files are available under `/md3/` too.
-
-For migration, in the old domain's **Rules → Redirect Rules**, match
-`http.host eq "tokens.marmenlind.com"`. Use a dynamic destination
-`concat("https://tokencatalog.dev/md3", http.request.uri.path)`, preserve the
-query string, and use status **308** to preserve POST methods. Keep the old
-proxied DNS record while this redirect is needed. Update any clients that use
-MCP directly to the new endpoint; some clients do not follow redirects.
-
-In the new zone's **Rules → Configuration Rules**, disable Browser Integrity
-Check for `http.host eq "tokencatalog.dev"` if ordinary API clients are blocked.
-In **AI Crawl Control**, leave crawler blocking disabled, and turn off managed
-robots.txt if it overwrites the site's policy. Markdown conversion is optional;
-the application already supports it. If custom caching rules apply, bypass
-`/md3/` except versioned `/md3/static/` files, and bypass root discovery files.
-Purge old cached discovery responses after deploying.
-
-Set the production GitHub Actions variable (not a secret) to
-`TOKENS_PUBLIC_ORIGIN=https://tokencatalog.dev/md3`, then run Deploy. There is
-no separate base-path variable. The tunnel token can remain the same when you
-reuse the existing tunnel.
+See [URL layout](../reference/agents.md#url-layout) for collection paths and
+root discovery aliases.

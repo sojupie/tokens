@@ -29,27 +29,10 @@ go run ./cmd/tokens snapshot create --help
 
 ## Normal workflow
 
-### Notifications
-
-Set `TOKENS_SMTP_HOST`, `TOKENS_SMTP_FROM`, and `TOKENS_SMTP_TO` to send
-failure and review notices by email. Set `TOKENS_SMTP_USERNAME` and
-`TOKENS_SMTP_PASSWORD` together when the server requires authentication.
-`TOKENS_SMTP_PORT` defaults to 587 with required STARTTLS; port 465 uses
-TLS from the start. Both modes verify the server certificate.
-
-`tokens update test-notification --state-dir STATE_DIR` sends a test without
-crawling or changing a publication. SMTP acceptance does not guarantee inbox
-delivery, so check the inbox. `tokens update notify RUN_ID --state-dir STATE_DIR`
-resends a saved run report. Delivery failures are saved as `notificationError`.
-Credentials stay in the environment and are not saved in run reports.
-
-`TOKENS_NOTIFY_WEBHOOK` remains optional. If email and a webhook are configured,
-the notifier attempts both. Successful and unchanged runs do not send alerts.
-
 ### Capture and publication
 
 For unattended updates, review and notifications, see
-[scheduled updates](updates.md).
+[scheduled updates](../operations/updates.md).
 
 Run a crawl using the checked-in page URL catalog:
 
@@ -165,8 +148,8 @@ go run ./cmd/tokens snapshot compare \
 With no paths, `snapshot compare` selects the two latest snapshot runs by the
 manifest `createdAt` timestamp. The positional forms and flag forms cannot be mixed for `verify` or `compare`.
 Unknown flags, unexpected positional arguments, missing paths, unsupported
-schema versions, incomplete captures, and non-empty snapshot output
-directories fail before snapshot assembly proceeds.
+schema versions, and non-empty snapshot output directories are rejected.
+Incomplete captures retain their partial status; publication review is separate.
 
 ## Crawl controls
 

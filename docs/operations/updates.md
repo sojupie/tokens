@@ -1,7 +1,7 @@
 # Updates and recovery
 
 Run these commands from `/opt/tokens`. For first-time installation, use
-[Deploy Token Catalog](../deploy/README.md).
+[Deploy Token Catalog](deployment.md).
 
 ## Run an update
 
@@ -124,3 +124,38 @@ History caches can be rebuilt, but payload caches are needed to reuse receipts.
 If the next update asks you to finish an interrupted approval, inspect that
 exact run and approve it again. Restart the website afterwards. Do not delete
 the lock file; the operating system releases the lock when the process exits.
+
+## Import retained history
+
+Keep imported snapshots under `/var/lib/tokens/imported-history`, with one
+snapshot directory per capture. Copy the complete bundle, including its manifest,
+source payloads and checksums. Preserve its original capture and review status.
+
+Verify and compare an imported snapshot from the deployment checkout:
+
+```sh
+docker compose -f deploy/compose.yaml run --rm --no-deps updater \
+  snapshot verify /var/lib/tokens/imported-history/SNAPSHOT_ID
+
+docker compose -f deploy/compose.yaml run --rm --no-deps updater \
+  snapshot compare /var/lib/tokens/imported-history/SNAPSHOT_ID \
+  /var/lib/tokens/runs/CURRENT_RUN_ID/snapshot
+```
+
+Include the directory in the next update:
+
+```sh
+sudo sh deploy/update.sh run --history-dir /var/lib/tokens/imported-history
+```
+
+To rebuild from saved capture evidence without opening Chromium, add
+`--receipt /var/lib/tokens/runs/CURRENT_RUN_ID/receipt.json`. This creates a new
+run from the existing evidence. It does not capture new upstream data.
+
+After activation, later updates inherit the imported-history directory from
+the active run. Restart the website to load the publication. The publisher
+compares consecutive snapshots and uses the oldest as a baseline.
+
+A partial snapshot can provide useful historical values. Missing payloads can
+also appear as additions or removals in later comparisons. Inspect capture
+coverage before interpreting those entries as upstream changes.
