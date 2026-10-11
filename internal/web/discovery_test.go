@@ -210,7 +210,7 @@ func TestMarkdownSubpageViews(t *testing.T) {
 func TestContentSignals(t *testing.T) {
 	response := httptest.NewRecorder()
 	discoveryTestServer(t).Handler().ServeHTTP(response, httptest.NewRequest("GET", "/robots.txt", nil))
-	if !strings.Contains(response.Body.String(), "Content-Signal: "+contentSignal) || !strings.Contains(response.Body.String(), "Agentmap: https://tokens.example"+aiCatalogPath) || response.Header().Get("Content-Signal") != contentSignal {
+	if !strings.Contains(response.Body.String(), "Content-Signal: "+contentSignal) || strings.Contains(response.Body.String(), "Agentmap:") || response.Header().Get("Content-Signal") != contentSignal {
 		t.Fatal("content preferences are missing or inconsistent")
 	}
 }

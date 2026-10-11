@@ -58,5 +58,5 @@ func (server *Server) handleRobots(response http.ResponseWriter, _ *http.Request
 		_, _ = fmt.Fprint(response, "User-agent: *\nDisallow: /\n")
 		return
 	}
-	_, _ = fmt.Fprintf(response, "User-agent: *\nContent-Signal: "+contentSignal+"\nAllow: /\nSitemap: %s/sitemap.xml\nAgentmap: %s/.well-known/ai-catalog.json\n", server.publicOrigin, server.publicOrigin)
+	_, _ = fmt.Fprintf(response, "User-agent: *\nContent-Signal: "+contentSignal+"\nAllow: /\nSitemap: %s/sitemap.xml\n", server.publicOrigin)
 }
