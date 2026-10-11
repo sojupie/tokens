@@ -72,6 +72,9 @@ func (server *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /llms.txt", server.handleAgentDiscovery)
 	mux.HandleFunc("GET /llms-full.txt", server.handleAgentDiscovery)
 	mux.HandleFunc("GET /skills/material-tokens/SKILL.md", server.handleAgentDiscovery)
+	for _, discoveryPath := range []string{apiCatalogPath, aiCatalogPath, skillIndexPath, mcpCardPath, "/mcp/server-card", "/auth.md"} {
+		mux.HandleFunc("GET "+discoveryPath, server.handleWellKnown)
+	}
 	mux.HandleFunc("GET /theme.css", server.handleTheme)
 	mux.HandleFunc("GET /api/v1/health", server.handleHealth)
 	mux.HandleFunc("GET /api/v1/releases", server.handleReleases)
@@ -88,7 +91,8 @@ func (server *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /styles", server.handleOverview)
 	mux.HandleFunc("GET /styles/{slug...}", server.handleHTMLSubject)
 	return http.HandlerFunc(func(response http.ResponseWriter, request *http.Request) {
-		publicData := strings.HasPrefix(request.URL.Path, "/api/") || strings.HasPrefix(request.URL.Path, "/downloads/") || agentDiscoveryPath(request.URL.Path)
+		response.Header().Set("Content-Signal", contentSignal)
+		publicData := strings.HasPrefix(request.URL.Path, "/api/") || strings.HasPrefix(request.URL.Path, "/downloads/") || agentDiscoveryPath(request.URL.Path) || wellKnownPath(request.URL.Path)
 		if publicData {
 			response.Header().Set("Access-Control-Allow-Origin", "*")
 			response.Header().Set("Access-Control-Allow-Methods", "GET, HEAD, OPTIONS")
@@ -102,6 +106,11 @@ func (server *Server) Handler() http.Handler {
 		}
 		if strings.HasPrefix(request.URL.Path, "/api/") || strings.HasPrefix(request.URL.Path, "/downloads/") {
 			response.Header().Set("X-Robots-Tag", "noindex")
+		}
+		if request.URL.Path == "/mcp" {
+			response.Header().Set("X-Robots-Tag", "noindex")
+			server.handleMCP(response, request)
+			return
 		}
 		mux.ServeHTTP(response, request)
 	})

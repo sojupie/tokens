@@ -17,6 +17,7 @@ templ layout(title string) {
 		<link rel="stylesheet" href={ staticURL("token-table.css") }/>
 		<script src={ staticURL("htmx.min.js") } defer></script>
 		<script src={ staticURL("token-table.js") } defer></script>
+		<script src={ staticURL("webmcp.js") } defer></script>
 		<link rel="icon" type="image/png" sizes="250x250" href={ staticURL("logo-250x250.png") }/>
 		<link rel="apple-touch-icon" href={ staticURL("logo-250x250.png") }/>
 		<title>{ pageTitle(ctx, title) } · Tokens</title>
@@ -25,6 +26,8 @@ templ layout(title string) {
 			<link rel="describedby" href="/agents.json" type="application/json"/>
 			<link rel="describedby" href="/llms.txt" type="text/plain"/>
 			<link rel="service-desc" href="/openapi.json" type="application/json"/>
+			<link rel="api-catalog" href="/.well-known/api-catalog" type="application/linkset+json"/>
+			<link rel="ai-catalog" href="/.well-known/ai-catalog.json" type="application/json"/>
 		}
 		if metadata(ctx).JSONAlternate != "" {
 			<link rel="alternate" href={ templ.SafeURL(metadata(ctx).JSONAlternate) } type="application/json" title="Token data for this view"/>

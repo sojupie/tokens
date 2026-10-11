@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-//go:embed static/app.css static/token-table.css static/token-table.js static/theme.js static/htmx.min.js static/fonts static/logo.png static/logo-250x250.png
+//go:embed static/app.css static/token-table.css static/token-table.js static/theme.js static/webmcp.js static/htmx.min.js static/fonts static/logo.png static/logo-250x250.png
 var embeddedStatic embed.FS
 
 var webStaticFiles = mustStaticFiles()

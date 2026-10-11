@@ -58,6 +58,11 @@ reads. Set the public origin to enable the discovery files and sitemap.
 If a proxy or Cloudflare blocks automated requests, allow access to these public
 read-only routes there too. The application cannot override proxy rules.
 
+The site also supports Markdown negotiation, API and skill catalogs, ARD,
+a public read-only MCP endpoint at `/mcp`, and WebMCP in supporting browsers.
+See [agent discovery and Cloudflare setup](docs/agent-discovery.md) for the
+implemented features, DNS records, DNSSEC and proxy settings.
+
 ## Crawl
 
 A normal crawl uses the checked-in page URL catalog. It lists reviewed Material

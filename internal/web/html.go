@@ -1,6 +1,7 @@
 package web
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -30,7 +31,7 @@ func (server *Server) handleOverview(response http.ResponseWriter, request *http
 	query := request.URL.Query().Get("q")
 	subjects := filterSubjects(sortedSubjects(server.state), query, styles)
 	if request.Header.Get("HX-Request") == "true" {
-		response.Header().Set("Vary", "HX-Request")
+		response.Header().Set("Vary", "HX-Request, Accept")
 		if err := server.renderHTML(response, request, subjectList(subjects)); err != nil {
 			http.Error(response, err.Error(), http.StatusInternalServerError)
 		}
@@ -176,7 +177,7 @@ func (server *Server) renderChangeHistory(response http.ResponseWriter, request 
 }
 
 func (server *Server) renderHTML(response http.ResponseWriter, request *http.Request, component templ.Component) error {
-	response.Header().Set("Vary", "HX-Request")
+	response.Header().Set("Vary", "HX-Request, Accept")
 	response.Header().Set("Content-Type", "text/html; charset=utf-8")
 	response.Header().Set("Cache-Control", "no-cache")
 	ctx := request.Context()
@@ -184,6 +185,19 @@ func (server *Server) renderHTML(response http.ResponseWriter, request *http.Req
 		ctx = context.WithValue(ctx, pageMetadataKey{}, server.basicMetadata(request.URL.Path, request.URL.Query()))
 	}
 	ctx = context.WithValue(ctx, themeVersionKey{}, assetVersion([]byte(server.themeCSS)))
+	if wantsMarkdown(request) {
+		var rendered bytes.Buffer
+		if err := component.Render(ctx, &rendered); err != nil {
+			return err
+		}
+		markdown, err := htmlMarkdown(rendered.Bytes())
+		if err != nil {
+			return err
+		}
+		response.Header().Set("Content-Type", "text/markdown; charset=utf-8")
+		_, err = response.Write([]byte(markdown))
+		return err
+	}
 	return component.Render(ctx, response)
 }
 

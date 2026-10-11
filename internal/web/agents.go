@@ -53,7 +53,7 @@ func (server *Server) handleAgentDiscovery(response http.ResponseWriter, request
 		return
 	}
 	if request.URL.Path == tokenSkillPath {
-		_, _ = fmt.Fprint(response, "---\nname: material-tokens\ndescription: Find Material Design token references, values, supported contexts and observed changes using the Tokens public read-only API.\n---\n\n", server.agentGuide())
+		_, _ = fmt.Fprint(response, server.tokenSkill())
 		return
 	}
 	var body strings.Builder
@@ -85,7 +85,8 @@ func (server *Server) agentGuide() string {
 	return `# Read Material Design tokens
 
 All endpoints below use GET. No account, API key, cookies or JavaScript are required.
-The service is read-only. It does not provide MCP, payment or authentication protocols.
+The service is read-only. It provides a public MCP endpoint at /mcp and browser tools where WebMCP is supported.
+No payment or authentication protocols are required.
 Read ` + origin + `/openapi.json for request parameters and response schemas.
 
 ## Find a component or style

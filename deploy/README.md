@@ -233,6 +233,13 @@ runner.
 
 Run `status` to check the setup.
 
+## Configure agent discovery
+
+After deploying, follow [agent discovery and Cloudflare setup](../docs/agent-discovery.md)
+to publish DNS-AID records, enable DNSSEC, and check bot, caching and content-signal
+settings. The application serves catalogs, Markdown and a public MCP endpoint;
+Cloudflare DNS and account settings require separate configuration.
+
 ## Check a problem
 
 ```sh

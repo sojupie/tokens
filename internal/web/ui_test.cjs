@@ -90,3 +90,44 @@ test('only backdrop clicks cancel and close a modal', () => {
   click(350, 150);
   assert.equal(closed, 1);
 });
+
+test('WebMCP registers usable read-only tools and cleans up', async () => {
+  const tools = [];
+  const events = new Map();
+  let signal;
+  const index = {subjects: [{kind: 'component', slug: 'snackbar', name: 'Snackbar', jsonUrl: 'https://tokens.example/downloads/component/snackbar.json?scope=all'}]};
+  const globals = {
+    document: {modelContext: {registerTool(tool, options) { tools.push(tool); signal = options.signal; return Promise.resolve(); }}},
+    navigator: {},
+    window: {addEventListener(name, callback) { events.set(name, callback); }},
+    location: {origin: 'https://tokens.example'},
+    AbortController, URL, console,
+    fetch: async path => ({ok: true, json: async () => {
+      if (path === '/api/v1/subjects') return structuredClone(index);
+      if (path === '/api/v1/changes') return {changes: [{subject: 'snackbar'}, {subject: 'buttons'}]};
+      assert.equal(path, '/downloads/component/snackbar.json?scope=all');
+      return {tokens: [{name: 'md.comp.snackbar.container.color'}]};
+    }}),
+  };
+  runScript('webmcp.js', globals);
+  assert.deepEqual(tools.map(tool => tool.name), ['list_subjects', 'get_tokens', 'list_changes']);
+  assert.equal(JSON.parse((await tools[0].execute({query: 'snack'})).content[0].text).subjects.length, 1);
+  assert.equal(JSON.parse((await tools[0].execute({query: 'missing'})).content[0].text).subjects.length, 0);
+  assert.equal(JSON.parse((await tools[1].execute({kind: 'component', slug: 'snackbar'})).content[0].text).tokens.length, 1);
+  await assert.rejects(tools[1].execute({kind: 'component', slug: '../missing'}), /Subject not found/);
+  assert.equal(JSON.parse((await tools[2].execute({subject: 'snackbar'})).content[0].text).changes.length, 1);
+  events.get('pagehide')({persisted: true});
+  assert.equal(signal.aborted, false);
+  events.get('pagehide')({persisted: false});
+  assert.equal(signal.aborted, true);
+});
+
+test('WebMCP is optional and supports the navigator fallback', () => {
+  runScript('webmcp.js', {document: {}, navigator: {}});
+  let count = 0;
+  runScript('webmcp.js', {
+    document: {}, navigator: {modelContext: {registerTool() { count++; }}},
+    AbortController, console, window: {addEventListener() {}},
+  });
+  assert.equal(count, 3);
+});
