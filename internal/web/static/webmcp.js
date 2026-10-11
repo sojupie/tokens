@@ -44,6 +44,7 @@
       inputSchema: {type: 'object', properties: {subject: {type: 'string', description: 'Optional exact subject slug.'}}, additionalProperties: false},
       execute: async ({subject = ''} = {}) => {
         const data = await read('/api/v1/changes');
+        data.changes = data.changes || [];
         if (subject) data.changes = data.changes.filter(change => change.subject === subject);
         return result(data);
       },

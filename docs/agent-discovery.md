@@ -100,6 +100,12 @@ OPTIONS at `/mcp`; GET at that endpoint returns 405 by design. Keep ordinary
 rate limiting and DDoS protection. Some bot settings cannot be skipped through
 custom WAF rules; adjust the relevant product setting if it still blocks requests.
 
+Browser Integrity Check can block ordinary API clients, including Python's
+default user agent, with HTTP 403 and `error code: 1010`. If that happens, create
+a Configuration Rule matching `http.host eq "tokens.marmenlind.com"` and set
+Browser Integrity Check to Off for this hostname. This allows clients to use
+their normal user agent. See [Browser Integrity Check](https://developers.cloudflare.com/waf/tools/browser-integrity-check/).
+
 ### 4. Keep content signals consistent
 
 If Cloudflare Managed robots.txt or AI Crawl Control inserts content signals,

@@ -183,10 +183,14 @@ func (server *Server) handleComponent(response http.ResponseWriter, request *htt
 }
 
 func (server *Server) handleChanges(response http.ResponseWriter, _ *http.Request) {
+	changes := server.state.Changes
+	if changes == nil {
+		changes = []publish.ChangeView{}
+	}
 	writeJSON(response, http.StatusOK, changesResponse{
 		PublicationID: server.state.PublicationID,
 		Snapshot:      server.state.CurrentSnapshot,
-		Changes:       server.state.Changes,
+		Changes:       changes,
 	})
 }
 

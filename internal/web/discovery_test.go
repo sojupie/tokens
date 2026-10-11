@@ -214,3 +214,17 @@ func TestContentSignals(t *testing.T) {
 		t.Fatal("content preferences are missing or inconsistent")
 	}
 }
+
+func TestEmptyChangesReturnsArray(t *testing.T) {
+	response := httptest.NewRecorder()
+	discoveryTestServer(t).Handler().ServeHTTP(response, httptest.NewRequest("GET", "/api/v1/changes", nil))
+	var body struct {
+		Changes json.RawMessage `json:"changes"`
+	}
+	if err := json.Unmarshal(response.Body.Bytes(), &body); err != nil {
+		t.Fatal(err)
+	}
+	if response.Code != 200 || string(body.Changes) != "[]" {
+		t.Fatalf("empty changes must be an array: %d %s", response.Code, response.Body.String())
+	}
+}

@@ -96,6 +96,7 @@ test('WebMCP registers usable read-only tools and cleans up', async () => {
   const events = new Map();
   let signal;
   const index = {subjects: [{kind: 'component', slug: 'snackbar', name: 'Snackbar', jsonUrl: 'https://tokens.example/downloads/component/snackbar.json?scope=all'}]};
+  let changes = [{subject: 'snackbar'}, {subject: 'buttons'}];
   const globals = {
     document: {modelContext: {registerTool(tool, options) { tools.push(tool); signal = options.signal; return Promise.resolve(); }}},
     navigator: {},
@@ -104,7 +105,7 @@ test('WebMCP registers usable read-only tools and cleans up', async () => {
     AbortController, URL, console,
     fetch: async path => ({ok: true, json: async () => {
       if (path === '/api/v1/subjects') return structuredClone(index);
-      if (path === '/api/v1/changes') return {changes: [{subject: 'snackbar'}, {subject: 'buttons'}]};
+      if (path === '/api/v1/changes') return {changes};
       assert.equal(path, '/downloads/component/snackbar.json?scope=all');
       return {tokens: [{name: 'md.comp.snackbar.container.color'}]};
     }}),
@@ -116,6 +117,9 @@ test('WebMCP registers usable read-only tools and cleans up', async () => {
   assert.equal(JSON.parse((await tools[1].execute({kind: 'component', slug: 'snackbar'})).content[0].text).tokens.length, 1);
   await assert.rejects(tools[1].execute({kind: 'component', slug: '../missing'}), /Subject not found/);
   assert.equal(JSON.parse((await tools[2].execute({subject: 'snackbar'})).content[0].text).changes.length, 1);
+  changes = null;
+  assert.deepEqual(JSON.parse((await tools[2].execute({subject: 'snackbar'})).content[0].text).changes, []);
+  assert.deepEqual(JSON.parse((await tools[2].execute({})).content[0].text).changes, []);
   events.get('pagehide')({persisted: true});
   assert.equal(signal.aborted, false);
   events.get('pagehide')({persisted: false});
