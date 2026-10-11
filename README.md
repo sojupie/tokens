@@ -44,6 +44,11 @@ with 0 ms total blocking time and no layout shift.
 
 The captured [Is It Agent Ready?](https://isitagentready.com/) check scores 80/100,
 including 100 for discoverability, content and bot access control.
+The remaining three checks concern OAuth/OIDC discovery, protected-resource
+metadata and agent registration. Token Catalog provides public, read-only access
+without accounts or protected APIs, so those authentication features are
+deliberately omitted. The lower score reflects those checks being counted as
+missing; the discovery and access checks for the public service pass.
 
 <a href="https://pagespeed.web.dev/analysis/https-tokencatalog-dev/91lzhrkat6?hl=en&amp;form_factor=mobile"><img src="docs/images/PageSpeedInsights.png" alt="October 11, 2026 mobile PageSpeed Insights report showing four scores of 100 and 4/4 agentic browsing checks" width="420" /></a>
 <img src="docs/images/isitagentready.png" alt="Is It Agent Ready report for Token Catalog showing 80/100 overall and 100 for discoverability, content and bot access control" width="420" />
