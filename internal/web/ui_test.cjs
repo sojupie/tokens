@@ -153,3 +153,120 @@ test('WebMCP uses the collection path for both index and token downloads', async
   await tools.find(tool => tool.name === 'get_tokens').execute({kind: 'component', slug: 'snackbar'});
   assert.deepEqual(requests, ['/md3/api/v1/subjects', '/md3/downloads/component/snackbar.json?scope=all']);
 });
+
+function prefetchHarness({speculation = true, native = true, connection = {}} = {}) {
+  const listeners = {};
+  const scheduled = new Map();
+  const appended = [];
+  let now = 0;
+  let next = 0;
+  const document = {
+    currentScript: {src: 'https://tokens.test/md3/static/prefetch.js'},
+    visibilityState: 'visible',
+    addEventListener: (name, listener) => { listeners[name] = listener; },
+    createElement: tag => ({tag, relList: {supports: () => native}}),
+    head: {append: element => appended.push(element)},
+  };
+  runScript('prefetch.js', {
+    document,
+    navigator: {connection},
+    location: new URL('https://tokens.test/md3/'),
+    URL,
+    HTMLScriptElement: {supports: () => speculation},
+    setTimeout: (callback, delay) => { const id = ++next; scheduled.set(id, {callback, time: now + delay}); return id; },
+    clearTimeout: id => scheduled.delete(id),
+    window: {addEventListener: (name, listener) => { listeners[name] = listener; }},
+  });
+  function link(path, options = {}) {
+    const anchor = {
+      href: new URL(path, 'https://tokens.test').href,
+      target: options.target || '',
+      isConnected: true,
+      hasAttribute: name => name === 'download' && options.download,
+      closest: selector => selector === 'a[href]' ? anchor : options.htmx ? anchor : null,
+      contains: node => node === anchor,
+    };
+    return anchor;
+  }
+  return {
+    appended, document, connection, link,
+    event: (name, target, extra = {}) => listeners[name]?.({target, pointerType: 'mouse', ...extra}),
+    advance: milliseconds => {
+      now += milliseconds;
+      for (const [id, job] of scheduled) {
+        if (job.time <= now) { scheduled.delete(id); job.callback(); }
+      }
+    },
+  };
+}
+
+test('hover prefetch waits 200 ms, cancels brief hovers, and deduplicates destinations', () => {
+  const h = prefetchHarness();
+  const link = h.link('/md3/components/buttons');
+  h.event('pointerover', link);
+  h.advance(1);
+  h.event('pointerout', link, {relatedTarget: null});
+  h.advance(500);
+  assert.equal(h.appended.length, 0);
+  h.event('pointerover', link);
+  h.advance(199);
+  assert.equal(h.appended.length, 0);
+  h.advance(1);
+  assert.deepEqual(JSON.parse(h.appended[0].textContent).prefetch[0].urls, ['https://tokens.test/md3/components/buttons']);
+  h.event('pointerover', link);
+  h.advance(500);
+  assert.equal(h.appended.length, 1);
+});
+
+test('prefetch skips external, download, API, fragment, HTMX and new-tab links', () => {
+  const h = prefetchHarness();
+  for (const link of [
+    h.link('https://github.com/sojupie/tokens'),
+    h.link('/md3/downloads/tokens.json'),
+    h.link('/md3/api/v1/subjects'),
+    h.link('/other/components/buttons'),
+    h.link('/md3/components/buttons#table'),
+    h.link('/md3/components/buttons', {download: true}),
+    h.link('/md3/components/buttons', {htmx: true}),
+    h.link('/md3/components/buttons', {target: '_blank'}),
+  ]) {
+    h.event('pointerover', link);
+    h.advance(200);
+  }
+  assert.equal(h.appended.length, 0);
+});
+
+test('prefetch handles keyboard focus and native hints, with an eight-page limit', () => {
+  const h = prefetchHarness({speculation: false});
+  for (let index = 0; index < 10; index++) {
+    h.event('focusin', h.link(`/md3/components/subject-${index}`));
+    h.advance(200);
+  }
+  assert.equal(h.appended.length, 8);
+  assert.equal(h.appended[0].rel, 'prefetch');
+  assert.equal(h.appended[0].as, 'document');
+});
+
+test('prefetch respects data saving, slow connections, visibility and touch input', () => {
+  for (const connection of [{saveData: true}, {effectiveType: '2g'}, {effectiveType: 'slow-2g'}]) {
+    const h = prefetchHarness({connection});
+    h.event('pointerover', h.link('/md3/styles'));
+    h.advance(200);
+    assert.equal(h.appended.length, 0);
+  }
+  const h = prefetchHarness();
+  const link = h.link('/md3/styles');
+  h.event('pointerover', link, {pointerType: 'touch'});
+  h.advance(200);
+  assert.equal(h.appended.length, 0);
+  h.event('pointerover', link);
+  h.connection.saveData = true;
+  h.advance(200);
+  assert.equal(h.appended.length, 0);
+  h.connection.saveData = false;
+  h.event('pointerover', link);
+  h.document.visibilityState = 'hidden';
+  h.event('visibilitychange');
+  h.advance(200);
+  assert.equal(h.appended.length, 0);
+});

@@ -19,6 +19,7 @@ templ layout(title string) {
 		<script src={ staticURL("htmx.min.js") } defer></script>
 		<script src={ staticURL("token-table.js") } defer></script>
 		<script src={ staticURL("webmcp.js") } defer></script>
+		<script src={ staticURL("prefetch.js") } defer></script>
 		<link rel="icon" type="image/webp" sizes="250x250" href={ staticURL("logo-250x250.webp") }/>
 		<link rel="apple-touch-icon" href={ staticURL("logo-250x250.png") }/>
 		<title>{ pageTitle(ctx, title) } · Token Catalog</title>
@@ -84,6 +85,7 @@ templ layout(title string) {
 				</div>
 				<div>
 					<p class="md-typescale-title-medium">Resources</p>
+					<a class="tokens-link md-typescale-body-medium" href="https://github.com/sojupie/tokens">GitHub</a>
 					if metadata(ctx).AgentDiscovery {
 						<a class="tokens-link md-typescale-body-medium" href="/llms-full.txt">API and agent guide</a>
 					}

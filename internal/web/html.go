@@ -203,6 +203,13 @@ func (server *Server) renderHTML(response http.ResponseWriter, request *http.Req
 		_, err = response.Write([]byte(markdown))
 		return err
 	}
+	// Native document prefetch needs a fresh HTTP cache entry to reuse on click.
+	// Keep it private and brief; normal reads still revalidate immediately.
+	if request.Method == http.MethodGet && request.Header.Get("HX-Request") != "true" &&
+		(strings.EqualFold(strings.TrimSpace(request.Header.Get("Purpose")), "prefetch") ||
+			strings.HasPrefix(strings.ToLower(request.Header.Get("Sec-Purpose")), "prefetch")) {
+		response.Header().Set("Cache-Control", "private, max-age=30")
+	}
 	_, err = response.Write(body)
 	return err
 }
