@@ -83,11 +83,16 @@ func TestHTMLAgentHintsAndJSONAlternate(t *testing.T) {
 		if len(footerColumns) != 3 || strings.Contains(footerColumns[0], "Download JSON") || !strings.Contains(footerColumns[1], "API and agent guide") || !strings.Contains(footerColumns[1], "Download JSON") || !strings.HasPrefix(footerColumns[2], "About") || !strings.Contains(footerColumns[2], "Made by Olle Marmenlind") {
 			t.Fatalf("wrong footer columns: %v", footerColumns)
 		}
-		if links["/agents.json"] != "describedby" || links["/llms.txt"] != "describedby" || links["/openapi.json"] != "service-desc" || !footerLink {
+		if links["/agents.json"] != "describedby" || links["/llms.txt"] != "describedby" || links["/openapi.json"] != "service-desc" || links[apiCatalogPath] != "api-catalog" || links[aiCatalogPath] != "ai-catalog" || !footerLink {
 			t.Fatalf("%s missing HTML hints/footer guide", path)
 		}
 		if !strings.Contains(response.Header().Get("Link"), `</agents.json>; rel="describedby"`) {
 			t.Fatal("incorrect discovery header relation")
+		}
+		for _, hint := range []string{`</.well-known/api-catalog>; rel="api-catalog"`, `</.well-known/ai-catalog.json>; rel="ai-catalog"`} {
+			if !strings.Contains(response.Header().Get("Link"), hint) {
+				t.Fatalf("missing catalog header: %s", hint)
+			}
 		}
 		if strings.HasPrefix(path, "/components/") || strings.HasPrefix(path, "/styles/") {
 			if alternate == "" {
@@ -147,6 +152,26 @@ func TestAgentDiscoveryAndDataLinks(t *testing.T) {
 		}
 		if response.Header().Get("Content-Type") != contentType {
 			t.Fatal("wrong content type for " + path)
+		}
+	}
+	for _, path := range []string{"/llms.txt", "/llms-full.txt"} {
+		body := get(path).Body.String()
+		for _, target := range []string{apiCatalogPath, aiCatalogPath, skillIndexPath, "/mcp/server-card", "/auth.md"} {
+			if !strings.Contains(body, "(https://tokens.example"+target+")") {
+				t.Fatalf("%s missing discovery link %s", path, target)
+			}
+			get(target)
+		}
+	}
+	if !strings.Contains(get("/llms.txt").Body.String(), "(https://tokens.example/llms-full.txt)") {
+		t.Fatal("short guide does not link to full guide")
+	}
+	for _, path := range []string{"/llms-full.txt", tokenSkillPath} {
+		body := get(path).Body.String()
+		for _, instruction := range []string{"MCP uses POST", "Accept: text/markdown", "tools/list", "get_tokens", "MCP-Protocol-Version: " + mcpProtocol} {
+			if !strings.Contains(body, instruction) {
+				t.Fatalf("%s missing %q", path, instruction)
+			}
 		}
 	}
 	var discovery map[string]json.RawMessage

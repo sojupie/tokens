@@ -168,6 +168,10 @@ the images. Settings in `/etc/tokens` survive installation and image rebuilds.
 Before restarting, make sure `server.env` contains the public URL. Older
 installations may not have had this file.
 
+The Docker build keeps Go's module and compiled-package caches between builds.
+Chromium is installed in a layer that application changes do not invalidate.
+The first build after changing the Dockerfile or base images can still be slow.
+
 ## Manage from GitHub Actions
 
 Open **Actions → Manage Tokens → Run workflow**, select `main`, and choose a
@@ -177,7 +181,7 @@ command:
 | --- | --- |
 | `status` | Show containers, the next scheduled update and saved run reports. |
 | `logs` | Show recent website, tunnel and update logs. |
-| `deploy` | Update `/opt/tokens` to the selected main commit, rebuild both images and restart the website. |
+| `deploy` | Update `/opt/tokens` to the selected main commit, build both images and update changed containers. |
 | `restart` | Restart the website and tunnel without rebuilding or crawling. |
 | `crawl` | Start the existing update service, including alerts and restart after publication. |
 | `inspect` | Show a saved run report. Requires a run ID. |
@@ -199,6 +203,23 @@ systemd starts the website later. Restart and crawl use the saved value.
 
 Deploy does not crawl. It refuses local edits, local commits or a move to an
 older commit. Tunnel and email settings stay in `/etc/tokens`.
+
+Deploy removes unused Docker build cache before and after building, retaining
+up to roughly 4 GB of unused cache. This cleanup affects the host's default
+Docker builder; it does not remove images, containers, volumes or token data.
+Active build cache can exceed that target while a build is running.
+For manual deployments, run the same cleanup when needed:
+
+```sh
+sudo docker builder prune --all --force --keep-storage 4GB
+```
+
+When the service is already active, deploy uses Compose to replace changed
+containers and waits for the website to be healthy. The tunnel can remain
+running when its configuration has not changed. Startup health checks run
+every two seconds; normal checks still run every thirty seconds.
+The Actions summary reports time spent fetching source, installing deployment
+configuration, building images and waiting for containers.
 
 A capture that needs review marks the workflow as failed. Read the run report,
 then use `inspect` and `approve` when appropriate. Failed captures must not be

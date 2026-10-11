@@ -102,7 +102,7 @@ func (server *Server) Handler() http.Handler {
 			}
 		}
 		if server.publicOrigin != "" {
-			response.Header().Add("Link", `</agents.json>; rel="describedby"; type="application/json", </llms.txt>; rel="describedby"; type="text/plain", </openapi.json>; rel="service-desc"; type="application/json"`)
+			response.Header().Add("Link", `</agents.json>; rel="describedby"; type="application/json", </llms.txt>; rel="describedby"; type="text/plain", </openapi.json>; rel="service-desc"; type="application/json", </.well-known/api-catalog>; rel="api-catalog"; type="application/linkset+json", </.well-known/ai-catalog.json>; rel="ai-catalog"; type="application/json"`)
 		}
 		if strings.HasPrefix(request.URL.Path, "/api/") || strings.HasPrefix(request.URL.Path, "/downloads/") {
 			response.Header().Set("X-Robots-Tag", "noindex")

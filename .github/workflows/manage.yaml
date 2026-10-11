@@ -91,11 +91,24 @@ jobs:
             exit 1
           fi
 
+      - name: Free unused build cache before deployment
+        if: inputs.operation == 'deploy'
+        run: sudo -n /usr/bin/docker builder prune --all --force --keep-storage 4GB
+
       - name: Run management command
         run: |
           set -euo pipefail
           compose() { sudo -n /usr/bin/docker compose -f deploy/compose.yaml "$@"; }
           update() { sudo -n /usr/bin/sh /opt/tokens/deploy/update.sh "$@"; }
+          timed() {
+            local label="$1" started=$SECONDS result
+            shift
+            echo "::group::$label"
+            if "$@"; then result=0; else result=$?; fi
+            echo "::endgroup::"
+            printf '%s: %ss (exit %s)\n' "$label" "$((SECONDS - started))" "$result" >> "$GITHUB_STEP_SUMMARY"
+            return "$result"
+          }
           case "$OPERATION" in
             deploy)
               [[ "$(git branch --show-current)" == main ]]
@@ -107,17 +120,21 @@ jobs:
                 https://github.com/sojupie/tokens.git|git@github.com:sojupie/tokens.git) ;;
                 *) echo 'Unexpected origin in /opt/tokens.' >&2; exit 1 ;;
               esac
-              git fetch origin main
+              timed 'Fetch source' git fetch origin main
               git merge-base --is-ancestor "$GITHUB_SHA" origin/main
               if ! git merge-base --is-ancestor HEAD "$GITHUB_SHA"; then
                 echo 'This deployment would go backwards or overwrite local commits.' >&2
                 exit 1
               fi
               git merge --ff-only "$GITHUB_SHA"
-              sudo -n /usr/bin/sh /opt/tokens/deploy/install.sh
-              compose --profile update build --pull
-              update configure-public-origin "$TOKENS_PUBLIC_ORIGIN"
-              sudo -n /usr/bin/systemctl restart tokens.service
+              timed 'Install deployment configuration' sudo -n /usr/bin/sh /opt/tokens/deploy/install.sh
+              timed 'Build images' compose --progress plain --profile update build --pull
+              timed 'Save public URL' update configure-public-origin "$TOKENS_PUBLIC_ORIGIN"
+              if /usr/bin/systemctl is-active --quiet tokens.service; then
+                timed 'Update containers and wait for health' compose up -d --wait tokens cloudflared
+              else
+                timed 'Start service and wait for health' sudo -n /usr/bin/systemctl restart tokens.service
+              fi
               ;;
             restart) sudo -n /usr/bin/systemctl restart tokens.service ;;
             crawl) sudo -n /usr/bin/systemctl start tokens-update.service ;;
@@ -140,6 +157,10 @@ jobs:
           if [[ "$OPERATION" == deploy || "$OPERATION" == restart || "$OPERATION" == approve || "$OPERATION" == retry ]]; then
             compose ps
           fi
+
+      - name: Limit build cache after deployment
+        if: always() && inputs.operation == 'deploy' && steps.pause.outcome == 'success'
+        run: sudo -n /usr/bin/docker builder prune --all --force --keep-storage 4GB
 
       - name: Show failure details
         if: failure()

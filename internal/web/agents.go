@@ -63,6 +63,11 @@ func (server *Server) handleAgentDiscovery(response http.ResponseWriter, request
 	for _, link := range []struct{ label, path, description string }{
 		{"Usage guide", tokenSkillPath, "API endpoints, download scopes and interpretation."},
 		{"API description", "/openapi.json", "OpenAPI paths, parameters and response schemas."},
+		{"API catalog", apiCatalogPath, "API description, usage documentation and health endpoint."},
+		{"AI catalog", aiCatalogPath, "API, agent skill and MCP discovery."},
+		{"Skills index", skillIndexPath, "Available agent skills and their content digests."},
+		{"MCP server card", "/mcp/server-card", "Public MCP transport and supported protocol versions."},
+		{"Authentication guide", "/auth.md", "Public access; no credentials or registration needed."},
 		{"Subject index", "/api/v1/subjects", "Components and styles with exact page and JSON URLs."},
 		{"Snapshots", "/api/v1/releases", "Capture dates and snapshot identifiers."},
 		{"Change history", "/api/v1/changes", "All retained observed changes as JSON."},
@@ -70,6 +75,9 @@ func (server *Server) handleAgentDiscovery(response http.ResponseWriter, request
 		{"Page index", "/sitemap.xml", "Canonical HTML pages."},
 	} {
 		fmt.Fprintf(&body, "- [%s](%s%s): %s\n", link.label, origin, link.path, link.description)
+	}
+	if request.URL.Path == "/llms.txt" {
+		fmt.Fprintf(&body, "- [Full API and agent guide](%s/llms-full.txt): Usage instructions, MCP, Markdown and the subject inventory.\n", origin)
 	}
 	if request.URL.Path == "/llms-full.txt" {
 		body.WriteString("\n" + server.agentGuide() + "\n## Subject inventory\n\n")
@@ -84,8 +92,9 @@ func (server *Server) agentGuide() string {
 	origin := server.publicOrigin
 	return `# Read Material Design tokens
 
-All endpoints below use GET. No account, API key, cookies or JavaScript are required.
-The service is read-only. It provides a public MCP endpoint at /mcp and browser tools where WebMCP is supported.
+The JSON data endpoints below use GET. MCP uses POST.
+No account, API key, cookies or JavaScript are required to read the data.
+The service is read-only. It provides browser tools where WebMCP is supported.
 No payment or authentication protocols are required.
 Read ` + origin + `/openapi.json for request parameters and response schemas.
 
@@ -129,11 +138,26 @@ with before and after where available. Before and after are strings, which can
 contain JSON. Dates show when the crawler observed a change, not its release date.
 One token can change in multiple contexts; a record count is not a unique-token count.
 
-## Read HTML instead
+## Use MCP
+
+Read [the MCP server card](` + origin + `/mcp/server-card) for the transport URL
+and supported protocol versions. Send JSON-RPC requests to ` + origin + `/mcp
+using POST with Content-Type: application/json and
+Accept: application/json, text/event-stream. Initialize the connection, then use
+tools/list to discover list_subjects, get_tokens and list_changes.
+Use MCP-Protocol-Version: ` + mcpProtocol + ` for subsequent requests.
+This server returns JSON responses and does not require a session ID.
+Use exact kind and slug values from list_subjects when calling get_tokens.
+
+## Read HTML or Markdown instead
 
 Use ` + origin + `/sitemap.xml for canonical pages. The site returns server-rendered
 HTML. Leave HX-Request unset to receive a complete page, not an HTMX fragment.
 Token rows remain in the HTML when their groups are collapsed.
+Send Accept: text/markdown to receive the same filtered view as Markdown with
+Content-Type: text/markdown. Browsers receive HTML by default.
+Markdown preserves token tables, reference chains and links to documentation,
+change history and other pages. Query filters apply to both representations.
 Prefer one subject's JSON over repeated page scraping or a full-site download.
 Reuse the subject index and discovery files rather than fetching them for every token.
 `
