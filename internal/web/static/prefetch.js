@@ -51,7 +51,7 @@
         preload.href = url;
         document.head.append(preload);
       }
-    }, 200);
+    }, 65);
   }
 
   document.addEventListener('pointerover', event => {

@@ -200,7 +200,7 @@ function prefetchHarness({speculation = true, native = true, connection = {}} = 
   };
 }
 
-test('hover prefetch waits 200 ms, cancels brief hovers, and deduplicates destinations', () => {
+test('hover prefetch waits 65 ms, cancels brief hovers, and deduplicates destinations', () => {
   const h = prefetchHarness();
   const link = h.link('/md3/components/buttons');
   h.event('pointerover', link);
@@ -209,7 +209,7 @@ test('hover prefetch waits 200 ms, cancels brief hovers, and deduplicates destin
   h.advance(500);
   assert.equal(h.appended.length, 0);
   h.event('pointerover', link);
-  h.advance(199);
+  h.advance(64);
   assert.equal(h.appended.length, 0);
   h.advance(1);
   assert.deepEqual(JSON.parse(h.appended[0].textContent).prefetch[0].urls, ['https://tokens.test/md3/components/buttons']);
@@ -231,7 +231,7 @@ test('prefetch skips external, download, API, fragment, HTMX and new-tab links',
     h.link('/md3/components/buttons', {target: '_blank'}),
   ]) {
     h.event('pointerover', link);
-    h.advance(200);
+    h.advance(65);
   }
   assert.equal(h.appended.length, 0);
 });
@@ -240,7 +240,7 @@ test('prefetch handles keyboard focus and native hints, with an eight-page limit
   const h = prefetchHarness({speculation: false});
   for (let index = 0; index < 10; index++) {
     h.event('focusin', h.link(`/md3/components/subject-${index}`));
-    h.advance(200);
+    h.advance(65);
   }
   assert.equal(h.appended.length, 8);
   assert.equal(h.appended[0].rel, 'prefetch');
@@ -251,22 +251,22 @@ test('prefetch respects data saving, slow connections, visibility and touch inpu
   for (const connection of [{saveData: true}, {effectiveType: '2g'}, {effectiveType: 'slow-2g'}]) {
     const h = prefetchHarness({connection});
     h.event('pointerover', h.link('/md3/styles'));
-    h.advance(200);
+    h.advance(65);
     assert.equal(h.appended.length, 0);
   }
   const h = prefetchHarness();
   const link = h.link('/md3/styles');
   h.event('pointerover', link, {pointerType: 'touch'});
-  h.advance(200);
+  h.advance(65);
   assert.equal(h.appended.length, 0);
   h.event('pointerover', link);
   h.connection.saveData = true;
-  h.advance(200);
+  h.advance(65);
   assert.equal(h.appended.length, 0);
   h.connection.saveData = false;
   h.event('pointerover', link);
   h.document.visibilityState = 'hidden';
   h.event('visibilitychange');
-  h.advance(200);
+  h.advance(65);
   assert.equal(h.appended.length, 0);
 });

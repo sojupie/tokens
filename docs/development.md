@@ -76,7 +76,7 @@ values should be traceable to the source independently of the rendered site.
 
 ## Hover prefetch
 
-Internal page links prefetch after 200 ms of mouse hover or keyboard focus.
+Internal page links prefetch after 65 ms of mouse hover or keyboard focus.
 Leaving the link before the delay cancels the pending work. Downloads, API
 routes, external links and HTMX controls are excluded. Each document prefetches
 at most eight distinct destinations, and data-saving or 2G connections skip it.
@@ -88,5 +88,5 @@ requests continue to revalidate. HTMX fragments and Markdown keep their existing
 cache policy.
 
 To check this in a browser, hover a component link briefly, then for more than
-200 ms. In DevTools, check the prefetch request or the speculative loading panel.
+65 ms. In DevTools, check the prefetch request or the speculative loading panel.
 Click the link and confirm the navigation reuses the prefetched response.
