@@ -1,6 +1,13 @@
-; Replace tokens.example.com everywhere with TOKENS_PUBLIC_ORIGIN's hostname.
-; Publish discovery owner names as DNS-only; retain the existing proxied Tunnel hostname.
-; DNS-AID private-use keys follow dns-aid-core; they are not IANA registrations.
+; Add these three records in Cloudflare's DNS settings.
+; Replace tokens.example.com everywhere with your website's hostname.
+; Use DNS-only for these new records. Leave your existing website/Tunnel record unchanged.
+; The numbered keys and the mcp protocol label are experimental and may change.
+;
+; This record points agents to the list of features the site provides.
 _index._agents.tokens.example.com. 3600 IN SVCB 1 tokens.example.com. alpn="h2" port=443 mandatory=alpn,port key65400="https://tokens.example.com/.well-known/ai-catalog.json"
+;
+; This record points agents to the instructions for connecting to the MCP server.
 _mcp._agents.tokens.example.com. 3600 IN SVCB 1 tokens.example.com. alpn="mcp,h2" port=443 mandatory=alpn,port key65400="https://tokens.example.com/mcp/server-card" key65402="mcp"
+;
+; This TXT record gives agents another way to find the same feature list.
 _catalog._agents.tokens.example.com. 3600 IN TXT "url=https://tokens.example.com/.well-known/ai-catalog.json"

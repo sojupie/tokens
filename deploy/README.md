@@ -185,9 +185,20 @@ command:
 | `retry` | Retry a saved capture and restart the website if it publishes. Requires a run ID. |
 | `test-notification` | Send a test email or webhook using the host's settings. |
 
+Before running **deploy**, open the repository's **Settings → Environments →
+production → Environment variables** and add:
+
+```dotenv
+TOKENS_PUBLIC_ORIGIN=https://tokens.marmenlind.com
+```
+
+Use a variable, not a secret: the website URL is public. The deploy action saves
+this value in `/etc/tokens/server.env` before restarting the website. Changing
+it on GitHub takes effect on the next deploy. It also remains available when
+systemd starts the website later. Restart and crawl use the saved value.
+
 Deploy does not crawl. It refuses local edits, local commits or a move to an
-older commit. Settings stay in `/etc/tokens`; do not add SMTP passwords or
-tunnel tokens to GitHub.
+older commit. Tunnel and email settings stay in `/etc/tokens`.
 
 A capture that needs review marks the workflow as failed. Read the run report,
 then use `inspect` and `approve` when appropriate. Failed captures must not be

@@ -1,7 +1,10 @@
 # Agent discovery and Cloudflare setup
 
 Deploy the application changes using the normal [deployment workflow](../deploy/README.md).
-Set `TOKENS_PUBLIC_ORIGIN` to the actual HTTPS origin. Discovery files and MCP
+For GitHub deployments, set `TOKENS_PUBLIC_ORIGIN` to `https://tokens.marmenlind.com`
+in the repository’s **Settings → Environments → production → Environment variables**.
+The deploy action saves it in `/etc/tokens/server.env` for Docker and systemd.
+For manual deployments, set it directly in that file. Discovery files and MCP
 return 503 until this is configured. DNS and Cloudflare account settings are
 separate from the application deployment and have not been changed by this patch.
 
