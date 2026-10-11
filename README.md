@@ -4,6 +4,11 @@ Token Catalog collects design tokens and makes them easier to browse, compare
 and download. [Material Design 3](https://tokencatalog.dev/md3/) is the first
 supported collection.
 
+The goal is fast, direct access to design data for developers and agents. Tokens,
+references and settings are available in readable pages and structured responses
+that can be inspected, crawled and fetched with ordinary HTTP clients. Source
+links connect the data to the original design guidance.
+
 ![Token Catalog showing the Material Design 3 component catalog](docs/images/catalog.png)
 
 ## Browse and download
@@ -23,6 +28,25 @@ was observed. Incomplete captures remain marked as partial.
 The same data is available through a public JSON API, Markdown responses and
 read-only MCP tools. See [usage](docs/usage.md) and
 [API and agent access](docs/reference/agents.md).
+
+## Performance and access
+
+Pages render on the server with the token data already present in the HTML.
+Reading pages and fetching JSON do not require JavaScript or an account.
+Markdown responses, OpenAPI, discovery files and MCP tools make the same data
+available to different clients. Small assets and deferred scripts keep the
+browser's initial work limited.
+
+The October 11, 2026 [mobile PageSpeed Insights report](https://pagespeed.web.dev/analysis/https-tokencatalog-dev/91lzhrkat6?hl=en&form_factor=mobile)
+scores 100 for performance, accessibility, best practices and SEO, with 4/4
+agentic browsing checks passed. The measured largest contentful paint is 1.2 s,
+with 0 ms total blocking time and no layout shift.
+
+The captured [Is It Agent Ready?](https://isitagentready.com/) check scores 80/100,
+including 100 for discoverability, content and bot access control.
+
+<a href="https://pagespeed.web.dev/analysis/https-tokencatalog-dev/91lzhrkat6?hl=en&amp;form_factor=mobile"><img src="docs/images/PageSpeedInsights.png" alt="October 11, 2026 mobile PageSpeed Insights report showing four scores of 100 and 4/4 agentic browsing checks" width="420" /></a>
+<img src="docs/images/isitagentready.png" alt="Is It Agent Ready report for Token Catalog showing 80/100 overall and 100 for discoverability, content and bot access control" width="420" />
 
 ## How it works
 
