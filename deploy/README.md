@@ -225,6 +225,12 @@ A capture that needs review marks the workflow as failed. Read the run report,
 then use `inspect` and `approve` when appropriate. Failed captures must not be
 approved. Weekly updates still use `tokens-update.timer`, not GitHub's scheduler.
 
+A complete capture with no review issues is published even when it finds zero
+token changes. This refreshes the current snapshot and capture time without
+changing the detection dates of earlier token changes. Older runs marked
+`unchanged` can be approved if their candidate is intact and the live publication
+has not changed since they were built.
+
 Workflows run one at a time. Commands that change the site pause the timer and
 refuse to run while an updater is active. The cleanup step restores the timer
 if it was running before. If the runner loses power or is forcibly stopped,

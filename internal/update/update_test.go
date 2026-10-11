@@ -181,6 +181,56 @@ func TestUpdateLockAndInvalidIDs(t *testing.T) {
 	}
 }
 
+func TestUnchangedCaptureFreshnessAndLegacyApproval(t *testing.T) {
+	config := testConfig(t, 40, false)
+	baseline, err := Run(context.Background(), config)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := Approve(config.StateDir, baseline.ID); err != nil {
+		t.Fatal(err)
+	}
+	config.ReceiptPath = receiptFixture(t, 48, false)
+	changed, err := Run(context.Background(), config)
+	if err != nil || changed.Status != "published" {
+		t.Fatalf("changed capture: %+v %v", changed, err)
+	}
+	before, err := publish.Load(filepath.Join(changed.CandidatePath, "tokens.sqlite"))
+	if err != nil || len(before.Changes) != 1 {
+		t.Fatalf("changed history: %+v %v", before, err)
+	}
+	fresh, err := Run(context.Background(), config)
+	if err != nil || fresh.Status != "published" {
+		t.Fatalf("fresh capture: %+v %v", fresh, err)
+	}
+	after, err := publish.Load(filepath.Join(fresh.CandidatePath, "tokens.sqlite"))
+	if err != nil || after.CurrentSnapshot.ID != fresh.ID || after.CurrentSnapshot.CreatedAt != fresh.StartedAt || len(after.Changes) != 1 {
+		t.Fatalf("fresh capture metadata/history: %+v %v", after, err)
+	}
+	oldHistory, _ := json.Marshal(before.Changes)
+	newHistory, _ := json.Marshal(after.Changes)
+	if string(oldHistory) != string(newHistory) {
+		t.Fatalf("unchanged capture rewrote detected changes: %s -> %s", oldHistory, newHistory)
+	}
+	// Recreate the saved candidate and current link produced by older releases.
+	if err := publish.Activate(filepath.Join(config.StateDir, "current"), changed.CandidatePath); err != nil {
+		t.Fatal(err)
+	}
+	fresh.Status = "unchanged"
+	fresh.Phase = "review"
+	if err := save(config.StateDir, fresh); err != nil {
+		t.Fatal(err)
+	}
+	approved, err := Approve(config.StateDir, fresh.ID)
+	if err != nil || approved.Status != "published" {
+		t.Fatalf("legacy unchanged approval: %+v %v", approved, err)
+	}
+	current, err := active(config.StateDir)
+	if err != nil || current != fresh.CandidatePath {
+		t.Fatalf("legacy unchanged candidate not activated: %s %v", current, err)
+	}
+}
+
 func TestApprovalHistoryUnchangedAndStaleCandidate(t *testing.T) {
 	config := testConfig(t, 40, false)
 	probe := filepath.Join(config.StateDir, "probe")
@@ -195,8 +245,16 @@ func TestApprovalHistoryUnchangedAndStaleCandidate(t *testing.T) {
 		t.Fatal(err)
 	}
 	unchanged, err := Run(context.Background(), config)
-	if err != nil || unchanged.Status != "unchanged" {
+	if err != nil || unchanged.Status != "published" || unchanged.Summary.Added+unchanged.Summary.Updated+unchanged.Summary.Removed != 0 {
 		t.Fatalf("unchanged: %+v %v", unchanged, err)
+	}
+	current, err := active(config.StateDir)
+	if err != nil || current != unchanged.CandidatePath {
+		t.Fatalf("unchanged capture did not become current: %s %v", current, err)
+	}
+	refreshed, err := publish.Load(filepath.Join(current, "tokens.sqlite"))
+	if err != nil || refreshed.CurrentSnapshot.ID != unchanged.ID || len(refreshed.Changes) != 0 {
+		t.Fatalf("freshness or history incorrect after unchanged capture: %+v %v", refreshed, err)
 	}
 	config.ReceiptPath = receiptFixture(t, 48, false)
 	second, err := Run(context.Background(), config)
@@ -204,7 +262,7 @@ func TestApprovalHistoryUnchangedAndStaleCandidate(t *testing.T) {
 		t.Fatalf("update: %+v %v", second, err)
 	}
 	state, err := publish.Load(filepath.Join(second.CandidatePath, "tokens.sqlite"))
-	if err != nil || len(state.Snapshots) != 2 || len(state.Changes) != 1 {
+	if err != nil || len(state.Snapshots) != 3 || len(state.Changes) != 1 {
 		t.Fatalf("timeline: %+v %v", state, err)
 	}
 	config.MaxChangeFraction = .25

@@ -291,10 +291,7 @@ func run(ctx context.Context, config Config, capture func(context.Context, crawl
 		report.Status = "needs_review"
 		return report, nil
 	}
-	if report.Summary.Added+report.Summary.Updated+report.Summary.Removed == 0 {
-		report.Status = "unchanged"
-		return report, nil
-	}
+	// A complete capture refreshes freshness metadata even without token changes.
 	report.Status = "needs_review"
 	if err := save(root, report); err != nil {
 		return report, err

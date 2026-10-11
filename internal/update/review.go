@@ -127,7 +127,7 @@ func Approve(root, id string) (Report, error) {
 	if err != nil {
 		return report, err
 	}
-	if report.Status != "needs_review" && report.Status != "failed" && report.Status != "running" && report.Status != "published" {
+	if report.Status != "needs_review" && report.Status != "failed" && report.Status != "running" && report.Status != "published" && report.Status != "unchanged" {
 		return report, errors.New("this run has no candidate to approve")
 	}
 	for _, issue := range report.Issues {
