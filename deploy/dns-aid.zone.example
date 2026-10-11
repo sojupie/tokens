@@ -1,0 +1,6 @@
+; Replace tokens.example.com everywhere with TOKENS_PUBLIC_ORIGIN's hostname.
+; Publish discovery owner names as DNS-only; retain the existing proxied Tunnel hostname.
+; DNS-AID private-use keys follow dns-aid-core; they are not IANA registrations.
+_index._agents.tokens.example.com. 3600 IN SVCB 1 tokens.example.com. alpn="h2" port=443 mandatory=alpn,port key65400="https://tokens.example.com/.well-known/ai-catalog.json"
+_mcp._agents.tokens.example.com. 3600 IN SVCB 1 tokens.example.com. alpn="mcp,h2" port=443 mandatory=alpn,port key65400="https://tokens.example.com/mcp/server-card" key65402="mcp"
+_catalog._agents.tokens.example.com. 3600 IN TXT "url=https://tokens.example.com/.well-known/ai-catalog.json"
