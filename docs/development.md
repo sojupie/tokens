@@ -80,6 +80,8 @@ Internal page links prefetch after 65 ms of mouse hover or keyboard focus.
 Leaving the link before the delay cancels the pending work. Downloads, API
 routes, external links and HTMX controls are excluded. Each document prefetches
 at most eight distinct destinations, and data-saving or 2G connections skip it.
+Hover and focus listeners run during capture so descendant handlers cannot hide
+events by stopping propagation. Non-element event targets are ignored.
 
 The script uses browser speculation rules where supported, then native document
 prefetch hints. Other browsers keep normal navigation. Full HTML prefetch

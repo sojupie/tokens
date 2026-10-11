@@ -270,3 +270,37 @@ test('prefetch respects data saving, slow connections, visibility and touch inpu
   h.advance(65);
   assert.equal(h.appended.length, 0);
 });
+
+test('prefetch ignores event targets without an element closest method', () => {
+  const h = prefetchHarness();
+  assert.doesNotThrow(() => h.event('pointerover', h.document));
+  assert.doesNotThrow(() => h.event('focusin', h.document));
+  h.advance(65);
+  assert.equal(h.appended.length, 0);
+});
+
+test('prefetch keeps the hover timer when moving between children of a link', () => {
+  const h = prefetchHarness();
+  const link = h.link('/md3/components/buttons');
+  const child = {closest: () => link};
+  link.contains = node => node === link || node === child;
+  h.event('pointerover', link);
+  h.advance(40);
+  h.event('pointerout', link, {relatedTarget: child});
+  h.event('pointerover', child);
+  h.advance(25);
+  assert.equal(h.appended.length, 1);
+});
+
+test('prefetch checks links again after the hover delay', () => {
+  const h = prefetchHarness();
+  const removed = h.link('/md3/components/buttons');
+  h.event('pointerover', removed);
+  removed.isConnected = false;
+  h.advance(65);
+  const changed = h.link('/md3/styles');
+  h.event('pointerover', changed);
+  changed.href = 'https://tokens.test/md3/downloads/tokens.json';
+  h.advance(65);
+  assert.equal(h.appended.length, 0);
+});

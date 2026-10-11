@@ -55,15 +55,15 @@
   }
 
   document.addEventListener('pointerover', event => {
-    if (event.pointerType === 'mouse' || event.pointerType === 'pen') schedule(event.target.closest('a[href]'));
-  });
+    if (event.pointerType === 'mouse' || event.pointerType === 'pen') schedule(event.target?.closest?.('a[href]'));
+  }, {capture: true, passive: true});
   document.addEventListener('pointerout', event => {
     if (pending && !pending.contains(event.relatedTarget)) cancel();
-  });
-  document.addEventListener('focusin', event => schedule(event.target.closest('a[href]')));
+  }, {capture: true, passive: true});
+  document.addEventListener('focusin', event => schedule(event.target?.closest?.('a[href]')), {capture: true, passive: true});
   document.addEventListener('focusout', event => {
     if (pending && !pending.contains(event.relatedTarget)) cancel();
-  });
+  }, {capture: true, passive: true});
   document.addEventListener('visibilitychange', cancel);
   window.addEventListener('pagehide', cancel);
 })();
