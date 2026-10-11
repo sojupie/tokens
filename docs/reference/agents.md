@@ -63,7 +63,7 @@ All pages, static assets, API requests, downloads, OpenAPI and MCP use `/md3/`.
 The root `/` redirects to `/md3/`. Unprefixed component and download routes are
 not served. `/robots.txt`, `/sitemap.xml`, `/agents.txt`, `/agents.json`,
 `/llms.txt`, `/llms-full.txt`, `/openapi.json`, `/auth.md`, `/skills/` (the published
-skill file only), and the supported `/.well-known/` files also work at the
+skill file only), and the supported `/.well-known/`https://pagespeed.web.dev/analysis/https-tokencatalog-dev/91lzhrkat6?hl=en&form_factor=mobile files also work at the
 root so discovery clients can find the collection. Their contents advertise
 canonical `/md3/` URLs. `/api/v1/health` remains a root alias for internal checks.
 The same discovery files are available under `/md3/` too.
