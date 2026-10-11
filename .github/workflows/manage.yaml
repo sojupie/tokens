@@ -91,10 +91,6 @@ jobs:
             exit 1
           fi
 
-      - name: Free unused build cache before deployment
-        if: inputs.operation == 'deploy'
-        run: sudo -n /usr/bin/docker builder prune --all --force --keep-storage 4GB
-
       - name: Run management command
         run: |
           set -euo pipefail
@@ -160,7 +156,7 @@ jobs:
 
       - name: Limit build cache after deployment
         if: always() && inputs.operation == 'deploy' && steps.pause.outcome == 'success'
-        run: sudo -n /usr/bin/docker builder prune --all --force --keep-storage 4GB
+        run: sudo -n /usr/bin/docker builder prune --all --force --keep-storage 20GB
 
       - name: Show failure details
         if: failure()

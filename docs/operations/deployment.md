@@ -204,14 +204,14 @@ systemd starts the website later. Restart and crawl use the saved value.
 Deploy does not crawl. It refuses local edits, local commits or a move to an
 older commit. Tunnel and email settings stay in `/etc/tokens`.
 
-Deploy removes unused Docker build cache before and after building, retaining
-up to roughly 4 GB of unused cache. This cleanup affects the host's default
+Deploy keeps the existing build cache before building. Afterwards, it removes
+unused cache above roughly 20 GB. This cleanup affects the host's default
 Docker builder; it does not remove images, containers, volumes or token data.
 Active build cache can exceed that target while a build is running.
 For manual deployments, run the same cleanup when needed:
 
 ```sh
-sudo docker builder prune --all --force --keep-storage 4GB
+sudo docker builder prune --all --force --keep-storage 20GB
 ```
 
 When the service is already active, deploy uses Compose to replace changed
