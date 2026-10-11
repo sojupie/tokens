@@ -13,11 +13,14 @@ import (
 )
 
 type Server struct {
-	publicOrigin string
-	state        publish.PublishedState
-	downloadsDir string
-	themeCSS     string
-	themeError   error
+	publicOrigin  string
+	basePath      string
+	browserOrigin string
+	state         publish.PublishedState
+	downloadsDir  string
+	themeCSS      string
+	themeError    error
+	siteDownload  downloadPreview
 }
 
 type subjectSummary struct {
@@ -58,7 +61,7 @@ type changesResponse struct {
 
 func New(state publish.PublishedState, downloadsDir string) *Server {
 	css, err := publicationTheme(state)
-	return &Server{state: state, downloadsDir: downloadsDir, themeCSS: css, themeError: err}
+	return &Server{state: state, downloadsDir: downloadsDir, themeCSS: css, themeError: err, siteDownload: previewSiteDownload(state)}
 }
 
 func (server *Server) Handler() http.Handler {
@@ -90,7 +93,7 @@ func (server *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /components/{slug...}", server.handleHTMLSubject)
 	mux.HandleFunc("GET /styles", server.handleOverview)
 	mux.HandleFunc("GET /styles/{slug...}", server.handleHTMLSubject)
-	return http.HandlerFunc(func(response http.ResponseWriter, request *http.Request) {
+	handler := http.HandlerFunc(func(response http.ResponseWriter, request *http.Request) {
 		response.Header().Set("Content-Signal", contentSignal)
 		publicData := strings.HasPrefix(request.URL.Path, "/api/") || strings.HasPrefix(request.URL.Path, "/downloads/") || agentDiscoveryPath(request.URL.Path) || wellKnownPath(request.URL.Path)
 		if publicData {
@@ -102,7 +105,7 @@ func (server *Server) Handler() http.Handler {
 			}
 		}
 		if server.publicOrigin != "" {
-			response.Header().Add("Link", `</agents.json>; rel="describedby"; type="application/json", </llms.txt>; rel="describedby"; type="text/plain", </openapi.json>; rel="service-desc"; type="application/json", </.well-known/api-catalog>; rel="api-catalog"; type="application/linkset+json", </.well-known/ai-catalog.json>; rel="ai-catalog"; type="application/json"`)
+			response.Header().Add("Link", server.baseLinks(`</agents.json>; rel="describedby"; type="application/json", </llms.txt>; rel="describedby"; type="text/plain", </openapi.json>; rel="service-desc"; type="application/json", </.well-known/api-catalog>; rel="api-catalog"; type="application/linkset+json", </.well-known/ai-catalog.json>; rel="ai-catalog"; type="application/json"`))
 		}
 		if strings.HasPrefix(request.URL.Path, "/api/") || strings.HasPrefix(request.URL.Path, "/downloads/") {
 			response.Header().Set("X-Robots-Tag", "noindex")
@@ -114,6 +117,7 @@ func (server *Server) Handler() http.Handler {
 		}
 		mux.ServeHTTP(response, request)
 	})
+	return server.mount(handler)
 }
 
 func (server *Server) handleHealth(response http.ResponseWriter, _ *http.Request) {

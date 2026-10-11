@@ -34,12 +34,18 @@
       }
     }},
     "/downloads/{kind}/{slug}.json": {"get": {
-      "operationId": "downloadSubject", "summary": "Download one subject with all supported contexts",
-      "description": "Use jsonUrl from the subject index. The slug path parameter can span multiple path segments. This operation documents the all-context export; filtered table exports are available through the HTML form.",
+      "operationId": "downloadSubject", "summary": "Download a filtered table, a whole table or an entire subject",
+      "description": "Subject scopes: view selects one table and applies q and context filters to its values; set selects one table with every supported context, ignoring q and context filters; all returns every table and supported context in this subject, ignoring set, q and context filters. Collection scope=all at /downloads/tokens.json instead returns every subject on the site. Obtain exact table keys and supported context settings from the subject HTML Download JSON form; do not invent them. Slugs can span multiple path segments.",
       "parameters": [
         {"name": "kind", "in": "path", "required": true, "schema": {"type": "string"}},
         {"name": "slug", "in": "path", "required": true, "schema": {"type": "string"}},
-        {"name": "scope", "in": "query", "required": true, "schema": {"type": "string", "const": "all"}}
+        {"name": "scope", "in": "query", "required": true, "schema": {"type": "string", "enum": ["view", "set", "all"]}, "description": "view = filtered table; set = whole table, all contexts; all = whole subject, all tables and contexts."},
+        {"name": "set", "in": "query", "schema": {"type": "string"}, "description": "Exact table key from the HTML form. Used by view and set; ignored by all. Omission selects the default table."},
+        {"name": "q", "in": "query", "schema": {"type": "string"}, "description": "Token search, applied only for scope=view."},
+        {"name": "context.Theme", "in": "query", "schema": {"type": "string"}, "description": "Only applies to scope=view when this table supports Theme. Copy an available value from the HTML form. Omission uses the table default. Other context names may be supported."},
+        {"name": "context.Platform", "in": "query", "schema": {"type": "string"}, "description": "Only applies to scope=view when this table supports Platform. Copy an available value from the HTML form. Omission uses the table default. Other context names may be supported."},
+        {"name": "context.Contrast", "in": "query", "schema": {"type": "string"}, "description": "Only applies to scope=view when this table supports Contrast. Copy an available value from the HTML form. Omission uses the table default. Other context names may be supported."},
+        {"name": "context.Audience", "in": "query", "schema": {"type": "string"}, "description": "Only applies to scope=view when this table supports Audience. Copy an available value from the HTML form. Omission uses the table default. Other context names may be supported."}
       ],
       "responses": {
         "200": {"description": "JSON attachment", "content": {"application/json": {"schema": {"allOf": [{"$ref": "#/components/schemas/Subject"}, {"type": "object", "required": ["capturedAt"], "properties": {"capturedAt": {"type": "string"}}}]}}}},

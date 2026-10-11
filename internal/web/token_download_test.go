@@ -70,7 +70,7 @@ func TestTokenDownloadControlExplainsChoices(t *testing.T) {
 	var output bytes.Buffer
 	subject := publish.SubjectView{Key: publish.SubjectKey{Kind: publish.SubjectComponent, Slug: "buttons"}, Name: "Buttons"}
 	browser := tokenBrowser{Sets: []tokenSet{{}}, Selected: tokenSet{Key: "button|color|outlined", Label: "Button - Color - Outlined"}, Query: `icon & label`}
-	if err := writeTokenDownloadMenu(&output, subject, browser); err != nil {
+	if err := writeTokenDownloadMenu(&output, subject, browser, downloadPreview{}); err != nil {
 		t.Fatal(err)
 	}
 	for _, want := range []string{`method="get"`, `aria-labelledby="tokens-download-title"`, `value="view" checked`, `value="set"`, `value="all"`, `icon &amp; label`, `Download JSON</button>`, `Button - Color - Outlined`, `This table, with your filters`, `This table, with every value`, `All Buttons tokens`, `Ignores search and filters.`} {
@@ -82,10 +82,54 @@ func TestTokenDownloadControlExplainsChoices(t *testing.T) {
 		t.Fatal("choices should be explained together, not hidden in a scope selector")
 	}
 	output.Reset()
-	if err := writeTokenDownloadMenu(&output, subject, tokenBrowser{}); err != nil {
+	if err := writeTokenDownloadMenu(&output, subject, tokenBrowser{}, downloadPreview{}); err != nil {
 		t.Fatal(err)
 	}
 	if !strings.Contains(output.String(), `value="all" checked`) || strings.Contains(output.String(), `value="view"`) {
 		t.Fatal("page without a table must offer only the complete download")
+	}
+}
+
+func TestDownloadPreviewsMatchTheExportScopes(t *testing.T) {
+	values := []publish.TokenValueView{
+		{ContextLabels: []string{"Theme: Light", "Platform: Web"}, Value: json.RawMessage(`{"color":{"red":1}}`)},
+		{ContextLabels: []string{"Theme: Dark", "Platform: Web"}, Value: json.RawMessage(`{"color":{"red":0}}`)},
+	}
+	key := publish.SubjectKey{Kind: publish.SubjectComponent, Slug: "buttons"}
+	subject := publish.SubjectView{Key: key, Name: "Buttons", Tokens: []publish.TokenView{
+		{SourceName: "md.comp.button.outlined.icon.color", DisplayName: "Icon <color>", Category: "COLOR", Values: values},
+		{SourceName: "md.comp.button.outlined.container.color", Category: "COLOR", Values: values},
+		{SourceName: "md.comp.button.filled.icon.color", Category: "COLOR", Values: values},
+	}}
+	styleKey := publish.SubjectKey{Kind: publish.SubjectStyle, Slug: "elevation"}
+	style := publish.SubjectView{Key: styleKey, Name: "Elevation", Tokens: []publish.TokenView{{SourceName: "md.sys.elevation.level1", Values: values[:1]}}}
+	state := publish.PublishedState{Subjects: map[publish.SubjectKey]publish.SubjectView{key: subject, styleKey: style}}
+	query := url.Values{"set": {"button|color|outlined"}, "q": {"icon"}, "context.Theme": {"Light"}}
+	browser := buildTokenBrowser(subject, query)
+	var output bytes.Buffer
+	if err := writeTokenDownloadMenu(&output, subject, browser, previewSiteDownload(state)); err != nil {
+		t.Fatal(err)
+	}
+	for scope, counts := range map[string]string{
+		"view":       "1 token · 1 value · 1 table",
+		"set":        "2 tokens · 4 values · 1 table",
+		"all":        "3 tokens · 6 values · 2 tables",
+		"everything": "4 tokens · 7 values · 2 components and styles",
+	} {
+		option := strings.SplitN(output.String(), `name="scope" value="`+scope+`"`, 2)
+		if len(option) != 2 || !strings.Contains(strings.SplitN(option[1], `</label>`, 2)[0], counts) {
+			t.Fatalf("%s has incorrect preview: %s", scope, output.String())
+		}
+	}
+	if !strings.Contains(output.String(), "Icon &lt;color&gt;") || !strings.Contains(output.String(), "Theme: Light") || !strings.Contains(output.String(), "Theme: Dark, Light") {
+		t.Fatal("examples were missing or not escaped")
+	}
+	query.Set("q", "no matches")
+	output.Reset()
+	if err := writeTokenDownloadMenu(&output, subject, buildTokenBrowser(subject, query), previewSiteDownload(state)); err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(output.String(), "0 tokens · 0 values · 1 table") || !strings.Contains(output.String(), "No tokens match this selection.") {
+		t.Fatal("empty filtered selection has a misleading preview")
 	}
 }

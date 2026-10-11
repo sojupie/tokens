@@ -28,7 +28,7 @@ func runServe(args []string) error {
 	publicOrigin := os.Getenv("TOKENS_PUBLIC_ORIGIN")
 	flags.StringVar(&publishedDir, "published", publishedDir, "publication directory")
 	flags.StringVar(&listenAddress, "listen", listenAddress, "HTTP listen address")
-	flags.StringVar(&publicOrigin, "public-origin", publicOrigin, "public http(s) origin for canonical URLs and sitemap; unset disables indexing")
+	flags.StringVar(&publicOrigin, "public-origin", publicOrigin, "public http(s) base URL, optionally including a path, for canonical URLs and sitemap; unset disables indexing")
 	if err := flags.Parse(args); err != nil {
 		if errors.Is(err, flag.ErrHelp) {
 			return nil

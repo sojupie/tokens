@@ -135,3 +135,19 @@ test('WebMCP is optional and supports the navigator fallback', () => {
   });
   assert.equal(count, 3);
 });
+
+test('WebMCP uses the collection path for both index and token downloads', async () => {
+  const tools = [];
+  const requests = [];
+  runScript('webmcp.js', {
+    document: {currentScript: {src: 'https://tokencatalog.dev/md3/static/webmcp.js?v=1'}, modelContext: {registerTool(tool) { tools.push(tool); }}},
+    navigator: {}, window: {addEventListener() {}},
+    location: {origin: 'https://tokencatalog.dev'}, AbortController, URL, console,
+    fetch: async path => {
+      requests.push(path);
+      return {ok: true, json: async () => path.endsWith('/api/v1/subjects') ? {subjects: [{kind: 'component', slug: 'snackbar', jsonUrl: 'https://tokencatalog.dev/md3/downloads/component/snackbar.json?scope=all'}]} : {tokens: []}};
+    },
+  });
+  await tools.find(tool => tool.name === 'get_tokens').execute({kind: 'component', slug: 'snackbar'});
+  assert.deepEqual(requests, ['/md3/api/v1/subjects', '/md3/downloads/component/snackbar.json?scope=all']);
+});

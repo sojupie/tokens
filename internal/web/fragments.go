@@ -131,7 +131,7 @@ func subjectPageComponent(subject publish.SubjectView, changes []publish.ChangeV
 			if err := write(`<p class="tokens-back-link"><a class="tokens-link" href="` + subjectListPath(subject.Key.Kind != publish.SubjectComponent) + `">` + materialSymbolSVG("arrow_back") + html.EscapeString(subjectKindLabel(subject.Key.Kind)) + `</a></p><header class="tokens-subject-heading"><h1 class="md-typescale-headline-medium">` + html.EscapeString(heading) + `</h1><nav class="tokens-subject-actions" aria-label="Component links">`); err != nil {
 				return err
 			}
-			if err := writeTokenDownloadMenu(writer, subject, browser); err != nil {
+			if err := writeTokenDownloadMenu(writer, subject, browser, metadata(ctx).SiteDownload); err != nil {
 				return err
 			}
 			if err := write(`<a class="tokens-link" href="` + html.EscapeString(subjectChangesURL(subject)) + `">Change history (` + strconv.Itoa(len(changes)) + `)</a>`); err != nil {

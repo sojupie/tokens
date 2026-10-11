@@ -42,7 +42,7 @@ func mcpTools() []any {
 	}
 	return []any{
 		tool("list_subjects", "Find Material Design components and styles with exact token download URLs.", map[string]any{"query": map[string]string{"type": "string", "description": "Optional case-insensitive name or slug filter."}}),
-		tool("get_tokens", "Read every token and supported context for a subject from list_subjects.", map[string]any{
+		tool("get_tokens", "Read every table, token and supported context for one subject from list_subjects. Ignores browser search and filters. For filtered table downloads, use the HTTP API documented in OpenAPI.", map[string]any{
 			"kind": map[string]any{"type": "string", "enum": []string{"component", "style", "foundation", "reference-token-set", "system-token-set"}},
 			"slug": map[string]string{"type": "string", "description": "Exact subject slug returned by list_subjects."},
 		}, "kind", "slug"),
@@ -58,11 +58,11 @@ func writeDiscoveryJSON(response http.ResponseWriter, value any) {
 // Streamable HTTP in stateless JSON-response mode: no session or SSE stream.
 func (server *Server) handleMCP(response http.ResponseWriter, request *http.Request) {
 	response.Header().Set("Cache-Control", "no-store")
-	if origin := request.Header.Get("Origin"); origin != "" && origin != server.publicOrigin {
+	if origin := request.Header.Get("Origin"); origin != "" && origin != server.browserOrigin {
 		http.Error(response, "Origin is not allowed.", http.StatusForbidden)
 		return
 	}
-	response.Header().Set("Access-Control-Allow-Origin", server.publicOrigin)
+	response.Header().Set("Access-Control-Allow-Origin", server.browserOrigin)
 	response.Header().Set("Vary", "Origin")
 	response.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 	response.Header().Set("Access-Control-Allow-Headers", "Content-Type, MCP-Protocol-Version")
@@ -137,7 +137,7 @@ func (server *Server) handleMCP(response http.ResponseWriter, request *http.Requ
 		if params.ProtocolVersion == "2025-06-18" || params.ProtocolVersion == "2025-03-26" {
 			negotiated = params.ProtocolVersion
 		}
-		result = map[string]any{"protocolVersion": negotiated, "serverInfo": server.mcpInfo(), "capabilities": map[string]any{"tools": map[string]bool{"listChanged": false}}, "instructions": "Public read-only Material Design token data. No registration required. Start with list_subjects; use exact kind and slug for get_tokens."}
+		result = map[string]any{"protocolVersion": negotiated, "serverInfo": server.mcpInfo(), "capabilities": map[string]any{"tools": map[string]bool{"listChanged": false}}, "instructions": "Public read-only Material Design token data. No registration required. Start with list_subjects; use exact kind and slug for get_tokens. get_tokens returns the entire subject in all contexts. For filtered tables, read " + server.publicOrigin + "/openapi.json and " + server.publicOrigin + "/llms-full.txt."}
 	case "ping":
 		result = map[string]any{}
 	case "tools/list":

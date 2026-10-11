@@ -1,13 +1,11 @@
-; Add these three records in Cloudflare's DNS settings.
-; Replace tokens.example.com everywhere with your website's hostname.
-; Use DNS-only for these new records. Leave your existing website/Tunnel record unchanged.
-; The numbered keys and the mcp protocol label are experimental and may change.
-;
-; This record points agents to the list of features the site provides.
-_index._agents.tokens.example.com. 3600 IN SVCB 1 tokens.example.com. alpn="h2" port=443 mandatory=alpn,port key65400="https://tokens.example.com/.well-known/ai-catalog.json"
-;
-; This record points agents to the instructions for connecting to the MCP server.
-_mcp._agents.tokens.example.com. 3600 IN SVCB 1 tokens.example.com. alpn="mcp,h2" port=443 mandatory=alpn,port key65400="https://tokens.example.com/mcp/server-card" key65402="mcp"
-;
-; This TXT record gives agents another way to find the same feature list.
-_catalog._agents.tokens.example.com. 3600 IN TXT "url=https://tokens.example.com/.well-known/ai-catalog.json"
+; Add these records under the tokencatalog.dev zone in DNS > Records.
+; Cloudflare Name fields: _index._agents, _mcp._agents, _catalog._agents.
+; SVCB priority is 1; target is tokencatalog.dev; paste the remaining fields
+; into Values. The TXT Content field is the quoted text below, without quotes.
+; TTL: 3600 seconds. Discovery records are DNS-only.
+; Keep the website's proxied Tunnel CNAME separate. DNS names have no /md3 path;
+; the discovery URLs carry the path. The numbered keys and mcp label are experimental.
+
+_index._agents.tokencatalog.dev. 3600 IN SVCB 1 tokencatalog.dev. alpn="h2" port=443 mandatory=alpn,port key65400="https://tokencatalog.dev/.well-known/ai-catalog.json"
+_mcp._agents.tokencatalog.dev. 3600 IN SVCB 1 tokencatalog.dev. alpn="mcp,h2" port=443 mandatory=alpn,port key65400="https://tokencatalog.dev/md3/mcp/server-card" key65402="mcp"
+_catalog._agents.tokencatalog.dev. 3600 IN TXT "url=https://tokencatalog.dev/.well-known/ai-catalog.json"

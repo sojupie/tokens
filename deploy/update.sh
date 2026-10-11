@@ -7,18 +7,18 @@ if [ "$#" -eq 0 ]; then
 fi
 if [ "$1" = configure-public-origin ]; then
     if [ "$#" -ne 2 ]; then
-        echo 'Usage: sudo sh deploy/update.sh configure-public-origin https://your-hostname' >&2
+        echo 'Usage: sudo sh deploy/update.sh configure-public-origin https://tokencatalog.dev/md3' >&2
         exit 1
     fi
     public_origin=${2%/}
     case "$public_origin" in
         *[!A-Za-z0-9:./-]*)
-            echo 'Public URL must be an HTTPS origin without credentials, path, query or fragment.' >&2
+            echo 'Public URL must be an HTTPS origin without credentials, query or fragment; an optional clean path is allowed.' >&2
             exit 1
             ;;
     esac
-    if ! printf '%s\n' "$public_origin" | LC_ALL=C grep -Eq '^https://[A-Za-z0-9]([A-Za-z0-9.-]*[A-Za-z0-9])?(:[0-9]{1,5})?$'; then
-        echo 'Public URL must be an HTTPS origin without credentials, path, query or fragment.' >&2
+    if ! printf '%s\n' "$public_origin" | LC_ALL=C grep -Eq '^https://[A-Za-z0-9]([A-Za-z0-9.-]*[A-Za-z0-9])?(:[0-9]{1,5})?(/[A-Za-z0-9_-]+)*$'; then
+        echo 'Public URL must be an HTTPS origin without credentials, query or fragment; an optional clean path is allowed.' >&2
         exit 1
     fi
     if [ "$(id -u)" != 0 ]; then

@@ -42,7 +42,7 @@ func (server *Server) handleSitemap(response http.ResponseWriter, request *http.
 	}
 	response.Header().Set("Content-Type", "application/xml; charset=utf-8")
 	response.Header().Set("Cache-Control", "no-cache")
-	_, _ = fmt.Fprint(response, xml.Header, "<?xml-stylesheet type=\"text/css\" href=\"/sitemap.css\"?>\n", string(data), "\n")
+	_, _ = fmt.Fprint(response, xml.Header, "<?xml-stylesheet type=\"text/css\" href=\""+server.basePath+"/sitemap.css\"?>\n", string(data), "\n")
 }
 
 func handleSitemapCSS(response http.ResponseWriter, _ *http.Request) {
@@ -58,5 +58,5 @@ func (server *Server) handleRobots(response http.ResponseWriter, _ *http.Request
 		_, _ = fmt.Fprint(response, "User-agent: *\nDisallow: /\n")
 		return
 	}
-	_, _ = fmt.Fprintf(response, "User-agent: *\nContent-Signal: "+contentSignal+"\nAllow: /agents.txt\nAllow: /agents.json\nAllow: /llms.txt\nAllow: /\nSitemap: %s/sitemap.xml\nAgentmap: %s/.well-known/ai-catalog.json\n", server.publicOrigin, server.publicOrigin)
+	_, _ = fmt.Fprintf(response, "User-agent: *\nContent-Signal: "+contentSignal+"\nAllow: /\nSitemap: %s/sitemap.xml\nAgentmap: %s/.well-known/ai-catalog.json\n", server.publicOrigin, server.publicOrigin)
 }

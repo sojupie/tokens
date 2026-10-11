@@ -1,39 +1,186 @@
 package web
 
 import (
+	"fmt"
 	"html"
 	"io"
 	"mime"
 	"net/http"
+	"sort"
 	"strings"
 
 	"github.com/sojupie/tokens/internal/publish"
 )
 
-func writeTokenDownloadMenu(writer io.Writer, subject publish.SubjectView, browser tokenBrowser) error {
+type downloadPreview struct {
+	Tokens, Values, Tables, Subjects int
+	Examples, Contexts               string
+}
+
+func previewTokenDownload(subject publish.SubjectView) downloadPreview {
+	preview := downloadPreview{Tokens: len(subject.Tokens)}
+	var examples []string
+	contexts := map[string]bool{}
+	for _, token := range subject.Tokens {
+		if len(examples) < 2 {
+			examples = append(examples, tokenDisplayName(token))
+		}
+		preview.Values += len(token.Values)
+		for _, value := range token.Values {
+			for _, label := range value.ContextLabels {
+				contexts[label] = true
+			}
+		}
+	}
+	preview.Examples = strings.Join(examples, "; ")
+	settings := map[string][]string{}
+	for label := range contexts {
+		name, value, ok := strings.Cut(label, ": ")
+		if !ok {
+			name, value = "Other settings", label
+		}
+		settings[name] = append(settings[name], value)
+	}
+	var names []string
+	for _, name := range []string{"Theme", "Platform", "Contrast", "Audience"} {
+		if len(settings[name]) > 0 {
+			names = append(names, name)
+		}
+	}
+	var otherNames []string
+	for name := range settings {
+		if name != "Theme" && name != "Platform" && name != "Contrast" && name != "Audience" {
+			otherNames = append(otherNames, name)
+		}
+	}
+	sort.Strings(otherNames)
+	names = append(names, otherNames...)
+	var labels []string
+	for _, name := range names {
+		if len(labels) == 4 {
+			break
+		}
+		values := settings[name]
+		sort.Strings(values)
+		label := name + ": "
+		if len(values) > 4 {
+			label += strings.Join(values[:4], ", ") + fmt.Sprintf(" (+%d more)", len(values)-4)
+		} else {
+			label += strings.Join(values, ", ")
+		}
+		labels = append(labels, label)
+	}
+	if len(labels) > 0 {
+		preview.Contexts = "Contexts: " + strings.Join(labels, " · ")
+		if len(names) > len(labels) {
+			preview.Contexts += " · +" + downloadCount(len(names)-len(labels), "other setting")
+		}
+	} else if preview.Values > 0 {
+		preview.Contexts = "Default values; no context-specific settings."
+	}
+	return preview
+}
+
+func previewSiteDownload(state publish.PublishedState) downloadPreview {
+	preview := downloadPreview{Subjects: len(state.Subjects)}
+	var names []string
+	for _, subject := range sortedSubjects(state) {
+		preview.Tokens += len(subject.Tokens)
+		for _, token := range subject.Tokens {
+			preview.Values += len(token.Values)
+		}
+		if len(names) < 3 {
+			names = append(names, subject.Name)
+		}
+	}
+	preview.Examples = strings.Join(names, "; ")
+	preview.Contexts = "Every supported context across all components and styles."
+	return preview
+}
+
+func downloadCount(count int, noun string) string {
+	if count != 1 {
+		noun += "s"
+	}
+	digits := fmt.Sprint(count)
+	for i := len(digits) - 3; i > 0; i -= 3 {
+		digits = digits[:i] + "," + digits[i:]
+	}
+	return digits + " " + noun
+}
+
+func writeTokenDownloadMenu(writer io.Writer, subject publish.SubjectView, browser tokenBrowser, site downloadPreview) error {
 	menu := `<div class="tokens-token-download"><button type="button" data-download-open aria-haspopup="dialog">Download JSON</button><dialog aria-labelledby="tokens-download-title"><form method="get" action="` + html.EscapeString(subjectDownloadURL(subject)) + `"><h2 id="tokens-download-title">Download tokens</h2>`
 	if browser.Selected.Label != "" {
 		menu += `<p class="tokens-download-table">` + html.EscapeString(browser.Selected.Label) + `</p>`
 	}
-	menu += `<fieldset><legend>What should the file include?</legend>`
-	option := func(value, label, description string, checked bool) {
+	menu += `<div class="tokens-download-choices"><fieldset><legend>What should the file include?</legend>`
+	menu += `<p class="tokens-download-help">A token can have different values for theme, platform and other settings. Select an option to see examples.</p>`
+	option := func(value, label, description string, checked bool, preview downloadPreview) {
 		menu += `<label class="tokens-download-option"><input type="radio" name="scope" value="` + value + `"`
 		if checked {
 			menu += ` checked`
 		}
-		menu += `><span><strong>` + html.EscapeString(label) + `</strong><small>` + html.EscapeString(description) + `</small></span></label>`
+		counts := downloadCount(preview.Tokens, "token") + " · " + downloadCount(preview.Values, "value")
+		if preview.Tables > 0 {
+			counts += " · " + downloadCount(preview.Tables, "table")
+		}
+		if preview.Subjects > 0 {
+			if preview.Subjects == 1 {
+				counts += " · 1 component or style"
+			} else {
+				counts += fmt.Sprintf(" · %d components and styles", preview.Subjects)
+			}
+		}
+		menu += `><span><strong>` + html.EscapeString(label) + `</strong><small>` + html.EscapeString(description) + `</small><small class="tokens-download-counts">` + html.EscapeString(counts) + `</small><span class="tokens-download-preview">`
+		if value == "view" && browser.Query != "" {
+			menu += `<small>Search: “` + html.EscapeString(browser.Query) + `”</small>`
+		}
+		if preview.Tokens == 0 {
+			menu += `<small>No tokens match this selection.</small>`
+		} else if preview.Examples != "" {
+			prefix := "Examples: "
+			if value == "all" && preview.Tables > 0 {
+				prefix = "Tables included: "
+			} else if value == "everything" {
+				prefix = "Components and styles include: "
+			}
+			menu += `<small>` + prefix + html.EscapeString(preview.Examples) + `</small>`
+		}
+		if preview.Contexts != "" {
+			menu += `<small>` + html.EscapeString(preview.Contexts) + `</small>`
+		}
+		menu += `</span></span></label>`
 	}
 	if len(browser.Sets) > 0 {
-		option("view", "This table, with your filters", "Matches your search and selected values.", true)
-		option("set", "This table, with every value", "Includes all available settings. Ignores search and filters.", false)
+		view := previewTokenDownload(tokenDownloadSubject(subject, browser, "view"))
+		view.Tables = 1
+		set := previewTokenDownload(publish.SubjectView{Tokens: browser.Selected.sourceTokens})
+		set.Tables = 1
+		option("view", "This table, with your filters", "Matches your search and selected values.", true, view)
+		option("set", "This table, with every value", "Keeps this table. Includes every supported context. Ignores search and filters.", false, set)
 	}
 	allLabel := "All tokens on this page"
 	if subject.Name != "" {
 		allLabel = "All " + subject.Name + " tokens"
 	}
-	option("all", allLabel, "Includes every table and every value. Ignores search and filters.", len(browser.Sets) == 0)
-	option("everything", "All tokens on this site", "Includes all components and styles, with every supported context.", false)
-	menu += `</fieldset>`
+	all := previewTokenDownload(subject)
+	all.Tables = len(browser.Sets)
+	if len(browser.Sets) > 0 {
+		var tables []string
+		for _, set := range browser.Sets {
+			if len(tables) < 3 {
+				tables = append(tables, set.Label)
+			}
+		}
+		all.Examples = strings.Join(tables, "; ")
+		if len(browser.Sets) > 3 {
+			all.Examples += fmt.Sprintf("; +%d more", len(browser.Sets)-3)
+		}
+	}
+	option("all", allLabel, "Includes every table and every value. Ignores search and filters.", len(browser.Sets) == 0, all)
+	option("everything", "All tokens on this site", "Includes all components and styles, with every supported context.", false, site)
+	menu += `</fieldset></div>`
 	input := func(name, value string) {
 		menu += `<input type="hidden" name="` + html.EscapeString(name) + `" value="` + html.EscapeString(value) + `">`
 	}

@@ -39,7 +39,7 @@ go build -o .\bin\tokens.exe .\cmd\tokens
 Open `http://127.0.0.1:8081`. On later starts, only the serve command is needed.
 Use `--chrome-path` on the crawl command if Chrome cannot be found automatically.
 
-For a public site, add `--public-origin https://tokens.example.com` with your
+For a public site, add `--public-origin https://tokencatalog.dev/md3` with your
 site's actual URL, or set `TOKENS_PUBLIC_ORIGIN` in the environment.
 See [publication](docs/publication.md) for creating the published data and
 [search indexing](docs/web-seo.md) for deployment checks.

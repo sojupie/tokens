@@ -98,6 +98,18 @@
 .tokens-download-option input { flex-shrink:0; accent-color:var(--md-sys-color-primary); }
 .tokens-download-option strong { display:block; font-weight:var(--md-sys-typescale-label-large-weight); }
 .tokens-download-option small { display:block; color:var(--md-sys-color-on-surface-variant); margin-top:var(--md-sys-measurement-space50); }
+.tokens-download-help { color:var(--md-sys-color-on-surface-variant); font-size:var(--md-sys-typescale-body-small-size); margin:0 0 var(--md-sys-measurement-space100); }
+.tokens-token-download dialog { width:560px; overflow:hidden; }
+.tokens-token-download dialog > form { display:flex; flex-direction:column; max-height:calc(100dvh - 80px); }
+.tokens-token-download fieldset { min-height:0; overflow-y:auto; }
+.tokens-download-choices { min-height:0; overflow-y:auto; }
+.tokens-download-choices fieldset { overflow:visible; }
+.tokens-token-download footer { flex-shrink:0; }
+.tokens-download-option > span { min-width:0; overflow-wrap:anywhere; }
+.tokens-download-option .tokens-download-counts { color:var(--md-sys-color-on-surface); font-weight:var(--md-sys-typescale-label-large-weight); }
+.tokens-download-preview { display:none; }
+.tokens-download-option input:checked + span .tokens-download-preview { display:block; margin-top:var(--md-sys-measurement-space100); padding-left:var(--md-sys-measurement-space150); border-left:2px solid var(--md-sys-color-primary); }
+.tokens-download-option:has(input:checked) strong { color:var(--md-sys-color-primary); }
 .tokens-token-download footer { display:flex; justify-content:flex-end; gap:var(--md-sys-measurement-space100); margin-top:var(--md-sys-measurement-space200); padding-top:var(--md-sys-measurement-space200); border-top:var(--md-comp-divider-thickness) solid var(--md-sys-color-outline-variant); }
 .tokens-token-download [type="submit"] { color:var(--md-sys-color-surface-container-low); background:var(--md-sys-color-primary); border-color:var(--md-sys-color-primary); }
 .tokens-token-download [type="submit"]:hover {  background:var(--md-sys-color-primary); }

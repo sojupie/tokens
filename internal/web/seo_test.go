@@ -112,7 +112,7 @@ func TestSitemapAndRobots(t *testing.T) {
 
 func TestPublicOriginValidationAndLocalIndexing(t *testing.T) {
 	server := New(seoTestState(), "")
-	for _, origin := range []string{"example.com", "ftp://example.com", "https://user:pass@example.com", "https://example.com/path", "https://example.com?query=one", "https://example.com#fragment", "https://example.com?"} {
+	for _, origin := range []string{"example.com", "ftp://example.com", "https://user:pass@example.com", "https://example.com/a/../b", "https://example.com//md3", "https://example.com?query=one", "https://example.com#fragment", "https://example.com?"} {
 		if err := server.SetPublicOrigin(origin); err == nil {
 			t.Errorf("accepted invalid origin %q", origin)
 		}

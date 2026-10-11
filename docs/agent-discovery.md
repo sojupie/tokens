@@ -1,7 +1,7 @@
 # Agent discovery and Cloudflare setup
 
 Deploy the application changes using the normal [deployment workflow](../deploy/README.md).
-For GitHub deployments, set `TOKENS_PUBLIC_ORIGIN` to `https://tokens.marmenlind.com`
+For GitHub deployments, set `TOKENS_PUBLIC_ORIGIN` to `https://tokencatalog.dev/md3`
 in the repository’s **Settings → Environments → production → Environment variables**.
 The deploy action saves it in `/etc/tokens/server.env` for Docker and systemd.
 For manual deployments, set it directly in that file. Discovery files and MCP
@@ -48,37 +48,37 @@ Change `contentSignal` in `internal/web/discovery.go` if a different policy is w
 
 ## Cloudflare changes
 
-Use the hostname from `TOKENS_PUBLIC_ORIGIN` below; `tokens.example.com` is only
-an example. If Cloudflare manages `example.com`, the relative names are
-`_index._agents.tokens`, `_mcp._agents.tokens` and `_catalog._agents.tokens`.
-If the site is at the zone apex, omit `.tokens` in those names.
+### 1. Connect the new domain and publish discovery DNS
 
-### 1. Publish discovery DNS
+In the **tokencatalog.dev** zone, confirm the domain uses the Cloudflare
+nameservers shown in Overview. In **Zero Trust → Networks → Connectors →
+Cloudflare Tunnels**, open the existing Tokens tunnel and add a published
+application route: hostname `tokencatalog.dev` (leave subdomain and path empty),
+service `HTTP`, URL `tokens:8080`. Route the whole hostname because robots.txt
+and discovery files also live at the root. Do not strip `/md3` or put it in the
+service URL. The application handles that path itself.
 
-Go to **DNS → Records**. Add the following records with a TTL of 3600 seconds.
-Use DNS-only discovery names. Keep the existing proxied Cloudflare Tunnel record
-for `tokens.example.com`; do not replace it or publish an origin IP address.
+Cloudflare should create a proxied CNAME for `@` pointing to the tunnel's
+`<UUID>.cfargotunnel.com` hostname. If it does not, add it in **DNS → Records**.
+Do not add an A record with the server's IP. Resolve any existing conflicting
+apex web record before creating the Tunnel record; keep unrelated mail records.
 
-| Type | Full owner name | Priority | Target | Parameters / content |
+Then add these DNS-only discovery records, TTL 3600:
+
+| Type | Name | Priority | Target | Values / Content |
 | --- | --- | --- | --- | --- |
-| SVCB | `_index._agents.tokens.example.com` | 1 | `tokens.example.com` | `alpn="h2" port=443 mandatory=alpn,port key65400="https://tokens.example.com/.well-known/ai-catalog.json"` |
-| SVCB | `_mcp._agents.tokens.example.com` | 1 | `tokens.example.com` | `alpn="mcp,h2" port=443 mandatory=alpn,port key65400="https://tokens.example.com/mcp/server-card" key65402="mcp"` |
-| TXT | `_catalog._agents.tokens.example.com` | — | — | `url=https://tokens.example.com/.well-known/ai-catalog.json` |
+| SVCB | `_index._agents` | 1 | `tokencatalog.dev` | `alpn="h2" port=443 mandatory=alpn,port key65400="https://tokencatalog.dev/.well-known/ai-catalog.json"` |
+| SVCB | `_mcp._agents` | 1 | `tokencatalog.dev` | `alpn="mcp,h2" port=443 mandatory=alpn,port key65400="https://tokencatalog.dev/md3/mcp/server-card" key65402="mcp"` |
+| TXT | `_catalog._agents` | — | — | `url=https://tokencatalog.dev/.well-known/ai-catalog.json` |
 
-[Copyable zone records](../deploy/dns-aid.zone.example) are included. Use SVCB
-for these discovery names. Cloudflare synthesizes HTTPS records on proxied
-names, which can hide manually added HTTPS values; these SVCB records avoid
-altering the site's Tunnel hostname. Confirm HTTP/2 is enabled for the zone.
+[Copyable zone records](../deploy/dns-aid.zone.example). DNS names contain only
+the hostname; `/md3` belongs in URLs. The numbered SVCB keys and `mcp` ALPN
+label are experimental. The server card advertises the actual MCP endpoint.
+Enable HTTP/2 in the zone. No A2A records are needed.
 
-`key65400` (capability URL) and `key65402` (agent protocol) follow the
-[DNS-AID reference implementation](https://github.com/dns-aid/dns-aid-core/security).
-They are private-use experimental parameters, not registered names. The
-`mcp` ALPN label is likewise experimental; `h2` is the actual HTTPS transport.
-The MCP endpoint URL `/mcp` is discovered through the linked server card.
-Do not add `_a2a` records because this app does not provide A2A.
-
-Sources: [DNS-AID draft](https://datatracker.ietf.org/doc/draft-mozleywilliams-dnsop-dnsaid/),
-[Cloudflare SVCB/HTTPS behavior](https://developers.cloudflare.com/dns/manage-dns-records/reference/dns-record-types/#svcb-and-https).
+Sources: [Tunnel routing](https://developers.cloudflare.com/tunnel/concepts/routing/),
+[DNS-AID draft](https://datatracker.ietf.org/doc/draft-mozleywilliams-dnsop-dnsaid/),
+[Cloudflare SVCB records](https://developers.cloudflare.com/dns/manage-dns-records/reference/dns-record-types/#svcb-and-https).
 
 ### 2. Enable DNSSEC and complete registrar setup
 
@@ -102,7 +102,7 @@ custom WAF rules; adjust the relevant product setting if it still blocks request
 
 Browser Integrity Check can block ordinary API clients, including Python's
 default user agent, with HTTP 403 and `error code: 1010`. If that happens, create
-a Configuration Rule matching `http.host eq "tokens.marmenlind.com"` and set
+a Configuration Rule matching `http.host eq "tokencatalog.dev"` and set
 Browser Integrity Check to Off for this hostname. This allows clients to use
 their normal user agent. See [Browser Integrity Check](https://developers.cloudflare.com/waf/tools/browser-integrity-check/).
 
@@ -115,6 +115,9 @@ one consistent policy. The origin sends its own `Content-Signal` header, which
 Cloudflare Markdown for Agents preserves.
 
 ### 5. Review caching and optional Markdown conversion
+
+Apply the following checks to `tokencatalog.dev`. Paths listed here are relative
+to `/md3` unless described as root discovery files.
 
 Remove any Cache Everything / custom cache rule that caches HTML without
 separating `Accept` and `HX-Request` variants. Bypass cache for `/`, `/components`,
@@ -134,27 +137,27 @@ See [Cloudflare Markdown for Agents](https://developers.cloudflare.com/fundament
 Replace the example origin in these commands:
 
 ```sh
-curl -i https://tokens.example.com/ -H 'Accept: text/markdown'
-curl -i https://tokens.example.com/ -H 'Accept: text/html'
-curl -i https://tokens.example.com/robots.txt
-curl -i https://tokens.example.com/.well-known/api-catalog
-curl -i https://tokens.example.com/.well-known/ai-catalog.json
-curl -i https://tokens.example.com/.well-known/agent-skills/index.json
-curl -i https://tokens.example.com/mcp/server-card
-curl -i https://tokens.example.com/auth.md
-curl -i https://tokens.example.com/mcp \
+curl -i https://tokencatalog.dev/md3/ -H 'Accept: text/markdown'
+curl -i https://tokencatalog.dev/md3/ -H 'Accept: text/html'
+curl -i https://tokencatalog.dev/robots.txt
+curl -i https://tokencatalog.dev/md3/.well-known/api-catalog
+curl -i https://tokencatalog.dev/md3/.well-known/ai-catalog.json
+curl -i https://tokencatalog.dev/md3/.well-known/agent-skills/index.json
+curl -i https://tokencatalog.dev/md3/mcp/server-card
+curl -i https://tokencatalog.dev/md3/auth.md
+curl -i https://tokencatalog.dev/md3/mcp \
   -H 'Content-Type: application/json' \
   -H 'Accept: application/json, text/event-stream' \
   -H 'MCP-Protocol-Version: 2025-11-25' \
   --data '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-11-25","clientInfo":{"name":"check","version":"1"},"capabilities":{}}}'
-curl -i https://tokens.example.com/mcp \
+curl -i https://tokencatalog.dev/md3/mcp \
   -H 'Content-Type: application/json' \
   -H 'Accept: application/json, text/event-stream' \
   -H 'MCP-Protocol-Version: 2025-11-25' \
   --data '{"jsonrpc":"2.0","id":2,"method":"tools/list"}'
-dig @1.1.1.1 +dnssec _index._agents.tokens.example.com SVCB
-dig @1.1.1.1 +dnssec _mcp._agents.tokens.example.com SVCB
-dig @1.1.1.1 _catalog._agents.tokens.example.com TXT
+dig @1.1.1.1 +dnssec _index._agents.tokencatalog.dev SVCB
+dig @1.1.1.1 +dnssec _mcp._agents.tokencatalog.dev SVCB
+dig @1.1.1.1 _catalog._agents.tokencatalog.dev TXT
 ```
 
 The Markdown response should contain the page heading and data, with no HTML
@@ -164,3 +167,35 @@ API catalog must use `application/linkset+json`. DNSSEC responses should include
 exercise registration, API reads and cleanup, but cannot provide browser support.
 Rerun the readiness scan after DNS propagation and deployment; authentication
 and registration checks can remain absent for this public service.
+
+## URL layout
+
+`https://tokencatalog.dev/md3/` is the canonical Material Design 3 collection.
+All pages, static assets, API requests, downloads, OpenAPI and MCP use `/md3/`.
+The root `/` redirects to `/md3/`. Unprefixed component and download routes are
+not served. `/robots.txt`, `/sitemap.xml`, `/agents.txt`, `/agents.json`,
+`/llms.txt`, `/llms-full.txt`, `/openapi.json`, `/auth.md`, `/skills/` (the published
+skill file only), and the supported `/.well-known/` files also work at the
+root so discovery clients can find the collection. Their contents advertise
+canonical `/md3/` URLs. `/api/v1/health` remains a root alias for internal checks.
+The same discovery files are available under `/md3/` too.
+
+For migration, in the old domain's **Rules → Redirect Rules**, match
+`http.host eq "tokens.marmenlind.com"`. Use a dynamic destination
+`concat("https://tokencatalog.dev/md3", http.request.uri.path)`, preserve the
+query string, and use status **308** to preserve POST methods. Keep the old
+proxied DNS record while this redirect is needed. Update any clients that use
+MCP directly to the new endpoint; some clients do not follow redirects.
+
+In the new zone's **Rules → Configuration Rules**, disable Browser Integrity
+Check for `http.host eq "tokencatalog.dev"` if ordinary API clients are blocked.
+In **AI Crawl Control**, leave crawler blocking disabled, and turn off managed
+robots.txt if it overwrites the site's policy. Markdown conversion is optional;
+the application already supports it. If custom caching rules apply, bypass
+`/md3/` except versioned `/md3/static/` files, and bypass root discovery files.
+Purge old cached discovery responses after deploying.
+
+Set the production GitHub Actions variable (not a secret) to
+`TOKENS_PUBLIC_ORIGIN=https://tokencatalog.dev/md3`, then run Deploy. There is
+no separate base-path variable. The tunnel token can remain the same when you
+reuse the existing tunnel.

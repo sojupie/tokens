@@ -113,10 +113,20 @@ The older /api/v1/components endpoint returns the same index, including styles.
 
 Collection downloads contain capturedAt and subjects. A subject's jsonUrl returns
 capturedAt, kind, slug, name and tokens. Both include all supported contexts.
+A token is a named item; one token may have many values for different contexts.
 For a smaller export, use the page's Download JSON form: view applies its table,
 search and context filters; set includes the selected table in all contexts;
 all includes every token in that subject. Copy the form's exact set and context
 parameters. Do not invent contexts that the subject does not support.
+
+For example, a filtered table can contain 7 tokens and 7 values. The same table
+with scope=set can contain 7 tokens and 153 values. The whole subject with
+scope=all can contain 13 tokens and 159 values across two tables. These counts
+are illustrative; the HTML download previews show exact counts for the current
+snapshot and filters. scope=all on /downloads/tokens.json means the entire site,
+whereas scope=all on a subject download means only that subject.
+MCP and WebMCP get_tokens always return the entire subject with every context;
+use the filtered HTTP download endpoint when you want scope=view or scope=set.
 
 ## Interpret token values
 

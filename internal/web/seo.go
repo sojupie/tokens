@@ -4,11 +4,13 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"path"
 	"strconv"
 	"strings"
 )
 
 type pageMetadata struct {
+	SiteDownload   downloadPreview
 	Title          string
 	Description    string
 	Canonical      string
@@ -25,13 +27,17 @@ type pageMetadataKey struct{}
 func (server *Server) SetPublicOrigin(origin string) error {
 	if origin == "" {
 		server.publicOrigin = ""
+		server.basePath = ""
+		server.browserOrigin = ""
 		return nil
 	}
 	parsed, err := url.Parse(origin)
-	if err != nil || (parsed.Scheme != "https" && parsed.Scheme != "http") || parsed.Hostname() == "" || parsed.User != nil || (parsed.Path != "" && parsed.Path != "/") || parsed.RawQuery != "" || parsed.ForceQuery || parsed.Fragment != "" {
-		return fmt.Errorf("public origin must be an absolute http(s) origin without credentials, path, query or fragment")
+	if err != nil || (parsed.Scheme != "https" && parsed.Scheme != "http") || parsed.Hostname() == "" || parsed.User != nil || (strings.Contains(parsed.Path, "//") || path.Clean(parsed.Path) != strings.TrimSuffix(parsed.Path, "/") && parsed.Path != "" && parsed.Path != "/" || parsed.RawPath != "") || parsed.RawQuery != "" || parsed.ForceQuery || parsed.Fragment != "" {
+		return fmt.Errorf("public origin must be an absolute http(s) origin without credentials, query or fragment, with an optional clean base path")
 	}
 	server.publicOrigin = strings.TrimSuffix(parsed.String(), "/")
+	server.basePath = strings.TrimSuffix(parsed.Path, "/")
+	server.browserOrigin = parsed.Scheme + "://" + parsed.Host
 	return nil
 }
 

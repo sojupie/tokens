@@ -28,16 +28,16 @@ sudoedit /etc/tokens/server.env
 Set the URL where the site will be reachable:
 
 ```dotenv
-TOKENS_PUBLIC_ORIGIN=https://tokens.example.com
+TOKENS_PUBLIC_ORIGIN=https://tokencatalog.dev/md3
 ```
 
-Replace the example with your hostname. Use HTTPS, without a path or trailing
+Replace the example with your hostname. Use HTTPS with the collection path `/md3`, without a trailing
 slash. This controls canonical URLs and the sitemap. An empty setting disables
 search indexing.
 
 Create a Cloudflare Tunnel for this site. Add a public hostname with:
 
-- Hostname: the hostname from the public URL.
+- Hostname: `tokencatalog.dev` (no subdomain). Leave the path empty.
 - Service type: HTTP.
 - Service URL: `tokens:8080`.
 
@@ -193,7 +193,7 @@ Before running **deploy**, open the repository's **Settings → Environments →
 production → Environment variables** and add:
 
 ```dotenv
-TOKENS_PUBLIC_ORIGIN=https://tokens.marmenlind.com
+TOKENS_PUBLIC_ORIGIN=https://tokencatalog.dev/md3
 ```
 
 Use a variable, not a secret: the website URL is public. The deploy action saves

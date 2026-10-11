@@ -102,6 +102,7 @@ func (server *Server) handleHTMLSubject(response http.ResponseWriter, request *h
 		return
 	}
 	info := server.basicMetadata(subjectURL(subjects[0]), query)
+	info.SiteDownload = server.siteDownload
 	info.Title = subjects[0].Name + " tokens — Material Design"
 	info.Heading = "Material Design " + tokenPhrase(subjects[0].Name) + " tokens"
 	info.Description = subjectTokenDescription(subjects[0])
@@ -185,12 +186,16 @@ func (server *Server) renderHTML(response http.ResponseWriter, request *http.Req
 		ctx = context.WithValue(ctx, pageMetadataKey{}, server.basicMetadata(request.URL.Path, request.URL.Query()))
 	}
 	ctx = context.WithValue(ctx, themeVersionKey{}, assetVersion([]byte(server.themeCSS)))
+	var rendered bytes.Buffer
+	if err := component.Render(ctx, &rendered); err != nil {
+		return err
+	}
+	body, err := prefixHTML(rendered.Bytes(), server.basePath)
+	if err != nil {
+		return err
+	}
 	if wantsMarkdown(request) {
-		var rendered bytes.Buffer
-		if err := component.Render(ctx, &rendered); err != nil {
-			return err
-		}
-		markdown, err := htmlMarkdown(rendered.Bytes(), server.publicOrigin+request.URL.RequestURI())
+		markdown, err := htmlMarkdown(body, server.publicOrigin+request.URL.RequestURI())
 		if err != nil {
 			return err
 		}
@@ -198,7 +203,8 @@ func (server *Server) renderHTML(response http.ResponseWriter, request *http.Req
 		_, err = response.Write([]byte(markdown))
 		return err
 	}
-	return component.Render(ctx, response)
+	_, err = response.Write(body)
+	return err
 }
 
 func sortedSubjects(state publish.PublishedState) []publish.SubjectView {

@@ -4,10 +4,10 @@ Build and run the server with its public origin:
 
 ```powershell
 go build -o .\bin\tokens.exe .\cmd\tokens
-.\bin\tokens.exe serve --published published --listen 127.0.0.1:8081 --public-origin https://tokens.example.com
+.\bin\tokens.exe serve --published published --listen 127.0.0.1:8081 --public-origin https://tokencatalog.dev/md3
 ```
 
-Replace the example with the site's public HTTPS URL. Do not include a path,
+Replace the example with the site's public HTTPS URL. Include `/md3` as the collection path. Do not include a
 query, fragment or credentials. `TOKENS_PUBLIC_ORIGIN` sets the same default;
 the command-line flag overrides it. The server uses this URL for canonical links
 and the sitemap, not the incoming request headers.
