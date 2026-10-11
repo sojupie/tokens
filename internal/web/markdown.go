@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"mime"
 	"net/http"
+	"net/url"
 	"strconv"
 	"strings"
 
@@ -40,8 +41,13 @@ func markdownEscape(value string) string {
 }
 
 // Convert the rendered view so search, table, context and pagination filters agree
-// with HTML. Scripts, navigation, controls and duplicated footer text are omitted.
-func htmlMarkdown(source []byte) (string, error) {
+// with HTML. Keep content navigation; omit scripts, controls and site chrome.
+// Resolve links against the page URL so the Markdown works outside the browser.
+func htmlMarkdown(source []byte, pageURL string) (string, error) {
+	base, err := url.Parse(pageURL)
+	if err != nil {
+		return "", err
+	}
 	document, err := html.Parse(bytes.NewReader(source))
 	if err != nil {
 		return "", err
@@ -81,8 +87,23 @@ func htmlMarkdown(source []byte) (string, error) {
 			return ""
 		}
 		switch node.Data {
-		case "head", "script", "style", "nav", "footer", "svg", "button", "form", "dialog":
+		case "head", "script", "style", "noscript", "footer", "svg", "button", "form", "dialog", "caption":
 			return ""
+		}
+		for _, class := range strings.Fields(attrs["class"]) {
+			if class == "tokens-reference-toggle" {
+				return ""
+			}
+			if node.Data == "details" && class == "tokens-token-reference" {
+				var chain strings.Builder
+				for child := node.FirstChild; child != nil; child = child.NextSibling {
+					if child.Data != "summary" {
+						chain.WriteString(render(child))
+					}
+				}
+				text := strings.Join(strings.Fields(chain.String()), " ")
+				return " (reference chain: " + strings.ReplaceAll(text, " - ", " → ") + ") "
+			}
 		}
 		var body strings.Builder
 		for child := node.FirstChild; child != nil; child = child.NextSibling {
@@ -91,12 +112,15 @@ func htmlMarkdown(source []byte) (string, error) {
 				continue
 			}
 			body.WriteString(render(child))
+			if node.Data == "nav" {
+				body.WriteByte('\n')
+			}
 		}
 		text := strings.TrimSpace(body.String())
 		switch node.Data {
 		case "h1", "h2", "h3", "h4", "h5", "h6":
 			return "\n\n" + strings.Repeat("#", int(node.Data[1]-'0')) + " " + text + "\n\n"
-		case "p", "section", "article", "header", "div", "details", "ul", "ol":
+		case "p", "section", "article", "header", "div", "details", "ul", "ol", "nav":
 			return "\n\n" + text + "\n\n"
 		case "li":
 			return "\n- " + text + "\n"
@@ -104,18 +128,48 @@ func htmlMarkdown(source []byte) (string, error) {
 			return "\n"
 		case "strong", "b":
 			return "**" + text + "**"
+		case "code":
+			var raw strings.Builder
+			var collect func(*html.Node)
+			collect = func(n *html.Node) {
+				if n.Type == html.TextNode {
+					raw.WriteString(n.Data)
+				}
+				for child := n.FirstChild; child != nil; child = child.NextSibling {
+					collect(child)
+				}
+			}
+			collect(node)
+			value := strings.Join(strings.Fields(raw.String()), " ")
+			delimiter := "`"
+			for strings.Contains(value, delimiter) {
+				delimiter += "`"
+			}
+			if strings.HasPrefix(value, "`") || strings.HasSuffix(value, "`") {
+				value = " " + value + " "
+			}
+			return " " + delimiter + strings.ReplaceAll(value, "|", "\\|") + delimiter + " "
+		case "summary":
+			return "\n\n### " + text + "\n\n"
 		case "a":
 			href := attrs["href"]
-			if href == "" || strings.HasPrefix(href, "javascript:") {
+			link, err := url.Parse(href)
+			if href == "" || err != nil {
 				return text
 			}
+			switch strings.ToLower(link.Scheme) {
+			case "", "http", "https", "mailto", "tel":
+			default:
+				return text
+			}
+			href = base.ResolveReference(link).String()
 			return "[" + text + "](" + strings.NewReplacer("(", "%28", ")", "%29", " ", "%20").Replace(href) + ")"
 		case "tr":
 			cells := []string{}
 			heading := false
 			for child := node.FirstChild; child != nil; child = child.NextSibling {
 				if child.Data == "th" || child.Data == "td" {
-					if child.Data == "th" {
+					if child.Data == "th" && node.Parent != nil && node.Parent.Data == "thead" {
 						heading = true
 					}
 					cells = append(cells, strings.Join(strings.Fields(render(child)), " "))
@@ -135,6 +189,12 @@ func htmlMarkdown(source []byte) (string, error) {
 		return body.String()
 	}
 	text := render(root)
+	// Whitespace-only lines from empty UI elements should not create blank blocks.
+	lines := strings.Split(text, "\n")
+	for i := range lines {
+		lines[i] = strings.TrimRight(lines[i], " \t\r")
+	}
+	text = strings.Join(lines, "\n")
 	for strings.Contains(text, "\n\n\n") {
 		text = strings.ReplaceAll(text, "\n\n\n", "\n\n")
 	}

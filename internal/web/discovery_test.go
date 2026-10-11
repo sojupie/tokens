@@ -8,6 +8,8 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
+
+	"github.com/sojupie/tokens/internal/publish"
 )
 
 func discoveryTestServer(t *testing.T) *Server {
@@ -127,17 +129,81 @@ func TestMarkdownNegotiation(t *testing.T) {
 }
 
 func TestMarkdownPreservesViewContent(t *testing.T) {
-	markdown, err := htmlMarkdown([]byte(`<html><head><script>secret</script></head><body><nav>Menu</nav><main><h1>Tokens</h1><p>Read <a href="/components">components</a> here.</p><table><thead><tr><th>Name</th><th>Value</th></tr></thead><tbody><tr><td>md.test</td><td>4 dp</td></tr></tbody></table></main><footer>Footer</footer></body></html>`))
+	markdown, err := htmlMarkdown([]byte(`<html><head><script>secret</script></head><body><nav>Menu</nav><main><h1>Tokens</h1><p>Read <a href="/components">components</a> here.</p><table><thead><tr><th>Name</th><th>Value</th></tr></thead><tbody><tr><td>md.test</td><td>4 dp</td></tr></tbody></table><nav><a href="?page=2">Next</a><a href="https://example.org/docs">Documentation</a></nav></main><footer>Footer</footer></body></html>`), "https://tokens.example/changes")
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, content := range []string{"# Tokens", "Read [components](/components) here.", "| Name | Value |", "| md.test | 4 dp |"} {
+	for _, content := range []string{"# Tokens", "Read [components](https://tokens.example/components) here.", "| Name | Value |", "| md.test | 4 dp |", "[Next](https://tokens.example/changes?page=2)\n[Documentation](https://example.org/docs)"} {
 		if !strings.Contains(markdown, content) {
 			t.Fatalf("lost %q: %s", content, markdown)
 		}
 	}
 	if strings.Contains(markdown, "secret") || strings.Contains(markdown, "Menu") || strings.Contains(markdown, "Footer") {
 		t.Fatal("included chrome or scripts")
+	}
+}
+
+func TestMarkdownSubjectLinks(t *testing.T) {
+	server := discoveryTestServer(t)
+	response := httptest.NewRecorder()
+	request := httptest.NewRequest("GET", "/components/snackbar", nil)
+	request.Host = "untrusted.example"
+	request.Header.Set("Accept", "text/markdown")
+	server.Handler().ServeHTTP(response, request)
+	body := response.Body.String()
+	for _, link := range []string{"(https://tokens.example/components)", "[Change history (0)](https://tokens.example/components/snackbar/changes)"} {
+		if !strings.Contains(body, link) {
+			t.Fatalf("missing %q: %s", link, body)
+		}
+	}
+	if strings.Contains(body, "untrusted.example") {
+		t.Fatal("links used the request host instead of the configured origin")
+	}
+}
+
+func TestMarkdownTokenTableFormatting(t *testing.T) {
+	source := []byte(`<main><noscript><style>secret CSS</style></noscript><details><summary>Enabled</summary><table><caption>Enabled tokens</caption><thead><tr><th scope="col">Token</th><th scope="col">Value</th></tr></thead><tbody><tr><th scope="row"><span>Container color</span><code>md.comp.container_color</code></th><td><details class="tokens-token-reference"><summary><code>md.sys.color</code><span class="tokens-reference-toggle">Show reference chainHide reference chain</span></summary><div><code>md.comp.container_color</code><ul><li><code>md.sys.color</code></li><li><code>md.ref.color</code></li></ul></div></details><span>#322F35</span></td></tr><tr><th scope="row">Width</th><td>4 dp</td></tr></tbody></table></details></main>`)
+	result, err := htmlMarkdown(source, "https://tokens.example/components/test")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, content := range []string{"### Enabled\n\n| Token | Value |", "Container color `md.comp.container_color`", "reference chain: `md.comp.container_color` → `md.sys.color` → `md.ref.color`", "#322F35", "| Width | 4 dp |"} {
+		if !strings.Contains(result, content) {
+			t.Fatalf("lost %q: %s", content, result)
+		}
+	}
+	if strings.Count(result, "| --- | --- |") != 1 || strings.Contains(result, "secret CSS") || strings.Contains(result, "Show reference") || strings.Contains(result, "Hide reference") {
+		t.Fatalf("included UI text or repeated table headers: %s", result)
+	}
+}
+
+func TestMarkdownSubpageViews(t *testing.T) {
+	state := seoTestState()
+	style := state.Subjects[publish.SubjectKey{Kind: publish.SubjectComponent, Slug: "snackbar"}]
+	style.Key = publish.SubjectKey{Kind: publish.SubjectStyle, Slug: "elevation"}
+	style.Name = "Elevation"
+	state.Subjects[style.Key] = style
+	for i := 0; i < 51; i++ {
+		state.Changes = append(state.Changes, publish.ChangeView{ID: fmt.Sprint(i), Subject: "snackbar", Type: "changed", Name: "md.comp.snackbar.container.width"})
+	}
+	server := New(state, "")
+	if err := server.SetPublicOrigin("https://tokens.example"); err != nil {
+		t.Fatal(err)
+	}
+	for _, path := range []string{"/styles/elevation", "/components/snackbar?q=container", "/components/snackbar/sets/snackbar/common", "/components/snackbar?context.Theme=Dark", "/changes", "/components/snackbar/changes", "/components/snackbar/changes?page=2"} {
+		t.Run(path, func(t *testing.T) {
+			response := httptest.NewRecorder()
+			request := httptest.NewRequest("GET", path, nil)
+			request.Header.Set("Accept", "text/markdown")
+			server.Handler().ServeHTTP(response, request)
+			body := response.Body.String()
+			if response.Code != 200 || !strings.Contains(body, "# ") || strings.Contains(body, "&lt;style") || strings.Contains(body, "\n \n") {
+				t.Fatalf("invalid subpage Markdown: %d %s", response.Code, body)
+			}
+			if path == "/components/snackbar/changes" && !strings.Contains(body, "[Next](https://tokens.example/components/snackbar/changes?page=2)") {
+				t.Fatalf("pagination link missing: %s", body)
+			}
+		})
 	}
 }
 

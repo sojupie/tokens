@@ -190,7 +190,7 @@ func (server *Server) renderHTML(response http.ResponseWriter, request *http.Req
 		if err := component.Render(ctx, &rendered); err != nil {
 			return err
 		}
-		markdown, err := htmlMarkdown(rendered.Bytes())
+		markdown, err := htmlMarkdown(rendered.Bytes(), server.publicOrigin+request.URL.RequestURI())
 		if err != nil {
 			return err
 		}
