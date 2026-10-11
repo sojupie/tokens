@@ -15,11 +15,18 @@ services:
     env_file:
       - path: /etc/tokens/server.env
         required: false
+    environment:
+      TOKENS_USAGE_DIR: /var/lib/tokens-usage
     volumes:
       - type: bind
         source: ${TOKENS_STATE_DIR:-/var/lib/tokens}
         target: /var/lib/tokens
         read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: /var/lib/tokens-usage
+        target: /var/lib/tokens-usage
         bind:
           create_host_path: false
     healthcheck:
@@ -75,6 +82,28 @@ services:
         bind:
           create_host_path: false
     command: [update, run, --state-dir, /var/lib/tokens, --page-catalog, /etc/tokens/page-catalog.json, --chrome-path, /usr/bin/chromium, --concurrency, "1", --page-timeout, 30s, --timeout, 1h]
+    networks: [crawl]
+
+  usage:
+    image: tokens:local
+    profiles: [usage]
+    init: true
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    tmpfs: [/tmp]
+    env_file:
+      - path: /etc/tokens/update.env
+        required: false
+    environment:
+      TOKENS_USAGE_DIR: /var/lib/tokens-usage
+    volumes:
+      - type: bind
+        source: /var/lib/tokens-usage
+        target: /var/lib/tokens-usage
+        bind:
+          create_host_path: false
+    command: [usage, --weekly]
     networks: [crawl]
 
 networks:

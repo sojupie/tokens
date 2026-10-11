@@ -10,9 +10,11 @@ import (
 	"strings"
 
 	"github.com/sojupie/tokens/internal/publish"
+	"github.com/sojupie/tokens/internal/usage"
 )
 
 type Server struct {
+	usage         *usage.Store
 	publicOrigin  string
 	basePath      string
 	browserOrigin string
@@ -117,7 +119,7 @@ func (server *Server) Handler() http.Handler {
 		}
 		mux.ServeHTTP(response, request)
 	})
-	return server.mount(handler)
+	return server.mount(server.observe(handler))
 }
 
 func (server *Server) handleHealth(response http.ResponseWriter, _ *http.Request) {

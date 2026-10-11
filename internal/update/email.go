@@ -97,15 +97,23 @@ func emailMessage(config smtpConfig, root string, report Report) []byte {
 	if report.Status != "test" {
 		body.WriteString("\nService logs:\nsudo journalctl -u tokens-update.service -n 100 --no-pager\n")
 	}
+	return plainEmail(config, subject, body.String())
+}
+
+func plainEmail(config smtpConfig, subject, body string) []byte {
 	var message strings.Builder
 	fmt.Fprintf(&message, "From: %s\r\nTo: %s\r\nSubject: %s\r\nDate: %s\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\n", config.from.String(), config.to.String(), subject, time.Now().UTC().Format(time.RFC1123Z))
 	writer := quotedprintable.NewWriter(&message)
-	_, _ = writer.Write([]byte(body.String()))
+	_, _ = writer.Write([]byte(body))
 	_ = writer.Close()
 	return []byte(message.String())
 }
 
 func sendEmail(ctx context.Context, config smtpConfig, root string, report Report) error {
+	return sendSMTP(ctx, config, emailMessage(config, root, report))
+}
+
+func sendSMTP(ctx context.Context, config smtpConfig, message []byte) error {
 	connection, err := (&net.Dialer{}).DialContext(ctx, "tcp", net.JoinHostPort(config.host, config.port))
 	if err != nil {
 		return errors.New("SMTP connection failed; check host, port and network")
@@ -153,7 +161,7 @@ func sendEmail(ctx context.Context, config smtpConfig, root string, report Repor
 	if err != nil {
 		return errors.New("SMTP server refused the message")
 	}
-	if _, err := writer.Write(emailMessage(config, root, report)); err != nil {
+	if _, err := writer.Write(message); err != nil {
 		return errors.New("SMTP message transfer failed")
 	}
 	if err := writer.Close(); err != nil {
@@ -163,4 +171,21 @@ func sendEmail(ctx context.Context, config smtpConfig, root string, report Repor
 		return errors.New("SMTP message accepted, but closing the session failed; check your inbox before resending")
 	}
 	return nil
+}
+
+// SendEmailMessage uses the same SMTP settings and TLS transport as update alerts.
+func SendEmailMessage(ctx context.Context, subject, body string) error {
+	if !smtpConfigured() {
+		return errors.New("configure TOKENS_SMTP settings before sending a usage digest")
+	}
+	if strings.ContainsAny(subject, "\r\n") {
+		return errors.New("email subject must be one line")
+	}
+	config, err := smtpEnvironment()
+	if err != nil {
+		return err
+	}
+	ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+	return sendSMTP(ctx, config, plainEmail(config, subject, body))
 }

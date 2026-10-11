@@ -24,6 +24,7 @@ if [ -d /var/lib/tokens ] && [ "$(stat -c %u /var/lib/tokens)" != 10001 ]; then
     exit 1
 fi
 install -d -o 10001 -g 10001 -m 0700 /var/lib/tokens
+install -d -o 10001 -g 10001 -m 0700 /var/lib/tokens-usage
 install -d -m 0755 /etc/tokens
 if [ ! -e /etc/tokens/cloudflared.env ]; then
     install -m 0600 /opt/tokens/deploy/cloudflared.env.example /etc/tokens/cloudflared.env
@@ -39,7 +40,9 @@ chmod 0600 /etc/tokens/cloudflared.env /etc/tokens/update.env /etc/tokens/server
 install -m 0644 /opt/tokens/deploy/systemd/tokens.service \
     /opt/tokens/deploy/systemd/tokens-update.service \
     /opt/tokens/deploy/systemd/tokens-update-failure.service \
-    /opt/tokens/deploy/systemd/tokens-update.timer /etc/systemd/system/
+    /opt/tokens/deploy/systemd/tokens-update.timer \
+    /opt/tokens/deploy/systemd/tokens-usage.service \
+    /opt/tokens/deploy/systemd/tokens-usage.timer /etc/systemd/system/
 systemctl daemon-reload
 echo 'Configuration: /etc/tokens/server.env, cloudflared.env, update.env'
 echo 'Setup instructions: /opt/tokens/deploy/README.md'

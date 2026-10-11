@@ -41,6 +41,8 @@ func run(args []string) error {
 		return runPublish(args[1:])
 	case "update":
 		return runUpdate(args[1:])
+	case "usage":
+		return runUsage(args[1:])
 	case "serve":
 		return runServe(args[1:])
 	case "snapshot":
@@ -58,6 +60,7 @@ const topHelp = `Usage:
   tokens publish [flags]
   tokens update [run|status|inspect|approve|retry|notify] [flags]
   tokens serve [flags]
+  tokens usage [--since 7d] [--send | --weekly] [flags]
   tokens snapshot create [flags]
   tokens snapshot verify [flags]
   tokens snapshot compare [flags]

@@ -296,3 +296,67 @@ sudo journalctl -u tokens-update.service -u tokens-update-failure.service -n 100
 - No email: run the notification test and check the SMTP settings.
 
 See [updates and recovery](updates.md) for review, retries and backups.
+
+## Usage reports and weekly email
+
+The production server logs requests as JSON and retains hourly totals in
+`/var/lib/tokens-usage/usage.sqlite`. The writable usage directory is separate
+from the read-only publication. Deploys and Docker log rotation do not erase
+these totals. Tracking starts when this version is deployed; it does not recover
+older traffic.
+
+Totals expire after 90 days. The SQLite database has a 128 MiB page limit, with
+additional small WAL and shared-memory files. Deleted pages are reused. Raw
+container logs keep their existing rotation policy. Records use fixed route
+patterns and known subject names, so arbitrary URLs cannot create unlimited
+categories. Logging runs through a bounded queue and flushes every second;
+graceful server shutdown drains it. A forced shutdown can lose the last batch.
+Dropped records are reported when storage is available; storage failures appear
+in the container logs.
+
+Reports include request kinds, response formats, popular subjects, downloads by
+scope, MCP methods and tool outcomes, HTTP errors, response bytes, and mean and
+maximum response times. Prefetches are separate. Health checks and successful
+static-file requests are excluded. Counts measure requests, not unique visitors.
+Browser and Cloudflare cache hits may not reach the server. IP addresses,
+cookies, query text, MCP arguments and request bodies are not recorded.
+
+Read a report from `/opt/tokens`:
+
+```sh
+sudo sh deploy/usage.sh --since 7d
+sudo sh deploy/usage.sh --since 30d
+```
+
+The installer installs the weekly digest units. Enable them after deploying:
+
+```sh
+sudo systemctl enable --now tokens-usage.timer
+sudo systemctl list-timers --all tokens-usage.timer
+```
+
+The digest runs Mondays at 09:00 Europe/Stockholm and uses the SMTP settings in
+`/etc/tokens/update.env`, including the existing sender and recipient. Weekly
+periods end at the last complete UTC hour. The first report covers the previous
+seven days and states when tracking started. Later reports resume from the last
+successfully emailed period, including delayed deliveries. Persistent timers
+catch missed runs; delivery failures retry hourly. A database lease prevents
+overlapping weekly sends. SMTP acceptance is followed by saving the checkpoint;
+a crash between those operations can still cause a duplicate email.
+
+Send a current report manually without advancing the weekly checkpoint:
+
+```sh
+sudo sh deploy/usage.sh --since 7d --send
+```
+
+Inspect delivery failures:
+
+```sh
+sudo journalctl -u tokens-usage.service -n 100 --no-pager
+sudo docker compose -f deploy/compose.yaml logs --tail=100 tokens
+```
+
+SMTP settings are required to enable the email timer. It does not use the
+optional update webhook. Changes to the timer schedule can be made with
+`sudo systemctl edit tokens-usage.timer`, as with the update timer.

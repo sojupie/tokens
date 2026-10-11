@@ -1,16 +1,20 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"flag"
 	"fmt"
 	"net/http"
 	"os"
+	"os/signal"
 	"path/filepath"
 	"strings"
+	"syscall"
 	"time"
 
 	"github.com/sojupie/tokens/internal/publish"
+	"github.com/sojupie/tokens/internal/usage"
 	"github.com/sojupie/tokens/internal/web"
 )
 
@@ -26,6 +30,8 @@ func runServe(args []string) error {
 	publishedDir := "published"
 	listenAddress := "127.0.0.1:8080"
 	publicOrigin := os.Getenv("TOKENS_PUBLIC_ORIGIN")
+	usageDir := os.Getenv("TOKENS_USAGE_DIR")
+	flags.StringVar(&usageDir, "usage-dir", usageDir, "directory for retained usage totals; empty disables usage logging")
 	flags.StringVar(&publishedDir, "published", publishedDir, "publication directory")
 	flags.StringVar(&listenAddress, "listen", listenAddress, "HTTP listen address")
 	flags.StringVar(&publicOrigin, "public-origin", publicOrigin, "public http(s) base URL, optionally including a path, for canonical URLs and sitemap; unset disables indexing")
@@ -51,11 +57,35 @@ func runServe(args []string) error {
 	if err := publicationServer.SetPublicOrigin(publicOrigin); err != nil {
 		return err
 	}
+	if usageDir != "" {
+		store, err := usage.Open(usageDir, os.Stdout)
+		if err != nil {
+			return fmt.Errorf("open usage store: %w", err)
+		}
+		defer store.Close()
+		publicationServer.SetUsage(store)
+	}
 	server := &http.Server{
 		Addr:              listenAddress,
 		Handler:           publicationServer.Handler(),
 		ReadHeaderTimeout: 5 * time.Second,
 	}
 	fmt.Printf("Serving publication %s on http://%s\n", state.PublicationID, listenAddress)
-	return server.ListenAndServe()
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	defer stop()
+	shutdownDone := make(chan struct{})
+	go func() {
+		<-ctx.Done()
+		shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
+		_ = server.Shutdown(shutdownCtx)
+		close(shutdownDone)
+	}()
+	err = server.ListenAndServe()
+	stop()
+	<-shutdownDone
+	if errors.Is(err, http.ErrServerClosed) {
+		return nil
+	}
+	return err
 }

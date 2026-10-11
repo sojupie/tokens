@@ -8,8 +8,10 @@ import (
 	"mime"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/sojupie/tokens/internal/publish"
+	"github.com/sojupie/tokens/internal/usage"
 )
 
 const mcpVersion = "1.0.0"
@@ -99,8 +101,16 @@ func (server *Server) handleMCP(response http.ResponseWriter, request *http.Requ
 		Method  string          `json:"method"`
 		Params  json.RawMessage `json:"params"`
 	}
+	observed := usage.Event{Time: time.Now().UTC(), Event: "mcp_call", Route: "/mcp", Kind: "mcp", Method: "unknown", Status: 200}
+	if server.usage != nil {
+		defer func() {
+			observed.DurationMS = float64(time.Since(observed.Time)) / float64(time.Millisecond)
+			server.usage.Record(observed)
+		}()
+	}
 	decoder := json.NewDecoder(http.MaxBytesReader(response, request.Body, 64<<10))
 	rpcError := func(id json.RawMessage, code int, message string) {
+		observed.Success = false
 		if len(id) == 0 {
 			id = json.RawMessage("null")
 		}
@@ -114,15 +124,23 @@ func (server *Server) handleMCP(response http.ResponseWriter, request *http.Requ
 		rpcError(nil, -32700, "Expected one JSON-RPC message")
 		return
 	}
+	for _, method := range []string{"initialize", "ping", "tools/list", "tools/call", "notifications/initialized"} {
+		if message.Method == method {
+			observed.Method = method
+		}
+	}
 	validID := len(message.ID) == 0 || string(message.ID) == "null" || message.ID[0] == '"' || message.ID[0] == '-' || message.ID[0] >= '0' && message.ID[0] <= '9'
 	if message.JSONRPC != "2.0" || message.Method == "" || !validID {
 		rpcError(nil, -32600, "Invalid request")
 		return
 	}
 	if len(message.ID) == 0 {
+		observed.Success = true
+		observed.Status = http.StatusAccepted
 		response.WriteHeader(http.StatusAccepted)
 		return
 	}
+	observed.Success = true
 	var result any
 	switch message.Method {
 	case "initialize":
@@ -151,12 +169,19 @@ func (server *Server) handleMCP(response http.ResponseWriter, request *http.Requ
 			rpcError(message.ID, -32602, "Tool name is required")
 			return
 		}
+		observed.Tool = "unknown"
+		for _, name := range []string{"list_subjects", "get_tokens", "list_changes"} {
+			if params.Name == name {
+				observed.Tool = name
+			}
+		}
 		value, err := server.callMCPTool(params.Name, params.Arguments)
 		if errors.Is(err, errMCPArguments) {
 			rpcError(message.ID, -32602, err.Error())
 			return
 		}
 		if err != nil {
+			observed.Success = false
 			result = map[string]any{"isError": true, "content": []any{map[string]string{"type": "text", "text": err.Error()}}}
 		} else {
 			encoded, _ := json.Marshal(value)

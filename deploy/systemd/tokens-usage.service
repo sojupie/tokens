@@ -1,0 +1,18 @@
+[Unit]
+Description=Email the weekly Token Catalog usage digest
+Wants=network-online.target
+Requires=docker.service
+After=docker.service network-online.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/tokens
+ExecStart=/usr/bin/docker compose -f /opt/tokens/deploy/compose.yaml --profile usage run --rm --no-deps --name tokens-weekly-usage usage
+ExecStopPost=-/usr/bin/docker stop --time 10 tokens-weekly-usage
+ExecStopPost=-/usr/bin/docker rm -f tokens-weekly-usage
+Restart=on-failure
+RestartSec=1h
+TimeoutStartSec=2min
+TimeoutStopSec=30s
+UMask=0077
