@@ -38,10 +38,12 @@
   font: inherit;
   color: inherit;
 }
-.tokens-token-browser button:focus-visible,
-.tokens-token-browser select:focus-visible,
-.tokens-token-browser input:focus-visible,
-.tokens-token-folder summary:focus-visible {
+:where(
+  .tokens-token-browser button,
+  .tokens-token-browser select,
+  .tokens-token-browser input,
+  .tokens-token-folder summary
+):focus-visible {
   outline: var(--md-sys-state-focus-indicator-thickness) solid
     var(--md-sys-color-primary);
   outline-offset: var(--md-sys-state-focus-indicator-outer-offset);
@@ -812,6 +814,42 @@
       )
   );
 }
+.tokens-icon-button[aria-pressed="false"] {
+  color: var(--md-comp-icon-button-standard-unselected-icon-color);
+}
+.tokens-icon-button[aria-pressed="false"]:hover:not(:disabled) {
+  color: var(--md-comp-icon-button-standard-unselected-hovered-icon-color);
+  background: color-mix(
+    in srgb,
+    transparent,
+    var(--md-comp-icon-button-standard-unselected-hovered-state-layer-color)
+      calc(
+        var(--md-comp-icon-button-standard-hovered-state-layer-opacity) * 100%
+      )
+  );
+}
+.tokens-icon-button[aria-pressed="false"]:focus-visible:not(:disabled) {
+  color: var(--md-comp-icon-button-standard-unselected-focused-icon-color);
+  background: color-mix(
+    in srgb,
+    transparent,
+    var(--md-comp-icon-button-standard-unselected-focused-state-layer-color)
+      calc(
+        var(--md-comp-icon-button-standard-focused-state-layer-opacity) * 100%
+      )
+  );
+}
+.tokens-icon-button[aria-pressed="false"]:active:not(:disabled) {
+  color: var(--md-comp-icon-button-standard-unselected-pressed-icon-color);
+  background: color-mix(
+    in srgb,
+    transparent,
+    var(--md-comp-icon-button-standard-unselected-pressed-state-layer-color)
+      calc(
+        var(--md-comp-icon-button-standard-pressed-state-layer-opacity) * 100%
+      )
+  );
+}
 .tokens-icon-button:disabled {
   cursor: default;
   pointer-events: none;
@@ -945,9 +983,9 @@
   display: block;
 }
 .tokens-context-choice > input:focus-visible + span {
-  outline: var(--md-sys-state-focus-indicator-thickness) solid
-    var(--md-sys-color-primary);
-  outline-offset: var(--md-sys-state-focus-indicator-outer-offset);
+  outline: var(--md-comp-filter-chip-focus-indicator-thickness) solid
+    var(--md-comp-filter-chip-focus-indicator-color);
+  outline-offset: var(--md-comp-filter-chip-focus-indicator-outline-offset);
 }
 .tokens-context-choice:hover > input:not(:checked):enabled + span {
   color: var(--md-comp-filter-chip-unselected-hover-label-text-color);
@@ -969,7 +1007,7 @@
       calc(var(--md-comp-filter-chip-selected-hover-state-layer-opacity) * 100%)
   );
 }
-.tokens-context-choice > input:not(:checked):focus-visible + span {
+.tokens-context-choice > input:not(:checked):focus-visible:enabled + span {
   color: var(--md-comp-filter-chip-unselected-focus-label-text-color);
   background: color-mix(
     in srgb,
@@ -980,7 +1018,7 @@
       )
   );
 }
-.tokens-context-choice > input:checked:focus-visible + span {
+.tokens-context-choice > input:checked:focus-visible:enabled + span {
   color: var(--md-comp-filter-chip-selected-focus-label-text-color);
   background: color-mix(
     in srgb,
@@ -1188,6 +1226,8 @@
 .tokens-reference-node > code {
   flex: 1;
   min-width: 0;
+  direction: rtl;
+  text-align: left;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1275,7 +1315,8 @@
 .tokens-grid-view .tokens-info-button {
   display: none;
 }
-.tokens-token-set:hover {
+.tokens-token-set:hover:not(:disabled) {
+  color: var(--md-comp-filter-chip-selected-hover-label-text-color);
   background: color-mix(
     in srgb,
     var(--md-comp-filter-chip-flat-selected-container-color),
@@ -1283,7 +1324,8 @@
       calc(var(--md-comp-filter-chip-selected-hover-state-layer-opacity) * 100%)
   );
 }
-.tokens-token-set:focus-visible {
+.tokens-token-set:focus-visible:not(:disabled) {
+  color: var(--md-comp-filter-chip-selected-focus-label-text-color);
   background: color-mix(
     in srgb,
     var(--md-comp-filter-chip-flat-selected-container-color),
@@ -1291,7 +1333,8 @@
       calc(var(--md-comp-filter-chip-selected-focus-state-layer-opacity) * 100%)
   );
 }
-.tokens-token-set:active {
+.tokens-token-set:active:not(:disabled) {
+  color: var(--md-comp-filter-chip-selected-pressed-label-text-color);
   background: color-mix(
     in srgb,
     var(--md-comp-filter-chip-flat-selected-container-color),
@@ -1301,7 +1344,8 @@
       )
   );
 }
-.tokens-context-button:hover {
+.tokens-context-button:hover:not(:disabled) {
+  color: var(--md-comp-filter-chip-unselected-hover-label-text-color);
   background: color-mix(
     in srgb,
     transparent,
@@ -1311,7 +1355,8 @@
       )
   );
 }
-.tokens-context-button:focus-visible {
+.tokens-context-button:focus-visible:not(:disabled) {
+  color: var(--md-comp-filter-chip-unselected-focus-label-text-color);
   background: color-mix(
     in srgb,
     transparent,
@@ -1321,7 +1366,8 @@
       )
   );
 }
-.tokens-context-button:active {
+.tokens-context-button:active:not(:disabled) {
+  color: var(--md-comp-filter-chip-unselected-pressed-label-text-color);
   background: color-mix(
     in srgb,
     transparent,
@@ -1340,10 +1386,8 @@
   outline-offset: var(--md-sys-state-focus-indicator-outer-offset);
 }
 .tokens-icon-button.tokens-popover-close {
-  background: var(
-    --md-comp-filled-tonal-icon-button-unselected-container-color
-  );
-  color: var(--md-comp-filled-tonal-icon-button-toggle-unselected-icon-color);
+  background: var(--md-comp-filled-tonal-icon-button-container-color);
+  color: var(--md-comp-filled-tonal-icon-button-icon-color);
   border-radius: var(--md-comp-filled-tonal-icon-button-container-shape);
 }
 .tokens-reference-type {
@@ -1355,45 +1399,33 @@
   color: var(--md-sys-color-on-surface-variant);
 }
 .tokens-icon-button.tokens-popover-close:hover:not(:disabled) {
-  color: var(
-    --md-comp-filled-tonal-icon-button-toggle-unselected-hover-icon-color
-  );
+  color: var(--md-comp-filled-tonal-icon-button-hover-icon-color);
   background: color-mix(
     in srgb,
-    var(--md-comp-filled-tonal-icon-button-unselected-container-color),
-    var(
-        --md-comp-filled-tonal-icon-button-toggle-unselected-hover-state-layer-color
-      )
+    var(--md-comp-filled-tonal-icon-button-container-color),
+    var(--md-comp-filled-tonal-icon-button-hover-state-layer-color)
       calc(
         var(--md-comp-filled-tonal-icon-button-hover-state-layer-opacity) * 100%
       )
   );
 }
 .tokens-icon-button.tokens-popover-close:focus-visible:not(:disabled) {
-  color: var(
-    --md-comp-filled-tonal-icon-button-toggle-unselected-focus-icon-color
-  );
+  color: var(--md-comp-filled-tonal-icon-button-focus-icon-color);
   background: color-mix(
     in srgb,
-    var(--md-comp-filled-tonal-icon-button-unselected-container-color),
-    var(
-        --md-comp-filled-tonal-icon-button-toggle-unselected-focus-state-layer-color
-      )
+    var(--md-comp-filled-tonal-icon-button-container-color),
+    var(--md-comp-filled-tonal-icon-button-focus-state-layer-color)
       calc(
         var(--md-comp-filled-tonal-icon-button-focus-state-layer-opacity) * 100%
       )
   );
 }
 .tokens-icon-button.tokens-popover-close:active:not(:disabled) {
-  color: var(
-    --md-comp-filled-tonal-icon-button-toggle-unselected-pressed-icon-color
-  );
+  color: var(--md-comp-filled-tonal-icon-button-pressed-icon-color);
   background: color-mix(
     in srgb,
-    var(--md-comp-filled-tonal-icon-button-unselected-container-color),
-    var(
-        --md-comp-filled-tonal-icon-button-toggle-unselected-pressed-state-layer-color
-      )
+    var(--md-comp-filled-tonal-icon-button-container-color),
+    var(--md-comp-filled-tonal-icon-button-pressed-state-layer-color)
       calc(
         var(--md-comp-filled-tonal-icon-button-pressed-state-layer-opacity) *
           100%
@@ -1412,4 +1444,260 @@
   .tokens-no-previews:not(.tokens-grid-view) .tokens-token-value-column {
     width: 50%;
   }
+}
+
+.tokens-context-choice:has(input:disabled) {
+  cursor: default;
+}
+.tokens-context-choice > input:disabled + span {
+  color: color-mix(
+    in srgb,
+    var(--md-comp-filter-chip-disabled-label-text-color)
+      calc(var(--md-comp-filter-chip-disabled-label-text-opacity) * 100%),
+    transparent
+  );
+}
+.tokens-context-choice > input:disabled:checked + span {
+  background: color-mix(
+    in srgb,
+    var(--md-comp-filter-chip-flat-disabled-selected-container-color)
+      calc(
+        var(--md-comp-filter-chip-flat-disabled-selected-container-opacity) *
+          100%
+      ),
+    transparent
+  );
+}
+.tokens-context-choice > input:disabled:not(:checked) + span {
+  border-color: color-mix(
+    in srgb,
+    var(--md-comp-filter-chip-flat-disabled-unselected-outline-color)
+      calc(
+        var(--md-comp-filter-chip-flat-disabled-unselected-outline-opacity) *
+          100%
+      ),
+    transparent
+  );
+}
+.tokens-context-choice > input:checked + span > svg {
+  color: var(--md-comp-filter-chip-with-icon-selected-icon-color);
+}
+.tokens-context-choice:hover > input:checked:enabled + span > svg {
+  color: var(--md-comp-filter-chip-with-icon-selected-hover-icon-color);
+}
+.tokens-context-choice > input:checked:focus-visible:enabled + span > svg {
+  color: var(--md-comp-filter-chip-with-icon-selected-focus-icon-color);
+}
+.tokens-context-choice:active > input:checked:enabled + span > svg {
+  color: var(--md-comp-filter-chip-with-icon-selected-pressed-icon-color);
+}
+
+.tokens-context-choice > input:disabled + span > svg {
+  color: color-mix(
+    in srgb,
+    var(--md-comp-filter-chip-with-icon-disabled-icon-color)
+      calc(var(--md-comp-filter-chip-with-icon-disabled-icon-opacity) * 100%),
+    transparent
+  );
+}
+.tokens-token-set:focus-visible:not(:disabled) {
+  outline: var(--md-comp-filter-chip-focus-indicator-thickness) solid
+    var(--md-comp-filter-chip-focus-indicator-color);
+  outline-offset: var(--md-comp-filter-chip-focus-indicator-outline-offset);
+}
+.tokens-context-button:focus-visible:not(:disabled) {
+  outline: var(--md-comp-filter-chip-focus-indicator-thickness) solid
+    var(--md-comp-filter-chip-focus-indicator-color);
+  outline-offset: var(--md-comp-filter-chip-focus-indicator-outline-offset);
+}
+
+.tokens-icon-button.tokens-popover-close:disabled {
+  color: color-mix(
+    in srgb,
+    var(--md-comp-filled-tonal-icon-button-disabled-icon-color)
+      calc(var(--md-comp-filled-tonal-icon-button-disabled-icon-opacity) * 100%),
+    transparent
+  );
+  background: color-mix(
+    in srgb,
+    var(--md-comp-filled-tonal-icon-button-disabled-container-color)
+      calc(
+        var(--md-comp-filled-tonal-icon-button-disabled-container-opacity) *
+          100%
+      ),
+    transparent
+  );
+}
+.tokens-icon-button.tokens-popover-close:focus-visible {
+  outline: var(--md-comp-filled-tonal-icon-button-focus-indicator-thickness)
+    solid var(--md-comp-filled-tonal-icon-button-focus-indicator-color);
+  outline-offset: var(
+    --md-comp-filled-tonal-icon-button-focus-indicator-outline-offset
+  );
+}
+
+.tokens-token-set > svg {
+  color: var(
+    --md-comp-filter-chip-with-trailing-icon-selected-trailing-icon-color
+  );
+}
+.tokens-token-set:hover:not(:disabled) > svg {
+  color: var(
+    --md-comp-filter-chip-with-trailing-icon-selected-hover-trailing-icon-color
+  );
+}
+.tokens-token-set:focus-visible:not(:disabled) > svg {
+  color: var(
+    --md-comp-filter-chip-with-trailing-icon-selected-focus-trailing-icon-color
+  );
+}
+.tokens-token-set:active:not(:disabled) > svg {
+  color: var(
+    --md-comp-filter-chip-with-trailing-icon-selected-pressed-trailing-icon-color
+  );
+}
+.tokens-token-set:disabled {
+  color: color-mix(
+    in srgb,
+    var(--md-comp-filter-chip-disabled-label-text-color)
+      calc(var(--md-comp-filter-chip-disabled-label-text-opacity) * 100%),
+    transparent
+  );
+  background: color-mix(
+    in srgb,
+    var(--md-comp-filter-chip-flat-disabled-selected-container-color)
+      calc(
+        var(--md-comp-filter-chip-flat-disabled-selected-container-opacity) *
+          100%
+      ),
+    transparent
+  );
+}
+.tokens-token-set:disabled > svg {
+  color: color-mix(
+    in srgb,
+    var(--md-comp-filter-chip-with-trailing-icon-disabled-trailing-icon-color)
+      calc(
+        var(
+            --md-comp-filter-chip-with-trailing-icon-disabled-trailing-icon-opacity
+          ) *
+          100%
+      ),
+    transparent
+  );
+}
+
+.tokens-context-button > svg {
+  color: var(
+    --md-comp-filter-chip-with-trailing-icon-unselected-trailing-icon-color
+  );
+}
+.tokens-context-button:hover:not(:disabled) > svg {
+  color: var(
+    --md-comp-filter-chip-with-trailing-icon-unselected-hover-trailing-icon-color
+  );
+}
+.tokens-context-button:focus-visible:not(:disabled) > svg {
+  color: var(
+    --md-comp-filter-chip-with-trailing-icon-unselected-focus-trailing-icon-color
+  );
+}
+.tokens-context-button:active:not(:disabled) > svg {
+  color: var(
+    --md-comp-filter-chip-with-trailing-icon-unselected-pressed-trailing-icon-color
+  );
+}
+.tokens-context-button:disabled {
+  color: color-mix(
+    in srgb,
+    var(--md-comp-filter-chip-disabled-label-text-color)
+      calc(var(--md-comp-filter-chip-disabled-label-text-opacity) * 100%),
+    transparent
+  );
+  background: transparent;
+}
+.tokens-context-button:disabled > svg {
+  color: color-mix(
+    in srgb,
+    var(--md-comp-filter-chip-with-trailing-icon-disabled-trailing-icon-color)
+      calc(
+        var(
+            --md-comp-filter-chip-with-trailing-icon-disabled-trailing-icon-opacity
+          ) *
+          100%
+      ),
+    transparent
+  );
+}
+
+.tokens-icon-button.tokens-popover-close {
+  min-width: var(--md-comp-filled-tonal-icon-button-container-width);
+  min-height: var(--md-comp-filled-tonal-icon-button-container-height);
+}
+.tokens-icon-button.tokens-popover-close > svg {
+  width: var(--md-comp-filled-tonal-icon-button-icon-size);
+  height: var(--md-comp-filled-tonal-icon-button-icon-size);
+}
+
+.tokens-context-choice > span,
+.tokens-context-button,
+.tokens-token-set {
+  --_elevation-level: var(--md-comp-filter-chip-flat-container-elevation);
+  --_shadow-color: var(--md-comp-filter-chip-container-shadow-color);
+}
+.tokens-context-choice:hover > input:checked:enabled + span,
+.tokens-token-set:hover:not(:disabled) {
+  --_elevation-level: var(
+    --md-comp-filter-chip-flat-selected-hover-container-elevation
+  );
+}
+.tokens-context-choice > input:checked:focus-visible:enabled + span,
+.tokens-token-set:focus-visible:not(:disabled) {
+  --_elevation-level: var(
+    --md-comp-filter-chip-flat-selected-focus-container-elevation
+  );
+}
+.tokens-context-choice:active > input:checked:enabled + span,
+.tokens-token-set:active:not(:disabled) {
+  --_elevation-level: var(
+    --md-comp-filter-chip-flat-selected-pressed-container-elevation
+  );
+}
+.tokens-context-choice:hover > input:not(:checked):enabled + span,
+.tokens-context-button:hover:not(:disabled) {
+  --_elevation-level: var(
+    --md-comp-filter-chip-flat-unselected-hover-container-elevation
+  );
+}
+.tokens-context-choice > input:not(:checked):focus-visible:enabled + span,
+.tokens-context-button:focus-visible:not(:disabled) {
+  --_elevation-level: var(
+    --md-comp-filter-chip-flat-unselected-focus-container-elevation
+  );
+}
+.tokens-context-choice:active > input:not(:checked):enabled + span,
+.tokens-context-button:active:not(:disabled) {
+  --_elevation-level: var(
+    --md-comp-filter-chip-flat-unselected-pressed-container-elevation
+  );
+}
+
+.tokens-context-choice > input:not(:checked):focus-visible:enabled + span,
+.tokens-context-button:focus-visible:not(:disabled) {
+  border-color: color-mix(
+    in srgb,
+    var(--md-comp-filter-chip-flat-unselected-focus-outline-color) 50%,
+    transparent
+  );
+}
+.tokens-context-button:disabled {
+  border-color: color-mix(
+    in srgb,
+    var(--md-comp-filter-chip-flat-disabled-unselected-outline-color)
+      calc(
+        var(--md-comp-filter-chip-flat-disabled-unselected-outline-opacity) *
+          100%
+      ),
+    transparent
+  );
 }

@@ -57,20 +57,53 @@ func TestStylesUseMaterialRolesWithoutLegacyAliases(t *testing.T) {
 	}
 }
 
-func TestAppearanceHoverKeepsMatchingForegroundAndContainer(t *testing.T) {
+func TestComponentStateProperties(t *testing.T) {
 	css, err := embeddedStatic.ReadFile("static/app.css")
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, rule := range []string{
-		"transparent, currentColor calc(var(--md-sys-state-hover-state-layer-opacity) * 100%)",
-		`button[aria-pressed="true"]:hover`,
-		"var(--md-sys-color-primary), var(--md-sys-color-on-primary) calc(var(--md-sys-state-hover-state-layer-opacity) * 100%)",
-	} {
-		if !strings.Contains(string(css), rule) {
-			t.Fatalf("missing paired hover state layer: %s", rule)
+	// Check properties within their state rules, not just token presence.
+	for _, variant := range []string{"filled", "filled-tonal", "elevated"} {
+		for pseudo, state := range map[string]string{"hover": "hover", "focus-visible": "focus", "active": "pressed"} {
+			selector := ".md-" + variant + "-button:" + pseudo + `:not(:disabled):not([aria-disabled="true"])`
+			assertCSSProperty(t, string(css), selector, "--_elevation-level", "var(--md-comp-"+variant+"-button-"+state+"-container-elevation)")
 		}
 	}
+	for pseudo, state := range map[string]string{"hover": "hover", "focus-visible": "focus", "active": "pressed"} {
+		assertCSSProperty(t, string(css), ".md-outlined-button:"+pseudo+`:not(:disabled):not([aria-disabled="true"])`, "border-color", "var(--md-comp-outlined-button-"+state+"-outline-color)")
+	}
+	for _, variant := range []string{"outlined", "filled", "elevated"} {
+		selector := ".md-" + variant + `-card.md-interactive-card:focus-visible:not([aria-disabled="true"])`
+		assertCSSProperty(t, string(css), selector, "--_elevation-level", "var(--md-comp-"+variant+"-card-focus-container-elevation)")
+		assertCSSProperty(t, string(css), selector, "outline-offset", "var(--md-comp-"+variant+"-card-focus-indicator-outline-offset)")
+	}
+}
+
+func TestRadioChipFocusHasHoverSpecificity(t *testing.T) {
+	css, err := embeddedStatic.ReadFile("static/token-table.css")
+	if err != nil {
+		t.Fatal(err)
+	}
+	// :enabled is also present in hover rules. Focus must take precedence
+	// when a keyboard-focused choice is under the pointer.
+	for _, selected := range []string{"checked", "not(:checked)"} {
+		state := "selected"
+		if selected == "not(:checked)" {
+			state = "unselected"
+		}
+		assertCSSProperty(t, string(css), ".tokens-context-choice > input:"+selected+":focus-visible:enabled + span", "color", "var(--md-comp-filter-chip-"+state+"-focus-label-text-color)")
+	}
+}
+
+func assertCSSProperty(t *testing.T, css, selector, property, expected string) {
+	t.Helper()
+	rule := regexp.MustCompile(regexp.QuoteMeta(selector) + `\s*\{([^}]+)\}`)
+	for _, match := range rule.FindAllStringSubmatch(css, -1) {
+		if regexp.MustCompile(regexp.QuoteMeta(property) + `\s*:\s*` + regexp.QuoteMeta(expected) + `\s*[;}]`).MatchString(match[1] + "}") {
+			return
+		}
+	}
+	t.Errorf("%s must set %s to %s", selector, property, expected)
 }
 
 func TestThemeReportsMissingTokensWithoutInventingFallbacks(t *testing.T) {
