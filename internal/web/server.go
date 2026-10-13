@@ -97,6 +97,15 @@ func (server *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /styles", server.handleOverview)
 	mux.HandleFunc("GET /styles/{slug...}", server.handleHTMLSubject)
 	handler := http.HandlerFunc(func(response http.ResponseWriter, request *http.Request) {
+		// Keep page URLs canonical without dropping filters or the collection mount.
+		if (request.Method == http.MethodGet || request.Method == http.MethodHead) && request.URL.Path != "/" && !strings.HasSuffix(request.URL.Path, "/sets/") && strings.HasSuffix(request.URL.Path, "/") && (strings.HasPrefix(request.URL.Path, "/components/") || strings.HasPrefix(request.URL.Path, "/styles/") || request.URL.Path == "/changes/" || request.URL.Path == "/for-agents/") {
+			target := strings.TrimRight(request.URL.Path, "/")
+			if request.URL.RawQuery != "" {
+				target += "?" + request.URL.RawQuery
+			}
+			http.Redirect(response, request, target, http.StatusPermanentRedirect)
+			return
+		}
 		response.Header().Set("Content-Signal", contentSignal)
 		publicData := strings.HasPrefix(request.URL.Path, "/api/") || strings.HasPrefix(request.URL.Path, "/downloads/") || agentDiscoveryPath(request.URL.Path) || wellKnownPath(request.URL.Path)
 		if publicData {

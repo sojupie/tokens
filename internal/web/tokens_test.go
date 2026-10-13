@@ -32,7 +32,7 @@ func TestReferenceCellUsesAliasesAndPreservesChain(t *testing.T) {
 		t.Fatal(err)
 	}
 	body := output.String()
-	if !strings.Contains(body, `<summary><code>md.sys.color.shadow</code>`) || !strings.Contains(body, "md.ref.palette.neutral0") {
+	if !strings.Contains(body, `<code title="md.sys.color.shadow">md.sys.color.shadow</code>`) || !strings.Contains(body, "md.ref.palette.neutral0") {
 		t.Fatalf("missing primary alias or dependency: %s", body)
 	}
 	if strings.Contains(body, "Color not resolved") {
@@ -139,5 +139,20 @@ func TestContextFiltersOnlyOfferSupportedCombinations(t *testing.T) {
 func TestPreviewTextContrast(t *testing.T) {
 	if tokenColorTextColor("rgba(103, 80, 164, 1)") != "var(--tokens-preview-on-dark)" || tokenColorTextColor("rgba(255, 255, 255, 1)") != "var(--tokens-preview-on-light)" {
 		t.Fatal("preview labels need contrasting text")
+	}
+}
+
+func TestValuePreviewAndInfoShareOneNativeReferencePopup(t *testing.T) {
+	row := tokenRow{Name: "Button color", SourceName: "md.comp.button.color", Value: "#6750A4", Color: "rgba(103,80,164,1)", HasValue: true, References: []publish.TokenReference{{Name: "md.sys.color.primary"}}}
+	var output bytes.Buffer
+	if err := writeTokenReferences(&output, row); err != nil {
+		t.Fatal(err)
+	}
+	body := output.String()
+	start := strings.Index(body, `popovertarget="`) + len(`popovertarget="`)
+	end := start + strings.Index(body[start:], `"`)
+	id := body[start:end]
+	if strings.Count(body, `popovertarget="`+id+`"`) != 3 || strings.Count(body, `id="`+id+`"`) != 1 || !strings.Contains(body, `popover role="dialog"`) || !strings.Contains(body, `class="tokens-color-dot"`) || strings.Contains(body, `<details`) {
+		t.Fatal("preview, info and close must target one popup while the compact swatch remains present")
 	}
 }

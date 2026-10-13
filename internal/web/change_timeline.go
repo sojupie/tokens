@@ -107,16 +107,11 @@ func changeHierarchy(name string) []string {
 	return labels
 }
 
-func timelineTitle(subject string, subjects map[publish.SubjectKey]publish.SubjectView) string {
+func timelineTitle(subject string) string {
 	if subject == "" {
 		return "Change log"
 	}
-	for _, item := range subjects {
-		if item.Key.Slug == subject && item.Name != "" {
-			return item.Name + " changes"
-		}
-	}
-	return displayWords(subject) + " changes"
+	return "Material Design 3 " + tokenPhrase(displayWords(subject)) + " token changes"
 }
 
 func changeBatches(changes []publish.ChangeView, snapshots []publish.SnapshotView) []changeBatch {

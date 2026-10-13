@@ -24,6 +24,15 @@ func TestThemeValuesAreTypedCSS(t *testing.T) {
 		`{"shape":{"family":"SHAPE_FAMILY_ROUNDED_CORNERS","defaultSize":{"value":12,"unit":"DIPS"}}}`: "12px",
 		`{"shape":{"family":"SHAPE_FAMILY_CIRCULAR"}}`:                                                 "calc(infinity * 1px)",
 		`{"fontNames":{"values":["Roboto"]}}`:                                                          `"Roboto", sans-serif`,
+		`{"elevation":{"unit":"DIPS"}}`:                                                                "0",
+		`{"elevation":{"value":0,"unit":"DIPS"}}`:                                                      "0",
+		`{"elevation":{"value":1,"unit":"DIPS"}}`:                                                      "1",
+		`{"elevation":{"value":3,"unit":"DIPS"}}`:                                                      "2",
+		`{"elevation":{"value":6,"unit":"DIPS"}}`:                                                      "3",
+		`{"elevation":{"value":8,"unit":"DIPS"}}`:                                                      "4",
+		`{"elevation":{"value":12,"unit":"DIPS"}}`:                                                     "5",
+		`{"elevation":{"value":2,"unit":"DIPS"}}`:                                                      "",
+		`{"elevation":{"value":1,"unit":"POINTS"}}`:                                                    "",
 		`{"opacity":0.08}`:                                                                             "0.08",
 		`{"length":{"unit":"DIPS"}}`:                                                                   "",
 		`{"undefined":true}`:                                                                           "",
@@ -97,7 +106,7 @@ func TestReadableRolesAndDistinctCardSurface(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !strings.Contains(string(table), "font-size:var(--md-sys-typescale-body-large-size)") || !strings.Contains(string(table), "line-height:var(--md-sys-typescale-body-large-line-height)") {
+	if !strings.Contains(string(table), "font-size: var(--md-sys-typescale-body-large-size)") || !strings.Contains(string(table), "line-height: var(--md-sys-typescale-body-large-line-height)") {
 		t.Fatal("primary token content must use the readable body-large role")
 	}
 	response := httptest.NewRecorder()
@@ -171,5 +180,13 @@ func TestThemeFromPublication(t *testing.T) {
 		if err != nil || len(font) < 4 || string(font[:4]) != "wOF2" {
 			t.Fatalf("missing or invalid self-hosted font: %s", file)
 		}
+	}
+}
+
+func TestThemeReferencesAcceptFormattedCSS(t *testing.T) {
+	css := "color:var(--md-sys-color-primary); background:var(\n --md-comp-filled-tonal-icon-button-unselected-container-color\n); border-color:var( --md-sys-color-outline, transparent);"
+	matches := themeTokenReference.FindAllStringSubmatch(css, -1)
+	if len(matches) != 3 || matches[1][1] != "md-comp-filled-tonal-icon-button-unselected-container-color" || matches[2][1] != "md-sys-color-outline" {
+		t.Fatal("formatted token references must remain part of theme validation")
 	}
 }

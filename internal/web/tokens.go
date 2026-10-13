@@ -45,6 +45,7 @@ type tokenRow struct {
 	SourceName string
 	Value      string
 	Color      string
+	Elevation  string
 	Lifecycle  string
 	HasValue   bool
 	References []publish.TokenReference
@@ -161,6 +162,13 @@ func buildTokenBrowser(subject publish.SubjectView, query url.Values) tokenBrows
 		row := tokenRow{Name: tokenDisplayName(token), SourceName: token.SourceName, HasValue: hasValue, References: value.References}
 		if hasValue {
 			row.Value = tokenValueDisplay(token.Category, value.Value)
+			var primitive map[string]json.RawMessage
+			if json.Unmarshal(value.Value, &primitive) == nil && primitive["elevation"] != nil {
+				row.Elevation = themeValue(value.Value)
+				if row.Elevation == "0" && row.Value == "No value specified (dp)" {
+					row.Value = "0dp"
+				}
+			}
 			if strings.EqualFold(token.Category, "COLOR") {
 				row.Color = tokenColor(value.Value)
 				if label := tokenColorLabel(value.Value); label != "" {

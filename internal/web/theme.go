@@ -13,6 +13,8 @@ import (
 	"github.com/sojupie/tokens/internal/publish"
 )
 
+var themeTokenReference = regexp.MustCompile(`var\(\s*--(md-[a-z0-9-]+)\s*[,)]`)
+
 // The app's theme is independent of the token context a visitor is inspecting.
 // Web maps Material's logical DIPS and type-scale POINTS to CSS pixels.
 func publicationTheme(state publish.PublishedState) (string, error) {
@@ -70,7 +72,7 @@ func publicationThemeVariant(state publish.PublishedState, theme, contrast strin
 	}
 	// Include preview text colour inputs alongside the tokens referenced by the styles.
 	wanted := map[string]bool{"md-ref-palette-neutral0": true, "md-sys-color-on-primary": true}
-	pattern := regexp.MustCompile(`var\(--(md-[a-z0-9-]+)\)`)
+	pattern := themeTokenReference
 	for _, file := range []string{"static/app.css", "static/token-table.css"} {
 		data, err := embeddedStatic.ReadFile(file)
 		if err != nil {
@@ -119,6 +121,22 @@ func themeValue(raw json.RawMessage) string {
 	}
 	if _, ok := value["color"]; ok {
 		return tokenColor(raw)
+	}
+	var elevation struct {
+		Value *float64 `json:"value"`
+		Unit  string   `json:"unit"`
+	}
+	if json.Unmarshal(value["elevation"], &elevation) == nil && elevation.Unit == "DIPS" {
+		if elevation.Value == nil {
+			return "0" // Protobuf omits the zero elevation value.
+		}
+		// Material Web's shadow renderer takes a level, rather than a dp distance.
+		for level, dp := range []float64{0, 1, 3, 6, 8, 12} {
+			if *elevation.Value == dp {
+				return strconv.Itoa(level)
+			}
+		}
+		return ""
 	}
 	for _, key := range []string{"length", "fontSize", "lineHeight", "fontTracking"} {
 		var size struct {

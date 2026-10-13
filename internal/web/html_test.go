@@ -56,7 +56,7 @@ func TestHTMLPagesRenderComponentsAndStyles(t *testing.T) {
 		{path: "/styles/motion/overview", body: []string{"Motion", "Download JSON"}, status: http.StatusOK},
 		{path: "/components?q=snack", body: []string{"snack", "hx-target=\"#subject-list\""}, status: http.StatusOK},
 		{path: "/changes", body: []string{"Change log", "1 item changed", "/components/snackbar", "View changes"}, status: http.StatusOK},
-		{path: "/components/snackbar/changes", body: []string{"Snackbar changes", "md.comp.snackbar.container.width", "480", "560"}, status: http.StatusOK},
+		{path: "/components/snackbar/changes", body: []string{"Material Design 3 snackbar token changes", "md.comp.snackbar.container.width", "480", "560"}, status: http.StatusOK},
 	}
 	for _, check := range checks {
 		t.Run(check.path, func(t *testing.T) {

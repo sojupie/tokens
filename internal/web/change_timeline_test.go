@@ -120,3 +120,18 @@ func TestChangeGroupsCombineInterleavedComponents(t *testing.T) {
 		t.Fatalf("component grouping split or lost records: %#v", groups)
 	}
 }
+
+func TestScopedChangeHeadingUsesRouteAcrossFiltersAndEmptyResults(t *testing.T) {
+	key := publish.SubjectKey{Kind: publish.SubjectComponent, Slug: "app-bars"}
+	state := publish.PublishedState{
+		Subjects: map[publish.SubjectKey]publish.SubjectView{key: {Key: key, Name: "Search"}},
+		Changes:  []publish.ChangeView{{Subject: "app-bars", Name: "width", Type: "added", SnapshotID: "new"}},
+	}
+	for _, suffix := range []string{"", "?snapshot=new", "?q=missing", "?page=2"} {
+		recorder := httptest.NewRecorder()
+		New(state, "").Handler().ServeHTTP(recorder, httptest.NewRequest("GET", "/components/app-bars/changes"+suffix, nil))
+		if recorder.Code != http.StatusOK || !strings.Contains(recorder.Body.String(), `>Material Design 3 app bars token changes</h1>`) || strings.Contains(recorder.Body.String(), "Search changes") {
+			t.Fatalf("incorrect scoped heading for %s", suffix)
+		}
+	}
+}

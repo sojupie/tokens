@@ -29,7 +29,6 @@ document.querySelectorAll('.tokens-token-browser').forEach(browser => {
   const form = browser.querySelector('form');
   const dialog = browser.querySelector('dialog');
   const groups = [...browser.querySelectorAll('.tokens-token-folder')];
-  let openGroups = [];
   let contextFields = '';
   let contextRequest;
 
@@ -99,9 +98,77 @@ document.querySelectorAll('.tokens-token-browser').forEach(browser => {
     event.preventDefault();
   });
   addEventListener('resize', () => { if (menu.matches(':popover-open')) placeMenu(); });
-  browser.addEventListener('click', event => {
+  const previewToggle = browser.querySelector('[data-action="previews"]');
+  const viewToggle = browser.querySelector('[data-action="view"]');
+  const expandToggle = browser.querySelector('[data-action="expand"]');
+  const showIcon = (button, alternate) => {
+    button.querySelector('[data-icon="on"]').hidden = alternate;
+    button.querySelector('[data-icon="off"]').hidden = !alternate;
+  };
+  const syncControls = () => {
+    const grid = browser.classList.contains('tokens-grid-view');
+    const hidden = browser.classList.contains('tokens-no-previews');
+    previewToggle.hidden = grid;
+    previewToggle.setAttribute('aria-pressed', String(!hidden));
+    previewToggle.setAttribute('aria-label', hidden ? 'Show previews' : 'Hide previews');
+    viewToggle.setAttribute('aria-pressed', String(grid));
+    viewToggle.setAttribute('aria-label', grid ? 'Show table view' : 'Show grid view');
+    showIcon(previewToggle, hidden);
+    showIcon(viewToggle, grid);
+    const expanded = groups.length > 0 && groups.every(group => group.open);
+    expandToggle.setAttribute('aria-expanded', String(expanded));
+    expandToggle.setAttribute('aria-label', expanded ? 'Collapse all groups' : 'Expand all groups');
+    showIcon(expandToggle, expanded);
+  };
+  browser.addEventListener('toggle', event => {
+    if (event.target.classList.contains('tokens-token-folder')) syncControls();
+  }, true);
+
+  // Native popovers provide Escape, outside-click dismissal and invoker focus.
+  // Position beside the active value where space allows, then clamp to the viewport.
+  let invoker;
+  const placeReference = popup => {
+    if (!invoker || !popup.matches(':popover-open')) return;
+    const bounds = invoker.getBoundingClientRect();
+    const gap = parseFloat(getComputedStyle(browser).getPropertyValue('--md-sys-measurement-space200'));
+    const width = popup.offsetWidth;
+    const height = popup.offsetHeight;
+    let left = bounds.right + gap;
+    if (left + width > innerWidth - gap) left = bounds.left - width - gap;
+    if (left < gap) left = Math.max(gap, (innerWidth - width) / 2);
+    popup.style.left = `${left}px`;
+    popup.style.top = `${Math.max(gap, Math.min(bounds.top, innerHeight - height - gap))}px`;
+  };
+  browser.querySelectorAll('.tokens-reference-popover').forEach(popup => {
+    popup.addEventListener('toggle', event => {
+      if (event.newState === 'open') placeReference(popup);
+    });
+  });
+  const reposition = () => browser.querySelectorAll('.tokens-reference-popover:popover-open').forEach(placeReference);
+  addEventListener('resize', reposition);
+  addEventListener('scroll', reposition, true);
+  browser.addEventListener('click', async event => {
+    const popupButton = event.target.closest('button[popovertarget]');
+    if (popupButton && popupButton.getAttribute('popovertargetaction') !== 'hide') invoker = popupButton;
+    const copy = event.target.closest('[data-copy-reference]');
+    if (copy) {
+      const status = copy.closest('.tokens-reference-popover').querySelector('[role="status"]');
+      try {
+        await navigator.clipboard.writeText(copy.dataset.copyReference);
+        status.textContent = 'Copied.';
+      } catch {
+        const range = document.createRange();
+        range.selectNodeContents(copy.previousElementSibling);
+        const selection = getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        status.textContent = 'Reference selected. Copy it with your keyboard.';
+      }
+      return;
+    }
     const button = event.target.closest('button[data-action]');
     if (!button) return;
+    browser.querySelectorAll('.tokens-reference-popover:popover-open').forEach(popup => popup.hidePopover());
     switch (button.dataset.action) {
       case 'context':
         contextFields = dialog.querySelector('.tokens-context-fields').innerHTML;
@@ -111,28 +178,20 @@ document.querySelectorAll('.tokens-token-browser').forEach(browser => {
         cancelContext();
         dialog.close();
         break;
-      case 'previews': {
-        const hidden = browser.classList.toggle('tokens-no-previews');
-        button.setAttribute('aria-pressed', String(!hidden));
+      case 'previews':
+        browser.classList.toggle('tokens-no-previews');
         break;
-      }
-      case 'view': {
-        const flat = browser.classList.toggle('tokens-flat-view');
-        button.setAttribute('aria-pressed', String(flat));
-        if (flat) openGroups = groups.map(group => group.open);
-        groups.forEach((group, index) => { group.open = flat || openGroups[index]; });
+      case 'view':
+        browser.classList.toggle('tokens-grid-view');
         break;
-      }
       case 'expand': {
         const open = button.getAttribute('aria-expanded') !== 'true';
         groups.forEach(group => { group.open = open; });
-        browser.classList.remove('tokens-flat-view');
-        browser.querySelector('[data-action="view"]').setAttribute('aria-pressed', 'false');
-        button.setAttribute('aria-expanded', String(open));
-        button.setAttribute('aria-label', open ? 'Collapse all groups' : 'Expand all groups');
         break;
       }
     }
+    syncControls();
   });
+  syncControls();
   if (dialog) dialog.addEventListener('cancel', cancelContext);
 });

@@ -2,6 +2,8 @@ package web
 
 import (
 	"context"
+	"crypto/sha256"
+	"fmt"
 	"html"
 	"io"
 	"net/url"
@@ -27,11 +29,11 @@ func tokenBrowserView(subject publish.SubjectView, browser tokenBrowser) templ.C
 		if err := tokenSetPicker(subject, browser).Render(ctx, writer); err != nil {
 			return err
 		}
-		if err := write(`<label class="tokens-token-search">` + tableIcon("search") + `<span class="tokens-visually-hidden">Search tokens</span><input type="search" name="q" value="` + html.EscapeString(browser.Query) + `" placeholder="Search"></label><div class="tokens-token-tools" role="group" aria-label="Table display"><button class="tokens-icon-button" type="button" data-action="previews" aria-label="Toggle previews" aria-pressed="true">` + tableIcon("eye") + `</button><button class="tokens-icon-button" type="button" data-action="view" aria-label="Toggle view" aria-pressed="false">` + tableIcon("grid") + `</button><button class="tokens-icon-button" type="button" data-action="expand" aria-label="Expand all groups" aria-expanded="false">` + tableIcon("expand") + `</button></div></div><div class="tokens-token-columns"><span>Token</span>`); err != nil {
+		if err := write(`<label class="tokens-token-search">` + tableIcon("search") + `<span class="tokens-visually-hidden">Search tokens</span><input type="search" name="q" value="` + html.EscapeString(browser.Query) + `" placeholder="Search"></label><div class="tokens-token-tools" role="group" aria-label="Table display"><button class="tokens-icon-button" type="button" data-action="previews" aria-label="Hide previews" aria-pressed="true">` + `<span data-icon="on">` + tableIcon("eye") + `</span><span data-icon="off" hidden>` + materialSymbolSVG("visibility_off") + `</span></button><button class="tokens-icon-button" type="button" data-action="view" aria-label="Show grid view" aria-pressed="false">` + `<span data-icon="on">` + tableIcon("grid") + `</span><span data-icon="off" hidden>` + materialSymbolSVG("table_rows") + `</span></button><button class="tokens-icon-button" type="button" data-action="expand" aria-label="Expand all groups" aria-expanded="false">` + `<span data-icon="on">` + tableIcon("expand") + `</span><span data-icon="off" hidden>` + materialSymbolSVG("unfold_less") + `</span></button></div></div><div class="tokens-token-columns"><span>Token</span>`); err != nil {
 			return err
 		}
 		if len(browser.Filters) > 0 {
-			if err := write(`<button class="tokens-context-button" type="button" data-action="context" aria-haspopup="dialog">` + html.EscapeString(tableContextLabel(browser.Filters)) + tableIcon("dropdown") + `</button></div><dialog class="tokens-context-dialog" aria-labelledby="tokens-context-title"><h2 id="tokens-context-title">See more values</h2><p>Compare token values by selecting another context</p><div class="tokens-context-fields">`); err != nil {
+			if err := write(`<button class="tokens-context-button" type="button" data-action="context" aria-haspopup="dialog">` + `<span class="tokens-context-label" title="` + html.EscapeString(tableContextLabel(browser.Filters)) + `">` + html.EscapeString(tableContextLabel(browser.Filters)) + `</span>` + tableIcon("dropdown") + `</button></div><dialog class="tokens-context-dialog" aria-labelledby="tokens-context-title"><h2 id="tokens-context-title">See more values</h2><p>Compare token values by selecting another context</p><div class="tokens-context-fields">`); err != nil {
 				return err
 			}
 			advanced := false
@@ -52,7 +54,7 @@ func tokenBrowserView(subject publish.SubjectView, browser tokenBrowser) templ.C
 						selected = ` checked`
 					}
 					label := option
-					if err := write(`<label><input type="radio" name="` + html.EscapeString(filter.Key) + `" value="` + html.EscapeString(option) + `"` + selected + `><span>` + materialSymbolSVG("check") + html.EscapeString(label) + `</span></label>`); err != nil {
+					if err := write(`<label class="tokens-context-choice"><input class="tokens-visually-hidden" type="radio" name="` + html.EscapeString(filter.Key) + `" value="` + html.EscapeString(option) + `"` + selected + `><span>` + materialSymbolSVG("check") + html.EscapeString(label) + `</span></label>`); err != nil {
 						return err
 					}
 				}
@@ -112,7 +114,7 @@ func tableContextLabel(filters []tokenFilter) string {
 func tableIcon(name string) string {
 	symbols := map[string]string{
 		"search": "search", "eye": "visibility", "grid": "grid_view",
-		"expand": "unfold_more", "dropdown": "expand_more", "folder": "folder",
+		"expand": "unfold_more", "dropdown": "expand_more", "folder": "folder", "folder-open": "folder_open",
 	}
 	return materialSymbolSVG(symbols[name])
 }
@@ -181,7 +183,7 @@ func writeTokenGroup(writer io.Writer, group tokenGroup, state bool) error {
 	if group.Open {
 		open = ` open`
 	}
-	if err := write(`<details class="` + className + `"` + open + `><summary>` + tableIcon("folder") + `<span>` + html.EscapeString(group.Name) + `</span>` + tableIcon("dropdown") + `</summary>`); err != nil {
+	if err := write(`<details class="` + className + `"` + open + `><summary>` + `<span class="tokens-folder-closed">` + tableIcon("folder") + `</span><span class="tokens-folder-open">` + tableIcon("folder-open") + `</span><span>` + html.EscapeString(group.Name) + `</span>` + tableIcon("dropdown") + `</summary>`); err != nil {
 		return err
 	}
 	if len(group.Tokens) > 0 {
@@ -197,29 +199,17 @@ func writeTokenGroup(writer io.Writer, group tokenGroup, state bool) error {
 					return err
 				}
 			}
+			cell := `</th><td>`
 			if !token.HasValue {
-				if err := write(`</th><td class="tokens-token-no-value">—</td></tr>`); err != nil {
-					return err
-				}
-				continue
+				cell = `</th><td class="tokens-token-no-value">`
 			}
-			if err := write(`</th><td>`); err != nil {
+			if err := write(cell); err != nil {
 				return err
 			}
-			if len(token.References) > 0 {
-				if err := writeTokenReferences(writer, token); err != nil {
-					return err
-				}
-				if err := write(`</td></tr>`); err != nil {
-					return err
-				}
-				continue
+			if err := writeTokenReferences(writer, token); err != nil {
+				return err
 			}
-			style := ""
-			if token.Color != "" {
-				style = ` style="--tokens-preview-color:` + html.EscapeString(token.Color) + `;--tokens-preview-on-color:` + tokenColorTextColor(token.Color) + `"`
-			}
-			if err := write(`<span class="tokens-token-value` + colorCellClass(token.Color) + `"` + style + `>` + html.EscapeString(token.Value) + `</span></td></tr>`); err != nil {
+			if err := write(`</td></tr>`); err != nil {
 				return err
 			}
 		}
@@ -237,31 +227,42 @@ func writeTokenGroup(writer io.Writer, group tokenGroup, state bool) error {
 
 func writeTokenReferences(writer io.Writer, token tokenRow) error {
 	write := func(value string) error { _, err := io.WriteString(writer, value); return err }
-	if err := write(`<details class="tokens-token-reference"><summary>`); err != nil {
-		return err
-	}
-	for _, reference := range token.References {
-		if err := write(`<code>` + html.EscapeString(reference.Name) + `</code>`); err != nil {
-			return err
+	id := fmt.Sprintf("token-info-%x", sha256.Sum256([]byte(token.SourceName+"\x00"+token.Name+"\x00"+token.Value)))
+	label := token.Value
+	if label == "" || label == "Color not resolved" || label == "Undefined: true" {
+		if len(token.References) > 0 {
+			label = token.References[0].Name
+		} else {
+			label = "—"
 		}
 	}
-	if err := write(`<span class="tokens-reference-toggle"><span class="tokens-reference-show">Show reference chain</span><span class="tokens-reference-hide">Hide reference chain</span>` + materialSymbolSVG("expand_more") + `</span></summary><div class="tokens-reference-chain"><code>` + html.EscapeString(token.SourceName) + `</code>`); err != nil {
+	style := ""
+	if token.Color != "" {
+		style = ` style="--tokens-preview-color:` + html.EscapeString(token.Color) + `;--tokens-preview-on-color:` + tokenColorTextColor(token.Color) + `"`
+	}
+	preview := `<span class="tokens-preview-value">` + html.EscapeString(label) + `</span>`
+	if token.Elevation != "" {
+		preview = `<span class="tokens-elevation-swatch" style="--_elevation-level:` + html.EscapeString(token.Elevation) + `" aria-hidden="true"></span><span class="tokens-visually-hidden">` + html.EscapeString(label) + `</span>`
+	}
+	compact := `<span class="tokens-compact-value"` + style + `>`
+	if token.Color != "" {
+		compact += `<span class="tokens-color-dot" aria-hidden="true"></span>`
+	}
+	compact += html.EscapeString(label) + `</span>`
+	if err := write(`<div class="tokens-value-cell"><button type="button" class="tokens-large-preview` + colorCellClass(token.Color) + `"` + style + ` popovertarget="` + id + `" aria-label="View ` + html.EscapeString(token.Name) + ` details">` + preview + `<span class="tokens-preview-name" aria-hidden="true">` + html.EscapeString(token.Name) + `</span></button>` + compact + `<button type="button" class="tokens-icon-button tokens-info-button" popovertarget="` + id + `" aria-label="References for ` + html.EscapeString(token.Name) + `">` + materialSymbolSVG("info") + `</button></div>`); err != nil {
+		return err
+	}
+	if err := write(`<div id="` + id + `" class="tokens-reference-popover" popover role="dialog" aria-labelledby="` + id + `-title"><header><h3 id="` + id + `-title" class="md-typescale-title-large" title="` + html.EscapeString(token.Name) + `">` + html.EscapeString(token.Name) + `</h3><button type="button" class="tokens-icon-button tokens-popover-close" popovertarget="` + id + `" popovertargetaction="hide" aria-label="Close token details">` + materialSymbolSVG("close") + `</button></header><div class="tokens-popup-value">` + preview + `</div><div class="tokens-reference-chain"><code class="tokens-popup-source">` + html.EscapeString(token.SourceName) + `</code>`); err != nil {
 		return err
 	}
 	if err := writeReferenceBranches(writer, token.References); err != nil {
 		return err
 	}
-	if err := write(`</div></details>`); err != nil {
-		return err
+	kind := ""
+	if token.Color != "" {
+		kind = `<span class="tokens-reference-type">Color</span>`
 	}
-	if token.Value != "" && token.Value != "Color not resolved" && token.Value != "Undefined: true" {
-		style := ""
-		if token.Color != "" {
-			style = ` style="--tokens-preview-color:` + html.EscapeString(token.Color) + `"`
-		}
-		return write(`<span class="tokens-reference-preview"` + style + `>` + html.EscapeString(token.Value) + `</span>`)
-	}
-	return nil
+	return write(`<div class="tokens-reference-resolved">` + kind + compact + `</div></div><p class="tokens-reference-status" role="status" aria-live="polite"></p></div>`)
 }
 
 func writeReferenceBranches(writer io.Writer, references []publish.TokenReference) error {
@@ -269,7 +270,8 @@ func writeReferenceBranches(writer io.Writer, references []publish.TokenReferenc
 		return err
 	}
 	for _, reference := range references {
-		if _, err := io.WriteString(writer, `<li>`+materialSymbolSVG("chevron_right")+`<code>`+html.EscapeString(reference.Name)+`</code>`); err != nil {
+		name := html.EscapeString(reference.Name)
+		if _, err := io.WriteString(writer, `<li><div class="tokens-reference-node">`+materialSymbolSVG("camera")+`<code title="`+name+`">`+name+`</code><button type="button" class="tokens-icon-button" data-copy-reference="`+name+`" aria-label="Copy `+name+`">`+materialSymbolSVG("content_copy")+`</button></div>`+materialSymbolSVG("arrow_downward")); err != nil {
 			return err
 		}
 		if len(reference.References) > 0 {

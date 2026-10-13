@@ -29,6 +29,7 @@ independent project and is not affiliated with or endorsed by Google.
 | --- | --- | --- |
 | HTMX 2.0.8 | [bigskysoftware/htmx](https://github.com/bigskysoftware/htmx/tree/v2.0.8) | [Zero-Clause BSD](licenses/HTMX-LICENSE.txt) |
 | Roboto font files | [Google Fonts / Roboto](https://github.com/google/fonts/tree/main/ofl/roboto) | [SIL Open Font License 1.1](internal/web/static/fonts/OFL.txt), Copyright 2011 The Roboto Project Authors |
+| Material Web elevation shadow formulas (adapted in `internal/web/static/app.css`) | [material-components/material-web](https://github.com/material-components/material-web/blob/main/elevation/internal/_elevation.scss), Copyright 2022 Google LLC | [Apache License 2.0](internal/web/MATERIAL-SYMBOLS-LICENSE.txt) |
 | Material Symbols SVG paths | [Google Material Design icons](https://github.com/google/material-design-icons) | [Apache License 2.0](internal/web/MATERIAL-SYMBOLS-LICENSE.txt) |
 
 The existing [Moby license](deploy/MOBY-LICENSE) is preserved with the deployment

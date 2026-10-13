@@ -332,3 +332,65 @@ test('agent handoff copies visible text and selects it when clipboard access fai
   runScript('agent-handoff.js', globals);
   assert.equal(button.hidden, true);
 });
+
+test('table modes preserve preview preference and folder state, with matching action icons', async () => {
+  const classes = new Set();
+  const listeners = {};
+  const groups = [{open: true}, {open: false}];
+  const controls = Object.fromEntries(['previews', 'view', 'expand'].map(action => {
+    const attributes = {};
+    const icons = {on: {hidden: false}, off: {hidden: true}};
+    return [action, {
+      dataset: {action}, attributes, icons,
+      setAttribute: (key, value) => { attributes[key] = value; },
+      getAttribute: key => attributes[key],
+      querySelector: selector => icons[selector.includes('"off"') ? 'off' : 'on'],
+    }];
+  }));
+  const menu = {addEventListener() {}, matches: () => false};
+  const browser = {
+    classList: {
+      contains: value => classes.has(value),
+      toggle: value => { if (classes.has(value)) { classes.delete(value); return false; } classes.add(value); return true; },
+    },
+    querySelector: selector => {
+      if (selector === 'form') return {};
+      if (selector === 'dialog') return null;
+      if (selector === '.tokens-token-set') return {};
+      if (selector === '.tokens-token-set-menu') return menu;
+      return controls[selector.match(/data-action="([^"]+)"/)[1]];
+    },
+    querySelectorAll: selector => selector === '.tokens-token-folder' ? groups : [],
+    addEventListener: (name, handler) => { listeners[name] = handler; },
+  };
+  let copied;
+  runScript('token-table.js', {
+    document: {querySelectorAll: selector => selector === '.tokens-token-browser' ? [browser] : []},
+    addEventListener() {},
+    navigator: {clipboard: {writeText: async value => { copied = value; }}},
+  });
+  const click = action => listeners.click({target: {closest: selector => selector === 'button[data-action]' ? controls[action] : null}});
+  await click('previews');
+  assert.equal(classes.has('tokens-no-previews'), true);
+  assert.equal(controls.previews.icons.off.hidden, false);
+  await click('view');
+  assert.equal(classes.has('tokens-grid-view'), true);
+  assert.equal(controls.previews.hidden, true);
+  assert.equal(controls.view.icons.off.hidden, false);
+  assert.deepEqual(groups.map(group => group.open), [true, false]);
+  await click('view');
+  assert.equal(controls.previews.hidden, false);
+  assert.equal(classes.has('tokens-no-previews'), true);
+  await click('expand');
+  assert.deepEqual(groups.map(group => group.open), [true, true]);
+  assert.equal(controls.expand.icons.off.hidden, false);
+  await click('view');
+  await click('expand');
+  assert.equal(classes.has('tokens-grid-view'), true);
+  assert.deepEqual(groups.map(group => group.open), [false, false]);
+  const status = {};
+  const copy = {dataset: {copyReference: 'md.sys.color.primary'}, closest: () => ({querySelector: () => status})};
+  await listeners.click({target: {closest: selector => selector === '[data-copy-reference]' ? copy : null}});
+  assert.equal(copied, 'md.sys.color.primary');
+  assert.equal(status.textContent, 'Copied.');
+});

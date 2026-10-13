@@ -121,12 +121,12 @@ templ overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView
 
         if metadata(ctx).AgentDiscovery {
             <div class="tokens-audience-grid">
-                <section class="md-filled-card tokens-card-content" aria-labelledby="human-heading">
+                <section class="md-elevated-card tokens-card-content" aria-labelledby="human-heading">
                     <h2 class="md-typescale-title-medium" id="human-heading">Browse tokens</h2>
                     <p>Browse components and styles, compare values, and download the tokens you need.</p>
                     <a class="md-outlined-button" href="/components">Browse components</a>
                 </section>
-                <section class="md-filled-card tokens-card-content" aria-labelledby="agent-heading">
+                <section class="md-elevated-card tokens-card-content" aria-labelledby="agent-heading">
                     <h2 class="md-typescale-title-medium" id="agent-heading">Use with your agent</h2>
                     <p>Give your coding agent access to the same token data through a prompt, skill, or MCP.</p>
                     <a class="md-filled-tonal-button" href="/for-agents">Give this to your agent</a>
@@ -138,7 +138,7 @@ templ overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView
 			<ul class="tokens-card-grid">
 				for _, subject := range subjects {
 					if subject.Key.Kind == publish.SubjectComponent {
-						<li class="md-outlined-card tokens-card"><a class="tokens-link" href={ subjectURL(subject) }>{ subject.Name }</a> <small class="md-typescale-body-small">({ len(subject.Tokens) } tokens)</small></li>
+						<li><a class="md-outlined-card md-interactive-card tokens-card" href={ subjectURL(subject) }>{ subject.Name } <small class="md-typescale-body-small">({ len(subject.Tokens) } tokens)</small></a></li>
 					}
 				}
 			</ul>
@@ -149,7 +149,7 @@ templ overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView
 			<ul class="tokens-card-grid">
 				for _, subject := range subjects {
 					if subject.Key.Kind != publish.SubjectComponent {
-						<li class="md-outlined-card tokens-card"><a class="tokens-link" href={ subjectURL(subject) }>{ subject.Name }</a> <small class="md-typescale-body-small">{ subjectKindLabel(subject.Key.Kind) } · { len(subject.Tokens) } tokens</small></li>
+						<li><a class="md-outlined-card md-interactive-card tokens-card" href={ subjectURL(subject) }>{ subject.Name } <small class="md-typescale-body-small">{ subjectKindLabel(subject.Key.Kind) } · { len(subject.Tokens) } tokens</small></a></li>
 					}
 				}
 			</ul>
@@ -229,7 +229,7 @@ templ subjectPage(subject publish.SubjectView, changes []publish.ChangeView, bro
 
 templ tokenSetPicker(subject publish.SubjectView, browser tokenBrowser) {
 	<button class="tokens-token-set" type="button" popovertarget="tokens-token-set-menu" aria-label={ "Token set: " + tokenSetLabel(browser.Selected) }>
-		{ tokenSetLabel(browser.Selected) }
+		<span class="tokens-context-label" title={ tokenSetLabel(browser.Selected) }>{ tokenSetLabel(browser.Selected) }</span>
 		@materialSymbol("expand_more")
 	</button>
 	<nav class="tokens-token-set-menu" id="tokens-token-set-menu" popover="auto" aria-label="Token sets">
@@ -253,8 +253,8 @@ templ tokenSetPicker(subject publish.SubjectView, browser tokenBrowser) {
 }
 
 templ changesPage(state publish.PublishedState, subject string, baseURL string, filters changeFilters, counts string, changes []publish.ChangeView, page int, total int, hasPrevious bool, hasNext bool) {
-@layout(timelineTitle(subject, state.Subjects)) {
-		<h1 class="md-typescale-headline-medium">{ timelineTitle(subject, state.Subjects) }</h1>
+@layout(timelineTitle(subject)) {
+		<h1 class="md-typescale-headline-medium">{ timelineTitle(subject) }</h1>
 		<p class="tokens-metadata">{ historyCoverage(state.Snapshots) }</p>
 		<p class="md-typescale-body-medium">Dates show when we detected changes, not when Material published them.</p>
 		@changeFilterForm(filters, baseURL)
@@ -393,25 +393,25 @@ templ forAgentsPage(prompt string, mcpURL string) {
             <p class="md-typescale-body-large">Use Material Design 3 token data in your coding agent. No account or API key is required.</p>
         </header>
         <div class="tokens-handoff-grid">
-            <section class="md-filled-card tokens-card-content" aria-labelledby="prompt-heading">
-                <h2 class="md-typescale-title-medium" id="prompt-heading">Copy a prompt</h2>
-                <pre id="agent-prompt" class="md-outlined-card tokens-code-block" tabindex="0" aria-labelledby="prompt-heading"><code>{ prompt }</code></pre>
-                <button class="md-filled-button" type="button" data-copy-target="agent-prompt" hidden>Copy prompt</button>
-                <p class="tokens-copy-status" data-copy-status aria-live="polite"></p>
-            </section>
-            <section class="md-filled-card tokens-card-content" aria-labelledby="skill-heading">
+            <section class="md-elevated-card tokens-card-content" aria-labelledby="skill-heading">
                 <h2 class="md-typescale-title-medium" id="skill-heading">Install the skill</h2>
                 <p>For clients that support Agent Skills. Choose your agent in the installer.</p>
                 <pre id="agent-skill" class="md-outlined-card tokens-code-block" tabindex="0" aria-labelledby="skill-heading"><code>npx skills add sojupie/tokens --skill token-catalog</code></pre>
-                <button class="md-filled-tonal-button" type="button" data-copy-target="agent-skill" hidden>Copy install command</button>
+                <button class="md-filled-button" type="button" data-copy-target="agent-skill" hidden>Copy install command</button>
                 <p class="tokens-copy-status" data-copy-status aria-live="polite"></p>
                 <a class="tokens-link" href="https://github.com/sojupie/tokens/blob/main/skills/token-catalog/SKILL.md">Read the skill</a>
             </section>
-            <section class="md-filled-card tokens-card-content" aria-labelledby="mcp-heading">
+            <section class="md-filled-card tokens-card-content tokens-secondary-option" aria-labelledby="prompt-heading">
+                <h2 class="md-typescale-title-medium" id="prompt-heading">Copy a prompt</h2>
+                <pre id="agent-prompt" class="md-outlined-card tokens-code-block" tabindex="0" aria-labelledby="prompt-heading"><code>{ prompt }</code></pre>
+                <button class="md-elevated-button" type="button" data-copy-target="agent-prompt" hidden>Copy prompt</button>
+                <p class="tokens-copy-status" data-copy-status aria-live="polite"></p>
+            </section>
+            <section class="md-filled-card tokens-card-content tokens-secondary-option" aria-labelledby="mcp-heading">
                 <h2 class="md-typescale-title-medium" id="mcp-heading">Connect with MCP</h2>
                 <p>Add this URL as a Streamable HTTP server in your client.</p>
                 <pre id="agent-mcp" class="md-outlined-card tokens-code-block" tabindex="0" aria-labelledby="mcp-heading"><code>{ mcpURL }</code></pre>
-                <button class="md-filled-tonal-button" type="button" data-copy-target="agent-mcp" hidden>Copy MCP URL</button>
+                <button class="md-elevated-button" type="button" data-copy-target="agent-mcp" hidden>Copy MCP URL</button>
                 <p class="tokens-copy-status" data-copy-status aria-live="polite"></p>
                 <p>Start with <code>list_subjects</code>, then use <code>get_tokens</code> with the returned kind and slug.</p>
             </section>

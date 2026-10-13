@@ -38,7 +38,7 @@ func TestSEOMetadataAndCanonicalURLs(t *testing.T) {
 		{"/components/snackbar/sets/snackbar/common", "Snackbar: common tokens — Material Design 3", "https://tokens.example/components/snackbar/sets/snackbar/common", false},
 		{"/components/snackbar?set=snackbar%7Ccommon%7C", "Snackbar: common tokens — Material Design 3", "https://tokens.example/components/snackbar/sets/snackbar/common", false},
 		{"/components/snackbar?utm_source=example", "Snackbar tokens — Material Design 3", "https://tokens.example/components/snackbar", false},
-		{"/components/snackbar/changes?page=2", "Material Design 3 Snackbar changes - Page 2", "https://tokens.example/components/snackbar/changes?page=2", false},
+		{"/components/snackbar/changes?page=2", "Material Design 3 snackbar token changes - Page 2", "https://tokens.example/components/snackbar/changes?page=2", false},
 		{"/components?q=snack", "Material Design 3 Component Tokens", "", true},
 		{"/components/snackbar?context.Theme=Dark", "Snackbar tokens — Material Design 3", "", true},
 		{"/changes?snapshot=one", "Material Design 3 Token Change History", "", true},

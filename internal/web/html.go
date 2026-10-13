@@ -165,8 +165,8 @@ func (server *Server) renderChangeHistory(response http.ResponseWriter, request 
 	query.Set("page", strconv.Itoa(page))
 	info := server.basicMetadata(request.URL.Path, query)
 	if subject != "" {
-		info.Title = "Material Design 3 " + timelineTitle(subject, server.state.Subjects)
-		info.Description = "Track " + timelineTitle(subject, server.state.Subjects) + " in Material Design 3 tokens, with previous values, new values and context. Dates show when changes were detected."
+		info.Title = timelineTitle(subject)
+		info.Description = "Token values, references and context changes for " + displayWords(subject) + ". Observation dates record when changes were detected."
 		if page > 1 {
 			info.Title += " - Page " + strconv.Itoa(page)
 		}

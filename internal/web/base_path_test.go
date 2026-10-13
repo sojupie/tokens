@@ -106,3 +106,22 @@ func TestCollectionBasePath(t *testing.T) {
 		t.Fatal("filtered scope missing from OpenAPI")
 	}
 }
+
+func TestPageTrailingSlashRedirectPreservesCollectionAndQuery(t *testing.T) {
+	for _, base := range []string{"", "/md3"} {
+		server := New(seoTestState(), "")
+		if err := server.SetPublicOrigin("https://tokencatalog.dev" + base); err != nil {
+			t.Fatal(err)
+		}
+		for _, path := range []string{"/components/snackbar/", "/styles/color/", "/components/snackbar/changes/", "/components/snackbar/sets/color/common/", "/components/", "/styles/", "/changes/", "/for-agents/"} {
+			for _, method := range []string{http.MethodGet, http.MethodHead} {
+				w := httptest.NewRecorder()
+				server.Handler().ServeHTTP(w, httptest.NewRequest(method, base+path+"?q=font&theme=Dark", nil))
+				want := base + strings.TrimSuffix(path, "/") + "?q=font&theme=Dark"
+				if w.Code != http.StatusPermanentRedirect || w.Header().Get("Location") != want {
+					t.Fatalf("%s %s: %d %q, want %q", method, path, w.Code, w.Header().Get("Location"), want)
+				}
+			}
+		}
+	}
+}
