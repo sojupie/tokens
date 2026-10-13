@@ -4,7 +4,7 @@ Token Catalog collects design tokens and makes them easier to browse, compare
 and download. [Material Design 3](https://tokencatalog.dev/md3/) is the first
 supported collection.
 
-The goal is fast, direct access to design data for developers and agents. Tokens,
+The goal is fast, direct access to design data for developers and [agents](#use-with-your-agent). Tokens,
 references and settings are available in readable pages and structured responses
 that can be inspected, crawled and fetched with ordinary HTTP clients. Source
 links connect the data to the original design guidance.
@@ -28,6 +28,44 @@ was observed. Incomplete captures remain marked as partial.
 The same data is available through a public JSON API, Markdown responses and
 read-only MCP tools. See [usage](docs/usage.md) and
 [API and agent access](docs/reference/agents.md).
+
+## Use with your agent
+
+Give your agent this instruction:
+
+> Use Token Catalog at https://tokencatalog.dev/md3 to find the Material Design 3
+> tokens for this task. Read its agent guide, fetch the relevant component or
+> style, and preserve the token references and selected context.
+
+For agents that support installable skills:
+
+```sh
+npx skills add sojupie/tokens --skill token-catalog
+```
+
+The installer lets you choose your agent. The [skill](skills/token-catalog/SKILL.md)
+lives in this repo and reads the current API guide from the site. You do not need
+to clone or run the catalog to use its data.
+
+If your client supports MCP, add `https://tokencatalog.dev/md3/mcp` as a
+Streamable HTTP server. Start with `list_subjects`, then call `get_tokens` with
+the returned kind and slug. No account or API key is required.
+
+Example requests:
+
+- “Find the filled button tokens for Android in the dark theme.”
+- “Compare the corner tokens for cards and dialogs.”
+- “Check which motion token values changed between retained captures.”
+
+See [API and agent access](docs/reference/agents.md) for setup and data formats.
+
+## Usage
+
+![Token Catalog usage over the last seven days: server requests, downloads, Markdown requests, successful MCP tool calls, and popular subjects](docs/images/usage.svg)
+
+The graphic updates weekly from retained server totals. Counts include automated
+traffic and validation requests; they are not unique visitors. Prefetches are
+separate, and browser or CDN cache hits may not reach the server.
 
 ## Performance and access
 

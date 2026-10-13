@@ -9,7 +9,7 @@ import (
 )
 
 func TestUsageCommandValidationAndWeeklyDeduplication(t *testing.T) {
-	for _, args := range [][]string{{"--since", "0d"}, {"--since", "91d"}, {"--since", "7h"}, {"unexpected"}} {
+	for _, args := range [][]string{{"--since", "0d"}, {"--since", "91d"}, {"--since", "7h"}, {"unexpected"}, {"--svg", "--send"}, {"--svg", "--weekly"}} {
 		if err := runUsage(args); err == nil {
 			t.Fatalf("accepted %v", args)
 		}

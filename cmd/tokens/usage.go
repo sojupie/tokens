@@ -22,9 +22,10 @@ func runUsage(args []string) error {
 		directory = "/var/lib/tokens-usage"
 	}
 	since := "7d"
-	send, weekly := false, false
+	send, weekly, svg := false, false, false
 	flags.StringVar(&directory, "usage-dir", directory, "retained usage database directory")
 	flags.StringVar(&since, "since", since, "report period, from 1d to 90d")
+	flags.BoolVar(&svg, "svg", false, "render aggregate usage as an SVG for the README")
 	flags.BoolVar(&send, "send", false, "email this report using existing SMTP settings")
 	flags.BoolVar(&weekly, "weekly", false, "email once per week, resuming from the last successful digest")
 	if err := flags.Parse(args); err != nil {
@@ -35,6 +36,9 @@ func runUsage(args []string) error {
 	}
 	if flags.NArg() != 0 {
 		return errors.New("usage does not accept positional arguments")
+	}
+	if svg && (send || weekly) {
+		return errors.New("--svg cannot be combined with --send or --weekly")
 	}
 	days, err := strconv.Atoi(strings.TrimSuffix(since, "d"))
 	if err != nil || !strings.HasSuffix(since, "d") || days < 1 || days > 90 {
@@ -79,6 +83,10 @@ func runUsage(args []string) error {
 	summary, err := store.Report(from, until)
 	if err != nil {
 		return err
+	}
+	if svg {
+		fmt.Print(summary.SVG())
+		return nil
 	}
 	body := warning + summary.Text()
 	fmt.Print(body)

@@ -362,3 +362,26 @@ sudo docker compose -f deploy/compose.yaml logs --tail=100 tokens
 SMTP settings are required to enable the email timer. It does not use the
 optional update webhook. Changes to the timer schedule can be made with
 `sudo systemctl edit tokens-usage.timer`, as with the update timer.
+
+### README usage graphic
+
+**Actions → Update usage graphic → Run workflow** refreshes
+`docs/images/usage.svg` from the last seven days of retained totals. The same
+workflow runs Mondays at 09:15 UTC. The README embeds the image directly.
+Only the image is committed; the workflow does not rewrite README text, send
+email, or advance the digest checkpoint.
+
+The workflow uses the existing production runner and the deployed `tokens:local`
+image. Deploy the SVG exporter before running it for the first time. It has
+`contents: write` permission to push the generated image to `main`; repository
+rules must allow that bot commit. No additional token or chart service is needed.
+The shared production concurrency group keeps it separate from management runs.
+
+To export a graphic manually:
+
+```sh
+sudo sh deploy/usage.sh --since 7d --svg > usage.svg
+```
+
+Only aggregate counts appear in the public graphic. Prefetches are listed
+separately, and successful MCP tool calls exclude initialization and tool listing.
