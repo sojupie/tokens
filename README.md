@@ -66,9 +66,8 @@ See [API and agent access](docs/reference/agents.md) for setup and data formats.
 
 ![Token Catalog usage over the last seven days: server requests, downloads, Markdown requests, successful MCP tool calls, and popular subjects](docs/images/usage.svg)
 
-The graphic updates weekly from retained server totals. Counts include automated
-traffic and validation requests; they are not unique visitors. Prefetches are
-separate, and browser or CDN cache hits may not reach the server.
+The graphic updates weekly from retained server request totals, with prefetches
+counted separately.
 
 ## Performance and access
 
@@ -94,49 +93,88 @@ missing even though the discovery and access checks for the public service pass.
 <a href="https://pagespeed.web.dev/analysis/https-tokencatalog-dev/91lzhrkat6?hl=en&amp;form_factor=mobile"><img src="docs/images/PageSpeedInsights.png" alt="October 11, 2026 mobile PageSpeed Insights report showing four scores of 100 and 4/4 agentic browsing checks" width="420" /></a>
 <img src="docs/images/isitagentready.png" alt="Is It Agent Ready report for Token Catalog showing 80/100 overall and 100 for discoverability, content and bot access control" width="420" />
 
-## How it works
+## Repository components
 
-A Go pipeline opens source pages with Chromium, captures their token payloads,
-and saves the source URLs, coverage results and SHA-256 hashes. Each snapshot
-contains the captured data and the files needed to verify it later.
+The website, data pipeline and agent integrations share one Go application.
 
-Publication runs offline. It compares snapshots and builds a SQLite read index
-and JSON downloads. The Go server renders pages with templ and HTMX, serving
-saved data independently of the crawler and upstream website.
+| Part | What it does | Source |
+| --- | --- | --- |
+| Catalog website | Renders token tables, filters, reference chains, downloads and change history with templ and HTMX | [`internal/web/`](internal/web/) |
+| Material Design 3 capture | Opens Google's source pages with Chromium and saves token payloads, source URLs and coverage results | [`internal/crawl/`](internal/crawl/) |
+| Snapshots and publication | Verifies captured files, compares token values and builds the SQLite index and JSON exports | [`internal/tokensnapshot/`](internal/tokensnapshot/), [`internal/publish/`](internal/publish/) |
+| Agent access | Serves Markdown, JSON, OpenAPI, discovery metadata and read-only MCP tools; provides an installable skill | [`internal/web/`](internal/web/), [`skills/token-catalog/`](skills/token-catalog/) |
+| Update and deployment tools | Runs scheduled captures, reviews changes, activates publications and sends notifications | [`internal/update/`](internal/update/), [`deploy/`](deploy/), [GitHub workflows](.github/workflows/) |
+| Usage reporting | Retains hourly request totals and produces weekly email reports and the README chart | [`internal/usage/`](internal/usage/) |
 
-The project grew out of using Material Design in a web application and needing
-its token values in a form that could be inspected and consumed directly.
-[Architecture](docs/architecture.md) explains the pipeline and its boundaries.
+## Material Design 3 data pipeline
 
-## Run locally
+The capture command opens the reviewed source pages with Chromium and saves
+their token payloads. Snapshot creation bundles those payloads with extracted
+tokens, source URLs, coverage results and SHA-256 checksums. Verification checks
+that the saved files match their checksums and schemas.
 
-Install Go 1.26 or newer and Chrome or Chromium, then run:
+Publication compares verified snapshots and builds a SQLite read index, change
+history and JSON downloads. The web server loads a publication at startup and
+uses it for HTML pages, API responses and MCP tools. Its own Material component
+styles also come from the published tokens.
+
+Scheduled updates carry out the same steps, retain a report for each run and
+check the candidate publication before activation. See
+[architecture](docs/architecture.md) for the data flow and
+[scheduled updates](docs/operations/updates.md) for review and recovery.
+
+## Run the catalog server locally
+
+Build the Go application with Go 1.26 or newer:
 
 ```sh
 go build -o ./bin/tokens ./cmd/tokens
-./bin/tokens crawl
-./bin/tokens snapshot create
-./bin/tokens publish
+```
+
+With an existing publication in `published/`, start the catalog server:
+
+```sh
 ./bin/tokens serve --published published --listen 127.0.0.1:8081
 ```
 
-Open [localhost:8081](http://127.0.0.1:8081). The initial crawl needs network
-access. Later starts only need the serve command. On Windows, build
+Open [localhost:8081](http://127.0.0.1:8081) to browse the saved tokens. This starts
+the website and its data endpoints. The [agent access reference](docs/reference/agents.md)
+explains public-origin configuration for discovery metadata and MCP.
+
+### Create a Material Design 3 publication
+
+For a fresh checkout, install Chrome or Chromium and run these commands before
+starting the server:
+
+```sh
+./bin/tokens crawl
+./bin/tokens snapshot create
+./bin/tokens snapshot verify
+./bin/tokens publish
+```
+
+The crawl fetches Google's source pages and payloads over the network.
+Subsequent server starts use the saved publication. On Windows, build
 `bin/tokens.exe` and use that executable for the same commands.
 
 See [development](docs/development.md) for tests and template changes, or
-[deployment](docs/operations/deployment.md) for Docker and scheduled updates.
+[deployment](docs/operations/deployment.md) for Docker, scheduled updates and
+usage reports. To use the hosted data from an agent, follow
+[Use with your agent](#use-with-your-agent).
 
-## Scope
+## Supported design systems and source coverage
 
-The current crawler, extractor and publication format are specific to Material
-Design 3. Other design systems would need source adapters, extraction rules and
-their own attribution. The catalog can grow to include further collections;
-only Material Design 3 is implemented today.
+Material Design 3 is the current collection. Its capture and extraction
+code reads Google's source payloads, and its website theme uses Material tokens.
+Adding another design system requires a source catalog, capture and extraction
+rules, publication mapping, a website theme and source attribution. The
+[development guide](docs/development.md#other-design-systems) describes those
+integration points.
 
-Captures cover the reviewed source-page catalog. Upstream failures and missing
-payloads affect coverage. A token's appearance or disappearance in a partial
-capture does not establish that its source added or removed it.
+The Material Design 3 page catalog defines capture coverage. Snapshots retain
+page and payload results, and incomplete captures are marked as partial in the
+change history. Coverage records accompany comparisons so source changes can
+be assessed against the pages captured in each run.
 
 ## Documentation
 

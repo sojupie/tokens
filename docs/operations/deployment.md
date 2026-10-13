@@ -318,7 +318,7 @@ in the container logs.
 Reports include request kinds, response formats, popular subjects, downloads by
 scope, MCP methods and tool outcomes, HTTP errors, response bytes, and mean and
 maximum response times. Prefetches are separate. Health checks and successful
-static-file requests are excluded. Counts measure requests, not unique visitors.
+static-file requests are excluded.
 Browser and Cloudflare cache hits may not reach the server. IP addresses,
 cookies, query text, MCP arguments and request bodies are not recorded.
 

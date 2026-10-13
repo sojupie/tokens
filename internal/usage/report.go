@@ -124,7 +124,7 @@ func (s Summary) Text() string {
 			fmt.Fprintf(&b, "%d  %s\n", group.counts[key], key)
 		}
 	}
-	b.WriteString("\nCounts measure requests, not unique visitors. Health checks and successful static-file requests are excluded. Browser and Cloudflare cache hits may not reach the server. IP addresses, query text, cookies and MCP arguments are not recorded.\n")
+	b.WriteString("\nHealth checks and successful static-file requests are excluded. Browser and Cloudflare cache hits may not reach the server. IP addresses, query text, cookies and MCP arguments are not recorded.\n")
 	return b.String()
 }
 

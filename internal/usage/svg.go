@@ -12,10 +12,10 @@ import (
 // SVG renders only aggregate counts, with no scripts or external assets.
 func (s Summary) SVG() string {
 	var b strings.Builder
-	b.WriteString(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 606" role="img" aria-labelledby="title desc"><title id="title">Token Catalog server usage</title><desc id="desc">Request totals, request types and popular subjects. Counts include automated traffic and are not unique visitors.</desc><style>
+	b.WriteString(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 583" role="img" aria-labelledby="title desc"><title id="title">Token Catalog server usage</title><desc id="desc">Request totals, request types and popular subjects.</desc><style>
  text{font-family:system-ui,-apple-system,Segoe UI,sans-serif;fill:#211c2b} .muted{fill:#635d6d} .bg{fill:#faf8ff} .card{fill:#fff;stroke:#e7e0ef} .track{fill:#ece6f4} .bar{fill:#6750a4}
  @media(prefers-color-scheme:dark){text{fill:#eee7f5}.muted{fill:#c9bed7}.bg{fill:#17131e}.card{fill:#211b2a;stroke:#3b3248}.track{fill:#34283f}.bar{fill:#cbb2ff}}
- </style><rect class="bg" width="1000" height="606" rx="20"/>`)
+ </style><rect class="bg" width="1000" height="583" rx="20"/>`)
 	text := func(x, y, size int, css, value string) {
 		fmt.Fprintf(&b, `<text x="%d" y="%d" font-size="%d" class="%s">%s</text>`, x, y, size, css, html.EscapeString(value))
 	}
@@ -76,14 +76,13 @@ func (s Summary) SVG() string {
 	chart(32, "Request types · top six", s.Kinds)
 	chart(526, "Popular subjects · successful requests", s.Subjects)
 	text(32, 505, 12, "muted", fmt.Sprintf("Prefetches: %d (excluded above) · HTTP errors: %d", s.Prefetches, s.Errors))
-	text(32, 528, 12, "muted", "Requests include automated traffic and validation. They are not unique visitors.")
 	if s.Lost > 0 {
-		text(32, 551, 12, "muted", fmt.Sprintf("Incomplete totals: %d records lost.", s.Lost))
+		text(32, 528, 12, "muted", fmt.Sprintf("Incomplete totals: %d records lost.", s.Lost))
 	} else {
-		text(32, 551, 12, "muted", "Browser/CDN cache hits may not reach the server. Updated weekly.")
+		text(32, 528, 12, "muted", "Browser/CDN cache hits may not reach the server. Updated weekly.")
 	}
 	if started, err := time.Parse(time.RFC3339, s.Started); err == nil {
-		text(32, 574, 12, "muted", "Tracking since "+started.UTC().Format("Jan 2, 2006 15:04")+" UTC.")
+		text(32, 551, 12, "muted", "Tracking since "+started.UTC().Format("Jan 2, 2006 15:04")+" UTC.")
 	}
 	b.WriteString("</svg>\n")
 	return b.String()
