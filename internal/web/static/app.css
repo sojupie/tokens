@@ -47,6 +47,7 @@ button:not(:disabled), [role=button]:not([aria-disabled=true]) { cursor:pointer;
 .tokens-link:hover { text-decoration:underline; }
 .tokens-card-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(14rem,1fr)); gap:var(--md-sys-measurement-space200); list-style:none; margin:0; padding:0; }
 .md-outlined-card { border:var(--md-comp-outlined-card-outline-width) solid var(--md-comp-outlined-card-outline-color); border-radius:var(--md-comp-outlined-card-container-shape); background:var(--md-comp-outlined-card-container-color); padding:var(--md-sys-measurement-space200); }
+.md-filled-card { border:0; border-radius:var(--md-comp-filled-card-container-shape); background:var(--md-comp-filled-card-container-color); padding:var(--md-sys-measurement-space200); }
 .tokens-card small { display:block; margin-top:var(--md-sys-measurement-space50); color:var(--md-sys-color-on-surface-variant); }
 .tokens-card:hover { border-color:var(--md-comp-outlined-card-hover-outline-color); }
 .tokens-search-form { display:flex; flex-direction:column; gap:var(--md-sys-measurement-space100); max-width:36rem; }
@@ -67,13 +68,14 @@ button:not(:disabled), [role=button]:not([aria-disabled=true]) { cursor:pointer;
 .tokens-audience-grid, .tokens-handoff-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr)); gap:var(--md-sys-measurement-space200); }
 /* Layout belongs to the page; appearance belongs to the Material variant. */
 .tokens-card-content { display:flex; min-width:0; flex-direction:column; align-items:flex-start; gap:var(--md-sys-measurement-space150); }
-.tokens-code-block { width:100%; margin:0; white-space:pre-wrap; overflow-wrap:anywhere; padding:var(--md-sys-measurement-space150); background:var(--md-sys-color-surface); color:var(--md-sys-color-on-surface); font:inherit; line-height:var(--md-sys-typescale-body-medium-line-height); }
+.tokens-code-block { width:100%; margin:0; white-space:pre-wrap; overflow-wrap:anywhere; padding:var(--md-sys-measurement-space150); color:var(--md-sys-color-on-surface); font:inherit; line-height:var(--md-sys-typescale-body-medium-line-height); }
 .tokens-copy-status { min-height:var(--md-sys-typescale-body-medium-line-height); color:var(--md-sys-color-on-surface-variant); }
 
 .tokens-handoff-grid { grid-template-columns:repeat(auto-fit,minmax(min(100%,25rem),1fr)); }
 .tokens-handoff-grid > :first-child { grid-column:1 / -1; }
 
-.md-filled-button, .md-outlined-button, .md-text-button { cursor:pointer; padding:var(--md-sys-measurement-space100) var(--md-sys-measurement-space300); max-width:100%; }
+.md-filled-button, .md-filled-tonal-button, .md-outlined-button, .md-text-button { display:inline-flex; align-items:center; justify-content:center; text-decoration:none; cursor:pointer; padding:var(--md-sys-measurement-space100) var(--md-sys-measurement-space300); max-width:100%; }
+.md-filled-button[hidden], .md-filled-tonal-button[hidden] { display:none; }
 .md-filled-button { min-height:var(--md-comp-filled-button-container-height); border-radius:var(--md-comp-filled-button-container-shape); color:var(--md-comp-filled-button-label-text-color); font-family:var(--md-comp-filled-button-label-text-font); font-size:var(--md-comp-filled-button-label-text-size); line-height:var(--md-comp-filled-button-label-text-line-height); font-weight:var(--md-comp-filled-button-label-text-weight); letter-spacing:var(--md-comp-filled-button-label-text-tracking); border:0; background:var(--md-comp-filled-button-container-color); }
 .md-filled-button:hover { color:var(--md-comp-filled-button-hover-label-text-color); background:color-mix(in srgb, var(--md-comp-filled-button-container-color), var(--md-comp-filled-button-hover-state-layer-color) calc(var(--md-comp-filled-button-hover-state-layer-opacity) * 100%)); }
 .md-filled-button:focus-visible { color:var(--md-comp-filled-button-focus-label-text-color); background:color-mix(in srgb, var(--md-comp-filled-button-container-color), var(--md-comp-filled-button-focus-state-layer-color) calc(var(--md-comp-filled-button-focus-state-layer-opacity) * 100%)); }
@@ -86,3 +88,8 @@ button:not(:disabled), [role=button]:not([aria-disabled=true]) { cursor:pointer;
 .md-text-button:hover { color:var(--md-comp-text-button-hover-label-text-color); background:color-mix(in srgb, transparent, var(--md-comp-text-button-hover-state-layer-color) calc(var(--md-comp-text-button-hover-state-layer-opacity) * 100%)); }
 .md-text-button:focus-visible { color:var(--md-comp-text-button-focus-label-text-color); background:color-mix(in srgb, transparent, var(--md-comp-text-button-focus-state-layer-color) calc(var(--md-comp-text-button-focus-state-layer-opacity) * 100%)); }
 .md-text-button:active { color:var(--md-comp-text-button-pressed-label-text-color); background:color-mix(in srgb, transparent, var(--md-comp-text-button-pressed-state-layer-color) calc(var(--md-comp-text-button-pressed-state-layer-opacity) * 100%)); }
+
+.md-filled-tonal-button { min-height:var(--md-comp-filled-tonal-button-container-height); border-radius:var(--md-comp-filled-tonal-button-container-shape); color:var(--md-comp-filled-tonal-button-label-text-color); font-family:var(--md-comp-filled-tonal-button-label-text-font); font-size:var(--md-comp-filled-tonal-button-label-text-size); line-height:var(--md-comp-filled-tonal-button-label-text-line-height); font-weight:var(--md-comp-filled-tonal-button-label-text-weight); letter-spacing:var(--md-comp-filled-tonal-button-label-text-tracking); border:0; background:var(--md-comp-filled-tonal-button-container-color); }
+.md-filled-tonal-button:hover { color:var(--md-comp-filled-tonal-button-hover-label-text-color); background:color-mix(in srgb, var(--md-comp-filled-tonal-button-container-color), var(--md-comp-filled-tonal-button-hover-state-layer-color) calc(var(--md-comp-filled-tonal-button-hover-state-layer-opacity) * 100%)); }
+.md-filled-tonal-button:focus-visible { color:var(--md-comp-filled-tonal-button-focus-label-text-color); background:color-mix(in srgb, var(--md-comp-filled-tonal-button-container-color), var(--md-comp-filled-tonal-button-focus-state-layer-color) calc(var(--md-comp-filled-tonal-button-focus-state-layer-opacity) * 100%)); }
+.md-filled-tonal-button:active { color:var(--md-comp-filled-tonal-button-pressed-label-text-color); background:color-mix(in srgb, var(--md-comp-filled-tonal-button-container-color), var(--md-comp-filled-tonal-button-pressed-state-layer-color) calc(var(--md-comp-filled-tonal-button-pressed-state-layer-opacity) * 100%)); }

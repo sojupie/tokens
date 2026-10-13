@@ -121,15 +121,15 @@ templ overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView
 
         if metadata(ctx).AgentDiscovery {
             <div class="tokens-audience-grid">
-                <section class="md-outlined-card tokens-card-content" aria-labelledby="human-heading">
+                <section class="md-filled-card tokens-card-content" aria-labelledby="human-heading">
                     <h2 class="md-typescale-title-medium" id="human-heading">Browse tokens</h2>
                     <p>Browse components and styles, compare values, and download the tokens you need.</p>
-                    <a class="tokens-link" href="/components">Browse components</a>
+                    <a class="md-outlined-button" href="/components">Browse components</a>
                 </section>
-                <section class="md-outlined-card tokens-card-content" aria-labelledby="agent-heading">
+                <section class="md-filled-card tokens-card-content" aria-labelledby="agent-heading">
                     <h2 class="md-typescale-title-medium" id="agent-heading">Use with your agent</h2>
                     <p>Give your coding agent access to the same token data through a prompt, skill, or MCP.</p>
-                    <a class="tokens-link" href="/for-agents">Give this to your agent</a>
+                    <a class="md-filled-tonal-button" href="/for-agents">Give this to your agent</a>
                 </section>
             </div>
         }
@@ -393,25 +393,25 @@ templ forAgentsPage(prompt string, mcpURL string) {
             <p class="md-typescale-body-large">Use Material Design 3 token data in your coding agent. No account or API key is required.</p>
         </header>
         <div class="tokens-handoff-grid">
-            <section class="md-outlined-card tokens-card-content" aria-labelledby="prompt-heading">
+            <section class="md-filled-card tokens-card-content" aria-labelledby="prompt-heading">
                 <h2 class="md-typescale-title-medium" id="prompt-heading">Copy a prompt</h2>
-                <pre id="agent-prompt" class="tokens-code-block" tabindex="0" aria-labelledby="prompt-heading"><code>{ prompt }</code></pre>
+                <pre id="agent-prompt" class="md-outlined-card tokens-code-block" tabindex="0" aria-labelledby="prompt-heading"><code>{ prompt }</code></pre>
                 <button class="md-filled-button" type="button" data-copy-target="agent-prompt" hidden>Copy prompt</button>
                 <p class="tokens-copy-status" data-copy-status aria-live="polite"></p>
             </section>
-            <section class="md-outlined-card tokens-card-content" aria-labelledby="skill-heading">
+            <section class="md-filled-card tokens-card-content" aria-labelledby="skill-heading">
                 <h2 class="md-typescale-title-medium" id="skill-heading">Install the skill</h2>
                 <p>For clients that support Agent Skills. Choose your agent in the installer.</p>
-                <pre id="agent-skill" class="tokens-code-block" tabindex="0" aria-labelledby="skill-heading"><code>npx skills add sojupie/tokens --skill token-catalog</code></pre>
-                <button class="md-filled-button" type="button" data-copy-target="agent-skill" hidden>Copy install command</button>
+                <pre id="agent-skill" class="md-outlined-card tokens-code-block" tabindex="0" aria-labelledby="skill-heading"><code>npx skills add sojupie/tokens --skill token-catalog</code></pre>
+                <button class="md-filled-tonal-button" type="button" data-copy-target="agent-skill" hidden>Copy install command</button>
                 <p class="tokens-copy-status" data-copy-status aria-live="polite"></p>
                 <a class="tokens-link" href="https://github.com/sojupie/tokens/blob/main/skills/token-catalog/SKILL.md">Read the skill</a>
             </section>
-            <section class="md-outlined-card tokens-card-content" aria-labelledby="mcp-heading">
+            <section class="md-filled-card tokens-card-content" aria-labelledby="mcp-heading">
                 <h2 class="md-typescale-title-medium" id="mcp-heading">Connect with MCP</h2>
                 <p>Add this URL as a Streamable HTTP server in your client.</p>
-                <pre id="agent-mcp" class="tokens-code-block" tabindex="0" aria-labelledby="mcp-heading"><code>{ mcpURL }</code></pre>
-                <button class="md-filled-button" type="button" data-copy-target="agent-mcp" hidden>Copy MCP URL</button>
+                <pre id="agent-mcp" class="md-outlined-card tokens-code-block" tabindex="0" aria-labelledby="mcp-heading"><code>{ mcpURL }</code></pre>
+                <button class="md-filled-tonal-button" type="button" data-copy-target="agent-mcp" hidden>Copy MCP URL</button>
                 <p class="tokens-copy-status" data-copy-status aria-live="polite"></p>
                 <p>Start with <code>list_subjects</code>, then use <code>get_tokens</code> with the returned kind and slug.</p>
             </section>

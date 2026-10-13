@@ -421,7 +421,7 @@ func overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView)
 				return templ_7745c5c3_Err
 			}
 			if metadata(ctx).AgentDiscovery {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "<div class=\"tokens-audience-grid\"><section class=\"md-outlined-card tokens-card-content\" aria-labelledby=\"human-heading\"><h2 class=\"md-typescale-title-medium\" id=\"human-heading\">Browse tokens</h2><p>Browse components and styles, compare values, and download the tokens you need.</p><a class=\"tokens-link\" href=\"/components\">Browse components</a></section><section class=\"md-outlined-card tokens-card-content\" aria-labelledby=\"agent-heading\"><h2 class=\"md-typescale-title-medium\" id=\"agent-heading\">Use with your agent</h2><p>Give your coding agent access to the same token data through a prompt, skill, or MCP.</p><a class=\"tokens-link\" href=\"/for-agents\">Give this to your agent</a></section></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "<div class=\"tokens-audience-grid\"><section class=\"md-filled-card tokens-card-content\" aria-labelledby=\"human-heading\"><h2 class=\"md-typescale-title-medium\" id=\"human-heading\">Browse tokens</h2><p>Browse components and styles, compare values, and download the tokens you need.</p><a class=\"md-outlined-button\" href=\"/components\">Browse components</a></section><section class=\"md-filled-card tokens-card-content\" aria-labelledby=\"agent-heading\"><h2 class=\"md-typescale-title-medium\" id=\"agent-heading\">Use with your agent</h2><p>Give your coding agent access to the same token data through a prompt, skill, or MCP.</p><a class=\"md-filled-tonal-button\" href=\"/for-agents\">Give this to your agent</a></section></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -1877,33 +1877,33 @@ func forAgentsPage(prompt string, mcpURL string) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 167, "<header class=\"tokens-section\"><h1 class=\"md-typescale-headline-medium\">Give this to your agent</h1><p class=\"md-typescale-body-large\">Use Material Design 3 token data in your coding agent. No account or API key is required.</p></header><div class=\"tokens-handoff-grid\"><section class=\"md-outlined-card tokens-card-content\" aria-labelledby=\"prompt-heading\"><h2 class=\"md-typescale-title-medium\" id=\"prompt-heading\">Copy a prompt</h2><pre id=\"agent-prompt\" class=\"tokens-code-block\" tabindex=\"0\" aria-labelledby=\"prompt-heading\"><code>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 167, "<header class=\"tokens-section\"><h1 class=\"md-typescale-headline-medium\">Give this to your agent</h1><p class=\"md-typescale-body-large\">Use Material Design 3 token data in your coding agent. No account or API key is required.</p></header><div class=\"tokens-handoff-grid\"><section class=\"md-filled-card tokens-card-content\" aria-labelledby=\"prompt-heading\"><h2 class=\"md-typescale-title-medium\" id=\"prompt-heading\">Copy a prompt</h2><pre id=\"agent-prompt\" class=\"md-outlined-card tokens-code-block\" tabindex=\"0\" aria-labelledby=\"prompt-heading\"><code>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var91 string
 			templ_7745c5c3_Var91, templ_7745c5c3_Err = templ.JoinStringErrs(prompt)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/web/templates.templ`, Line: 398, Col: 125}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/web/templates.templ`, Line: 398, Col: 142}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var91))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 168, "</code></pre><button class=\"md-filled-button\" type=\"button\" data-copy-target=\"agent-prompt\" hidden>Copy prompt</button><p class=\"tokens-copy-status\" data-copy-status aria-live=\"polite\"></p></section><section class=\"md-outlined-card tokens-card-content\" aria-labelledby=\"skill-heading\"><h2 class=\"md-typescale-title-medium\" id=\"skill-heading\">Install the skill</h2><p>For clients that support Agent Skills. Choose your agent in the installer.</p><pre id=\"agent-skill\" class=\"tokens-code-block\" tabindex=\"0\" aria-labelledby=\"skill-heading\"><code>npx skills add sojupie/tokens --skill token-catalog</code></pre><button class=\"md-filled-button\" type=\"button\" data-copy-target=\"agent-skill\" hidden>Copy install command</button><p class=\"tokens-copy-status\" data-copy-status aria-live=\"polite\"></p><a class=\"tokens-link\" href=\"https://github.com/sojupie/tokens/blob/main/skills/token-catalog/SKILL.md\">Read the skill</a></section><section class=\"md-outlined-card tokens-card-content\" aria-labelledby=\"mcp-heading\"><h2 class=\"md-typescale-title-medium\" id=\"mcp-heading\">Connect with MCP</h2><p>Add this URL as a Streamable HTTP server in your client.</p><pre id=\"agent-mcp\" class=\"tokens-code-block\" tabindex=\"0\" aria-labelledby=\"mcp-heading\"><code>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 168, "</code></pre><button class=\"md-filled-button\" type=\"button\" data-copy-target=\"agent-prompt\" hidden>Copy prompt</button><p class=\"tokens-copy-status\" data-copy-status aria-live=\"polite\"></p></section><section class=\"md-filled-card tokens-card-content\" aria-labelledby=\"skill-heading\"><h2 class=\"md-typescale-title-medium\" id=\"skill-heading\">Install the skill</h2><p>For clients that support Agent Skills. Choose your agent in the installer.</p><pre id=\"agent-skill\" class=\"md-outlined-card tokens-code-block\" tabindex=\"0\" aria-labelledby=\"skill-heading\"><code>npx skills add sojupie/tokens --skill token-catalog</code></pre><button class=\"md-filled-tonal-button\" type=\"button\" data-copy-target=\"agent-skill\" hidden>Copy install command</button><p class=\"tokens-copy-status\" data-copy-status aria-live=\"polite\"></p><a class=\"tokens-link\" href=\"https://github.com/sojupie/tokens/blob/main/skills/token-catalog/SKILL.md\">Read the skill</a></section><section class=\"md-filled-card tokens-card-content\" aria-labelledby=\"mcp-heading\"><h2 class=\"md-typescale-title-medium\" id=\"mcp-heading\">Connect with MCP</h2><p>Add this URL as a Streamable HTTP server in your client.</p><pre id=\"agent-mcp\" class=\"md-outlined-card tokens-code-block\" tabindex=\"0\" aria-labelledby=\"mcp-heading\"><code>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var92 string
 			templ_7745c5c3_Var92, templ_7745c5c3_Err = templ.JoinStringErrs(mcpURL)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/web/templates.templ`, Line: 413, Col: 119}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/web/templates.templ`, Line: 413, Col: 136}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var92))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 169, "</code></pre><button class=\"md-filled-button\" type=\"button\" data-copy-target=\"agent-mcp\" hidden>Copy MCP URL</button><p class=\"tokens-copy-status\" data-copy-status aria-live=\"polite\"></p><p>Start with <code>list_subjects</code>, then use <code>get_tokens</code> with the returned kind and slug.</p></section></div><section class=\"tokens-section\" aria-labelledby=\"reference-heading\"><h2 class=\"md-typescale-title-medium\" id=\"reference-heading\">API reference</h2><p>Request parameters, response formats, and download scopes.</p><a class=\"tokens-link\" href=\"/llms-full.txt\">API and data reference</a> <a class=\"tokens-link\" href=\"/openapi.json\">OpenAPI schema</a></section><script src=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 169, "</code></pre><button class=\"md-filled-tonal-button\" type=\"button\" data-copy-target=\"agent-mcp\" hidden>Copy MCP URL</button><p class=\"tokens-copy-status\" data-copy-status aria-live=\"polite\"></p><p>Start with <code>list_subjects</code>, then use <code>get_tokens</code> with the returned kind and slug.</p></section></div><section class=\"tokens-section\" aria-labelledby=\"reference-heading\"><h2 class=\"md-typescale-title-medium\" id=\"reference-heading\">API reference</h2><p>Request parameters, response formats, and download scopes.</p><a class=\"tokens-link\" href=\"/llms-full.txt\">API and data reference</a> <a class=\"tokens-link\" href=\"/openapi.json\">OpenAPI schema</a></section><script src=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
