@@ -70,13 +70,13 @@ func tokenBrowserView(subject publish.SubjectView, browser tokenBrowser) templ.C
 					return err
 				}
 			}
-			if err := write(`</div><p class="tokens-context-status" role="status" aria-live="polite"></p><footer><button type="button" data-action="cancel">Cancel</button><button type="submit">Save</button></footer></dialog>`); err != nil {
+			if err := write(`</div><p class="tokens-context-status" role="status" aria-live="polite"></p><footer><button class="md-text-button" type="button" data-action="cancel">Cancel</button><button class="md-text-button" type="submit">Save</button></footer></dialog>`); err != nil {
 				return err
 			}
 		} else if err := write(`<span>Value</span></div>`); err != nil {
 			return err
 		}
-		if err := write(`<noscript><button type="submit">Apply filters</button><style>.tokens-context-dialog:not([open]){display:block;position:static}</style></noscript></form>`); err != nil {
+		if err := write(`<noscript><button class="md-filled-button" type="submit">Apply filters</button><style>.tokens-context-dialog:not([open]){display:block;position:static}</style></noscript></form>`); err != nil {
 			return err
 		}
 		if browser.Count == 0 {

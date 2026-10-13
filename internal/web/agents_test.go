@@ -80,7 +80,7 @@ func TestHTMLAgentHintsAndJSONAlternate(t *testing.T) {
 			}
 		}
 		walk(document, false)
-		if len(footerColumns) != 4 || strings.Contains(footerColumns[0], "Download JSON") || !strings.HasPrefix(footerColumns[1], "For humans") || !strings.Contains(footerColumns[2], "API and data reference") || !strings.Contains(footerColumns[2], "Give this to your agent") || !strings.Contains(footerColumns[1], "Download JSON") || !strings.HasPrefix(footerColumns[3], "About") || !strings.Contains(footerColumns[3], "Made by Olle Marmenlind") {
+		if len(footerColumns) != 4 || !strings.Contains(footerColumns[0], "Download JSON") || !strings.HasPrefix(footerColumns[1], "For humans") || !strings.Contains(footerColumns[2], "API and data reference") || !strings.Contains(footerColumns[1], "Give this to your agent") || !strings.HasPrefix(footerColumns[3], "About") || !strings.Contains(footerColumns[3], "Made by Olle Marmenlind") {
 			t.Fatalf("wrong footer columns: %v", footerColumns)
 		}
 		if links["/agents.json"] != "describedby" || links["/llms.txt"] != "describedby" || links["/openapi.json"] != "service-desc" || links[apiCatalogPath] != "api-catalog" || links[aiCatalogPath] != "ai-catalog" || !footerLink {

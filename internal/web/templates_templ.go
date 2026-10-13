@@ -270,7 +270,7 @@ func layout(title string) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		if metadata(ctx).AgentDiscovery {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "<a class=\"tokens-nav-link md-typescale-label-large\" href=\"/for-agents\">For agents</a>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "<a class=\"tokens-nav-link md-typescale-label-large\" href=\"/for-agents\">Use with your agent</a>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -323,7 +323,7 @@ func layout(title string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "</main><footer class=\"tokens-site-footer\"><div class=\"tokens-footer-content\"><div><p class=\"md-typescale-title-medium\">Token Catalog</p><p class=\"md-typescale-body-medium\">Browse Material Design 3 tokens and track their changes.</p><p class=\"md-typescale-body-medium\">Independent project. Not affiliated with Google.</p></div><div><p class=\"md-typescale-title-medium\">For humans</p><a class=\"tokens-link md-typescale-body-medium\" href=\"https://github.com/sojupie/tokens\">GitHub</a> <a class=\"tokens-link md-typescale-body-medium\" href=\"/components\">Browse components</a>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "</main><footer class=\"tokens-site-footer\"><div class=\"tokens-footer-content\"><div><p class=\"md-typescale-title-medium\">Token Catalog</p><p class=\"md-typescale-body-medium\">Browse Material Design 3 tokens and track their changes.</p><p class=\"md-typescale-body-medium\">Independent project. Not affiliated with Google.</p>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -331,12 +331,12 @@ func layout(title string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "</div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "</div><div><p class=\"md-typescale-title-medium\">For humans</p><a class=\"tokens-link md-typescale-body-medium\" href=\"https://github.com/sojupie/tokens\">GitHub</a> <a class=\"tokens-link md-typescale-body-medium\" href=\"/components\">Browse components</a> <a class=\"tokens-link md-typescale-body-medium\" href=\"/for-agents\">Give this to your agent</a></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if metadata(ctx).AgentDiscovery {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "<div><p class=\"md-typescale-title-medium\">For agents</p><a class=\"tokens-link md-typescale-body-medium\" href=\"/for-agents\">Give this to your agent</a> <a class=\"tokens-link md-typescale-body-medium\" href=\"/llms-full.txt\">API and data reference</a></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "<div><p class=\"md-typescale-title-medium\">For agents</p><a class=\"tokens-link md-typescale-body-medium\" href=\"/llms-full.txt\">API and data reference</a></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -421,7 +421,7 @@ func overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView)
 				return templ_7745c5c3_Err
 			}
 			if metadata(ctx).AgentDiscovery {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "<div class=\"tokens-audience-grid\"><section class=\"tokens-handoff-card\" aria-labelledby=\"human-heading\"><h2 class=\"md-typescale-title-medium\" id=\"human-heading\">For humans</h2><p>Browse components and styles, compare values, and download the tokens you need.</p><a class=\"tokens-link\" href=\"/components\">Browse components</a></section><section class=\"tokens-handoff-card\" aria-labelledby=\"agent-heading\"><h2 class=\"md-typescale-title-medium\" id=\"agent-heading\">For agents</h2><p>Give your coding agent access to the same token data through a prompt, skill, or MCP.</p><a class=\"tokens-link\" href=\"/for-agents\">Give this to your agent</a></section></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "<div class=\"tokens-audience-grid\"><section class=\"md-outlined-card tokens-card-content\" aria-labelledby=\"human-heading\"><h2 class=\"md-typescale-title-medium\" id=\"human-heading\">Browse tokens</h2><p>Browse components and styles, compare values, and download the tokens you need.</p><a class=\"tokens-link\" href=\"/components\">Browse components</a></section><section class=\"md-outlined-card tokens-card-content\" aria-labelledby=\"agent-heading\"><h2 class=\"md-typescale-title-medium\" id=\"agent-heading\">Use with your agent</h2><p>Give your coding agent access to the same token data through a prompt, skill, or MCP.</p><a class=\"tokens-link\" href=\"/for-agents\">Give this to your agent</a></section></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -432,14 +432,14 @@ func overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView)
 			}
 			for _, subject := range subjects {
 				if subject.Key.Kind == publish.SubjectComponent {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "<li class=\"tokens-card\"><a class=\"tokens-link\" href=\"")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "<li class=\"md-outlined-card tokens-card\"><a class=\"tokens-link\" href=\"")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					var templ_7745c5c3_Var21 templ.SafeURL
 					templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinURLErrs(subjectURL(subject))
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/web/templates.templ`, Line: 141, Col: 79}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/web/templates.templ`, Line: 141, Col: 96}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
 					if templ_7745c5c3_Err != nil {
@@ -452,7 +452,7 @@ func overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView)
 					var templ_7745c5c3_Var22 string
 					templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(subject.Name)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/web/templates.templ`, Line: 141, Col: 96}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/web/templates.templ`, Line: 141, Col: 113}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
 					if templ_7745c5c3_Err != nil {
@@ -465,7 +465,7 @@ func overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView)
 					var templ_7745c5c3_Var23 string
 					templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(len(subject.Tokens))
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/web/templates.templ`, Line: 141, Col: 164}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/web/templates.templ`, Line: 141, Col: 181}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
 					if templ_7745c5c3_Err != nil {
@@ -483,14 +483,14 @@ func overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView)
 			}
 			for _, subject := range subjects {
 				if subject.Key.Kind != publish.SubjectComponent {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 45, "<li class=\"tokens-card\"><a class=\"tokens-link\" href=\"")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 45, "<li class=\"md-outlined-card tokens-card\"><a class=\"tokens-link\" href=\"")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					var templ_7745c5c3_Var24 templ.SafeURL
 					templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinURLErrs(subjectURL(subject))
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/web/templates.templ`, Line: 152, Col: 79}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/web/templates.templ`, Line: 152, Col: 96}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var24))
 					if templ_7745c5c3_Err != nil {
@@ -503,7 +503,7 @@ func overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView)
 					var templ_7745c5c3_Var25 string
 					templ_7745c5c3_Var25, templ_7745c5c3_Err = templ.JoinStringErrs(subject.Name)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/web/templates.templ`, Line: 152, Col: 96}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/web/templates.templ`, Line: 152, Col: 113}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var25))
 					if templ_7745c5c3_Err != nil {
@@ -516,7 +516,7 @@ func overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView)
 					var templ_7745c5c3_Var26 string
 					templ_7745c5c3_Var26, templ_7745c5c3_Err = templ.JoinStringErrs(subjectKindLabel(subject.Key.Kind))
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/web/templates.templ`, Line: 152, Col: 178}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/web/templates.templ`, Line: 152, Col: 195}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var26))
 					if templ_7745c5c3_Err != nil {
@@ -529,7 +529,7 @@ func overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView)
 					var templ_7745c5c3_Var27 string
 					templ_7745c5c3_Var27, templ_7745c5c3_Err = templ.JoinStringErrs(len(subject.Tokens))
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/web/templates.templ`, Line: 152, Col: 205}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/web/templates.templ`, Line: 152, Col: 222}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var27))
 					if templ_7745c5c3_Err != nil {
@@ -663,7 +663,7 @@ func subjectListPage(snapshot publish.SnapshotView, subjects []publish.SubjectVi
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 58, "\" hx-target=\"#subject-list\" hx-trigger=\"input changed delay:250ms\" hx-push-url=\"true\"></form><div id=\"subject-list\" class=\"tokens-list-panel\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 58, "\" hx-target=\"#subject-list\" hx-trigger=\"input changed delay:250ms\" hx-push-url=\"true\"></form><div id=\"subject-list\" class=\"md-outlined-card tokens-list-panel\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -706,14 +706,14 @@ func siteDownloadButton(scope string) templ.Component {
 			templ_7745c5c3_Var34 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 60, "<div class=\"tokens-token-download\"><button type=\"button\" data-site-download-open=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 60, "<div class=\"tokens-token-download\"><button class=\"md-outlined-button\" type=\"button\" data-site-download-open=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var35 string
 		templ_7745c5c3_Var35, templ_7745c5c3_Err = templ.JoinStringErrs(scope)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/web/templates.templ`, Line: 188, Col: 55}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/web/templates.templ`, Line: 188, Col: 82}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var35))
 		if templ_7745c5c3_Err != nil {
@@ -748,7 +748,7 @@ func siteDownloadMenu() templ.Component {
 			templ_7745c5c3_Var36 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 62, "<div class=\"tokens-token-download\"><button type=\"button\" data-download-open aria-haspopup=\"dialog\" aria-controls=\"tokens-site-download\">Download JSON</button> <dialog id=\"tokens-site-download\" aria-labelledby=\"tokens-site-download-title\"><form method=\"get\" action=\"/downloads/tokens.json\"><h2 id=\"tokens-site-download-title\">Download tokens</h2><fieldset><legend>What should the file include?</legend> <label class=\"tokens-download-option\"><input type=\"radio\" name=\"scope\" value=\"components\"><span><strong>Components</strong><small>Every component, token set and supported context.</small></span></label> <label class=\"tokens-download-option\"><input type=\"radio\" name=\"scope\" value=\"styles\"><span><strong>Styles and token sources</strong><small>All style and foundation tokens, with every supported context.</small></span></label> <label class=\"tokens-download-option\"><input type=\"radio\" name=\"scope\" value=\"all\" checked><span><strong>All tokens</strong><small>Everything in the current publication, including components and styles.</small></span></label></fieldset><footer><button type=\"button\" data-download-cancel>Cancel</button><button type=\"submit\">Download JSON</button></footer></form></dialog><noscript><a class=\"tokens-link\" href=\"/downloads/tokens.json?scope=components\">Download components</a> <a class=\"tokens-link\" href=\"/downloads/tokens.json?scope=styles\">Download styles</a> <a class=\"tokens-link\" href=\"/downloads/tokens.json?scope=all\">Download all tokens</a></noscript></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 62, "<div class=\"tokens-token-download\"><button class=\"md-outlined-button\" type=\"button\" data-download-open aria-haspopup=\"dialog\" aria-controls=\"tokens-site-download\">Download JSON</button> <dialog id=\"tokens-site-download\" aria-labelledby=\"tokens-site-download-title\"><form method=\"get\" action=\"/downloads/tokens.json\"><h2 id=\"tokens-site-download-title\">Download tokens</h2><fieldset><legend>What should the file include?</legend> <label class=\"tokens-download-option\"><input type=\"radio\" name=\"scope\" value=\"components\"><span><strong>Components</strong><small>Every component, token set and supported context.</small></span></label> <label class=\"tokens-download-option\"><input type=\"radio\" name=\"scope\" value=\"styles\"><span><strong>Styles and token sources</strong><small>All style and foundation tokens, with every supported context.</small></span></label> <label class=\"tokens-download-option\"><input type=\"radio\" name=\"scope\" value=\"all\" checked><span><strong>All tokens</strong><small>Everything in the current publication, including components and styles.</small></span></label></fieldset><footer><button class=\"md-text-button\" type=\"button\" data-download-cancel>Cancel</button><button class=\"md-filled-button\" type=\"submit\">Download JSON</button></footer></form></dialog><noscript><a class=\"tokens-link\" href=\"/downloads/tokens.json?scope=components\">Download components</a> <a class=\"tokens-link\" href=\"/downloads/tokens.json?scope=styles\">Download styles</a> <a class=\"tokens-link\" href=\"/downloads/tokens.json?scope=all\">Download all tokens</a></noscript></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -1634,7 +1634,7 @@ func changeFilterForm(filters changeFilters, baseURL string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 147, "\" placeholder=\"e.g. width or font\"></label><div class=\"tokens-change-filter-actions\"><button type=\"submit\">Apply filters</button> <a class=\"tokens-link\" href=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 147, "\" placeholder=\"e.g. width or font\"></label><div class=\"tokens-change-filter-actions\"><button class=\"md-filled-button\" type=\"submit\">Apply filters</button> <a class=\"tokens-link\" href=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -1677,7 +1677,7 @@ func changeRecordList(changes []labeledChange) templ.Component {
 		}
 		ctx = templ.ClearChildren(ctx)
 		for _, change := range changes {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 149, "<details class=\"tokens-change-card tokens-change-disclosure\"><summary class=\"tokens-change-heading\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 149, "<details class=\"md-outlined-card tokens-change-card tokens-change-disclosure\"><summary class=\"tokens-change-heading\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -1877,33 +1877,33 @@ func forAgentsPage(prompt string, mcpURL string) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 167, "<header class=\"tokens-section\"><h1 class=\"md-typescale-headline-medium\">Give this to your agent</h1><p class=\"md-typescale-body-large\">Use Material Design 3 token data in your coding agent. No account or API key is required.</p></header><div class=\"tokens-handoff-grid\"><section class=\"tokens-handoff-card\" aria-labelledby=\"prompt-heading\"><h2 class=\"md-typescale-title-medium\" id=\"prompt-heading\">Copy a prompt</h2><pre id=\"agent-prompt\" class=\"tokens-handoff-text\" tabindex=\"0\" aria-labelledby=\"prompt-heading\"><code>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 167, "<header class=\"tokens-section\"><h1 class=\"md-typescale-headline-medium\">Give this to your agent</h1><p class=\"md-typescale-body-large\">Use Material Design 3 token data in your coding agent. No account or API key is required.</p></header><div class=\"tokens-handoff-grid\"><section class=\"md-outlined-card tokens-card-content\" aria-labelledby=\"prompt-heading\"><h2 class=\"md-typescale-title-medium\" id=\"prompt-heading\">Copy a prompt</h2><pre id=\"agent-prompt\" class=\"tokens-code-block\" tabindex=\"0\" aria-labelledby=\"prompt-heading\"><code>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var91 string
 			templ_7745c5c3_Var91, templ_7745c5c3_Err = templ.JoinStringErrs(prompt)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/web/templates.templ`, Line: 398, Col: 127}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/web/templates.templ`, Line: 398, Col: 125}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var91))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 168, "</code></pre><button type=\"button\" data-copy-target=\"agent-prompt\" hidden>Copy prompt</button><p class=\"tokens-copy-status\" data-copy-status aria-live=\"polite\"></p></section><section class=\"tokens-handoff-card\" aria-labelledby=\"skill-heading\"><h2 class=\"md-typescale-title-medium\" id=\"skill-heading\">Install the skill</h2><p>For clients that support Agent Skills. Choose your agent in the installer.</p><pre id=\"agent-skill\" class=\"tokens-handoff-text\" tabindex=\"0\" aria-labelledby=\"skill-heading\"><code>npx skills add sojupie/tokens --skill token-catalog</code></pre><button type=\"button\" data-copy-target=\"agent-skill\" hidden>Copy install command</button><p class=\"tokens-copy-status\" data-copy-status aria-live=\"polite\"></p><a class=\"tokens-link\" href=\"https://github.com/sojupie/tokens/blob/main/skills/token-catalog/SKILL.md\">Read the skill</a></section><section class=\"tokens-handoff-card\" aria-labelledby=\"mcp-heading\"><h2 class=\"md-typescale-title-medium\" id=\"mcp-heading\">Connect with MCP</h2><p>Add this URL as a Streamable HTTP server in your client.</p><pre id=\"agent-mcp\" class=\"tokens-handoff-text\" tabindex=\"0\" aria-labelledby=\"mcp-heading\"><code>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 168, "</code></pre><button class=\"md-filled-button\" type=\"button\" data-copy-target=\"agent-prompt\" hidden>Copy prompt</button><p class=\"tokens-copy-status\" data-copy-status aria-live=\"polite\"></p></section><section class=\"md-outlined-card tokens-card-content\" aria-labelledby=\"skill-heading\"><h2 class=\"md-typescale-title-medium\" id=\"skill-heading\">Install the skill</h2><p>For clients that support Agent Skills. Choose your agent in the installer.</p><pre id=\"agent-skill\" class=\"tokens-code-block\" tabindex=\"0\" aria-labelledby=\"skill-heading\"><code>npx skills add sojupie/tokens --skill token-catalog</code></pre><button class=\"md-filled-button\" type=\"button\" data-copy-target=\"agent-skill\" hidden>Copy install command</button><p class=\"tokens-copy-status\" data-copy-status aria-live=\"polite\"></p><a class=\"tokens-link\" href=\"https://github.com/sojupie/tokens/blob/main/skills/token-catalog/SKILL.md\">Read the skill</a></section><section class=\"md-outlined-card tokens-card-content\" aria-labelledby=\"mcp-heading\"><h2 class=\"md-typescale-title-medium\" id=\"mcp-heading\">Connect with MCP</h2><p>Add this URL as a Streamable HTTP server in your client.</p><pre id=\"agent-mcp\" class=\"tokens-code-block\" tabindex=\"0\" aria-labelledby=\"mcp-heading\"><code>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var92 string
 			templ_7745c5c3_Var92, templ_7745c5c3_Err = templ.JoinStringErrs(mcpURL)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/web/templates.templ`, Line: 413, Col: 121}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/web/templates.templ`, Line: 413, Col: 119}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var92))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 169, "</code></pre><button type=\"button\" data-copy-target=\"agent-mcp\" hidden>Copy MCP URL</button><p class=\"tokens-copy-status\" data-copy-status aria-live=\"polite\"></p><p>Start with <code>list_subjects</code>, then use <code>get_tokens</code> with the returned kind and slug.</p></section></div><section class=\"tokens-section\" aria-labelledby=\"reference-heading\"><h2 class=\"md-typescale-title-medium\" id=\"reference-heading\">API reference</h2><p>Request parameters, response formats, and download scopes.</p><a class=\"tokens-link\" href=\"/llms-full.txt\">API and data reference</a> <a class=\"tokens-link\" href=\"/openapi.json\">OpenAPI schema</a></section><script src=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 169, "</code></pre><button class=\"md-filled-button\" type=\"button\" data-copy-target=\"agent-mcp\" hidden>Copy MCP URL</button><p class=\"tokens-copy-status\" data-copy-status aria-live=\"polite\"></p><p>Start with <code>list_subjects</code>, then use <code>get_tokens</code> with the returned kind and slug.</p></section></div><section class=\"tokens-section\" aria-labelledby=\"reference-heading\"><h2 class=\"md-typescale-title-medium\" id=\"reference-heading\">API reference</h2><p>Request parameters, response formats, and download scopes.</p><a class=\"tokens-link\" href=\"/llms-full.txt\">API and data reference</a> <a class=\"tokens-link\" href=\"/openapi.json\">OpenAPI schema</a></section><script src=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

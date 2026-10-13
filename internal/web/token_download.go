@@ -110,7 +110,7 @@ func downloadCount(count int, noun string) string {
 }
 
 func writeTokenDownloadMenu(writer io.Writer, subject publish.SubjectView, browser tokenBrowser, site downloadPreview) error {
-	menu := `<div class="tokens-token-download"><button type="button" data-download-open aria-haspopup="dialog">Download JSON</button><dialog aria-labelledby="tokens-download-title"><form method="get" action="` + html.EscapeString(subjectDownloadURL(subject)) + `"><h2 id="tokens-download-title">Download tokens</h2>`
+	menu := `<div class="tokens-token-download"><button class="md-outlined-button" type="button" data-download-open aria-haspopup="dialog">Download JSON</button><dialog aria-labelledby="tokens-download-title"><form method="get" action="` + html.EscapeString(subjectDownloadURL(subject)) + `"><h2 id="tokens-download-title">Download tokens</h2>`
 	if browser.Selected.Label != "" {
 		menu += `<p class="tokens-download-table">` + html.EscapeString(browser.Selected.Label) + `</p>`
 	}
@@ -189,7 +189,7 @@ func writeTokenDownloadMenu(writer io.Writer, subject publish.SubjectView, brows
 	for _, filter := range browser.Filters {
 		input(filter.Key, filter.Selected)
 	}
-	menu += `<footer><button type="button" data-download-cancel>Cancel</button><button type="submit">Download JSON</button></footer></form></dialog><noscript><style>.tokens-token-download>button{display:none}.tokens-token-download dialog:not([open]){display:block;position:static}</style></noscript></div>`
+	menu += `<footer><button class="md-text-button" type="button" data-download-cancel>Cancel</button><button class="md-filled-button" type="submit">Download JSON</button></footer></form></dialog><noscript><style>.tokens-token-download>button{display:none}.tokens-token-download dialog:not([open]){display:block;position:static}</style></noscript></div>`
 	_, err := io.WriteString(writer, menu)
 	return err
 }

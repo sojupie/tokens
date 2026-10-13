@@ -50,7 +50,7 @@ templ layout(title string) {
 					<a class="tokens-nav-link md-typescale-label-large" href="/styles">Styles and token sources</a>
 					<a class="tokens-nav-link md-typescale-label-large" href="/changes">Change log</a>
                     if metadata(ctx).AgentDiscovery {
-                        <a class="tokens-nav-link md-typescale-label-large" href="/for-agents">For agents</a>
+                        <a class="tokens-nav-link md-typescale-label-large" href="/for-agents">Use with your agent</a>
                     }
 				</div>
 				<div class="tokens-theme-controls" role="group" aria-label="Site appearance">
@@ -85,17 +85,17 @@ templ layout(title string) {
 					<p class="md-typescale-title-medium">Token Catalog</p>
 					<p class="md-typescale-body-medium">Browse Material Design 3 tokens and track their changes.</p>
 					<p class="md-typescale-body-medium">Independent project. Not affiliated with Google.</p>
+                    @siteDownloadMenu()
 				</div>
 				<div>
 					<p class="md-typescale-title-medium">For humans</p>
 					<a class="tokens-link md-typescale-body-medium" href="https://github.com/sojupie/tokens">GitHub</a>
                     <a class="tokens-link md-typescale-body-medium" href="/components">Browse components</a>
-                    @siteDownloadMenu()
+                    <a class="tokens-link md-typescale-body-medium" href="/for-agents">Give this to your agent</a>
 				</div>
                 if metadata(ctx).AgentDiscovery {
                     <div>
                         <p class="md-typescale-title-medium">For agents</p>
-                        <a class="tokens-link md-typescale-body-medium" href="/for-agents">Give this to your agent</a>
                         <a class="tokens-link md-typescale-body-medium" href="/llms-full.txt">API and data reference</a>
                     </div>
                 }
@@ -121,13 +121,13 @@ templ overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView
 
         if metadata(ctx).AgentDiscovery {
             <div class="tokens-audience-grid">
-                <section class="tokens-handoff-card" aria-labelledby="human-heading">
-                    <h2 class="md-typescale-title-medium" id="human-heading">For humans</h2>
+                <section class="md-outlined-card tokens-card-content" aria-labelledby="human-heading">
+                    <h2 class="md-typescale-title-medium" id="human-heading">Browse tokens</h2>
                     <p>Browse components and styles, compare values, and download the tokens you need.</p>
                     <a class="tokens-link" href="/components">Browse components</a>
                 </section>
-                <section class="tokens-handoff-card" aria-labelledby="agent-heading">
-                    <h2 class="md-typescale-title-medium" id="agent-heading">For agents</h2>
+                <section class="md-outlined-card tokens-card-content" aria-labelledby="agent-heading">
+                    <h2 class="md-typescale-title-medium" id="agent-heading">Use with your agent</h2>
                     <p>Give your coding agent access to the same token data through a prompt, skill, or MCP.</p>
                     <a class="tokens-link" href="/for-agents">Give this to your agent</a>
                 </section>
@@ -138,7 +138,7 @@ templ overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView
 			<ul class="tokens-card-grid">
 				for _, subject := range subjects {
 					if subject.Key.Kind == publish.SubjectComponent {
-						<li class="tokens-card"><a class="tokens-link" href={ subjectURL(subject) }>{ subject.Name }</a> <small class="md-typescale-body-small">({ len(subject.Tokens) } tokens)</small></li>
+						<li class="md-outlined-card tokens-card"><a class="tokens-link" href={ subjectURL(subject) }>{ subject.Name }</a> <small class="md-typescale-body-small">({ len(subject.Tokens) } tokens)</small></li>
 					}
 				}
 			</ul>
@@ -149,7 +149,7 @@ templ overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView
 			<ul class="tokens-card-grid">
 				for _, subject := range subjects {
 					if subject.Key.Kind != publish.SubjectComponent {
-						<li class="tokens-card"><a class="tokens-link" href={ subjectURL(subject) }>{ subject.Name }</a> <small class="md-typescale-body-small">{ subjectKindLabel(subject.Key.Kind) } · { len(subject.Tokens) } tokens</small></li>
+						<li class="md-outlined-card tokens-card"><a class="tokens-link" href={ subjectURL(subject) }>{ subject.Name }</a> <small class="md-typescale-body-small">{ subjectKindLabel(subject.Key.Kind) } · { len(subject.Tokens) } tokens</small></li>
 					}
 				}
 			</ul>
@@ -177,7 +177,7 @@ templ subjectListPage(snapshot publish.SnapshotView, subjects []publish.SubjectV
 				hx-trigger="input changed delay:250ms"
 				hx-push-url="true"/>
 		</form>
-		<div id="subject-list" class="tokens-list-panel">
+		<div id="subject-list" class="md-outlined-card tokens-list-panel">
 			@subjectList(subjects)
 		</div>
 }
@@ -185,13 +185,13 @@ templ subjectListPage(snapshot publish.SnapshotView, subjects []publish.SubjectV
 
 templ siteDownloadButton(scope string) {
 	<div class="tokens-token-download">
-		<button type="button" data-site-download-open={ scope } aria-haspopup="dialog" aria-controls="tokens-site-download">Download JSON</button>
+		<button class="md-outlined-button" type="button" data-site-download-open={ scope } aria-haspopup="dialog" aria-controls="tokens-site-download">Download JSON</button>
 	</div>
 }
 
 templ siteDownloadMenu() {
 	<div class="tokens-token-download">
-		<button type="button" data-download-open aria-haspopup="dialog" aria-controls="tokens-site-download">Download JSON</button>
+		<button class="md-outlined-button" type="button" data-download-open aria-haspopup="dialog" aria-controls="tokens-site-download">Download JSON</button>
 		<dialog id="tokens-site-download" aria-labelledby="tokens-site-download-title">
 			<form method="get" action="/downloads/tokens.json">
 				<h2 id="tokens-site-download-title">Download tokens</h2>
@@ -201,7 +201,7 @@ templ siteDownloadMenu() {
 					<label class="tokens-download-option"><input type="radio" name="scope" value="styles"/><span><strong>Styles and token sources</strong><small>All style and foundation tokens, with every supported context.</small></span></label>
 					<label class="tokens-download-option"><input type="radio" name="scope" value="all" checked/><span><strong>All tokens</strong><small>Everything in the current publication, including components and styles.</small></span></label>
 				</fieldset>
-				<footer><button type="button" data-download-cancel>Cancel</button><button type="submit">Download JSON</button></footer>
+				<footer><button class="md-text-button" type="button" data-download-cancel>Cancel</button><button class="md-filled-button" type="submit">Download JSON</button></footer>
 			</form>
 		</dialog>
 		<noscript>
@@ -344,7 +344,7 @@ templ changeFilterForm(filters changeFilters, baseURL string) {
 		</select></label>
 		<label>Token name<input type="search" name="q" value={ filters.Query } placeholder="e.g. width or font"/></label>
 		<div class="tokens-change-filter-actions">
-			<button type="submit">Apply filters</button>
+			<button class="md-filled-button" type="submit">Apply filters</button>
 			<a class="tokens-link" href={ strings.SplitN(baseURL, "?", 2)[0] }>Reset</a>
 		</div>
 	</form>
@@ -352,7 +352,7 @@ templ changeFilterForm(filters changeFilters, baseURL string) {
 
 templ changeRecordList(changes []labeledChange) {
 		for _, change := range changes {
-			<details class="tokens-change-card tokens-change-disclosure">
+			<details class="md-outlined-card tokens-change-card tokens-change-disclosure">
 				<summary class="tokens-change-heading">
 					@materialSymbol("chevron_right")
 					<h4>{ change.Name }</h4>
@@ -393,25 +393,25 @@ templ forAgentsPage(prompt string, mcpURL string) {
             <p class="md-typescale-body-large">Use Material Design 3 token data in your coding agent. No account or API key is required.</p>
         </header>
         <div class="tokens-handoff-grid">
-            <section class="tokens-handoff-card" aria-labelledby="prompt-heading">
+            <section class="md-outlined-card tokens-card-content" aria-labelledby="prompt-heading">
                 <h2 class="md-typescale-title-medium" id="prompt-heading">Copy a prompt</h2>
-                <pre id="agent-prompt" class="tokens-handoff-text" tabindex="0" aria-labelledby="prompt-heading"><code>{ prompt }</code></pre>
-                <button type="button" data-copy-target="agent-prompt" hidden>Copy prompt</button>
+                <pre id="agent-prompt" class="tokens-code-block" tabindex="0" aria-labelledby="prompt-heading"><code>{ prompt }</code></pre>
+                <button class="md-filled-button" type="button" data-copy-target="agent-prompt" hidden>Copy prompt</button>
                 <p class="tokens-copy-status" data-copy-status aria-live="polite"></p>
             </section>
-            <section class="tokens-handoff-card" aria-labelledby="skill-heading">
+            <section class="md-outlined-card tokens-card-content" aria-labelledby="skill-heading">
                 <h2 class="md-typescale-title-medium" id="skill-heading">Install the skill</h2>
                 <p>For clients that support Agent Skills. Choose your agent in the installer.</p>
-                <pre id="agent-skill" class="tokens-handoff-text" tabindex="0" aria-labelledby="skill-heading"><code>npx skills add sojupie/tokens --skill token-catalog</code></pre>
-                <button type="button" data-copy-target="agent-skill" hidden>Copy install command</button>
+                <pre id="agent-skill" class="tokens-code-block" tabindex="0" aria-labelledby="skill-heading"><code>npx skills add sojupie/tokens --skill token-catalog</code></pre>
+                <button class="md-filled-button" type="button" data-copy-target="agent-skill" hidden>Copy install command</button>
                 <p class="tokens-copy-status" data-copy-status aria-live="polite"></p>
                 <a class="tokens-link" href="https://github.com/sojupie/tokens/blob/main/skills/token-catalog/SKILL.md">Read the skill</a>
             </section>
-            <section class="tokens-handoff-card" aria-labelledby="mcp-heading">
+            <section class="md-outlined-card tokens-card-content" aria-labelledby="mcp-heading">
                 <h2 class="md-typescale-title-medium" id="mcp-heading">Connect with MCP</h2>
                 <p>Add this URL as a Streamable HTTP server in your client.</p>
-                <pre id="agent-mcp" class="tokens-handoff-text" tabindex="0" aria-labelledby="mcp-heading"><code>{ mcpURL }</code></pre>
-                <button type="button" data-copy-target="agent-mcp" hidden>Copy MCP URL</button>
+                <pre id="agent-mcp" class="tokens-code-block" tabindex="0" aria-labelledby="mcp-heading"><code>{ mcpURL }</code></pre>
+                <button class="md-filled-button" type="button" data-copy-target="agent-mcp" hidden>Copy MCP URL</button>
                 <p class="tokens-copy-status" data-copy-status aria-live="polite"></p>
                 <p>Start with <code>list_subjects</code>, then use <code>get_tokens</code> with the returned kind and slug.</p>
             </section>
