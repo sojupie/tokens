@@ -19,6 +19,7 @@ on:
           - approve
           - retry
           - test-notification
+          - usage-report
       run_id:
         description: Run ID (required for inspect, approve and retry)
         type: string
@@ -57,7 +58,7 @@ jobs:
                 exit 1
               fi
               ;;
-            status|logs|deploy|restart|crawl|test-notification) ;;
+            status|logs|deploy|restart|crawl|test-notification|usage-report) ;;
             *) echo 'Unknown operation.' >&2; exit 1 ;;
           esac
           if [[ "$OPERATION" == deploy && -z "$TOKENS_PUBLIC_ORIGIN" ]]; then
@@ -140,6 +141,11 @@ jobs:
               sudo -n /usr/bin/systemctl restart tokens.service
               ;;
             test-notification) update test-notification ;;
+            usage-report)
+              printf '## Usage report\n\n```text\n' >> "$GITHUB_STEP_SUMMARY"
+              compose --profile usage run --rm --no-deps usage usage --since 7d --send | tee -a "$GITHUB_STEP_SUMMARY"
+              printf '\n```\n' >> "$GITHUB_STEP_SUMMARY"
+              ;;
             status)
               compose ps -a
               /usr/bin/systemctl list-timers --all tokens-update.timer

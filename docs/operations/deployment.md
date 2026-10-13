@@ -188,6 +188,7 @@ command:
 | `approve` | Publish a reviewed capture and restart the website. Requires a run ID. |
 | `retry` | Retry a saved capture and restart the website if it publishes. Requires a run ID. |
 | `test-notification` | Send a test email or webhook using the host's settings. |
+| `usage-report` | Generate a seven-day usage report, show it in the Actions summary and email it to the existing recipient. Leaves the weekly digest checkpoint unchanged. |
 
 Before running **deploy**, open the repository's **Settings → Environments →
 production → Environment variables** and add:
