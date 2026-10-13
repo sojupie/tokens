@@ -81,7 +81,7 @@ func TestSitemapAndRobots(t *testing.T) {
 	if err := xml.Unmarshal(response.Body.Bytes(), &document); err != nil {
 		t.Fatal(err)
 	}
-	if response.Code != http.StatusOK || document.XMLNS != "http://www.sitemaps.org/schemas/sitemap/0.9" || len(document.URLs) != 8 {
+	if response.Code != http.StatusOK || document.XMLNS != "http://www.sitemaps.org/schemas/sitemap/0.9" || len(document.URLs) != 9 {
 		t.Fatalf("unexpected sitemap: %s", response.Body.String())
 	}
 	seen := map[string]bool{}

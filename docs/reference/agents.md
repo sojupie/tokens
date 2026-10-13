@@ -18,6 +18,10 @@ curl https://tokencatalog.dev/md3/ -H 'Accept: text/markdown'
 Subject responses include a `jsonUrl` for the token download. The usage skill
 explains references, contexts and capture dates.
 
+For copyable prompts, the skill command, and MCP setup, open
+[Give this to your agent](https://tokencatalog.dev/md3/for-agents).
+The guide below covers the API and response formats.
+
 ## Install the skill
 
 ```sh

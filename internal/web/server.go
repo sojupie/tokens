@@ -68,6 +68,7 @@ func New(state publish.PublishedState, downloadsDir string) *Server {
 
 func (server *Server) Handler() http.Handler {
 	mux := http.NewServeMux()
+	mux.HandleFunc("GET /for-agents", server.handleForAgents)
 	mux.HandleFunc("GET /sitemap.xml", server.handleSitemap)
 	mux.HandleFunc("GET /sitemap.css", handleSitemapCSS)
 	mux.HandleFunc("GET /robots.txt", server.handleRobots)

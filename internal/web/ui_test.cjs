@@ -304,3 +304,31 @@ test('prefetch checks links again after the hover delay', () => {
   h.advance(65);
   assert.equal(h.appended.length, 0);
 });
+
+test('agent handoff copies visible text and selects it when clipboard access fails', async () => {
+  const field = {textContent: 'Use https://catalog.test/md3/mcp', focus() { this.focused = true; }};
+  const status = {textContent: ''};
+  const button = {hidden: true, dataset: {copyTarget: 'agent-mcp'}, closest: () => ({querySelector: () => status}), addEventListener(name, callback) { this.click = callback; }};
+  let copied;
+  let selected;
+  let fail = false;
+  const globals = {
+    document: {querySelectorAll: () => [button], getElementById: () => field},
+    navigator: {clipboard: {writeText: async text => { if (fail) throw new Error('denied'); copied = text; }}},
+    window: {getSelection: () => ({selectAllChildren: element => { selected = element; }})},
+  };
+  runScript('agent-handoff.js', globals);
+  assert.equal(button.hidden, false);
+  await button.click();
+  assert.equal(copied, field.textContent);
+  assert.equal(status.textContent, 'Copied.');
+  fail = true;
+  await button.click();
+  assert.equal(field.focused, true);
+  assert.equal(selected, field);
+  assert.match(status.textContent, /^Copy failed/);
+  button.hidden = true;
+  globals.navigator = {};
+  runScript('agent-handoff.js', globals);
+  assert.equal(button.hidden, true);
+});

@@ -31,6 +31,9 @@ read-only MCP tools. See [usage](docs/usage.md) and
 
 ## Use with your agent
 
+[Give this to your agent](https://tokencatalog.dev/md3/for-agents) has a copyable
+prompt, skill install command, and MCP server URL.
+
 Give your agent this instruction:
 
 > Use Token Catalog at https://tokencatalog.dev/md3 to find the Material Design 3

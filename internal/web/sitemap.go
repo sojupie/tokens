@@ -25,7 +25,7 @@ func (server *Server) handleSitemap(response http.ResponseWriter, request *http.
 	add := func(path string) {
 		document.URLs = append(document.URLs, sitemapEntry{Location: server.publicOrigin + path})
 	}
-	for _, path := range []string{"/", "/components", "/styles", "/changes"} {
+	for _, path := range []string{"/", "/components", "/styles", "/changes", "/for-agents"} {
 		add(path)
 	}
 	for _, subject := range sortedSubjects(server.state) {

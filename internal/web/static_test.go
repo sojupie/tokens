@@ -8,7 +8,7 @@ import (
 )
 
 func TestVersionedAssetsAreCachedAndRevalidated(t *testing.T) {
-	for _, name := range []string{"app.css", "token-table.css", "theme.js", "token-table.js", "prefetch.js", "htmx.min.js", "logo.png", "logo-250x250.png", "logo-250x250.webp"} {
+	for _, name := range []string{"app.css", "token-table.css", "theme.js", "token-table.js", "prefetch.js", "agent-handoff.js", "htmx.min.js", "logo.png", "logo-250x250.png", "logo-250x250.webp"} {
 		t.Run(name, func(t *testing.T) {
 			response := httptest.NewRecorder()
 			handleStaticAsset(response, httptest.NewRequest("GET", staticURL(name), nil))

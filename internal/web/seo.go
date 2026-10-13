@@ -72,6 +72,9 @@ func (server *Server) basicMetadata(path string, query url.Values) pageMetadata 
 	case "/":
 		info.Title = "Material Design 3 Tokens and Change History"
 		info.Description = "Material Design 3 tokens, named references and change history. Find a component or style and download its tokens as JSON."
+	case "/for-agents":
+		info.Title = "Give this to your agent"
+		info.Description = "Use Token Catalog with your coding agent. Copy a prompt, install the skill, or connect through MCP to read Material Design 3 tokens."
 	case "/components":
 		info.Title = "Material Design 3 Component Tokens"
 		info.Description = "Find tokens for Material Design 3 components, from buttons to navigation. View references and values, download JSON and see what changed."

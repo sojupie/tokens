@@ -72,7 +72,7 @@ func TestHTMLAgentHintsAndJSONAlternate(t *testing.T) {
 					alternate = attrs["href"]
 				}
 			}
-			if inFooter && node.Data == "a" && attrs["href"] == "/llms-full.txt" && node.FirstChild != nil && node.FirstChild.Data == "API and agent guide" {
+			if inFooter && node.Data == "a" && attrs["href"] == "/llms-full.txt" && node.FirstChild != nil && node.FirstChild.Data == "API and data reference" {
 				footerLink = true
 			}
 			for child := node.FirstChild; child != nil; child = child.NextSibling {
@@ -80,7 +80,7 @@ func TestHTMLAgentHintsAndJSONAlternate(t *testing.T) {
 			}
 		}
 		walk(document, false)
-		if len(footerColumns) != 3 || strings.Contains(footerColumns[0], "Download JSON") || !strings.Contains(footerColumns[1], "API and agent guide") || !strings.Contains(footerColumns[1], "Download JSON") || !strings.HasPrefix(footerColumns[2], "About") || !strings.Contains(footerColumns[2], "Made by Olle Marmenlind") {
+		if len(footerColumns) != 4 || strings.Contains(footerColumns[0], "Download JSON") || !strings.HasPrefix(footerColumns[1], "For humans") || !strings.Contains(footerColumns[2], "API and data reference") || !strings.Contains(footerColumns[2], "Give this to your agent") || !strings.Contains(footerColumns[1], "Download JSON") || !strings.HasPrefix(footerColumns[3], "About") || !strings.Contains(footerColumns[3], "Made by Olle Marmenlind") {
 			t.Fatalf("wrong footer columns: %v", footerColumns)
 		}
 		if links["/agents.json"] != "describedby" || links["/llms.txt"] != "describedby" || links["/openapi.json"] != "service-desc" || links[apiCatalogPath] != "api-catalog" || links[aiCatalogPath] != "ai-catalog" || !footerLink {

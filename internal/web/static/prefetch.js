@@ -18,7 +18,7 @@
     const url = new URL(link.href, location.href);
     if (url.origin !== location.origin || url.hash || url.href === location.href) return;
     const path = url.pathname;
-    if (path !== base + '/' && !['components', 'styles', 'changes'].some(section =>
+    if (path !== base + '/' && path !== base + '/for-agents' && !['components', 'styles', 'changes'].some(section =>
       path === `${base}/${section}` || path.startsWith(`${base}/${section}/`))) return;
     return url.href;
   }

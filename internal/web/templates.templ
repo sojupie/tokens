@@ -49,6 +49,9 @@ templ layout(title string) {
 					<a class="tokens-nav-link md-typescale-label-large" href="/components">Components</a>
 					<a class="tokens-nav-link md-typescale-label-large" href="/styles">Styles and token sources</a>
 					<a class="tokens-nav-link md-typescale-label-large" href="/changes">Change log</a>
+                    if metadata(ctx).AgentDiscovery {
+                        <a class="tokens-nav-link md-typescale-label-large" href="/for-agents">For agents</a>
+                    }
 				</div>
 				<div class="tokens-theme-controls" role="group" aria-label="Site appearance">
 					<button type="button" data-app-theme aria-label="Dark mode" aria-pressed="false" title="Dark mode" disabled>
@@ -84,15 +87,20 @@ templ layout(title string) {
 					<p class="md-typescale-body-medium">Independent project. Not affiliated with Google.</p>
 				</div>
 				<div>
-					<p class="md-typescale-title-medium">Resources</p>
+					<p class="md-typescale-title-medium">For humans</p>
 					<a class="tokens-link md-typescale-body-medium" href="https://github.com/sojupie/tokens">GitHub</a>
-					if metadata(ctx).AgentDiscovery {
-						<a class="tokens-link md-typescale-body-medium" href="/llms-full.txt">API and agent guide</a>
-					}
-					@siteDownloadMenu()
+                    <a class="tokens-link md-typescale-body-medium" href="/components">Browse components</a>
+                    @siteDownloadMenu()
 				</div>
-				<div>
-					<p class="md-typescale-title-medium">About</p>
+                if metadata(ctx).AgentDiscovery {
+                    <div>
+                        <p class="md-typescale-title-medium">For agents</p>
+                        <a class="tokens-link md-typescale-body-medium" href="/for-agents">Give this to your agent</a>
+                        <a class="tokens-link md-typescale-body-medium" href="/llms-full.txt">API and data reference</a>
+                    </div>
+                }
+                <div>
+                    <p class="md-typescale-title-medium">About</p>
 					<p class="md-typescale-body-medium">Made by Olle Marmenlind</p>
 					<a class="tokens-link md-typescale-body-medium" href="https://marmenlind.com">marmenlind.com</a>
 				</div>
@@ -111,7 +119,21 @@ templ overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView
 		<p class="md-typescale-body-large">Current snapshot: <code class="tokens-code">{ snapshot.ID }</code></p>
 		<p class="tokens-metadata">Detected: { snapshot.CreatedAt }</p>
 
-		<section class="tokens-section" aria-labelledby="components-heading">
+        if metadata(ctx).AgentDiscovery {
+            <div class="tokens-audience-grid">
+                <section class="tokens-handoff-card" aria-labelledby="human-heading">
+                    <h2 class="md-typescale-title-medium" id="human-heading">For humans</h2>
+                    <p>Browse components and styles, compare values, and download the tokens you need.</p>
+                    <a class="tokens-link" href="/components">Browse components</a>
+                </section>
+                <section class="tokens-handoff-card" aria-labelledby="agent-heading">
+                    <h2 class="md-typescale-title-medium" id="agent-heading">For agents</h2>
+                    <p>Give your coding agent access to the same token data through a prompt, skill, or MCP.</p>
+                    <a class="tokens-link" href="/for-agents">Give this to your agent</a>
+                </section>
+            </div>
+        }
+        <section class="tokens-section" aria-labelledby="components-heading">
 			<h2 class="md-typescale-title-medium" id="components-heading">Components</h2>
 			<ul class="tokens-card-grid">
 				for _, subject := range subjects {
@@ -361,4 +383,45 @@ templ changeRecordList(changes []labeledChange) {
 				</table>
 			</details>
 		}
+}
+
+
+templ forAgentsPage(prompt string, mcpURL string) {
+    @layout("Give this to your agent") {
+        <header class="tokens-section">
+            <h1 class="md-typescale-headline-medium">Give this to your agent</h1>
+            <p class="md-typescale-body-large">Use Material Design 3 token data in your coding agent. No account or API key is required.</p>
+        </header>
+        <div class="tokens-handoff-grid">
+            <section class="tokens-handoff-card" aria-labelledby="prompt-heading">
+                <h2 class="md-typescale-title-medium" id="prompt-heading">Copy a prompt</h2>
+                <pre id="agent-prompt" class="tokens-handoff-text" tabindex="0" aria-labelledby="prompt-heading"><code>{ prompt }</code></pre>
+                <button type="button" data-copy-target="agent-prompt" hidden>Copy prompt</button>
+                <p class="tokens-copy-status" data-copy-status aria-live="polite"></p>
+            </section>
+            <section class="tokens-handoff-card" aria-labelledby="skill-heading">
+                <h2 class="md-typescale-title-medium" id="skill-heading">Install the skill</h2>
+                <p>For clients that support Agent Skills. Choose your agent in the installer.</p>
+                <pre id="agent-skill" class="tokens-handoff-text" tabindex="0" aria-labelledby="skill-heading"><code>npx skills add sojupie/tokens --skill token-catalog</code></pre>
+                <button type="button" data-copy-target="agent-skill" hidden>Copy install command</button>
+                <p class="tokens-copy-status" data-copy-status aria-live="polite"></p>
+                <a class="tokens-link" href="https://github.com/sojupie/tokens/blob/main/skills/token-catalog/SKILL.md">Read the skill</a>
+            </section>
+            <section class="tokens-handoff-card" aria-labelledby="mcp-heading">
+                <h2 class="md-typescale-title-medium" id="mcp-heading">Connect with MCP</h2>
+                <p>Add this URL as a Streamable HTTP server in your client.</p>
+                <pre id="agent-mcp" class="tokens-handoff-text" tabindex="0" aria-labelledby="mcp-heading"><code>{ mcpURL }</code></pre>
+                <button type="button" data-copy-target="agent-mcp" hidden>Copy MCP URL</button>
+                <p class="tokens-copy-status" data-copy-status aria-live="polite"></p>
+                <p>Start with <code>list_subjects</code>, then use <code>get_tokens</code> with the returned kind and slug.</p>
+            </section>
+        </div>
+        <section class="tokens-section" aria-labelledby="reference-heading">
+            <h2 class="md-typescale-title-medium" id="reference-heading">API reference</h2>
+            <p>Request parameters, response formats, and download scopes.</p>
+            <a class="tokens-link" href="/llms-full.txt">API and data reference</a>
+            <a class="tokens-link" href="/openapi.json">OpenAPI schema</a>
+        </section>
+        <script src={ staticURL("agent-handoff.js") } defer></script>
+    }
 }
