@@ -392,16 +392,16 @@
 .tokens-token-no-value {
   color: var(--md-sys-color-on-surface-variant);
 }
-.tokens-token-browser.tokens-context-dialog {
+.tokens-context-dialog {
+  box-sizing: border-box;
   color: var(--md-sys-color-on-surface);
   background: var(--md-sys-color-surface);
-  border: var(--md-comp-divider-thickness) solid
-    color-mix(in srgb, var(--md-comp-divider-color) 50%, transparent);
+  border: 0;
   border-radius: var(--md-sys-shape-corner-extra-large);
   width: 412px;
   max-width: calc(100vw - var(--md-sys-measurement-space400));
   padding: var(--md-sys-measurement-space300) var(--md-sys-measurement-space300)
-    0;
+    var(--md-sys-measurement-space300);
   max-height: 85vh;
 }
 .tokens-context-dialog::backdrop {
@@ -420,8 +420,11 @@
   margin: 0 0 var(--md-sys-measurement-space300);
 }
 .tokens-context-fields {
+  box-sizing: border-box;
   max-height: 50vh;
   overflow: auto;
+  padding: var(--md-sys-measurement-space100);
+  margin: 0 calc(-1 * var(--md-sys-measurement-space100));
 }
 .tokens-context-fields fieldset {
   border: 0;
@@ -442,8 +445,8 @@
   gap: var(--md-sys-measurement-space300);
   border-top: var(--md-comp-divider-thickness) solid
     color-mix(in srgb, var(--md-comp-divider-color) 50%, transparent);
-  margin: 0 calc(-1 * var(--md-sys-measurement-space300));
-  padding: var(--md-sys-measurement-space250) var(--md-sys-measurement-space400);
+  margin-top: var(--md-sys-measurement-space200);
+  padding-top: var(--md-sys-measurement-space250);
 }
 .tokens-empty {
   padding: var(--md-sys-measurement-space300);

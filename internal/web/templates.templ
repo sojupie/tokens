@@ -111,13 +111,16 @@ templ layout(title string) {
 }
 
 templ overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView) {
-@layout("Published Material Design 3 tokens") {
+@layout("Material Design 3 Tokens and Change History") {
 		<header class="tokens-subject-heading">
-			<h1 class="md-typescale-headline-medium">Published Material Design 3 tokens</h1>
-			@siteDownloadButton("all")
+			<h1 class="md-typescale-headline-medium">Material Design 3 tokens and change history</h1>
 		</header>
-		<p class="md-typescale-body-large">Current snapshot: <code class="tokens-code">{ snapshot.ID }</code></p>
-		<p class="tokens-metadata">Detected: { snapshot.CreatedAt }</p>
+		<p class="md-typescale-body-large">Browse Material Design 3 components and styles. Compare token values by context, follow named references, download JSON and review observed changes.</p>
+		@siteDownloadButton("all")
+		<div data-nosnippet>
+			<p class="md-typescale-body-large">Current snapshot: <code class="tokens-code">{ snapshot.ID }</code></p>
+			<p class="tokens-metadata">Detected: { snapshot.CreatedAt }</p>
+		</div>
 
         if metadata(ctx).AgentDiscovery {
             <div class="tokens-audience-grid">
@@ -168,7 +171,7 @@ templ subjectListPage(snapshot publish.SnapshotView, subjects []publish.SubjectV
 			@siteDownloadButton("components")
 		}
 		</header>
-		<p class="tokens-metadata">Current snapshot: <code class="tokens-code">{ snapshot.ID }</code></p>
+		<div data-nosnippet><p class="tokens-metadata">Current snapshot: <code class="tokens-code">{ snapshot.ID }</code></p></div>
 		<form class="tokens-search-form" method="get" action={ subjectListPath(styles) } role="search">
 			<label class="md-typescale-body-medium" for="subject-search">Search by name or slug</label>
 			<input class="tokens-search-input" id="subject-search" type="search" name="q" value={ query } autocomplete="off"
@@ -192,7 +195,7 @@ templ siteDownloadButton(scope string) {
 templ siteDownloadMenu() {
 	<div class="tokens-token-download">
 		<button class="md-outlined-button" type="button" data-download-open aria-haspopup="dialog" aria-controls="tokens-site-download">Download JSON</button>
-		<dialog id="tokens-site-download" aria-labelledby="tokens-site-download-title">
+		<div data-nosnippet><dialog id="tokens-site-download" aria-labelledby="tokens-site-download-title">
 			<form method="get" action="/downloads/tokens.json">
 				<h2 id="tokens-site-download-title">Download tokens</h2>
 				<fieldset>
@@ -203,7 +206,7 @@ templ siteDownloadMenu() {
 				</fieldset>
 				<footer><button class="md-text-button" type="button" data-download-cancel>Cancel</button><button class="md-filled-button" type="submit">Download JSON</button></footer>
 			</form>
-		</dialog>
+		</dialog></div>
 		<noscript>
 			<a class="tokens-link" href="/downloads/tokens.json?scope=components">Download components</a>
 			<a class="tokens-link" href="/downloads/tokens.json?scope=styles">Download styles</a>

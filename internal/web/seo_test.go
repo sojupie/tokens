@@ -34,15 +34,15 @@ func TestSEOMetadataAndCanonicalURLs(t *testing.T) {
 		noindex                bool
 	}{
 		{"/", "Material Design 3 Tokens and Change History", "https://tokens.example/", false},
-		{"/components/snackbar", "Snackbar tokens — Material Design 3", "https://tokens.example/components/snackbar", false},
-		{"/components/snackbar/sets/snackbar/common", "Snackbar: common tokens — Material Design 3", "https://tokens.example/components/snackbar/sets/snackbar/common", false},
-		{"/components/snackbar?set=snackbar%7Ccommon%7C", "Snackbar: common tokens — Material Design 3", "https://tokens.example/components/snackbar/sets/snackbar/common", false},
-		{"/components/snackbar?utm_source=example", "Snackbar tokens — Material Design 3", "https://tokens.example/components/snackbar", false},
-		{"/components/snackbar/changes?page=2", "Material Design 3 snackbar token changes - Page 2", "https://tokens.example/components/snackbar/changes?page=2", false},
-		{"/components?q=snack", "Material Design 3 Component Tokens", "", true},
-		{"/components/snackbar?context.Theme=Dark", "Snackbar tokens — Material Design 3", "", true},
-		{"/changes?snapshot=one", "Material Design 3 Token Change History", "", true},
-		{"/changes?type=removed", "Material Design 3 Token Change History", "", true},
+		{"/components/snackbar", "Snackbar Component Tokens — Material Design 3", "https://tokens.example/components/snackbar", false},
+		{"/components/snackbar/sets/snackbar/common", "Snackbar Common Tokens — Material Design 3", "https://tokens.example/components/snackbar/sets/snackbar/common", false},
+		{"/components/snackbar?set=snackbar%7Ccommon%7C", "Snackbar Common Tokens — Material Design 3", "https://tokens.example/components/snackbar/sets/snackbar/common", false},
+		{"/components/snackbar?utm_source=example", "Snackbar Component Tokens — Material Design 3", "https://tokens.example/components/snackbar", false},
+		{"/components/snackbar/changes?page=2", "Snackbar component token changes — Material Design 3 — Page 2", "https://tokens.example/components/snackbar/changes?page=2", false},
+		{"/components?q=snack", "Material Design 3 Components and Component Tokens", "", true},
+		{"/components/snackbar?context.Theme=Dark", "Snackbar Component Tokens — Material Design 3", "", true},
+		{"/changes?snapshot=one", "Material Design 3 Token Change Log", "", true},
+		{"/changes?type=removed", "Material Design 3 Token Change Log", "", true},
 	} {
 		t.Run(check.path, func(t *testing.T) {
 			response := httptest.NewRecorder()
@@ -67,6 +67,41 @@ func TestSEOMetadataAndCanonicalURLs(t *testing.T) {
 				t.Fatal("full HTML and HTMX fragments must be separate cache variants")
 			}
 		})
+	}
+}
+
+func TestSEOIndexPagesHaveDistinctTitlesAndDescriptions(t *testing.T) {
+	server := New(seoTestState(), "")
+	if err := server.SetPublicOrigin("https://tokens.example"); err != nil {
+		t.Fatal(err)
+	}
+	seenTitles := map[string]string{}
+	seenDescriptions := map[string]string{}
+	for _, path := range []string{"/", "/for-agents", "/components", "/styles", "/changes"} {
+		response := httptest.NewRecorder()
+		server.Handler().ServeHTTP(response, httptest.NewRequest(http.MethodGet, path, nil))
+		body := response.Body.String()
+		titleStart := strings.Index(body, "<title>")
+		titleEnd := strings.Index(body, "</title>")
+		descriptionStart := strings.Index(body, `<meta name="description" content="`)
+		if response.Code != http.StatusOK || titleStart < 0 || titleEnd < titleStart || descriptionStart < 0 {
+			t.Fatalf("%s: page metadata missing", path)
+		}
+		title := body[titleStart+len("<title>") : titleEnd]
+		descriptionStart += len(`<meta name="description" content="`)
+		descriptionEnd := strings.Index(body[descriptionStart:], `">`)
+		if descriptionEnd < 0 {
+			t.Fatalf("%s: description is not closed", path)
+		}
+		description := body[descriptionStart : descriptionStart+descriptionEnd]
+		if previous := seenTitles[title]; previous != "" {
+			t.Errorf("%s and %s share title %q", previous, path, title)
+		}
+		if previous := seenDescriptions[description]; previous != "" {
+			t.Errorf("%s and %s share description %q", previous, path, description)
+		}
+		seenTitles[title] = path
+		seenDescriptions[description] = path
 	}
 }
 

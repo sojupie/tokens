@@ -26,7 +26,8 @@ func tokenSetURL(subject publish.SubjectView, set tokenSet) string {
 }
 
 func subjectTokenDescription(subject publish.SubjectView) string {
-	return "Material Design 3 tokens for " + subject.Name + ". View named references and values by context, download JSON or see what changed."
+	kind := strings.ToLower(subjectKindLabel(subject.Key.Kind))
+	return "Explore Material Design 3 " + kind + " tokens for " + subject.Name + ". Compare values by context, follow named references, download JSON and review observed changes."
 }
 
 type tokenSetMenuGroup struct {
