@@ -138,6 +138,59 @@ func TestTokenValuesHaveReadableForms(t *testing.T) {
 	}
 }
 
+func TestShapeTokenFormatting(t *testing.T) {
+	tests := []struct {
+		name  string
+		input string
+		want  string
+	}{
+		{
+			name:  "circular full",
+			input: `{"shape":{"family":"SHAPE_FAMILY_CIRCULAR"}}`,
+			want:  "Full",
+		},
+		{
+			name:  "uniform 16dp",
+			input: `{"shape":{"family":"SHAPE_FAMILY_ROUNDED_CORNERS","defaultSize":{"value":16,"unit":"DIPS"}}}`,
+			want:  "16dp",
+		},
+		{
+			name:  "uniform 0dp none",
+			input: `{"shape":{"family":"SHAPE_FAMILY_ROUNDED_CORNERS","defaultSize":{"unit":"DIPS"}}}`,
+			want:  "0dp",
+		},
+		{
+			name:  "large end rounding",
+			input: `{"shape":{"family":"SHAPE_FAMILY_ROUNDED_CORNERS","topRight":{"value":16,"unit":"DIPS"},"bottomRight":{"value":16,"unit":"DIPS"},"defaultSize":{"unit":"DIPS"}}}`,
+			want:  "Top-right: 16dp · Bottom-right: 16dp",
+		},
+		{
+			name:  "large start rounding",
+			input: `{"shape":{"family":"SHAPE_FAMILY_ROUNDED_CORNERS","topLeft":{"value":16,"unit":"DIPS"},"bottomLeft":{"value":16,"unit":"DIPS"},"defaultSize":{"unit":"DIPS"}}}`,
+			want:  "Top-left: 16dp · Bottom-left: 16dp",
+		},
+		{
+			name:  "large top rounding",
+			input: `{"shape":{"family":"SHAPE_FAMILY_ROUNDED_CORNERS","topLeft":{"value":16,"unit":"DIPS"},"topRight":{"value":16,"unit":"DIPS"},"defaultSize":{"unit":"DIPS"}}}`,
+			want:  "Top-left: 16dp · Top-right: 16dp",
+		},
+		{
+			name:  "all four corners specified identically",
+			input: `{"shape":{"family":"SHAPE_FAMILY_ROUNDED_CORNERS","topLeft":{"value":12,"unit":"DIPS"},"topRight":{"value":12,"unit":"DIPS"},"bottomLeft":{"value":12,"unit":"DIPS"},"bottomRight":{"value":12,"unit":"DIPS"}}}`,
+			want:  "12dp",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := tokenValueText([]byte(tt.input))
+			if got != tt.want {
+				t.Fatalf("tokenValueText() = %q, want %q", got, tt.want)
+			}
+		})
+	}
+}
+
 func TestHTMLChangeLogIsPaginated(t *testing.T) {
 	changes := make([]publish.ChangeView, 51)
 	for index := range changes {

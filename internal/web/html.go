@@ -371,7 +371,8 @@ func formattedNamedValue(name string, value any) (string, bool) {
 		if color, ok := value.(map[string]any); ok {
 			return colorValueText(color)
 		}
-	case "dimension", "length", "elevation", "fontSize", "fontTracking", "lineHeight", "defaultSize":
+	case "dimension", "length", "elevation", "fontSize", "fontTracking", "lineHeight", "defaultSize",
+		"topLeft", "topRight", "bottomLeft", "bottomRight":
 		if ok {
 			if text, ok := dimensionValueText(fields); ok {
 				return text, true
@@ -521,24 +522,96 @@ func fontNamesValue(value any) (string, bool) {
 	return strings.Join(names, ", "), true
 }
 
-func shapeValueText(fields map[string]any) string {
-	parts := make([]string, 0, len(fields))
-	if family, ok := fields["family"].(string); ok {
-		family = strings.TrimPrefix(family, "SHAPE_FAMILY_")
-		parts = append(parts, displayWords(strings.ToLower(family)))
+func cornerDimensionText(val any) (string, float64, string, bool) {
+	m, ok := val.(map[string]any)
+	if !ok {
+		return "", 0, "", false
 	}
-	keys := make([]string, 0, len(fields))
-	for key := range fields {
-		if key != "family" {
-			keys = append(keys, key)
+	unit, unitOK := m["unit"].(string)
+	if !unitOK {
+		return "", 0, "", false
+	}
+	value, valueOK := numberValue(m["value"])
+	if !valueOK {
+		value = 0
+	}
+	formatted := formatNumber(value) + displayUnit(unit)
+	return formatted, value, unit, true
+}
+
+func shapeValueText(fields map[string]any) string {
+	family, _ := fields["family"].(string)
+	if family == "SHAPE_FAMILY_CIRCULAR" || strings.EqualFold(family, "circular") {
+		return "Full"
+	}
+
+	defaultText, defaultVal, _, hasDefault := cornerDimensionText(fields["defaultSize"])
+
+	tlText, tlVal, _, hasTL := cornerDimensionText(fields["topLeft"])
+	trText, trVal, _, hasTR := cornerDimensionText(fields["topRight"])
+	brText, brVal, _, hasBR := cornerDimensionText(fields["bottomRight"])
+	blText, blVal, _, hasBL := cornerDimensionText(fields["bottomLeft"])
+
+	hasSpecificCorners := hasTL || hasTR || hasBR || hasBL
+
+	if !hasSpecificCorners {
+		if hasDefault {
+			return defaultText
+		}
+		if family != "" {
+			family = strings.TrimPrefix(family, "SHAPE_FAMILY_")
+			return displayWords(strings.ToLower(family))
+		}
+		return "Shape not specified"
+	}
+
+	type cornerInfo struct {
+		label string
+		text  string
+		val   float64
+	}
+	corners := []cornerInfo{
+		{label: "Top-left", text: tlText, val: tlVal},
+		{label: "Top-right", text: trText, val: trVal},
+		{label: "Bottom-right", text: brText, val: brVal},
+		{label: "Bottom-left", text: blText, val: blVal},
+	}
+	specified := []cornerInfo{}
+	if hasTL {
+		specified = append(specified, corners[0])
+	}
+	if hasTR {
+		specified = append(specified, corners[1])
+	}
+	if hasBR {
+		specified = append(specified, corners[2])
+	}
+	if hasBL {
+		specified = append(specified, corners[3])
+	}
+
+	allSpecifiedSame := true
+	for i := 1; i < len(specified); i++ {
+		if specified[i].text != specified[0].text {
+			allSpecifiedSame = false
+			break
 		}
 	}
-	sort.Strings(keys)
-	for _, key := range keys {
-		parts = append(parts, displayWords(key)+": "+formattedTokenValue(map[string]any{key: fields[key]}))
+	if allSpecifiedSame && len(specified) == 4 {
+		return specified[0].text
+	}
+
+	var parts []string
+	for _, c := range specified {
+		if c.val > 0 || !hasDefault || defaultVal == 0 {
+			parts = append(parts, c.label+": "+c.text)
+		}
 	}
 	if len(parts) == 0 {
-		return "Shape not specified"
+		if hasDefault {
+			return defaultText
+		}
+		return "0dp"
 	}
 	return strings.Join(parts, " · ")
 }
