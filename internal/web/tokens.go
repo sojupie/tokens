@@ -94,7 +94,9 @@ func tokenSets(subject publish.SubjectView) []tokenSet {
 			if label == "" {
 				label = "Tokens"
 			}
-			label += " - " + displayWords(strings.ToLower(category))
+			if !strings.EqualFold(component, category) {
+				label += " - " + displayWords(strings.ToLower(category))
+			}
 			if variant != "" {
 				label += " - " + displayWords(variant)
 			}
@@ -258,6 +260,15 @@ func tokenLocation(token publish.TokenView, isComponent bool) (component, varian
 	parts := strings.Split(token.SourceName, ".")
 	if len(parts) >= 4 && parts[0] == "md" && parts[1] == "comp" {
 		component, path = parts[2], append([]string(nil), parts[3:]...)
+	} else if len(parts) >= 4 && parts[0] == "md" && (parts[1] == "sys" || parts[1] == "ref") {
+		concept := parts[2]
+		switch concept {
+		case "typescale":
+			concept = "Type scale"
+		default:
+			concept = displayWords(concept)
+		}
+		component, path = concept, append([]string(nil), parts[3:]...)
 	} else if len(parts) >= 3 && parts[0] == "md" {
 		component, path = displayWords(parts[1]), append([]string(nil), parts[2:]...)
 	} else {
