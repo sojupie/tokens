@@ -116,6 +116,7 @@ document.querySelectorAll('.tokens-token-browser').forEach(browser => {
     showIcon(previewToggle, hidden);
     showIcon(viewToggle, grid);
     const expanded = groups.length > 0 && groups.every(group => group.open);
+    expandToggle.disabled = groups.length === 0;
     expandToggle.setAttribute('aria-expanded', String(expanded));
     expandToggle.setAttribute('aria-label', expanded ? 'Collapse all groups' : 'Expand all groups');
     showIcon(expandToggle, expanded);

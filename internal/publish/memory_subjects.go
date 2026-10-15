@@ -38,8 +38,12 @@ func loadSubjects(database *sql.DB, state *PublishedState) error {
 }
 
 func loadTokens(database *sql.DB, state *PublishedState) error {
+	presentationColumn := "presentation_json"
+	if state.schemaVersion == 3 {
+		presentationColumn = "NULL"
+	}
 	rows, err := database.Query(`
-		SELECT subject_kind, subject_slug, source_name, display_name, category, raw_json, lifecycle
+		SELECT subject_kind, subject_slug, source_name, display_name, category, raw_json, lifecycle, ` + presentationColumn + `
 		FROM tokens
 		ORDER BY subject_kind, subject_slug, source_name`)
 	if err != nil {
@@ -49,8 +53,8 @@ func loadTokens(database *sql.DB, state *PublishedState) error {
 	for rows.Next() {
 		var key SubjectKey
 		var token TokenView
-		var raw, lifecycle sql.NullString
-		if err := rows.Scan(&key.Kind, &key.Slug, &token.SourceName, &token.DisplayName, &token.Category, &raw, &lifecycle); err != nil {
+		var raw, lifecycle, presentation sql.NullString
+		if err := rows.Scan(&key.Kind, &key.Slug, &token.SourceName, &token.DisplayName, &token.Category, &raw, &lifecycle, &presentation); err != nil {
 			return fmt.Errorf("read token: %w", err)
 		}
 		if _, ok := state.Subjects[key]; !ok {
@@ -58,6 +62,11 @@ func loadTokens(database *sql.DB, state *PublishedState) error {
 		}
 		if raw.Valid {
 			token.Raw = json.RawMessage(raw.String)
+		}
+		if presentation.Valid {
+			if err := json.Unmarshal([]byte(presentation.String), &token.Presentation); err != nil {
+				return fmt.Errorf("decode token presentation %s: %w", token.SourceName, err)
+			}
 		}
 		token.Lifecycle = lifecycle.String
 		token.Values = []TokenValueView{}

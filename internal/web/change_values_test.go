@@ -19,9 +19,9 @@ func TestChangedValuesOnlyShowDifferencesAndKeepUnits(t *testing.T) {
 	}
 }
 
-func TestAddedMeasurementsDistinguishMissingFromZero(t *testing.T) {
+func TestAddedMeasurementsUseSourceZeroDefaults(t *testing.T) {
 	change := publish.ChangeView{Type: "added", After: `{"type":{"fontSize":{"unit":"POINTS","value":0},"fontTracking":{"unit":"POINTS"}}}`}
-	want := []changeValue{{"Font size", "—", "0pt"}, {"Letter spacing", "—", "Not specified (pt)"}}
+	want := []changeValue{{"Font size", "—", "0pt"}, {"Letter spacing", "—", "0pt"}}
 	if got := changedValues(change); !reflect.DeepEqual(got, want) {
 		t.Fatalf("got %#v", got)
 	}

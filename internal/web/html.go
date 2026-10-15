@@ -88,6 +88,14 @@ func (server *Server) handleHTMLSubject(response http.ResponseWriter, request *h
 			}
 		}
 		if query.Get("set") == "" {
+			if source, ok := legacyTokenSet(subjects[0], setPath); ok {
+				target := tokenSetURL(subjects[0], source)
+				if len(query) > 0 {
+					target += "?" + query.Encode()
+				}
+				http.Redirect(response, request, target, http.StatusPermanentRedirect)
+				return
+			}
 			http.NotFound(response, request)
 			return
 		}
@@ -371,7 +379,8 @@ func formattedNamedValue(name string, value any) (string, bool) {
 		if color, ok := value.(map[string]any); ok {
 			return colorValueText(color)
 		}
-	case "dimension", "length", "elevation", "fontSize", "fontTracking", "lineHeight", "defaultSize":
+	case "dimension", "length", "elevation", "fontSize", "fontTracking", "lineHeight", "defaultSize",
+		"topLeft", "topRight", "bottomLeft", "bottomRight":
 		if ok {
 			if text, ok := dimensionValueText(fields); ok {
 				return text, true
@@ -460,12 +469,7 @@ func colorChannels(color map[string]any) (float64, float64, float64, bool) {
 }
 
 func dimensionValueText(dimension map[string]any) (string, bool) {
-	value, valueOK := numberValue(dimension["value"])
-	unit, unitOK := dimension["unit"].(string)
-	if !valueOK || !unitOK {
-		return "", false
-	}
-	return formatNumber(value) + displayUnit(unit), true
+	return sourceDimensionText(dimension)
 }
 
 func typographyValueText(fields map[string]any) string {
@@ -521,26 +525,101 @@ func fontNamesValue(value any) (string, bool) {
 	return strings.Join(names, ", "), true
 }
 
-func shapeValueText(fields map[string]any) string {
-	parts := make([]string, 0, len(fields))
-	if family, ok := fields["family"].(string); ok {
-		family = strings.TrimPrefix(family, "SHAPE_FAMILY_")
-		parts = append(parts, displayWords(strings.ToLower(family)))
+func sourceDimensionText(val any) (string, bool) {
+	m, ok := val.(map[string]any)
+	if !ok {
+		return "", false
 	}
-	keys := make([]string, 0, len(fields))
-	for key := range fields {
-		if key != "family" {
-			keys = append(keys, key)
+	unit, ok := m["unit"].(string)
+	if !ok || (unit != "DIPS" && unit != "POINTS" && unit != "PIXELS") {
+		return "", false
+	}
+	value := 0.0
+	if raw, exists := m["value"]; exists {
+		var valid bool
+		value, valid = numberValue(raw)
+		if !valid {
+			return "", false
 		}
 	}
-	sort.Strings(keys)
-	for _, key := range keys {
-		parts = append(parts, displayWords(key)+": "+formattedTokenValue(map[string]any{key: fields[key]}))
+	return formatNumber(value) + displayUnit(unit), true
+}
+
+func shapeValueText(fields map[string]any) string {
+	family, _ := fields["family"].(string)
+	if family == "SHAPE_FAMILY_CIRCULAR" || strings.EqualFold(family, "circular") {
+		return "Full"
+	}
+	base, hasDefault := sourceDimensionText(fields["defaultSize"])
+	keys := []string{"topLeft", "topRight", "bottomRight", "bottomLeft"}
+	labels := []string{"Top-left", "Top-right", "Bottom-right", "Bottom-left"}
+	var effective [4]string
+	var specified [4]bool
+	for i, key := range keys {
+		effective[i], specified[i] = sourceDimensionText(fields[key])
+		if !specified[i] && hasDefault {
+			effective[i] = base
+		}
+	}
+	uniform := effective[0] != ""
+	for _, value := range effective[1:] {
+		uniform = uniform && value == effective[0]
+	}
+	var parts []string
+	if uniform {
+		parts = append(parts, effective[0])
+	} else {
+		if hasDefault {
+			parts = append(parts, "Default: "+base)
+		}
+		for i, value := range effective {
+			if specified[i] && (!hasDefault || value != base) {
+				parts = append(parts, labels[i]+": "+value)
+			}
+		}
+	}
+	if family != "" && family != "SHAPE_FAMILY_ROUNDED_CORNERS" {
+		parts = append([]string{displayWords(strings.ToLower(strings.TrimPrefix(family, "SHAPE_FAMILY_")))}, parts...)
 	}
 	if len(parts) == 0 {
 		return "Shape not specified"
 	}
 	return strings.Join(parts, " · ")
+}
+
+// Rounded shapes use the default for unspecified corners. Explicit zero is a
+// square corner, including protobuf dimensions whose numeric field is omitted.
+func shapePreviewCSS(raw json.RawMessage) string {
+	var document struct {
+		Shape map[string]any `json:"shape"`
+	}
+	if json.Unmarshal(raw, &document) != nil || document.Shape == nil {
+		return ""
+	}
+	shape := document.Shape
+	family, _ := shape["family"].(string)
+	if family == "SHAPE_FAMILY_CIRCULAR" {
+		return "50%"
+	}
+	if family != "SHAPE_FAMILY_ROUNDED_CORNERS" {
+		return ""
+	}
+	var corners []string
+	for _, key := range []string{"topLeft", "topRight", "bottomRight", "bottomLeft"} {
+		value, found := shape[key]
+		if !found {
+			value = shape["defaultSize"]
+		}
+		text, ok := sourceDimensionText(value)
+		if !ok || !(strings.HasSuffix(text, "dp") || strings.HasSuffix(text, "px")) {
+			return ""
+		}
+		corners = append(corners, strings.TrimSuffix(strings.TrimSuffix(text, "dp"), "px")+"px")
+	}
+	if corners[0] == corners[1] && corners[0] == corners[2] && corners[0] == corners[3] {
+		return corners[0]
+	}
+	return strings.Join(corners, " ")
 }
 
 func displayUnit(unit string) string {

@@ -45,6 +45,7 @@ CREATE TABLE tokens (
     display_name TEXT NOT NULL,
     category TEXT NOT NULL,
     raw_json TEXT,
+    presentation_json TEXT,
     lifecycle TEXT NOT NULL,
     PRIMARY KEY (subject_kind, subject_slug, source_name),
     FOREIGN KEY (subject_kind, subject_slug)

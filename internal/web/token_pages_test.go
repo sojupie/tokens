@@ -68,3 +68,20 @@ func TestSelectorDistinguishesSourceFamiliesAndVariants(t *testing.T) {
 		t.Fatalf("selector merged different source families: %+v", groups)
 	}
 }
+
+func TestStyleTokenSetsHaveProperLabels(t *testing.T) {
+	subject := publish.SubjectView{
+		Key:  publish.SubjectKey{Kind: publish.SubjectStyle, Slug: "shape/corner-radius"},
+		Name: "Shape",
+		Tokens: []publish.TokenView{
+			{SourceName: "md.sys.shape.corner.large", Category: "SHAPE"},
+		},
+	}
+	sets := tokenSets(subject)
+	if len(sets) != 1 {
+		t.Fatalf("len(sets) = %d, want 1", len(sets))
+	}
+	if sets[0].Label != "Shape" {
+		t.Fatalf("sets[0].Label = %q, want %q", sets[0].Label, "Shape")
+	}
+}

@@ -86,6 +86,33 @@ func htmlMarkdown(source []byte, pageURL string) (string, error) {
 		if _, hidden := attrs["hidden"]; hidden {
 			return ""
 		}
+		classes := " " + attrs["class"] + " "
+		if node.Data == "button" && strings.Contains(classes, " tokens-token-set ") {
+			var label strings.Builder
+			for child := node.FirstChild; child != nil; child = child.NextSibling {
+				label.WriteString(render(child))
+			}
+			return "\n\n## " + strings.TrimSpace(label.String()) + "\n\n"
+		}
+		if strings.Contains(classes, " tokens-reference-popover ") {
+			var references []string
+			var collect func(*html.Node, bool)
+			collect = func(n *html.Node, inList bool) {
+				inList = inList || n.Data == "ul"
+				if inList && n.Data == "code" {
+					references = append(references, strings.TrimSpace(render(n)))
+					return
+				}
+				for child := n.FirstChild; child != nil; child = child.NextSibling {
+					collect(child, inList)
+				}
+			}
+			collect(node, false)
+			if len(references) == 0 {
+				return ""
+			}
+			return " (references: " + strings.Join(references, "; ") + ") "
+		}
 		switch node.Data {
 		case "head", "script", "style", "noscript", "footer", "svg", "button", "form", "dialog", "caption":
 			return ""

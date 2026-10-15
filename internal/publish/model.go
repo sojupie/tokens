@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-const SchemaVersion = 3
+const SchemaVersion = 4
 
 type SubjectKind string
 
@@ -85,11 +85,12 @@ type PublicTokenDocument struct {
 }
 
 type PublicToken struct {
-	Name        string             `json:"name"`
-	DisplayName string             `json:"displayName,omitempty"`
-	Type        string             `json:"type,omitempty"`
-	Values      []PublicTokenValue `json:"values"`
-	Lifecycle   string             `json:"lifecycle,omitempty"`
+	Presentation *TokenPresentation `json:"presentation,omitempty"`
+	Name         string             `json:"name"`
+	DisplayName  string             `json:"displayName,omitempty"`
+	Type         string             `json:"type,omitempty"`
+	Values       []PublicTokenValue `json:"values"`
+	Lifecycle    string             `json:"lifecycle,omitempty"`
 }
 
 type PublicTokenValue struct {
@@ -108,10 +109,11 @@ func (subject SubjectView) Public() PublicSubject {
 	}
 	for _, token := range subject.Tokens {
 		publicToken := PublicToken{
-			Name:        token.SourceName,
-			DisplayName: token.DisplayName,
-			Type:        token.Category,
-			Values:      make([]PublicTokenValue, 0, len(token.Values)),
+			Name:         token.SourceName,
+			Presentation: token.Presentation,
+			DisplayName:  token.DisplayName,
+			Type:         token.Category,
+			Values:       make([]PublicTokenValue, 0, len(token.Values)),
 		}
 		if !strings.EqualFold(token.Lifecycle, "active") {
 			publicToken.Lifecycle = token.Lifecycle
@@ -141,13 +143,14 @@ func (subject SubjectView) PublicDocument(capturedAt string) PublicTokenDocument
 }
 
 type TokenView struct {
-	SourceName  string            `json:"sourceName"`
-	DisplayName string            `json:"displayName,omitempty"`
-	Category    string            `json:"category,omitempty"`
-	Values      []TokenValueView  `json:"values"`
-	Raw         json.RawMessage   `json:"raw,omitempty"`
-	Lifecycle   string            `json:"lifecycle,omitempty"`
-	Sources     []TokenSourceView `json:"sources"`
+	Presentation *TokenPresentation `json:"presentation,omitempty"`
+	SourceName   string             `json:"sourceName"`
+	DisplayName  string             `json:"displayName,omitempty"`
+	Category     string             `json:"category,omitempty"`
+	Values       []TokenValueView   `json:"values"`
+	Raw          json.RawMessage    `json:"raw,omitempty"`
+	Lifecycle    string             `json:"lifecycle,omitempty"`
+	Sources      []TokenSourceView  `json:"sources"`
 }
 
 type TokenValueView struct {

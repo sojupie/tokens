@@ -9,6 +9,7 @@ import (
 )
 
 type PublishedState struct {
+	schemaVersion   int
 	PublicationID   string
 	GeneratedAt     string
 	CurrentSnapshot SnapshotView
@@ -57,9 +58,10 @@ func loadPublication(database *sql.DB) (PublishedState, error) {
 	).Scan(&schemaVersion, &state.PublicationID, &state.GeneratedAt, &currentSnapshotID); err != nil {
 		return PublishedState{}, fmt.Errorf("read publication metadata: %w", err)
 	}
-	if schemaVersion != SchemaVersion {
+	if schemaVersion != SchemaVersion && schemaVersion != 3 {
 		return PublishedState{}, fmt.Errorf("unsupported publication schema version %d; rebuild with tokens publish", schemaVersion)
 	}
+	state.schemaVersion = schemaVersion
 	state.Subjects = make(map[SubjectKey]SubjectView)
 	state.SourcePayloads = make(map[string]SourcePayloadView)
 	state.CurrentSnapshot.ID = currentSnapshotID

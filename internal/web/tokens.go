@@ -28,6 +28,8 @@ type tokenSet struct {
 	component    string
 	category     string
 	variant      string
+	sourceName   string
+	order        int
 	sourceTokens []publish.TokenView
 	Groups       []tokenGroup
 }
@@ -46,6 +48,7 @@ type tokenRow struct {
 	Value      string
 	Color      string
 	Elevation  string
+	Shape      string
 	Lifecycle  string
 	HasValue   bool
 	References []publish.TokenReference
@@ -60,6 +63,7 @@ type tokenFilter struct {
 
 type tokenFolder struct {
 	name     string
+	order    int
 	tokens   []tokenRow
 	children map[string]*tokenFolder
 }
@@ -68,6 +72,16 @@ func tokenSets(subject publish.SubjectView) []tokenSet {
 	var result []tokenSet
 	sets := make(map[string]*tokenSet)
 	for _, token := range subject.Tokens {
+		if source := token.Presentation; source != nil {
+			key := source.SetName
+			set := sets[key]
+			if set == nil {
+				set = &tokenSet{Key: key, Label: source.SetLabel, sourceName: source.SetName, order: source.SetOrder, component: subject.Name}
+				sets[key] = set
+			}
+			set.sourceTokens = append(set.sourceTokens, token)
+			continue
+		}
 		isComponent := subject.Key.Kind == publish.SubjectComponent
 		component, variant, _, _ := tokenLocation(token, isComponent)
 		category := token.Category
@@ -94,7 +108,9 @@ func tokenSets(subject publish.SubjectView) []tokenSet {
 			if label == "" {
 				label = "Tokens"
 			}
-			label += " - " + displayWords(strings.ToLower(category))
+			if !strings.EqualFold(component, category) {
+				label += " - " + displayWords(strings.ToLower(category))
+			}
 			if variant != "" {
 				label += " - " + displayWords(variant)
 			}
@@ -104,10 +120,25 @@ func tokenSets(subject publish.SubjectView) []tokenSet {
 		set.sourceTokens = append(set.sourceTokens, token)
 	}
 	for _, set := range sets {
+		if set.sourceName != "" {
+			sort.SliceStable(set.sourceTokens, func(i, j int) bool {
+				a, b := set.sourceTokens[i].Presentation, set.sourceTokens[j].Presentation
+				if a.Order != b.Order {
+					return a.Order < b.Order
+				}
+				return set.sourceTokens[i].SourceName < set.sourceTokens[j].SourceName
+			})
+		}
 		result = append(result, *set)
 	}
 	sort.Slice(result, func(i, j int) bool {
 		left, right := result[i], result[j]
+		if left.sourceName != "" && right.sourceName != "" {
+			if left.order != right.order {
+				return left.order < right.order
+			}
+			return left.sourceName < right.sourceName
+		}
 		if left.component != right.component {
 			return left.component < right.component
 		}
@@ -162,12 +193,10 @@ func buildTokenBrowser(subject publish.SubjectView, query url.Values) tokenBrows
 		row := tokenRow{Name: tokenDisplayName(token), SourceName: token.SourceName, HasValue: hasValue, References: value.References}
 		if hasValue {
 			row.Value = tokenValueDisplay(token.Category, value.Value)
+			row.Shape = shapePreviewCSS(value.Value)
 			var primitive map[string]json.RawMessage
 			if json.Unmarshal(value.Value, &primitive) == nil && primitive["elevation"] != nil {
 				row.Elevation = themeValue(value.Value)
-				if row.Elevation == "0" && row.Value == "No value specified (dp)" {
-					row.Value = "0dp"
-				}
 			}
 			if strings.EqualFold(token.Category, "COLOR") {
 				row.Color = tokenColor(value.Value)
@@ -182,15 +211,39 @@ func buildTokenBrowser(subject publish.SubjectView, query url.Values) tokenBrows
 		if browser.Query != "" && !tokenRowMatches(browser.Query, token, row, value, hasValue) {
 			continue
 		}
-		root := folders[state]
-		if root == nil {
-			root = &tokenFolder{name: state, children: make(map[string]*tokenFolder)}
-			folders[state] = root
-		}
-		if browser.Selected.category == "COLOR" {
-			root.tokens = append(root.tokens, row)
+		if source := token.Presentation; source != nil {
+			group := publish.DisplayGroup{}
+			if len(source.Groups) > 0 {
+				group = source.Groups[0]
+			}
+			root := folders[group.Name]
+			if root == nil {
+				root = &tokenFolder{name: group.Name, order: group.Order, children: make(map[string]*tokenFolder)}
+				folders[group.Name] = root
+			}
+			current := root
+			if len(source.Groups) > 1 {
+				for _, childGroup := range source.Groups[1:] {
+					child := current.children[childGroup.Name]
+					if child == nil {
+						child = &tokenFolder{name: childGroup.Name, order: childGroup.Order, children: make(map[string]*tokenFolder)}
+						current.children[childGroup.Name] = child
+					}
+					current = child
+				}
+			}
+			current.tokens = append(current.tokens, row)
 		} else {
-			addTokenRow(root, path, row)
+			root := folders[state]
+			if root == nil {
+				root = &tokenFolder{name: state, order: stateOrder(state), children: make(map[string]*tokenFolder)}
+				folders[state] = root
+			}
+			if browser.Selected.category == "COLOR" {
+				root.tokens = append(root.tokens, row)
+			} else {
+				addTokenRow(root, path, row)
+			}
 		}
 		browser.Count++
 	}
@@ -200,7 +253,7 @@ func buildTokenBrowser(subject publish.SubjectView, query url.Values) tokenBrows
 		stateNames = append(stateNames, name)
 	}
 	sort.Slice(stateNames, func(i, j int) bool {
-		left, right := stateOrder(stateNames[i]), stateOrder(stateNames[j])
+		left, right := folders[stateNames[i]].order, folders[stateNames[j]].order
 		if left == right {
 			return stateNames[i] < stateNames[j]
 		}
@@ -258,6 +311,15 @@ func tokenLocation(token publish.TokenView, isComponent bool) (component, varian
 	parts := strings.Split(token.SourceName, ".")
 	if len(parts) >= 4 && parts[0] == "md" && parts[1] == "comp" {
 		component, path = parts[2], append([]string(nil), parts[3:]...)
+	} else if len(parts) >= 4 && parts[0] == "md" && (parts[1] == "sys" || parts[1] == "ref") {
+		concept := parts[2]
+		switch concept {
+		case "typescale":
+			concept = "Type scale"
+		default:
+			concept = displayWords(concept)
+		}
+		component, path = concept, append([]string(nil), parts[3:]...)
 	} else if len(parts) >= 3 && parts[0] == "md" {
 		component, path = displayWords(parts[1]), append([]string(nil), parts[2:]...)
 	} else {
@@ -629,7 +691,13 @@ func folderView(folder *tokenFolder, open bool) tokenGroup {
 	for _, child := range folder.children {
 		view.Children = append(view.Children, folderView(child, open))
 	}
-	sort.Slice(view.Children, func(i, j int) bool { return view.Children[i].Name < view.Children[j].Name })
+	sort.Slice(view.Children, func(i, j int) bool {
+		a, b := folder.children[view.Children[i].Name], folder.children[view.Children[j].Name]
+		if a.order != b.order {
+			return a.order < b.order
+		}
+		return a.name < b.name
+	})
 	view.Count = len(view.Tokens)
 	for _, child := range view.Children {
 		view.Count += child.Count

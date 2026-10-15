@@ -10,6 +10,9 @@ import (
 )
 
 func tokenSetPath(set tokenSet) string {
+	if set.sourceName != "" {
+		return set.sourceName
+	}
 	parts := []string{strings.Join(strings.Fields(strings.ToLower(set.component)), "-"), strings.ToLower(set.category)}
 	if set.variant != "" {
 		parts = append(parts, set.variant)
@@ -23,6 +26,39 @@ func tokenSetURL(subject publish.SubjectView, set tokenSet) string {
 		parts[i] = url.PathEscape(parts[i])
 	}
 	return subjectURL(subject) + "/sets/" + strings.Join(parts, "/")
+}
+
+// Old name-derived table URLs can redirect only when every token belongs to
+// one source table. A merged legacy table has no single canonical replacement.
+func legacyTokenSet(subject publish.SubjectView, path string) (tokenSet, bool) {
+	legacy := subject
+	legacy.Tokens = append([]publish.TokenView(nil), subject.Tokens...)
+	sourceSets := make(map[string]string)
+	for i, token := range legacy.Tokens {
+		if token.Presentation != nil {
+			sourceSets[token.SourceName] = token.Presentation.SetName
+		}
+		legacy.Tokens[i].Presentation = nil
+	}
+	for _, set := range tokenSets(legacy) {
+		if tokenSetPath(set) != path {
+			continue
+		}
+		name := ""
+		for _, token := range set.sourceTokens {
+			source := sourceSets[token.SourceName]
+			if source == "" || name != "" && name != source {
+				return tokenSet{}, false
+			}
+			name = source
+		}
+		for _, source := range tokenSets(subject) {
+			if source.sourceName == name && name != "" {
+				return source, true
+			}
+		}
+	}
+	return tokenSet{}, false
 }
 
 func subjectTokenDescription(subject publish.SubjectView) string {
@@ -55,6 +91,9 @@ func tokenSetMenuGroups(sets []tokenSet) []tokenSetMenuGroup {
 }
 
 func tokenSetMenuLabel(set tokenSet) string {
+	if set.sourceName != "" {
+		return set.Label
+	}
 	if set.variant != "" && set.variant != "toggle" && set.category != "SIZE" {
 		return sentenceCase(tokenPhrase(set.variant)) + " · " + sentenceCase(tokenPhrase(set.category))
 	}
@@ -119,6 +158,9 @@ func tokenSetComponent(set tokenSet) string {
 }
 
 func tokenSetLabel(set tokenSet) string {
+	if set.sourceName != "" {
+		return set.Label
+	}
 	label := sentenceCase(tokenPhrase(set.category))
 	if set.variant == "toggle" || set.category == "SIZE" && set.variant != "" {
 		label = sentenceCase(tokenPhrase(set.variant)) + " · " + label
@@ -127,6 +169,9 @@ func tokenSetLabel(set tokenSet) string {
 }
 
 func tokenSetTitle(set tokenSet) string {
+	if set.sourceName != "" {
+		return set.Label + " tokens — Material Design 3"
+	}
 	subset := tokenPhrase(set.category) + " tokens"
 	if set.category == "COLOR" {
 		subset = "colors"

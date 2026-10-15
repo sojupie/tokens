@@ -134,7 +134,11 @@ Each token has name, optional displayName and type, and a values array.
 Each value contains structured value data, optional context labels, default and
 references. Preserve references and context labels. Do not replace references with
 theme-specific hex colors or assume that every token resolves to a scalar.
-An absent value is not zero. An absent context is not proof that a context exists.
+A missing resolved value remains unavailable. In a typed source dimension with a
+known unit, an omitted numeric value field represents zero. A shape is one compound
+value whose named corners override defaultSize. Keep those corner overrides when
+using the token. The optional presentation object preserves source token-set
+membership, display groups and order. An absent context does not establish a context.
 Use sourcePageUrls to cite Material's source pages and capturedAt for freshness.
 This site captures source data; it is not an official Google service.
 
