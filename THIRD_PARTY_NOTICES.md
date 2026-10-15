@@ -1,7 +1,9 @@
 # Third-party notices
 
-Token Catalog's original code and documentation are licensed under MIT.
-The following material retains its upstream copyright and license terms.
+Token Catalog's original code and documentation are licensed under the
+Business Source License 1.1 (BSL 1.1, transitioning to Apache License 2.0
+three years after publication). The following material retains its upstream copyright
+and license terms.
 
 ## Material Design 3
 
@@ -13,7 +15,7 @@ Token names, source values and upstream design guidance originate with Google.
 Google's [Material Design licensing statement](https://m3.material.io/get-started)
 identifies Apache 2.0 or CC BY 4.0 for Material content, guidelines, imagery and
 resources. Item-specific terms and notices govern the material concerned.
-The project's MIT license does not relicense captured payloads, token values,
+The project's license does not relicense captured payloads, token values,
 or upstream material preserved in snapshots and exports.
 
 Source-page and payload URLs are preserved in the captured evidence. Derived

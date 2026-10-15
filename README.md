@@ -187,10 +187,20 @@ be assessed against the pages captured in each run.
 
 ## License and attribution
 
-Project code and original documentation are licensed under [MIT](LICENSE).
+Token Catalog engine code and original documentation are licensed under the
+[Business Source License 1.1 (BSL 1.1)](LICENSE), which converts to the
+[Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0) three years
+after the publication date of each version or commit.
+
+Under the Additional Use Grant, Token Catalog is free to use for all individual
+developers, AI agents, non-commercial entities, and any deployment serving
+publicly available, openly licensed design tokens. Production use and self-hosting
+by any entity to serve, browse, or manage proprietary, internal, or non-open
+corporate design systems is strictly prohibited without a separate commercial agreement.
+
 Material Design 3 data comes from Google and retains its upstream terms.
 Bundled fonts, icons and dependencies retain their own licenses.
 
 Token Catalog is an independent project. See [third-party notices](THIRD_PARTY_NOTICES.md)
 and [licensing and source attribution](docs/licensing.md) for the distinction
-between the software and the data it publishes.
+between the software engine and the token data it publishes.
