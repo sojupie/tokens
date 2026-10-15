@@ -2,16 +2,17 @@
 .cache/
 .tokens/
 
-# Generated crawler evidence. Crawl receipts are local run output; curated,
-# reviewed snapshots are intentionally added to Git.
-crawl-results/*.json
+# Generated crawler evidence and receipts stay local.
+crawl-results/*
+!crawl-results/.gitkeep
 sources/raw/
 sources/normalized/
 sources/runs/
 
-# New captures stay local; deliberately selected snapshot fixtures may be
-# force-added. Existing tracked snapshots remain tracked.
-/snapshots/material-token-data/*/
+# Snapshot payloads and token data stay local or on production volumes;
+# Google Material Design 3 tokens are fetched during deployment.
+/snapshots/material-token-data/*
+!/snapshots/material-token-data/.gitkeep
 
 # Rebuildable publications and local review output.
 /published/
