@@ -63,19 +63,6 @@ func stemWord(w string) string {
 	return strings.TrimSuffix(w, "s")
 }
 
-func wordsMatch(words, slugWords []string) bool {
-	stemmedSlug := make(map[string]bool, len(slugWords))
-	for _, sw := range slugWords {
-		stemmedSlug[stemWord(sw)] = true
-	}
-	for _, w := range words {
-		if stemmedSlug[stemWord(w)] {
-			return true
-		}
-	}
-	return false
-}
-
 func wordMatchScore(words, slugWords []string) int {
 	stemmedSlug := make(map[string]bool, len(slugWords))
 	for _, sw := range slugWords {
@@ -99,25 +86,17 @@ func componentSubjectKey(record tokensnapshot.ExtractedRecord, payload SourcePay
 		return SubjectKey{Kind: SubjectComponent, Slug: record.DisplayName}
 	}
 
+	var payloadSlugs []string
 	for _, pageURL := range payload.PageURLs {
 		if slug := extractComponentSlug(pageURL); slug != "" {
-			if wordsMatch(words, cleanWords(slug)) {
-				return SubjectKey{Kind: SubjectComponent, Slug: slug}
-			}
+			payloadSlugs = append(payloadSlugs, slug)
 		}
 	}
-
-	bestSlug := ""
-	bestScore := 0
-	for _, slug := range knownSlugs {
-		score := wordMatchScore(words, cleanWords(slug))
-		if score > bestScore {
-			bestScore = score
-			bestSlug = slug
-		}
+	if slug := bestComponentSlug(words, payloadSlugs); slug != "" {
+		return SubjectKey{Kind: SubjectComponent, Slug: slug}
 	}
-	if bestScore > 0 && bestSlug != "" {
-		return SubjectKey{Kind: SubjectComponent, Slug: bestSlug}
+	if slug := bestComponentSlug(words, knownSlugs); slug != "" {
+		return SubjectKey{Kind: SubjectComponent, Slug: slug}
 	}
 
 	if fallback.Kind == SubjectComponent && fallback.Slug != "" {
@@ -126,9 +105,31 @@ func componentSubjectKey(record tokensnapshot.ExtractedRecord, payload SourcePay
 	return SubjectKey{Kind: SubjectComponent, Slug: strings.Join(words, "-")}
 }
 
+// Prefer the most specific name match; a tie is not evidence of ownership.
+func bestComponentSlug(words, slugs []string) string {
+	best, bestScore, bestExtra, tied := "", 0, 0, false
+	for _, slug := range slugs {
+		slugWords := cleanWords(slug)
+		score := wordMatchScore(words, slugWords)
+		extra := len(slugWords) - score
+		if score > bestScore || score > 0 && score == bestScore && extra < bestExtra {
+			best, bestScore, bestExtra, tied = slug, score, extra, false
+		} else if score > 0 && score == bestScore && extra == bestExtra && best != slug {
+			tied = true
+		}
+	}
+	if tied {
+		return ""
+	}
+	return best
+}
+
 func styleTokenSetSubject(tokenSetName, displayName string) (SubjectKey, bool) {
 	lowerName := strings.ToLower(tokenSetName)
-	lowerDisplay := strings.ToLower(displayName)
+	lowerDisplay := ""
+	if tokenSetName == "" {
+		lowerDisplay = strings.ToLower(displayName)
+	}
 	switch {
 	case strings.Contains(lowerName, "md.sys.shape") || strings.Contains(lowerDisplay, "shape"):
 		return SubjectKey{Kind: SubjectStyle, Slug: "shape/corner-radius"}, true
@@ -216,6 +217,7 @@ func project(input snapshotInput) (Publication, error) {
 	owners := tokenSetOwners(input.Graph.Records, payloads, payloadSubjects, componentSlugs)
 	styleTokenSets := indexStyleTokenSets(input.Graph.Records)
 	contexts := contextDescriptions(input.Graph.Records)
+	presentations := tokenPresentations(input.Graph.Records)
 
 	for _, record := range sortedRecords(input.Graph.Records) {
 		if record.Kind == "component" && record.SourcePayloadKind == "component" {
@@ -256,6 +258,9 @@ func project(input snapshotInput) (Publication, error) {
 				addPayloadPages(builder, payloads[record.SourcePayloadID])
 				if err := builder.addToken(record.TokenName, record.ValueType, nil, nil, nil, record.Raw, record, contexts); err != nil {
 					return Publication{}, err
+				}
+				if presentation := presentations[record.SourcePayloadID+"\x00"+record.ID]; presentation != nil {
+					builder.tokens[record.TokenName].Presentation = presentation
 				}
 			}
 			continue

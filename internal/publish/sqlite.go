@@ -108,9 +108,13 @@ func insertSubjectTokens(transaction *sql.Tx, subject SubjectView) error {
 	sort.Slice(tokens, func(i, j int) bool { return tokens[i].SourceName < tokens[j].SourceName })
 	for _, token := range tokens {
 		raw := jsonText(token.Raw)
+		presentation, err := json.Marshal(token.Presentation)
+		if err != nil {
+			return fmt.Errorf("encode token presentation: %w", err)
+		}
 		if _, err := transaction.Exec(
-			"INSERT INTO tokens (subject_kind, subject_slug, source_name, display_name, category, raw_json, lifecycle) VALUES (?, ?, ?, ?, ?, ?, ?)",
-			subject.Key.Kind, subject.Key.Slug, token.SourceName, token.DisplayName, token.Category, raw, token.Lifecycle,
+			"INSERT INTO tokens (subject_kind, subject_slug, source_name, display_name, category, raw_json, presentation_json, lifecycle) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+			subject.Key.Kind, subject.Key.Slug, token.SourceName, token.DisplayName, token.Category, raw, string(presentation), token.Lifecycle,
 		); err != nil {
 			return fmt.Errorf("insert token %s/%s: %w", subject.Key.String(), token.SourceName, err)
 		}

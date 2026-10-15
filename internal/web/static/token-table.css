@@ -1704,3 +1704,18 @@
     transparent
   );
 }
+
+.tokens-shape-swatch {
+  display: block;
+  flex: none;
+  width: var(--md-sys-measurement-space800);
+  height: var(--md-sys-measurement-space800);
+  background: var(--md-sys-color-primary);
+}
+
+.tokens-popup-value:has(.tokens-shape-swatch) {
+  flex-direction: column;
+  gap: var(--md-sys-measurement-space150);
+  padding: var(--md-sys-measurement-space150) 0;
+  text-align: center;
+}

@@ -162,17 +162,17 @@ func TestShapeTokenFormatting(t *testing.T) {
 		{
 			name:  "large end rounding",
 			input: `{"shape":{"family":"SHAPE_FAMILY_ROUNDED_CORNERS","topRight":{"value":16,"unit":"DIPS"},"bottomRight":{"value":16,"unit":"DIPS"},"defaultSize":{"unit":"DIPS"}}}`,
-			want:  "Top-right: 16dp · Bottom-right: 16dp",
+			want:  "Default: 0dp · Top-right: 16dp · Bottom-right: 16dp",
 		},
 		{
 			name:  "large start rounding",
 			input: `{"shape":{"family":"SHAPE_FAMILY_ROUNDED_CORNERS","topLeft":{"value":16,"unit":"DIPS"},"bottomLeft":{"value":16,"unit":"DIPS"},"defaultSize":{"unit":"DIPS"}}}`,
-			want:  "Top-left: 16dp · Bottom-left: 16dp",
+			want:  "Default: 0dp · Top-left: 16dp · Bottom-left: 16dp",
 		},
 		{
 			name:  "large top rounding",
 			input: `{"shape":{"family":"SHAPE_FAMILY_ROUNDED_CORNERS","topLeft":{"value":16,"unit":"DIPS"},"topRight":{"value":16,"unit":"DIPS"},"defaultSize":{"unit":"DIPS"}}}`,
-			want:  "Top-left: 16dp · Top-right: 16dp",
+			want:  "Default: 0dp · Top-left: 16dp · Top-right: 16dp",
 		},
 		{
 			name:  "all four corners specified identically",

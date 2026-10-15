@@ -140,6 +140,23 @@ A token with several context-specific resolved values is stored as one token
 with several values. It is not collapsed into whichever value happened to be
 read first.
 
+## Source tables and compound values
+
+Each token's optional `presentation` field preserves its source token-set name,
+label, display-group path and order. The browser and downloads use the same
+membership. Token sets such as “Button - Color - Elevated” belong to the Buttons
+component.
+
+A shape is one compound value. Its `defaultSize` applies to unspecified corners,
+and named corners override that default. A dimension with a known unit and an
+omitted numeric `value` represents zero in the source format. The display keeps
+explicit zero corner overrides and draws supported rounded shapes from all four
+corner values.
+
+Publication schema 4 stores this presentation metadata. Rebuild saved publications
+with `tokens publish` to populate it. The server also reads schema 3 publications
+using the previous table grouping.
+
 ## Change history
 
 The global change log and each component's history show all detected changes,

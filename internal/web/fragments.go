@@ -183,11 +183,13 @@ func writeTokenGroup(writer io.Writer, group tokenGroup, state bool) error {
 	if group.Open {
 		open = ` open`
 	}
-	if err := write(`<details class="` + className + `"` + open + `><summary>` + `<span class="tokens-folder-closed">` + tableIcon("folder") + `</span><span class="tokens-folder-open">` + tableIcon("folder-open") + `</span><span>` + html.EscapeString(group.Name) + `</span>` + tableIcon("dropdown") + `</summary>`); err != nil {
-		return err
+	if group.Name != "" {
+		if err := write(`<details class="` + className + `"` + open + `><summary>` + `<span class="tokens-folder-closed">` + tableIcon("folder") + `</span><span class="tokens-folder-open">` + tableIcon("folder-open") + `</span><span>` + html.EscapeString(group.Name) + `</span>` + tableIcon("dropdown") + `</summary>`); err != nil {
+			return err
+		}
 	}
 	if len(group.Tokens) > 0 {
-		if err := write(`<div class="tokens-token-table-wrap"><table class="tokens-token-table"><caption class="tokens-visually-hidden">` + html.EscapeString(group.Name) + ` tokens</caption><colgroup><col><col class="tokens-token-value-column"></colgroup><thead class="tokens-visually-hidden"><tr><th scope="col">Token</th><th scope="col">Value</th></tr></thead><tbody>`); err != nil {
+		if err := write(`<div class="tokens-token-table-wrap"><table class="tokens-token-table"><caption class="tokens-visually-hidden">` + html.EscapeString(strings.TrimSpace(group.Name+" tokens")) + `</caption><colgroup><col><col class="tokens-token-value-column"></colgroup><thead class="tokens-visually-hidden"><tr><th scope="col">Token</th><th scope="col">Value</th></tr></thead><tbody>`); err != nil {
 			return err
 		}
 		for _, token := range group.Tokens {
@@ -222,7 +224,10 @@ func writeTokenGroup(writer io.Writer, group tokenGroup, state bool) error {
 			return err
 		}
 	}
-	return write(`</details>`)
+	if group.Name != "" {
+		return write(`</details>`)
+	}
+	return nil
 }
 
 func writeTokenReferences(writer io.Writer, token tokenRow) error {
@@ -241,6 +246,9 @@ func writeTokenReferences(writer io.Writer, token tokenRow) error {
 		style = ` style="--tokens-preview-color:` + html.EscapeString(token.Color) + `;--tokens-preview-on-color:` + tokenColorTextColor(token.Color) + `"`
 	}
 	preview := `<span class="tokens-preview-value">` + html.EscapeString(label) + `</span>`
+	if token.Shape != "" {
+		preview = `<span class="tokens-shape-swatch" style="border-radius:` + html.EscapeString(token.Shape) + `" aria-hidden="true"></span><span class="tokens-preview-value">` + html.EscapeString(label) + `</span>`
+	}
 	if token.Elevation != "" {
 		preview = `<span class="tokens-elevation-swatch" style="--_elevation-level:` + html.EscapeString(token.Elevation) + `" aria-hidden="true"></span><span class="tokens-visually-hidden">` + html.EscapeString(label) + `</span>`
 	}

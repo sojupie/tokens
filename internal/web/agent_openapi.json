@@ -67,7 +67,10 @@
         "kind": {"type": "string"}, "slug": {"type": "string"}, "name": {"type": "string"}, "tokens": {"type": "array", "items": {"$ref": "#/components/schemas/Token"}}
       }},
       "Token": {"type": "object", "required": ["name", "values"], "properties": {
-        "name": {"type": "string"}, "displayName": {"type": "string"}, "type": {"type": "string"}, "lifecycle": {"type": "string"}, "values": {"type": "array", "items": {"$ref": "#/components/schemas/TokenValue"}}
+        "name": {"type": "string"}, "displayName": {"type": "string"}, "type": {"type": "string"}, "lifecycle": {"type": "string"}, "presentation": {"$ref": "#/components/schemas/TokenPresentation"}, "values": {"type": "array", "items": {"$ref": "#/components/schemas/TokenValue"}}
+      }},
+      "TokenPresentation": {"type": "object", "required": ["setName", "setLabel", "setOrder", "order"], "description": "Source token-set membership, table hierarchy and display order. A compound typed value remains one token.", "properties": {
+        "setName": {"type": "string"}, "setLabel": {"type": "string"}, "setOrder": {"type": "integer"}, "order": {"type": "integer"}, "groups": {"type": "array", "items": {"type": "object", "required": ["name", "order"], "properties": {"name": {"type": "string"}, "order": {"type": "integer"}}}}
       }},
       "TokenValue": {"type": "object", "required": ["value"], "properties": {
         "context": {"type": "array", "items": {"type": "string"}}, "default": {"type": "boolean"}, "value": {"description": "Source-structured JSON, including references or typed compound values; may be null. Do not assume a hex color or scalar."}, "references": {"type": "array", "items": {"$ref": "#/components/schemas/TokenReference"}}
