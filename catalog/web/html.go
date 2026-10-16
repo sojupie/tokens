@@ -13,6 +13,7 @@ import (
 	"strings"
 
 	"github.com/a-h/templ"
+	"github.com/sojupie/tokens/source/dtcg"
 	"github.com/sojupie/tokens/source/publish"
 )
 
@@ -590,36 +591,7 @@ func shapeValueText(fields map[string]any) string {
 // Rounded shapes use the default for unspecified corners. Explicit zero is a
 // square corner, including protobuf dimensions whose numeric field is omitted.
 func shapePreviewCSS(raw json.RawMessage) string {
-	var document struct {
-		Shape map[string]any `json:"shape"`
-	}
-	if json.Unmarshal(raw, &document) != nil || document.Shape == nil {
-		return ""
-	}
-	shape := document.Shape
-	family, _ := shape["family"].(string)
-	if family == "SHAPE_FAMILY_CIRCULAR" {
-		return "50%"
-	}
-	if family != "SHAPE_FAMILY_ROUNDED_CORNERS" {
-		return ""
-	}
-	var corners []string
-	for _, key := range []string{"topLeft", "topRight", "bottomRight", "bottomLeft"} {
-		value, found := shape[key]
-		if !found {
-			value = shape["defaultSize"]
-		}
-		text, ok := sourceDimensionText(value)
-		if !ok || !(strings.HasSuffix(text, "dp") || strings.HasSuffix(text, "px")) {
-			return ""
-		}
-		corners = append(corners, strings.TrimSuffix(strings.TrimSuffix(text, "dp"), "px")+"px")
-	}
-	if corners[0] == corners[1] && corners[0] == corners[2] && corners[0] == corners[3] {
-		return corners[0]
-	}
-	return strings.Join(corners, " ")
+	return dtcg.ShapeCSS(raw)
 }
 
 func displayUnit(unit string) string {

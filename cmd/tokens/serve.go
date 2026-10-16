@@ -54,6 +54,9 @@ func runServe(args []string) error {
 		return err
 	}
 	publicationServer := web.New(state, filepath.Join(publishedDir, "downloads"))
+	if err := publicationServer.UseGeneratedAssets(publishedDir); err != nil {
+		return fmt.Errorf("load generated token assets: %w", err)
+	}
 	if err := publicationServer.SetPublicOrigin(publicOrigin); err != nil {
 		return err
 	}

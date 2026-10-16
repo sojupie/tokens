@@ -93,3 +93,13 @@ root so discovery clients can find the collection. Their contents advertise
 canonical `/md3/` URLs. `/api/v1/health` remains a root alias for internal checks.
 The same discovery files are available under `/md3/` too.
 
+
+## Skill source
+
+The installable skill lives in `skills/token-catalog/`. Its Material reference,
+`references/material-tokens.md`, also supplies the hosted usage guide. The server
+fills in the configured public origin, MCP protocol version, and generated
+export links. Edit that reference when changing shared API instructions.
+
+The skill name, installation command, and `/md3/skills/material-tokens/SKILL.md`
+route remain stable as the repository code moves between directories.

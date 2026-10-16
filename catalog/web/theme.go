@@ -10,6 +10,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/sojupie/tokens/source/dtcg"
 	"github.com/sojupie/tokens/source/publish"
 )
 
@@ -48,6 +49,11 @@ func publicationThemeVariant(state publish.PublishedState, theme, contrast strin
 				continue
 			}
 			values[token.SourceName] = css
+			if node, err := dtcg.Convert(value.Value); err == nil && node["$type"] == "typography" {
+				typography := node["$value"].(map[string]any)
+				spacing := typography["letterSpacing"].(dtcg.Dimension)
+				values[token.SourceName+".letter-spacing"] = themeNumber(spacing.Value) + spacing.Unit
+			}
 			// A single reference chain denotes the same primitive value. This
 			// recovers system roles absent as standalone values in the publication.
 			// Composite/branching references cannot be inferred this way.
@@ -73,8 +79,8 @@ func publicationThemeVariant(state publish.PublishedState, theme, contrast strin
 	// Include preview text colour inputs alongside the tokens referenced by the styles.
 	wanted := map[string]bool{"md-ref-palette-neutral0": true, "md-sys-color-on-primary": true}
 	pattern := themeTokenReference
-	for _, file := range []string{"static/app.css", "static/token-table.css"} {
-		data, err := embeddedStatic.ReadFile(file)
+	for _, file := range []string{"static/app.css", "static/token-table.css", "static/buttons.css", "static/components.css"} {
+		data, err := readStaticFile(file)
 		if err != nil {
 			return "", err
 		}
@@ -146,11 +152,6 @@ func themeValue(raw json.RawMessage) string {
 		if json.Unmarshal(value[key], &size) == nil && size.Value != nil && (size.Unit == "DIPS" || size.Unit == "POINTS") {
 			return themeNumber(*size.Value) + "px"
 		}
-		if key == "fontTracking" && size.Value == nil && size.Unit == "POINTS" {
-			// No numeric tracking was captured for some headline roles.
-			// Keep native CSS tracking rather than inventing a token value.
-			return "normal"
-		}
 	}
 	var shape struct {
 		Family      string `json:"family"`
@@ -178,10 +179,35 @@ func themeValue(raw json.RawMessage) string {
 		}
 		return strings.Join(quoted, ", ") + ", sans-serif"
 	}
-	for _, key := range []string{"fontWeight", "opacity"} {
+	for _, key := range []string{"fontWeight", "opacity", "numeric"} {
 		var number *float64
 		if json.Unmarshal(value[key], &number) == nil && number != nil {
 			return themeNumber(*number)
+		}
+	}
+	if node, err := dtcg.Convert(raw); err == nil {
+		switch node["$type"] {
+		case "dimension":
+			if _, elevation := value["elevation"]; elevation {
+				return ""
+			}
+			dimension := node["$value"].(dtcg.Dimension)
+			return themeNumber(dimension.Value) + dimension.Unit
+		case "duration":
+			value := node["$value"].(map[string]any)
+			return themeNumber(value["value"].(float64)) + value["unit"].(string)
+		case "cubicBezier":
+			points := node["$value"].([]float64)
+			parts := make([]string, len(points))
+			for i, v := range points {
+				parts[i] = themeNumber(v)
+			}
+			return "cubic-bezier(" + strings.Join(parts, ", ") + ")"
+		case "typography":
+			t := node["$value"].(map[string]any)
+			size := t["fontSize"].(dtcg.Dimension)
+			fonts, _ := json.Marshal(map[string]any{"fontNames": map[string]any{"values": t["fontFamily"]}})
+			return themeNumber(t["fontWeight"].(float64)) + " " + themeNumber(size.Value) + size.Unit + "/" + themeNumber(t["lineHeight"].(float64)) + " " + themeValue(fonts)
 		}
 	}
 	return ""

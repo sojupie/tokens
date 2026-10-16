@@ -9,7 +9,10 @@ Token Catalog provides public, read-only token data at
 https://tokencatalog.dev/md3. No account or API key is required.
 
 1. Read https://tokencatalog.dev/md3/skills/material-tokens/SKILL.md for the
-   current data format, download scopes, and interpretation rules.
+   current data format, download scopes, and interpretation rules. The
+   [bundled reference](references/material-tokens.md) contains the same guide
+   as a server template; use the hosted version for deployment URLs, protocol
+   versions, and available generated downloads.
 2. Fetch https://tokencatalog.dev/md3/api/v1/subjects and find the component or
    style needed for the task. Use its exact `kind` and `slug`. Follow `jsonUrl`
    to download its tokens; style slugs can contain slashes.

@@ -110,14 +110,14 @@ func downloadCount(count int, noun string) string {
 }
 
 func writeTokenDownloadMenu(writer io.Writer, subject publish.SubjectView, browser tokenBrowser, site downloadPreview) error {
-	menu := `<div class="tokens-token-download"><button class="md-outlined-button" type="button" data-download-open aria-haspopup="dialog">Download JSON</button><dialog aria-labelledby="tokens-download-title"><form method="get" action="` + html.EscapeString(subjectDownloadURL(subject)) + `"><h2 id="tokens-download-title">Download tokens</h2>`
+	menu := `<div class="tokens-token-download"><button class="md-button md-outlined-button" type="button" data-download-open aria-haspopup="dialog">Download JSON</button><dialog class="md-dialog" aria-labelledby="tokens-download-title"><form method="get" action="` + html.EscapeString(subjectDownloadURL(subject)) + `"><h2 id="tokens-download-title">Download tokens</h2>`
 	if browser.Selected.Label != "" {
 		menu += `<p class="tokens-download-table">` + html.EscapeString(browser.Selected.Label) + `</p>`
 	}
 	menu += `<div class="tokens-download-choices"><fieldset><legend>What should the file include?</legend>`
 	menu += `<p class="tokens-download-help">A token can have different values for theme, platform and other settings. Select an option to see examples.</p>`
 	option := func(value, label, description string, checked bool, preview downloadPreview) {
-		menu += `<label class="tokens-download-option"><input type="radio" name="scope" value="` + value + `"`
+		menu += `<label class="tokens-download-option"><input class="md-radio" type="radio" name="scope" value="` + value + `"`
 		if checked {
 			menu += ` checked`
 		}
@@ -189,7 +189,7 @@ func writeTokenDownloadMenu(writer io.Writer, subject publish.SubjectView, brows
 	for _, filter := range browser.Filters {
 		input(filter.Key, filter.Selected)
 	}
-	menu += `<footer><button class="md-text-button" type="button" data-download-cancel>Cancel</button><button class="md-filled-button" type="submit">Download JSON</button></footer></form></dialog><noscript><style>.tokens-token-download>button{display:none}.tokens-token-download dialog:not([open]){display:block;position:static}</style></noscript></div>`
+	menu += `<footer><button class="md-button md-text-button" type="button" data-download-cancel>Cancel</button><button class="md-button md-filled-button" type="submit">Download JSON</button></footer></form></dialog><noscript><style>.tokens-token-download>button{display:none}.tokens-token-download dialog:not([open]){display:block;position:static}</style></noscript></div>`
 	_, err := io.WriteString(writer, menu)
 	return err
 }

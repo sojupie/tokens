@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/a-h/templ"
+	"github.com/sojupie/tokens/forge/components"
 )
 
 //go:embed static/app.css static/token-table.css static/token-table.js static/theme.js static/webmcp.js static/prefetch.js static/agent-handoff.js static/htmx.min.js static/fonts static/logo.png static/logo-250x250.png static/logo-250x250.webp
@@ -32,7 +33,23 @@ func mustStaticFiles() fs.FS {
 	if err != nil {
 		panic(err)
 	}
-	return files
+	return staticAssets{FS: files}
+}
+
+// Component assets have one source in Forge and retain their public static URLs.
+type staticAssets struct{ fs.FS }
+
+func (files staticAssets) Open(name string) (fs.File, error) {
+	switch name {
+	case "buttons.css", "buttons.js", "components.css":
+		return components.Files.Open("static/" + name)
+	default:
+		return files.FS.Open(name)
+	}
+}
+
+func readStaticFile(name string) ([]byte, error) {
+	return fs.ReadFile(webStaticFiles, strings.TrimPrefix(name, "static/"))
 }
 
 func assetVersion(content []byte) string {

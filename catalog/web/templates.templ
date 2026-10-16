@@ -2,6 +2,7 @@ package web
 
 import (
 	"strings"
+ "fmt"
 	"github.com/sojupie/tokens/source/publish"
 )
 
@@ -16,6 +17,9 @@ templ layout(title string) {
 		<link rel="stylesheet" href={ themeURL(ctx) }/>
 		<link rel="stylesheet" href={ staticURL("app.css") }/>
 		<link rel="stylesheet" href={ staticURL("token-table.css") }/>
+        <link rel="stylesheet" href={ staticURL("buttons.css") }/>
+        <link rel="stylesheet" href={ staticURL("components.css") }/>
+        <script src={ staticURL("buttons.js") } defer></script>
 		<script src={ staticURL("htmx.min.js") } defer></script>
 		<script src={ staticURL("token-table.js") } defer></script>
 		<script src={ staticURL("webmcp.js") } defer></script>
@@ -54,7 +58,7 @@ templ layout(title string) {
                     }
 				</div>
 				<div class="tokens-theme-controls" role="group" aria-label="Site appearance">
-					<button type="button" data-app-theme aria-label="Dark mode" aria-pressed="false" title="Dark mode" disabled>
+					<button class="md-icon-button md-standard-icon-button" type="button" data-app-theme aria-label="Dark mode" aria-pressed="false" title="Dark mode" disabled>
 						<span data-theme-icon="light">
 							@materialSymbol("dark_mode")
 						</span>
@@ -63,13 +67,13 @@ templ layout(title string) {
 						</span>
 					</button>
 					<div class="tokens-contrast-buttons" role="group" aria-label="Contrast">
-						<button type="button" data-app-contrast="default" aria-label="Standard contrast" aria-pressed="true" title="Standard contrast" disabled>
+						<button class="md-icon-button md-filled-icon-button" type="button" data-app-contrast="default" aria-label="Standard contrast" aria-pressed="true" title="Standard contrast" disabled>
 							@materialSymbol("brightness_low")
 						</button>
-						<button type="button" data-app-contrast="medium" aria-label="Medium contrast" aria-pressed="false" title="Medium contrast" disabled>
+						<button class="md-icon-button md-filled-icon-button" type="button" data-app-contrast="medium" aria-label="Medium contrast" aria-pressed="false" title="Medium contrast" disabled>
 							@materialSymbol("brightness_medium")
 						</button>
-						<button type="button" data-app-contrast="high" aria-label="High contrast" aria-pressed="false" title="High contrast" disabled>
+						<button class="md-icon-button md-filled-icon-button" type="button" data-app-contrast="high" aria-label="High contrast" aria-pressed="false" title="High contrast" disabled>
 							@materialSymbol("brightness_high")
 						</button>
 					</div>
@@ -124,15 +128,15 @@ templ overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView
 
         if metadata(ctx).AgentDiscovery {
             <div class="tokens-audience-grid">
-                <section class="md-elevated-card tokens-card-content" aria-labelledby="human-heading">
+                <section class="md-card md-elevated-card tokens-card-content" aria-labelledby="human-heading">
                     <h2 class="md-typescale-title-medium" id="human-heading">Browse tokens</h2>
                     <p>Browse components and styles, compare values, and download the tokens you need.</p>
-                    <a class="md-outlined-button" href="/components">Browse components</a>
+                    <a class="md-button md-outlined-button" href="/components">Browse components</a>
                 </section>
-                <section class="md-elevated-card tokens-card-content" aria-labelledby="agent-heading">
+                <section class="md-card md-elevated-card tokens-card-content" aria-labelledby="agent-heading">
                     <h2 class="md-typescale-title-medium" id="agent-heading">Use with your agent</h2>
                     <p>Give your coding agent access to the same token data through a prompt, skill, or MCP.</p>
-                    <a class="md-filled-tonal-button" href="/for-agents">Give this to your agent</a>
+                    <a class="md-button md-tonal-button" href="/for-agents">Give this to your agent</a>
                 </section>
             </div>
         }
@@ -141,7 +145,7 @@ templ overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView
 			<ul class="tokens-card-grid">
 				for _, subject := range subjects {
 					if subject.Key.Kind == publish.SubjectComponent {
-						<li><a class="md-outlined-card md-interactive-card tokens-card" href={ subjectURL(subject) }>{ subject.Name } <small class="md-typescale-body-small">({ len(subject.Tokens) } tokens)</small></a></li>
+						<li><a class="md-card md-outlined-card md-interactive-card tokens-card" href={ subjectURL(subject) }>{ subject.Name } <small class="md-typescale-body-small">({ len(subject.Tokens) } tokens)</small></a></li>
 					}
 				}
 			</ul>
@@ -152,7 +156,7 @@ templ overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView
 			<ul class="tokens-card-grid">
 				for _, subject := range subjects {
 					if subject.Key.Kind != publish.SubjectComponent {
-						<li><a class="md-outlined-card md-interactive-card tokens-card" href={ subjectURL(subject) }>{ subject.Name } <small class="md-typescale-body-small">{ subjectKindLabel(subject.Key.Kind) } · { len(subject.Tokens) } tokens</small></a></li>
+						<li><a class="md-card md-outlined-card md-interactive-card tokens-card" href={ subjectURL(subject) }>{ subject.Name } <small class="md-typescale-body-small">{ subjectKindLabel(subject.Key.Kind) } · { len(subject.Tokens) } tokens</small></a></li>
 					}
 				}
 			</ul>
@@ -174,13 +178,13 @@ templ subjectListPage(snapshot publish.SnapshotView, subjects []publish.SubjectV
 		<div data-nosnippet><p class="tokens-metadata">Current snapshot: <code class="tokens-code">{ snapshot.ID }</code></p></div>
 		<form class="tokens-search-form" method="get" action={ subjectListPath(styles) } role="search">
 			<label class="md-typescale-body-medium" for="subject-search">Search by name or slug</label>
-			<input class="tokens-search-input" id="subject-search" type="search" name="q" value={ query } autocomplete="off"
+			<input class="md-outlined-text-field tokens-search-input" id="subject-search" type="search" name="q" value={ query } autocomplete="off"
 				hx-get={ subjectListPath(styles) }
 				hx-target="#subject-list"
 				hx-trigger="input changed delay:250ms"
 				hx-push-url="true"/>
 		</form>
-		<div id="subject-list" class="md-outlined-card tokens-list-panel">
+		<div id="subject-list" class="md-card md-outlined-card tokens-list-panel">
 			@subjectList(subjects)
 		</div>
 }
@@ -188,23 +192,23 @@ templ subjectListPage(snapshot publish.SnapshotView, subjects []publish.SubjectV
 
 templ siteDownloadButton(scope string) {
 	<div class="tokens-token-download">
-		<button class="md-outlined-button" type="button" data-site-download-open={ scope } aria-haspopup="dialog" aria-controls="tokens-site-download">Download JSON</button>
+		<button class="md-button md-outlined-button" type="button" data-site-download-open={ scope } aria-haspopup="dialog" aria-controls="tokens-site-download">Download JSON</button>
 	</div>
 }
 
 templ siteDownloadMenu() {
 	<div class="tokens-token-download">
-		<button class="md-outlined-button" type="button" data-download-open aria-haspopup="dialog" aria-controls="tokens-site-download">Download JSON</button>
-		<div data-nosnippet><dialog id="tokens-site-download" aria-labelledby="tokens-site-download-title">
+		<button class="md-button md-outlined-button" type="button" data-download-open aria-haspopup="dialog" aria-controls="tokens-site-download">Download JSON</button>
+		<div data-nosnippet><dialog class="md-dialog" id="tokens-site-download" aria-labelledby="tokens-site-download-title">
 			<form method="get" action="/downloads/tokens.json">
 				<h2 id="tokens-site-download-title">Download tokens</h2>
 				<fieldset>
 					<legend>What should the file include?</legend>
-					<label class="tokens-download-option"><input type="radio" name="scope" value="components"/><span><strong>Components</strong><small>Every component, token set and supported context.</small></span></label>
-					<label class="tokens-download-option"><input type="radio" name="scope" value="styles"/><span><strong>Styles and token sources</strong><small>All style and foundation tokens, with every supported context.</small></span></label>
-					<label class="tokens-download-option"><input type="radio" name="scope" value="all" checked/><span><strong>All tokens</strong><small>Everything in the current publication, including components and styles.</small></span></label>
+					<label class="tokens-download-option"><input class="md-radio" type="radio" name="scope" value="components"/><span><strong>Components</strong><small>Every component, token set and supported context.</small></span></label>
+					<label class="tokens-download-option"><input class="md-radio" type="radio" name="scope" value="styles"/><span><strong>Styles and token sources</strong><small>All style and foundation tokens, with every supported context.</small></span></label>
+					<label class="tokens-download-option"><input class="md-radio" type="radio" name="scope" value="all" checked/><span><strong>All tokens</strong><small>Everything in the current publication, including components and styles.</small></span></label>
 				</fieldset>
-				<footer><button class="md-text-button" type="button" data-download-cancel>Cancel</button><button class="md-filled-button" type="submit">Download JSON</button></footer>
+				<footer><button class="md-button md-text-button" type="button" data-download-cancel>Cancel</button><button class="md-button md-filled-button" type="submit">Download JSON</button></footer>
 			</form>
 		</dialog></div>
 		<noscript>
@@ -231,19 +235,19 @@ templ subjectPage(subject publish.SubjectView, changes []publish.ChangeView, bro
 }
 
 templ tokenSetPicker(subject publish.SubjectView, browser tokenBrowser) {
-	<button class="tokens-token-set" type="button" popovertarget="tokens-token-set-menu" aria-label={ "Token set: " + tokenSetLabel(browser.Selected) }>
+	<button class="md-filter-chip tokens-token-set" data-selected="true" type="button" popovertarget="tokens-token-set-menu" aria-label={ "Token set: " + tokenSetLabel(browser.Selected) }>
 		<span class="tokens-context-label" title={ tokenSetLabel(browser.Selected) }>{ tokenSetLabel(browser.Selected) }</span>
 		@materialSymbol("expand_more")
 	</button>
-	<nav class="tokens-token-set-menu" id="tokens-token-set-menu" popover="auto" aria-label="Token sets">
-		<a class="tokens-link tokens-token-set-overview" href={ subjectURL(subject) }>{ subject.Name } overview</a>
+	<nav class="md-menu tokens-token-set-menu" id="tokens-token-set-menu" popover="auto" aria-label="Token sets">
+		<a class="md-menu-item tokens-token-set-overview" href={ subjectURL(subject) }>{ subject.Name } overview</a>
 		for _, group := range tokenSetMenuGroups(browser.Sets) {
 			<section>
 				<h3 class="md-typescale-title-medium">{ group.Label }</h3>
 				<ul>
 					for _, set := range group.Sets {
 						<li>
-							<a href={ tokenSetLinkURL(subject, set, browser) } aria-current={ currentTokenSet(set.Key == browser.Selected.Key) }>
+							<a class="md-menu-item" href={ tokenSetLinkURL(subject, set, browser) } aria-current={ currentTokenSet(set.Key == browser.Selected.Key) }>
 								@materialSymbol("check")
 								{ tokenSetMenuLabel(set) }
 							</a>
@@ -328,26 +332,26 @@ templ changesPage(state publish.PublishedState, subject string, baseURL string, 
 templ changeFilterForm(filters changeFilters, baseURL string) {
 	<form class="tokens-change-filters" method="get" action={ strings.SplitN(baseURL, "?", 2)[0] }>
 		if !filters.FixedSubject {
-			<label>Component or style<select name="subject"><option value="">All components and styles</option>
+			<label>Component or style<span class="md-outlined-select"><select name="subject"><option value="">All components and styles</option>
 				for _, option := range filters.Subjects {
 					<option value={ option.Value } selected?={ option.Value == filters.Subject }>{ option.Label }</option>
 				}
-			</select></label>
+			</select><span data-slot="trailing-icon">@materialSymbol("expand_more")</span></span></label>
 		}
-		<label>Observed<select name="snapshot"><option value="">All dates</option>
+		<label>Observed<span class="md-outlined-select"><select name="snapshot"><option value="">All dates</option>
 			for _, option := range filters.Snapshots {
 				<option value={ option.Value } selected?={ option.Value == filters.Snapshot }>{ option.Label }</option>
 			}
-		</select></label>
-		<label>Change<select name="type">
+		</select><span data-slot="trailing-icon">@materialSymbol("expand_more")</span></span></label>
+		<label>Change<span class="md-outlined-select"><select name="type">
 			<option value="">All changes</option>
 			<option value="changed" selected?={ filters.Type == "changed" }>Updated</option>
 			<option value="added" selected?={ filters.Type == "added" }>Added</option>
 			<option value="removed" selected?={ filters.Type == "removed" }>Removed</option>
-		</select></label>
-		<label>Token name<input type="search" name="q" value={ filters.Query } placeholder="e.g. width or font"/></label>
+		</select><span data-slot="trailing-icon">@materialSymbol("expand_more")</span></span></label>
+		<label>Token name<input class="md-outlined-text-field" type="search" name="q" value={ filters.Query } placeholder="e.g. width or font"/></label>
 		<div class="tokens-change-filter-actions">
-			<button class="md-filled-button" type="submit">Apply filters</button>
+			<button class="md-button md-filled-button" type="submit">Apply filters</button>
 			<a class="tokens-link" href={ strings.SplitN(baseURL, "?", 2)[0] }>Reset</a>
 		</div>
 	</form>
@@ -355,7 +359,7 @@ templ changeFilterForm(filters changeFilters, baseURL string) {
 
 templ changeRecordList(changes []labeledChange) {
 		for _, change := range changes {
-			<details class="md-outlined-card tokens-change-card tokens-change-disclosure">
+			<details class="md-card md-outlined-card tokens-change-card tokens-change-disclosure">
 				<summary class="tokens-change-heading">
 					@materialSymbol("chevron_right")
 					<h4>{ change.Name }</h4>
@@ -396,25 +400,25 @@ templ forAgentsPage(prompt string, mcpURL string) {
             <p class="md-typescale-body-large">Use Material Design 3 token data in your coding agent. No account or API key is required.</p>
         </header>
         <div class="tokens-handoff-grid">
-            <section class="md-elevated-card tokens-card-content" aria-labelledby="skill-heading">
+            <section class="md-card md-elevated-card tokens-card-content" aria-labelledby="skill-heading">
                 <h2 class="md-typescale-title-medium" id="skill-heading">Install the skill</h2>
                 <p>For clients that support Agent Skills. Choose your agent in the installer.</p>
-                <pre id="agent-skill" class="md-outlined-card tokens-code-block" tabindex="0" aria-labelledby="skill-heading"><code>npx skills add sojupie/tokens --skill token-catalog</code></pre>
-                <button class="md-filled-button" type="button" data-copy-target="agent-skill" hidden>Copy install command</button>
+                <pre id="agent-skill" class="md-card md-outlined-card tokens-code-block" tabindex="0" aria-labelledby="skill-heading"><code>npx skills add sojupie/tokens --skill token-catalog</code></pre>
+                <button class="md-button md-filled-button" type="button" data-copy-target="agent-skill" hidden>Copy install command</button>
                 <p class="tokens-copy-status" data-copy-status aria-live="polite"></p>
                 <a class="tokens-link" href="https://github.com/sojupie/tokens/blob/main/skills/token-catalog/SKILL.md">Read the skill</a>
             </section>
-            <section class="md-filled-card tokens-card-content tokens-secondary-option" aria-labelledby="prompt-heading">
+            <section class="md-card md-filled-card tokens-card-content tokens-secondary-option" aria-labelledby="prompt-heading">
                 <h2 class="md-typescale-title-medium" id="prompt-heading">Copy a prompt</h2>
-                <pre id="agent-prompt" class="md-outlined-card tokens-code-block" tabindex="0" aria-labelledby="prompt-heading"><code>{ prompt }</code></pre>
-                <button class="md-elevated-button" type="button" data-copy-target="agent-prompt" hidden>Copy prompt</button>
+                <pre id="agent-prompt" class="md-card md-outlined-card tokens-code-block" tabindex="0" aria-labelledby="prompt-heading"><code>{ prompt }</code></pre>
+                <button class="md-button md-elevated-button" type="button" data-copy-target="agent-prompt" hidden>Copy prompt</button>
                 <p class="tokens-copy-status" data-copy-status aria-live="polite"></p>
             </section>
-            <section class="md-filled-card tokens-card-content tokens-secondary-option" aria-labelledby="mcp-heading">
+            <section class="md-card md-filled-card tokens-card-content tokens-secondary-option" aria-labelledby="mcp-heading">
                 <h2 class="md-typescale-title-medium" id="mcp-heading">Connect with MCP</h2>
                 <p>Add this URL as a Streamable HTTP server in your client.</p>
-                <pre id="agent-mcp" class="md-outlined-card tokens-code-block" tabindex="0" aria-labelledby="mcp-heading"><code>{ mcpURL }</code></pre>
-                <button class="md-elevated-button" type="button" data-copy-target="agent-mcp" hidden>Copy MCP URL</button>
+                <pre id="agent-mcp" class="md-card md-outlined-card tokens-code-block" tabindex="0" aria-labelledby="mcp-heading"><code>{ mcpURL }</code></pre>
+                <button class="md-button md-elevated-button" type="button" data-copy-target="agent-mcp" hidden>Copy MCP URL</button>
                 <p class="tokens-copy-status" data-copy-status aria-live="polite"></p>
                 <p>Start with <code>list_subjects</code>, then use <code>get_tokens</code> with the returned kind and slug.</p>
             </section>
@@ -427,4 +431,77 @@ templ forAgentsPage(prompt string, mcpURL string) {
         </section>
         <script src={ staticURL("agent-handoff.js") } defer></script>
     }
+}
+
+templ buttonGalleryPage(page buttonGallery) {
+ @layout("Material Design 3 buttons") {
+  <h1 class="md-typescale-headline-medium">Buttons</h1>
+  <p class="md-typescale-body-medium">{ fmt.Sprint(page.Mapped) } source tokens mapped. Press a button to try its shape animation and ripple.</p>
+  <form class="tokens-gallery-filters" method="get">
+   @gallerySelect("variant", "Variant", append([]string{"all"}, page.Variants...), page.Filters["variant"])
+   @gallerySelect("size", "Size", append([]string{"all"}, page.Sizes...), page.Filters["size"])
+   @gallerySelect("shape", "Shape", []string{"all","round","square"}, page.Filters["shape"])
+   @gallerySelect("selection", "Selection", []string{"all","plain","unselected","selected"}, page.Filters["selection"])
+   @gallerySelect("state", "State", []string{"all","enabled","hovered","focused","pressed","disabled"}, page.Filters["state"])
+   <button type="submit" class="md-button md-filled-button">Apply</button>
+  </form>
+  <div class="tokens-button-gallery">
+   for _, c := range page.Cases {
+    <article class="md-card md-outlined-card tokens-button-example">
+     <p class="md-typescale-body-small">{ c.Label() }</p>
+     <button { c.Attributes()... }>@materialSymbol("check")<span>Button</span></button>
+    </article>
+   }
+  </div>
+ }
+}
+
+templ gallerySelect(name string, label string, options []string, selected string) {
+ <label class="md-typescale-body-medium">{ label }
+  <span class="md-outlined-select"><select name={ name }>
+   for _, option := range options {
+    <option value={ option } selected?={ option==selected }>{ option }</option>
+   }
+  </select><span data-slot="trailing-icon">@materialSymbol("expand_more")</span></span>
+ </label>
+}
+
+templ componentGalleryPage(page componentGallery) {
+ @layout("Material Design 3 Component Gallery") {
+  <section class="tokens-section">
+   <h1 class="md-typescale-headline-medium">Material Design 3 component gallery</h1>
+   <p>{ fmt.Sprint(page.Mapped) } mapped source tokens · { fmt.Sprint(page.Excluded) } documented exclusions · { fmt.Sprint(len(page.Cases)) } configurations</p>
+   <form method="get" class="tokens-gallery-filters">
+    @gallerySelect("family", "Family", []string{"all","card","icon","chip","radio","field","select","menu","dialog","divider"}, page.Family)
+    <button class="md-button md-outlined-button" type="submit">Apply filters</button>
+   </form>
+   <div class="tokens-component-gallery">
+    for _, c := range page.Cases {
+     <figure class="tokens-component-example">
+      <figcaption class="md-typescale-body-small">{ c.Label() }</figcaption>
+      switch c.Family {
+       case "card":
+        <a href={ "#"+c.ID() } { c.Attributes()... }><span>Card title</span><p>Supporting text</p><span data-slot="icon">@materialSymbol("check")</span></a>
+       case "icon":
+        <button { c.Attributes()... }>@materialSymbol("check")</button>
+       case "chip":
+        <label { c.Attributes()... }><input class="tokens-visually-hidden" type="checkbox" checked?={ c.Selected } disabled?={ c.State=="disabled" }/><span class="md-chip-face">@materialSymbol("check")<span>Filter chip</span></span></label>
+       case "radio":
+        <input { c.Attributes()... }/>
+       case "field":
+        <div { c.Attributes()... }><label for={ c.ID() } data-slot="label">Label</label><input id={ c.ID() } aria-describedby={ c.ID()+"-help" } placeholder="Input text" disabled?={ c.State=="disabled" } aria-invalid={ fmt.Sprint(c.Invalid) }/><small id={ c.ID()+"-help" } data-slot="supporting-text">Supporting text</small></div>
+       case "select":
+        <span { c.Attributes()... }><select aria-label="Select value" disabled?={ c.State=="disabled" } aria-invalid={ fmt.Sprint(c.Invalid) }><option>Selected value</option><option>Another value</option></select><span data-slot="trailing-icon">@materialSymbol("expand_more")</span></span>
+       case "menu":
+        <nav class="md-menu" data-variant={ c.Variant } aria-label={ c.Label() }><section><h3>Section</h3><a href={ "#"+c.ID() } { c.Attributes()... }>@materialSymbol("check")<span>Menu item</span><small data-slot="trailing-supporting-text">⌘K</small></a></section></nav>
+       case "dialog":
+        <section { c.Attributes()... }><h2>Dialog headline</h2><p>Supporting text</p><footer><button class="md-button md-text-button" type="button">Cancel</button><button class="md-button md-text-button" type="button">Confirm</button></footer></section>
+       case "divider":
+        <hr { c.Attributes()... }/>
+      }
+     </figure>
+    }
+   </div>
+  </section>
+ }
 }

@@ -29,11 +29,11 @@ func tokenBrowserView(subject publish.SubjectView, browser tokenBrowser) templ.C
 		if err := tokenSetPicker(subject, browser).Render(ctx, writer); err != nil {
 			return err
 		}
-		if err := write(`<label class="tokens-token-search">` + tableIcon("search") + `<span class="tokens-visually-hidden">Search tokens</span><input type="search" name="q" value="` + html.EscapeString(browser.Query) + `" placeholder="Search"></label><div class="tokens-token-tools" role="group" aria-label="Table display"><button class="tokens-icon-button" type="button" data-action="previews" aria-label="Hide previews" aria-pressed="true">` + `<span data-icon="on">` + tableIcon("eye") + `</span><span data-icon="off" hidden>` + materialSymbolSVG("visibility_off") + `</span></button><button class="tokens-icon-button" type="button" data-action="view" aria-label="Show grid view" aria-pressed="false">` + `<span data-icon="on">` + tableIcon("grid") + `</span><span data-icon="off" hidden>` + materialSymbolSVG("table_rows") + `</span></button><button class="tokens-icon-button" type="button" data-action="expand" aria-label="Expand all groups" aria-expanded="false">` + `<span data-icon="on">` + tableIcon("expand") + `</span><span data-icon="off" hidden>` + materialSymbolSVG("unfold_less") + `</span></button></div></div><div class="tokens-token-columns"><span>Token</span>`); err != nil {
+		if err := write(`<label class="tokens-token-search">` + tableIcon("search") + `<span class="tokens-visually-hidden">Search tokens</span><input type="search" name="q" value="` + html.EscapeString(browser.Query) + `" placeholder="Search"></label><div class="tokens-token-tools" role="group" aria-label="Table display"><button class="md-icon-button md-standard-icon-button tokens-icon-button" type="button" data-action="previews" aria-label="Hide previews" aria-pressed="true">` + `<span data-icon="on">` + tableIcon("eye") + `</span><span data-icon="off" hidden>` + materialSymbolSVG("visibility_off") + `</span></button><button class="md-icon-button md-standard-icon-button tokens-icon-button" type="button" data-action="view" aria-label="Show grid view" aria-pressed="false">` + `<span data-icon="on">` + tableIcon("grid") + `</span><span data-icon="off" hidden>` + materialSymbolSVG("table_rows") + `</span></button><button class="md-icon-button md-standard-icon-button tokens-icon-button" type="button" data-action="expand" aria-label="Expand all groups" aria-expanded="false">` + `<span data-icon="on">` + tableIcon("expand") + `</span><span data-icon="off" hidden>` + materialSymbolSVG("unfold_less") + `</span></button></div></div><div class="tokens-token-columns"><span>Token</span>`); err != nil {
 			return err
 		}
 		if len(browser.Filters) > 0 {
-			if err := write(`<button class="tokens-context-button" type="button" data-action="context" aria-haspopup="dialog">` + `<span class="tokens-context-label" title="` + html.EscapeString(tableContextLabel(browser.Filters)) + `">` + html.EscapeString(tableContextLabel(browser.Filters)) + `</span>` + tableIcon("dropdown") + `</button></div><dialog class="tokens-context-dialog" aria-labelledby="tokens-context-title"><h2 id="tokens-context-title">See more values</h2><p>Compare token values by selecting another context</p><div class="tokens-context-fields">`); err != nil {
+			if err := write(`<button class="md-filter-chip tokens-context-button" type="button" data-action="context" aria-haspopup="dialog">` + `<span class="tokens-context-label" title="` + html.EscapeString(tableContextLabel(browser.Filters)) + `">` + html.EscapeString(tableContextLabel(browser.Filters)) + `</span>` + tableIcon("dropdown") + `</button></div><dialog class="md-dialog tokens-context-dialog" aria-labelledby="tokens-context-title"><h2 id="tokens-context-title">See more values</h2><p>Compare token values by selecting another context</p><div class="tokens-context-fields">`); err != nil {
 				return err
 			}
 			advanced := false
@@ -54,7 +54,7 @@ func tokenBrowserView(subject publish.SubjectView, browser tokenBrowser) templ.C
 						selected = ` checked`
 					}
 					label := option
-					if err := write(`<label class="tokens-context-choice"><input class="tokens-visually-hidden" type="radio" name="` + html.EscapeString(filter.Key) + `" value="` + html.EscapeString(option) + `"` + selected + `><span>` + materialSymbolSVG("check") + html.EscapeString(label) + `</span></label>`); err != nil {
+					if err := write(`<label class="md-filter-chip tokens-context-choice"><input class="tokens-visually-hidden" type="radio" name="` + html.EscapeString(filter.Key) + `" value="` + html.EscapeString(option) + `"` + selected + `><span class="md-chip-face">` + materialSymbolSVG("check") + html.EscapeString(label) + `</span></label>`); err != nil {
 						return err
 					}
 				}
@@ -72,13 +72,13 @@ func tokenBrowserView(subject publish.SubjectView, browser tokenBrowser) templ.C
 					return err
 				}
 			}
-			if err := write(`</div><p class="tokens-context-status" role="status" aria-live="polite"></p><footer><button class="md-text-button" type="button" data-action="cancel">Cancel</button><button class="md-text-button" type="submit">Save</button></footer></dialog>`); err != nil {
+			if err := write(`</div><p class="tokens-context-status" role="status" aria-live="polite"></p><footer><button class="md-button md-text-button" type="button" data-action="cancel">Cancel</button><button class="md-button md-text-button" type="submit">Save</button></footer></dialog>`); err != nil {
 				return err
 			}
 		} else if err := write(`<span>Value</span></div>`); err != nil {
 			return err
 		}
-		if err := write(`<noscript><button class="md-filled-button" type="submit">Apply filters</button><style>.tokens-context-dialog:not([open]){display:block;position:static}</style></noscript></form>`); err != nil {
+		if err := write(`<noscript><button class="md-button md-filled-button" type="submit">Apply filters</button><style>.tokens-context-dialog:not([open]){display:block;position:static}</style></noscript></form>`); err != nil {
 			return err
 		}
 		if browser.Count == 0 {
@@ -250,17 +250,17 @@ func writeTokenReferences(writer io.Writer, token tokenRow) error {
 		preview = `<span class="tokens-shape-swatch" style="border-radius:` + html.EscapeString(token.Shape) + `" aria-hidden="true"></span><span class="tokens-preview-value">` + html.EscapeString(label) + `</span>`
 	}
 	if token.Elevation != "" {
-		preview = `<span class="tokens-elevation-swatch" style="--_elevation-level:` + html.EscapeString(token.Elevation) + `" aria-hidden="true"></span><span class="tokens-visually-hidden">` + html.EscapeString(label) + `</span>`
+		preview = `<span class="md-elevation tokens-elevation-swatch" style="--_elevation-level:` + html.EscapeString(token.Elevation) + `" aria-hidden="true"></span><span class="tokens-visually-hidden">` + html.EscapeString(label) + `</span>`
 	}
 	compact := `<span class="tokens-compact-value"` + style + `>`
 	if token.Color != "" {
 		compact += `<span class="tokens-color-dot" aria-hidden="true"></span>`
 	}
 	compact += html.EscapeString(label) + `</span>`
-	if err := write(`<div class="tokens-value-cell"><button type="button" class="tokens-large-preview` + colorCellClass(token.Color) + `"` + style + ` popovertarget="` + id + `" aria-label="View ` + html.EscapeString(token.Name) + ` details">` + preview + `<span class="tokens-preview-name" aria-hidden="true">` + html.EscapeString(token.Name) + `</span></button>` + compact + `<button type="button" class="tokens-icon-button tokens-info-button" popovertarget="` + id + `" aria-label="References for ` + html.EscapeString(token.Name) + `">` + materialSymbolSVG("info") + `</button></div>`); err != nil {
+	if err := write(`<div class="tokens-value-cell"><button type="button" class="tokens-large-preview` + colorCellClass(token.Color) + `"` + style + ` popovertarget="` + id + `" aria-label="View ` + html.EscapeString(token.Name) + ` details">` + preview + `<span class="tokens-preview-name" aria-hidden="true">` + html.EscapeString(token.Name) + `</span></button>` + compact + `<button type="button" class="md-icon-button md-standard-icon-button tokens-icon-button tokens-info-button" popovertarget="` + id + `" aria-label="References for ` + html.EscapeString(token.Name) + `">` + materialSymbolSVG("info") + `</button></div>`); err != nil {
 		return err
 	}
-	if err := write(`<div id="` + id + `" class="tokens-reference-popover" popover role="dialog" aria-labelledby="` + id + `-title"><header><h3 id="` + id + `-title" class="md-typescale-title-large" title="` + html.EscapeString(token.Name) + `">` + html.EscapeString(token.Name) + `</h3><button type="button" class="tokens-icon-button tokens-popover-close" popovertarget="` + id + `" popovertargetaction="hide" aria-label="Close token details">` + materialSymbolSVG("close") + `</button></header><div class="tokens-popup-value">` + preview + `</div><div class="tokens-reference-chain"><code class="tokens-popup-source">` + html.EscapeString(token.SourceName) + `</code>`); err != nil {
+	if err := write(`<div id="` + id + `" class="md-elevation tokens-reference-popover" popover role="dialog" aria-labelledby="` + id + `-title"><header><h3 id="` + id + `-title" class="md-typescale-title-large" title="` + html.EscapeString(token.Name) + `">` + html.EscapeString(token.Name) + `</h3><button type="button" class="md-icon-button md-standard-icon-button tokens-icon-button tokens-popover-close" popovertarget="` + id + `" popovertargetaction="hide" aria-label="Close token details">` + materialSymbolSVG("close") + `</button></header><div class="tokens-popup-value">` + preview + `</div><div class="tokens-reference-chain"><code class="tokens-popup-source">` + html.EscapeString(token.SourceName) + `</code>`); err != nil {
 		return err
 	}
 	if err := writeReferenceBranches(writer, token.References); err != nil {
@@ -279,7 +279,7 @@ func writeReferenceBranches(writer io.Writer, references []publish.TokenReferenc
 	}
 	for _, reference := range references {
 		name := html.EscapeString(reference.Name)
-		if _, err := io.WriteString(writer, `<li><div class="tokens-reference-node">`+materialSymbolSVG("camera")+`<code title="`+name+`">`+name+`</code><button type="button" class="tokens-icon-button" data-copy-reference="`+name+`" aria-label="Copy `+name+`">`+materialSymbolSVG("content_copy")+`</button></div>`+materialSymbolSVG("arrow_downward")); err != nil {
+		if _, err := io.WriteString(writer, `<li><div class="tokens-reference-node">`+materialSymbolSVG("camera")+`<code title="`+name+`">`+name+`</code><button type="button" class="md-icon-button md-standard-icon-button tokens-icon-button" data-copy-reference="`+name+`" aria-label="Copy `+name+`">`+materialSymbolSVG("content_copy")+`</button></div>`+materialSymbolSVG("arrow_downward")); err != nil {
 			return err
 		}
 		if len(reference.References) > 0 {

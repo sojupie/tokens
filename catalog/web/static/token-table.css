@@ -69,10 +69,6 @@
   border-bottom: var(--md-comp-divider-thickness) solid
     color-mix(in srgb, var(--md-comp-divider-color) 50%, transparent);
 }
-.tokens-token-browser .tokens-token-set svg {
-  width: var(--md-sys-measurement-space200);
-  height: var(--md-sys-measurement-space200);
-}
 .tokens-token-set-menu {
   position: fixed;
   inset: auto;
@@ -83,11 +79,7 @@
   max-height: calc(100dvh - var(--md-sys-measurement-space400));
   overflow: auto;
   padding: var(--md-sys-measurement-space100);
-  border: var(--md-comp-divider-thickness) solid
-    color-mix(in srgb, var(--md-comp-divider-color) 50%, transparent);
-  border-radius: var(--md-sys-shape-corner-medium);
-  background: var(--md-sys-color-surface-container);
-  color: var(--md-sys-color-on-surface);
+
 }
 .tokens-token-set-menu section + section {
   border-top: var(--md-comp-divider-thickness) solid
@@ -103,36 +95,8 @@
   padding: 0;
   margin: 0;
 }
-.tokens-token-set-menu li a {
-  display: flex;
-  align-items: center;
-  gap: var(--md-sys-measurement-space150);
-  min-height: var(--md-sys-measurement-space600);
-  padding: var(--md-sys-measurement-space100) var(--md-sys-measurement-space150);
-  border-radius: var(--md-sys-shape-corner-small);
-  text-decoration: none;
-}
-.tokens-token-set-menu a[aria-current="page"] {
-  background: var(--md-sys-color-secondary-container);
-  color: var(--md-sys-color-on-secondary-container);
-}
 .tokens-token-set-menu a:not([aria-current="page"]) > svg {
   visibility: hidden;
-}
-.tokens-token-set-menu li a:hover {
-  background: color-mix(
-    in srgb,
-    transparent,
-    currentColor calc(var(--md-sys-state-hover-state-layer-opacity) * 100%)
-  );
-}
-.tokens-token-set-menu a[aria-current="page"]:hover {
-  background: color-mix(
-    in srgb,
-    var(--md-sys-color-secondary-container),
-    var(--md-sys-color-on-secondary-container)
-      calc(var(--md-sys-state-hover-state-layer-opacity) * 100%)
-  );
 }
 .tokens-token-tools {
   display: flex;
@@ -174,10 +138,6 @@
 }
 .tokens-token-columns > span:first-child {
   padding-left: var(--md-sys-measurement-space100);
-}
-.tokens-context-button svg {
-  height: var(--md-sys-measurement-space200);
-  width: var(--md-sys-measurement-space200);
 }
 .tokens-token-folder {
   border: 0;
@@ -273,24 +233,15 @@
   overflow-wrap: anywhere;
 }
 .tokens-token-download dialog {
-  color: var(--md-sys-color-on-surface);
-  background: var(--md-sys-color-surface-container-low);
-  border: var(--md-comp-divider-thickness) solid
-    color-mix(in srgb, var(--md-comp-divider-color) 50%, transparent);
-  border-radius: var(--md-sys-shape-corner-small);
+
   width: 440px;
   max-width: calc(100vw - var(--md-sys-measurement-space400));
   max-height: calc(100vh - var(--md-sys-measurement-space400));
   overflow: auto;
   padding: var(--md-sys-measurement-space300);
 }
-.tokens-token-download dialog::backdrop {
-  background: var(--md-comp-navigation-drawer-scrim-color);
-  opacity: var(--md-comp-navigation-drawer-scrim-opacity);
-}
 .tokens-token-download h2 {
-  font-size: var(--md-sys-typescale-title-large-size);
-  font-weight: var(--md-sys-typescale-label-large-weight);
+
   margin: 0 0 var(--md-sys-measurement-space100);
 }
 .tokens-download-table {
@@ -394,29 +345,19 @@
 }
 .tokens-context-dialog {
   box-sizing: border-box;
-  color: var(--md-sys-color-on-surface);
-  background: var(--md-sys-color-surface);
-  border: 0;
-  border-radius: var(--md-sys-shape-corner-extra-large);
+
   width: 412px;
   max-width: calc(100vw - var(--md-sys-measurement-space400));
   padding: var(--md-sys-measurement-space300) var(--md-sys-measurement-space300)
     var(--md-sys-measurement-space300);
   max-height: 85vh;
 }
-.tokens-context-dialog::backdrop {
-  background: var(--md-comp-navigation-drawer-scrim-color);
-  opacity: var(--md-comp-navigation-drawer-scrim-opacity);
-}
 .tokens-context-dialog h2 {
-  font-size: var(--md-comp-dialog-headline-size);
-  line-height: var(--md-comp-dialog-headline-line-height);
-  letter-spacing: var(--md-comp-dialog-headline-tracking);
-  font-weight: var(--md-sys-typescale-body-medium-weight);
+
   margin: 0 0 var(--md-sys-measurement-space150);
 }
 .tokens-context-dialog p {
-  font-size: var(--md-sys-typescale-body-medium-size);
+
   margin: 0 0 var(--md-sys-measurement-space300);
 }
 .tokens-context-fields {
@@ -476,18 +417,6 @@
   display: flex;
   flex-direction: column;
   gap: var(--md-sys-measurement-space75);
-}
-.tokens-change-filters select,
-.tokens-change-filters input {
-  font: inherit;
-  color: inherit;
-  background: var(--md-sys-color-surface-container-low);
-  border: var(--md-comp-divider-thickness) solid
-    color-mix(in srgb, var(--md-comp-divider-color) 50%, transparent);
-  border-radius: var(--md-sys-shape-corner-extra-small);
-  padding: var(--md-sys-measurement-space100) var(--md-sys-measurement-space125);
-  min-height: var(--md-comp-outlined-text-field-container-height);
-  max-width: 100%;
 }
 .tokens-change-filters input {
   width: 200px;
@@ -642,9 +571,6 @@
   color: var(--md-sys-color-on-surface-variant);
 }
 @media (max-width: 640px) {
-  .tokens-token-set {
-    max-width: 100%;
-  }
   .tokens-token-columns {
     grid-template-columns: minmax(0, 1fr) 140px;
   }
@@ -661,17 +587,6 @@
     padding: var(--md-sys-measurement-space100);
   }
 }
-.tokens-context-dialog,
-.tokens-token-download dialog {
-  background: var(--md-comp-dialog-container-color);
-  border-radius: var(--md-comp-dialog-container-shape);
-}
-.tokens-token-download h2 {
-  font-family: var(--md-comp-dialog-headline-font);
-  font-size: var(--md-comp-dialog-headline-size);
-  line-height: var(--md-comp-dialog-headline-line-height);
-  letter-spacing: var(--md-comp-dialog-headline-tracking);
-}
 /* Readable content uses body roles; compact action labels use label roles.
    Only timestamps, counts and preview captions retain the small scale. */
 .tokens-token-source-name,
@@ -686,19 +601,10 @@
   line-height: var(--md-sys-typescale-body-medium-line-height);
   letter-spacing: var(--md-sys-typescale-body-medium-tracking);
 }
-.tokens-change-filters select,
-.tokens-change-filters input {
-  font-size: var(--md-sys-typescale-body-large-size);
-  line-height: var(--md-sys-typescale-body-large-line-height);
-  letter-spacing: var(--md-sys-typescale-body-large-tracking);
-}
 /* Reflow against the table's width, even when embedded in a narrow panel. */
 @container (max-width:760px) {
   .tokens-token-toolbar {
     grid-template-columns: minmax(234px, 1fr) auto;
-  }
-  .tokens-token-set {
-    grid-column: 1 / -1;
   }
   .tokens-token-search {
     width: 100%;
@@ -730,139 +636,6 @@
 .tokens-folder-closed {
   align-items: center;
   flex-shrink: 0;
-}
-
-.tokens-icon-button {
-  display: grid;
-  place-items: center;
-  min-width: var(--md-comp-icon-button-container-height);
-  min-height: var(--md-comp-icon-button-container-height);
-  padding: 0;
-  border: 0;
-  border-radius: var(--md-comp-icon-button-container-shape-round);
-  background: transparent;
-  color: var(--md-comp-icon-button-standard-icon-color);
-}
-.tokens-icon-button[aria-pressed="true"] {
-  color: var(--md-comp-icon-button-standard-selected-icon-color);
-  background: transparent;
-}
-.tokens-icon-button svg {
-  width: var(--md-comp-icon-button-icon-size);
-  height: var(--md-comp-icon-button-icon-size);
-}
-.tokens-icon-button:not([aria-pressed="true"]):hover:not(:disabled) {
-  color: var(--md-comp-icon-button-standard-hovered-icon-color);
-  background: color-mix(
-    in srgb,
-    transparent,
-    var(--md-comp-icon-button-standard-hovered-state-layer-color)
-      calc(
-        var(--md-comp-icon-button-standard-hovered-state-layer-opacity) * 100%
-      )
-  );
-}
-.tokens-icon-button[aria-pressed="true"]:hover:not(:disabled) {
-  color: var(--md-comp-icon-button-standard-selected-hovered-icon-color);
-  background: color-mix(
-    in srgb,
-    transparent,
-    var(--md-comp-icon-button-standard-selected-hovered-state-layer-color)
-      calc(
-        var(--md-comp-icon-button-standard-hovered-state-layer-opacity) * 100%
-      )
-  );
-}
-.tokens-icon-button:not([aria-pressed="true"]):focus-visible:not(:disabled) {
-  color: var(--md-comp-icon-button-standard-focused-icon-color);
-  background: color-mix(
-    in srgb,
-    transparent,
-    var(--md-comp-icon-button-standard-focused-state-layer-color)
-      calc(
-        var(--md-comp-icon-button-standard-focused-state-layer-opacity) * 100%
-      )
-  );
-}
-.tokens-icon-button[aria-pressed="true"]:focus-visible:not(:disabled) {
-  color: var(--md-comp-icon-button-standard-selected-focused-icon-color);
-  background: color-mix(
-    in srgb,
-    transparent,
-    var(--md-comp-icon-button-standard-selected-focused-state-layer-color)
-      calc(
-        var(--md-comp-icon-button-standard-focused-state-layer-opacity) * 100%
-      )
-  );
-}
-.tokens-icon-button:not([aria-pressed="true"]):active:not(:disabled) {
-  color: var(--md-comp-icon-button-standard-pressed-icon-color);
-  background: color-mix(
-    in srgb,
-    transparent,
-    var(--md-comp-icon-button-standard-pressed-state-layer-color)
-      calc(
-        var(--md-comp-icon-button-standard-pressed-state-layer-opacity) * 100%
-      )
-  );
-}
-.tokens-icon-button[aria-pressed="true"]:active:not(:disabled) {
-  color: var(--md-comp-icon-button-standard-selected-pressed-icon-color);
-  background: color-mix(
-    in srgb,
-    transparent,
-    var(--md-comp-icon-button-standard-selected-pressed-state-layer-color)
-      calc(
-        var(--md-comp-icon-button-standard-pressed-state-layer-opacity) * 100%
-      )
-  );
-}
-.tokens-icon-button[aria-pressed="false"] {
-  color: var(--md-comp-icon-button-standard-unselected-icon-color);
-}
-.tokens-icon-button[aria-pressed="false"]:hover:not(:disabled) {
-  color: var(--md-comp-icon-button-standard-unselected-hovered-icon-color);
-  background: color-mix(
-    in srgb,
-    transparent,
-    var(--md-comp-icon-button-standard-unselected-hovered-state-layer-color)
-      calc(
-        var(--md-comp-icon-button-standard-hovered-state-layer-opacity) * 100%
-      )
-  );
-}
-.tokens-icon-button[aria-pressed="false"]:focus-visible:not(:disabled) {
-  color: var(--md-comp-icon-button-standard-unselected-focused-icon-color);
-  background: color-mix(
-    in srgb,
-    transparent,
-    var(--md-comp-icon-button-standard-unselected-focused-state-layer-color)
-      calc(
-        var(--md-comp-icon-button-standard-focused-state-layer-opacity) * 100%
-      )
-  );
-}
-.tokens-icon-button[aria-pressed="false"]:active:not(:disabled) {
-  color: var(--md-comp-icon-button-standard-unselected-pressed-icon-color);
-  background: color-mix(
-    in srgb,
-    transparent,
-    var(--md-comp-icon-button-standard-unselected-pressed-state-layer-color)
-      calc(
-        var(--md-comp-icon-button-standard-pressed-state-layer-opacity) * 100%
-      )
-  );
-}
-.tokens-icon-button:disabled {
-  cursor: default;
-  pointer-events: none;
-  background: transparent;
-  color: color-mix(
-    in srgb,
-    var(--md-comp-icon-button-standard-disabled-icon-color)
-      calc(var(--md-comp-icon-button-standard-disabled-icon-opacity) * 100%),
-    transparent
-  );
 }
 .tokens-token-folder > summary:hover {
   background: color-mix(
@@ -905,42 +678,6 @@
       calc(var(--md-sys-state-hover-state-layer-opacity) * 100%)
   );
 }
-.tokens-token-set-menu a:focus-visible {
-  background: color-mix(
-    in srgb,
-    transparent,
-    currentColor calc(var(--md-sys-state-focus-state-layer-opacity) * 100%)
-  );
-}
-.tokens-token-set-menu a[aria-current="page"]:focus-visible {
-  background: color-mix(
-    in srgb,
-    var(--md-sys-color-secondary-container),
-    var(--md-sys-color-on-secondary-container)
-      calc(var(--md-sys-state-focus-state-layer-opacity) * 100%)
-  );
-}
-.tokens-token-set-menu a:active {
-  background: color-mix(
-    in srgb,
-    transparent,
-    currentColor calc(var(--md-sys-state-pressed-state-layer-opacity) * 100%)
-  );
-}
-.tokens-token-set-menu a[aria-current="page"]:active {
-  background: color-mix(
-    in srgb,
-    var(--md-sys-color-secondary-container),
-    var(--md-sys-color-on-secondary-container)
-      calc(var(--md-sys-state-pressed-state-layer-opacity) * 100%)
-  );
-}
-
-.tokens-icon-button:focus-visible {
-  outline: var(--md-comp-icon-button-focus-indicator-thickness) solid
-    var(--md-comp-icon-button-focus-indicator-color);
-  outline-offset: var(--md-comp-icon-button-focus-indicator-outline-offset);
-}
 
 /* Native radio choices: the label owns the hit area and all pointer states. */
 .tokens-context-options {
@@ -948,152 +685,11 @@
   flex-wrap: wrap;
   gap: var(--md-sys-measurement-space100);
 }
-.tokens-context-choice {
-  position: relative;
-  display: inline-flex;
-  max-width: 100%;
-  cursor: pointer;
-}
-.tokens-context-choice > span {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--md-sys-measurement-space100);
-  overflow-wrap: anywhere;
-  min-height: var(--md-comp-filter-chip-container-height);
-  border: var(--md-comp-divider-thickness) solid
-    color-mix(in srgb, var(--md-comp-divider-color) 50%, transparent);
-  border-radius: var(--md-comp-filter-chip-container-shape);
-  padding: var(--md-sys-measurement-space50) var(--md-sys-measurement-space150);
-  font-family: var(--md-comp-filter-chip-label-text-font);
-  font-size: var(--md-comp-filter-chip-label-text-size);
-  line-height: var(--md-comp-filter-chip-label-text-line-height);
-  font-weight: var(--md-comp-filter-chip-label-text-weight);
-  letter-spacing: var(--md-comp-filter-chip-label-text-tracking);
-  color: var(--md-comp-filter-chip-unselected-label-text-color);
-  background: transparent;
-}
-.tokens-context-choice > span > svg {
-  display: none;
-  width: var(--md-comp-filter-chip-with-icon-icon-size);
-  height: var(--md-comp-filter-chip-with-icon-icon-size);
-}
-.tokens-context-choice > input:checked + span {
-  color: var(--md-comp-filter-chip-selected-label-text-color);
-  background: var(--md-comp-filter-chip-flat-selected-container-color);
-  border-color: transparent;
-}
-.tokens-context-choice > input:checked + span > svg {
-  display: block;
-}
-.tokens-context-choice > input:focus-visible + span {
-  outline: var(--md-comp-filter-chip-focus-indicator-thickness) solid
-    var(--md-comp-filter-chip-focus-indicator-color);
-  outline-offset: var(--md-comp-filter-chip-focus-indicator-outline-offset);
-}
-.tokens-context-choice:hover > input:not(:checked):enabled + span {
-  color: var(--md-comp-filter-chip-unselected-hover-label-text-color);
-  background: color-mix(
-    in srgb,
-    transparent,
-    var(--md-comp-filter-chip-unselected-hover-state-layer-color)
-      calc(
-        var(--md-comp-filter-chip-unselected-hover-state-layer-opacity) * 100%
-      )
-  );
-}
-.tokens-context-choice:hover > input:checked:enabled + span {
-  color: var(--md-comp-filter-chip-selected-hover-label-text-color);
-  background: color-mix(
-    in srgb,
-    var(--md-comp-filter-chip-flat-selected-container-color),
-    var(--md-comp-filter-chip-selected-hover-state-layer-color)
-      calc(var(--md-comp-filter-chip-selected-hover-state-layer-opacity) * 100%)
-  );
-}
-.tokens-context-choice > input:not(:checked):focus-visible:enabled + span {
-  color: var(--md-comp-filter-chip-unselected-focus-label-text-color);
-  background: color-mix(
-    in srgb,
-    transparent,
-    var(--md-comp-filter-chip-unselected-focus-state-layer-color)
-      calc(
-        var(--md-comp-filter-chip-unselected-focus-state-layer-opacity) * 100%
-      )
-  );
-}
-.tokens-context-choice > input:checked:focus-visible:enabled + span {
-  color: var(--md-comp-filter-chip-selected-focus-label-text-color);
-  background: color-mix(
-    in srgb,
-    var(--md-comp-filter-chip-flat-selected-container-color),
-    var(--md-comp-filter-chip-selected-focus-state-layer-color)
-      calc(var(--md-comp-filter-chip-selected-focus-state-layer-opacity) * 100%)
-  );
-}
-.tokens-context-choice:active > input:not(:checked):enabled + span {
-  color: var(--md-comp-filter-chip-unselected-pressed-label-text-color);
-  background: color-mix(
-    in srgb,
-    transparent,
-    var(--md-comp-filter-chip-unselected-pressed-state-layer-color)
-      calc(
-        var(--md-comp-filter-chip-unselected-pressed-state-layer-opacity) * 100%
-      )
-  );
-}
-.tokens-context-choice:active > input:checked:enabled + span {
-  color: var(--md-comp-filter-chip-selected-pressed-label-text-color);
-  background: color-mix(
-    in srgb,
-    var(--md-comp-filter-chip-flat-selected-container-color),
-    var(--md-comp-filter-chip-selected-pressed-state-layer-color)
-      calc(
-        var(--md-comp-filter-chip-selected-pressed-state-layer-opacity) * 100%
-      )
-  );
-}
-
-/* Compact menu triggers; text truncates while the arrow keeps its width. */
-.tokens-token-browser .tokens-token-set,
-.tokens-context-button {
-  display: inline-flex;
-  align-items: center;
-  flex-wrap: nowrap;
-  gap: var(--md-sys-measurement-space100);
-  min-width: 0;
-  max-width: 100%;
-  height: var(--md-comp-filter-chip-container-height);
-  padding: 0 var(--md-sys-measurement-space150);
-  border: var(--md-comp-divider-thickness) solid
-    color-mix(in srgb, var(--md-comp-divider-color) 50%, transparent);
-  border-radius: var(--md-comp-filter-chip-container-shape);
-  font-family: var(--md-comp-filter-chip-label-text-font);
-  font-size: var(--md-comp-filter-chip-label-text-size);
-  font-weight: var(--md-comp-filter-chip-label-text-weight);
-  line-height: var(--md-comp-filter-chip-label-text-line-height);
-  letter-spacing: var(--md-comp-filter-chip-label-text-tracking);
-  color: var(--md-comp-filter-chip-unselected-label-text-color);
-  background: transparent;
-  white-space: nowrap;
-}
-.tokens-token-browser .tokens-token-set {
-  justify-self: start;
-  color: var(--md-comp-filter-chip-selected-label-text-color);
-  background: var(--md-comp-filter-chip-flat-selected-container-color);
-  border-color: transparent;
-}
-.tokens-context-button {
-  justify-self: end;
-}
 .tokens-context-label {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-.tokens-context-button svg,
-.tokens-token-set svg {
-  flex-shrink: 0;
 }
 .tokens-token-tools span {
   display: inline-flex;
@@ -1263,9 +859,6 @@
 .tokens-grid-view .tokens-token-columns > span {
   display: none;
 }
-.tokens-grid-view .tokens-context-button {
-  justify-self: start;
-}
 .tokens-grid-view .tokens-token-table,
 .tokens-grid-view .tokens-token-table tbody {
   display: block;
@@ -1318,68 +911,6 @@
 .tokens-grid-view .tokens-info-button {
   display: none;
 }
-.tokens-token-set:hover:not(:disabled) {
-  color: var(--md-comp-filter-chip-selected-hover-label-text-color);
-  background: color-mix(
-    in srgb,
-    var(--md-comp-filter-chip-flat-selected-container-color),
-    var(--md-comp-filter-chip-selected-hover-state-layer-color)
-      calc(var(--md-comp-filter-chip-selected-hover-state-layer-opacity) * 100%)
-  );
-}
-.tokens-token-set:focus-visible:not(:disabled) {
-  color: var(--md-comp-filter-chip-selected-focus-label-text-color);
-  background: color-mix(
-    in srgb,
-    var(--md-comp-filter-chip-flat-selected-container-color),
-    var(--md-comp-filter-chip-selected-focus-state-layer-color)
-      calc(var(--md-comp-filter-chip-selected-focus-state-layer-opacity) * 100%)
-  );
-}
-.tokens-token-set:active:not(:disabled) {
-  color: var(--md-comp-filter-chip-selected-pressed-label-text-color);
-  background: color-mix(
-    in srgb,
-    var(--md-comp-filter-chip-flat-selected-container-color),
-    var(--md-comp-filter-chip-selected-pressed-state-layer-color)
-      calc(
-        var(--md-comp-filter-chip-selected-pressed-state-layer-opacity) * 100%
-      )
-  );
-}
-.tokens-context-button:hover:not(:disabled) {
-  color: var(--md-comp-filter-chip-unselected-hover-label-text-color);
-  background: color-mix(
-    in srgb,
-    transparent,
-    var(--md-comp-filter-chip-unselected-hover-state-layer-color)
-      calc(
-        var(--md-comp-filter-chip-unselected-hover-state-layer-opacity) * 100%
-      )
-  );
-}
-.tokens-context-button:focus-visible:not(:disabled) {
-  color: var(--md-comp-filter-chip-unselected-focus-label-text-color);
-  background: color-mix(
-    in srgb,
-    transparent,
-    var(--md-comp-filter-chip-unselected-focus-state-layer-color)
-      calc(
-        var(--md-comp-filter-chip-unselected-focus-state-layer-opacity) * 100%
-      )
-  );
-}
-.tokens-context-button:active:not(:disabled) {
-  color: var(--md-comp-filter-chip-unselected-pressed-label-text-color);
-  background: color-mix(
-    in srgb,
-    transparent,
-    var(--md-comp-filter-chip-unselected-pressed-state-layer-color)
-      calc(
-        var(--md-comp-filter-chip-unselected-pressed-state-layer-opacity) * 100%
-      )
-  );
-}
 
 .tokens-token-table
   td:has(> .tokens-reference-popover:popover-open)
@@ -1388,11 +919,6 @@
     var(--md-sys-color-primary);
   outline-offset: var(--md-sys-state-focus-indicator-outer-offset);
 }
-.tokens-icon-button.tokens-popover-close {
-  background: var(--md-comp-filled-tonal-icon-button-container-color);
-  color: var(--md-comp-filled-tonal-icon-button-icon-color);
-  border-radius: var(--md-comp-filled-tonal-icon-button-container-shape);
-}
 .tokens-reference-type {
   display: block;
   margin-left: calc(
@@ -1400,40 +926,6 @@
   );
   font-size: var(--md-sys-typescale-body-small-size);
   color: var(--md-sys-color-on-surface-variant);
-}
-.tokens-icon-button.tokens-popover-close:hover:not(:disabled) {
-  color: var(--md-comp-filled-tonal-icon-button-hover-icon-color);
-  background: color-mix(
-    in srgb,
-    var(--md-comp-filled-tonal-icon-button-container-color),
-    var(--md-comp-filled-tonal-icon-button-hover-state-layer-color)
-      calc(
-        var(--md-comp-filled-tonal-icon-button-hover-state-layer-opacity) * 100%
-      )
-  );
-}
-.tokens-icon-button.tokens-popover-close:focus-visible:not(:disabled) {
-  color: var(--md-comp-filled-tonal-icon-button-focus-icon-color);
-  background: color-mix(
-    in srgb,
-    var(--md-comp-filled-tonal-icon-button-container-color),
-    var(--md-comp-filled-tonal-icon-button-focus-state-layer-color)
-      calc(
-        var(--md-comp-filled-tonal-icon-button-focus-state-layer-opacity) * 100%
-      )
-  );
-}
-.tokens-icon-button.tokens-popover-close:active:not(:disabled) {
-  color: var(--md-comp-filled-tonal-icon-button-pressed-icon-color);
-  background: color-mix(
-    in srgb,
-    var(--md-comp-filled-tonal-icon-button-container-color),
-    var(--md-comp-filled-tonal-icon-button-pressed-state-layer-color)
-      calc(
-        var(--md-comp-filled-tonal-icon-button-pressed-state-layer-opacity) *
-          100%
-      )
-  );
 }
 .tokens-compact-value {
   font-size: var(--md-sys-typescale-body-medium-size);
@@ -1447,262 +939,6 @@
   .tokens-no-previews:not(.tokens-grid-view) .tokens-token-value-column {
     width: 50%;
   }
-}
-
-.tokens-context-choice:has(input:disabled) {
-  cursor: default;
-}
-.tokens-context-choice > input:disabled + span {
-  color: color-mix(
-    in srgb,
-    var(--md-comp-filter-chip-disabled-label-text-color)
-      calc(var(--md-comp-filter-chip-disabled-label-text-opacity) * 100%),
-    transparent
-  );
-}
-.tokens-context-choice > input:disabled:checked + span {
-  background: color-mix(
-    in srgb,
-    var(--md-comp-filter-chip-flat-disabled-selected-container-color)
-      calc(
-        var(--md-comp-filter-chip-flat-disabled-selected-container-opacity) *
-          100%
-      ),
-    transparent
-  );
-}
-.tokens-context-choice > input:disabled:not(:checked) + span {
-  border-color: color-mix(
-    in srgb,
-    var(--md-comp-filter-chip-flat-disabled-unselected-outline-color)
-      calc(
-        var(--md-comp-filter-chip-flat-disabled-unselected-outline-opacity) *
-          100%
-      ),
-    transparent
-  );
-}
-.tokens-context-choice > input:checked + span > svg {
-  color: var(--md-comp-filter-chip-with-icon-selected-icon-color);
-}
-.tokens-context-choice:hover > input:checked:enabled + span > svg {
-  color: var(--md-comp-filter-chip-with-icon-selected-hover-icon-color);
-}
-.tokens-context-choice > input:checked:focus-visible:enabled + span > svg {
-  color: var(--md-comp-filter-chip-with-icon-selected-focus-icon-color);
-}
-.tokens-context-choice:active > input:checked:enabled + span > svg {
-  color: var(--md-comp-filter-chip-with-icon-selected-pressed-icon-color);
-}
-
-.tokens-context-choice > input:disabled + span > svg {
-  color: color-mix(
-    in srgb,
-    var(--md-comp-filter-chip-with-icon-disabled-icon-color)
-      calc(var(--md-comp-filter-chip-with-icon-disabled-icon-opacity) * 100%),
-    transparent
-  );
-}
-.tokens-token-set:focus-visible:not(:disabled) {
-  outline: var(--md-comp-filter-chip-focus-indicator-thickness) solid
-    var(--md-comp-filter-chip-focus-indicator-color);
-  outline-offset: var(--md-comp-filter-chip-focus-indicator-outline-offset);
-}
-.tokens-context-button:focus-visible:not(:disabled) {
-  outline: var(--md-comp-filter-chip-focus-indicator-thickness) solid
-    var(--md-comp-filter-chip-focus-indicator-color);
-  outline-offset: var(--md-comp-filter-chip-focus-indicator-outline-offset);
-}
-
-.tokens-icon-button.tokens-popover-close:disabled {
-  color: color-mix(
-    in srgb,
-    var(--md-comp-filled-tonal-icon-button-disabled-icon-color)
-      calc(var(--md-comp-filled-tonal-icon-button-disabled-icon-opacity) * 100%),
-    transparent
-  );
-  background: color-mix(
-    in srgb,
-    var(--md-comp-filled-tonal-icon-button-disabled-container-color)
-      calc(
-        var(--md-comp-filled-tonal-icon-button-disabled-container-opacity) *
-          100%
-      ),
-    transparent
-  );
-}
-.tokens-icon-button.tokens-popover-close:focus-visible {
-  outline: var(--md-comp-filled-tonal-icon-button-focus-indicator-thickness)
-    solid var(--md-comp-filled-tonal-icon-button-focus-indicator-color);
-  outline-offset: var(
-    --md-comp-filled-tonal-icon-button-focus-indicator-outline-offset
-  );
-}
-
-.tokens-token-set > svg {
-  color: var(
-    --md-comp-filter-chip-with-trailing-icon-selected-trailing-icon-color
-  );
-}
-.tokens-token-set:hover:not(:disabled) > svg {
-  color: var(
-    --md-comp-filter-chip-with-trailing-icon-selected-hover-trailing-icon-color
-  );
-}
-.tokens-token-set:focus-visible:not(:disabled) > svg {
-  color: var(
-    --md-comp-filter-chip-with-trailing-icon-selected-focus-trailing-icon-color
-  );
-}
-.tokens-token-set:active:not(:disabled) > svg {
-  color: var(
-    --md-comp-filter-chip-with-trailing-icon-selected-pressed-trailing-icon-color
-  );
-}
-.tokens-token-set:disabled {
-  color: color-mix(
-    in srgb,
-    var(--md-comp-filter-chip-disabled-label-text-color)
-      calc(var(--md-comp-filter-chip-disabled-label-text-opacity) * 100%),
-    transparent
-  );
-  background: color-mix(
-    in srgb,
-    var(--md-comp-filter-chip-flat-disabled-selected-container-color)
-      calc(
-        var(--md-comp-filter-chip-flat-disabled-selected-container-opacity) *
-          100%
-      ),
-    transparent
-  );
-}
-.tokens-token-set:disabled > svg {
-  color: color-mix(
-    in srgb,
-    var(--md-comp-filter-chip-with-trailing-icon-disabled-trailing-icon-color)
-      calc(
-        var(
-            --md-comp-filter-chip-with-trailing-icon-disabled-trailing-icon-opacity
-          ) *
-          100%
-      ),
-    transparent
-  );
-}
-
-.tokens-context-button > svg {
-  color: var(
-    --md-comp-filter-chip-with-trailing-icon-unselected-trailing-icon-color
-  );
-}
-.tokens-context-button:hover:not(:disabled) > svg {
-  color: var(
-    --md-comp-filter-chip-with-trailing-icon-unselected-hover-trailing-icon-color
-  );
-}
-.tokens-context-button:focus-visible:not(:disabled) > svg {
-  color: var(
-    --md-comp-filter-chip-with-trailing-icon-unselected-focus-trailing-icon-color
-  );
-}
-.tokens-context-button:active:not(:disabled) > svg {
-  color: var(
-    --md-comp-filter-chip-with-trailing-icon-unselected-pressed-trailing-icon-color
-  );
-}
-.tokens-context-button:disabled {
-  color: color-mix(
-    in srgb,
-    var(--md-comp-filter-chip-disabled-label-text-color)
-      calc(var(--md-comp-filter-chip-disabled-label-text-opacity) * 100%),
-    transparent
-  );
-  background: transparent;
-}
-.tokens-context-button:disabled > svg {
-  color: color-mix(
-    in srgb,
-    var(--md-comp-filter-chip-with-trailing-icon-disabled-trailing-icon-color)
-      calc(
-        var(
-            --md-comp-filter-chip-with-trailing-icon-disabled-trailing-icon-opacity
-          ) *
-          100%
-      ),
-    transparent
-  );
-}
-
-.tokens-icon-button.tokens-popover-close {
-  min-width: var(--md-comp-filled-tonal-icon-button-container-width);
-  min-height: var(--md-comp-filled-tonal-icon-button-container-height);
-}
-.tokens-icon-button.tokens-popover-close > svg {
-  width: var(--md-comp-filled-tonal-icon-button-icon-size);
-  height: var(--md-comp-filled-tonal-icon-button-icon-size);
-}
-
-.tokens-context-choice > span,
-.tokens-context-button,
-.tokens-token-set {
-  --_elevation-level: var(--md-comp-filter-chip-flat-container-elevation);
-  --_shadow-color: var(--md-comp-filter-chip-container-shadow-color);
-}
-.tokens-context-choice:hover > input:checked:enabled + span,
-.tokens-token-set:hover:not(:disabled) {
-  --_elevation-level: var(
-    --md-comp-filter-chip-flat-selected-hover-container-elevation
-  );
-}
-.tokens-context-choice > input:checked:focus-visible:enabled + span,
-.tokens-token-set:focus-visible:not(:disabled) {
-  --_elevation-level: var(
-    --md-comp-filter-chip-flat-selected-focus-container-elevation
-  );
-}
-.tokens-context-choice:active > input:checked:enabled + span,
-.tokens-token-set:active:not(:disabled) {
-  --_elevation-level: var(
-    --md-comp-filter-chip-flat-selected-pressed-container-elevation
-  );
-}
-.tokens-context-choice:hover > input:not(:checked):enabled + span,
-.tokens-context-button:hover:not(:disabled) {
-  --_elevation-level: var(
-    --md-comp-filter-chip-flat-unselected-hover-container-elevation
-  );
-}
-.tokens-context-choice > input:not(:checked):focus-visible:enabled + span,
-.tokens-context-button:focus-visible:not(:disabled) {
-  --_elevation-level: var(
-    --md-comp-filter-chip-flat-unselected-focus-container-elevation
-  );
-}
-.tokens-context-choice:active > input:not(:checked):enabled + span,
-.tokens-context-button:active:not(:disabled) {
-  --_elevation-level: var(
-    --md-comp-filter-chip-flat-unselected-pressed-container-elevation
-  );
-}
-
-.tokens-context-choice > input:not(:checked):focus-visible:enabled + span,
-.tokens-context-button:focus-visible:not(:disabled) {
-  border-color: color-mix(
-    in srgb,
-    var(--md-comp-filter-chip-flat-unselected-focus-outline-color) 50%,
-    transparent
-  );
-}
-.tokens-context-button:disabled {
-  border-color: color-mix(
-    in srgb,
-    var(--md-comp-filter-chip-flat-disabled-unselected-outline-color)
-      calc(
-        var(--md-comp-filter-chip-flat-disabled-unselected-outline-opacity) *
-          100%
-      ),
-    transparent
-  );
 }
 
 .tokens-shape-swatch {
@@ -1719,3 +955,10 @@
   padding: var(--md-sys-measurement-space150) 0;
   text-align: center;
 }
+
+.tokens-context-choice { max-width:100%; }
+.tokens-token-set { justify-self:start; max-width:100%; }
+.tokens-context-button { justify-self:end; max-width:100%; white-space:nowrap; }
+.tokens-context-label { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; }
+.tokens-token-browser .md-icon-button svg { width:var(--_icon-icon-size); height:var(--_icon-icon-size); }
+.tokens-context-options { display:flex; flex-wrap:wrap; gap:var(--md-sys-measurement-space100); }

@@ -6,6 +6,8 @@ RUN --mount=type=cache,id=tokens-go-mod,target=/go/pkg/mod,sharing=locked go mod
 COPY cmd ./cmd
 COPY source ./source
 COPY catalog ./catalog
+COPY forge ./forge
+COPY skills ./skills
 COPY schemas ./schemas
 RUN --mount=type=cache,id=tokens-go-mod,target=/go/pkg/mod,sharing=locked \
     --mount=type=cache,id=tokens-go-build,target=/root/.cache/go-build \

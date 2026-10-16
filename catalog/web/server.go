@@ -14,15 +14,16 @@ import (
 )
 
 type Server struct {
-	usage         *usage.Store
-	publicOrigin  string
-	basePath      string
-	browserOrigin string
-	state         publish.PublishedState
-	downloadsDir  string
-	themeCSS      string
-	themeError    error
-	siteDownload  downloadPreview
+	usage          *usage.Store
+	publicOrigin   string
+	basePath       string
+	browserOrigin  string
+	state          publish.PublishedState
+	tokenAssetsDir string
+	downloadsDir   string
+	themeCSS       string
+	themeError     error
+	siteDownload   downloadPreview
 }
 
 type subjectSummary struct {
@@ -68,6 +69,8 @@ func New(state publish.PublishedState, downloadsDir string) *Server {
 
 func (server *Server) Handler() http.Handler {
 	mux := http.NewServeMux()
+	mux.HandleFunc("GET /lab/buttons", server.handleButtonGallery)
+	mux.HandleFunc("GET /lab/components", server.handleComponentGallery)
 	mux.HandleFunc("GET /for-agents", server.handleForAgents)
 	mux.HandleFunc("GET /sitemap.xml", server.handleSitemap)
 	mux.HandleFunc("GET /sitemap.css", handleSitemapCSS)
@@ -89,6 +92,7 @@ func (server *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /api/v1/subjects", server.handleComponents)
 	mux.HandleFunc("GET /api/v1/components/{slug...}", server.handleComponent)
 	mux.HandleFunc("GET /static/", handleStaticAsset)
+	mux.HandleFunc("GET /downloads/dtcg/{variant}/{file}", server.handleDTCGDownload)
 	mux.HandleFunc("GET /downloads/{path...}", server.handleDownload)
 	mux.HandleFunc("GET /", server.handleOverview)
 	mux.HandleFunc("GET /changes", server.handleGlobalChanges)

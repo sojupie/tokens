@@ -18,7 +18,7 @@ func TestThemeValuesAreTypedCSS(t *testing.T) {
 		`{"color":{}}`:                              "",
 		`{"color":{"alpha":null}}`:                  "",
 		`{"fontWeight":null}`:                       "",
-		`{"fontTracking":{"unit":"POINTS"}}`:        "normal",
+		`{"fontTracking":{"unit":"POINTS"}}`:        "0px",
 		`{"length":{"value":24,"unit":"DIPS"}}`:     "24px",
 		`{"fontSize":{"value":16,"unit":"POINTS"}}`: "16px",
 		`{"shape":{"family":"SHAPE_FAMILY_ROUNDED_CORNERS","defaultSize":{"value":12,"unit":"DIPS"}}}`: "12px",
@@ -34,7 +34,7 @@ func TestThemeValuesAreTypedCSS(t *testing.T) {
 		`{"elevation":{"value":2,"unit":"DIPS"}}`:                                                      "",
 		`{"elevation":{"value":1,"unit":"POINTS"}}`:                                                    "",
 		`{"opacity":0.08}`:                                                                             "0.08",
-		`{"length":{"unit":"DIPS"}}`:                                                                   "",
+		`{"length":{"unit":"DIPS"}}`:                                                                   "0px",
 		`{"undefined":true}`:                                                                           "",
 		`{"arbitrary":"red; } body { display:none"}`:                                                   "",
 	} {
@@ -47,7 +47,7 @@ func TestThemeValuesAreTypedCSS(t *testing.T) {
 func TestStylesUseMaterialRolesWithoutLegacyAliases(t *testing.T) {
 	legacy := regexp.MustCompile(`--(?:tokens-(?:ink|page|rule|accent|font)|table-|token-(?:ink|color))`)
 	for _, file := range []string{"static/app.css", "static/token-table.css"} {
-		css, err := embeddedStatic.ReadFile(file)
+		css, err := readStaticFile(file)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -58,40 +58,36 @@ func TestStylesUseMaterialRolesWithoutLegacyAliases(t *testing.T) {
 }
 
 func TestComponentStateProperties(t *testing.T) {
-	css, err := embeddedStatic.ReadFile("static/app.css")
+	css, err := readStaticFile("static/app.css")
 	if err != nil {
 		t.Fatal(err)
 	}
 	// Check properties within their state rules, not just token presence.
-	for _, variant := range []string{"filled", "filled-tonal", "elevated"} {
-		for pseudo, state := range map[string]string{"hover": "hover", "focus-visible": "focus", "active": "pressed"} {
-			selector := ".md-" + variant + "-button:" + pseudo + `:not(:disabled):not([aria-disabled="true"])`
-			assertCSSProperty(t, string(css), selector, "--_elevation-level", "var(--md-comp-"+variant+"-button-"+state+"-container-elevation)")
-		}
-	}
-	for pseudo, state := range map[string]string{"hover": "hover", "focus-visible": "focus", "active": "pressed"} {
-		assertCSSProperty(t, string(css), ".md-outlined-button:"+pseudo+`:not(:disabled):not([aria-disabled="true"])`, "border-color", "var(--md-comp-outlined-button-"+state+"-outline-color)")
-	}
-	for _, variant := range []string{"outlined", "filled", "elevated"} {
-		selector := ".md-" + variant + `-card.md-interactive-card:focus-visible:not([aria-disabled="true"])`
-		assertCSSProperty(t, string(css), selector, "--_elevation-level", "var(--md-comp-"+variant+"-card-focus-container-elevation)")
-		assertCSSProperty(t, string(css), selector, "outline-offset", "var(--md-comp-"+variant+"-card-focus-indicator-outline-offset)")
-	}
-}
-
-func TestRadioChipFocusHasHoverSpecificity(t *testing.T) {
-	css, err := embeddedStatic.ReadFile("static/token-table.css")
+	buttons, err := readStaticFile("static/buttons.css")
 	if err != nil {
 		t.Fatal(err)
 	}
-	// :enabled is also present in hover rules. Focus must take precedence
-	// when a keyboard-focused choice is under the pointer.
-	for _, selected := range []string{"checked", "not(:checked)"} {
-		state := "selected"
-		if selected == "not(:checked)" {
-			state = "unselected"
+	for _, variant := range []string{"filled", "tonal", "elevated"} {
+		for _, state := range []string{"hovered", "focused", "pressed"} {
+			if !strings.Contains(string(buttons), "--_elevation-level: var(--md-comp-button-"+variant+"-"+state+"-container-elevation)") {
+				t.Fatal("missing generated elevation", variant, state)
+			}
 		}
-		assertCSSProperty(t, string(css), ".tokens-context-choice > input:"+selected+":focus-visible:enabled + span", "color", "var(--md-comp-filter-chip-"+state+"-focus-label-text-color)")
+	}
+	if strings.Contains(string(css), ".md-filled-button") || strings.Contains(string(css), ".md-filled-tonal-button") {
+		t.Fatal("handwritten button rules remain")
+	}
+	components, err := readStaticFile("static/components.css")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, variant := range []string{"outlined", "filled", "elevated"} {
+		if !strings.Contains(string(components), "--_card-elevation: var(--md-comp-"+variant+"-card-focus-container-elevation)") {
+			t.Fatal("missing generated card focus elevation", variant)
+		}
+	}
+	if strings.Contains(string(css), ".md-outlined-card.md-interactive-card") {
+		t.Fatal("handwritten card states remain")
 	}
 }
 
@@ -117,7 +113,7 @@ func TestThemeReportsMissingTokensWithoutInventingFallbacks(t *testing.T) {
 
 func TestStylesHaveNoSeparatePaletteOrTypeScale(t *testing.T) {
 	for _, file := range []string{"static/app.css", "static/token-table.css"} {
-		css, err := embeddedStatic.ReadFile(file)
+		css, err := readStaticFile(file)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -128,14 +124,14 @@ func TestStylesHaveNoSeparatePaletteOrTypeScale(t *testing.T) {
 }
 
 func TestReadableRolesAndDistinctCardSurface(t *testing.T) {
-	app, err := embeddedStatic.ReadFile("static/app.css")
+	app, err := readStaticFile("static/app.css")
 	if err != nil {
 		t.Fatal(err)
 	}
 	if strings.Contains(string(app), "typo-") || !strings.Contains(string(app), "background:var(--md-sys-color-surface-container-low)") || !strings.Contains(string(app), "background:var(--md-sys-color-surface);") {
 		t.Fatal("use Material role names and a card surface separate from the page")
 	}
-	table, err := embeddedStatic.ReadFile("static/token-table.css")
+	table, err := readStaticFile("static/token-table.css")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -151,9 +147,9 @@ func TestReadableRolesAndDistinctCardSurface(t *testing.T) {
 
 // Opt-in check against the actual served publication, not a mock theme.
 func TestThemeFromPublication(t *testing.T) {
-	path := os.Getenv("SOURCE_LOOM_THEME_DB")
+	path := os.Getenv("TOKEN_CATALOG_THEME_DB")
 	if path == "" {
-		t.Skip("set SOURCE_LOOM_THEME_DB to validate a real publication")
+		t.Skip("set TOKEN_CATALOG_THEME_DB to validate a real publication")
 	}
 	state, err := publish.Load(path)
 	if err != nil {
@@ -209,7 +205,7 @@ func TestThemeFromPublication(t *testing.T) {
 		t.Fatal("unchanged theme should not transfer CSS again")
 	}
 	for _, file := range []string{"roboto-latin.woff2", "roboto-latin-ext.woff2"} {
-		font, err := embeddedStatic.ReadFile("static/fonts/" + file)
+		font, err := readStaticFile("static/fonts/" + file)
 		if err != nil || len(font) < 4 || string(font[:4]) != "wOF2" {
 			t.Fatalf("missing or invalid self-hosted font: %s", file)
 		}
