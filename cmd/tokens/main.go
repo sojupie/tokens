@@ -37,6 +37,8 @@ func run(args []string) error {
 		return nil
 	case "crawl":
 		return runCrawl(args[1:])
+	case "export":
+		return runExport(args[1:])
 	case "publish":
 		return runPublish(args[1:])
 	case "update":
@@ -58,6 +60,7 @@ func run(args []string) error {
 const topHelp = `Usage:
   tokens crawl [flags]
   tokens publish [flags]
+  tokens export [--published directory] [--context Name=Value] [--output directory]
   tokens update [run|status|inspect|approve|retry|notify] [flags]
   tokens serve [flags]
   tokens usage [--since 7d] [--send | --weekly] [flags]
