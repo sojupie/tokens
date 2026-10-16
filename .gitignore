@@ -38,3 +38,6 @@ dist/
 # Platform files.
 .DS_Store
 Thumbs.db
+
+# Token build dependencies and generated assets.
+node_modules/

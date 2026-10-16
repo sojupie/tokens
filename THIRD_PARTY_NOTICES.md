@@ -41,6 +41,9 @@ licenses.
 ## Dependencies and further collections
 
 Go dependencies are pinned in [go.mod](go.mod) and retain their upstream licenses.
+CSS build dependencies are pinned in [package-lock.json](package-lock.json).
+[Style Dictionary](https://github.com/style-dictionary/style-dictionary) uses the
+Apache License 2.0; its dependency package includes the upstream license.
 When distributing binaries, preserve applicable dependency notices alongside
 those for the bundled assets. Container distributions also include system
 packages such as Chromium under their own terms.
