@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/sojupie/tokens/internal/usage"
+	"github.com/sojupie/tokens/catalog/usage"
 )
 
 func TestUsageCommandValidationAndWeeklyDeduplication(t *testing.T) {

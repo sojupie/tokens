@@ -14,8 +14,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/sojupie/tokens/internal/crawl"
-	"github.com/sojupie/tokens/internal/tokensnapshot"
+	"github.com/sojupie/tokens/source/crawl"
+	"github.com/sojupie/tokens/source/tokensnapshot"
 )
 
 const snapshotRoot = "snapshots/material-token-data"

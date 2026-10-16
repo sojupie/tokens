@@ -7,7 +7,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/sojupie/tokens/internal/publish"
+	"github.com/sojupie/tokens/source/publish"
 )
 
 func runPublish(args []string) error {

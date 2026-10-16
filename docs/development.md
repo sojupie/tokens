@@ -29,7 +29,7 @@ snapshot files after creation; their checksums verify the captured evidence.
 
 ```sh
 go test ./...
-node --test internal/web/ui_test.cjs
+node --test catalog/web/ui_test.cjs
 ```
 
 Tests use local fixtures. Keep normal checks offline. Live captures and DNS or
@@ -37,28 +37,28 @@ Cloudflare checks are separate operational checks.
 
 ## Templates and assets
 
-Edit `internal/web/templates.templ`, then regenerate its Go file with the pinned
+Edit `catalog/web/templates.templ`, then regenerate its Go file with the pinned
 templ version:
 
 ```sh
-go run github.com/a-h/templ/cmd/templ@v0.3.960 generate -f internal/web/templates.templ
+go run github.com/a-h/templ/cmd/templ@v0.3.960 generate -f catalog/web/templates.templ
 ```
 
 Commit both the template and generated Go file. CSS and JavaScript are maintained
-in `internal/web/static/` and embedded in the binary. Rebuild and restart the
+in `catalog/web/static/` and embedded in the binary. Rebuild and restart the
 server after changing them. Styles come from the published token data through
-`internal/web/theme.go`; layout rules are in the static stylesheets.
+`catalog/web/theme.go`; layout rules are in the static stylesheets.
 
 ## Code layout
 
 | Path | Responsibility |
 | --- | --- |
 | `cmd/tokens/` | CLI commands and server startup |
-| `internal/crawl/` | Browser capture, source discovery, payload cache and receipts |
-| `internal/tokensnapshot/` | Snapshot assembly, verification and semantic comparison |
-| `internal/publish/` | Token projection, retained history, SQLite and JSON exports |
-| `internal/update/` | Saved runs, review, activation, retry and notifications |
-| `internal/web/` | HTML, filters, downloads, API and agent interfaces |
+| `source/crawl/` | Browser capture, source discovery, payload cache and receipts |
+| `source/tokensnapshot/` | Snapshot assembly, verification and semantic comparison |
+| `source/publish/` | Token projection, retained history, SQLite and JSON exports |
+| `source/update/` | Saved runs, review, activation, retry and notifications |
+| `catalog/web/` | HTML, filters, downloads, API and agent interfaces |
 | `schemas/` | Snapshot document schemas |
 | `inputs/page-catalog.json` | Reviewed Material Design 3 source pages |
 | `deploy/` | Docker, systemd and deployment scripts |

@@ -11,8 +11,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/sojupie/tokens/internal/crawl"
-	"github.com/sojupie/tokens/internal/update"
+	"github.com/sojupie/tokens/source/crawl"
+	"github.com/sojupie/tokens/source/update"
 )
 
 func runUpdate(args []string) error {

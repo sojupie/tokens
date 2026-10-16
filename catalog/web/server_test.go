@@ -1,0 +1,178 @@
+package web
+
+import (
+	"encoding/json"
+	"net/http"
+	"net/http/httptest"
+	"os"
+	"path/filepath"
+	"strings"
+	"testing"
+
+	"github.com/sojupie/tokens/source/publish"
+)
+
+func TestHandlerServesReadAPI(t *testing.T) {
+	state := publish.PublishedState{
+		PublicationID: "publication-1",
+		CurrentSnapshot: publish.SnapshotView{
+			ID:            "snapshot-1",
+			CreatedAt:     "2026-09-07T00:00:00Z",
+			ManifestHash:  "manifest-hash",
+			CaptureStatus: "complete",
+			ReviewStatus:  "provisional",
+		},
+		Snapshots: []publish.SnapshotView{{ID: "snapshot-1"}},
+		Changes: []publish.ChangeView{{
+			ID:                 "change-1",
+			Type:               "changed",
+			Subject:            "snackbar",
+			Kind:               "contextualReferenceTree",
+			Name:               "md.comp.snackbar.container.width",
+			Before:             `{"dimension":{"value":480,"unit":"DIPS"}}`,
+			After:              `{"dimension":{"value":560,"unit":"DIPS"}}`,
+			PreviousSnapshotID: "snapshot-0",
+			SnapshotID:         "snapshot-1",
+		}},
+		Subjects: map[publish.SubjectKey]publish.SubjectView{
+			{Kind: publish.SubjectStyle, Slug: "elevation"}: {
+				Key:  publish.SubjectKey{Kind: publish.SubjectStyle, Slug: "elevation"},
+				Name: "Elevation",
+				Tokens: []publish.TokenView{{
+					SourceName: "md.sys.elevation.level1",
+				}},
+			},
+			{Kind: publish.SubjectComponent, Slug: "snackbar"}: {
+				Key:  publish.SubjectKey{Kind: publish.SubjectComponent, Slug: "snackbar"},
+				Name: "Snackbar",
+			},
+		},
+	}
+	server := New(state, "")
+
+	checks := []struct {
+		path       string
+		statusCode int
+	}{
+		{path: "/api/v1/health", statusCode: http.StatusOK},
+		{path: "/api/v1/releases", statusCode: http.StatusOK},
+		{path: "/api/v1/changes", statusCode: http.StatusOK},
+		{path: "/api/v1/components", statusCode: http.StatusOK},
+		{path: "/api/v1/components/snackbar", statusCode: http.StatusOK},
+		{path: "/api/v1/components/snackbar/changes", statusCode: http.StatusOK},
+		{path: "/api/v1/components/missing", statusCode: http.StatusNotFound},
+	}
+	for _, check := range checks {
+		t.Run(check.path, func(t *testing.T) {
+			request := httptest.NewRequest(http.MethodGet, check.path, nil)
+			recorder := httptest.NewRecorder()
+			server.Handler().ServeHTTP(recorder, request)
+			if recorder.Code != check.statusCode {
+				t.Fatalf("status = %d, want %d", recorder.Code, check.statusCode)
+			}
+			if check.statusCode == http.StatusOK && recorder.Header().Get("Content-Type") != "application/json; charset=utf-8" {
+				t.Fatalf("content type = %q", recorder.Header().Get("Content-Type"))
+			}
+		})
+	}
+}
+
+func TestComponentsAreSortedAndIncludeStyles(t *testing.T) {
+	state := publish.PublishedState{
+		PublicationID:   "publication-1",
+		CurrentSnapshot: publish.SnapshotView{ID: "snapshot-1"},
+		Subjects: map[publish.SubjectKey]publish.SubjectView{
+			{Kind: publish.SubjectStyle, Slug: "spacing"}: {
+				Key: publish.SubjectKey{Kind: publish.SubjectStyle, Slug: "spacing"},
+			},
+			{Kind: publish.SubjectComponent, Slug: "button"}: {
+				Key: publish.SubjectKey{Kind: publish.SubjectComponent, Slug: "button"},
+			},
+		},
+	}
+	request := httptest.NewRequest(http.MethodGet, "/api/v1/components", nil)
+	recorder := httptest.NewRecorder()
+	New(state, "").Handler().ServeHTTP(recorder, request)
+
+	var response componentListResponse
+	if err := json.NewDecoder(recorder.Body).Decode(&response); err != nil {
+		t.Fatal(err)
+	}
+	if len(response.Subjects) != 2 {
+		t.Fatalf("subject count = %d, want 2", len(response.Subjects))
+	}
+	if response.Subjects[0].Kind != publish.SubjectComponent || response.Subjects[1].Kind != publish.SubjectStyle {
+		t.Fatalf("subjects = %#v", response.Subjects)
+	}
+}
+
+func TestHandlerServesOnlyApprovedDownloads(t *testing.T) {
+	downloadsDir := t.TempDir()
+	if err := os.WriteFile(filepath.Join(downloadsDir, "tokens.json"), []byte("published"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	handler := New(publish.PublishedState{}, downloadsDir).Handler()
+
+	recorder := httptest.NewRecorder()
+	handler.ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, "/downloads/tokens.json", nil))
+	if recorder.Code != http.StatusOK || recorder.Body.String() != "published" {
+		t.Fatalf("download response = %d %q", recorder.Code, recorder.Body.String())
+	}
+
+	for _, relativePath := range []string{"../tokens.json", "component\\tokens.json", ""} {
+		if safeDownloadPath(relativePath) {
+			t.Fatalf("safeDownloadPath(%q) = true", relativePath)
+		}
+	}
+}
+
+func TestHandlerServesEmbeddedStaticAssets(t *testing.T) {
+	handler := New(publish.PublishedState{}, "").Handler()
+	for _, path := range []string{"/static/app.css", "/static/htmx.min.js"} {
+		t.Run(path, func(t *testing.T) {
+			recorder := httptest.NewRecorder()
+			handler.ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, path, nil))
+			if recorder.Code != http.StatusOK {
+				t.Fatalf("status = %d, want %d", recorder.Code, http.StatusOK)
+			}
+			if recorder.Body.Len() == 0 {
+				t.Fatal("asset response is empty")
+			}
+		})
+	}
+}
+
+func TestComponentAPIOmitsInternalSourceData(t *testing.T) {
+	state := publish.PublishedState{Subjects: map[publish.SubjectKey]publish.SubjectView{
+		{Kind: publish.SubjectComponent, Slug: "button"}: {
+			Key:  publish.SubjectKey{Kind: publish.SubjectComponent, Slug: "button"},
+			Name: "Button",
+			Tokens: []publish.TokenView{{
+				SourceName: "md.comp.button.container.color",
+				Raw:        []byte(`{"tokenName":"internal"}`),
+				Sources:    []publish.TokenSourceView{{PayloadID: "payload", SourceRecordID: "record"}},
+				Values: []publish.TokenValueView{{
+					Value:   []byte(`{"color":{"red":1}}`),
+					Raw:     []byte(`{"resolvedValue":"internal"}`),
+					Sources: []publish.TokenSourceView{{PayloadID: "payload", SourceRecordID: "record"}},
+				}},
+			}},
+		},
+	}}
+	recorder := httptest.NewRecorder()
+	New(state, "").Handler().ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, "/api/v1/components/button", nil))
+	if recorder.Code != http.StatusOK {
+		t.Fatalf("status = %d, want %d", recorder.Code, http.StatusOK)
+	}
+	body := recorder.Body.String()
+	for _, unwanted := range []string{"internal", "payload", "record", "raw", "sources"} {
+		if strings.Contains(body, unwanted) {
+			t.Fatalf("response contains internal field %q: %s", unwanted, body)
+		}
+	}
+	for _, wanted := range []string{"md.comp.button.container.color", "color"} {
+		if !strings.Contains(body, wanted) {
+			t.Fatalf("response does not contain %q: %s", wanted, body)
+		}
+	}
+}

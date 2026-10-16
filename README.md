@@ -99,12 +99,12 @@ The website, data pipeline and agent integrations share one Go application.
 
 | Part | What it does | Source |
 | --- | --- | --- |
-| Catalog website | Renders token tables, filters, reference chains, downloads and change history with templ and HTMX | [`internal/web/`](internal/web/) |
-| Material Design 3 capture | Opens Google's source pages with Chromium and saves token payloads, source URLs and coverage results | [`internal/crawl/`](internal/crawl/) |
-| Snapshots and publication | Verifies captured files, compares token values and builds the SQLite index and JSON exports | [`internal/tokensnapshot/`](internal/tokensnapshot/), [`internal/publish/`](internal/publish/) |
-| Agent access | Serves Markdown, JSON, OpenAPI, discovery metadata and read-only MCP tools; provides an installable skill | [`internal/web/`](internal/web/), [`skills/token-catalog/`](skills/token-catalog/) |
-| Update and deployment tools | Runs scheduled captures, reviews changes, activates publications and sends notifications | [`internal/update/`](internal/update/), [`deploy/`](deploy/), [GitHub workflows](.github/workflows/) |
-| Usage reporting | Retains hourly request totals and produces weekly email reports and the README chart | [`internal/usage/`](internal/usage/) |
+| Catalog website | Renders token tables, filters, reference chains, downloads and change history with templ and HTMX | [`catalog/web/`](catalog/web/) |
+| Material Design 3 capture | Opens Google's source pages with Chromium and saves token payloads, source URLs and coverage results | [`source/crawl/`](source/crawl/) |
+| Snapshots and publication | Verifies captured files, compares token values and builds the SQLite index and JSON exports | [`source/tokensnapshot/`](source/tokensnapshot/), [`source/publish/`](source/publish/) |
+| Agent access | Serves Markdown, JSON, OpenAPI, discovery metadata and read-only MCP tools; provides an installable skill | [`catalog/web/`](catalog/web/), [`skills/token-catalog/`](skills/token-catalog/) |
+| Update and deployment tools | Runs scheduled captures, reviews changes, activates publications and sends notifications | [`source/update/`](source/update/), [`deploy/`](deploy/), [GitHub workflows](.github/workflows/) |
+| Usage reporting | Retains hourly request totals and produces weekly email reports and the README chart | [`catalog/usage/`](catalog/usage/) |
 
 ## Material Design 3 data pipeline
 

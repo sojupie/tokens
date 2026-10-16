@@ -11,8 +11,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/sojupie/tokens/internal/update"
-	"github.com/sojupie/tokens/internal/usage"
+	"github.com/sojupie/tokens/catalog/usage"
+	"github.com/sojupie/tokens/source/update"
 )
 
 func runUsage(args []string) error {

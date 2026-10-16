@@ -2,7 +2,8 @@
 !go.mod
 !go.sum
 !cmd/**
-!internal/**
+!source/**
+!catalog/**
 !schemas/**
 !inputs/page-catalog.json
 !deploy/testdata/**

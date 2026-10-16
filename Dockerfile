@@ -4,7 +4,8 @@ WORKDIR /src
 COPY go.mod go.sum ./
 RUN --mount=type=cache,id=tokens-go-mod,target=/go/pkg/mod,sharing=locked go mod download
 COPY cmd ./cmd
-COPY internal ./internal
+COPY source ./source
+COPY catalog ./catalog
 COPY schemas ./schemas
 RUN --mount=type=cache,id=tokens-go-mod,target=/go/pkg/mod,sharing=locked \
     --mount=type=cache,id=tokens-go-build,target=/root/.cache/go-build \

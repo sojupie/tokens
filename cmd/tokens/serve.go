@@ -13,9 +13,9 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/sojupie/tokens/internal/publish"
-	"github.com/sojupie/tokens/internal/usage"
-	"github.com/sojupie/tokens/internal/web"
+	"github.com/sojupie/tokens/catalog/usage"
+	"github.com/sojupie/tokens/catalog/web"
+	"github.com/sojupie/tokens/source/publish"
 )
 
 func runServe(args []string) error {

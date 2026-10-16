@@ -118,11 +118,11 @@ snapshot directory.
 ## Web assets
 
 The server embeds CSS, JavaScript, fonts and logos in the Go binary. CSS is
-maintained in `internal/web/static/app.css` and `token-table.css`. HTML templates
+maintained in `catalog/web/static/app.css` and `token-table.css`. HTML templates
 are written in templ; generated Go files are committed alongside them.
 See [development](../development.md) for regeneration and checks.
 
-HTMX is bundled in `internal/web/static/htmx.min.js`, and Roboto is self-hosted.
+HTMX is bundled in `catalog/web/static/htmx.min.js`, and Roboto is self-hosted.
 The server does not need a CDN. Their licenses are listed in
 [third-party notices](../../THIRD_PARTY_NOTICES.md).
 
