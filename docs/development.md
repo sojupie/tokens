@@ -1,7 +1,7 @@
 # Development
 
 Install Go 1.26 or newer. Chrome or Chromium is needed for live crawling.
-Node.js is needed for the browser-script checks. Serving a saved publication
+Node.js 22 or newer is needed for CSS generation and the browser-script checks. Serving a saved publication
 and running the Go tests do not require Chromium.
 
 ## Build and capture
@@ -29,7 +29,9 @@ snapshot files after creation; their checksums verify the captured evidence.
 
 ```sh
 go test ./...
-node --test catalog/web/ui_test.cjs
+npm ci
+npm run test:ui
+npm run test:tokens
 ```
 
 Tests use local fixtures. Keep normal checks offline. Live captures and DNS or
@@ -45,9 +47,15 @@ go run github.com/a-h/templ/cmd/templ@v0.3.960 generate -f catalog/web/templates
 ```
 
 Commit both the template and generated Go file. CSS and JavaScript are maintained
-in `catalog/web/static/` and embedded in the binary. Rebuild and restart the
+in `catalog/web/static/`. Shared component assets live in
+`forge/components/static/`. Both are embedded in the binary. Rebuild and restart the
 server after changing them. Styles come from the published token data through
-`catalog/web/theme.go`; layout rules are in the static stylesheets.
+the [DTCG and CSS build](reference/dtcg.md) when generated assets are present.
+`catalog/web/theme.go` supports publications without generated assets. Layout
+rules are in the static stylesheets.
+
+The [component reference](reference/components.md) and [button reference](reference/buttons.md)
+cover generated state bindings, shared interactions, and the local galleries.
 
 ## Code layout
 
@@ -56,9 +64,13 @@ server after changing them. Styles come from the published token data through
 | `cmd/tokens/` | CLI commands and server startup |
 | `source/crawl/` | Browser capture, source discovery, payload cache and receipts |
 | `source/tokensnapshot/` | Snapshot assembly, verification and semantic comparison |
+| `source/dtcg/` | Material conversion, context selection and DTCG exports |
+| `forge/` | Style Dictionary CSS generation, Material component mappings, browser behavior and conformance checks |
 | `source/publish/` | Token projection, retained history, SQLite and JSON exports |
 | `source/update/` | Saved runs, review, activation, retry and notifications |
 | `catalog/web/` | HTML, filters, downloads, API and agent interfaces |
+| `catalog/usage/` | Request totals, retention and reports |
+| `skills/` | Installable skill and embedded hosted guide |
 | `schemas/` | Snapshot document schemas |
 | `inputs/page-catalog.json` | Reviewed Material Design 3 source pages |
 | `deploy/` | Docker, systemd and deployment scripts |

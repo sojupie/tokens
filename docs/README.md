@@ -7,6 +7,8 @@
 
 - [Local setup and checks](development.md)
 - [Architecture](architecture.md)
+- [Source](../source/README.md), [Catalog](../catalog/README.md), and [Forge](../forge/README.md)
+- [Agent skill source](../skills/README.md)
 - [Contributing](../CONTRIBUTING.md)
 - [Licensing and attribution](licensing.md)
 
@@ -16,6 +18,9 @@
 - [Material Design 3 crawler](reference/crawler.md)
 - [Snapshot format](reference/snapshot-format.md)
 - [Publication and history](reference/publication.md)
+- [DTCG exports and CSS](reference/dtcg.md)
+- [Generated buttons](reference/buttons.md)
+- [Generated components](reference/components.md)
 - [API and agent access](reference/agents.md)
 
 ## Operations

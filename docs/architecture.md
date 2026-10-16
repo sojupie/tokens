@@ -1,8 +1,40 @@
 # Architecture
 
-Token Catalog separates capture, verification, publication and serving. The
-current source implementation reads Material Design 3 pages. A publication
-contains the data needed for browsing, API reads and downloads.
+Token Catalog contains Source, Catalog, and Forge in one repository.
+
+- Source (`source/`) captures upstream data, verifies snapshots, builds
+  publications, and exports selected token contexts as DTCG.
+- Catalog (`catalog/`) serves publications through the website and agent
+  interfaces, and retains usage totals.
+- Forge (`forge/`) builds CSS and component styles from DTCG and implements
+  their browser behavior.
+
+The parts share one Go module and the `cmd/tokens` executable. The root Node
+package pins Style Dictionary for Forge. They ship together; no separate package
+release or service is needed between these directories.
+
+Source owns the published data model consumed by Catalog and the DTCG exporter.
+Forge's compiler and Material mappings read DTCG documents. Its current build
+script also runs the CLI exporter and reads Catalog's stylesheets to assemble
+the site theme. Catalog embeds the generated component assets from Forge and
+loads matching publication assets when available.
+
+```text
+upstream data -> Source snapshots -> publication -> Catalog
+                                        |
+                                        v
+                                      DTCG
+                                        |
+                                        v
+                                Forge CSS + behavior
+                                        |
+                                        v
+                                  Catalog website
+```
+
+Generated assets are optional for serving a publication. The existing Go theme
+renderer supports publications without them. Production update jobs do not yet
+run the Node build. See [DTCG exports](reference/dtcg.md) for the build procedure.
 
 ## Design decisions
 
@@ -144,10 +176,35 @@ assembled while still being partial and provisional.
 ## Collection boundaries
 
 The hosted Material Design 3 collection lives at `/md3`. Root discovery files
-advertise that collection's routes. Source catalogs, capture rules, extraction,
-theme generation and several stored names currently assume Material Design 3.
-Supporting another collection requires changes at those boundaries. The current
-server hosts one loaded publication.
+advertise that collection's routes. The current server loads one publication.
+Source capture, conversion, Catalog presentation, and Forge component mappings
+currently contain Material-specific rules.
+
+To add another design system:
+
+1. Add its source catalog, capture and extraction rules, completeness checks,
+   and licensing notes under Source. Preserve its native token names and evidence.
+2. Map its supported values and contexts into the published model and DTCG.
+   Retain source extensions for information that DTCG cannot represent.
+3. Add its Catalog route prefix, publication selection, presentation mappings,
+   and entries in origin discovery documents. Multi-collection serving needs
+   implementation before one server can host both collections.
+4. Add Forge component mappings and behavior for the system's own anatomy,
+   states, and variants when component output is needed. DTCG standardizes token
+   values; it does not define component markup or interactions.
+5. Add its interpretation rules to the agent skill's references. Keep the
+   existing skill name and install command while it serves the same workflow.
+
+Introduce shared adapter interfaces when the second implementation establishes
+what they need to share. A new collection does not require a separate repository.
+
+## Agent instructions
+
+`skills/token-catalog/SKILL.md` is the installable user skill. Its Material
+reference supplies the hosted guide through an embedded template, with the
+public origin, MCP version, and available generated downloads filled at runtime.
+The discovery index hashes that rendered guide. Repository development guidance
+lives in the root `AGENTS.md`.
 
 [Development](development.md) maps these stages to packages.
 [Updates and recovery](operations/updates.md) describes automated capture,

@@ -95,16 +95,22 @@ missing even though the discovery and access checks for the public service pass.
 
 ## Repository components
 
-The website, data pipeline and agent integrations share one Go application.
+The project has three parts in one repository. They share the existing CLI,
+Go module, and deployment.
 
 | Part | What it does | Source |
 | --- | --- | --- |
-| Catalog website | Renders token tables, filters, reference chains, downloads and change history with templ and HTMX | [`catalog/web/`](catalog/web/) |
-| Material Design 3 capture | Opens Google's source pages with Chromium and saves token payloads, source URLs and coverage results | [`source/crawl/`](source/crawl/) |
-| Snapshots and publication | Verifies captured files, compares token values and builds the SQLite index and JSON exports | [`source/tokensnapshot/`](source/tokensnapshot/), [`source/publish/`](source/publish/) |
-| Agent access | Serves Markdown, JSON, OpenAPI, discovery metadata and read-only MCP tools; provides an installable skill | [`catalog/web/`](catalog/web/), [`skills/token-catalog/`](skills/token-catalog/) |
-| Update and deployment tools | Runs scheduled captures, reviews changes, activates publications and sends notifications | [`source/update/`](source/update/), [`deploy/`](deploy/), [GitHub workflows](.github/workflows/) |
-| Usage reporting | Retains hourly request totals and produces weekly email reports and the README chart | [`catalog/usage/`](catalog/usage/) |
+| Source | Captures upstream data, verifies snapshots, compares changes, builds publications, and exports DTCG | [`source/`](source/) |
+| Catalog | Serves token tables, filters, downloads, history, API and agent interfaces, and usage reports | [`catalog/`](catalog/) |
+| Forge | Generates CSS and component state bindings, implements browser behavior, and checks the rendered result | [`forge/`](forge/) |
+
+[`skills/`](skills/) contains the installable agent skill and the reference used
+by the hosted guide. [`cmd/tokens/`](cmd/tokens/) provides the shared CLI.
+Deployment configuration remains in [`deploy/`](deploy/).
+
+Forge generates the catalog theme and shared components, including buttons,
+cards, chips, fields, menus, and dialogs. See [generated components](docs/reference/components.md)
+and [buttons](docs/reference/buttons.md) for supported variants, states, and checks.
 
 ## Material Design 3 data pipeline
 

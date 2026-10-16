@@ -8,6 +8,7 @@ tokens snapshot create
 tokens snapshot verify
 tokens snapshot compare
 tokens publish
+tokens export
 tokens serve
 tokens update run
 tokens update status
@@ -182,3 +183,10 @@ receipt because a complete crawl needs them for offline snapshot assembly.
 If only the generated snapshot needs to be rerun, use `snapshot create` again
 with the existing crawl receipt. That path reads cached source-payload artifacts
 and does not open Chrome or crawl pages.
+
+## DTCG export
+
+`tokens export --published published --output dist/tokens` exports a selected
+context as DTCG 2025.10 JSON. Repeat `--context Name=Value` to override context
+choices, or use `--themes` to export the site’s six appearance combinations.
+[DTCG exports and CSS](dtcg.md) covers conversion rules and Style Dictionary.
