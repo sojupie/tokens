@@ -1,4 +1,6 @@
 import StyleDictionary from "style-dictionary";
+import { generateComponents } from "./material/generate-components.mjs";
+import { generateButtons } from "./material/generate-buttons.mjs";
 import {
   realpath,
   readFile,
@@ -181,6 +183,22 @@ async function main() {
     }
     let themeCSS = "";
     let identity;
+    let buttonCSS;
+    let buttonCoverage;
+    let componentCSS;
+    let componentCoverage;
+    const anatomy = await readFile(
+      "forge/components/static/components-base.css",
+      "utf8",
+    );
+    const elevation = await readFile(
+      "forge/components/static/elevation.css",
+      "utf8",
+    );
+    for (const match of (anatomy + elevation).matchAll(
+      /var\(\s*--(md-[a-z0-9-]+)\s*[,)]/g,
+    ))
+      required.add(match[1]);
     const totals = [];
     for (const variant of index) {
       const document = JSON.parse(
@@ -198,6 +216,26 @@ async function main() {
           "utf8",
         ),
       );
+      const missingButtons = report.omitted.filter((token) =>
+        token.name.startsWith("md.comp.button."),
+      );
+      if (missingButtons.length)
+        throw new Error(
+          `Button tokens omitted from DTCG: ${missingButtons.map((t) => t.name).join(", ")}`,
+        );
+      const buttons = generateButtons(document, compiled.values);
+      if (buttonCSS !== undefined && buttonCSS !== buttons.css)
+        throw new Error("Button structure differs across appearance contexts");
+      buttonCSS = buttons.css;
+      buttonCoverage = buttons.coverage;
+      for (const name of buttons.requiredNames) required.add(name);
+      const components = generateComponents(document, compiled.values);
+      const generated = anatomy + "\n" + elevation + "\n" + components.css;
+      if (componentCSS !== undefined && componentCSS !== generated)
+        throw new Error("Component bindings differ across appearances");
+      componentCSS = generated;
+      componentCoverage = components.coverage;
+      for (const name of components.requiredNames) required.add(name);
       compiled.css = cssVariables(compiled.values, selector, required);
       for (const name of required)
         if (!(name in compiled.values))
@@ -228,6 +266,16 @@ async function main() {
     )
       throw new Error("Publication changed during the build");
     await writeFile(path.join(output, "theme.css"), themeCSS);
+    await writeFile(path.join(output, "buttons.css"), buttonCSS);
+    await writeFile(path.join(output, "components.css"), componentCSS);
+    await writeFile(
+      path.join(output, "components-coverage.json"),
+      JSON.stringify(componentCoverage, null, 2) + "\n",
+    );
+    await writeFile(
+      path.join(output, "buttons-coverage.json"),
+      JSON.stringify(buttonCoverage, null, 2) + "\n",
+    );
     await writeFile(
       path.join(output, "manifest.json"),
       JSON.stringify(
@@ -237,6 +285,10 @@ async function main() {
           publicationId: identity.publicationId,
           snapshotId: identity.snapshotId,
           databaseSha256,
+          componentsSha256: createHash("sha256")
+            .update(componentCSS)
+            .digest("hex"),
+          buttonsSha256: createHash("sha256").update(buttonCSS).digest("hex"),
           cssSha256: createHash("sha256").update(themeCSS).digest("hex"),
           variants: totals,
         },
@@ -260,6 +312,8 @@ async function main() {
       throw e;
     }
     if (previous) await rm(backup, { recursive: true });
+    await writeFile("forge/components/static/buttons.css", buttonCSS);
+    await writeFile("forge/components/static/components.css", componentCSS);
     console.log(`Built six themes and DTCG/CSS downloads in ${target}`);
   } finally {
     await rm(output, { recursive: true, force: true });

@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Component transition check</title>
+  </head>
+  <body>
+    <main class="tokens-section">
+      <h1>Component transition check</h1>
+      <button id="run" class="md-button md-filled-button" disabled>
+        Run transitions
+      </button>
+      <div id="samples" class="tokens-component-gallery">
+        <section class="md-menu">
+          <a
+            href="#card-elevated----enabled-false-false-false"
+            class="md-card md-elevated-card md-interactive-card"
+            data-component-case="card-elevated----enabled-false-false-false"
+            data-component-state="enabled"
+            data-family="card"
+            ><span>Card title</span>
+            <p>Supporting text</p>
+            <span data-slot="icon"
+              ><svg
+                class="tokens-material-symbol"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 -960 960 960"
+                width="24"
+                height="24"
+                fill="currentColor"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path
+                  d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"
+                ></path></svg></span
+          ></a>
+        </section>
+        <section class="md-menu">
+          <button
+            aria-label="icon · tonal · xsmall · round · default width · unselected · enabled"
+            aria-pressed="false"
+            class="md-icon-button md-tonal-icon-button"
+            data-button-toggle=""
+            data-component-case="icon-tonal-xsmall-round-default-enabled-false-false-false"
+            data-component-state="enabled"
+            data-family="icon"
+            data-shape="round"
+            data-size="xsmall"
+            data-width="default"
+            type="button"
+          >
+            <svg
+              class="tokens-material-symbol"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 -960 960 960"
+              width="24"
+              height="24"
+              fill="currentColor"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"
+              ></path>
+            </svg>
+          </button>
+        </section>
+        <section class="md-menu">
+          <label
+            class="md-filter-chip"
+            data-component-case="chip-----enabled-false-false-false"
+            data-component-state="enabled"
+            data-elevated="false"
+            data-family="chip"
+            ><input class="tokens-visually-hidden" type="checkbox" /><span
+              class="md-chip-face"
+              ><svg
+                class="tokens-material-symbol"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 -960 960 960"
+                width="24"
+                height="24"
+                fill="currentColor"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path
+                  d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"
+                ></path></svg
+              ><span>Filter chip</span></span
+            ></label
+          >
+        </section>
+        <section class="md-menu">
+          <a
+            href="#menu-standard----enabled-false-false-false"
+            class="md-menu-item"
+            data-component-case="menu-standard----enabled-false-false-false"
+            data-component-state="enabled"
+            data-family="menu"
+            ><svg
+              class="tokens-material-symbol"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 -960 960 960"
+              width="24"
+              height="24"
+              fill="currentColor"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"
+              ></path></svg
+            ><span>Menu item</span
+            ><small data-slot="trailing-supporting-text">⌘K</small></a
+          >
+        </section>
+        <button class="md-button md-tonal-button">Tonal button</button>
+      </div>
+      <pre id="result">Loading local component assets</pre>
+    </main>
+    <script type="module">
+      import { checkFeedbackTransitions } from "./check-feedback-transitions.mjs";
+      const origin = "http://127.0.0.1:8081/md3/",
+        version = Date.now();
+      await Promise.all(
+        [
+          "theme.css",
+          "static/app.css",
+          "static/token-table.css",
+          "static/buttons.css",
+          "static/components.css",
+        ].map(
+          (path) =>
+            new Promise((resolve, reject) => {
+              const link = document.createElement("link");
+              link.rel = "stylesheet";
+              link.href = origin + path + "?check=" + version;
+              link.onload = resolve;
+              link.onerror = reject;
+              document.head.append(link);
+            }),
+        ),
+      );
+      await new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src = origin + "static/buttons.js?check=" + version;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.append(script);
+      });
+      const run = document.getElementById("run"),
+        output = document.getElementById("result");
+      run.disabled = false;
+      output.textContent = "Ready";
+      run.addEventListener("click", async () => {
+        run.disabled = true;
+        output.textContent = "Running";
+        const results = [];
+        for (const theme of ["light", "dark"])
+          for (const contrast of ["default", "medium", "high"]) {
+            document.documentElement.dataset.theme = theme;
+            document.documentElement.dataset.contrast = contrast;
+            results.push({
+              theme,
+              contrast,
+              checks: await checkFeedbackTransitions([
+                ...document.querySelectorAll(
+                  "#samples .md-interactive-card,#samples .md-icon-button,#samples .md-filter-chip,#samples .md-menu-item,#samples .md-button",
+                ),
+              ]),
+            });
+          }
+        output.textContent = JSON.stringify(results, null, 2);
+        run.disabled = false;
+      });
+    </script>
+  </body>
+</html>

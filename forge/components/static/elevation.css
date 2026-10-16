@@ -1,0 +1,53 @@
+/* Material Web key/ambient shadow geometry, Google LLC, Apache-2.0.
+   Source elevations are mapped to renderer levels 0–5 by the token compiler. */
+.md-button,
+.md-card,
+.md-icon-button,
+.md-filter-chip,
+.md-menu,
+.md-dialog,
+.md-elevation {
+  box-shadow:
+    0
+      calc(
+        1px *
+          (
+            clamp(0, var(--_elevation-level), 1) +
+              clamp(0, var(--_elevation-level) - 3, 1) + 2 *
+              clamp(0, var(--_elevation-level) - 4, 1)
+          )
+      )
+      calc(
+        1px *
+          (
+            2 * clamp(0, var(--_elevation-level), 1) +
+              clamp(0, var(--_elevation-level) - 2, 1) +
+              clamp(0, var(--_elevation-level) - 4, 1)
+          )
+      )
+      0 color-mix(in srgb, var(--_shadow-color) 30%, transparent),
+    0
+      calc(
+        1px *
+          (
+            clamp(0, var(--_elevation-level), 1) +
+              clamp(0, var(--_elevation-level) - 1, 1) + 2 *
+              clamp(0, var(--_elevation-level) - 2, 3)
+          )
+      )
+      calc(
+        1px *
+          (
+            3 * clamp(0, var(--_elevation-level), 2) + 2 *
+              clamp(0, var(--_elevation-level) - 2, 3)
+          )
+      )
+      calc(
+        1px *
+          (
+            clamp(0, var(--_elevation-level), 4) + 2 *
+              clamp(0, var(--_elevation-level) - 4, 1)
+          )
+      )
+      color-mix(in srgb, var(--_shadow-color) 15%, transparent);
+}

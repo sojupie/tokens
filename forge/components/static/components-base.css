@@ -1,0 +1,737 @@
+/* Web anatomy and interaction contracts. Values are supplied by generated bindings.
+   Spacing around content uses system measurement tokens where the source has no component token. */
+.md-card {
+  --_card-container-opacity: 1;
+  --_card-outline-opacity: 1;
+  --_card-outline-width: 0px;
+  --_card-outline: transparent;
+  --_card-state-opacity: 0;
+  --_card-state-color: transparent;
+  --_elevation-level: var(--_card-elevation);
+  --_shadow-color: var(--_card-shadow);
+  position: relative;
+  isolation: isolate;
+  background: color-mix(
+    in srgb,
+    var(--_card-container) calc(var(--_card-container-opacity) * 100%),
+    transparent
+  );
+  border: var(--_card-outline-width) solid
+    color-mix(
+      in srgb,
+      var(--_card-outline) calc(var(--_card-outline-opacity) * 100%),
+      transparent
+    );
+  border-radius: var(--_card-shape);
+  padding: var(--md-sys-measurement-space200);
+}
+.md-card > [data-slot="icon"] {
+  display: inline-flex;
+  color: var(--_card-icon);
+  width: var(--_card-icon-size);
+  height: var(--_card-icon-size);
+}
+.md-card.md-interactive-card {
+  --_card-background-state-color: transparent;
+  --_card-background-state-opacity: 0;
+  --_button-background-state-color: var(--_card-background-state-color);
+  --_button-background-state-opacity: var(--_card-background-state-opacity);
+  --_button-pressed-state-color: var(--_card-pressed-state-color);
+  --_button-pressed-state-opacity: var(--_card-pressed-state-opacity);
+  --_button-state-color: var(--_card-state-color);
+  --_button-state-opacity: var(--_card-state-opacity);
+  --_button-rest-shape: var(--_card-shape);
+  --_button-pressed-shape: var(--_card-shape);
+}
+.md-card.md-interactive-card:focus-visible {
+  outline: var(--_card-focus-width) solid var(--_card-focus-color);
+  outline-offset: var(--_card-focus-offset);
+}
+.md-card.md-interactive-card[aria-disabled="true"] {
+  cursor: default;
+}
+.md-icon-button {
+  --_icon-container: transparent;
+  --_icon-container-opacity: 1;
+  --_icon-icon-opacity: 1;
+  --_icon-outline: transparent;
+  --_icon-outline-opacity: 1;
+  --_icon-outline-width: 0px;
+  --_icon-state-color: transparent;
+  --_icon-state-opacity: 0;
+  --_elevation-level: 0;
+  --_shadow-color: transparent;
+  --_icon-background-state-color: transparent;
+  --_icon-background-state-opacity: 0;
+  --_button-background-state-color: var(--_icon-background-state-color);
+  --_button-background-state-opacity: var(--_icon-background-state-opacity);
+  --_button-pressed-state-color: var(--_icon-pressed-state-color);
+  --_button-pressed-state-opacity: var(--_icon-pressed-state-opacity);
+  --_button-state-color: var(--_icon-state-color);
+  --_button-state-opacity: var(--_icon-state-opacity);
+  --_button-rest-shape: var(--_icon-round-shape);
+  --_button-pressed-shape: var(--_icon-pressed-shape);
+  --_button-spring-damping: var(--_icon-spring-damping);
+  --_button-spring-stiffness: var(--_icon-spring-stiffness);
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  height: var(--_icon-height);
+  min-width: calc(
+    var(--_icon-icon-size) + var(--_icon-leading) + var(--_icon-trailing)
+  );
+  padding: 0 var(--_icon-trailing) 0 var(--_icon-leading);
+  gap: 0;
+  border: var(--_icon-outline-width) solid var(--_icon-outline);
+  border-radius: var(--_button-rest-shape);
+  background: color-mix(
+    in srgb,
+    var(--_icon-container) calc(var(--_icon-container-opacity) * 100%),
+    transparent
+  );
+  color: color-mix(
+    in srgb,
+    var(--_icon-icon) calc(var(--_icon-icon-opacity) * 100%),
+    transparent
+  );
+  text-decoration: none;
+  vertical-align: middle;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.md-icon-button[data-shape="square"] {
+  --_button-rest-shape: var(--_icon-square-shape);
+}
+.md-icon-button[aria-pressed="true"] {
+  --_button-rest-shape: var(--_icon-selected-round-shape);
+}
+.md-icon-button[aria-pressed="true"][data-shape="square"] {
+  --_button-rest-shape: var(--_icon-selected-square-shape);
+}
+.md-icon-button.md-outlined-icon-button {
+  --_icon-outline-width: var(--_icon-size-outline-width);
+}
+.md-icon-button.md-outlined-icon-button[aria-pressed="true"] {
+  --_icon-outline-width: 0px;
+}
+.md-icon-button > svg,
+.md-icon-button > span > svg {
+  color: inherit;
+  width: var(--_icon-icon-size);
+  height: var(--_icon-icon-size);
+  flex: none;
+}
+.md-icon-button > span:not(.md-button-ripple) {
+  display: contents;
+}
+.md-icon-button::before,
+.md-interactive-card::before,
+.md-filter-chip::before,
+.md-menu-item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: var(--_button-background-state-color);
+  opacity: var(--_button-background-state-opacity);
+}
+.md-icon-button,
+.md-interactive-card,
+.md-filter-chip,
+.md-menu-item {
+  --_button-effects-duration: var(--md-sys-motion-duration-short3);
+  --_button-easing: var(--md-sys-motion-easing-standard);
+  transition:
+    background-color var(--_button-effects-duration) var(--_button-easing),
+    color var(--_button-effects-duration) var(--_button-easing),
+    border-color var(--_button-effects-duration) var(--_button-easing),
+    box-shadow var(--_button-effects-duration) var(--_button-easing);
+}
+.md-icon-button:focus-visible {
+  outline: var(--md-sys-state-focus-indicator-thickness) solid
+    var(--md-sys-color-secondary);
+  outline-offset: var(--md-sys-state-focus-indicator-outer-offset);
+}
+.md-icon-button:is(
+    :active,
+    [data-pressed],
+    [data-component-state="pressed"]
+  ):not(:disabled):not([aria-disabled="true"]):not([data-button-cancelled]) {
+  border-radius: var(--_button-pressed-shape);
+}
+.md-filter-chip {
+  --_chip-container: transparent;
+  --_chip-container-opacity: 1;
+  --_chip-outline: transparent;
+  --_chip-outline-width: 0px;
+  --_chip-outline-opacity: 1;
+  --_chip-icon-opacity: 1;
+  --_chip-label-opacity: 1;
+  --_chip-state-color: transparent;
+  --_chip-state-opacity: 0;
+  --_elevation-level: var(--_chip-elevation);
+  --_shadow-color: var(--_chip-shadow);
+  --_chip-background-state-color: transparent;
+  --_chip-background-state-opacity: 0;
+  --_button-background-state-color: var(--_chip-background-state-color);
+  --_button-background-state-opacity: var(--_chip-background-state-opacity);
+  --_button-pressed-state-color: var(--_chip-pressed-state-color);
+  --_button-pressed-state-opacity: var(--_chip-pressed-state-opacity);
+  --_button-state-color: var(--_chip-state-color);
+  --_button-state-opacity: var(--_chip-state-opacity);
+  --_button-rest-shape: var(--_chip-shape);
+  --_button-pressed-shape: var(--_chip-shape);
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  min-width: 0;
+  max-width: 100%;
+  min-height: var(--_chip-height);
+  padding: var(--md-sys-measurement-space50) var(--md-sys-measurement-space150);
+  gap: var(--md-sys-measurement-space100);
+  border: var(--_chip-outline-width) solid
+    color-mix(
+      in srgb,
+      var(--_chip-outline) calc(var(--_chip-outline-opacity) * 100%),
+      transparent
+    );
+  border-radius: var(--_chip-shape);
+  background: color-mix(
+    in srgb,
+    var(--_chip-container) calc(var(--_chip-container-opacity) * 100%),
+    transparent
+  );
+  color: color-mix(
+    in srgb,
+    var(--_chip-label) calc(var(--_chip-label-opacity) * 100%),
+    transparent
+  );
+  font-family: var(--_chip-font-family);
+  font-size: var(--_chip-font-size);
+  line-height: var(--_chip-line-height);
+  letter-spacing: var(--_chip-tracking);
+  font-weight: var(--_chip-font-weight);
+  text-decoration: none;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.md-filter-chip > .md-chip-face {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--md-sys-measurement-space100);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.md-filter-chip [data-slot="icon"],
+.md-filter-chip > .md-chip-face > svg,
+.md-filter-chip > svg {
+  width: var(--_chip-icon-size);
+  height: var(--_chip-icon-size);
+  color: color-mix(
+    in srgb,
+    var(--_chip-icon) calc(var(--_chip-icon-opacity) * 100%),
+    transparent
+  );
+  flex: none;
+}
+.md-filter-chip [data-slot="leading-icon"],
+.md-filter-chip [data-slot="trailing-icon"] {
+  width: var(--_chip-icon-size);
+  height: var(--_chip-icon-size);
+  color: color-mix(
+    in srgb,
+    var(--_chip-icon) calc(var(--_chip-icon-opacity) * 100%),
+    transparent
+  );
+}
+.md-filter-chip:focus-visible,
+.md-filter-chip:has(> input:focus-visible) {
+  outline: var(--_chip-focus-width) solid var(--_chip-focus-color);
+  outline-offset: var(--_chip-focus-offset);
+}
+.md-filter-chip:has(> input:disabled),
+.md-filter-chip:disabled {
+  cursor: default;
+}
+.md-dialog {
+  --_elevation-level: var(--_dialog-elevation);
+  --_shadow-color: var(--md-sys-color-shadow);
+  background: var(--_dialog-container);
+  border: 0;
+  border-radius: var(--_dialog-shape);
+  color: var(--_dialog-supporting-text-color);
+  padding: var(--md-sys-measurement-space300);
+}
+.md-dialog::backdrop {
+  background: color-mix(
+    in srgb,
+    var(--md-ref-palette-neutral0) 32%,
+    transparent
+  );
+}
+.md-dialog h2 {
+  color: var(--_dialog-headline-color);
+  font-family: var(--_dialog-headline-font-family);
+  font-size: var(--_dialog-headline-font-size);
+  font-weight: var(--_dialog-headline-font-weight);
+  line-height: var(--_dialog-headline-line-height);
+  letter-spacing: var(--_dialog-headline-tracking);
+}
+.md-dialog p,
+.md-dialog [data-slot="supporting-text"] {
+  color: var(--_dialog-supporting-text-color);
+  font-family: var(--_dialog-supporting-text-font-family);
+  font-size: var(--_dialog-supporting-text-font-size);
+  font-weight: var(--_dialog-supporting-text-font-weight);
+  line-height: var(--_dialog-supporting-text-line-height);
+  letter-spacing: var(--_dialog-supporting-text-tracking);
+}
+.md-dialog [data-slot="subhead"] {
+  color: var(--_dialog-subhead-color);
+  font-family: var(--_dialog-subhead-font-family);
+  font-size: var(--_dialog-subhead-font-size);
+  font-weight: var(--_dialog-subhead-font-weight);
+  line-height: var(--_dialog-subhead-line-height);
+  letter-spacing: var(--_dialog-subhead-tracking);
+}
+.md-dialog > [data-slot="icon"] {
+  color: var(--_dialog-icon);
+  width: var(--_dialog-icon-size);
+  height: var(--_dialog-icon-size);
+}
+.md-dialog .md-divider {
+  --_divider-color: var(--_dialog-divider);
+  --_divider-thickness: var(--_dialog-divider-height);
+}
+.md-dialog .md-text-button {
+  font-family: var(--_dialog-action-font-family);
+  font-size: var(--_dialog-action-font-size);
+  line-height: var(--_dialog-action-line-height);
+  font-weight: var(--_dialog-action-font-weight);
+  letter-spacing: var(--_dialog-action-tracking);
+}
+.md-radio {
+  --_radio-state-opacity: 0;
+  --_radio-state-color: transparent;
+  --_radio-icon-opacity: 1;
+  appearance: none;
+  -webkit-appearance: none;
+  flex: none;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0;
+  width: var(--_radio-state-size);
+  height: var(--_radio-state-size);
+  border: 0;
+  border-radius: 50%;
+  padding: 0;
+  color: color-mix(
+    in srgb,
+    var(--_radio-icon) calc(var(--_radio-icon-opacity) * 100%),
+    transparent
+  );
+  background: color-mix(
+    in srgb,
+    var(--_radio-state-color) calc(var(--_radio-state-opacity) * 100%),
+    transparent
+  );
+  cursor: pointer;
+}
+.md-radio::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: var(--_radio-icon-size);
+  height: var(--_radio-icon-size);
+  box-sizing: border-box;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}
+.md-radio:checked::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(var(--_radio-icon-size) / 2);
+  height: calc(var(--_radio-icon-size) / 2);
+  background: currentColor;
+  border-radius: 50%;
+}
+.md-radio:disabled {
+  cursor: default;
+}
+
+:is(.md-outlined-text-field, .md-outlined-select) {
+  --_field-state-color: transparent;
+  --_field-state-opacity: 0;
+  --_field-outline-opacity: 1;
+  --_field-input-text-opacity: 1;
+  --_field-label-opacity: 1;
+  --_field-supporting-text-opacity: 1;
+  --_field-leading-icon-opacity: 1;
+  --_field-trailing-icon-opacity: 1;
+  position: relative;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--md-sys-measurement-space100);
+  min-width: 0;
+  max-width: 100%;
+  height: var(--_field-height);
+  min-height: var(--_field-height);
+  border: var(--_field-outline-width) solid
+    color-mix(
+      in srgb,
+      var(--_field-outline) calc(var(--_field-outline-opacity) * 100%),
+      transparent
+    );
+  border-radius: var(--_field-shape);
+  background:
+    linear-gradient(
+      color-mix(
+        in srgb,
+        var(--_field-state-color) calc(var(--_field-state-opacity) * 100%),
+        transparent
+      ),
+      color-mix(
+        in srgb,
+        var(--_field-state-color) calc(var(--_field-state-opacity) * 100%),
+        transparent
+      )
+    ),
+    var(--_field-container, transparent);
+  padding: 0 var(--md-sys-measurement-space200);
+  caret-color: var(--_field-caret);
+  color: color-mix(
+    in srgb,
+    var(--_field-input-text-color) calc(var(--_field-input-text-opacity) * 100%),
+    transparent
+  );
+  font-family: var(--_field-input-text-font-family);
+  font-size: var(--_field-input-text-font-size);
+  line-height: var(--_field-input-text-line-height);
+  font-weight: var(--_field-input-text-font-weight);
+  letter-spacing: var(--_field-input-text-tracking);
+}
+:is(.md-outlined-text-field, .md-outlined-select):focus-visible,
+:is(.md-outlined-text-field, .md-outlined-select):has(
+  > :is(input, select):focus-visible
+) {
+  outline: var(--_field-focus-width) solid var(--_field-focus-color);
+  outline-offset: var(--md-sys-state-focus-indicator-outer-offset);
+}
+.md-outlined-text-field::placeholder,
+.md-outlined-text-field input::placeholder {
+  color: var(--_field-placeholder);
+  opacity: 1;
+}
+.md-outlined-text-field:has(> [data-slot="label"]):not(:focus-within):not(
+    [data-component-state="focused"]
+  )
+  input:placeholder-shown::placeholder {
+  color: transparent;
+}
+:is(.md-outlined-text-field, .md-outlined-select) > :is(input, select) {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  appearance: none;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  caret-color: inherit;
+  outline: 0;
+  padding: 0;
+}
+.md-outlined-select > select {
+  width: auto;
+  padding-right: calc(
+    var(--_field-trailing-icon-size) + var(--md-sys-measurement-space100)
+  );
+}
+.md-outlined-select > [data-slot="trailing-icon"] {
+  position: absolute;
+  right: var(--md-sys-measurement-space200);
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+:is(.md-outlined-text-field, .md-outlined-select) [data-slot="label"] {
+  position: absolute;
+  left: var(--md-sys-measurement-space200);
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: color-mix(
+    in srgb,
+    var(--_field-label) calc(var(--_field-label-opacity) * 100%),
+    transparent
+  );
+  font-family: var(--_field-font-family);
+  font-size: var(--_field-font-size);
+  line-height: var(--_field-line-height);
+  font-weight: var(--_field-font-weight);
+  letter-spacing: var(--_field-tracking);
+}
+.md-outlined-text-field:is(
+    :focus-within,
+    [data-component-state="focused"],
+    :has(> input:not(:placeholder-shown))
+  )
+  [data-slot="label"] {
+  top: 0;
+  padding-inline: var(--md-sys-measurement-space50);
+  background: var(--md-sys-color-surface);
+  font-size: var(--_field-populated-label-size);
+  line-height: var(--_field-populated-label-line-height);
+}
+.md-outlined-text-field:has(> [data-slot="supporting-text"]) {
+  margin-bottom: calc(
+    var(--_field-supporting-text-line-height) +
+      var(--md-sys-measurement-space50)
+  );
+}
+.md-outlined-text-field [data-slot="supporting-text"] {
+  position: absolute;
+  top: calc(100% + var(--md-sys-measurement-space50));
+  left: var(--md-sys-measurement-space200);
+  right: var(--md-sys-measurement-space200);
+  color: color-mix(
+    in srgb,
+    var(--_field-supporting-text-color)
+      calc(var(--_field-supporting-text-opacity) * 100%),
+    transparent
+  );
+  font-family: var(--_field-supporting-text-font-family);
+  font-size: var(--_field-supporting-text-font-size);
+  line-height: var(--_field-supporting-text-line-height);
+  letter-spacing: var(--_field-supporting-text-tracking);
+  font-weight: var(--_field-supporting-text-font-weight);
+}
+:is(.md-outlined-text-field, .md-outlined-select) [data-slot="leading-icon"],
+:is(.md-outlined-text-field, .md-outlined-select) [data-slot="trailing-icon"] {
+  display: inline-flex;
+  flex: none;
+  width: var(--_field-leading-icon-size);
+  height: var(--_field-leading-icon-size);
+  color: color-mix(
+    in srgb,
+    var(--_field-leading-icon-color)
+      calc(var(--_field-leading-icon-opacity) * 100%),
+    transparent
+  );
+}
+:is(.md-outlined-text-field, .md-outlined-select) [data-slot="trailing-icon"] {
+  width: var(--_field-trailing-icon-size);
+  height: var(--_field-trailing-icon-size);
+  color: color-mix(
+    in srgb,
+    var(--_field-trailing-icon-color)
+      calc(var(--_field-trailing-icon-opacity) * 100%),
+    transparent
+  );
+}
+:is(.md-outlined-text-field, .md-outlined-select) [data-slot$="icon"] > svg {
+  width: 100%;
+  height: 100%;
+}
+.md-outlined-text-field [data-slot="prefix"] {
+  color: var(--_field-prefix);
+}
+.md-outlined-text-field [data-slot="suffix"] {
+  color: var(--_field-suffix);
+}
+
+.md-menu {
+  --_elevation-level: var(--_menu-elevation);
+  --_shadow-color: var(--_menu-shadow, var(--md-sys-color-shadow));
+  padding: var(--_menu-group-padding);
+  border: 0;
+  border-radius: var(--_menu-shape);
+  background: var(--_menu-container);
+}
+.md-menu section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--_menu-gap);
+  padding: var(--_menu-group-padding);
+  border-radius: var(--_menu-group-shape);
+}
+.md-menu h3 {
+  color: var(--_menu-section-label-text-color);
+}
+.md-menu-item {
+  --_menu-item-container-opacity: 1;
+  --_menu-item-label-opacity: 1;
+  --_menu-item-leading-icon-opacity: 1;
+  --_menu-item-trailing-icon-opacity: 1;
+  --_menu-item-supporting-text-opacity: 1;
+  --_menu-item-trailing-supporting-text-opacity: 1;
+  --_menu-item-state-color: transparent;
+  --_menu-item-state-opacity: 0;
+  --_menu-item-background-state-color: transparent;
+  --_menu-item-background-state-opacity: 0;
+  --_button-background-state-color: var(--_menu-item-background-state-color);
+  --_button-background-state-opacity: var(
+    --_menu-item-background-state-opacity
+  );
+  --_button-pressed-state-color: var(--_menu-item-pressed-state-color);
+  --_button-pressed-state-opacity: var(--_menu-item-pressed-state-opacity);
+  --_button-state-color: var(--_menu-item-state-color);
+  --_button-state-opacity: var(--_menu-item-state-opacity);
+  --_button-rest-shape: var(--_menu-item-shape);
+  --_button-pressed-shape: var(--_menu-item-shape);
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  gap: var(--_menu-item-gap);
+  min-height: var(--_menu-item-height);
+  box-sizing: border-box;
+  padding: var(--_menu-item-top) var(--_menu-item-trailing)
+    var(--_menu-item-bottom) var(--_menu-item-leading);
+  border: 0;
+  border-radius: var(--_menu-item-shape);
+  background: color-mix(
+    in srgb,
+    var(--_menu-item-container) calc(var(--_menu-item-container-opacity) * 100%),
+    transparent
+  );
+  color: color-mix(
+    in srgb,
+    var(--_menu-item-label) calc(var(--_menu-item-label-opacity) * 100%),
+    transparent
+  );
+  text-decoration: none;
+  font-family: var(--_menu-item-font-family);
+  font-size: var(--_menu-item-font-size);
+  line-height: var(--_menu-item-line-height);
+  font-weight: var(--_menu-item-font-weight);
+  letter-spacing: var(--_menu-item-tracking);
+}
+.md-menu-item:focus-visible {
+  outline: var(--_menu-item-focus-width) solid var(--_menu-item-focus-color);
+  outline-offset: var(--_menu-item-focus-offset);
+}
+.md-menu-item > [data-slot="leading-icon"],
+.md-menu-item > svg {
+  color: color-mix(
+    in srgb,
+    var(--_menu-item-leading-icon-color)
+      calc(var(--_menu-item-leading-icon-opacity) * 100%),
+    transparent
+  );
+  width: var(--_menu-item-leading-icon-size);
+  height: var(--_menu-item-leading-icon-size);
+}
+.md-menu-item > [data-slot="trailing-icon"] {
+  color: color-mix(
+    in srgb,
+    var(--_menu-item-trailing-icon-color)
+      calc(var(--_menu-item-trailing-icon-opacity) * 100%),
+    transparent
+  );
+  width: var(--_menu-item-trailing-icon-size);
+  height: var(--_menu-item-trailing-icon-size);
+}
+.md-menu-item > [data-slot="supporting-text"] {
+  color: color-mix(
+    in srgb,
+    var(--_menu-item-supporting-text-color)
+      calc(var(--_menu-item-supporting-text-opacity) * 100%),
+    transparent
+  );
+  font-family: var(--_menu-item-supporting-text-font-family);
+  font-size: var(--_menu-item-supporting-text-font-size);
+  line-height: var(--_menu-item-supporting-text-line-height);
+  font-weight: var(--_menu-item-supporting-text-font-weight);
+  letter-spacing: var(--_menu-item-supporting-text-tracking);
+}
+.md-menu-item > [data-slot="trailing-supporting-text"] {
+  color: color-mix(
+    in srgb,
+    var(--_menu-item-trailing-supporting-text-color)
+      calc(var(--_menu-item-trailing-supporting-text-opacity) * 100%),
+    transparent
+  );
+  font-family: var(--_menu-item-trailing-supporting-text-font-family);
+  font-size: var(--_menu-item-trailing-supporting-text-font-size);
+  line-height: var(--_menu-item-trailing-supporting-text-line-height);
+  font-weight: var(--_menu-item-trailing-supporting-text-font-weight);
+  letter-spacing: var(--_menu-item-trailing-supporting-text-tracking);
+}
+.md-divider {
+  border: 0;
+  border-top: var(--_divider-thickness) solid var(--_divider-color);
+  margin: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .md-icon-button,
+  .md-card,
+  .md-filter-chip,
+  .md-menu-item {
+    transition: none;
+  }
+}
+@media (forced-colors: active) {
+  .md-icon-button,
+  .md-card,
+  .md-filter-chip,
+  .md-menu-item,
+  :is(.md-outlined-text-field, .md-outlined-select) {
+    border: 1px solid ButtonText;
+  }
+  .md-radio {
+    color: ButtonText;
+  }
+}
+
+.md-filter-chip:has(> input:not(:checked)) > .md-chip-face > svg {
+  display: none;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.md-interactive-card::before,
+.md-icon-button::before,
+.md-filter-chip::before,
+.md-menu-item::before {
+  transition:
+    opacity 15ms linear,
+    background-color 15ms linear;
+}
+.md-card > [data-slot="icon"] > svg {
+  width: 100%;
+  height: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .md-interactive-card::before,
+  .md-icon-button::before,
+  .md-filter-chip::before,
+  .md-menu-item::before {
+    transition: none;
+    background: var(--_button-state-color);
+    opacity: var(--_button-state-opacity);
+  }
+}

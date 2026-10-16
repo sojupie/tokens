@@ -31,7 +31,8 @@ independent project and is not affiliated with or endorsed by Google.
 | --- | --- | --- |
 | HTMX 2.0.8 | [bigskysoftware/htmx](https://github.com/bigskysoftware/htmx/tree/v2.0.8) | [Zero-Clause BSD](licenses/HTMX-LICENSE.txt) |
 | Roboto font files | [Google Fonts / Roboto](https://github.com/google/fonts/tree/main/ofl/roboto) | [SIL Open Font License 1.1](catalog/web/static/fonts/OFL.txt), Copyright 2011 The Roboto Project Authors |
-| Material Web elevation shadow formulas (adapted in `catalog/web/static/app.css`) | [material-components/material-web](https://github.com/material-components/material-web/blob/main/elevation/internal/_elevation.scss), Copyright 2022 Google LLC | [Apache License 2.0](catalog/web/MATERIAL-SYMBOLS-LICENSE.txt) |
+| Material Web ripple geometry and interaction lifecycle (adapted in `forge/components/static/buttons.js` and generated ripple CSS) | [material-components/material-web](https://github.com/material-components/material-web/tree/main/ripple/internal), Copyright 2022 Google LLC | [Apache License 2.0](catalog/web/MATERIAL-SYMBOLS-LICENSE.txt) |
+| Material Web elevation shadow formulas (adapted in `forge/components/static/elevation.css`) | [material-components/material-web](https://github.com/material-components/material-web/blob/main/elevation/internal/_elevation.scss), Copyright 2022 Google LLC | [Apache License 2.0](catalog/web/MATERIAL-SYMBOLS-LICENSE.txt) |
 | Material Symbols SVG paths | [Google Material Design icons](https://github.com/google/material-design-icons) | [Apache License 2.0](catalog/web/MATERIAL-SYMBOLS-LICENSE.txt) |
 
 The existing [Moby license](deploy/MOBY-LICENSE) is preserved with the deployment
