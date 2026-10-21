@@ -209,7 +209,8 @@ properties. A missing token, new property, unknown icon-button or menu set, or
 unconverted mapped value stops the build. Review new upstream concepts before
 updating the contract and renderer together.
 
-`forge/components/static/components-base.css` defines browser anatomy.
+`forge/components/styles/` defines browser anatomy by family and concern;
+`forge/components/static/components-base.css` is its assembled output.
 `components.css` combines that anatomy, the shared shadow renderer, and generated
 bindings. The server embeds it. Its checksum must match the publication asset
 manifest, so regenerate assets and rebuild the server together.
@@ -220,7 +221,7 @@ The same selector structure is checked across all six appearances.
 
 ## What a rebuild changes
 
-`components-base.css` and `elevation.css` contain handwritten CSS. The Material
+`components/styles/` and `static/elevation.css` contain handwritten CSS. The Material
 JavaScript generators contain explicit token-to-property mappings and handwritten
 CSS templates. Each build combines these sources into generated `components.css`
 and `buttons.css`. Edit the source files rather than the generated output.
@@ -610,7 +611,7 @@ The renderer mirrors asymmetric corners for the leading edge and RTL layouts.
 Side sheets explicitly clear the unused logical inset so native modal-dialog
 defaults cannot pin an end-aligned sheet to the start edge.
 
-Sizing and gestures use explicit renderer defaults in `components-base.css`:
+Sizing and gestures use explicit renderer defaults in `forge/components/styles/sheets.css`:
 56 px minimized height, a `min(24rem, 85svh)` expanded height, a 56 px drag threshold,
 and a 125 px/s fling threshold. The maximum modal bottom-sheet width is 40 rem.
 The minimized height, drag thresholds, and scrim opacity follow

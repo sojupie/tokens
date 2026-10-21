@@ -1,6 +1,9 @@
 # Forge component library proposal
 
-Status: draft for discussion; implementation has not started. Paths, package names,
+Status: deferred draft for discussion; the library migration has not started.
+The current release keeps the native implementation and separates its templates,
+styles, and behaviors. See [Architecture](architecture.md#component-authoring) for
+the maintained source paths. Paths, package names,
 and APIs below are proposed. Examples are illustrative rather than runnable
 implementations.
 
@@ -31,10 +34,12 @@ components unchanged.
 ## Current problem
 
 The current ownership map is in [Architecture](architecture.md#component-authoring).
-Forge generates token bindings, but Catalog supplies much of the component markup
-through `templates.templ`, `component_gallery.go`, and family-specific helpers.
-Layout shares `components-base.css`; several behaviors share `components.js`.
-Some browser behavior also knows about demo content and HTMX lifecycle events.
+Forge generates token bindings, while Catalog supplies component specimens through
+family templates and Go attribute helpers. Component styles and behaviors now have
+separate source files. They still use Catalog's preview case model and existing
+DOM contracts. Some browser behavior still knows about demo containers and HTMX
+lifecycle events. This proposal addresses the remaining library boundary, beyond
+the source cleanup for the gallery release.
 
 `forge/build-tokens.mjs` both compiles design assets and assembles Catalog styles.
 The root Node package is private build tooling, not an installable component

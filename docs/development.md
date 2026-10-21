@@ -32,6 +32,7 @@ go test ./...
 npm ci
 npm run test:ui
 npm run test:tokens
+npm run check:components
 ```
 
 To include captured-data checks, build assets for a local publication, then run:
@@ -50,16 +51,26 @@ Cloudflare checks are separate operational checks.
 
 ## Templates and assets
 
+Page templates have named files such as `layout.templ` and `changes.templ`.
+Component examples use `specimen_<family>.templ`; `component_specimen.templ` only
+dispatches to the selected family. Matching `specimen_*.go` files hold attribute
+helpers, while `component_gallery.go` holds the shared preview case model.
+
 Edit the affected `catalog/web/*.templ` file, then regenerate the Go files with
 the pinned templ version:
 
 ```sh
-go run github.com/a-h/templ/cmd/templ@v0.3.960 generate -path catalog/web
+go run github.com/a-h/templ/cmd/templ@v0.3.960 generate -path .
 ```
 
-Commit both the template and generated Go file. CSS and JavaScript are maintained
-in `catalog/web/static/`. Shared component assets live in
-`forge/components/static/`. Both are embedded in the binary. Rebuild and restart the
+Commit both the template and generated Go file. Site CSS and JavaScript are maintained
+in `catalog/web/static/`. Shared component CSS sources live in
+`forge/components/styles/`; behavior sources live in `forge/components/behaviors/`.
+Run `npm run build:components` to assemble them into the existing served files in
+`forge/components/static/`. Dedicated scripts such as `menus.js` and `fields.js`
+remain maintained in `static/`. Catalog's demo responses live in
+`catalog/web/static/component-demos.js`. Both sets of served assets are embedded
+in the binary. Rebuild and restart the
 server after changing them. Styles come from the published token data through
 the [DTCG and CSS build](reference/dtcg.md) when generated assets are present.
 `catalog/web/theme.go` supports publications without generated assets. Layout

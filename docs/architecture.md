@@ -45,23 +45,34 @@ they do not contain the component implementations.
 
 | Part | Maintained source | Generated output |
 | --- | --- | --- |
-| HTML markup | `catalog/web/templates.templ`, `site_ui.templ`, and thumbnail templates | Matching `*_templ.go` files, compiled into the Go server |
-| Preview choices and attributes | `catalog/web/component_preview.go`, `component_gallery.go`, `navigation.go`, and other component helpers | HTML rendered for the requested page and preview settings |
-| Layout and anatomy | `forge/components/static/components-base.css`, `elevation.css`, and the anatomy in `forge/material/generate-buttons.mjs` | Included in `forge/components/static/components.css` and `buttons.css` |
+| Pages and site layout | `catalog/web/layout.templ`, `overview.templ`, `subject*.templ`, `changes.templ`, `agents.templ`, and `downloads.templ` | Matching `*_templ.go` files, compiled into the Go server |
+| Component specimens | `catalog/web/specimen_<family>.templ` and matching Go attribute helpers | Selected through the small `component_specimen.templ` dispatcher |
+| Preview configuration | `catalog/web/component_preview.go`, `component_gallery.go`, `component_preview.templ`, and family configuration helpers | HTML rendered for the requested preview settings |
+| Layout and anatomy | `forge/components/styles/*.css`, `static/elevation.css`, and the anatomy in `forge/material/generate-buttons.mjs` | Assembled `static/components-base.css`, then token-bound `static/components.css` and `buttons.css` |
 | Token-to-component mappings | `forge/material/generate-components.mjs` and `generate-buttons.mjs` | CSS selectors binding component roles to captured token variables |
-| Browser behavior | `forge/components/static/components.js`, `buttons.js`, and dedicated files such as `menus.js` and `fields.js` | Served JavaScript; these source files are not generated |
+| Browser behavior | `forge/components/behaviors/*.js` and dedicated `static/` files such as `buttons.js`, `menus.js`, and `fields.js` | `static/components.js` is assembled from behavior sources; dedicated scripts are served directly |
+| Example actions and announcements | `catalog/web/static/component-demos.js` | Catalog listens for component events and supplies example output and workspace content |
 | Theme and publication assets | DTCG exports, `forge/material/site-theme.json`, `overrides.json`, and `forge/build-tokens.mjs` | `<publication>/assets/` themes, component CSS, downloads, and reports |
 
-`templ generate` compiles `.templ` markup into Go.
+`templ generate` compiles `.templ` markup into Go. `npm run build:components`
+assembles component CSS anatomy and browser behaviors using the explicit order in
+`style-sources.json` and `behavior-sources.json`. It needs no publication or token
+capture. `npm run check:components` detects stale assembled files.
 `npm run build:tokens -- --published <publication>` runs the CSS build and
-refreshes the generated component styles. The Go build embeds the shared browser assets; the server
+also runs the component assembly before refreshing token-bound styles. The Go build embeds the shared browser assets; the server
 also loads matching generated CSS from the selected publication.
 
-The directory structure is not one component per file. Much of the markup
-shares `templates.templ`, layout shares `components-base.css`, and several
-behaviors share `components.js`. More involved behaviors have dedicated files.
-Edit maintained sources, then regenerate their outputs; direct edits to generated
-CSS or `*_templ.go` files are overwritten by the next build.
+Specimens, styles, and behavior sources are separated by family and concern.
+Some later CSS sections remain separate files to preserve the existing cascade
+order. `components-base.css` and `components.js` retain their existing served
+paths but are generated assembly outputs. Edit maintained sources, then regenerate;
+direct edits to those outputs, token-bound CSS, or `*_templ.go` files are overwritten.
+
+These are still the current native HTML/CSS/JavaScript components used by Catalog,
+not a published Web Components library. The
+[component library proposal](component-library-proposal.md) describes a later
+migration. The current release work separates existing responsibilities without
+changing component APIs or introducing that compiler.
 
 ## Design decisions
 

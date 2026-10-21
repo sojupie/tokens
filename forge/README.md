@@ -14,10 +14,29 @@ Run these commands from the repository root:
 
 ```sh
 npm ci
+npm run build:components
 npm run build:tokens -- --published published
 npm run test:tokens
 npm run test:ui
 ```
+
+Component source ownership:
+
+| Path | Edit here for |
+| --- | --- |
+| `components/styles/` | CSS anatomy, layout, and interaction styling, separated by concern |
+| `components/behaviors/` | Chips, tabs, navigation, sliders, toolbars, snackbars, FAB menus, split buttons, and tooltips |
+| `components/style-sources.json`, `behavior-sources.json` | Assembly order; CSS order preserves the existing cascade |
+| `components/static/` | Dedicated behavior scripts, shared motion, elevation, and generated served assets |
+| `material/` | Explicit token bindings, source coverage, and value overrides |
+
+`components/static/components-base.css` and `components.js` are assembled files.
+Run `npm run build:components` after editing their sources, or
+`npm run check:components` to check freshness. The token build also assembles them.
+Other dedicated scripts in `static/`, such as `menus.js`, remain authored source.
+Catalog's specimen markup lives in `catalog/web/specimen_<family>.templ`;
+its example messages and workspace actions live in `catalog/web/static/component-demos.js`.
+Those examples consume behavior events rather than putting their content in Forge.
 
 The build exports selected contexts from a saved publication, generates CSS, and
 writes publication assets. It also updates `forge/components/static/buttons.css`,

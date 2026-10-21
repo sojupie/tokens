@@ -29,6 +29,20 @@ The same data is available through a public JSON API, Markdown responses and
 read-only MCP tools. See [usage](docs/usage.md) and
 [API and agent access](docs/reference/agents.md).
 
+## Component playground
+
+Component pages include interactive examples and comparisons of supported
+variants, sizes and states. The examples use CSS bindings generated from the
+captured tokens, with authored HTML, layout and browser behavior where tokens
+do not describe implementation. Theme and contrast controls apply to both the
+site and its examples.
+
+The gallery and playground use the same Forge assets. Specimen markup,
+component styling and browser behavior have separate source files; see the
+[component authoring map](docs/architecture.md#component-authoring) to follow a
+component from its example to its token bindings. These components are currently
+part of the site; a standalone library is planned separately.
+
 ## Use with your agent
 
 [Give this to your agent](https://tokencatalog.dev/md3/for-agents) has a copyable

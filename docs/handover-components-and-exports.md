@@ -68,6 +68,12 @@ is explanatory artwork, not a measured plot of a captured easing function.
 
 ## What is generated, and what is authored?
 
+The current ownership map is maintained in
+[Architecture](architecture.md#component-authoring). Gallery source cleanup split
+the former template and browser-script monoliths into page, specimen, style and
+behavior files. `components-base.css` and `components.js` are now assembled outputs;
+the library extraction proposals later in this handover remain deferred.
+
 The build path is:
 
 ```text
