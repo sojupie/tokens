@@ -37,6 +37,32 @@ renderer supports publications without them. Production requires matching
 external assets and runs the Node asset build before server startup or restart.
 See [DTCG exports](reference/dtcg.md) for the build procedure.
 
+## Component authoring
+
+The components are handwritten HTML anatomy, CSS layout and browser behavior,
+with generated token bindings. Captured Material payloads supply design data;
+they do not contain the component implementations.
+
+| Part | Maintained source | Generated output |
+| --- | --- | --- |
+| HTML markup | `catalog/web/templates.templ`, `site_ui.templ`, and thumbnail templates | Matching `*_templ.go` files, compiled into the Go server |
+| Preview choices and attributes | `catalog/web/component_preview.go`, `component_gallery.go`, `navigation.go`, and other component helpers | HTML rendered for the requested page and preview settings |
+| Layout and anatomy | `forge/components/static/components-base.css`, `elevation.css`, and the anatomy in `forge/material/generate-buttons.mjs` | Included in `forge/components/static/components.css` and `buttons.css` |
+| Token-to-component mappings | `forge/material/generate-components.mjs` and `generate-buttons.mjs` | CSS selectors binding component roles to captured token variables |
+| Browser behavior | `forge/components/static/components.js`, `buttons.js`, and dedicated files such as `menus.js` and `fields.js` | Served JavaScript; these source files are not generated |
+| Theme and publication assets | DTCG exports, `forge/material/site-theme.json`, `overrides.json`, and `forge/build-tokens.mjs` | `<publication>/assets/` themes, component CSS, downloads, and reports |
+
+`templ generate` compiles `.templ` markup into Go.
+`npm run build:tokens -- --published <publication>` runs the CSS build and
+refreshes the generated component styles. The Go build embeds the shared browser assets; the server
+also loads matching generated CSS from the selected publication.
+
+The directory structure is not one component per file. Much of the markup
+shares `templates.templ`, layout shares `components-base.css`, and several
+behaviors share `components.js`. More involved behaviors have dedicated files.
+Edit maintained sources, then regenerate their outputs; direct edits to generated
+CSS or `*_templ.go` files are overwritten by the next build.
+
 ## Design decisions
 
 - Capture records pages, payloads and failures separately, so a successful page
