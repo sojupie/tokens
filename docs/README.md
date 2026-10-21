@@ -7,6 +7,7 @@
 
 - [Local setup and checks](development.md)
 - [Architecture](architecture.md)
+- [Forge component library proposal (draft)](component-library-proposal.md)
 - [Component and export handover](handover-components-and-exports.md)
 - [Source](../source/README.md), [Catalog](../catalog/README.md), and [Forge](../forge/README.md)
 - [Agent skill source](../skills/README.md)

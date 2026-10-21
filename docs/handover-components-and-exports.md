@@ -153,6 +153,9 @@ Material anatomy and mappings remain explicit.
 
 ## How to offer a library and adapters
 
+The [Forge component library proposal](component-library-proposal.md) supersedes
+the proposed sequence below. Neither proposal describes a shipped package API.
+
 Use the existing Web implementation as the starting point. Do not create a
 second CSS implementation for each framework.
 
