@@ -81,6 +81,46 @@ cover generated state bindings, shared interactions, and the local galleries.
 The [CSS inspection and override instructions](reference/components.md#inspect-css-sources)
 explain how to find manual declarations and change a token value.
 
+## Asset delivery checks
+
+`forge/css-output.mjs` factors the site theme and compacts generated CSS.
+`forge/component-bundles.mjs` selects shared controls and optional component
+families. Add child families there when a specimen composes other components.
+`catalog/web/component_assets.go` selects the stylesheet for each page.
+`catalog/web/static/asset-loader.js` selects optional behavior from the rendered
+markup. Keep these mappings aligned when adding a component.
+
+The layout loads shared CSS and core controls. Page-specific stylesheets live
+inside the replaced page content, so HTMX removes them when leaving a playground.
+The loader fetches each optional script once and emits `tokens:assets-ready` after
+styles and behavior are ready. Initializers must handle that event and remain
+idempotent on revisits. A playground stays inert while its assets load. A failed
+load shows a reload instruction. Inert catalog thumbnails skip optional behavior,
+except the progress script needed to paint static SVG paths.
+
+Run the conformance proxy described under motion checks below. `/motion.html`
+checks direct loads, HTMX navigation, lazy initialization and revisits.
+`/asset-performance.html` measures the actual theme and contrast controls, reporting
+synchronous style/layout time and time through two animation frames. Close other
+animation fixtures before measuring. Compare the same browser, viewport and
+publication; these timings are machine-specific.
+
+A Chromium 155 measurement on Linux on 2026-10-22 reduced `/changes` CSS from
+3.00 MB to 1.24 MB before compression (220 KB to 101 KB with gzip level 6).
+Script requests fell from 22 to 12. In 24 measured appearance changes after four
+warmups, synchronous style/layout median fell from 49.5 ms to 42.6 ms on
+`/changes`, and from 51.0 ms to 42.2 ms in the navigation-rail playground.
+Time through two animation frames did not improve. The theme still defines the
+full token set on the root, so inherited-variable recalculation remains a cost.
+These figures describe this local browser run, not a cross-browser performance guarantee.
+
+For a CSS build comparison, save the previous theme and full component stylesheet
+as `forge/conformance/baseline-theme.tmp` and `baseline-components.tmp`, then open
+`/asset-equivalence.html`. It compares appearance variables in all six contexts and
+computed component properties across the gallery. These temporary baseline files
+are ignored by Git. The comparison complements interaction checks; it does not
+replace them.
+
 ## Code layout
 
 | Path | Responsibility |
@@ -146,7 +186,8 @@ Coverage reports and fixed thumbnail choices are also cached for that server.
 Do not replace assets under a running server's pinned directory.
 
 Versioned static URLs use content hashes and a one-year immutable lifetime.
-Bare URLs and stale hashes revalidate. HTML, Markdown and static CSS/JS negotiate
+Bare URLs and stale hashes revalidate. Static gzip bodies are cached by content hash within the server process.
+HTML, Markdown and static CSS/JS negotiate
 gzip; compressed and uncompressed representations have separate ETags.
 DTCG downloads revalidate and remain tied to the loaded publication.
 

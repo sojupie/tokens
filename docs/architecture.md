@@ -68,6 +68,19 @@ order. `components-base.css` and `components.js` retain their existing served
 paths but are generated assembly outputs. Edit maintained sources, then regenerate;
 direct edits to those outputs, token-bound CSS, or `*_templ.go` files are overwritten.
 
+The CSS build emits shared component primitives and optional family bundles.
+Catalog chooses a stylesheet from the page route and keeps it with the body
+content during HTMX navigation. The browser loader selects behavior from the
+rendered component anatomy, loads each module once, and signals when styles and
+behavior are ready. A deployment fingerprint covers the versioned module map;
+ordinary page changes retain the document and shared header.
+
+The generated site theme declares common values once and appearance differences
+under the six theme/contrast selectors. This reduces CSS without changing the
+complete context exports offered for download. The browser still inherits the
+full site token set; these bundles reduce component rules and behavior delivery,
+not the number of token variables inherited by each element.
+
 These are still the current native HTML/CSS/JavaScript components used by Catalog,
 not a published Web Components library. The
 [component library proposal](component-library-proposal.md) describes a later

@@ -28,11 +28,15 @@ Component source ownership:
 | `components/behaviors/` | Chips, tabs, navigation, sliders, toolbars, snackbars, FAB menus, split buttons, and tooltips |
 | `components/style-sources.json`, `behavior-sources.json` | Assembly order; CSS order preserves the existing cascade |
 | `components/static/` | Dedicated behavior scripts, shared motion, elevation, and generated served assets |
+| `components/static/runtime/` | Generated scripts for individual behavior modules |
+| `components/static/bundles/` | Generated shared and page-specific component CSS |
+| `component-bundles.mjs`, `css-output.mjs` | CSS partitioning, declaration grouping, theme deltas, and minification |
 | `material/` | Explicit token bindings, source coverage, and value overrides |
 
 `components/static/components-base.css` and `components.js` are assembled files.
 Run `npm run build:components` after editing their sources, or
-`npm run check:components` to check freshness. The token build also assembles them.
+`npm run check:components` to check freshness. The token build also assembles them. It generates the individual `static/runtime/`
+scripts from the same behavior sources.
 Other dedicated scripts in `static/`, such as `menus.js`, remain authored source.
 Catalog's specimen markup lives in `catalog/web/specimen_<family>.templ`;
 its example messages and workspace actions live in `catalog/web/static/component-demos.js`.
@@ -40,10 +44,18 @@ Those examples consume behavior events rather than putting their content in Forg
 
 The build exports selected contexts from a saved publication, generates CSS, and
 writes publication assets. It also updates `forge/components/static/buttons.css`,
-and `components.css`, which the Go server embeds. Rebuild the server after regenerating that file.
+and `components.css`, plus the CSS bundles in `static/bundles/`, which the Go
+server embeds. Rebuild the server after regenerating these files.
 The build assembles Catalog's theme from its static stylesheet references and
 configured color/motion scheme. Expressive site springs are selected separately
 from the Standard-motion public downloads.
+The theme defines shared values once and emits differences for the six appearance
+contexts. Public token downloads retain their complete selected context. Component
+CSS groups compatible bindings and removes whitespace before partitioning shared
+controls and optional families. Catalog selects the page stylesheet and loads
+optional behavior through `catalog/web/static/asset-loader.js`. The complete
+`components.css` and `components.js` assets remain available.
+
 Production builds run in a separate asset-builder image before server startup
 and after accepted updates. Assets stay outside approved generations; see
 [deployment](../docs/operations/deployment.md#generated-publication-assets).

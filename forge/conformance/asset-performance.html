@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" /><title>Asset and theme measurements</title>
+  <style>
+    body {
+      font: 16px system-ui;
+      margin: 24px;
+    }
+    iframe {
+      width: 100%;
+      height: 600px;
+      border: 1px solid #aaa;
+    }
+    pre {
+      white-space: pre-wrap;
+    }
+    button {
+      padding: 12px;
+    }
+  </style>
+  <h1>Asset and theme measurements</h1>
+  <p>
+    Measures actual appearance controls, synchronous style/layout work, and two
+    animation frames. Results depend on the browser and machine.
+  </p>
+  <button id="run">Measure</button>
+  <pre id="result">Ready</pre>
+  <div id="frame"></div>
+  <script type="module">
+    const button = document.querySelector("#run"),
+      result = document.querySelector("#result"),
+      container = document.querySelector("#frame");
+    const percentile = (values, p) =>
+      [...values].sort((a, b) => a - b)[
+        Math.min(values.length - 1, Math.floor(values.length * p))
+      ];
+    button.onclick = async () => {
+      button.disabled = true;
+      result.textContent = "Running";
+      const pages = [];
+      try {
+        for (const route of [
+          "/changes",
+          "/components/navigation-rail?preview.compare=interactive",
+        ]) {
+          container.replaceChildren();
+          const frame = document.createElement("iframe");
+          container.append(frame);
+          const html = await fetch("/md3" + route).then((r) => r.text());
+          const loaded = new Promise((resolve) => (frame.onload = resolve));
+          frame.srcdoc = html.replace(
+            "<head>",
+            `<head><base href="${location.origin}/md3/">`,
+          );
+          await loaded;
+          frame.scrollIntoView({ block: "start" });
+          const w = frame.contentWindow,
+            d = frame.contentDocument;
+          if (w.TokenAssets?.ready) await w.TokenAssets.ready;
+          await d.fonts.ready;
+          const layout = [],
+            frames = [];
+          for (let i = 0; i < 28; i++) {
+            await new Promise((resolve) => w.requestAnimationFrame(resolve));
+            const start = w.performance.now();
+            d.querySelector("[data-app-theme]").click();
+            d.querySelector(
+              `[data-app-contrast="${["default", "medium", "high"][i % 3]}"]`,
+            ).click();
+            void d.documentElement.offsetWidth;
+            const sync = w.performance.now() - start;
+            await new Promise((resolve) =>
+              w.requestAnimationFrame(() => w.requestAnimationFrame(resolve)),
+            );
+            if (i >= 4) {
+              layout.push(sync);
+              frames.push(w.performance.now() - start);
+            }
+          }
+          pages.push({
+            route,
+            samples: layout.length,
+            styleLayoutMedian: percentile(layout, 0.5),
+            styleLayoutP95: percentile(layout, 0.95),
+            twoFramesMedian: percentile(frames, 0.5),
+            twoFramesP95: percentile(frames, 0.95),
+            styles: [...d.styleSheets].map((s) => s.href).filter(Boolean),
+            scripts: [...d.scripts].map((s) => s.src).filter(Boolean),
+          });
+        }
+        result.textContent = JSON.stringify(
+          { userAgent: navigator.userAgent, pages },
+          null,
+          2,
+        );
+      } catch (error) {
+        result.textContent = error.stack;
+      } finally {
+        button.disabled = false;
+      }
+    };
+  </script>
+</html>

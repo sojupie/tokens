@@ -1,11 +1,12 @@
 import { checkComponentDemos } from './check-component-demos.mjs';
+import { checkAssetNavigation } from './check-asset-navigation.mjs';
 
 // Serve this fixture and /md3 through one local origin; see the development guide.
 export async function checkMotion(container) {
   const checks = [], wait = ms => new Promise(resolve => setTimeout(resolve, ms));
   const assert = (condition, message) => { if (!condition) throw new Error(message); checks.push(message); };
   let frame;
-  async function load(slug, {reduced = false, fallback = false, query = ''} = {}) {
+  async function load(slug, {reduced = false, fallback = false, query = '', path, real = false} = {}) {
     frame?.remove();frame = document.createElement('iframe');frame.style.width=Math.min(960,document.documentElement.clientWidth-48)+'px';container.append(frame);
     const bootstrap = `
       window.motionErrors=[];addEventListener('error',event=>motionErrors.push(event.message));
@@ -16,13 +17,16 @@ export async function checkMotion(container) {
       const originalSupports=CSS.supports.bind(CSS);CSS.supports=(...args)=>args[0]==='overlay'&&${fallback}?false:originalSupports(...args);
       addEventListener('load',()=>{setMotionReduced(window.motionReduced);${fallback ? "const style=document.createElement('style');style.textContent=':is(.md-menu,.md-field-menu,.md-fab-menu-panel)[popover]{transition-property:opacity,scale,border-radius!important}';document.head.append(style);" : ''}});
     `;
-    const html = await fetch(slug ? `/md3/components/${slug}?preview.compare=interactive${query}` : '/md3/').then(r=>{if(!r.ok)throw Error(`Page ${slug}: ${r.status}`);return r.text();});
+    const html = await fetch(path ?? (slug ? `/md3/components/${slug}?preview.compare=interactive${query}` : '/md3/')).then(r=>{if(!r.ok)throw Error(`Page ${slug}: ${r.status}`);return r.text();});
     const loaded = new Promise(resolve=>frame.onload=resolve);
-    frame.srcdoc = html.replace('<head>', `<head><base href="${location.origin}/md3/"><script>${bootstrap}<\/script>`);
-    await loaded;frame.scrollIntoView({block:'start'});await wait(30);
+    if(real)frame.src=path;
+    else frame.srcdoc = html.replace('<head>', `<head><base href="${location.origin}/md3/"><script>${bootstrap}<\/script>`);
+    await loaded;await frame.contentWindow.TokenAssets?.ready;frame.scrollIntoView({block:'start'});await wait(30);
+    if(real){frame.contentWindow.motionErrors=[];frame.contentWindow.addEventListener('error',event=>frame.contentWindow.motionErrors.push(event.message));}
     return {w:frame.contentWindow,d:frame.contentDocument};
   }
   await checkComponentDemos(load, assert);
+  await checkAssetNavigation(load, assert);
   {
     const {w,d}=await load('navigation-rail'),input=d.querySelector('#preview-variant'),root=input.closest('[data-field-example]'),menu=root.querySelector('.md-field-menu'),option=menu.querySelector('[data-field-value="expanded"]');
     let changes=0;input.addEventListener('change',event=>{changes++;event.stopPropagation();});input.addEventListener('input',event=>event.stopPropagation());

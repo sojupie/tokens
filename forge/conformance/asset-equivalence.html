@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" /><title>Asset equivalence checks</title>
+  <style>
+    body {
+      font: 16px system-ui;
+      margin: 24px;
+    }
+    iframe {
+      width: 100%;
+      height: 600px;
+    }
+    pre {
+      white-space: pre-wrap;
+    }
+  </style>
+  <h1>Asset equivalence checks</h1>
+  <p>
+    Supply baseline-theme.tmp and baseline-components.tmp from a previous build
+    in this directory. Checks every appearance variable and computed component
+    styles against those files.
+  </p>
+  <button id="run">Compare builds</button>
+  <pre id="result">Ready</pre>
+  <div id="frame"></div>
+  <script type="module">
+    const button = document.querySelector("#run"),
+      result = document.querySelector("#result"),
+      container = document.querySelector("#frame");
+    const properties = [
+      "display",
+      "position",
+      "width",
+      "height",
+      "color",
+      "backgroundColor",
+      "borderTopColor",
+      "borderTopWidth",
+      "borderTopLeftRadius",
+      "borderTopRightRadius",
+      "borderBottomRightRadius",
+      "borderBottomLeftRadius",
+      "paddingTop",
+      "paddingRight",
+      "paddingBottom",
+      "paddingLeft",
+      "fontFamily",
+      "fontWeight",
+      "fontSize",
+      "lineHeight",
+      "gap",
+      "alignItems",
+      "justifyContent",
+      "outlineColor",
+      "outlineWidth",
+    ];
+    const clean = (value) => value.replace(/\s/g, "");
+    button.onclick = async () => {
+      button.disabled = true;
+      result.textContent = "Running";
+      let checks = 0;
+      const differences = [];
+      try {
+        const baseline = await Promise.all(
+          ["theme", "components"].map((name) =>
+            fetch(`baseline-${name}.tmp`).then((r) => {
+              if (!r.ok) throw Error("Missing baseline " + name);
+              return r.text();
+            }),
+          ),
+        );
+        const index = await fetch("/md3/components").then((r) => r.text()),
+          routes = [
+            ...new Set(
+              [
+                ...index.matchAll(/href="(\/md3\/components\/[a-z0-9-]+)"/g),
+              ].map((m) => m[1]),
+            ),
+          ];
+        for (const route of routes) {
+          result.textContent = `Running: ${route}`;
+          container.replaceChildren();
+          const frame = document.createElement("iframe");
+          container.append(frame);
+          const html = await fetch(route + "?preview.compare=states").then(
+            (r) => r.text(),
+          );
+          const loaded = new Promise((resolve) => (frame.onload = resolve));
+          frame.srcdoc = html.replace(
+            "<head>",
+            `<head><base href="${location.origin}/md3/"><style>*,::before,::after{transition:none!important;animation:none!important}</style>`,
+          );
+          await loaded;
+          const d = frame.contentDocument,
+            w = frame.contentWindow;
+          await w.TokenAssets?.ready;
+          await d.fonts.ready;
+          d.documentElement.dataset.theme = "light";
+          d.documentElement.dataset.contrast = "default";
+          const elements = [
+            ...d.querySelectorAll("#component-preview [class]"),
+          ].filter((e) => [...e.classList].some((c) => c.startsWith("md-")));
+          const snapshot = () =>
+            elements.map((element) => {
+              const style = w.getComputedStyle(element);
+              return properties.map((property) => style[property]);
+            });
+          const actual = snapshot(),
+            sheets = [
+              ...d.querySelectorAll(
+                'link[href*="/bundles/"],link[href*="/components.css"]',
+              ),
+            ];
+          sheets.forEach((link) => (link.disabled = true));
+          const old = d.createElement("style");
+          old.textContent = baseline[1];
+          d.head.append(old);
+          const expected = snapshot();
+          for (let i = 0; i < elements.length; i++)
+            for (let p = 0; p < properties.length; p++) {
+              checks++;
+              if (actual[i][p] !== expected[i][p] && differences.length < 30)
+                differences.push({
+                  route,
+                  element: elements[i].className,
+                  property: properties[p],
+                  before: expected[i][p],
+                  after: actual[i][p],
+                });
+            }
+          old.remove();
+          sheets.forEach((link) => (link.disabled = false));
+          if (route === routes[0]) {
+            const names = [
+                ...new Set(
+                  [...baseline[0].matchAll(/(--[\w-]+)\s*:/g)].map((m) => m[1]),
+                ),
+              ],
+              theme = d.querySelector('link[href*="theme.css"]');
+            for (const appearance of ["light", "dark"])
+              for (const contrast of ["default", "medium", "high"]) {
+                d.documentElement.dataset.theme = appearance;
+                d.documentElement.dataset.contrast = contrast;
+                const current = w.getComputedStyle(d.documentElement),
+                  values = names.map((name) =>
+                    clean(current.getPropertyValue(name)),
+                  );
+                theme.disabled = true;
+                old.textContent = baseline[0];
+                d.head.append(old);
+                const previous = w.getComputedStyle(d.documentElement);
+                for (let i = 0; i < names.length; i++) {
+                  checks++;
+                  const expected = clean(previous.getPropertyValue(names[i]));
+                  if (values[i] !== expected && differences.length < 30)
+                    differences.push({
+                      appearance,
+                      contrast,
+                      variable: names[i],
+                      before: expected,
+                      after: values[i],
+                    });
+                }
+                old.remove();
+                theme.disabled = false;
+              }
+          }
+        }
+        result.textContent = JSON.stringify(
+          { pages: routes.length, checks, differences },
+          null,
+          2,
+        );
+      } catch (error) {
+        result.textContent = error.stack;
+      } finally {
+        button.disabled = false;
+      }
+    };
+  </script>
+</html>
