@@ -1,6 +1,8 @@
 services:
   tokens:
     image: tokens-server-check:local
+    # The crawl fixture intentionally lacks a complete six-context theme.
+    command: [serve, --published, /var/lib/tokens/current, --listen, "0.0.0.0:8080"]
     restart: "no"
     env_file: !reset []
     environment:

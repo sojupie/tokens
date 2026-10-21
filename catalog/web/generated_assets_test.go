@@ -57,6 +57,35 @@ func TestGeneratedAssetsAreBoundToPublication(t *testing.T) {
 	if response.Code != 404 {
 		t.Fatal(response)
 	}
+
+	external := filepath.Join(t.TempDir(), "assets")
+	if err := os.Rename(assets, external); err != nil {
+		t.Fatal(err)
+	}
+	link := filepath.Join(t.TempDir(), "current-assets")
+	if err := os.Symlink(external, link); err != nil {
+		t.Fatal(err)
+	}
+	if err := server.UseGeneratedAssetsDirectory(directory, link); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Remove(link); err != nil {
+		t.Fatal(err)
+	}
+	response = httptest.NewRecorder()
+	server.Handler().ServeHTTP(response, httptest.NewRequest("GET", "/downloads/dtcg/light-default/tokens.tokens.json", nil))
+	if response.Code != 200 {
+		t.Fatal("external asset path was not pinned", response)
+	}
+	if err := server.UseGeneratedAssetsDirectory(directory, link); err == nil {
+		t.Fatal("accepted missing required assets")
+	}
+	if err := server.UseGeneratedAssetsDirectory(directory, t.TempDir()); err == nil {
+		t.Fatal("accepted directory without manifest")
+	}
+	if err := os.Symlink(external, assets); err != nil {
+		t.Fatal(err)
+	}
 	if err := os.WriteFile(filepath.Join(directory, "tokens.sqlite"), []byte("new publication"), 0644); err != nil {
 		t.Fatal(err)
 	}

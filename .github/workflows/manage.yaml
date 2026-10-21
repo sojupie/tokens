@@ -126,6 +126,7 @@ jobs:
               git merge --ff-only "$GITHUB_SHA"
               timed 'Install deployment configuration' sudo -n /usr/bin/sh /opt/tokens/deploy/install.sh
               timed 'Build images' compose --progress plain --profile update build --pull
+              timed 'Build publication assets' update build-assets
               timed 'Save public URL' update configure-public-origin "$TOKENS_PUBLIC_ORIGIN"
               if /usr/bin/systemctl is-active --quiet tokens.service; then
                 timed 'Update containers and wait for health' compose up -d --wait tokens cloudflared

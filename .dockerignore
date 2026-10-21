@@ -9,3 +9,6 @@
 !schemas/**
 !inputs/page-catalog.json
 !deploy/testdata/**
+!package.json
+!package-lock.json
+!deploy/build-assets.sh

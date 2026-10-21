@@ -28,10 +28,12 @@ func runServe(args []string) error {
 		flags.PrintDefaults()
 	}
 	publishedDir := "published"
+	assetsDir := ""
 	listenAddress := "127.0.0.1:8080"
 	publicOrigin := os.Getenv("TOKENS_PUBLIC_ORIGIN")
 	usageDir := os.Getenv("TOKENS_USAGE_DIR")
 	flags.StringVar(&usageDir, "usage-dir", usageDir, "directory for retained usage totals; empty disables usage logging")
+	flags.StringVar(&assetsDir, "assets", assetsDir, "required generated asset directory outside the publication; empty uses publication/assets when present")
 	flags.StringVar(&publishedDir, "published", publishedDir, "publication directory")
 	flags.StringVar(&listenAddress, "listen", listenAddress, "HTTP listen address")
 	flags.StringVar(&publicOrigin, "public-origin", publicOrigin, "public http(s) base URL, optionally including a path, for canonical URLs and sitemap; unset disables indexing")
@@ -54,7 +56,12 @@ func runServe(args []string) error {
 		return err
 	}
 	publicationServer := web.New(state, filepath.Join(publishedDir, "downloads"))
-	if err := publicationServer.UseGeneratedAssets(publishedDir); err != nil {
+	if assetsDir != "" {
+		err = publicationServer.UseGeneratedAssetsDirectory(publishedDir, assetsDir)
+	} else {
+		err = publicationServer.UseGeneratedAssets(publishedDir)
+	}
+	if err != nil {
 		return fmt.Errorf("load generated token assets: %w", err)
 	}
 	if err := publicationServer.SetPublicOrigin(publicOrigin); err != nil {

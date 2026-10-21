@@ -2,7 +2,7 @@
 set -eu
 cd "$(dirname "$0")/.."
 if [ "$#" -eq 0 ]; then
-    echo 'Usage: sh deploy/update.sh run|status|inspect RUN_ID|approve RUN_ID|retry RUN_ID|test-notification|configure-public-origin URL' >&2
+    echo 'Usage: sh deploy/update.sh build-assets|run|status|inspect RUN_ID|approve RUN_ID|retry RUN_ID|test-notification|configure-public-origin URL' >&2
     exit 1
 fi
 if [ "$1" = configure-public-origin ]; then
@@ -32,6 +32,10 @@ if [ "$1" = configure-public-origin ]; then
     chmod 0600 "$config_tmp"
     mv -f "$config_tmp" /etc/tokens/server.env
     echo "Public URL saved: $public_origin"
+    exit 0
+fi
+if [ "$1" = build-assets ]; then
+    docker compose -f deploy/compose.yaml run --rm --no-deps assets
     exit 0
 fi
 if [ "$1" = run ]; then

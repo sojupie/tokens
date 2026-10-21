@@ -84,6 +84,26 @@ services:
     command: [update, run, --state-dir, /var/lib/tokens, --page-catalog, /etc/tokens/page-catalog.json, --chrome-path, /usr/bin/chromium, --concurrency, "1", --page-timeout, 30s, --timeout, 1h]
     networks: [crawl]
 
+  assets:
+    image: tokens-assets:local
+    build:
+      context: ..
+      target: asset-builder
+    profiles: [update]
+    init: true
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    tmpfs: [/tmp]
+    mem_limit: ${TOKENS_UPDATE_MEMORY:-4g}
+    volumes:
+      - type: bind
+        source: ${TOKENS_STATE_DIR:-/var/lib/tokens}
+        target: /var/lib/tokens
+        bind:
+          create_host_path: false
+    network_mode: none
+
   usage:
     image: tokens:local
     profiles: [usage]

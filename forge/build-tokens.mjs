@@ -1,9 +1,11 @@
+import { parseArgs } from "node:util";
 import StyleDictionary from "style-dictionary";
 import { siteTheme } from "./material/site-theme.mjs";
 import { generateComponents } from "./material/generate-components.mjs";
 import { generateButtons } from "./material/generate-buttons.mjs";
 import {
   realpath,
+  mkdir,
   readFile,
   writeFile,
   mkdtemp,
@@ -197,12 +199,21 @@ function cssVariables(values, selector, names) {
 }
 
 async function main() {
-  const args = process.argv.slice(2);
-  if (args.length !== 2 || args[0] !== "--published")
-    throw new Error(
-      "Usage: npm run build:tokens -- --published <publication-directory>",
-    );
-  const published = await realpath(args[1]);
+  const { values: args } = parseArgs({
+    options: {
+      published: { type: "string" },
+      assets: { type: "string" },
+      "tokens-binary": { type: "string" },
+      "check-bindings": { type: "boolean", default: false },
+    },
+  });
+  if (!args.published)
+    throw new Error("Usage: npm run build:tokens -- --published <directory> [--assets <directory>] [--check-bindings]");
+  const executable = args["tokens-binary"] ?? "go";
+  const prefix = args["tokens-binary"] ? [] : ["run", "./cmd/tokens"];
+  const published = await realpath(args.published);
+  const target = path.resolve(args.assets ?? path.join(published, "assets"));
+  await mkdir(path.dirname(target), { recursive: true });
   const overrides = JSON.parse(
     await readFile("forge/material/overrides.json", "utf8"),
   );
@@ -216,13 +227,12 @@ async function main() {
   );
   const database = await readFile(path.join(published, "tokens.sqlite"));
   const databaseSha256 = createHash("sha256").update(database).digest("hex");
-  const output = await mkdtemp(path.join(published, ".token-assets-"));
+  const output = await mkdtemp(path.join(path.dirname(target), ".token-assets-"));
   try {
     const result = spawnSync(
-      "go",
+      executable,
       [
-        "run",
-        "./cmd/tokens",
+        ...prefix,
         "export",
         "--published",
         published,
@@ -374,10 +384,9 @@ async function main() {
       JSON.stringify(Object.values(overrideValues), null, 2) + "\n",
     );
     const audit = spawnSync(
-      "go",
+      executable,
       [
-        "run",
-        "./cmd/tokens",
+        ...prefix,
         "forge",
         "inspect",
         "--assets",
@@ -408,7 +417,12 @@ async function main() {
         2,
       ) + "\n",
     );
-    const target = path.join(published, "assets");
+    if (args["check-bindings"]) {
+      for (const [file, css] of [["buttons.css", buttonCSS], ["components.css", componentCSS]]) {
+        if (await readFile(path.join("forge/components/static", file), "utf8") !== css)
+          throw new Error(`${file} differs from the committed server bindings; regenerate and rebuild the application`);
+      }
+    }
     const backup = `${output}-previous`;
     let previous = false;
     try {
@@ -424,8 +438,10 @@ async function main() {
       throw e;
     }
     if (previous) await rm(backup, { recursive: true });
-    await writeFile("forge/components/static/buttons.css", buttonCSS);
-    await writeFile("forge/components/static/components.css", componentCSS);
+    if (!args["check-bindings"]) {
+      await writeFile("forge/components/static/buttons.css", buttonCSS);
+      await writeFile("forge/components/static/components.css", componentCSS);
+    }
     console.log(`Built six themes and DTCG/CSS downloads in ${target}`);
   } finally {
     await rm(output, { recursive: true, force: true });

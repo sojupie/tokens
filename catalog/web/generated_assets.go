@@ -14,9 +14,21 @@ import (
 // UseGeneratedAssets loads Style Dictionary output belonging to this exact
 // publication. Publications created before the exporter keep their Go theme.
 func (server *Server) UseGeneratedAssets(publicationDir string) error {
-	directory := filepath.Join(publicationDir, "assets")
+	return server.useGeneratedAssets(publicationDir, filepath.Join(publicationDir, "assets"), false)
+}
+
+// UseGeneratedAssetsDirectory requires external assets and pins their resolved path.
+func (server *Server) UseGeneratedAssetsDirectory(publicationDir, directory string) error {
+	resolved, err := filepath.EvalSymlinks(directory)
+	if err != nil {
+		return err
+	}
+	return server.useGeneratedAssets(publicationDir, resolved, true)
+}
+
+func (server *Server) useGeneratedAssets(publicationDir, directory string, required bool) error {
 	data, err := os.ReadFile(filepath.Join(directory, "manifest.json"))
-	if os.IsNotExist(err) {
+	if os.IsNotExist(err) && !required {
 		return nil
 	}
 	if err != nil {

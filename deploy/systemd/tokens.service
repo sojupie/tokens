@@ -8,9 +8,10 @@ ConditionPathExists=/var/lib/tokens/current/tokens.sqlite
 Type=oneshot
 RemainAfterExit=true
 WorkingDirectory=/opt/tokens
+ExecStartPre=/usr/bin/docker compose -f /opt/tokens/deploy/compose.yaml run --rm --no-deps assets
 ExecStart=/usr/bin/docker compose -f /opt/tokens/deploy/compose.yaml up -d --wait tokens cloudflared
 ExecStop=/usr/bin/docker compose -f /opt/tokens/deploy/compose.yaml stop tokens cloudflared
-TimeoutStartSec=3min
+TimeoutStartSec=15min
 
 [Install]
 WantedBy=multi-user.target

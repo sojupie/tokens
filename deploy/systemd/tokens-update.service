@@ -9,6 +9,7 @@ OnFailure=tokens-update-failure.service
 Type=oneshot
 WorkingDirectory=/opt/tokens
 ExecStart=/usr/bin/docker compose -f /opt/tokens/deploy/compose.yaml run --rm --no-deps --name tokens-weekly-update updater
+ExecStartPost=/usr/bin/docker compose -f /opt/tokens/deploy/compose.yaml run --rm --no-deps assets
 ExecStartPost=/usr/bin/docker compose -f /opt/tokens/deploy/compose.yaml restart tokens
 ExecStopPost=-/usr/bin/docker stop --time 30 tokens-weekly-update
 ExecStopPost=-/usr/bin/docker rm -f tokens-weekly-update
