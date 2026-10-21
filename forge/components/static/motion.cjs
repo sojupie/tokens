@@ -48,6 +48,9 @@
     if (!Number.isFinite(duration) || !easing) throw new Error(`Missing generated ${role} motion`);
     return { duration, easing };
   }
+  // An exit copy needs its used geometry and paint, not hundreds of unrelated
+  // computed CSS properties (each read can resolve layout in some browsers).
+  const exitProperties=('position top right bottom left display box-sizing width height min-width max-width min-height max-height margin padding border border-radius background color box-shadow opacity overflow transform transform-origin translate rotate scale flex flex-direction flex-wrap align-items align-self align-content justify-content gap grid-template-columns grid-template-rows grid-auto-flow grid-column grid-row order font letter-spacing text-align white-space text-overflow word-break overflow-wrap visibility vertical-align fill fill-rule stroke stroke-width stroke-linecap stroke-linejoin clip-path appearance contain isolation z-index pointer-events direction writing-mode --_button-container --_button-background-state-color --_button-background-state-opacity --_button-state-color --_button-state-opacity --_button-ripple-color --_elevation-level --_shadow-color --_menu-container --_field-menu-label-color').split(' ');
   const exits = new Map();
   function clearExit(element) { exits.get(element)?.(); }
   function retainExit(element, mirror = false) {
@@ -61,8 +64,10 @@
       copy.removeAttribute('popover'); copy.setAttribute('data-menu-exit-copy', ''); copy.setAttribute('aria-hidden', 'true'); copy.inert = true;
       originals.forEach((node, i) => {
         const style = getComputedStyle(node);
-        for (const property of Array.from(style)) if (!property.startsWith('--') || property.startsWith('--_')) copies[i].style.setProperty(property, style.getPropertyValue(property));
-        copies[i].style.setProperty('transition', 'none', 'important');
+        // Do not enumerate computed styles: the publication contributes thousands
+        // of inherited tokens to every descendant's CSSStyleDeclaration.
+        const declarations=exitProperties.map(property=>`${property}:${style.getPropertyValue(property)};`);
+        copies[i].style.cssText=declarations.join('')+'transition:none!important;';
       });
       copy.style.setProperty('pointer-events', 'none', 'important'); copy.style.setProperty('z-index', '2147483647');
       (element.closest('dialog[open]') || document.body).append(copy);

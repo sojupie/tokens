@@ -31,7 +31,9 @@ test('popup fallback mirrors FAB item springs and removes copies on reopen or re
   const {runInNewContext} = require('node:vm'), {readFileSync} = require('node:fs');
   const listeners = {}, timers = new Map(), copies = [];
   let timer = 0;
-  const style = Object.assign(['display','opacity'], {getPropertyValue:name=>name==='display'?'block':'1'});
+  const reads=[];
+  const style = Object.assign(['display','opacity','grid-template-areas','--_motion-fast-spatial-easing','--_button-container'], {getPropertyValue(name){reads.push(name);if(name==='grid-template-areas'||name==='--_motion-fast-spatial-easing')throw Error('Unneeded computed style read');return name==='display'?'block':'1';}});
+  style[Symbol.iterator]=function(){throw Error('Must not enumerate inherited publication tokens');};
   const document={body:{append(copy){copies.push(copy);}},addEventListener(){}};
   const globals={document,CSS:{supports:()=>false},matchMedia:()=>({matches:false,addEventListener:(name,fn)=>listeners[name]=fn}),getComputedStyle:()=>style,setTimeout(fn,ms){timers.set(++timer,{fn,ms});return timer;},clearTimeout:id=>timers.delete(id)};
   runInNewContext(readFileSync(require.resolve('./static/motion.cjs'),'utf8'),globals);
@@ -42,6 +44,9 @@ test('popup fallback mirrors FAB item springs and removes copies on reopen or re
   const element={scrollTop:4,scrollLeft:0,closest:()=>null,querySelectorAll:()=>[item],getAnimations:()=>[],cloneNode(){const child=node();return{...node(),querySelectorAll:selector=>selector==='*'?[child]:[],removeAttribute(){},setAttribute(){},remove(){this.removed=true;}};}};
   globals.MaterialMotion.retainExit(element,true);
   assert.equal(copies.length,1);assert.equal(copies[0].inert,true);
+  assert.match(copies[0].style.cssText,/--_button-container:1;/,'keep the resolved component paint variables');
+  assert.ok(reads.length<300,'snapshot only geometry and paint, not every computed property');
+  assert.doesNotMatch(copies[0].style.cssText,/--_motion-/,'copied WAAPI tracks supply their own timing');
   assert.equal(mirrored[0].options.delay,75);assert.equal(mirrored[0].options.duration,420);assert.equal(mirrored[0].a.currentTime,12);
   assert.ok([...timers.values()].some(t=>t.ms===545));
   globals.MaterialMotion.clearExit(element);

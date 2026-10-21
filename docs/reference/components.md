@@ -1295,7 +1295,9 @@ Native popover overlay transitions retain menus and FAB menus during exit.
 Without overlay support, an inert, ARIA-hidden copy remains outside the popover
 lifecycle. Ordinary menus retain separate spatial/effects animations; FAB menus
 mirror their item springs and delays. Reopening, completion, cancellation,
-reduced motion and a timeout remove copies. No fallback calls `showPopover()`.
+reduced motion and a timeout remove copies. No fallback calls `showPopover()`. Exit snapshots read a fixed set of used
+geometry, paint and state-layer properties. They never enumerate computed
+styles, which include the publication tokens inherited by every descendant.
 
 Ripple timings and loading/progress algorithms retain their component-specific
 Material implementations. Static components do not gain an arbitrary entry

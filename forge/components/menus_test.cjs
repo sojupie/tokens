@@ -63,7 +63,7 @@ test('Firefox exit is painted synchronously without re-entering the popover life
  events.beforetoggle({newState:'closed',target:menu});
  assert.equal(appended,true,'copy must be present before the original disappears');assert.equal(unpopovered,true);assert.equal(copies,1);
  events.beforetoggle({newState:'closed',target:menu});assert.equal(copies,1);
- assert.equal(copy.inert,true);assert.equal(copy.scrollTop,80);assert.equal(values.get('display'),'block');assert.equal(values.get('pointer-events'),'none');assert.equal(values.get('--_menu-container'),'rgb(1, 2, 3)');assert.equal(values.has('--md-sys-color-primary'),false);
+ assert.equal(copy.inert,true);assert.equal(copy.scrollTop,80);assert.match(copy.style.cssText,/display:block;/);assert.equal(values.get('pointer-events'),'none');assert.match(copy.style.cssText,/--_menu-container:rgb\(1, 2, 3\);/);assert.equal(values.has('--md-sys-color-primary'),false);
  assert.equal(frames[0].options.duration,150);assert.equal(frames[0].keyframes[0].opacity,'1');assert.equal(frames[0].keyframes[1].opacity,0);
  assert.equal(Array.from(timers.values()).some(t=>t.ms===0),false,'no delayed copy handoff');
  const watchdog=Array.from(timers.values()).find(t=>t.ms===400);assert.ok(watchdog);watchdog.fn();assert.equal(removed,true,'cleanup must not depend on animation completion');

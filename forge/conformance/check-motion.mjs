@@ -38,9 +38,18 @@ export async function checkMotion(container) {
   }
   {
     const {w,d}=await load('fab-menu',{fallback:true}),trigger=d.querySelector('.md-fab-menu-opener'),panel=d.querySelector('.md-fab-menu-panel');
-    trigger.click();await wait(850);panel.hidePopover();
+    trigger.click();await wait(850);
+    const before=panel.querySelector('.md-fab-menu-item'),beforeStyle=w.getComputedStyle(before),paint={background:beforeStyle.backgroundColor,color:beforeStyle.color,height:before.getBoundingClientRect().height,width:before.getBoundingClientRect().width};
+    const start=w.performance.now();panel.hidePopover();
+    assert(w.performance.now()-start<50,'FAB fallback exit setup stays below the long-task threshold');
     const copy=d.querySelector('[data-menu-exit-copy]');assert(copy?.inert,'FAB exit receives a retained surface without overlay support');
     assert([...copy.querySelectorAll('.md-fab-menu-item')].some(item=>item.getAnimations().length),'FAB fallback mirrors the item spring animations');
+    const copied=copy.querySelector('.md-fab-menu-item'),copiedStyle=w.getComputedStyle(copied);
+    assert(copiedStyle.backgroundColor===paint.background&&copiedStyle.color===paint.color,'FAB exit copy retains its resolved colors');
+    assert(Math.abs(copied.getBoundingClientRect().height-paint.height)<.1&&Math.abs(copied.getBoundingClientRect().width-paint.width)<.1,'FAB exit copy retains its starting geometry');
+    await wait(600);trigger.click();await wait(650);
+    const actionStart=w.performance.now();panel.querySelector('[data-fab-menu-action]').click();
+    assert(w.performance.now()-actionStart<50&&!panel.matches(':popover-open'),'FAB item selection dismisses without blocking');
     await wait(1000);assert(!d.querySelector('[data-menu-exit-copy]'),'FAB exit copy cleans up');assert(!w.motionErrors.length,'FAB lifecycle has no script errors');
   }
   for(const slug of ['date-pickers','time-pickers']) {
