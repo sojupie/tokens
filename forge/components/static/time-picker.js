@@ -59,23 +59,24 @@
    state.panel.querySelector('[data-time-error]').textContent=validHour?'Enter minutes from 0 to 59.':state.is24?'Enter an hour from 0 to 23.':'Enter an hour from 1 to 12.';input.focus({preventScroll:true});input.select();}
   return false;
  }
- function timing(state){const style=getComputedStyle(state.panel);return{duration:parseFloat(style.getPropertyValue('--md-sys-motion-duration-short3')),easing:style.getPropertyValue('--md-sys-motion-easing-standard').trim()};}
+ function timing(state){return MaterialMotion.timing(state.panel,'fast-effects');}
  function cancelGesture(state){const g=state.gesture;if(!g)return;state.gesture=null;delete state.dial.dataset.dragging;if(state.dial.hasPointerCapture(g.id))state.dial.releasePointerCapture(g.id);}
  function open(state){
-  if(state.panel.open)return;
-  state.revision=(state.revision||0)+1;state.animation?.cancel();render(state);state.panel.showModal();state.opener.setAttribute('aria-expanded','true');
+  if(state.panel.open&&!state.closing)return;
+  const from=state.panel.open?getComputedStyle(state.panel).opacity:0;state.closing=false;state.panel.inert=false;
+  state.revision=(state.revision||0)+1;state.animation?.cancel();render(state);if(!state.panel.open)state.panel.showModal();state.opener.setAttribute('aria-expanded','true');
   if(state.panel.dataset.mode==='input'){const input=state.panel.querySelector('[data-time-input="hour"]');input.focus({preventScroll:true});input.select();}
   else state.panel.querySelector(`[data-time-value="${state.active}"]`).focus({preventScroll:true});
-  if(!reduced.matches)state.animation=state.panel.animate([{opacity:0},{opacity:1}],timing(state));
+  if(!reduced.matches)state.animation=state.panel.animate([{opacity:from},{opacity:1}],timing(state));
  }
  async function close(state,save){
   if(save&&!validate(state))return;
   cancelGesture(state);
   if(save){state.committed={hour:state.hour,minute:state.minute};state.root.querySelector('[data-time-output]').textContent=timeText(state);}else Object.assign(state,state.committed);
   render(state);if(state.panel.hasAttribute('data-time-inline'))return;
-  const revision=state.revision=(state.revision||0)+1;state.animation?.cancel();
-  if(!reduced.matches){const animation=state.panel.animate([{opacity:1},{opacity:0}],timing(state));state.animation=animation;try{await animation.finished;}catch{return;}if(state.revision!==revision)return;animation.cancel();}
-  state.panel.close();state.opener.setAttribute('aria-expanded','false');state.opener.focus({preventScroll:true});
+  const from=getComputedStyle(state.panel).opacity;state.closing=true;state.panel.inert=true;const revision=state.revision=(state.revision||0)+1;state.animation?.cancel();
+  if(!reduced.matches){const animation=state.panel.animate([{opacity:from},{opacity:0}],timing(state));state.animation=animation;try{await animation.finished;}catch{return;}if(state.revision!==revision)return;animation.cancel();}
+  state.panel.close();state.panel.inert=false;state.closing=false;state.opener.setAttribute('aria-expanded','false');state.opener.focus({preventScroll:true});
  }
  function init(){for(const root of document.querySelectorAll('.md-time-demo')){
   if(states.has(root))continue;const panel=root.querySelector('.md-time-panel'),state={root,panel,opener:root.querySelector('[data-time-open]'),dial:panel.querySelector('[data-time-dial]'),is24:panel.dataset.format==='24h',hour:10,minute:10,active:panel.dataset.active};state.committed={hour:10,minute:10};states.set(root,state);render(state);
@@ -120,5 +121,6 @@
  document.addEventListener('pointerup',event=>finishPointer(event,false));document.addEventListener('pointercancel',event=>finishPointer(event,true));document.addEventListener('lostpointercapture',event=>finishPointer(event,true));
  window.addEventListener('blur',()=>{for(const panel of document.querySelectorAll('.md-time-panel')){const state=stateFor(panel);if(state?.gesture){const g=state.gesture;cancelGesture(state);state.hour=g.hour;state.minute=g.minute;render(state,false);}}});
  document.addEventListener('htmx:beforeCleanupElement',event=>{const node=event.detail?.elt;if(!node)return;for(const root of [...(node.matches?.('.md-time-demo')?[node]:[]),...node.querySelectorAll('.md-time-demo')]){const state=states.get(root);if(!state)continue;state.revision++;cancelGesture(state);state.animation?.cancel();if(state.panel.open)state.panel.close();states.delete(root);}});
+ reduced.addEventListener('change',()=>{if(!reduced.matches)return;for(const root of document.querySelectorAll('.md-time-demo')){const state=states.get(root);if(!state)continue;state.animation?.finish();state.monthAnimation?.finish();}});
  document.addEventListener('htmx:afterSwap',init);if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();

@@ -8,41 +8,7 @@
   initializeCheckboxes();
   document.addEventListener("htmx:afterSwap", () => initializeCheckboxes());
 
-  // Material supplies damping ratios and stiffness. The renderer uses unit mass.
-  function springFrames(damping, stiffness) {
-    if (!(damping > 0) || !(stiffness > 0))
-      throw new Error("Invalid button spring");
-    const omega = Math.sqrt(stiffness);
-    const progress = (time) => {
-      if (damping < 1) {
-        const wd = omega * Math.sqrt(1 - damping * damping);
-        return (
-          1 -
-          Math.exp(-damping * omega * time) *
-            (Math.cos(wd * time) +
-              ((damping * omega) / wd) * Math.sin(wd * time))
-        );
-      }
-      if (damping === 1)
-        return 1 - Math.exp(-omega * time) * (1 + omega * time);
-      const root = Math.sqrt(damping * damping - 1);
-      const a = -omega * (damping - root),
-        b = -omega * (damping + root);
-      return 1 - (b * Math.exp(a * time) - a * Math.exp(b * time)) / (b - a);
-    };
-    const samples = [0];
-    for (let i = 1; i <= 600; i++) {
-      samples.push(progress(i / 60));
-      if (
-        i > 2 &&
-        Math.abs(1 - samples[i]) < 0.001 &&
-        Math.abs(samples[i] - samples[i - 1]) < 0.001
-      )
-        break;
-    }
-    samples[samples.length - 1] = 1;
-    return { samples, duration: ((samples.length - 1) * 1000) / 60 };
-  }
+  const { springFrames, springState, springTrack } = MaterialMotion;
   // Neighbor compression adapted from AndroidX ButtonGroup.kt, Copyright 2024
   // The Android Open Source Project, Apache-2.0. See THIRD_PARTY_NOTICES.md.
   function groupWidths(widths,index,ratio,limits) {
@@ -187,6 +153,7 @@
       widthGroups.set(group,state);
     }
     const from=state.items.map(item=>item.getBoundingClientRect().width);
+    const velocity=from.map((_,i)=>state.motion&&state.animations[i]?springState(state.motion.damping,state.motion.stiffness,Math.max(0,Number(state.animations[i].currentTime)||0)/1000,state.motion.from[i],state.motion.to[i],state.motion.velocity[i]).velocity:0);
     for(const animation of state.animations)animation.cancel();
     const revision=++state.revision,style=getComputedStyle(group);
     const held=state.items.findIndex(item=>item.hasAttribute('data-pressed'));
@@ -199,9 +166,10 @@
       if(index<0){for(const [i,item]of state.items.entries())item.style.width=state.original[i];widthGroups.delete(group);}
     };
     if(reduced.matches||document.hidden){finish();return;}
-    const {samples,duration}=springFrames(parseFloat(style.getPropertyValue('--_group-width-damping')),parseFloat(style.getPropertyValue('--_group-width-stiffness')));
+    const damping=parseFloat(style.getPropertyValue('--_group-width-damping')),stiffness=parseFloat(style.getPropertyValue('--_group-width-stiffness'));
+    const {samples,duration}=springTrack(damping,stiffness,from,to,velocity);state.motion={damping,stiffness,from,to,velocity};
     group.setAttribute('data-width-animating','');
-    state.animations=state.items.map((item,i)=>item.animate(samples.map((p,j)=>({width:Math.max(0,from[i]+(to[i]-from[i])*p)+'px',offset:j/(samples.length-1)})),{duration,easing:'linear'}));
+    state.animations=state.items.map((item,i)=>item.animate(samples.map((widths,j)=>({width:Math.max(0,widths[i])+'px',offset:j/(samples.length-1)})),{duration,easing:'linear'}));
     Promise.all(state.animations.map(a=>a.finished)).then(finish,()=>{});
   }
   const widthGallery=new WeakSet();
@@ -219,8 +187,10 @@
     shapeTo(button, "--_button-rest-shape", start);
     widthGroup(button,false);
   }
+  const shapeMotions = new WeakMap();
   function shapeTo(button, target, initial) {
-    const old = shapes.get(button);
+    const old = shapes.get(button), prior = shapeMotions.get(button);
+    const velocity = old && prior ? prior.from.map((n, i) => springState(prior.damping, prior.stiffness, Math.max(0, Number(old.currentTime) || 0) / 1000, n, prior.to[i], prior.velocity[i]).velocity) : [0, 0, 0, 0];
     const style = getComputedStyle(button);
     // Leave CSS transitions untouched when this component has no shape spring.
     if (!style.getPropertyValue("--_button-spring-damping").trim()) return;
@@ -239,18 +209,12 @@
       shapes.delete(button);
       return;
     }
-    const { samples, duration } = springFrames(
-      parseFloat(style.getPropertyValue("--_button-spring-damping")),
-      parseFloat(style.getPropertyValue("--_button-spring-stiffness")),
-    );
-    const frames = samples.map((value, i) => ({
-      borderRadius: start
-        .map((n, c) => `${Math.max(0, n + (end[c] - n) * value)}px`)
-        .join(" "),
-      offset: i / (samples.length - 1),
-    }));
+    const damping = parseFloat(style.getPropertyValue("--_button-spring-damping")), stiffness = parseFloat(style.getPropertyValue("--_button-spring-stiffness"));
+    const { samples, duration } = springTrack(damping, stiffness, start, end, velocity);
+    const frames = samples.map((corners, i) => ({ borderRadius: corners.map(n => `${Math.max(0, n)}px`).join(" "), offset: i / (samples.length - 1) }));
     const animation = button.animate(frames, { duration, easing: "linear" });
     shapes.set(button, animation);
+    shapeMotions.set(button, { damping, stiffness, from: start, to: end, velocity });
     animation.finished.then(
       () => {
         if (shapes.get(button) === animation) shapes.delete(button);

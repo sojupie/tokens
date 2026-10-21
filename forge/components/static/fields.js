@@ -26,7 +26,7 @@
   // Measure the CSS-capped surface before choosing which side of the field to use.
   state.menu.style.setProperty('--_field-popup-height',Math.max(0,viewport.height-2*gap)+'px');
   const height=Math.min(state.menu.scrollHeight,state.menu.offsetHeight||state.menu.scrollHeight);
-  const p=popupPosition(rect,viewport,height,gap);state.menu.dataset.menuAbove=String(p.top<rect.top);for(const [key,value]of Object.entries(p))state.menu.style.setProperty('--_field-popup-'+key,value+'px');
+  const p=popupPosition(rect,viewport,height,gap);state.menu.dataset.menuAbove=String(p.top<rect.top);state.menu.style.setProperty('--_menu-origin-x',Math.max(0,Math.min(100,(rect.left+rect.width/2-p.left)/p.width*100))+'%');for(const [key,value]of Object.entries(p))state.menu.style.setProperty('--_field-popup-'+key,value+'px');
  }
  function open(state,query='') {
   if(state.input.disabled)return;filter(state,query);if(!state.menu.matches(':popover-open'))state.menu.showPopover();position(state);state.input.setAttribute('aria-expanded','true');

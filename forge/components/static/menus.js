@@ -7,33 +7,12 @@
  if(typeof module!=='undefined')module.exports={menuIndex};
  if(typeof document==='undefined')return;
  const pending=new WeakMap(),initialized=new WeakSet(),pointerOpen=new WeakMap();
- // Browsers without overlay transitions need a visual exit surface. Keep it
- // outside the native popover lifecycle: a deferred showPopover caused a blink
- // and re-entering the top layer during dismissal can freeze Firefox.
- const exits=new WeakMap();
+ // The FAB controller schedules its item springs before this listener copies them.
  document.addEventListener('beforetoggle',event=>{
   const menu=event.target;
-  if(!menu.matches?.('.md-menu[popover],.md-field-menu[popover]')||menu.hasAttribute('data-menu-exit-copy'))return;
-  if(event.newState==='open'){exits.get(menu)?.();return;}
-  if(exits.has(menu)||(typeof CSS!=='undefined'&&CSS.supports('overlay','auto'))||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-  const style=getComputedStyle(menu),copy=menu.cloneNode(true);
-  let timer;
-  const cleanup=()=>{clearTimeout(timer);copy.remove();if(exits.get(menu)===cleanup)exits.delete(menu);};
-  exits.set(menu,cleanup);
-  try{
-   copy.removeAttribute('id');for(const child of copy.querySelectorAll('[id]'))child.removeAttribute('id');
-   copy.removeAttribute('popover');copy.setAttribute('data-menu-exit-copy','');copy.setAttribute('aria-hidden','true');copy.inert=true;
-   for(const property of Array.from(style))if(!property.startsWith('--')||property.startsWith('--_'))copy.style.setProperty(property,style.getPropertyValue(property));
-   copy.style.setProperty('pointer-events','none','important');copy.style.setProperty('transition','none','important');copy.style.setProperty('z-index','2147483647');
-   const rawDuration=Number.parseFloat(style.getPropertyValue('--md-sys-motion-duration-short3'));
-   const duration=Number.isFinite(rawDuration)?rawDuration:150;
-   // Modal dialogs paint above the document, so keep their exit copies inside.
-   (menu.closest('dialog[open]')||document.body).append(copy);
-   copy.scrollTop=menu.scrollTop;copy.scrollLeft=menu.scrollLeft;
-   const animation=copy.animate([{opacity:style.opacity},{opacity:0}],{duration,easing:'linear',fill:'forwards'});
-   timer=setTimeout(cleanup,duration+50);
-   animation.finished.then(cleanup,cleanup);
-  }catch{cleanup();}
+  if(!menu.matches?.('.md-menu[popover],.md-field-menu[popover],.md-fab-menu-panel[popover]')||menu.hasAttribute('data-menu-exit-copy'))return;
+  if(event.newState==='open')MaterialMotion.clearExit(menu);
+  else MaterialMotion.retainExit(menu,menu.matches('.md-fab-menu-panel'));
  },true);
 
  const items=menu=>[...menu.querySelectorAll('[role^="menuitem"]')].filter(x=>x.closest('[data-menu-panel]')===menu&&!x.closest('[hidden]')&&!x.disabled&&x.getAttribute('aria-disabled')!=='true');
@@ -47,7 +26,7 @@
   if(menu.hasAttribute('data-menu-main')){x=rtl?r.right-b.width:r.left;y=r.bottom+gap;if(y+b.height>innerHeight-gap)y=r.top-b.height-gap;}
   else{x=rtl?r.left-b.width-gap:r.right+gap;if(x<gap||x+b.width>viewport-gap)x=rtl?r.right+gap:r.left-b.width-gap;y=r.top;}
   menu.dataset.menuAbove=String(y+b.height<=r.top);
-  menu.style.left=Math.max(gap,Math.min(x,viewport-b.width-gap))+'px';menu.style.top=Math.max(gap,Math.min(y,innerHeight-b.height-gap))+'px';
+  const left=Math.max(gap,Math.min(x,viewport-b.width-gap));menu.style.left=left+'px';menu.style.top=Math.max(gap,Math.min(y,innerHeight-b.height-gap))+'px';menu.style.setProperty('--_menu-origin-x',Math.max(0,Math.min(100,(r.left+r.width/2-left)/b.width*100))+'%');
  }
  function close(menu,restore){if(menu.matches(':popover-open'))menu.hidePopover();const trigger=triggerFor(menu);if(!trigger)return;trigger.setAttribute('aria-expanded','false');if(restore){const parent=trigger.closest('[data-menu-panel]');if(parent)focus(parent,trigger);else trigger.focus({preventScroll:true});}}
  function open(trigger,keyboard,last=false){if(trigger.disabled)return;const menu=panel(trigger);if(!menu.hasAttribute('popover'))return;clearTimeout(pending.get(trigger));menu.showPopover();position(menu);trigger.setAttribute('aria-expanded','true');if(keyboard){const list=items(menu);focus(menu,last?list.at(-1):list[0]);}}

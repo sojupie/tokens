@@ -16,7 +16,7 @@ test('tall-row alignment follows rendered height and observes swapped rows',()=>
  const row={getBoundingClientRect:()=>({height:88}),toggleAttribute:(name,on)=>changes.push([name,on])};
  const document={readyState:'loading',addEventListener:(name,fn)=>events[name]=fn,querySelectorAll:()=>[row]};
  const sizes={observe:item=>assert.equal(item,row),unobserve:item=>assert.equal(item,row)};
- runInNewContext(readFileSync(`${__dirname}/static/lists.js`,'utf8'),{document,window:{addEventListener(){}},matchMedia:()=>({matches:false}),ResizeObserver:class{constructor(fn){resize=fn;return sizes;}}});
+ runInNewContext(readFileSync(`${__dirname}/static/lists.js`,'utf8'),{document,window:{addEventListener(){}},matchMedia:()=>({matches:false,addEventListener(){}}),ResizeObserver:class{constructor(fn){resize=fn;return sizes;}}});
  events.DOMContentLoaded();resize([{target:row,borderBoxSize:[{blockSize:88}]}]);
  row.getBoundingClientRect=()=>({height:72});resize([{target:row,borderBoxSize:[{blockSize:72}]}]);
  assert.deepEqual(changes,[['data-list-tall',true],['data-list-tall',false]]);
@@ -32,7 +32,7 @@ test('reorder handle targets its row and updates bottom-sheet boundary actions',
  const row={dataset:{listLabel:'First item'},querySelector:s=>s==='.md-list-row > .md-list-item'?{disabled:false}:null,closest:()=>list,hasAttribute:name=>name==='data-list-action-target'&&selected,toggleAttribute:(name,on)=>selected=on};
  const button={disabled:false,closest:s=>s==='[data-list-row]'?row:button,hasAttribute:s=>s==='data-list-grip'};
  const document={readyState:'loading',addEventListener:(name,fn)=>events[name]=fn};
- runInNewContext(readFileSync(`${__dirname}/static/lists.js`,'utf8'),{document,window:{addEventListener(){}},matchMedia:()=>({matches:false}),ResizeObserver:class{}});
+ runInNewContext(readFileSync(`${__dirname}/static/lists.js`,'utf8'),{document,window:{addEventListener(){}},matchMedia:()=>({matches:false,addEventListener(){}}),ResizeObserver:class{}});
  events.click({target:button,detail:1});
  assert.equal(selected,true);assert.equal(attrs['aria-label'],'Reorder First item');assert.equal(up.disabled,true);assert.equal(down.disabled,true);assert.equal(focused,true);
 });

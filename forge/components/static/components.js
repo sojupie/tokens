@@ -71,10 +71,9 @@
     for(const item of list.querySelectorAll('[role="tab"]')) { const selected=item===tab;item.setAttribute('aria-selected',String(selected));item.tabIndex=selected?0:-1; }
     for(const panel of example.querySelectorAll('[role="tabpanel"]')) panel.hidden=panel.id!==tab.getAttribute('aria-controls');
     if(!from || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const indicator=tab.querySelector('.md-tab-active-indicator'), to=indicator.getBoundingClientRect(), style=getComputedStyle(tab);
-    const duration=Number.parseFloat(style.getPropertyValue('--md-sys-motion-duration-short3'));
-    if(!to.width || !Number.isFinite(duration)) return;
-    const animation=indicator.animate([{transform:`translateX(${from.left-to.left}px) scaleX(${from.width/to.width})`},{transform:'none'}],{duration,easing:style.getPropertyValue('--md-sys-motion-easing-standard').trim()});
+    const indicator=tab.querySelector('.md-tab-active-indicator'), to=indicator.getBoundingClientRect();
+    if(!to.width) return;
+    const animation=indicator.animate([{transform:`translateX(${from.left-to.left}px) scaleX(${from.width/to.width})`},{transform:'none'}],MaterialMotion.timing(tab));
     tabAnimations.set(list,animation);
   }
   document.addEventListener('click',event=>{
@@ -124,7 +123,7 @@
     const label=button.querySelector('.md-nav-label').textContent;
     if(output) output.textContent=label+' selected';
     const frame=group.closest('.md-rail-frame');
-    if(frame){const title=frame.querySelector('[data-navigation-title]');title.textContent=label;frame.querySelector('[data-navigation-description]').textContent='Your '+label.toLowerCase()+' in this workspace.';const screen=frame.querySelector('.md-rail-screen');screen.scrollTop=0;if(!matchMedia('(prefers-reduced-motion: reduce)').matches)screen.animate([{opacity:0},{opacity:1}],{duration:parseFloat(getComputedStyle(group).getPropertyValue('--md-sys-motion-duration-short3'))});if(frame.dataset.modalOpen==='true')setRailExpanded(frame,false);}
+    if(frame){const title=frame.querySelector('[data-navigation-title]');title.textContent=label;frame.querySelector('[data-navigation-description]').textContent='Your '+label.toLowerCase()+' in this workspace.';const screen=frame.querySelector('.md-rail-screen');screen.scrollTop=0;if(!matchMedia('(prefers-reduced-motion: reduce)').matches)screen.animate([{opacity:0},{opacity:1}],MaterialMotion.timing(group,'fast-effects'));if(frame.dataset.modalOpen==='true')setRailExpanded(frame,false);}
     group.closest('dialog[data-navigation-modal]')?.close();
   }
   document.addEventListener('keydown', event => {
@@ -153,7 +152,7 @@
     for(const a of state?.animations||[])a.cancel();delete frame.dataset.transitioning;
     const fab=rail.querySelector('.md-nav-fab'),fabStart=before.get(fab)?.width;
     rail.dataset.variant=expanded?'expanded':'collapsed';rail.dataset.orientation=expanded?'horizontal':'vertical';syncRail(frame);
-    const targetHidden=frame.dataset.railHidden==='true',end=targetHidden?0:rail.getBoundingClientRect().width,s=getComputedStyle(rail),timing={duration:parseFloat(s.getPropertyValue('--md-sys-motion-duration-medium2')),easing:s.getPropertyValue('--md-sys-motion-easing-emphasized').trim()};
+    const targetHidden=frame.dataset.railHidden==='true',end=targetHidden?0:rail.getBoundingClientRect().width,timing=MaterialMotion.timing(rail,'default-spatial'),effects=MaterialMotion.timing(rail,'default-effects');
     const restoreFocus=()=>{if(focus){const target=targetHidden?frame.querySelector('.md-rail-external-menu'):rail.querySelector('[data-navigation-expand],.md-nav-fab,[data-navigation-item]');target?.focus({preventScroll:true});}};
     if(matchMedia('(prefers-reduced-motion: reduce)').matches){restoreFocus();return;}
     if(targetHidden){frame.querySelector('.md-navigation-surface').hidden=false;frame.dataset.railHidden='false';}
@@ -168,11 +167,11 @@
       const parent=element.parentElement.closest(motionTargets),parentShift=shifts.get(parent)||{x:0,y:0};
       const shift=prior?{x:prior.x-next.x,y:prior.y-next.y}:{x:0,y:0};shifts.set(element,shift);
       const transform=getComputedStyle(element).transform,base=transform==='none'?'':transform;
-      current.animations.push(element.animate(prior?[{transform:`translate(${shift.x-parentShift.x}px,${shift.y-parentShift.y}px) ${base}`},{transform:base||'none'}]:[{opacity:0},{opacity:1}],timing));
+      current.animations.push(element.animate(prior?[{transform:`translate(${shift.x-parentShift.x}px,${shift.y-parentShift.y}px) ${base}`},{transform:base||'none'}]:[{opacity:0},{opacity:1}],prior?timing:effects));
     }
     const animation=rail.animate([{width:start+'px',minWidth:start+'px'},{width:end+'px',minWidth:end+'px'}],timing);current.animations.push(animation);
     if(fab)current.animations.push(fab.animate([{width:fabStart+'px',minWidth:fabStart+'px'},{width:fab.getBoundingClientRect().width+'px',minWidth:fab.getBoundingClientRect().width+'px'}],timing));
-    if(wasModal&&!expanded)current.animations.push(frame.querySelector('.md-navigation-scrim').animate([{opacity:1},{opacity:0}],timing));
+    if(wasModal&&!expanded)current.animations.push(frame.querySelector('.md-navigation-scrim').animate([{opacity:1},{opacity:0}],effects));
     if(expanded)restoreFocus();
     animation.finished.then(()=>{if(railFrames.get(frame)!==current)return;delete frame.dataset.transitioning;syncRail(frame);if(!expanded)restoreFocus();},()=>{});
   }

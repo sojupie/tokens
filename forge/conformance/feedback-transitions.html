@@ -144,9 +144,9 @@
             }),
         ),
       );
-      await new Promise((resolve, reject) => {
+      for (const name of ["motion", "buttons"]) await new Promise((resolve, reject) => {
         const script = document.createElement("script");
-        script.src = origin + "static/buttons.js?check=" + version;
+        script.src = origin + `static/${name}.js?check=` + version;
         script.onload = resolve;
         script.onerror = reject;
         document.head.append(script);

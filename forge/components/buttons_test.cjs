@@ -1,3 +1,7 @@
+function runMotionScript(code, globals) {
+  runInNewContext(readFileSync(require.resolve('./static/motion.cjs'), 'utf8'), globals);
+  return runInNewContext(code, globals);
+}
 const { test } = require("node:test");
 const assert = require("node:assert/strict");
 const { readFileSync } = require("node:fs");
@@ -165,7 +169,7 @@ function harness(reduced = false, initialCheckboxes = []) {
           }[name] ?? ""),
   });
   const module = { exports: {} };
-  runInNewContext(source, {
+  runMotionScript(source, {
     module,
     document,
     window,

@@ -20,11 +20,23 @@
     const expanded=sheet.dataset.variant==='expanded';handle.setAttribute('aria-expanded',String(expanded));handle.setAttribute('aria-label',expanded?'Minimize sheet':'Expand sheet');
   }
   function exit(sheet){return sheetExit(sheet.classList.contains('md-bottom-sheet'),sheet.dataset.orientation==='start',getComputedStyle(sheet).direction==='rtl');}
-  function animate(sheet,frames,closing=false){
+  function animate(sheet,frames,closing=false,velocity=0){
     const state=entry(sheet);state.animation?.cancel();state.animation=null;
     if(reduced.matches)return Promise.resolve(true);
-    const style=getComputedStyle(sheet),duration=numeric(sheet,'duration');
-    const animation=sheet.animate(frames,{duration,easing:style.getPropertyValue(closing?'--_sheet-exit-easing':'--_sheet-enter-easing').trim(),fill:'both'});
+    const style=getComputedStyle(sheet);let timing=MaterialMotion.timing(sheet,'default-spatial');
+    if(velocity && frames[0].height && frames[1].height) {
+      const from=parseFloat(frames[0].height),to=parseFloat(frames[1].height);
+      if(from!==to){
+        const spring=MaterialMotion.springFrames(parseFloat(style.getPropertyValue('--md-sys-motion-spring-default-spatial-damping')),parseFloat(style.getPropertyValue('--md-sys-motion-spring-default-spatial-stiffness')),velocity/(to-from));
+        frames=spring.samples.map((p,i)=>({height:Math.max(0,from+(to-from)*p)+'px',offset:i/(spring.samples.length-1)}));timing={duration:spring.duration,easing:'linear'};
+      }
+    }
+    if(velocity && closing && frames[0].transform) {
+      const axis=sheet.classList.contains('md-bottom-sheet')?'Y':'X',matrix=new DOMMatrixReadOnly(frames[0].transform==='none'?undefined:frames[0].transform);
+      const from=axis==='Y'?matrix.m42:matrix.m41,sign=exit(sheet).includes('-100%')?-1:1,to=(axis==='Y'?sheet.offsetHeight:sheet.offsetWidth)*sign;
+      if(from!==to){const spring=MaterialMotion.springFrames(parseFloat(style.getPropertyValue('--md-sys-motion-spring-default-spatial-damping')),parseFloat(style.getPropertyValue('--md-sys-motion-spring-default-spatial-stiffness')),velocity/(to-from));frames=spring.samples.map((p,i)=>({transform:`translate${axis}(${from+(to-from)*p}px)`,offset:i/(spring.samples.length-1)}));timing={duration:spring.duration,easing:'linear'};}
+    }
+    const animation=sheet.animate(frames,{...timing,fill:'both'});
     state.animation=animation;
     return animation.finished.then(()=>{if(state.animation!==animation)return false;state.animation=null;animation.cancel();return true;},()=>false);
   }
@@ -34,13 +46,13 @@
     const value=sheet.getBoundingClientRect().height;
     sheet.dataset.variant=old;sheet.style.height=height;return value;
   }
-  async function resize(sheet,variant){
+  async function resize(sheet,variant,velocity=0){
     const state=entry(sheet);if(state.phase==='closing'||state.phase==='closed')return;
     const from=sheet.getBoundingClientRect().height;
     state.animation?.cancel();state.phase='resizing';
     content(sheet,true,variant==='expanded');sheet.dataset.variant=variant;updateHandle(sheet);
     const to=bounds(sheet,variant);sheet.style.height=to+'px';
-    if(await animate(sheet,[{height:from+'px'},{height:to+'px'}])){sheet.style.height='';state.phase='open';content(sheet,variant==='expanded');}
+    if(await animate(sheet,[{height:from+'px'},{height:to+'px'}],false,velocity)){sheet.style.height='';state.phase='open';content(sheet,variant==='expanded');}
   }
   async function open(sheet,opener){
     const state=entry(sheet);if(!state)return;
@@ -56,12 +68,12 @@
     sheet.querySelector(':is([data-sheet-initial-focus],[data-sheet-handle],.md-sheet-close):not(:disabled)')?.focus({preventScroll:true});
     if(await animate(sheet,[{transform:from,height:(interrupted?fromHeight:to)+'px'},{transform:'none',height:to+'px'}])){sheet.style.height='';state.phase='open';}
   }
-  async function close(sheet,save=false,restoreFocus=true){
+  async function close(sheet,save=false,restoreFocus=true,velocity=0){
     const state=entry(sheet);if(!state||['closed','closing'].includes(state.phase))return;
     const from=getComputedStyle(sheet).transform,height=sheet.getBoundingClientRect().height;
     const input=sheet.querySelector('input');if(input){if(save)state.saved=input.value;else input.value=state.saved;}
     sheet.style.height=height+'px';state.phase='closing';sheet.inert=true;sheet.setAttribute('data-sheet-closing','');
-    if(!await animate(sheet,[{transform:from},{transform:exit(sheet)}],true))return;
+    if(!await animate(sheet,[{transform:from},{transform:exit(sheet)}],true,velocity))return;
     if(sheet instanceof HTMLDialogElement)sheet.close();else sheet.hidden=true;
     sheet.inert=false;sheet.style.height='';sheet.removeAttribute('data-sheet-closing');state.phase='closed';
     const opener=state.opener;opener?.setAttribute('aria-expanded','false');if(restoreFocus)opener?.focus({preventScroll:true});
@@ -122,7 +134,7 @@
       drag.samples.push([event.timeStamp,event.clientY]);const recent=drag.samples.filter(([time])=>event.timeStamp-time<=100),first=recent[0];
       const velocity=first&&event.timeStamp>first[0]?(event.clientY-first[1])/(event.timeStamp-first[0]):0;
       const target=sheetTarget(drag.origin,drag.current,drag.height,drag.min,velocity,numeric(sheet,'drag-distance'),numeric(sheet,'drag-velocity')/1000);
-      if(target==='hidden')close(sheet);else resize(sheet,target);
+      if(target==='hidden')close(sheet,false,true,velocity*1000);else resize(sheet,target,-velocity*1000);
     }else if(!cancelled&&state.backdrop&&event.target===sheet){
       const r=sheet.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)close(sheet);
     }

@@ -109,7 +109,7 @@
   if(state.variant==='docked'&&panel.open&&!panel.hasAttribute('data-date-inline'))positionDocked(state);
   if(focusISO)panel.querySelector(`[data-date="${focusISO}"]`)?.focus({preventScroll:true});
  }
- function timing(state){const s=getComputedStyle(state.panel);return{duration:parseFloat(s.getPropertyValue('--md-sys-motion-duration-short3')),easing:s.getPropertyValue('--md-sys-motion-easing-standard').trim()};}
+ function timing(state){return MaterialMotion.timing(state.panel,'fast-effects');}
  function positionDocked(state){
   const r=state.anchor.getBoundingClientRect(),box=state.panel.getBoundingClientRect(),s=getComputedStyle(state.panel),gap=parseFloat(s.getPropertyValue('--md-sys-measurement-space50')),gutter=parseFloat(s.getPropertyValue('--md-sys-measurement-space200'));
   const below=r.bottom+gap,above=r.top-box.height-gap,maxTop=Math.max(gutter,innerHeight-box.height-gutter),top=below+box.height+gutter<=innerHeight?below:above>=gutter?above:Math.max(gutter,Math.min(below,maxTop));
@@ -121,14 +121,14 @@
   if(!preserveEntry)syncEntries(state);
   if(state.inline&&state.variant==='full-screen'&&!state.panel.hasAttribute('data-date-inline')){setMode(state,'calendar');render(state);initialFocus(state);return;}
   if(state.panel.hasAttribute('data-date-inline'))return;
-  state.closing=true;const revision=state.revision=(state.revision||0)+1;state.animation?.cancel();
-  if(!reduced.matches){const a=state.panel.animate([{opacity:1},{opacity:0}],timing(state));state.animation=a;try{await a.finished;}catch{return;}if(revision!==state.revision)return;a.cancel();}
-  state.closing=false;if(state.panel.matches(':popover-open'))state.panel.hidePopover();state.panel.close();state.opener.setAttribute('aria-expanded','false');for(const input of state.fields)if(input.hasAttribute('aria-expanded'))input.setAttribute('aria-expanded','false');if(focus)(state.returnFocus||state.opener).focus({preventScroll:true});
+  const from=getComputedStyle(state.panel).opacity;state.closing=true;state.panel.inert=true;const revision=state.revision=(state.revision||0)+1;state.animation?.cancel();
+  if(!reduced.matches){const a=state.panel.animate([{opacity:from},{opacity:0}],timing(state));state.animation=a;try{await a.finished;}catch{return;}if(revision!==state.revision)return;a.cancel();}
+  if(state.panel.matches(':popover-open'))state.panel.hidePopover();state.panel.close();state.panel.inert=false;state.closing=false;state.opener.setAttribute('aria-expanded','false');for(const input of state.fields)if(input.hasAttribute('aria-expanded'))input.setAttribute('aria-expanded','false');if(focus)(state.returnFocus||state.opener).focus({preventScroll:true});
  }
  function open(state,focusCalendar=true){
   if(state.panel.open&&!state.closing){close(state,false);return;}
   readEntries(state);state.months=null;state.returnFocus=focusCalendar?state.opener:state.fields[0];
-  const reopening=state.panel.open,from=reopening?getComputedStyle(state.panel).opacity:0;state.closing=false;
+  state.panel.inert=false;const reopening=state.panel.open,from=reopening?getComputedStyle(state.panel).opacity:0;state.closing=false;
   state.revision=(state.revision||0)+1;state.animation?.cancel();state.panel.style.left='';state.panel.style.top='';state.panel.style.position='';state.panel.style.margin='';
   if(!reopening&&state.variant==='docked'){
    Object.assign(state.panel.style,{position:'fixed',inset:'auto',margin:'0'});state.panel.setAttribute('popover','manual');state.panel.open=true;state.panel.showPopover();
@@ -157,7 +157,7 @@
  }
  function changeMonth(state,delta){
   state.month=addMonths(state.month+'-01',delta).slice(0,7);if(state.range)state.months=null;render(state);announce(state,monthLabel(state.month));
-  if(!state.range&&state.variant!=='docked'&&!reduced.matches){const view=state.panel.querySelector('[data-date-calendars]');state.monthAnimation?.cancel();state.monthAnimation=view.animate([{translate:`${delta>0?10:-10}% 0`,opacity:.4},{translate:'0 0',opacity:1}],timing(state));}
+  if(!state.range&&state.variant!=='docked'&&!reduced.matches){const view=state.panel.querySelector('[data-date-calendars]');state.monthAnimation?.cancel();state.monthAnimation=view.animate([{translate:`${delta>0?10:-10}% 0`},{translate:'0 0'}],MaterialMotion.timing(view));}
  }
  function extendMonths(state,view){
   if(!state.range||state.variant==='docked'||view.hidden||!view.clientHeight)return;
@@ -176,7 +176,7 @@
   let gesture;
   view.addEventListener('pointerdown',event=>{if(state.range||state.variant==='docked'||event.button!==0)return;gesture={id:event.pointerId,x:event.clientX,y:event.clientY};});
   view.addEventListener('pointermove',event=>{if(!gesture||gesture.id!==event.pointerId)return;const dx=event.clientX-gesture.x,dy=event.clientY-gesture.y;if(!gesture.dragging&&Math.abs(dx)>10&&Math.abs(dx)>Math.abs(dy)*1.5){gesture.dragging=true;view.setPointerCapture(event.pointerId);}if(gesture.dragging){event.preventDefault();view.style.translate=`${dx/3}px 0`;}});
-  const finishSwipe=event=>{if(!gesture||gesture.id!==event.pointerId)return;const g=gesture;gesture=null;view.style.translate='';if(!g.dragging)return;state.swiped=true;setTimeout(()=>state.swiped=false,0);const dx=event.clientX-g.x;if(event.type!=='pointercancel'&&Math.abs(dx)>=48){const rtl=getComputedStyle(view).direction==='rtl';changeMonth(state,(dx<0?1:-1)*(rtl?-1:1));}else if(!reduced.matches)view.animate([{translate:`${dx/3}px 0`},{translate:'0 0'}],timing(state));};
+  const finishSwipe=event=>{if(!gesture||gesture.id!==event.pointerId)return;const g=gesture;gesture=null;view.style.translate='';if(!g.dragging)return;state.swiped=true;setTimeout(()=>state.swiped=false,0);const dx=event.clientX-g.x;if(event.type!=='pointercancel'&&Math.abs(dx)>=48){const rtl=getComputedStyle(view).direction==='rtl';changeMonth(state,(dx<0?1:-1)*(rtl?-1:1));}else if(!reduced.matches)view.animate([{translate:`${dx/3}px 0`},{translate:'0 0'}],MaterialMotion.timing(view));};
   view.addEventListener('pointerup',finishSwipe);view.addEventListener('pointercancel',finishSwipe);
   panel.addEventListener('cancel',event=>{event.preventDefault();close(state,false);});
  }}
@@ -216,5 +216,6 @@
  document.addEventListener('pointerdown',event=>{for(const panel of document.querySelectorAll('.md-date-panel[open]:not([data-date-inline])')){const state=stateFor(panel);if(!state)continue;if(state.variant==='docked'){if(!panel.contains(event.target)&&!state.anchor.contains(event.target)){readEntries(state);close(state,false,false,true);}}else if(event.target===panel){const r=panel.getBoundingClientRect();if(event.clientX<r.left||event.clientY<r.top||event.clientX>r.right||event.clientY>r.bottom)close(state,false);}}});
  document.addEventListener('htmx:beforeCleanupElement',event=>{const node=event.detail?.elt;if(!node)return;for(const root of [...(node.matches?.('.md-date-demo')?[node]:[]),...node.querySelectorAll('.md-date-demo')]){const state=states.get(root);if(!state)continue;state.revision++;state.animation?.cancel();state.monthAnimation?.cancel();if(state.panel.matches(':popover-open'))state.panel.hidePopover();if(state.panel.open)state.panel.close();states.delete(root);}});
  window.addEventListener('resize',()=>{for(const panel of document.querySelectorAll('.md-date-panel[open][data-variant="docked"]:not([data-date-inline])')){const state=stateFor(panel);if(state)positionDocked(state);}});
+ reduced.addEventListener('change',()=>{if(!reduced.matches)return;for(const root of document.querySelectorAll('.md-date-demo')){const state=states.get(root);if(!state)continue;state.animation?.finish();state.monthAnimation?.finish();}});
  document.addEventListener('htmx:afterSwap',init);if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();

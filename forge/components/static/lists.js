@@ -8,7 +8,7 @@
   const rows=list=>[...list.querySelectorAll(':scope > [data-list-row]')];
   const primary=row=>row.querySelector('.md-list-row > .md-list-item');
   const announce=(list,text)=>{for(const output of list.closest('.md-list-demo').querySelectorAll('output'))output.textContent=text;};
-  const timing=element=>{const s=getComputedStyle(element);return{duration:parseFloat(s.getPropertyValue('--md-sys-motion-duration-medium2')),easing:s.getPropertyValue('--md-sys-motion-easing-emphasized').trim()};};
+  const timing=element=>MaterialMotion.timing(element,'default-spatial');
   const cancelFeedback=button=>button.dispatchEvent(new CustomEvent('material:cancel-feedback',{bubbles:true}));
   // Baseline list measurements top-align content at 88dp, including rows
   // made taller by media or wrapped text. Keep captured padding unchanged.
@@ -18,6 +18,7 @@
   });
   function init(){for(const item of document.querySelectorAll('.md-list-item'))if(!observed.has(item)){observed.add(item);sizes.observe(item);}}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+  reduced.addEventListener('change',()=>{if(reduced.matches)for(const panel of document.querySelectorAll('[data-list-animating]'))animations.get(panel)?.finish();});
   document.addEventListener('htmx:afterSwap',init);
   document.addEventListener('htmx:beforeCleanupElement',event=>{for(const item of event.detail.elt.querySelectorAll?.('.md-list-item')||[])sizes.unobserve(item);});
   document.addEventListener('change',event=>{

@@ -1,0 +1,11 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><title>Component motion checks</title>
+<style>body{font:16px system-ui;margin:24px}iframe{width:960px;height:600px;border:1px solid #aaa}pre{white-space:pre-wrap}button{padding:12px}</style>
+<h1>Component motion checks</h1>
+<p>Runs real Catalog markup and scripts. Reduced motion and missing overlay support are simulated inside isolated frames.</p>
+<button id="run">Run motion checks</button><pre id="result">Ready</pre><div id="frame"></div>
+<script type="module">
+import {checkMotion} from './check-motion.mjs';
+const button=document.querySelector('#run'),result=document.querySelector('#result');
+button.onclick=async()=>{button.disabled=true;result.textContent='Running';try{result.textContent=JSON.stringify(await checkMotion(document.querySelector('#frame')),null,2);}catch(error){result.textContent=error.stack;}button.disabled=false;};
+</script></html>
