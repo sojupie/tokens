@@ -7,6 +7,7 @@
 
 - [Local setup and checks](development.md)
 - [Architecture](architecture.md)
+- [Component and export handover](handover-components-and-exports.md)
 - [Source](../source/README.md), [Catalog](../catalog/README.md), and [Forge](../forge/README.md)
 - [Agent skill source](../skills/README.md)
 - [Contributing](../CONTRIBUTING.md)
@@ -21,6 +22,7 @@
 - [DTCG exports and CSS](reference/dtcg.md)
 - [Generated buttons](reference/buttons.md)
 - [Generated components](reference/components.md)
+- [Toolbar source measurements and conflicts](reference/toolbar-spec.md)
 - [API and agent access](reference/agents.md)
 
 ## Operations

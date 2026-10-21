@@ -1,7 +1,7 @@
 # Deploy Token Catalog
 
 Use a Linux host with systemd, Git, Docker Engine and Docker Compose 2.24.4 or
-newer. The updater can use up to 4 GiB of RAM. Go and Chromium run inside the
+newer. The updater can use up to 4 GiB of RAM. Go, Node.js and Chromium run inside the
 images; they do not need to be installed on the host.
 
 This setup publishes the site through a Cloudflare Tunnel. Have a Cloudflare
@@ -163,7 +163,8 @@ sudo systemctl restart tokens.service
 sudo systemctl start tokens-update.timer
 ```
 
-This updates the application and Chromium. Weekly data captures do not update
+Server startup first builds publication assets using the matching application
+image. This updates the application, token build dependencies and Chromium. Weekly data captures do not update
 the images. Settings in `/etc/tokens` survive installation and image rebuilds.
 Before restarting, make sure `server.env` contains the public URL. Older
 installations may not have had this file.
@@ -181,7 +182,7 @@ command:
 | --- | --- |
 | `status` | Show containers, the next scheduled update and saved run reports. |
 | `logs` | Show recent website, tunnel and update logs. |
-| `deploy` | Update `/opt/tokens` to the selected main commit, build both images and update changed containers. |
+| `deploy` | Update `/opt/tokens` to the selected main commit, build application/update/asset images, build publication assets and update changed containers. |
 | `restart` | Restart the website and tunnel without rebuilding or crawling. |
 | `crawl` | Start the existing update service, including alerts and restart after publication. |
 | `inspect` | Show a saved run report. Requires a run ID. |
@@ -220,7 +221,7 @@ containers and waits for the website to be healthy. The tunnel can remain
 running when its configuration has not changed. Startup health checks run
 every two seconds; normal checks still run every thirty seconds.
 The Actions summary reports time spent fetching source, installing deployment
-configuration, building images and waiting for containers.
+configuration, building images, generating publication assets and waiting for containers.
 
 A capture that needs review marks the workflow as failed. Read the run report,
 then use `inspect` and `approve` when appropriate. Failed captures must not be
@@ -385,3 +386,49 @@ sudo sh deploy/usage.sh --since 7d --svg > usage.svg
 
 Only aggregate counts appear in the public graphic. Prefetches are listed
 separately, and successful MCP tool calls exclude initialization and tool listing.
+
+## Generated publication assets
+
+Approved generations remain immutable: their review digests cover every file.
+The `assets` Compose service reads `current`, builds all six DTCG/CSS contexts
+and the site theme into a new `.site-assets-*` directory beside it, then swaps
+`site-assets` to the completed output. No generated data enters Git.
+
+The asset-builder image contains pinned npm dependencies, the compiled CLI and the
+same source revision as the server. It runs without network access. The build
+checks required theme values, identical component structure across appearances,
+the SQLite checksum, and generated bindings against the CSS embedded in the
+server. A source-token change requiring different bindings stops the build;
+regenerate the checked-in bindings locally, test and release matching images.
+A failed build leaves the previous asset link in place.
+
+`tokens.service` builds assets before starting the server. Weekly updates build
+assets after publication and before restarting the website. GitHub deploy also
+builds assets before replacing containers; approve/retry run the same startup
+step. A manual data update requires these commands before restarting a container:
+
+```sh
+sudo sh deploy/update.sh build-assets
+sudo docker compose -f deploy/compose.yaml restart tokens
+```
+
+The server requires `/var/lib/tokens/site-assets`, validates its manifest against
+the loaded publication and embedded bindings, and pins the resolved directory.
+Missing, stale or incompatible assets stop startup instead of silently disabling
+downloads. A build failure after data activation leaves the existing server
+running its previously loaded data; fix the build, rebuild assets, then restart.
+The reviewed `current` link is not rolled back automatically.
+
+After startup, check the public page and all three formats for a context:
+
+```sh
+curl --fail https://tokencatalog.dev/md3/downloads/dtcg/light-default/tokens.tokens.json -o /tmp/tokens.tokens.json
+curl --fail https://tokencatalog.dev/md3/downloads/dtcg/light-default/tokens.css -o /tmp/tokens.css
+curl --fail https://tokencatalog.dev/md3/downloads/dtcg/light-default/report.json -o /tmp/tokens-report.json
+```
+
+Old `.site-assets-*` directories are retained because a running server may still
+serve their downloads. After a successful restart and checks, remove older
+asset directories manually, keeping the directory targeted by `site-assets`
+and one previous successful build for recovery. Do not remove approved source
+generations as part of asset cleanup.

@@ -34,16 +34,27 @@ npm run test:ui
 npm run test:tokens
 ```
 
+To include captured-data checks, build assets for a local publication, then run:
+
+```sh
+npm run build:tokens -- --published published-review
+TOKEN_ASSETS_DIR="$PWD/published-review/assets" npm run test:tokens
+TOKEN_CATALOG_THEME_DB="$PWD/published-review/tokens.sqlite" go test ./catalog/web ./source/dtcg
+```
+
+Without these environment variables, optional captured-data checks skip.
+The [handover](handover-components-and-exports.md) records validation boundaries.
+
 Tests use local fixtures. Keep normal checks offline. Live captures and DNS or
 Cloudflare checks are separate operational checks.
 
 ## Templates and assets
 
-Edit `catalog/web/templates.templ`, then regenerate its Go file with the pinned
-templ version:
+Edit the affected `catalog/web/*.templ` file, then regenerate the Go files with
+the pinned templ version:
 
 ```sh
-go run github.com/a-h/templ/cmd/templ@v0.3.960 generate -f catalog/web/templates.templ
+go run github.com/a-h/templ/cmd/templ@v0.3.960 generate -path catalog/web
 ```
 
 Commit both the template and generated Go file. CSS and JavaScript are maintained
@@ -98,11 +109,60 @@ Hover and focus listeners run during capture so descendant handlers cannot hide
 events by stopping propagation. Non-element event targets are ignored.
 
 The script uses browser speculation rules where supported, then native document
-prefetch hints. Other browsers keep normal navigation. Full HTML prefetch
-responses can stay in the browser's private cache for 30 seconds; ordinary
-requests continue to revalidate. HTMX fragments and Markdown keep their existing
-cache policy.
+prefetch hints. Other browsers keep normal navigation. Rendered responses use the revalidation policy described
+below. The inner
+prefetch handler can set a 30-second private lifetime, but the outer response
+cache replaces it with `public, no-cache` for successful cached responses.
 
 To check this in a browser, hover a component link briefly, then for more than
 65 ms. In DevTools, check the prefetch request or the speculative loading panel.
 Click the link and confirm the navigation reuses the prefetched response.
+
+## Caching and navigation
+
+The server loads one publication and its generated assets at startup. Rendered
+HTML, HTMX fragments, Markdown and eligible API responses share an in-memory
+LRU cache, bounded by 256 entries and 32 MiB of bodies and keys. Keys include
+the URL/query, HTMX request/target, accepted content type and content encoding.
+Boosted page navigation uses the full-document variant. Only successful
+responses without cookies or `no-store` enter the cache. Health, usage, MCP,
+range requests, static assets and ordinary downloads bypass it.
+
+Cached responses use `public, no-cache` and representation-specific ETags.
+Browsers revalidate; unchanged responses return 304. There is no age-based
+server expiry: restarting after new data or a code build creates an empty cache.
+Coverage reports and fixed thumbnail choices are also cached for that server.
+Do not replace assets under a running server's pinned directory.
+
+Versioned static URLs use content hashes and a one-year immutable lifetime.
+Bare URLs and stale hashes revalidate. HTML, Markdown and static CSS/JS negotiate
+gzip; compressed and uncompressed representations have separate ETags.
+DTCG downloads revalidate and remain tied to the loaded publication.
+
+HTMX boosts internal navigation and preserves `#tokens-site-header`, keeping the
+navbar in place while page content changes. Native links remain usable without
+JavaScript. Preview filters submit directly; their responses reuse the server
+cache. The context popup uses shared controls and the surface color role. Its
+request checks available context combinations without flashing a loading message;
+errors remain visible.
+
+## Rendering and motion
+
+Component cards and token-table wrappers use `content-visibility: auto` with
+intrinsic placeholder sizes. Browsers can skip offscreen layout and paint,
+particularly on mobile. The DOM and styles are still delivered; this is not DOM
+virtualization. Printing disables the containment optimization.
+
+The landing page shows a small component/style selection, then a separate
+section for change history and agent access. Hero artwork lives in
+`catalog/web/static/artwork.js`. Its color-block choreography and loop timing
+are authored; sampled captured spatial springs drive resize, shape and turn
+transitions. Corner changes share their block's resize clock and direction.
+The pause control, reduced-motion preference, document visibility and viewport
+intersection control playback.
+
+Menus use shared Forge behavior. Browsers with overlay transitions retain the
+native exit surface. Other browsers receive an inert, ARIA-hidden visual copy
+that fades using the short3 duration, then is removed. The copy never reopens a
+popover. Reduced motion skips the fallback. Check real Firefox interactions as
+well as the unit fallback checks before declaring browser conformance.

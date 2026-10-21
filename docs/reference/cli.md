@@ -190,3 +190,11 @@ and does not open Chrome or crawl pages.
 context as DTCG 2025.10 JSON. Repeat `--context Name=Value` to override context
 choices, or use `--themes` to export the site’s six appearance combinations.
 [DTCG exports and CSS](dtcg.md) covers conversion rules and Style Dictionary.
+
+## External generated assets
+
+`serve --assets DIRECTORY` requires a generated asset directory outside the
+publication. Startup checks its database, theme and embedded component checksums.
+Without this flag, local publications can use their optional `assets/` directory.
+See [DTCG exports and CSS](dtcg.md) and
+[deployment](../operations/deployment.md#generated-publication-assets).

@@ -15,6 +15,11 @@ Material-specific mappings must remain explicit when adding another design syste
 Use the current captured token data and source guidance for component states.
 Check computed styles and behavior on the real pages as well as the component lab.
 
+Keep token overrides in `forge/material/overrides.json`. Generate CSS usage reports
+from the source; do not add approval workflows or manually maintained review records.
+Use Go for CLI commands, validation and reports. Node handles Style Dictionary
+and browser-side JavaScript.
+
 `skills/token-catalog/` contains instructions for agents using the public service.
 Its `references/material-tokens.md` is also embedded in the hosted API guide.
 Keep public URLs and skill installation commands stable when moving code.

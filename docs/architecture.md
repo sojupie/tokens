@@ -210,3 +210,13 @@ lives in the root `AGENTS.md`.
 [Updates and recovery](operations/updates.md) describes automated capture,
 review and activation. [Snapshot format](reference/snapshot-format.md) and
 [publication](reference/publication.md) describe the stored artifacts.
+
+## Derived site assets
+
+Production keeps Forge output outside approved publication generations. The
+asset-builder reads the selected SQLite database, generates six appearance
+contexts, and checks the result against the server's embedded bindings. A
+completed build replaces the external asset symlink before server startup.
+The server pins both publication and asset directories and verifies their
+manifest checksums. Source review digests remain unchanged. See
+[deployment](operations/deployment.md#generated-publication-assets).

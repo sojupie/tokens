@@ -11,13 +11,16 @@ sudo sh deploy/update.sh status
 ```
 
 The website keeps serving its current data while an update runs. A normal
-weekly update publishes accepted changes and restarts the website. Failed
-updates and updates needing review do not replace live data.
+weekly update publishes accepted changes, builds matching external assets and
+restarts the website. Asset build failures keep the previous server running;
+see [generated publication assets](deployment.md#generated-publication-assets).
+Failed updates and updates needing review do not replace live data.
 
 A manual update does not restart the website. After a successful manual
 publication, run:
 
 ```sh
+sudo sh deploy/update.sh build-assets
 sudo docker compose -f deploy/compose.yaml restart tokens
 ```
 
@@ -39,6 +42,7 @@ If the changes are expected:
 
 ```sh
 sudo sh deploy/update.sh approve "$run_id"
+sudo sh deploy/update.sh build-assets
 sudo docker compose -f deploy/compose.yaml restart tokens
 ```
 

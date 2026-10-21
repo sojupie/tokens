@@ -1,6 +1,6 @@
 # Component implementation and export handover
 
-Checked against the working tree and local review publication on 2026-10-20.
+Checked against the working tree and local review publication on 2026-10-21.
 This is a description of the implementation, its limits, and proposed next work.
 The library and adapter APIs below are proposals, not shipped features.
 
@@ -107,8 +107,11 @@ the selected asset definitions and classifies declarations as Token, Mixed,
 Manual or Unresolved. It scans app CSS, token-table CSS, generated button CSS,
 component base CSS and elevation CSS; it does not measure JavaScript, DOM,
 interaction completeness, or how many user-visible pixels match Material.
-In the 2026-10-20 build, 5,569 scanned declarations comprise 2,451 Token
-(44.0%), 307 Mixed (5.5%), 2,799 Manual (50.3%) and 12 Unresolved (0.2%).
+The 2026-10-21 source inspection found 5,841 declarations: 2,533 Token,
+307 Mixed, 2,975 Manual and 26 Unresolved. The inspector does not yet recognize
+site `--catalog-*` extensions, registered-property defaults or values assigned
+by JavaScript. Unresolved entries include hero and measured-layout properties;
+the count does not mean 26 missing source tokens.
 Re-run the report after edits;
 its categories are evidence for investigation, not a component fidelity score.
 
@@ -270,8 +273,8 @@ configuration entries describe generated cases, not individually verified
 browser interactions.
 
 - Focused Catalog rendering/generated-asset tests and Source DTCG tests pass.
-  The browser-script suite passes all 92 tests. The token suite passes 37 tests
-  and skips three optional checks without captured-data environment settings.
+  All Go tests and all 102 browser-script tests pass. With the captured-data
+  environment enabled, all 40 token tests pass without skips.
 - Checked all 36 component illustrations and five style illustrations in the
   rendered indexes. A live HTMX search reduced the component grid to one card;
   it stayed 270px wide in the same 1104px grid. The style grid also fits a 360px
@@ -281,13 +284,11 @@ browser interactions.
 - All 18 local DTCG routes (six contexts times JSON, CSS and report) returned
   HTTP 200 with the expected MIME types; both JSON files parse in each context.
   This verifies the local review server, not the deployed production server.
-- The shared generator suite has a known captured-data test failure: one
-  appearance has 3,655 bindings while the test expects the first appearance's
-  3,656. This predates the card changes and is not caused by authored card CSS.
-  Determine which context legitimately lacks a value before changing the test
-  or exporter. Do not claim that all theme parity checks pass.
-- The CSS report still contains 12 unresolved declarations. Trace them before
-  publishing a claim of complete token coverage.
+- All six appearances generate the same 3,655 component bindings and identical
+  CSS. The earlier failure was a stale expectation of 3,656, not a missing value
+  in one theme. The check now compares token-name sets as well as CSS and counts.
+- Refresh and inspect the source-derived CSS report before claiming complete
+  token coverage. Its unresolved category has the limitations described above.
 - Visual review in this change uses the in-app browser. Firefox, screen-reader
   behavior and a packaged consumer installation need separate validation.
 - TS/React adapters, a published package and a browser support policy have not
@@ -303,8 +304,11 @@ adapter and consumer tests.
 The site navigation now uses shared text/icon button primitives with a native
 popover disclosure on compact windows. Desktop and mobile share the same links
 and appearance controls. Preview filters use the shared select/listbox primitive,
-with separate submitted values and display labels. The token table controls and
-their stylesheet/behavior were left intact.
+with separate submitted values and display labels. Token-table context controls
+now use a surface-colored popup and shared
+controls. Menu labels retain their alignment with trailing selection checks.
+Horizontal menu spacing uses horizontal tokens plus the explicit 4px container
+override. Single/multiple selection is configurable in the demo.
 
 Markdown negotiation explicitly excludes the component preview region and
 ARIA-hidden illustrations. It retains content navigation, token tables and
@@ -347,5 +351,31 @@ and body sizes, not Firefox paint or interaction measurements.
 
 The rendered Switch page has 4,154 DOM elements, of which 3,841 belong to the
 token browser and 116 to the component-preview section. Compression does not
-reduce that DOM. Reducing its browser-side cost further would require a separate
-review of token-table rendering, which this change leaves intact.
+reduce that DOM. Offscreen cards and token-table wrappers now use
+`content-visibility: auto`.
+This reduces layout/paint work without removing DOM. The old figures above are
+historical HTTP measurements, not current mobile performance measurements.
+
+## Release and recent site changes
+
+The [development guide](development.md#caching-and-navigation) describes the
+32 MiB/256-entry response cache, ETag invalidation, persistent HTMX navbar,
+offscreen rendering and hero motion ownership. Code/data changes take effect
+through a new binary/assets build and server restart. There is no weekly cache
+TTL that could conceal a newly activated publication.
+
+The landing page separates component and style previews from “Work with tokens”.
+Its hero uses color blocks on a light surface, with staggered resize and whole
+surface turns. The custom loop uses captured spatial springs for transitions.
+Directional corners morph during resizing. Reduced motion and pause remain
+supported; artwork pauses offscreen and in a hidden document.
+
+Change history uses outlined expandable groups and filter pills with short
+selected-value labels. Search has its own column. The context popup uses the
+surface role shared by the download dialog. The release asset build is separate
+from approved publication generations and checks embedded CSS compatibility;
+see [deployment](operations/deployment.md#generated-publication-assets).
+
+Website release checks do not establish a packaged library API or full browser
+conformance. Firefox, screen-reader and consumer-install validation remain
+separate work. No production deployment is implied by local build results.

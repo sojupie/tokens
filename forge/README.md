@@ -23,11 +23,14 @@ The build exports selected contexts from a saved publication, generates CSS, and
 writes publication assets. It also updates `forge/components/static/buttons.css`,
 and `components.css`, which the Go server embeds. Rebuild the server after regenerating that file.
 The build currently assembles Catalog's theme by reading its static stylesheets.
-Production update jobs do not yet run this Node build.
+Production builds run in a separate asset-builder image before server startup
+and after accepted updates. Assets stay outside approved generations; see
+[deployment](../docs/operations/deployment.md#generated-publication-assets).
 
-Forge generates common buttons, cards, icon buttons, filter chips, outlined
-fields and native selects, vertical menus, basic dialogs, radio buttons, and
-dividers. See [generated components](../docs/reference/components.md),
+Forge covers action controls, chips and selection controls, cards and lists,
+fields and pickers, menus, navigation, search, sheets, dialogs, toolbars,
+loading and progress indicators, and supporting surfaces. Coverage varies by
+family; the contracts describe implemented states and remaining limits. See [generated components](../docs/reference/components.md),
 [buttons](../docs/reference/buttons.md), and [DTCG exports](../docs/reference/dtcg.md)
 for supported variants, checks, and exclusions.
 

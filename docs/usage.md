@@ -17,21 +17,31 @@ need the design guidance behind a token.
 
 ## Downloads
 
-| Option | Included data | Example |
-| --- | --- | --- |
-| This table, with your filters | The selected table's rows and values matching your search and settings | The matching color tokens for the selected platform and theme |
-| This table, with every value | Every token and setting in the selected table | All color values in that table across platforms and themes |
-| All tokens for this component or style | Every table and value for the subject | All Buttons tokens, including color, typography and geometry |
-| All tokens on this site | Every published component and style with all contexts | The full Material Design 3 collection |
+**Download tokens** opens a dialog with three formats: DTCG JSON, CSS variables,
+and the conversion report. Choose Light or Dark and Default, Medium or High
+contrast. Each download covers the whole collection in that context. Page,
+table and search filters do not apply. The dialog disables downloads when the
+publication has no generated assets.
 
-Only the first option applies the current search and filters. The other options
-expand the export to their stated scope. A subject's tables can cover different
-parts, variants or states, so exporting a whole subject can include much more
-than the selected table.
+DTCG JSON preserves supported typed values, references and source metadata.
+CSS contains custom properties for browser use. The report lists the selected
+context, conversion counts, omitted values and values retained only in source
+extensions. Read the report when checking conversion completeness. These files
+provide design data; they do not contain component implementations.
+See [DTCG exports and CSS](reference/dtcg.md) for conversion rules and CLI exports.
+Source data retains its [upstream license](licensing.md).
 
-JSON downloads preserve token names, references and context settings. They
-provide design data for your own implementation; they do not generate UI
-components. Source data retains its [upstream license](licensing.md).
+Older custom JSON download URLs remain available for compatibility:
+
+| Scope | Included data |
+| --- | --- |
+| Filtered table | The selected table's rows and values matching search and settings |
+| Complete table | Every token and context in the selected table |
+| Component or style | Every table and context for the subject |
+| Collection | Every published component and style with all contexts |
+
+Only the filtered-table scope applies search and context filters. These older
+files use the Catalog model; their schema has not changed to DTCG.
 
 ## Comparisons
 

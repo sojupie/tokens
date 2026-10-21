@@ -87,7 +87,23 @@ Keep these builds outside approved production generations, whose digests cover
 every file.
 Saved publications without generated assets continue to use the existing Go
 stylesheet generator. The scheduled update pipeline currently builds the saved
-publication without invoking Node.js; this CSS build is a separate step.
+publication, then runs a separate Node asset-builder before restarting the
+server. Production assets stay outside approved generations.
+For an immutable publication, build into an external directory:
+
+```sh
+npm run build:tokens -- --published /path/to/publication --assets /tmp/site-assets --check-bindings
+go run ./cmd/tokens serve --published /path/to/publication --assets /tmp/site-assets
+```
+
+The container supplies `--tokens-binary /usr/local/bin/tokens` to reuse its
+compiled CLI; local builds default to `go run ./cmd/tokens`.
+
+`--check-bindings` requires generated button/component CSS to match the checked-in
+files and leaves those files unchanged. `serve --assets` requires a valid manifest
+and pins the directory after resolving symlinks. See
+[production asset builds](../operations/deployment.md#generated-publication-assets).
+
 The existing API and JSON download formats remain unchanged.
 
 ## Material conversion
