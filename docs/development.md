@@ -170,6 +170,10 @@ mirror their item animations and delays. The copy never reopens a
 popover. Reduced motion skips the fallback. Check real Firefox interactions as
 well as the unit fallback checks before declaring browser conformance.
 
+Rail transitions measure label heights after changing variants and before
+capturing animation destinations. The resize observer maintains those heights
+afterward; it must not change the base indicator transform during a transition.
+
 ## Component motion
 
 The site motion scheme is selected independently of public download contexts in

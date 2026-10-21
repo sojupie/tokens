@@ -135,7 +135,11 @@
     event.preventDefault(); items[next].focus();
   });
   const railFrames=new WeakMap(),railLabels=new WeakSet();
-  const railLabelSizes=new ResizeObserver(entries=>{for(const {target} of entries){const item=target.closest('.md-nav-item');if(item)item.style.setProperty('--_nav-label-height',target.getBoundingClientRect().height+'px');}});
+  function measureRailLabels(labels){
+    const sizes=Array.from(labels,label=>({item:label.closest('.md-nav-item'),height:label.getBoundingClientRect().height}));
+    for(const {item,height} of sizes)if(item&&height)item.style.setProperty('--_nav-label-height',height+'px');
+  }
+  const railLabelSizes=new ResizeObserver(entries=>measureRailLabels(entries.map(entry=>entry.target)));
   function syncRail(frame){
     const rail=frame.querySelector('.md-navigation-rail'),expanded=rail.dataset.variant==='expanded',modal=expanded&&rail.dataset.layout==='modal',hidden=!expanded&&frame.dataset.collapse==='hidden';
     frame.dataset.modalOpen=String(modal);frame.dataset.railHidden=String(hidden);frame.querySelector('.md-navigation-surface').hidden=hidden;
@@ -152,6 +156,9 @@
     for(const a of state?.animations||[])a.cancel();delete frame.dataset.transitioning;
     const fab=rail.querySelector('.md-nav-fab'),fabStart=before.get(fab)?.width;
     rail.dataset.variant=expanded?'expanded':'collapsed';rail.dataset.orientation=expanded?'horizontal':'vertical';syncRail(frame);
+    // Resolve the new label metrics before capturing the FLIP destination.
+    // ResizeObserver otherwise updates the CSS base transform mid-animation.
+    measureRailLabels(rail.querySelectorAll('.md-nav-label'));
     const targetHidden=frame.dataset.railHidden==='true',end=targetHidden?0:rail.getBoundingClientRect().width,timing=MaterialMotion.timing(rail,'default-spatial'),effects=MaterialMotion.timing(rail,'default-effects');
     const restoreFocus=()=>{if(focus){const target=targetHidden?frame.querySelector('.md-rail-external-menu'):rail.querySelector('[data-navigation-expand],.md-nav-fab,[data-navigation-item]');target?.focus({preventScroll:true});}};
     if(matchMedia('(prefers-reduced-motion: reduce)').matches){restoreFocus();return;}

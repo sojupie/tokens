@@ -80,6 +80,23 @@ export async function checkMotion(container) {
     assert(!sheet.open,'Sheet exit completes');assert(!w.motionErrors.length,'Sheet lifecycle has no script errors');
   }
   {
+    const {w,d}=await load('navigation-rail'),frame=d.querySelector('.md-rail-frame'),rail=frame.querySelector('.md-navigation-rail');
+    await d.fonts.ready;
+    for(const direction of ['ltr','rtl'])for(const expanded of [true,false]){
+      rail.style.direction=direction;rail.querySelector('[data-navigation-expand]').click();
+      assert(rail.dataset.variant===(expanded?'expanded':'collapsed'),`Rail ${direction}: switches to the requested variant`);
+      const nodes=[...rail.querySelectorAll('.md-nav-indicator,.md-nav-icon,.md-nav-label')].filter(n=>n.getClientRects().length);
+      const animations=rail.getAnimations({subtree:true});
+      for(const a of animations){a.pause();a.currentTime=Number(a.effect.getComputedTiming().endTime)-.001;}
+      const before=nodes.map(n=>n.getBoundingClientRect());
+      animations.forEach(a=>a.finish());await Promise.all(animations.map(a=>a.finished.catch(()=>{})));await new Promise(w.requestAnimationFrame);
+      const jump=Math.max(...nodes.map((n,i)=>{const r=n.getBoundingClientRect();return Math.max(Math.abs(r.x-before[i].x),Math.abs(r.y-before[i].y));}));
+      assert(jump<.1,`Rail ${direction}/${expanded?'expanded':'collapsed'}: final layout stays within 0.1px of the animation endpoint`);
+      assert(!frame.hasAttribute('data-transitioning'),'Rail clears the temporary transition layout');
+    }
+    assert(!w.motionErrors.length,'Rail transitions have no script errors');
+  }
+  {
     const {w,d}=await load(''),art=d.querySelector('[data-artwork]'),toggle=d.querySelector('.tokens-art-pause input');
     const animations=art.getAnimations({subtree:true});
     assert(animations.length===22,'Hero starts its layout, stripe and corner animations');
