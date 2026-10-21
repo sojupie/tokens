@@ -32,9 +32,10 @@ upstream data -> Source snapshots -> publication -> Catalog
                                   Catalog website
 ```
 
-Generated assets are optional for serving a publication. The existing Go theme
-renderer supports publications without them. Production update jobs do not yet
-run the Node build. See [DTCG exports](reference/dtcg.md) for the build procedure.
+Generated assets remain optional for local publications. The existing Go theme
+renderer supports publications without them. Production requires matching
+external assets and runs the Node asset build before server startup or restart.
+See [DTCG exports](reference/dtcg.md) for the build procedure.
 
 ## Design decisions
 

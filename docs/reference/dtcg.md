@@ -50,7 +50,9 @@ primary and secondary seeds in `forge/material/site-theme.json`. Change either
 palette seed and rebuild to update
 light and dark themes at default, medium, and high contrast. The build uses
 Tonal Spot with contrast levels 0, 0.5, and 1. Component color aliases resolve
-against these generated roles. Captured DTCG and downloadable CSS retain the
+against these generated roles. The configured `motionScheme` selects the captured
+spring context for the site independently; it currently selects Expressive.
+The public download default remains Standard motion. Captured DTCG and downloadable CSS retain the
 upstream palette.
 
 Material Color Utilities is pinned to 0.3.0 because 0.4.0 contains extensionless

@@ -107,8 +107,8 @@ the selected asset definitions and classifies declarations as Token, Mixed,
 Manual or Unresolved. It scans app CSS, token-table CSS, generated button CSS,
 component base CSS and elevation CSS; it does not measure JavaScript, DOM,
 interaction completeness, or how many user-visible pixels match Material.
-The 2026-10-21 source inspection found 5,841 declarations: 2,533 Token,
-307 Mixed, 2,975 Manual and 26 Unresolved. The inspector does not yet recognize
+Use the generated report for current declaration counts. The inspector does not
+yet recognize
 site `--catalog-*` extensions, registered-property defaults or values assigned
 by JavaScript. Unresolved entries include hero and measured-layout properties;
 the count does not mean 26 missing source tokens.
@@ -273,8 +273,8 @@ configuration entries describe generated cases, not individually verified
 browser interactions.
 
 - Focused Catalog rendering/generated-asset tests and Source DTCG tests pass.
-  All Go tests and all 102 browser-script tests pass. With the captured-data
-  environment enabled, all 40 token tests pass without skips.
+  All Go tests and all 106 browser-script tests pass. With the captured-data
+  environment enabled, all 41 token tests pass without skips.
 - Checked all 36 component illustrations and five style illustrations in the
   rendered indexes. A live HTMX search reduced the component grid to one card;
   it stayed 270px wide in the same 1104px grid. The style grid also fits a 360px
@@ -379,3 +379,24 @@ see [deployment](operations/deployment.md#generated-publication-assets).
 Website release checks do not establish a packaged library API or full browser
 conformance. Firefox, screen-reader and consumer-install validation remain
 separate work. No production deployment is implied by local build results.
+
+## Expressive motion follow-up
+
+The site now selects captured Expressive springs independently of the public
+Standard-motion download context. The shared sampler, derived CSS curves and
+component assignments are documented in the
+[motion contract](reference/components.md#motion-schemes-and-lifecycle).
+Legacy geometry/effects timing in the supported component transitions was
+replaced with the appropriate spring role. Dedicated ripple, progress and
+loading algorithms remain unchanged.
+
+Button shape/width retargeting preserves velocity. Sheet release carries drag
+velocity into settling. Picker exit preserves opacity and disables interaction;
+reduced-motion changes finish dismissal. Search icons and date-picker arrows
+respect reduced motion. FAB menus now share popup retention and mirror their
+item springs when native overlay transitions are unavailable.
+
+The browser fixture exercises real pages with simulated reduced-motion and
+missing-overlay support. Actual Firefox/WebKit and operating-system preference
+checks remain separate validation boundaries. The site motion profile does not
+add animations to static components or change source/download defaults.

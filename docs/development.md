@@ -163,6 +163,22 @@ intersection control playback.
 
 Menus use shared Forge behavior. Browsers with overlay transitions retain the
 native exit surface. Other browsers receive an inert, ARIA-hidden visual copy
-that fades using the short3 duration, then is removed. The copy never reopens a
+that follows the spatial/effects spring curves, then is removed. FAB exits
+mirror their item animations and delays. The copy never reopens a
 popover. Reduced motion skips the fallback. Check real Firefox interactions as
 well as the unit fallback checks before declaring browser conformance.
+
+## Component motion
+
+The site motion scheme is selected independently of public download contexts in
+`forge/material/site-theme.json`. It currently uses Expressive. Rebuild tokens,
+then rebuild and restart the server after changing the scheme or shared motion
+code. The build derives CSS `linear()` curves and settling durations from the
+captured damping/stiffness values; it does not approximate them with arbitrary
+short/medium duration tokens. The shared source is
+`forge/components/static/motion.cjs`, served as `motion.js` before component code.
+
+The [motion contract and browser checks](reference/components.md#motion-schemes-and-lifecycle)
+describe assignments, interruption handling, reduced motion and popup fallbacks.
+Run `go run ./forge/conformance` alongside Catalog and open
+`http://127.0.0.1:8082/motion.html` to repeat the checks.

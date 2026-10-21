@@ -7,7 +7,7 @@ cannot describe, including keyboard handling, ripples, and shape animation.
 | --- | --- |
 | `build-tokens.mjs` | Style Dictionary build and catalog theme assembly |
 | `material/` | Material Design 3 component token mappings and coverage checks |
-| `components/` | Shared browser behavior and embedded generated styles |
+| `components/` | Shared spring sampler, browser behavior and embedded generated styles |
 | `conformance/` | Browser checks against token-derived properties |
 
 Run these commands from the repository root:
@@ -22,7 +22,9 @@ npm run test:ui
 The build exports selected contexts from a saved publication, generates CSS, and
 writes publication assets. It also updates `forge/components/static/buttons.css`,
 and `components.css`, which the Go server embeds. Rebuild the server after regenerating that file.
-The build currently assembles Catalog's theme by reading its static stylesheets.
+The build assembles Catalog's theme from its static stylesheet references and
+configured color/motion scheme. Expressive site springs are selected separately
+from the Standard-motion public downloads.
 Production builds run in a separate asset-builder image before server startup
 and after accepted updates. Assets stay outside approved generations; see
 [deployment](../docs/operations/deployment.md#generated-publication-assets).

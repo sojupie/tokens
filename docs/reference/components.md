@@ -340,7 +340,7 @@ layers on animation frames, and checks continuity, ripple overlap, and cleanup.
 With the catalog running on port 8081, serve the fixture:
 
 ```sh
-python3 -m http.server 8082 --bind 127.0.0.1 --directory forge/conformance
+go run ./forge/conformance
 ```
 
 Open `http://127.0.0.1:8082/feedback-transitions.html` and click **Run transitions**.
@@ -359,7 +359,7 @@ The build maps every captured checkbox and switch token. Source dimensions,
 shapes, colors, opacities, focus rings, and interaction layers feed their CSS.
 The renderer supplies SVG checkmarks, indeterminate marks, and switch icons.
 It centers the switch handle one half-track-height from either end and moves it
-between those positions using the system short3 duration and standard easing.
+between those positions using the fast spatial spring from the site motion scheme.
 These positioning and motion choices are handwritten renderer rules. Checkboxes and switches use the shared ripple lifecycle with their captured
 pressed-state colors and opacities. Checkbox ink is clipped to its circular
 state layer. Switch ink follows the handle inside a circular state layer.
@@ -431,7 +431,7 @@ Tabs include primary and secondary styles with labels, icons, or both. Each tab
 controls a linked panel using the [WAI-ARIA tabs pattern](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/). Arrow keys, Home, and End move focus and activate the
 matching panel. Only the selected tab participates in the page tab sequence.
 Primary indicators follow the content width; secondary indicators fill the tab.
-Indicator movement uses the system short3 duration and standard easing, with
+Indicator movement uses the fast spatial spring from the site motion scheme, with
 motion disabled by the reduced-motion preference. Indicator width, content
 padding, icon/label spacing, and panel behavior are renderer rules.
 
@@ -485,7 +485,7 @@ Source tokens supply handle and track dimensions, shapes, colors, disabled
 opacity, tick marks, end stops, value-label typography, and overlap outlines.
 The shared ripple uses each handle's source pressed-state color and opacity.
 Pointer hover applies within the handle's interaction area. Focus and press
-shrink the handle using their source width, with system short2 timing.
+shrink the handle using their source width and the fast spatial spring.
 
 The renderer supplies axis layout, gaps around the handles, native-input clipping,
 vertical orientation, icon color roles, label padding and shape, and a system
@@ -852,7 +852,9 @@ scrim explicitly composes the existing modal drawer scrim color and opacity.
 Contained actions reserve 48px targets around the captured 40px icon buttons.
 
 The captured contained motion spring has no value. Geometry transitions use
-system medium2 duration and emphasized easing; reduced motion disables them.
+the site motion scheme: fast spatial for docked geometry, slow spatial for
+full-screen expansion and default spatial for its return. Fast effects controls
+opacity; reduced motion disables these transitions, including icon rotation.
 Android predictive back is platform-specific and is not simulated on the web.
 
 Source guidance: [specifications](https://m3.material.io/components/search/specs),
@@ -893,7 +895,7 @@ Native dialogs provide modal focus containment. The docked view uses a native
 popover above the page and remains nonmodal. Live views cap their minimum height
 to the available viewport and scroll their contents. Resizing dismisses a docked
 view so it cannot remain detached from its opener.
-Opening and closing use system short3 duration and standard easing, with no fade
+Opening and closing use the fast effects spring from the site motion scheme, with no fade
 when reduced motion is enabled.
 
 Source guidance: [Material date pickers](https://m3.material.io/components/date-pickers/overview),
@@ -912,8 +914,9 @@ It excludes ten duplicate typography composites, two deprecated tint layers and
 two deprecated names ending in `.ignore`. Source values remain in the exports.
 Captured fields supply container shape and color, typography, dial and handle
 geometry, value sizes, period layout, state layers and input focus outlines.
-The source has no dedicated time-picker motion fields, so transitions use system
-short3 duration and standard easing. Reduced motion removes the transitions.
+The source has no dedicated time-picker motion fields, so transitions use the system
+fast effects spring for disclosure and fast spatial for the dial. Reduced motion
+removes the transitions.
 
 The renderer supplies clock arithmetic, pointer and keyboard handling, layout and
 validation. Dial labels use the Material implementation's outer radius of 101,
@@ -994,7 +997,8 @@ Filled labels use 8px top spacing and keep their alignment with the input text.
 Outlined fields and their focus rings use fieldset notches, keeping the label
 cutout clear on any surface.
 System spacing supplies 16px content padding, 8px gaps and 4px notch padding.
-Label transitions use system short3 duration and standard easing, and stop when
+Label transitions use the fast spatial spring; focus-ring opacity uses fast
+effects. Both stop when
 reduced motion is enabled. These layout and motion rules appear in `css-usage.json`.
 
 Selects use read-only native inputs with combobox semantics. Autocomplete inputs
@@ -1060,9 +1064,8 @@ are application compositions. Material calls for at most two actions, confirming
 actions trailing (with RTL ordering), and stacked long labels with confirmation
 above dismissal. These are composition requirements, not additional tokens.
 
-Fullscreen entry uses system medium2 duration and emphasized-decelerate easing;
-exit uses short4 and emphasized-accelerate. Basic dialogs fade with short3 and
-standard easing. Closing during entry starts from the current rendered frame.
+Fullscreen entry uses the slow spatial spring; exit uses default spatial.
+Basic dialogs fade with fast effects. Closing during entry starts from the current rendered frame.
 Reduced motion skips these animations. Native keyboard behavior and computed
 styles are checked locally; physical screen-reader behavior needs separate
 assistive-technology testing.
@@ -1096,7 +1099,7 @@ retains its captured active state layer while the submenu is open.
 Renderer layout limits the demonstration's main menu to 20rem. Submenus have a
 12rem minimum width, an 8px gap and viewport-aware placement. Static submenu
 comparisons stack below their triggers on narrow screens. Container shape changes
-use system short3 duration and standard easing. These layout and timing choices
+use the fast spatial spring. These layout and motion choices
 appear in `css-usage.json`.
 
 Source guidance: [Material menu behavior and focus](https://m3.material.io/components/menus/guidelines).
@@ -1130,7 +1133,7 @@ ripples without adding children to the native input.
 Captured radio tokens supply the state-layer and icon sizes, icon colors, disabled
 opacity and hover, focus and pressed feedback. The ring's 2px stroke and half-size
 center dot remain renderer geometry. The focus ring uses system indicator values.
-The center dot uses system short2 duration and standard easing, with animation
+The center dot uses fast spatial for geometry and fast effects for opacity, with animation
 removed for reduced motion. Forced colors show the native radio control.
 
 Native checkbox, switch and radio controls use Space for activation. Enter does
@@ -1248,3 +1251,65 @@ and [specifications](https://m3.material.io/components/date-pickers/specs).
 
 The [component and export handover](../handover-components-and-exports.md)
 describes the current portability boundary, library proposals and download state.
+
+## Motion schemes and lifecycle
+
+The Catalog selects `Expressive` in `forge/material/site-theme.json`. The build
+exports that captured context separately and applies its system spring values
+to the site theme. Public DTCG and token-CSS downloads retain their selected
+context, which defaults to Standard. Component aliases continue to reference
+canonical system spring names. No captured values are overwritten.
+
+`forge/components/static/motion.cjs` supplies the shared unit-mass spring model.
+The Node build samples it into private `--_motion-*-duration` and
+`--_motion-*-easing` properties in generated component CSS. These are derived
+renderer values, not additional Material source tokens. Browser CSS and Web
+Animations use those same curves. `motion.js` must load before component scripts;
+Catalog serves that URL from the shared `.cjs` source.
+
+| Property or component | Assignment |
+| --- | --- |
+| Menu reveal, submenu corners, switch, radio dot, slider bubble, field label, tab indicator and split-button shape/icon | Fast spatial |
+| Small opacity and color changes, basic dialogs and date/time disclosure | Fast effects |
+| Sheet movement/settling, list expansion/reorder and expanded rail geometry | Default spatial |
+| Rail content/scrim effects and sheet scrim | Default effects |
+| Full-screen search expansion and full-screen dialog entry | Slow spatial |
+| Full-screen search return and full-screen dialog exit | Default spatial |
+| FAB-menu item width/opacity/stagger | Fast spatial / fast effects / slow effects |
+
+The component spring aliases and explicit assignments follow the
+[Material motion specification](https://m3.material.io/styles/motion/overview/specs)
+and component guidance. The
+[official menu implementation](https://github.com/androidx/androidx/blob/androidx-main/compose/material3/material3/src/commonMain/kotlin/androidx/compose/material3/Menu.kt)
+assigns fast spatial to scale/shape and fast effects to opacity/color even though
+those assignments are absent from the captured menu tables. Full-screen dialog
+slide choreography remains an authored browser presentation.
+
+Buttons and standard button groups preserve spring velocity when retargeted.
+Sheet release carries drag velocity into its settling spring. Date/time picker
+exit starts at the rendered opacity and makes the closing panel inert. Changes
+to reduced motion finish pending picker dismissal without stranding the dialog.
+Search leading icons and date-picker arrows also stop transitioning.
+
+Native popover overlay transitions retain menus and FAB menus during exit.
+Without overlay support, an inert, ARIA-hidden copy remains outside the popover
+lifecycle. Ordinary menus retain separate spatial/effects animations; FAB menus
+mirror their item springs and delays. Reopening, completion, cancellation,
+reduced motion and a timeout remove copies. No fallback calls `showPopover()`.
+
+Ripple timings and loading/progress algorithms retain their component-specific
+Material implementations. Static components do not gain an arbitrary entry
+animation. Hero loop choreography remains custom and uses the selected springs.
+
+For browser regression checks, start Catalog on port 8081, then run from the root:
+
+```sh
+go run ./forge/conformance
+```
+
+Open `http://127.0.0.1:8082/motion.html` and choose **Run motion checks**. The
+fixture uses real pages and scripts in isolated frames and simulates reduced
+motion and missing overlay support. It covers six appearances, menu/FAB cleanup,
+interrupted picker dismissal, search icon motion and sheet entry/exit. These
+simulations supplement actual Firefox/WebKit and operating-system preference
+checks; they do not establish full browser conformance.
