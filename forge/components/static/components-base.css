@@ -1780,7 +1780,9 @@ html:has(.md-dialog-demo > dialog:modal) { overflow:hidden; }
 .md-navigation-rail .md-nav-label { white-space:normal;overflow-wrap:anywhere; }
 .md-navigation-rail[data-orientation="horizontal"] .md-nav-item { justify-content:flex-start; }
 .md-navigation-rail[data-orientation="horizontal"] .md-nav-indicator { inline-size:max-content;max-inline-size:100%;min-block-size:var(--_nav-item-indicator-height);block-size:auto; }
-.md-navigation-rail[data-orientation="horizontal"] .md-nav-label { min-inline-size:0; }
+/* Horizontal labels sit inside the indicator, so use its on-container
+   foreground, as the icon does. The vertical label remains outside the pill. */
+.md-navigation-rail[data-orientation="horizontal"] .md-nav-label { min-inline-size:0;color:var(--_nav-item-icon); }
 .md-navigation-rail[data-orientation="vertical"] .md-nav-item { min-block-size:var(--_nav-item-height);block-size:max(var(--_nav-item-height),calc(var(--_nav-item-indicator-height) + var(--_nav-item-label-gap) + var(--_nav-label-height) + 2 * var(--_nav-item-vertical-padding)));padding-block:var(--_nav-item-vertical-padding); }
 .md-navigation-rail[data-orientation="vertical"] .md-nav-indicator { transform:translateY(calc((var(--_nav-item-label-gap) + var(--_nav-label-height)) / -2)); }
 .md-navigation-rail[data-orientation="vertical"] .md-nav-label { inline-size:max-content;max-inline-size:calc(var(--_rail-rest-width) - 2 * var(--md-sys-measurement-space200)); }
