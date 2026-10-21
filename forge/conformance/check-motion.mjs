@@ -122,6 +122,14 @@ export async function checkMotion(container) {
   {
     const {w,d}=await load('navigation-rail'),frame=d.querySelector('.md-rail-frame'),rail=frame.querySelector('.md-navigation-rail');
     await d.fonts.ready;
+    function collapsedLabels(){
+      for(const label of rail.querySelectorAll('.md-nav-label'))if(label.getClientRects().length){
+        const style=w.getComputedStyle(label),r=label.getBoundingClientRect(),icon=label.closest('.md-nav-indicator').getBoundingClientRect();
+        assert(style.position==='absolute'&&Math.abs((r.left+r.right-icon.left-icon.right)/2)<.1,'Collapsed rail labels remain absolutely positioned and centered under their indicators');
+        assert(r.height<=parseFloat(style.lineHeight)+.1,'Collapsed rail labels fit on one line');
+      }
+    }
+    collapsedLabels();
     for(const direction of ['ltr','rtl'])for(const expanded of [true,false]){
       rail.style.direction=direction;rail.querySelector('[data-navigation-expand]').click();
       assert(rail.dataset.variant===(expanded?'expanded':'collapsed'),`Rail ${direction}: switches to the requested variant`);
@@ -167,6 +175,7 @@ export async function checkMotion(container) {
       const jump=Math.max(...nodes.map((n,i)=>{const r=n.getBoundingClientRect();return Math.max(Math.abs(r.x-before[i].x),Math.abs(r.y-before[i].y));}));
       assert(jump<.1,`Rail ${direction}/${expanded?'expanded':'collapsed'}: final layout stays within 0.1px of the animation endpoint`);
       assert(!frame.hasAttribute('data-transitioning')&&!frame.querySelector('[data-rail-text-exit]'),'Rail clears the temporary layout and outgoing text');
+      if(!expanded)collapsedLabels();
     }
     const toggle=rail.querySelector('[data-navigation-expand]');toggle.click();await wait(60);toggle.click();await wait(60);toggle.click();await wait(600);
     assert(!frame.querySelector('[data-rail-text-exit]')&&!frame.hasAttribute('data-transitioning'),'Interrupted rail transitions remove outgoing text and finish cleanly');
