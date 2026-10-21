@@ -103,6 +103,23 @@ export async function checkMotion(container) {
     assert(!sheet.open,'Sheet exit completes');assert(!w.motionErrors.length,'Sheet lifecycle has no script errors');
   }
   {
+    const {w,d}=await load('navigation-rail'),rail=d.querySelector('.md-navigation-rail'),fab=rail.querySelector('.md-nav-fab');
+    for(const expanded of [false,true]){
+      if(expanded){rail.querySelector('[data-navigation-expand]').click();await wait(600);}
+      const before=fab.getBoundingClientRect(),radius=w.getComputedStyle(fab).borderRadius;
+      assert(fab.classList.contains(expanded?'md-extended-fab':'md-fab'),'Rail Create uses the matching shared FAB class');
+      fab.dispatchEvent(new w.PointerEvent('pointerdown',{bubbles:true,pointerType:'mouse',pointerId:12,button:0,isPrimary:true,clientX:before.x+20,clientY:before.y+20}));
+      const ripple=fab.querySelector('.md-button-ripple'),ink=ripple?.firstElementChild,style=ripple&&w.getComputedStyle(ripple);
+      assert(!!ripple&&style.display!=='none'&&style.position==='absolute','Rail FAB ripple remains visible and outside flex layout');
+      assert(Number(w.getComputedStyle(ink).opacity)>0&&w.getComputedStyle(ink).backgroundImage.includes('radial-gradient'),'Rail FAB ripple has a painted pressed state');
+      const pressed=fab.getBoundingClientRect();assert(Math.abs(before.width-pressed.width)<.1&&Math.abs(before.x-pressed.x)<.1,'Pressing the rail FAB does not extend or shift it');
+      assert(w.getComputedStyle(fab).borderRadius===radius,'Rail FAB retains its canonical fixed press shape');
+      fab.dispatchEvent(new w.PointerEvent('pointerup',{bubbles:true,pointerType:'mouse',pointerId:12,button:0,isPrimary:true}));fab.click();await wait(700);
+      assert(!fab.hasAttribute('data-pressed')&&!fab.querySelector('.md-button-ripple'),'Rail FAB releases and removes its ripple');
+    }
+    assert(!w.motionErrors.length,'Rail FAB feedback has no script errors');
+  }
+  {
     const {w,d}=await load('navigation-rail'),frame=d.querySelector('.md-rail-frame'),rail=frame.querySelector('.md-navigation-rail');
     await d.fonts.ready;
     for(const direction of ['ltr','rtl'])for(const expanded of [true,false]){
@@ -116,10 +133,12 @@ export async function checkMotion(container) {
       const oldPositions=copies.map(n=>n.getBoundingClientRect());
       assert(copies.length>0&&copies.every(n=>n.inert&&n.getAttribute('aria-hidden')==='true'),'Outgoing rail text is retained only as inert visual content');
       assert(labels.every(n=>Number(w.getComputedStyle(n).opacity)===0),'Incoming labels start invisible in their destination layout');
+      const heading=rail.querySelector('.md-nav-section'),headingRect=heading.getBoundingClientRect();
+      assert(heading.getAnimations().every(a=>a.effect.getKeyframes().every(k=>!['left','top','transform','scale','fontSize'].some(p=>p in k))),'Library heading animates opacity only');
       const labelPositions=labels.map(n=>n.getBoundingClientRect());
       const textAnimation=labels[0].getAnimations().find(a=>a.effect.getKeyframes().some(k=>'opacity' in k)),textFrames=textAnimation.effect.getKeyframes(),middle=textFrames.findLast(k=>Number(k.opacity)===0).offset*Number(textAnimation.effect.getTiming().duration);
       animations.forEach(a=>a.currentTime=middle);
-      assert(labels.every(n=>Number(w.getComputedStyle(n).opacity)<.001)&&copies.every(n=>Number(w.getComputedStyle(n).opacity)<.001),'Both label layouts are invisible at the shared halfway phase');
+      assert(labels.every(n=>Number(w.getComputedStyle(n).opacity)<.001)&&copies.filter(n=>!n.hasAttribute('data-rail-section-exit')).every(n=>Number(w.getComputedStyle(n).opacity)<.001),'Both label layouts are invisible at the shared halfway phase');
       const glyph=rail.querySelector(expanded?'[data-navigation-collapse-icon]':'[data-navigation-menu-icon]'),matrix=w.getComputedStyle(glyph).transform.match(/matrix\(([^)]+)\)/),angle=matrix?Math.abs(Math.atan2(...matrix[1].split(',').slice(0,2).reverse().map(Number))*180/Math.PI):0;
       assert(Math.abs(angle-45)<1,'Menu icon is halfway through its quarter turn when labels disappear');
       animations.forEach(a=>a.currentTime=Number(textAnimation.effect.getTiming().duration));
@@ -128,6 +147,7 @@ export async function checkMotion(container) {
       for(const time of [60,160,280]){
         animations.forEach(a=>a.currentTime=time);
         if(expanded){
+          const r=heading.getBoundingClientRect();assert(Math.abs(r.x-headingRect.x)<.1&&Math.abs(r.y-headingRect.y)<.1&&Math.abs(r.width-headingRect.width)<.1&&Math.abs(r.height-headingRect.height)<.1,'Library heading stays at its final position and size throughout its fade');
           assert(labels.every((n,i)=>{const r=n.getBoundingClientRect(),opacity=Number(w.getComputedStyle(n).opacity),distance=Math.abs(labelPositions[i].x-labelEnds[i].x);return Math.abs(r.y-labelEnds[i].y)<.1&&(opacity<.5||Math.abs(r.x-labelEnds[i].x)<=distance*.2+.1);}),`Entering labels approach horizontally and are nearly placed once visible (${time}ms)`);
         }else{
           const travel=Math.max(...labels.map((n,i)=>{const r=n.getBoundingClientRect();return Math.max(Math.abs(r.x-labelPositions[i].x),Math.abs(r.y-labelPositions[i].y));}));

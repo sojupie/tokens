@@ -181,12 +181,16 @@ indicators move with positional offsets rather than animated transforms. Labels
 crossfade on the same default spatial progress as the menu icon rotation and
 rail geometry. Following AndroidX NavigationItem, outgoing opacity is
 `max(0, 1 - 2p)²` and incoming opacity is `max(0, min(1, 2p - 1))²`.
-Both layouts are invisible at `p = 0.5`, when the menu icon has rotated 45°.
+Both destination-label layouts are invisible at `p = 0.5`, when the menu icon
+has rotated 45°. Section headings remain at their final size and position,
+using only the default effects opacity fade.
 Inert outgoing text fades in place. Incoming collapsed labels also stay fixed;
 expanded labels approach horizontally from near the icon, covering most of
 that distance while transparent. Positional offsets cancel the moving parent
 indicator. Outgoing text is removed on completion or interruption. Reduced
-motion changes layouts immediately. The directory
+motion changes layouts immediately. Rail FAB label styles exclude the ripple
+span, which stays absolutely positioned and visible in both rail states. FAB
+press feedback retains the source shape and uses its ripple/state layer. The directory
 keeps its final layout width during motion, and its position follows the same
 spatial spring as the rail. The modal scrim retains zero opacity after its
 faster effects spring settles, until spatial cleanup hides it. Horizontal rail
