@@ -491,10 +491,10 @@ test('mosaic artwork pauses for the control, reduced motion, and offscreen visib
   function animate(frames,options){animationOptions.push(options);const animation={state:'running',pause(){this.state='paused';},play(){this.state='running';},cancel(){this.state='idle';}};animationStates.push(animation);return animation;}
   const artwork={animate,querySelectorAll:selector=>Array.from({length:selector==='.tokens-art-column'?3:9},()=>({animate})),parentElement:{querySelector:()=>control},toggleAttribute(name,value){assert.equal(name,'data-paused');paused=value;}};
   const document={readyState:'complete',hidden:false,querySelector:()=>artwork,addEventListener(type,handler){events[type]=handler;},removeEventListener(){}};
-  runScript('artwork.js',{document,getComputedStyle:()=>({getPropertyValue:key=>({'--_art-spring-damping':'.9','--_art-spring-stiffness':'300','--_art-stagger':'100ms','--_art-turn-edge-duration':'200ms','--_art-shape-damping':'.9','--_art-shape-stiffness':'1400','--_art-corner-small':'8px','--_art-corner-large':'16px','--_art-corner-base':'28px','--_art-corner-soft':'48px'}[key])}),matchMedia:()=>reduced,IntersectionObserver:class{constructor(callback){observe=callback;}observe(){}disconnect(){}}});
+  runScript('artwork.js',{document,getComputedStyle:()=>({getPropertyValue:key=>({'--_art-spring-damping':'.9','--_art-spring-stiffness':'300','--_art-stagger':'100ms','--_art-shape-damping':'.9','--_art-shape-stiffness':'1400','--_art-corner-small':'8px','--_art-corner-large':'16px','--_art-corner-base':'28px','--_art-corner-soft':'48px'}[key])}),matchMedia:()=>reduced,IntersectionObserver:class{constructor(callback){observe=callback;}observe(){}disconnect(){}}});
   assert.equal(paused,false);
   assert.equal(animationStates.length,22);
-  assert.equal(new Set(animationOptions.slice(4,13).map(o=>o.delay)).size,9,'inner rotations are staggered');
+  animationOptions.slice(4,13).forEach((rotation,index)=>{const layout=animationOptions[1+Math.floor(index/3)];assert.equal(rotation.duration,layout.duration);assert.equal(rotation.delay,layout.delay,'stripes start with their owning column resize');});
   [0,4,8,2,6,1,7,3,5].forEach((tile,slot)=>{const corner=animationOptions[13+slot],layout=animationOptions[1+Math.floor(tile/3)];assert.equal(corner.duration,layout.duration);assert.equal(corner.delay,layout.delay,'corners start with their owning column resize');});
   control.checked=true;control.change();assert.equal(paused,true);assert.ok(animationStates.every(a=>a.state==='paused'));
   control.checked=false;control.change();assert.equal(paused,false);
@@ -524,19 +524,20 @@ test('mosaic artwork pauses for the control, reduced motion, and offscreen visib
   assert.equal(frames.at(-1).offset,1);
  });
 
-test('whole-block turns give the quarter-turn a full spatial spring with short overlapping edges', () => {
+test('internal stripe turns settle and hold on resize beats without a loop jump', () => {
   const module={exports:{}};
   runInNewContext(readFileSync(join(__dirname,'static','artwork.js'),'utf8'),{module});
-  const {artworkSpring,artworkTurns}=module.exports;
-  const spring=artworkSpring(.9,1400),frames=artworkTurns(spring),duration=spring.duration+160,n=Math.ceil(duration*60/1000)+1;
-  assert.equal(frames.length,2*n+1);
-  assert.equal(frames[0]['--_art-square'],'0.000000');
-  assert.equal(frames[n-1]['--_art-square'],'0.000000');
-  assert.equal(frames[n-1]['--_art-turn'],'1.000000');
-  assert.ok(Math.abs(frames[n-1].offset*54000-duration)<.001);
-  assert.ok(frames.slice(0,n).some(f=>+f['--_art-square']===1&&+f['--_art-turn']>0&&+f['--_art-turn']<1));
-  assert.equal(frames.at(-1)['--_art-turn'],'0');
-  assert.ok(frames.every((frame,i)=>!i||frame.offset>=frames[i-1].offset));
+  const {artworkSpring,artworkFrames}=module.exports;
+  const spring=artworkSpring(.6,800),frames=artworkFrames([[0],[0],[90],[90]],'--_art-angle',spring,8000,'deg');
+  assert.equal(frames[0]['--_art-angle'],'0.000000deg');
+  assert.equal(frames.at(-1)['--_art-angle'],'0deg');
+  for(let scene=0;scene<4;scene++){
+    const start=frames[scene*spring.samples.length],end=frames[(scene+1)*spring.samples.length-1];
+    assert.equal(start.offset,scene/4);
+    assert.ok(end.offset<(scene+1)/4,'turn settles before the next resize beat');
+    assert.equal(parseFloat(end['--_art-angle']),parseFloat(frames[(scene+1)*spring.samples.length]['--_art-angle']));
+  }
+  assert.ok(frames.some(frame=>parseFloat(frame['--_art-angle'])>90),'Expressive spatial overshoot is retained');
 });
 
 test('corner morphs use pixel radii and finish at their exact token values', () => {

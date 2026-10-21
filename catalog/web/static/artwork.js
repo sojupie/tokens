@@ -24,28 +24,6 @@
     frames.push({offset:1,[property]:states[0].map(value=>value+unit).join(' ')});
     return frames;
   }
-  function artworkTurns(spring,loop=54000,edge=100){
-    const frames=[],rotationStart=edge*.8,expansionStart=rotationStart+spring.duration-edge*.2,end=expansionStart+edge;
-    const sample=(time,duration)=>{
-      if(time<=0)return 0;if(time>=duration)return 1;
-      const index=time/duration*(spring.samples.length-1),i=Math.floor(index);
-      return spring.samples[i]+(spring.samples[i+1]-spring.samples[i])*(index-i);
-    };
-    for(let turn=0;turn<2;turn++){
-      for(let i=0;i<=Math.ceil(end*60/1000);i++){
-        const time=Math.min(end,i*1000/60);
-        const square=sample(time,edge)*(1-sample(time-expansionStart,edge));
-        const rotation=sample(time-rotationStart,spring.duration);
-        frames.push({
-          offset:turn/2+time/loop,
-          '--_art-square':square.toFixed(6),
-          '--_art-turn':(turn?1-rotation:rotation).toFixed(6),
-        });
-      }
-    }
-    frames.push({offset:1,'--_art-square':'0','--_art-turn':'0'});
-    return frames;
-  }
   function artworkDirectionalCorners(from,to,[small,,base,soft]){
     // Outward-moving edges soften; edges being pushed inward flatten.
     const edges=[from.left-to.left,to.right-from.right,from.top-to.top,to.bottom-from.bottom];
@@ -64,7 +42,7 @@
     };
     return tracks[0].map((_,scene)=>artworkDirectionalCorners(rect((scene+3)%4),rect(scene),corners));
   }
-  if(typeof module!=='undefined')module.exports={artworkSpring,artworkFrames,artworkTurns,artworkDirectionalCorners,artworkCornerStates};
+  if(typeof module!=='undefined')module.exports={artworkSpring,artworkFrames,artworkDirectionalCorners,artworkCornerStates};
   if(typeof document==='undefined')return;
   const reduced=matchMedia('(prefers-reduced-motion: reduce)');
   let current;
@@ -74,8 +52,8 @@
     current?.dispose();current=null;
     if(!artwork)return;
     const style=getComputedStyle(artwork),spring=artworkSpring(parseFloat(style.getPropertyValue('--_art-spring-damping')),parseFloat(style.getPropertyValue('--_art-spring-stiffness')));
-    const stagger=parseFloat(style.getPropertyValue('--_art-stagger')),turnEdge=parseFloat(style.getPropertyValue('--_art-turn-edge-duration')),animations=[];
-    const turnSpring=artworkSpring(parseFloat(style.getPropertyValue('--_art-shape-damping')),parseFloat(style.getPropertyValue('--_art-shape-stiffness')));
+    const stagger=parseFloat(style.getPropertyValue('--_art-stagger')),animations=[];
+    const shapeSpring=artworkSpring(parseFloat(style.getPropertyValue('--_art-shape-damping')),parseFloat(style.getPropertyValue('--_art-shape-stiffness')));
     const tracks=[
         [[1.2,.8,1],[.65,1.45,.9],[1,.65,1.35],[1.5,.85,.65]],
         [[1.3,.7,1],[.6,1,1.4],[1,1.4,.6],[1.6,.8,.6]],
@@ -86,14 +64,15 @@
       [artwork,...artwork.querySelectorAll('.tokens-art-column')].forEach((node,i)=>{
         animations.push(node.animate(artworkFrames(tracks[i],i?'gridTemplateRows':'gridTemplateColumns',spring),{duration:8000,delay:i*stagger,iterations:Infinity,fill:'both',easing:'linear'}));
       });
-      // Contract to a square, turn the entire surface, then expand. Visit
-      // separated tiles so these moments never happen all at once.
-      const surfaces=[...artwork.querySelectorAll('.tokens-art-surface')];
-      [0,4,8,2,6,1,7,3,5].forEach((index,slot)=>{
-        animations.push(surfaces[index].animate(artworkTurns(turnSpring||spring,54000,turnEdge),{duration:54000,delay:1500+slot*3000,iterations:Infinity,fill:'both',easing:'linear'}));
+      // Turn selected stripes on the same beats as their column resize and
+      // corner morph. Held scenes keep neighboring tiles from turning together.
+      const stripes=[...artwork.querySelectorAll('.tokens-art-sections')];
+      stripes.forEach((node,index)=>{
+        const col=Math.floor(index/3),phase=(col+index%3)%4;
+        const states=Array.from({length:4},(_,scene)=>[Math.floor(((scene+phase)%4)/2)*90]);
+        animations.push(node.animate(artworkFrames(states,'--_art-angle',shapeSpring||spring,8000,'deg'),{duration:8000,delay:(col+1)*stagger,iterations:Infinity,fill:'both',easing:'linear'}));
       });
     }
-    const shapeSpring=artworkSpring(parseFloat(style.getPropertyValue('--_art-shape-damping')),parseFloat(style.getPropertyValue('--_art-shape-stiffness')));
     const corners=['small','large','base','soft'].map(name=>parseFloat(style.getPropertyValue('--_art-corner-'+name)));
     if(shapeSpring&&corners.every(Number.isFinite)&&Number.isFinite(stagger)){
       // Share the owning column's resize clock; corners never pulse alone.

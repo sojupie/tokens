@@ -157,7 +157,8 @@ The landing page shows a small component/style selection, then a separate
 section for change history and agent access. Hero artwork lives in
 `catalog/web/static/artwork.js`. Its color-block choreography and loop timing
 are authored; sampled captured spatial springs drive resize, shape and turn
-transitions. Corner changes share their block's resize clock and direction.
+transitions. Corner changes share their block's resize clock and direction. Internal stripe
+turns start on that clock too, with different tiles turning on different beats.
 The pause control, reduced-motion preference, document visibility and viewport
 intersection control playback.
 

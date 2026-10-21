@@ -365,9 +365,11 @@ through a new binary/assets build and server restart. There is no weekly cache
 TTL that could conceal a newly activated publication.
 
 The landing page separates component and style previews from “Work with tokens”.
-Its hero uses color blocks on a light surface, with staggered resize and whole
-surface turns. The custom loop uses captured spatial springs for transitions.
-Directional corners morph during resizing. Reduced motion and pause remain
+Its hero uses color blocks on a light surface, with staggered resize and internal
+stripe turns. The custom loop uses captured spatial springs for transitions.
+Directional corners and stripe turns share the column resize clock. The stripe
+layer follows the inverse-rotated tile bounds, preserving equal thirds at each
+quarter turn without leaving gaps at intermediate angles. Reduced motion and pause remain
 supported; artwork pauses offscreen and in a hidden document.
 
 Change history uses outlined expandable groups and filter pills with short

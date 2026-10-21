@@ -14,7 +14,7 @@ export async function checkMotion(container) {
       const originalSupports=CSS.supports.bind(CSS);CSS.supports=(...args)=>args[0]==='overlay'&&${fallback}?false:originalSupports(...args);
       addEventListener('load',()=>{setMotionReduced(window.motionReduced);${fallback ? "const style=document.createElement('style');style.textContent=':is(.md-menu,.md-field-menu,.md-fab-menu-panel)[popover]{transition-property:opacity,scale,border-radius!important}';document.head.append(style);" : ''}});
     `;
-    const html = await fetch(`/md3/components/${slug}?preview.compare=interactive${query}`).then(r=>{if(!r.ok)throw Error(`Page ${slug}: ${r.status}`);return r.text();});
+    const html = await fetch(slug ? `/md3/components/${slug}?preview.compare=interactive${query}` : '/md3/').then(r=>{if(!r.ok)throw Error(`Page ${slug}: ${r.status}`);return r.text();});
     const loaded = new Promise(resolve=>frame.onload=resolve);
     frame.srcdoc = html.replace('<head>', `<head><base href="${location.origin}/md3/"><script>${bootstrap}<\/script>`);
     await loaded;await wait(30);
@@ -69,6 +69,35 @@ export async function checkMotion(container) {
     assert(sheet.getAnimations().some(a=>a.effect.getTiming().easing.includes('linear(')),'Sheet geometry uses the default spatial spring');
     sheet.dispatchEvent(new w.Event('cancel',{cancelable:true}));await wait(600);
     assert(!sheet.open,'Sheet exit completes');assert(!w.motionErrors.length,'Sheet lifecycle has no script errors');
+  }
+  {
+    const {w,d}=await load(''),art=d.querySelector('[data-artwork]'),toggle=d.querySelector('.tokens-art-pause input');
+    const animations=art.getAnimations({subtree:true});
+    assert(animations.length===22,'Hero starts its layout, stripe and corner animations');
+    toggle.click();assert(animations.every(a=>a.playState==='paused'),'Hero pause control pauses every track');
+    toggle.click();w.setMotionReduced(true);assert(animations.every(a=>a.playState==='paused'),'Hero reduced motion pauses every track');
+    w.setMotionReduced(false);assert(animations.every(a=>a.playState==='running'),'Hero resumes after reduced motion clears');
+    animations.forEach(a=>a.pause());
+    for(const width of [960,390]){
+      frame.style.width=width+'px';await new Promise(w.requestAnimationFrame);
+      let maxGap=0,turned=false,endpoint=false;
+      for(let time=0;time<=8300;time+=50){
+        animations.forEach(a=>a.currentTime=time);
+        for(const node of d.querySelectorAll('.tokens-art-sections')){
+          const style=w.getComputedStyle(node),tile=w.getComputedStyle(node.closest('.tokens-art-tile'));
+          const angle=parseFloat(style.getPropertyValue('--_art-angle')),r=angle*Math.PI/180;
+          const tw=parseFloat(tile.width),th=parseFloat(tile.height),rw=parseFloat(style.width),rh=parseFloat(style.height);
+          assertFinite(rw,rh);
+          maxGap=Math.max(maxGap,(Math.abs(tw*Math.cos(r))+Math.abs(th*Math.sin(r))-rw)/2,(Math.abs(tw*Math.sin(r))+Math.abs(th*Math.cos(r))-rh)/2);
+          turned ||= angle>1&&angle<89;
+          if(angle===90){endpoint=true;if(Math.abs(rw-th)>.1||Math.abs(rh-tw)>.1)throw Error('Stripe thirds lose their proportions at a quarter turn');}
+        }
+      }
+      assert(maxGap<.1&&turned&&endpoint,`Hero ${width}px: full-loop stripe coverage and endpoint proportions`);
+      assert([...d.querySelectorAll('.tokens-art-surface')].every(n=>w.getComputedStyle(n).transform==='none'),`Hero ${width}px: tile shells never rotate or contract for a turn`);
+    }
+    assert(!w.motionErrors.length,'Hero has no script errors');
+    function assertFinite(...values){if(!values.every(value=>Number.isFinite(value)&&value>0))throw Error('Invalid stripe dimensions');}
   }
   const response=await fetch('/md3/downloads/dtcg/light-default/report.json').then(r=>r.json());
   assert(response.context['Motion scheme']==='Standard','Public download context remains Standard');
