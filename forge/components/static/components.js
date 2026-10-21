@@ -153,8 +153,8 @@
     const rail=frame.querySelector('.md-navigation-rail'),state=railFrames.get(frame),start=rail.getBoundingClientRect().width,wasModal=frame.dataset.modalOpen==='true';
     const slot=frame.querySelector('.md-navigation-slot'),body=frame.querySelector('.md-rail-body'),bodyBefore=body.getBoundingClientRect();
     const textTargets='.md-nav-label,.md-nav-section,.md-nav-fab > span:not(.md-button-ripple)';
-    const outgoing=[...rail.querySelectorAll(textTargets)].filter(e=>e.getClientRects().length).map(element=>{const style=getComputedStyle(element);return {text:element.textContent,rect:element.getBoundingClientRect(),font:style.font,color:style.color,spacing:style.letterSpacing,align:style.textAlign,opacity:style.opacity,direction:style.direction};});
-    const motionTargets='.md-nav-indicator,.md-nav-icon,.md-nav-label,.md-nav-section,.md-rail-menu,.md-nav-fab,.md-nav-fab > span:not(.md-button-ripple)';
+    const outgoing=[...rail.querySelectorAll(textTargets)].filter(e=>e.getClientRects().length).map(element=>{const style=getComputedStyle(element);return {text:element.textContent,rect:element.getBoundingClientRect(),font:style.font,color:style.color,spacing:style.letterSpacing,align:style.textAlign,opacity:style.opacity,direction:style.direction,section:element.matches('.md-nav-section')};});
+    const motionTargets='.md-nav-indicator,.md-nav-icon,.md-nav-label,.md-rail-menu,.md-nav-fab,.md-nav-fab > span:not(.md-button-ripple)';
     const before=new Map([...rail.querySelectorAll(motionTargets)].filter(e=>e.getClientRects().length).map(e=>[e,e.getBoundingClientRect()]));
     for(const a of state?.animations||[])a.cancel();for(const copy of state?.copies||[])copy.remove();delete frame.dataset.transitioning;
     const fab=rail.querySelector('.md-nav-fab'),fabStart=before.get(fab)?.width;
@@ -182,9 +182,9 @@
     const middle=phases.findIndex(({progress})=>progress>=.5),a=phases[middle-1],b=phases[middle];
     phases.splice(middle,0,{progress:.5,offset:a.offset+(.5-a.progress)/(b.progress-a.progress)*(b.offset-a.offset)});
     for(const old of outgoing){
-      const copy=document.createElement('span');copy.textContent=old.text;copy.dataset.railTextExit='';copy.setAttribute('aria-hidden','true');copy.inert=true;
+      const copy=document.createElement('span');copy.textContent=old.text;copy.dataset.railTextExit='';copy.setAttribute('aria-hidden','true');copy.inert=true;if(old.section)copy.dataset.railSectionExit='';
       Object.assign(copy.style,{position:'absolute',pointerEvents:'none',zIndex:'4',left:(old.rect.x-frameRect.x-frame.clientLeft)+'px',top:(old.rect.y-frameRect.y-frame.clientTop)+'px',width:old.rect.width+'px',height:old.rect.height+'px',font:old.font,color:old.color,letterSpacing:old.spacing,textAlign:old.align,direction:old.direction});
-      frame.append(copy);current.copies.push(copy);current.animations.push(copy.animate(phases.map(({progress,offset})=>({offset,opacity:Number(old.opacity)*Math.max(0,1-2*Math.max(0,progress))**2})),{...textTiming,fill:'forwards'}));
+      frame.append(copy);current.copies.push(copy);current.animations.push(copy.animate(old.section?[{opacity:old.opacity},{opacity:0}]:phases.map(({progress,offset})=>({offset,opacity:Number(old.opacity)*Math.max(0,1-2*Math.max(0,progress))**2})),{...(old.section?effects:textTiming),fill:'forwards'}));
     }
     // Fix the final inner layout while the outer rail resizes. Move existing
     // contents from their current positions instead of reflowing every frame.
@@ -194,6 +194,8 @@
       const style=getComputedStyle(element);
       return [element,{rect:element.getBoundingClientRect(),left:parseFloat(style.left)||0,top:parseFloat(style.top)||0}];
     }));
+    const heading=rail.querySelector('.md-nav-section');
+    if(heading?.getClientRects().length)current.animations.push(heading.animate([{opacity:0},{opacity:1}],effects));
     const shifts=new Map();
     for(const [element,{rect:next,left,top}] of destinations){
       const prior=before.get(element);if(!next.width||!next.height)continue;
