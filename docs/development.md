@@ -173,6 +173,10 @@ well as the unit fallback checks before declaring browser conformance.
 Rail transitions measure label heights after changing variants and before
 capturing animation destinations. The resize observer maintains those heights
 afterward; it must not change the base indicator transform during a transition.
+All destinations are measured before starting parent animations. Rail contents
+move with positional offsets rather than animated text transforms. The directory
+keeps its final layout width during motion, and its position follows the same
+spatial spring as the rail.
 
 ## Component motion
 

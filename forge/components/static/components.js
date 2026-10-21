@@ -151,6 +151,7 @@
   }
   function setRailExpanded(frame,expanded,focus=false){
     const rail=frame.querySelector('.md-navigation-rail'),state=railFrames.get(frame),start=rail.getBoundingClientRect().width,wasModal=frame.dataset.modalOpen==='true';
+    const slot=frame.querySelector('.md-navigation-slot'),body=frame.querySelector('.md-rail-body'),bodyBefore=body.getBoundingClientRect();
     const motionTargets='.md-nav-indicator,.md-nav-icon,.md-nav-label,.md-nav-section,.md-rail-menu,.md-nav-fab';
     const before=new Map([...rail.querySelectorAll(motionTargets)].filter(e=>e.getClientRects().length).map(e=>[e,e.getBoundingClientRect()]));
     for(const a of state?.animations||[])a.cancel();delete frame.dataset.transitioning;
@@ -159,28 +160,39 @@
     // Resolve the new label metrics before capturing the FLIP destination.
     // ResizeObserver otherwise updates the CSS base transform mid-animation.
     measureRailLabels(rail.querySelectorAll('.md-nav-label'));
+    const slotEnd=slot.getBoundingClientRect().width;
     const targetHidden=frame.dataset.railHidden==='true',end=targetHidden?0:rail.getBoundingClientRect().width,timing=MaterialMotion.timing(rail,'default-spatial'),effects=MaterialMotion.timing(rail,'default-effects');
     const restoreFocus=()=>{if(focus){const target=targetHidden?frame.querySelector('.md-rail-external-menu'):rail.querySelector('[data-navigation-expand],.md-nav-fab,[data-navigation-item]');target?.focus({preventScroll:true});}};
     if(matchMedia('(prefers-reduced-motion: reduce)').matches){restoreFocus();return;}
     if(targetHidden){frame.querySelector('.md-navigation-surface').hidden=false;frame.dataset.railHidden='false';}
     if(wasModal&&!expanded){frame.dataset.modalOpen='true';frame.querySelector('.md-rail-body').inert=true;frame.querySelector('.md-navigation-scrim').hidden=false;}
-    frame.style.setProperty('--_rail-content-width',(targetHidden?start:end)+'px');frame.dataset.transitioning='';
+    frame.style.setProperty('--_rail-content-width',(targetHidden?start:end)+'px');
+    frame.style.setProperty('--_rail-slot-width',slotEnd+'px');frame.dataset.transitioning='';
     const current={animations:[]};railFrames.set(frame,current);
     // Fix the final inner layout while the outer rail resizes. Move existing
     // contents from their current positions instead of reflowing every frame.
+    // Capture every destination before starting any animation. An animated
+    // parent must not contaminate the measured destination of its children.
+    const destinations=new Map([...rail.querySelectorAll(motionTargets)].map(element=>{
+      const style=getComputedStyle(element);
+      return [element,{rect:element.getBoundingClientRect(),left:parseFloat(style.left)||0,top:parseFloat(style.top)||0}];
+    }));
     const shifts=new Map();
-    for(const element of rail.querySelectorAll(motionTargets)){
-      const prior=before.get(element),next=element.getBoundingClientRect();if(!next.width||!next.height)continue;
+    for(const [element,{rect:next,left,top}] of destinations){
+      const prior=before.get(element);if(!next.width||!next.height)continue;
       const parent=element.parentElement.closest(motionTargets),parentShift=shifts.get(parent)||{x:0,y:0};
       const shift=prior?{x:prior.x-next.x,y:prior.y-next.y}:{x:0,y:0};shifts.set(element,shift);
-      const transform=getComputedStyle(element).transform,base=transform==='none'?'':transform;
-      current.animations.push(element.animate(prior?[{transform:`translate(${shift.x-parentShift.x}px,${shift.y-parentShift.y}px) ${base}`},{transform:base||'none'}]:[{opacity:0},{opacity:1}],prior?timing:effects));
+      // Paint text at its moving position rather than promoting it into a
+      // transformed texture that changes rasterization when the effect ends.
+      current.animations.push(element.animate(prior?[{left:(left+shift.x-parentShift.x)+'px',top:(top+shift.y-parentShift.y)+'px'},{left:left+'px',top:top+'px'}]:[{opacity:0},{opacity:1}],prior?timing:effects));
     }
-    const animation=rail.animate([{width:start+'px',minWidth:start+'px'},{width:end+'px',minWidth:end+'px'}],timing);current.animations.push(animation);
+    const bodyEnd=body.getBoundingClientRect(),bodyShift=bodyBefore.x-bodyEnd.x;
+    if(Math.abs(bodyShift)>.01)current.animations.push(body.animate([{left:bodyShift+'px'},{left:'0px'}],timing));
+    const animation=rail.animate([{width:start+'px',minWidth:start+'px'},{width:end+'px',minWidth:end+'px'}],{...timing,fill:'both'});current.animations.push(animation);
     if(fab)current.animations.push(fab.animate([{width:fabStart+'px',minWidth:fabStart+'px'},{width:fab.getBoundingClientRect().width+'px',minWidth:fab.getBoundingClientRect().width+'px'}],timing));
     if(wasModal&&!expanded)current.animations.push(frame.querySelector('.md-navigation-scrim').animate([{opacity:1},{opacity:0}],effects));
     if(expanded)restoreFocus();
-    animation.finished.then(()=>{if(railFrames.get(frame)!==current)return;delete frame.dataset.transitioning;syncRail(frame);if(!expanded)restoreFocus();},()=>{});
+    animation.finished.then(()=>{if(railFrames.get(frame)!==current)return;delete frame.dataset.transitioning;for(const a of current.animations)a.cancel();syncRail(frame);if(!expanded)restoreFocus();},()=>{});
   }
   function initRailFrames(){for(const frame of document.querySelectorAll('.md-rail-frame')){if(!railFrames.has(frame)){railFrames.set(frame,{});syncRail(frame);}for(const label of frame.querySelectorAll('.md-nav-label'))if(!railLabels.has(label)){railLabels.add(label);railLabelSizes.observe(label);}}}
   document.addEventListener('keydown',event=>{const frame=event.target.closest?.('.md-rail-frame');if(!frame||frame.dataset.modalOpen!=='true')return;if(event.key==='Escape'){event.preventDefault();setRailExpanded(frame,false,true);return;}if(event.key==='Tab'){const controls=[...frame.querySelector('.md-navigation-rail').querySelectorAll('button')].filter(e=>e.getClientRects().length),first=controls[0],last=controls.at(-1);if(event.shiftKey&&event.target===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&event.target===last){event.preventDefault();first.focus();}}});

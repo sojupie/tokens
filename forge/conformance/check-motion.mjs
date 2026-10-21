@@ -85,8 +85,14 @@ export async function checkMotion(container) {
     for(const direction of ['ltr','rtl'])for(const expanded of [true,false]){
       rail.style.direction=direction;rail.querySelector('[data-navigation-expand]').click();
       assert(rail.dataset.variant===(expanded?'expanded':'collapsed'),`Rail ${direction}: switches to the requested variant`);
-      const nodes=[...rail.querySelectorAll('.md-nav-indicator,.md-nav-icon,.md-nav-label')].filter(n=>n.getClientRects().length);
-      const animations=rail.getAnimations({subtree:true});
+      const nodes=[...frame.querySelectorAll('.md-nav-indicator,.md-nav-icon,.md-nav-label,.md-navigation-slot,.md-rail-body,.md-rail-screen,.md-rail-screen h3,.md-rail-screen article:first-of-type')].filter(n=>n.getClientRects().length);
+      const animations=frame.getAnimations({subtree:true});
+      const directory=frame.querySelector('.md-rail-body');
+      for(const a of animations){a.pause();a.currentTime=0;}
+      const directoryWidth=directory.getBoundingClientRect().width;
+      for(const a of animations)a.currentTime=Number(a.effect.getComputedTiming().endTime)/2;
+      assert(Math.abs(directory.getBoundingClientRect().width-directoryWidth)<.1,'Rail directory text keeps one layout width throughout motion');
+      assert(rail.querySelectorAll('.md-nav-label').length>0&&[...rail.querySelectorAll('.md-nav-label')].every(n=>n.getAnimations().every(a=>!a.effect.getKeyframes().some(k=>'transform' in k))),'Rail labels move without animated transform layers');
       for(const a of animations){a.pause();a.currentTime=Number(a.effect.getComputedTiming().endTime)-.001;}
       const before=nodes.map(n=>n.getBoundingClientRect());
       animations.forEach(a=>a.finish());await Promise.all(animations.map(a=>a.finished.catch(()=>{})));await new Promise(w.requestAnimationFrame);
