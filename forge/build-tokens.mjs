@@ -5,6 +5,8 @@ import { siteTheme } from "./material/site-theme.mjs";
 import { generateComponents } from "./material/generate-components.mjs";
 import { generateButtons } from "./material/generate-buttons.mjs";
 import { buildComponentAssets } from "./components/build-assets.mjs";
+import { compactCSS, themeVariantsCSS } from './css-output.mjs';
+import { componentBundles } from './component-bundles.mjs';
 import {
   realpath,
   mkdir,
@@ -266,6 +268,7 @@ async function main() {
     const motionDocument = JSON.parse(await readFile(path.join(motionOutput, "tokens.tokens.json"), "utf8"));
     await rm(motionOutput, { recursive: true });
     let themeCSS = "";
+    const themeVariants = [];
     let referencePalette = {};
     let identity;
     let buttonCSS;
@@ -335,7 +338,7 @@ async function main() {
         for (const property of ["duration", "easing"]) motionProperties.push(`  --_motion-${speed}-${type}-${property}: ${timing[property]};`);
       }
       const motionCSS = `:root {\n${motionProperties.join("\n")}\n}\n`;
-      const generated = motionCSS + anatomy + "\n" + elevation + "\n" + components.css;
+      const generated = compactCSS(motionCSS + anatomy + "\n" + elevation + "\n" + components.css);
       if (componentCSS !== undefined && componentCSS !== generated)
         throw new Error("Component bindings differ across appearances");
       componentCSS = generated;
@@ -360,18 +363,7 @@ async function main() {
         path.join(output, "dtcg", variant.name, "tokens.css"),
         downloadable.css,
       );
-      const defaultLight = variant.name === "light-default";
-      const vars = defaultLight
-        ? `  --tokens-preview-on-light: ${compiled.values["md-ref-palette-neutral0"]};\n  --tokens-preview-on-dark: ${compiled.values["md-sys-color-on-primary"]};\n`
-        : "";
-      if (defaultLight && vars.includes("undefined"))
-        throw new Error("Missing preview text colors");
-      themeCSS +=
-        (defaultLight ? ":root, " : "") +
-        compiled.css.replace(
-          "{\n",
-          `{\n  color-scheme: ${variant.theme};\n${vars}`,
-        );
+      themeVariants.push({ selector, theme: variant.theme, values: compiled.values });
       totals.push({ context: variant.name, cssVariables: required.size });
     }
     if (
@@ -380,6 +372,7 @@ async function main() {
         .digest("hex") !== databaseSha256
     )
       throw new Error("Publication changed during the build");
+    themeCSS = themeVariantsCSS(themeVariants, required);
     await writeFile(path.join(output, "theme.css"), themeCSS);
     await writeFile(path.join(output, "buttons.css"), buttonCSS);
     await writeFile(path.join(output, "components.css"), componentCSS);
@@ -459,6 +452,16 @@ async function main() {
     if (!args["check-bindings"]) {
       await writeFile("forge/components/static/buttons.css", buttonCSS);
       await writeFile("forge/components/static/components.css", componentCSS);
+    }
+    const bundles = componentBundles(componentCSS);
+    for (const [name, css] of bundles) {
+      const file = `forge/components/static/bundles/${name}.css`;
+      if (args['check-bindings']) {
+        if (await readFile(file, 'utf8') !== css) throw new Error(`Stale component bundle: ${name}`);
+      } else {
+        await mkdir('forge/components/static/bundles', { recursive: true });
+        await writeFile(file, css);
+      }
     }
     console.log(`Built six themes and DTCG/CSS downloads in ${target}`);
   } finally {

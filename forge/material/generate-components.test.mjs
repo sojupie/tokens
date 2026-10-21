@@ -243,7 +243,7 @@ test('navigation uses current source sets, orientation geometry and selection st
  for (const family of ['nav-bar','nav-rail','nav-drawer']) assert.ok(coverage.configurations.some(c=>c.family===family));
  const row=coverage.mapped.find(r=>r.token==='md.comp.nav-bar.container.height');
  assert.equal(row.selector,'.md-navigation-bar');
- assert.match(css,/\.md-navigation-bar \{ --_nav-height: var\(--md-comp-nav-bar-container-height\)/);
+ assert.match(css,/\.md-navigation-bar \{[^}]*--_nav-height: var\(--md-comp-nav-bar-container-height\)/);
  const narrow=coverage.mapped.find(r=>r.token==='md.comp.nav-rail.collapsed.narrow.container.width');
  assert.match(narrow.selector,/data-variant="collapsed"/);assert.match(narrow.selector,/data-width="narrow"/);
  const selected=coverage.mapped.find(r=>r.token==='md.comp.nav-bar.item.active.icon.color');

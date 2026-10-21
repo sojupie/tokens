@@ -1,4 +1,5 @@
 import { readFileSync } from "node:fs";
+import { groupBindings } from '../css-output.mjs';
 
 const contract = JSON.parse(
   readFileSync(new URL("./component-contract.json", import.meta.url)),
@@ -1108,7 +1109,7 @@ export function generateComponents(document, values) {
   return {
     css:
       "/* Generated from the reviewed Material component contract. */\n" +
-      rules.join("\n") +
+      groupBindings(rules.join("\n")) +
       "\n",
     coverage: { mapped, excluded, configurations },
     requiredNames,
