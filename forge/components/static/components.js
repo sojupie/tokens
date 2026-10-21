@@ -190,9 +190,9 @@
     if(Math.abs(bodyShift)>.01)current.animations.push(body.animate([{left:bodyShift+'px'},{left:'0px'}],timing));
     const animation=rail.animate([{width:start+'px',minWidth:start+'px'},{width:end+'px',minWidth:end+'px'}],{...timing,fill:'both'});current.animations.push(animation);
     if(fab)current.animations.push(fab.animate([{width:fabStart+'px',minWidth:fabStart+'px'},{width:fab.getBoundingClientRect().width+'px',minWidth:fab.getBoundingClientRect().width+'px'}],timing));
-    if(wasModal&&!expanded)current.animations.push(frame.querySelector('.md-navigation-scrim').animate([{opacity:1},{opacity:0}],effects));
+    if(wasModal&&!expanded)current.animations.push(frame.querySelector('.md-navigation-scrim').animate([{opacity:1},{opacity:0}],{...effects,fill:'forwards'}));
     if(expanded)restoreFocus();
-    animation.finished.then(()=>{if(railFrames.get(frame)!==current)return;delete frame.dataset.transitioning;for(const a of current.animations)a.cancel();syncRail(frame);if(!expanded)restoreFocus();},()=>{});
+    animation.finished.then(()=>{if(railFrames.get(frame)!==current)return;delete frame.dataset.transitioning;syncRail(frame);for(const a of current.animations)a.cancel();if(!expanded)restoreFocus();},()=>{});
   }
   function initRailFrames(){for(const frame of document.querySelectorAll('.md-rail-frame')){if(!railFrames.has(frame)){railFrames.set(frame,{});syncRail(frame);}for(const label of frame.querySelectorAll('.md-nav-label'))if(!railLabels.has(label)){railLabels.add(label);railLabelSizes.observe(label);}}}
   document.addEventListener('keydown',event=>{const frame=event.target.closest?.('.md-rail-frame');if(!frame||frame.dataset.modalOpen!=='true')return;if(event.key==='Escape'){event.preventDefault();setRailExpanded(frame,false,true);return;}if(event.key==='Tab'){const controls=[...frame.querySelector('.md-navigation-rail').querySelectorAll('button')].filter(e=>e.getClientRects().length),first=controls[0],last=controls.at(-1);if(event.shiftKey&&event.target===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&event.target===last){event.preventDefault();first.focus();}}});

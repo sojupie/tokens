@@ -103,6 +103,22 @@ export async function checkMotion(container) {
     assert(!w.motionErrors.length,'Rail transitions have no script errors');
   }
   {
+    const {w,d}=await load('navigation-rail',{query:'&preview.layout=modal'}),frame=d.querySelector('.md-rail-frame'),rail=frame.querySelector('.md-navigation-rail'),scrim=frame.querySelector('.md-navigation-scrim'),menu=rail.querySelector('[data-navigation-expand]');
+    for(const close of ['scrim','menu','escape']){
+      menu.click();await wait(600);
+      assert(!scrim.hidden&&Number(w.getComputedStyle(scrim).opacity)===1,'Modal rail reopens with a visible scrim');
+      if(close==='escape')menu.dispatchEvent(new w.KeyboardEvent('keydown',{key:'Escape',bubbles:true}));else(close==='scrim'?scrim:menu).click();
+      const fade=scrim.getAnimations().find(a=>a.effect.getKeyframes().some(k=>'opacity' in k));
+      assert(!!fade,`Modal rail ${close}: scrim has an exit fade`);
+      await fade.finished;
+      assert(frame.hasAttribute('data-transitioning'),`Modal rail ${close}: opacity settles before spatial motion`);
+      for(let i=0;i<3;i++){await new Promise(w.requestAnimationFrame);assert(scrim.hidden||Number(w.getComputedStyle(scrim).opacity)<.001,`Modal rail ${close}: scrim stays transparent after the fade`);}
+      await wait(500);
+      assert(scrim.hidden&&frame.dataset.modalOpen==='false',`Modal rail ${close}: cleanup hides the scrim`);
+    }
+    assert(!w.motionErrors.length,'Modal rail scrim lifecycle has no script errors');
+  }
+  {
     const {w,d}=await load(''),art=d.querySelector('[data-artwork]'),toggle=d.querySelector('.tokens-art-pause input');
     const animations=art.getAnimations({subtree:true});
     assert(animations.length===22,'Hero starts its layout, stripe and corner animations');

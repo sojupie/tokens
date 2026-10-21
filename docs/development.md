@@ -176,7 +176,8 @@ afterward; it must not change the base indicator transform during a transition.
 All destinations are measured before starting parent animations. Rail contents
 move with positional offsets rather than animated text transforms. The directory
 keeps its final layout width during motion, and its position follows the same
-spatial spring as the rail.
+spatial spring as the rail. The modal scrim retains zero opacity after its
+faster effects spring settles, until spatial cleanup hides it.
 
 ## Component motion
 
