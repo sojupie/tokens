@@ -178,11 +178,15 @@ capturing animation destinations. The resize observer maintains those heights
 afterward; it must not change the base indicator transform during a transition.
 All destinations are measured before starting parent animations. Icons and
 indicators move with positional offsets rather than animated transforms. Labels
-crossfade between their two layouts: inert outgoing text fades in place on the
-fast effects spring, then incoming text fades at its destination on the default
-effects spring. A matching inverse positional offset cancels the moving parent
-indicator, so labels do not travel between layouts. Outgoing text is removed
-on completion or interruption. Reduced motion changes layouts immediately. The directory
+crossfade on the same default spatial progress as the menu icon rotation and
+rail geometry. Following AndroidX NavigationItem, outgoing opacity is
+`max(0, 1 - 2p)²` and incoming opacity is `max(0, min(1, 2p - 1))²`.
+Both layouts are invisible at `p = 0.5`, when the menu icon has rotated 45°.
+Inert outgoing text fades in place. Incoming collapsed labels also stay fixed;
+expanded labels approach horizontally from near the icon, covering most of
+that distance while transparent. Positional offsets cancel the moving parent
+indicator. Outgoing text is removed on completion or interruption. Reduced
+motion changes layouts immediately. The directory
 keeps its final layout width during motion, and its position follows the same
 spatial spring as the rail. The modal scrim retains zero opacity after its
 faster effects spring settles, until spatial cleanup hides it. Horizontal rail

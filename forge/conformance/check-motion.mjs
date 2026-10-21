@@ -117,10 +117,22 @@ export async function checkMotion(container) {
       assert(copies.length>0&&copies.every(n=>n.inert&&n.getAttribute('aria-hidden')==='true'),'Outgoing rail text is retained only as inert visual content');
       assert(labels.every(n=>Number(w.getComputedStyle(n).opacity)===0),'Incoming labels start invisible in their destination layout');
       const labelPositions=labels.map(n=>n.getBoundingClientRect());
+      const textAnimation=labels[0].getAnimations().find(a=>a.effect.getKeyframes().some(k=>'opacity' in k)),textFrames=textAnimation.effect.getKeyframes(),middle=textFrames.findLast(k=>Number(k.opacity)===0).offset*Number(textAnimation.effect.getTiming().duration);
+      animations.forEach(a=>a.currentTime=middle);
+      assert(labels.every(n=>Number(w.getComputedStyle(n).opacity)<.001)&&copies.every(n=>Number(w.getComputedStyle(n).opacity)<.001),'Both label layouts are invisible at the shared halfway phase');
+      const glyph=rail.querySelector(expanded?'[data-navigation-collapse-icon]':'[data-navigation-menu-icon]'),matrix=w.getComputedStyle(glyph).transform.match(/matrix\(([^)]+)\)/),angle=matrix?Math.abs(Math.atan2(...matrix[1].split(',').slice(0,2).reverse().map(Number))*180/Math.PI):0;
+      assert(Math.abs(angle-45)<1,'Menu icon is halfway through its quarter turn when labels disappear');
+      animations.forEach(a=>a.currentTime=Number(textAnimation.effect.getTiming().duration));
+      const labelEnds=labels.map(n=>n.getBoundingClientRect());
+      animations.forEach(a=>a.currentTime=0);
       for(const time of [60,160,280]){
         animations.forEach(a=>a.currentTime=time);
-        const travel=Math.max(...labels.map((n,i)=>{const r=n.getBoundingClientRect();return Math.max(Math.abs(r.x-labelPositions[i].x),Math.abs(r.y-labelPositions[i].y));}));
-        assert(travel<.1,`Rail ${direction}/${expanded}: incoming text stays in its destination while the indicator moves (${time}ms, drift=${travel.toFixed(3)}px)`);
+        if(expanded){
+          assert(labels.every((n,i)=>{const r=n.getBoundingClientRect(),opacity=Number(w.getComputedStyle(n).opacity),distance=Math.abs(labelPositions[i].x-labelEnds[i].x);return Math.abs(r.y-labelEnds[i].y)<.1&&(opacity<.5||Math.abs(r.x-labelEnds[i].x)<=distance*.2+.1);}),`Entering labels approach horizontally and are nearly placed once visible (${time}ms)`);
+        }else{
+          const travel=Math.max(...labels.map((n,i)=>{const r=n.getBoundingClientRect();return Math.max(Math.abs(r.x-labelPositions[i].x),Math.abs(r.y-labelPositions[i].y));}));
+          assert(travel<.1,`Collapsed labels fade in place (${time}ms, drift=${travel.toFixed(3)}px)`);
+        }
         assert(copies.every((n,i)=>{const r=n.getBoundingClientRect();return Math.abs(r.x-oldPositions[i].x)<.1&&Math.abs(r.y-oldPositions[i].y)<.1;}),'Outgoing labels fade without travelling');
       }
       assert(copies.every(n=>Number(w.getComputedStyle(n).opacity)<.001),'Outgoing text finishes fading before the geometry settles');
