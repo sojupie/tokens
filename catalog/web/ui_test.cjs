@@ -8,6 +8,7 @@ const {runInNewContext} = require('node:vm');
 function runScript(name, globals) {
   globals.document.addEventListener ||= () => {};
   globals.AbortController ||= AbortController;
+  globals.ResizeObserver ||= class {observe(){} unobserve(){}};
   // The inline initialization runs before the deferred theme controls in HTML.
   if (name === 'theme.js') runInNewContext(readFileSync(join(__dirname, 'static', 'theme-init.js'), 'utf8'), globals);
   runInNewContext(readFileSync(join(__dirname, 'static', name), 'utf8'), globals);

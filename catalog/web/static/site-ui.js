@@ -6,6 +6,10 @@
     if(menu.matches(':popover-open'))menu.hidePopover();toggle.hidden=!compact.matches;menu.classList.toggle('md-menu',compact.matches);
     if(compact.matches){menu.setAttribute('popover','auto');position(menu,toggle);}else{menu.removeAttribute('popover');menu.style.top='';menu.style.maxHeight='';}
   }
+  // HTML specimens avoid Safari foreignObject compositing and clipping bugs.
+  const thumbnailSizes=new ResizeObserver(entries=>{for(const {target,contentRect} of entries)target.style.setProperty("--_thumbnail-scale",String(contentRect.width/360));});
+  const thumbnails=new WeakSet();
+  document.addEventListener("htmx:beforeCleanupElement",event=>{const node=event.detail.elt;if(node.matches?.(".tokens-component-thumbnail"))thumbnailSizes.unobserve(node);for(const thumbnail of node.querySelectorAll(".tokens-component-thumbnail"))thumbnailSizes.unobserve(thumbnail);});
   const descriptions={
     'tokens.tokens.json':['Download DTCG JSON','DTCG 2025.10 values and aliases, with source metadata.'],
     'tokens.css':['Download CSS','CSS custom properties only. Component styles, markup and behavior are not included.'],
@@ -52,6 +56,7 @@
   document.addEventListener('htmx:historyCacheMissLoad',event=>updateDocument(event.detail.response,event.detail.path));
   function initialize(){
     navigationLinks();
+    for(const thumbnail of document.querySelectorAll(".tokens-component-thumbnail"))if(!thumbnails.has(thumbnail)){thumbnails.add(thumbnail);thumbnailSizes.observe(thumbnail);}
     const menu=document.getElementById('tokens-site-menu'),toggle=document.getElementById('tokens-nav-toggle');
     if(menu&&toggle&&!initialized.has(menu)){
       initialized.add(menu);menu.addEventListener('toggle',()=>{const open=menu.matches(':popover-open');toggle.setAttribute('aria-expanded',String(open));if(open){position(menu,toggle);menu.querySelector('a')?.focus({preventScroll:true});}});layout();

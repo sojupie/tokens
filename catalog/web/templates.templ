@@ -282,13 +282,9 @@ templ subjectCard(subject publish.SubjectView, thumbnails map[string]componentCa
       if styles {
        @styleThumbnail(subject)
       } else if specimen, ok := thumbnails[subject.Key.Slug]; ok {
-       <svg class="tokens-component-thumbnail-viewport" viewBox="0 0 360 225" aria-hidden="true" focusable="false">
-        <foreignObject width="360" height="225">
-         <div xmlns="http://www.w3.org/1999/xhtml" class="tokens-component-thumbnail-scene" inert aria-hidden="true" data-thumbnail={ subject.Key.Slug }>
+       <div class="tokens-component-thumbnail-scene" inert aria-hidden="true" data-thumbnail={ subject.Key.Slug }>
           @componentThumbnail(specimen)
-         </div>
-        </foreignObject>
-       </svg>
+       </div>
       } else {
        @materialSymbol("widgets")
       }

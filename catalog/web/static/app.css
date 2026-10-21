@@ -98,12 +98,11 @@ button:not(:disabled), [role=button]:not([aria-disabled=true]) { cursor:pointer;
 .tokens-component-tile:hover { --_tile-background:color-mix(in srgb,var(--md-sys-color-secondary-container),var(--md-sys-color-on-secondary-container) calc(var(--md-sys-state-hover-state-layer-opacity) * 100%));color:var(--md-sys-color-on-secondary-container); }
 .tokens-component-tile:active { border-radius:var(--md-sys-shape-corner-extra-extra-large); }
 #subject-list { margin-block-start:var(--md-sys-measurement-space300); }
-.tokens-component-thumbnail { display:flex; align-items:center; justify-content:center; aspect-ratio:8 / 5; flex:none; overflow:hidden; border-radius:var(--md-sys-shape-corner-none) var(--md-sys-shape-corner-none) var(--md-sys-shape-corner-extra-large) var(--md-sys-shape-corner-extra-large); background:var(--md-sys-color-secondary-container); color:var(--md-sys-color-on-secondary-container); pointer-events:none; }
+.tokens-component-thumbnail { position:relative;display:flex; align-items:center; justify-content:center; aspect-ratio:8 / 5; flex:none; overflow:hidden; border-radius:var(--md-sys-shape-corner-none) var(--md-sys-shape-corner-none) var(--md-sys-shape-corner-extra-large) var(--md-sys-shape-corner-extra-large); background:var(--md-sys-color-secondary-container); color:var(--md-sys-color-on-secondary-container); pointer-events:none; }
 .tokens-component-thumbnail > span { color:inherit; }
 /* Thumbnail dimensions and app frames are illustration layout. Component
    dimensions, colors and states continue to use Forge's generated styles. */
-.tokens-component-thumbnail-viewport { display:block; width:100%; height:auto; flex:none; }
-.tokens-component-thumbnail-scene { position:relative; display:flex; align-items:center; justify-content:center; width:360px; height:225px; flex:none; pointer-events:none; color:var(--md-sys-color-on-secondary-container); }
+.tokens-component-thumbnail-scene { position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(var(--_thumbnail-scale,1)); display:flex; align-items:center; justify-content:center; width:360px; height:225px; flex:none; pointer-events:none; color:var(--md-sys-color-on-secondary-container); }
 .tokens-thumbnail-content h3,.tokens-thumbnail-paper > h3,.tokens-thumbnail-card h3 { margin:0; font:var(--md-sys-typescale-title-medium); }
 .tokens-thumbnail-content p,.tokens-thumbnail-card p { font:var(--md-sys-typescale-body-medium); }
 .tokens-component-thumbnail-scene :is(button,input,dialog) { pointer-events:none; }
@@ -360,7 +359,7 @@ button:not(:disabled), [role=button]:not([aria-disabled=true]) { cursor:pointer;
 .tokens-landing-samples { display:grid;gap:var(--md-sys-measurement-space500); }
 .tokens-landing-samples .tokens-card-grid { grid-template-columns:repeat(4,minmax(0,1fr)); }
 .tokens-landing-section-heading { display:flex;align-items:baseline;justify-content:space-between;gap:var(--md-sys-measurement-space200);margin-block-end:var(--md-sys-measurement-space100); }
-@media(max-width:48rem) { .tokens-landing-samples .tokens-card-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }.tokens-landing-hero { grid-template-columns:1fr; }.tokens-landing-copy { padding:var(--md-sys-measurement-space400) var(--md-sys-measurement-space300); }.tokens-landing-art { min-block-size:0;block-size:18rem; } }
+@media(max-width:48rem) { .tokens-landing-samples .tokens-card-grid { grid-template-columns:1fr; }.tokens-landing-hero { grid-template-columns:1fr; }.tokens-landing-copy { padding:var(--md-sys-measurement-space400) var(--md-sys-measurement-space300); }.tokens-landing-art { min-block-size:0;block-size:18rem; } }
 @media(max-width:26rem) { .tokens-landing-samples .tokens-card-grid { grid-template-columns:1fr; } }
 /* The aspect ratio reserves the preview's exact space while its descendants
    are skipped off screen. Titles and links remain ordinary document content. */

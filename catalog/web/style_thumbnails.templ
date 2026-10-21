@@ -4,9 +4,7 @@ import "github.com/sojupie/tokens/source/publish"
 
 // Illustrations show the style's role. Their composition is not a component API.
 templ styleThumbnail(subject publish.SubjectView) {
- <svg class="tokens-component-thumbnail-viewport" viewBox="0 0 360 225" aria-hidden="true" focusable="false">
-  <foreignObject width="360" height="225">
-   <div xmlns="http://www.w3.org/1999/xhtml" class="tokens-component-thumbnail-scene" inert aria-hidden="true" data-style-thumbnail={ subject.Key.Slug }>
+ <div class="tokens-component-thumbnail-scene" inert aria-hidden="true" data-style-thumbnail={ subject.Key.Slug }>
     switch subject.Key.Slug {
     case "elevation":
      <div class="tokens-style-elevation">
@@ -32,7 +30,5 @@ templ styleThumbnail(subject publish.SubjectView) {
     default:
      <div class="tokens-style-shapes"><span></span><span></span><span></span><span></span></div>
     }
-   </div>
-  </foreignObject>
- </svg>
+ </div>
 }
