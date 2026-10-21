@@ -10,6 +10,7 @@
  }
  if(typeof module!=='undefined')module.exports={matches,popupPosition,typeahead};
  if(typeof document==='undefined')return;
+ let touchState;
  const states=new WeakMap(),rootFor=e=>e.closest?.('[data-field-example]'),stateFor=e=>states.get(rootFor(e));
  function active(state,index) {
   const options=state.options.filter(e=>!e.hidden);state.active=Math.max(-1,Math.min(index,options.length-1));
@@ -39,7 +40,7 @@
  function init(){for(const input of document.querySelectorAll('[data-field-combo]')){const root=rootFor(input);if(states.has(root))continue;const menu=root.querySelector('.md-field-menu'),state={root,input,menu,readOnly:input.readOnly||input.hasAttribute('data-field-select'),options:Array.from(menu.querySelectorAll('[data-field-option]')),active:-1,buffer:'',typedAt:0};states.set(root,state);input.setAttribute('aria-expanded','false');input.removeAttribute('aria-activedescendant');menu.addEventListener('beforetoggle',event=>{if(event.newState==='closed'){input.setAttribute('aria-expanded','false');active(state,-1);}});}}
  document.addEventListener('click',event=>{
   const state=stateFor(event.target);if(!state||state.input.disabled)return;
-  const option=event.target.closest('[data-field-option]');if(option){choose(state,option);return;}
+  const option=event.target.closest('[data-field-option]');if(option){if(event.detail>0&&state.touchCommitted===option){delete state.touchCommitted;return;}choose(state,option);return;}
   if(event.target.closest('[data-field-toggle]')||state.readOnly&&!event.target.closest('.md-field-menu')){
    event.preventDefault();
    // Native light-dismiss may already have closed the popup on pointerup.
@@ -49,9 +50,14 @@
  });
  document.addEventListener('pointerdown',event=>{
   const state=stateFor(event.target);
+  if(state){delete state.touchCommitted;const option=event.target.closest('[data-field-option]');state.touchOption=event.pointerType==='touch'&&option?{option,id:event.pointerId}:null;if(state.touchOption)touchState=state;}
   if(state&&(event.target.closest('[data-field-toggle]')||state.readOnly&&!event.target.closest('.md-field-menu'))){state.pointerOpen=state.menu.matches(':popover-open');event.preventDefault();}
   else if(event.target.closest?.('[data-field-option]'))event.preventDefault();
  });
+ // Commit touch selection on release: Safari can blur the trigger before it
+ // delivers a click on a non-focusable option. Keep focusout from hiding it first.
+ document.addEventListener('pointerup',event=>{const state=touchState,touch=state?.touchOption;if(!touch||touch.id!==event.pointerId)return;touchState=null;state.touchOption=null;if(event.target.closest('[data-field-option]')===touch.option&&state.menu.matches(':popover-open')){event.preventDefault();state.touchCommitted=touch.option;choose(state,touch.option);}else close(state);});
+ document.addEventListener('pointercancel',event=>{const state=touchState;if(state?.touchOption?.id===event.pointerId){touchState=null;state.touchOption=null;close(state);}});
  document.addEventListener('input',event=>{
   const root=rootFor(event.target);if(root)root.dataset.populated=String(event.target.value!=='');
   const state=stateFor(event.target);if(state&&event.target===state.input&&!state.readOnly&&!state.committing)open(state,state.input.value);
@@ -71,7 +77,7 @@
   if(state.readOnly&&['Enter',' '].includes(event.key)){event.preventDefault();open(state);active(state,0);return;}
   if(state.readOnly&&event.key.length===1&&!event.ctrlKey&&!event.metaKey&&!event.altKey){event.preventDefault();const now=Date.now();state.buffer=(now-state.typedAt>500?'':state.buffer)+event.key;state.typedAt=now;if(!shown)open(state);active(state,typeahead(state.options.map(e=>e.dataset.fieldOption),state.active,state.buffer));}
  });
- document.addEventListener('focusout',event=>{const state=stateFor(event.target);if(state&&!state.root.contains(event.relatedTarget))close(state);});
+ document.addEventListener('focusout',event=>{const state=stateFor(event.target);if(state&&!state.touchOption&&!state.root.contains(event.relatedTarget))close(state);});
  window.addEventListener('resize',()=>{for(const menu of document.querySelectorAll('.md-field-menu:popover-open'))close(stateFor(menu));});
  document.addEventListener('scroll',event=>{if(event.target.closest?.('.md-field-menu'))return;for(const menu of document.querySelectorAll('.md-field-menu:popover-open'))close(stateFor(menu));},true);
  document.addEventListener('htmx:beforeCleanupElement',event=>{const node=event.detail?.elt;if(!node)return;for(const root of [...(node.matches?.('[data-field-example]')?[node]:[]),...node.querySelectorAll('[data-field-example]')]){const state=states.get(root);if(state){close(state);states.delete(root);}}});
