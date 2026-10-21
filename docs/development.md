@@ -176,8 +176,13 @@ browser conformance.
 Rail transitions measure label heights after changing variants and before
 capturing animation destinations. The resize observer maintains those heights
 afterward; it must not change the base indicator transform during a transition.
-All destinations are measured before starting parent animations. Rail contents
-move with positional offsets rather than animated text transforms. The directory
+All destinations are measured before starting parent animations. Icons and
+indicators move with positional offsets rather than animated transforms. Labels
+crossfade between their two layouts: inert outgoing text fades in place on the
+fast effects spring, then incoming text fades at its destination on the default
+effects spring. A matching inverse positional offset cancels the moving parent
+indicator, so labels do not travel between layouts. Outgoing text is removed
+on completion or interruption. Reduced motion changes layouts immediately. The directory
 keeps its final layout width during motion, and its position follows the same
 spatial spring as the rail. The modal scrim retains zero opacity after its
 faster effects spring settles, until spatial cleanup hides it. Horizontal rail

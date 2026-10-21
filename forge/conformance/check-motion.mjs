@@ -112,17 +112,33 @@ export async function checkMotion(container) {
       const animations=frame.getAnimations({subtree:true});
       const directory=frame.querySelector('.md-rail-body');
       for(const a of animations){a.pause();a.currentTime=0;}
+      const labels=[...rail.querySelectorAll('.md-nav-label')].filter(n=>n.getClientRects().length),copies=[...frame.querySelectorAll('[data-rail-text-exit]')];
+      const oldPositions=copies.map(n=>n.getBoundingClientRect());
+      assert(copies.length>0&&copies.every(n=>n.inert&&n.getAttribute('aria-hidden')==='true'),'Outgoing rail text is retained only as inert visual content');
+      assert(labels.every(n=>Number(w.getComputedStyle(n).opacity)===0),'Incoming labels start invisible in their destination layout');
+      const labelPositions=labels.map(n=>n.getBoundingClientRect());
+      for(const time of [60,160,280]){
+        animations.forEach(a=>a.currentTime=time);
+        const travel=Math.max(...labels.map((n,i)=>{const r=n.getBoundingClientRect();return Math.max(Math.abs(r.x-labelPositions[i].x),Math.abs(r.y-labelPositions[i].y));}));
+        assert(travel<.1,`Rail ${direction}/${expanded}: incoming text stays in its destination while the indicator moves (${time}ms, drift=${travel.toFixed(3)}px)`);
+        assert(copies.every((n,i)=>{const r=n.getBoundingClientRect();return Math.abs(r.x-oldPositions[i].x)<.1&&Math.abs(r.y-oldPositions[i].y)<.1;}),'Outgoing labels fade without travelling');
+      }
+      assert(copies.every(n=>Number(w.getComputedStyle(n).opacity)<.001),'Outgoing text finishes fading before the geometry settles');
+      animations.forEach(a=>a.currentTime=0);
       const directoryWidth=directory.getBoundingClientRect().width;
       for(const a of animations)a.currentTime=Number(a.effect.getComputedTiming().endTime)/2;
       assert(Math.abs(directory.getBoundingClientRect().width-directoryWidth)<.1,'Rail directory text keeps one layout width throughout motion');
-      assert(rail.querySelectorAll('.md-nav-label').length>0&&[...rail.querySelectorAll('.md-nav-label')].every(n=>n.getAnimations().every(a=>!a.effect.getKeyframes().some(k=>'transform' in k))),'Rail labels move without animated transform layers');
+      assert(rail.querySelectorAll('.md-nav-label').length>0&&[...rail.querySelectorAll('.md-nav-label')].every(n=>n.getAnimations().every(a=>!a.effect.getKeyframes().some(k=>'transform' in k))),'Rail labels crossfade without animated transform layers');
       for(const a of animations){a.pause();a.currentTime=Number(a.effect.getComputedTiming().endTime)-.001;}
       const before=nodes.map(n=>n.getBoundingClientRect());
       animations.forEach(a=>a.finish());await Promise.all(animations.map(a=>a.finished.catch(()=>{})));await new Promise(w.requestAnimationFrame);
       const jump=Math.max(...nodes.map((n,i)=>{const r=n.getBoundingClientRect();return Math.max(Math.abs(r.x-before[i].x),Math.abs(r.y-before[i].y));}));
       assert(jump<.1,`Rail ${direction}/${expanded?'expanded':'collapsed'}: final layout stays within 0.1px of the animation endpoint`);
-      assert(!frame.hasAttribute('data-transitioning'),'Rail clears the temporary transition layout');
+      assert(!frame.hasAttribute('data-transitioning')&&!frame.querySelector('[data-rail-text-exit]'),'Rail clears the temporary layout and outgoing text');
     }
+    const toggle=rail.querySelector('[data-navigation-expand]');toggle.click();await wait(60);toggle.click();await wait(60);toggle.click();await wait(600);
+    assert(!frame.querySelector('[data-rail-text-exit]')&&!frame.hasAttribute('data-transitioning'),'Interrupted rail transitions remove outgoing text and finish cleanly');
+    w.setMotionReduced(true);toggle.click();assert(!frame.querySelector('[data-rail-text-exit]')&&[...rail.querySelectorAll('.md-nav-label')].filter(n=>n.getClientRects().length).every(n=>Number(w.getComputedStyle(n).opacity)===1),'Reduced motion swaps label layouts immediately without visual copies');
     assert(!w.motionErrors.length,'Rail transitions have no script errors');
   }
   {
@@ -131,13 +147,14 @@ export async function checkMotion(container) {
       menu.click();await wait(600);
       assert(!scrim.hidden&&Number(w.getComputedStyle(scrim).opacity)===1,'Modal rail reopens with a visible scrim');
       if(close==='escape')menu.dispatchEvent(new w.KeyboardEvent('keydown',{key:'Escape',bubbles:true}));else(close==='scrim'?scrim:menu).click();
+      assert(frame.querySelectorAll('[data-rail-text-exit]').length>0,'Modal dismissal retains outgoing text for its exit fade');
       const fade=scrim.getAnimations().find(a=>a.effect.getKeyframes().some(k=>'opacity' in k));
       assert(!!fade,`Modal rail ${close}: scrim has an exit fade`);
       await fade.finished;
       assert(frame.hasAttribute('data-transitioning'),`Modal rail ${close}: opacity settles before spatial motion`);
       for(let i=0;i<3;i++){await new Promise(w.requestAnimationFrame);assert(scrim.hidden||Number(w.getComputedStyle(scrim).opacity)<.001,`Modal rail ${close}: scrim stays transparent after the fade`);}
       await wait(500);
-      assert(scrim.hidden&&frame.dataset.modalOpen==='false',`Modal rail ${close}: cleanup hides the scrim`);
+      assert(scrim.hidden&&frame.dataset.modalOpen==='false'&&!frame.querySelector('[data-rail-text-exit]'),`Modal rail ${close}: cleanup hides the scrim and removes outgoing text`);
     }
     assert(!w.motionErrors.length,'Modal rail scrim lifecycle has no script errors');
   }
