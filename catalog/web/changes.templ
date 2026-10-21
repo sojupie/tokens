@@ -1,0 +1,148 @@
+package web
+
+import (
+	"github.com/sojupie/tokens/source/publish"
+	"strings"
+)
+
+templ changesPage(state publish.PublishedState, subject string, baseURL string, filters changeFilters, counts string, changes []publish.ChangeView, page int, total int, hasPrevious bool, hasNext bool) {
+	@layout(timelineTitle(subject)) {
+		<header class="tokens-history-intro">
+			if subject != "" {
+				<a class="tokens-link tokens-history-back" href="/changes">@materialSymbol("arrow_back")
+All changes</a>
+			}
+			<h1 class="md-typescale-headline-medium">{ timelineTitle(subject) }</h1>
+			<p class="md-typescale-body-large">Dates show when we detected changes, not when Material published them.</p>
+			<p class="tokens-metadata">{ historyCoverage(state.Snapshots) }</p>
+		</header>
+		@changeFilterForm(filters, baseURL)
+		if total > 0 && subject != "" {
+			<div class="tokens-history-counts">
+				<p class="tokens-metadata">Showing page { page } of { (total + 49) / 50 } · { total } total changes</p>
+				<p class="tokens-change-counts">{ counts }. One token can have changes in several settings.</p>
+			</div>
+		}
+		if len(changes) == 0 {
+			if len(state.Snapshots) < 2 {
+				<p>At least two snapshots are needed to detect changes.</p>
+			} else if len(state.Changes) > 0 {
+				<p>No changes match these filters.</p>
+			} else {
+				<p>No changes were detected in the retained snapshot history.</p>
+			}
+		}
+		for _, batch := range changeBatches(changes, state.Snapshots) {
+			<section class="tokens-section tokens-timeline-batch">
+				<header class="tokens-observation-heading">
+					<h2 class="md-typescale-title-large">Observed <time datetime={ batch.DetectedAt }>{ observationDate(batch.DetectedAt) }</time></h2>
+					if batch.PreviousAt != "" {
+						<p class="tokens-metadata">Compared with { observationDate(batch.PreviousAt) }</p>
+					}
+				</header>
+				<div class="tokens-observation-records">
+					for _, group := range changeGroups(batch.Changes, state.Subjects) {
+						if subject == "" {
+							<article class="md-card md-outlined-card tokens-change-summary">
+								<h3 class="md-typescale-title-medium">
+									if group.URL != "" {
+										<a class="tokens-link" href={ group.URL }>{ group.Label }</a>
+									} else {
+										{ group.Label }
+									}
+								</h3>
+								<p>
+									if changedItemCount(group.Changes) == 1 {
+										1 item changed
+									} else {
+										{ changedItemCount(group.Changes) } items changed
+									}
+								</p>
+								<a class="md-button md-text-button" href={ groupChangelogURL(baseURL, group, batch.Changes[0].SnapshotID) }>
+									View changes
+									@materialSymbol("chevron_right")
+								</a>
+							</article>
+						} else {
+							if group.URL != "" {
+								<p class="tokens-change-component-link">
+									<a class="md-button md-outlined-button" href={ group.URL }>
+										Browse tokens
+										@materialSymbol("arrow_forward")
+									</a>
+								</p>
+							}
+							@changeRecordList(group.Changes)
+						}
+					}
+				</div>
+			</section>
+		}
+		if hasPrevious || hasNext {
+			<nav class="tokens-pagination" aria-label="Change log pages">
+				if hasPrevious {
+					<a class="md-button md-outlined-button" href={ changesPageURL(baseURL, page-1) }>Previous</a>
+				}
+				<span class="md-typescale-body-small">Page { page }</span>
+				if hasNext {
+					<a class="md-button md-outlined-button" href={ changesPageURL(baseURL, page+1) }>Next</a>
+				}
+			</nav>
+		}
+	}
+}
+
+templ changeFilterForm(filters changeFilters, baseURL string) {
+	<form class="tokens-change-filters" method="get" action={ strings.SplitN(baseURL, "?", 2)[0] } aria-label="Filter changes" hx-boost="false" hx-get={ strings.SplitN(baseURL, "?", 2)[0] } hx-target=".tokens-main" hx-select=".tokens-main" hx-swap="outerHTML" hx-push-url="true" hx-trigger="change, input changed delay:250ms from:input[type='search'], submit" hx-sync="this:replace">
+		<div class="tokens-change-pill-group">
+			if !filters.FixedSubject {
+				@filterPill("history-subject", "subject", "Component or style", filters.Subject, historyChoices("All components and styles", filters.Subjects), false)
+			}
+			@filterPill("history-snapshot", "snapshot", "Observed", filters.Snapshot, historyChoices("All dates", filters.Snapshots), false)
+			@filterPill("history-type", "type", "Change", filters.Type, []catalogChoice{{"", "All changes"}, {"changed", "Updated"}, {"added", "Added"}, {"removed", "Removed"}}, false)
+			<div class="tokens-change-filter-actions">
+				<noscript><button class="md-button md-filled-button" type="submit">Apply filters</button></noscript>
+				<a class="md-button md-text-button" href={ strings.SplitN(baseURL, "?", 2)[0] }>Reset</a>
+			</div>
+		</div>
+		<label class="md-outlined-text-field">
+			<input id="history-query" type="search" name="q" value={ filters.Query } placeholder=" "/>
+			<span data-slot="label">Token name</span>
+		</label>
+	</form>
+}
+
+templ changeRecordList(changes []labeledChange) {
+	for _, change := range changes {
+		<details class="md-card md-outlined-card tokens-change-card tokens-change-disclosure">
+			<summary class="tokens-change-heading">
+				@materialSymbol("chevron_right")
+				<h4>{ change.Name }</h4>
+				<span class="tokens-change-status md-typescale-label-large" data-change-type={ change.Type }>{ changeTypeLabel(change.Type) }</span>
+				if context := changeContext(change.ChangeView); context != "" {
+					<span class="tokens-change-context tokens-change-context-summary">{ context }</span>
+				}
+			</summary>
+			if len(change.Hierarchy) > 0 {
+				<ol class="tokens-change-hierarchy" aria-label="Token hierarchy">
+					for index, part := range change.Hierarchy {
+						<li>
+							if index > 0 {
+								@materialSymbol("chevron_right")
+							}
+							{ part }
+						</li>
+					}
+				</ol>
+			}
+			<table class="tokens-change-table">
+				<thead><tr><th scope="col">Property</th><th scope="col">Previous value</th><th scope="col">New value</th></tr></thead>
+				<tbody>
+					for _, value := range changedValues(change.ChangeView) {
+						<tr><th scope="row">{ value.Field }</th><td>{ value.Before }</td><td>{ value.After }</td></tr>
+					}
+				</tbody>
+			</table>
+		</details>
+	}
+}

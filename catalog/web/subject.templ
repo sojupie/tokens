@@ -1,0 +1,33 @@
+package web
+
+import "github.com/sojupie/tokens/source/publish"
+
+templ subjectPage(subject publish.SubjectView, changes []publish.ChangeView, browser tokenBrowser) {
+	@subjectPageComponent(subject, changes, browser)
+}
+
+templ tokenSetPicker(subject publish.SubjectView, browser tokenBrowser) {
+	<button class="md-filter-chip tokens-token-set" data-selected="true" type="button" popovertarget="tokens-token-set-menu" aria-label={ "Token set: " + tokenSetLabel(browser.Selected) }>
+		<span class="tokens-context-label" title={ tokenSetLabel(browser.Selected) }>{ tokenSetLabel(browser.Selected) }</span>
+		@materialSymbol("expand_more")
+	</button>
+	<nav class="md-menu tokens-token-set-menu" id="tokens-token-set-menu" popover="auto" aria-label="Token sets">
+		<a class="md-menu-item tokens-token-set-overview" href={ subjectURL(subject) }>{ subject.Name } overview</a>
+		for _, group := range tokenSetMenuGroups(browser.Sets) {
+			<section>
+				<h3 class="md-typescale-title-medium">{ group.Label }</h3>
+				<ul>
+					for _, set := range group.Sets {
+						<li>
+							<a class="md-menu-item" href={ tokenSetLinkURL(subject, set, browser) } aria-current={ currentTokenSet(set.Key == browser.Selected.Key) }>
+								<span class="md-menu-item-text">{ tokenSetMenuLabel(set) }</span>
+								<span data-slot="trailing-icon" aria-hidden="true">@materialSymbol("check")
+</span>
+							</a>
+						</li>
+					}
+				</ul>
+			</section>
+		}
+	</nav>
+}

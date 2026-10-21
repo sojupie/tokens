@@ -1,0 +1,31 @@
+package web
+
+templ specimenSnackbar(c componentCase) {
+	if c.State=="interactive" {
+		<div data-snackbar-demo>
+			<button class="md-button md-outlined-button" type="button" data-snackbar-open>Show snackbar</button>
+			<div { c.Attributes()... } popover="manual" role="status" data-snackbar-duration="6000">
+				@snackbarContents(c)
+			</div>
+			<output class="md-typescale-body-small" aria-live="polite"></output>
+		</div>
+	} else {
+		<div { c.Attributes()... } role="status">@snackbarContents(c)
+</div>
+	}
+}
+
+templ snackbarContents(c componentCase) {
+	<span class="md-feedback-text">
+		if c.Variant=="two-lines" {
+			<span>Message sent.</span>
+			<br/>
+			<span>You can undo this action.</span>
+		} else {
+			{ "Message sent" }
+		}
+	</span>
+	<button { c.FeedbackAttributes("md-button md-text-button md-feedback-action")... } data-snackbar-action>Undo</button>
+	<button { c.FeedbackAttributes("md-icon-button md-snackbar-close")... } aria-label="Dismiss notification" data-snackbar-close>@materialSymbol("close")
+</button>
+}

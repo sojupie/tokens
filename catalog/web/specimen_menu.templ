@@ -1,0 +1,67 @@
+package web
+
+templ specimenMenu(c componentCase) {
+	<div class="md-menu-demo" data-menu-example>
+		if c.State=="interactive" {
+			<button type="button" class="md-button md-outlined-button" data-menu-open={ c.ID() + "-menu" } aria-controls={ c.ID() + "-menu" } aria-haspopup="menu" aria-expanded="false">Open menu</button>
+		}
+		<div { c.MenuPanel(false)... }>
+			<section>
+				if c.Orientation!="horizontal" && c.Variant!="baseline" {
+					<h3>Section</h3>
+				}
+				<ul role="presentation">
+					for index,label:=range []string{"Favorite","Download","Edit"} {
+						if index==2 && c.Variant=="baseline" && c.Shape=="divided" {
+							<li role="separator"><hr class="md-divider" aria-hidden="true"/></li>
+						}
+						<li role="presentation">
+							<button { c.MenuItem(index)... }>
+								<span data-slot="leading-icon" aria-hidden="true">
+									if c.Shape=="icon-only" && c.MenuSelectable(index) {
+										<span data-menu-checked-icon hidden?={ !c.MenuSelected(index) }>@materialSymbol("check")
+</span>
+										<span data-menu-unchecked-icon hidden?={ c.MenuSelected(index) }>@materialSymbol([]string{"star", "download", "edit"}[index])
+</span>
+									} else {
+										@materialSymbol([]string{"star", "download", "edit"}[index])
+									}
+								</span>
+								if c.Shape!="icon-only" {
+									<span class="md-menu-item-text">
+										<span>{ label }</span>
+										if c.Shape=="supporting" {
+											<span data-slot="supporting-text">{ []string{"Save for later","Save a copy","Change this item"}[index] }</span>
+										}
+									</span>
+									if index==0 && c.Shape=="cascade" {
+										<span data-slot="trailing-icon" aria-hidden="true">@materialSymbol("chevron_right")
+</span>
+									} else if c.MenuSelectable(index) {
+										<span data-slot="trailing-icon" aria-hidden="true"><span data-menu-checked-icon hidden?={ !c.MenuSelected(index) }>@materialSymbol("check")
+</span></span>
+									} else if c.Orientation!="horizontal" {
+										<small class="md-menu-shortcut" data-slot="trailing-supporting-text" aria-label={ "Command+" + []string{"K", "D", "E"}[index] }>@materialSymbol("keyboard_command_key")
+<span>{ []string{"K","D","E"}[index] }</span></small>
+									}
+								}
+							</button>
+							if index==0 && c.Shape=="cascade" {
+								<div { c.MenuPanel(true)... }>
+									<section>
+										<ul role="presentation">
+											for _,label:=range []string{"Add to favorites","Manage favorites"} {
+												<li role="presentation"><button type="button" class="md-menu-item" role="menuitem" tabindex="-1" data-menu-action>{ label }</button></li>
+											}
+										</ul>
+									</section>
+								</div>
+							}
+						</li>
+					}
+				</ul>
+			</section>
+		</div>
+		<output data-menu-output aria-live="polite"></output>
+	</div>
+}

@@ -1,0 +1,57 @@
+package web
+
+import "fmt"
+
+templ specimenField(c componentCase) {
+	<div { c.Attributes()... }>
+		if c.Variant=="outlined" {
+			@outlinedFieldFrame(c.FieldLabel())
+		}
+		<label for={ c.ID() + "-input" } data-slot="label">{ c.FieldLabel() }</label>
+		if c.Shape=="icons" {
+			<span data-slot="leading-icon" aria-hidden="true">@materialSymbol("search")
+</span>
+		}
+		if c.Shape=="affixes" {
+			<span data-slot="prefix" aria-hidden="true">$</span>
+		}
+		<input { c.FieldInput()... }/>
+		if c.Shape=="affixes" {
+			<span data-slot="suffix" aria-hidden="true">kg</span>
+		}
+		if c.Family!="field" {
+			<button type="button" class="md-field-toggle" data-field-toggle tabindex="-1" aria-label="Show options" aria-controls={ c.ID() + "-options" } disabled?={ c.State=="disabled" }><span data-slot="trailing-icon">@materialSymbol("expand_more")
+</span></button>
+		} else if c.Shape=="icons" {
+			<span data-slot="trailing-icon" aria-hidden="true">@materialSymbol("info")
+</span>
+		}
+		<small id={ c.ID() + "-help" } data-slot="supporting-text">Supporting text</small>
+		if c.Family!="field" {
+			<div class="md-field-menu" id={ c.ID() + "-options" } role="listbox" aria-label={ c.FieldLabel() } popover="auto">
+				for index,value := range fieldOptions {
+					if index==2 {
+						<hr class="md-field-menu-divider" aria-hidden="true"/>
+					}
+					<div class="md-field-option" id={ fmt.Sprintf("%s-option-%d", c.ID(), index) } role="option" aria-selected={ fmt.Sprint(c.Width == "populated" && index == 1) } data-field-option={ value }>
+						if c.Family=="select" && c.Shape=="icons" {
+							<span class="md-field-menu-leading" aria-hidden="true">@materialSymbol("star")
+</span>
+						}
+						<span>{ value }</span>
+						if c.Family=="select" && c.Shape=="icons" {
+							<span class="md-field-menu-trailing" aria-hidden="true">@materialSymbol("check")
+</span>
+						}
+					</div>
+				}
+				<p class="md-field-empty" role="option" aria-disabled="true" hidden>No matches</p>
+			</div>
+		}
+	</div>
+}
+
+templ outlinedFieldFrame(label string) {
+	<fieldset class="md-field-outline" aria-hidden="true"><legend>{ label }</legend></fieldset>
+	<fieldset class="md-field-outline md-field-focus-outline" aria-hidden="true"><legend>{ label }</legend></fieldset>
+}

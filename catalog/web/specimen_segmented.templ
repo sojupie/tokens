@@ -1,0 +1,20 @@
+package web
+
+templ specimenSegmented(c componentCase) {
+	<div { c.Attributes()... } role="group" aria-label="View selection">
+		for i,label := range []string{"Home","Files","Saved"} {
+			<label { c.SegmentAttributes(i)... }>
+				<input { c.SegmentInput(i,label)... }/>
+				<span class="md-segment-face">
+					<span class="md-segment-check">@materialSymbol("check")
+</span>
+					if c.Control!="label" {
+						<span class="md-segment-icon">@materialSymbol([]string{"home", "folder", "star"}[i])
+</span>
+					}
+					<span class={ templ.KV("tokens-visually-hidden", c.Control == "icon") }>{ label }</span>
+				</span>
+			</label>
+		}
+	</div>
+}

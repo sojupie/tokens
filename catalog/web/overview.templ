@@ -1,0 +1,75 @@
+package web
+
+import (
+	"fmt"
+	"github.com/sojupie/tokens/source/publish"
+)
+
+templ overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView, thumbnails map[string]componentCase) {
+	@layout("Material Design 3 Tokens and Change History") {
+		<section class="tokens-landing-hero" aria-labelledby="landing-heading">
+			<div class="tokens-landing-copy">
+				<p class="md-typescale-label-large">Token Catalog</p>
+				<h1 class="md-typescale-display-small" id="landing-heading">Material Design 3 tokens and change history</h1>
+				<p class="md-typescale-body-large">Browse Material Design 3 components and styles. Compare values, follow references, and download the tokens for your project.</p>
+				<div class="tokens-landing-actions">
+					<a class="md-button md-filled-button" href="/components">Browse components</a>
+					<a class="md-button md-tonal-button" href="/styles">Explore styles</a>
+				</div>
+			</div>
+			@landingArtwork()
+		</section>
+		<div class="tokens-landing-samples">
+			<section class="tokens-section" aria-labelledby="components-heading">
+				<div class="tokens-landing-section-heading"><h2 class="md-typescale-title-large" id="components-heading">Components</h2><a class="tokens-link" href="/components">View all components</a></div>
+				@subjectCardGrid(subjects, thumbnails, false)
+			</section>
+			<section class="tokens-section" aria-labelledby="styles-heading">
+				<div class="tokens-landing-section-heading"><h2 class="md-typescale-title-large" id="styles-heading">Styles</h2><a class="tokens-link" href="/styles">View all styles</a></div>
+				@subjectCardGrid(subjects, thumbnails, true)
+			</section>
+		</div>
+		<section class="tokens-section tokens-landing-workflows" aria-labelledby="workflows-heading">
+			<h2 class="md-typescale-title-large" id="workflows-heading">Work with tokens</h2>
+			<div class="tokens-audience-grid">
+				<section class="md-card md-outlined-card tokens-card-content" aria-labelledby="history-heading">
+					<h3 class="md-typescale-title-medium" id="history-heading">Follow token changes</h3>
+					<p>See what changed between captured snapshots, with previous values and source references.</p>
+					<a class="md-button md-text-button" href="/changes">View change history</a>
+				</section>
+				if metadata(ctx).AgentDiscovery {
+					<section class="md-card md-outlined-card tokens-card-content" aria-labelledby="agent-heading">
+						<h3 class="md-typescale-title-medium" id="agent-heading">Use with your agent</h3>
+						<p>Give your coding agent access to the same token data through a prompt, skill, or MCP.</p>
+						<a class="md-button md-text-button" href="/for-agents">Give this to your agent</a>
+					</section>
+				}
+			</div>
+		</section>
+		<p class="tokens-metadata" data-nosnippet>Current snapshot: <code class="tokens-code">{ snapshot.ID }</code> · Detected: { snapshot.CreatedAt }</p>
+	}
+}
+
+// Decorative geometry is deliberately separate from the public component API.
+templ landingArtwork() {
+	<div class="tokens-landing-art">
+		<div class="tokens-art-mosaic" data-artwork aria-hidden="true">
+			for col := range 3 {
+				<div class={ fmt.Sprintf("tokens-art-column tokens-art-column-%d", col) }>
+					for row := range 3 {
+						<div class={ fmt.Sprintf("tokens-art-tile tokens-art-palette-%d", (col*3+row)%5) }>
+							<div class="tokens-art-surface"><div class="tokens-art-sections"></div></div>
+						</div>
+					}
+				</div>
+			}
+		</div>
+		<label class="md-icon-button md-tonal-icon-button tokens-art-pause" title="Pause or resume artwork">
+			<input class="tokens-visually-hidden" type="checkbox" aria-label="Pause artwork animation"/>
+			<span class="tokens-art-toggle-face">
+				<svg class="tokens-art-pause-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5H10V19H6ZM14 5H18V19H14Z"></path></svg>
+				<svg class="tokens-art-play-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5V19L19 12Z"></path></svg>
+			</span>
+		</label>
+	</div>
+}

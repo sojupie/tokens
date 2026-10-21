@@ -1,0 +1,23 @@
+package web
+
+templ specimenFabMenu(c componentCase) {
+	<div { c.Attributes()... }>
+		if c.State=="interactive" {
+			<button { c.FABMenuOpener()... }>@materialSymbol("add")
+</button>
+		}
+		<div { c.FABMenuPanel()... }>
+			<ul role="menu" aria-label="Create">
+				for index, label := range []string{"New file","New folder","New project"} {
+					<li role="none"><button { c.FABMenuAction(index)... }><span class="md-fab-menu-item-content">@materialSymbol([]string{"edit", "folder", "add"}[index])
+<span>{ label }</span></span></button></li>
+				}
+			</ul>
+			if c.State!="interactive" {
+				<button { c.FABMenuAction(-1)... }>@materialSymbol("close")
+</button>
+			}
+		</div>
+		<output class="md-typescale-body-small" aria-live="polite"></output>
+	</div>
+}

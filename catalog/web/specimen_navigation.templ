@@ -1,0 +1,98 @@
+package web
+
+import "fmt"
+
+templ specimenNavRail(c componentCase) {
+	<div { c.RailFrame()... }>
+		<div class="md-navigation-slot">
+			<div class="md-navigation-surface">
+				<nav { c.Attributes()... } aria-label="Primary navigation">@navigationContents(c)
+</nav>
+			</div>
+		</div>
+		<button class="md-navigation-scrim" type="button" tabindex="-1" data-navigation-dismiss aria-label="Collapse navigation" hidden></button>
+		<div class="md-rail-body">
+			<header><button class="md-icon-button md-standard-icon-button md-rail-external-menu" type="button" data-size="small" data-shape="round" data-width="default" data-navigation-expand aria-label="Expand navigation" aria-expanded="false">@materialSymbol("menu")
+</button><span>Workspace</span></header>
+			<section class="md-rail-screen" id={ c.ID() + "-screen" }>
+				<h3 data-navigation-title tabindex="-1">
+					if c.Selected {
+						Home
+					} else {
+						Files
+					}
+				</h3>
+				<p data-navigation-description>Documents and collections in your workspace.</p>
+				for _, label := range []string{"Project notes","Weekend plans","Reading list","Ideas","References","Shared documents","Drafts","Resources","Planning","Archive"} {
+					<article><span>@materialSymbol("folder")
+</span><div><strong>{ label }</strong><p>Updated recently</p></div></article>
+				}
+			</section>
+		</div>
+	</div>
+}
+
+templ specimenNavBar(c componentCase) {
+	if c.State=="interactive" && c.Variant=="modal" {
+		<div data-navigation-demo>
+			<button type="button" class="md-button md-outlined-button" data-navigation-open aria-haspopup="dialog" aria-controls={ c.ID() + "-modal" }>Open navigation</button>
+			<dialog { c.Attributes()... } id={ c.ID() + "-modal" } data-navigation-modal aria-label="Navigation preview">@navigationContents(c)
+</dialog>
+		</div>
+	} else {
+		<nav { c.Attributes()... } aria-label="Navigation preview">@navigationContents(c)
+</nav>
+	}
+}
+
+templ navigationContents(c componentCase) {
+	if c.Family=="nav-rail" && (c.RailMenu()||c.RailFAB()) {
+		<header>
+			if c.RailMenu() {
+				<button class="md-icon-button md-standard-icon-button md-rail-menu" type="button" data-size="small" data-shape="round" data-width="default" data-navigation-expand aria-label={ c.NavigationToggleLabel() } aria-expanded={ fmt.Sprint(c.Variant == "expanded") }><span data-navigation-menu-icon>@materialSymbol("menu")
+</span><span data-navigation-collapse-icon>@materialSymbol("menu_open")
+</span></button>
+			}
+			if c.RailFAB() {
+				<button { c.NavigationFAB()... }>@materialSymbol("edit")
+<span>Create</span></button>
+			}
+		</header>
+	}
+	if c.Family=="nav-drawer" {
+		<h3>Library</h3>
+	}
+	<div class="md-nav-items">
+		for i,label:=range c.NavigationLabels() {
+			if i==4 && c.Family=="nav-drawer" {
+				<hr/>
+				<h3>Workspace</h3>
+			}
+			if i==4 && c.Family=="nav-rail" {
+				<h3 class="md-nav-section">Library</h3>
+			}
+			<button { c.NavigationItem(i)... } data-navigation-secondary?={ c.Family=="nav-rail"&&i>=4 }>@navigationItemContents(c, i, label, c.NavigationIcon(i))
+</button>
+		}
+	</div>
+	<output class="tokens-visually-hidden" id={ c.ID() + "-selection" } aria-live="polite"></output>
+}
+
+templ navigationItemContents(c componentCase, i int, label string, icon string) {
+	<span class="md-nav-indicator">
+		<span class="md-nav-icon">
+			@materialSymbol(icon + "_outline")
+			@materialSymbol(icon + "_filled")
+		</span><span class="md-nav-label">{ label }</span>
+		if c.Family=="nav-drawer" {
+			<span class="md-nav-count">{ fmt.Sprint(i+1) }</span>
+		}
+		if c.Family=="nav-rail" && i==1 && c.NavBadge!=""&&c.NavBadge!="none" {
+			<span class={ "md-badge md-nav-badge" } data-variant={ c.NavBadge } aria-label="3 unread files">
+				if c.NavBadge=="labeled" {
+					3
+				}
+			</span>
+		}
+	</span>
+}

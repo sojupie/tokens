@@ -1,0 +1,56 @@
+package web
+
+import "fmt"
+
+templ specimenAppbar(c componentCase) {
+	<div class="md-appbar-demo" data-appbar-demo data-interactive={ fmt.Sprint(c.State == "interactive") }>
+		<div { c.Attributes()... } role="group" aria-label="App bar">
+			<div class="md-appbar-row">
+				<button { c.BarAction(0)... }>@materialSymbol("arrow_back")
+</button>
+				if c.Variant!="bottom" && !c.BarExpanded() {
+					if c.Control=="search" {
+						<label class="md-appbar-search">@materialSymbol("search")
+<input type="search" placeholder="Search" aria-label="Search preview"/></label>
+					} else {
+						<span class="md-appbar-copy">
+							<span class="md-appbar-title">Title</span>
+							if c.Control=="subtitle" {
+								<span class="md-appbar-subtitle">Subtitle</span>
+							}
+						</span>
+					}
+				}
+				<div class="md-appbar-actions">
+					<button { c.BarAction(1)... }>@materialSymbol("star")
+</button>
+					if c.Control=="avatar" {
+						<span class="md-appbar-avatar-slot"><span class="md-appbar-avatar" role="img" aria-label="Profile">A</span></span>
+					} else {
+						<button { c.BarAction(2)... }>@materialSymbol("menu")
+</button>
+					}
+					if c.Control=="fab" {
+						<button class="md-button md-fab" data-variant="secondary-container" data-size="default" type="button" aria-label="Create">@materialSymbol("add")
+</button>
+					}
+				</div>
+			</div>
+			if c.BarExpanded() {
+				<div class="md-appbar-copy md-appbar-expanded">
+					<span class="md-appbar-title">Title</span>
+					if c.Control=="subtitle" {
+						<span class="md-appbar-subtitle">Subtitle</span>
+					}
+				</div>
+			}
+		</div>
+		if c.State=="interactive" && c.Variant!="bottom" {
+			<div class="md-appbar-content" tabindex="0" role="region" aria-label="Scrollable preview content">
+				for i := range 12 {
+					<p class="md-typescale-body-medium">{ fmt.Sprintf("Preview content %d",i+1) }</p>
+				}
+			</div>
+		}
+	</div>
+}

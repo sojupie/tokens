@@ -1,0 +1,47 @@
+package web
+
+templ specimenTime(c componentCase) {
+	<div { c.Attributes()... }>
+		if c.State=="interactive" {
+			<button type="button" class="md-button md-outlined-button" data-time-open aria-controls={ c.ID() + "-time" } aria-haspopup="dialog" aria-expanded="false">Choose time</button>
+		}
+		<dialog { c.TimePanel()... }>
+			<h3 class="md-time-title" data-time-title>Select time</h3>
+			<div class="md-time-body">
+				<div class="md-time-selectors">
+					<div class="md-time-hour">
+						<button { c.TimeValue("hour")... }>10</button>
+						<label class="md-time-field-wrap"><input { c.TimeInput("hour")... }/><span class="md-time-supporting">Hour</span></label>
+					</div>
+					<span class="md-time-separator" aria-hidden="true">:</span>
+					<div class="md-time-minute">
+						<button { c.TimeValue("minute")... }>10</button>
+						<label class="md-time-field-wrap"><input { c.TimeInput("minute")... }/><span class="md-time-supporting">Minute</span></label>
+					</div>
+					<div class="md-time-period-group" role="group" aria-label="Period" hidden?={ c.Width=="24h" }>
+						<button { c.TimePeriod("am")... }>AM</button><button { c.TimePeriod("pm")... }>PM</button>
+					</div>
+				</div>
+				<div { c.TimeDial()... }>
+					<span class="md-time-hand" aria-hidden="true"><span class="md-time-handle"><span class="md-time-dot"></span></span></span>
+					<span class="md-time-center" aria-hidden="true"></span>
+					<div class="md-time-labels" aria-hidden="true">
+						for _,tick:=range c.TimeTicks() {
+							<span class="md-time-tick" style={ tick.Style() }>{ tick.Label }</span>
+						}
+					</div>
+					<div class="md-time-selected-labels" aria-hidden="true">
+						for _,tick:=range c.TimeTicks() {
+							<span class="md-time-tick" style={ tick.Style() }>{ tick.Label }</span>
+						}
+					</div>
+				</div>
+			</div>
+			<p class="md-time-error md-typescale-body-small" id={ c.ID() + "-error" } data-time-error role="alert"></p>
+			<footer class="md-time-actions"><button class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" type="button" data-time-mode aria-label="Use keyboard input">@materialSymbol("keyboard")
+@materialSymbol("schedule")
+</button><span></span><button class="md-button md-text-button" type="button" data-time-cancel>Cancel</button><button class="md-button md-text-button" type="button" data-time-save>OK</button></footer>
+		</dialog>
+		<output class="md-typescale-body-small" data-time-output aria-live="polite"></output>
+	</div>
+}

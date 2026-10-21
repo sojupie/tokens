@@ -1,0 +1,23 @@
+package web
+
+import "fmt"
+
+templ specimenTabs(c componentCase) {
+	<div { c.Attributes()... }>
+		<div class="md-tabs" role="tablist" aria-label="Library views" data-variant={ c.Variant } data-control={ c.Control }>
+			for i,label := range []string{"Home","Files","Saved"} {
+				<button { c.TabAttributes(i)... }>
+					<span class="md-tab-content">
+						if c.Control!="label" {
+							@materialSymbol([]string{"home", "folder", "star"}[i])
+						}
+						<span class={ templ.KV("tokens-visually-hidden", c.Control == "icon") }>{ label }</span>
+					</span><span class="md-tab-active-indicator" aria-hidden="true"></span>
+				</button>
+			}
+		</div>
+		for i,label := range []string{"Home","Files","Saved"} {
+			<section role="tabpanel" tabindex="0" id={ fmt.Sprintf("%s-panel-%d", c.ID(), i) } aria-labelledby={ fmt.Sprintf("%s-tab-%d", c.ID(), i) } hidden?={ !c.ItemSelected(i) }><p class="md-typescale-body-medium">{ label+" content" }</p></section>
+		}
+	</div>
+}

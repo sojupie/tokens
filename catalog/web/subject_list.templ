@@ -1,0 +1,71 @@
+package web
+
+import "github.com/sojupie/tokens/source/publish"
+
+templ subjectListPage(snapshot publish.SnapshotView, subjects []publish.SubjectView, styles bool, query string, thumbnails map[string]componentCase) {
+	@layout("Published Material Design 3 subjects") {
+		<header class="tokens-subject-heading">
+			if styles {
+				<h1 class="md-typescale-headline-medium">Styles and token sources</h1>
+				@siteDownloadButton()
+			} else {
+				<h1 class="md-typescale-headline-medium">Components</h1>
+				@siteDownloadButton()
+			}
+		</header>
+		<div data-nosnippet><p class="tokens-metadata">Current snapshot: <code class="tokens-code">{ snapshot.ID }</code></p></div>
+		<form hx-boost="false" class="tokens-search-form" method="get" action={ subjectListPath(styles) } role="search">
+			<label class="md-outlined-text-field">
+				<input
+					id="subject-search"
+					type="search"
+					name="q"
+					value={ query }
+					placeholder=" "
+					autocomplete="off"
+					hx-get={ subjectListPath(styles) }
+					hx-target="#subject-list"
+					hx-trigger="input changed delay:250ms"
+					hx-push-url="true"
+				/>
+				<span data-slot="label">Search by name or slug</span>
+			</label>
+		</form>
+		<div id="subject-list" aria-live="polite">
+			@subjectCardGrid(subjects, thumbnails, styles)
+		</div>
+	}
+}
+
+templ subjectCardGrid(subjects []publish.SubjectView, thumbnails map[string]componentCase, styles bool) {
+	<ul class="tokens-card-grid">
+		for _, subject := range subjects {
+			if (subject.Key.Kind!=publish.SubjectComponent)==styles {
+				@subjectCard(subject, thumbnails, styles)
+			}
+		}
+		if len(subjects)==0 {
+			<li class="tokens-empty md-typescale-body-large">No matching subjects.</li>
+		}
+	</ul>
+}
+
+templ subjectCard(subject publish.SubjectView, thumbnails map[string]componentCase, styles bool) {
+	<li class="tokens-component-tile">
+		<div class="tokens-component-thumbnail">
+			if styles {
+				@styleThumbnail(subject)
+			} else if specimen, ok := thumbnails[subject.Key.Slug]; ok {
+				<div class="tokens-component-thumbnail-scene" inert aria-hidden="true" data-thumbnail={ subject.Key.Slug }>
+					@componentThumbnail(specimen)
+				</div>
+			} else {
+				@materialSymbol("widgets")
+			}
+		</div>
+		<a class="tokens-component-tile-link" href={ subjectURL(subject) }>
+			<span class="md-typescale-title-medium">{ subject.Name }</span>
+			<small class="md-typescale-body-small">{ len(subject.Tokens) } tokens</small>
+		</a>
+	</li>
+}

@@ -1,0 +1,74 @@
+package web
+
+templ componentSpecimen(c componentCase) {
+	switch c.Family {
+		case "button":
+			@specimenButton(c)
+		case "card":
+			@specimenCard(c)
+		case "icon":
+			@specimenIcon(c)
+		case "chip":
+			@specimenChip(c)
+		case "badge":
+			@specimenBadge(c)
+		case "time":
+			@specimenTime(c)
+		case "date":
+			@specimenDate(c)
+		case "search":
+			@specimenSearch(c)
+		case "carousel":
+			@specimenCarousel(c)
+		case "list":
+			@specimenList(c)
+		case "fab-menu":
+			@specimenFabMenu(c)
+		case "button-group":
+			@specimenButtonGroup(c)
+		case "split":
+			@specimenSplit(c)
+		case "bottom-sheet", "side-sheet":
+			@specimenBottomSheet(c)
+		case "appbar":
+			@specimenAppbar(c)
+		case "toolbar":
+			@specimenToolbar(c)
+		case "loading":
+			@specimenLoading(c)
+		case "progress":
+			@specimenProgress(c)
+		case "slider":
+			@specimenSlider(c)
+		case "tabs":
+			@specimenTabs(c)
+		case "segmented":
+			@specimenSegmented(c)
+		case "nav-rail":
+			@specimenNavRail(c)
+		case "nav-bar", "nav-drawer":
+			@specimenNavBar(c)
+		case "snackbar":
+			@specimenSnackbar(c)
+		case "tooltip":
+			@specimenTooltip(c)
+		case "fab":
+			@specimenFab(c)
+		case "extended-fab":
+			@specimenExtendedFab(c)
+		case "checkbox":
+			@specimenCheckbox(c)
+		case "switch":
+			@specimenSwitch(c)
+		case "radio":
+			@specimenRadio(c)
+		case "field", "select", "autocomplete":
+			@specimenField(c)
+		case "menu":
+			@specimenMenu(c)
+		case "dialog":
+			@specimenDialog(c)
+		case "divider":
+			@specimenDivider(c)
+	}
+}

@@ -1,0 +1,28 @@
+package web
+
+import "fmt"
+
+templ specimenSlider(c componentCase) {
+	<div { c.Attributes()... } role="group" aria-label="Slider preview">
+		<div class="md-slider-rail" aria-hidden="true">
+			<span class="md-slider-inactive md-slider-before"></span><span class="md-slider-active"></span><span class="md-slider-inactive md-slider-after"></span>
+			<span class="md-slider-stop md-slider-stop-start"></span><span class="md-slider-stop md-slider-stop-end"></span>
+			if c.Variant=="discrete" {
+				for i := range 9 {
+					<span class="md-slider-tick" style={ templ.SafeCSS(fmt.Sprintf("--_slider-tick:%d%%", (i+1)*10)) } data-value={ fmt.Sprint((i + 1) * 10) }></span>
+				}
+			}
+			if c.Size=="medium" || c.Size=="large" || c.Size=="xlarge" {
+				<span class="md-slider-icon md-slider-leading">@materialSymbol("remove")
+</span><span class="md-slider-icon md-slider-trailing">@materialSymbol("add")
+</span>
+			}
+		</div>
+		for _,handle:=range c.SliderHandles() {
+			<div { c.SliderHandle(handle)... }>
+				<input { c.SliderInput(handle)... }/>
+				<span class="md-slider-thumb" aria-hidden="true"><span class="md-slider-state-layer"></span><span class="md-slider-nub"></span><span class="md-slider-value">{ c.SliderValue(handle) }</span></span>
+			</div>
+		}
+	</div>
+}

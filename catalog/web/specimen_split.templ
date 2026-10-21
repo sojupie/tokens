@@ -1,0 +1,22 @@
+package web
+
+templ specimenSplit(c componentCase) {
+	<div class="md-split-demo">
+		<div { c.Attributes()... }>
+			<button { c.SplitAction(false)... }>
+				if c.Shape != "label" {
+					@materialSymbol("add")
+				}
+				if c.Shape != "icon" {
+					<span>Add to cart</span>
+				}
+			</button>
+			<button { c.SplitAction(true)... }>@materialSymbol("expand_more")
+</button>
+		</div>
+		<nav class="md-menu md-split-menu" data-variant="standard" id={ c.ID() + "-menu" } popover="auto" role="menu" aria-label="Cart options">
+			<ul><li><button type="button" class="md-menu-item" role="menuitem" tabindex="-1" data-split-option>Save for later</button></li><li><button type="button" class="md-menu-item" role="menuitem" tabindex="-1" data-split-option>Add to wishlist</button></li></ul>
+		</nav>
+		<output class="md-typescale-body-small" aria-live="polite"></output>
+	</div>
+}

@@ -1,0 +1,6 @@
+package web
+
+templ specimenCard(c componentCase) {
+	<button type="button" { c.Attributes()... }><span>Card title</span><span>Supporting text</span><span data-slot="icon">@materialSymbol("check")
+</span></button>
+}

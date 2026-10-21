@@ -1,0 +1,37 @@
+package web
+
+templ siteDownloadButton() {
+	<button class="md-button md-outlined-button" type="button" data-export-open aria-haspopup="dialog" aria-controls="tokens-site-download">Download tokens</button>
+}
+
+templ siteDownloadMenu() {
+	<div class="tokens-export">
+		@siteDownloadButton()
+		<dialog hx-boost="false" class="md-dialog tokens-export-dialog" data-dialog-surface id="tokens-site-download" aria-labelledby="tokens-site-download-title" aria-describedby="tokens-export-scope">
+			<header class="md-basic-header"><h2 id="tokens-site-download-title">Download tokens</h2></header>
+			<div class="md-dialog-content">
+				if metadata(ctx).GeneratedDownloads {
+					<p id="tokens-export-scope">All components and styles for one context. Page, table and search filters do not apply.</p>
+					<div class="tokens-export-fields">
+						@catalogSelect("export-format", "format", "Format", "tokens.tokens.json", exportFormatChoices())
+						@catalogSelect("export-context", "context", "Appearance", "light-default", exportContextChoices())
+					</div>
+					<p class="tokens-export-description" data-export-description>DTCG 2025.10 values and aliases, with source metadata.</p>
+					<p class="md-typescale-body-small">Web · 3P · Static font · Standard motion · Small language height</p>
+					<a class="tokens-link" data-export-report href="/downloads/dtcg/light-default/report.json">View conversion report</a>
+				} else {
+					<p id="tokens-export-scope">DTCG downloads are unavailable for this publication. Generated assets must be built before these files can be served.</p>
+				}
+			</div>
+			<footer class="md-basic-actions">
+				<button class="md-button md-text-button" type="button" data-export-cancel>Close</button>
+				if metadata(ctx).GeneratedDownloads {
+					<a class="md-button md-filled-button" data-export-link href="/downloads/dtcg/light-default/tokens.tokens.json" download>Download DTCG JSON</a>
+				}
+			</footer>
+		</dialog>
+		if metadata(ctx).GeneratedDownloads {
+			<noscript><p><a href="/downloads/dtcg/light-default/tokens.tokens.json" download>DTCG JSON · Light, default contrast</a> · <a href="/downloads/dtcg/light-default/tokens.css" download>CSS variables</a> · <a href="/downloads/dtcg/light-default/report.json" download>Conversion report</a></p></noscript>
+		}
+	</div>
+}

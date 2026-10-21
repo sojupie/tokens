@@ -1,0 +1,50 @@
+package web
+
+import "fmt"
+
+templ specimenToolbar(c componentCase) {
+	<div class="md-toolbar-scene">
+		<p class="md-typescale-body-medium md-toolbar-page">Document content</p>
+		<div class="md-toolbar-demo" data-menu-example data-orientation={ c.Orientation }>
+			<div { c.Attributes()... } role="toolbar" aria-label="Editing tools" aria-orientation={ c.Orientation }>
+				for i := range 3 {
+					<button { c.BarAction(i)... }>
+						if c.Shape!="label" {
+							if i==0 {
+								@materialSymbol("edit")
+							} else if i==1 {
+								@materialSymbol("check")
+							} else {
+								@materialSymbol("more_vert")
+							}
+						}
+						if c.Shape!="icon" {
+							if i==0 {
+								<span>Edit</span>
+							} else if i==1 {
+								<span>Save</span>
+							} else {
+								<span>More</span>
+							}
+						}
+					</button>
+				}
+			</div>
+			if c.Variant=="floating" && c.Size!="none" {
+				<button { c.BarFAB()... }>@materialSymbol("add")
+</button>
+			}
+			<nav class="md-menu md-toolbar-menu" id={ c.ID() + "-toolbar-menu" } data-menu-panel data-menu-main data-variant="standard" data-orientation="vertical" role="menu" aria-label="More editing tools" popover="auto">
+				<ul>
+					<li data-toolbar-overflow="0" hidden><button class="md-menu-item" type="button" role="menuitemcheckbox" aria-checked={ fmt.Sprint(c.Selected) } data-toolbar-proxy="0" data-menu-action tabindex="-1"><span data-menu-checked-icon hidden?={ !c.Selected }>@materialSymbol("check")
+</span><span data-menu-unchecked-icon hidden?={ c.Selected }>@materialSymbol("edit")
+</span><span class="md-menu-item-text"><span>Edit</span></span></button></li>
+					<li data-toolbar-overflow="1" hidden><button class="md-menu-item" type="button" role="menuitem" data-toolbar-proxy="1" data-menu-action tabindex="-1"><span class="md-menu-item-text"><span>Save</span></span></button></li>
+					<li><button class="md-menu-item" type="button" role="menuitem" data-menu-action tabindex="-1"><span class="md-menu-item-text"><span>Share</span></span></button></li>
+					<li><button class="md-menu-item" type="button" role="menuitem" data-menu-action tabindex="-1"><span class="md-menu-item-text"><span>Print</span></span></button></li>
+				</ul>
+			</nav>
+			<output class="tokens-visually-hidden" data-menu-output aria-live="polite"></output>
+		</div>
+	</div>
+}

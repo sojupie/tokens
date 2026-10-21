@@ -1,0 +1,9 @@
+package web
+
+templ specimenBadge(c componentCase) {
+	<span { c.Attributes()... } role="img" aria-label="Unread notifications">
+		if c.Variant=="labeled" {
+			{ "99+" }
+		}
+	</span>
+}

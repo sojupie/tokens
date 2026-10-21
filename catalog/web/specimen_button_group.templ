@@ -1,0 +1,20 @@
+package web
+
+templ specimenButtonGroup(c componentCase) {
+	<div class="md-button-group-demo">
+		<div { c.Attributes()... }>
+			for index := range 3 {
+				<button { c.GroupButton(index)... }>
+					if c.Control=="connected" {
+						<span class="md-group-check" aria-hidden="true">@materialSymbol("check")
+</span>
+					} else {
+						@materialSymbol([]string{"arrow_back", "edit", "chevron_right"}[index])
+					}
+					<span>{ c.GroupLabel(index) }</span>
+				</button>
+			}
+		</div>
+		<output class="md-typescale-body-small" aria-live="polite"></output>
+	</div>
+}

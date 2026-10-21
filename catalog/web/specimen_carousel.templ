@@ -1,0 +1,36 @@
+package web
+
+import "fmt"
+
+templ specimenCarousel(c componentCase) {
+	<section { c.Attributes()... } aria-label="Example carousel" aria-roledescription="carousel">
+		<div class="md-carousel-viewport" tabindex="0" aria-label="Carousel items">
+			<div class="md-carousel-scroll-track">
+				<div class="md-carousel-snaps" aria-hidden="true">
+					for range 6 {
+						<span class="md-carousel-snap"></span>
+					}
+				</div>
+				<ol class="md-carousel-track">
+					for index := range 6 {
+						<li class="md-carousel-slot">
+							<button { c.CarouselItem(index)... }>
+								<span class="md-carousel-art" aria-hidden="true">
+									<svg viewBox="0 0 240 192" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="240" height="192" fill="var(--md-sys-color-tertiary-container)"></rect><circle cx={ fmt.Sprint(60 + index*20) } cy="58" r="35" fill="var(--md-sys-color-primary-container)"></circle><path d="M0 192V142L76 62 142 142 190 95 240 145V192Z" fill="var(--md-sys-color-secondary)"></path><path d="M0 192V155L85 112 160 174 240 115V192Z" fill="var(--md-sys-color-tertiary)"></path></svg>
+								</span>
+								<span class="md-carousel-number" aria-hidden="true">{ fmt.Sprint(index+1) }</span>
+							</button>
+						</li>
+					}
+				</ol>
+			</div>
+		</div>
+		<div class="md-carousel-controls">
+			<button type="button" class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" data-carousel-step="-1" aria-label="Previous item">@materialSymbol("chevron_left")
+</button>
+			<output class="md-typescale-label-medium" aria-live="polite">Item 1 of 6</output>
+			<button type="button" class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" data-carousel-step="1" aria-label="Next item">@materialSymbol("chevron_right")
+</button>
+		</div>
+	</section>
+}

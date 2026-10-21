@@ -1,0 +1,49 @@
+package web
+
+import "fmt"
+
+templ specimenBottomSheet(c componentCase) {
+	<div class="md-sheet-demo" data-interactive={ fmt.Sprint(c.State == "interactive") } data-kind={ c.Family }>
+		if c.State=="interactive" {
+			<button { c.SheetOpener()... }>Open sheet</button>
+		}
+		<div class="md-sheet-frame">
+			if c.State=="interactive" {
+				<span class="md-typescale-body-medium md-sheet-page-label">Page content</span>
+			}
+			if c.Control=="modal" && c.State=="interactive" {
+				<dialog { c.SheetAttributes()... } aria-labelledby={ c.ID() + "-heading" }>
+					@sheetContents(c)
+				</dialog>
+			} else {
+				<section { c.SheetAttributes()... } role="region" aria-labelledby={ c.ID() + "-heading" } hidden?={ c.State=="interactive" }>
+					@sheetContents(c)
+				</section>
+			}
+		</div>
+		if c.State=="interactive" {
+			<output class="md-typescale-body-small" data-sheet-status aria-live="polite"></output>
+		}
+	</div>
+}
+
+templ sheetContents(c componentCase) {
+	if c.Family=="bottom-sheet" {
+		<button { c.SheetHandle()... }><span class="md-sheet-handle-mark"></span></button>
+	}
+	<div class="md-sheet-content" id={ c.ID() + "-content" } hidden?={ c.Family=="bottom-sheet" && c.Variant=="minimized" }>
+		<header class="md-sheet-header">
+			<h3 class="md-sheet-title" id={ c.ID() + "-heading" }>Details</h3>
+			<button class="md-icon-button md-standard-icon-button md-sheet-close" type="button" aria-label="Close sheet" data-sheet-close data-sheet-initial-focus?={ c.Family=="side-sheet" } autofocus?={ c.Family=="side-sheet" && c.Control=="modal" && c.State=="interactive" }>@materialSymbol("close")
+</button>
+		</header>
+		<div class="md-sheet-body">
+			<p class="md-typescale-body-medium">Supporting text</p>
+			<div class="md-outlined-text-field">@outlinedFieldFrame("Name")
+<label for={ c.ID() + "-name" } data-slot="label">Name</label><input id={ c.ID() + "-name" } value="Sample" placeholder="Name"/></div>
+		</div>
+		<footer class="md-sheet-footer">
+			<button { c.SheetAction(0)... }>Cancel</button><button { c.SheetAction(1)... }>Done</button>
+		</footer>
+	</div>
+}

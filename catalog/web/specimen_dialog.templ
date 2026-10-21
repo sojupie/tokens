@@ -1,0 +1,76 @@
+package web
+
+import "fmt"
+
+templ specimenDialog(c componentCase) {
+	<div class="md-dialog-demo">
+		if c.State=="interactive" {
+			<button type="button" class="md-button md-outlined-button" data-dialog-open aria-controls={ c.ID() + "-panel" } aria-haspopup="dialog" aria-expanded="false">Open dialog</button>
+		}
+		<dialog { c.DialogPanel()... }>
+			if c.Variant=="full-screen" {
+				<header class="md-full-header">
+					<button { c.DialogClose()... }>@materialSymbol("close")
+</button>
+					if c.DialogHeadline!="hidden" {
+						<h2 id={ c.ID() + "-heading" }>{ c.DialogHeading() }</h2>
+					}
+					if c.Orientation!="bottom" {
+						<button { c.DialogAction(true)... }>Save</button>
+					}
+					if c.DialogDividers() {
+						<hr class="md-divider"/>
+					}
+				</header>
+			} else {
+				<header class="md-basic-header">
+					if c.DialogIcon() {
+						<span data-slot="icon" aria-hidden="true">@materialSymbol("info")
+</span>
+					}
+					if c.DialogHeadline!="hidden" {
+						<h2 id={ c.ID() + "-heading" }>{ c.DialogHeading() }</h2>
+					}
+					if c.DialogDividers() {
+						<hr class="md-divider"/>
+					}
+				</header>
+			}
+			<div class="md-dialog-content" data-dialog-content tabindex="0" aria-label="Dialog content">
+				@dialogSample(c)
+			</div>
+			if c.Variant!="full-screen" || c.Orientation=="bottom" {
+				<footer class={ templ.KV("md-full-action-bar",c.Variant=="full-screen"),templ.KV("md-basic-actions",c.Variant!="full-screen") }>
+					if c.DialogDividers() {
+						<hr class="md-divider"/>
+					}
+					<button { c.DialogAction(false)... }>Cancel</button>
+					<button { c.DialogAction(true)... }>Save</button>
+				</footer>
+			}
+		</dialog>
+		if c.Variant=="full-screen" {
+			<dialog class="md-dialog md-dialog-discard" data-dialog-discard role="alertdialog" aria-labelledby={ c.ID() + "-discard-heading" } aria-describedby={ c.ID() + "-discard-support" }>
+				<h2 id={ c.ID() + "-discard-heading" }>Discard changes?</h2>
+				<p id={ c.ID() + "-discard-support" }>Your edits will be lost.</p>
+				<footer class="md-basic-actions"><button class="md-button md-text-button" type="button" data-dialog-keep>Keep editing</button><button class="md-button md-text-button" type="button" data-dialog-discard-confirm>Discard</button></footer>
+			</dialog>
+		}
+		<output data-dialog-output aria-live="polite"></output>
+	</div>
+}
+
+templ dialogSample(c componentCase) {
+	<h3 data-slot="subhead">Item details</h3>
+	<p id={ c.ID() + "-support" } data-slot="supporting-text">Supporting text</p>
+	<div class="md-outlined-text-field">
+		@outlinedFieldFrame("Name")
+		<label for={ c.ID() + "-name" } data-slot="label">Name</label>
+		<input id={ c.ID() + "-name" } name="item" placeholder="Name" value="Sample" required data-dialog-value aria-invalid="false" aria-describedby={ c.ID() + "-error" }/><small data-slot="supporting-text" id={ c.ID() + "-error" } data-dialog-error aria-live="polite">Required</small>
+	</div>
+	if c.Expanded || c.Variant=="full-screen" {
+		for i:=range 12 {
+			<section><h3 data-slot="subhead">{ fmt.Sprintf("Section %d",i+1) }</h3><p data-slot="supporting-text">Supporting text for this section.</p></section>
+		}
+	}
+}

@@ -1,0 +1,30 @@
+package web
+
+templ specimenTooltip(c componentCase) {
+	if c.State=="interactive" {
+		<div class="md-tooltip-demo">
+			if c.Variant=="plain" {
+				<button class="md-icon-button md-standard-icon-button" type="button" aria-label="Details" aria-describedby={ c.ID() + "-tip" }>@materialSymbol("info")
+</button>
+				<div { c.Attributes()... } role="tooltip" id={ c.ID() + "-tip" }><p>More information</p></div>
+			} else {
+				<button class="md-button md-outlined-button" type="button" popovertarget={ c.ID() + "-tip" } aria-haspopup="dialog">Show details</button>
+				<section { c.Attributes()... } id={ c.ID() + "-tip" } popover="auto" role="dialog" aria-label="Details">@tooltipContents(c)
+</section>
+			}
+		</div>
+	} else {
+		<section { c.Attributes()... }>@tooltipContents(c)
+</section>
+	}
+}
+
+templ tooltipContents(c componentCase) {
+	if c.Variant=="rich" {
+		<h3>Details</h3>
+	}
+	<p>More information about this action.</p>
+	if c.Variant=="rich" {
+		<button { c.FeedbackAttributes("md-button md-text-button md-feedback-action")... } data-tooltip-close>Got it</button>
+	}
+}

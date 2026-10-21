@@ -1,0 +1,134 @@
+package web
+
+import "fmt"
+
+templ specimenDate(c componentCase) {
+	<div { c.Attributes()... }>
+		if c.State=="interactive" {
+			<div class="md-date-fields" data-date-anchor>
+				@dateEntryField(c, "start")
+				if c.DateRange {
+					@dateEntryField(c, "end")
+				}
+			</div>
+		}
+		<dialog { c.DatePanel()... }>
+			if c.Variant=="full-screen" {
+				<div class="md-date-fullscreen-actions"><button class="md-icon-button md-standard-icon-button" type="button" data-date-cancel aria-label="Close date picker">@materialSymbol("close")
+</button><button class="md-button md-text-button" type="button" data-date-save>Save</button></div>
+			}
+			<header class="md-date-header">
+				<p data-date-title>Select date</p>
+				<div><h3 data-date-headline>{ c.DateHeadline() }</h3><button type="button" class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" data-date-mode aria-label="Enter date">@materialSymbol("edit")
+@materialSymbol("calendar_month")
+</button></div>
+			</header>
+			if c.Variant=="docked" {
+				<div class="md-date-navigation md-date-docked-navigation">
+					<div class="md-date-nav-group">
+						<button type="button" class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" data-date-step="-1" aria-label="Previous month">@materialSymbol("chevron_left")
+</button>
+						<button { c.DateMenu()... }><span data-date-month-label>Oct</span>@materialSymbol("expand_more")
+</button>
+						<button type="button" class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" data-date-step="1" aria-label="Next month">@materialSymbol("chevron_right")
+</button>
+					</div>
+					<div class="md-date-nav-group">
+						<button type="button" class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" data-date-step="-12" aria-label="Previous year">@materialSymbol("chevron_left")
+</button>
+						<button { c.DateYearMenu()... }><span data-date-year-label>2026</span>@materialSymbol("expand_more")
+</button>
+						<button type="button" class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" data-date-step="12" aria-label="Next year">@materialSymbol("chevron_right")
+</button>
+					</div>
+				</div>
+			} else {
+				<div class="md-date-navigation">
+					<button { c.DateMenu()... }><span data-date-month-label>October 2026</span>@materialSymbol("expand_more")
+</button>
+					<span><button type="button" class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" data-date-step="-1" aria-label="Previous month">@materialSymbol("chevron_left")
+</button><button type="button" class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" data-date-step="1" aria-label="Next month">@materialSymbol("chevron_right")
+</button></span>
+				</div>
+			}
+			<div class="md-date-calendars" data-date-calendars>
+				@dateCalendar(c, 10)
+				if c.DateRange {
+					@dateCalendar(c, 11)
+				}
+			</div>
+			<div class="md-date-years" role="group" id={ c.ID() + "-years" } data-date-years hidden?={ c.Control!="year" } aria-label="Choose year">
+				if c.Control=="year" {
+					for year:=range 201 {
+						<button { c.DateYear(1900+year)... }>
+							if c.Variant=="docked" {
+								@materialSymbol("check")
+								<span>{ fmt.Sprint(1900+year) }</span>
+							} else {
+								{ fmt.Sprint(1900+year) }
+							}
+						</button>
+					}
+				}
+			</div>
+			<div class="md-date-months" role="group" id={ c.ID() + "-months" } data-date-months hidden?={ c.Control!="month" } aria-label="Choose month">
+				for month,label:=range dateMonths {
+					<button { c.DateMonth(month+1)... }>@materialSymbol("check")
+<span>{ label }</span></button>
+				}
+			</div>
+			<div class="md-date-inputs" data-date-inputs>
+				<div class="md-outlined-text-field">@outlinedFieldFrame("Date")
+<label for={ c.ID() + "-start" } data-slot="label">Date</label><input id={ c.ID() + "-start" } data-date-input="start" aria-describedby={ c.ID() + "-error" } placeholder="YYYY-MM-DD" value="2026-10-21" inputmode="numeric" maxlength="32" autocomplete="off"/></div>
+				if c.DateRange {
+					<div class="md-outlined-text-field">@outlinedFieldFrame("End date")
+<label for={ c.ID() + "-end" } data-slot="label">End date</label><input id={ c.ID() + "-end" } data-date-input="end" aria-describedby={ c.ID() + "-error" } placeholder="YYYY-MM-DD" value="2026-10-26" inputmode="numeric" maxlength="32" autocomplete="off"/></div>
+				}
+				<p id={ c.ID() + "-error" } class="md-typescale-body-small" data-date-error role="alert"></p>
+			</div>
+			<footer class="md-date-actions"><button class="md-button md-text-button" type="button" data-date-cancel>Cancel</button><button class="md-button md-text-button" type="button" data-date-save>OK</button></footer>
+			<output class="md-date-status md-typescale-body-small" aria-live="polite"></output>
+		</dialog>
+	</div>
+}
+
+templ dateEntryField(c componentCase, part string) {
+	<div class="md-outlined-text-field">
+		@outlinedFieldFrame(c.DateEntryLabel(part))
+		<label for={ c.ID() + "-value-" + part } data-slot="label">{ c.DateEntryLabel(part) }</label>
+		<input { c.DateEntry(part)... }/>
+		if part=="start" {
+			<button class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" type="button" data-date-open title="Choose date (Alt+ArrowDown)" aria-keyshortcuts="Alt+ArrowDown" aria-label="Choose date" aria-controls={ c.ID() + "-date" } aria-haspopup="dialog" aria-expanded="false">@materialSymbol("calendar_month")
+</button>
+		}
+		<small data-slot="supporting-text" id={ c.ID() + "-value-help-" + part } data-date-value-help={ part } aria-live="polite">YYYY-MM-DD</small>
+	</div>
+}
+
+templ dateCalendar(c componentCase, month int) {
+	<section class="md-date-month-calendar" data-calendar-month={ fmt.Sprintf("2026-%02d", month) }>
+		if c.DateRange && c.Variant!="docked" {
+			<h4>{ dateMonths[month-1]+" 2026" }</h4>
+		}
+		<div class="md-date-grid" role="grid" aria-colcount="7" aria-rowcount={ fmt.Sprint(len(dateRows(month)) + 1) } aria-label={ dateMonths[month-1] + " 2026" }>
+			<div class="md-date-week" role="row">
+				for _,day:=range dateWeekdays {
+					<span class="md-date-weekday" role="columnheader" aria-label={ day } title={ day }>{ day[:1] }</span>
+				}
+			</div>
+			for _,row:=range dateRows(month) {
+				<div class="md-date-row" role="row">
+					for _,day:=range row {
+						<span { c.DateCell(day)... }>
+							if !day.Outside||c.Variant=="docked" {
+								<button { c.DateDay(day)... }>{ day.Label }</button>
+							}
+						</span>
+					}
+				</div>
+			}
+		</div>
+	</section>
+}
+
+// Chips share anatomy while each variant keeps its source color and state bindings.

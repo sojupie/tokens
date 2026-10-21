@@ -1,0 +1,10 @@
+package web
+
+templ specimenDivider(c componentCase) {
+	<div class={ "md-divider-layout", templ.KV("md-divider-supporting",c.Control=="supporting") } data-inset={ c.DividerInset() } data-spacing={ c.Width }>
+		<hr { c.Attributes()... }/>
+		if c.Control=="supporting" {
+			<p class="md-typescale-body-small">Supporting text</p>
+		}
+	</div>
+}

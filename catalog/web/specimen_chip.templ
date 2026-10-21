@@ -1,0 +1,44 @@
+package web
+
+import "fmt"
+
+templ specimenChip(c componentCase) {
+	<span class="md-chip-demo">
+		if c.Variant=="assist" || c.Variant=="suggestion" {
+			<button { c.Attributes()... }>
+				@chipLeading(c)
+				<span class="md-chip-label">{ c.ChipLabel() }</span>
+			</button>
+		} else {
+			<span { c.Attributes()... }>
+				<button class="md-chip-primary" type="button" data-chip-select aria-pressed={ fmt.Sprint(c.Selected) } disabled?={ c.State=="disabled" }>
+					@chipLeading(c)
+					<span class="md-chip-label">{ c.ChipLabel() }</span>
+				</button>
+				if c.Width=="removable" || c.Variant=="input" {
+					<button class="md-chip-remove" type="button" data-chip-remove aria-label={ "Remove " + c.ChipLabel() } disabled?={ c.State=="disabled" } tabindex="-1">
+						<span class="md-chip-icon" data-slot="trailing-icon">@materialSymbol("close")
+</span>
+					</button>
+				}
+			</span>
+		}
+		<output class="tokens-visually-hidden" aria-live="polite" data-chip-output></output>
+	</span>
+}
+
+templ chipLeading(c componentCase) {
+	if c.Variant=="input" && c.Shape=="avatar" {
+		<span class="md-chip-avatar" aria-hidden="true">A</span>
+	} else if c.Variant=="filter" || c.Variant=="" {
+		<span class="md-chip-icon md-chip-check" data-slot="leading-icon">@materialSymbol("check")
+</span>
+		if c.Shape=="icon" {
+			<span class="md-chip-icon md-chip-leading" data-slot="leading-icon">@materialSymbol("star")
+</span>
+		}
+	} else if c.Shape=="icon" {
+		<span class="md-chip-icon" data-slot="leading-icon">@materialSymbol("star")
+</span>
+	}
+}

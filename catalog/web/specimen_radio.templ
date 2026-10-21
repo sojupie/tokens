@@ -1,0 +1,27 @@
+package web
+
+import "fmt"
+
+templ specimenRadio(c componentCase) {
+	if c.State=="interactive" {
+		<fieldset class="md-radio-group" role="radiogroup">
+			<legend>Options</legend>
+			for index:=range 3 {
+				@radioChoice(c, index, true)
+			}
+		</fieldset>
+	} else {
+		@radioChoice(c, 0, false)
+	}
+}
+
+templ radioChoice(c componentCase, index int, showLabel bool) {
+	<label class="md-radio-choice">
+		<span { c.RadioControl(index)... }><input { c.RadioInput(index)... }/><span class="md-radio-icon" aria-hidden="true"></span></span>
+		if showLabel {
+			<span>{ fmt.Sprintf("Option %d",index+1) }</span>
+		}
+	</label>
+}
+
+// Search actions retain the selected configuration when search is focused.
