@@ -164,6 +164,7 @@ test(
   { skip: !process.env.TOKEN_ASSETS_DIR },
   async () => {
     let css;
+    let bindings;
     for (const appearance of [
       "light-default",
       "light-medium",
@@ -179,7 +180,10 @@ test(
       );
       const compiled = await compile(document, ":root", { appTheme: true });
       const generated = generateComponents(document, compiled.values);
-      assert.equal(generated.coverage.mapped.length, 3656);
+      assert.equal(generated.coverage.mapped.length, 3655);
+      const names = generated.coverage.mapped.map(({ token }) => token).sort();
+      if (bindings !== undefined) assert.deepEqual(names, bindings, appearance);
+      bindings = names;
       if (css !== undefined) assert.equal(generated.css, css);
       css = generated.css;
       assert.doesNotMatch(css, /undefined|NaN|\[object Object\]/);
