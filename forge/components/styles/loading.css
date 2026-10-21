@@ -1,0 +1,19 @@
+.md-loading {
+  display: grid;
+  place-items: center;
+  inline-size: var(--_loading-width);
+  block-size: var(--_loading-height);
+  border-radius: var(--_loading-shape);
+  background: var(--_loading-container, transparent);
+  color: var(--_loading-color);
+  overflow: hidden;
+}
+.md-loading:where([data-variant="uncontained"]) {
+  background: transparent;
+}
+.md-loading svg {
+  display: block;
+  inline-size: var(--_loading-size);
+  block-size: var(--_loading-size);
+  fill: currentColor;
+}

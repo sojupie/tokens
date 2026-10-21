@@ -1,0 +1,320 @@
+:is(
+  .md-outlined-text-field,
+  .md-filled-text-field,
+  .md-outlined-select,
+  .md-filled-select,
+  .md-outlined-autocomplete,
+  .md-filled-autocomplete
+) {
+  --_field-state-color: transparent;
+  --_field-state-opacity: 0;
+  --_field-outline-opacity: 1;
+  --_field-input-text-opacity: 1;
+  --_field-label-opacity: 1;
+  --_field-supporting-text-opacity: 1;
+  --_field-leading-icon-opacity: 1;
+  --_field-trailing-icon-opacity: 1;
+  position: relative;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--md-sys-measurement-space100);
+  min-width: 0;
+  max-width: 100%;
+  height: var(--_field-height);
+  min-height: var(--_field-height);
+  border: var(--_field-outline-width) solid
+    color-mix(
+      in srgb,
+      var(--_field-outline) calc(var(--_field-outline-opacity) * 100%),
+      transparent
+    );
+  border-radius: var(--_field-shape);
+  background:
+    linear-gradient(
+      color-mix(
+        in srgb,
+        var(--_field-state-color) calc(var(--_field-state-opacity) * 100%),
+        transparent
+      ),
+      color-mix(
+        in srgb,
+        var(--_field-state-color) calc(var(--_field-state-opacity) * 100%),
+        transparent
+      )
+    ),
+    var(--_field-container, transparent);
+  padding: 0 var(--md-sys-measurement-space200);
+  caret-color: var(--_field-caret);
+  color: color-mix(
+    in srgb,
+    var(--_field-input-text-color) calc(var(--_field-input-text-opacity) * 100%),
+    transparent
+  );
+  font-family: var(--_field-input-text-font-family);
+  font-size: var(--_field-input-text-font-size);
+  line-height: var(--_field-input-text-line-height);
+  font-weight: var(--_field-input-text-font-weight);
+  letter-spacing: var(--_field-input-text-tracking);
+}
+:is(
+  .md-outlined-text-field,
+  .md-filled-text-field,
+  .md-outlined-select,
+  .md-filled-select,
+  .md-outlined-autocomplete,
+  .md-filled-autocomplete
+):focus-visible,
+:is(
+  .md-outlined-text-field,
+  .md-filled-text-field,
+  .md-outlined-select,
+  .md-filled-select,
+  .md-outlined-autocomplete,
+  .md-filled-autocomplete
+):has(> :is(input, select):focus-visible) {
+  outline: var(--_field-focus-width) solid var(--_field-focus-color);
+  outline-offset: var(--md-sys-state-focus-indicator-outer-offset);
+}
+:is(
+  .md-outlined-text-field,
+  .md-filled-text-field,
+  .md-outlined-select,
+  .md-filled-select,
+  .md-outlined-autocomplete,
+  .md-filled-autocomplete
+)::placeholder,
+:is(
+    .md-outlined-text-field,
+    .md-filled-text-field,
+    .md-outlined-select,
+    .md-filled-select,
+    .md-outlined-autocomplete,
+    .md-filled-autocomplete
+  )
+  input::placeholder {
+  color: var(--_field-placeholder);
+  opacity: 1;
+}
+:is(
+    .md-outlined-text-field,
+    .md-filled-text-field,
+    .md-outlined-select,
+    .md-filled-select,
+    .md-outlined-autocomplete,
+    .md-filled-autocomplete
+  ):has(> [data-slot="label"]):not(:focus-within):not(
+    [data-component-state="focused"]
+  )
+  input:placeholder-shown::placeholder {
+  color: transparent;
+}
+:is(
+    .md-outlined-text-field,
+    .md-filled-text-field,
+    .md-outlined-select,
+    .md-filled-select,
+    .md-outlined-autocomplete,
+    .md-filled-autocomplete
+  )
+  > :is(input, select) {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  appearance: none;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  caret-color: inherit;
+  outline: 0;
+  padding: 0;
+}
+.md-outlined-select {
+  padding: 0;
+}
+.md-outlined-select > select {
+  box-sizing: border-box;
+  cursor: pointer;
+  padding-inline: var(--md-sys-measurement-space200)
+    calc(
+      var(--_field-trailing-icon-size) + var(--md-sys-measurement-space100) +
+        var(--md-sys-measurement-space200)
+    );
+}
+.md-outlined-select > select > option {
+  background: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface);
+}
+.md-outlined-select > [data-slot="trailing-icon"] {
+  position: absolute;
+  right: var(--md-sys-measurement-space200);
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+:is(
+    .md-outlined-text-field,
+    .md-filled-text-field,
+    .md-outlined-select,
+    .md-filled-select,
+    .md-outlined-autocomplete,
+    .md-filled-autocomplete
+  )
+  [data-slot="label"] {
+  position: absolute;
+  left: var(--md-sys-measurement-space200);
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: color-mix(
+    in srgb,
+    var(--_field-label) calc(var(--_field-label-opacity) * 100%),
+    transparent
+  );
+  font-family: var(--_field-font-family);
+  font-size: var(--_field-font-size);
+  line-height: var(--_field-line-height);
+  font-weight: var(--_field-font-weight);
+  letter-spacing: var(--_field-tracking);
+}
+:is(
+    .md-outlined-text-field,
+    .md-filled-text-field,
+    .md-outlined-select,
+    .md-filled-select,
+    .md-outlined-autocomplete,
+    .md-filled-autocomplete
+  ):is(
+    :focus-within,
+    [data-component-state="focused"],
+    :has(> input:not(:placeholder-shown))
+  )
+  [data-slot="label"] {
+  top: 0;
+  font-size: var(--_field-populated-label-size);
+  line-height: var(--_field-populated-label-line-height);
+}
+:is(
+  .md-outlined-text-field,
+  .md-filled-text-field,
+  .md-outlined-select,
+  .md-filled-select,
+  .md-outlined-autocomplete,
+  .md-filled-autocomplete
+):has(> [data-slot="supporting-text"]) {
+  margin-bottom: calc(
+    var(--_field-supporting-text-line-height) +
+      var(--md-sys-measurement-space50)
+  );
+}
+:is(
+    .md-outlined-text-field,
+    .md-filled-text-field,
+    .md-outlined-select,
+    .md-filled-select,
+    .md-outlined-autocomplete,
+    .md-filled-autocomplete
+  )
+  [data-slot="supporting-text"] {
+  position: absolute;
+  top: calc(100% + var(--md-sys-measurement-space50));
+  left: var(--md-sys-measurement-space200);
+  right: var(--md-sys-measurement-space200);
+  color: color-mix(
+    in srgb,
+    var(--_field-supporting-text-color)
+      calc(var(--_field-supporting-text-opacity) * 100%),
+    transparent
+  );
+  font-family: var(--_field-supporting-text-font-family);
+  font-size: var(--_field-supporting-text-font-size);
+  line-height: var(--_field-supporting-text-line-height);
+  letter-spacing: var(--_field-supporting-text-tracking);
+  font-weight: var(--_field-supporting-text-font-weight);
+}
+:is(
+    .md-outlined-text-field,
+    .md-filled-text-field,
+    .md-outlined-select,
+    .md-filled-select,
+    .md-outlined-autocomplete,
+    .md-filled-autocomplete
+  )
+  [data-slot="leading-icon"],
+:is(
+    .md-outlined-text-field,
+    .md-filled-text-field,
+    .md-outlined-select,
+    .md-filled-select,
+    .md-outlined-autocomplete,
+    .md-filled-autocomplete
+  )
+  [data-slot="trailing-icon"] {
+  display: inline-flex;
+  flex: none;
+  width: var(--_field-leading-icon-size);
+  height: var(--_field-leading-icon-size);
+  color: color-mix(
+    in srgb,
+    var(--_field-leading-icon-color)
+      calc(var(--_field-leading-icon-opacity) * 100%),
+    transparent
+  );
+}
+:is(
+    .md-outlined-text-field,
+    .md-filled-text-field,
+    .md-outlined-select,
+    .md-filled-select,
+    .md-outlined-autocomplete,
+    .md-filled-autocomplete
+  )
+  [data-slot="trailing-icon"] {
+  width: var(--_field-trailing-icon-size);
+  height: var(--_field-trailing-icon-size);
+  color: color-mix(
+    in srgb,
+    var(--_field-trailing-icon-color)
+      calc(var(--_field-trailing-icon-opacity) * 100%),
+    transparent
+  );
+}
+:is(
+    .md-outlined-text-field,
+    .md-filled-text-field,
+    .md-outlined-select,
+    .md-filled-select,
+    .md-outlined-autocomplete,
+    .md-filled-autocomplete
+  )
+  [data-slot$="icon"]
+  > svg {
+  width: 100%;
+  height: 100%;
+}
+:is(
+    .md-outlined-text-field,
+    .md-filled-text-field,
+    .md-outlined-select,
+    .md-filled-select,
+    .md-outlined-autocomplete,
+    .md-filled-autocomplete
+  )
+  [data-slot="prefix"] {
+  color: var(--_field-prefix);
+}
+:is(
+    .md-outlined-text-field,
+    .md-filled-text-field,
+    .md-outlined-select,
+    .md-filled-select,
+    .md-outlined-autocomplete,
+    .md-filled-autocomplete
+  )
+  [data-slot="suffix"] {
+  color: var(--_field-suffix);
+}

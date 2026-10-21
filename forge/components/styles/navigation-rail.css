@@ -1,0 +1,344 @@
+/* Rail layout and app scaffolding are renderer rules, not captured measurements. */
+.md-menu-shortcut {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15em;
+  white-space: nowrap;
+}
+.md-menu-shortcut > svg {
+  inline-size: 1em;
+  block-size: 1em;
+  flex: none;
+  color: inherit;
+}
+.md-nav-icon {
+  display: block;
+  flex: none;
+  inline-size: var(--_nav-item-icon-size);
+  block-size: var(--_nav-item-icon-size);
+}
+.md-nav-icon > svg {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  color: var(--_nav-item-icon);
+}
+.md-nav-icon > svg:last-child {
+  display: none;
+}
+.md-nav-item[aria-current="page"] .md-nav-icon > svg:first-child {
+  display: none;
+}
+.md-nav-item[aria-current="page"] .md-nav-icon > svg:last-child {
+  display: block;
+}
+.md-rail-frame {
+  --_rail-content-width: 0px;
+  --_rail-rest-width: var(--md-comp-nav-rail-collapsed-container-width);
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  inline-size: 100%;
+  block-size: 40rem;
+  max-inline-size: 100%;
+  overflow: clip;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  border: var(--md-comp-divider-thickness) solid
+    var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-medium);
+}
+.md-rail-frame[data-width="narrow"] {
+  --_rail-rest-width: var(--md-comp-nav-rail-collapsed-narrow-container-width);
+}
+.md-navigation-slot {
+  flex: none;
+  min-inline-size: 0;
+  block-size: 100%;
+}
+.md-navigation-surface {
+  block-size: 100%;
+}
+.md-navigation-surface[hidden] {
+  display: none;
+}
+.md-rail-frame .md-navigation-rail {
+  display: flex;
+  flex-direction: column;
+  block-size: 100%;
+  min-block-size: 0;
+  overflow: auto;
+}
+.md-navigation-rail > header {
+  flex: none;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-inline: calc(
+    (var(--_rail-rest-width) - var(--md-comp-fab-container-width)) / 2
+  );
+  gap: var(--md-sys-measurement-space100);
+}
+.md-navigation-rail[data-variant="expanded"] > header {
+  align-items: flex-start;
+  padding-inline: var(
+    --md-comp-nav-rail-item-horizontal-full-width-leading-space
+  );
+}
+.md-navigation-rail[data-variant="expanded"] .md-rail-menu {
+  margin-inline-start: calc(
+    (
+        var(--md-comp-fab-container-width) -
+          var(--md-comp-icon-button-small-container-height)
+      ) /
+      2
+  );
+}
+.md-navigation-rail .md-nav-items {
+  flex: none;
+  inline-size: 100%;
+}
+.md-navigation-rail .md-nav-item {
+  --_nav-label-height: 1lh;
+  --_nav-item-label-gap: var(--_nav-item-indicator-gap);
+  flex: none;
+  inline-size: 100%;
+}
+.md-navigation-rail
+  :where(
+    .md-nav-icon,
+    .md-nav-label,
+    .md-nav-fab > span:not(.md-button-ripple)
+  ) {
+  position: relative;
+}
+.md-navigation-rail .md-nav-label {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.md-navigation-rail[data-orientation="horizontal"] .md-nav-item {
+  justify-content: flex-start;
+}
+.md-navigation-rail[data-orientation="horizontal"] .md-nav-indicator {
+  inline-size: max-content;
+  max-inline-size: 100%;
+  min-block-size: var(--_nav-item-indicator-height);
+  block-size: auto;
+}
+/* Horizontal labels sit inside the indicator, so use its on-container
+   foreground, as the icon does. The vertical label remains outside the pill. */
+.md-navigation-rail[data-orientation="horizontal"] .md-nav-label {
+  min-inline-size: 0;
+  color: var(--_nav-item-icon);
+}
+.md-navigation-rail[data-orientation="vertical"] .md-nav-item {
+  min-block-size: var(--_nav-item-height);
+  block-size: max(
+    var(--_nav-item-height),
+    calc(
+      var(--_nav-item-indicator-height) + var(--_nav-item-label-gap) +
+        var(--_nav-label-height) + 2 * var(--_nav-item-vertical-padding)
+    )
+  );
+  padding-block: var(--_nav-item-vertical-padding);
+}
+.md-navigation-rail[data-orientation="vertical"] .md-nav-indicator {
+  transform: translateY(
+    calc((var(--_nav-item-label-gap) + var(--_nav-label-height)) / -2)
+  );
+}
+.md-navigation-rail[data-orientation="vertical"] .md-nav-label {
+  inline-size: max-content;
+  max-inline-size: calc(
+    var(--_rail-rest-width) - 2 * var(--md-sys-measurement-space200)
+  );
+}
+.md-navigation-rail[data-variant="collapsed"]
+  :is([data-navigation-secondary], .md-nav-section) {
+  display: none;
+}
+.md-nav-section {
+  margin: var(--md-sys-measurement-space150) 0
+    var(--md-sys-measurement-space100);
+  padding-inline: calc(
+    var(--md-comp-nav-rail-item-horizontal-full-width-leading-space) +
+      var(--md-comp-nav-rail-item-active-indicator-leading-space)
+  );
+  font: var(--md-sys-typescale-label-large-weight)
+    var(--md-sys-typescale-label-large-size) /
+    var(--md-sys-typescale-label-large-line-height)
+    var(--md-sys-typescale-label-large-font);
+  color: var(--md-sys-color-on-surface-variant);
+}
+.md-navigation-rail .md-nav-fab {
+  --_elevation-level: var(--md-sys-elevation-level0);
+  justify-content: flex-start;
+}
+.md-navigation-rail .md-nav-fab.md-fab {
+  padding-inline: calc((var(--_fab-width) - var(--_button-icon-size)) / 2);
+}
+.md-navigation-rail[data-variant="collapsed"] .md-rail-menu {
+  margin-inline-start: calc(
+    (
+        var(--md-comp-fab-container-width) -
+          var(--md-comp-icon-button-small-container-height)
+      ) /
+      2
+  );
+}
+/* Optional drawer-style indicator; the destination button remains full width. */
+.md-navigation-rail[data-variant="expanded"][data-indicator="fill"]
+  .md-nav-indicator {
+  inline-size: 100%;
+  justify-content: flex-start;
+}
+.md-navigation-rail[data-variant="collapsed"]
+  .md-nav-fab
+  > span:not(.md-button-ripple) {
+  display: none;
+}
+/* Both glyphs occupy one icon slot; only the current glyph is opaque. */
+.md-icon-button.md-rail-menu > span:not(.md-button-ripple) {
+  display: flex;
+  position: absolute;
+  opacity: 1;
+  transform: rotate(0deg);
+  transition:
+    opacity var(--_motion-fast-effects-duration)
+      var(--_motion-fast-effects-easing),
+    transform var(--_motion-default-spatial-duration)
+      var(--_motion-default-spatial-easing);
+}
+.md-icon-button.md-rail-menu
+  > [data-navigation-collapse-icon]:not(.md-button-ripple) {
+  opacity: 0;
+  transform: rotate(-90deg);
+}
+.md-navigation-rail[data-variant="expanded"]
+  .md-rail-menu
+  > [data-navigation-menu-icon] {
+  opacity: 0;
+  transform: rotate(90deg);
+}
+.md-navigation-rail[data-variant="expanded"]
+  .md-rail-menu
+  > [data-navigation-collapse-icon] {
+  opacity: 1;
+  transform: rotate(0deg);
+}
+.md-navigation-rail[data-variant="expanded"][data-orientation="vertical"]
+  .md-nav-item {
+  justify-content: flex-start;
+  padding-inline: var(
+    --md-comp-nav-rail-item-horizontal-full-width-leading-space
+  );
+}
+.md-rail-frame[data-transitioning] .md-navigation-rail {
+  overflow: hidden;
+}
+.md-rail-frame[data-transitioning]
+  .md-navigation-rail
+  > :is(header, .md-nav-items) {
+  inline-size: var(--_rail-content-width);
+  box-sizing: border-box;
+  align-self: var(--_rail-content-align);
+}
+.md-rail-screen {
+  scrollbar-gutter: stable;
+}
+@media (prefers-reduced-motion: reduce) {
+  .md-icon-button.md-rail-menu > span:not(.md-button-ripple) {
+    transition: none;
+  }
+}
+.md-nav-badge {
+  flex: none;
+}
+.md-navigation-rail[data-orientation="vertical"] .md-nav-badge {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-end: calc(
+    (
+        var(--_nav-item-indicator-width) - var(--_nav-item-icon-size) -
+          var(--_badge-size)
+      ) /
+      2
+  );
+  translate: 0 -50%;
+}
+.md-rail-frame[data-alignment="center"] .md-nav-items {
+  margin-block: auto;
+}
+.md-rail-body {
+  position: relative;
+  min-inline-size: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  block-size: 100%;
+}
+.md-rail-body > header {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: var(--md-sys-measurement-space150);
+  padding: var(--md-sys-measurement-space200);
+  font: inherit;
+}
+.md-rail-external-menu[hidden] {
+  display: none;
+}
+.md-rail-screen {
+  flex: 1;
+  min-block-size: 0;
+  overflow: auto;
+  padding: var(--md-sys-measurement-space300);
+}
+.md-rail-screen h3 {
+  margin-block-start: 0;
+}
+.md-rail-screen article {
+  display: flex;
+  gap: var(--md-sys-measurement-space200);
+  align-items: center;
+  padding-block: var(--md-sys-measurement-space200);
+  border-block-end: var(--md-comp-divider-thickness) solid
+    var(--md-comp-divider-color);
+}
+.md-rail-screen article p {
+  margin: var(--md-sys-measurement-space50) 0 0;
+  color: var(--md-sys-color-on-surface-variant);
+}
+.md-navigation-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border: 0;
+  padding: 0;
+  background: color-mix(
+    in srgb,
+    var(--md-comp-navigation-drawer-scrim-color)
+      calc(var(--md-comp-navigation-drawer-scrim-opacity) * 100%),
+    transparent
+  );
+}
+.md-navigation-scrim[hidden] {
+  display: none;
+}
+.md-rail-frame[data-modal-open="true"] .md-navigation-surface {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  z-index: 3;
+}
+.md-rail-frame[data-modal-open="true"] .md-navigation-slot {
+  inline-size: var(--_rail-rest-width);
+}
+.md-rail-frame[data-rail-hidden="true"] .md-navigation-slot,
+.md-rail-frame[data-modal-open="true"][data-collapse="hidden"]
+  .md-navigation-slot {
+  inline-size: 0;
+}
+/* Reserve the final layout once; move the directory without resizing its text. */
+.md-rail-frame[data-transitioning] .md-navigation-slot {
+  inline-size: var(--_rail-slot-width);
+}

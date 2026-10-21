@@ -1,0 +1,278 @@
+/* Sheet sizes and gesture defaults absent from the capture are renderer rules. */
+.md-sheet-demo {
+  --_sheet-peek-height: 56px;
+  --_sheet-expanded-height: min(24rem, 85svh);
+  --_sheet-drag-distance: 56px;
+  --_sheet-drag-velocity: 125;
+  --_sheet-scrim-color: var(--md-ref-palette-neutral0);
+  --_sheet-scrim-opacity: 0.32;
+  inline-size: 28rem;
+  max-inline-size: 100%;
+  display: grid;
+  gap: var(--md-sys-measurement-space200);
+}
+.md-sheet-frame {
+  position: relative;
+  inline-size: 100%;
+  block-size: min(28rem, 70svh);
+  overflow: hidden;
+  background: var(--md-sys-color-surface-container-high);
+}
+.md-sheet-page-label {
+  display: block;
+  padding: var(--md-sys-measurement-space200);
+  color: var(--md-sys-color-on-surface);
+}
+.md-sheet {
+  --_elevation-level: var(--_sheet-elevation);
+  --_shadow-color: var(--md-sys-color-shadow);
+  --_sheet-duration: var(--_motion-default-spatial-duration);
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  min-inline-size: 0;
+  min-block-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--_sheet-shape);
+  background: var(--_sheet-container);
+  color: var(--md-sys-color-on-surface);
+  overflow: visible;
+}
+.md-sheet[hidden],
+dialog.md-sheet:not([open]) {
+  display: none;
+}
+.md-bottom-sheet {
+  inset-inline: 0;
+  inset-block-end: 0;
+  inline-size: 100%;
+  block-size: var(--_sheet-expanded-height);
+  max-block-size: 100%;
+  transition: border-radius var(--_sheet-duration)
+    var(--_motion-default-spatial-easing);
+}
+.md-bottom-sheet[data-variant="minimized"] {
+  block-size: var(--_sheet-peek-height);
+}
+/* Clear the native dialog start inset before anchoring either sheet kind. */
+.md-side-sheet {
+  inset-block: 0;
+  inset-inline-start: auto;
+  inset-inline-end: 0;
+  inline-size: var(--_sheet-width);
+  block-size: var(--_sheet-height);
+  max-inline-size: 100%;
+  border-start-start-radius: var(--_sheet-shape-tl);
+  border-start-end-radius: var(--_sheet-shape-tr);
+  border-end-start-radius: var(--_sheet-shape-bl);
+  border-end-end-radius: var(--_sheet-shape-br);
+}
+.md-side-sheet[data-orientation="start"] {
+  inset-inline-start: 0;
+  inset-inline-end: auto;
+  border-start-start-radius: var(--_sheet-shape-tr);
+  border-start-end-radius: var(--_sheet-shape-tl);
+  border-end-start-radius: var(--_sheet-shape-br);
+  border-end-end-radius: var(--_sheet-shape-bl);
+}
+.md-side-sheet[data-control="standard"][data-variant="docked"] {
+  border-inline-start: var(--md-comp-divider-thickness) solid
+    var(--_sheet-divider);
+}
+.md-side-sheet[data-control="standard"][data-variant="docked"][data-orientation="start"] {
+  border-inline-start: 0;
+  border-inline-end: var(--md-comp-divider-thickness) solid
+    var(--_sheet-divider);
+}
+.md-side-sheet[data-variant="detached"] {
+  inset-block: var(--md-sys-measurement-space200);
+  inset-inline-end: var(--md-sys-measurement-space200);
+  block-size: calc(100% - 2 * var(--md-sys-measurement-space200));
+  max-inline-size: calc(100% - 2 * var(--md-sys-measurement-space200));
+}
+.md-side-sheet[data-variant="detached"][data-orientation="start"] {
+  inset-inline-start: var(--md-sys-measurement-space200);
+  inset-inline-end: auto;
+}
+dialog.md-sheet {
+  position: fixed;
+  max-block-size: 100svh;
+}
+dialog.md-bottom-sheet {
+  inset-block-start: auto;
+  inline-size: min(40rem, 100svw);
+  margin-inline: auto;
+  max-block-size: 85svh;
+}
+dialog.md-side-sheet {
+  block-size: 100svh;
+}
+dialog.md-side-sheet[data-variant="detached"] {
+  block-size: calc(100svh - 2 * var(--md-sys-measurement-space200));
+  max-inline-size: calc(100svw - 2 * var(--md-sys-measurement-space200));
+}
+.md-sheet::backdrop {
+  background: color-mix(
+    in srgb,
+    var(--_sheet-scrim-color) calc(var(--_sheet-scrim-opacity) * 100%),
+    transparent
+  );
+  opacity: 1;
+  transition: opacity var(--_motion-default-effects-duration)
+    var(--_motion-default-effects-easing);
+}
+.md-sheet[data-sheet-closing] {
+  pointer-events: none;
+}
+.md-sheet[data-sheet-closing]::backdrop {
+  opacity: 0;
+}
+@starting-style {
+  .md-sheet[open]::backdrop {
+    opacity: 0;
+  }
+}
+.md-sheet-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-block-size: 0;
+  overflow: hidden;
+  opacity: 1;
+  transition: opacity var(--_motion-fast-effects-duration)
+    var(--_motion-fast-effects-easing);
+}
+.md-sheet-content[hidden] {
+  display: none;
+}
+.md-bottom-sheet[data-variant="minimized"] .md-sheet-content {
+  opacity: 0;
+}
+.md-sheet-handle {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--md-sys-measurement-space50);
+  flex: none;
+  inline-size: var(--md-sys-measurement-space600);
+  block-size: var(--md-sys-measurement-space600);
+  margin: var(--md-sys-measurement-space50) auto;
+  padding: 0;
+  border: 0;
+  border-radius: var(--md-sys-shape-corner-full);
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: ns-resize;
+  touch-action: none;
+  user-select: none;
+}
+.md-sheet-handle-mark {
+  inline-size: var(--_sheet-handle-width);
+  block-size: var(--_sheet-handle-height);
+  background: color-mix(
+    in srgb,
+    var(--_sheet-handle) calc(var(--_sheet-handle-opacity) * 100%),
+    transparent
+  );
+  border-radius: var(--md-sys-shape-corner-full);
+}
+.md-sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: none;
+  gap: var(--md-sys-measurement-space100);
+  padding: var(--md-sys-measurement-space100) var(--md-sys-measurement-space300);
+}
+.md-sheet-title {
+  min-inline-size: 0;
+  margin: 0;
+  font: var(--md-sys-typescale-title-large);
+  color: var(--md-sys-color-on-surface);
+}
+.md-side-sheet .md-sheet-title {
+  color: var(--_sheet-headline-color);
+  font-family: var(--_sheet-headline-font-family);
+  font-size: var(--_sheet-headline-font-size);
+  font-weight: var(--_sheet-headline-font-weight);
+  line-height: var(--_sheet-headline-line-height);
+  letter-spacing: var(--_sheet-headline-tracking);
+}
+.md-sheet-body {
+  flex: 1;
+  min-block-size: 0;
+  overflow: auto;
+  padding: var(--md-sys-measurement-space300);
+}
+.md-sheet-body p {
+  margin-block: 0 var(--md-sys-measurement-space300);
+}
+.md-sheet-body
+  :is(
+    .md-outlined-text-field,
+    .md-filled-text-field,
+    .md-outlined-select,
+    .md-filled-select,
+    .md-outlined-autocomplete,
+    .md-filled-autocomplete
+  ) {
+  inline-size: 100%;
+}
+.md-sheet-footer {
+  display: flex;
+  flex: none;
+  justify-content: flex-end;
+  gap: var(--md-sys-measurement-space100);
+  padding: var(--md-sys-measurement-space200) var(--md-sys-measurement-space300);
+}
+.md-sheet .md-sheet-action {
+  --_button-label: var(
+    --_sheet-action-label,
+    var(--md-comp-button-text-label-text-color)
+  );
+  --_button-state-color: var(--_sheet-action-state-color, currentColor);
+  --_button-state-opacity: var(--_sheet-action-state-opacity, 0);
+  --_button-background-state-color: var(
+    --_sheet-action-background-state-color,
+    transparent
+  );
+  --_button-background-state-opacity: var(
+    --_sheet-action-background-state-opacity,
+    0
+  );
+  --_button-pressed-state-color: var(--_sheet-action-pressed-state-color);
+  --_button-pressed-state-opacity: var(--_sheet-action-pressed-state-opacity);
+}
+.md-sheet
+  :is(.md-sheet-action, .md-sheet-close):where(
+    :focus-visible,
+    [data-component-state="focused"]
+  ) {
+  outline: var(--_sheet-focus-width) solid var(--_sheet-focus-color);
+  outline-offset: var(--_sheet-focus-offset);
+}
+@media (prefers-reduced-motion: reduce) {
+  .md-sheet,
+  .md-sheet-content,
+  .md-sheet::backdrop {
+    transition: none;
+  }
+}
+
+.md-sheet-handle:focus-visible {
+  outline: none;
+}
+.md-sheet-handle:where(:focus-visible, [data-component-state="focused"])
+  .md-sheet-handle-mark {
+  outline: var(--_sheet-focus-width) solid var(--_sheet-focus-color);
+  outline-offset: var(--_sheet-focus-offset);
+}
+.md-sheet .md-sheet-action:disabled {
+  --_button-label: var(--md-comp-button-text-disabled-label-text-color);
+  --_button-label-opacity: var(
+    --md-comp-button-text-disabled-label-text-opacity
+  );
+}

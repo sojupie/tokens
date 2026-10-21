@@ -1,0 +1,6 @@
+/* Selects retain combobox focus and keyboard navigation without a text caret. */
+:is(.md-filled-select, .md-outlined-select) > input[readonly] {
+  cursor: pointer;
+  caret-color: transparent;
+  user-select: none;
+}

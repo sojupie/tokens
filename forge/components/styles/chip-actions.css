@@ -1,0 +1,141 @@
+/* Chip action anatomy uses system spacing; dimensions and colors use each chip's source set. */
+.md-chip-demo {
+  display: inline-flex;
+  max-inline-size: 100%;
+}
+:is(.md-filter-chip, .md-assist-chip, .md-suggestion-chip, .md-input-chip) {
+  box-sizing: border-box;
+  min-inline-size: 0;
+  block-size: var(--_chip-height);
+  white-space: nowrap;
+  --_chip-shadow: var(--md-sys-color-shadow);
+}
+:is(.md-filter-chip, .md-input-chip):has(> .md-chip-primary) {
+  padding: 0;
+  gap: 0;
+}
+.md-chip-primary,
+.md-chip-remove {
+  appearance: none;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  gap: var(--md-sys-measurement-space100);
+  box-sizing: border-box;
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  cursor: inherit;
+  touch-action: manipulation;
+  outline: 0;
+}
+.md-chip-primary {
+  padding-inline: var(--md-sys-measurement-space150);
+  border-radius: inherit;
+}
+:is(.md-assist-chip, .md-suggestion-chip):has(.md-chip-icon),
+:is(.md-filter-chip, .md-input-chip):has(> .md-chip-primary .md-chip-icon)
+  > .md-chip-primary {
+  padding-inline-start: var(--md-sys-measurement-space100);
+}
+:is(.md-filter-chip, .md-input-chip):has(> .md-chip-remove) > .md-chip-primary {
+  padding-inline-end: var(--md-sys-measurement-space100);
+}
+.md-chip-remove {
+  padding-inline-end: var(--md-sys-measurement-space100);
+  border-start-end-radius: inherit;
+  border-end-end-radius: inherit;
+}
+.md-chip-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-inline-size: 0;
+}
+.md-chip-icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+}
+.md-chip-icon[data-slot="leading-icon"] {
+  inline-size: var(--_chip-leading-icon-size, var(--_chip-icon-size));
+  block-size: var(--_chip-leading-icon-size, var(--_chip-icon-size));
+  color: color-mix(
+    in srgb,
+    var(--_chip-leading-icon, var(--_chip-icon))
+      calc(var(--_chip-leading-icon-opacity, var(--_chip-icon-opacity)) * 100%),
+    transparent
+  );
+}
+.md-chip-icon[data-slot="trailing-icon"] {
+  inline-size: var(--_chip-trailing-icon-size, var(--_chip-icon-size));
+  block-size: var(--_chip-trailing-icon-size, var(--_chip-icon-size));
+  color: color-mix(
+    in srgb,
+    var(--_chip-trailing-icon, var(--_chip-icon))
+      calc(var(--_chip-trailing-icon-opacity, var(--_chip-icon-opacity)) * 100%),
+    transparent
+  );
+}
+.md-chip-icon > svg {
+  inline-size: 100%;
+  block-size: 100%;
+  color: inherit;
+}
+.md-filter-chip:where(:not([data-selected="true"])) .md-chip-check,
+.md-filter-chip:where([data-selected="true"]) .md-chip-leading {
+  display: none;
+}
+.md-chip-avatar {
+  display: grid;
+  place-items: center;
+  flex: none;
+  inline-size: var(--_chip-avatar-size);
+  block-size: var(--_chip-avatar-size);
+  border-radius: var(--_chip-avatar-shape);
+  background: var(--md-sys-color-tertiary-container);
+  color: var(--md-sys-color-on-tertiary-container);
+  opacity: var(--_chip-avatar-opacity, 1);
+}
+.md-input-chip[data-shape="avatar"] > .md-chip-primary {
+  padding-inline-start: var(--md-sys-measurement-space50);
+}
+:is(.md-filter-chip, .md-input-chip):has(> button:focus-visible) {
+  outline: var(--_chip-focus-width) solid var(--_chip-focus-color);
+  outline-offset: var(--_chip-focus-offset);
+}
+.md-chip-remove:focus-visible::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: var(--_chip-focus-width) solid var(--_chip-focus-color);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+:is(
+  .md-filter-chip,
+  .md-assist-chip,
+  .md-suggestion-chip,
+  .md-input-chip
+)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  pointer-events: none;
+  border-radius: inherit;
+  border: var(--_chip-outline-width) solid
+    color-mix(
+      in srgb,
+      var(--_chip-outline) calc(var(--_chip-outline-opacity) * 100%),
+      transparent
+    );
+}

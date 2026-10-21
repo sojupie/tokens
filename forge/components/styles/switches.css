@@ -1,0 +1,212 @@
+/* Native inputs handle selection. Mark geometry and handle travel are renderer anatomy. */
+.md-checkbox,
+.md-switch {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  vertical-align: middle;
+  cursor: pointer;
+}
+.md-checkbox {
+  --_checkbox-container: transparent;
+  --_checkbox-container-opacity: 1;
+  --_checkbox-icon-opacity: 1;
+  --_checkbox-state-color: transparent;
+  --_checkbox-state-opacity: 0;
+  width: var(--_checkbox-state-size);
+  height: var(--_checkbox-state-size);
+}
+:is(.md-checkbox, .md-switch) > input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  margin: 0;
+  cursor: inherit;
+  z-index: 2;
+}
+.md-checkbox::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--_checkbox-state-shape);
+  z-index: -1;
+  background: var(--_button-background-state-color);
+  opacity: var(--_button-background-state-opacity);
+  pointer-events: none;
+}
+.md-checkbox > .md-checkbox-box {
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  width: var(--_checkbox-width);
+  height: var(--_checkbox-height);
+  border-radius: var(--_checkbox-shape);
+  border: var(--_checkbox-outline-width) solid
+    color-mix(
+      in srgb,
+      var(--_checkbox-outline, transparent)
+        calc(var(--_checkbox-container-opacity) * 100%),
+      transparent
+    );
+  background: color-mix(
+    in srgb,
+    var(--_checkbox-container) calc(var(--_checkbox-container-opacity) * 100%),
+    transparent
+  );
+}
+.md-checkbox > .md-checkbox-box > svg {
+  display: none;
+  width: var(--_checkbox-icon-size);
+  height: var(--_checkbox-icon-size);
+  color: color-mix(
+    in srgb,
+    var(--_checkbox-icon) calc(var(--_checkbox-icon-opacity) * 100%),
+    transparent
+  );
+}
+.md-checkbox:has(> input:checked) > .md-checkbox-box > .md-checkbox-check {
+  display: block;
+}
+.md-checkbox:has(> input:indeterminate)
+  > .md-checkbox-box
+  > .md-checkbox-check {
+  display: none;
+}
+.md-checkbox:has(> input:indeterminate) > .md-checkbox-box > .md-checkbox-dash {
+  display: block;
+}
+.md-checkbox:has(> input:focus-visible),
+.md-checkbox[data-component-state="focused"] {
+  outline: var(--_checkbox-focus-width) solid var(--_checkbox-focus-color);
+  outline-offset: var(--_checkbox-focus-offset);
+  border-radius: var(--md-sys-shape-corner-full);
+}
+.md-switch {
+  --_switch-track-opacity: 1;
+  --_switch-handle-opacity: 1;
+  --_switch-icon-opacity: 1;
+  --_switch-state-color: transparent;
+  --_switch-state-opacity: 0;
+  width: var(--_switch-track-width);
+  height: var(--_switch-state-size);
+}
+.md-switch-track {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  box-sizing: border-box;
+  width: var(--_switch-track-width);
+  height: var(--_switch-track-height);
+  border: var(--_switch-track-outline-width) solid
+    color-mix(
+      in srgb,
+      var(--_switch-track-outline, var(--_switch-track))
+        calc(var(--_switch-track-opacity) * 100%),
+      transparent
+    );
+  border-radius: var(--_switch-track-shape);
+  background: color-mix(
+    in srgb,
+    var(--_switch-track) calc(var(--_switch-track-opacity) * 100%),
+    transparent
+  );
+}
+.md-switch-handle {
+  --_elevation-level: var(--_switch-handle-elevation);
+  --_shadow-color: var(--_switch-handle-shadow);
+  position: absolute;
+  top: 50%;
+  left: calc(var(--_switch-track-height) / 2);
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  width: var(--_switch-handle-width);
+  height: var(--_switch-handle-height);
+  isolation: isolate;
+  border-radius: var(--_switch-handle-shape);
+  transition:
+    left var(--_motion-fast-spatial-duration) var(--_motion-fast-spatial-easing),
+    width var(--_motion-fast-spatial-duration)
+      var(--_motion-fast-spatial-easing),
+    height var(--_motion-fast-spatial-duration)
+      var(--_motion-fast-spatial-easing);
+}
+.md-switch:has(> input:checked) > .md-switch-handle {
+  left: calc(var(--_switch-track-width) - var(--_switch-track-height) / 2);
+}
+.md-switch-handle::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: color-mix(
+    in srgb,
+    var(--_switch-handle) calc(var(--_switch-handle-opacity) * 100%),
+    transparent
+  );
+  z-index: 0;
+}
+.md-switch-handle::before {
+  z-index: -1;
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: var(--_switch-state-size);
+  height: var(--_switch-state-size);
+  border-radius: var(--_switch-state-shape);
+  background: var(--_button-background-state-color);
+  opacity: var(--_button-background-state-opacity);
+}
+.md-switch-handle > svg {
+  position: relative;
+  z-index: 1;
+  width: var(--_switch-icon-size);
+  height: var(--_switch-icon-size);
+  color: color-mix(
+    in srgb,
+    var(--_switch-icon) calc(var(--_switch-icon-opacity) * 100%),
+    transparent
+  );
+}
+.md-switch:not([data-with-icon="true"]) .md-switch-handle > svg,
+.md-switch:has(> input:checked) .md-switch-off,
+.md-switch:not(:has(> input:checked)) .md-switch-on {
+  display: none;
+}
+.md-switch:has(> input:focus-visible),
+.md-switch[data-component-state="focused"] {
+  outline: var(--_switch-focus-width) solid var(--_switch-focus-color);
+  outline-offset: var(--_switch-focus-offset);
+  border-radius: var(--md-sys-shape-corner-full);
+}
+:is(.md-checkbox, .md-switch):has(> input:disabled) {
+  cursor: default;
+}
+@media (prefers-reduced-motion: reduce) {
+  .md-switch-handle {
+    transition: none;
+  }
+}
+@media (forced-colors: active) {
+  :is(.md-checkbox, .md-switch) > input {
+    appearance: auto;
+    opacity: 1;
+    position: static;
+    width: var(--md-sys-measurement-space300);
+    height: var(--md-sys-measurement-space300);
+  }
+  .md-checkbox::before,
+  .md-checkbox-box,
+  .md-switch-track,
+  .md-switch-handle {
+    display: none !important;
+  }
+}

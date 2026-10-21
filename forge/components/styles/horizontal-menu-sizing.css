@@ -1,0 +1,10 @@
+/* Horizontal menus size to their items and their captured horizontal padding. */
+.md-menu[popover][data-orientation="horizontal"] {
+  min-inline-size: 0;
+}
+.md-menu[data-orientation="horizontal"] .md-menu-item::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block: min(0px, calc((100% - var(--md-sys-measurement-space600)) / 2));
+}

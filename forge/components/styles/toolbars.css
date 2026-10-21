@@ -1,0 +1,194 @@
+/* Toolbar geometry and colors override shared button anatomy. */
+.md-toolbar-scene {
+  position: relative;
+  inline-size: 100%;
+  block-size: 20rem;
+  min-inline-size: 0;
+  overflow: hidden;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-medium);
+  background: var(--md-sys-color-surface);
+}
+.md-toolbar-page {
+  margin: 0;
+  padding: var(--md-sys-measurement-space300);
+  color: var(--md-sys-color-on-surface-variant);
+}
+.md-toolbar-demo {
+  --_toolbar-clearance: var(
+    --_toolbar-wrapper-padding,
+    var(--md-sys-measurement-space200)
+  );
+  display: flex;
+  align-items: center;
+  max-inline-size: 100%;
+  padding: 0;
+  box-sizing: border-box;
+}
+.md-toolbar-scene > .md-toolbar-demo {
+  position: absolute;
+  inset-inline-start: 50%;
+  inset-block-end: calc(
+    var(--_toolbar-clearance) + env(safe-area-inset-bottom, 0px)
+  );
+  translate: -50% 0;
+  max-inline-size: calc(100% - 2 * var(--_toolbar-clearance));
+}
+.md-toolbar-scene > .md-toolbar-demo:has(> .md-toolbar[data-variant="docked"]) {
+  inset-inline: 0;
+  inset-block-end: 0;
+  translate: none;
+  inline-size: 100%;
+  max-inline-size: 100%;
+}
+.md-toolbar-demo[data-orientation="vertical"] {
+  --_toolbar-clearance: var(
+    --md-comp-toolbar-floating-vertical-container-external-space
+  );
+  flex-direction: column;
+}
+.md-toolbar-scene > .md-toolbar-demo[data-orientation="vertical"] {
+  inset-inline-start: auto;
+  inset-inline-end: var(--_toolbar-clearance);
+  inset-block-start: 50%;
+  inset-block-end: auto;
+  translate: 0 -50%;
+  max-block-size: calc(100% - 2 * var(--_toolbar-clearance));
+}
+.md-toolbar {
+  --_elevation-level: var(--_toolbar-elevation, 0);
+  --_shadow-color: var(--md-sys-color-shadow);
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  max-inline-size: 100%;
+  block-size: var(--_toolbar-height);
+  padding-inline: var(--_toolbar-leading) var(--_toolbar-trailing);
+  gap: var(--_toolbar-gap);
+  border-radius: var(--_toolbar-shape);
+  background: var(--_toolbar-container);
+}
+.md-toolbar[data-variant="docked"] {
+  inline-size: 100%;
+  justify-content: safe center;
+  gap: var(--_toolbar-gap, var(--_toolbar-min-gap));
+}
+.md-toolbar[data-variant="floating"] {
+  padding-block: var(--md-sys-measurement-space100);
+}
+.md-toolbar[data-orientation="vertical"] {
+  flex-direction: column;
+  inline-size: var(--_toolbar-width);
+  block-size: max-content;
+  padding-block: var(--_toolbar-leading) var(--_toolbar-trailing);
+  padding-inline: var(--md-sys-measurement-space100);
+}
+/* Allocate 48dp targets while preserving the 40dp small-button visuals. */
+.md-toolbar .md-toolbar-item {
+  margin: var(--md-sys-measurement-space50);
+}
+.md-toolbar .md-toolbar-item::after {
+  content: "";
+  position: absolute;
+  inset: calc(-1 * var(--md-sys-measurement-space50));
+  min-inline-size: var(--md-sys-measurement-space600);
+  min-block-size: var(--md-sys-measurement-space600);
+}
+.md-toolbar-item[hidden],
+.md-toolbar-menu [hidden] {
+  display: none;
+}
+.md-toolbar-menu {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  max-inline-size: calc(100vw - 2 * var(--md-sys-measurement-space100));
+}
+.md-toolbar .md-toolbar-item {
+  --_toolbar-item-container: var(--md-sys-color-surface-container);
+  --_toolbar-item-icon-opacity: 1;
+  --_toolbar-item-label-opacity: 1;
+  --_toolbar-item-background-state-color: transparent;
+  --_toolbar-item-background-state-opacity: 0;
+  --_icon-container: var(--_toolbar-item-container);
+  --_icon-icon: var(--_toolbar-item-icon);
+  --_icon-icon-opacity: var(--_toolbar-item-icon-opacity);
+  --_button-container: var(--_toolbar-item-container);
+  --_button-label: var(--_toolbar-item-label);
+  --_button-icon: var(--_toolbar-item-icon);
+  --_button-label-opacity: var(--_toolbar-item-label-opacity);
+  --_button-icon-opacity: var(--_toolbar-item-icon-opacity);
+  --_button-state-color: var(--_toolbar-item-state-color, currentColor);
+  --_button-state-opacity: var(--_toolbar-item-state-opacity, 0);
+  --_button-background-state-color: var(--_toolbar-item-background-state-color);
+  --_button-background-state-opacity: var(
+    --_toolbar-item-background-state-opacity
+  );
+  --_button-pressed-state-color: var(--_toolbar-item-pressed-state-color);
+  --_button-pressed-state-opacity: var(--_toolbar-item-pressed-state-opacity);
+}
+.md-toolbar .md-toolbar-item:where(.md-button) {
+  color: color-mix(
+    in srgb,
+    var(--_toolbar-item-label) calc(var(--_toolbar-item-label-opacity) * 100%),
+    transparent
+  );
+}
+.md-toolbar .md-toolbar-item > svg {
+  color: color-mix(
+    in srgb,
+    var(--_toolbar-item-icon) calc(var(--_toolbar-item-icon-opacity) * 100%),
+    transparent
+  );
+}
+.md-toolbar-demo > .md-toolbar-fab {
+  --_fab-width: var(--_toolbar-fab-width);
+  --_fab-height: var(--_toolbar-fab-height);
+  --_fab-shape: var(--_toolbar-fab-shape);
+  --_fab-icon-size: var(--_toolbar-fab-icon-size);
+  --_fab-icon: var(--_toolbar-fab-icon);
+  --_fab-container: var(--_toolbar-fab-container);
+  --_fab-elevation: var(--_toolbar-fab-elevation);
+  --_fab-shadow: var(--md-sys-color-shadow);
+  --_fab-pressed-state-color: var(--_toolbar-fab-icon);
+  --_fab-pressed-state-opacity: var(--md-sys-state-pressed-state-layer-opacity);
+  margin-inline-start: var(--_toolbar-fab-gap);
+}
+.md-toolbar-demo[data-orientation="vertical"] > .md-toolbar-fab {
+  margin-inline-start: 0;
+  margin-block-start: var(--_toolbar-fab-gap);
+}
+@media (prefers-reduced-motion: reduce) {
+  .md-app-bar {
+    transition: none;
+  }
+}
+/* AndroidX toolbar-FAB interaction elevations fill states absent from its size tokens. */
+.md-toolbar-demo > .md-toolbar-fab:where(:hover):not(:where([data-touch])) {
+  --_fab-elevation: var(--md-sys-elevation-level3);
+  --_fab-state-color: var(--_toolbar-fab-icon);
+  --_fab-state-opacity: var(--md-sys-state-hover-state-layer-opacity);
+  --_fab-background-state-color: var(--_toolbar-fab-icon);
+  --_fab-background-state-opacity: var(
+    --md-sys-state-hover-state-layer-opacity
+  );
+}
+.md-toolbar-demo > .md-toolbar-fab:where(:focus-visible) {
+  --_fab-elevation: var(--md-sys-elevation-level2);
+  --_fab-state-color: var(--_toolbar-fab-icon);
+  --_fab-state-opacity: var(--md-sys-state-focus-state-layer-opacity);
+  --_fab-background-state-color: var(--_toolbar-fab-icon);
+  --_fab-background-state-opacity: var(
+    --md-sys-state-focus-state-layer-opacity
+  );
+}
+.md-toolbar-demo
+  > .md-toolbar-fab:where(:active, [data-pressed]):not(
+    :where([data-button-cancelled])
+  ) {
+  --_fab-elevation: var(--md-sys-elevation-level2);
+  --_fab-state-color: var(--_toolbar-fab-icon);
+  --_fab-state-opacity: var(--md-sys-state-pressed-state-layer-opacity);
+}

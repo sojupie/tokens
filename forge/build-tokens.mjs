@@ -4,6 +4,7 @@ import StyleDictionary from "style-dictionary";
 import { siteTheme } from "./material/site-theme.mjs";
 import { generateComponents } from "./material/generate-components.mjs";
 import { generateButtons } from "./material/generate-buttons.mjs";
+import { buildComponentAssets } from "./components/build-assets.mjs";
 import {
   realpath,
   mkdir,
@@ -210,6 +211,7 @@ async function main() {
   });
   if (!args.published)
     throw new Error("Usage: npm run build:tokens -- --published <directory> [--assets <directory>] [--check-bindings]");
+  await buildComponentAssets();
   const executable = args["tokens-binary"] ?? "go";
   const prefix = args["tokens-binary"] ? [] : ["run", "./cmd/tokens"];
   const published = await realpath(args.published);

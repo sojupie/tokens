@@ -1,0 +1,104 @@
+/* Date-picker composition from the guidelines; token replacements live in overrides.json. */
+.md-date-panel:not([data-variant="docked"]) .md-date-header {
+  border-block-end: var(--md-comp-divider-thickness) solid
+    var(--md-comp-divider-color);
+}
+.md-date-panel[data-mode="input"] .md-date-header p {
+  margin-block-end: var(--md-sys-measurement-space450);
+}
+.md-date-panel[data-mode="input"] .md-date-header {
+  padding-block-end: calc(
+    var(--md-sys-measurement-space100) + var(--md-sys-measurement-space25)
+  );
+}
+.md-date-panel[data-mode="input"] .md-date-inputs {
+  padding: calc(
+      var(--md-sys-measurement-space100) + var(--md-sys-measurement-space25)
+    )
+    var(--md-sys-measurement-space300) var(--md-sys-measurement-space200);
+}
+.md-date-inputs [data-date-error]:empty {
+  display: none;
+}
+.md-date-panel[data-mode="input"] .md-date-actions {
+  padding: var(--md-sys-measurement-space100) var(--md-sys-measurement-space200)
+    var(--md-sys-measurement-space150);
+}
+.md-date-panel[data-range="true"]:not(
+    [data-variant="docked"]
+  )[data-mode="calendar"]
+  .md-date-calendars {
+  block-size: calc(var(--_date-day-height) * 7);
+  min-block-size: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  overflow-anchor: none;
+}
+.md-date-panel:not([data-range="true"]):not([data-variant="docked"])
+  .md-date-calendars {
+  touch-action: pan-y;
+  overflow: hidden;
+}
+/* Full-screen dates use the full-screen dialog surface, including bounded previews. */
+.md-date-panel[data-variant="full-screen"][data-mode="calendar"] {
+  border-radius: var(--md-comp-full-screen-dialog-container-shape);
+  --_elevation-level: var(--md-comp-full-screen-dialog-container-elevation);
+}
+.md-date-panel[data-variant="full-screen"][data-mode="calendar"][data-date-inline] {
+  block-size: var(--_date-height);
+  min-block-size: 0;
+  overflow: hidden;
+}
+.md-date-panel[data-mode="input"] .md-date-fullscreen-actions {
+  display: none;
+}
+/* The floating label sits half a line above the outline; reserve that space in flow. */
+.md-date-panel[data-mode="input"] .md-date-inputs > .md-outlined-text-field {
+  margin-block-start: calc(var(--_field-populated-label-line-height) / 2);
+}
+.md-date-fullscreen-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--md-sys-measurement-space100) var(--md-sys-measurement-space150);
+}
+.md-date-panel[data-variant="full-screen"][data-mode="calendar"]
+  > .md-date-actions {
+  display: none;
+}
+.md-date-panel[data-variant="full-screen"][data-mode="calendar"]
+  .md-date-calendars {
+  flex: 1;
+  block-size: auto;
+  min-block-size: 0;
+}
+.md-date-demo :is(.md-date-panel button, [data-date-open])::after {
+  content: "";
+  position: absolute;
+  inset-inline-start: 50%;
+  inset-block-start: 50%;
+  translate: -50% -50%;
+  inline-size: max(100%, var(--md-sys-measurement-space600));
+  block-size: max(100%, var(--md-sys-measurement-space600));
+}
+/* Docked ranges compose the modal range indicator with docked dates; no separate source range set exists. */
+.md-date-panel[data-variant="docked"][data-range="true"] {
+  --_date-range-color: var(
+    --md-comp-date-picker-modal-range-selection-active-indicator-container-color
+  );
+  --_date-range-height: var(
+    --md-comp-date-picker-modal-range-selection-active-indicator-container-height
+  );
+  --_date-range-shape: var(
+    --md-comp-date-picker-modal-range-selection-active-indicator-container-shape
+  );
+}
+
+/* 40px date visuals retain separate 48px targets and row spacing. */
+.md-date-cell,
+.md-date-weekday {
+  min-block-size: max(
+    var(--_date-day-height),
+    var(--md-sys-measurement-space600)
+  );
+}

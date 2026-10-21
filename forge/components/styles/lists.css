@@ -1,0 +1,450 @@
+.md-list-demo {
+  inline-size: 24rem;
+  max-inline-size: 100%;
+  display: grid;
+  gap: var(--md-sys-measurement-space100);
+}
+.md-list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-radius: var(--_list-shape);
+  overflow: clip;
+}
+.md-list[data-variant="segmented"] {
+  gap: var(--_list-gap);
+}
+.md-list[data-reordering],
+.md-list[data-component-state="dragged"] {
+  overflow: visible;
+}
+.md-list > li {
+  position: relative;
+  min-inline-size: 0;
+}
+.md-list[data-variant="standard"]:not([data-divider="none"])
+  > li:not(:last-child)::after {
+  content: "";
+  display: block;
+  border-block-start: var(--_list-divider-width) solid var(--_list-divider);
+  margin: var(--_list-divider-top) var(--_list-divider-trailing)
+    var(--_list-divider-bottom) var(--_list-divider-leading);
+}
+/* Full-width is a documented divider layout; inset dimensions remain source tokens. */
+.md-list[data-variant="standard"][data-divider="full-width"]
+  > li:not(:last-child)::after {
+  margin-inline: 0;
+}
+/* Alignment is a documented layout rule, not a replacement for captured padding. */
+.md-list[data-shape="baseline"] .md-list-item[data-list-tall] {
+  align-items: flex-start;
+}
+.md-list-item:has(.md-list-selection-control) {
+  cursor: pointer;
+}
+.md-list-item[aria-disabled="true"] {
+  cursor: default;
+}
+.md-list-item:has(.md-list-selection-control input:focus-visible) {
+  outline: var(--_list-focus-width) solid var(--_list-focus-color);
+  outline-offset: var(--_list-focus-offset);
+}
+.md-list-row {
+  position: relative;
+}
+.md-list-item {
+  --_list-item-container-opacity: 1;
+  --_list-item-label-opacity: 1;
+  --_list-item-leading-icon-opacity: 1;
+  --_list-item-trailing-icon-opacity: 1;
+  --_list-item-overline-opacity: 1;
+  --_list-item-supporting-text-opacity: 1;
+  --_list-item-trailing-supporting-text-opacity: var(
+    --_list-item-supporting-text-opacity
+  );
+  --_button-rest-shape: var(--_list-item-shape);
+  --_button-pressed-shape: var(
+    --_list-item-pressed-shape,
+    var(--_list-item-shape)
+  );
+  --_button-spring-damping: var(--md-sys-motion-spring-fast-spatial-damping);
+  --_button-spring-stiffness: var(
+    --md-sys-motion-spring-fast-spatial-stiffness
+  );
+  --_button-background-state-color: var(
+    --_list-item-background-state-color,
+    transparent
+  );
+  --_button-background-state-opacity: var(
+    --_list-item-background-state-opacity,
+    0
+  );
+  --_button-pressed-state-color: var(--_list-item-pressed-state-color);
+  --_button-pressed-state-opacity: var(--_list-item-pressed-state-opacity);
+  --_button-state-color: var(--_list-item-state-color, currentColor);
+  --_button-state-opacity: var(--_list-item-state-opacity, 0);
+  --_elevation-level: var(--_list-item-elevation);
+  --_shadow-color: var(--_list-item-shadow, var(--md-sys-color-shadow));
+  --_button-shape: var(--_button-rest-shape);
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  gap: var(--_list-item-gap);
+  inline-size: 100%;
+  min-block-size: var(--_list-item-height);
+  box-sizing: border-box;
+  margin: 0;
+  border: 0;
+  padding: var(--_list-item-top) var(--_list-item-trailing)
+    var(--_list-item-bottom) var(--_list-item-leading);
+  text-align: start;
+  border-radius: var(--_button-shape);
+  color: var(--_list-item-label);
+  background: color-mix(
+    in srgb,
+    var(--_list-item-container) calc(var(--_list-item-container-opacity) * 100%),
+    transparent
+  );
+  cursor: pointer;
+  touch-action: manipulation;
+  transition:
+    background-color var(--_motion-fast-effects-duration)
+      var(--_motion-fast-effects-easing),
+    border-radius var(--_motion-fast-spatial-duration)
+      var(--_motion-fast-spatial-easing);
+}
+.md-list-item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: var(--_button-background-state-color);
+  opacity: var(--_button-background-state-opacity);
+}
+.md-list-item:is(:active, [data-pressed], [data-component-state="pressed"]):not(
+    :disabled
+  ):not([data-button-cancelled]) {
+  --_button-shape: var(--_button-pressed-shape);
+}
+.md-list-item:disabled {
+  cursor: default;
+  --_button-background-state-color: var(--_list-item-state-color);
+  --_button-background-state-opacity: var(--_list-item-state-opacity);
+}
+.md-list-item:where(:focus-visible, [data-component-state="focused"]) {
+  outline: var(--_list-focus-width) solid var(--_list-focus-color);
+  outline-offset: var(--_list-focus-offset);
+}
+.md-list-leading,
+.md-list-tail {
+  flex: none;
+  display: flex;
+  align-items: center;
+}
+.md-list-tail {
+  gap: var(--_list-item-gap);
+}
+.md-list-icon svg {
+  inline-size: var(--_list-item-leading-icon-size);
+  block-size: var(--_list-item-leading-icon-size);
+  color: color-mix(
+    in srgb,
+    var(--_list-item-leading-icon)
+      calc(var(--_list-item-leading-icon-opacity) * 100%),
+    transparent
+  );
+}
+.md-list-avatar {
+  inline-size: var(--_list-item-avatar-size);
+  block-size: var(--_list-item-avatar-size);
+  justify-content: center;
+  border-radius: var(--_list-item-avatar-shape);
+  background: var(--_list-item-avatar);
+}
+.md-list-avatar-label {
+  color: var(--_list-item-leading-avatar-label-color);
+  font-family: var(--_list-item-leading-avatar-label-font-family);
+  font-size: var(--_list-item-leading-avatar-label-font-size);
+  font-weight: var(--_list-item-leading-avatar-label-font-weight);
+  line-height: var(--_list-item-leading-avatar-label-line-height);
+  letter-spacing: var(--_list-item-leading-avatar-label-tracking);
+}
+.md-list-image {
+  inline-size: var(--_list-item-image-width);
+  block-size: var(--_list-item-image-height);
+  border-radius: var(--_list-item-image-shape);
+  overflow: hidden;
+}
+.md-list-video {
+  inline-size: var(--_list-item-video-width);
+  block-size: var(
+    --_list-item-video-height,
+    var(--md-comp-list-list-item-small-leading-video-height)
+  );
+  border-radius: var(--_list-item-video-shape);
+  overflow: hidden;
+}
+.md-list-image svg,
+.md-list-video svg {
+  inline-size: 100%;
+  block-size: 100%;
+}
+.md-list-body {
+  flex: 1;
+  min-inline-size: 0;
+}
+.md-list-label,
+.md-list-supporting,
+.md-list-overline {
+  display: block;
+}
+.md-list-label {
+  color: color-mix(
+    in srgb,
+    var(--_list-item-label) calc(var(--_list-item-label-opacity) * 100%),
+    transparent
+  );
+  font-family: var(--_list-item-font-family);
+  font-size: var(--_list-item-font-size);
+  font-weight: var(--_list-item-font-weight);
+  line-height: var(--_list-item-line-height);
+  letter-spacing: var(--_list-item-tracking);
+}
+.md-list-supporting {
+  white-space: pre-line;
+  color: color-mix(
+    in srgb,
+    var(--_list-item-supporting-text-color)
+      calc(var(--_list-item-supporting-text-opacity) * 100%),
+    transparent
+  );
+  font-family: var(--_list-item-supporting-text-font-family);
+  font-size: var(--_list-item-supporting-text-font-size);
+  font-weight: var(--_list-item-supporting-text-font-weight);
+  line-height: var(--_list-item-supporting-text-line-height);
+  letter-spacing: var(--_list-item-supporting-text-tracking);
+}
+.md-list-overline {
+  color: color-mix(
+    in srgb,
+    var(--_list-item-overline-color)
+      calc(var(--_list-item-overline-opacity) * 100%),
+    transparent
+  );
+  font-family: var(--_list-item-overline-font-family);
+  font-size: var(--_list-item-overline-font-size);
+  font-weight: var(--_list-item-overline-font-weight);
+  line-height: var(--_list-item-overline-line-height);
+  letter-spacing: var(--_list-item-overline-tracking);
+}
+.md-list-meta {
+  color: color-mix(
+    in srgb,
+    var(--_list-item-trailing-supporting-text-color)
+      calc(var(--_list-item-trailing-supporting-text-opacity) * 100%),
+    transparent
+  );
+  font-family: var(--_list-item-trailing-supporting-text-font-family);
+  font-size: var(--_list-item-trailing-supporting-text-font-size);
+  font-weight: var(--_list-item-trailing-supporting-text-font-weight);
+  line-height: var(--_list-item-trailing-supporting-text-line-height);
+  letter-spacing: var(--_list-item-trailing-supporting-text-tracking);
+}
+.md-list-trailing-icon svg,
+.md-list-expand-icon svg {
+  display: block;
+  inline-size: var(--_list-item-trailing-icon-size);
+  block-size: var(--_list-item-trailing-icon-size);
+  color: color-mix(
+    in srgb,
+    var(--_list-item-trailing-icon)
+      calc(var(--_list-item-trailing-icon-opacity) * 100%),
+    transparent
+  );
+}
+.md-list-expand-icon {
+  display: grid;
+  place-content: center;
+  inline-size: var(--md-comp-icon-button-small-container-height);
+  block-size: var(--md-comp-icon-button-small-container-height);
+  border-radius: var(--_list-item-expand-icon-shape);
+  background: var(--_list-item-expand-icon-container);
+}
+.md-list-item[aria-expanded="true"] .md-list-expand-icon svg {
+  rotate: 180deg;
+}
+/* The source expansion example reveals full-width rows on one continuous surface. */
+.md-list:where([data-control="expand"]) > li[data-list-expanded="true"] {
+  overflow: clip;
+  background: var(--md-comp-list-expand-expanded-list-item-container-color);
+  border-radius: var(--_list-shape);
+}
+.md-list:where([data-control="expand"][data-variant="segmented"])
+  > li[data-list-expanded="true"] {
+  overflow: clip;
+  background: var(
+    --md-comp-list-expand-expanded-list-item-segmented-container-color
+  );
+}
+.md-list-expand-content {
+  overflow: hidden;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.md-list-expand-content[hidden] {
+  display: none;
+}
+.md-list[data-control="reorder"] .md-list-row > .md-list-item,
+.md-list[data-control="reveal"] .md-list-row > .md-list-item {
+  padding-inline-end: calc(
+    var(--_list-item-trailing) +
+      var(--md-comp-icon-button-small-container-height) + var(--_list-item-gap)
+  );
+}
+.md-list-reorder-sheet {
+  --_sheet-expanded-height: auto;
+  z-index: 20;
+}
+.md-list-reorder-sheet .md-sheet-body {
+  padding: var(--md-sys-measurement-space100) 0;
+}
+.md-list-grip,
+.md-list-reveal-toggle {
+  position: absolute;
+  inset-inline-end: var(--md-comp-list-list-item-trailing-space);
+  inset-block-start: 50%;
+  translate: 0 -50%;
+}
+.md-list-grip,
+.md-list[data-control="reorder"] .md-list-row > .md-list-item {
+  touch-action: none;
+  cursor: grab;
+  user-select: none;
+}
+.md-list [data-list-dragging] .md-list-grip {
+  cursor: grabbing;
+  --_icon-icon: var(--md-comp-list-reorder-list-item-trailing-icon-color);
+}
+.md-list [data-list-dragging] {
+  z-index: 2;
+}
+.md-list-drop-zone {
+  position: absolute;
+  inset: 0;
+  background: var(--_list-drop-color);
+  border-radius: var(--_list-shape);
+  pointer-events: none;
+}
+.md-list[data-control="reveal"] .md-list-row {
+  --_list-reveal-distance: calc(
+    var(--md-comp-icon-button-small-container-height) + 2 *
+      var(--md-comp-list-list-item-trailing-space)
+  );
+  overflow: clip;
+  border-radius: var(--md-comp-list-reveal-list-item-container-shape);
+}
+.md-list[data-control="reveal"][data-variant="segmented"] .md-list-row {
+  border-radius: var(--md-comp-list-reveal-list-item-segmented-container-shape);
+}
+.md-list[data-control="reveal"] .md-list-row > .md-list-item {
+  touch-action: pan-y;
+}
+.md-list-reveal-toggle,
+.md-list-reveal-action {
+  --_icon-container: var(--_list-reveal-container);
+  --_icon-icon: var(--_list-reveal-icon);
+  --_icon-round-shape: var(--_list-reveal-shape);
+  --_icon-pressed-shape: var(--_list-reveal-shape);
+  --_icon-state-color: var(--_list-reveal-state-color);
+  --_icon-background-state-color: var(--_list-reveal-background-state-color);
+  --_icon-pressed-state-color: var(--_list-reveal-pressed-state-color);
+  --_icon-pressed-state-opacity: var(
+    --md-sys-state-pressed-state-layer-opacity
+  );
+}
+.md-list-reveal-toggle:is(:hover, [data-component-state="hovered"]),
+.md-list-reveal-action:is(:hover, [data-component-state="hovered"]) {
+  --_icon-state-opacity: var(--md-sys-state-hover-state-layer-opacity);
+  --_icon-background-state-opacity: var(
+    --md-sys-state-hover-state-layer-opacity
+  );
+}
+.md-list-reveal-toggle:is(:focus-visible, [data-component-state="focused"]),
+.md-list-reveal-action:is(:focus-visible, [data-component-state="focused"]) {
+  --_icon-state-opacity: var(--md-sys-state-focus-state-layer-opacity);
+  --_icon-background-state-opacity: var(
+    --md-sys-state-focus-state-layer-opacity
+  );
+}
+.md-list-reveal-toggle:disabled,
+.md-list-reveal-action:disabled {
+  --_icon-icon-opacity: var(--md-comp-button-text-disabled-label-text-opacity);
+}
+.md-list-reveal-action {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
+  block-size: 100%;
+  inline-size: var(--_list-reveal-distance);
+}
+.md-list[data-control="reveal"] .md-list-row > .md-list-item {
+  translate: var(--_list-reveal-offset, 0px) 0;
+  transition:
+    translate var(--_motion-fast-spatial-duration)
+      var(--_motion-fast-spatial-easing),
+    background-color var(--_motion-fast-effects-duration)
+      var(--_motion-fast-effects-easing);
+}
+.md-list[data-control="reveal"] .md-list-reveal-toggle {
+  translate: var(--_list-reveal-offset, 0px) -50%;
+  transition: translate var(--_motion-default-spatial-duration)
+    var(--_motion-default-spatial-easing);
+}
+.md-list-row[data-swiping] > .md-list-item,
+.md-list-row[data-swiping] > .md-list-reveal-toggle {
+  transition: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .md-list-item,
+  .md-list-reveal-toggle {
+    transition: none !important;
+  }
+}
+.md-list {
+  isolation: isolate;
+}
+.md-list-drop-zone {
+  inset-block-end: auto;
+  z-index: -1;
+}
+
+.md-list-row:has(> .md-list-item[data-component-state="dragged"])
+  > .md-list-grip {
+  --_icon-icon: var(--md-comp-list-reorder-list-item-trailing-icon-color);
+}
+.md-list-reveal-action {
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    visibility 0s var(--_motion-default-spatial-duration),
+    background-color var(--_button-effects-duration) var(--_button-easing);
+}
+.md-list-row:is([data-revealed="true"], [data-swiping])
+  > .md-list-reveal-action {
+  visibility: visible;
+  pointer-events: auto;
+  transition-delay: 0s;
+}
+.md-list-item[data-component-state="pressed"]::before,
+:root:not([data-feedback-ready]) .md-list-item::before {
+  background: var(--_list-item-state-color, transparent);
+  opacity: var(--_list-item-state-opacity, 0);
+}

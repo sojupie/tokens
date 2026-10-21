@@ -1,0 +1,36 @@
+/* Optional expansion compositions; captured values remain unchanged. */
+.md-list[data-expand-inset="inset"] .md-list-expand-content {
+  box-sizing: border-box;
+  padding-inline-start: var(--md-comp-list-list-item-leading-space);
+}
+.md-list[data-expand-surface="none"] > li[data-list-expanded="true"] {
+  background: transparent;
+}
+.md-list[data-expand-surface="none"] .md-list-item[aria-expanded="true"] {
+  --_list-item-container: var(--md-comp-list-list-item-container-color);
+}
+.md-list[data-expand-surface="none"][data-variant="segmented"]
+  .md-list-item[aria-expanded="true"] {
+  --_list-item-container: var(
+    --md-comp-list-list-item-segmented-container-color
+  );
+}
+.md-list:not([data-expand-surface="none"])
+  > li[data-list-expanded="true"]
+  .md-list-expand-content
+  .md-list-item {
+  background: transparent;
+}
+.md-list[data-expand-icon="plain"] .md-list-expand-icon {
+  background: transparent;
+}
+
+.md-list[data-expand-surface="tonal"] > li[data-list-expanded="true"] {
+  background: var(--md-sys-color-surface-container);
+}
+.md-list[data-expand-surface="tonal"]
+  > li[data-list-expanded="true"]
+  > .md-list-row
+  > .md-list-item {
+  background: transparent;
+}

@@ -1,0 +1,136 @@
+.md-radio {
+  --_radio-state-opacity: 0;
+  --_radio-state-color: transparent;
+  --_radio-icon-opacity: 1;
+  --_radio-background-state-color: transparent;
+  --_radio-background-state-opacity: 0;
+  --_button-background-state-color: var(--_radio-background-state-color);
+  --_button-background-state-opacity: var(--_radio-background-state-opacity);
+  --_button-pressed-state-color: var(--_radio-pressed-state-color);
+  --_button-pressed-state-opacity: var(--_radio-pressed-state-opacity);
+  --_button-rest-shape: 50%;
+  --_button-pressed-shape: 50%;
+  position: relative;
+  isolation: isolate;
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  vertical-align: middle;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  inline-size: var(--_radio-state-size);
+  block-size: var(--_radio-state-size);
+  background: transparent;
+  color: color-mix(
+    in srgb,
+    var(--_radio-icon) calc(var(--_radio-icon-opacity) * 100%),
+    transparent
+  );
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.md-radio > input {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  inline-size: 100%;
+  block-size: 100%;
+  opacity: 0;
+  margin: 0;
+  cursor: inherit;
+}
+.md-radio::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: var(--_button-background-state-color);
+  opacity: var(--_button-background-state-opacity);
+}
+.md-radio-icon {
+  position: relative;
+  box-sizing: border-box;
+  inline-size: var(--_radio-icon-size);
+  block-size: var(--_radio-icon-size);
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}
+.md-radio-icon::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  inline-size: calc(var(--_radio-icon-size) / 2);
+  block-size: calc(var(--_radio-icon-size) / 2);
+  background: currentColor;
+  border-radius: 50%;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0);
+  transition:
+    transform var(--_motion-fast-spatial-duration)
+      var(--_motion-fast-spatial-easing),
+    opacity var(--_motion-fast-effects-duration)
+      var(--_motion-fast-effects-easing);
+}
+.md-radio:has(> input:checked) > .md-radio-icon::after {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+.md-radio:has(> input:disabled) {
+  cursor: default;
+}
+.md-radio:is(:has(> input:focus-visible), [data-component-state="focused"]) {
+  outline: var(--md-sys-state-focus-indicator-thickness) solid
+    var(--md-sys-color-secondary);
+  outline-offset: var(--md-sys-state-focus-indicator-outer-offset);
+}
+:root:not([data-feedback-ready]) .md-radio::before,
+:root .md-radio[data-component-state="pressed"]::before {
+  background: var(--_radio-state-color);
+  opacity: var(--_radio-state-opacity);
+}
+.md-radio-group {
+  display: grid;
+  gap: var(--md-sys-measurement-space100);
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-inline-size: 0;
+}
+.md-radio-group > legend {
+  margin-block-end: var(--md-sys-measurement-space100);
+}
+.md-radio-choice {
+  display: flex;
+  align-items: center;
+  gap: var(--md-sys-measurement-space100);
+  inline-size: max-content;
+  max-inline-size: 100%;
+  cursor: pointer;
+}
+@media (prefers-reduced-motion: reduce) {
+  .md-radio-icon::after {
+    transition: none;
+  }
+  .md-radio::before {
+    background: var(--_radio-state-color);
+    opacity: var(--_radio-state-opacity);
+  }
+}
+@media (forced-colors: active) {
+  .md-radio > input {
+    position: static;
+    inline-size: var(--_radio-icon-size);
+    block-size: var(--_radio-icon-size);
+    opacity: 1;
+    accent-color: auto;
+  }
+  .md-radio-icon,
+  .md-radio::before {
+    display: none;
+  }
+}

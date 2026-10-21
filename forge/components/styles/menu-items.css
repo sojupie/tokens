@@ -1,0 +1,151 @@
+.md-menu {
+  --_elevation-level: var(--_menu-elevation);
+  --_shadow-color: var(--_menu-shadow, var(--md-sys-color-shadow));
+  padding: 0;
+  border: 0;
+  border-radius: var(--_menu-shape);
+  background: var(--_menu-container);
+}
+.md-menu section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--_menu-gap);
+  padding: var(--_menu-group-padding);
+  border-radius: var(--_menu-group-shape);
+}
+.md-menu h3 {
+  /* Menu measurements specify a 32dp label row and 12dp horizontal inset.
+     The captured section-label tokens supply color only, not this layout.
+     https://m3.material.io/components/menus/specs */
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  min-block-size: 32px;
+  margin: 0;
+  padding: 0 var(--md-sys-measurement-space150);
+  font: inherit;
+  color: var(--_menu-section-label-text-color);
+}
+.md-menu ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--_menu-gap);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.md-menu-item {
+  inline-size: 100%;
+  text-align: start;
+  --_menu-item-container-opacity: 1;
+  --_menu-item-label-opacity: 1;
+  --_menu-item-leading-icon-opacity: 1;
+  --_menu-item-trailing-icon-opacity: 1;
+  --_menu-item-supporting-text-opacity: 1;
+  --_menu-item-trailing-supporting-text-opacity: 1;
+  --_menu-item-state-color: var(--_menu-item-active-state-color, transparent);
+  --_menu-item-state-opacity: var(--_menu-item-active-state-opacity, 0);
+  --_menu-item-background-state-color: var(
+    --_menu-item-active-state-color,
+    transparent
+  );
+  --_menu-item-background-state-opacity: var(
+    --_menu-item-active-state-opacity,
+    0
+  );
+  --_button-background-state-color: var(--_menu-item-background-state-color);
+  --_button-background-state-opacity: var(
+    --_menu-item-background-state-opacity
+  );
+  --_button-pressed-state-color: var(--_menu-item-pressed-state-color);
+  --_button-pressed-state-opacity: var(--_menu-item-pressed-state-opacity);
+  --_button-state-color: var(--_menu-item-state-color);
+  --_button-state-opacity: var(--_menu-item-state-opacity);
+  --_button-rest-shape: var(--_menu-item-top-shape, var(--_menu-item-shape))
+    var(--_menu-item-top-shape, var(--_menu-item-shape))
+    var(--_menu-item-bottom-shape, var(--_menu-item-shape))
+    var(--_menu-item-bottom-shape, var(--_menu-item-shape));
+  --_button-pressed-shape: var(--_button-rest-shape);
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  gap: var(--_menu-item-gap);
+  min-height: var(--_menu-item-height);
+  box-sizing: border-box;
+  padding: var(--_menu-item-top) var(--_menu-item-trailing)
+    var(--_menu-item-bottom) var(--_menu-item-leading);
+  border: 0;
+  border-radius: var(--_button-rest-shape);
+  background: color-mix(
+    in srgb,
+    var(--_menu-item-container) calc(var(--_menu-item-container-opacity) * 100%),
+    transparent
+  );
+  color: color-mix(
+    in srgb,
+    var(--_menu-item-label) calc(var(--_menu-item-label-opacity) * 100%),
+    transparent
+  );
+  text-decoration: none;
+  font-family: var(--_menu-item-font-family);
+  font-size: var(--_menu-item-font-size);
+  line-height: var(--_menu-item-line-height);
+  font-weight: var(--_menu-item-font-weight);
+  letter-spacing: var(--_menu-item-tracking);
+}
+.md-menu-item:is(:focus-visible, [data-component-state="focused"]):not(
+    :disabled
+  ) {
+  outline: var(--_menu-item-focus-width) solid var(--_menu-item-focus-color);
+  outline-offset: var(--_menu-item-focus-offset);
+}
+.md-menu-item > [data-slot="leading-icon"],
+.md-menu-item > svg {
+  color: color-mix(
+    in srgb,
+    var(--_menu-item-leading-icon-color)
+      calc(var(--_menu-item-leading-icon-opacity) * 100%),
+    transparent
+  );
+  width: var(--_menu-item-leading-icon-size);
+  height: var(--_menu-item-leading-icon-size);
+}
+.md-menu-item > [data-slot="trailing-icon"] {
+  color: color-mix(
+    in srgb,
+    var(--_menu-item-trailing-icon-color)
+      calc(var(--_menu-item-trailing-icon-opacity) * 100%),
+    transparent
+  );
+  width: var(--_menu-item-trailing-icon-size);
+  height: var(--_menu-item-trailing-icon-size);
+}
+.md-menu-item > [data-slot="supporting-text"],
+.md-menu-item-text > [data-slot="supporting-text"] {
+  color: color-mix(
+    in srgb,
+    var(--_menu-item-supporting-text-color)
+      calc(var(--_menu-item-supporting-text-opacity) * 100%),
+    transparent
+  );
+  font-family: var(--_menu-item-supporting-text-font-family);
+  font-size: var(--_menu-item-supporting-text-font-size);
+  line-height: var(--_menu-item-supporting-text-line-height);
+  font-weight: var(--_menu-item-supporting-text-font-weight);
+  letter-spacing: var(--_menu-item-supporting-text-tracking);
+}
+.md-menu-item > [data-slot="trailing-supporting-text"] {
+  margin-inline-start: auto;
+  color: color-mix(
+    in srgb,
+    var(--_menu-item-trailing-supporting-text-color)
+      calc(var(--_menu-item-trailing-supporting-text-opacity) * 100%),
+    transparent
+  );
+  font-family: var(--_menu-item-trailing-supporting-text-font-family);
+  font-size: var(--_menu-item-trailing-supporting-text-font-size);
+  line-height: var(--_menu-item-trailing-supporting-text-line-height);
+  font-weight: var(--_menu-item-trailing-supporting-text-font-weight);
+  letter-spacing: var(--_menu-item-trailing-supporting-text-tracking);
+}

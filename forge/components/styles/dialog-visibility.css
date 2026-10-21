@@ -1,0 +1,3 @@
+.md-dialog[data-dialog-surface]:not([open]) {
+  display: none;
+}

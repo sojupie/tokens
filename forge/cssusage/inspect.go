@@ -266,7 +266,19 @@ func (report Report) Count(kind string) int {
 
 func Run(assets string) (Report, error) {
 	files := map[string]string{}
-	for _, file := range []string{"forge/components/static/components-base.css", "forge/components/static/elevation.css", "catalog/web/static/app.css", "catalog/web/static/token-table.css"} {
+	manifest, err := os.ReadFile("forge/components/style-sources.json")
+	if err != nil {
+		return Report{}, err
+	}
+	var styles []string
+	if err := json.Unmarshal(manifest, &styles); err != nil {
+		return Report{}, err
+	}
+	sources := []string{"forge/components/static/elevation.css", "catalog/web/static/app.css", "catalog/web/static/token-table.css"}
+	for _, style := range styles {
+		sources = append(sources, filepath.Join("forge/components", style))
+	}
+	for _, file := range sources {
 		data, err := os.ReadFile(file)
 		if err != nil {
 			return Report{}, err

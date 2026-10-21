@@ -1,0 +1,55 @@
+/* Web anatomy and interaction contracts. Values are supplied by generated bindings.
+   Spacing around content uses system measurement tokens where the source has no component token. */
+.md-card {
+  font: inherit;
+  text-align: start;
+  color: var(--md-sys-color-on-surface);
+  --_card-container-opacity: 1;
+  --_card-outline-opacity: 1;
+  --_card-outline-width: 0px;
+  --_card-outline: transparent;
+  --_card-state-opacity: 0;
+  --_card-state-color: transparent;
+  --_elevation-level: var(--_card-elevation);
+  --_shadow-color: var(--_card-shadow);
+  position: relative;
+  isolation: isolate;
+  background: color-mix(
+    in srgb,
+    var(--_card-container) calc(var(--_card-container-opacity) * 100%),
+    transparent
+  );
+  border: var(--_card-outline-width) solid
+    color-mix(
+      in srgb,
+      var(--_card-outline) calc(var(--_card-outline-opacity) * 100%),
+      transparent
+    );
+  border-radius: var(--_card-shape);
+  padding: var(--md-sys-measurement-space200);
+}
+.md-card > [data-slot="icon"] {
+  display: inline-flex;
+  color: var(--_card-icon);
+  width: var(--_card-icon-size);
+  height: var(--_card-icon-size);
+}
+.md-card.md-interactive-card {
+  --_card-background-state-color: transparent;
+  --_card-background-state-opacity: 0;
+  --_button-background-state-color: var(--_card-background-state-color);
+  --_button-background-state-opacity: var(--_card-background-state-opacity);
+  --_button-pressed-state-color: var(--_card-pressed-state-color);
+  --_button-pressed-state-opacity: var(--_card-pressed-state-opacity);
+  --_button-state-color: var(--_card-state-color);
+  --_button-state-opacity: var(--_card-state-opacity);
+  --_button-rest-shape: var(--_card-shape);
+  --_button-pressed-shape: var(--_card-shape);
+}
+.md-card.md-interactive-card:focus-visible {
+  outline: var(--_card-focus-width) solid var(--_card-focus-color);
+  outline-offset: var(--_card-focus-offset);
+}
+.md-card.md-interactive-card[aria-disabled="true"] {
+  cursor: default;
+}

@@ -6,6 +6,8 @@
     "node": ">=22"
   },
   "scripts": {
+    "build:components": "node forge/components/build-assets.mjs",
+    "check:components": "node forge/components/build-assets.mjs --check",
     "build:tokens": "node forge/build-tokens.mjs",
     "test:tokens": "node --test forge/*.test.mjs forge/material/*.test.mjs",
     "test:ui": "node --test catalog/web/ui_test.cjs forge/components/*_test.cjs"

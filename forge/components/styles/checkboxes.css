@@ -1,0 +1,52 @@
+.md-checkbox {
+  --_checkbox-background-state-color: transparent;
+  --_checkbox-background-state-opacity: 0;
+  --_button-background-state-color: var(--_checkbox-background-state-color);
+  --_button-background-state-opacity: var(--_checkbox-background-state-opacity);
+  --_button-pressed-state-color: var(--_checkbox-pressed-state-color);
+  --_button-pressed-state-opacity: var(--_checkbox-pressed-state-opacity);
+  --_button-rest-shape: var(--_checkbox-state-shape);
+  --_button-pressed-shape: var(--_checkbox-state-shape);
+}
+.md-switch {
+  --_switch-background-state-color: transparent;
+  --_switch-background-state-opacity: 0;
+  --_button-background-state-color: var(--_switch-background-state-color);
+  --_button-background-state-opacity: var(--_switch-background-state-opacity);
+  --_button-pressed-state-color: var(--_switch-pressed-state-color);
+  --_button-pressed-state-opacity: var(--_switch-pressed-state-opacity);
+  --_button-rest-shape: var(--_switch-state-shape);
+  --_button-pressed-shape: var(--_switch-state-shape);
+}
+.md-checkbox > .md-button-ripple {
+  border-radius: var(--_checkbox-state-shape);
+}
+.md-switch-handle > .md-button-ripple {
+  inset: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: var(--_switch-state-size);
+  height: var(--_switch-state-size);
+  border-radius: var(--_switch-state-shape);
+}
+:root:not([data-feedback-ready]) .md-checkbox::before,
+:root .md-checkbox[data-component-state="pressed"]::before {
+  background: var(--_checkbox-state-color);
+  opacity: var(--_checkbox-state-opacity);
+}
+:root:not([data-feedback-ready]) .md-switch-handle::before,
+:root .md-switch[data-component-state="pressed"] > .md-switch-handle::before {
+  background: var(--_switch-state-color);
+  opacity: var(--_switch-state-opacity);
+}
+@media (prefers-reduced-motion: reduce), (forced-colors: active) {
+  .md-checkbox::before {
+    background: var(--_checkbox-state-color);
+    opacity: var(--_checkbox-state-opacity);
+  }
+  .md-switch-handle::before {
+    background: var(--_switch-state-color);
+    opacity: var(--_switch-state-opacity);
+  }
+}

@@ -1,0 +1,7 @@
+.md-filter-chip:has(> input:not(:checked)) > .md-chip-face > svg {
+  display: none;
+}
+
+[hidden] {
+  display: none !important;
+}

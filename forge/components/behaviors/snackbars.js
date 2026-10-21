@@ -1,0 +1,64 @@
+(() => {
+  if (typeof document === "undefined") return;
+  const { snackbarTimer } = globalThis.MaterialComponents;
+  const timers = new WeakMap();
+  const clock = {
+    now: () => performance.now(),
+    setTimeout: (fn, delay) => setTimeout(fn, delay),
+    clearTimeout: (id) => clearTimeout(id),
+  };
+  function initialize(root = document) {
+    for (const bar of root.querySelectorAll(".md-snackbar[popover]")) {
+      if (timers.has(bar)) continue;
+      const timer = snackbarTimer(() => {
+        if (bar.isConnected && bar.matches(":popover-open")) bar.hidePopover();
+      }, clock);
+      timers.set(bar, timer);
+      bar.addEventListener("toggle", () => {
+        if (!bar.matches(":popover-open")) timer.stop();
+      });
+      bar.addEventListener("pointerenter", () => timer.pause("pointer"));
+      bar.addEventListener("pointerleave", () => timer.resume("pointer"));
+      bar.addEventListener("focusin", () => timer.pause("focus"));
+      bar.addEventListener("focusout", (event) => {
+        if (!bar.contains(event.relatedTarget)) timer.resume("focus");
+      });
+    }
+  }
+  initialize();
+  document.addEventListener("htmx:afterSwap", () => initialize());
+  document.addEventListener("htmx:beforeCleanupElement", (event) => {
+    const root = event.detail.elt;
+    if (root.matches?.(".md-snackbar[popover]")) timers.get(root)?.stop();
+    for (const bar of root.querySelectorAll?.(".md-snackbar[popover]") || [])
+      timers.get(bar)?.stop();
+  });
+  document.addEventListener("click", (event) => {
+    const button = event.target.closest?.("button"),
+      demo = button?.closest("[data-snackbar-demo]");
+    if (!demo) return;
+    const bar = demo.querySelector(".md-snackbar");
+    if (button.hasAttribute("data-snackbar-open")) {
+      bar.showPopover();
+      timers.get(bar).start(Number(bar.dataset.snackbarDuration));
+    } else if (
+      button.hasAttribute("data-snackbar-close") ||
+      button.hasAttribute("data-snackbar-action")
+    ) {
+      timers.get(bar).stop();
+      bar.hidePopover();
+    } else return;
+    button.dispatchEvent(
+      new CustomEvent("md-snackbar-action", { bubbles: true }),
+    );
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape")
+      for (const bar of document.querySelectorAll(
+        ".md-snackbar:popover-open",
+      )) {
+        timers.get(bar)?.stop();
+        bar.hidePopover();
+      }
+  });
+})();

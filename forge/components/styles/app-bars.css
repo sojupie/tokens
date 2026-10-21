@@ -1,0 +1,174 @@
+/* App bar structure. Insets without component tokens use system spacing. */
+.md-appbar-demo {
+  inline-size: 28rem;
+  max-inline-size: 100%;
+}
+.md-app-bar {
+  --_elevation-level: var(--_appbar-elevation);
+  --_shadow-color: var(--_appbar-shadow, var(--md-sys-color-shadow));
+  position: relative;
+  inline-size: 100%;
+  block-size: var(--_appbar-height);
+  border-radius: var(--_appbar-shape);
+  background: var(--_appbar-container);
+  box-sizing: border-box;
+  transition:
+    background-color var(--_motion-fast-effects-duration)
+      var(--_motion-fast-effects-easing),
+    box-shadow var(--_motion-fast-effects-duration)
+      var(--_motion-fast-effects-easing);
+}
+.md-appbar-row {
+  display: flex;
+  align-items: center;
+  block-size: var(--md-comp-app-bar-small-container-height);
+  padding-inline: var(--_appbar-leading, var(--md-sys-measurement-space50))
+    var(--_appbar-trailing, var(--md-sys-measurement-space50));
+  gap: var(--_appbar-button-gap, var(--md-sys-measurement-space0));
+  box-sizing: border-box;
+}
+.md-appbar-copy {
+  display: grid;
+  min-inline-size: 0;
+  gap: var(--md-sys-measurement-space0);
+  padding-inline: var(--md-sys-measurement-space100);
+}
+.md-appbar-title {
+  color: var(--_appbar-title-color);
+  font: var(--_appbar-title-font);
+  letter-spacing: var(--_appbar-title-tracking);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.md-appbar-subtitle {
+  color: var(--_appbar-subtitle-color);
+  font: var(--_appbar-subtitle-font);
+  letter-spacing: var(--_appbar-subtitle-tracking);
+}
+.md-app-bar:where([data-variant^="baseline-"]) .md-appbar-title {
+  font-family: var(--_appbar-title-font-family);
+  font-size: var(--_appbar-title-font-size);
+  font-weight: var(--_appbar-title-font-weight);
+  line-height: var(--_appbar-title-line-height);
+  letter-spacing: var(--_appbar-title-tracking);
+}
+.md-appbar-expanded {
+  position: absolute;
+  inset-inline: var(--md-sys-measurement-space200);
+  inset-block-end: var(--md-sys-measurement-space200);
+  padding: 0;
+}
+.md-appbar-actions {
+  margin-inline-start: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--_appbar-button-gap, var(--md-sys-measurement-space0));
+}
+/* Give the avatar the same control footprint as its neighboring icon button. */
+.md-appbar-avatar-slot {
+  display: grid;
+  place-items: center;
+  flex: none;
+  inline-size: var(--md-comp-icon-button-small-container-height);
+  block-size: var(--md-comp-icon-button-small-container-height);
+}
+.md-app-bar .md-appbar-actions .md-icon-button {
+  color: var(--_appbar-trailing-icon, var(--md-sys-color-on-surface-variant));
+  --_icon-icon: var(
+    --_appbar-trailing-icon,
+    var(--md-sys-color-on-surface-variant)
+  );
+  --_icon-icon-size: var(
+    --_appbar-trailing-icon-size,
+    var(--_appbar-icon-size, var(--md-comp-icon-button-small-icon-size))
+  );
+}
+.md-app-bar .md-appbar-row > .md-icon-button {
+  color: var(--_appbar-leading-icon, var(--md-sys-color-on-surface));
+  --_icon-icon: var(--_appbar-leading-icon, var(--md-sys-color-on-surface));
+  --_icon-icon-size: var(
+    --_appbar-leading-icon-size,
+    var(--_appbar-icon-size, var(--md-comp-icon-button-small-icon-size))
+  );
+}
+.md-app-bar:where([data-variant="centered"], [data-variant="baseline-centered"])
+  .md-appbar-copy {
+  position: absolute;
+  inset-inline: 25%;
+  text-align: center;
+  padding: 0;
+}
+.md-appbar-avatar {
+  display: grid;
+  place-items: center;
+  inline-size: var(--_appbar-avatar-size);
+  block-size: var(--_appbar-avatar-size);
+  border-radius: var(--_appbar-avatar-shape, var(--md-sys-shape-corner-full));
+  background: var(--md-sys-color-tertiary-container);
+  color: var(--md-sys-color-on-tertiary-container);
+  font: var(--md-sys-typescale-label-medium);
+}
+.md-appbar-search {
+  flex: 1;
+  min-inline-size: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--md-sys-measurement-space100);
+  block-size: var(--_appbar-search-height);
+  border-radius: var(--_appbar-search-shape);
+  padding-inline: var(--_appbar-search-leading) var(--_appbar-search-trailing);
+  color: var(--_appbar-search-label);
+  background: var(--_appbar-search-container);
+}
+.md-appbar-search input {
+  inline-size: 100%;
+  min-inline-size: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: inherit;
+  font: var(--_appbar-search-font);
+  letter-spacing: var(--_appbar-search-tracking);
+}
+.md-appbar-search input::placeholder {
+  color: inherit;
+  opacity: 1;
+}
+.md-appbar-search:focus-within {
+  outline: var(--md-sys-state-focus-indicator-thickness) solid
+    var(--md-sys-color-secondary);
+  outline-offset: var(--md-sys-state-focus-indicator-outer-offset);
+}
+.md-app-bar:where([data-variant="bottom"]) .md-appbar-row {
+  block-size: 100%;
+  padding-inline: var(--md-sys-measurement-space50)
+    var(--md-sys-measurement-space200);
+}
+.md-app-bar[data-variant="bottom"] .md-icon-button {
+  margin-inline: var(--md-sys-measurement-space50);
+}
+.md-app-bar[data-variant="bottom"] .md-icon-button::after {
+  content: "";
+  position: absolute;
+  inset: calc(-1 * var(--md-sys-measurement-space50));
+  min-inline-size: var(--md-sys-measurement-space600);
+  min-block-size: var(--md-sys-measurement-space600);
+}
+.md-appbar-demo[data-interactive="true"]:has(.md-appbar-content) {
+  max-block-size: 20rem;
+  overflow: auto;
+}
+.md-appbar-demo[data-interactive="true"] .md-app-bar {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 1;
+}
+.md-appbar-content {
+  padding: var(--md-sys-measurement-space200);
+  background: var(--md-sys-color-surface);
+}
+.md-appbar-content p {
+  margin-block: var(--md-sys-measurement-space200);
+}

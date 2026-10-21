@@ -1,0 +1,27 @@
+@media (prefers-reduced-motion: reduce) {
+  .md-icon-button,
+  .md-card,
+  :is(.md-filter-chip, .md-assist-chip, .md-suggestion-chip, .md-input-chip),
+  .md-menu-item {
+    transition: none;
+  }
+}
+@media (forced-colors: active) {
+  .md-icon-button,
+  .md-card,
+  :is(.md-filter-chip, .md-assist-chip, .md-suggestion-chip, .md-input-chip),
+  .md-menu-item,
+  :is(
+    .md-outlined-text-field,
+    .md-filled-text-field,
+    .md-outlined-select,
+    .md-filled-select,
+    .md-outlined-autocomplete,
+    .md-filled-autocomplete
+  ) {
+    border: 1px solid ButtonText;
+  }
+  .md-radio {
+    color: ButtonText;
+  }
+}

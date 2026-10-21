@@ -1,0 +1,47 @@
+/* FABs reuse button input, state-layer and ripple behavior. */
+.md-button:is(.md-fab, .md-extended-fab) {
+  --_fab-state-color: transparent;
+  --_fab-state-opacity: 0;
+  --_fab-background-state-color: transparent;
+  --_fab-background-state-opacity: 0;
+  --_button-spring-damping: initial;
+  --_button-spring-stiffness: initial;
+  --_button-container: var(--_fab-container);
+  --_button-label: var(--_fab-label, var(--_fab-icon));
+  --_button-icon: var(--_fab-icon);
+  --_button-icon-size: var(--_fab-icon-size);
+  --_button-height: var(--_fab-height);
+  --_button-rest-shape: var(--_fab-shape);
+  --_button-pressed-shape: var(--_fab-shape);
+  --_button-shape: var(--_fab-shape);
+  --_button-outline-width: 0px;
+  --_button-state-color: var(--_fab-state-color);
+  --_button-state-opacity: var(--_fab-state-opacity);
+  --_button-background-state-color: var(--_fab-background-state-color);
+  --_button-background-state-opacity: var(--_fab-background-state-opacity);
+  --_button-pressed-state-color: var(--_fab-pressed-state-color);
+  --_button-pressed-state-opacity: var(--_fab-pressed-state-opacity);
+  --_elevation-level: var(--_fab-elevation);
+  --_shadow-color: var(--_fab-shadow);
+}
+.md-button.md-fab {
+  width: var(--_fab-width);
+  min-inline-size: var(--_fab-width);
+  height: var(--_fab-height);
+  padding: 0;
+}
+.md-button.md-extended-fab {
+  --_button-font: var(--_fab-font);
+  --_button-letter-spacing: var(--_fab-tracking);
+  --_button-gap: var(--_fab-gap);
+  --_button-leading: var(--_fab-leading);
+  --_button-trailing: var(--_fab-trailing);
+}
+.md-button:is(.md-fab, .md-extended-fab):is(
+    :focus-visible,
+    [data-component-state="focused"]
+  ) {
+  outline: var(--md-sys-state-focus-indicator-thickness) solid
+    var(--md-sys-color-secondary);
+  outline-offset: var(--md-sys-state-focus-indicator-outer-offset);
+}

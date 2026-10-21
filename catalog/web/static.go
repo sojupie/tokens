@@ -15,7 +15,7 @@ import (
 	"github.com/sojupie/tokens/forge/components"
 )
 
-//go:embed static/app.css static/token-table.css static/token-table.js static/theme.js static/site-ui.js static/artwork.js static/webmcp.js static/prefetch.js static/agent-handoff.js static/htmx.min.js static/fonts static/logo.png static/logo-250x250.png static/logo-250x250.webp
+//go:embed static/app.css static/token-table.css static/token-table.js static/theme.js static/site-ui.js static/artwork.js static/component-demos.js static/webmcp.js static/prefetch.js static/agent-handoff.js static/htmx.min.js static/fonts static/logo.png static/logo-250x250.png static/logo-250x250.webp
 var embeddedStatic embed.FS
 
 //go:embed static/theme-init.js

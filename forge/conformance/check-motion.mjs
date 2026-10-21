@@ -1,3 +1,5 @@
+import { checkComponentDemos } from './check-component-demos.mjs';
+
 // Serve this fixture and /md3 through one local origin; see the development guide.
 export async function checkMotion(container) {
   const checks = [], wait = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -20,6 +22,7 @@ export async function checkMotion(container) {
     await loaded;frame.scrollIntoView({block:'start'});await wait(30);
     return {w:frame.contentWindow,d:frame.contentDocument};
   }
+  await checkComponentDemos(load, assert);
   {
     const {w,d}=await load('navigation-rail'),input=d.querySelector('#preview-variant'),root=input.closest('[data-field-example]'),menu=root.querySelector('.md-field-menu'),option=menu.querySelector('[data-field-value="expanded"]');
     let changes=0;input.addEventListener('change',event=>{changes++;event.stopPropagation();});input.addEventListener('input',event=>event.stopPropagation());

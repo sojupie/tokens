@@ -5,3 +5,10 @@ deploy/*.yaml text eol=lf
 deploy/systemd/*.service text eol=lf
 deploy/systemd/*.timer text eol=lf
 .github/workflows/*.yaml text eol=lf
+
+# Review maintained templates, styles and behavior sources rather than build output.
+catalog/web/*_templ.go linguist-generated=true
+forge/components/static/components-base.css linguist-generated=true
+forge/components/static/components.css linguist-generated=true
+forge/components/static/components.js linguist-generated=true
+forge/components/static/buttons.css linguist-generated=true

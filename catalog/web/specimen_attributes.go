@@ -2,15 +2,53 @@ package web
 
 import (
 	"fmt"
-	"github.com/a-h/templ"
 	"strings"
+
+	"github.com/a-h/templ"
 )
 
 func (c componentCase) Attributes() templ.Attributes {
 	if c.Family == "button" {
 		return c.button().Attributes()
 	}
-	class := map[string]string{"card": "md-card md-" + c.Variant + "-card md-interactive-card", "icon": "md-icon-button md-" + c.Variant + "-icon-button", "chip": "md-filter-chip", "radio": "md-radio", "field": "md-outlined-text-field", "select": "md-outlined-select", "menu": "md-menu-item", "dialog": "md-dialog", "divider": "md-divider", "checkbox": "md-checkbox", "switch": "md-switch", "fab": "md-button md-fab", "extended-fab": "md-button md-extended-fab", "badge": "md-badge", "snackbar": "md-snackbar", "tooltip": "md-tooltip", "nav-bar": "md-navigation md-navigation-bar", "nav-rail": "md-navigation md-navigation-rail", "nav-drawer": "md-navigation md-navigation-drawer", "tabs": "md-tabs-example", "segmented": "md-segmented-buttons", "slider": "md-slider", "progress": "md-progress", "loading": "md-loading", "appbar": "md-app-bar", "toolbar": "md-toolbar", "bottom-sheet": "md-sheet md-bottom-sheet", "side-sheet": "md-sheet md-side-sheet", "split": "md-split-button", "button-group": "md-button-group", "fab-menu": "md-fab-menu", "list": "md-list", "carousel": "md-carousel", "search": "md-search-demo", "date": "md-date-demo", "time": "md-time-demo"}[c.Family]
+	class := map[string]string{
+		"card":         "md-card md-" + c.Variant + "-card md-interactive-card",
+		"icon":         "md-icon-button md-" + c.Variant + "-icon-button",
+		"chip":         "md-filter-chip",
+		"radio":        "md-radio",
+		"field":        "md-outlined-text-field",
+		"select":       "md-outlined-select",
+		"menu":         "md-menu-item",
+		"dialog":       "md-dialog",
+		"divider":      "md-divider",
+		"checkbox":     "md-checkbox",
+		"switch":       "md-switch",
+		"fab":          "md-button md-fab",
+		"extended-fab": "md-button md-extended-fab",
+		"badge":        "md-badge",
+		"snackbar":     "md-snackbar",
+		"tooltip":      "md-tooltip",
+		"nav-bar":      "md-navigation md-navigation-bar",
+		"nav-rail":     "md-navigation md-navigation-rail",
+		"nav-drawer":   "md-navigation md-navigation-drawer",
+		"tabs":         "md-tabs-example",
+		"segmented":    "md-segmented-buttons",
+		"slider":       "md-slider",
+		"progress":     "md-progress",
+		"loading":      "md-loading",
+		"appbar":       "md-app-bar",
+		"toolbar":      "md-toolbar",
+		"bottom-sheet": "md-sheet md-bottom-sheet",
+		"side-sheet":   "md-sheet md-side-sheet",
+		"split":        "md-split-button",
+		"button-group": "md-button-group",
+		"fab-menu":     "md-fab-menu",
+		"list":         "md-list",
+		"carousel":     "md-carousel",
+		"search":       "md-search-demo",
+		"date":         "md-date-demo",
+		"time":         "md-time-demo",
+	}[c.Family]
 	if c.Family == "chip" && c.Variant != "" {
 		class = "md-" + c.Variant + "-chip"
 	}

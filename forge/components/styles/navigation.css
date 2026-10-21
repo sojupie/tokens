@@ -1,0 +1,247 @@
+/* Navigation anatomy. Unspecified item spacing uses system spacing; bar/rail
+   inactive state opacity and focus rings use the corresponding system state. */
+.md-navigation {
+  --_elevation-level: var(--_nav-elevation, 0);
+  --_shadow-color: var(--_nav-shadow, var(--md-sys-color-shadow));
+  box-sizing: border-box;
+  margin: 0;
+  border: 0;
+  border-radius: var(--_nav-shape);
+  background: var(--_nav-container);
+  color: var(--md-sys-color-on-surface);
+}
+.md-nav-items {
+  display: flex;
+  gap: var(--_nav-gap, 0px);
+}
+.md-navigation-bar {
+  height: var(--_nav-height);
+  width: 100%;
+}
+.md-navigation-bar > .md-nav-items {
+  height: 100%;
+}
+.md-navigation-rail {
+  width: var(--_nav-width, max-content);
+  min-width: var(--_nav-min-width, 0px);
+  max-width: var(--_nav-max-width, 100%);
+  padding-block: var(--_nav-top) var(--_nav-end-padding, 0px);
+}
+.md-navigation-rail > header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--_nav-header-gap);
+}
+.md-navigation-rail > .md-nav-items,
+.md-navigation-drawer > .md-nav-items {
+  flex-direction: column;
+}
+.md-nav-item {
+  --_nav-item-state-color: transparent;
+  --_nav-item-state-opacity: 0;
+  --_nav-item-background-state-color: transparent;
+  --_nav-item-background-state-opacity: 0;
+  --_nav-item-pressed-state-opacity: var(
+    --md-sys-state-pressed-state-layer-opacity
+  );
+  --_button-rest-shape: var(
+    --_nav-item-indicator-shape,
+    var(--_nav-indicator-shape)
+  );
+  --_button-pressed-shape: var(--_button-rest-shape);
+  --_button-state-color: var(--_nav-item-state-color);
+  --_button-state-opacity: var(--_nav-item-state-opacity);
+  --_button-background-state-color: var(--_nav-item-background-state-color);
+  --_button-background-state-opacity: var(--_nav-item-background-state-opacity);
+  --_button-pressed-state-color: var(--_nav-item-pressed-state-color);
+  --_button-pressed-state-opacity: var(--_nav-item-pressed-state-opacity);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: var(--_nav-item-height, var(--_nav-height));
+  padding: 0 var(--_nav-item-outer-trailing, 0px) 0
+    var(--_nav-item-outer-leading, 0px);
+  border: 0;
+  border-radius: var(--_nav-item-shape, 0px);
+  background: transparent;
+  color: var(--_nav-item-label);
+  letter-spacing: var(--_nav-item-tracking);
+  cursor: pointer;
+}
+.md-navigation:where(:not(.md-navigation-drawer)) .md-nav-item {
+  font: var(--_nav-item-font);
+  letter-spacing: var(--_nav-item-tracking);
+}
+.md-nav-indicator {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--_nav-item-indicator-gap, var(--md-sys-measurement-space150));
+  box-sizing: border-box;
+  width: var(--_nav-item-indicator-width, 100%);
+  height: var(--_nav-item-indicator-height, var(--_nav-indicator-height));
+  padding-inline: var(--_nav-item-leading, var(--md-sys-measurement-space200))
+    var(--_nav-item-trailing, var(--md-sys-measurement-space200));
+  border-radius: var(--_nav-item-indicator-shape, var(--_nav-indicator-shape));
+}
+.md-nav-item[aria-current="page"] > .md-nav-indicator {
+  background: var(--_nav-item-indicator, var(--_nav-indicator));
+}
+.md-nav-indicator > svg {
+  flex: none;
+  width: var(--_nav-item-icon-size);
+  height: var(--_nav-item-icon-size);
+  color: var(--_nav-item-icon);
+}
+.md-nav-label {
+  white-space: nowrap;
+}
+.md-nav-indicator::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--_button-background-state-color);
+  opacity: var(--_button-background-state-opacity);
+  pointer-events: none;
+  transition:
+    opacity 15ms linear,
+    background-color 15ms linear;
+}
+.md-navigation:where(:not(.md-navigation-drawer))
+  .md-nav-item:where(:hover, [data-component-state="hovered"]):not(
+    [data-touch]
+  ) {
+  --_nav-item-state-opacity: var(--md-sys-state-hover-state-layer-opacity);
+  --_nav-item-background-state-opacity: var(
+    --md-sys-state-hover-state-layer-opacity
+  );
+}
+.md-navigation:where(:not(.md-navigation-drawer))
+  .md-nav-item:where(:focus-visible, [data-component-state="focused"]) {
+  --_nav-item-state-opacity: var(--md-sys-state-focus-state-layer-opacity);
+  --_nav-item-background-state-opacity: var(
+    --md-sys-state-focus-state-layer-opacity
+  );
+}
+.md-navigation:where(:not(.md-navigation-drawer))
+  .md-nav-item:where(
+    :active,
+    [data-pressed],
+    [data-component-state="pressed"]
+  ) {
+  --_nav-item-state-opacity: var(--md-sys-state-pressed-state-layer-opacity);
+}
+.md-nav-item[data-component-state="pressed"] {
+  --_button-background-state-color: var(--_button-state-color);
+  --_button-background-state-opacity: var(--_button-state-opacity);
+}
+.md-nav-item:is(:focus-visible, [data-component-state="focused"])
+  > .md-nav-indicator {
+  outline: var(
+      --_nav-item-focus-width,
+      var(--md-sys-state-focus-indicator-thickness)
+    )
+    solid var(--_nav-item-focus-color, currentColor);
+  outline-offset: var(
+    --_nav-item-focus-offset,
+    var(--md-sys-state-focus-indicator-outer-offset)
+  );
+}
+.md-nav-item:focus-visible {
+  outline: none;
+}
+.md-navigation[data-orientation="vertical"] .md-nav-item {
+  padding-inline: 0;
+}
+.md-navigation[data-orientation="vertical"] .md-nav-indicator {
+  padding: 0;
+  transform: translateY(calc((var(--_nav-item-label-gap) + 1lh) / -2));
+}
+.md-navigation[data-orientation="vertical"] .md-nav-label {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + var(--_nav-item-label-gap));
+  transform: translateX(-50%);
+}
+.md-navigation-drawer {
+  block-size: var(--_nav-height);
+  width: var(--_nav-width);
+  max-width: 100%;
+  padding: var(--md-sys-measurement-space200)
+    calc((var(--_nav-width) - var(--_nav-indicator-width)) / 2);
+}
+.md-navigation-drawer .md-nav-item {
+  min-height: var(--_nav-indicator-height);
+  font-family: var(--_nav-item-font-family);
+  font-size: var(--_nav-item-font-size);
+  font-weight: var(--_nav-item-font-weight);
+  line-height: var(--_nav-item-line-height);
+}
+.md-navigation-drawer .md-nav-indicator {
+  width: var(--_nav-indicator-width);
+  max-width: 100%;
+  justify-content: start;
+}
+.md-navigation-drawer h3 {
+  margin: 0;
+  padding: var(--md-sys-measurement-space200);
+  color: var(--_nav-headline-color);
+  font-family: var(--_nav-headline-font-family);
+  font-size: var(--_nav-headline-font-size);
+  font-weight: var(--_nav-headline-font-weight);
+  line-height: var(--_nav-headline-line-height);
+  letter-spacing: var(--_nav-headline-tracking);
+}
+.md-nav-count {
+  margin-left: auto;
+  color: var(--_nav-item-large-badge-label-color);
+  font-family: var(--_nav-item-large-badge-label-font-family);
+  font-size: var(--_nav-item-large-badge-label-font-size);
+  font-weight: var(--_nav-item-large-badge-label-font-weight);
+  line-height: var(--_nav-item-large-badge-label-line-height);
+  letter-spacing: var(--_nav-item-large-badge-label-tracking);
+}
+.md-navigation-drawer hr {
+  border: 0;
+  border-top: var(--md-comp-divider-thickness) solid var(--_nav-divider);
+  margin-block: var(--md-sys-measurement-space100);
+}
+.md-navigation[data-navigation-modal] {
+  position: fixed;
+  inset: 0 auto 0 0;
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: auto;
+}
+.md-navigation[data-navigation-modal]:not([open]) {
+  display: none;
+}
+.md-navigation[data-navigation-modal]::backdrop {
+  background: color-mix(
+    in srgb,
+    var(--_nav-scrim, var(--md-ref-palette-neutral0))
+      calc(var(--_nav-scrim-opacity, 0.32) * 100%),
+    transparent
+  );
+}
+@media (prefers-reduced-motion: reduce) {
+  .md-nav-indicator::before {
+    transition: none;
+  }
+}
+@media (forced-colors: active) {
+  .md-nav-item[aria-current="page"] > .md-nav-indicator {
+    outline: 1px solid Highlight;
+  }
+  .md-nav-indicator::before {
+    display: none;
+  }
+}

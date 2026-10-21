@@ -1,0 +1,14 @@
+.md-search-view[data-variant="full-screen"] {
+  --_search-spatial-duration: var(--_motion-default-spatial-duration);
+  --_search-spatial-easing: var(--_motion-default-spatial-easing);
+}
+.md-search-view[data-variant="full-screen"][data-open="true"] {
+  --_search-spatial-duration: var(--_motion-slow-spatial-duration);
+  --_search-spatial-easing: var(--_motion-slow-spatial-easing);
+}
+@media (prefers-reduced-motion: reduce) {
+  .md-search-leading-slot > *,
+  .md-date-menu-button > svg {
+    transition: none;
+  }
+}

@@ -1,0 +1,112 @@
+/* Tab indicator width follows its content in primary tabs and its entire cell
+   in secondary tabs. Padding and icon/label gaps use system spacing. */
+.md-tabs {
+  display: flex;
+  width: 100%;
+}
+.md-tabs-example {
+  width: 100%;
+}
+.md-tab {
+  --_tab-state-color: transparent;
+  --_tab-state-opacity: 0;
+  --_tab-background-state-color: transparent;
+  --_tab-background-state-opacity: 0;
+  --_button-rest-shape: var(--_tab-shape);
+  --_button-pressed-shape: var(--_tab-shape);
+  --_button-state-color: var(--_tab-state-color);
+  --_button-state-opacity: var(--_tab-state-opacity);
+  --_button-background-state-color: var(--_tab-background-state-color);
+  --_button-background-state-opacity: var(--_tab-background-state-opacity);
+  --_button-pressed-state-color: var(--_tab-pressed-state-color);
+  --_button-pressed-state-opacity: var(--_tab-pressed-state-opacity);
+  --_elevation-level: var(--_tab-elevation);
+  --_shadow-color: var(--_tab-shadow, var(--md-sys-color-shadow));
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: max-content;
+  grid-template-rows: 1fr;
+  justify-content: center;
+  flex: 1;
+  min-width: var(--md-sys-measurement-space600);
+  height: var(--_tab-height);
+  box-sizing: border-box;
+  padding: 0 var(--md-sys-measurement-space200);
+  border: 0;
+  border-bottom: var(--_tab-divider-height) solid var(--_tab-divider);
+  border-radius: var(--_tab-shape);
+  background: var(--_tab-container);
+  color: var(--_tab-label);
+  font-family: var(--_tab-font-family);
+  font-size: var(--_tab-font-size);
+  font-weight: var(--_tab-font-weight);
+  line-height: var(--_tab-line-height);
+  letter-spacing: var(--_tab-tracking);
+  cursor: pointer;
+}
+.md-tab-content {
+  grid-area: 1 / 1;
+  display: flex;
+  align-items: center;
+  align-self: center;
+  justify-self: center;
+  gap: var(--md-sys-measurement-space50);
+  white-space: nowrap;
+}
+.md-tab-content > svg {
+  flex: none;
+  width: var(--_tab-icon-size);
+  height: var(--_tab-icon-size);
+  color: var(--_tab-icon);
+}
+.md-tabs[data-variant="primary"][data-control="icon-label"] .md-tab-content {
+  flex-direction: column;
+}
+.md-tab-active-indicator {
+  grid-area: 1 / 1;
+  align-self: end;
+  width: 100%;
+  height: var(--_tab-indicator-height);
+  margin-bottom: calc(-1 * var(--_tab-divider-height));
+  border-radius: var(--_tab-indicator-shape, var(--md-sys-shape-corner-none));
+  background: var(--_tab-indicator);
+  opacity: 0;
+  transform-origin: left center;
+  pointer-events: none;
+}
+.md-tab[aria-selected="true"] .md-tab-active-indicator {
+  opacity: 1;
+}
+.md-tabs[data-variant="secondary"] .md-tab {
+  grid-template-columns: 1fr;
+  padding-inline: 0;
+}
+.md-tabs[data-variant="secondary"] .md-tab-content {
+  padding-inline: var(--md-sys-measurement-space200);
+  gap: var(--md-sys-measurement-space100);
+}
+.md-tab::before,
+.md-segmented-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--_button-background-state-color);
+  opacity: var(--_button-background-state-opacity);
+  pointer-events: none;
+  transition:
+    opacity 15ms linear,
+    background-color 15ms linear;
+}
+.md-tab:is(:focus-visible, [data-component-state="focused"]) {
+  outline: var(--_tab-focus-width) solid var(--_tab-focus-color);
+  outline-offset: var(--_tab-focus-offset);
+  z-index: 1;
+}
+.md-tab[data-component-state="pressed"],
+.md-segmented-button[data-component-state="pressed"] {
+  --_button-background-state-color: var(--_button-state-color);
+  --_button-background-state-opacity: var(--_button-state-opacity);
+}

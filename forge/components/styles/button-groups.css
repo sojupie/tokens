@@ -1,0 +1,120 @@
+.md-button-group-demo {
+  display: grid;
+  justify-items: start;
+  gap: var(--md-sys-measurement-space100);
+}
+.md-button-group {
+  display: inline-flex;
+  inline-size: max-content;
+  align-items: center;
+  gap: var(--_group-gap);
+}
+.md-button-group > .md-button {
+  --_button-height: var(--_group-height);
+  box-sizing: border-box;
+}
+.md-button-group[data-control="standard"] > .md-button {
+  min-inline-size: 0;
+}
+.md-button-group[data-control="connected"] > .md-button {
+  --_group-current-inner: var(--_group-inner);
+  --_group-radius: min(
+    var(--_group-current-inner),
+    calc(var(--_group-height) / 2)
+  );
+  --_group-outer-radius: min(
+    var(--_group-outer),
+    calc(var(--_group-height) / 2)
+  );
+  --_group-pressed-radius: min(
+    var(--_group-pressed-inner),
+    calc(var(--_group-height) / 2)
+  );
+  --_button-rest-shape: var(--_group-radius);
+  --_button-pressed-shape: var(--_group-pressed-radius);
+}
+.md-button-group[data-control="connected"] > .md-button:first-child {
+  --_button-rest-shape: var(--_group-outer-radius) var(--_group-radius)
+    var(--_group-radius) var(--_group-outer-radius);
+  --_button-pressed-shape: var(--_group-outer-radius)
+    var(--_group-pressed-radius) var(--_group-pressed-radius)
+    var(--_group-outer-radius);
+}
+.md-button-group[data-control="connected"] > .md-button:last-child {
+  --_button-rest-shape: var(--_group-radius) var(--_group-outer-radius)
+    var(--_group-outer-radius) var(--_group-radius);
+  --_button-pressed-shape: var(--_group-pressed-radius)
+    var(--_group-outer-radius) var(--_group-outer-radius)
+    var(--_group-pressed-radius);
+}
+.md-button-group[data-control="connected"]:dir(rtl) > .md-button:first-child {
+  --_button-rest-shape: var(--_group-radius) var(--_group-outer-radius)
+    var(--_group-outer-radius) var(--_group-radius);
+  --_button-pressed-shape: var(--_group-pressed-radius)
+    var(--_group-outer-radius) var(--_group-outer-radius)
+    var(--_group-pressed-radius);
+}
+.md-button-group[data-control="connected"]:dir(rtl) > .md-button:last-child {
+  --_button-rest-shape: var(--_group-outer-radius) var(--_group-radius)
+    var(--_group-radius) var(--_group-outer-radius);
+  --_button-pressed-shape: var(--_group-outer-radius)
+    var(--_group-pressed-radius) var(--_group-pressed-radius)
+    var(--_group-outer-radius);
+}
+.md-button-group[data-control="connected"] > .md-button[aria-pressed="true"] {
+  --_group-current-inner: var(--_group-selected-inner);
+}
+/* Reserve the selected content's width; center the label alone when its check is hidden. */
+.md-group-check {
+  display: inline-flex;
+  flex: none;
+  visibility: hidden;
+}
+.md-group-check svg {
+  inline-size: var(--_button-icon-size);
+  block-size: var(--_button-icon-size);
+  color: color-mix(
+    in srgb,
+    var(--_button-icon) calc(var(--_button-icon-opacity) * 100%),
+    transparent
+  );
+}
+.md-button[aria-pressed="true"] > .md-group-check {
+  visibility: visible;
+}
+.md-button[aria-pressed="false"] > .md-group-check + span {
+  position: relative;
+  inset-inline-start: calc(
+    (var(--_button-icon-size) + var(--_button-gap)) / -2
+  );
+}
+/* Selection removes the outlined button's visible border, without changing its footprint. */
+.md-button-group[data-control="connected"] > .md-outlined-button {
+  --_button-outline-width: var(--_button-size-outline-width);
+}
+/* Material guidance supplies the 48dp target and minimum width; visible heights remain token-derived. */
+.md-button-group[data-control="connected"]:is(
+    [data-size="xsmall"],
+    [data-size="small"]
+  ) {
+  min-block-size: var(--md-sys-measurement-space600);
+}
+.md-button-group[data-control="connected"]:is(
+    [data-size="xsmall"],
+    [data-size="small"]
+  )
+  > .md-button {
+  min-inline-size: var(--md-sys-measurement-space600);
+}
+.md-button-group[data-control="connected"]:is(
+    [data-size="xsmall"],
+    [data-size="small"]
+  )
+  > .md-button::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: 50%;
+  block-size: var(--md-sys-measurement-space600);
+  transform: translateY(-50%);
+}

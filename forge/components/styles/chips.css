@@ -1,0 +1,115 @@
+:is(.md-filter-chip, .md-assist-chip, .md-suggestion-chip, .md-input-chip) {
+  --_chip-container: transparent;
+  --_chip-elevation: 0;
+  --_chip-container-opacity: 1;
+  --_chip-outline: transparent;
+  --_chip-outline-width: 0px;
+  --_chip-outline-opacity: 1;
+  --_chip-icon-opacity: 1;
+  --_chip-label-opacity: 1;
+  --_chip-state-color: transparent;
+  --_chip-state-opacity: 0;
+  --_elevation-level: var(--_chip-elevation);
+  --_shadow-color: var(--_chip-shadow);
+  --_chip-background-state-color: transparent;
+  --_chip-background-state-opacity: 0;
+  --_button-background-state-color: var(--_chip-background-state-color);
+  --_button-background-state-opacity: var(--_chip-background-state-opacity);
+  --_button-pressed-state-color: var(--_chip-pressed-state-color);
+  --_button-pressed-state-opacity: var(--_chip-pressed-state-opacity);
+  --_button-state-color: var(--_chip-state-color);
+  --_button-state-opacity: var(--_chip-state-opacity);
+  --_button-rest-shape: var(--_chip-shape);
+  --_button-pressed-shape: var(--_chip-shape);
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  min-width: 0;
+  max-width: 100%;
+  min-height: var(--_chip-height);
+  padding: var(--md-sys-measurement-space50) var(--md-sys-measurement-space150);
+  gap: var(--md-sys-measurement-space100);
+  border: 0;
+  border-radius: var(--_chip-shape);
+  background: color-mix(
+    in srgb,
+    var(--_chip-container) calc(var(--_chip-container-opacity) * 100%),
+    transparent
+  );
+  color: color-mix(
+    in srgb,
+    var(--_chip-label) calc(var(--_chip-label-opacity) * 100%),
+    transparent
+  );
+  font-family: var(--_chip-font-family);
+  font-size: var(--_chip-font-size);
+  line-height: var(--_chip-line-height);
+  letter-spacing: var(--_chip-tracking);
+  font-weight: var(--_chip-font-weight);
+  text-decoration: none;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+:is(.md-filter-chip, .md-assist-chip, .md-suggestion-chip, .md-input-chip)
+  > .md-chip-face {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--md-sys-measurement-space100);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+:is(.md-filter-chip, .md-assist-chip, .md-suggestion-chip, .md-input-chip)
+  [data-slot="icon"],
+:is(.md-filter-chip, .md-assist-chip, .md-suggestion-chip, .md-input-chip)
+  > .md-chip-face
+  > svg,
+:is(.md-filter-chip, .md-assist-chip, .md-suggestion-chip, .md-input-chip)
+  > svg {
+  width: var(--_chip-icon-size);
+  height: var(--_chip-icon-size);
+  color: color-mix(
+    in srgb,
+    var(--_chip-icon) calc(var(--_chip-icon-opacity) * 100%),
+    transparent
+  );
+  flex: none;
+}
+:is(.md-filter-chip, .md-assist-chip, .md-suggestion-chip, .md-input-chip)
+  [data-slot="leading-icon"],
+:is(.md-filter-chip, .md-assist-chip, .md-suggestion-chip, .md-input-chip)
+  [data-slot="trailing-icon"] {
+  width: var(--_chip-icon-size);
+  height: var(--_chip-icon-size);
+  color: color-mix(
+    in srgb,
+    var(--_chip-icon) calc(var(--_chip-icon-opacity) * 100%),
+    transparent
+  );
+}
+:is(
+  .md-filter-chip,
+  .md-assist-chip,
+  .md-suggestion-chip,
+  .md-input-chip
+):focus-visible,
+:is(.md-filter-chip, .md-assist-chip, .md-suggestion-chip, .md-input-chip):has(
+  > input:focus-visible
+) {
+  outline: var(--_chip-focus-width) solid var(--_chip-focus-color);
+  outline-offset: var(--_chip-focus-offset);
+}
+:is(.md-filter-chip, .md-assist-chip, .md-suggestion-chip, .md-input-chip):has(
+  > input:disabled
+),
+:is(
+  .md-filter-chip,
+  .md-assist-chip,
+  .md-suggestion-chip,
+  .md-input-chip
+):disabled {
+  cursor: default;
+}

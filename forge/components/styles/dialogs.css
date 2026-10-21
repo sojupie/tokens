@@ -1,0 +1,247 @@
+/* Dialog viewport sizes and content spacing are renderer layout rules. */
+.md-dialog-demo {
+  --_dialog-enter-duration: var(--_motion-fast-effects-duration);
+  --_dialog-exit-duration: var(--_motion-fast-effects-duration);
+  --_dialog-enter-easing: var(--_motion-fast-effects-easing);
+  --_dialog-exit-easing: var(--_motion-fast-effects-easing);
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  inline-size: 100%;
+}
+.md-dialog:is([data-dialog-preview], [data-dialog-surface]) {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: var(--md-sys-measurement-space200);
+  box-sizing: border-box;
+  inline-size: min(
+    560px,
+    calc(100dvw - 2 * var(--md-sys-measurement-space300))
+  );
+  min-inline-size: min(280px, 100%);
+  max-inline-size: calc(100dvw - 2 * var(--md-sys-measurement-space300));
+  max-block-size: calc(100dvh - 2 * var(--md-sys-measurement-space300));
+  overflow: hidden;
+}
+.md-dialog[data-dialog-inline] {
+  position: relative;
+  inset: auto;
+  margin: 0;
+  inline-size: min(560px, 100%);
+  max-inline-size: 100%;
+  max-block-size: 32rem;
+}
+.md-basic-header h2 {
+  margin: 0;
+}
+.md-basic-header > [data-slot="icon"] {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto var(--md-sys-measurement-space200);
+  inline-size: var(--_dialog-icon-size);
+  block-size: var(--_dialog-icon-size);
+  color: var(--_dialog-icon);
+}
+.md-basic-header [data-slot="icon"] > svg {
+  inline-size: 100%;
+  block-size: 100%;
+}
+.md-dialog:is([data-shape="icon"], [data-shape="icon-divided"])
+  .md-basic-header {
+  text-align: center;
+}
+.md-dialog-content {
+  min-block-size: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: var(--md-sys-measurement-space100);
+  outline: 0;
+}
+.md-dialog-content > h3:first-child {
+  margin-block-start: 0;
+}
+.md-dialog-content > section {
+  margin-block-start: var(--md-sys-measurement-space300);
+}
+.md-dialog-content > section > :last-child {
+  margin-block-end: 0;
+}
+.md-dialog-content > h3,
+.md-dialog-content > section > h3 {
+  margin-block: var(--md-sys-measurement-space200)
+    var(--md-sys-measurement-space100);
+}
+.md-dialog-content > p,
+.md-dialog-content > section > p {
+  margin-block: 0 var(--md-sys-measurement-space200);
+}
+.md-dialog-content > .md-outlined-text-field {
+  inline-size: 100%;
+}
+.md-basic-actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: var(--md-sys-measurement-space100);
+}
+.md-basic-actions > .md-divider {
+  flex-basis: 100%;
+  margin-block-end: var(--md-sys-measurement-space100);
+}
+.md-basic-header > .md-divider {
+  margin-block-start: var(--md-sys-measurement-space200);
+}
+.md-dialog .md-text-button {
+  --_button-font: var(--_dialog-action-font-weight)
+    var(--_dialog-action-font-size) / var(--_dialog-action-line-height)
+    var(--_dialog-action-font-family);
+  --_button-letter-spacing: var(--_dialog-action-tracking);
+}
+.md-full-screen-dialog {
+  --_dialog-enter-duration: var(--_motion-slow-spatial-duration);
+  --_dialog-exit-duration: var(--_motion-default-spatial-duration);
+  --_dialog-enter-easing: var(--_motion-slow-spatial-easing);
+  --_dialog-exit-easing: var(--_motion-default-spatial-easing);
+  --_elevation-level: var(--_full-elevation);
+  --_shadow-color: var(--md-sys-color-shadow);
+  display: grid;
+  grid-template-rows: var(--_full-header-height) minmax(0, 1fr);
+  position: fixed;
+  inset: 0;
+  margin: 0;
+  box-sizing: border-box;
+  inline-size: 100dvw;
+  block-size: 100dvh;
+  max-inline-size: none;
+  max-block-size: none;
+  min-inline-size: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--_full-shape);
+  background: var(--_full-container);
+  color: var(--md-sys-color-on-surface);
+  overflow: hidden;
+}
+.md-full-screen-dialog:has(> .md-full-action-bar) {
+  grid-template-rows: var(--_full-header-height) minmax(0, 1fr) var(
+      --_full-bar-height
+    );
+}
+.md-full-screen-dialog[data-dialog-inline] {
+  position: relative;
+  inset: auto;
+  inline-size: 100%;
+  block-size: 32rem;
+  max-inline-size: 100%;
+}
+.md-full-header {
+  --_elevation-level: var(--_full-header-elevation);
+  --_shadow-color: var(--md-sys-color-shadow);
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--md-sys-measurement-space100);
+  box-sizing: border-box;
+  min-inline-size: 0;
+  block-size: var(--_full-header-height);
+  padding: var(--md-sys-measurement-space100);
+  background: var(--_full-header-container);
+}
+.md-full-header h2 {
+  flex: 1;
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0;
+  color: var(--_full-header-headline-color);
+  font-family: var(--_full-header-headline-font-family);
+  font-size: var(--_full-header-headline-font-size);
+  line-height: var(--_full-header-headline-line-height);
+  font-weight: var(--_full-header-headline-font-weight);
+  letter-spacing: var(--_full-header-headline-tracking);
+}
+.md-full-header .md-dialog-close > svg {
+  color: var(--_full-header-icon);
+  inline-size: var(--_full-header-icon-size);
+  block-size: var(--_full-header-icon-size);
+}
+.md-full-screen-dialog .md-dialog-content {
+  padding: var(--md-sys-measurement-space300);
+  font-family: var(--md-sys-typescale-body-large-font);
+  font-size: var(--md-sys-typescale-body-large-size);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+  font-weight: var(--md-sys-typescale-body-large-weight);
+  letter-spacing: var(--md-sys-typescale-body-large-tracking);
+}
+.md-full-screen-dialog .md-dialog-content > h3,
+.md-full-screen-dialog .md-dialog-content > section > h3 {
+  font-family: var(--md-sys-typescale-title-medium-font);
+  font-size: var(--md-sys-typescale-title-medium-size);
+  line-height: var(--md-sys-typescale-title-medium-line-height);
+  font-weight: var(--md-sys-typescale-title-medium-weight);
+  letter-spacing: var(--md-sys-typescale-title-medium-tracking);
+}
+.md-full-action-bar {
+  --_elevation-level: var(--_full-bar-elevation);
+  --_shadow-color: var(--md-sys-color-shadow);
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--md-sys-measurement-space100);
+  box-sizing: border-box;
+  block-size: var(--_full-bar-height);
+  padding: var(--md-sys-measurement-space100);
+  background: var(--_full-bar-container);
+}
+.md-full-screen-dialog .md-text-button {
+  --_button-label: var(--_full-action-label);
+  --_button-font: var(--_full-action-font-weight)
+    var(--_full-action-font-size) / var(--_full-action-line-height)
+    var(--_full-action-font-family);
+  --_button-letter-spacing: var(--_full-action-tracking);
+  --_button-state-color: var(--_full-action-state-color, transparent);
+  --_button-state-opacity: var(--_full-action-state-opacity, 0);
+  --_button-background-state-color: var(
+    --_full-action-background-state-color,
+    transparent
+  );
+  --_button-background-state-opacity: var(
+    --_full-action-background-state-opacity,
+    0
+  );
+  --_button-pressed-state-color: var(--_full-action-pressed-state-color);
+  --_button-pressed-state-opacity: var(--_full-action-pressed-state-opacity);
+}
+.md-full-screen-dialog .md-divider {
+  --_divider-color: var(--_full-divider-color);
+  --_divider-thickness: var(--_full-divider-height);
+  position: absolute;
+  inset: auto 0 0;
+}
+.md-full-action-bar > .md-divider {
+  inset: 0 0 auto;
+}
+.md-dialog[data-dialog-preview]::backdrop,
+.md-full-screen-dialog::backdrop {
+  background: color-mix(
+    in srgb,
+    var(--md-ref-palette-neutral0) 32%,
+    transparent
+  );
+}
+.md-dialog-demo > output:empty {
+  display: none;
+}
+.md-dialog[data-dialog-preview]:not([open]),
+.md-full-screen-dialog:not([open]) {
+  display: none;
+}
+@media (forced-colors: active) {
+  .md-dialog[data-dialog-preview],
+  .md-full-screen-dialog {
+    border: 1px solid CanvasText;
+  }
+}

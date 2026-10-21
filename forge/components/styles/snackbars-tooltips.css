@@ -1,0 +1,139 @@
+.md-button.md-feedback-action {
+  --_button-label: var(--_support-action-label);
+  --_button-font: var(--_support-action-font-weight)
+    var(--_support-action-font-size) / var(--_support-action-line-height)
+    var(--_support-action-font-family);
+  --_button-letter-spacing: var(--_support-action-tracking);
+  --_button-state-color: var(--_support-action-state-color, transparent);
+  --_button-state-opacity: var(--_support-action-state-opacity, 0);
+  --_button-background-state-color: var(
+    --_support-action-background-state-color,
+    transparent
+  );
+  --_button-background-state-opacity: var(
+    --_support-action-background-state-opacity,
+    0
+  );
+  --_button-pressed-state-color: var(--_support-action-pressed-state-color);
+  --_button-pressed-state-opacity: var(--_support-action-pressed-state-opacity);
+}
+.md-snackbar .md-snackbar-close.md-icon-button {
+  --_icon-icon: var(--_support-icon-icon, var(--_snackbar-icon));
+  --_icon-icon-size: var(--_snackbar-icon-size);
+}
+.md-snackbar .md-snackbar-close {
+  --_button-state-color: var(--_support-icon-state-color, transparent);
+  --_button-state-opacity: var(--_support-icon-state-opacity, 0);
+  --_button-background-state-color: var(
+    --_support-icon-background-state-color,
+    transparent
+  );
+  --_button-background-state-opacity: var(
+    --_support-icon-background-state-opacity,
+    0
+  );
+  --_button-pressed-state-color: var(--_support-icon-pressed-state-color);
+  --_button-pressed-state-opacity: var(--_support-icon-pressed-state-opacity);
+}
+.md-snackbar[popover] {
+  inset: auto;
+  bottom: var(--md-sys-measurement-space200);
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: calc(100vw - var(--md-sys-measurement-space400));
+}
+.md-snackbar[popover]:not(:popover-open) {
+  display: none;
+}
+.md-tooltip {
+  --_elevation-level: var(--_tooltip-elevation, 0);
+  --_shadow-color: var(--_tooltip-shadow, transparent);
+  box-sizing: border-box;
+  margin: 0;
+  border: 0;
+  border-radius: var(--_tooltip-shape);
+  background: var(--_tooltip-container);
+  padding: var(--md-sys-measurement-space150) var(--md-sys-measurement-space200)
+    var(--md-sys-measurement-space100);
+  width: max-content;
+  max-width: 24rem;
+  text-align: start;
+}
+.md-tooltip[data-variant="plain"] {
+  min-block-size: var(--md-sys-measurement-space300);
+  padding: var(--md-sys-measurement-space50) var(--md-sys-measurement-space100);
+}
+.md-tooltip > p {
+  margin: 0;
+  color: var(--_tooltip-supporting-text-color);
+  font-family: var(--_tooltip-supporting-text-font-family);
+  font-size: var(--_tooltip-supporting-text-font-size);
+  font-weight: var(--_tooltip-supporting-text-font-weight);
+  line-height: var(--_tooltip-supporting-text-line-height);
+  letter-spacing: var(--_tooltip-supporting-text-tracking);
+}
+.md-tooltip > h3 {
+  margin: 0 0 var(--md-sys-measurement-space50);
+  color: var(--_tooltip-subhead-color);
+  font-family: var(--_tooltip-subhead-font-family);
+  font-size: var(--_tooltip-subhead-font-size);
+  font-weight: var(--_tooltip-subhead-font-weight);
+  line-height: var(--_tooltip-subhead-line-height);
+  letter-spacing: var(--_tooltip-subhead-tracking);
+}
+.md-tooltip[data-variant="rich"] > .md-feedback-action {
+  margin-block-start: var(--md-sys-measurement-space150);
+  padding-inline: 0;
+  justify-content: flex-start;
+}
+.md-tooltip-demo {
+  anchor-scope: --tooltip-trigger;
+  position: relative;
+  display: inline-flex;
+}
+.md-tooltip-demo > .md-tooltip[data-variant="plain"] {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  visibility: hidden;
+}
+.md-tooltip-demo:is(:hover, :focus-within):not([data-tooltip-dismissed])
+  > .md-tooltip[data-variant="plain"] {
+  visibility: visible;
+}
+.md-tooltip[data-variant="rich"][popover] {
+  inset: auto;
+  position-anchor: --tooltip-trigger;
+  top: anchor(bottom);
+  left: anchor(left);
+  margin-block: var(--md-sys-measurement-space100);
+}
+@supports not (top: anchor(bottom)) {
+  .md-tooltip[data-variant="rich"][popover] {
+    top: 0;
+    left: 0;
+    visibility: hidden;
+  }
+  .md-tooltip[data-variant="rich"][popover][data-positioned] {
+    visibility: visible;
+  }
+}
+.md-tooltip-demo > button {
+  anchor-name: --tooltip-trigger;
+}
+@media (forced-colors: active) {
+  .md-tooltip,
+  .md-snackbar,
+  .md-badge {
+    border: 1px solid CanvasText;
+  }
+}
+.md-feedback-action[data-component-state="focused"],
+.md-snackbar-close[data-component-state="focused"],
+.md-feedback-action:focus-visible,
+.md-snackbar-close:focus-visible {
+  outline: var(--md-sys-state-focus-indicator-thickness) solid currentColor;
+  outline-offset: var(--md-sys-state-focus-indicator-outer-offset);
+}

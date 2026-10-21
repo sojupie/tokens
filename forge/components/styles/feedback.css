@@ -1,0 +1,42 @@
+.md-icon-button::before,
+.md-interactive-card::before,
+:is(
+  .md-filter-chip,
+  .md-assist-chip,
+  .md-suggestion-chip,
+  .md-input-chip
+)::before,
+.md-menu-item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: var(--_button-background-state-color);
+  opacity: var(--_button-background-state-opacity);
+}
+.md-icon-button,
+.md-interactive-card,
+:is(.md-filter-chip, .md-assist-chip, .md-suggestion-chip, .md-input-chip),
+.md-menu-item {
+  --_button-effects-duration: var(--_motion-fast-effects-duration);
+  --_button-easing: var(--_motion-fast-effects-easing);
+  transition:
+    background-color var(--_button-effects-duration) var(--_button-easing),
+    color var(--_button-effects-duration) var(--_button-easing),
+    border-color var(--_button-effects-duration) var(--_button-easing),
+    box-shadow var(--_button-effects-duration) var(--_button-easing);
+}
+.md-icon-button:focus-visible {
+  outline: var(--md-sys-state-focus-indicator-thickness) solid
+    var(--md-sys-color-secondary);
+  outline-offset: var(--md-sys-state-focus-indicator-outer-offset);
+}
+.md-icon-button:is(
+    :active,
+    [data-pressed],
+    [data-component-state="pressed"]
+  ):not(:disabled):not([aria-disabled="true"]):not([data-button-cancelled]) {
+  border-radius: var(--_button-pressed-shape);
+}

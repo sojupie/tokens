@@ -1,0 +1,187 @@
+/* Horizontal menu geometry is supplied by the captured Common menu set. */
+.md-menu-demo {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  inline-size: min(20rem, 100%);
+}
+.md-menu[data-menu-panel] {
+  transition: border-radius var(--_motion-fast-spatial-duration)
+    var(--_motion-fast-spatial-easing);
+}
+.md-menu-item-text {
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+  flex: 1;
+}
+.md-menu-item [data-slot="leading-icon"] svg,
+.md-menu-item [data-slot="trailing-icon"] > svg {
+  inline-size: 100%;
+  block-size: 100%;
+}
+.md-menu-item > [data-slot="leading-icon"],
+.md-menu-item > [data-slot="trailing-icon"] {
+  display: flex;
+  flex: none;
+}
+.md-menu-item > [data-slot="trailing-icon"] {
+  margin-inline-start: auto;
+}
+.md-menu[data-orientation="horizontal"] {
+  inline-size: max-content;
+  max-inline-size: 100%;
+}
+.md-menu[data-orientation="horizontal"] > section {
+  padding-block: var(--_menu-top) var(--_menu-bottom);
+  padding-inline: var(--md-sys-measurement-space150);
+}
+.md-menu[data-orientation="horizontal"] > section > ul {
+  flex-direction: row;
+}
+.md-menu[data-orientation="horizontal"] > section > ul > li {
+  flex: none;
+}
+.md-menu[data-orientation="horizontal"] .md-menu-item {
+  min-height: 0;
+  flex-direction: row;
+  justify-content: center;
+  white-space: nowrap;
+  transition:
+    border-radius var(--_motion-fast-spatial-duration)
+      var(--_motion-fast-spatial-easing),
+    background-color var(--_button-effects-duration) var(--_button-easing),
+    color var(--_button-effects-duration) var(--_button-easing);
+}
+.md-menu[data-content="icon-only"] .md-menu-item.md-menu-icon-button {
+  --_menu-item-container: var(--_menu-icon-container);
+  --_menu-item-label: var(--_menu-icon-icon);
+  --_menu-item-leading-icon-color: var(--_menu-icon-icon);
+  --_menu-item-state-color: var(--_menu-icon-state-color, transparent);
+  --_menu-item-background-state-color: var(
+    --_menu-icon-background-state-color,
+    transparent
+  );
+  --_menu-item-pressed-state-color: var(
+    --_menu-icon-pressed-state-color,
+    var(--_menu-icon-icon)
+  );
+}
+.md-menu li:has(> [data-menu-submenu]) {
+  position: relative;
+}
+.md-menu [data-menu-static] {
+  position: absolute;
+  z-index: 2;
+  inset-block-start: 0;
+  inset-inline-start: calc(100% + var(--md-sys-measurement-space100));
+  inline-size: max-content;
+  min-inline-size: 12rem;
+}
+.md-menu [data-menu-static][hidden] {
+  display: none;
+}
+.md-menu[popover] {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  inline-size: max-content;
+  min-inline-size: min(12rem, calc(100dvw - 16px));
+  max-inline-size: calc(100dvw - 16px);
+  max-block-size: calc(100dvh - 16px);
+  overflow: auto;
+}
+.md-menu-demo > output:empty {
+  display: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .md-menu[data-menu-panel],
+  .md-menu[data-orientation="horizontal"] .md-menu-item {
+    transition: none;
+  }
+}
+
+.md-menu-demo > [data-menu-main] {
+  inline-size: min(20rem, 100%);
+}
+.md-menu-demo:has([data-menu-static]:not([hidden])) {
+  inline-size: calc(32rem + var(--md-sys-measurement-space100));
+}
+@media (max-width: 600px) {
+  .md-menu [data-menu-static] {
+    position: static;
+    min-inline-size: 0;
+    inline-size: 100%;
+    margin-block-start: var(--md-sys-measurement-space100);
+  }
+}
+
+.md-menu-item [data-menu-checked-icon],
+.md-menu-item [data-menu-unchecked-icon] {
+  display: contents;
+}
+.md-menu-item [data-menu-checked-icon][hidden],
+.md-menu-item [data-menu-unchecked-icon][hidden] {
+  display: none;
+}
+
+.md-menu-demo:has(> [data-orientation="horizontal"]) {
+  inline-size: 100%;
+  display: grid;
+  justify-items: center;
+}
+.md-menu-demo > [data-menu-main][data-orientation="horizontal"] {
+  inline-size: max-content;
+  max-inline-size: 100%;
+}
+
+/* Baseline menu spacing follows the Material measurements table. */
+.md-menu[data-variant="baseline"] {
+  --_menu-gap: 0px;
+  --_menu-group-padding: 0px;
+  --_menu-group-shape: var(--_menu-shape);
+}
+.md-menu[data-variant="baseline"] > section {
+  padding-block: var(--md-sys-measurement-space100);
+}
+.md-menu[data-variant="baseline"] .md-menu-item {
+  --_menu-item-container: transparent;
+  --_menu-item-shape: 0px;
+  --_menu-item-top-shape: 0px;
+  --_menu-item-bottom-shape: 0px;
+  --_menu-item-top: 0px;
+  --_menu-item-bottom: 0px;
+  --_menu-item-leading: var(--md-sys-measurement-space150);
+  --_menu-item-trailing: var(--md-sys-measurement-space150);
+  --_menu-item-gap: var(--md-sys-measurement-space150);
+  --_menu-item-trailing-supporting-text-color: var(
+    --_menu-item-leading-icon-color
+  );
+  --_menu-item-trailing-supporting-text-font-family: var(
+    --_menu-item-font-family
+  );
+  --_menu-item-trailing-supporting-text-font-size: var(--_menu-item-font-size);
+  --_menu-item-trailing-supporting-text-line-height: var(
+    --_menu-item-line-height
+  );
+  --_menu-item-trailing-supporting-text-font-weight: var(
+    --_menu-item-font-weight
+  );
+  --_menu-item-trailing-supporting-text-tracking: var(--_menu-item-tracking);
+}
+.md-menu[data-variant="baseline"] .md-divider {
+  --_divider-color: var(--_menu-divider-color);
+  --_divider-thickness: var(--_menu-divider-height);
+  margin-block: var(--md-sys-measurement-space100);
+}
+.md-menu[data-variant="baseline"] {
+  min-inline-size: min(112px, 100%);
+  max-inline-size: 280px;
+}
+.md-menu-demo:has(> [data-variant="baseline"]) {
+  inline-size: min(280px, 100%);
+}
+.md-menu-demo:has(> [data-variant="baseline"]):has(
+    [data-menu-static]:not([hidden])
+  ) {
+  inline-size: calc(280px + 12rem + var(--md-sys-measurement-space100));
+}

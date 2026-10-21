@@ -1,0 +1,14 @@
+[
+  "behaviors/utils.js",
+  "behaviors/chips.js",
+  "behaviors/tabs.js",
+  "behaviors/button-groups.js",
+  "behaviors/navigation.js",
+  "behaviors/sliders.js",
+  "behaviors/toolbars.js",
+  "behaviors/app-bars.js",
+  "behaviors/snackbars.js",
+  "behaviors/fab-menus.js",
+  "behaviors/split-buttons.js",
+  "behaviors/tooltips.js"
+]

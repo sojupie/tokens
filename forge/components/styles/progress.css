@@ -1,0 +1,42 @@
+/* Progress geometry comes from component bindings. The linear length is demo layout. */
+.md-progress-demo {
+  display: grid;
+  justify-items: center;
+  gap: var(--md-sys-measurement-space200);
+  max-inline-size: 100%;
+}
+.md-progress {
+  display: block;
+  inline-size: 15rem;
+  max-inline-size: 100%;
+  block-size: var(--_progress-height, var(--_progress-thickness));
+}
+.md-progress:where([data-variant$="circular"]) {
+  inline-size: var(--_progress-size);
+  block-size: var(--_progress-size);
+}
+.md-progress svg {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  overflow: visible;
+}
+.md-progress:where([data-variant$="linear"]):dir(rtl) svg {
+  transform: scaleX(-1);
+}
+.md-progress path {
+  fill: none;
+}
+.md-progress-track {
+  stroke: var(--_progress-track);
+}
+.md-progress-active {
+  stroke: var(--_progress-color);
+}
+.md-progress-stop {
+  fill: var(--_progress-stop-color);
+}
+.md-progress-control {
+  display: grid;
+  gap: var(--md-sys-measurement-space100);
+}

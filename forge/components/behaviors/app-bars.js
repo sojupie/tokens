@@ -1,0 +1,14 @@
+(() => {
+  if (typeof document === "undefined") return;
+  document.addEventListener(
+    "scroll",
+    (event) => {
+      const demo = event.target;
+      if (demo.matches?.('[data-appbar-demo][data-interactive="true"]'))
+        demo
+          .querySelector(".md-app-bar")
+          .toggleAttribute("data-scrolled", demo.scrollTop > 0);
+    },
+    true,
+  );
+})();

@@ -1,0 +1,57 @@
+.md-dialog {
+  --_elevation-level: var(--_dialog-elevation);
+  --_shadow-color: var(--md-sys-color-shadow);
+  background: var(--_dialog-container);
+  border: 0;
+  border-radius: var(--_dialog-shape);
+  color: var(--_dialog-supporting-text-color);
+  padding: var(--md-sys-measurement-space300);
+}
+.md-dialog::backdrop {
+  background: color-mix(
+    in srgb,
+    var(--md-ref-palette-neutral0) 32%,
+    transparent
+  );
+}
+.md-dialog h2 {
+  color: var(--_dialog-headline-color);
+  font-family: var(--_dialog-headline-font-family);
+  font-size: var(--_dialog-headline-font-size);
+  font-weight: var(--_dialog-headline-font-weight);
+  line-height: var(--_dialog-headline-line-height);
+  letter-spacing: var(--_dialog-headline-tracking);
+}
+.md-dialog p,
+.md-dialog [data-slot="supporting-text"] {
+  color: var(--_dialog-supporting-text-color);
+  font-family: var(--_dialog-supporting-text-font-family);
+  font-size: var(--_dialog-supporting-text-font-size);
+  font-weight: var(--_dialog-supporting-text-font-weight);
+  line-height: var(--_dialog-supporting-text-line-height);
+  letter-spacing: var(--_dialog-supporting-text-tracking);
+}
+.md-dialog [data-slot="subhead"] {
+  color: var(--_dialog-subhead-color);
+  font-family: var(--_dialog-subhead-font-family);
+  font-size: var(--_dialog-subhead-font-size);
+  font-weight: var(--_dialog-subhead-font-weight);
+  line-height: var(--_dialog-subhead-line-height);
+  letter-spacing: var(--_dialog-subhead-tracking);
+}
+.md-dialog > [data-slot="icon"] {
+  color: var(--_dialog-icon);
+  width: var(--_dialog-icon-size);
+  height: var(--_dialog-icon-size);
+}
+.md-dialog .md-divider {
+  --_divider-color: var(--_dialog-divider);
+  --_divider-thickness: var(--_dialog-divider-height);
+}
+.md-dialog .md-text-button {
+  font-family: var(--_dialog-action-font-family);
+  font-size: var(--_dialog-action-font-size);
+  line-height: var(--_dialog-action-line-height);
+  font-weight: var(--_dialog-action-font-weight);
+  letter-spacing: var(--_dialog-action-tracking);
+}

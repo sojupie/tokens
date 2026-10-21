@@ -1,0 +1,37 @@
+/* Divider measurements are layout rules outside the captured color/thickness tokens.
+   https://m3.material.io/components/divider/specs */
+.md-divider {
+  border: 0;
+  border-block-start: var(--_divider-thickness) solid var(--_divider-color);
+  margin: 0;
+  min-inline-size: 0;
+  align-self: stretch;
+}
+.md-divider[data-inset="true"] {
+  margin-inline-start: var(--md-sys-measurement-space200);
+}
+.md-divider[data-inset="middle"] {
+  margin-inline: var(--md-sys-measurement-space200);
+}
+/* The source also lists 8dp right/bottom margins without specifying their context.
+   Keep these optional outer margins separate from the divider insets. */
+.md-divider-layout {
+  align-self: stretch;
+  min-inline-size: 0;
+}
+.md-divider-layout:is([data-spacing="right"], [data-spacing="right-bottom"]) {
+  margin-inline-end: var(--md-sys-measurement-space100);
+}
+.md-divider-layout:is([data-spacing="bottom"], [data-spacing="right-bottom"]) {
+  margin-block-end: var(--md-sys-measurement-space100);
+}
+.md-divider-supporting > p {
+  margin: var(--md-sys-measurement-space50) 0 0;
+  color: var(--md-sys-color-on-surface-variant);
+}
+.md-divider-supporting[data-inset="true"] > p {
+  margin-inline-start: var(--md-sys-measurement-space200);
+}
+.md-divider-supporting[data-inset="middle"] > p {
+  margin-inline: var(--md-sys-measurement-space200);
+}

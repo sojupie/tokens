@@ -1,0 +1,78 @@
+.md-icon-button {
+  --_icon-container: transparent;
+  --_icon-container-opacity: 1;
+  --_icon-icon-opacity: 1;
+  --_icon-outline: transparent;
+  --_icon-outline-opacity: 1;
+  --_icon-outline-width: 0px;
+  --_icon-state-color: transparent;
+  --_icon-state-opacity: 0;
+  --_elevation-level: 0;
+  --_shadow-color: transparent;
+  --_icon-background-state-color: transparent;
+  --_icon-background-state-opacity: 0;
+  --_button-background-state-color: var(--_icon-background-state-color);
+  --_button-background-state-opacity: var(--_icon-background-state-opacity);
+  --_button-pressed-state-color: var(--_icon-pressed-state-color);
+  --_button-pressed-state-opacity: var(--_icon-pressed-state-opacity);
+  --_button-state-color: var(--_icon-state-color);
+  --_button-state-opacity: var(--_icon-state-opacity);
+  --_button-rest-shape: var(--_icon-round-shape);
+  --_button-pressed-shape: var(--_icon-pressed-shape);
+  --_button-spring-damping: var(--_icon-spring-damping);
+  --_button-spring-stiffness: var(--_icon-spring-stiffness);
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  height: var(--_icon-height);
+  min-width: calc(
+    var(--_icon-icon-size) + var(--_icon-leading) + var(--_icon-trailing)
+  );
+  padding: 0 var(--_icon-trailing) 0 var(--_icon-leading);
+  gap: 0;
+  border: var(--_icon-outline-width) solid var(--_icon-outline);
+  border-radius: var(--_button-rest-shape);
+  background: color-mix(
+    in srgb,
+    var(--_icon-container) calc(var(--_icon-container-opacity) * 100%),
+    transparent
+  );
+  color: color-mix(
+    in srgb,
+    var(--_icon-icon) calc(var(--_icon-icon-opacity) * 100%),
+    transparent
+  );
+  text-decoration: none;
+  vertical-align: middle;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.md-icon-button[data-shape="square"] {
+  --_button-rest-shape: var(--_icon-square-shape);
+}
+.md-icon-button[aria-pressed="true"] {
+  --_button-rest-shape: var(--_icon-selected-round-shape);
+}
+.md-icon-button[aria-pressed="true"][data-shape="square"] {
+  --_button-rest-shape: var(--_icon-selected-square-shape);
+}
+.md-icon-button.md-outlined-icon-button {
+  --_icon-outline-width: var(--_icon-size-outline-width);
+}
+.md-icon-button.md-outlined-icon-button[aria-pressed="true"] {
+  --_icon-outline-width: 0px;
+}
+.md-icon-button > svg,
+.md-icon-button > span > svg {
+  color: inherit;
+  width: var(--_icon-icon-size);
+  height: var(--_icon-icon-size);
+  flex: none;
+}
+.md-icon-button > span:not(.md-button-ripple) {
+  display: contents;
+}
