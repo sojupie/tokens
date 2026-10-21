@@ -1790,7 +1790,7 @@ html:has(.md-dialog-demo > dialog:modal) { overflow:hidden; }
 .md-navigation-rail[data-variant="expanded"] .md-rail-menu { margin-inline-start:calc((var(--md-comp-fab-container-width) - var(--md-comp-icon-button-small-container-height)) / 2); }
 .md-navigation-rail .md-nav-items { flex:none;inline-size:100%; }
 .md-navigation-rail .md-nav-item { --_nav-label-height:1lh;--_nav-item-label-gap:var(--_nav-item-indicator-gap);flex:none;inline-size:100%; }
-.md-navigation-rail :is(.md-nav-icon,.md-nav-label,.md-nav-section) { position:relative; }
+.md-navigation-rail :is(.md-nav-icon,.md-nav-label,.md-nav-section,.md-nav-fab > span) { position:relative; }
 .md-navigation-rail .md-nav-label { white-space:normal;overflow-wrap:anywhere; }
 .md-navigation-rail[data-orientation="horizontal"] .md-nav-item { justify-content:flex-start; }
 .md-navigation-rail[data-orientation="horizontal"] .md-nav-indicator { inline-size:max-content;max-inline-size:100%;min-block-size:var(--_nav-item-indicator-height);block-size:auto; }
@@ -1815,7 +1815,7 @@ html:has(.md-dialog-demo > dialog:modal) { overflow:hidden; }
 .md-navigation-rail[data-variant="expanded"] .md-rail-menu > [data-navigation-collapse-icon] { opacity:1;transform:rotate(0deg); }
 .md-navigation-rail[data-variant="expanded"][data-orientation="vertical"] .md-nav-item { justify-content:flex-start;padding-inline:var(--md-comp-nav-rail-item-horizontal-full-width-leading-space); }
 .md-rail-frame[data-transitioning] .md-navigation-rail { overflow:hidden; }
-.md-rail-frame[data-transitioning] .md-navigation-rail > :is(header,.md-nav-items) { inline-size:var(--_rail-content-width);box-sizing:border-box; }
+.md-rail-frame[data-transitioning] .md-navigation-rail > :is(header,.md-nav-items) { inline-size:var(--_rail-content-width);box-sizing:border-box;align-self:var(--_rail-content-align); }
 .md-rail-screen { scrollbar-gutter:stable; }
 @media (prefers-reduced-motion:reduce) { .md-icon-button.md-rail-menu > span:not(.md-button-ripple) { transition:none; } }
 .md-nav-badge { flex:none; }

@@ -152,9 +152,11 @@
   function setRailExpanded(frame,expanded,focus=false){
     const rail=frame.querySelector('.md-navigation-rail'),state=railFrames.get(frame),start=rail.getBoundingClientRect().width,wasModal=frame.dataset.modalOpen==='true';
     const slot=frame.querySelector('.md-navigation-slot'),body=frame.querySelector('.md-rail-body'),bodyBefore=body.getBoundingClientRect();
-    const motionTargets='.md-nav-indicator,.md-nav-icon,.md-nav-label,.md-nav-section,.md-rail-menu,.md-nav-fab';
+    const textTargets='.md-nav-label,.md-nav-section,.md-nav-fab > span:not(.md-button-ripple)';
+    const outgoing=[...rail.querySelectorAll(textTargets)].filter(e=>e.getClientRects().length).map(element=>{const style=getComputedStyle(element);return {text:element.textContent,rect:element.getBoundingClientRect(),font:style.font,color:style.color,spacing:style.letterSpacing,align:style.textAlign,opacity:style.opacity,direction:style.direction};});
+    const motionTargets='.md-nav-indicator,.md-nav-icon,.md-nav-label,.md-nav-section,.md-rail-menu,.md-nav-fab,.md-nav-fab > span:not(.md-button-ripple)';
     const before=new Map([...rail.querySelectorAll(motionTargets)].filter(e=>e.getClientRects().length).map(e=>[e,e.getBoundingClientRect()]));
-    for(const a of state?.animations||[])a.cancel();delete frame.dataset.transitioning;
+    for(const a of state?.animations||[])a.cancel();for(const copy of state?.copies||[])copy.remove();delete frame.dataset.transitioning;
     const fab=rail.querySelector('.md-nav-fab'),fabStart=before.get(fab)?.width;
     rail.dataset.variant=expanded?'expanded':'collapsed';rail.dataset.orientation=expanded?'horizontal':'vertical';syncRail(frame);
     // Resolve the new label metrics before capturing the FLIP destination.
@@ -167,8 +169,17 @@
     if(targetHidden){frame.querySelector('.md-navigation-surface').hidden=false;frame.dataset.railHidden='false';}
     if(wasModal&&!expanded){frame.dataset.modalOpen='true';frame.querySelector('.md-rail-body').inert=true;frame.querySelector('.md-navigation-scrim').hidden=false;}
     frame.style.setProperty('--_rail-content-width',(targetHidden?start:end)+'px');
+    frame.style.setProperty('--_rail-content-align',getComputedStyle(rail).direction==='rtl'?'flex-end':'flex-start');
     frame.style.setProperty('--_rail-slot-width',slotEnd+'px');frame.dataset.transitioning='';
-    const current={animations:[]};railFrames.set(frame,current);
+    const current={animations:[],copies:[]};railFrames.set(frame,current);
+    // Labels crossfade between layouts. Retain only the outgoing text, at its
+    // current position and typography, while the real label takes its new slot.
+    const fade=MaterialMotion.timing(rail,'fast-effects'),frameRect=frame.getBoundingClientRect();
+    for(const old of outgoing){
+      const copy=document.createElement('span');copy.textContent=old.text;copy.dataset.railTextExit='';copy.setAttribute('aria-hidden','true');copy.inert=true;
+      Object.assign(copy.style,{position:'absolute',pointerEvents:'none',zIndex:'4',left:(old.rect.x-frameRect.x-frame.clientLeft)+'px',top:(old.rect.y-frameRect.y-frame.clientTop)+'px',width:old.rect.width+'px',height:old.rect.height+'px',font:old.font,color:old.color,letterSpacing:old.spacing,textAlign:old.align,direction:old.direction});
+      frame.append(copy);current.copies.push(copy);current.animations.push(copy.animate([{opacity:old.opacity},{opacity:0}],{...fade,fill:'forwards'}));
+    }
     // Fix the final inner layout while the outer rail resizes. Move existing
     // contents from their current positions instead of reflowing every frame.
     // Capture every destination before starting any animation. An animated
@@ -182,6 +193,13 @@
       const prior=before.get(element);if(!next.width||!next.height)continue;
       const parent=element.parentElement.closest(motionTargets),parentShift=shifts.get(parent)||{x:0,y:0};
       const shift=prior?{x:prior.x-next.x,y:prior.y-next.y}:{x:0,y:0};shifts.set(element,shift);
+      if(element.matches(textTargets)){
+        // Cancel the moving indicator's offset: the incoming label fades at
+        // its destination rather than travelling from below the icon.
+        current.animations.push(element.animate([{left:(left-parentShift.x)+'px',top:(top-parentShift.y)+'px'},{left:left+'px',top:top+'px'}],timing));
+        current.animations.push(element.animate([{opacity:0},{opacity:1}],{...effects,delay:fade.duration,fill:'both'}));
+        continue;
+      }
       // Paint text at its moving position rather than promoting it into a
       // transformed texture that changes rasterization when the effect ends.
       current.animations.push(element.animate(prior?[{left:(left+shift.x-parentShift.x)+'px',top:(top+shift.y-parentShift.y)+'px'},{left:left+'px',top:top+'px'}]:[{opacity:0},{opacity:1}],prior?timing:effects));
@@ -192,7 +210,7 @@
     if(fab)current.animations.push(fab.animate([{width:fabStart+'px',minWidth:fabStart+'px'},{width:fab.getBoundingClientRect().width+'px',minWidth:fab.getBoundingClientRect().width+'px'}],timing));
     if(wasModal&&!expanded)current.animations.push(frame.querySelector('.md-navigation-scrim').animate([{opacity:1},{opacity:0}],{...effects,fill:'forwards'}));
     if(expanded)restoreFocus();
-    animation.finished.then(()=>{if(railFrames.get(frame)!==current)return;delete frame.dataset.transitioning;syncRail(frame);for(const a of current.animations)a.cancel();if(!expanded)restoreFocus();},()=>{});
+    animation.finished.then(()=>{if(railFrames.get(frame)!==current)return;delete frame.dataset.transitioning;syncRail(frame);for(const a of current.animations)a.cancel();for(const copy of current.copies)copy.remove();if(!expanded)restoreFocus();},()=>{});
   }
   function initRailFrames(){for(const frame of document.querySelectorAll('.md-rail-frame')){if(!railFrames.has(frame)){railFrames.set(frame,{});syncRail(frame);}for(const label of frame.querySelectorAll('.md-nav-label'))if(!railLabels.has(label)){railLabels.add(label);railLabelSizes.observe(label);}}}
   document.addEventListener('keydown',event=>{const frame=event.target.closest?.('.md-rail-frame');if(!frame||frame.dataset.modalOpen!=='true')return;if(event.key==='Escape'){event.preventDefault();setRailExpanded(frame,false,true);return;}if(event.key==='Tab'){const controls=[...frame.querySelector('.md-navigation-rail').querySelectorAll('button')].filter(e=>e.getClientRects().length),first=controls[0],last=controls.at(-1);if(event.shiftKey&&event.target===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&event.target===last){event.preventDefault();first.focus();}}});
