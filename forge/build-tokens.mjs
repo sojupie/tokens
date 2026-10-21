@@ -1,3 +1,4 @@
+import motion from "./components/static/motion.cjs";
 import { parseArgs } from "node:util";
 import StyleDictionary from "style-dictionary";
 import { siteTheme } from "./material/site-theme.mjs";
@@ -256,6 +257,12 @@ async function main() {
         required.add(match[1]);
     }
     const themeConfig = JSON.parse(await readFile("forge/material/site-theme.json", "utf8"));
+    if (!["Standard", "Expressive"].includes(themeConfig.motionScheme)) throw new Error("Unknown site motion scheme");
+    const motionOutput = path.join(output, "site-motion");
+    const motionExport = spawnSync(executable, [...prefix, "export", "--published", published, "--context", `Motion scheme=${themeConfig.motionScheme}`, "--output", motionOutput], { stdio: "inherit" });
+    if (motionExport.status !== 0) throw new Error("Site motion export failed");
+    const motionDocument = JSON.parse(await readFile(path.join(motionOutput, "tokens.tokens.json"), "utf8"));
+    await rm(motionOutput, { recursive: true });
     let themeCSS = "";
     let referencePalette = {};
     let identity;
@@ -283,7 +290,7 @@ async function main() {
       );
       identity = document.$extensions["dev.tokencatalog.export"];
       const selector = `:root[data-theme="${variant.theme}"][data-contrast="${variant.contrast}"]`;
-      const compiled = await compile(siteTheme(document, variant, themeConfig), selector, {
+      const compiled = await compile(siteTheme(document, variant, themeConfig, motionDocument), selector, {
         appTheme: true,
         names: required,
         overrides,
@@ -318,7 +325,15 @@ async function main() {
       buttonCoverage = buttons.coverage;
       for (const name of buttons.requiredNames) required.add(name);
       const components = generateComponents(document, compiled.values);
-      const generated = anatomy + "\n" + elevation + "\n" + components.css;
+      const motionProperties = [];
+      for (const speed of ["fast", "default", "slow"]) for (const type of ["spatial", "effects"]) {
+        const name = `md-sys-motion-spring-${speed}-${type}`;
+        for (const property of ["damping", "stiffness"]) required.add(`${name}-${property}`);
+        const timing = motion.cssTiming(Number(compiled.values[`${name}-damping`]), Number(compiled.values[`${name}-stiffness`]));
+        for (const property of ["duration", "easing"]) motionProperties.push(`  --_motion-${speed}-${type}-${property}: ${timing[property]};`);
+      }
+      const motionCSS = `:root {\n${motionProperties.join("\n")}\n}\n`;
+      const generated = motionCSS + anatomy + "\n" + elevation + "\n" + components.css;
       if (componentCSS !== undefined && componentCSS !== generated)
         throw new Error("Component bindings differ across appearances");
       componentCSS = generated;
@@ -401,6 +416,7 @@ async function main() {
       path.join(output, "manifest.json"),
       JSON.stringify(
         {
+          motionScheme: themeConfig.motionScheme,
           formatVersion: "2025.10",
           styleDictionary: "5.6.1",
           publicationId: identity.publicationId,

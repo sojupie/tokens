@@ -8,8 +8,8 @@
   --_elevation-level: 0; --_shadow-color: transparent;
   --_button-rest-shape: var(--_button-round-shape);
   --_button-shape: var(--_button-rest-shape);
-  --_button-effects-duration: var(--md-sys-motion-duration-short3);
-  --_button-easing: var(--md-sys-motion-easing-standard);
+  --_button-effects-duration: var(--_motion-fast-effects-duration);
+  --_button-easing: var(--_motion-fast-effects-easing);
   position: relative; isolation: isolate; display: inline-flex; touch-action: manipulation; -webkit-tap-highlight-color: transparent; user-select: none;
   align-items: center; justify-content: center; flex: none;
   min-height: var(--_button-height); min-inline-size: max-content; white-space: nowrap;

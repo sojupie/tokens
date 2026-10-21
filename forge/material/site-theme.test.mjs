@@ -25,3 +25,14 @@ test("site palette follows appearance and aliases without modifying captured tok
   assert.equal(new Set(values).size, 6);
   assert.deepEqual(source, before);
 });
+
+test('site scheme changes spring values without changing download input or component aliases', () => {
+  const source = {md:{sys:{color:{},motion:{spring:{fast:{spatial:{damping:{$type:'number',$value:.9},stiffness:{$type:'number',$value:1400}}}}}},ref:{palette:{}},comp:{example:{$type:'number',$value:'{md.sys.motion.spring.fast.spatial.damping}'}}}};
+  const motion = {$extensions:{'dev.tokencatalog.export':{context:{'Motion scheme':'Expressive'}}},md:{sys:{motion:{spring:{fast:{spatial:{damping:{$type:'number',$value:.6},stiffness:{$type:'number',$value:800}}}}}}}};
+  const config={primary:'#6750a4',secondary:'#5d5d74',motionScheme:'Expressive'};
+  const themed=siteTheme(source,{theme:'light',contrast:'default'},config,motion);
+  assert.equal(themed.md.sys.motion.spring.fast.spatial.damping.$value,.6);
+  assert.equal(source.md.sys.motion.spring.fast.spatial.damping.$value,.9);
+  assert.equal(themed.md.comp.example.$value,source.md.comp.example.$value);
+  assert.throws(()=>siteTheme(source,{theme:'light',contrast:'default'},{...config,motionScheme:'Standard'},motion),/context mismatch/);
+});
