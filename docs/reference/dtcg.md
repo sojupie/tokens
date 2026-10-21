@@ -45,6 +45,17 @@ and CSS for all six appearance contexts under `published/assets/`. The site
 loads `assets/theme.css` on startup. Its manifest binds the generated theme to
 the exact SQLite database and checks the CSS checksum.
 
+The site's color palette is generated with Material Color Utilities from the
+primary and secondary seeds in `forge/material/site-theme.json`. Change either
+palette seed and rebuild to update
+light and dark themes at default, medium, and high contrast. The build uses
+Tonal Spot with contrast levels 0, 0.5, and 1. Component color aliases resolve
+against these generated roles. Captured DTCG and downloadable CSS retain the
+upstream palette.
+
+Material Color Utilities is pinned to 0.3.0 because 0.4.0 contains extensionless
+imports that fail in the Node.js build.
+
 The build also generates [button styles and a coverage report](buttons.md)
 from the current color and size sets. Rebuild the Go binary after this step.
 
@@ -60,6 +71,12 @@ The server exposes these files when generated assets are present:
 /downloads/dtcg/light-default/tokens.css
 /downloads/dtcg/light-default/report.json
 ```
+
+The site's **Download tokens** dialog exposes these three formats and all six
+appearance contexts. DTCG JSON is the default. Each file includes the whole
+collection for that context; page, table and search filters do not apply. The
+older custom JSON API/download URLs remain available for compatibility. They
+have not been silently changed to DTCG.
 
 Replace `light-default` with `light-medium`, `light-high`, `dark-default`,
 `dark-medium` or `dark-high`. Include the collection mount, such as `/md3`,
@@ -126,3 +143,8 @@ typography line height, duration output, required theme tokens and stale assets.
 
 Specifications: [DTCG format](https://www.designtokens.org/tr/2025.10/format/),
 [Style Dictionary compatibility](https://styledictionary.com/info/dtcg/).
+
+Percentage lengths remain in the Material source extension on groups without a
+DTCG `$value`, following the existing handling of circular shapes. The CSS
+compiler reads that extension and emits `%`. This preserves values such as
+selected split-button corners without inventing a DTCG dimension unit.

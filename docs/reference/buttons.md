@@ -39,9 +39,10 @@ button sets appear as explicit exclusions in the coverage report.
 `published/assets/buttons-coverage.json` records source-token mappings,
 exclusions and supported configurations. The current capture supplies 295
 mapped tokens and 650 combinations of variant, size, shape, selection and state.
-The generator uses this configuration list for the local gallery at
-`/lab/buttons`. Include `/md3` when the server is mounted there. The gallery
-supports query filters and is excluded from indexing.
+The button page at `/md3/components/buttons` uses this configuration list for
+its live preview. Compare states, sizes, or variants while fixing the other
+settings, or choose Interactive for one live button. Preview query parameters
+are described in the [component reference](components.md).
 
 ## Interaction behavior
 

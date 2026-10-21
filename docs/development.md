@@ -56,6 +56,8 @@ rules are in the static stylesheets.
 
 The [component reference](reference/components.md) and [button reference](reference/buttons.md)
 cover generated state bindings, shared interactions, and the local galleries.
+The [CSS inspection and override instructions](reference/components.md#inspect-css-sources)
+explain how to find manual declarations and change a token value.
 
 ## Code layout
 
