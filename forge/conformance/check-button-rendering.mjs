@@ -34,13 +34,21 @@ export function checkButtonRendering() {
     );
   };
   for (const button of document.querySelectorAll("[data-button-case]")) {
-    const [variant, size, shape, selection, forced] =
+    const [variant, size, shape, configuredSelection, forced] =
       button.dataset.buttonCase.split("-");
+    const selection = button.hasAttribute("aria-pressed")
+      ? button.getAttribute("aria-pressed") === "true"
+        ? "selected"
+        : "unselected"
+      : configuredSelection;
+    const split = button.closest(".md-split-button"),
+      group = button.closest(".md-button-group"),
+      trailing = button.classList.contains("md-split-trailing");
     const style = getComputedStyle(button),
       rect = button.getBoundingClientRect();
     const variable = (name) =>
       style.getPropertyValue("--" + name.replaceAll(".", "-")).trim();
-    let state = forced === "enabled" ? "" : forced;
+    let state = ["enabled", "interactive"].includes(forced) ? "" : forced;
     if (state !== "disabled") {
       if (button.matches(":active") || button.hasAttribute("data-pressed"))
         state = "pressed";
@@ -114,7 +122,11 @@ export function checkButtonRendering() {
     expect(!!icon, "icon", !!icon, true);
     if (icon) {
       const iconStyle = getComputedStyle(icon),
-        iconSize = variable(`md.comp.button.${size}.icon.size`);
+        iconSize = variable(
+          split && trailing
+            ? `md.comp.split-button.${size}.trailing-button.icon.size`
+            : `md.comp.button.${size}.icon.size`,
+        );
       expect(
         iconStyle.width === iconSize,
         "icon width",
@@ -140,21 +152,43 @@ export function checkButtonRendering() {
       layerOpacity,
       resolve("state-layer.opacity") || 0,
     );
-    const height = variable(`md.comp.button.${size}.container.height`);
+    const height = variable(
+      split
+        ? `md.comp.split-button.${size}.container.height`
+        : group
+          ? `md.comp.button-group.${group.dataset.control}.${size}.container.height`
+          : `md.comp.button.${size}.container.height`,
+    );
     expect(style.minHeight === height, "min-height", style.minHeight, height);
     expect(
       style.paddingInlineStart ===
-        variable(`md.comp.button.${size}.leading-space`),
+        variable(
+          split
+            ? `md.comp.split-button.${size}.${trailing ? "trailing" : "leading"}-button.leading-space`
+            : `md.comp.button.${size}.leading-space`,
+        ),
       "leading space",
       style.paddingInlineStart,
-      variable(`md.comp.button.${size}.leading-space`),
+      variable(
+        split
+          ? `md.comp.split-button.${size}.${trailing ? "trailing" : "leading"}-button.leading-space`
+          : `md.comp.button.${size}.leading-space`,
+      ),
     );
     expect(
       style.paddingInlineEnd ===
-        variable(`md.comp.button.${size}.trailing-space`),
+        variable(
+          split
+            ? `md.comp.split-button.${size}.${trailing ? "trailing" : "leading"}-button.trailing-space`
+            : `md.comp.button.${size}.trailing-space`,
+        ),
       "trailing space",
       style.paddingInlineEnd,
-      variable(`md.comp.button.${size}.trailing-space`),
+      variable(
+        split
+          ? `md.comp.split-button.${size}.${trailing ? "trailing" : "leading"}-button.trailing-space`
+          : `md.comp.button.${size}.trailing-space`,
+      ),
     );
     const tracking = variable(
       `md.comp.button.${size}.label-text.letter-spacing`,
@@ -202,27 +236,29 @@ export function checkButtonRendering() {
       style.borderTopWidth,
       width,
     );
-    const shapeToken =
-      state === "pressed"
-        ? `md.comp.button.${size}.pressed.container.shape`
-        : `md.comp.button.${size}.${selection === "selected" ? "selected." : ""}container.shape.${shape}`;
-    const radius = variable(shapeToken);
-    const expectedRadius = radius.includes("infinity")
-      ? Math.min(rect.width, rect.height) / 2
-      : Math.min(
-          Number.parseFloat(radius),
-          Math.min(rect.width, rect.height) / 2,
-        );
-    const actualRadius = Math.min(
-      Number.parseFloat(style.borderTopLeftRadius),
-      Math.min(rect.width, rect.height) / 2,
-    );
-    expect(
-      Math.abs(actualRadius - expectedRadius) < 0.1,
-      "shape",
-      actualRadius,
-      expectedRadius,
-    );
+    if (!split && group?.dataset.control !== "connected") {
+      const shapeToken =
+        state === "pressed"
+          ? `md.comp.button.${size}.pressed.container.shape`
+          : `md.comp.button.${size}.${selection === "selected" ? "selected." : ""}container.shape.${shape}`;
+      const radius = variable(shapeToken);
+      const expectedRadius = radius.includes("infinity")
+        ? Math.min(rect.width, rect.height) / 2
+        : Math.min(
+            Number.parseFloat(radius),
+            Math.min(rect.width, rect.height) / 2,
+          );
+      const actualRadius = Math.min(
+        Number.parseFloat(style.borderTopLeftRadius),
+        Math.min(rect.width, rect.height) / 2,
+      );
+      expect(
+        Math.abs(actualRadius - expectedRadius) < 0.1,
+        "shape",
+        actualRadius,
+        expectedRadius,
+      );
+    }
   }
   return {
     theme: document.documentElement.dataset.theme,
@@ -232,4 +268,211 @@ export function checkButtonRendering() {
     failureCounts,
     failures,
   };
+}
+
+// Convert the bounded corners used by the component styles to physical radii.
+export function componentRadius(value, width, height) {
+  const half = Math.min(width, height) / 2,
+    text = String(value).trim();
+  if (text.includes("infinity")) return half;
+  const length = (part) =>
+    /^\d*\.?\d+(?:e[+-]?\d+)?(?:px|%)?$/i.test(part.trim())
+      ? part.trim().endsWith("%")
+        ? (Number.parseFloat(part) * half) / 50
+        : Number.parseFloat(part)
+      : NaN;
+  return Math.min(
+    half,
+    text.startsWith("min(") && text.endsWith(")")
+      ? Math.min(...text.slice(4, -1).split(",").map(length))
+      : length(text),
+  );
+}
+
+export function checkCompositeButtonRendering() {
+  const failures = [];
+  let checked = 0,
+    cases = 0;
+  const roots = [
+    ...document.querySelectorAll(".md-split-button,.md-button-group"),
+  ];
+  const expect = (root, property, actual, expected) => {
+    checked++;
+    if (
+      !Number.isFinite(actual) ||
+      !Number.isFinite(expected) ||
+      Math.abs(actual - expected) > 0.12
+    )
+      failures.push({
+        id: root.dataset.componentCase,
+        property,
+        actual,
+        expected,
+      });
+  };
+  for (const root of roots) {
+    if (!root.getClientRects().length) continue;
+    cases++;
+    const split = root.classList.contains("md-split-button"),
+      size = root.dataset.size,
+      control = root.dataset.control,
+      p =
+        "md.comp." +
+        (split ? "split-button." : "button-group." + control + ".") +
+        size +
+        ".",
+      style = getComputedStyle(root),
+      rtl = style.direction === "rtl";
+    const source = (name) =>
+        style.getPropertyValue("--" + name.replaceAll(".", "-")).trim(),
+      number = (name) => Number.parseFloat(source(name));
+    expect(
+      root,
+      "gap",
+      Number.parseFloat(style.columnGap),
+      number(p + "between-space"),
+    );
+    const buttons = [...root.querySelectorAll(":scope > .md-button")];
+    buttons.forEach((button, index) => {
+      const cs = getComputedStyle(button),
+        rect = button.getBoundingClientRect(),
+        state =
+          button.dataset.buttonState ||
+          (button.disabled
+            ? "disabled"
+            : button.hasAttribute("data-pressed")
+              ? "pressed"
+              : button.matches(":focus-visible")
+                ? "focused"
+                : button.matches(":hover")
+                  ? "hovered"
+                  : "enabled");
+      expect(
+        root,
+        "height " + index,
+        rect.height,
+        number(p + "container.height"),
+      );
+      if (split) {
+        const target=getComputedStyle(button,"::after");
+        expect(root,"touch target width "+index,Math.max(rect.width,Number.parseFloat(target.width),Number.parseFloat(target.minWidth)),Math.max(rect.width,48));
+        expect(root,"touch target height "+index,Math.max(rect.height,Number.parseFloat(target.height),Number.parseFloat(target.minHeight)),Math.max(rect.height,48));
+        if(index===1){
+          const icon=getComputedStyle(button.querySelector("svg")),active=state==="pressed"||button.matches(":active")||button.getAttribute("aria-expanded")==="true";
+          const offset={xsmall:-1,small:-1,medium:-2,large:-3,xlarge:-6}[size];
+          expect(root,"menu icon optical offset",Number.parseFloat(icon.translate),active?0:offset*(rtl?-1:1));
+          expect(root,"menu icon rotation",Number.parseFloat(icon.rotate),active?(rtl?-180:180):0);
+        }
+      }
+      if (split || control === "connected") {
+        const first = index === 0,
+          last = index === buttons.length - 1,
+          selected = button.getAttribute("aria-pressed") === "true",
+          pressed = state === "pressed" || button.hasAttribute("data-pressed");
+        const shape = (name) =>
+          componentRadius(source(name), rect.width, rect.height);
+        const outer = shape(
+          source(p + "outer-corner.corner-size")
+            ? p + "outer-corner.corner-size"
+            : p + "container.shape",
+        );
+        let inner;
+        if (split)
+          inner = shape(
+            p +
+              (pressed
+                ? "inner-corner.pressed.corner-size"
+                : last && button.getAttribute("aria-expanded") === "true"
+                  ? "trailing-button.inner-corner.selected.corner-size"
+                  : state === "hovered" || button.matches(":hover")
+                    ? "inner-corner.hovered.corner-size"
+                    : "inner-corner.corner-size"),
+          );
+        else
+          inner = shape(
+            p +
+              (pressed ? "pressed." : selected ? "selected." : "") +
+              "inner-corner.corner-size",
+          );
+        const left = (first && !rtl) || (last && rtl),
+          right = (last && !rtl) || (first && rtl);
+        for (const [corner, outside] of [
+          ["TopLeft", left],
+          ["BottomLeft", left],
+          ["TopRight", right],
+          ["BottomRight", right],
+        ])
+          expect(
+            root,
+            corner + " " + index,
+            componentRadius(
+              cs["border" + corner + "Radius"],
+              rect.width,
+              rect.height,
+            ),
+            outside ? outer : inner,
+          );
+      }
+      const mark = button.querySelector(".md-group-check");
+      if (mark) {
+        const label = mark.nextElementSibling.getBoundingClientRect(),
+          selected = button.getAttribute("aria-pressed") === "true",
+          icon = mark.getBoundingClientRect(),
+          contentLeft = selected ? Math.min(icon.left,label.left) : label.left,
+          contentRight = selected ? Math.max(icon.right,label.right) : label.right;
+        expect(root,"visible content center " + index,(contentLeft+contentRight)/2,rect.left+rect.width/2);
+        checked++;
+        if (
+          (getComputedStyle(mark).visibility === "visible") !==
+          (button.getAttribute("aria-pressed") === "true")
+        )
+          failures.push({
+            id: root.dataset.componentCase,
+            property: "selection mark " + index,
+          });
+      }
+    });
+    if (
+      !split &&
+      control === "standard" &&
+      root.dataset.componentState === "pressed"
+    ) {
+      const peer = roots.find(
+        (x) =>
+          x !== root &&
+          x.dataset.componentState === "enabled" &&
+          x.dataset.control === control &&
+          x.dataset.size === size &&
+          x.dataset.variant === root.dataset.variant,
+      );
+      if (peer) {
+        const base = [...peer.querySelectorAll(":scope > .md-button")].map(
+            (x) => x.getBoundingClientRect().width,
+          ),
+          actual = buttons.map((x) => x.getBoundingClientRect().width),
+          limits = buttons.map((x) => {
+            const s = getComputedStyle(x);
+            return Math.min(
+              Number.parseFloat(s.paddingInlineStart),
+              Number.parseFloat(s.paddingInlineEnd),
+            );
+          }),
+          growth = Math.min(
+            (base[1] * number(p + "pressed.item.width.multiplier")) / 200,
+            limits[0],
+            limits[2],
+          );
+        expect(root, "pressed width", actual[1], base[1] + 2 * growth);
+        expect(root, "previous width", actual[0], base[0] - growth);
+        expect(root, "next width", actual[2], base[2] - growth);
+        expect(
+          root,
+          "constant group width",
+          actual.reduce((a, b) => a + b, 0),
+          base.reduce((a, b) => a + b, 0),
+        );
+      }
+    }
+  }
+  return { cases, checked, failureCount: failures.length, failures };
 }

@@ -46,6 +46,9 @@ export async function checkFeedbackTransitions(elements) {
       frames.push({
         time,
         phase,
+        radius: Number.parseFloat(
+          getComputedStyle(element).borderTopLeftRadius,
+        ),
         base,
         ink,
         composite: base + ink * (1 - base),
@@ -56,11 +59,17 @@ export async function checkFeedbackTransitions(elements) {
     state("hovered");
     await wait(220);
     const hover = Number(getComputedStyle(element, "::before").opacity);
+    const restingRadius = Number.parseFloat(
+      getComputedStyle(element).borderTopLeftRadius,
+    );
     requestAnimationFrame(sample);
-    phase = "press";
+    phase = "held-press";
     pointer("pointerdown");
-    await wait(100);
-    phase = "release-hover";
+    await wait(650);
+    const pressedRadius = Number.parseFloat(
+      getComputedStyle(element).borderTopLeftRadius,
+    );
+    phase = "held-release";
     pointer("pointerup");
     click();
     await wait(650);
@@ -87,6 +96,16 @@ export async function checkFeedbackTransitions(elements) {
     pointer("pointerout");
     await wait(220);
     sampling = false;
+    if (
+      Math.abs(restingRadius - pressedRadius) > 1 &&
+      !frames.some(
+        (frame) =>
+          frame.phase === "held-release" &&
+          frame.radius > Math.min(restingRadius, pressedRadius) + 0.1 &&
+          frame.radius < Math.max(restingRadius, pressedRadius) - 0.1,
+      )
+    )
+      failures.push("Shape snaps back after a held press");
     if (frames.length < 20)
       failures.push("Insufficient rendered animation frames");
     for (const [i, frame] of frames.entries()) {

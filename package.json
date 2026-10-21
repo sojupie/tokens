@@ -8,9 +8,10 @@
   "scripts": {
     "build:tokens": "node forge/build-tokens.mjs",
     "test:tokens": "node --test forge/*.test.mjs forge/material/*.test.mjs",
-    "test:ui": "node --test catalog/web/ui_test.cjs forge/components/buttons_test.cjs"
+    "test:ui": "node --test catalog/web/ui_test.cjs forge/components/*_test.cjs"
   },
   "devDependencies": {
+    "@material/material-color-utilities": "0.3.0",
     "style-dictionary": "5.6.1"
   }
 }

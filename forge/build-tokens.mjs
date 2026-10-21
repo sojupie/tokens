@@ -1,4 +1,5 @@
 import StyleDictionary from "style-dictionary";
+import { siteTheme } from "./material/site-theme.mjs";
 import { generateComponents } from "./material/generate-components.mjs";
 import { generateButtons } from "./material/generate-buttons.mjs";
 import {
@@ -34,6 +35,7 @@ StyleDictionary.registerTransform({
 export function flatten(document) {
   const tokens = {};
   const shapes = {};
+  const percentages = {};
   function walk(group, parts = [], inheritedType) {
     const type = group.$type ?? inheritedType;
     if ("$value" in group) {
@@ -47,6 +49,8 @@ export function flatten(document) {
       tokens[name] = node;
     }
     const source = group.$extensions?.[extension];
+    if (source?.sourceType === "length" && source.sourceValue.length.unit === "PERCENT")
+      percentages[parts.join("-")] = source.sourceValue.length.value;
     if (source?.sourceType === "shape")
       shapes[parts.join("-")] = source.sourceValue.shape.family;
     for (const [key, child] of Object.entries(group)) {
@@ -55,15 +59,52 @@ export function flatten(document) {
     }
   }
   walk(document);
-  return { tokens, shapes };
+  return { tokens, shapes, percentages };
+}
+
+export function applyOverrides(document, overrides) {
+  if (!Object.keys(overrides).length) return document;
+  const result = structuredClone(document);
+  for (const [name, value] of Object.entries(overrides)) {
+    const group = name.split(".").reduce((node, part) => node?.[part], result);
+    const token = group?.$root ?? group;
+    if (!token || typeof token !== "object")
+      throw new Error(`Unknown override token: ${name}`);
+    if (group.$extensions?.[extension]?.sourceType === "shape") {
+      if (
+        !(typeof value === "string" && /^\{[^{}]+\}$/.test(value)) &&
+        !(
+          value &&
+          Number.isFinite(value.value) &&
+          ["px", "rem"].includes(value.unit)
+        )
+      )
+        throw new Error(
+          `Shape override needs a dimension or reference: ${name}`,
+        );
+      for (const corner of ["topLeft", "topRight", "bottomRight", "bottomLeft"])
+        group[corner].$value =
+          typeof value === "string"
+            ? `{${value.slice(1, -1)}.${corner}}`
+            : structuredClone(value);
+      group.$extensions[extension].sourceValue.shape.family =
+        "SHAPE_FAMILY_ROUNDED_CORNERS";
+    } else {
+      if (!("$value" in token))
+        throw new Error(`Override is not a token: ${name}`);
+      token.$value = structuredClone(value);
+    }
+  }
+  return result;
 }
 
 export async function compile(
   document,
   selector = ":root",
-  { appTheme = false, names } = {},
+  { appTheme = false, names, overrides = {} } = {},
 ) {
-  const { tokens, shapes } = flatten(document);
+  document = applyOverrides(document, overrides);
+  const { tokens, shapes, percentages } = flatten(document);
   const dictionary = new StyleDictionary({
     tokens,
     usesDtcg: true,
@@ -101,7 +142,7 @@ export async function compile(
     for (const t of built.allTokens) {
       const source = t.$extensions?.[extension];
       if (source?.sourceType === "elevation") {
-        const dp = source.sourceValue.elevation.value ?? 0;
+        const dp = Number.parseFloat(t.$value);
         const level = [0, 1, 3, 6, 8, 12].indexOf(dp);
         if (level < 0) throw new Error(`Unsupported Material elevation: ${dp}`);
         values[t.path.join("-")] = level;
@@ -109,6 +150,10 @@ export async function compile(
       if (source?.sourceType === "fontNames")
         values[t.path.join("-")] += ", sans-serif";
     }
+  }
+  for (const [name, value] of Object.entries(percentages)) {
+    if (!Number.isFinite(value)) throw new Error(`Invalid percentage: ${name}`);
+    values[name] = `${value}%`;
   }
   for (const [name, family] of Object.entries(shapes)) {
     if (family === "SHAPE_FAMILY_CIRCULAR")
@@ -135,6 +180,14 @@ export async function compile(
   return { css: cssVariables(values, selector, names), values };
 }
 
+// Reference palette tones are shared across appearances. Context exports only
+// include tones used by their aliases, so retain captured base tones for site art.
+export function inheritReferencePalette(values, baseValues) {
+  for (const [name, value] of Object.entries(baseValues)) {
+    if (name.startsWith("md-ref-palette-") && !(name in values)) values[name] = value;
+  }
+}
+
 function cssVariables(values, selector, names) {
   const declarations = Object.entries(values)
     .filter(([name]) => !names || names.has(name))
@@ -150,6 +203,17 @@ async function main() {
       "Usage: npm run build:tokens -- --published <publication-directory>",
     );
   const published = await realpath(args[1]);
+  const overrides = JSON.parse(
+    await readFile("forge/material/overrides.json", "utf8"),
+  );
+  if (!overrides || Array.isArray(overrides) || typeof overrides !== "object")
+    throw new Error("Token overrides must be an object keyed by token name");
+  const overrideValues = Object.fromEntries(
+    Object.keys(overrides).map((token) => [
+      token,
+      { token, value: overrides[token], upstream: {}, effective: {} },
+    ]),
+  );
   const database = await readFile(path.join(published, "tokens.sqlite"));
   const databaseSha256 = createHash("sha256").update(database).digest("hex");
   const output = await mkdtemp(path.join(published, ".token-assets-"));
@@ -178,10 +242,12 @@ async function main() {
     ]);
     for (const file of ["app.css", "token-table.css"]) {
       const css = await readFile(path.join("catalog/web/static", file), "utf8");
-      for (const match of css.matchAll(/var\(\s*--(md-[a-z0-9-]+)\s*[,)]/g))
+      for (const match of css.matchAll(/var\(\s*--((?:md|catalog)-[a-z0-9-]+)\s*[,)]/g))
         required.add(match[1]);
     }
+    const themeConfig = JSON.parse(await readFile("forge/material/site-theme.json", "utf8"));
     let themeCSS = "";
+    let referencePalette = {};
     let identity;
     let buttonCSS;
     let buttonCoverage;
@@ -196,20 +262,32 @@ async function main() {
       "utf8",
     );
     for (const match of (anatomy + elevation).matchAll(
-      /var\(\s*--(md-[a-z0-9-]+)\s*[,)]/g,
+      /var\(\s*--((?:md|catalog)-[a-z0-9-]+)\s*[,)]/g,
     ))
       required.add(match[1]);
     const totals = [];
+    const bindingValues = new Map();
     for (const variant of index) {
       const document = JSON.parse(
         await readFile(path.join(output, "dtcg", variant.file), "utf8"),
       );
       identity = document.$extensions["dev.tokencatalog.export"];
       const selector = `:root[data-theme="${variant.theme}"][data-contrast="${variant.contrast}"]`;
-      const compiled = await compile(document, selector, {
+      const compiled = await compile(siteTheme(document, variant, themeConfig), selector, {
         appTheme: true,
         names: required,
+        overrides,
       });
+      if (variant.name === "light-default") referencePalette = { ...compiled.values };
+      inheritReferencePalette(compiled.values, referencePalette);
+      if (Object.keys(overrides).length) {
+        const original = await compile(document, selector, { appTheme: true });
+        for (const [token, entry] of Object.entries(overrideValues)) {
+          const name = token.replaceAll(".", "-");
+          entry.upstream[variant.name] = String(original.values[name]);
+          entry.effective[variant.name] = String(compiled.values[name]);
+        }
+      }
       const report = JSON.parse(
         await readFile(
           path.join(output, "dtcg", variant.name, "report.json"),
@@ -235,12 +313,22 @@ async function main() {
         throw new Error("Component bindings differ across appearances");
       componentCSS = generated;
       componentCoverage = components.coverage;
+      for (const binding of [
+        ...buttons.coverage.mapped,
+        ...components.coverage.mapped,
+      ]) {
+        if (!bindingValues.has(binding.token))
+          bindingValues.set(binding.token, {});
+        bindingValues.get(binding.token)[variant.name] = String(
+          compiled.values[binding.token.replaceAll(".", "-")],
+        );
+      }
       for (const name of components.requiredNames) required.add(name);
       compiled.css = cssVariables(compiled.values, selector, required);
       for (const name of required)
         if (!(name in compiled.values))
           throw new Error(`${variant.name} is missing --${name}`);
-      const downloadable = await compile(document);
+      const downloadable = await compile(document, ":root", { overrides });
       await writeFile(
         path.join(output, "dtcg", variant.name, "tokens.css"),
         downloadable.css,
@@ -268,6 +356,11 @@ async function main() {
     await writeFile(path.join(output, "theme.css"), themeCSS);
     await writeFile(path.join(output, "buttons.css"), buttonCSS);
     await writeFile(path.join(output, "components.css"), componentCSS);
+    for (const binding of [
+      ...buttonCoverage.mapped,
+      ...componentCoverage.mapped,
+    ])
+      binding.values = bindingValues.get(binding.token);
     await writeFile(
       path.join(output, "components-coverage.json"),
       JSON.stringify(componentCoverage, null, 2) + "\n",
@@ -276,6 +369,25 @@ async function main() {
       path.join(output, "buttons-coverage.json"),
       JSON.stringify(buttonCoverage, null, 2) + "\n",
     );
+    await writeFile(
+      path.join(output, "overrides.json"),
+      JSON.stringify(Object.values(overrideValues), null, 2) + "\n",
+    );
+    const audit = spawnSync(
+      "go",
+      [
+        "run",
+        "./cmd/tokens",
+        "forge",
+        "inspect",
+        "--assets",
+        output,
+        "--output",
+        path.join(output, "css-usage.json"),
+      ],
+      { stdio: "inherit" },
+    );
+    if (audit.status !== 0) throw new Error("CSS usage report failed");
     await writeFile(
       path.join(output, "manifest.json"),
       JSON.stringify(

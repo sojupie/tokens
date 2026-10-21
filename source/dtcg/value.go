@@ -50,6 +50,19 @@ func Convert(raw json.RawMessage) (Node, error) {
 			}
 			node = token("color", map[string]any{"colorSpace": "srgb", "components": []float64{c.Red, c.Green, c.Blue}, "alpha": *c.Alpha})
 		case "length", "fontSize", "lineHeight", "fontTracking", "elevation":
+			var length struct {
+				Unit  string
+				Value *float64
+			}
+			if kind == "length" && json.Unmarshal(body, &length) == nil && length.Unit == "PERCENT" {
+				if length.Value == nil || math.IsNaN(*length.Value) || math.IsInf(*length.Value, 0) {
+					return nil, fmt.Errorf("invalid percentage length")
+				}
+				// DTCG dimensions have no percentage unit. Keep the source value
+				// on a group, as with circular shapes, for renderer-specific use.
+				node = Node{}
+				break
+			}
 			var d Dimension
 			d, err = dimension(body)
 			node = token("dimension", d)

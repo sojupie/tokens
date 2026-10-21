@@ -41,6 +41,8 @@ test(
       /opacity: var\(--_button-pressed-state-opacity\)/,
     );
     assert.match(generated.css, /radial-gradient\(closest-side/);
+    const pressRule=generated.css.split("\n").find(rule=>rule.includes('data-component-state="pressed"')&&rule.includes("--_button-background-state-color"));
+    for(const chip of ["filter","assist","suggestion","input"])assert.ok(pressRule.includes(`.md-${chip}-chip`));
     assert.doesNotMatch(generated.css, /--_button-ink-opacity|md-ripple-enter/);
     assert.match(
       generated.css,

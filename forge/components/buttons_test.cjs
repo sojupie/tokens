@@ -4,7 +4,7 @@ const { readFileSync } = require("node:fs");
 const { runInNewContext } = require("node:vm");
 const source = readFileSync(`${__dirname}/static/buttons.js`, "utf8");
 
-function harness(reduced = false) {
+function harness(reduced = false, initialCheckboxes = []) {
   const listeners = {},
     windows = {},
     animations = [];
@@ -55,7 +55,9 @@ function harness(reduced = false) {
       return this.isButton ? this : (this.parent?.closest() ?? null);
     }
     matches(selector) {
-      if (selector === ".md-filter-chip") return !!this.isChip;
+      if (selector === ".md-slider-input") return !!this.isSlider;
+      if (selector === '.md-radio,.md-checkbox,.md-switch') return !!this.isSelectionControl;
+      if (selector === ".md-filter-chip,.md-assist-chip,.md-suggestion-chip,.md-input-chip,.md-radio,.md-checkbox,.md-switch,.md-segmented-button,.md-slider-input") return !!(this.isChip || this.isSelectionControl);
       return (
         !!this.disabled ||
         !!this.disabledChild ||
@@ -124,6 +126,7 @@ function harness(reduced = false) {
     },
   };
   const document = {
+    querySelectorAll: () => initialCheckboxes.filter(input => input.pending),
     documentElement: new Element("HTML"),
     hidden: false,
     createElement: (tag) => new Element(tag),
@@ -138,10 +141,11 @@ function harness(reduced = false) {
   };
   const getComputedStyle = (button) => ({
     opacity: "1",
-    borderTopLeftRadius: "20px",
-    borderTopRightRadius: "20px",
-    borderBottomRightRadius: "20px",
-    borderBottomLeftRadius: "20px",
+    ...Object.fromEntries(["TopLeft","TopRight","BottomRight","BottomLeft"].map((name,index)=>[
+      "border"+name+"Radius",button.style.borderRadius
+        ? module.exports.corners(button.style.borderRadius,120,40)[index]+"px"
+        : button.hasAttribute("data-pressed")?"8px":"20px"
+    ])),
     getPropertyValue: (name) =>
       button.noSpring && name.includes("spring")
         ? ""
@@ -214,7 +218,7 @@ function harness(reduced = false) {
     advance,
     media,
     exports: module.exports,
-    mutate: () => observer(),
+    mutate: (records = []) => observer(records),
     blur: () => windows.blur(),
     reduce: () => {
       media.matches = true;
@@ -240,7 +244,44 @@ test("spring follows captured damping/stiffness and reaches its destination", ()
     Array.from(corners("calc(infinity * 1px)", 120, 40)),
     [20, 20, 20, 20],
   );
+  assert.deepEqual(Array.from(corners("calc(infinity * 1px) 4px 4px calc(infinity * 1px)",120,40)),[20,4,4,20]);
   assert.throws(() => springFrames(0, 1400));
+});
+
+test("a held press returns from its pressed corners without restarting on click", async () => {
+  const h = harness(),
+    b = h.button();
+  h.emit("pointerdown", b);
+  h.animations.find((a) => a.frames[0].borderRadius).complete();
+  await Promise.resolve();
+  h.emit("pointerup", b);
+  const shapes = h.animations.filter((a) => a.frames[0].borderRadius);
+  const returning = shapes.at(-1);
+  assert.equal(returning.frames[0].borderRadius, "8px 8px 8px 8px");
+  assert.equal(returning.frames.at(-1).borderRadius, "20px 20px 20px 20px");
+  assert.ok(
+    returning.frames.some(
+      (f) => parseFloat(f.borderRadius) > 8 && parseFloat(f.borderRadius) < 20,
+    ),
+  );
+  h.emit("click", b);
+  assert.equal(returning.cancelled, false);
+  assert.equal(
+    h.animations.filter((a) => a.frames[0].borderRadius).length,
+    shapes.length,
+  );
+});
+
+test("keyboard release also animates from the held pressed shape", async () => {
+  const h = harness(),
+    b = h.button();
+  h.emit("keydown", b, { key: " " });
+  h.animations.find((a) => a.frames[0].borderRadius).complete();
+  await Promise.resolve();
+  h.emit("keyup", b, { key: " " });
+  const returning = h.animations.filter((a) => a.frames[0].borderRadius).at(-1);
+  assert.equal(returning.frames[0].borderRadius, "8px 8px 8px 8px");
+  assert.equal(returning.frames.at(-1).borderRadius, "20px 20px 20px 20px");
 });
 
 test("mouse ink follows upstream geometry, timing and click release", async () => {
@@ -359,6 +400,29 @@ test("a repeated press restarts at its new position and invalidates old release 
   assert.equal(b.children.length, 0);
 });
 
+test("application selection changes retarget the release shape", () => {
+  const h = harness(), b = h.button();
+  b.setAttribute("aria-pressed", "false");
+  h.emit("pointerdown", b);
+  h.emit("pointerup", b);
+  h.emit("click", b);
+  const returning = h.animations.filter(a => a.frames[0].borderRadius).at(-1);
+  assert.equal(returning.frames.at(-1).borderRadius, "20px 20px 20px 20px");
+  b.setAttribute("aria-pressed", "true");
+  h.mutate([{target:b, attributeName:"aria-pressed", oldValue:"false"}]);
+  const selected = h.animations.filter(a => a.frames[0].borderRadius).at(-1);
+  assert.equal(returning.cancelled, true);
+  assert.equal(selected.frames.at(-1).borderRadius, "12px 12px 12px 12px");
+  const count = h.animations.length;
+  h.mutate([{target:b, attributeName:"aria-pressed", oldValue:"true"}]);
+  assert.equal(h.animations.length, count);
+  b.setAttribute("aria-pressed", "false");
+  h.mutate([{target:b, attributeName:"aria-pressed", oldValue:"true"}]);
+  const unselected = h.animations.filter(a => a.frames[0].borderRadius).at(-1);
+  assert.equal(selected.cancelled, true);
+  assert.equal(unselected.frames.at(-1).borderRadius, "20px 20px 20px 20px");
+});
+
 test("keyboard-synthesized clicks create centered ink and toggle selection once", () => {
   const h = harness(),
     b = h.button();
@@ -438,4 +502,136 @@ test("shared chip feedback handles native input activation once", () => {
   h.advance(225);
   assert.equal(h.animations.at(-1).options.duration, 375);
   assert.equal(b.hasAttribute("aria-pressed"), false);
+});
+
+
+test("indeterminate checkboxes initialize on page load and HTMX swaps", () => {
+  const input = () => ({ pending:true, indeterminate:false, removeAttribute(name) { assert.equal(name, "data-indeterminate"); this.pending=false; } });
+  const first = input(), inputs = [first];
+  const h = harness(false, inputs);
+  assert.equal(first.indeterminate, true);
+  assert.equal(first.pending, false);
+  first.indeterminate = false;
+  const next = input();inputs.push(next);
+  h.emit("htmx:afterSwap", null, {detail:{target:{isConnected:false,querySelectorAll:()=>{throw new Error("detached swap target");}}}});
+  assert.equal(next.indeterminate, true);
+  assert.equal(first.indeterminate, false);
+});
+
+
+for (const family of ["checkbox", "switch", "segmented"]) {
+ test(`${family} shares pointer and native keyboard ripple lifecycle`, () => {
+  const h = harness(), label = h.button();
+  label.tagName="LABEL"; label.isSelectionControl=true; label.noSpring=true;
+  const input = new h.Element("INPUT"); label.append(input);
+  let host=label;
+  if(family==="switch") { host=new h.Element("SPAN");host.className="md-switch-handle";label.append(host); }
+  h.emit("pointerdown", input);
+  assert.equal(host.children.at(-1).className,"md-button-ripple");
+  h.emit("pointerup", input);
+  h.emit("click", label);
+  h.emit("click", input, {detail:1});
+  assert.equal(host.children.filter(e=>e.className==="md-button-ripple").length,1);
+  h.advance(225);
+  assert.equal(h.animations.at(-1).options.duration,375);
+  h.emit("keydown",input,{key:" "});
+  assert.equal(label.hasAttribute("data-pressed"),true);
+  h.emit("keyup",input,{key:" "});
+  h.emit("click",input,{detail:0});
+  assert.equal(label.hasAttribute("data-pressed"),false);
+  h.emit("pointerdown",input);
+  h.emit("pointercancel",input);
+  assert.equal(label.hasAttribute("data-pressed"),false);
+  label.disabledChild=true;
+  const count=h.animations.length;
+  h.emit("pointerdown",input);h.emit("keydown",input,{key:" "});
+  assert.equal(h.animations.length,count);
+ });
+}
+
+test("navigation item contains its ripple within the indicator", () => {
+ const h=harness(),button=h.button(); button.noSpring=true;
+ const indicator=new h.Element("SPAN");indicator.className="md-nav-indicator";button.append(indicator);
+ h.emit("pointerdown",button);
+ assert.equal(indicator.children.at(-1).className,"md-button-ripple");
+ h.emit("pointerup",button);h.emit("click",button);h.advance(225);
+ assert.equal(h.animations.at(-1).options.duration,375);
+});
+
+test("slider arrow keys start and release ripple in the moving state-layer host",()=>{
+ const h=harness(),control=h.button();control.isSlider=true;control.noSpring=true;
+ const input=new h.Element("INPUT");control.append(input);
+ const host=new h.Element("SPAN");host.className="md-slider-state-layer";control.append(host);
+ h.emit("keydown",input,{key:"ArrowRight"});
+ assert.equal(control.hasAttribute("data-pressed"),true);
+ assert.equal(host.children.at(-1).className,"md-button-ripple");
+ h.emit("keyup",input,{key:"ArrowRight"});h.advance(225);
+ assert.equal(control.hasAttribute("data-pressed"),false);
+ assert.equal(h.animations.at(-1).options.duration,375);
+});
+
+
+test("standard group width growth preserves total width and only borrows neighboring padding",()=>{
+ const {groupWidths}=harness().exports;
+ assert.deepEqual(Array.from(groupWidths([100,100,100],1,.15,[24,24,24])),[92.5,115,92.5]);
+ assert.deepEqual(Array.from(groupWidths([100,100,100],0,.15,[24,24,24])),[115,85,100]);
+ assert.deepEqual(Array.from(groupWidths([100,100,100],2,.15,[24,24,24])),[100,85,115]);
+ assert.deepEqual(Array.from(groupWidths([100,100,100],1,.15,[4,24,10])),[96,108,96]);
+ assert.deepEqual(Array.from(groupWidths([100],0,.15,[24])),[100]);
+ assert.deepEqual(Array.from(groupWidths([100,100,100],-1,.15,[24,24,24])),[100,100,100]);
+});
+
+
+test("FAB menu reveal starts next to the trigger and reverses for dismissal",()=>{
+ const {fabMenuDelays}=harness().exports;
+ const spring={samples:[0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1],duration:1000};
+ assert.deepEqual(Array.from(fabMenuDelays(3,spring,true)),[900,500,200]);
+ assert.deepEqual(Array.from(fabMenuDelays(3,spring,false)),[200,500,900]);
+ assert.deepEqual(Array.from(fabMenuDelays(1,spring,true)),[500]);
+});
+
+test("compound input chip uses shared keyboard and pointer feedback",()=>{
+ const h=harness(),root=h.button();root.tagName="SPAN";root.isChip=true;root.noSpring=true;
+ const action=new h.Element("BUTTON");root.append(action);
+ h.emit("keydown",action,{key:" "});assert.equal(root.hasAttribute("data-pressed"),true);
+ h.emit("keyup",action,{key:" "});assert.equal(root.hasAttribute("data-pressed"),false);
+ h.emit("pointerdown",action);assert.equal(root.children.at(-1).className,"md-button-ripple");
+ h.emit("pointercancel",action);assert.equal(root.hasAttribute("data-pressed"),false);
+ root.setAttribute("aria-disabled","true");const count=h.animations.length;h.emit("pointerdown",action);assert.equal(h.animations.length,count);
+});
+
+test('native radio input owns pointer and Space feedback inside its ripple host',()=>{
+ const h=harness(),host=h.button();host.tagName='SPAN';host.isSelectionControl=true;host.noSpring=true;
+ const input=new h.Element('INPUT');host.append(input);
+ h.emit('pointerdown',input);h.emit('pointerup',input);h.emit('click',input,{detail:1});
+ assert.equal(host.children.filter(x=>x.className==='md-button-ripple').length,1);
+ h.advance(225);h.emit('keydown',input,{key:' '});assert.equal(host.hasAttribute('data-pressed'),true);
+ h.emit('keyup',input,{key:' '});h.emit('click',input,{detail:0});assert.equal(host.hasAttribute('data-pressed'),false);
+ host.disabledChild=true;const count=h.animations.length;h.emit('pointerdown',input);h.emit('keydown',input,{key:' '});assert.equal(h.animations.length,count);
+});
+test('Enter does not press native checkbox, switch or radio controls',()=>{
+ const h=harness(),host=h.button();host.isSelectionControl=true;host.noSpring=true;host.tagName='SPAN';const input=new h.Element('INPUT');host.append(input);
+ h.emit('keydown',input,{key:'Enter'});assert.equal(host.hasAttribute('data-pressed'),false);assert.equal(h.animations.length,0);
+});
+
+test("CSS-only shape transitions are not disturbed by spring target probes", () => {
+ const h=harness(),b=h.button();b.noSpring=true;
+ let writes=0;
+ Object.defineProperty(b.style,'borderRadius',{get:()=>'',set:()=>{writes++;}});
+ b.setAttribute('aria-expanded','true');
+ h.mutate([{target:b,attributeName:'aria-expanded',oldValue:'false'}]);
+ assert.equal(writes,0);
+});
+
+
+test("click releases feedback when focus changed the control class", async () => {
+ const h=harness(),button=h.button();button.noSpring=true;
+ h.emit("pointerdown",button);
+ button.isButton=false;
+ h.emit("pointerup",button);h.emit("click",button);h.advance(225);
+ const fade=h.animations.at(-1);
+ assert.equal(fade.options.duration,375);
+ fade.complete();await Promise.resolve();await Promise.resolve();
+ assert.equal(button.hasAttribute("data-rippling"),false);
+ assert.equal(button.querySelector(".md-button-ripple"),null);
 });

@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
-import { compile, flatten } from "./build-tokens.mjs";
+import { compile, flatten, inheritReferencePalette } from "./build-tokens.mjs";
 
 const meta = (kind, value) => ({
   "dev.tokencatalog.material": {
@@ -55,6 +55,7 @@ test("shape corners, circular shapes and elevation have explicit CSS policies", 
     $extensions: meta("shape", { family: "SHAPE_FAMILY_ROUNDED_CORNERS" }),
   };
   const document = {
+    percentage: { $extensions: meta("length", {value:50,unit:"PERCENT"}) },
     shape,
     full: { $extensions: meta("shape", { family: "SHAPE_FAMILY_CIRCULAR" }) },
     elevation: {
@@ -64,6 +65,7 @@ test("shape corners, circular shapes and elevation have explicit CSS policies", 
     },
   };
   const standard = await compile(document);
+  assert.equal(standard.values.percentage, "50%");
   assert.equal(standard.values.shape, "0px 16px 16px 0px");
   assert.equal(standard.values.full, "calc(infinity * 1px)");
   assert.equal(standard.values.elevation, "3px");
@@ -176,3 +178,56 @@ test(
     assert.equal(primary.size, 6);
   },
 );
+
+test("overrides follow aliases, leave captures intact and survive a new upstream value", async () => {
+  const document = {
+    md: {
+      comp: {
+        menus: {
+          group: {
+            padding: { $type: "dimension", $value: { value: 2, unit: "px" } },
+          },
+        },
+      },
+    },
+    alias: { $type: "dimension", $value: "{md.comp.menus.group.padding}" },
+  };
+  const overrides = { "md.comp.menus.group.padding": { value: 4, unit: "px" } };
+  const original = await compile(document);
+  const changed = await compile(document, ":root", { overrides });
+  assert.equal(original.values["md-comp-menus-group-padding"], "2px");
+  assert.equal(changed.values["md-comp-menus-group-padding"], "4px");
+  assert.equal(changed.values.alias, "4px");
+  assert.equal(document.md.comp.menus.group.padding.$value.value, 2);
+  document.md.comp.menus.group.padding.$value.value = 3;
+  assert.equal(
+    (await compile(document, ":root", { overrides })).values.alias,
+    "4px",
+  );
+  await assert.rejects(
+    compile(document, ":root", { overrides: { "removed.token": 4 } }),
+    /Unknown override token/,
+  );
+});
+
+test("shape overrides update every corner before CSS generation", async () => {
+  const shape = {
+    $extensions: meta("shape", { family: "SHAPE_FAMILY_ROUNDED_CORNERS" }),
+  };
+  for (const corner of ["topLeft", "topRight", "bottomRight", "bottomLeft"])
+    shape[corner] = { $type: "dimension", $value: { value: 12, unit: "px" } };
+  const document = { shape };
+  const result = await compile(document, ":root", {
+    overrides: { shape: { value: 4, unit: "px" } },
+  });
+  assert.equal(result.values.shape, "4px");
+  assert.equal(shape.topLeft.$value.value, 12);
+});
+
+test("appearance themes inherit captured palette tones without replacing their values", () => {
+  const base = {"md-ref-palette-secondary90":"#e8def8", "md-ref-palette-secondary30":"#4a4458", "md-sys-color-secondary-container":"#e8def8"};
+  const appearance = {"md-ref-palette-secondary30":"#123456"};
+  inheritReferencePalette(appearance, base);
+  assert.deepEqual(appearance, {"md-ref-palette-secondary30":"#123456", "md-ref-palette-secondary90":"#e8def8"});
+  assert.equal(base["md-ref-palette-secondary30"], "#4a4458");
+});

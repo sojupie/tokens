@@ -320,7 +320,7 @@ export function generateButtons(document, values) {
   --_button-easing: var(--md-sys-motion-easing-standard);
   position: relative; isolation: isolate; display: inline-flex; touch-action: manipulation; -webkit-tap-highlight-color: transparent; user-select: none;
   align-items: center; justify-content: center; flex: none;
-  min-height: var(--_button-height); max-width: 100%;
+  min-height: var(--_button-height); min-inline-size: max-content; white-space: nowrap;
   padding-block: 0; padding-inline: var(--_button-leading) var(--_button-trailing);
   gap: var(--_button-gap); font: var(--_button-font);
   letter-spacing: var(--_button-letter-spacing); text-decoration: none;
@@ -341,12 +341,12 @@ export function generateButtons(document, values) {
 .md-button > svg { flex: none; width: var(--_button-icon-size); height: var(--_button-icon-size); color: color-mix(in srgb,var(--_button-icon) calc(var(--_button-icon-opacity) * 100%),transparent); }
 .md-button:is(:focus-visible,[data-button-state="focused"])${enabled} { outline: var(--md-sys-state-focus-indicator-thickness) solid var(--md-sys-color-secondary); outline-offset: var(--md-sys-state-focus-indicator-outer-offset); }
 .md-button:is(:disabled,[aria-disabled="true"]) { cursor: default; }
-:root:not([data-feedback-ready]) :is(.md-button,.md-icon-button,.md-interactive-card,.md-filter-chip,.md-menu-item)::before { background: var(--_button-state-color); opacity: var(--_button-state-opacity); }
+:root:not([data-feedback-ready]) :is(.md-button,.md-icon-button,.md-interactive-card,.md-filter-chip,.md-assist-chip,.md-suggestion-chip,.md-input-chip,.md-menu-item)::before { background: var(--_button-state-color); opacity: var(--_button-state-opacity); }
 /* A forced gallery state is already the resting appearance of that specimen. */
-:root :is(.md-button,.md-icon-button,.md-interactive-card,.md-filter-chip,.md-menu-item):is([data-button-state="pressed"],[data-component-state="pressed"]) { --_button-background-state-color: var(--_button-state-color); --_button-background-state-opacity: var(--_button-state-opacity); }
+:root :is(.md-button,.md-icon-button,.md-interactive-card,.md-filter-chip,.md-assist-chip,.md-suggestion-chip,.md-input-chip,.md-menu-item):is([data-button-state="pressed"],[data-component-state="pressed"]) { --_button-background-state-color: var(--_button-state-color); --_button-background-state-opacity: var(--_button-state-opacity); }
 .md-button-ripple { position: absolute; inset: 0; z-index: -1; overflow: hidden; border-radius: inherit; pointer-events: none; opacity: 0; }
 .md-button-ripple > span { position: absolute; border-radius: 50%; transform-origin: center center; background: radial-gradient(closest-side, var(--_button-pressed-state-color) max(calc(100% - 70px), 65%), transparent 100%); opacity: var(--_button-pressed-state-opacity); }
-@media (forced-colors: active) { .md-button-ripple, :is(.md-button,.md-icon-button,.md-interactive-card,.md-filter-chip,.md-menu-item)::before { display: none; } }
+@media (forced-colors: active) { .md-button-ripple, :is(.md-button,.md-icon-button,.md-interactive-card,.md-filter-chip,.md-assist-chip,.md-suggestion-chip,.md-input-chip,.md-menu-item)::before { display: none; } }
 
 @media (prefers-reduced-motion: reduce) { .md-button, .md-button::before { transition: none; } .md-button::before { background: var(--_button-state-color); opacity: var(--_button-state-opacity); } }
 ${rules.join("\n")}

@@ -1,0 +1,10 @@
+{
+  "primary": "#6750A4",
+  "secondary": "#5D5D74",
+  "extensions": {
+    "coral": "#FF795B",
+    "lime": "#D9EF63",
+    "aqua": "#73DDEB",
+    "amber": "#FFC46C"
+  }
+}

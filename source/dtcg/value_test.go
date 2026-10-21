@@ -50,7 +50,7 @@ func TestMaterialConversionPreservesMeaning(t *testing.T) {
 	if shape["topLeft"].(Node)["$value"].(Dimension).Value != 0 || shape["bottomRight"].(Node)["$value"].(Dimension).Value != 16 {
 		t.Fatal(shape)
 	}
-	for _, raw := range []string{`{"length":{"unit":"DIPS","value":null}}`, `{"length":{"unit":"PERCENT","value":50}}`, `{"color":{}}`, `{"color":{"alpha":2}}`, `{"color":{"alpha":1,"red":null}}`, `{"cubicBezier":{"x0":null}}`, `{"axisValue":{"tag":"wght","value":null}}`, `{"undefined":true}`, `{"svgPath":"M 0,0"}`} {
+	for _, raw := range []string{`{"length":{"unit":"DIPS","value":null}}`, `{"length":{"unit":"PERCENT","value":null}}`, `{"color":{}}`, `{"color":{"alpha":2}}`, `{"color":{"alpha":1,"red":null}}`, `{"cubicBezier":{"x0":null}}`, `{"axisValue":{"tag":"wght","value":null}}`, `{"undefined":true}`, `{"svgPath":"M 0,0"}`} {
 		if _, err := Convert(json.RawMessage(raw)); err == nil {
 			t.Fatalf("accepted %s", raw)
 		}
@@ -128,5 +128,20 @@ func TestExportRealPublication(t *testing.T) {
 			}
 			walk(document, nil)
 		}
+	}
+}
+
+func TestPercentageLengthRetainsSourceWithoutInventingDTCGUnit(t *testing.T) {
+	raw := json.RawMessage(`{"length":{"unit":"PERCENT","value":50}}`)
+	n, err := Convert(raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, exists := n["$value"]; exists {
+		t.Fatal("percentage became a DTCG dimension")
+	}
+	meta := n["$extensions"].(map[string]any)[Extension].(map[string]any)
+	if string(meta["sourceValue"].(json.RawMessage)) != string(raw) {
+		t.Fatal("percentage source changed")
 	}
 }
