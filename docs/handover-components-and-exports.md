@@ -366,7 +366,8 @@ TTL that could conceal a newly activated publication.
 
 The landing page separates component and style previews from “Work with tokens”.
 Its hero uses color blocks on a light surface, with staggered resize and internal
-stripe turns. The custom loop uses captured spatial springs for transitions.
+stripe turns. The custom loop uses captured spatial springs for resizing and corners; stripe
+turns use standard easing with medium2 duration to avoid rotational rebound.
 Directional corners and stripe turns share the column resize clock. The stripe
 layer follows the inverse-rotated tile bounds, preserving equal thirds at each
 quarter turn without leaving gaps at intermediate angles. Reduced motion and pause remain

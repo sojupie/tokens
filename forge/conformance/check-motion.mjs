@@ -89,6 +89,7 @@ export async function checkMotion(container) {
           const tw=parseFloat(tile.width),th=parseFloat(tile.height),rw=parseFloat(style.width),rh=parseFloat(style.height);
           assertFinite(rw,rh);
           maxGap=Math.max(maxGap,(Math.abs(tw*Math.cos(r))+Math.abs(th*Math.sin(r))-rw)/2,(Math.abs(tw*Math.sin(r))+Math.abs(th*Math.cos(r))-rh)/2);
+          if(angle<0||angle>90)throw Error('Hero stripe turn overshoots');
           turned ||= angle>1&&angle<89;
           if(angle===90){endpoint=true;if(Math.abs(rw-th)>.1||Math.abs(rh-tw)>.1)throw Error('Stripe thirds lose their proportions at a quarter turn');}
         }

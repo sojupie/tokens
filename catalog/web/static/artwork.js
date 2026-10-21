@@ -54,6 +54,7 @@
     const style=getComputedStyle(artwork),spring=artworkSpring(parseFloat(style.getPropertyValue('--_art-spring-damping')),parseFloat(style.getPropertyValue('--_art-spring-stiffness')));
     const stagger=parseFloat(style.getPropertyValue('--_art-stagger')),animations=[];
     const shapeSpring=artworkSpring(parseFloat(style.getPropertyValue('--_art-shape-damping')),parseFloat(style.getPropertyValue('--_art-shape-stiffness')));
+    const turnDuration=parseFloat(style.getPropertyValue('--_art-turn-duration')),turnEasing=style.getPropertyValue('--_art-turn-easing').trim();
     const tracks=[
         [[1.2,.8,1],[.65,1.45,.9],[1,.65,1.35],[1.5,.85,.65]],
         [[1.3,.7,1],[.6,1,1.4],[1,1.4,.6],[1.6,.8,.6]],
@@ -67,10 +68,12 @@
       // Turn selected stripes on the same beats as their column resize and
       // corner morph. Held scenes keep neighboring tiles from turning together.
       const stripes=[...artwork.querySelectorAll('.tokens-art-sections')];
-      stripes.forEach((node,index)=>{
+      if(Number.isFinite(turnDuration)&&turnEasing)stripes.forEach((node,index)=>{
         const col=Math.floor(index/3),phase=(col+index%3)%4;
         const states=Array.from({length:4},(_,scene)=>[Math.floor(((scene+phase)%4)/2)*90]);
-        animations.push(node.animate(artworkFrames(states,'--_art-angle',shapeSpring||spring,8000,'deg'),{duration:8000,delay:(col+1)*stagger,iterations:Infinity,fill:'both',easing:'linear'}));
+        // A monotonic token curve avoids a distracting rotational rebound.
+        const frames=artworkFrames(states,'--_art-angle',{samples:[0,1],duration:turnDuration},8000,'deg').map(frame=>({...frame,easing:turnEasing}));
+        animations.push(node.animate(frames,{duration:8000,delay:(col+1)*stagger,iterations:Infinity,fill:'both',easing:'linear'}));
       });
     }
     const corners=['small','large','base','soft'].map(name=>parseFloat(style.getPropertyValue('--_art-corner-'+name)));
