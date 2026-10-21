@@ -174,11 +174,17 @@
     const current={animations:[],copies:[]};railFrames.set(frame,current);
     // Labels crossfade between layouts. Retain only the outgoing text, at its
     // current position and typography, while the real label takes its new slot.
-    const fade=MaterialMotion.timing(rail,'fast-effects'),frameRect=frame.getBoundingClientRect();
+    // Label phase follows the spatial transition, adapted from AndroidX
+    // NavigationItem.kt, Copyright 2024 The Android Open Source Project,
+    // Apache-2.0. See THIRD_PARTY_NOTICES.md.
+    const style=getComputedStyle(rail),spring=MaterialMotion.springFrames(Number(style.getPropertyValue('--md-sys-motion-spring-default-spatial-damping')),Number(style.getPropertyValue('--md-sys-motion-spring-default-spatial-stiffness')));
+    const phases=spring.samples.map((progress,i)=>({progress,offset:i/(spring.samples.length-1)})),textTiming={duration:timing.duration,easing:'linear'},frameRect=frame.getBoundingClientRect(),sign=style.direction==='rtl'?-1:1;
+    const middle=phases.findIndex(({progress})=>progress>=.5),a=phases[middle-1],b=phases[middle];
+    phases.splice(middle,0,{progress:.5,offset:a.offset+(.5-a.progress)/(b.progress-a.progress)*(b.offset-a.offset)});
     for(const old of outgoing){
       const copy=document.createElement('span');copy.textContent=old.text;copy.dataset.railTextExit='';copy.setAttribute('aria-hidden','true');copy.inert=true;
       Object.assign(copy.style,{position:'absolute',pointerEvents:'none',zIndex:'4',left:(old.rect.x-frameRect.x-frame.clientLeft)+'px',top:(old.rect.y-frameRect.y-frame.clientTop)+'px',width:old.rect.width+'px',height:old.rect.height+'px',font:old.font,color:old.color,letterSpacing:old.spacing,textAlign:old.align,direction:old.direction});
-      frame.append(copy);current.copies.push(copy);current.animations.push(copy.animate([{opacity:old.opacity},{opacity:0}],{...fade,fill:'forwards'}));
+      frame.append(copy);current.copies.push(copy);current.animations.push(copy.animate(phases.map(({progress,offset})=>({offset,opacity:Number(old.opacity)*Math.max(0,1-2*Math.max(0,progress))**2})),{...textTiming,fill:'forwards'}));
     }
     // Fix the final inner layout while the outer rail resizes. Move existing
     // contents from their current positions instead of reflowing every frame.
@@ -194,10 +200,10 @@
       const parent=element.parentElement.closest(motionTargets),parentShift=shifts.get(parent)||{x:0,y:0};
       const shift=prior?{x:prior.x-next.x,y:prior.y-next.y}:{x:0,y:0};shifts.set(element,shift);
       if(element.matches(textTargets)){
-        // Cancel the moving indicator's offset: the incoming label fades at
-        // its destination rather than travelling from below the icon.
-        current.animations.push(element.animate([{left:(left-parentShift.x)+'px',top:(top-parentShift.y)+'px'},{left:left+'px',top:top+'px'}],timing));
-        current.animations.push(element.animate([{opacity:0},{opacity:1}],{...effects,delay:fade.duration,fill:'both'}));
+        // Exit text stays fixed. On entry, the horizontal label approaches
+        // from the icon while nearly transparent; its vertical slot is fixed.
+        const parentRect=destinations.get(parent)?.rect,approach=expanded&&!element.matches('.md-nav-section')&&parentRect?(sign===1?next.left-parentRect.left:parentRect.right-next.right):0;
+        current.animations.push(element.animate(phases.map(({progress:p,offset})=>({offset,left:(left-parentShift.x*(1-p)+sign*approach*(p-1))+'px',top:(top-parentShift.y*(1-p))+'px',opacity:Math.max(0,Math.min(1,2*p-1))**2})),textTiming));
         continue;
       }
       // Paint text at its moving position rather than promoting it into a

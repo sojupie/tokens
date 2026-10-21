@@ -1809,7 +1809,7 @@ html:has(.md-dialog-demo > dialog:modal) { overflow:hidden; }
 .md-navigation-rail[data-variant="expanded"][data-indicator="fill"] .md-nav-indicator { inline-size:100%;justify-content:flex-start; }
 .md-navigation-rail[data-variant="collapsed"] .md-nav-fab > span { display:none; }
 /* Both glyphs occupy one icon slot; only the current glyph is opaque. */
-.md-icon-button.md-rail-menu > span:not(.md-button-ripple) { display:flex;position:absolute;opacity:1;transform:rotate(0deg);transition:opacity var(--_motion-fast-effects-duration) var(--_motion-fast-effects-easing),transform var(--_motion-fast-spatial-duration) var(--_motion-fast-spatial-easing); }
+.md-icon-button.md-rail-menu > span:not(.md-button-ripple) { display:flex;position:absolute;opacity:1;transform:rotate(0deg);transition:opacity var(--_motion-fast-effects-duration) var(--_motion-fast-effects-easing),transform var(--_motion-default-spatial-duration) var(--_motion-default-spatial-easing); }
 .md-icon-button.md-rail-menu > [data-navigation-collapse-icon]:not(.md-button-ripple) { opacity:0;transform:rotate(-90deg); }
 .md-navigation-rail[data-variant="expanded"] .md-rail-menu > [data-navigation-menu-icon] { opacity:0;transform:rotate(90deg); }
 .md-navigation-rail[data-variant="expanded"] .md-rail-menu > [data-navigation-collapse-icon] { opacity:1;transform:rotate(0deg); }
