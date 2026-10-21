@@ -4,7 +4,7 @@ export async function checkMotion(container) {
   const assert = (condition, message) => { if (!condition) throw new Error(message); checks.push(message); };
   let frame;
   async function load(slug, {reduced = false, fallback = false, query = ''} = {}) {
-    frame?.remove();frame = document.createElement('iframe');container.append(frame);
+    frame?.remove();frame = document.createElement('iframe');frame.style.width=Math.min(960,document.documentElement.clientWidth-48)+'px';container.append(frame);
     const bootstrap = `
       window.motionErrors=[];addEventListener('error',event=>motionErrors.push(event.message));
       const originalMedia=window.matchMedia.bind(window),queries=[];
@@ -17,8 +17,21 @@ export async function checkMotion(container) {
     const html = await fetch(slug ? `/md3/components/${slug}?preview.compare=interactive${query}` : '/md3/').then(r=>{if(!r.ok)throw Error(`Page ${slug}: ${r.status}`);return r.text();});
     const loaded = new Promise(resolve=>frame.onload=resolve);
     frame.srcdoc = html.replace('<head>', `<head><base href="${location.origin}/md3/"><script>${bootstrap}<\/script>`);
-    await loaded;await wait(30);
+    await loaded;frame.scrollIntoView({block:'start'});await wait(30);
     return {w:frame.contentWindow,d:frame.contentDocument};
+  }
+  {
+    const {w,d}=await load('navigation-rail'),input=d.querySelector('#preview-variant'),root=input.closest('[data-field-example]'),menu=root.querySelector('.md-field-menu'),option=menu.querySelector('[data-field-value="expanded"]');
+    let changes=0;input.addEventListener('change',event=>{changes++;event.stopPropagation();});input.addEventListener('input',event=>event.stopPropagation());
+    const pointer=(type,target)=>target.dispatchEvent(new w.PointerEvent(type,{bubbles:true,cancelable:true,pointerType:'touch',pointerId:7,button:0,isPrimary:true}));
+    input.click();pointer('pointerdown',option);input.dispatchEvent(new w.FocusEvent('focusout',{bubbles:true,relatedTarget:null}));
+    assert(menu.matches(':popover-open'),'Touch option survives trigger blur before release');
+    pointer('pointerup',option);
+    assert(root.querySelector('[data-field-value]').value==='expanded'&&changes===1,'Touch release commits the filter exactly once without a synthetic click');
+    assert(!menu.matches(':popover-open')&&!option.hasAttribute('data-pressed'),'Touch release clears the pressed state and dismisses');
+    option.dispatchEvent(new w.MouseEvent('click',{bubbles:true,detail:1}));assert(changes===1,'Compatibility click does not submit the filter twice');
+    input.click();pointer('pointerdown',option);pointer('pointercancel',option);assert(changes===1&&!option.hasAttribute('data-pressed'),'Cancelled touch does not select and clears the pressed state');
+    input.click();pointer('pointerdown',option);pointer('pointerup',d.body);assert(changes===1&&!menu.matches(':popover-open'),'Releasing outside cancels selection');
   }
   for (const fallback of [false,true]) {
     const {w,d} = await load('menus',{fallback});
@@ -51,6 +64,16 @@ export async function checkMotion(container) {
     const actionStart=w.performance.now();panel.querySelector('[data-fab-menu-action]').click();
     assert(w.performance.now()-actionStart<50&&!panel.matches(':popover-open'),'FAB item selection dismisses without blocking');
     await wait(1000);assert(!d.querySelector('[data-menu-exit-copy]'),'FAB exit copy cleans up');assert(!w.motionErrors.length,'FAB lifecycle has no script errors');
+  }
+  {
+    const {w,d}=await load('navigation-rail'),rail=d.querySelector('.md-navigation-rail'),item=rail.querySelector('[aria-current="page"]'),label=item.querySelector('.md-nav-label'),icon=item.querySelector('.md-nav-icon svg');
+    const luminance=color=>{const c=color.match(/[\d.]+/g).slice(0,3).map(n=>{const v=Number(n)/255;return v<=.04045?v/12.92:((v+.055)/1.055)**2.4;});return c[0]*.2126+c[1]*.7152+c[2]*.0722;};
+    for(const theme of ['light','dark'])for(const contrast of ['default','medium','high']){
+      d.documentElement.dataset.theme=theme;d.documentElement.dataset.contrast=contrast;
+      rail.dataset.orientation='horizontal';const foreground=w.getComputedStyle(label).color,background=w.getComputedStyle(item.querySelector('.md-nav-indicator')).backgroundColor,a=luminance(foreground),b=luminance(background);
+      assert(foreground===w.getComputedStyle(icon).color&&(Math.max(a,b)+.05)/(Math.min(a,b)+.05)>=4.5,`Horizontal rail ${theme}/${contrast}: label matches the indicator foreground and exceeds 4.5:1`);
+      rail.dataset.orientation='vertical';assert(w.getComputedStyle(label).color===w.getComputedStyle(item).color,`Vertical rail ${theme}/${contrast}: outside label retains its source color`);
+    }
   }
   for(const slug of ['date-pickers','time-pickers']) {
     const {w,d}=await load(slug,{query:slug==='date-pickers'?'&preview.variant=modal':''});
@@ -120,6 +143,7 @@ export async function checkMotion(container) {
   }
   {
     const {w,d}=await load(''),art=d.querySelector('[data-artwork]'),toggle=d.querySelector('.tokens-art-pause input');
+    art.scrollIntoView({block:'center'});await wait(50);
     const animations=art.getAnimations({subtree:true});
     assert(animations.length===22,'Hero starts its layout, stripe and corner animations');
     toggle.click();assert(animations.every(a=>a.playState==='paused'),'Hero pause control pauses every track');

@@ -167,8 +167,11 @@ Menus use shared Forge behavior. Browsers with overlay transitions retain the
 native exit surface. Other browsers receive an inert, ARIA-hidden visual copy
 that follows the spatial/effects spring curves, then is removed. FAB exits
 mirror their item animations and delays. The copy never reopens a
-popover. Reduced motion skips the fallback. Check real Firefox interactions as
-well as the unit fallback checks before declaring browser conformance.
+popover. Touch select options commit on pointer release and defer focusout dismissal
+until that release; canceled gestures do not change the value. Compatibility
+clicks do not repeat the change event. Reduced motion skips the fallback. Check
+real Firefox interactions as well as the unit fallback checks before declaring
+browser conformance.
 
 Rail transitions measure label heights after changing variants and before
 capturing animation destinations. The resize observer maintains those heights
@@ -177,7 +180,9 @@ All destinations are measured before starting parent animations. Rail contents
 move with positional offsets rather than animated text transforms. The directory
 keeps its final layout width during motion, and its position follows the same
 spatial spring as the rail. The modal scrim retains zero opacity after its
-faster effects spring settles, until spatial cleanup hides it.
+faster effects spring settles, until spatial cleanup hides it. Horizontal rail
+labels use the indicator’s on-container icon foreground. Vertical labels remain
+outside the indicator and retain the captured label color.
 
 ## Component motion
 
