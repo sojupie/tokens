@@ -1,0 +1,183 @@
+package web
+
+// These are catalogue illustrations. Component anatomy and states still come
+// from the shared specimens; the surrounding app content is authored here.
+templ componentThumbnail(c componentCase) {
+ switch c.Family {
+ case "appbar":
+  <div class="tokens-thumbnail-phone tokens-thumbnail-top">
+   @componentSpecimen(c)
+   <div class="tokens-thumbnail-content"><h3>Field notes</h3>@thumbnailDocument()</div>
+  </div>
+ case "badge":
+  <div class="tokens-thumbnail-badges">
+   for i,label := range []string{"Inbox","Activity"} {
+    <div><span class="tokens-thumbnail-badged-icon">@materialSymbol([]string{"folder","star"}[i])
+     if i==0 {
+<span class="md-badge" data-variant="labeled">8</span>
+} else {
+<span class="md-badge" data-variant="dot"></span>
+}
+    </span><span>{ label }</span></div>
+   }
+  </div>
+ case "bottom-sheet":
+  <div class="tokens-thumbnail-phone tokens-thumbnail-bottom">
+   <div class="tokens-thumbnail-content"><h3>Weekend plans</h3>@thumbnailDocument()</div>
+   <section { c.SheetAttributes()... }>
+    <div class="md-sheet-handle"><span class="md-sheet-handle-mark"></span></div>
+    <div class="md-sheet-content"><header class="md-sheet-header"><h3 class="md-sheet-title">Add to your plan</h3></header><div class="md-sheet-body"><p>Walk by the river</p><p>Visit the gallery</p></div></div>
+   </section>
+  </div>
+ case "button-group":
+  @componentSpecimen(c)
+ case "button":
+  <div class="tokens-thumbnail-buttons">
+   <button { c.Attributes()... }>@materialSymbol("add")<span>New note</span></button>
+   <div><button { c.thumbnailVariant("elevated").Attributes()... }>@materialSymbol("edit")<span>Edit</span></button><button { c.thumbnailVariant("tonal").Attributes()... }>More</button></div>
+  </div>
+ case "card":
+  <article class="md-card md-elevated-card tokens-thumbnail-card">
+   @thumbnailLandscape()
+   <div><h3>Along the coast</h3><p>A route for the weekend</p><button class="md-button md-filled-button" data-size="small" data-shape="round" type="button">View route</button></div>
+  </article>
+ case "carousel":
+  <div class="tokens-thumbnail-carousel"><section { c.Attributes()... }><div class="md-carousel-viewport"><ol class="md-carousel-track">
+   for i,label := range []string{"Coast","Forest","Hills"} {
+    <li class="md-carousel-slot"><button { c.CarouselItem(i)... }><span class="md-carousel-art">@thumbnailLandscape()</span><span class="tokens-thumbnail-carousel-label">{ label }</span></button></li>
+   }
+  </ol></div></section></div>
+ case "checkbox":
+  <div class="tokens-thumbnail-options tokens-thumbnail-paper">
+   for i,label := range []string{"Design tokens","Components","All collections"} {
+    <div>@componentSpecimen(c.thumbnailSelected(i==0).thumbnailVariant([]string{"selected","unselected","indeterminate"}[i]))<span>{ label }</span></div>
+   }
+  </div>
+ case "chip":
+  <div class="tokens-thumbnail-chips tokens-thumbnail-paper">
+   @componentSpecimen(c.thumbnailSelected(true))
+   @componentSpecimen(c.thumbnailSelected(false))
+   @componentSpecimen(c.thumbnailVariant("assist"))
+  </div>
+ case "date":
+  <div class="tokens-thumbnail-calendar">@componentSpecimen(c)</div>
+ case "dialog":
+  <div class="tokens-thumbnail-window tokens-thumbnail-dialog-context">
+   <div class="tokens-thumbnail-content"><h3>Field notes</h3>@thumbnailDocument()</div>
+   <div class="tokens-thumbnail-scrim"></div>
+   <div class="tokens-thumbnail-dialog">
+    <dialog { c.DialogPanel()... }>
+     <header class="md-basic-header"><h2>Keep this note?</h2></header>
+     <div class="md-dialog-content"><p>Save your changes before leaving.</p></div>
+     <footer class="md-basic-actions"><button { c.DialogAction(false)... }>Discard</button><button { c.DialogAction(true)... }>Save</button></footer>
+    </dialog>
+   </div>
+  </div>
+ case "divider":
+  <div class="tokens-thumbnail-settings">
+   <div>@materialSymbol("folder")<span>Personal notes</span><span>12</span></div>
+   @componentSpecimen(c)
+   <div>@materialSymbol("star")<span>Favorites</span><span>4</span></div>
+   <hr class="md-divider" data-inset="true"/>
+   <div>@materialSymbol("folder")<span>Archive</span><span>8</span></div>
+  </div>
+ case "extended-fab":
+  <button { c.Attributes()... }>@materialSymbol("add")<span>New note</span></button>
+ case "fab-menu":
+  <div class="tokens-thumbnail-phone tokens-thumbnail-bottom"><div class="tokens-thumbnail-content"><h3>Your workspace</h3>@thumbnailDocument()</div><div class="tokens-thumbnail-fab-menu">@componentSpecimen(c)</div></div>
+ case "fab":
+  @componentSpecimen(c)
+ case "icon":
+  <div class="tokens-thumbnail-icons">
+   <button { c.thumbnailVariant("outlined").Attributes()... }>@materialSymbol("edit")</button>
+   <button { c.Attributes()... }>@materialSymbol("star")</button>
+   <button { c.thumbnailVariant("filled").Attributes()... }>@materialSymbol("open_in_new")</button>
+  </div>
+ case "list":
+  <div class="tokens-thumbnail-list"><ul { c.Attributes()... }>
+   for i,label := range []string{"Weekend plans","Reading list","Studio notes"} {
+    <li><button { c.ListItem(i)... }><span class="md-list-leading md-list-icon">@materialSymbol("folder")</span><span class="md-list-body"><span class="md-list-label">{ label }</span><span class="md-list-supporting">{ []string{"Updated today","8 saved articles","Shared with Alex"}[i] }</span></span><span class="md-list-tail">@materialSymbol("chevron_right")</span></button></li>
+   }
+  </ul></div>
+ case "loading":
+  <div class="tokens-thumbnail-loading">@componentSpecimen(c)</div>
+ case "menu":
+  <div class="tokens-thumbnail-menu">@componentSpecimen(c)</div>
+ case "nav-bar":
+  <div class="tokens-thumbnail-phone tokens-thumbnail-bottom"><div class="tokens-thumbnail-content"><h3>Your library</h3>@thumbnailDocument()</div><div class="tokens-thumbnail-nav-bottom">@componentSpecimen(c)</div></div>
+ case "nav-drawer", "nav-rail":
+  <div class="tokens-thumbnail-desktop"><div class="tokens-thumbnail-navigation">@componentSpecimen(c)</div><div class="tokens-thumbnail-content"><h3>Recent notes</h3>@thumbnailDocument()</div></div>
+ case "progress":
+  <div class="tokens-thumbnail-progress tokens-thumbnail-paper">
+   <div><span>Trip photos.zip</span><small>Uploading · 40%</small></div>
+   @componentSpecimen(componentCase{Family:"progress",Variant:"linear",Size:"normal",Shape:"flat",Control:"determinate",State:"enabled"})
+   <div class="tokens-thumbnail-progress-circular">@componentSpecimen(c)<span>Preparing preview</span></div>
+  </div>
+ case "radio":
+  <div class="tokens-thumbnail-options tokens-thumbnail-paper">
+   for i,label := range []string{"Only me","People with the link","Everyone"} {
+    <div>@radioChoice(c,i,false)<span>{ label }</span></div>
+   }
+  </div>
+ case "search":
+  <div class="tokens-thumbnail-phone tokens-thumbnail-top"><div class="tokens-thumbnail-content">
+   <div { c.SearchBar()... }><span class="md-search-leading-slot"><span class="md-search-leading">@materialSymbol("search")</span></span><input class="md-search-input" aria-label="Search" value="Weekend" readonly/></div>
+   <div class="tokens-thumbnail-search-results"><div>@materialSymbol("search")<span>Weekend walks</span></div><div>@materialSymbol("search")<span>Weekend reading</span></div></div>
+  </div></div>
+ case "segmented":
+  <div class="tokens-thumbnail-paper tokens-thumbnail-view"><h3>Calendar</h3><div { c.Attributes()... } role="group">
+   for i,label := range []string{"Day","Week","Month"} {
+    <label { c.SegmentAttributes(i)... }><input { c.SegmentInput(i,label)... }/><span class="md-segment-face"><span class="md-segment-check">@materialSymbol("check")</span><span>{ label }</span></span></label>
+   }
+  </div>@thumbnailDocument()</div>
+ case "side-sheet":
+  <div class="tokens-thumbnail-desktop tokens-thumbnail-side-sheet"><div class="tokens-thumbnail-content"><h3>Notes</h3>@thumbnailDocument()</div>
+   <section { c.SheetAttributes()... }><div class="md-sheet-content"><header class="md-sheet-header"><h3 class="md-sheet-title">Note details</h3></header><div class="md-sheet-body"><p>Weekend plans</p><p>Updated today</p></div><footer class="md-sheet-footer"><button class="md-button md-text-button" data-size="small" type="button">Done</button></footer></div></section>
+  </div>
+ case "slider":
+  <div class="tokens-thumbnail-sliders tokens-thumbnail-paper"><span>Volume</span>@componentSpecimen(c)<span>Price range</span>@componentSpecimen(componentCase{Family:"slider", Variant:"discrete", Size:c.Size, Shape:c.Shape, Orientation:"horizontal", Control:"range", State:"enabled"})</div>
+ case "snackbar":
+  <div class="tokens-thumbnail-phone tokens-thumbnail-bottom"><div class="tokens-thumbnail-content"><h3>Field notes</h3>@thumbnailDocument()</div><div class="tokens-thumbnail-snackbar">@componentSpecimen(c)</div></div>
+ case "split":
+  @componentSpecimen(c)
+ case "switch":
+  <div class="tokens-thumbnail-options tokens-thumbnail-switches"><div><span>Notifications</span>@componentSpecimen(c.thumbnailSelected(true))</div><div><span>Offline access</span>@componentSpecimen(c.thumbnailSelected(false))</div></div>
+ case "tabs":
+  <div class="tokens-thumbnail-phone tokens-thumbnail-top">@componentSpecimen(c)<div class="tokens-thumbnail-content">@thumbnailDocument()</div></div>
+ case "field":
+  <div class="tokens-thumbnail-fields tokens-thumbnail-paper">@componentSpecimen(c.thumbnailVariant("filled"))@componentSpecimen(c.thumbnailVariant("outlined"))</div>
+ case "time":
+  <div class="tokens-thumbnail-clock">@componentSpecimen(c)</div>
+ case "toolbar":
+  <div class="tokens-thumbnail-phone tokens-thumbnail-bottom tokens-thumbnail-toolbar-phone">
+   <div class="tokens-thumbnail-toolbar"><div class="md-toolbar-demo" data-orientation="horizontal">
+    <div { c.Attributes()... } role="toolbar" aria-label="Note actions">
+     for i,icon := range []string{"download","content_copy","more"} {
+      <button { c.thumbnailToolbarAction(i)... }>
+       @materialSymbol(map[string]string{"more":"more_vert","download":"download","content_copy":"content_copy"}[icon])
+      </button>
+     }
+    </div>
+    <button { c.BarFAB()... }>@materialSymbol("add")</button>
+   </div></div>
+   <span class="tokens-thumbnail-home-indicator"></span>
+  </div>
+ case "tooltip":
+  <div class="tokens-thumbnail-tooltip tokens-thumbnail-plain-tooltip">
+   <div class="md-tooltip" data-variant="plain"><p>Copy link</p></div>
+   <button { (componentCase{Family:"icon",Variant:"filled",Size:"medium",Shape:"round",Width:"default",State:"enabled"}).Attributes()... }>@materialSymbol("content_copy")</button>
+  </div>
+  <div class="tokens-thumbnail-tooltip tokens-thumbnail-rich-tooltip">
+   <section { c.Attributes()... }><h3>Share this note</h3><p>Anyone with the link can read it.</p><button { c.FeedbackAttributes("md-button md-text-button md-feedback-action")... }>Copy link</button></section>
+   <button { (componentCase{Family:"icon",Variant:"tonal",Size:"medium",Shape:"round",Width:"default",State:"enabled"}).Attributes()... }>@materialSymbol("info")</button>
+  </div>
+ }
+}
+
+templ thumbnailDocument() {
+ <div class="tokens-thumbnail-document" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+}
+
+templ thumbnailLandscape() {
+ <svg class="tokens-thumbnail-landscape" viewBox="0 0 240 100" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="240" height="100" fill="var(--md-sys-color-tertiary-container)"/><circle cx="180" cy="28" r="16" fill="var(--md-sys-color-tertiary)"/><path d="M0 100V60L65 25 140 85 200 48 240 68V100Z" fill="var(--md-sys-color-secondary)"/><path d="M0 100V85L90 60 180 95 240 78V100Z" fill="var(--md-sys-color-primary)"/></svg>
+}

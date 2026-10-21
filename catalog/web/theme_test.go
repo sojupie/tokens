@@ -13,6 +13,7 @@ import (
 
 func TestThemeValuesAreTypedCSS(t *testing.T) {
 	for raw, expected := range map[string]string{
+		`{"length":{"value":50,"unit":"PERCENT"}}`:  "50%",
 		`{"color":{"alpha":1}}`:                     "rgba(0, 0, 0, 1)",
 		`{"color":{"green":1,"alpha":1}}`:           "rgba(0, 255, 0, 1)",
 		`{"color":{}}`:                              "",
@@ -21,22 +22,24 @@ func TestThemeValuesAreTypedCSS(t *testing.T) {
 		`{"fontTracking":{"unit":"POINTS"}}`:        "0px",
 		`{"length":{"value":24,"unit":"DIPS"}}`:     "24px",
 		`{"fontSize":{"value":16,"unit":"POINTS"}}`: "16px",
-		`{"shape":{"family":"SHAPE_FAMILY_ROUNDED_CORNERS","defaultSize":{"value":12,"unit":"DIPS"}}}`: "12px",
-		`{"shape":{"family":"SHAPE_FAMILY_CIRCULAR"}}`:                                                 "calc(infinity * 1px)",
-		`{"fontNames":{"values":["Roboto"]}}`:                                                          `"Roboto", sans-serif`,
-		`{"elevation":{"unit":"DIPS"}}`:                                                                "0",
-		`{"elevation":{"value":0,"unit":"DIPS"}}`:                                                      "0",
-		`{"elevation":{"value":1,"unit":"DIPS"}}`:                                                      "1",
-		`{"elevation":{"value":3,"unit":"DIPS"}}`:                                                      "2",
-		`{"elevation":{"value":6,"unit":"DIPS"}}`:                                                      "3",
-		`{"elevation":{"value":8,"unit":"DIPS"}}`:                                                      "4",
-		`{"elevation":{"value":12,"unit":"DIPS"}}`:                                                     "5",
-		`{"elevation":{"value":2,"unit":"DIPS"}}`:                                                      "",
-		`{"elevation":{"value":1,"unit":"POINTS"}}`:                                                    "",
-		`{"opacity":0.08}`:                                                                             "0.08",
-		`{"length":{"unit":"DIPS"}}`:                                                                   "0px",
-		`{"undefined":true}`:                                                                           "",
-		`{"arbitrary":"red; } body { display:none"}`:                                                   "",
+		`{"shape":{"family":"SHAPE_FAMILY_ROUNDED_CORNERS","defaultSize":{"value":12,"unit":"DIPS"}}}`:                                                                     "12px",
+		`{"shape":{"family":"SHAPE_FAMILY_ROUNDED_CORNERS","defaultSize":{"unit":"DIPS"}}}`:                                                                                "0px",
+		`{"shape":{"family":"SHAPE_FAMILY_ROUNDED_CORNERS","defaultSize":{"unit":"DIPS"},"topRight":{"value":16,"unit":"DIPS"},"bottomRight":{"value":16,"unit":"DIPS"}}}`: "0px 16px 16px 0px",
+		`{"shape":{"family":"SHAPE_FAMILY_CIRCULAR"}}`:                                                                                                                     "calc(infinity * 1px)",
+		`{"fontNames":{"values":["Roboto"]}}`:                                                                                                                              `"Roboto", sans-serif`,
+		`{"elevation":{"unit":"DIPS"}}`:                                                                                                                                    "0",
+		`{"elevation":{"value":0,"unit":"DIPS"}}`:                                                                                                                          "0",
+		`{"elevation":{"value":1,"unit":"DIPS"}}`:                                                                                                                          "1",
+		`{"elevation":{"value":3,"unit":"DIPS"}}`:                                                                                                                          "2",
+		`{"elevation":{"value":6,"unit":"DIPS"}}`:                                                                                                                          "3",
+		`{"elevation":{"value":8,"unit":"DIPS"}}`:                                                                                                                          "4",
+		`{"elevation":{"value":12,"unit":"DIPS"}}`:                                                                                                                         "5",
+		`{"elevation":{"value":2,"unit":"DIPS"}}`:                                                                                                                          "",
+		`{"elevation":{"value":1,"unit":"POINTS"}}`:                                                                                                                        "",
+		`{"opacity":0.08}`:                           "0.08",
+		`{"length":{"unit":"DIPS"}}`:                 "0px",
+		`{"undefined":true}`:                         "",
+		`{"arbitrary":"red; } body { display:none"}`: "",
 	} {
 		if got := themeValue(json.RawMessage(raw)); got != expected {
 			t.Errorf("themeValue(%s) = %q, want %q", raw, got, expected)
@@ -140,7 +143,7 @@ func TestReadableRolesAndDistinctCardSurface(t *testing.T) {
 	}
 	response := httptest.NewRecorder()
 	New(publish.PublishedState{}, "").Handler().ServeHTTP(response, httptest.NewRequest("GET", "/changes", nil))
-	if strings.Contains(response.Body.String(), "typo-") || !strings.Contains(response.Body.String(), `class="md-typescale-body-medium">Dates show`) {
+	if strings.Contains(response.Body.String(), "typo-") || !strings.Contains(response.Body.String(), `class="md-typescale-body-large">Dates show`) {
 		t.Fatal("instructions should be readable body text, not tiny metadata")
 	}
 }

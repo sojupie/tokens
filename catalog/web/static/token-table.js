@@ -1,5 +1,18 @@
+(() => {
+const initialized = new WeakSet();
+function unbound(selector) {
+  return [...document.querySelectorAll(selector)].filter(element => {
+    if (initialized.has(element)) return false;
+    initialized.add(element);
+    return true;
+  });
+}
+function initialize() {
+// Cached pages can still contain the old inline no-script fallback rules.
+document.querySelectorAll('noscript style').forEach(style => style.remove());
 // The backdrop targets the dialog too; its bounds distinguish it from padding.
-document.querySelectorAll('dialog').forEach(dialog => {
+// Sheets own backdrop gestures and wait for their exit animation.
+unbound('dialog:not(.md-sheet)').forEach(dialog => {
   dialog.addEventListener('click', event => {
     if (event.target !== dialog) return;
     const bounds = dialog.getBoundingClientRect();
@@ -9,7 +22,7 @@ document.querySelectorAll('dialog').forEach(dialog => {
   });
 });
 
-document.querySelectorAll('.tokens-token-download').forEach(download => {
+unbound('.tokens-token-download').forEach(download => {
   const dialog = download.querySelector('dialog');
   if (!dialog) return;
   download.querySelector('[data-download-open]').addEventListener('click', () => dialog.showModal());
@@ -17,7 +30,7 @@ document.querySelectorAll('.tokens-token-download').forEach(download => {
   dialog.querySelector('form').addEventListener('submit', () => dialog.close());
 });
 
-document.querySelectorAll('[data-site-download-open]').forEach(button => {
+unbound('[data-site-download-open]').forEach(button => {
   button.addEventListener('click', () => {
     const dialog = document.querySelector('#tokens-site-download');
     dialog.querySelector(`input[value="${button.dataset.siteDownloadOpen}"]`).checked = true;
@@ -25,9 +38,11 @@ document.querySelectorAll('[data-site-download-open]').forEach(button => {
   });
 });
 
-document.querySelectorAll('.tokens-token-browser').forEach(browser => {
+unbound('.tokens-token-browser').forEach(browser => {
+  const lifecycle = new AbortController();
+  const signal = lifecycle.signal;
   const form = browser.querySelector('form');
-  const dialog = browser.querySelector('dialog');
+  const dialog = browser.querySelector('.tokens-context-dialog');
   const groups = [...browser.querySelectorAll('.tokens-token-folder')];
   let contextFields = '';
   let contextRequest;
@@ -41,7 +56,8 @@ document.querySelectorAll('.tokens-token-browser').forEach(browser => {
     const save = dialog.querySelector('[type="submit"]');
     const status = dialog.querySelector('[role="status"]');
     save.disabled = true;
-    status.textContent = 'Checking available contexts…';
+    status.textContent = '';
+    dialog.setAttribute('aria-busy', 'true');
     const url = new URL(form.action);
     url.search = new URLSearchParams(new FormData(form)).toString();
     try {
@@ -54,20 +70,67 @@ document.querySelectorAll('.tokens-token-browser').forEach(browser => {
       dialog.querySelector('.tokens-context-fields').replaceWith(fields);
       const advanced = dialog.querySelector('.tokens-context-advanced');
       if (advanced) advanced.open = advancedOpen;
-      dialog.querySelector(`input[name="${CSS.escape(changedField)}"]:checked`)?.focus();
+      dialog.querySelector(`input[name="${CSS.escape(changedField)}"]:checked`)?.focus({preventScroll:true});
       status.textContent = '';
       save.disabled = false;
+      placeContext();
     } catch (error) {
       if (!request.signal.aborted) status.textContent = 'Could not check contexts. Change a selection to retry, or cancel.';
+    } finally {
+      if (contextRequest === request) dialog.removeAttribute('aria-busy');
     }
   });
 
   const cancelContext = () => {
     contextRequest?.abort();
+    dialog.removeAttribute('aria-busy');
     dialog.querySelector('.tokens-context-fields').innerHTML = contextFields;
     dialog.querySelector('[role="status"]').textContent = '';
     dialog.querySelector('[type="submit"]').disabled = false;
   };
+
+  const contextButton = browser.querySelector('[data-action="context"]');
+  const placeContext = () => {
+    if (!dialog?.matches(':popover-open')) return;
+    const r = contextButton.getBoundingClientRect(), gap = 8;
+    const width = dialog.offsetWidth, height = dialog.offsetHeight;
+    let left, top;
+    if (r.left - width - gap >= gap) { left = r.left - width - gap; top = r.top; }
+    else if (r.right + gap + width <= innerWidth - gap) { left = r.right + gap; top = r.top; }
+    else {
+      left = r.right - width;
+      const below = r.bottom + gap;
+      top = below + height <= innerHeight - gap ? below : r.top - height - gap;
+    }
+    dialog.style.left = `${Math.max(gap, Math.min(left, innerWidth - width - gap))}px`;
+    dialog.style.top = `${Math.max(gap, Math.min(top, innerHeight - height - gap))}px`;
+  };
+  if (dialog) {
+    dialog.addEventListener('beforetoggle', event => {
+      if (event.newState === 'open') {
+        contextFields = dialog.querySelector('.tokens-context-fields').innerHTML;
+        // Position before focusing so opening cannot scroll the document.
+        dialog.style.visibility = 'hidden';
+      } else contextRequest?.abort();
+    });
+    dialog.addEventListener('toggle', () => {
+      contextButton.setAttribute('aria-expanded', String(dialog.matches(':popover-open')));
+      placeContext();
+      dialog.style.visibility = '';
+      if (dialog.matches(':popover-open')) dialog.querySelector('input:checked')?.focus({preventScroll:true});
+      else cancelContext();
+    });
+    dialog.addEventListener('keydown', event => {
+      if (event.key !== 'Escape') return;
+      event.preventDefault();
+      event.stopPropagation();
+      dialog.hidePopover();
+      contextButton.focus({preventScroll:true});
+    });
+    dialog.addEventListener('toggle', placeContext, true);
+    addEventListener('resize', placeContext, {signal});
+    addEventListener('scroll', placeContext, {capture: true, signal});
+  }
 
   const picker = browser.querySelector('.tokens-token-set');
   const menu = browser.querySelector('.tokens-token-set-menu');
@@ -77,6 +140,7 @@ document.querySelectorAll('.tokens-token-browser').forEach(browser => {
     const below = innerHeight - bounds.bottom - edge;
     const above = bounds.top - edge;
     const upwards = below < 200 && above > below;
+    menu.dataset.menuAbove = String(upwards);
     menu.style.left = `${Math.max(edge, Math.min(bounds.left, innerWidth - menu.offsetWidth - edge))}px`;
     menu.style.maxHeight = `${Math.max(0, upwards ? above : below)}px`;
     menu.style.top = `${upwards ? bounds.top - menu.offsetHeight : bounds.bottom}px`;
@@ -97,7 +161,7 @@ document.querySelectorAll('.tokens-token-browser').forEach(browser => {
     links[index]?.focus();
     event.preventDefault();
   });
-  addEventListener('resize', () => { if (menu.matches(':popover-open')) placeMenu(); });
+  addEventListener('resize', () => { if (menu.matches(':popover-open')) placeMenu(); }, {signal});
   const previewToggle = browser.querySelector('[data-action="previews"]');
   const viewToggle = browser.querySelector('[data-action="view"]');
   const expandToggle = browser.querySelector('[data-action="expand"]');
@@ -128,6 +192,37 @@ document.querySelectorAll('.tokens-token-browser').forEach(browser => {
   // Native popovers provide Escape, outside-click dismissal and invoker focus.
   // Position beside the active value where space allows, then clamp to the viewport.
   let invoker;
+  const prepareReference = popup => {
+    if (popup.querySelector('header')) return;
+    const row = popup.closest('tr');
+    const chrome = browser.querySelector('.tokens-reference-chrome').content.cloneNode(true);
+    const title = chrome.querySelector('h3');
+    title.id = `${popup.id}-title`;
+    title.textContent = row.querySelector('.tokens-token-description').textContent;
+    title.title = title.textContent;
+    popup.setAttribute('aria-labelledby', title.id);
+    popup.removeAttribute('aria-label');
+    chrome.querySelector('.tokens-popover-close').setAttribute('popovertarget', popup.id);
+    const preview = chrome.querySelector('.tokens-popup-value');
+    for (const child of row.querySelector('.tokens-large-preview').children) {
+      if (!child.classList.contains('tokens-preview-name')) preview.append(child.cloneNode(true));
+    }
+    const resolved = chrome.querySelector('.tokens-reference-resolved');
+    const compact = row.querySelector('.tokens-compact-value');
+    if (!compact.querySelector('.tokens-color-dot')) resolved.querySelector('.tokens-reference-type').remove();
+    resolved.append(compact.cloneNode(true));
+    const copyButton = chrome.querySelector('[data-copy-reference]');
+    for (const node of popup.querySelectorAll('.tokens-reference-node')) {
+      const button = copyButton.cloneNode(true);
+      const name = node.querySelector('code').textContent;
+      button.dataset.copyReference = name;
+      button.setAttribute('aria-label', `Copy ${name}`);
+      node.append(button);
+    }
+    popup.prepend(chrome.querySelector('header'), preview);
+    popup.querySelector('.tokens-reference-chain').append(resolved);
+    popup.append(chrome.querySelector('[role="status"]'));
+  };
   const placeReference = popup => {
     if (!invoker || !popup.matches(':popover-open')) return;
     const bounds = invoker.getBoundingClientRect();
@@ -141,13 +236,16 @@ document.querySelectorAll('.tokens-token-browser').forEach(browser => {
     popup.style.top = `${Math.max(gap, Math.min(bounds.top, innerHeight - height - gap))}px`;
   };
   browser.querySelectorAll('.tokens-reference-popover').forEach(popup => {
+    popup.addEventListener('beforetoggle', event => {
+      if (event.newState === 'open') prepareReference(popup);
+    });
     popup.addEventListener('toggle', event => {
       if (event.newState === 'open') placeReference(popup);
     });
   });
   const reposition = () => browser.querySelectorAll('.tokens-reference-popover:popover-open').forEach(placeReference);
-  addEventListener('resize', reposition);
-  addEventListener('scroll', reposition, true);
+  addEventListener('resize', reposition, {signal});
+  addEventListener('scroll', reposition, {capture: true, signal});
   browser.addEventListener('click', async event => {
     const popupButton = event.target.closest('button[popovertarget]');
     if (popupButton && popupButton.getAttribute('popovertargetaction') !== 'hide') invoker = popupButton;
@@ -172,12 +270,11 @@ document.querySelectorAll('.tokens-token-browser').forEach(browser => {
     browser.querySelectorAll('.tokens-reference-popover:popover-open').forEach(popup => popup.hidePopover());
     switch (button.dataset.action) {
       case 'context':
-        contextFields = dialog.querySelector('.tokens-context-fields').innerHTML;
-        dialog.showModal();
+        // The native popover invoker handles opening, dismissal and focus.
         break;
       case 'cancel':
-        cancelContext();
-        dialog.close();
+        dialog.hidePopover();
+        contextButton.focus({preventScroll:true});
         break;
       case 'previews':
         browser.classList.toggle('tokens-no-previews');
@@ -194,5 +291,15 @@ document.querySelectorAll('.tokens-token-browser').forEach(browser => {
     syncControls();
   });
   syncControls();
-  if (dialog) dialog.addEventListener('cancel', cancelContext);
+  document.addEventListener('htmx:beforeCleanupElement', event => {
+    if (event.detail.elt === browser || event.detail.elt.contains(browser)) {
+      contextRequest?.abort();
+      lifecycle.abort();
+    }
+  }, {signal});
 });
+}
+document.addEventListener('htmx:afterSwap', initialize);
+document.addEventListener('htmx:historyRestore', initialize);
+initialize();
+})();

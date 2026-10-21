@@ -83,6 +83,10 @@ func htmlMarkdown(source []byte, pageURL string) (string, error) {
 		for _, attr := range node.Attr {
 			attrs[attr.Key] = attr.Val
 		}
+		// Interactive specimens and illustration scenes are presentation, not page content.
+		if attrs["id"] == "component-preview" || attrs["aria-hidden"] == "true" {
+			return ""
+		}
 		if _, hidden := attrs["hidden"]; hidden {
 			return ""
 		}
@@ -114,7 +118,7 @@ func htmlMarkdown(source []byte, pageURL string) (string, error) {
 			return " (references: " + strings.Join(references, "; ") + ") "
 		}
 		switch node.Data {
-		case "head", "script", "style", "noscript", "footer", "svg", "button", "form", "dialog", "caption":
+		case "head", "script", "style", "noscript", "template", "footer", "svg", "button", "form", "dialog", "caption":
 			return ""
 		}
 		for _, class := range strings.Fields(attrs["class"]) {

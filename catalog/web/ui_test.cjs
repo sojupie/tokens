@@ -6,6 +6,8 @@ const {test} = require('node:test');
 const {runInNewContext} = require('node:vm');
 
 function runScript(name, globals) {
+  globals.document.addEventListener ||= () => {};
+  globals.AbortController ||= AbortController;
   // The inline initialization runs before the deferred theme controls in HTML.
   if (name === 'theme.js') runInNewContext(readFileSync(join(__dirname, 'static', 'theme-init.js'), 'utf8'), globals);
   runInNewContext(readFileSync(join(__dirname, 'static', name), 'utf8'), globals);
@@ -80,7 +82,7 @@ test('only backdrop clicks cancel and close a modal', () => {
   dialog.addEventListener('cancel', () => { cancelled++; });
   runScript('token-table.js', {
     Event,
-    document: {querySelectorAll: selector => selector === 'dialog' ? [dialog] : []},
+    document: {querySelectorAll: selector => selector === 'dialog:not(.md-sheet)' ? [dialog] : []},
   });
   const click = (x, y) => dialog.dispatchEvent(Object.assign(new Event('click'), {clientX: x, clientY: y}));
   click(150, 150);
@@ -355,7 +357,7 @@ test('table modes preserve preview preference and folder state, with matching ac
     },
     querySelector: selector => {
       if (selector === 'form') return {};
-      if (selector === 'dialog') return null;
+      if (selector === '.tokens-context-dialog') return null;
       if (selector === '.tokens-token-set') return {};
       if (selector === '.tokens-token-set-menu') return menu;
       return controls[selector.match(/data-action="([^"]+)"/)[1]];
@@ -393,4 +395,169 @@ test('table modes preserve preview preference and folder state, with matching ac
   await listeners.click({target: {closest: selector => selector === '[data-copy-reference]' ? copy : null}});
   assert.equal(copied, 'md.sys.color.primary');
   assert.equal(status.textContent, 'Copied.');
+});
+
+test('history restoration binds replacement download controls once', () => {
+  const events = new Map();
+  let buttons = [];
+  let fallbackStyles = [];
+  let opened = 0;
+  const dialog = {querySelector: () => ({checked: false}), showModal: () => { opened++; }};
+  runScript('token-table.js', {document: {
+    addEventListener: (name, callback) => events.set(name, callback),
+    querySelectorAll: selector => selector === '[data-site-download-open]' ? buttons : selector === 'noscript style' ? fallbackStyles : [],
+    querySelector: () => dialog,
+  }});
+  const restored = new EventTarget(); restored.dataset = {siteDownloadOpen: 'all'};
+  buttons = [restored];
+  fallbackStyles = [{remove: () => { fallbackStyles = []; }}];
+  events.get('htmx:afterSwap')();
+  events.get('htmx:historyRestore')();
+  assert.equal(fallbackStyles.length, 0);
+  restored.dispatchEvent(new Event('click'));
+  assert.equal(opened, 1);
+  const replacement = new EventTarget(); replacement.dataset = {siteDownloadOpen: 'styles'};
+  buttons = [replacement];
+  events.get('htmx:historyRestore')();
+  replacement.dispatchEvent(new Event('click'));
+  assert.equal(opened, 2);
+});
+
+test('theme controls survive body restoration without duplicate click handlers', () => {
+  class Button extends EventTarget {
+    constructor(dataset = {}) { super(); this.dataset = dataset; this.disabled = true; this.attributes = {}; }
+    setAttribute(name, value) { this.attributes[name] = value; }
+  }
+  const events = new Map(), root = {dataset: {}};
+  let theme = new Button(), contrasts = ['default','medium','high'].map(appContrast => new Button({appContrast}));
+  runScript('theme.js', {localStorage: {getItem: () => null, setItem() {}}, document: {
+    documentElement: root,
+    addEventListener: (name, callback) => events.set(name, callback),
+    querySelector: () => theme,
+    querySelectorAll: selector => selector === '[data-app-contrast]' ? contrasts : [],
+  }});
+  events.get('DOMContentLoaded')();
+  theme = new Button(); contrasts = ['default','medium','high'].map(appContrast => new Button({appContrast}));
+  events.get('htmx:afterSwap')();
+  events.get('htmx:historyRestore')();
+  theme.dispatchEvent(new Event('click'));
+  assert.equal(root.dataset.theme, 'dark');
+  contrasts[2].dispatchEvent(new Event('click'));
+  assert.equal(root.dataset.contrast, 'high');
+  assert.equal(contrasts[2].attributes['aria-pressed'], 'true');
+  assert.equal(theme.disabled, false);
+});
+
+test('export dialog retains collection URLs and binds restored history content', () => {
+  const events = {};
+  function panel() {
+    const listeners = {}, link = {href:'https://catalog.example/md3/downloads/dtcg/light-default/tokens.tokens.json'}, report = {};
+    const fields = {format:{value:'tokens.css'},context:{value:'dark-high'}};
+    const node = {
+      link, report, fields, opens:0,
+      querySelector(selector) {
+        if(selector==='[data-export-link]')return link;
+        if(selector==='[data-export-report]')return report;
+        if(selector==='[data-export-description]')return {};
+        if(selector==='[role="combobox"],button')return {focus(){}};
+        return fields[selector.includes('format')?'format':'context'];
+      },
+      addEventListener(type,handler){listeners[type]=handler;},
+      showModal(){this.opens++;},
+      close(){listeners.close();}
+    };
+    return node;
+  }
+  const original=panel();let current=original;
+  runScript('site-ui.js',{
+    document:{readyState:'complete',querySelector:selector=>selector==='svg[data-artwork]'?null:({src:'https://catalog.example/md3/static/site-ui.js'}),querySelectorAll:()=>[],addEventListener(type,handler){events[type]=handler;},getElementById(id){return id==='tokens-site-download'?current:null;}},
+    window:{addEventListener(){}},matchMedia:()=>({matches:false,addEventListener(){}}),URL
+  });
+  assert.equal(current.link.href,'https://catalog.example/md3/downloads/dtcg/dark-high/tokens.css');
+  assert.equal(current.report.href,'https://catalog.example/md3/downloads/dtcg/dark-high/report.json');
+  current=panel();current.fields.format.value='report.json';events['htmx:historyRestore']();
+  let focused=false;
+  const trigger={isConnected:true,focus(){focused=true;}};
+  events.click({target:{closest:selector=>selector==='[data-export-open]'?trigger:null}});
+  assert.equal(current.opens,1);assert.equal(original.opens,0);
+  assert.equal(current.link.href,'https://catalog.example/md3/downloads/dtcg/dark-high/report.json');
+  current.close();assert.equal(focused,true);
+});
+
+test('mosaic artwork pauses for the control, reduced motion, and offscreen visibility', () => {
+  const events={}, reduced={matches:false,addEventListener(_,handler){this.change=handler;},removeEventListener(){}},control={checked:false,addEventListener(_,handler){this.change=handler;},removeEventListener(){}};
+  let paused=false,observe;
+  const animationStates=[];const animationOptions=[];
+  function animate(frames,options){animationOptions.push(options);const animation={state:'running',pause(){this.state='paused';},play(){this.state='running';},cancel(){this.state='idle';}};animationStates.push(animation);return animation;}
+  const artwork={animate,querySelectorAll:selector=>Array.from({length:selector==='.tokens-art-column'?3:9},()=>({animate})),parentElement:{querySelector:()=>control},toggleAttribute(name,value){assert.equal(name,'data-paused');paused=value;}};
+  const document={readyState:'complete',hidden:false,querySelector:()=>artwork,addEventListener(type,handler){events[type]=handler;},removeEventListener(){}};
+  runScript('artwork.js',{document,getComputedStyle:()=>({getPropertyValue:key=>({'--_art-spring-damping':'.9','--_art-spring-stiffness':'300','--_art-stagger':'100ms','--_art-turn-edge-duration':'200ms','--_art-shape-damping':'.9','--_art-shape-stiffness':'1400','--_art-corner-small':'8px','--_art-corner-large':'16px','--_art-corner-base':'28px','--_art-corner-soft':'48px'}[key])}),matchMedia:()=>reduced,IntersectionObserver:class{constructor(callback){observe=callback;}observe(){}disconnect(){}}});
+  assert.equal(paused,false);
+  assert.equal(animationStates.length,22);
+  assert.equal(new Set(animationOptions.slice(4,13).map(o=>o.delay)).size,9,'inner rotations are staggered');
+  [0,4,8,2,6,1,7,3,5].forEach((tile,slot)=>{const corner=animationOptions[13+slot],layout=animationOptions[1+Math.floor(tile/3)];assert.equal(corner.duration,layout.duration);assert.equal(corner.delay,layout.delay,'corners start with their owning column resize');});
+  control.checked=true;control.change();assert.equal(paused,true);assert.ok(animationStates.every(a=>a.state==='paused'));
+  control.checked=false;control.change();assert.equal(paused,false);
+  reduced.matches=true;reduced.change();assert.equal(paused,true);
+  reduced.matches=false;reduced.change();assert.equal(paused,false);
+  observe([{isIntersecting:false}]);assert.equal(paused,true);
+  observe([{isIntersecting:true}]);assert.equal(paused,false);
+  document.hidden=true;events.visibilitychange();assert.equal(paused,true);
+  events['htmx:afterSwap']();assert.equal(paused,true);
+});
+
+ test('hero transitions use the supplied spatial spring and hold after settling', () => {
+  const module={exports:{}};
+  runInNewContext(readFileSync(join(__dirname,'static','artwork.js'),'utf8'),{module});
+  const {artworkSpring,artworkFrames}=module.exports;
+  const slow=artworkSpring(.9,300),fast=artworkSpring(.9,1400);
+  assert.ok(slow.duration>fast.duration);
+  assert.ok(slow.duration<1000);
+  assert.ok(Math.max(...slow.samples)>1,'spatial spring retains its small overshoot');
+  assert.equal(slow.samples.at(-1),1,'finish exactly at the destination');
+  assert.equal(artworkSpring(0,300),null,'missing tokens must not invent motion');
+  const frames=artworkFrames([[1,2],[2,1]],'gridTemplateColumns',slow);
+  assert.equal(frames[0].gridTemplateColumns,'1.000000fr 2.000000fr');
+  const arrival=frames[slow.samples.length-1],hold=frames[slow.samples.length];
+  assert.equal(arrival.gridTemplateColumns,hold.gridTemplateColumns);
+  assert.ok(hold.offset-arrival.offset>.4,'settling is separate from the loop hold');
+  assert.equal(frames.at(-1).offset,1);
+ });
+
+test('whole-block turns give the quarter-turn a full spatial spring with short overlapping edges', () => {
+  const module={exports:{}};
+  runInNewContext(readFileSync(join(__dirname,'static','artwork.js'),'utf8'),{module});
+  const {artworkSpring,artworkTurns}=module.exports;
+  const spring=artworkSpring(.9,1400),frames=artworkTurns(spring),duration=spring.duration+160,n=Math.ceil(duration*60/1000)+1;
+  assert.equal(frames.length,2*n+1);
+  assert.equal(frames[0]['--_art-square'],'0.000000');
+  assert.equal(frames[n-1]['--_art-square'],'0.000000');
+  assert.equal(frames[n-1]['--_art-turn'],'1.000000');
+  assert.ok(Math.abs(frames[n-1].offset*54000-duration)<.001);
+  assert.ok(frames.slice(0,n).some(f=>+f['--_art-square']===1&&+f['--_art-turn']>0&&+f['--_art-turn']<1));
+  assert.equal(frames.at(-1)['--_art-turn'],'0');
+  assert.ok(frames.every((frame,i)=>!i||frame.offset>=frames[i-1].offset));
+});
+
+test('corner morphs use pixel radii and finish at their exact token values', () => {
+  const module={exports:{}};
+  runInNewContext(readFileSync(join(__dirname,'static','artwork.js'),'utf8'),{module});
+  const {artworkSpring,artworkFrames}=module.exports;
+  const frames=artworkFrames([[28,28,28,28],[48,8,48,8]],'borderRadius',artworkSpring(.9,1400),24000,'px');
+  assert.equal(frames[0].borderRadius,'28.000000px 28.000000px 28.000000px 28.000000px');
+  assert.equal(frames.find(frame=>frame.offset===.5).borderRadius,'48.000000px 8.000000px 48.000000px 8.000000px');
+  assert.equal(frames.at(-1).borderRadius,'28px 28px 28px 28px');
+});
+
+test('hero corners follow leading edges and flatten compressed sides', () => {
+  const module={exports:{}};
+  runInNewContext(readFileSync(join(__dirname,'static','artwork.js'),'utf8'),{module});
+  const corners=module.exports.artworkDirectionalCorners,from={left:0,right:1,top:0,bottom:1},radii=[8,16,28,48];
+  const values=to=>Array.from(corners(from,to,radii));
+  assert.deepEqual(values({left:0,right:1,top:-1,bottom:0}),[48,48,8,8],'upwards rounds the top');
+  assert.deepEqual(values({left:1,right:2,top:0,bottom:1}),[8,48,48,8],'rightwards rounds the right');
+  assert.deepEqual(values({left:-1,right:0,top:0,bottom:1}),[48,8,8,48],'leftwards rounds the left');
+  assert.deepEqual(values({left:0,right:1,top:1,bottom:2}),[8,8,48,48],'downwards rounds the bottom');
+  assert.deepEqual(values({left:.25,right:.75,top:0,bottom:1}),[8,8,8,8],'compression flattens corners');
+  assert.deepEqual(values(from),[28,28,28,28]);
 });

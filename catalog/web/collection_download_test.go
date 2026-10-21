@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/sojupie/tokens/source/publish"
+	"golang.org/x/net/html"
 )
 
 func TestCollectionDownloadsAndSharedControls(t *testing.T) {
@@ -56,7 +57,7 @@ func TestCollectionDownloadsAndSharedControls(t *testing.T) {
 		if response.Code != 200 {
 			t.Fatalf("page %s: %d", path, response.Code)
 		}
-		for _, text := range []string{`class="tokens-brand-logo"`, `rel="icon"`, `id="tokens-site-download"`, `value="all"`, `value="components"`, `value="styles"`} {
+		for _, text := range []string{`class="tokens-brand-logo"`, `rel="icon"`, `id="tokens-site-download"`, `data-export-open`, `data-dialog-surface`, `unavailable for this publication`} {
 			if !strings.Contains(body, text) {
 				t.Fatalf("%s missing %s", path, text)
 			}
@@ -64,6 +65,23 @@ func TestCollectionDownloadsAndSharedControls(t *testing.T) {
 		if strings.Count(body, `id="tokens-site-download"`) != 1 || strings.Count(body, `src="/static/token-table.js`) != 1 {
 			t.Fatalf("duplicate dialog or script on %s", path)
 		}
+		// HTMX parses history fragments with scripting disabled. A style inside
+		// noscript then becomes active CSS when the fragment is restored.
+		document, err := html.ParseWithOptions(strings.NewReader(body), html.ParseOptionEnableScripting(false))
+		if err != nil {
+			t.Fatal(err)
+		}
+		var checkFallback func(*html.Node, bool)
+		checkFallback = func(node *html.Node, inNoscript bool) {
+			inNoscript = inNoscript || node.Type == html.ElementNode && node.Data == "noscript"
+			if inNoscript && node.Type == html.ElementNode && node.Data == "style" {
+				t.Fatalf("%s embeds fallback CSS that activates on history restoration", path)
+			}
+			for child := node.FirstChild; child != nil; child = child.NextSibling {
+				checkFallback(child, inNoscript)
+			}
+		}
+		checkFallback(document, false)
 	}
 	response = httptest.NewRecorder()
 	handler.ServeHTTP(response, httptest.NewRequest("GET", "/downloads/component/buttons.json?scope=everything", nil))

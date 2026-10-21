@@ -17,7 +17,7 @@ func TestTableAndDownloadButtonsUseSharedImplementation(t *testing.T) {
 	if err := tokenBrowserView(subject, browser).Render(context.Background(), &output); err != nil {
 		t.Fatal(err)
 	}
-	if err := writeTokenDownloadMenu(&output, subject, browser, downloadPreview{}); err != nil {
+	if err := siteDownloadButton().Render(context.Background(), &output); err != nil {
 		t.Fatal(err)
 	}
 	document, err := html.ParseWithOptions(&output, html.ParseOptionEnableScripting(false))
@@ -54,7 +54,7 @@ func TestTableAndDownloadButtonsUseSharedImplementation(t *testing.T) {
 		}
 	}
 	visit(document)
-	if count != 6 {
-		t.Fatalf("checked %d common buttons, want 6", count)
+	if count != 4 {
+		t.Fatalf("checked %d common buttons, want 4", count)
 	}
 }

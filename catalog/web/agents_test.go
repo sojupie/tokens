@@ -80,7 +80,7 @@ func TestHTMLAgentHintsAndJSONAlternate(t *testing.T) {
 			}
 		}
 		walk(document, false)
-		if len(footerColumns) != 4 || !strings.Contains(footerColumns[0], "Download JSON") || !strings.HasPrefix(footerColumns[1], "For humans") || !strings.Contains(footerColumns[2], "API and data reference") || !strings.Contains(footerColumns[1], "Give this to your agent") || !strings.HasPrefix(footerColumns[3], "About") || !strings.Contains(footerColumns[3], "Made by Olle Marmenlind") {
+		if len(footerColumns) != 4 || !strings.Contains(footerColumns[0], "Download tokens") || !strings.HasPrefix(footerColumns[1], "For humans") || !strings.Contains(footerColumns[2], "API and data reference") || !strings.Contains(footerColumns[1], "Give this to your agent") || !strings.HasPrefix(footerColumns[3], "About") || !strings.Contains(footerColumns[3], "Made by Olle Marmenlind") {
 			t.Fatalf("wrong footer columns: %v", footerColumns)
 		}
 		if links["/agents.json"] != "describedby" || links["/llms.txt"] != "describedby" || links["/openapi.json"] != "service-desc" || links[apiCatalogPath] != "api-catalog" || links[aiCatalogPath] != "ai-catalog" || !footerLink {
@@ -143,7 +143,7 @@ func TestAgentDiscoveryAndDataLinks(t *testing.T) {
 	}
 	for _, path := range []string{"/agents.txt", "/agents.json", "/llms.txt", "/llms-full.txt", "/openapi.json", tokenSkillPath} {
 		response := get(path)
-		if response.Header().Get("Access-Control-Allow-Origin") != "*" || response.Header().Get("Cache-Control") != "public, max-age=3600" || strings.Contains(response.Body.String(), "untrusted.example") {
+		if response.Header().Get("Access-Control-Allow-Origin") != "*" || response.Header().Get("Cache-Control") != "public, no-cache" || strings.Contains(response.Body.String(), "untrusted.example") {
 			t.Fatalf("wrong discovery headers/origin for %s", path)
 		}
 		contentType := "text/plain; charset=utf-8"

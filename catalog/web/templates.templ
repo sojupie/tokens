@@ -12,6 +12,7 @@ templ layout(title string) {
 	<head>
 		<meta charset="utf-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<meta name="htmx-config" content='{"historyCacheSize":0,"historyRestoreAsHxRequest":false}'/>
 		@initialThemeScript()
 		<script src={ staticURL("theme.js") } defer></script>
 		<link rel="stylesheet" href={ themeURL(ctx) }/>
@@ -20,6 +21,20 @@ templ layout(title string) {
         <link rel="stylesheet" href={ staticURL("buttons.css") }/>
         <link rel="stylesheet" href={ staticURL("components.css") }/>
         <script src={ staticURL("buttons.js") } defer></script>
+        <script src={ staticURL("components.js") } defer></script>
+        <script src={ staticURL("progress.js") } defer></script>
+        <script src={ staticURL("sheets.js") } defer></script>
+<script src={ staticURL("lists.js") } defer></script>
+<script src={ staticURL("carousel.js") } defer></script>
+<script src={ staticURL("search.js") } defer></script>
+<script src={ staticURL("date-picker.js") } defer></script>
+<script src={ staticURL("time-picker.js") } defer></script>
+<script src={ staticURL("fields.js") } defer></script>
+<script src={ staticURL("site-ui.js") } defer></script>
+<script src={ staticURL("artwork.js") } defer></script>
+<script src={ staticURL("dialogs.js") } defer></script>
+<script src={ staticURL("menus.js") } defer></script>
+        <script src={ staticURL("loading.js") } data-shapes-version={ loadingGeometry.version } defer></script>
 		<script src={ staticURL("htmx.min.js") } defer></script>
 		<script src={ staticURL("token-table.js") } defer></script>
 		<script src={ staticURL("webmcp.js") } defer></script>
@@ -45,18 +60,20 @@ templ layout(title string) {
 			<meta name="robots" content="noindex, follow"/>
 		}
 	</head>
-	<body class="tokens-body">
-		<header class="tokens-site-header">
+	<body class="tokens-body" hx-boost="true">
+		<header class="tokens-site-header" id="tokens-site-header" hx-preserve>
 			<nav class="tokens-primary-nav" aria-label="Primary">
 				<a class="tokens-brand md-typescale-headline-medium" href="/"><img class="tokens-brand-logo" src={ staticURL("logo-250x250.webp") } alt="" width="40" height="40"/>Token Catalog</a>
-				<div class="tokens-nav-links">
-					<a class="tokens-nav-link md-typescale-label-large" href="/components">Components</a>
-					<a class="tokens-nav-link md-typescale-label-large" href="/styles">Styles and token sources</a>
-					<a class="tokens-nav-link md-typescale-label-large" href="/changes">Change log</a>
-                    if metadata(ctx).AgentDiscovery {
-                        <a class="tokens-nav-link md-typescale-label-large" href="/for-agents">Use with your agent</a>
-                    }
-				</div>
+                <button class="md-icon-button md-standard-icon-button tokens-nav-toggle" type="button" id="tokens-nav-toggle" popovertarget="tokens-site-menu" aria-label="Navigation" aria-expanded="false" aria-controls="tokens-site-menu" data-size="small" data-shape="round" data-width="default" hidden>@materialSymbol("menu")</button>
+                <div id="tokens-site-menu" class="tokens-navigation-content" data-variant="standard" data-orientation="vertical">
+                 <div class="tokens-nav-links">
+                  @siteNavLink("/components", "Components")
+                  @siteNavLink("/styles", "Styles")
+                  @siteNavLink("/changes", "Changes")
+                  if metadata(ctx).AgentDiscovery {
+                   @siteNavLink("/for-agents", "For agents")
+                  }
+                 </div>
 				<div class="tokens-theme-controls" role="group" aria-label="Site appearance">
 					<button class="md-icon-button md-standard-icon-button" type="button" data-app-theme aria-label="Dark mode" aria-pressed="false" title="Dark mode" disabled>
 						<span data-theme-icon="light">
@@ -78,6 +95,7 @@ templ layout(title string) {
 						</button>
 					</div>
 				</div>
+                </div>
 			</nav>
 		</header>
 		<main class="tokens-main">
@@ -114,120 +132,171 @@ templ layout(title string) {
 </html>
 }
 
-templ overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView) {
+templ overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView, thumbnails map[string]componentCase) {
 @layout("Material Design 3 Tokens and Change History") {
-		<header class="tokens-subject-heading">
-			<h1 class="md-typescale-headline-medium">Material Design 3 tokens and change history</h1>
-		</header>
-		<p class="md-typescale-body-large">Browse Material Design 3 components and styles. Compare token values by context, follow named references, download JSON and review observed changes.</p>
-		@siteDownloadButton("all")
-		<div data-nosnippet>
-			<p class="md-typescale-body-large">Current snapshot: <code class="tokens-code">{ snapshot.ID }</code></p>
-			<p class="tokens-metadata">Detected: { snapshot.CreatedAt }</p>
-		</div>
-
-        if metadata(ctx).AgentDiscovery {
-            <div class="tokens-audience-grid">
-                <section class="md-card md-elevated-card tokens-card-content" aria-labelledby="human-heading">
-                    <h2 class="md-typescale-title-medium" id="human-heading">Browse tokens</h2>
-                    <p>Browse components and styles, compare values, and download the tokens you need.</p>
-                    <a class="md-button md-outlined-button" href="/components">Browse components</a>
-                </section>
-                <section class="md-card md-elevated-card tokens-card-content" aria-labelledby="agent-heading">
-                    <h2 class="md-typescale-title-medium" id="agent-heading">Use with your agent</h2>
-                    <p>Give your coding agent access to the same token data through a prompt, skill, or MCP.</p>
-                    <a class="md-button md-tonal-button" href="/for-agents">Give this to your agent</a>
-                </section>
-            </div>
-        }
-        <section class="tokens-section" aria-labelledby="components-heading">
-			<h2 class="md-typescale-title-medium" id="components-heading">Components</h2>
-			<ul class="tokens-card-grid">
-				for _, subject := range subjects {
-					if subject.Key.Kind == publish.SubjectComponent {
-						<li><a class="md-card md-outlined-card md-interactive-card tokens-card" href={ subjectURL(subject) }>{ subject.Name } <small class="md-typescale-body-small">({ len(subject.Tokens) } tokens)</small></a></li>
-					}
-				}
-			</ul>
-		</section>
-
-		<section class="tokens-section" aria-labelledby="styles-heading">
-			<h2 class="md-typescale-title-medium" id="styles-heading">Styles and token sources</h2>
-			<ul class="tokens-card-grid">
-				for _, subject := range subjects {
-					if subject.Key.Kind != publish.SubjectComponent {
-						<li><a class="md-card md-outlined-card md-interactive-card tokens-card" href={ subjectURL(subject) }>{ subject.Name } <small class="md-typescale-body-small">{ subjectKindLabel(subject.Key.Kind) } · { len(subject.Tokens) } tokens</small></a></li>
-					}
-				}
-			</ul>
-		</section>
+ <section class="tokens-landing-hero" aria-labelledby="landing-heading">
+  <div class="tokens-landing-copy">
+  <p class="md-typescale-label-large">Token Catalog</p>
+  <h1 class="md-typescale-display-small" id="landing-heading">Material Design 3 tokens and change history</h1>
+  <p class="md-typescale-body-large">Browse Material Design 3 components and styles. Compare values, follow references, and download the tokens for your project.</p>
+  <div class="tokens-landing-actions">
+   <a class="md-button md-filled-button" href="/components">Browse components</a>
+   <a class="md-button md-tonal-button" href="/styles">Explore styles</a>
+  </div>
+  </div>
+  @landingArtwork()
+ </section>
+ <div class="tokens-landing-samples">
+  <section class="tokens-section" aria-labelledby="components-heading">
+   <div class="tokens-landing-section-heading"><h2 class="md-typescale-title-large" id="components-heading">Components</h2><a class="tokens-link" href="/components">View all components</a></div>
+   @subjectCardGrid(subjects, thumbnails, false)
+  </section>
+  <section class="tokens-section" aria-labelledby="styles-heading">
+   <div class="tokens-landing-section-heading"><h2 class="md-typescale-title-large" id="styles-heading">Styles</h2><a class="tokens-link" href="/styles">View all styles</a></div>
+   @subjectCardGrid(subjects, thumbnails, true)
+  </section>
+ </div>
+ <section class="tokens-section tokens-landing-workflows" aria-labelledby="workflows-heading">
+  <h2 class="md-typescale-title-large" id="workflows-heading">Work with tokens</h2>
+ <div class="tokens-audience-grid">
+  <section class="md-card md-outlined-card tokens-card-content" aria-labelledby="history-heading">
+   <h3 class="md-typescale-title-medium" id="history-heading">Follow token changes</h3>
+   <p>See what changed between captured snapshots, with previous values and source references.</p>
+   <a class="md-button md-text-button" href="/changes">View change history</a>
+  </section>
+  if metadata(ctx).AgentDiscovery {
+   <section class="md-card md-outlined-card tokens-card-content" aria-labelledby="agent-heading">
+    <h3 class="md-typescale-title-medium" id="agent-heading">Use with your agent</h3>
+    <p>Give your coding agent access to the same token data through a prompt, skill, or MCP.</p>
+    <a class="md-button md-text-button" href="/for-agents">Give this to your agent</a>
+   </section>
+  }
+ </div>
+ </section>
+ <p class="tokens-metadata" data-nosnippet>Current snapshot: <code class="tokens-code">{ snapshot.ID }</code> · Detected: { snapshot.CreatedAt }</p>
 }
 }
 
-templ subjectListPage(snapshot publish.SnapshotView, subjects []publish.SubjectView, styles bool, query string) {
+// Decorative geometry is deliberately separate from the public component API.
+templ landingArtwork() {
+ <div class="tokens-landing-art">
+  <div class="tokens-art-mosaic" data-artwork aria-hidden="true">
+   for col := range 3 {
+    <div class={fmt.Sprintf("tokens-art-column tokens-art-column-%d",col)}>
+     for row := range 3 {
+      <div class={fmt.Sprintf("tokens-art-tile tokens-art-palette-%d",(col*3+row)%5)}>
+       <div class="tokens-art-surface"><div class="tokens-art-sections"></div></div>
+      </div>
+     }
+    </div>
+   }
+  </div>
+  <label class="md-icon-button md-tonal-icon-button tokens-art-pause" title="Pause or resume artwork">
+   <input class="tokens-visually-hidden" type="checkbox" aria-label="Pause artwork animation"/>
+   <span class="tokens-art-toggle-face">
+    <svg class="tokens-art-pause-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5H10V19H6ZM14 5H18V19H14Z"/></svg>
+    <svg class="tokens-art-play-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5V19L19 12Z"/></svg>
+   </span>
+  </label>
+ </div>
+}
+
+templ subjectListPage(snapshot publish.SnapshotView, subjects []publish.SubjectView, styles bool, query string, thumbnails map[string]componentCase) {
 @layout("Published Material Design 3 subjects") {
 		<header class="tokens-subject-heading">
 		if styles {
 			<h1 class="md-typescale-headline-medium">Styles and token sources</h1>
-			@siteDownloadButton("styles")
+			@siteDownloadButton()
 		} else {
 			<h1 class="md-typescale-headline-medium">Components</h1>
-			@siteDownloadButton("components")
+			@siteDownloadButton()
 		}
 		</header>
 		<div data-nosnippet><p class="tokens-metadata">Current snapshot: <code class="tokens-code">{ snapshot.ID }</code></p></div>
-		<form class="tokens-search-form" method="get" action={ subjectListPath(styles) } role="search">
-			<label class="md-typescale-body-medium" for="subject-search">Search by name or slug</label>
-			<input class="md-outlined-text-field tokens-search-input" id="subject-search" type="search" name="q" value={ query } autocomplete="off"
-				hx-get={ subjectListPath(styles) }
-				hx-target="#subject-list"
-				hx-trigger="input changed delay:250ms"
-				hx-push-url="true"/>
-		</form>
-		<div id="subject-list" class="md-card md-outlined-card tokens-list-panel">
-			@subjectList(subjects)
-		</div>
+        <form hx-boost="false" class="tokens-search-form" method="get" action={ subjectListPath(styles) } role="search">
+            <label class="md-outlined-text-field">
+                <input id="subject-search" type="search" name="q" value={ query } placeholder=" " autocomplete="off"
+                    hx-get={ subjectListPath(styles) } hx-target="#subject-list" hx-trigger="input changed delay:250ms" hx-push-url="true"/>
+                <span data-slot="label">Search by name or slug</span>
+            </label>
+        </form>
+        <div id="subject-list" aria-live="polite">
+            @subjectCardGrid(subjects, thumbnails, styles)
+        </div>
 }
 }
 
-templ siteDownloadButton(scope string) {
-	<div class="tokens-token-download">
-		<button class="md-button md-outlined-button" type="button" data-site-download-open={ scope } aria-haspopup="dialog" aria-controls="tokens-site-download">Download JSON</button>
-	</div>
+templ siteDownloadButton() {
+ <button class="md-button md-outlined-button" type="button" data-export-open aria-haspopup="dialog" aria-controls="tokens-site-download">Download tokens</button>
 }
 
 templ siteDownloadMenu() {
-	<div class="tokens-token-download">
-		<button class="md-button md-outlined-button" type="button" data-download-open aria-haspopup="dialog" aria-controls="tokens-site-download">Download JSON</button>
-		<div data-nosnippet><dialog class="md-dialog" id="tokens-site-download" aria-labelledby="tokens-site-download-title">
-			<form method="get" action="/downloads/tokens.json">
-				<h2 id="tokens-site-download-title">Download tokens</h2>
-				<fieldset>
-					<legend>What should the file include?</legend>
-					<label class="tokens-download-option"><input class="md-radio" type="radio" name="scope" value="components"/><span><strong>Components</strong><small>Every component, token set and supported context.</small></span></label>
-					<label class="tokens-download-option"><input class="md-radio" type="radio" name="scope" value="styles"/><span><strong>Styles and token sources</strong><small>All style and foundation tokens, with every supported context.</small></span></label>
-					<label class="tokens-download-option"><input class="md-radio" type="radio" name="scope" value="all" checked/><span><strong>All tokens</strong><small>Everything in the current publication, including components and styles.</small></span></label>
-				</fieldset>
-				<footer><button class="md-button md-text-button" type="button" data-download-cancel>Cancel</button><button class="md-button md-filled-button" type="submit">Download JSON</button></footer>
-			</form>
-		</dialog></div>
-		<noscript>
-			<a class="tokens-link" href="/downloads/tokens.json?scope=components">Download components</a>
-			<a class="tokens-link" href="/downloads/tokens.json?scope=styles">Download styles</a>
-			<a class="tokens-link" href="/downloads/tokens.json?scope=all">Download all tokens</a>
-		</noscript>
-	</div>
+ <div class="tokens-export">
+  @siteDownloadButton()
+  <dialog hx-boost="false" class="md-dialog tokens-export-dialog" data-dialog-surface id="tokens-site-download" aria-labelledby="tokens-site-download-title" aria-describedby="tokens-export-scope">
+   <header class="md-basic-header"><h2 id="tokens-site-download-title">Download tokens</h2></header>
+   <div class="md-dialog-content">
+    if metadata(ctx).GeneratedDownloads {
+     <p id="tokens-export-scope">All components and styles for one context. Page, table and search filters do not apply.</p>
+     <div class="tokens-export-fields">
+      @catalogSelect("export-format", "format", "Format", "tokens.tokens.json", exportFormatChoices())
+      @catalogSelect("export-context", "context", "Appearance", "light-default", exportContextChoices())
+     </div>
+     <p class="tokens-export-description" data-export-description>DTCG 2025.10 values and aliases, with source metadata.</p>
+     <p class="md-typescale-body-small">Web · 3P · Static font · Standard motion · Small language height</p>
+     <a class="tokens-link" data-export-report href="/downloads/dtcg/light-default/report.json">View conversion report</a>
+    } else {
+     <p id="tokens-export-scope">DTCG downloads are unavailable for this publication. Generated assets must be built before these files can be served.</p>
+    }
+   </div>
+   <footer class="md-basic-actions">
+    <button class="md-button md-text-button" type="button" data-export-cancel>Close</button>
+    if metadata(ctx).GeneratedDownloads {
+     <a class="md-button md-filled-button" data-export-link href="/downloads/dtcg/light-default/tokens.tokens.json" download>Download DTCG JSON</a>
+    }
+   </footer>
+  </dialog>
+  if metadata(ctx).GeneratedDownloads {
+   <noscript><p><a href="/downloads/dtcg/light-default/tokens.tokens.json" download>DTCG JSON · Light, default contrast</a> · <a href="/downloads/dtcg/light-default/tokens.css" download>CSS variables</a> · <a href="/downloads/dtcg/light-default/report.json" download>Conversion report</a></p></noscript>
+  }
+ </div>
 }
 
-templ subjectList(subjects []publish.SubjectView) {
-	<ul class="tokens-subject-list">
-		for _, subject := range subjects {
-			<li class="tokens-list-item"><a class="tokens-link" href={ subjectURL(subject) }>{ subject.Name }</a> <small class="md-typescale-body-small">{ subjectKindLabel(subject.Key.Kind) } · { len(subject.Tokens) } tokens</small></li>
-		}
-		if len(subjects) == 0 {
-			<li class="tokens-empty md-typescale-body-large">No matching subjects.</li>
-		}
-	</ul>
+templ subjectCardGrid(subjects []publish.SubjectView, thumbnails map[string]componentCase, styles bool) {
+ <ul class="tokens-card-grid">
+  for _, subject := range subjects {
+   if (subject.Key.Kind!=publish.SubjectComponent)==styles {
+    @subjectCard(subject, thumbnails, styles)
+   }
+  }
+  if len(subjects)==0 {
+   <li class="tokens-empty md-typescale-body-large">No matching subjects.</li>
+  }
+ </ul>
+}
+
+templ subjectCard(subject publish.SubjectView, thumbnails map[string]componentCase, styles bool) {
+    <li class="tokens-component-tile">
+     <div class="tokens-component-thumbnail">
+      if styles {
+       @styleThumbnail(subject)
+      } else if specimen, ok := thumbnails[subject.Key.Slug]; ok {
+       <svg class="tokens-component-thumbnail-viewport" viewBox="0 0 360 225" aria-hidden="true" focusable="false">
+        <foreignObject width="360" height="225">
+         <div xmlns="http://www.w3.org/1999/xhtml" class="tokens-component-thumbnail-scene" inert aria-hidden="true" data-thumbnail={ subject.Key.Slug }>
+          @componentThumbnail(specimen)
+         </div>
+        </foreignObject>
+       </svg>
+      } else {
+       @materialSymbol("widgets")
+      }
+     </div>
+     <a class="tokens-component-tile-link" href={ subjectURL(subject) }>
+      <span class="md-typescale-title-medium">{ subject.Name }</span>
+      <small class="md-typescale-body-small">{ len(subject.Tokens) } tokens</small>
+     </a>
+    </li>
 }
 
 templ subjectPage(subject publish.SubjectView, changes []publish.ChangeView, browser tokenBrowser) {
@@ -248,8 +317,8 @@ templ tokenSetPicker(subject publish.SubjectView, browser tokenBrowser) {
 					for _, set := range group.Sets {
 						<li>
 							<a class="md-menu-item" href={ tokenSetLinkURL(subject, set, browser) } aria-current={ currentTokenSet(set.Key == browser.Selected.Key) }>
-								@materialSymbol("check")
-								{ tokenSetMenuLabel(set) }
+								<span class="md-menu-item-text">{ tokenSetMenuLabel(set) }</span>
+                                <span data-slot="trailing-icon" aria-hidden="true">@materialSymbol("check")</span>
 							</a>
 						</li>
 					}
@@ -261,13 +330,20 @@ templ tokenSetPicker(subject publish.SubjectView, browser tokenBrowser) {
 
 templ changesPage(state publish.PublishedState, subject string, baseURL string, filters changeFilters, counts string, changes []publish.ChangeView, page int, total int, hasPrevious bool, hasNext bool) {
 @layout(timelineTitle(subject)) {
-		<h1 class="md-typescale-headline-medium">{ timelineTitle(subject) }</h1>
-		<p class="tokens-metadata">{ historyCoverage(state.Snapshots) }</p>
-		<p class="md-typescale-body-medium">Dates show when we detected changes, not when Material published them.</p>
+        <header class="tokens-history-intro">
+         if subject != "" {
+          <a class="tokens-link tokens-history-back" href="/changes">@materialSymbol("arrow_back") All changes</a>
+         }
+         <h1 class="md-typescale-headline-medium">{ timelineTitle(subject) }</h1>
+         <p class="md-typescale-body-large">Dates show when we detected changes, not when Material published them.</p>
+         <p class="tokens-metadata">{ historyCoverage(state.Snapshots) }</p>
+        </header>
 		@changeFilterForm(filters, baseURL)
 		if total > 0 && subject != "" {
+            <div class="tokens-history-counts">
 			<p class="tokens-metadata">Showing page { page } of { (total + 49) / 50 } · { total } total changes</p>
 			<p class="tokens-change-counts">{ counts }. One token can have changes in several settings.</p>
+            </div>
 		}
 		if len(changes) == 0 {
 			if len(state.Snapshots) < 2 {
@@ -280,13 +356,16 @@ templ changesPage(state publish.PublishedState, subject string, baseURL string, 
 		}
 		for _, batch := range changeBatches(changes, state.Snapshots) {
 			<section class="tokens-section tokens-timeline-batch">
-				<h2 class="md-typescale-title-medium">Observed <time datetime={ batch.DetectedAt }>{ observationDate(batch.DetectedAt) }</time></h2>
+                <header class="tokens-observation-heading">
+                <h2 class="md-typescale-title-large">Observed <time datetime={ batch.DetectedAt }>{ observationDate(batch.DetectedAt) }</time></h2>
 				if batch.PreviousAt != "" {
-					<p class="tokens-metadata">Compared with { observationDate(batch.PreviousAt) }</p>
-				}
+                    <p class="tokens-metadata">Compared with { observationDate(batch.PreviousAt) }</p>
+                }
+                </header>
+                <div class="tokens-observation-records">
 		for _, group := range changeGroups(batch.Changes, state.Subjects) {
 			if subject == "" {
-				<article class="tokens-change-summary">
+				<article class="md-card md-outlined-card tokens-change-summary">
 					<h3 class="md-typescale-title-medium">
 						if group.URL != "" {
 							<a class="tokens-link" href={ group.URL }>{ group.Label }</a>
@@ -301,28 +380,30 @@ templ changesPage(state publish.PublishedState, subject string, baseURL string, 
 							{ changedItemCount(group.Changes) } items changed
 						}
 					</p>
-					<a class="tokens-link" href={ groupChangelogURL(baseURL, group, batch.Changes[0].SnapshotID) }>
+					<a class="md-button md-text-button" href={ groupChangelogURL(baseURL, group, batch.Changes[0].SnapshotID) }>
 						View changes
 						@materialSymbol("chevron_right")
 					</a>
 				</article>
 			} else {
 				if group.URL != "" {
-					<p><a class="tokens-link" href={ group.URL }>Browse tokens</a></p>
+					<p class="tokens-change-component-link"><a class="md-button md-outlined-button" href={ group.URL }>Browse tokens
+@materialSymbol("arrow_forward")</a></p>
 				}
 				@changeRecordList(group.Changes)
 			}
 		}
+                </div>
 			</section>
 		}
 		if hasPrevious || hasNext {
 			<nav class="tokens-pagination" aria-label="Change log pages">
 				if hasPrevious {
-					<a class="tokens-link" href={ changesPageURL(baseURL, page - 1) }>Previous</a>
+					<a class="md-button md-outlined-button" href={ changesPageURL(baseURL, page - 1) }>Previous</a>
 				}
 				<span class="md-typescale-body-small">Page { page }</span>
 				if hasNext {
-					<a class="tokens-link" href={ changesPageURL(baseURL, page + 1) }>Next</a>
+					<a class="md-button md-outlined-button" href={ changesPageURL(baseURL, page + 1) }>Next</a>
 				}
 			</nav>
 		}
@@ -330,31 +411,23 @@ templ changesPage(state publish.PublishedState, subject string, baseURL string, 
 }
 
 templ changeFilterForm(filters changeFilters, baseURL string) {
-	<form class="tokens-change-filters" method="get" action={ strings.SplitN(baseURL, "?", 2)[0] }>
-		if !filters.FixedSubject {
-			<label>Component or style<span class="md-outlined-select"><select name="subject"><option value="">All components and styles</option>
-				for _, option := range filters.Subjects {
-					<option value={ option.Value } selected?={ option.Value == filters.Subject }>{ option.Label }</option>
-				}
-			</select><span data-slot="trailing-icon">@materialSymbol("expand_more")</span></span></label>
-		}
-		<label>Observed<span class="md-outlined-select"><select name="snapshot"><option value="">All dates</option>
-			for _, option := range filters.Snapshots {
-				<option value={ option.Value } selected?={ option.Value == filters.Snapshot }>{ option.Label }</option>
-			}
-		</select><span data-slot="trailing-icon">@materialSymbol("expand_more")</span></span></label>
-		<label>Change<span class="md-outlined-select"><select name="type">
-			<option value="">All changes</option>
-			<option value="changed" selected?={ filters.Type == "changed" }>Updated</option>
-			<option value="added" selected?={ filters.Type == "added" }>Added</option>
-			<option value="removed" selected?={ filters.Type == "removed" }>Removed</option>
-		</select><span data-slot="trailing-icon">@materialSymbol("expand_more")</span></span></label>
-		<label>Token name<input class="md-outlined-text-field" type="search" name="q" value={ filters.Query } placeholder="e.g. width or font"/></label>
-		<div class="tokens-change-filter-actions">
-			<button class="md-button md-filled-button" type="submit">Apply filters</button>
-			<a class="tokens-link" href={ strings.SplitN(baseURL, "?", 2)[0] }>Reset</a>
-		</div>
-	</form>
+ <form class="tokens-change-filters" method="get" action={ strings.SplitN(baseURL, "?", 2)[0] } aria-label="Filter changes" hx-boost="false" hx-get={ strings.SplitN(baseURL, "?", 2)[0] } hx-target=".tokens-main" hx-select=".tokens-main" hx-swap="outerHTML" hx-push-url="true" hx-trigger="change, input changed delay:250ms from:input[type='search'], submit" hx-sync="this:replace">
+  <div class="tokens-change-pill-group">
+   if !filters.FixedSubject {
+    @filterPill("history-subject", "subject", "Component or style", filters.Subject, historyChoices("All components and styles",filters.Subjects),false)
+   }
+   @filterPill("history-snapshot", "snapshot", "Observed", filters.Snapshot, historyChoices("All dates",filters.Snapshots),false)
+   @filterPill("history-type", "type", "Change", filters.Type, []catalogChoice{{"","All changes"},{"changed","Updated"},{"added","Added"},{"removed","Removed"}},false)
+   <div class="tokens-change-filter-actions">
+    <noscript><button class="md-button md-filled-button" type="submit">Apply filters</button></noscript>
+    <a class="md-button md-text-button" href={ strings.SplitN(baseURL, "?", 2)[0] }>Reset</a>
+   </div>
+  </div>
+  <label class="md-outlined-text-field">
+   <input id="history-query" type="search" name="q" value={filters.Query} placeholder=" "/>
+   <span data-slot="label">Token name</span>
+  </label>
+ </form>
 }
 
 templ changeRecordList(changes []labeledChange) {
@@ -363,7 +436,7 @@ templ changeRecordList(changes []labeledChange) {
 				<summary class="tokens-change-heading">
 					@materialSymbol("chevron_right")
 					<h4>{ change.Name }</h4>
-					<span class="tokens-change-status" data-change-type={ change.Type }>{ changeTypeLabel(change.Type) }</span>
+					<span class="tokens-change-status md-typescale-label-large" data-change-type={ change.Type }>{ changeTypeLabel(change.Type) }</span>
 					if context := changeContext(change.ChangeView); context != "" {
 						<span class="tokens-change-context tokens-change-context-summary">{ context }</span>
 					}
@@ -433,75 +506,1061 @@ templ forAgentsPage(prompt string, mcpURL string) {
     }
 }
 
-templ buttonGalleryPage(page buttonGallery) {
- @layout("Material Design 3 buttons") {
-  <h1 class="md-typescale-headline-medium">Buttons</h1>
-  <p class="md-typescale-body-medium">{ fmt.Sprint(page.Mapped) } source tokens mapped. Press a button to try its shape animation and ripple.</p>
-  <form class="tokens-gallery-filters" method="get">
-   @gallerySelect("variant", "Variant", append([]string{"all"}, page.Variants...), page.Filters["variant"])
-   @gallerySelect("size", "Size", append([]string{"all"}, page.Sizes...), page.Filters["size"])
-   @gallerySelect("shape", "Shape", []string{"all","round","square"}, page.Filters["shape"])
-   @gallerySelect("selection", "Selection", []string{"all","plain","unselected","selected"}, page.Filters["selection"])
-   @gallerySelect("state", "State", []string{"all","enabled","hovered","focused","pressed","disabled"}, page.Filters["state"])
-   <button type="submit" class="md-button md-filled-button">Apply</button>
+templ componentPreviewView(page componentPreview) {
+ <section class="tokens-section" id="component-preview" aria-labelledby="preview-heading">
+  <h2 class="md-typescale-title-medium" id="preview-heading">Preview</h2>
+  <form hx-boost="false" method="get" action={ page.Action } hx-get={ page.Action } hx-target="#component-preview" hx-select="#component-preview" hx-swap="outerHTML" hx-push-url="true" hx-trigger="change" hx-sync="this:replace" class="tokens-gallery-filters">
+   for _, hidden := range page.Hidden {
+    <input type="hidden" name={ hidden.Name } value={ hidden.Value }/>
+   }
+   for _, control := range page.Controls {
+    @previewSelect(control)
+   }
+   <noscript><button class="md-button md-outlined-button" type="submit">Apply</button></noscript>
   </form>
-  <div class="tokens-button-gallery">
+  <div class="tokens-preview-grid">
    for _, c := range page.Cases {
-    <article class="md-card md-outlined-card tokens-button-example">
-     <p class="md-typescale-body-small">{ c.Label() }</p>
-     <button { c.Attributes()... }>@materialSymbol("check")<span>Button</span></button>
-    </article>
+    <figure class="tokens-component-example">
+     <figcaption class="md-typescale-body-small">{ page.Caption(c) }</figcaption>
+     @componentSpecimen(c)
+    </figure>
    }
   </div>
- }
+  if len(page.Cases) == 0 {
+   <p>This combination has no implemented preview.</p>
+  }
+ </section>
 }
 
-templ gallerySelect(name string, label string, options []string, selected string) {
- <label class="md-typescale-body-medium">{ label }
-  <span class="md-outlined-select"><select name={ name }>
-   for _, option := range options {
-    <option value={ option } selected?={ option==selected }>{ option }</option>
-   }
-  </select><span data-slot="trailing-icon">@materialSymbol("expand_more")</span></span>
- </label>
+templ previewSelect(control previewControl) {
+ @previewFilter(control)
 }
 
-templ componentGalleryPage(page componentGallery) {
- @layout("Material Design 3 Component Gallery") {
-  <section class="tokens-section">
-   <h1 class="md-typescale-headline-medium">Material Design 3 component gallery</h1>
-   <p>{ fmt.Sprint(page.Mapped) } mapped source tokens · { fmt.Sprint(page.Excluded) } documented exclusions · { fmt.Sprint(len(page.Cases)) } configurations</p>
-   <form method="get" class="tokens-gallery-filters">
-    @gallerySelect("family", "Family", []string{"all","card","icon","chip","radio","field","select","menu","dialog","divider"}, page.Family)
-    <button class="md-button md-outlined-button" type="submit">Apply filters</button>
-   </form>
-   <div class="tokens-component-gallery">
-    for _, c := range page.Cases {
-     <figure class="tokens-component-example">
-      <figcaption class="md-typescale-body-small">{ c.Label() }</figcaption>
+templ componentSpecimen(c componentCase) {
       switch c.Family {
+       case "button":
+        <button { c.Attributes()... }>@materialSymbol("check")<span>Button</span></button>
        case "card":
-        <a href={ "#"+c.ID() } { c.Attributes()... }><span>Card title</span><p>Supporting text</p><span data-slot="icon">@materialSymbol("check")</span></a>
+        <button type="button" { c.Attributes()... }><span>Card title</span><span>Supporting text</span><span data-slot="icon">@materialSymbol("check")</span></button>
        case "icon":
         <button { c.Attributes()... }>@materialSymbol("check")</button>
        case "chip":
-        <label { c.Attributes()... }><input class="tokens-visually-hidden" type="checkbox" checked?={ c.Selected } disabled?={ c.State=="disabled" }/><span class="md-chip-face">@materialSymbol("check")<span>Filter chip</span></span></label>
+        <span class="md-chip-demo">
+         if c.Variant=="assist" || c.Variant=="suggestion" {
+          <button { c.Attributes()... }>
+           @chipLeading(c)
+           <span class="md-chip-label">{ c.ChipLabel() }</span>
+          </button>
+         } else {
+          <span { c.Attributes()... }>
+           <button class="md-chip-primary" type="button" data-chip-select aria-pressed={ fmt.Sprint(c.Selected) } disabled?={ c.State=="disabled" }>
+            @chipLeading(c)
+            <span class="md-chip-label">{ c.ChipLabel() }</span>
+           </button>
+           if c.Width=="removable" || c.Variant=="input" {
+            <button class="md-chip-remove" type="button" data-chip-remove aria-label={ "Remove "+c.ChipLabel() } disabled?={ c.State=="disabled" } tabindex="-1">
+             <span class="md-chip-icon" data-slot="trailing-icon">@materialSymbol("close")</span>
+            </button>
+           }
+          </span>
+         }
+         <output class="tokens-visually-hidden" aria-live="polite" data-chip-output></output>
+        </span>
+       case "badge":
+        <span { c.Attributes()... } role="img" aria-label="Unread notifications">
+         if c.Variant=="labeled" {
+          { "99+" }
+         }
+        </span>
+       case "time":
+        <div { c.Attributes()... }>
+         if c.State=="interactive" {
+          <button type="button" class="md-button md-outlined-button" data-time-open aria-controls={ c.ID()+"-time" } aria-haspopup="dialog" aria-expanded="false">Choose time</button>
+         }
+         <dialog { c.TimePanel()... }>
+          <h3 class="md-time-title" data-time-title>Select time</h3>
+          <div class="md-time-body">
+           <div class="md-time-selectors">
+            <div class="md-time-hour">
+             <button { c.TimeValue("hour")... }>10</button>
+             <label class="md-time-field-wrap"><input { c.TimeInput("hour")... }/><span class="md-time-supporting">Hour</span></label>
+            </div>
+            <span class="md-time-separator" aria-hidden="true">:</span>
+            <div class="md-time-minute">
+             <button { c.TimeValue("minute")... }>10</button>
+             <label class="md-time-field-wrap"><input { c.TimeInput("minute")... }/><span class="md-time-supporting">Minute</span></label>
+            </div>
+            <div class="md-time-period-group" role="group" aria-label="Period" hidden?={ c.Width=="24h" }>
+             <button { c.TimePeriod("am")... }>AM</button><button { c.TimePeriod("pm")... }>PM</button>
+            </div>
+           </div>
+           <div { c.TimeDial()... }>
+            <span class="md-time-hand" aria-hidden="true"><span class="md-time-handle"><span class="md-time-dot"></span></span></span>
+            <span class="md-time-center" aria-hidden="true"></span>
+            <div class="md-time-labels" aria-hidden="true">
+             for _,tick:=range c.TimeTicks() {
+              <span class="md-time-tick" style={tick.Style()}>{tick.Label}</span>
+             }
+            </div>
+            <div class="md-time-selected-labels" aria-hidden="true">
+             for _,tick:=range c.TimeTicks() {
+              <span class="md-time-tick" style={tick.Style()}>{tick.Label}</span>
+             }
+            </div>
+           </div>
+          </div>
+          <p class="md-time-error md-typescale-body-small" id={c.ID()+"-error"} data-time-error role="alert"></p>
+          <footer class="md-time-actions"><button class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" type="button" data-time-mode aria-label="Use keyboard input">@materialSymbol("keyboard")@materialSymbol("schedule")</button><span></span><button class="md-button md-text-button" type="button" data-time-cancel>Cancel</button><button class="md-button md-text-button" type="button" data-time-save>OK</button></footer>
+         </dialog>
+         <output class="md-typescale-body-small" data-time-output aria-live="polite"></output>
+        </div>
+       case "date":
+        <div { c.Attributes()... }>
+         if c.State=="interactive" {
+          <div class="md-date-fields" data-date-anchor>
+           @dateEntryField(c,"start")
+           if c.DateRange {
+            @dateEntryField(c,"end")
+           }
+          </div>
+         }
+         <dialog { c.DatePanel()... }>
+          if c.Variant=="full-screen" {
+           <div class="md-date-fullscreen-actions"><button class="md-icon-button md-standard-icon-button" type="button" data-date-cancel aria-label="Close date picker">@materialSymbol("close")</button><button class="md-button md-text-button" type="button" data-date-save>Save</button></div>
+          }
+          <header class="md-date-header">
+           <p data-date-title>Select date</p>
+           <div><h3 data-date-headline>{ c.DateHeadline() }</h3><button type="button" class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" data-date-mode aria-label="Enter date">@materialSymbol("edit")@materialSymbol("calendar_month")</button></div>
+          </header>
+          if c.Variant=="docked" {
+           <div class="md-date-navigation md-date-docked-navigation">
+            <div class="md-date-nav-group">
+             <button type="button" class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" data-date-step="-1" aria-label="Previous month">@materialSymbol("chevron_left")</button>
+             <button { c.DateMenu()... }><span data-date-month-label>Oct</span>@materialSymbol("expand_more")</button>
+             <button type="button" class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" data-date-step="1" aria-label="Next month">@materialSymbol("chevron_right")</button>
+            </div>
+            <div class="md-date-nav-group">
+             <button type="button" class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" data-date-step="-12" aria-label="Previous year">@materialSymbol("chevron_left")</button>
+             <button { c.DateYearMenu()... }><span data-date-year-label>2026</span>@materialSymbol("expand_more")</button>
+             <button type="button" class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" data-date-step="12" aria-label="Next year">@materialSymbol("chevron_right")</button>
+            </div>
+           </div>
+          } else {
+           <div class="md-date-navigation">
+           <button { c.DateMenu()... }><span data-date-month-label>October 2026</span>@materialSymbol("expand_more")</button>
+           <span><button type="button" class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" data-date-step="-1" aria-label="Previous month">@materialSymbol("chevron_left")</button><button type="button" class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" data-date-step="1" aria-label="Next month">@materialSymbol("chevron_right")</button></span>
+           </div>
+          }
+          <div class="md-date-calendars" data-date-calendars>
+           @dateCalendar(c,10)
+           if c.DateRange {
+            @dateCalendar(c,11)
+           }
+          </div>
+          <div class="md-date-years" role="group" id={c.ID()+"-years"} data-date-years hidden?={ c.Control!="year" } aria-label="Choose year">
+           if c.Control=="year" {
+            for year:=range 201 {
+             <button { c.DateYear(1900+year)... }>
+              if c.Variant=="docked" {
+               @materialSymbol("check")<span>{ fmt.Sprint(1900+year) }</span>
+              } else {
+               { fmt.Sprint(1900+year) }
+              }
+             </button>
+            }
+           }
+          </div>
+          <div class="md-date-months" role="group" id={c.ID()+"-months"} data-date-months hidden?={ c.Control!="month" } aria-label="Choose month">
+           for month,label:=range dateMonths {
+            <button { c.DateMonth(month+1)... }>@materialSymbol("check")<span>{ label }</span></button>
+           }
+          </div>
+          <div class="md-date-inputs" data-date-inputs>
+           <div class="md-outlined-text-field">@outlinedFieldFrame("Date")<label for={ c.ID()+"-start" } data-slot="label">Date</label><input id={ c.ID()+"-start" } data-date-input="start" aria-describedby={ c.ID()+"-error" } placeholder="YYYY-MM-DD" value="2026-10-21" inputmode="numeric" maxlength="32" autocomplete="off"/></div>
+           if c.DateRange {
+            <div class="md-outlined-text-field">@outlinedFieldFrame("End date")<label for={ c.ID()+"-end" } data-slot="label">End date</label><input id={ c.ID()+"-end" } data-date-input="end" aria-describedby={ c.ID()+"-error" } placeholder="YYYY-MM-DD" value="2026-10-26" inputmode="numeric" maxlength="32" autocomplete="off"/></div>
+           }
+           <p id={ c.ID()+"-error" } class="md-typescale-body-small" data-date-error role="alert"></p>
+          </div>
+          <footer class="md-date-actions"><button class="md-button md-text-button" type="button" data-date-cancel>Cancel</button><button class="md-button md-text-button" type="button" data-date-save>OK</button></footer>
+          <output class="md-date-status md-typescale-body-small" aria-live="polite"></output>
+         </dialog>
+        </div>
+       case "search":
+        <div { c.Attributes()... }>
+         if c.Variant=="adaptive" {
+          <label class="md-search-composition-size">Composition width <input type="range" min="320" max="1200" value="1200" step="1" data-search-composition-width/><output data-search-composition-width-label>Fit to available space</output></label>
+          <div class="md-search-workspace">
+           <div class="md-search-app">
+            <div class="md-search-mail-navigation">
+             @searchCompositionNavigation(c)
+            </div>
+            @searchScene(c)
+            <section {c.SearchMessageSurface()...} aria-label="Message"><button type="button" class="md-icon-button md-standard-icon-button md-search-message-back" data-size="small" data-shape="round" data-search-message-back aria-label="Back to inbox">@materialSymbol("arrow_back")</button><h3 data-search-page-title tabindex="-1">Buttons</h3><p class="md-search-mail-sender">Design team · 09:30</p><p>Hello,</p><p data-search-page-description>Review the latest component updates and examples.</p><p>The updated examples are ready for review. Let us know what you think.</p><button {c.SearchReply()...}>@materialSymbol("reply")<span>Reply</span></button></section>
+            @searchScrim()
+           </div>
+          </div>
+         } else {
+          @searchScene(c)
+         }
+         <output class="md-typescale-body-small" data-search-feedback aria-live="polite"></output>
+        </div>
+       case "carousel":
+        <section { c.Attributes()... } aria-label="Example carousel" aria-roledescription="carousel">
+         <div class="md-carousel-viewport" tabindex="0" aria-label="Carousel items">
+          <div class="md-carousel-scroll-track">
+           <div class="md-carousel-snaps" aria-hidden="true">
+            for range 6 {
+             <span class="md-carousel-snap"></span>
+            }
+           </div>
+          <ol class="md-carousel-track">
+           for index := range 6 {
+            <li class="md-carousel-slot">
+             <button { c.CarouselItem(index)... }>
+              <span class="md-carousel-art" aria-hidden="true">
+               <svg viewBox="0 0 240 192" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="240" height="192" fill="var(--md-sys-color-tertiary-container)"/><circle cx={ fmt.Sprint(60+index*20) } cy="58" r="35" fill="var(--md-sys-color-primary-container)"/><path d="M0 192V142L76 62 142 142 190 95 240 145V192Z" fill="var(--md-sys-color-secondary)"/><path d="M0 192V155L85 112 160 174 240 115V192Z" fill="var(--md-sys-color-tertiary)"/></svg>
+              </span>
+              <span class="md-carousel-number" aria-hidden="true">{ fmt.Sprint(index+1) }</span>
+             </button>
+            </li>
+           }
+          </ol>
+          </div>
+         </div>
+         <div class="md-carousel-controls">
+          <button type="button" class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" data-carousel-step="-1" aria-label="Previous item">@materialSymbol("chevron_left")</button>
+          <output class="md-typescale-label-medium" aria-live="polite">Item 1 of 6</output>
+          <button type="button" class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" data-carousel-step="1" aria-label="Next item">@materialSymbol("chevron_right")</button>
+         </div>
+        </section>
+       case "list":
+        <div class={ "md-list-demo", templ.KV("md-sheet-demo",c.Control=="reorder") } data-interactive="true">
+         <ul { c.Attributes()... }>
+          for index := range 3 {
+           <li data-list-row data-list-label={ c.ListLabel(index) } data-list-expanded={ fmt.Sprint(c.Control=="expand" && c.Expanded && index==0) }>
+            <div class="md-list-row">
+             if c.Control=="reveal" {
+ <button { c.ListUtility(index,true)... }>@materialSymbol("check")</button>
+ }
+             if c.ListNativeKind()!="" {
+ <div { c.ListItem(index)... }>@listContents(c,index)</div>
+ } else {
+ <button { c.ListItem(index)... }>@listContents(c,index)</button>
+ }
+             if c.Control=="reorder" {
+ <button { c.ListUtility(index,false)... }>@materialSymbol("drag_handle")</button>
+ }
+             if c.Control=="reveal" {
+ <button { c.ListUtility(index,false)... }>@materialSymbol("more_horiz")</button>
+ }
+            </div>
+            if c.Control=="expand" {
+             <ul class="md-list-expand-content" aria-label={ c.ListLabel(index)+" items" } id={ fmt.Sprintf("%s-children-%d",c.ID(),index) } hidden?={ !(c.Expanded&&index==0) }>
+              <li><button { c.ListItem(3)... }>@listContents(c,3)</button></li>
+              <li><button { c.ListItem(4)... }>@listContents(c,4)</button></li>
+             </ul>
+            }
+           </li>
+          }
+         </ul>
+         if c.Control=="reorder" {
+          <dialog class="md-sheet md-bottom-sheet md-list-reorder-sheet" data-control="standard" data-variant="expanded" data-list-reorder-sheet id={ c.ID()+"-reorder" } aria-label="Reorder item" tabindex="-1">
+           <div class="md-sheet-content">
+            <div class="md-sheet-body">
+             <div class="md-list" data-variant="standard" data-size="one-line" data-shape="baseline" data-width="icon">
+              <button { c.ListMoveAction(0,"up")... }><span class="md-list-leading md-list-icon">@materialSymbol("arrow_upward")</span><span class="md-list-body"><span class="md-list-label">Move up</span></span></button>
+              <button { c.ListMoveAction(0,"down")... }><span class="md-list-leading md-list-icon">@materialSymbol("arrow_downward")</span><span class="md-list-body"><span class="md-list-label">Move down</span></span></button>
+             </div>
+            </div>
+            <output class="tokens-visually-hidden" data-list-move-status aria-live="polite"></output>
+           </div>
+          </dialog>
+         }
+         <output class="md-typescale-body-small" aria-live="polite"></output>
+        </div>
+       case "fab-menu":
+        <div { c.Attributes()... }>
+         if c.State=="interactive" {
+          <button { c.FABMenuOpener()... }>@materialSymbol("add")</button>
+         }
+         <div { c.FABMenuPanel()... }>
+          <ul role="menu" aria-label="Create">
+           for index, label := range []string{"New file","New folder","New project"} {
+            <li role="none"><button { c.FABMenuAction(index)... }><span class="md-fab-menu-item-content">@materialSymbol([]string{"edit","folder","add"}[index])<span>{ label }</span></span></button></li>
+           }
+          </ul>
+          if c.State!="interactive" {
+           <button { c.FABMenuAction(-1)... }>@materialSymbol("close")</button>
+          }
+         </div>
+         <output class="md-typescale-body-small" aria-live="polite"></output>
+        </div>
+       case "button-group":
+        <div class="md-button-group-demo">
+         <div { c.Attributes()... }>
+          for index := range 3 {
+           <button { c.GroupButton(index)... }>
+            if c.Control=="connected" {
+             <span class="md-group-check" aria-hidden="true">@materialSymbol("check")</span>
+            } else {
+             @materialSymbol([]string{"arrow_back","edit","chevron_right"}[index])
+            }
+            <span>{ c.GroupLabel(index) }</span>
+           </button>
+          }
+         </div>
+         <output class="md-typescale-body-small" aria-live="polite"></output>
+        </div>
+       case "split":
+        <div class="md-split-demo">
+         <div { c.Attributes()... }>
+          <button { c.SplitAction(false)... }>
+           if c.Shape != "label" {
+            @materialSymbol("add")
+           }
+           if c.Shape != "icon" {
+            <span>Add to cart</span>
+           }
+          </button>
+          <button { c.SplitAction(true)... }>@materialSymbol("expand_more")</button>
+         </div>
+         <nav class="md-menu md-split-menu" data-variant="standard" id={ c.ID()+"-menu" } popover="auto" role="menu" aria-label="Cart options">
+          <ul><li><button type="button" class="md-menu-item" role="menuitem" tabindex="-1" data-split-option>Save for later</button></li><li><button type="button" class="md-menu-item" role="menuitem" tabindex="-1" data-split-option>Add to wishlist</button></li></ul>
+         </nav>
+         <output class="md-typescale-body-small" aria-live="polite"></output>
+        </div>
+       case "bottom-sheet", "side-sheet":
+        <div class="md-sheet-demo" data-interactive={ fmt.Sprint(c.State=="interactive") } data-kind={ c.Family }>
+         if c.State=="interactive" {
+          <button { c.SheetOpener()... }>Open sheet</button>
+         }
+         <div class="md-sheet-frame">
+          if c.State=="interactive" {
+           <span class="md-typescale-body-medium md-sheet-page-label">Page content</span>
+          }
+          if c.Control=="modal" && c.State=="interactive" {
+           <dialog { c.SheetAttributes()... } aria-labelledby={ c.ID()+"-heading" }>
+            @sheetContents(c)
+           </dialog>
+          } else {
+           <section { c.SheetAttributes()... } role="region" aria-labelledby={ c.ID()+"-heading" } hidden?={ c.State=="interactive" }>
+            @sheetContents(c)
+           </section>
+          }
+         </div>
+         if c.State=="interactive" {
+          <output class="md-typescale-body-small" data-sheet-status aria-live="polite"></output>
+         }
+        </div>
+       case "appbar":
+        <div class="md-appbar-demo" data-appbar-demo data-interactive={ fmt.Sprint(c.State=="interactive") }>
+         <div { c.Attributes()... } role="group" aria-label="App bar">
+          <div class="md-appbar-row">
+           <button { c.BarAction(0)... }>@materialSymbol("arrow_back")</button>
+           if c.Variant!="bottom" && !c.BarExpanded() {
+            if c.Control=="search" {
+             <label class="md-appbar-search">@materialSymbol("search")<input type="search" placeholder="Search" aria-label="Search preview"/></label>
+            } else {
+             <span class="md-appbar-copy"><span class="md-appbar-title">Title</span>
+              if c.Control=="subtitle" {
+               <span class="md-appbar-subtitle">Subtitle</span>
+              }
+             </span>
+            }
+           }
+           <div class="md-appbar-actions">
+            <button { c.BarAction(1)... }>@materialSymbol("star")</button>
+            if c.Control=="avatar" {
+             <span class="md-appbar-avatar-slot"><span class="md-appbar-avatar" role="img" aria-label="Profile">A</span></span>
+            } else {
+             <button { c.BarAction(2)... }>@materialSymbol("menu")</button>
+            }
+            if c.Control=="fab" {
+             <button class="md-button md-fab" data-variant="secondary-container" data-size="default" type="button" aria-label="Create">@materialSymbol("add")</button>
+            }
+           </div>
+          </div>
+          if c.BarExpanded() {
+           <div class="md-appbar-copy md-appbar-expanded"><span class="md-appbar-title">Title</span>
+            if c.Control=="subtitle" {
+             <span class="md-appbar-subtitle">Subtitle</span>
+            }
+           </div>
+          }
+         </div>
+         if c.State=="interactive" && c.Variant!="bottom" {
+          <div class="md-appbar-content" tabindex="0" role="region" aria-label="Scrollable preview content">
+           for i := range 12 {
+            <p class="md-typescale-body-medium">{ fmt.Sprintf("Preview content %d",i+1) }</p>
+           }
+          </div>
+         }
+        </div>
+       case "toolbar":
+        <div class="md-toolbar-scene">
+         <p class="md-typescale-body-medium md-toolbar-page">Document content</p>
+        <div class="md-toolbar-demo" data-menu-example data-orientation={ c.Orientation }>
+         <div { c.Attributes()... } role="toolbar" aria-label="Editing tools" aria-orientation={ c.Orientation }>
+          for i := range 3 {
+           <button { c.BarAction(i)... }>
+            if c.Shape!="label" {
+             if i==0 {
+              @materialSymbol("edit")
+             } else if i==1 {
+              @materialSymbol("check")
+             } else {
+              @materialSymbol("more_vert")
+             }
+            }
+            if c.Shape!="icon" {
+             if i==0 {
+              <span>Edit</span>
+             } else if i==1 {
+              <span>Save</span>
+             } else {
+              <span>More</span>
+             }
+            }
+           </button>
+          }
+         </div>
+         if c.Variant=="floating" && c.Size!="none" {
+          <button { c.BarFAB()... }>@materialSymbol("add")</button>
+         }
+         <nav class="md-menu md-toolbar-menu" id={ c.ID()+"-toolbar-menu" } data-menu-panel data-menu-main data-variant="standard" data-orientation="vertical" role="menu" aria-label="More editing tools" popover="auto">
+          <ul>
+           <li data-toolbar-overflow="0" hidden><button class="md-menu-item" type="button" role="menuitemcheckbox" aria-checked={fmt.Sprint(c.Selected)} data-toolbar-proxy="0" data-menu-action tabindex="-1"><span data-menu-checked-icon hidden?={ !c.Selected }>@materialSymbol("check")</span><span data-menu-unchecked-icon hidden?={ c.Selected }>@materialSymbol("edit")</span><span class="md-menu-item-text"><span>Edit</span></span></button></li>
+           <li data-toolbar-overflow="1" hidden><button class="md-menu-item" type="button" role="menuitem" data-toolbar-proxy="1" data-menu-action tabindex="-1"><span class="md-menu-item-text"><span>Save</span></span></button></li>
+           <li><button class="md-menu-item" type="button" role="menuitem" data-menu-action tabindex="-1"><span class="md-menu-item-text"><span>Share</span></span></button></li>
+           <li><button class="md-menu-item" type="button" role="menuitem" data-menu-action tabindex="-1"><span class="md-menu-item-text"><span>Print</span></span></button></li>
+          </ul>
+         </nav>
+         <output class="tokens-visually-hidden" data-menu-output aria-live="polite"></output>
+        </div>
+        </div>
+       case "loading":
+        <div class="md-progress-demo">
+         <div { c.ProgressAttributes()... }>
+          <svg viewBox="0 0 1 1" aria-hidden="true"><g transform={ loadingRotation(c.Control) }><path d={ loadingInitialPath(c.Control) }></path></g></svg>
+         </div>
+         if c.State=="interactive" && c.Control=="determinate" {
+          <div class="md-progress-control">@componentSpecimen(c.ProgressControl())<output class="md-typescale-body-small">40%</output></div>
+         }
+        </div>
+       case "progress":
+        <div class="md-progress-demo">
+         <div { c.ProgressAttributes()... }>
+          <svg aria-hidden="true"><path class="md-progress-track"></path><path class="md-progress-active"></path><path class="md-progress-active md-progress-second"></path><rect class="md-progress-stop"></rect></svg>
+         </div>
+         if c.State=="interactive" && c.Control=="determinate" {
+          <div class="md-progress-control">@componentSpecimen(c.ProgressControl())<output class="md-typescale-body-small">40%</output></div>
+         }
+        </div>
+       case "slider":
+        <div { c.Attributes()... } role="group" aria-label="Slider preview">
+         <div class="md-slider-rail" aria-hidden="true">
+          <span class="md-slider-inactive md-slider-before"></span><span class="md-slider-active"></span><span class="md-slider-inactive md-slider-after"></span>
+          <span class="md-slider-stop md-slider-stop-start"></span><span class="md-slider-stop md-slider-stop-end"></span>
+          if c.Variant=="discrete" {
+           for i := range 9 {
+            <span class="md-slider-tick" style={ templ.SafeCSS(fmt.Sprintf("--_slider-tick:%d%%",(i+1)*10)) } data-value={ fmt.Sprint((i+1)*10) }></span>
+           }
+          }
+          if c.Size=="medium" || c.Size=="large" || c.Size=="xlarge" {
+           <span class="md-slider-icon md-slider-leading">@materialSymbol("remove")</span><span class="md-slider-icon md-slider-trailing">@materialSymbol("add")</span>
+          }
+         </div>
+         for _,handle:=range c.SliderHandles() {
+          <div { c.SliderHandle(handle)... }>
+           <input { c.SliderInput(handle)... }/>
+           <span class="md-slider-thumb" aria-hidden="true"><span class="md-slider-state-layer"></span><span class="md-slider-nub"></span><span class="md-slider-value">{ c.SliderValue(handle) }</span></span>
+          </div>
+         }
+        </div>
+       case "tabs":
+        <div { c.Attributes()... }>
+         <div class="md-tabs" role="tablist" aria-label="Library views" data-variant={ c.Variant } data-control={ c.Control }>
+          for i,label := range []string{"Home","Files","Saved"} {
+           <button { c.TabAttributes(i)... }><span class="md-tab-content">
+            if c.Control!="label" {
+             @materialSymbol([]string{"home","folder","star"}[i])
+            }
+            <span class={ templ.KV("tokens-visually-hidden",c.Control=="icon") }>{ label }</span>
+           </span><span class="md-tab-active-indicator" aria-hidden="true"></span></button>
+          }
+         </div>
+         for i,label := range []string{"Home","Files","Saved"} {
+          <section role="tabpanel" tabindex="0" id={ fmt.Sprintf("%s-panel-%d",c.ID(),i) } aria-labelledby={ fmt.Sprintf("%s-tab-%d",c.ID(),i) } hidden?={ !c.ItemSelected(i) }><p class="md-typescale-body-medium">{ label+" content" }</p></section>
+         }
+        </div>
+       case "segmented":
+        <div { c.Attributes()... } role="group" aria-label="View selection">
+         for i,label := range []string{"Home","Files","Saved"} {
+          <label { c.SegmentAttributes(i)... }><input { c.SegmentInput(i,label)... }/><span class="md-segment-face">
+           <span class="md-segment-check">@materialSymbol("check")</span>
+           if c.Control!="label" {
+            <span class="md-segment-icon">@materialSymbol([]string{"home","folder","star"}[i])</span>
+           }
+           <span class={ templ.KV("tokens-visually-hidden",c.Control=="icon") }>{ label }</span>
+          </span></label>
+         }
+        </div>
+       case "nav-rail":
+        <div { c.RailFrame()... }>
+         <div class="md-navigation-slot"><div class="md-navigation-surface">
+          <nav { c.Attributes()... } aria-label="Primary navigation">@navigationContents(c)</nav>
+         </div></div>
+         <button class="md-navigation-scrim" type="button" tabindex="-1" data-navigation-dismiss aria-label="Collapse navigation" hidden></button>
+         <div class="md-rail-body">
+          <header><button class="md-icon-button md-standard-icon-button md-rail-external-menu" type="button" data-size="small" data-shape="round" data-width="default" data-navigation-expand aria-label="Expand navigation" aria-expanded="false">@materialSymbol("menu")</button><span>Workspace</span></header>
+          <section class="md-rail-screen" id={c.ID()+"-screen"}>
+           <h3 data-navigation-title tabindex="-1">
+ if c.Selected {
+ Home
+ } else {
+ Files
+ }
+ </h3>
+           <p data-navigation-description>Documents and collections in your workspace.</p>
+           for _, label := range []string{"Project notes","Weekend plans","Reading list","Ideas","References","Shared documents","Drafts","Resources","Planning","Archive"} {
+            <article><span>@materialSymbol("folder")</span><div><strong>{label}</strong><p>Updated recently</p></div></article>
+           }
+          </section>
+         </div>
+        </div>
+       case "nav-bar", "nav-drawer":
+        if c.State=="interactive" && c.Variant=="modal" {
+         <div data-navigation-demo>
+          <button type="button" class="md-button md-outlined-button" data-navigation-open aria-haspopup="dialog" aria-controls={ c.ID()+"-modal" }>Open navigation</button>
+          <dialog { c.Attributes()... } id={ c.ID()+"-modal" } data-navigation-modal aria-label="Navigation preview">@navigationContents(c)</dialog>
+         </div>
+        } else {
+         <nav { c.Attributes()... } aria-label="Navigation preview">@navigationContents(c)</nav>
+        }
+       case "snackbar":
+        if c.State=="interactive" {
+         <div data-snackbar-demo>
+          <button class="md-button md-outlined-button" type="button" data-snackbar-open>Show snackbar</button>
+          <div { c.Attributes()... } popover="manual" role="status" data-snackbar-duration="6000">
+           @snackbarContents(c)
+          </div>
+          <output class="md-typescale-body-small" aria-live="polite"></output>
+         </div>
+        } else {
+         <div { c.Attributes()... } role="status">@snackbarContents(c)</div>
+        }
+       case "tooltip":
+        if c.State=="interactive" {
+         <div class="md-tooltip-demo">
+          if c.Variant=="plain" {
+           <button class="md-icon-button md-standard-icon-button" type="button" aria-label="Details" aria-describedby={ c.ID()+"-tip" }>@materialSymbol("info")</button>
+           <div { c.Attributes()... } role="tooltip" id={ c.ID()+"-tip" }><p>More information</p></div>
+          } else {
+           <button class="md-button md-outlined-button" type="button" popovertarget={ c.ID()+"-tip" } aria-haspopup="dialog">Show details</button>
+           <section { c.Attributes()... } id={ c.ID()+"-tip" } popover="auto" role="dialog" aria-label="Details">@tooltipContents(c)</section>
+          }
+         </div>
+        } else {
+         <section { c.Attributes()... }>@tooltipContents(c)</section>
+        }
+       case "fab":
+        <button { c.Attributes()... }>@materialSymbol("add")</button>
+       case "extended-fab":
+        <button { c.Attributes()... }>@materialSymbol("add")<span>Create</span></button>
+       case "checkbox":
+        <label { c.Attributes()... }><input type="checkbox" aria-label={ c.Label() } aria-invalid={ fmt.Sprint(c.Invalid) } checked?={ c.Selected } disabled?={ c.State=="disabled" } data-indeterminate={ fmt.Sprint(c.Variant=="indeterminate") }/><span class="md-checkbox-box" aria-hidden="true"><svg class="md-checkbox-check" viewBox="0 0 18 18" fill="none"><path d="m4 9 3 3 7-7" stroke="currentColor" stroke-width="2"/></svg><svg class="md-checkbox-dash" viewBox="0 0 18 18" fill="none"><path d="M4 9h10" stroke="currentColor" stroke-width="2"/></svg></span></label>
+       case "switch":
+        <label { c.Attributes()... }><input type="checkbox" role="switch" aria-label={ c.Label() } checked?={ c.Selected } disabled?={ c.State=="disabled" }/><span class="md-switch-track" aria-hidden="true"></span><span class="md-switch-handle" aria-hidden="true"><svg class="md-switch-on" viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2"/></svg><svg class="md-switch-off" viewBox="0 0 24 24" fill="none"><path d="m7 7 10 10M7 17 17 7" stroke="currentColor" stroke-width="2"/></svg></span></label>
        case "radio":
-        <input { c.Attributes()... }/>
-       case "field":
-        <div { c.Attributes()... }><label for={ c.ID() } data-slot="label">Label</label><input id={ c.ID() } aria-describedby={ c.ID()+"-help" } placeholder="Input text" disabled?={ c.State=="disabled" } aria-invalid={ fmt.Sprint(c.Invalid) }/><small id={ c.ID()+"-help" } data-slot="supporting-text">Supporting text</small></div>
-       case "select":
-        <span { c.Attributes()... }><select aria-label="Select value" disabled?={ c.State=="disabled" } aria-invalid={ fmt.Sprint(c.Invalid) }><option>Selected value</option><option>Another value</option></select><span data-slot="trailing-icon">@materialSymbol("expand_more")</span></span>
+        if c.State=="interactive" {
+         <fieldset class="md-radio-group" role="radiogroup"><legend>Options</legend>
+          for index:=range 3 {
+ @radioChoice(c,index,true)
+ }
+         </fieldset>
+        } else {
+         @radioChoice(c,0,false)
+        }
+       case "field", "select", "autocomplete":
+        <div { c.Attributes()... }>
+         if c.Variant=="outlined" {
+          @outlinedFieldFrame(c.FieldLabel())
+         }
+         <label for={ c.ID()+"-input" } data-slot="label">{ c.FieldLabel() }</label>
+         if c.Shape=="icons" {
+          <span data-slot="leading-icon" aria-hidden="true">@materialSymbol("search")</span>
+         }
+         if c.Shape=="affixes" {
+          <span data-slot="prefix" aria-hidden="true">$</span>
+         }
+         <input { c.FieldInput()... }/>
+         if c.Shape=="affixes" {
+          <span data-slot="suffix" aria-hidden="true">kg</span>
+         }
+         if c.Family!="field" {
+          <button type="button" class="md-field-toggle" data-field-toggle tabindex="-1" aria-label="Show options" aria-controls={ c.ID()+"-options" } disabled?={ c.State=="disabled" }><span data-slot="trailing-icon">@materialSymbol("expand_more")</span></button>
+         } else if c.Shape=="icons" {
+          <span data-slot="trailing-icon" aria-hidden="true">@materialSymbol("info")</span>
+         }
+         <small id={ c.ID()+"-help" } data-slot="supporting-text">Supporting text</small>
+         if c.Family!="field" {
+          <div class="md-field-menu" id={ c.ID()+"-options" } role="listbox" aria-label={ c.FieldLabel() } popover="auto">
+           for index,value := range fieldOptions {
+            if index==2 {
+             <hr class="md-field-menu-divider" aria-hidden="true"/>
+            }
+            <div class="md-field-option" id={ fmt.Sprintf("%s-option-%d",c.ID(),index) } role="option" aria-selected={ fmt.Sprint(c.Width=="populated" && index==1) } data-field-option={ value }>
+             if c.Family=="select" && c.Shape=="icons" {
+              <span class="md-field-menu-leading" aria-hidden="true">@materialSymbol("star")</span>
+             }
+             <span>{ value }</span>
+             if c.Family=="select" && c.Shape=="icons" {
+              <span class="md-field-menu-trailing" aria-hidden="true">@materialSymbol("check")</span>
+             }
+            </div>
+           }
+           <p class="md-field-empty" role="option" aria-disabled="true" hidden>No matches</p>
+          </div>
+         }
+        </div>
        case "menu":
-        <nav class="md-menu" data-variant={ c.Variant } aria-label={ c.Label() }><section><h3>Section</h3><a href={ "#"+c.ID() } { c.Attributes()... }>@materialSymbol("check")<span>Menu item</span><small data-slot="trailing-supporting-text">⌘K</small></a></section></nav>
+        <div class="md-menu-demo" data-menu-example>
+         if c.State=="interactive" {
+          <button type="button" class="md-button md-outlined-button" data-menu-open={ c.ID()+"-menu" } aria-controls={ c.ID()+"-menu" } aria-haspopup="menu" aria-expanded="false">Open menu</button>
+         }
+         <div { c.MenuPanel(false)... }>
+          <section>
+           if c.Orientation!="horizontal" && c.Variant!="baseline" {
+ <h3>Section</h3>
+ }
+           <ul role="presentation">
+            for index,label:=range []string{"Favorite","Download","Edit"} {
+             if index==2 && c.Variant=="baseline" && c.Shape=="divided" {
+              <li role="separator"><hr class="md-divider" aria-hidden="true"/></li>
+             }
+             <li role="presentation">
+              <button { c.MenuItem(index)... }>
+               <span data-slot="leading-icon" aria-hidden="true">
+                if c.Shape=="icon-only" && c.MenuSelectable(index) {
+                 <span data-menu-checked-icon hidden?={ !c.MenuSelected(index) }>@materialSymbol("check")</span>
+                 <span data-menu-unchecked-icon hidden?={ c.MenuSelected(index) }>@materialSymbol([]string{"star","download","edit"}[index])</span>
+                } else {
+                 @materialSymbol([]string{"star","download","edit"}[index])
+                }
+               </span>
+               if c.Shape!="icon-only" {
+                <span class="md-menu-item-text"><span>{ label }</span>
+                 if c.Shape=="supporting" {
+ <span data-slot="supporting-text">{ []string{"Save for later","Save a copy","Change this item"}[index] }</span>
+ }
+                </span>
+                if index==0 && c.Shape=="cascade" {
+ <span data-slot="trailing-icon" aria-hidden="true">@materialSymbol("chevron_right")</span>
+ } else if c.MenuSelectable(index) {
+ <span data-slot="trailing-icon" aria-hidden="true"><span data-menu-checked-icon hidden?={ !c.MenuSelected(index) }>@materialSymbol("check")</span></span>
+ } else if c.Orientation!="horizontal" {
+ <small class="md-menu-shortcut" data-slot="trailing-supporting-text" aria-label={"Command+"+[]string{"K","D","E"}[index]}>@materialSymbol("keyboard_command_key")<span>{[]string{"K","D","E"}[index]}</span></small>
+ }
+               }
+              </button>
+              if index==0 && c.Shape=="cascade" {
+               <div { c.MenuPanel(true)... }><section><ul role="presentation">
+                for _,label:=range []string{"Add to favorites","Manage favorites"} {
+ <li role="presentation"><button type="button" class="md-menu-item" role="menuitem" tabindex="-1" data-menu-action>{ label }</button></li>
+ }
+               </ul></section></div>
+              }
+             </li>
+            }
+           </ul>
+          </section>
+         </div>
+         <output data-menu-output aria-live="polite"></output>
+        </div>
        case "dialog":
-        <section { c.Attributes()... }><h2>Dialog headline</h2><p>Supporting text</p><footer><button class="md-button md-text-button" type="button">Cancel</button><button class="md-button md-text-button" type="button">Confirm</button></footer></section>
+        <div class="md-dialog-demo">
+         if c.State=="interactive" {
+          <button type="button" class="md-button md-outlined-button" data-dialog-open aria-controls={ c.ID()+"-panel" } aria-haspopup="dialog" aria-expanded="false">Open dialog</button>
+         }
+         <dialog { c.DialogPanel()... }>
+          if c.Variant=="full-screen" {
+           <header class="md-full-header">
+            <button { c.DialogClose()... }>@materialSymbol("close")</button>
+            if c.DialogHeadline!="hidden" {
+             <h2 id={ c.ID()+"-heading" }>{ c.DialogHeading() }</h2>
+            }
+            if c.Orientation!="bottom" {
+             <button { c.DialogAction(true)... }>Save</button>
+            }
+            if c.DialogDividers() {
+             <hr class="md-divider"/>
+            }
+           </header>
+          } else {
+           <header class="md-basic-header">
+            if c.DialogIcon() {
+             <span data-slot="icon" aria-hidden="true">@materialSymbol("info")</span>
+            }
+            if c.DialogHeadline!="hidden" {
+             <h2 id={ c.ID()+"-heading" }>{ c.DialogHeading() }</h2>
+            }
+            if c.DialogDividers() {
+             <hr class="md-divider"/>
+            }
+           </header>
+          }
+          <div class="md-dialog-content" data-dialog-content tabindex="0" aria-label="Dialog content">
+           @dialogSample(c)
+          </div>
+          if c.Variant!="full-screen" || c.Orientation=="bottom" {
+           <footer class={ templ.KV("md-full-action-bar",c.Variant=="full-screen"),templ.KV("md-basic-actions",c.Variant!="full-screen") }>
+            if c.DialogDividers() {
+             <hr class="md-divider"/>
+            }
+            <button { c.DialogAction(false)... }>Cancel</button>
+            <button { c.DialogAction(true)... }>Save</button>
+           </footer>
+          }
+         </dialog>
+         if c.Variant=="full-screen" {
+          <dialog class="md-dialog md-dialog-discard" data-dialog-discard role="alertdialog" aria-labelledby={ c.ID()+"-discard-heading" } aria-describedby={ c.ID()+"-discard-support" }>
+           <h2 id={ c.ID()+"-discard-heading" }>Discard changes?</h2>
+           <p id={ c.ID()+"-discard-support" }>Your edits will be lost.</p>
+           <footer class="md-basic-actions"><button class="md-button md-text-button" type="button" data-dialog-keep>Keep editing</button><button class="md-button md-text-button" type="button" data-dialog-discard-confirm>Discard</button></footer>
+          </dialog>
+         }
+         <output data-dialog-output aria-live="polite"></output>
+        </div>
        case "divider":
-        <hr { c.Attributes()... }/>
+        <div class={ "md-divider-layout", templ.KV("md-divider-supporting",c.Control=="supporting") } data-inset={ c.DividerInset() } data-spacing={ c.Width }>
+         <hr { c.Attributes()... }/>
+         if c.Control=="supporting" {
+          <p class="md-typescale-body-small">Supporting text</p>
+         }
+        </div>
       }
-     </figure>
+}
+
+
+templ snackbarContents(c componentCase) {
+ <span class="md-feedback-text">
+  if c.Variant=="two-lines" {
+   <span>Message sent.</span><br/><span>You can undo this action.</span>
+  } else {
+   { "Message sent" }
+  }
+ </span>
+ <button { c.FeedbackAttributes("md-button md-text-button md-feedback-action")... } data-snackbar-action>Undo</button>
+ <button { c.FeedbackAttributes("md-icon-button md-snackbar-close")... } aria-label="Dismiss notification" data-snackbar-close>@materialSymbol("close")</button>
+}
+
+templ tooltipContents(c componentCase) {
+ if c.Variant=="rich" {
+  <h3>Details</h3>
+ }
+ <p>More information about this action.</p>
+ if c.Variant=="rich" {
+  <button { c.FeedbackAttributes("md-button md-text-button md-feedback-action")... } data-tooltip-close>Got it</button>
+ }
+}
+
+templ navigationContents(c componentCase) {
+ if c.Family=="nav-rail" && (c.RailMenu()||c.RailFAB()) {
+  <header>
+   if c.RailMenu() {
+<button class="md-icon-button md-standard-icon-button md-rail-menu" type="button" data-size="small" data-shape="round" data-width="default" data-navigation-expand aria-label={ c.NavigationToggleLabel() } aria-expanded={ fmt.Sprint(c.Variant=="expanded") }><span data-navigation-menu-icon>@materialSymbol("menu")</span><span data-navigation-collapse-icon>@materialSymbol("menu_open")</span></button>
+}
+   if c.RailFAB() {
+<button {c.NavigationFAB()...}>@materialSymbol("edit")<span>Create</span></button>
+}
+  </header>
+ }
+ if c.Family=="nav-drawer" {
+<h3>Library</h3>
+}
+ <div class="md-nav-items">
+  for i,label:=range c.NavigationLabels() {
+   if i==4 && c.Family=="nav-drawer" {
+<hr/><h3>Workspace</h3>
+}
+   if i==4 && c.Family=="nav-rail" {
+<h3 class="md-nav-section">Library</h3>
+}
+   <button {c.NavigationItem(i)...} data-navigation-secondary?={c.Family=="nav-rail"&&i>=4}>@navigationItemContents(c,i,label,c.NavigationIcon(i))</button>
+  }
+ </div>
+ <output class="tokens-visually-hidden" id={ c.ID()+"-selection" } aria-live="polite"></output>
+}
+
+
+templ sheetContents(c componentCase) {
+ if c.Family=="bottom-sheet" {
+  <button { c.SheetHandle()... }><span class="md-sheet-handle-mark"></span></button>
+ }
+ <div class="md-sheet-content" id={ c.ID()+"-content" } hidden?={ c.Family=="bottom-sheet" && c.Variant=="minimized" }>
+  <header class="md-sheet-header">
+   <h3 class="md-sheet-title" id={ c.ID()+"-heading" }>Details</h3>
+   <button class="md-icon-button md-standard-icon-button md-sheet-close" type="button" aria-label="Close sheet" data-sheet-close data-sheet-initial-focus?={ c.Family=="side-sheet" } autofocus?={ c.Family=="side-sheet" && c.Control=="modal" && c.State=="interactive" }>@materialSymbol("close")</button>
+  </header>
+  <div class="md-sheet-body">
+   <p class="md-typescale-body-medium">Supporting text</p>
+   <div class="md-outlined-text-field">@outlinedFieldFrame("Name")<label for={ c.ID()+"-name" } data-slot="label">Name</label><input id={ c.ID()+"-name" } value="Sample" placeholder="Name"/></div>
+  </div>
+  <footer class="md-sheet-footer">
+   <button { c.SheetAction(0)... }>Cancel</button><button { c.SheetAction(1)... }>Done</button>
+  </footer>
+ </div>
+}
+
+
+templ listContents(c componentCase,index int) {
+ @listItemContents(c,index,listItemContent{Label:c.ListLabel(index),Supporting:c.ListSupporting(),Overline:"Overline",Avatar:"A",Metadata:"100+"})
+}
+
+templ listItemContents(c componentCase,index int,content listItemContent) {
+ if c.Width!="none" {
+  <span class={ "md-list-leading md-list-"+c.Width } aria-hidden?={c.Width!="checkbox"&&c.Width!="radio"}>
+   switch c.Width {
+    case "checkbox", "radio":
+     @listSelectionControl(c,index)
+    case "icon":
+     @materialSymbol("folder")
+    case "avatar":
+     <span class="md-list-avatar-label">{content.Avatar}</span>
+    case "image":
+     <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="100" height="100" fill="var(--md-sys-color-secondary-container)"/><circle cx="75" cy="25" r="12" fill="var(--md-sys-color-tertiary)"/><path d="M0 90 35 40 65 80 85 55 100 90v10H0Z" fill="var(--md-sys-color-secondary)"/></svg>
+    case "video":
+     <svg viewBox="0 0 100 56" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="100" height="56" fill="var(--md-sys-color-tertiary-container)"/><path d="m42 16 20 12-20 12Z" fill="var(--md-sys-color-on-tertiary-container)"/></svg>
+   }
+  </span>
+ }
+ <span class="md-list-body">
+  if c.ListText=="overline" {
+ <span class="md-list-overline">{content.Overline}</span>
+ }
+  <span class="md-list-label">{ content.Label }</span>
+  if c.Size!="one-line" {
+ <span class="md-list-supporting">{ content.Supporting }</span>
+ }
+ </span>
+ if c.ListTrailing!="none" || c.Control=="expand" {
+ <span class="md-list-tail">
+  if c.ListTrailing=="" || c.ListTrailing=="text" {
+ <span class="md-list-meta">{content.Metadata}</span>
+ }
+  if c.ListTrailing=="checkbox" || c.ListTrailing=="radio" || c.ListTrailing=="switch" {
+ @listSelectionControl(c,index)
+ }
+  if c.Control=="expand" && index<3 {
+   <span class="md-list-expand-icon">@materialSymbol("expand_more")</span>
+  } else if c.ListTrailing=="icon" {
+   <span class="md-list-trailing-icon">@materialSymbol("chevron_right")</span>
+  }
+ </span>
+ }
+}
+
+
+// Reuse the checkbox, radio and switch renderers without nesting an input in a button.
+templ listSelectionControl(c componentCase,index int) {
+ <label { c.ListControlAttributes(index)... }>
+  <input { c.ListControlInput(index)... }/>
+  switch c.ListNativeKind() {
+   case "radio":
+    <span class="md-radio-icon" aria-hidden="true"></span>
+   case "checkbox":
+    <span class="md-checkbox-box" aria-hidden="true"><svg class="md-checkbox-check" viewBox="0 0 18 18" fill="none"><path d="m4 9 3 3 7-7" stroke="currentColor" stroke-width="2"/></svg></span>
+   case "switch":
+    <span class="md-switch-track" aria-hidden="true"></span><span class="md-switch-handle" aria-hidden="true"><svg class="md-switch-on" viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2"/></svg><svg class="md-switch-off" viewBox="0 0 24 24" fill="none"><path d="m7 7 10 10M7 17 17 7" stroke="currentColor" stroke-width="2"/></svg></span>
+  }
+ </label>
+}
+
+templ dateEntryField(c componentCase,part string) {
+ <div class="md-outlined-text-field">
+  @outlinedFieldFrame(c.DateEntryLabel(part))
+  <label for={ c.ID()+"-value-"+part } data-slot="label">{ c.DateEntryLabel(part) }</label>
+  <input { c.DateEntry(part)... }/>
+  if part=="start" {
+   <button class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" type="button" data-date-open title="Choose date (Alt+ArrowDown)" aria-keyshortcuts="Alt+ArrowDown" aria-label="Choose date" aria-controls={ c.ID()+"-date" } aria-haspopup="dialog" aria-expanded="false">@materialSymbol("calendar_month")</button>
+  }
+  <small data-slot="supporting-text" id={ c.ID()+"-value-help-"+part } data-date-value-help={ part } aria-live="polite">YYYY-MM-DD</small>
+ </div>
+}
+
+templ dateCalendar(c componentCase,month int) {
+ <section class="md-date-month-calendar" data-calendar-month={ fmt.Sprintf("2026-%02d",month) }>
+  if c.DateRange && c.Variant!="docked" {
+   <h4>{ dateMonths[month-1]+" 2026" }</h4>
+  }
+  <div class="md-date-grid" role="grid" aria-colcount="7" aria-rowcount={ fmt.Sprint(len(dateRows(month))+1) } aria-label={ dateMonths[month-1]+" 2026" }>
+   <div class="md-date-week" role="row">
+    for _,day:=range dateWeekdays {
+     <span class="md-date-weekday" role="columnheader" aria-label={ day } title={ day }>{ day[:1] }</span>
     }
    </div>
-  </section>
+   for _,row:=range dateRows(month) {
+    <div class="md-date-row" role="row">
+     for _,day:=range row {
+      <span { c.DateCell(day)... }>
+       if !day.Outside||c.Variant=="docked" {
+        <button { c.DateDay(day)... }>{ day.Label }</button>
+       }
+      </span>
+     }
+    </div>
+   }
+  </div>
+ </section>
+}
+
+// Chips share anatomy while each variant keeps its source color and state bindings.
+templ chipLeading(c componentCase) {
+ if c.Variant=="input" && c.Shape=="avatar" {
+  <span class="md-chip-avatar" aria-hidden="true">A</span>
+ } else if c.Variant=="filter" || c.Variant=="" {
+  <span class="md-chip-icon md-chip-check" data-slot="leading-icon">@materialSymbol("check")</span>
+  if c.Shape=="icon" {
+   <span class="md-chip-icon md-chip-leading" data-slot="leading-icon">@materialSymbol("star")</span>
+  }
+ } else if c.Shape=="icon" {
+  <span class="md-chip-icon" data-slot="leading-icon">@materialSymbol("star")</span>
  }
+}
+
+templ outlinedFieldFrame(label string) {
+ <fieldset class="md-field-outline" aria-hidden="true"><legend>{ label }</legend></fieldset>
+ <fieldset class="md-field-outline md-field-focus-outline" aria-hidden="true"><legend>{ label }</legend></fieldset>
+}
+
+templ dialogSample(c componentCase) {
+ <h3 data-slot="subhead">Item details</h3>
+ <p id={ c.ID()+"-support" } data-slot="supporting-text">Supporting text</p>
+ <div class="md-outlined-text-field">
+  @outlinedFieldFrame("Name")
+  <label for={ c.ID()+"-name" } data-slot="label">Name</label>
+  <input id={ c.ID()+"-name" } name="item" placeholder="Name" value="Sample" required data-dialog-value aria-invalid="false" aria-describedby={c.ID()+"-error"}/><small data-slot="supporting-text" id={c.ID()+"-error"} data-dialog-error aria-live="polite">Required</small>
+ </div>
+ if c.Expanded || c.Variant=="full-screen" {
+  for i:=range 12 {
+   <section><h3 data-slot="subhead">{ fmt.Sprintf("Section %d",i+1) }</h3><p data-slot="supporting-text">Supporting text for this section.</p></section>
+  }
+ }
+}
+
+templ radioChoice(c componentCase,index int,showLabel bool) {
+ <label class="md-radio-choice">
+  <span { c.RadioControl(index)... }><input { c.RadioInput(index)... }/><span class="md-radio-icon" aria-hidden="true"></span></span>
+  if showLabel {
+ <span>{ fmt.Sprintf("Option %d",index+1) }</span>
+ }
+ </label>
+}
+
+// Search actions retain the selected configuration when search is focused.
+templ searchActions(c componentCase) {
+ <div class="md-search-actions">
+  if c.SearchHasAction("clear") {
+   <span class="md-search-action-target" hidden?={c.SearchQuery()==""} data-search-clear-target><button class="md-icon-button md-standard-icon-button md-search-action" data-size="small" data-shape="round" type="button" aria-label="Clear search" data-search-clear>@materialSymbol("close")</button></span>
+  }
+  if c.SearchHasAction("settings") {
+   <span class="md-search-action-target"><button class="md-icon-button md-standard-icon-button md-search-action" data-size="small" data-shape="round" type="button" aria-label="Search options" popovertarget={c.SearchOptionsID()}>@materialSymbol("settings_outline")</button></span>
+   <div class="md-search-options" id={c.SearchOptionsID()} popover="auto" role="dialog" aria-label="Search options"><label><input type="checkbox" data-search-exact/>Match exact names</label></div>
+  }
+  if c.SearchHasAction("avatar") {
+   <button class="md-icon-button md-standard-icon-button md-search-avatar" data-size="small" data-shape="round" type="button" aria-label="Profile"><span aria-hidden="true">A</span></button>
+  }
+ </div>
+}
+
+
+templ searchScene(c componentCase) {
+<div class="md-search-scene">
+          <section class="md-search-page">
+           if c.Variant=="adaptive" {
+            <h3 data-search-folder-title>Inbox</h3>
+            <div class="md-list-demo md-search-messages">
+             <ul {c.SearchMessageList()...}>
+              for index,label:=range searchExamples {
+               <li data-list-row data-list-label={label}><div class="md-list-row"><button {c.SearchMessageItem(index,label)...}>@listItemContents(searchMessageList(),index,listItemContent{Label:label,Supporting:"Review the latest component updates and examples.",Overline:"Design team",Avatar:"D",Metadata:"09:30"})</button></div></li>
+              }
+             </ul>
+             <output class="tokens-visually-hidden" aria-live="polite"></output>
+            </div>
+           } else {
+            <h3 data-search-page-title>Component library</h3><p data-search-page-description>Find controls and patterns for your next screen.</p>
+            <article><strong>Buttons and actions</strong><p>Choose how people take action.</p></article>
+            <article><strong>Content and navigation</strong><p>Organize information and help people find it.</p></article>
+            <article><strong>Inputs and selection</strong><p>Collect information and show available choices.</p></article>
+           }
+          </section>
+          if c.Variant!="adaptive" {
+           @searchScrim()
+          }
+          <div { c.SearchPanel()... }>
+           <div { c.SearchBar()... }>
+            <span class="md-search-leading-slot">
+             if c.Shape=="icon" {
+              <span class="md-search-leading" aria-hidden="true">@materialSymbol("search")</span>
+             }
+             if c.Shape=="menu" {
+              <button class="md-icon-button md-standard-icon-button md-search-navigation" data-size="small" data-shape="round" type="button" data-search-navigation aria-label="Open navigation" aria-haspopup="dialog" aria-controls={c.ID()+"-navigation"}>@materialSymbol("menu")</button>
+             }
+             <button class="md-icon-button md-standard-icon-button md-search-back" data-size="small" data-shape="round" type="button" aria-label="Close search" data-search-back hidden?={!c.Expanded}>@materialSymbol("arrow_back")</button>
+            </span>
+            <input type="search" class="md-search-input" aria-label="Search tokens" aria-expanded={fmt.Sprint(c.Expanded)} aria-controls={c.ID()+"-results"} placeholder="Search tokens" value={c.SearchQuery()} autocomplete="off" readonly?={!c.Expanded}/>
+            @searchActions(c)
+           </div>
+           <div class={"md-search-results",templ.KV("md-elevation",c.SearchElevation=="token")} id={c.ID()+"-results"} hidden?={!c.Expanded}>
+            <h3 class="md-search-results-heading" data-search-heading tabindex="-1">Suggestions</h3>
+            <ul class="md-list" data-size="one-line" data-shape="baseline" aria-label="Search suggestions and results">
+             for _, label := range searchExamples {
+              <li data-search-result={label}><button class="md-list-item" type="button"><span class="md-list-leading md-list-icon" aria-hidden="true">@materialSymbol("search")</span><span class="md-list-body"><span class="md-list-label">{label}</span></span></button></li>
+             }
+            </ul>
+            <p class="md-typescale-body-medium" data-search-empty hidden>No results</p>
+           </div>
+           <output class="md-search-status" aria-live="polite"></output>
+          </div>
+          if c.Shape=="menu" {
+           <dialog {c.SearchNavigationPanel()...}>@navigationContents(c.SearchNavigation())</dialog>
+          }
+         </div>
+}
+
+
+templ navigationItemContents(c componentCase,i int,label string,icon string) {
+<span class="md-nav-indicator"><span class="md-nav-icon">@materialSymbol(icon+"_outline")
+@materialSymbol(icon+"_filled")</span><span class="md-nav-label">{label}</span>
+    if c.Family=="nav-drawer" {
+<span class="md-nav-count">{fmt.Sprint(i+1)}</span>
+}
+    if c.Family=="nav-rail" && i==1 && c.NavBadge!=""&&c.NavBadge!="none" {
+<span class={"md-badge md-nav-badge"} data-variant={c.NavBadge} aria-label="3 unread files">
+ if c.NavBadge=="labeled" {
+ 3
+ }
+ </span>
+}
+   </span>
+}
+
+
+templ searchCompositionNavigation(c componentCase) {
+ <nav {c.SearchMailNavigation()...} aria-label="Example mail navigation">
+  <header><button {c.SearchCompose()...}>@materialSymbol("edit")
+ </button></header>
+  <div class="md-nav-items">
+   for index,label:=range []string{"Inbox","Chat","Spaces"} {
+    <button {c.SearchMailDestination(index)...}>@navigationItemContents(searchMailNavigation(),index,label,[]string{"mail","chat","groups"}[index])</button>
+   }
+  </div>
+  <output class="tokens-visually-hidden" aria-live="polite"></output>
+ </nav>
+}
+
+
+templ searchScrim() {
+ <button class="md-search-scrim" type="button" aria-label="Dismiss search" tabindex="-1" hidden></button>
 }

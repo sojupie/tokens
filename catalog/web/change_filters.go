@@ -75,3 +75,12 @@ func changeCountSummary(changes []publish.ChangeView) string {
 	}
 	return fmt.Sprintf("%d added · %d updated · %d removed", counts["added"], counts["changed"], counts["removed"])
 }
+
+// Reuse the catalog select while keeping history options independent of previews.
+func historyChoices(all string, options []changeOption) []catalogChoice {
+	choices := []catalogChoice{{Value: "", Label: all}}
+	for _, option := range options {
+		choices = append(choices, catalogChoice{Value: option.Value, Label: option.Label})
+	}
+	return choices
+}

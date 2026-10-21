@@ -69,8 +69,8 @@ func TestShapeDescriptionAndPreviewPreserveCornerOverrides(t *testing.T) {
 	if err := writeTokenReferences(&output, tokenRow{Name: "Large end", Value: "Default: 0dp · Top-right: 16dp · Bottom-right: 16dp", Shape: "0px 16px 16px 0px", HasValue: true}); err != nil {
 		t.Fatal(err)
 	}
-	if strings.Count(output.String(), `border-radius:0px 16px 16px 0px`) != 2 {
-		t.Fatal("table and popup must show the same directional shape")
+	if strings.Count(output.String(), `border-radius:0px 16px 16px 0px`) != 1 {
+		t.Fatal("the table must provide one directional shape for reuse in the popup")
 	}
 	markdown, err := htmlMarkdown([]byte(`<main><button class="tokens-token-set"><span>Shape</span></button><table><tr><th>Large end</th><td>`+output.String()+`</td></tr></table></main>`), "https://example.test/styles/shape")
 	if err != nil {

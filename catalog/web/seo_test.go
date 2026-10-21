@@ -63,7 +63,7 @@ func TestSEOMetadataAndCanonicalURLs(t *testing.T) {
 			if strings.Contains(body, `content="noindex, follow"`) != check.noindex || strings.Contains(body, "untrusted.example") {
 				t.Fatal("wrong indexing rule or untrusted canonical origin")
 			}
-			if response.Header().Get("Vary") != "HX-Request, Accept" {
+			if response.Header().Get("Vary") != "HX-Request, HX-Target, Accept" {
 				t.Fatal("full HTML and HTMX fragments must be separate cache variants")
 			}
 		})

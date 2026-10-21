@@ -38,8 +38,28 @@ func publicationThemeVariant(state publish.PublishedState, theme, contrast strin
 	}
 	values := make(map[string]string)
 	aliases := make(map[string]string)
+	paletteFallback := make(map[string]string)
+	fallbackContext := map[string]string{"Theme": "Light", "Contrast": "Default", "Platform": "Web", "Audience": "3P", "Font": "Static"}
 	for _, subject := range sortedSubjects(state) {
 		for _, token := range subject.Tokens {
+			// Reference tones are fixed across appearances. Preserve an explicit
+			// context value, and recover absent tones from the captured default.
+			if fallback, ok := selectTokenValue(token.Values, fallbackContext); ok {
+				if css := themeValue(fallback.Value); css != "" {
+					if strings.HasPrefix(token.SourceName, "md.ref.palette.") {
+						paletteFallback[token.SourceName] = css
+					}
+					for refs := fallback.References; len(refs) == 1; refs = refs[0].References {
+						if name := refs[0].Name; strings.HasPrefix(name, "md.ref.palette.") {
+							if prior, exists := paletteFallback[name]; exists && prior != css {
+								paletteFallback[name] = ""
+							} else if !exists {
+								paletteFallback[name] = css
+							}
+						}
+					}
+				}
+			}
 			value, ok := selectTokenValue(token.Values, context)
 			if !ok {
 				continue
@@ -70,6 +90,14 @@ func publicationThemeVariant(state publish.PublishedState, theme, contrast strin
 	for name, value := range aliases {
 		if values[name] == "" {
 			values[name] = value
+		}
+	}
+	for name, css := range paletteFallback {
+		if _, explicit := values[name]; explicit {
+			continue
+		}
+		if _, evidence := aliases[name]; !evidence && css != "" {
+			values[name] = css
 		}
 	}
 	cssValues := make(map[string]string, len(values))
@@ -149,24 +177,21 @@ func themeValue(raw json.RawMessage) string {
 			Value *float64 `json:"value"`
 			Unit  string   `json:"unit"`
 		}
+		if key == "length" && json.Unmarshal(value[key], &size) == nil && size.Value != nil && size.Unit == "PERCENT" {
+			if number := themeNumber(*size.Value); number != "" {
+				return number + "%"
+			}
+		}
 		if json.Unmarshal(value[key], &size) == nil && size.Value != nil && (size.Unit == "DIPS" || size.Unit == "POINTS") {
 			return themeNumber(*size.Value) + "px"
 		}
 	}
-	var shape struct {
-		Family      string `json:"family"`
-		DefaultSize struct {
-			Value *float64 `json:"value"`
-			Unit  string   `json:"unit"`
-		} `json:"defaultSize"`
-	}
-	if json.Unmarshal(value["shape"], &shape) == nil {
-		if shape.Family == "SHAPE_FAMILY_CIRCULAR" {
+	if _, ok := value["shape"]; ok {
+		shape := dtcg.ShapeCSS(raw)
+		if shape == "50%" {
 			return "calc(infinity * 1px)"
 		}
-		if shape.Family == "SHAPE_FAMILY_ROUNDED_CORNERS" && shape.DefaultSize.Value != nil && shape.DefaultSize.Unit == "DIPS" {
-			return themeNumber(*shape.DefaultSize.Value) + "px"
-		}
+		return shape
 	}
 	var fonts struct {
 		Values []string `json:"values"`

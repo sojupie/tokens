@@ -10,14 +10,15 @@ import (
 )
 
 type pageMetadata struct {
-	SiteDownload   downloadPreview
-	Title          string
-	Description    string
-	Canonical      string
-	NoIndex        bool
-	Heading        string
-	AgentDiscovery bool
-	JSONAlternate  string
+	GeneratedDownloads bool
+	Path               string
+	Title              string
+	Description        string
+	Canonical          string
+	NoIndex            bool
+	Heading            string
+	AgentDiscovery     bool
+	JSONAlternate      string
 }
 
 type pageMetadataKey struct{}
@@ -55,7 +56,7 @@ func pageTitle(ctx context.Context, fallback string) string {
 
 func hasContentFilters(query url.Values) bool {
 	for key, values := range query {
-		if key == "q" || strings.HasPrefix(key, "context.") || key == "snapshot" || key == "type" || key == "subject" {
+		if strings.HasPrefix(key, "preview.") || key == "q" || strings.HasPrefix(key, "context.") || key == "snapshot" || key == "type" || key == "subject" {
 			for _, value := range values {
 				if value != "" {
 					return true
@@ -72,14 +73,6 @@ func (server *Server) basicMetadata(path string, query url.Values) pageMetadata 
 	case "/":
 		info.Title = "Material Design 3 Tokens and Change History"
 		info.Description = "Browse Material Design 3 components and styles. Compare token values by context, follow named references, download JSON and review observed changes."
-	case "/lab/components":
-		info.Title = "Material Design 3 Component Gallery"
-		info.Description = "Generated component variants and interaction states."
-		info.NoIndex = true
-	case "/lab/buttons":
-		info.Title = "Material Design 3 Button Gallery"
-		info.Description = "Generated button variants, sizes and interaction states."
-		info.NoIndex = true
 	case "/for-agents":
 		info.Title = "Use Material Design 3 Tokens with a Coding Agent"
 		info.Description = "Connect a coding agent to Token Catalog. Copy setup instructions, install the skill or use MCP to find Material Design 3 tokens, contexts and observed changes."

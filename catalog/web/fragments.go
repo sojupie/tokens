@@ -23,17 +23,17 @@ func tokenBrowserView(subject publish.SubjectView, browser tokenBrowser) templ.C
 		if len(browser.Sets) == 0 {
 			return write(`<p class="tokens-empty md-typescale-body-large">No published tokens for this page.</p>`)
 		}
-		if err := write(`<div class="tokens-token-browser"><form class="tokens-token-filters" method="get" action="` + html.EscapeString(subjectURL(subject)) + `"><input type="hidden" name="set" value="` + html.EscapeString(browser.Selected.Key) + `"><div class="tokens-token-toolbar">`); err != nil {
+		if err := write(`<div class="tokens-token-browser">` + tokenTableSharedMarkup() + `<form class="tokens-token-filters" method="get" action="` + html.EscapeString(subjectURL(subject)) + `"><input type="hidden" name="set" value="` + html.EscapeString(browser.Selected.Key) + `"><div class="tokens-token-toolbar">`); err != nil {
 			return err
 		}
 		if err := tokenSetPicker(subject, browser).Render(ctx, writer); err != nil {
 			return err
 		}
-		if err := write(`<label class="tokens-token-search">` + tableIcon("search") + `<span class="tokens-visually-hidden">Search tokens</span><input type="search" name="q" value="` + html.EscapeString(browser.Query) + `" placeholder="Search"></label><div class="tokens-token-tools" role="group" aria-label="Table display"><button class="md-icon-button md-standard-icon-button tokens-icon-button" type="button" data-action="previews" aria-label="Hide previews" aria-pressed="true">` + `<span data-icon="on">` + tableIcon("eye") + `</span><span data-icon="off" hidden>` + materialSymbolSVG("visibility_off") + `</span></button><button class="md-icon-button md-standard-icon-button tokens-icon-button" type="button" data-action="view" aria-label="Show grid view" aria-pressed="false">` + `<span data-icon="on">` + tableIcon("grid") + `</span><span data-icon="off" hidden>` + materialSymbolSVG("table_rows") + `</span></button><button class="md-icon-button md-standard-icon-button tokens-icon-button" type="button" data-action="expand" aria-label="Expand all groups" aria-expanded="false">` + `<span data-icon="on">` + tableIcon("expand") + `</span><span data-icon="off" hidden>` + materialSymbolSVG("unfold_less") + `</span></button></div></div><div class="tokens-token-columns"><span>Token</span>`); err != nil {
+		if err := write(`<label class="tokens-token-search">` + tableIcon("search") + `<span class="tokens-visually-hidden">Search tokens</span><input type="search" name="q" value="` + html.EscapeString(browser.Query) + `" placeholder="Search"></label><div class="tokens-token-tools" role="group" aria-label="Table display"><button class="md-icon-button md-standard-icon-button tokens-icon-button" type="button" data-action="previews" aria-label="Hide previews" aria-pressed="true">` + `<span data-icon="on">` + tableIcon("eye") + `</span><span data-icon="off" hidden>` + tokenTableSymbol("visibility_off") + `</span></button><button class="md-icon-button md-standard-icon-button tokens-icon-button" type="button" data-action="view" aria-label="Show grid view" aria-pressed="false">` + `<span data-icon="on">` + tableIcon("grid") + `</span><span data-icon="off" hidden>` + tokenTableSymbol("table_rows") + `</span></button><button class="md-icon-button md-standard-icon-button tokens-icon-button" type="button" data-action="expand" aria-label="Expand all groups" aria-expanded="false">` + `<span data-icon="on">` + tableIcon("expand") + `</span><span data-icon="off" hidden>` + tokenTableSymbol("unfold_less") + `</span></button></div></div><div class="tokens-token-columns"><span>Token</span>`); err != nil {
 			return err
 		}
 		if len(browser.Filters) > 0 {
-			if err := write(`<button class="md-filter-chip tokens-context-button" type="button" data-action="context" aria-haspopup="dialog">` + `<span class="tokens-context-label" title="` + html.EscapeString(tableContextLabel(browser.Filters)) + `">` + html.EscapeString(tableContextLabel(browser.Filters)) + `</span>` + tableIcon("dropdown") + `</button></div><dialog class="md-dialog tokens-context-dialog" aria-labelledby="tokens-context-title"><h2 id="tokens-context-title">See more values</h2><p>Compare token values by selecting another context</p><div class="tokens-context-fields">`); err != nil {
+			if err := write(`<button class="md-filter-chip tokens-context-button" type="button" data-action="context" aria-haspopup="dialog" aria-expanded="false" popovertarget="tokens-context-picker">` + `<span class="tokens-context-label" title="` + html.EscapeString(tableContextLabel(browser.Filters)) + `">` + html.EscapeString(tableContextLabel(browser.Filters)) + `</span>` + tableIcon("dropdown") + `</button></div><div id="tokens-context-picker" class="md-dialog md-elevation tokens-context-dialog" popover="auto" role="dialog" aria-labelledby="tokens-context-title"><h2 id="tokens-context-title">See more values</h2><p>Compare token values by selecting another context</p><div class="tokens-context-fields">`); err != nil {
 				return err
 			}
 			advanced := false
@@ -54,7 +54,7 @@ func tokenBrowserView(subject publish.SubjectView, browser tokenBrowser) templ.C
 						selected = ` checked`
 					}
 					label := option
-					if err := write(`<label class="md-filter-chip tokens-context-choice"><input class="tokens-visually-hidden" type="radio" name="` + html.EscapeString(filter.Key) + `" value="` + html.EscapeString(option) + `"` + selected + `><span class="md-chip-face">` + materialSymbolSVG("check") + html.EscapeString(label) + `</span></label>`); err != nil {
+					if err := write(`<label class="md-filter-chip tokens-context-choice"><input class="tokens-visually-hidden" type="radio" name="` + html.EscapeString(filter.Key) + `" value="` + html.EscapeString(option) + `"` + selected + `><span class="md-chip-face">` + tokenTableSymbol("check") + html.EscapeString(label) + `</span></label>`); err != nil {
 						return err
 					}
 				}
@@ -72,13 +72,13 @@ func tokenBrowserView(subject publish.SubjectView, browser tokenBrowser) templ.C
 					return err
 				}
 			}
-			if err := write(`</div><p class="tokens-context-status" role="status" aria-live="polite"></p><footer><button class="md-button md-text-button" type="button" data-action="cancel">Cancel</button><button class="md-button md-text-button" type="submit">Save</button></footer></dialog>`); err != nil {
+			if err := write(`</div><p class="tokens-context-status" role="status" aria-live="polite"></p><footer><button class="md-button md-text-button" type="button" data-action="cancel">Cancel</button><button class="md-button md-text-button" type="submit">Save</button></footer></div>`); err != nil {
 				return err
 			}
 		} else if err := write(`<span>Value</span></div>`); err != nil {
 			return err
 		}
-		if err := write(`<noscript><button class="md-button md-filled-button" type="submit">Apply filters</button><style>.tokens-context-dialog:not([open]){display:block;position:static}</style></noscript></form>`); err != nil {
+		if err := write(`<noscript><button class="md-button md-filled-button" type="submit">Apply filters</button></noscript></form>`); err != nil {
 			return err
 		}
 		if browser.Count == 0 {
@@ -116,7 +116,7 @@ func tableIcon(name string) string {
 		"search": "search", "eye": "visibility", "grid": "grid_view",
 		"expand": "unfold_more", "dropdown": "expand_more", "folder": "folder", "folder-open": "folder_open",
 	}
-	return materialSymbolSVG(symbols[name])
+	return tokenTableSymbol(symbols[name])
 }
 
 func subjectPageComponent(subject publish.SubjectView, changes []publish.ChangeView, browser tokenBrowser) templ.Component {
@@ -130,13 +130,13 @@ func subjectPageComponent(subject publish.SubjectView, changes []publish.ChangeV
 			if metadata(ctx).Heading != "" {
 				heading = metadata(ctx).Heading
 			}
-			if err := write(`<p class="tokens-back-link"><a class="tokens-link" href="` + subjectListPath(subject.Key.Kind != publish.SubjectComponent) + `">` + materialSymbolSVG("arrow_back") + html.EscapeString(subjectKindLabel(subject.Key.Kind)) + `</a></p><header class="tokens-subject-heading"><h1 class="md-typescale-headline-medium">` + html.EscapeString(heading) + `</h1><nav class="tokens-subject-actions" aria-label="Component links">`); err != nil {
+			if err := write(`<header class="tokens-subject-header"><p class="tokens-back-link"><a class="tokens-link" href="` + subjectListPath(subject.Key.Kind != publish.SubjectComponent) + `">` + materialSymbolSVG("arrow_back") + html.EscapeString(subjectKindLabel(subject.Key.Kind)) + `</a></p><div class="tokens-subject-heading"><h1 class="md-typescale-headline-medium">` + html.EscapeString(heading) + `</h1>`); err != nil {
 				return err
 			}
-			if err := writeTokenDownloadMenu(writer, subject, browser, metadata(ctx).SiteDownload); err != nil {
+			if err := siteDownloadButton().Render(ctx, writer); err != nil {
 				return err
 			}
-			if err := write(`<a class="tokens-link" href="` + html.EscapeString(subjectChangesURL(subject)) + `">Change history (` + strconv.Itoa(len(changes)) + `)</a>`); err != nil {
+			if err := write(`</div><nav class="tokens-subject-actions" aria-label="Component links"><a class="tokens-link" href="` + html.EscapeString(subjectChangesURL(subject)) + `">Change history (` + strconv.Itoa(len(changes)) + `)</a>`); err != nil {
 				return err
 			}
 			if len(subject.SourcePageURLs) > 0 {
@@ -148,6 +148,11 @@ func subjectPageComponent(subject publish.SubjectView, changes []publish.ChangeV
 			}
 			if err := write(`</nav></header>`); err != nil {
 				return err
+			}
+			if browser.Preview != nil {
+				if err := componentPreviewView(*browser.Preview).Render(ctx, writer); err != nil {
+					return err
+				}
 			}
 			if err := write(`<section class="tokens-section" aria-labelledby="tokens-heading"><h2 class="md-typescale-title-medium" id="tokens-heading">Browse tokens</h2>`); err != nil {
 				return err
@@ -257,20 +262,18 @@ func writeTokenReferences(writer io.Writer, token tokenRow) error {
 		compact += `<span class="tokens-color-dot" aria-hidden="true"></span>`
 	}
 	compact += html.EscapeString(label) + `</span>`
-	if err := write(`<div class="tokens-value-cell"><button type="button" class="tokens-large-preview` + colorCellClass(token.Color) + `"` + style + ` popovertarget="` + id + `" aria-label="View ` + html.EscapeString(token.Name) + ` details">` + preview + `<span class="tokens-preview-name" aria-hidden="true">` + html.EscapeString(token.Name) + `</span></button>` + compact + `<button type="button" class="md-icon-button md-standard-icon-button tokens-icon-button tokens-info-button" popovertarget="` + id + `" aria-label="References for ` + html.EscapeString(token.Name) + `">` + materialSymbolSVG("info") + `</button></div>`); err != nil {
+	if err := write(`<div class="tokens-value-cell"><button type="button" class="tokens-large-preview` + colorCellClass(token.Color) + `"` + style + ` popovertarget="` + id + `" aria-label="View ` + html.EscapeString(token.Name) + ` details">` + preview + `<span class="tokens-preview-name" aria-hidden="true">` + html.EscapeString(token.Name) + `</span></button>` + compact + `<button type="button" class="md-icon-button md-standard-icon-button tokens-icon-button tokens-info-button" popovertarget="` + id + `" aria-label="References for ` + html.EscapeString(token.Name) + `">` + tokenTableSymbol("info") + `</button></div>`); err != nil {
 		return err
 	}
-	if err := write(`<div id="` + id + `" class="md-elevation tokens-reference-popover" popover role="dialog" aria-labelledby="` + id + `-title"><header><h3 id="` + id + `-title" class="md-typescale-title-large" title="` + html.EscapeString(token.Name) + `">` + html.EscapeString(token.Name) + `</h3><button type="button" class="md-icon-button md-standard-icon-button tokens-icon-button tokens-popover-close" popovertarget="` + id + `" popovertargetaction="hide" aria-label="Close token details">` + materialSymbolSVG("close") + `</button></header><div class="tokens-popup-value">` + preview + `</div><div class="tokens-reference-chain"><code class="tokens-popup-source">` + html.EscapeString(token.SourceName) + `</code>`); err != nil {
+	// Keep the entire reference tree in the document. Duplicate previews and
+	// JavaScript-only controls are added from the shared template on first open.
+	if err := write(`<div id="` + id + `" class="md-elevation tokens-reference-popover" popover role="dialog" aria-label="` + html.EscapeString(token.Name) + `"><div class="tokens-reference-chain"><code class="tokens-popup-source">` + html.EscapeString(token.SourceName) + `</code>`); err != nil {
 		return err
 	}
 	if err := writeReferenceBranches(writer, token.References); err != nil {
 		return err
 	}
-	kind := ""
-	if token.Color != "" {
-		kind = `<span class="tokens-reference-type">Color</span>`
-	}
-	return write(`<div class="tokens-reference-resolved">` + kind + compact + `</div></div><p class="tokens-reference-status" role="status" aria-live="polite"></p></div>`)
+	return write(`</div></div>`)
 }
 
 func writeReferenceBranches(writer io.Writer, references []publish.TokenReference) error {
@@ -279,7 +282,7 @@ func writeReferenceBranches(writer io.Writer, references []publish.TokenReferenc
 	}
 	for _, reference := range references {
 		name := html.EscapeString(reference.Name)
-		if _, err := io.WriteString(writer, `<li><div class="tokens-reference-node">`+materialSymbolSVG("camera")+`<code title="`+name+`">`+name+`</code><button type="button" class="md-icon-button md-standard-icon-button tokens-icon-button" data-copy-reference="`+name+`" aria-label="Copy `+name+`">`+materialSymbolSVG("content_copy")+`</button></div>`+materialSymbolSVG("arrow_downward")); err != nil {
+		if _, err := io.WriteString(writer, `<li><div class="tokens-reference-node">`+tokenTableSymbol("camera")+`<code title="`+name+`">`+name+`</code></div>`+tokenTableSymbol("arrow_downward")); err != nil {
 			return err
 		}
 		if len(reference.References) > 0 {

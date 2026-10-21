@@ -129,7 +129,7 @@ func TestMarkdownNegotiation(t *testing.T) {
 }
 
 func TestMarkdownPreservesViewContent(t *testing.T) {
-	markdown, err := htmlMarkdown([]byte(`<html><head><script>secret</script></head><body><nav>Menu</nav><main><h1>Tokens</h1><p>Read <a href="/components">components</a> here.</p><table><thead><tr><th>Name</th><th>Value</th></tr></thead><tbody><tr><td>md.test</td><td>4 dp</td></tr></tbody></table><nav><a href="?page=2">Next</a><a href="https://example.org/docs">Documentation</a></nav></main><footer>Footer</footer></body></html>`), "https://tokens.example/changes")
+	markdown, err := htmlMarkdown([]byte(`<html><head><script>secret</script></head><body><nav>Menu</nav><main><h1>Tokens</h1><section id="component-preview"><h2>Preview</h2><p>Demo email text</p><ul><li><button>Only action</button></li></ul></section><div aria-hidden="true">Decorative content</div><p>Read <a href="/components">components</a> here.</p><table><thead><tr><th>Name</th><th>Value</th></tr></thead><tbody><tr><td>md.test</td><td>4 dp</td></tr></tbody></table><nav><a href="?page=2">Next</a><a href="https://example.org/docs">Documentation</a></nav></main><footer>Footer</footer></body></html>`), "https://tokens.example/changes")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -138,7 +138,7 @@ func TestMarkdownPreservesViewContent(t *testing.T) {
 			t.Fatalf("lost %q: %s", content, markdown)
 		}
 	}
-	if strings.Contains(markdown, "secret") || strings.Contains(markdown, "Menu") || strings.Contains(markdown, "Footer") {
+	if strings.Contains(markdown, "secret") || strings.Contains(markdown, "Menu") || strings.Contains(markdown, "Footer") || strings.Contains(markdown, "Demo email") || strings.Contains(markdown, "Decorative content") || strings.Contains(markdown, "## Preview") {
 		t.Fatal("included chrome or scripts")
 	}
 }

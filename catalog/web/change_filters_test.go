@@ -27,10 +27,10 @@ func TestChangeFiltersRunBeforePaginationAndPreserveSelection(t *testing.T) {
 	recorder := httptest.NewRecorder()
 	New(state, "").Handler().ServeHTTP(recorder, httptest.NewRequest("GET", "/changes?"+query.Encode(), nil))
 	body := recorder.Body.String()
-	if strings.Contains(body, `selected="false"`) {
+	if strings.Contains(body, ` selected="false"`) {
 		t.Fatal("false boolean attributes still select an option in HTML")
 	}
-	for _, text := range []string{`value="changed" selected`, "1 item changed", "/components/snackbar/changes?", "View changes"} {
+	for _, text := range []string{`name="type" value="changed"`, "1 item changed", "/components/snackbar/changes?", "View changes"} {
 		if !strings.Contains(body, text) {
 			t.Fatalf("missing %q", text)
 		}

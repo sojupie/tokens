@@ -152,7 +152,34 @@ func TestValuePreviewAndInfoShareOneNativeReferencePopup(t *testing.T) {
 	start := strings.Index(body, `popovertarget="`) + len(`popovertarget="`)
 	end := start + strings.Index(body[start:], `"`)
 	id := body[start:end]
-	if strings.Count(body, `popovertarget="`+id+`"`) != 3 || strings.Count(body, `id="`+id+`"`) != 1 || !strings.Contains(body, `popover role="dialog"`) || !strings.Contains(body, `class="tokens-color-dot"`) || strings.Contains(body, `<details`) {
-		t.Fatal("preview, info and close must target one popup while the compact swatch remains present")
+	if strings.Count(body, `popovertarget="`+id+`"`) != 2 || strings.Count(body, `id="`+id+`"`) != 1 || !strings.Contains(body, `popover role="dialog"`) || !strings.Contains(body, `class="tokens-color-dot"`) || strings.Contains(body, `<details`) {
+		t.Fatal("preview and info must target one popup while the compact swatch remains present")
+	}
+}
+
+func TestTableSharesDecorationButIncludesAllReferenceData(t *testing.T) {
+	row := tokenRow{Name: "Button color", SourceName: "md.comp.button.color", Value: "#6750A4", HasValue: true, References: []publish.TokenReference{{Name: "md.sys.color.primary", References: []publish.TokenReference{{Name: "md.ref.palette.primary40"}}}}}
+	var output bytes.Buffer
+	output.WriteString(tokenTableSharedMarkup())
+	for range 2 {
+		if err := writeTokenReferences(&output, row); err != nil {
+			t.Fatal(err)
+		}
+	}
+	body := output.String()
+	if strings.Count(body, `<template class="tokens-reference-chrome">`) != 1 || strings.Count(body, materialSymbolPaths["camera"]) != 1 || strings.Count(body, `data-copy-reference`) != 1 {
+		t.Fatal("popover controls and icon paths must be shared, not repeated per reference")
+	}
+	for _, name := range []string{row.SourceName, "md.sys.color.primary", "md.ref.palette.primary40"} {
+		if strings.Count(body, ">"+name+"</code>") != 2 {
+			t.Fatalf("each token must include its full reference tree without JavaScript: %s", name)
+		}
+	}
+	markdown, err := htmlMarkdown([]byte("<main>"+body+"</main>"), "https://tokens.test")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if strings.Contains(markdown, "Color") || !strings.Contains(markdown, "md.ref.palette.primary40") {
+		t.Fatalf("Markdown must preserve reference data and omit the shared controls: %s", markdown)
 	}
 }

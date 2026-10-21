@@ -26,18 +26,29 @@ func TestButtonGalleryUsesGeneratedConfigurations(t *testing.T) {
 	if err := server.SetPublicOrigin("https://catalog.example/md3"); err != nil {
 		t.Fatal(err)
 	}
+
+	for _, tc := range []struct {
+		compare string
+		count   int
+	}{{"states", 5}, {"sizes", 5}, {"variants", 5}, {"interactive", 1}} {
+		response := httptest.NewRecorder()
+		server.Handler().ServeHTTP(response, httptest.NewRequest("GET", "/md3/components/buttons?preview.compare="+tc.compare, nil))
+		if response.Code != 200 {
+			t.Fatal(response.Body.String())
+		}
+		if count := strings.Count(response.Body.String(), "data-button-case="); count != tc.count {
+			t.Fatalf("%s: got %d cases, want %d", tc.compare, count, tc.count)
+		}
+		if !strings.Contains(response.Body.String(), "Browse tokens") {
+			t.Fatal("preview replaced token table")
+		}
+		if tc.compare == "interactive" && strings.Contains(response.Body.String(), `data-button-state=`) {
+			t.Fatal("interactive preview forces an interaction state")
+		}
+	}
 	response := httptest.NewRecorder()
-	server.Handler().ServeHTTP(response, httptest.NewRequest("GET", "/md3/lab/buttons?size=all&shape=all", nil))
-	if response.Code != 200 {
-		t.Fatal(response)
-	}
-	if count := strings.Count(response.Body.String(), "data-button-case="); count != 650 {
-		t.Fatalf("rendered %d of 650 configurations", count)
-	}
-	if response.Header().Get("X-Robots-Tag") != "noindex" || !strings.Contains(response.Body.String(), `name="robots" content="noindex, follow"`) {
-		t.Fatal("gallery is indexable")
-	}
-	if strings.Contains(response.Body.String(), "md-comp-filled-tonal-button") || !strings.Contains(response.Body.String(), "/md3/static/buttons.js?v=") {
-		t.Fatal("gallery did not use current shared button implementation")
+	server.Handler().ServeHTTP(response, httptest.NewRequest("GET", "/md3/components/buttons?preview.size=all", nil))
+	if response.Code != 400 {
+		t.Fatalf("unsupported size: %d", response.Code)
 	}
 }

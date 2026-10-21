@@ -51,9 +51,9 @@ func TestHTMLPagesRenderComponentsAndStyles(t *testing.T) {
 		status int
 	}{
 		{path: "/", body: []string{"Material Design 3 tokens and change history", "Browse Material Design 3 components and styles", "/components/snackbar", "/styles/elevation"}, status: http.StatusOK},
-		{path: "/components/snackbar", body: []string{"Snackbar", "Container", "Snackbar container width", "md.comp.snackbar.container.width", "560", "Download JSON"}, status: http.StatusOK},
-		{path: "/styles/elevation", body: []string{"Elevation", "Download JSON"}, status: http.StatusOK},
-		{path: "/styles/motion/overview", body: []string{"Motion", "Download JSON"}, status: http.StatusOK},
+		{path: "/components/snackbar", body: []string{"Snackbar", "Container", "Snackbar container width", "md.comp.snackbar.container.width", "560", "Download tokens"}, status: http.StatusOK},
+		{path: "/styles/elevation", body: []string{"Elevation", "Download tokens"}, status: http.StatusOK},
+		{path: "/styles/motion/overview", body: []string{"Motion", "Download tokens"}, status: http.StatusOK},
 		{path: "/components?q=snack", body: []string{"snack", "hx-target=\"#subject-list\""}, status: http.StatusOK},
 		{path: "/changes", body: []string{"Change log", "1 item changed", "/components/snackbar", "View changes"}, status: http.StatusOK},
 		{path: "/components/snackbar/changes", body: []string{"Material Design 3 snackbar token changes", "md.comp.snackbar.container.width", "480", "560"}, status: http.StatusOK},

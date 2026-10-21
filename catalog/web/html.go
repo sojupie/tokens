@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"math"
 	"net/http"
@@ -23,7 +24,13 @@ func (server *Server) handleOverview(response http.ResponseWriter, request *http
 		return
 	}
 	if request.URL.Path == "/" {
-		if err := server.renderHTML(response, request, overviewPage(server.state.CurrentSnapshot, sortedSubjects(server.state))); err != nil {
+		subjects := landingSubjects(sortedSubjects(server.state))
+		thumbnails, err := server.componentThumbnails(subjects)
+		if err != nil {
+			http.Error(response, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		if err := server.renderHTML(response, request, overviewPage(server.state.CurrentSnapshot, subjects, thumbnails)); err != nil {
 			http.Error(response, err.Error(), http.StatusInternalServerError)
 		}
 		return
@@ -31,14 +38,19 @@ func (server *Server) handleOverview(response http.ResponseWriter, request *http
 	styles := request.URL.Path == "/styles"
 	query := request.URL.Query().Get("q")
 	subjects := filterSubjects(sortedSubjects(server.state), query, styles)
+	thumbnails, err := server.componentThumbnails(subjects)
+	if err != nil {
+		http.Error(response, err.Error(), http.StatusInternalServerError)
+		return
+	}
 	if request.Header.Get("HX-Request") == "true" {
 		response.Header().Set("Vary", "HX-Request, Accept")
-		if err := server.renderHTML(response, request, subjectList(subjects)); err != nil {
+		if err := server.renderHTML(response, request, subjectCardGrid(subjects, thumbnails, styles)); err != nil {
 			http.Error(response, err.Error(), http.StatusInternalServerError)
 		}
 		return
 	}
-	if err := server.renderHTML(response, request, subjectListPage(server.state.CurrentSnapshot, subjects, styles, query)); err != nil {
+	if err := server.renderHTML(response, request, subjectListPage(server.state.CurrentSnapshot, subjects, styles, query, thumbnails)); err != nil {
 		http.Error(response, err.Error(), http.StatusInternalServerError)
 	}
 }
@@ -101,7 +113,21 @@ func (server *Server) handleHTMLSubject(response http.ResponseWriter, request *h
 			return
 		}
 	}
+	preview, err := server.buildComponentPreview(subjects[0], query)
+	if preview != nil {
+		preview.Action = request.URL.Path
+	}
+	if err != nil {
+		status := http.StatusInternalServerError
+		if errors.Is(err, errPreviewInput) {
+			status = http.StatusBadRequest
+		}
+		http.Error(response, err.Error(), status)
+		return
+	}
+
 	browser := buildTokenBrowser(subjects[0], query)
+	browser.Preview = preview
 	if query.Get("set") != "" && query.Get("set") != browser.Selected.Key {
 		http.NotFound(response, request)
 		return
@@ -110,8 +136,13 @@ func (server *Server) handleHTMLSubject(response http.ResponseWriter, request *h
 		http.NotFound(response, request)
 		return
 	}
+	if preview != nil && request.Header.Get("HX-Request") == "true" && request.Header.Get("HX-Target") == "component-preview" && !wantsMarkdown(request) {
+		if err := server.renderHTML(response, request, componentPreviewView(*preview)); err != nil {
+			http.Error(response, err.Error(), http.StatusInternalServerError)
+		}
+		return
+	}
 	info := server.basicMetadata(subjectURL(subjects[0]), query)
-	info.SiteDownload = server.siteDownload
 	info.Title = subjects[0].Name + " " + subjectKindLabel(subjects[0].Key.Kind) + " Tokens — Material Design 3"
 	info.Heading = "Material Design 3 " + tokenPhrase(subjects[0].Name) + " tokens"
 	info.Description = subjectTokenDescription(subjects[0])
@@ -192,12 +223,19 @@ func (server *Server) renderChangeHistory(response http.ResponseWriter, request 
 }
 
 func (server *Server) renderHTML(response http.ResponseWriter, request *http.Request, component templ.Component) error {
-	response.Header().Set("Vary", "HX-Request, Accept")
+	response.Header().Set("Vary", "HX-Request, HX-Target, Accept")
 	response.Header().Set("Content-Type", "text/html; charset=utf-8")
 	response.Header().Set("Cache-Control", "no-cache")
 	ctx := request.Context()
 	if metadata(ctx).Title == "" {
 		ctx = context.WithValue(ctx, pageMetadataKey{}, server.basicMetadata(request.URL.Path, request.URL.Query()))
+	}
+	info := metadata(ctx)
+	info.Path = request.URL.Path
+	info.GeneratedDownloads = server.tokenAssetsDir != ""
+	ctx = context.WithValue(ctx, pageMetadataKey{}, info)
+	if metadata(ctx).NoIndex {
+		response.Header().Set("X-Robots-Tag", "noindex, follow")
 	}
 	ctx = context.WithValue(ctx, themeVersionKey{}, assetVersion([]byte(server.themeCSS)))
 	var rendered bytes.Buffer
@@ -214,17 +252,10 @@ func (server *Server) renderHTML(response http.ResponseWriter, request *http.Req
 			return err
 		}
 		response.Header().Set("Content-Type", "text/markdown; charset=utf-8")
-		_, err = response.Write([]byte(markdown))
+		_, err = writePageBody(response, request, []byte(markdown))
 		return err
 	}
-	// Native document prefetch needs a fresh HTTP cache entry to reuse on click.
-	// Keep it private and brief; normal reads still revalidate immediately.
-	if request.Method == http.MethodGet && request.Header.Get("HX-Request") != "true" &&
-		(strings.EqualFold(strings.TrimSpace(request.Header.Get("Purpose")), "prefetch") ||
-			strings.HasPrefix(strings.ToLower(request.Header.Get("Sec-Purpose")), "prefetch")) {
-		response.Header().Set("Cache-Control", "private, max-age=30")
-	}
-	_, err = response.Write(body)
+	_, err = writePageBody(response, request, body)
 	return err
 }
 
@@ -691,4 +722,38 @@ func changesPageURL(base string, page int) string {
 	}
 	address.RawQuery = query.Encode()
 	return address.String()
+}
+
+// The landing page illustrates the catalog; the indexes carry the full lists.
+func landingSubjects(subjects []publish.SubjectView) []publish.SubjectView {
+	result := []publish.SubjectView{}
+	selected := map[publish.SubjectKey]bool{}
+	components, styles := 0, 0
+	add := func(subject publish.SubjectView) {
+		if selected[subject.Key] {
+			return
+		}
+		component := subject.Key.Kind == publish.SubjectComponent
+		if component && components >= 4 || !component && styles >= 4 {
+			return
+		}
+		result = append(result, subject)
+		selected[subject.Key] = true
+		if component {
+			components++
+		} else {
+			styles++
+		}
+	}
+	for _, slug := range []string{"buttons", "cards", "chips", "menus", "typography/type-scale", "motion/overview", "elevation", "shape/corner-radius"} {
+		for _, subject := range subjects {
+			if subject.Key.Slug == slug {
+				add(subject)
+			}
+		}
+	}
+	for _, subject := range subjects {
+		add(subject)
+	}
+	return result
 }

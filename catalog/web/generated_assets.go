@@ -77,6 +77,7 @@ func (server *Server) UseGeneratedAssets(publicationDir string) error {
 }
 
 func (server *Server) handleDTCGDownload(response http.ResponseWriter, request *http.Request) {
+	response.Header().Set("Cache-Control", "public, no-cache")
 	variant, file := request.PathValue("variant"), request.PathValue("file")
 	valid := false
 	for _, allowed := range []string{"light-default", "light-medium", "light-high", "dark-default", "dark-medium", "dark-high"} {

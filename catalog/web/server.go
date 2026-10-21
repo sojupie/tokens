@@ -8,12 +8,17 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
+	"sync"
 
 	"github.com/sojupie/tokens/catalog/usage"
 	"github.com/sojupie/tokens/source/publish"
 )
 
 type Server struct {
+	thumbnailMu    sync.Mutex
+	thumbnails     map[string]componentCase
+	previewMu      sync.Mutex
+	previewFiles   map[string][]componentCase
 	usage          *usage.Store
 	publicOrigin   string
 	basePath       string
@@ -23,7 +28,6 @@ type Server struct {
 	downloadsDir   string
 	themeCSS       string
 	themeError     error
-	siteDownload   downloadPreview
 }
 
 type subjectSummary struct {
@@ -64,13 +68,11 @@ type changesResponse struct {
 
 func New(state publish.PublishedState, downloadsDir string) *Server {
 	css, err := publicationTheme(state)
-	return &Server{state: state, downloadsDir: downloadsDir, themeCSS: css, themeError: err, siteDownload: previewSiteDownload(state)}
+	return &Server{state: state, downloadsDir: downloadsDir, themeCSS: css, themeError: err}
 }
 
 func (server *Server) Handler() http.Handler {
 	mux := http.NewServeMux()
-	mux.HandleFunc("GET /lab/buttons", server.handleButtonGallery)
-	mux.HandleFunc("GET /lab/components", server.handleComponentGallery)
 	mux.HandleFunc("GET /for-agents", server.handleForAgents)
 	mux.HandleFunc("GET /sitemap.xml", server.handleSitemap)
 	mux.HandleFunc("GET /sitemap.css", handleSitemapCSS)
@@ -100,6 +102,7 @@ func (server *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /components/{slug...}", server.handleHTMLSubject)
 	mux.HandleFunc("GET /styles", server.handleOverview)
 	mux.HandleFunc("GET /styles/{slug...}", server.handleHTMLSubject)
+	cachedMux := cacheResponses(mux)
 	handler := http.HandlerFunc(func(response http.ResponseWriter, request *http.Request) {
 		// Keep page URLs canonical without dropping filters or the collection mount.
 		if (request.Method == http.MethodGet || request.Method == http.MethodHead) && request.URL.Path != "/" && !strings.HasSuffix(request.URL.Path, "/sets/") && strings.HasSuffix(request.URL.Path, "/") && (strings.HasPrefix(request.URL.Path, "/components/") || strings.HasPrefix(request.URL.Path, "/styles/") || request.URL.Path == "/changes/" || request.URL.Path == "/for-agents/") {
@@ -131,7 +134,7 @@ func (server *Server) Handler() http.Handler {
 			server.handleMCP(response, request)
 			return
 		}
-		mux.ServeHTTP(response, request)
+		cachedMux.ServeHTTP(response, request)
 	})
 	return server.mount(server.observe(handler))
 }
@@ -234,6 +237,7 @@ func (server *Server) writeSubjectChanges(response http.ResponseWriter, request 
 }
 
 func (server *Server) handleDownload(response http.ResponseWriter, request *http.Request) {
+	response.Header().Set("Cache-Control", "public, no-cache")
 	relativePath := request.PathValue("path")
 	if relativePath == "tokens.json" && (request.URL.Query().Has("scope") || server.downloadsDir == "") {
 		server.handleCollectionDownload(response, request)

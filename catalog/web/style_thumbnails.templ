@@ -1,0 +1,38 @@
+package web
+
+import "github.com/sojupie/tokens/source/publish"
+
+// Illustrations show the style's role. Their composition is not a component API.
+templ styleThumbnail(subject publish.SubjectView) {
+ <svg class="tokens-component-thumbnail-viewport" viewBox="0 0 360 225" aria-hidden="true" focusable="false">
+  <foreignObject width="360" height="225">
+   <div xmlns="http://www.w3.org/1999/xhtml" class="tokens-component-thumbnail-scene" inert aria-hidden="true" data-style-thumbnail={ subject.Key.Slug }>
+    switch subject.Key.Slug {
+    case "elevation":
+     <div class="tokens-style-elevation">
+      <div class="md-card md-filled-card"><span>Surface</span></div>
+      <div class="md-card md-elevated-card"><span>Raised</span></div>
+      <div class="md-fab md-button" data-size="default" data-variant="primary">@materialSymbol("add")</div>
+     </div>
+    case "motion/overview":
+     <div class="tokens-style-motion">
+      <svg viewBox="0 0 260 130" aria-hidden="true"><path class="tokens-style-motion-grid" d="M10 10V120H250"/><path class="tokens-style-motion-curve" d="M10 120C20 120 30 10 250 10"/><circle r="10"/></svg>
+      <span class="md-typescale-label-large">Move with purpose</span>
+     </div>
+    case "shape/corner-radius":
+     <div class="tokens-style-shapes"><span></span><span></span><span></span><span></span></div>
+    case "spacing":
+     <div class="tokens-style-spacing">
+      for _, label := range []string{"8","16","24"} {
+       <div><span class="md-typescale-label-large">{label}</span><div class={"tokens-style-space tokens-style-space-"+label}><i></i><i></i><i></i></div></div>
+      }
+     </div>
+    case "typography/type-scale":
+     <div class="tokens-style-type"><span class="md-typescale-display-small">Aa</span><span class="md-typescale-title-large">Words with rhythm</span><span class="md-typescale-body-medium">A clear hierarchy, from title to detail.</span><span class="md-typescale-label-large">READ MORE</span></div>
+    default:
+     <div class="tokens-style-shapes"><span></span><span></span><span></span><span></span></div>
+    }
+   </div>
+  </foreignObject>
+ </svg>
+}

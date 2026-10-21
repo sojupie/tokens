@@ -14,6 +14,7 @@ import (
 )
 
 type tokenBrowser struct {
+	Preview  *componentPreview
 	Contexts url.Values
 	Sets     []tokenSet
 	Selected tokenSet

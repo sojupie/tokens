@@ -15,7 +15,7 @@ import (
 	"github.com/sojupie/tokens/forge/components"
 )
 
-//go:embed static/app.css static/token-table.css static/token-table.js static/theme.js static/webmcp.js static/prefetch.js static/agent-handoff.js static/htmx.min.js static/fonts static/logo.png static/logo-250x250.png static/logo-250x250.webp
+//go:embed static/app.css static/token-table.css static/token-table.js static/theme.js static/site-ui.js static/artwork.js static/webmcp.js static/prefetch.js static/agent-handoff.js static/htmx.min.js static/fonts static/logo.png static/logo-250x250.png static/logo-250x250.webp
 var embeddedStatic embed.FS
 
 //go:embed static/theme-init.js
@@ -41,7 +41,7 @@ type staticAssets struct{ fs.FS }
 
 func (files staticAssets) Open(name string) (fs.File, error) {
 	switch name {
-	case "buttons.css", "buttons.js", "components.css":
+	case "buttons.css", "buttons.js", "components.css", "components.js", "progress.js", "loading.js", "loading-shapes.json", "sheets.js", "lists.js", "carousel.js", "search.js", "date-picker.js", "time-picker.js", "fields.js", "dialogs.js", "menus.js":
 		return components.Files.Open("static/" + name)
 	default:
 		return files.FS.Open(name)
@@ -75,7 +75,19 @@ func themeURL(ctx context.Context) string {
 
 func serveCachedAsset(response http.ResponseWriter, request *http.Request, name string, content []byte) {
 	version := assetVersion(content)
-	response.Header().Set("ETag", `"`+version+`"`)
+	addEncodingVary(response.Header())
+	representation := version
+	if acceptsGzip(request) && compressibleAsset(name) && request.Header.Get("Range") == "" {
+		encoded, err := gzipBytes(content)
+		if err != nil {
+			http.Error(response, "asset encoding failed", http.StatusInternalServerError)
+			return
+		}
+		content = encoded
+		representation += "-gzip"
+		response.Header().Set("Content-Encoding", "gzip")
+	}
+	response.Header().Set("ETag", `"`+representation+`"`)
 	if request.URL.Query().Get("v") == version {
 		response.Header().Set("Cache-Control", "public, max-age=31536000, immutable")
 	} else {

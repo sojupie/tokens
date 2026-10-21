@@ -1,0 +1,48 @@
+package web
+
+import "fmt"
+
+templ siteNavLink(path string, label string) {
+ <a class="md-button md-text-button tokens-nav-link" data-size="small" data-shape="round" href={templ.SafeURL(path)} aria-current={siteCurrent(ctx,path)}>{label}</a>
+}
+
+// Shared select anatomy; the hidden value keeps labels separate from URL values.
+templ catalogSelect(id string, name string, label string, selected string, choices []catalogChoice) {
+ <div class="md-outlined-select tokens-catalog-select" data-field-example data-populated="true">
+  @outlinedFieldFrame(label)
+  <label for={id} data-slot="label">{label}</label>
+  <input id={id} type="text" value={choiceLabel(choices,selected)} placeholder=" " readonly role="combobox" aria-expanded="false" aria-haspopup="listbox" aria-controls={id+"-options"} aria-autocomplete="none" data-field-combo/>
+  <input type="hidden" name={name} value={selected} data-field-value/>
+  <button type="button" class="md-field-toggle" data-field-toggle tabindex="-1" aria-label={"Show "+label+" options"} aria-controls={id+"-options"}><span data-slot="trailing-icon">@materialSymbol("expand_more")</span></button>
+  @catalogOptions(id,label,selected,choices)
+ </div>
+}
+
+
+templ catalogOptions(id string,label string,selected string,choices []catalogChoice) {
+  <div class="md-field-menu md-menu tokens-catalog-menu" data-variant="standard" data-orientation="vertical" id={id+"-options"} role="listbox" aria-label={label} popover="auto">
+   <section><ul role="presentation">
+   for i,choice := range choices {
+    <li role="presentation"><div class="md-menu-item" id={fmt.Sprintf("%s-option-%d",id,i)} role="option" aria-selected={fmt.Sprint(choice.Value==selected)} data-field-option={choice.Label} data-field-value={choice.Value}><span>{choice.Label}</span><span data-slot="trailing-icon" aria-hidden="true">@materialSymbol("check")</span></div></li>
+   }
+   </ul></section>
+   <p class="md-field-empty" role="option" aria-disabled="true" hidden>No matches</p>
+  </div>
+}
+
+templ filterPill(id string, name string, label string, selected string, choices []catalogChoice, showLabel bool) {
+ <div class="tokens-preview-filter" data-field-example data-populated="true">
+  <button type="button" class="md-filter-chip" id={id} role="combobox" aria-label={label} aria-expanded="false" aria-haspopup="listbox" aria-controls={id+"-options"} aria-autocomplete="none" value={choiceLabel(choices,selected)} data-field-combo data-field-select>
+   if showLabel {
+    <span>{label+":"}</span>
+   }
+   <span data-field-display>{choiceLabel(choices,selected)}</span><span data-slot="trailing-icon" aria-hidden="true">@materialSymbol("expand_more")</span>
+  </button>
+  <input type="hidden" name={name} value={selected} data-field-value/>
+  @catalogOptions(id,label,selected,choices)
+ </div>
+}
+
+templ previewFilter(control previewControl) {
+ @filterPill("preview-"+control.Name,"preview."+control.Name,control.Label,control.Selected,previewChoices(control),true)
+}
