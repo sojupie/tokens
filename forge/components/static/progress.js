@@ -127,4 +127,5 @@
   document.addEventListener('visibilitychange',schedule);
   reduce.addEventListener('change',()=>{for(const [element,entry]of entries)paint(element,entry,0);schedule();});
   initialize();
+  document.addEventListener('tokens:assets-ready',()=>{initialize();schedule();});
 })();

@@ -741,6 +741,7 @@
     if (button.hasAttribute("data-navigation-dismiss"))
       setRailExpanded(button.closest(".md-rail-frame"), false, true);
   });
+  document.addEventListener('tokens:assets-ready',initRailFrames);
 })();
 (() => {
   if (typeof document === "undefined") return;
@@ -928,6 +929,7 @@
     for (const slider of root.querySelectorAll?.(".md-slider") || [])
       sliderResize.unobserve(slider);
   });
+  document.addEventListener('tokens:assets-ready',()=>initialize());
 })();
 (() => {
   if (typeof document === "undefined") return;
@@ -1076,6 +1078,7 @@
     ) || [])
       toolbarResize.unobserve(item);
   });
+  document.addEventListener('tokens:assets-ready',()=>initialize());
 })();
 (() => {
   if (typeof document === "undefined") return;
@@ -1154,6 +1157,7 @@
         bar.hidePopover();
       }
   });
+  document.addEventListener('tokens:assets-ready',()=>initialize());
 })();
 (() => {
   if (typeof document === "undefined") return;

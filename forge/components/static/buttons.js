@@ -179,7 +179,8 @@
       widthGroup(button,true);const state=widthGroups.get(group);for(const animation of state?.animations||[])animation.finish();
     }
   }
-  document.addEventListener('htmx:afterSwap',initializeWidthGroups);
+  document.addEventListener('htmx:afterSwap',()=>{if(!globalThis.TokenAssets)initializeWidthGroups();});
+  document.addEventListener('tokens:assets-ready',initializeWidthGroups);
   function restoreShape(button) {
     if (!button.hasAttribute("data-pressed")) return;
     const start = currentCorners(button);

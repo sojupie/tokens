@@ -36,7 +36,7 @@
   document.addEventListener('htmx:beforeProcessNode',event=>navigationLinks(event.detail.elt));
   function updateDocument(html,url){
     const incoming=new DOMParser().parseFromString(html,'text/html');
-    const assets=doc=>Array.from(doc.head.querySelectorAll('script[src],link[rel="stylesheet"]'),node=>node.getAttribute('src')||node.getAttribute('href')).join('\n');
+    const assets=doc=>Array.from(doc.head.querySelectorAll('script[src]:not([data-component-script]),link[rel="stylesheet"]'),node=>[node.getAttribute('src')||node.getAttribute('href'),node.getAttribute('data-sources')||'',node.getAttribute('data-shapes-version')||''].join('\n')).join('\n');
     // A deployed asset change needs the new head and behavior as well as new content.
     if(assets(incoming)!==assets(document)){location.assign(url);return false;}
     const menu=document.getElementById('tokens-site-menu');if(menu?.matches(':popover-open'))menu.hidePopover();

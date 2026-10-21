@@ -447,4 +447,5 @@
     if (button.hasAttribute("data-navigation-dismiss"))
       setRailExpanded(button.closest(".md-rail-frame"), false, true);
   });
+  document.addEventListener('tokens:assets-ready',initRailFrames);
 })();

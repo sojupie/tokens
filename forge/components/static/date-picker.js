@@ -218,4 +218,5 @@
  window.addEventListener('resize',()=>{for(const panel of document.querySelectorAll('.md-date-panel[open][data-variant="docked"]:not([data-date-inline])')){const state=stateFor(panel);if(state)positionDocked(state);}});
  reduced.addEventListener('change',()=>{if(!reduced.matches)return;for(const root of document.querySelectorAll('.md-date-demo')){const state=states.get(root);if(!state)continue;state.animation?.finish();state.monthAnimation?.finish();}});
  document.addEventListener('htmx:afterSwap',init);if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+  document.addEventListener('tokens:assets-ready',init);
 })();

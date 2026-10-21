@@ -166,4 +166,5 @@
   });
   document.addEventListener('htmx:afterSwap',()=>init());
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>init());else init();
+  document.addEventListener('tokens:assets-ready',()=>init());
 })();

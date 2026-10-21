@@ -145,4 +145,5 @@
     ) || [])
       toolbarResize.unobserve(item);
   });
+  document.addEventListener('tokens:assets-ready',()=>initialize());
 })();

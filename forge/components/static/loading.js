@@ -60,6 +60,7 @@
     if(entries.has(element))paint(element,entries.get(element),0);
   });
   document.addEventListener('htmx:afterSwap',initialize);
+  document.addEventListener('tokens:assets-ready',initialize);
   document.addEventListener('htmx:beforeCleanupElement',event=>{
     for(const [element]of entries)if(element===event.detail.elt||event.detail.elt.contains(element)){visibility.unobserve(element);entries.delete(element);}
   });

@@ -184,4 +184,5 @@
     for (const slider of root.querySelectorAll?.(".md-slider") || [])
       sliderResize.unobserve(slider);
   });
+  document.addEventListener('tokens:assets-ready',()=>initialize());
 })();

@@ -61,4 +61,5 @@
         bar.hidePopover();
       }
   });
+  document.addEventListener('tokens:assets-ready',()=>initialize());
 })();

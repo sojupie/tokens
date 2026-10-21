@@ -12,3 +12,5 @@ forge/components/static/components-base.css linguist-generated=true
 forge/components/static/components.css linguist-generated=true
 forge/components/static/components.js linguist-generated=true
 forge/components/static/buttons.css linguist-generated=true
+forge/components/static/bundles/*.css linguist-generated=true
+forge/components/static/runtime/*.js linguist-generated=true

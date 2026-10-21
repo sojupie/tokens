@@ -146,4 +146,5 @@
   document.addEventListener('pointercancel',event=>{if(gesture&&gesture.id===event.pointerId)finish(true);});
   document.addEventListener('htmx:beforeCleanupElement',event=>{if(gesture&&event.detail.elt.contains(gesture.list))finish(true);});
   window.addEventListener('blur',()=>finish(true));
+  document.addEventListener('tokens:assets-ready',init);
 })();

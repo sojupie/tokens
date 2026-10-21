@@ -9,13 +9,14 @@ import (
 	"io/fs"
 	"net/http"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/a-h/templ"
 	"github.com/sojupie/tokens/forge/components"
 )
 
-//go:embed static/app.css static/token-table.css static/token-table.js static/theme.js static/site-ui.js static/artwork.js static/component-demos.js static/webmcp.js static/prefetch.js static/agent-handoff.js static/htmx.min.js static/fonts static/logo.png static/logo-250x250.png static/logo-250x250.webp
+//go:embed static/app.css static/token-table.css static/token-table.js static/theme.js static/site-ui.js static/artwork.js static/component-demos.js static/asset-loader.js static/webmcp.js static/prefetch.js static/agent-handoff.js static/htmx.min.js static/fonts static/logo.png static/logo-250x250.png static/logo-250x250.webp
 var embeddedStatic embed.FS
 
 //go:embed static/theme-init.js
@@ -40,6 +41,9 @@ func mustStaticFiles() fs.FS {
 type staticAssets struct{ fs.FS }
 
 func (files staticAssets) Open(name string) (fs.File, error) {
+	if strings.HasPrefix(name, "runtime/") || strings.HasPrefix(name, "bundles/") {
+		return components.Files.Open("static/" + name)
+	}
 	switch name {
 	case "motion.js":
 		return components.Files.Open("static/motion.cjs")
@@ -68,6 +72,18 @@ func staticURL(name string) string {
 
 type themeVersionKey struct{}
 
+// Asset contents are immutable for a running server. Cache compressed variants
+// by content identity, including the publication theme, rather than recompressing
+// them on each request or conditional request.
+var compressedAssets sync.Map
+
+func compressedAsset(version string, content []byte) ([]byte, error) {
+	encode, _ := compressedAssets.LoadOrStore(version, sync.OnceValues(func() ([]byte, error) {
+		return gzipBytes(content)
+	}))
+	return encode.(func() ([]byte, error))()
+}
+
 func themeURL(ctx context.Context) string {
 	if version, ok := ctx.Value(themeVersionKey{}).(string); ok {
 		return "/theme.css?v=" + version
@@ -80,7 +96,7 @@ func serveCachedAsset(response http.ResponseWriter, request *http.Request, name 
 	addEncodingVary(response.Header())
 	representation := version
 	if acceptsGzip(request) && compressibleAsset(name) && request.Header.Get("Range") == "" {
-		encoded, err := gzipBytes(content)
+		encoded, err := compressedAsset(version, content)
 		if err != nil {
 			http.Error(response, "asset encoding failed", http.StatusInternalServerError)
 			return

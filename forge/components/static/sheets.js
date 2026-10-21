@@ -149,4 +149,5 @@
   });
   reduced.addEventListener('change',()=>{if(reduced.matches)for(const sheet of document.querySelectorAll('.md-sheet'))entry(sheet)?.animation?.finish();});
   initialize();
+  document.addEventListener('tokens:assets-ready',initialize);
 })();

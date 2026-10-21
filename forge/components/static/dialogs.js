@@ -43,4 +43,5 @@
  document.addEventListener('htmx:beforeCleanupElement',event=>{const node=event.detail?.elt;if(!node)return;for(const panel of [...(node.matches?.('[data-dialog-preview]')?[node]:[]),...node.querySelectorAll('[data-dialog-preview]')]){const state=states.get(panel);if(!state)continue;state.revision++;state.animation?.cancel();state.observer.disconnect();if(state.discard?.open)state.discard.close();if(panel.open)panel.close();states.delete(panel);}});
  reduced.addEventListener('change',()=>{if(!reduced.matches)return;for(const panel of document.querySelectorAll('[data-dialog-preview]')){const state=states.get(panel);if(!state?.animation)continue;state.revision++;state.animation.cancel();state.animation=null;if(state.closing){panel.close();rest(state);}}});
  document.addEventListener('htmx:afterSwap',init);document.addEventListener('htmx:historyRestore',init);if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+  document.addEventListener('tokens:assets-ready',init);
 })();

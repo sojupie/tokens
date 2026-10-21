@@ -123,4 +123,5 @@
  document.addEventListener('htmx:beforeCleanupElement',event=>{const node=event.detail?.elt;if(!node)return;for(const root of [...(node.matches?.('.md-time-demo')?[node]:[]),...node.querySelectorAll('.md-time-demo')]){const state=states.get(root);if(!state)continue;state.revision++;cancelGesture(state);state.animation?.cancel();if(state.panel.open)state.panel.close();states.delete(root);}});
  reduced.addEventListener('change',()=>{if(!reduced.matches)return;for(const root of document.querySelectorAll('.md-time-demo')){const state=states.get(root);if(!state)continue;state.animation?.finish();state.monthAnimation?.finish();}});
  document.addEventListener('htmx:afterSwap',init);if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+  document.addEventListener('tokens:assets-ready',init);
 })();
