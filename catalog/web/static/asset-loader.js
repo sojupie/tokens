@@ -25,6 +25,7 @@
     ["time-picker.js", ".md-time-demo"],
     ["dialogs.js", ".md-dialog-demo"],
     ["loading.js", ".md-loading"],
+    ["artwork-canvas.js", '[data-artwork="canvas"]'],
     ["artwork.js", "[data-artwork]"],
     ["component-demos.js", "#component-preview"],
   ];

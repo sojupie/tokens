@@ -369,3 +369,6 @@ button:not(:disabled), [role=button]:not([aria-disabled=true]) { cursor:pointer;
 /* Turning the desktop navigation into a mobile popover is layout setup. */
 .tokens-primary-nav > .tokens-navigation-content[popover] { transition:none; }
 
+.tokens-art-canvas { position:absolute;inset:0;inline-size:100%;block-size:100%;visibility:hidden; }
+[data-canvas-ready] > .tokens-art-canvas { visibility:visible; }
+[data-canvas-ready] > .tokens-art-column { display:none; }

@@ -42,7 +42,7 @@ var componentScriptSources = sync.OnceValue(func() string {
 		"runtime/sliders.js", "runtime/toolbars.js", "runtime/app-bars.js", "runtime/snackbars.js",
 		"runtime/fab-menus.js", "runtime/split-buttons.js", "runtime/tooltips.js",
 		"progress.js", "sheets.js", "lists.js", "carousel.js", "search.js", "date-picker.js",
-		"time-picker.js", "dialogs.js", "loading.js", "artwork.js", "component-demos.js",
+		"time-picker.js", "dialogs.js", "loading.js", "artwork.js", "artwork-canvas.js", "component-demos.js",
 	} {
 		sources[name] = strings.TrimPrefix(staticURL(name), "/static/")
 	}

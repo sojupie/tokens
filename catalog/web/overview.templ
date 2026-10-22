@@ -5,7 +5,7 @@ import (
 	"github.com/sojupie/tokens/source/publish"
 )
 
-templ overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView, thumbnails map[string]componentCase) {
+templ overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView, thumbnails map[string]componentCase, renderer string) {
 	@layout("Material Design 3 Tokens and Change History") {
 		<section class="tokens-landing-hero" aria-labelledby="landing-heading">
 			<div class="tokens-landing-copy">
@@ -17,7 +17,7 @@ templ overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView
 					<a class="md-button md-tonal-button" href="/styles">Explore styles</a>
 				</div>
 			</div>
-			@landingArtwork()
+			@landingArtwork(renderer)
 		</section>
 		<div class="tokens-landing-samples">
 			<section class="tokens-section" aria-labelledby="components-heading">
@@ -51,9 +51,12 @@ templ overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView
 }
 
 // Decorative geometry is deliberately separate from the public component API.
-templ landingArtwork() {
+templ landingArtwork(renderer string) {
 	<div class="tokens-landing-art">
-		<div class="tokens-art-mosaic" data-artwork aria-hidden="true">
+		<div class="tokens-art-mosaic" data-artwork={ renderer } aria-hidden="true">
+			if renderer == "canvas" {
+				<canvas class="tokens-art-canvas"></canvas>
+			}
 			for col := range 3 {
 				<div class={ fmt.Sprintf("tokens-art-column tokens-art-column-%d", col) }>
 					for row := range 3 {

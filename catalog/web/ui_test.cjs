@@ -566,3 +566,25 @@ test('hero corners follow leading edges and flatten compressed sides', () => {
   assert.deepEqual(values({left:.25,right:.75,top:0,bottom:1}),[8,8,8,8],'compression flattens corners');
   assert.deepEqual(values(from),[28,28,28,28]);
 });
+
+test('Canvas artwork uses the DOM spring samples and keeps all tiles in bounds',()=>{
+  const core={exports:{}},canvas={exports:{}};
+  runInNewContext(readFileSync(join(__dirname,'static/artwork.js'),'utf8'),{module:core});
+  runInNewContext(readFileSync(join(__dirname,'static/artwork-canvas.js'),'utf8'),{module:canvas});
+  const spring=core.exports.artworkSpring(.9,300),track=[[1.2,.8,1],[.65,1.45,.9],[1,.65,1.35],[1.5,.85,.65]];
+  const frames=core.exports.artworkFrames(track,'gridTemplateColumns',spring);
+  frames.slice(0,spring.samples.length).forEach((frame,i)=>{
+    const values=canvas.exports.trackValues(track,0,core.exports.artworkProgress(spring,i*spring.duration/(spring.samples.length-1)));
+    frame.gridTemplateColumns.split(' ').forEach((value,j)=>assert.ok(Math.abs(parseFloat(value)-values[j])<.000001));
+  });
+  for(const width of [240,480,960])for(let time=0;time<8000;time+=50){
+    const scene=Math.floor(time/2000),p=core.exports.artworkProgress(spring,time%2000),values=canvas.exports.trackValues(track,scene,p);
+    const boxes=canvas.exports.tileBounds(width,448,8,values,[values,values,values]);
+    assert.equal(boxes.length,9);
+    assert.ok(boxes.every(b=>b.width>0&&b.height>0&&b.x>=0&&b.y>=0&&b.x+b.width<=width+.00001&&b.y+b.height<=448+.00001));
+  }
+  const ease=canvas.exports.turnProgress;
+  assert.equal(ease(0,300,'cubic-bezier(.2,0,0,1)'),0);
+  assert.equal(ease(300,300,'cubic-bezier(.2,0,0,1)'),1);
+  let prior=0;for(let t=0;t<=300;t++){const value=ease(t,300,'cubic-bezier(.2,0,0,1)');assert.ok(value>=prior&&value<=1);prior=value;}
+});

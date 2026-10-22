@@ -42,7 +42,14 @@
     };
     return tracks[0].map((_,scene)=>artworkDirectionalCorners(rect((scene+3)%4),rect(scene),corners));
   }
-  if(typeof module!=='undefined')module.exports={artworkSpring,artworkFrames,artworkDirectionalCorners,artworkCornerStates};
+  // Match WAAPI's linear interpolation between the sampled spring keyframes.
+  function artworkProgress(spring,time){
+    if(!spring)return 0;
+    const position=Math.max(0,Math.min(spring.samples.length-1,time/spring.duration*(spring.samples.length-1)));
+    const i=Math.floor(position),next=Math.min(i+1,spring.samples.length-1);
+    return spring.samples[i]+(spring.samples[next]-spring.samples[i])*(position-i);
+  }
+  if(typeof module!=='undefined')module.exports={artworkSpring,artworkFrames,artworkDirectionalCorners,artworkCornerStates,artworkProgress};
   if(typeof document==='undefined')return;
   const reduced=matchMedia('(prefers-reduced-motion: reduce)');
   let current;
@@ -51,6 +58,7 @@
     if(current?.artwork===artwork)return;
     current?.dispose();current=null;
     if(!artwork)return;
+    if(artwork.dataset?.artwork==='canvas'&&!globalThis.TokenArtworkCanvas)return;
     const style=getComputedStyle(artwork),spring=artworkSpring(parseFloat(style.getPropertyValue('--_art-spring-damping')),parseFloat(style.getPropertyValue('--_art-spring-stiffness')));
     const animations=[],timing={duration:8000,iterations:Infinity,fill:'both',easing:'linear'};
     const shapeSpring=artworkSpring(parseFloat(style.getPropertyValue('--_art-shape-damping')),parseFloat(style.getPropertyValue('--_art-shape-stiffness')));
@@ -61,7 +69,9 @@
         [[.7,1.5,.8],[1.5,.7,.8],[.6,1,1.4],[1,.6,1.4]],
         [[1,.7,1.3],[.8,1.5,.7],[1.4,.6,1],[.7,1.4,.9]],
       ];
-    if(spring){
+    const corners=['small','large','base','soft'].map(name=>parseFloat(style.getPropertyValue('--_art-corner-'+name)));
+    const canvas=artwork.dataset?.artwork==='canvas'?TokenArtworkCanvas(artwork,{tracks,spring,shapeSpring,corners,turnDuration,turnEasing,loop:timing.duration,progress:artworkProgress,cornerStates:artworkCornerStates}):null;
+    if(!canvas&&spring){
       [artwork,...artwork.querySelectorAll('.tokens-art-column')].forEach((node,i)=>{
         animations.push(node.animate(artworkFrames(tracks[i],i?'gridTemplateRows':'gridTemplateColumns',spring),timing));
       });
@@ -76,8 +86,7 @@
         animations.push(node.animate(frames,timing));
       });
     }
-    const corners=['small','large','base','soft'].map(name=>parseFloat(style.getPropertyValue('--_art-corner-'+name)));
-    if(shapeSpring&&corners.every(Number.isFinite)){
+    if(!canvas&&shapeSpring&&corners.every(Number.isFinite)){
       // Share the owning column's resize clock; corners never pulse alone.
       const tiles=[...artwork.querySelectorAll('.tokens-art-tile')],properties=['--_art-radius-tl','--_art-radius-tr','--_art-radius-br','--_art-radius-bl'];
       [0,4,8,2,6,1,7,3,5].forEach(index=>{
@@ -96,12 +105,14 @@
       const paused=!visible||document.hidden||reduced.matches||toggle.checked;
       artwork.toggleAttribute('data-paused',paused);
       animations.forEach(animation=>paused?animation.pause():animation.play());
+      if(canvas)paused?canvas.pause():canvas.play();
     }
     const observer=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;sync();});observer.observe(artwork);
     toggle.addEventListener('change',sync);reduced.addEventListener('change',sync);document.addEventListener('visibilitychange',sync);
-    current={artwork,dispose(){animations.forEach(animation=>animation.cancel());observer.disconnect();toggle.removeEventListener('change',sync);reduced.removeEventListener('change',sync);document.removeEventListener('visibilitychange',sync);}};
+    current={artwork,dispose(){canvas?.dispose();animations.forEach(animation=>animation.cancel());observer.disconnect();toggle.removeEventListener('change',sync);reduced.removeEventListener('change',sync);document.removeEventListener('visibilitychange',sync);}};
     sync();
   }
+  document.addEventListener('tokens:assets-ready',initialize);
   document.addEventListener('htmx:afterSwap',initialize);document.addEventListener('htmx:historyRestore',initialize);
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initialize);else initialize();
 })();
