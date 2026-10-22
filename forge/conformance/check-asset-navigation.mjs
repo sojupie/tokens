@@ -59,6 +59,17 @@ export async function checkAssetNavigation(load, assert) {
     requested("runtime/navigation.js") && !requested("date-picker.js"),
     "HTMX loads the newly visited rail without loading pickers",
   );
+  if (d.querySelector('link[href*="/themes/shared.css"]')) {
+    const name = "--md-comp-nav-bar-container-color";
+    assert(
+      !w.getComputedStyle(d.documentElement).getPropertyValue(name).trim() &&
+        w
+          .getComputedStyle(d.querySelector("#component-preview"))
+          .getPropertyValue(name)
+          .trim(),
+      "Navigation theme variables stay in the preview scope",
+    );
+  }
   const saved = [...d.querySelectorAll("[data-navigation-item]")].find(
     (item) => item.textContent.trim() === "Saved",
   );

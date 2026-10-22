@@ -110,13 +110,44 @@ A Chromium 155 measurement on Linux on 2026-10-22 reduced `/changes` CSS from
 Script requests fell from 22 to 12. In 24 measured appearance changes after four
 warmups, synchronous style/layout median fell from 49.5 ms to 42.6 ms on
 `/changes`, and from 51.0 ms to 42.2 ms in the navigation-rail playground.
-Time through two animation frames did not improve. The theme still defines the
-full token set on the root, so inherited-variable recalculation remains a cost.
+Time through two animation frames did not improve in that first pass.
 These figures describe this local browser run, not a cross-browser performance guarantee.
+
+`forge/theme-subsets.mjs` now derives theme inputs from shared CSS, template
+references, family bundles and literal JavaScript reads. It follows CSS aliases
+in all appearances; Style Dictionary resolves DTCG aliases before this step.
+Dynamic spring property names have explicit dependency roots in `pageThemes`.
+Add a root there if behavior introduces another dynamically constructed token
+name. Unknown Material or Catalog references fail the build.
+
+The shared theme stays in the head. A playground's remaining inputs are scoped
+to `#component-preview`; its theme link follows the page stylesheet through HTMX
+navigation. Catalog overview pages use the optional `all` theme globally because
+their thumbnails sit outside the playground. Existing manifests without theme
+bundles keep the complete theme. `/theme.css` and public token downloads remain
+complete.
+
+For a theme comparison, copy the complete generated `theme.css` to
+`forge/conformance/baseline-theme.tmp`. Open `/theme-equivalence.html` to compare
+layout, typography, colors and surfaces across the gallery in all six appearances.
+`/theme-scoping.html` alternates the complete and page themes in the same document,
+with warmups in each block. It reports time in the control handlers (including any
+synchronous style work), the following forced style/layout flush, and two animation
+frames. The last measure includes scheduling and rendering; it does not isolate
+paint duration. Close other animation fixtures while measuring.
+
+In a same-document A/B run on Chromium 155/Linux on 2026-10-22, with 32 measured
+samples per mode after block warmups, the median through two animation frames
+fell from 68.3 ms to 51.1 ms on `/changes` and from 68.4 ms to 51.2 ms on the rail.
+The forced style/layout flush medians fell from 17.3 ms to 10.2 ms and from
+15.7 ms to 10.2 ms respectively. Frame cadence differs between runs; use the
+within-run comparison. The root set fell from 4,115 to 2,017 variables, with 153
+additional variables scoped to the rail preview. Overview pages still load the
+full set for their mixed component thumbnails.
 
 For a CSS build comparison, save the previous theme and full component stylesheet
 as `forge/conformance/baseline-theme.tmp` and `baseline-components.tmp`, then open
-`/asset-equivalence.html`. It compares appearance variables in all six contexts and
+`/asset-equivalence.html`. It compares retained root variables in all six contexts and
 computed component properties across the gallery. These temporary baseline files
 are ignored by Git. The comparison complements interaction checks; it does not
 replace them.

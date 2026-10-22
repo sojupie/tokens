@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" /><title>Theme scoping experiment</title>
+  <style>
+    body {
+      font: 16px system-ui;
+      margin: 24px;
+    }
+    iframe {
+      width: 100%;
+      height: 600px;
+    }
+    pre {
+      white-space: pre-wrap;
+    }
+  </style>
+  <h1>Theme scoping experiment</h1>
+  <p>
+    Alternates complete and scoped themes in the same document. Uses actual
+    appearance controls and checks computed styles in all six contexts.
+  </p>
+  <button id="run">Compare themes</button>
+  <pre id="result">Ready</pre>
+  <div id="frame"></div>
+  <script type="module">
+    const button = document.querySelector("#run"),
+      result = document.querySelector("#result"),
+      container = document.querySelector("#frame");
+    const raf = (w) =>
+      new Promise((resolve) =>
+        w.requestAnimationFrame(() => w.requestAnimationFrame(resolve)),
+      );
+    const percentile = (values, p) =>
+      [...values].sort((a, b) => a - b)[
+        Math.min(values.length - 1, Math.floor(values.length * p))
+      ];
+    button.onclick = async () => {
+      button.disabled = true;
+      result.textContent = "Running";
+      try {
+        const baseline = await fetch("baseline-theme.tmp").then((r) => {
+          if (!r.ok) throw Error("Supply baseline-theme.tmp");
+          return r.text();
+        });
+        const pages = [];
+        let checks = 0;
+        const differences = [];
+        for (const route of [
+          "/changes",
+          "/components/navigation-rail?preview.compare=interactive",
+        ]) {
+          container.replaceChildren();
+          const frame = document.createElement("iframe");
+          container.append(frame);
+          const html = await fetch("/md3" + route).then((r) => r.text());
+          const loaded = new Promise((resolve) => (frame.onload = resolve));
+          frame.srcdoc = html.replace(
+            "<head>",
+            `<head><base href="${location.origin}/md3/">`,
+          );
+          await loaded;
+          const w = frame.contentWindow,
+            d = frame.contentDocument;
+          await w.TokenAssets.ready;
+          await d.fonts.ready;
+          frame.scrollIntoView({ block: "start" });
+          const current = [...d.querySelectorAll('link[href*="/themes/"]')],
+            full = d.createElement("style");
+          full.textContent = baseline;
+          d.head.append(full);
+          const select = (mode) => {
+            full.disabled = mode === "scoped";
+            current.forEach((link) => (link.disabled = mode === "full"));
+          };
+          const freeze = d.createElement("style");
+          freeze.textContent =
+            "*,*::before,*::after{transition:none!important;animation:none!important}";
+          d.head.append(freeze);
+          const nodes = [
+            ...d.querySelectorAll(
+              "body,header,main,button,input,svg,#component-preview *",
+            ),
+          ];
+          for (const theme of ["light", "dark"])
+            for (const contrast of ["default", "medium", "high"]) {
+              d.documentElement.dataset.theme = theme;
+              d.documentElement.dataset.contrast = contrast;
+              select("full");
+              await raf(w);
+              const baseline = nodes.map((node) => {
+                const s = w.getComputedStyle(node);
+                return [...s]
+                  .filter((p) => !p.startsWith("--"))
+                  .map((p) => [p, s.getPropertyValue(p)]);
+              });
+              select("scoped");
+              await raf(w);
+              nodes.forEach((node, i) => {
+                const s = w.getComputedStyle(node);
+                for (const [p, value] of baseline[i]) {
+                  checks++;
+                  if (
+                    s.getPropertyValue(p) !== value &&
+                    differences.length < 20
+                  )
+                    differences.push({
+                      route,
+                      theme,
+                      contrast,
+                      node: node.tagName + "." + node.getAttribute("class"),
+                      property: p,
+                      full: value,
+                      scoped: s.getPropertyValue(p),
+                    });
+                }
+              });
+            }
+          freeze.remove();
+          const samples = {
+            full: { script: [], styleLayout: [], twoFrames: [] },
+            scoped: { script: [], styleLayout: [], twoFrames: [] },
+          };
+          for (const mode of ["full", "scoped", "scoped", "full"]) {
+            select(mode);
+            await raf(w);
+            for (let i = 0; i < 20; i++) {
+              await new Promise((resolve) => w.requestAnimationFrame(resolve));
+              const start = w.performance.now();
+              d.querySelector("[data-app-theme]").click();
+              d.querySelector(
+                `[data-app-contrast="${["default", "medium", "high"][i % 3]}"]`,
+              ).click();
+              const script = w.performance.now() - start;
+              void d.documentElement.offsetWidth;
+              const sync = w.performance.now() - start;
+              await raf(w);
+              if (i >= 4) {
+                samples[mode].script.push(script);
+                samples[mode].styleLayout.push(sync - script);
+                samples[mode].twoFrames.push(w.performance.now() - start);
+              }
+            }
+          }
+          pages.push({
+            route,
+            results: Object.fromEntries(
+              Object.entries(samples).map(([mode, metrics]) => [
+                mode,
+                Object.fromEntries(
+                  Object.entries(metrics).map(([metric, values]) => [
+                    metric,
+                    {
+                      samples: values.length,
+                      median: percentile(values, 0.5),
+                      p95: percentile(values, 0.95),
+                    },
+                  ]),
+                ),
+              ]),
+            ),
+          });
+        }
+        result.textContent = JSON.stringify(
+          { userAgent: navigator.userAgent, checks, differences, pages },
+          null,
+          2,
+        );
+      } catch (error) {
+        result.textContent = error.stack;
+      } finally {
+        button.disabled = false;
+      }
+    };
+  </script>
+</html>

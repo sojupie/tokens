@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" /><title>Page theme equivalence</title>
+  <style>
+    body {
+      font: 16px system-ui;
+      margin: 24px;
+    }
+    iframe {
+      width: 100%;
+      height: 600px;
+    }
+    pre {
+      white-space: pre-wrap;
+    }
+  </style>
+  <h1>Page theme equivalence</h1>
+  <p>
+    Compares layout, typography, color and surface properties in six appearances
+    with the complete theme. Requires baseline-theme.tmp.
+  </p>
+  <button id="run">Check page themes</button>
+  <pre id="result">Ready</pre>
+  <div id="frame"></div>
+  <script type="module">
+    const button = document.querySelector("#run"),
+      result = document.querySelector("#result"),
+      container = document.querySelector("#frame");
+    button.onclick = async () => {
+      button.disabled = true;
+      const differences = [];
+      let checks = 0;
+      try {
+        const baseline = await fetch("baseline-theme.tmp").then((r) => {
+          if (!r.ok) throw Error("Supply baseline-theme.tmp");
+          return r.text();
+        });
+        const index = await fetch("/md3/components").then((r) => r.text());
+        const routes = [
+          "/md3/",
+          "/md3/components",
+          "/md3/changes",
+          "/md3/styles",
+          "/md3/for-agents",
+          ...new Set(
+            [...index.matchAll(/href="(\/md3\/components\/[a-z0-9-]+)"/g)].map(
+              (m) => m[1],
+            ),
+          ),
+        ];
+        for (const route of routes) {
+          result.textContent = "Checking " + route;
+          container.replaceChildren();
+          const frame = document.createElement("iframe");
+          container.append(frame);
+          const html = await fetch(route + "?preview.compare=states").then(
+            (r) => r.text(),
+          );
+          const loaded = new Promise((resolve) => (frame.onload = resolve));
+          frame.srcdoc = html.replace(
+            "<head>",
+            `<head><base href="${location.origin}/md3/"><style>*,::before,::after{transition:none!important;animation:none!important}</style>`,
+          );
+          await loaded;
+          const w = frame.contentWindow,
+            d = frame.contentDocument;
+          await w.TokenAssets.ready;
+          await d.fonts.ready;
+          const themes = [
+              ...d.querySelectorAll(
+                'link[href*="/themes/"],link[href*="/theme.css"]',
+              ),
+            ],
+            old = d.createElement("style");
+          old.textContent = baseline;
+          old.disabled = true;
+          d.head.append(old);
+          const nodes = [
+            ...d.querySelectorAll(
+              "#component-preview [class],.tokens-component-thumbnail [class],header [class],footer [class],.tokens-history-filters [class]",
+            ),
+          ];
+          const properties = [
+            "display",
+            "position",
+            "width",
+            "height",
+            "min-width",
+            "min-height",
+            "max-width",
+            "max-height",
+            "padding",
+            "margin",
+            "gap",
+            "grid-template-columns",
+            "flex-direction",
+            "align-items",
+            "justify-content",
+            "font",
+            "letter-spacing",
+            "text-align",
+            "color",
+            "background-color",
+            "background-image",
+            "border",
+            "border-radius",
+            "box-shadow",
+            "opacity",
+            "transform",
+            "fill",
+            "stroke",
+            "stroke-width",
+            "overflow",
+            "clip-path",
+            "outline",
+            "visibility",
+            "color-scheme",
+          ];
+          for (const theme of ["light", "dark"])
+            for (const contrast of ["default", "medium", "high"]) {
+              d.documentElement.dataset.theme = theme;
+              d.documentElement.dataset.contrast = contrast;
+              themes.forEach((s) => (s.disabled = false));
+              old.disabled = true;
+              const actual = nodes.map((node) => {
+                const s = w.getComputedStyle(node);
+                return properties.map((p) => [p, s.getPropertyValue(p)]);
+              });
+              themes.forEach((s) => (s.disabled = true));
+              old.disabled = false;
+              nodes.forEach((node, i) => {
+                const s = w.getComputedStyle(node);
+                for (const [property, value] of actual[i]) {
+                  checks++;
+                  if (
+                    value !== s.getPropertyValue(property) &&
+                    differences.length < 30
+                  )
+                    differences.push({
+                      route,
+                      theme,
+                      contrast,
+                      node: node.tagName + "." + node.getAttribute("class"),
+                      property,
+                      scoped: value,
+                      full: s.getPropertyValue(property),
+                    });
+                }
+              });
+            }
+        }
+        result.textContent = JSON.stringify(
+          { pages: routes.length, checks, differences },
+          null,
+          2,
+        );
+      } catch (error) {
+        result.textContent = error.stack;
+      } finally {
+        button.disabled = false;
+      }
+    };
+  </script>
+</html>

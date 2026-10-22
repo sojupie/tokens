@@ -77,9 +77,13 @@ ordinary page changes retain the document and shared header.
 
 The generated site theme declares common values once and appearance differences
 under the six theme/contrast selectors. This reduces CSS without changing the
-complete context exports offered for download. The browser still inherits the
-full site token set; these bundles reduce component rules and behavior delivery,
-not the number of token variables inherited by each element.
+complete context exports offered for download. `forge/theme-subsets.mjs` traces
+CSS variable dependencies across all six appearances. Shared site and control
+inputs live on the root; each playground loads its remaining family inputs under
+`#component-preview`. Overview pages load the full optional set for their mixed
+thumbnails. Page themes follow the same body lifetime as component stylesheets.
+The server verifies their publication manifest checksums and retains the bytes at
+startup. Older asset manifests keep the complete theme as a fallback.
 
 These are still the current native HTML/CSS/JavaScript components used by Catalog,
 not a published Web Components library. The

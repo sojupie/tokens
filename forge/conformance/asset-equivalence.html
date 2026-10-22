@@ -136,7 +136,9 @@
                   [...baseline[0].matchAll(/(--[\w-]+)\s*:/g)].map((m) => m[1]),
                 ),
               ],
-              theme = d.querySelector('link[href*="theme.css"]');
+              theme = d.querySelector(
+                'link[href*="theme.css"],link[href*="/themes/shared.css"]',
+              );
             for (const appearance of ["light", "dark"])
               for (const contrast of ["default", "medium", "high"]) {
                 d.documentElement.dataset.theme = appearance;
@@ -150,6 +152,7 @@
                 d.head.append(old);
                 const previous = w.getComputedStyle(d.documentElement);
                 for (let i = 0; i < names.length; i++) {
+                  if (!values[i]) continue; // Optional inputs now live in preview scopes.
                   checks++;
                   const expected = clean(previous.getPropertyValue(names[i]));
                   if (values[i] !== expected && differences.length < 30)
