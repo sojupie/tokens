@@ -257,6 +257,14 @@ cancels its frame/timer callbacks while paused, hidden or offscreen. The HTML ti
 remain as a fallback if a 2D context cannot be created. Only the Canvas variant
 loads the additional renderer script.
 
+Carousel touch scrolling uses native momentum and snapping. Its masked item geometry
+updates directly from scroll events, without another queued animation frame. Button,
+keyboard and mouse-release settling use fractional transforms sampled from a Web
+Animations clock with the standard easing and medium2 duration tokens. Mouse release
+projects recent drag velocity to choose the destination. Pointer and wheel input
+interrupt settling; reduced motion skips it. `/carousel.html` checks all four variants
+at desktop and phone widths, RTL, endpoints, focus and interruption behavior.
+
 Open `/hero.html` through the conformance proxy to check full-loop frame fit,
 DOM/Canvas geometry and corner parity, six appearances, responsive sizing and
 playback controls. Its profile alternates DOM/Canvas/Canvas/DOM on the real

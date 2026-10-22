@@ -39,7 +39,8 @@ test('cleanup ignores carousel descendants that were never initialized',()=>{
  assert.doesNotThrow(()=>listeners['htmx:beforeCleanupElement']({detail:{elt:child}}));
 });
 test('mouse release settles smoothly before restoring snapping',()=>{
- for(const reduced of [false,true]) {
+ for(const reduced of [false,true])for(const fast of [false,true]) {
+  let nextFrame,clock;
   const listeners={},scrollListeners={},calls=[],buttons=Array.from({length:6},()=>({style:{},disabled:false}));
   const output={},controls={},viewport={
    clientWidth:656,scrollWidth:1445,scrollLeft:0,
@@ -56,24 +57,26 @@ test('mouse release settles smoothly before restoring snapping',()=>{
   const document={readyState:'complete',querySelectorAll:()=>[root],addEventListener:(name,fn)=>listeners[name]=fn};
   runInNewContext(readFileSync(`${__dirname}/static/carousel.js`,'utf8'),{
    document,matchMedia:()=>({matches:reduced}),window:{addEventListener(){}},
-   getComputedStyle:()=>({direction:'ltr',paddingInlineStart:'8px',paddingInlineEnd:'8px',getPropertyValue:name=>name==='--_carousel-preferred'?'160px':'8px'}),
+   getComputedStyle:()=>({direction:'ltr',paddingInlineStart:'8px',paddingInlineEnd:'8px',getPropertyValue:name=>name==='--_carousel-preferred'?'160px':name==='--md-sys-motion-duration-medium2'?'300ms':name==='--md-sys-motion-easing-standard'?'cubic-bezier(0.2,0,0,1)':'8px'}),
+   Animation:class{constructor(effect){this.effect=effect;this.playState='running';clock=this;}play(){}cancel(){}},KeyframeEffect:class{getComputedTiming(){return{progress:clock.playState==='finished'?1:.5};}},requestAnimationFrame:fn=>{nextFrame=fn;return 1;},cancelAnimationFrame(){},
    ResizeObserver:class{constructor(fn){this.fn=fn;}observe(target){this.fn([{target}]);}},
   });
-  listeners.pointerdown({target,pointerType:'mouse',button:0,pointerId:1,clientX:500});
-  listeners.pointermove({pointerId:1,clientX:440,preventDefault(){}});
+  listeners.pointerdown({target,pointerType:'mouse',button:0,pointerId:1,clientX:500,timeStamp:0});
+  listeners.pointermove({pointerId:1,clientX:440,timeStamp:60,preventDefault(){}});
   assert.equal(viewport.scrollLeft,60);
   scrollListeners.scrollend(); // An idle moment while held is not the end of the gesture.
   assert.equal(root.dataset.carouselDragging,'');
   assert.equal(root.dataset.carouselSettled,undefined);
-  listeners.pointerup({pointerId:1});
-  assert.equal(calls.length,1);
-  assert.equal(calls[0].left,0);
-  assert.equal(calls[0].behavior,reduced?'instant':'smooth');
+  listeners.pointerup({pointerId:1,timeStamp:fast?70:160});
+  if(!reduced){nextFrame();assert.equal(calls[0].left,fast?109:30);clock.playState='finished';nextFrame();}
+  assert.equal(calls.length,reduced?1:2);
+  assert.equal(calls.at(-1).left,fast?158:0);
+  assert.equal(calls[0].behavior,'instant');
   assert.equal(calls[0].snap,'none');
   assert.equal(root.dataset.carouselDragging,undefined);
-  viewport.scrollLeft=0;
+  viewport.scrollLeft=fast?158:0;
   scrollListeners.scrollend();
   assert.equal(viewport.style.scrollSnapType,undefined);
-  assert.equal(root.dataset.carouselSettled,'0');
+  assert.equal(root.dataset.carouselSettled,fast?'1':'0');
  }
 });

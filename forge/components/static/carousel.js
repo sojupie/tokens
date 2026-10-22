@@ -61,38 +61,59 @@
   const roots=new WeakMap(),reduced=matchMedia('(prefers-reduced-motion: reduce)');
   const items=root=>[...root.querySelectorAll('.md-carousel-item')];
   function offset(state){return Math.abs(state.viewport.scrollLeft);}
+  function cancelMotion(state) {
+    if(state.motion){state.motion.clock.cancel();cancelAnimationFrame(state.motion.frame);state.motion=null;}
+  }
   function go(state,index,focus=false) {
     index=clamp(index,0,state.buttons.length-1);
-    const target=clamp(index*(state.plan.large+state.plan.gap),0,state.viewport.scrollWidth-state.viewport.clientWidth);
+    const target=Math.round(clamp(index*(state.plan.large+state.plan.gap),0,state.max));
+    const from=state.motion?.position??offset(state);cancelMotion(state);
     state.pendingFocus=focus&&!state.buttons[index].disabled?index:undefined;
-    if(Math.abs(offset(state)-target)<1){settled(state);return;}
+    state.viewport.style.scrollSnapType='none';
     delete state.root.dataset.carouselSettled;
-    state.viewport.scrollTo({left:(state.rtl?-1:1)*target,behavior:reduced.matches?'instant':'smooth'});
+    if(reduced.matches||Math.abs(from-target)<.01){state.viewport.scrollTo({left:(state.rtl?-1:1)*target,behavior:'instant'});settled(state);return;}
+    // Use the browser's token easing, but sample our geometry at display cadence.
+    // Native smooth scrolling quantizes scrollLeft and can update below display rate.
+    const style=getComputedStyle(state.root),clock=new Animation(new KeyframeEffect(null,[],{
+      duration:parseFloat(style.getPropertyValue('--md-sys-motion-duration-medium2')),
+      easing:style.getPropertyValue('--md-sys-motion-easing-standard').trim(),fill:'both',
+    }),document.timeline);
+    const motion=state.motion={clock,position:from,frame:0};clock.play();
+    function tick(){
+      const progress=clock.effect.getComputedTiming().progress??0;
+      motion.position=from+(target-from)*progress;
+      state.viewport.scrollTo({left:(state.rtl?-1:1)*motion.position,behavior:'instant'});
+      paint(state,motion.position);
+      if(clock.playState==='finished'){cancelMotion(state);settled(state);}
+      else motion.frame=requestAnimationFrame(tick);
+    }
+    motion.frame=requestAnimationFrame(tick);
   }
   function settled(state) {
-    if(drag?.state===state&&drag.moved)return;
+    if(state.motion||drag?.state===state&&drag.moved)return;
     state.viewport.style.removeProperty('scroll-snap-type');
     paint(state);
     if(state.pendingFocus!==undefined){const button=state.buttons[state.pendingFocus];state.pendingFocus=undefined;button.focus({preventScroll:true});}
     state.root.dataset.carouselSettled=state.root.dataset.carouselIndex;
     state.root.querySelector('output').textContent=`Item ${Number(state.root.dataset.carouselIndex)+1} of ${state.buttons.length}`;
   }
-  function paint(state) {
-    const {root,viewport,buttons,plan}=state,position=offset(state)/(plan.large+plan.gap),width=plan.width;
+  function paint(state,scroll=offset(state)) {
+    const {root,viewport,buttons,plan}=state,position=scroll/(plan.large+plan.gap),width=plan.width;
+    const max=state.max;
     buttons.forEach((button,index)=>{
       const frame=itemFrame(plan,index,position,buttons.length),left=Math.max(0,frame.left),right=Math.min(width,frame.left+frame.size),size=Math.max(0,right-left);
       // Outside items remain in the native scroll track without extending its bounds.
       button.style.visibility=size<1?'hidden':'visible';
       button.style.width=size+'px';
-      button.style.insetInlineStart=left+'px';
+      button.style.transform=`translateX(${state.rtl?-left:left}px)`;
     });
     const index=clamp(Math.round(position),0,buttons.length-1);
     root.dataset.carouselIndex=String(index);
-    root.querySelector('[data-carousel-step="-1"]').disabled=offset(state)<1;
-    root.querySelector('[data-carousel-step="1"]').disabled=offset(state)>=viewport.scrollWidth-viewport.clientWidth-1;
+    root.querySelector('[data-carousel-step="-1"]').disabled=scroll<1;
+    root.querySelector('[data-carousel-step="1"]').disabled=scroll>=max-1;
   }
   function resize(root) {
-    const state=roots.get(root);if(!state)return;
+    const state=roots.get(root);if(!state)return;cancelMotion(state);
     const style=getComputedStyle(root),prior=state.plan?offset(state)/(state.plan.large+state.plan.gap):0;
     state.rtl=style.direction==='rtl';
     const viewportStyle=getComputedStyle(state.viewport),width=state.viewport.clientWidth-parseFloat(viewportStyle.paddingInlineStart)-parseFloat(viewportStyle.paddingInlineEnd);
@@ -100,6 +121,7 @@
     root.style.setProperty('--_carousel-width',width+'px');
     root.style.setProperty('--_carousel-logical',state.plan.large+'px');
     root.style.setProperty('--_carousel-end',(root.dataset.variant==='uncontained'?0:Math.max(0,state.plan.width-state.plan.large))+'px');
+    state.max=state.viewport.scrollWidth-state.viewport.clientWidth;
     state.viewport.scrollLeft=(state.rtl?-1:1)*prior*(state.plan.large+state.plan.gap);paint(state);
   }
   const observer=new ResizeObserver(entries=>entries.forEach(e=>resize(e.target)));
@@ -109,7 +131,8 @@
       if(!root.querySelector('.md-carousel-scroll-track'))continue;
       if(roots.has(root))continue;
       const viewport=root.querySelector('.md-carousel-viewport'),buttons=items(root),state={root,viewport,buttons};roots.set(root,state);
-      viewport.addEventListener('scroll',()=>{if(!state.frame)state.frame=requestAnimationFrame(()=>{state.frame=0;paint(state);});},{passive:true});
+      viewport.addEventListener('scroll',()=>{if(!state.motion&&!(drag?.state===state&&drag.moved))paint(state);},{passive:true});
+      viewport.addEventListener('wheel',()=>{cancelMotion(state);state.pendingFocus=undefined;},{passive:true});
       viewport.addEventListener('scrollend',()=>settled(state));
       observer.observe(root);resize(root);
     }
@@ -134,27 +157,32 @@
   });
   let drag;
   document.addEventListener('pointerdown',event=>{
-    if(event.pointerType!=='mouse'||event.button!==0)return;
     const root=event.target.closest?.('.md-carousel');if(!root||!event.target.closest('.md-carousel-viewport'))return;
-    const state=roots.get(root);if(!state)return;state.suppress=false;
-    drag={state,id:event.pointerId,x:event.clientX,start:state.viewport.scrollLeft,button:event.target.closest('.md-carousel-item'),moved:false};
+    const state=roots.get(root);if(!state)return;cancelMotion(state);state.pendingFocus=undefined;state.suppress=false;
+    if(event.pointerType!=='mouse'||event.button!==0)return;
+    drag={state,id:event.pointerId,x:event.clientX,start:state.viewport.scrollLeft,button:event.target.closest('.md-carousel-item'),moved:false,lastX:event.clientX,lastTime:event.timeStamp,velocity:0};
   });
   document.addEventListener('pointermove',event=>{
     if(!drag||event.pointerId!==drag.id)return;const dx=event.clientX-drag.x;
     if(!drag.moved&&Math.abs(dx)<8)return;
     if(!drag.moved){drag.moved=true;drag.state.root.dataset.carouselDragging='';drag.state.viewport.setPointerCapture(event.pointerId);drag.button?.dispatchEvent(new Event('material:cancel-feedback',{bubbles:true}));}
+    const dt=event.timeStamp-drag.lastTime;
+    if(dt>0)drag.velocity=(event.clientX-drag.lastX)/dt;
+    drag.lastX=event.clientX;drag.lastTime=event.timeStamp;
     event.preventDefault();drag.state.viewport.scrollLeft=drag.start-dx;
+    paint(drag.state);
   });
   function finish(event,cancel=false) {
     if(!drag||event.pointerId!==drag.id)return;
-    const {state,moved,id}=drag;drag=null;
+    const {state,moved,id,velocity,lastTime}=drag;drag=null;
     if(state.viewport.hasPointerCapture(id))state.viewport.releasePointerCapture(id);
     if(moved){
       state.suppress=true;
       // Keep snapping off through the smooth settle; restoring it first can snap immediately.
       state.viewport.style.scrollSnapType='none';
       delete state.root.dataset.carouselDragging;
-      go(state,Math.round(offset(state)/(state.plan.large+state.plan.gap)));
+      const momentum=!cancel&&event.timeStamp-lastTime<80?velocity*(state.rtl?1:-1)*120:0;
+      go(state,Math.round((offset(state)+momentum)/(state.plan.large+state.plan.gap)));
     }
   }
   document.addEventListener('pointerup',finish);document.addEventListener('pointercancel',e=>finish(e,true));
@@ -162,8 +190,9 @@
   document.addEventListener('htmx:beforeCleanupElement',event=>{
     const node=event.detail?.elt;if(!node)return;
     const affected=[...(node.matches?.('.md-carousel')?[node]:[]),...node.querySelectorAll('.md-carousel')];
-    for(const root of affected){observer.unobserve(root);const state=roots.get(root);if(state?.frame)cancelAnimationFrame(state.frame);roots.delete(root);if(drag&&drag.state===state)finish({pointerId:drag.id},true);}
+    for(const root of affected){observer.unobserve(root);const state=roots.get(root);if(state)cancelMotion(state);if(drag?.state===state)drag=null;roots.delete(root);}
   });
+  reduced.addEventListener?.('change',()=>{if(reduced.matches)for(const root of document.querySelectorAll('.md-carousel')){const state=roots.get(root);if(state?.motion){state.motion.clock.finish();}}});
   document.addEventListener('htmx:afterSwap',()=>init());
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>init());else init();
   document.addEventListener('tokens:assets-ready',()=>init());
