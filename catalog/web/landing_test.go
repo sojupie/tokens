@@ -35,15 +35,15 @@ func TestLandingSamplesDoNotLimitCatalogIndexes(t *testing.T) {
 	}
 }
 
-func TestLandingCanvasIsOptionalAndKeepsHTMLFallback(t *testing.T) {
+func TestLandingCanvasIsDefaultAndKeepsHTMLFallback(t *testing.T) {
 	handler := New(publish.PublishedState{}, "").Handler()
-	for _, mode := range []string{"dom", "canvas", "unknown"} {
+	for _, mode := range []string{"", "dom", "canvas", "unknown"} {
 		response := httptest.NewRecorder()
 		handler.ServeHTTP(response, httptest.NewRequest("GET", "/?artwork="+mode, nil))
 		if response.Code != 200 {
 			t.Fatal(mode, response.Code)
 		}
-		if strings.Contains(response.Body.String(), `<canvas`) != (mode == "canvas") {
+		if strings.Contains(response.Body.String(), `<canvas`) != (mode != "dom") {
 			t.Fatal("wrong renderer", mode)
 		}
 		if strings.Count(response.Body.String(), `class="tokens-art-tile `) != 9 {

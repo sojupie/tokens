@@ -30,9 +30,9 @@ func (server *Server) handleOverview(response http.ResponseWriter, request *http
 			http.Error(response, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		renderer := "dom"
-		if request.URL.Query().Get("artwork") == "canvas" {
-			renderer = "canvas"
+		renderer := "canvas"
+		if request.URL.Query().Get("artwork") == "dom" {
+			renderer = "dom"
 		}
 		if err := server.renderHTML(response, request, overviewPage(server.state.CurrentSnapshot, subjects, thumbnails, renderer)); err != nil {
 			http.Error(response, err.Error(), http.StatusInternalServerError)

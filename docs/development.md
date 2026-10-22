@@ -248,8 +248,8 @@ The pause control, reduced-motion preference, document visibility and viewport
 intersection control playback.
 
 The mosaic has an inset inside the frame; complete blocks stay visible throughout
-the loop. The default renderer uses DOM/CSS. Add `?artwork=canvas` to the homepage
-to compare the optional Canvas 2D renderer in `catalog/web/static/artwork-canvas.js`.
+the loop. The default renderer uses Canvas 2D in `catalog/web/static/artwork-canvas.js`.
+Add `?artwork=dom` to the homepage to compare the DOM/CSS renderer.
 Both use the same tracks and spring samples from `artwork.js`. Canvas resolves
 palette colors through CSS on appearance changes, resizes its backing buffer with
 the viewport, and caps bitmap density at 2x. It sleeps during settled holds and
