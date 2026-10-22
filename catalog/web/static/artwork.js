@@ -52,7 +52,7 @@
     current?.dispose();current=null;
     if(!artwork)return;
     const style=getComputedStyle(artwork),spring=artworkSpring(parseFloat(style.getPropertyValue('--_art-spring-damping')),parseFloat(style.getPropertyValue('--_art-spring-stiffness')));
-    const stagger=parseFloat(style.getPropertyValue('--_art-stagger')),animations=[];
+    const animations=[],timing={duration:8000,iterations:Infinity,fill:'both',easing:'linear'};
     const shapeSpring=artworkSpring(parseFloat(style.getPropertyValue('--_art-shape-damping')),parseFloat(style.getPropertyValue('--_art-shape-stiffness')));
     const turnDuration=parseFloat(style.getPropertyValue('--_art-turn-duration')),turnEasing=style.getPropertyValue('--_art-turn-easing').trim();
     const tracks=[
@@ -61,11 +61,11 @@
         [[.7,1.5,.8],[1.5,.7,.8],[.6,1,1.4],[1,.6,1.4]],
         [[1,.7,1.3],[.8,1.5,.7],[1.4,.6,1],[.7,1.4,.9]],
       ];
-    if(spring&&Number.isFinite(stagger)){
+    if(spring){
       [artwork,...artwork.querySelectorAll('.tokens-art-column')].forEach((node,i)=>{
-        animations.push(node.animate(artworkFrames(tracks[i],i?'gridTemplateRows':'gridTemplateColumns',spring),{duration:8000,delay:i*stagger,iterations:Infinity,fill:'both',easing:'linear'}));
+        animations.push(node.animate(artworkFrames(tracks[i],i?'gridTemplateRows':'gridTemplateColumns',spring),timing));
       });
-      // Turn selected stripes on the same beats as their column resize and
+      // Turn selected stripes on the same beats as the grid resize and
       // corner morph. Held scenes keep neighboring tiles from turning together.
       const stripes=[...artwork.querySelectorAll('.tokens-art-sections')];
       if(Number.isFinite(turnDuration)&&turnEasing)stripes.forEach((node,index)=>{
@@ -73,19 +73,23 @@
         const states=Array.from({length:4},(_,scene)=>[Math.floor(((scene+phase)%4)/2)*90]);
         // A monotonic token curve avoids a distracting rotational rebound.
         const frames=artworkFrames(states,'--_art-angle',{samples:[0,1],duration:turnDuration},8000,'deg').map(frame=>({...frame,easing:turnEasing}));
-        animations.push(node.animate(frames,{duration:8000,delay:(col+1)*stagger,iterations:Infinity,fill:'both',easing:'linear'}));
+        animations.push(node.animate(frames,timing));
       });
     }
     const corners=['small','large','base','soft'].map(name=>parseFloat(style.getPropertyValue('--_art-corner-'+name)));
-    if(shapeSpring&&corners.every(Number.isFinite)&&Number.isFinite(stagger)){
+    if(shapeSpring&&corners.every(Number.isFinite)){
       // Share the owning column's resize clock; corners never pulse alone.
       const tiles=[...artwork.querySelectorAll('.tokens-art-tile')],properties=['--_art-radius-tl','--_art-radius-tr','--_art-radius-br','--_art-radius-bl'];
       [0,4,8,2,6,1,7,3,5].forEach(index=>{
         const states=artworkCornerStates(tracks,Math.floor(index/3),index%3,corners);
         const frames=artworkFrames(states,'borderRadius',shapeSpring,8000,'px').map(frame=>Object.fromEntries([['offset',frame.offset],...frame.borderRadius.split(' ').map((radius,i)=>[properties[i],radius])]));
-        animations.push(tiles[index].animate(frames,{duration:8000,delay:(Math.floor(index/3)+1)*stagger,iterations:Infinity,fill:'both',easing:'linear'}));
+        animations.push(tiles[index].animate(frames,timing));
       });
     }
+    // One scene clock: grid edges, directional corners and selected stripe turns
+    // begin together. Held stripe scenes preserve variation without delayed beats.
+    const startTime=document.timeline.currentTime;
+    animations.forEach(animation=>animation.startTime=startTime);
     let visible=true;
     const toggle=artwork.parentElement.querySelector('.tokens-art-pause input');
     function sync(){

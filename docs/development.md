@@ -241,8 +241,9 @@ section for change history and agent access. Hero artwork lives in
 `catalog/web/static/artwork.js`. Its color-block choreography and loop timing
 are authored; sampled captured spatial springs drive resize and shape
 transitions. Stripe turns use the standard easing and medium2 duration tokens
-to settle without overshoot. Corner changes share their block's resize clock and direction. Internal stripe
-turns start on that clock too, with different tiles turning on different beats.
+to settle without overshoot. Grid resizing, directional corner changes and stripe
+turns share one scene clock, with a transition every two seconds and no column
+delays. Different tiles turn on different beats; held scenes preserve variety.
 The pause control, reduced-motion preference, document visibility and viewport
 intersection control playback.
 

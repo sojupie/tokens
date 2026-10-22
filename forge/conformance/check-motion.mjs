@@ -211,6 +211,8 @@ export async function checkMotion(container) {
     art.scrollIntoView({block:'center'});await wait(50);
     const animations=art.getAnimations({subtree:true});
     assert(animations.length===22,'Hero starts its layout, stripe and corner animations');
+    assert(animations.every(a=>a.effect.getTiming().delay===0),'Hero resize, corner and stripe tracks share unstaggered beats');
+    assert(Math.max(...animations.map(a=>a.currentTime))-Math.min(...animations.map(a=>a.currentTime))<1,'Hero tracks share one scene clock');
     toggle.click();assert(animations.every(a=>a.playState==='paused'),'Hero pause control pauses every track');
     toggle.click();w.setMotionReduced(true);assert(animations.every(a=>a.playState==='paused'),'Hero reduced motion pauses every track');
     w.setMotionReduced(false);assert(animations.every(a=>a.playState==='running'),'Hero resumes after reduced motion clears');
