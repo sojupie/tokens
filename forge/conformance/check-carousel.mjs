@@ -17,8 +17,16 @@ export async function checkCarousel(container) {
       const viewport=root.querySelector('.md-carousel-viewport');if(!viewport)continue;
       const name=`${width}/${direction}/${root.dataset.variant}`;
       root.scrollIntoView({block:'center'});
+      const track=root.querySelector('.md-carousel-track');
+      assert(w.getComputedStyle(track).position==='sticky'&&w.getComputedStyle(track).contain.includes('layout'),`${name}: sticky visual track isolates item-mask layout`);
       const previous=root.querySelector('[data-carousel-step="-1"]'),next=root.querySelector('[data-carousel-step="1"]');
       root.querySelector('.md-carousel-item').dispatchEvent(new w.KeyboardEvent('keydown',{key:'Home',bubbles:true,cancelable:true}));await settle(root);
+      const geometry=()=>[...root.querySelectorAll('.md-carousel-item')].map(button=>button.style.width+' '+button.style.transform).join('|');
+      const atStart=geometry();
+      Object.defineProperty(viewport,'scrollLeft',{configurable:true,get:()=>direction==='rtl'?20:-20});
+      viewport.dispatchEvent(new w.Event('scroll'));
+      assert(geometry()===atStart,`${name}: outward overscroll does not fold into forward item motion`);
+      delete viewport.scrollLeft;
       const art=root.querySelector('.md-carousel-art');
       assert(w.getComputedStyle(art).insetInlineStart==='0px'&&w.getComputedStyle(art).translate==='none',`${name}: artwork uses explicit fractional centering`);
       let recording=true;const samples=[];
@@ -37,6 +45,11 @@ export async function checkCarousel(container) {
       const last=root.querySelectorAll('.md-carousel-item')[5];
       last.dispatchEvent(new w.KeyboardEvent('keydown',{key:'End',bubbles:true,cancelable:true}));await settle(root);
       assert(next.disabled&&d.activeElement===last,`${name}: End reaches last item and transfers focus`);
+      const end=(viewport.scrollWidth-viewport.clientWidth)*(direction==='rtl'?-1:1);
+      Object.defineProperty(viewport,'scrollLeft',{configurable:true,get:()=>end});viewport.dispatchEvent(new w.Event('scroll'));
+      const atBoundary=geometry(),beyondEnd=end+(direction==='rtl'?-20:20);
+      Object.defineProperty(viewport,'scrollLeft',{configurable:true,get:()=>beyondEnd});viewport.dispatchEvent(new w.Event('scroll'));
+      assert(geometry()===atBoundary,`${name}: end overscroll keeps boundary geometry stable`);delete viewport.scrollLeft;viewport.dispatchEvent(new w.Event('scroll'));
       const boxes=[...root.querySelectorAll('.md-carousel-item')].filter(b=>w.getComputedStyle(b).visibility!=='hidden').map(b=>b.getBoundingClientRect()).sort((a,b)=>a.left-b.left);
       for(let i=1;i<boxes.length;i++)assert(boxes[i].left-boxes[i-1].right>=7.9,`${name}: item gaps preserved`);
       previous.click();

@@ -257,7 +257,9 @@ cancels its frame/timer callbacks while paused, hidden or offscreen. The HTML ti
 remain as a fallback if a 2D context cannot be created. Only the Canvas variant
 loads the additional renderer script.
 
-Carousel touch scrolling uses native momentum and snapping. Its masked item geometry
+Carousel touch scrolling uses native momentum and snapping. The sticky visual track isolates descendant layout and carries a transform
+compositing hint. Signed scroll offsets are clamped at both ends so Safari rubber-banding does not
+fold into item movement. Its masked item geometry
 updates directly from scroll events, without another queued animation frame. Button,
 keyboard and mouse-release settling use fractional transforms sampled from a Web
 Animations clock with the standard easing and medium2 duration tokens. The native

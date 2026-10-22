@@ -60,7 +60,11 @@
   if(typeof document==='undefined')return;
   const roots=new WeakMap(),reduced=matchMedia('(prefers-reduced-motion: reduce)');
   const items=root=>[...root.querySelectorAll('.md-carousel-item')];
-  function offset(state){return Math.abs(state.viewport.scrollLeft);}
+  function offset(state){
+    // Safari can report positions beyond either end during rubber-banding.
+    // Taking abs() would fold a negative LTR overscroll into forward movement.
+    return clamp((state.rtl?-1:1)*state.viewport.scrollLeft,0,state.max??Infinity);
+  }
   function cancelMotion(state) {
     if(state.motion){
       // Hand the visible position back to native scrolling before user input or resize.

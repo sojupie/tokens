@@ -62,6 +62,10 @@ test('mouse release settles smoothly before restoring snapping',()=>{
    Animation:class{constructor(effect){this.effect=effect;this.playState='running';clock=this;}play(){}cancel(){}},KeyframeEffect:class{getComputedTiming(){return{progress:clock.playState==='finished'?1:.5};}},requestAnimationFrame:fn=>{nextFrame=fn;return 1;},cancelAnimationFrame(){},
    ResizeObserver:class{constructor(fn){this.fn=fn;}observe(target){this.fn([{target}]);}},
   });
+  const initialWidths=buttons.map(button=>button.style.width);
+  viewport.scrollLeft=-20;scrollListeners.scroll();
+  assert.deepEqual(buttons.map(button=>button.style.width),initialWidths,'start overscroll must not become forward motion');
+  viewport.scrollLeft=0;
   listeners.pointerdown({target,pointerType:'mouse',button:0,pointerId:1,clientX:500,timeStamp:0});
   listeners.pointermove({pointerId:1,clientX:440,timeStamp:60,preventDefault(){}});
   assert.equal(viewport.scrollLeft,60);
