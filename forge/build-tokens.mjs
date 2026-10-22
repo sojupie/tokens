@@ -7,7 +7,9 @@ import { generateButtons } from "./material/generate-buttons.mjs";
 import { buildComponentAssets } from "./components/build-assets.mjs";
 import { compactCSS, themeVariantsCSS } from './css-output.mjs';
 import { componentBundles } from './component-bundles.mjs';
+import { pageThemes } from './theme-subsets.mjs';
 import {
+  readdir,
   realpath,
   mkdir,
   readFile,
@@ -372,7 +374,47 @@ async function main() {
         .digest("hex") !== databaseSha256
     )
       throw new Error("Publication changed during the build");
+    const bundles = componentBundles(componentCSS);
+    const sharedSources = await Promise.all(
+      [
+        "catalog/web/static/app.css",
+        "catalog/web/static/token-table.css",
+        ...(await readdir("catalog/web"))
+          .filter((file) => file.endsWith(".templ"))
+          .map((file) => "catalog/web/" + file),
+      ].map((file) => readFile(file, "utf8")),
+    );
+    sharedSources.push(buttonCSS);
+    const runtimeFiles = (
+      await Promise.all(
+        ["forge/components/static", "catalog/web/static"].map(
+          async (directory) =>
+            (await readdir(directory))
+              .filter((file) => file.endsWith(".js"))
+              .map((file) => path.join(directory, file)),
+        ),
+      )
+    ).flat();
+    const runtimeSources = await Promise.all(
+      runtimeFiles.map((file) => readFile(file, "utf8")),
+    );
+    for (const source of sharedSources)
+      for (const match of source.matchAll(/var\(\s*--((?:md|catalog)-[\w-]+)/g))
+        required.add(match[1]);
+    for (const source of runtimeSources)
+      for (const match of source.matchAll(
+        /["'`]--((?:md|catalog)-[\w-]+)["'`]/g,
+      ))
+        required.add(match[1]);
+    for (const entry of totals) entry.cssVariables = required.size;
     themeCSS = themeVariantsCSS(themeVariants, required);
+    const themes = pageThemes(themeCSS, bundles, sharedSources, runtimeSources),
+      themeBundles = {};
+    await mkdir(path.join(output, "themes"));
+    for (const [name, { css }] of themes) {
+      await writeFile(path.join(output, "themes", name + ".css"), css);
+      themeBundles[name] = createHash("sha256").update(css).digest("hex");
+    }
     await writeFile(path.join(output, "theme.css"), themeCSS);
     await writeFile(path.join(output, "buttons.css"), buttonCSS);
     await writeFile(path.join(output, "components.css"), componentCSS);
@@ -423,6 +465,7 @@ async function main() {
           buttonsSha256: createHash("sha256").update(buttonCSS).digest("hex"),
           cssSha256: createHash("sha256").update(themeCSS).digest("hex"),
           variants: totals,
+          themeBundles,
         },
         null,
         2,
@@ -453,7 +496,6 @@ async function main() {
       await writeFile("forge/components/static/buttons.css", buttonCSS);
       await writeFile("forge/components/static/components.css", componentCSS);
     }
-    const bundles = componentBundles(componentCSS);
     for (const [name, css] of bundles) {
       const file = `forge/components/static/bundles/${name}.css`;
       if (args['check-bindings']) {
