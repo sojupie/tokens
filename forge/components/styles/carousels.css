@@ -68,9 +68,6 @@
 .md-carousel-scroll-track > .md-carousel-track {
   grid-area: 1 / 1;
   position: sticky;
-  /* Keep item-mask layout from invalidating the scrolling layer's geometry. */
-  contain: layout;
-  will-change: transform;
   inset-inline-start: 0;
   align-self: start;
   display: block;

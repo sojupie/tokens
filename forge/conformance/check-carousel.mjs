@@ -18,7 +18,7 @@ export async function checkCarousel(container) {
       const name=`${width}/${direction}/${root.dataset.variant}`;
       root.scrollIntoView({block:'center'});
       const track=root.querySelector('.md-carousel-track');
-      assert(w.getComputedStyle(track).position==='sticky'&&w.getComputedStyle(track).contain.includes('layout'),`${name}: sticky visual track isolates item-mask layout`);
+      assert(w.getComputedStyle(track).position==='sticky',`${name}: visual track uses native sticky positioning`);
       const previous=root.querySelector('[data-carousel-step="-1"]'),next=root.querySelector('[data-carousel-step="1"]');
       root.querySelector('.md-carousel-item').dispatchEvent(new w.KeyboardEvent('keydown',{key:'Home',bubbles:true,cancelable:true}));await settle(root);
       const geometry=()=>[...root.querySelectorAll('.md-carousel-item')].map(button=>button.style.width+' '+button.style.transform).join('|');
