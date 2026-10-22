@@ -48,3 +48,22 @@ func TestLazyAssetsKeepVersionedPublicDelivery(t *testing.T) {
 		}
 	}
 }
+
+func TestPageThemesFollowStylesAndKeepSharedHead(t *testing.T) {
+	server := &Server{themeBundles: map[string][]byte{"shared": []byte("shared"), "all": []byte("all"), "navigation": []byte("navigation")}}
+	for _, tc := range []struct{ path, page string }{{"/changes", ""}, {"/components/navigation-rail", "navigation"}, {"/components", "all"}} {
+		ctx := context.WithValue(context.Background(), pageMetadataKey{}, pageMetadata{Path: tc.path})
+		themes := server.pageThemes(ctx)
+		ctx = context.WithValue(ctx, pageThemeKey{}, themes)
+		if !strings.HasPrefix(themeURL(ctx), "/themes/shared.css?v=") {
+			t.Fatal("missing shared head", tc.path)
+		}
+		if tc.page == "" {
+			if themes.Page != "" {
+				t.Fatal("unrelated component theme", themes.Page)
+			}
+		} else if !strings.HasPrefix(pageThemeURL(ctx), "/themes/"+tc.page+".css?v=") {
+			t.Fatal("wrong page theme", themes.Page)
+		}
+	}
+}

@@ -24,12 +24,24 @@ func TestGeneratedAssetsAreBoundToPublication(t *testing.T) {
 	digest := func(data []byte) string { sum := sha256.Sum256(data); return hex.EncodeToString(sum[:]) }
 	components, _ := readStaticFile("static/components.css")
 	buttons, _ := readStaticFile("static/buttons.css")
-	manifest := map[string]string{"publicationId": "test", "snapshotId": "capture", "databaseSha256": digest(database), "cssSha256": digest(css), "buttonsSha256": digest(buttons), "componentsSha256": digest(components)}
+	manifest := map[string]any{"publicationId": "test", "snapshotId": "capture", "databaseSha256": digest(database), "cssSha256": digest(css), "buttonsSha256": digest(buttons), "componentsSha256": digest(components)}
 	for file, data := range map[string][]byte{"tokens.sqlite": database, "assets/theme.css": css, "assets/dtcg/light-default/tokens.tokens.json": []byte(`{"size":{"$type":"dimension","$value":{"value":4,"unit":"px"}}}`)} {
 		if err := os.WriteFile(filepath.Join(directory, file), data, 0644); err != nil {
 			t.Fatal(err)
 		}
 	}
+	if err := os.MkdirAll(filepath.Join(assets, "themes"), 0755); err != nil {
+		t.Fatal(err)
+	}
+	themeCSS := []byte(":root{--shared:red}")
+	checksums := map[string]string{}
+	for _, name := range []string{"shared", "all", "navigation"} {
+		if err := os.WriteFile(filepath.Join(assets, "themes", name+".css"), themeCSS, 0644); err != nil {
+			t.Fatal(err)
+		}
+		checksums[name] = digest(themeCSS)
+	}
+	manifest["themeBundles"] = checksums
 	data, _ := json.Marshal(manifest)
 	if err := os.WriteFile(filepath.Join(assets, "manifest.json"), data, 0644); err != nil {
 		t.Fatal(err)
@@ -37,6 +49,20 @@ func TestGeneratedAssetsAreBoundToPublication(t *testing.T) {
 	state := publish.PublishedState{PublicationID: "test", CurrentSnapshot: publish.SnapshotView{ID: "capture"}}
 	server := New(state, "")
 	if err := server.UseGeneratedAssets(directory); err != nil {
+		t.Fatal(err)
+	}
+	responseBundle := httptest.NewRecorder()
+	server.Handler().ServeHTTP(responseBundle, httptest.NewRequest("GET", "/themes/navigation.css?v="+digest(themeCSS), nil))
+	if responseBundle.Code != 200 || responseBundle.Body.String() != string(themeCSS) || !strings.Contains(responseBundle.Header().Get("Cache-Control"), "immutable") {
+		t.Fatal("theme bundle delivery", responseBundle)
+	}
+	if err := os.WriteFile(filepath.Join(assets, "themes", "navigation.css"), []byte("tampered"), 0644); err != nil {
+		t.Fatal(err)
+	}
+	if err := server.UseGeneratedAssets(directory); err == nil {
+		t.Fatal("accepted corrupted theme bundle")
+	}
+	if err := os.WriteFile(filepath.Join(assets, "themes", "navigation.css"), themeCSS, 0644); err != nil {
 		t.Fatal(err)
 	}
 	if !strings.Contains(server.agentGuide(), "/downloads/dtcg/light-default/tokens.tokens.json") {

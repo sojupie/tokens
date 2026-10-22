@@ -254,3 +254,15 @@ func (server *Server) handleTheme(response http.ResponseWriter, request *http.Re
 	response.Header().Set("Content-Type", "text/css; charset=utf-8")
 	serveCachedAsset(response, request, "theme.css", []byte(server.themeCSS))
 }
+
+func (server *Server) handleThemeBundle(response http.ResponseWriter, request *http.Request) {
+	name := strings.TrimSuffix(request.PathValue("name"), ".css")
+	data, ok := server.themeBundles[name]
+	if !ok || !strings.HasSuffix(request.PathValue("name"), ".css") {
+		response.Header().Set("Cache-Control", "no-store")
+		http.NotFound(response, request)
+		return
+	}
+	response.Header().Set("Content-Type", "text/css; charset=utf-8")
+	serveCachedAsset(response, request, name+".css", data)
+}

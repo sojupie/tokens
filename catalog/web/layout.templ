@@ -87,6 +87,9 @@ templ layout(title string) {
 				</nav>
 			</header>
 			<main class="tokens-main">
+				if theme := pageThemeURL(ctx); theme != "" {
+					<link rel="stylesheet" href={ theme } data-component-stylesheet data-page-theme/>
+				}
 				if stylesheet := componentStylesheet(ctx); stylesheet != "" {
 					<link rel="stylesheet" href={ staticURL(stylesheet) } data-component-stylesheet/>
 				}

@@ -52,3 +52,34 @@ var componentScriptSources = sync.OnceValue(func() string {
 	}
 	return string(data)
 })
+
+// Page themes share the component stylesheet's lifetime. Gallery thumbnails need
+// all optional tokens; playgrounds inherit only their own family's tokens.
+type pageThemeKey struct{}
+type pageThemesContext struct{ Shared, Page string }
+
+func (server *Server) pageThemes(ctx context.Context) pageThemesContext {
+	if len(server.themeBundles) == 0 {
+		return pageThemesContext{}
+	}
+	result := pageThemesContext{Shared: "/themes/shared.css?v=" + assetVersion(server.themeBundles["shared"])}
+	stylesheet := componentStylesheet(ctx)
+	if stylesheet == "" {
+		return result
+	}
+	name := strings.TrimSuffix(strings.TrimPrefix(stylesheet, "bundles/"), ".css")
+	data, ok := server.themeBundles[name]
+	if !ok {
+		name = "all"
+		data = server.themeBundles[name]
+	}
+	result.Page = "/themes/" + name + ".css?v=" + assetVersion(data)
+	return result
+}
+
+func pageThemeURL(ctx context.Context) string {
+	if themes, ok := ctx.Value(pageThemeKey{}).(pageThemesContext); ok {
+		return themes.Page
+	}
+	return ""
+}

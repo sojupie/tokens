@@ -85,6 +85,9 @@ func compressedAsset(version string, content []byte) ([]byte, error) {
 }
 
 func themeURL(ctx context.Context) string {
+	if themes, ok := ctx.Value(pageThemeKey{}).(pageThemesContext); ok && themes.Shared != "" {
+		return themes.Shared
+	}
 	if version, ok := ctx.Value(themeVersionKey{}).(string); ok {
 		return "/theme.css?v=" + version
 	}

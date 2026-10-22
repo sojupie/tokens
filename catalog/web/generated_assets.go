@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 // UseGeneratedAssets loads Style Dictionary output belonging to this exact
@@ -34,7 +35,10 @@ func (server *Server) useGeneratedAssets(publicationDir, directory string, requi
 	if err != nil {
 		return err
 	}
-	var manifest struct{ PublicationID, SnapshotID, DatabaseSha256, CssSha256, ButtonsSha256, ComponentsSha256 string }
+	var manifest struct {
+		PublicationID, SnapshotID, DatabaseSha256, CssSha256, ButtonsSha256, ComponentsSha256 string
+		ThemeBundles                                                                          map[string]string
+	}
 	if err := json.Unmarshal(data, &manifest); err != nil {
 		return err
 	}
@@ -82,6 +86,25 @@ func (server *Server) useGeneratedAssets(publicationDir, directory string, requi
 		return fmt.Errorf("generated component bindings differ from the server binary; rebuild token assets and the server")
 	}
 
+	// A running server keeps the verified bytes, just as it does for theme.css.
+	themes := map[string][]byte{}
+	for name, checksum := range manifest.ThemeBundles {
+		if name == "" || strings.Trim(name, "abcdefghijklmnopqrstuvwxyz-") != "" {
+			return fmt.Errorf("invalid theme bundle name")
+		}
+		data, err := os.ReadFile(filepath.Join(directory, "themes", name+".css"))
+		if err != nil {
+			return err
+		}
+		if assetVersion(data) != checksum {
+			return fmt.Errorf("generated theme bundle checksum mismatch: %s", name)
+		}
+		themes[name] = data
+	}
+	if len(themes) > 0 && (themes["shared"] == nil || themes["all"] == nil) {
+		return fmt.Errorf("generated themes need shared and all bundles")
+	}
+	server.themeBundles = themes
 	server.themeCSS = string(css)
 	server.themeError = nil
 	server.tokenAssetsDir = directory

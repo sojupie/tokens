@@ -237,6 +237,7 @@ func (server *Server) renderHTML(response http.ResponseWriter, request *http.Req
 	if metadata(ctx).NoIndex {
 		response.Header().Set("X-Robots-Tag", "noindex, follow")
 	}
+	ctx = context.WithValue(ctx, pageThemeKey{}, server.pageThemes(ctx))
 	ctx = context.WithValue(ctx, themeVersionKey{}, assetVersion([]byte(server.themeCSS)))
 	var rendered bytes.Buffer
 	if err := component.Render(ctx, &rendered); err != nil {

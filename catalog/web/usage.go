@@ -52,7 +52,7 @@ func (server *Server) observe(next http.Handler) http.Handler {
 		if p == "/api/v1/health" || p == "/" && ip != nil && ip.IsLoopback() && r.Header.Get("CF-Ray") == "" {
 			return
 		}
-		if response.status < 400 && (strings.HasPrefix(p, "/static/") || p == "/theme.css" || r.Method == http.MethodOptions) {
+		if response.status < 400 && (strings.HasPrefix(p, "/static/") || p == "/theme.css" || strings.HasPrefix(p, "/themes/") || r.Method == http.MethodOptions) {
 			return
 		}
 		event := usage.Event{Time: time.Now().UTC(), Event: "http_request", Route: "unmatched", Kind: "other", Method: "other", Status: response.status, Success: response.status < 400, Bytes: response.bytes, DurationMS: float64(time.Since(start)) / float64(time.Millisecond)}

@@ -46,7 +46,7 @@ func (w *bufferedResponse) Write(body []byte) (int, error) {
 
 func cacheableRequest(r *http.Request) bool {
 	p := r.URL.Path
-	return (r.Method == "GET" || r.Method == "HEAD") && r.Header.Get("Range") == "" && p != "/mcp" && p != "/api/v1/health" && !strings.HasPrefix(p, "/usage") && !strings.HasPrefix(p, "/static/") && p != "/theme.css" && (!strings.HasPrefix(p, "/downloads/") || r.URL.Query().Has("scope"))
+	return (r.Method == "GET" || r.Method == "HEAD") && r.Header.Get("Range") == "" && p != "/mcp" && p != "/api/v1/health" && !strings.HasPrefix(p, "/usage") && !strings.HasPrefix(p, "/static/") && p != "/theme.css" && !strings.HasPrefix(p, "/themes/") && (!strings.HasPrefix(p, "/downloads/") || r.URL.Query().Has("scope"))
 }
 func (c *responseCache) get(key string) *cachedResponse {
 	c.Lock()

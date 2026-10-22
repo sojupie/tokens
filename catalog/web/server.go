@@ -27,6 +27,7 @@ type Server struct {
 	tokenAssetsDir string
 	downloadsDir   string
 	themeCSS       string
+	themeBundles   map[string][]byte
 	themeError     error
 }
 
@@ -87,6 +88,7 @@ func (server *Server) Handler() http.Handler {
 		mux.HandleFunc("GET "+discoveryPath, server.handleWellKnown)
 	}
 	mux.HandleFunc("GET /theme.css", server.handleTheme)
+	mux.HandleFunc("GET /themes/{name}", server.handleThemeBundle)
 	mux.HandleFunc("GET /api/v1/health", server.handleHealth)
 	mux.HandleFunc("GET /api/v1/releases", server.handleReleases)
 	mux.HandleFunc("GET /api/v1/changes", server.handleChanges)
