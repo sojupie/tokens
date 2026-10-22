@@ -247,6 +247,49 @@ delays. Different tiles turn on different beats; held scenes preserve variety.
 The pause control, reduced-motion preference, document visibility and viewport
 intersection control playback.
 
+The mosaic has an inset inside the frame; complete blocks stay visible throughout
+the loop. The default renderer uses DOM/CSS. Add `?artwork=canvas` to the homepage
+to compare the optional Canvas 2D renderer in `catalog/web/static/artwork-canvas.js`.
+Both use the same tracks and spring samples from `artwork.js`. Canvas resolves
+palette colors through CSS on appearance changes, resizes its backing buffer with
+the viewport, and caps bitmap density at 2x. It sleeps during settled holds and
+cancels its frame/timer callbacks while paused, hidden or offscreen. The HTML tiles
+remain as a fallback if a 2D context cannot be created. Only the Canvas variant
+loads the additional renderer script.
+
+Open `/hero.html` through the conformance proxy to check full-loop frame fit,
+DOM/Canvas geometry and corner parity, six appearances, responsive sizing and
+playback controls. Its profile alternates DOM/Canvas/Canvas/DOM on the real
+homepage, using two complete active loops per sample and separate paused and
+offscreen samples. It reports frame intervals, long animation frames and Canvas
+draw-command submission time. Submission time does not include completed GPU
+rasterization.
+
+Optional Linux CPU counters come from explicitly selected browser renderer and GPU
+processes. Start the conformance proxy with `--profile-pids` followed by their
+comma-separated numeric PIDs. `/profile/cpu` reads their cumulative process CPU
+counters; the fixture computes deltas for each sample. Percentages use one core
+as 100 percent, and GPU-process CPU time is not GPU-device utilization. Pause other
+animated pages and avoid browser interaction during sampling. Without configured
+PIDs, the profile still reports browser timing metrics. These checks run locally;
+the profiling endpoint is not included in Catalog.
+
+A Chromium 155/Linux run on 2026-10-22 used a 381 × 416 CSS-pixel hero at DPR 1,
+with DOM/Canvas/Canvas/DOM order. Each active sample lasted 16 seconds; paused and
+offscreen samples lasted eight seconds. The hero iframe's renderer process used
+16.1–19.1 percent of one core for DOM and 2.81 percent for Canvas. Idle samples
+were approximately 1.6–3.0 percent, including the timing harness. GPU-process CPU
+was 23.2–23.9 percent for DOM and 20.0–20.5 percent for Canvas, against an idle
+baseline around 15.1–15.6 percent. This shared GPU-process counter includes the
+browser application and is not a measure of GPU hardware load.
+
+Both renderers had a frame-interval p95 around 20.9 ms and no animation frames over
+50 ms. Canvas draw-command submission p95 was 0.3 ms, with no draws during paused
+or offscreen samples. These results support lower renderer CPU cost for this scene;
+they do not establish battery savings or results on other browsers, sizes or DPRs.
+
+
+
 Menus use shared Forge behavior. Browsers with overlay transitions retain the
 native exit surface. Other browsers receive an inert, ARIA-hidden visual copy
 that follows the spatial/effects spring curves, then is removed. FAB exits
