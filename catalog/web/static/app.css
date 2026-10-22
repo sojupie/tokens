@@ -326,7 +326,7 @@ button:not(:disabled), [role=button]:not([aria-disabled=true]) { cursor:pointer;
 .tokens-landing-copy > :first-child { color:var(--md-sys-color-primary); }
 .tokens-landing-actions { display:flex;flex-wrap:wrap;align-items:center;gap:var(--md-sys-measurement-space100);margin-block-start:var(--md-sys-measurement-space100); }
 .tokens-landing-art { position:relative;overflow:hidden;isolation:isolate;min-inline-size:0;min-block-size:28rem;border-radius:var(--md-sys-shape-corner-extra-large);background:var(--md-sys-color-surface); }
-.tokens-art-mosaic { position:absolute;inset:-8% -6%;display:grid;grid-template-columns:1.2fr .8fr 1fr;gap:8px;--_art-spring-damping:var(--md-sys-motion-spring-slow-spatial-damping);--_art-spring-stiffness:var(--md-sys-motion-spring-slow-spatial-stiffness);--_art-turn-duration:var(--md-sys-motion-duration-medium2);--_art-turn-easing:var(--md-sys-motion-easing-standard);--_art-shape-damping:var(--md-sys-motion-spring-fast-spatial-damping);--_art-shape-stiffness:var(--md-sys-motion-spring-fast-spatial-stiffness);--_art-corner-small:var(--md-sys-shape-corner-small);--_art-corner-large:var(--md-sys-shape-corner-large);--_art-corner-base:var(--md-sys-shape-corner-extra-large);--_art-corner-soft:var(--md-sys-shape-corner-extra-extra-large); }
+.tokens-art-mosaic { position:absolute;inset:var(--md-sys-measurement-space200);display:grid;grid-template-columns:1.2fr .8fr 1fr;gap:8px;--_art-spring-damping:var(--md-sys-motion-spring-slow-spatial-damping);--_art-spring-stiffness:var(--md-sys-motion-spring-slow-spatial-stiffness);--_art-turn-duration:var(--md-sys-motion-duration-medium2);--_art-turn-easing:var(--md-sys-motion-easing-standard);--_art-shape-damping:var(--md-sys-motion-spring-fast-spatial-damping);--_art-shape-stiffness:var(--md-sys-motion-spring-fast-spatial-stiffness);--_art-corner-small:var(--md-sys-shape-corner-small);--_art-corner-large:var(--md-sys-shape-corner-large);--_art-corner-base:var(--md-sys-shape-corner-extra-large);--_art-corner-soft:var(--md-sys-shape-corner-extra-extra-large); }
 .tokens-art-column { display:grid;min-inline-size:0;min-block-size:0;gap:8px; }
 .tokens-art-column-0 { grid-template-rows:1.3fr .7fr 1fr; }
 .tokens-art-column-1 { grid-template-rows:.7fr 1.5fr .8fr; }
@@ -368,3 +368,4 @@ button:not(:disabled), [role=button]:not([aria-disabled=true]) { cursor:pointer;
 
 /* Turning the desktop navigation into a mobile popover is layout setup. */
 .tokens-primary-nav > .tokens-navigation-content[popover] { transition:none; }
+
