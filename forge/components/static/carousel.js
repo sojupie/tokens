@@ -62,18 +62,27 @@
   const items=root=>[...root.querySelectorAll('.md-carousel-item')];
   function offset(state){return Math.abs(state.viewport.scrollLeft);}
   function cancelMotion(state) {
-    if(state.motion){state.motion.clock.cancel();cancelAnimationFrame(state.motion.frame);state.motion=null;}
+    if(state.motion){
+      // Hand the visible position back to native scrolling before user input or resize.
+      state.viewport.scrollTo({left:(state.rtl?-1:1)*state.motion.position,behavior:'instant'});
+      state.motion.clock.cancel();cancelAnimationFrame(state.motion.frame);state.motion=null;
+    }
   }
   function go(state,index,focus=false) {
     index=clamp(index,0,state.buttons.length-1);
-    const target=Math.round(clamp(index*(state.plan.large+state.plan.gap),0,state.max));
     const from=state.motion?.position??offset(state);cancelMotion(state);
+    const requested=state.targets[index];
     state.pendingFocus=focus&&!state.buttons[index].disabled?index:undefined;
     state.viewport.style.scrollSnapType='none';
     delete state.root.dataset.carouselSettled;
-    if(reduced.matches||Math.abs(from-target)<.01){state.viewport.scrollTo({left:(state.rtl?-1:1)*target,behavior:'instant'});settled(state);return;}
-    // Use the browser's token easing, but sample our geometry at display cadence.
-    // Native smooth scrolling quantizes scrollLeft and can update below display rate.
+    // Resolve the real snap offset through the browser once, including its scroll
+    // precision. Keep fractional keylines; rounding every item changes the layout.
+    state.viewport.scrollTo({left:(state.rtl?-1:1)*requested,behavior:'instant'});
+    const target=offset(state);
+    if(reduced.matches||Math.abs(from-target)<.01){settled(state);return;}
+    state.viewport.scrollTo({left:(state.rtl?-1:1)*from,behavior:'instant'});
+    // The sticky visual track does not need native scrolling on every animation
+    // frame. One token clock drives fractional geometry; sync at completion/input.
     const style=getComputedStyle(state.root),clock=new Animation(new KeyframeEffect(null,[],{
       duration:parseFloat(style.getPropertyValue('--md-sys-motion-duration-medium2')),
       easing:style.getPropertyValue('--md-sys-motion-easing-standard').trim(),fill:'both',
@@ -82,7 +91,6 @@
     function tick(){
       const progress=clock.effect.getComputedTiming().progress??0;
       motion.position=from+(target-from)*progress;
-      state.viewport.scrollTo({left:(state.rtl?-1:1)*motion.position,behavior:'instant'});
       paint(state,motion.position);
       if(clock.playState==='finished'){cancelMotion(state);settled(state);}
       else motion.frame=requestAnimationFrame(tick);
@@ -98,7 +106,9 @@
     state.root.querySelector('output').textContent=`Item ${Number(state.root.dataset.carouselIndex)+1} of ${state.buttons.length}`;
   }
   function paint(state,scroll=offset(state)) {
-    const {root,viewport,buttons,plan}=state,position=scroll/(plan.large+plan.gap),width=plan.width;
+    if(state.lastPainted===scroll)return;
+    state.lastPainted=scroll;
+    const {root,buttons,plan}=state,position=scroll/(plan.large+plan.gap),width=plan.width;
     const max=state.max;
     buttons.forEach((button,index)=>{
       const frame=itemFrame(plan,index,position,buttons.length),left=Math.max(0,frame.left),right=Math.min(width,frame.left+frame.size),size=Math.max(0,right-left);
@@ -106,6 +116,10 @@
       button.style.visibility=size<1?'hidden':'visible';
       button.style.width=size+'px';
       button.style.transform=`translateX(${state.rtl?-left:left}px)`;
+      // Position artwork from the same fractional mask width, without percentage
+      // layout on a changing box. Static thumbnails retain their CSS centering.
+      const art=state.art[index],shift=(size-plan.large)/2;
+      if(art)art.style.transform=`translateX(${state.rtl?-shift:shift}px)`;
     });
     const index=clamp(Math.round(position),0,buttons.length-1);
     root.dataset.carouselIndex=String(index);
@@ -122,6 +136,9 @@
     root.style.setProperty('--_carousel-logical',state.plan.large+'px');
     root.style.setProperty('--_carousel-end',(root.dataset.variant==='uncontained'?0:Math.max(0,state.plan.width-state.plan.large))+'px');
     state.max=state.viewport.scrollWidth-state.viewport.clientWidth;
+    const snaps=[...root.querySelectorAll('.md-carousel-snap')],first=snaps[0].getBoundingClientRect().left;
+    state.targets=snaps.map(snap=>clamp(Math.abs(snap.getBoundingClientRect().left-first),0,state.max));
+    state.lastPainted=undefined;
     state.viewport.scrollLeft=(state.rtl?-1:1)*prior*(state.plan.large+state.plan.gap);paint(state);
   }
   const observer=new ResizeObserver(entries=>entries.forEach(e=>resize(e.target)));
@@ -130,7 +147,8 @@
       // Landing-page thumbnails are static compositions without a scrolling track.
       if(!root.querySelector('.md-carousel-scroll-track'))continue;
       if(roots.has(root))continue;
-      const viewport=root.querySelector('.md-carousel-viewport'),buttons=items(root),state={root,viewport,buttons};roots.set(root,state);
+      const viewport=root.querySelector('.md-carousel-viewport'),buttons=items(root),state={root,viewport,buttons,art:buttons.map(button=>button.querySelector('.md-carousel-art'))};roots.set(root,state);
+      root.dataset.carouselReady='';
       viewport.addEventListener('scroll',()=>{if(!state.motion&&!(drag?.state===state&&drag.moved))paint(state);},{passive:true});
       viewport.addEventListener('wheel',()=>{cancelMotion(state);state.pendingFocus=undefined;},{passive:true});
       viewport.addEventListener('scrollend',()=>settled(state));

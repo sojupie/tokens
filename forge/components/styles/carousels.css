@@ -160,6 +160,11 @@
   inline-size: var(--_carousel-logical, var(--_carousel-preferred));
   pointer-events: none;
 }
+/* Interactive artwork shares the mask's fractional coordinates. */
+.md-carousel[data-carousel-ready] .md-carousel-art {
+  inset-inline-start: calc(-1 * var(--_carousel-item-outline-width));
+  translate: none;
+}
 .md-carousel-art svg {
   display: block;
   inline-size: 100%;

@@ -19,9 +19,15 @@ export async function checkCarousel(container) {
       root.scrollIntoView({block:'center'});
       const previous=root.querySelector('[data-carousel-step="-1"]'),next=root.querySelector('[data-carousel-step="1"]');
       root.querySelector('.md-carousel-item').dispatchEvent(new w.KeyboardEvent('keydown',{key:'Home',bubbles:true,cancelable:true}));await settle(root);
+      const art=root.querySelector('.md-carousel-art');
+      assert(w.getComputedStyle(art).insetInlineStart==='0px'&&w.getComputedStyle(art).translate==='none',`${name}: artwork uses explicit fractional centering`);
       let recording=true;const samples=[];
       const sample=time=>{samples.push({time,x:Math.abs(viewport.scrollLeft),left:new w.DOMMatrixReadOnly(w.getComputedStyle(root.querySelectorAll('.md-carousel-item')[1]).transform).m41});if(recording)w.requestAnimationFrame(sample);};
-      w.requestAnimationFrame(sample);next.click();await settle(root);recording=false;await wait(30);
+      w.requestAnimationFrame(sample);next.click();await settle(root);
+      const settledX=viewport.scrollLeft,settledTransform=root.querySelectorAll('.md-carousel-item')[1].style.transform;
+      await wait(160);recording=false;await wait(30);
+      assert(viewport.scrollLeft===settledX&&root.querySelectorAll('.md-carousel-item')[1].style.transform===settledTransform,`${name}: restoring native snapping has no late correction`);
+      assert(new Set(samples.map(s=>s.x)).size<=2,`${name}: visual animation does not scroll the sticky layer each frame`);
       const moving=samples.filter((s,i,a)=>i&&s.left!==a[i-1].left);
       assert(moving.length>2,`${name}: animated geometry`);
       assert(moving.some(s=>Math.abs(s.left-Math.round(s.left))>.01),`${name}: fractional transforms during settling`);
@@ -39,6 +45,21 @@ export async function checkCarousel(container) {
       results.push({name,movingFrames:moving.length});
     }
   }
+  // The explicit artwork transform must also account for the outlined mask border.
+  const outlinedLoaded=new Promise(resolve=>frame.onload=resolve);
+  frame.src='/md3/components/carousel?preview.compare=interactive&preview.control=outlined';
+  await outlinedLoaded;await frame.contentWindow.TokenAssets?.ready;
+  const outlined=frame.contentDocument.querySelector('.md-carousel');outlined.scrollIntoView();
+  const centered=()=>{
+    for(const button of outlined.querySelectorAll('.md-carousel-item')){
+      if(frame.contentWindow.getComputedStyle(button).visibility==='hidden')continue;
+      const b=button.getBoundingClientRect(),a=button.querySelector('.md-carousel-art').getBoundingClientRect();
+      if(b.width<4)continue; // A clipped sliver can be narrower than the two borders.
+      assert(Math.abs((b.left+b.right-a.left-a.right)/2)<.04,'Outlined artwork stays centered in its fractional mask');
+    }
+  };
+  centered();outlined.querySelector('[data-carousel-step="1"]').click();
+  await new Promise((resolve,reject)=>{const sample=()=>{try{centered();if(outlined.dataset.carouselSettled!==undefined)resolve();else frame.contentWindow.requestAnimationFrame(sample);}catch(error){reject(error);}};frame.contentWindow.requestAnimationFrame(sample);});
   // A reduced-motion frame exercises the same real script with its media query set.
   const html=await fetch('/md3/components/carousel?preview.compare=interactive').then(r=>r.text());
   const reducedLoaded=new Promise(resolve=>frame.onload=resolve);

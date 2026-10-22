@@ -41,16 +41,17 @@ test('cleanup ignores carousel descendants that were never initialized',()=>{
 test('mouse release settles smoothly before restoring snapping',()=>{
  for(const reduced of [false,true])for(const fast of [false,true]) {
   let nextFrame,clock;
-  const listeners={},scrollListeners={},calls=[],buttons=Array.from({length:6},()=>({style:{},disabled:false}));
+  const listeners={},scrollListeners={},calls=[],buttons=Array.from({length:6},()=>({style:{},disabled:false,querySelector:()=>({style:{}})}));
+  const snaps=buttons.map((_,i)=>({getBoundingClientRect:()=>({left:i*157.71875})}));
   const output={},controls={},viewport={
    clientWidth:656,scrollWidth:1445,scrollLeft:0,
    style:{removeProperty(){delete this.scrollSnapType;}},
    addEventListener:(name,fn)=>scrollListeners[name]=fn,
    setPointerCapture(){},hasPointerCapture:()=>false,
-   scrollTo(options){calls.push({...options,snap:this.style.scrollSnapType});},
+   scrollTo(options){calls.push({...options,snap:this.style.scrollSnapType});this.scrollLeft=Math.round(options.left);},
   };
   const root={dataset:{variant:'multi-browse'},style:{setProperty(){}},
-   querySelectorAll:()=>buttons,
+   querySelectorAll:selector=>selector==='.md-carousel-snap'?snaps:buttons,
    querySelector:selector=>selector==='.md-carousel-scroll-track'?{}:selector==='.md-carousel-viewport'?viewport:selector==='output'?output:controls[selector]??={},
   };
   const target={closest:selector=>selector==='.md-carousel'?root:selector==='.md-carousel-viewport'?viewport:null};
@@ -68,9 +69,15 @@ test('mouse release settles smoothly before restoring snapping',()=>{
   assert.equal(root.dataset.carouselDragging,'');
   assert.equal(root.dataset.carouselSettled,undefined);
   listeners.pointerup({pointerId:1,timeStamp:fast?70:160});
-  if(!reduced){nextFrame();assert.equal(calls[0].left,fast?109:30);clock.playState='finished';nextFrame();}
-  assert.equal(calls.length,reduced?1:2);
-  assert.equal(calls.at(-1).left,fast?158:0);
+  if(!reduced){
+   assert.equal(calls.length,2); // Resolve target and restore the current native position.
+   nextFrame();assert.equal(calls.length,2,'visual frames must not scroll the sticky layer');
+   assert.equal(viewport.scrollLeft,60);
+   scrollListeners.scrollend();assert.equal(root.dataset.carouselSettled,undefined);
+   clock.playState='finished';nextFrame();
+  }
+  assert.equal(calls.length,reduced?1:3);
+  assert.equal(calls.at(-1).left,fast?(reduced?157.71875:158):0);
   assert.equal(calls[0].behavior,'instant');
   assert.equal(calls[0].snap,'none');
   assert.equal(root.dataset.carouselDragging,undefined);

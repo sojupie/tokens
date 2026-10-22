@@ -260,7 +260,12 @@ loads the additional renderer script.
 Carousel touch scrolling uses native momentum and snapping. Its masked item geometry
 updates directly from scroll events, without another queued animation frame. Button,
 keyboard and mouse-release settling use fractional transforms sampled from a Web
-Animations clock with the standard easing and medium2 duration tokens. Mouse release
+Animations clock with the standard easing and medium2 duration tokens. The native
+scroll position is synchronized at completion or interruption, rather than on each
+visual frame. Destinations come from the laid-out snap elements and are resolved
+through the browser’s scroll precision before animating. Artwork uses explicit
+fractional transforms instead of percentage centering inside a changing mask.
+Unchanged scroll positions skip geometry writes. Mouse release
 projects recent drag velocity to choose the destination. Pointer and wheel input
 interrupt settling; reduced motion skips it. `/carousel.html` checks all four variants
 at desktop and phone widths, RTL, endpoints, focus and interruption behavior.
