@@ -25,6 +25,6 @@ templ tooltipContents(c componentCase) {
 	}
 	<p>More information about this action.</p>
 	if c.Variant=="rich" {
-		<button { c.FeedbackAttributes("md-button md-text-button md-feedback-action")... } data-tooltip-close>Got it</button>
+		<button { c.FeedbackAttributes("md-button md-text-button md-feedback-action")... } data-size="xsmall" data-tooltip-close>Got it</button>
 	}
 }
