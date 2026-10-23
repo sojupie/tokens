@@ -24,6 +24,7 @@ type tokenBrowser struct {
 }
 
 type tokenSet struct {
+	All          bool
 	Key          string
 	Label        string
 	component    string
@@ -177,7 +178,7 @@ func buildTokenBrowser(subject publish.SubjectView, query url.Values) tokenBrows
 		}
 	}
 	if browser.Selected.Key == "" {
-		browser.Selected = browser.Sets[0]
+		browser.Selected = tokenSet{All: true, Label: "All tokens", sourceTokens: subject.Tokens}
 	}
 
 	browser.Filters = tokenFilters(browser.Selected.sourceTokens, query)
@@ -212,15 +213,40 @@ func buildTokenBrowser(subject publish.SubjectView, query url.Values) tokenBrows
 		if browser.Query != "" && !tokenRowMatches(browser.Query, token, row, value, hasValue) {
 			continue
 		}
+		rowFolders := folders
+		if browser.Selected.All {
+			// Keep source tables distinct in the aggregate view, including their groups.
+			for index, set := range browser.Sets {
+				belongs := token.Presentation != nil && set.Key == token.Presentation.SetName
+				if token.Presentation == nil {
+					for _, member := range set.sourceTokens {
+						if member.SourceName == token.SourceName {
+							belongs = true
+							break
+						}
+					}
+				}
+				if !belongs {
+					continue
+				}
+				root := folders[set.Key]
+				if root == nil {
+					root = &tokenFolder{name: set.Label, order: index, children: make(map[string]*tokenFolder)}
+					folders[set.Key] = root
+				}
+				rowFolders = root.children
+				break
+			}
+		}
 		if source := token.Presentation; source != nil {
 			group := publish.DisplayGroup{}
 			if len(source.Groups) > 0 {
 				group = source.Groups[0]
 			}
-			root := folders[group.Name]
+			root := rowFolders[group.Name]
 			if root == nil {
 				root = &tokenFolder{name: group.Name, order: group.Order, children: make(map[string]*tokenFolder)}
-				folders[group.Name] = root
+				rowFolders[group.Name] = root
 			}
 			current := root
 			if len(source.Groups) > 1 {
@@ -235,10 +261,10 @@ func buildTokenBrowser(subject publish.SubjectView, query url.Values) tokenBrows
 			}
 			current.tokens = append(current.tokens, row)
 		} else {
-			root := folders[state]
+			root := rowFolders[state]
 			if root == nil {
 				root = &tokenFolder{name: state, order: stateOrder(state), children: make(map[string]*tokenFolder)}
-				folders[state] = root
+				rowFolders[state] = root
 			}
 			if browser.Selected.category == "COLOR" {
 				root.tokens = append(root.tokens, row)

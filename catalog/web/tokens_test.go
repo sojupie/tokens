@@ -54,7 +54,7 @@ func TestMaterialColorSetIncludesRelatedValues(t *testing.T) {
 		{SourceName: "md.comp.button.elevated.selected.hovered.state-layer.opacity", Category: "OPACITY"},
 		{SourceName: "md.comp.button.elevated.hovered.container.elevation", Category: "ELEVATION"},
 	}}
-	browser := buildTokenBrowser(subject, url.Values{})
+	browser := buildTokenBrowser(subject, url.Values{"set": {"button|color|elevated"}})
 	if len(browser.Sets) != 1 || browser.Selected.Label != "Button - Color - Elevated" || browser.Count != 3 {
 		t.Fatalf("expected one complete color set, got %#v", browser)
 	}

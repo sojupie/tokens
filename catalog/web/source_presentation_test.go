@@ -18,7 +18,7 @@ func TestSourceTablesRetainMembershipGroupOrderAndTokenOrder(t *testing.T) {
 		token("md.comp.button.elevated.a", "Enabled", 1, 2),
 		token("md.comp.button.elevated.disabled.elevation", "Disabled", 2, 0),
 	}}
-	browser := buildTokenBrowser(subject, url.Values{})
+	browser := buildTokenBrowser(subject, url.Values{"set": {"md.comp.button.elevated"}})
 	if len(browser.Sets) != 1 || browser.Selected.Label != "Button - Color - Elevated" {
 		t.Fatalf("sets=%+v", browser.Sets)
 	}
@@ -41,7 +41,7 @@ func TestSourceTablesRetainMembershipGroupOrderAndTokenOrder(t *testing.T) {
 	}
 	subject.Tokens = subject.Tokens[:1]
 	subject.Tokens[0].Presentation.Groups = nil
-	browser = buildTokenBrowser(subject, url.Values{})
+	browser = buildTokenBrowser(subject, url.Values{"set": {"md.comp.button.elevated"}})
 	var flat strings.Builder
 	if err := writeTokenGroup(&flat, browser.Selected.Groups[0], true); err != nil {
 		t.Fatal(err)

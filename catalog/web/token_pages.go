@@ -21,6 +21,9 @@ func tokenSetPath(set tokenSet) string {
 }
 
 func tokenSetURL(subject publish.SubjectView, set tokenSet) string {
+	if set.All {
+		return subjectURL(subject)
+	}
 	parts := strings.Split(tokenSetPath(set), "/")
 	for i := range parts {
 		parts[i] = url.PathEscape(parts[i])
