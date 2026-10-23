@@ -130,6 +130,15 @@ export function checkComponentRendering() {
         const actionStyle = getComputedStyle(action);
         compare("action leading padding", actionStyle.paddingInlineStart, actionStyle.getPropertyValue("--_button-leading").trim());
         compare("action trailing padding", actionStyle.paddingInlineEnd, actionStyle.getPropertyValue("--_button-trailing").trim());
+        if (f === "tooltip" && el.dataset.variant === "rich") {
+          const label = document.createRange();
+          label.selectNodeContents(action);
+          const edge = actionStyle.direction === "rtl" ? "right" : "left";
+          const labelStart = label.getBoundingClientRect()[edge];
+          for (const content of [text, el.querySelector("h3")]) {
+            compare("action text start alignment", `${labelStart}px`, `${content.getBoundingClientRect()[edge]}px`);
+          }
+        }
         const actionState = action.dataset.componentState;
         const actionShort = {hovered:"hover", focused:"focus"}[actionState] || actionState;
         compare("action label",getComputedStyle(action).color,first([prefix + "action." + actionShort + ".label-text.color",prefix + "action.label-text.color"]),true);

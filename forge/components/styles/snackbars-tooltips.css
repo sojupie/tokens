@@ -83,6 +83,7 @@
 }
 .md-tooltip[data-variant="rich"] > .md-feedback-action {
   margin-block-start: var(--md-sys-measurement-space150);
+  margin-inline-start: calc(-1 * var(--_button-leading));
 }
 .md-tooltip-demo {
   anchor-scope: --tooltip-trigger;
