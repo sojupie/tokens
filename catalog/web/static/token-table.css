@@ -87,10 +87,6 @@
   padding: var(--md-sys-measurement-space100);
 
 }
-.tokens-token-set-menu h3 {
-  display: block;
-  padding: var(--md-sys-measurement-space150);
-}
 .tokens-token-set-menu ul {
   list-style: none;
   padding: 0;

@@ -175,6 +175,8 @@
   border-radius: var(--_button-pressed-shape);
 }
 :is(.md-filter-chip, .md-assist-chip, .md-suggestion-chip, .md-input-chip) {
+  --_chip-padding-start: var(--md-sys-measurement-space200);
+  --_chip-padding-end: var(--md-sys-measurement-space200);
   --_chip-container: transparent;
   --_chip-elevation: 0;
   --_chip-container-opacity: 1;
@@ -202,12 +204,14 @@
   display: inline-flex;
   flex: none;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  text-align: start;
   vertical-align: middle;
   min-width: 0;
   max-width: 100%;
   min-height: var(--_chip-height);
-  padding: var(--md-sys-measurement-space50) var(--md-sys-measurement-space150);
+  padding-block: var(--md-sys-measurement-space50);
+  padding-inline: var(--_chip-padding-start) var(--_chip-padding-end);
   gap: var(--md-sys-measurement-space100);
   border: 0;
   border-radius: var(--_chip-shape);
@@ -288,6 +292,29 @@
   .md-input-chip
 ):disabled {
   cursor: default;
+}
+
+/* Untokenized chip measurements: 16dp label edges, 8dp at an icon edge.
+   Keep leading and trailing edges independent for dropdown and removable chips. */
+:is(.md-filter-chip, .md-assist-chip, .md-suggestion-chip, .md-input-chip):has(
+  [data-slot="leading-icon"]:not(.md-chip-check):not([hidden]),
+  [data-slot="icon"]:not([hidden]),
+  > svg:first-child:not([hidden])
+),
+.md-filter-chip[data-selected="true"]:has(.md-chip-check),
+.md-filter-chip:has(> input:checked):has(> .md-chip-face > svg) {
+  --_chip-padding-start: var(--md-sys-measurement-space100);
+}
+:is(.md-filter-chip, .md-assist-chip, .md-suggestion-chip, .md-input-chip):has(
+  [data-slot="trailing-icon"]:not([hidden])
+) {
+  --_chip-padding-end: var(--md-sys-measurement-space100);
+}
+
+:is(.md-filter-chip, .md-assist-chip, .md-suggestion-chip, .md-input-chip)
+  :is([data-slot="icon"], [data-slot="leading-icon"], [data-slot="trailing-icon"]) > svg {
+  inline-size: 100%;
+  block-size: 100%;
 }
 .md-dialog {
   --_elevation-level: var(--_dialog-elevation);
@@ -6239,7 +6266,7 @@ dialog.md-side-sheet[data-variant="detached"] {
   position: relative;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   align-self: stretch;
   gap: var(--md-sys-measurement-space100);
   box-sizing: border-box;
@@ -6256,13 +6283,8 @@ dialog.md-side-sheet[data-variant="detached"] {
   outline: 0;
 }
 .md-chip-primary {
-  padding-inline: var(--md-sys-measurement-space150);
+  padding-inline: var(--_chip-padding-start) var(--_chip-padding-end);
   border-radius: inherit;
-}
-:is(.md-assist-chip, .md-suggestion-chip):has(.md-chip-icon),
-:is(.md-filter-chip, .md-input-chip):has(> .md-chip-primary .md-chip-icon)
-  > .md-chip-primary {
-  padding-inline-start: var(--md-sys-measurement-space100);
 }
 :is(.md-filter-chip, .md-input-chip):has(> .md-chip-remove) > .md-chip-primary {
   padding-inline-end: var(--md-sys-measurement-space100);

@@ -1,0 +1,37 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Chip spacing checks</title>
+<link rel="stylesheet" href="/theme.css"><link rel="stylesheet" href="/static/bundles/common.css">
+<style>body{font:16px sans-serif;padding:32px;background:var(--md-sys-color-surface)}#samples{display:flex;gap:24px;align-items:start;flex-wrap:wrap}output{display:block;white-space:pre-line;margin-top:24px}.md-menu{min-width:180px}</style>
+<h1>Chip spacing checks</h1><div id="samples">
+<button class="md-filter-chip" id="plain"><span class="md-chip-label">Plain</span></button>
+<button class="md-filter-chip" id="dropdown"><span class="md-chip-label">Dropdown</span><span data-slot="trailing-icon"><svg viewBox="0 0 24 24"><path d="m7 10 5 5 5-5z"/></svg></span></button>
+<button class="md-assist-chip" id="leading"><span data-slot="leading-icon"><svg viewBox="0 0 24 24"><path d="M5 5h14v14H5z"/></svg></span><span class="md-chip-label">Leading</span></button>
+<span class="md-filter-chip" id="unchecked" data-selected="false"><button class="md-chip-primary"><span class="md-chip-icon md-chip-check" data-slot="leading-icon"><svg viewBox="0 0 24 24"><path d="M5 5h14v14H5z"/></svg></span><span class="md-chip-label">Unselected</span></button></span>
+<span class="md-filter-chip" id="checked" data-selected="true"><button class="md-chip-primary"><span class="md-chip-icon md-chip-check" data-slot="leading-icon"><svg viewBox="0 0 24 24"><path d="M5 5h14v14H5z"/></svg></span><span class="md-chip-label">Selected</span></button></span>
+<span class="md-input-chip" id="removable"><button class="md-chip-primary"><span class="md-chip-label">Remove</span></button><button class="md-chip-remove" aria-label="Remove chip"><span class="md-chip-icon" data-slot="trailing-icon"><svg viewBox="0 0 24 24"><path d="M5 5h14v14H5z"/></svg></span></button></span>
+<div class="md-menu" id="menu"><section><ul><li><button class="md-menu-item"><span>Menu item</span></button></li></ul></section></div>
+</div><output id="results"></output><script>
+(async()=>{
+ await document.fonts.ready;
+ const checks=[];
+ const near=(name,actual,expected)=>checks.push({name,actual,expected,pass:Math.abs(actual-expected)<.1});
+ for(const [id,start,end] of [['plain',16,16],['dropdown',16,8],['leading',8,16],['unchecked',16,16],['checked',8,16],['removable',16,8]]){
+  const chip=document.getElementById(id),primary=chip.querySelector('.md-chip-primary')||chip,cs=getComputedStyle(chip),ps=getComputedStyle(primary);
+  near(id+' height',chip.getBoundingClientRect().height,32);
+  near(id+' radius',parseFloat(cs.borderTopLeftRadius),8);
+  near(id+' leading padding',parseFloat(ps.paddingInlineStart),start);
+  const endElement=chip.querySelector('.md-chip-remove')||primary;
+  near(id+' trailing padding',parseFloat(getComputedStyle(endElement).paddingInlineEnd),end);
+  near(id+' gap',parseFloat(ps.columnGap),8);
+  for(const icon of chip.querySelectorAll('[data-slot]')){
+   if(getComputedStyle(icon).display==='none')continue;
+   near(id+' icon size',icon.getBoundingClientRect().width,18);
+   near(id+' svg size',icon.querySelector('svg').getBoundingClientRect().width,18);
+  }
+ }
+ const plain=document.querySelector('#plain .md-chip-label'),menu=document.querySelector('#menu .md-menu-item span');
+ near('plain label inset',plain.getBoundingClientRect().left-document.getElementById('plain').getBoundingClientRect().left,16);
+ near('menu label inset',menu.getBoundingClientRect().left-document.getElementById('menu').getBoundingClientRect().left,16);
+ document.getElementById('results').textContent=JSON.stringify({passed:checks.filter(c=>c.pass).length,total:checks.length,failures:checks.filter(c=>!c.pass)},null,2);
+ document.body.dataset.result=checks.every(c=>c.pass)?'pass':'fail';
+})();
+</script></html>

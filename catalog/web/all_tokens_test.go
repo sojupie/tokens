@@ -84,6 +84,9 @@ func TestDefaultAndAllViewsAreServerRenderedAndAddressable(t *testing.T) {
 			if len(nav) != 2 {
 				t.Fatal("missing table selector")
 			}
+			if strings.Contains(nav[1], "<h3") {
+				t.Fatal("table selector must not include section labels")
+			}
 			if !strings.Contains(nav[1], `href="/md3/components/date-pickers"`) {
 				t.Fatal("default option does not link to root")
 			}

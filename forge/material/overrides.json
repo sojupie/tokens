@@ -8,11 +8,11 @@
     "unit": "px"
   },
   "md.comp.menus.menu-item.leading-space": {
-    "value": 14,
+    "value": 12,
     "unit": "px"
   },
   "md.comp.menus.menu-item.trailing-space": {
-    "value": 14,
+    "value": 12,
     "unit": "px"
   }
 }

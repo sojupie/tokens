@@ -20,7 +20,7 @@
   position: relative;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   align-self: stretch;
   gap: var(--md-sys-measurement-space100);
   box-sizing: border-box;
@@ -37,13 +37,8 @@
   outline: 0;
 }
 .md-chip-primary {
-  padding-inline: var(--md-sys-measurement-space150);
+  padding-inline: var(--_chip-padding-start) var(--_chip-padding-end);
   border-radius: inherit;
-}
-:is(.md-assist-chip, .md-suggestion-chip):has(.md-chip-icon),
-:is(.md-filter-chip, .md-input-chip):has(> .md-chip-primary .md-chip-icon)
-  > .md-chip-primary {
-  padding-inline-start: var(--md-sys-measurement-space100);
 }
 :is(.md-filter-chip, .md-input-chip):has(> .md-chip-remove) > .md-chip-primary {
   padding-inline-end: var(--md-sys-measurement-space100);

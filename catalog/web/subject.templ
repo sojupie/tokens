@@ -9,7 +9,7 @@ templ subjectPage(subject publish.SubjectView, changes []publish.ChangeView, bro
 templ tokenSetPicker(subject publish.SubjectView, browser tokenBrowser) {
 	<button class="md-filter-chip tokens-token-set" data-selected="true" type="button" popovertarget="tokens-token-set-menu" aria-label={ "Token set: " + selectedTableLabel(subject, browser.Selected) }>
 		<span class="tokens-context-label" title={ selectedTableLabel(subject, browser.Selected) }>{ selectedTableLabel(subject, browser.Selected) }</span>
-		@materialSymbol("expand_more")
+		<span data-slot="trailing-icon" aria-hidden="true">@materialSymbol("expand_more")</span>
 	</button>
 	<nav class="md-menu tokens-token-set-menu" id="tokens-token-set-menu" popover="auto" aria-label="Token sets">
 		for index, group := range tokenSetMenuGroups(subject, browser.Sets) {
@@ -17,7 +17,6 @@ templ tokenSetPicker(subject publish.SubjectView, browser tokenBrowser) {
 				<hr class="md-divider" data-inset="middle"/>
 			}
 			<section>
-				<h3 class="md-typescale-title-medium">{ group.Label }</h3>
 				<ul>
 					for _, set := range group.Sets {
 						<li>
