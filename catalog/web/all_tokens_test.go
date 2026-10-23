@@ -87,7 +87,7 @@ func TestDefaultAndAllViewsAreServerRenderedAndAddressable(t *testing.T) {
 			if !strings.Contains(nav[1], `href="/md3/components/date-pickers"`) {
 				t.Fatal("default option does not link to root")
 			}
-			if !regexp.MustCompile(`(?s)Docked.*<ul>\s*<li>\s*<a class="md-menu-item" href="/md3/components/date-pickers/sets/all"[^>]*>\s*<span class="md-menu-item-text">All tokens</span>\s*<span data-slot="trailing-icon"[^>]*>.*?</span>\s*</a>\s*</li>\s*</ul>\s*$`).MatchString(nav[1]) {
+			if !regexp.MustCompile(`(?s)Docked.*<section aria-label="All tokens">\s*<ul>\s*<li>\s*<a class="md-menu-item" href="/md3/components/date-pickers/sets/all"[^>]*>\s*<span class="md-menu-item-text">All tokens</span>\s*<span data-slot="trailing-icon"[^>]*>.*?</span>\s*</a>\s*</li>\s*</ul>\s*</section>\s*$`).MatchString(nav[1]) {
 				t.Fatal("All tokens must be last and have its own URL")
 			}
 		})
