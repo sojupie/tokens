@@ -10,6 +10,9 @@ import (
 )
 
 func tokenSetPath(set tokenSet) string {
+	if set.All {
+		return "all"
+	}
 	if set.sourceName != "" {
 		return set.sourceName
 	}
@@ -22,7 +25,7 @@ func tokenSetPath(set tokenSet) string {
 
 func tokenSetURL(subject publish.SubjectView, set tokenSet) string {
 	if set.All {
-		return subjectURL(subject)
+		return subjectURL(subject) + "/sets/all"
 	}
 	parts := strings.Split(tokenSetPath(set), "/")
 	for i := range parts {
@@ -108,6 +111,9 @@ func tokenSetLinkURL(subject publish.SubjectView, set tokenSet, browser tokenBro
 		}
 	}
 	path := tokenSetURL(subject, set)
+	if isDefaultTokenSet(subject, set) {
+		path = subjectURL(subject)
+	}
 	if len(query) > 0 {
 		path += "?" + query.Encode()
 	}

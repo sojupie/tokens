@@ -12,7 +12,6 @@ templ tokenSetPicker(subject publish.SubjectView, browser tokenBrowser) {
 		@materialSymbol("expand_more")
 	</button>
 	<nav class="md-menu tokens-token-set-menu" id="tokens-token-set-menu" popover="auto" aria-label="Token sets">
-		<a class="md-menu-item tokens-token-set-overview" href={ tokenSetLinkURL(subject, tokenSet{All: true, sourceTokens: subject.Tokens}, browser) } aria-current={ currentTokenSet(browser.Selected.Key == "") }>All tokens</a>
 		for _, group := range tokenSetMenuGroups(subject, browser.Sets) {
 			<section>
 				<h3 class="md-typescale-title-medium">{ group.Label }</h3>
@@ -29,5 +28,6 @@ templ tokenSetPicker(subject publish.SubjectView, browser tokenBrowser) {
 				</ul>
 			</section>
 		}
+		<a class="md-menu-item tokens-token-set-overview" href={ tokenSetLinkURL(subject, allTokenSet(subject), browser) } aria-current={ currentTokenSet(browser.Selected.All) }>All tokens</a>
 	</nav>
 }

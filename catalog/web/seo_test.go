@@ -180,7 +180,7 @@ func TestTokenSetPagesAreLinkedAndServerRendered(t *testing.T) {
 		if !strings.Contains(body, `popover="auto"`) || !strings.Contains(body, `aria-current="page"`) || !strings.Contains(html.UnescapeString(body), `Material Design 3 "Snackbar" tokens`) {
 			t.Fatal("missing native popover, current selection or clear main heading")
 		}
-		for _, link := range []string{"/sets/snackbar/color", "/sets/snackbar/common"} {
+		for _, link := range []string{"", "/sets/snackbar/common", "/sets/all"} {
 			if !strings.Contains(body, `href="/components/snackbar`+link+`"`) {
 				t.Fatalf("%s: missing token set link %s", path, link)
 			}

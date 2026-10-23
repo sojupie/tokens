@@ -3,6 +3,7 @@ package web
 import (
 	"html"
 	"net/http/httptest"
+	"net/url"
 	"os"
 	"regexp"
 	"strings"
@@ -92,13 +93,13 @@ func TestSourceTableSEOMatrix(t *testing.T) {
 		noindex                    bool
 	}{
 		{"/components/date-pickers", "", "/components/date-pickers", false},
-		{"/components/date-pickers/sets/md.comp.date-picker.modal", ": Modal", "/components/date-pickers/sets/md.comp.date-picker.modal", false},
+		{"/components/date-pickers/sets/md.comp.date-picker.modal", "", "/components/date-pickers", false},
 		{"/components/date-pickers?set=md.comp.date-picker.docked", ": Docked", "/components/date-pickers/sets/md.comp.date-picker.docked", false},
 		{"/components/date-pickers?preview.compare=interactive", "", "", true},
 		{"/components/date-pickers?context.Theme=Dark", "", "", true},
 		{"/components/date-pickers?q=container", "", "", true},
 		{"/components/date-pickers?utm_source=example", "", "/components/date-pickers", false},
-		{"/components/date-pickers/sets/md.comp.date-picker.modal?q=container", ": Modal", "", true},
+		{"/components/date-pickers/sets/md.comp.date-picker.modal?q=container", "", "", true},
 		{"/components/date-pickers/changes", "changes", "/components/date-pickers/changes", false},
 	} {
 		t.Run(tc.path, func(t *testing.T) {
@@ -159,7 +160,7 @@ func TestPublishedTableNamesAndAggregateCoverage(t *testing.T) {
 	}
 	total := 0
 	for _, subject := range state.Subjects {
-		all := buildTokenBrowser(subject, nil)
+		all := buildTokenBrowser(subject, url.Values{"set": {"all"}})
 		if all.Count != len(subject.Tokens) {
 			t.Fatalf("%s: aggregate has %d of %d tokens", subject.Key.Slug, all.Count, len(subject.Tokens))
 		}

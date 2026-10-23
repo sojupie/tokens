@@ -178,7 +178,10 @@ func buildTokenBrowser(subject publish.SubjectView, query url.Values) tokenBrows
 		}
 	}
 	if browser.Selected.Key == "" {
-		browser.Selected = tokenSet{All: true, Label: "All tokens", sourceTokens: subject.Tokens}
+		browser.Selected = browser.Sets[0]
+	}
+	if selectedKey == "all" {
+		browser.Selected = allTokenSet(subject)
 	}
 
 	browser.Filters = tokenFilters(browser.Selected.sourceTokens, query)

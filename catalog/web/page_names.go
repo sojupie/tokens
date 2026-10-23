@@ -75,7 +75,7 @@ func tokenTableQualifier(subject publish.SubjectView, set tokenSet) string {
 
 func subjectTableTitle(subject publish.SubjectView, set tokenSet) string {
 	if set.All {
-		return subjectTokenTitle(subject)
+		return subjectTokenTitle(subject) + ": All tokens"
 	}
 	return subjectTokenTitle(subject) + ": " + tokenTableQualifier(subject, set)
 }
@@ -93,7 +93,7 @@ func subjectChangesTitle(subject publish.SubjectView) string {
 }
 
 func tokenTableCanonicalPath(subject publish.SubjectView, set tokenSet) string {
-	if set.All || len(tokenSets(subject)) == 1 {
+	if isDefaultTokenSet(subject, set) || set.All && len(tokenSets(subject)) == 1 {
 		return subjectURL(subject)
 	}
 	return tokenSetURL(subject, set)
@@ -121,4 +121,13 @@ func titleTokenPhrase(value string) string {
 		}
 	}
 	return strings.Join(words, " ")
+}
+
+func allTokenSet(subject publish.SubjectView) tokenSet {
+	return tokenSet{Key: "all", All: true, Label: "All tokens", sourceTokens: subject.Tokens}
+}
+
+func isDefaultTokenSet(subject publish.SubjectView, set tokenSet) bool {
+	sets := tokenSets(subject)
+	return !set.All && len(sets) > 0 && set.Key == sets[0].Key
 }

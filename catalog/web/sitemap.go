@@ -32,12 +32,13 @@ func (server *Server) handleSitemap(response http.ResponseWriter, request *http.
 		add(subjectURL(subject))
 		add(subjectChangesURL(subject))
 		sets := tokenSets(subject)
-		if len(sets) == 1 {
+		if len(sets) <= 1 {
 			continue
 		}
-		for _, set := range sets {
+		for _, set := range sets[1:] {
 			add(tokenSetURL(subject, set))
 		}
+		add(tokenSetURL(subject, allTokenSet(subject)))
 	}
 	data, err := xml.MarshalIndent(document, "", "  ")
 	if err != nil {

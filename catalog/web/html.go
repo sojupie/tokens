@@ -98,7 +98,7 @@ func (server *Server) handleHTMLSubject(response http.ResponseWriter, request *h
 	query := request.URL.Query()
 	if setPath != "" {
 		query.Del("set")
-		for _, set := range tokenSets(subjects[0]) {
+		for _, set := range append(tokenSets(subjects[0]), allTokenSet(subjects[0])) {
 			if tokenSetPath(set) == setPath {
 				query.Set("set", set.Key)
 				break
@@ -165,9 +165,11 @@ func (server *Server) handleHTMLSubject(response http.ResponseWriter, request *h
 	}
 	info.JSONAlternate = subjectDownloadURL(subjects[0]) + "?" + downloadQuery.Encode()
 	if setPath != "" || query.Get("set") != "" {
-		info.Title = subjectTableTitle(subjects[0], browser.Selected)
-		info.Heading = info.Title
-		info.Description = subjectTableDescription(subjects[0], browser.Selected)
+		if !isDefaultTokenSet(subjects[0], browser.Selected) {
+			info.Title = subjectTableTitle(subjects[0], browser.Selected)
+			info.Heading = info.Title
+			info.Description = subjectTableDescription(subjects[0], browser.Selected)
+		}
 		if !info.NoIndex {
 			info.Canonical = server.publicOrigin + tokenTableCanonicalPath(subjects[0], browser.Selected)
 		}
