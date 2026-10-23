@@ -55,7 +55,7 @@ func componentPreviewView(page componentPreview) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\" hx-target=\"#component-preview\" hx-select=\"#component-preview\" hx-swap=\"outerHTML\" hx-push-url=\"true\" hx-trigger=\"change\" hx-sync=\"this:replace\" class=\"tokens-gallery-filters\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\" hx-target=\"#component-preview\" hx-select=\"#component-preview\" hx-swap=\"outerHTML\" hx-replace-url=\"true\" hx-trigger=\"change\" hx-sync=\"this:replace\" class=\"tokens-gallery-filters\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

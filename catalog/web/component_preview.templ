@@ -3,7 +3,7 @@ package web
 templ componentPreviewView(page componentPreview) {
 	<section class="tokens-section" id="component-preview" aria-labelledby="preview-heading">
 		<h2 class="md-typescale-title-medium" id="preview-heading">Preview</h2>
-		<form hx-boost="false" method="get" action={ page.Action } hx-get={ page.Action } hx-target="#component-preview" hx-select="#component-preview" hx-swap="outerHTML" hx-push-url="true" hx-trigger="change" hx-sync="this:replace" class="tokens-gallery-filters">
+		<form hx-boost="false" method="get" action={ page.Action } hx-get={ page.Action } hx-target="#component-preview" hx-select="#component-preview" hx-swap="outerHTML" hx-replace-url="true" hx-trigger="change" hx-sync="this:replace" class="tokens-gallery-filters">
 			for _, hidden := range page.Hidden {
 				<input type="hidden" name={ hidden.Name } value={ hidden.Value }/>
 			}
