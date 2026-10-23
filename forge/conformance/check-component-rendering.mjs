@@ -127,6 +127,9 @@ export function checkComponentRendering() {
       if (el.dataset.variant === "rich") typography(el.querySelector("h3"),prefix + "subhead.");
       const action = el.querySelector(".md-feedback-action");
       if (action) {
+        const actionStyle = getComputedStyle(action);
+        compare("action leading padding", actionStyle.paddingInlineStart, actionStyle.getPropertyValue("--_button-leading").trim());
+        compare("action trailing padding", actionStyle.paddingInlineEnd, actionStyle.getPropertyValue("--_button-trailing").trim());
         const actionState = action.dataset.componentState;
         const actionShort = {hovered:"hover", focused:"focus"}[actionState] || actionState;
         compare("action label",getComputedStyle(action).color,first([prefix + "action." + actionShort + ".label-text.color",prefix + "action.label-text.color"]),true);

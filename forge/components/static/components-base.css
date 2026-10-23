@@ -1526,8 +1526,6 @@
 }
 .md-tooltip[data-variant="rich"] > .md-feedback-action {
   margin-block-start: var(--md-sys-measurement-space150);
-  padding-inline: 0;
-  justify-content: flex-start;
 }
 .md-tooltip-demo {
   anchor-scope: --tooltip-trigger;
