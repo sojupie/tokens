@@ -6,5 +6,13 @@
   "md.comp.menus.group.padding": {
     "value": 4,
     "unit": "px"
+  },
+  "md.comp.menus.menu-item.leading-space": {
+    "value": 14,
+    "unit": "px"
+  },
+  "md.comp.menus.menu-item.trailing-space": {
+    "value": 14,
+    "unit": "px"
   }
 }
