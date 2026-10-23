@@ -28,6 +28,13 @@ templ tokenSetPicker(subject publish.SubjectView, browser tokenBrowser) {
 				</ul>
 			</section>
 		}
-		<a class="md-menu-item tokens-token-set-overview" href={ tokenSetLinkURL(subject, allTokenSet(subject), browser) } aria-current={ currentTokenSet(browser.Selected.All) }>All tokens</a>
+		<ul>
+			<li>
+				<a class="md-menu-item" href={ tokenSetLinkURL(subject, allTokenSet(subject), browser) } aria-current={ currentTokenSet(browser.Selected.All) }>
+					<span class="md-menu-item-text">All tokens</span>
+					<span data-slot="trailing-icon" aria-hidden="true">@materialSymbol("check")</span>
+				</a>
+			</li>
+		</ul>
 	</nav>
 }

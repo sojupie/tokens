@@ -91,8 +91,7 @@
   border-top: var(--md-comp-divider-thickness) solid
     color-mix(in srgb, var(--md-comp-divider-color) 50%, transparent);
 }
-.tokens-token-set-menu h3,
-.tokens-token-set-overview {
+.tokens-token-set-menu h3 {
   display: block;
   padding: var(--md-sys-measurement-space150);
 }
