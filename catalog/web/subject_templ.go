@@ -65,9 +65,9 @@ func tokenSetPicker(subject publish.SubjectView, browser tokenBrowser) templ.Com
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var3 string
-		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs("Token set: " + tokenSetLabel(browser.Selected))
+		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs("Token set: " + selectedTableLabel(subject, browser.Selected))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/subject.templ`, Line: 10, Col: 182}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/subject.templ`, Line: 10, Col: 196}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
@@ -78,9 +78,9 @@ func tokenSetPicker(subject publish.SubjectView, browser tokenBrowser) templ.Com
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var4 string
-		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(tokenSetLabel(browser.Selected))
+		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(selectedTableLabel(subject, browser.Selected))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/subject.templ`, Line: 11, Col: 76}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/subject.templ`, Line: 11, Col: 90}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
@@ -91,9 +91,9 @@ func tokenSetPicker(subject publish.SubjectView, browser tokenBrowser) templ.Com
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var5 string
-		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(tokenSetLabel(browser.Selected))
+		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(selectedTableLabel(subject, browser.Selected))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/subject.templ`, Line: 11, Col: 112}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/subject.templ`, Line: 11, Col: 140}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
@@ -137,7 +137,7 @@ func tokenSetPicker(subject publish.SubjectView, browser tokenBrowser) templ.Com
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		for _, group := range tokenSetMenuGroups(browser.Sets) {
+		for _, group := range tokenSetMenuGroups(subject, browser.Sets) {
 			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<section><h3 class=\"md-typescale-title-medium\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -187,9 +187,9 @@ func tokenSetPicker(subject publish.SubjectView, browser tokenBrowser) templ.Com
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var11 string
-				templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(tokenSetMenuLabel(set))
+				templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(tokenTableQualifier(subject, set))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/subject.templ`, Line: 23, Col: 64}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/subject.templ`, Line: 23, Col: 75}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 				if templ_7745c5c3_Err != nil {

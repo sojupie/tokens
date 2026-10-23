@@ -31,7 +31,11 @@ func (server *Server) handleSitemap(response http.ResponseWriter, request *http.
 	for _, subject := range sortedSubjects(server.state) {
 		add(subjectURL(subject))
 		add(subjectChangesURL(subject))
-		for _, set := range tokenSets(subject) {
+		sets := tokenSets(subject)
+		if len(sets) == 1 {
+			continue
+		}
+		for _, set := range sets {
 			add(tokenSetURL(subject, set))
 		}
 	}

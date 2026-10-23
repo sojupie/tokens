@@ -27,7 +27,7 @@ templ layout(title string) {
 			<script src={ staticURL("asset-loader.js") } data-sources={ componentScriptSources() } data-shapes-version={ loadingGeometry.version } defer></script>
 			<link rel="icon" type="image/webp" sizes="250x250" href={ staticURL("logo-250x250.webp") }/>
 			<link rel="apple-touch-icon" href={ staticURL("logo-250x250.png") }/>
-			<title>{ pageTitle(ctx, title) } · Token Catalog</title>
+			<title>{ pageTitle(ctx, title) } | Token Catalog</title>
 			<meta name="description" content={ metadata(ctx).Description }/>
 			if metadata(ctx).AgentDiscovery {
 				<link rel="describedby" href="/agents.json" type="application/json"/>

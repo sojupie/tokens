@@ -7,20 +7,20 @@ templ subjectPage(subject publish.SubjectView, changes []publish.ChangeView, bro
 }
 
 templ tokenSetPicker(subject publish.SubjectView, browser tokenBrowser) {
-	<button class="md-filter-chip tokens-token-set" data-selected="true" type="button" popovertarget="tokens-token-set-menu" aria-label={ "Token set: " + tokenSetLabel(browser.Selected) }>
-		<span class="tokens-context-label" title={ tokenSetLabel(browser.Selected) }>{ tokenSetLabel(browser.Selected) }</span>
+	<button class="md-filter-chip tokens-token-set" data-selected="true" type="button" popovertarget="tokens-token-set-menu" aria-label={ "Token set: " + selectedTableLabel(subject, browser.Selected) }>
+		<span class="tokens-context-label" title={ selectedTableLabel(subject, browser.Selected) }>{ selectedTableLabel(subject, browser.Selected) }</span>
 		@materialSymbol("expand_more")
 	</button>
 	<nav class="md-menu tokens-token-set-menu" id="tokens-token-set-menu" popover="auto" aria-label="Token sets">
 		<a class="md-menu-item tokens-token-set-overview" href={ tokenSetLinkURL(subject, tokenSet{All: true, sourceTokens: subject.Tokens}, browser) } aria-current={ currentTokenSet(browser.Selected.Key == "") }>All tokens</a>
-		for _, group := range tokenSetMenuGroups(browser.Sets) {
+		for _, group := range tokenSetMenuGroups(subject, browser.Sets) {
 			<section>
 				<h3 class="md-typescale-title-medium">{ group.Label }</h3>
 				<ul>
 					for _, set := range group.Sets {
 						<li>
 							<a class="md-menu-item" href={ tokenSetLinkURL(subject, set, browser) } aria-current={ currentTokenSet(set.Key == browser.Selected.Key) }>
-								<span class="md-menu-item-text">{ tokenSetMenuLabel(set) }</span>
+								<span class="md-menu-item-text">{ tokenTableQualifier(subject, set) }</span>
 								<span data-slot="trailing-icon" aria-hidden="true">@materialSymbol("check")
 </span>
 							</a>

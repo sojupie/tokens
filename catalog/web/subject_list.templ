@@ -64,7 +64,7 @@ templ subjectCard(subject publish.SubjectView, thumbnails map[string]componentCa
 			}
 		</div>
 		<a class="tokens-component-tile-link" href={ subjectURL(subject) }>
-			<span class="md-typescale-title-medium">{ subject.Name }</span>
+			<span class="md-typescale-title-medium">{ subjectName(subject) }</span>
 			<small class="md-typescale-body-small">{ len(subject.Tokens) } tokens</small>
 		</a>
 	</li>

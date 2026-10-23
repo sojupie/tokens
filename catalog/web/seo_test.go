@@ -2,6 +2,7 @@ package web
 
 import (
 	"encoding/xml"
+	"html"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -34,13 +35,13 @@ func TestSEOMetadataAndCanonicalURLs(t *testing.T) {
 		noindex                bool
 	}{
 		{"/", "Material Design 3 Tokens and Change History", "https://tokens.example/", false},
-		{"/components/snackbar", "Snackbar Component Tokens — Material Design 3", "https://tokens.example/components/snackbar", false},
-		{"/components/snackbar/sets/snackbar/common", "Snackbar Common Tokens — Material Design 3", "https://tokens.example/components/snackbar/sets/snackbar/common", false},
-		{"/components/snackbar?set=snackbar%7Ccommon%7C", "Snackbar Common Tokens — Material Design 3", "https://tokens.example/components/snackbar/sets/snackbar/common", false},
-		{"/components/snackbar?utm_source=example", "Snackbar Component Tokens — Material Design 3", "https://tokens.example/components/snackbar", false},
-		{"/components/snackbar/changes?page=2", "Snackbar component token changes — Material Design 3 — Page 2", "https://tokens.example/components/snackbar/changes?page=2", false},
+		{"/components/snackbar", `Material Design 3 "Snackbar" tokens`, "https://tokens.example/components/snackbar", false},
+		{"/components/snackbar/sets/snackbar/common", `Material Design 3 "Snackbar" tokens: Common`, "https://tokens.example/components/snackbar/sets/snackbar/common", false},
+		{"/components/snackbar?set=snackbar%7Ccommon%7C", `Material Design 3 "Snackbar" tokens: Common`, "https://tokens.example/components/snackbar/sets/snackbar/common", false},
+		{"/components/snackbar?utm_source=example", `Material Design 3 "Snackbar" tokens`, "https://tokens.example/components/snackbar", false},
+		{"/components/snackbar/changes?page=2", `Material Design 3 "Snackbar" token changes: Page 2`, "https://tokens.example/components/snackbar/changes?page=2", false},
 		{"/components?q=snack", "Material Design 3 Components and Component Tokens", "", true},
-		{"/components/snackbar?context.Theme=Dark", "Snackbar Component Tokens — Material Design 3", "", true},
+		{"/components/snackbar?context.Theme=Dark", `Material Design 3 "Snackbar" tokens`, "", true},
 		{"/changes?snapshot=one", "Material Design 3 Token Change Log", "", true},
 		{"/changes?type=removed", "Material Design 3 Token Change Log", "", true},
 	} {
@@ -51,7 +52,7 @@ func TestSEOMetadataAndCanonicalURLs(t *testing.T) {
 			request.Header.Set("X-Forwarded-Host", "untrusted.example")
 			server.Handler().ServeHTTP(response, request)
 			body := response.Body.String()
-			if response.Code != http.StatusOK || !strings.Contains(body, "<title>"+check.title+" · Token Catalog</title>") || !strings.Contains(body, `<meta name="description" content="`) {
+			if response.Code != http.StatusOK || !strings.Contains(html.UnescapeString(body), "<title>"+check.title+" | Token Catalog</title>") || !strings.Contains(body, `<meta name="description" content="`) {
 				t.Fatalf("%s: unexpected metadata/status %d", check.path, response.Code)
 			}
 			if check.canonical != "" && !strings.Contains(body, `rel="canonical" href="`+check.canonical+`"`) {
@@ -176,7 +177,7 @@ func TestTokenSetPagesAreLinkedAndServerRendered(t *testing.T) {
 		if strings.Contains(body, "tokens-token-set-links") || strings.Contains(body, `<select name="set">`) || strings.Count(body, `aria-label="Token sets"`) != 1 {
 			t.Fatal("page has redundant token-set navigation")
 		}
-		if !strings.Contains(body, `popover="auto"`) || !strings.Contains(body, `aria-current="page"`) || !strings.Contains(body, "Material Design 3 snackbar tokens") {
+		if !strings.Contains(body, `popover="auto"`) || !strings.Contains(body, `aria-current="page"`) || !strings.Contains(html.UnescapeString(body), `Material Design 3 "Snackbar" tokens`) {
 			t.Fatal("missing native popover, current selection or clear main heading")
 		}
 		for _, link := range []string{"/sets/snackbar/color", "/sets/snackbar/common"} {

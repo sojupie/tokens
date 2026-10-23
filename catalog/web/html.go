@@ -147,13 +147,15 @@ func (server *Server) handleHTMLSubject(response http.ResponseWriter, request *h
 		return
 	}
 	info := server.basicMetadata(subjectURL(subjects[0]), query)
-	info.Title = subjects[0].Name + " " + subjectKindLabel(subjects[0].Key.Kind) + " Tokens — Material Design 3"
-	info.Heading = "Material Design 3 " + tokenPhrase(subjects[0].Name) + " tokens"
+	info.Title = subjectTokenTitle(subjects[0])
+	info.Heading = info.Title
 	info.Description = subjectTokenDescription(subjects[0])
 	downloadQuery := url.Values{"scope": {"all"}}
 	if len(browser.Sets) > 0 {
 		downloadQuery.Set("scope", "view")
-		downloadQuery.Set("set", browser.Selected.Key)
+		if browser.Selected.Key != "" {
+			downloadQuery.Set("set", browser.Selected.Key)
+		}
 		if browser.Query != "" {
 			downloadQuery.Set("q", browser.Query)
 		}
@@ -163,11 +165,11 @@ func (server *Server) handleHTMLSubject(response http.ResponseWriter, request *h
 	}
 	info.JSONAlternate = subjectDownloadURL(subjects[0]) + "?" + downloadQuery.Encode()
 	if setPath != "" || query.Get("set") != "" {
-		info.Heading = "Material Design 3 " + tokenSetComponent(browser.Selected) + " tokens"
-		info.Title = subjects[0].Name + " " + tokenSetLabel(browser.Selected) + " Tokens — Material Design 3"
-		info.Description = subjects[0].Name + " " + strings.ToLower(tokenSetLabel(browser.Selected)) + " tokens: " + tokenSetDescription(browser.Selected)
+		info.Title = subjectTableTitle(subjects[0], browser.Selected)
+		info.Heading = info.Title
+		info.Description = subjectTableDescription(subjects[0], browser.Selected)
 		if !info.NoIndex {
-			info.Canonical = server.publicOrigin + tokenSetURL(subjects[0], browser.Selected)
+			info.Canonical = server.publicOrigin + tokenTableCanonicalPath(subjects[0], browser.Selected)
 		}
 	}
 	request = request.WithContext(context.WithValue(request.Context(), pageMetadataKey{}, info))
@@ -213,10 +215,15 @@ func (server *Server) renderChangeHistory(response http.ResponseWriter, request 
 		if strings.HasPrefix(request.URL.Path, "/components/") {
 			kind = publish.SubjectComponent
 		}
-		info.Title = displayWords(subject) + " " + strings.ToLower(subjectKindLabel(kind)) + " token changes — Material Design 3"
-		info.Description = "Review observed Material Design 3 token changes for " + displayWords(subject) + " " + strings.ToLower(subjectKindLabel(kind)) + ". Compare previous and current values by context and observation date."
+		view := server.state.Subjects[publish.SubjectKey{Kind: kind, Slug: subject}]
+		if view.Name == "" {
+			view = publish.SubjectView{Key: publish.SubjectKey{Kind: kind, Slug: subject}, Name: displayWords(subject)}
+		}
+		info.Title = subjectChangesTitle(view)
+		info.Heading = info.Title
+		info.Description = `Review Material Design 3 "` + subjectName(view) + `" token changes. Compare previous and current values by context and observation date.`
 		if page > 1 {
-			info.Title += " — Page " + strconv.Itoa(page)
+			info.Title += ": Page " + strconv.Itoa(page)
 			info.Description += " Page " + strconv.Itoa(page) + " shows older changes."
 		}
 	}

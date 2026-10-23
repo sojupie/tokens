@@ -32,7 +32,7 @@ func TestSourceTablesRetainMembershipGroupOrderAndTokenOrder(t *testing.T) {
 	if got := tokenSetURL(subject, browser.Selected); got != "/components/buttons/sets/md.comp.button.elevated" {
 		t.Fatal(got)
 	}
-	if tokenSetMenuLabel(browser.Selected) != "Button - Color - Elevated" {
+	if browser.Selected.Label != "Button - Color - Elevated" {
 		t.Fatal("menu invented a label")
 	}
 	canonical, ok := legacyTokenSet(subject, "button/color/elevated")

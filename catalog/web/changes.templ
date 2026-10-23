@@ -12,7 +12,7 @@ templ changesPage(state publish.PublishedState, subject string, baseURL string, 
 				<a class="tokens-link tokens-history-back" href="/changes">@materialSymbol("arrow_back")
 All changes</a>
 			}
-			<h1 class="md-typescale-headline-medium">{ timelineTitle(subject) }</h1>
+			<h1 class="md-typescale-headline-medium">{ changePageHeading(ctx, subject) }</h1>
 			<p class="md-typescale-body-large">Dates show when we detected changes, not when Material published them.</p>
 			<p class="tokens-metadata">{ historyCoverage(state.Snapshots) }</p>
 		</header>

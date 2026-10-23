@@ -18,16 +18,20 @@ Without `--public-origin`, HTML pages have `noindex`, robots.txt disallows crawl
 
 - The table's token-set selector contains grouped HTML links. It replaces the separate token-set list and native select. Its links exist in the initial HTML; JavaScript only positions the native popover and adds keyboard navigation.
 - Switching sets retains explicit context selections only when the destination supports that combination. Without explicit filters, links use the clean indexable URLs.
-- Main headings name the Material Design 3 component. Titles also identify the subset; descriptions name properties present in the data. Meta descriptions are not repeated as visible introductions.
+- The default selection is All tokens, grouped by the original source tables. Individual tables retain their own URLs and source membership.
+- Component display names use singular English nouns. Source names, identifiers and URL slugs stay unchanged. Style names retain their source wording.
+- Headings and titles follow `Material Design 3 "Icon Button" tokens`. Table pages append a qualifier such as `Filled / Color` or `Medium / Size`. Titles end with ` | Token Catalog`. Descriptions identify the selected table.
+- Table qualifiers come from captured labels. Baseline and deprecated labels remain visible. Expressive availability and recommendation guidance must not be inferred from a color name such as Vibrant.
+- Playground changes replace the current history entry. The URL retains the configuration for sharing and reloading.
 - A token-set page such as `/components/buttons/sets/button/color/elevated` renders its tokens on the server. JavaScript is not needed to load the content.
-- Existing `?set=...` links still work and declare the corresponding token-set URL as canonical.
+- Existing `?set=...` links still work and declare the corresponding token-set URL as canonical. If the subject has only one table, its table URL instead declares the main subject URL as canonical.
 - Search, context and changelog-filter views have `noindex, follow`. These views contain selected subsets, so they do not claim to duplicate a full page.
 - Unfiltered component changelog pages have their own canonical URLs. Page two keeps `?page=2`; it is not canonicalized to page one.
 - API and JSON download responses have an `X-Robots-Tag: noindex` header.
 
 ## Sitemap and deployment checks
 
-`/sitemap.xml` lists the home page, component and style indexes, component and style pages, token sets, and each subject's changelog entry page. Further changelog pages are reachable through normal pagination links. Filter combinations are not listed. No fabricated modification dates are included.
+`/sitemap.xml` lists the home page, component and style indexes, component and style pages, token sets, and each subject's changelog entry page. Further changelog pages are reachable through normal pagination links. Single-table duplicates and filter combinations are not listed. No fabricated modification dates are included.
 
 `/robots.txt` advertises the sitemap when the public origin is configured. It does not block filtered HTML pages: crawlers must be able to read their `noindex` instructions.
 

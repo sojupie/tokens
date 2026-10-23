@@ -67,7 +67,7 @@ func changeGroups(changes []publish.ChangeView, subjects map[publish.SubjectKey]
 			group := changeGroup{Label: displayWords(change.Subject)}
 			if subject, ok := bySlug[change.Subject]; ok {
 				if subject.Name != "" {
-					group.Label = subject.Name
+					group.Label = subjectName(subject)
 				}
 				group.URL = subjectURL(subject)
 			}
