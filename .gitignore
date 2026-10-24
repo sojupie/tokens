@@ -41,3 +41,6 @@ Thumbs.db
 
 # Token build dependencies and generated assets.
 node_modules/
+
+# Rendered documentation captures and version receipts.
+/snapshots/material-guidance/

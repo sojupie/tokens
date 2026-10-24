@@ -35,6 +35,8 @@ func run(args []string) error {
 	case "help", "-h", "--help":
 		printTopHelp()
 		return nil
+	case "guidance":
+		return runGuidance(args[1:])
 	case "crawl":
 		return runCrawl(args[1:])
 	case "export":
@@ -61,6 +63,7 @@ func run(args []string) error {
 
 const topHelp = `Usage:
   tokens crawl [flags]
+  tokens guidance --url URL [--url URL] [flags]
   tokens publish [flags]
   tokens export [--published directory] [--context Name=Value] [--output directory]
   tokens update [run|status|inspect|approve|retry|notify] [flags]

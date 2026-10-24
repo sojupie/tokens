@@ -3,17 +3,19 @@ module github.com/sojupie/tokens
 go 1.26
 
 require (
-	github.com/jinzhu/inflection v1.0.0
+	github.com/JohannesKaufmann/html-to-markdown/v2 v2.5.2
 	github.com/a-h/templ v0.3.960
 	github.com/chromedp/cdproto v0.0.0-20250724212937-08a3db8b4327
 	github.com/chromedp/chromedp v0.14.2
+	github.com/jinzhu/inflection v1.0.0
 	github.com/santhosh-tekuri/jsonschema/v6 v6.0.2
-	golang.org/x/net v0.47.0
+	golang.org/x/net v0.55.0
 	golang.org/x/sys v0.47.0
 	modernc.org/sqlite v1.58.0
 )
 
 require (
+	github.com/JohannesKaufmann/dom v0.3.1 // indirect
 	github.com/chromedp/sysutil v1.1.0 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/go-json-experiment/json v0.0.0-20250725192818-e39067aee2d2 // indirect
@@ -24,7 +26,7 @@ require (
 	github.com/mattn/go-isatty v0.0.24 // indirect
 	github.com/ncruces/go-strftime v1.0.0 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
-	golang.org/x/text v0.36.0 // indirect
+	golang.org/x/text v0.37.0 // indirect
 	modernc.org/libc v1.75.6 // indirect
 	modernc.org/mathutil v1.7.1 // indirect
 	modernc.org/memory v1.12.1 // indirect
