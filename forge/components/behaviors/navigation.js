@@ -12,7 +12,9 @@
     for (const item of group.querySelectorAll("[data-navigation-item]"))
       item.removeAttribute("aria-current");
     button.setAttribute("aria-current", "page");
-    for (const badge of button.querySelectorAll(".md-nav-badge")) badge.remove();
+    const badges = button.querySelectorAll(".md-nav-badge");
+    if (badges.length) button.removeAttribute("aria-label");
+    for (const badge of badges) badge.remove();
     const label = button.querySelector(".md-nav-label").textContent;
     group.dispatchEvent(
       new CustomEvent("md-navigation-select", {

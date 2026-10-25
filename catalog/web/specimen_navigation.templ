@@ -83,16 +83,17 @@ templ navigationItemContents(c componentCase, i int, label string, icon string) 
 		<span class="md-nav-icon">
 			@materialSymbol(icon + "_outline")
 			@materialSymbol(icon + "_filled")
-		</span><span class="md-nav-label">{ label }</span>
-		if c.Family=="nav-drawer" {
-			<span class="md-nav-count">{ fmt.Sprint(i+1) }</span>
-		}
 		if c.Family=="nav-rail" && i==1 && c.NavBadge!=""&&c.NavBadge!="none" && c.NavigationItem(i)["aria-current"]!="page" {
-			<span class={ "md-badge md-nav-badge" } data-variant={ c.NavBadge } aria-label={ c.NavigationBadgeLabel() }>
+			<span class={ "md-badge md-nav-badge" } data-variant={ c.NavBadge } aria-label={ c.NavigationBadgeLabel() } aria-hidden="true">
 				if c.NavBadge=="labeled" {
 					3
 				}
 			</span>
 		}
+		</span><span class="md-nav-label">{ label }</span>
+		if c.Family=="nav-drawer" {
+			<span class="md-nav-count">{ fmt.Sprint(i+1) }</span>
+		}
+
 	</span>
 }

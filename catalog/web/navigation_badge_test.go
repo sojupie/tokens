@@ -15,7 +15,7 @@ func TestNavigationBadgeNamesAndInitialSelection(t *testing.T) {
 		if err := navigationItemContents(c, 1, "Files", "folder").Render(context.Background(), &out); err != nil {
 			t.Fatal(err)
 		}
-		if !strings.Contains(out.String(), `aria-label="`+want+`"`) {
+		if !strings.Contains(out.String(), `aria-label="`+want+`"`) || c.NavigationItem(1)["aria-label"] != "Files "+want {
 			t.Errorf("%s missing %s", variant, want)
 		}
 	}

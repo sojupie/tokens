@@ -18,6 +18,9 @@ func (c componentCase) NavigationItem(index int) templ.Attributes {
 			attrs["data-component-state"] = c.State
 		}
 	}
+	if c.Family == "nav-rail" && index == 1 && c.NavBadge != "" && c.NavBadge != "none" && attrs["aria-current"] != "page" {
+		attrs["aria-label"] = c.NavigationLabels()[index] + " " + c.NavigationBadgeLabel()
+	}
 	return attrs
 }
 
