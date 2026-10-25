@@ -1172,7 +1172,13 @@
 (() => {
   if (typeof document === "undefined") return;
   const { snackbarTimer } = globalThis.MaterialComponents;
-  const timers = new WeakMap();
+  const timers = new WeakMap(), openers = new WeakMap();
+  function dismiss(bar) {
+    const restore = bar.contains(document.activeElement);
+    timers.get(bar)?.stop();
+    bar.hidePopover();
+    if (restore) openers.get(bar)?.focus({ preventScroll: true });
+  }
   const clock = {
     now: () => performance.now(),
     setTimeout: (fn, delay) => setTimeout(fn, delay),
@@ -1182,7 +1188,7 @@
     for (const bar of root.querySelectorAll(".md-snackbar[popover]")) {
       if (timers.has(bar)) continue;
       const timer = snackbarTimer(() => {
-        if (bar.isConnected && bar.matches(":popover-open")) bar.hidePopover();
+        if (bar.isConnected && bar.matches(":popover-open")) dismiss(bar);
       }, clock);
       timers.set(bar, timer);
       bar.addEventListener("toggle", () => {
@@ -1210,14 +1216,18 @@
     if (!demo) return;
     const bar = demo.querySelector(".md-snackbar");
     if (button.hasAttribute("data-snackbar-open")) {
+      openers.set(bar, button);
       bar.showPopover();
-      timers.get(bar).start(Number(bar.dataset.snackbarDuration));
+      const inline = demo.querySelector("[data-snackbar-inline]");
+      if (inline) inline.textContent = bar.querySelector(".md-feedback-text").textContent.trim();
+      // Web notifications must remain available either in the actionable bar
+      // itself or as inline feedback after a non-actionable bar disappears.
+      timers.get(bar).start(bar.querySelector("[data-snackbar-action]") || !inline ? 0 : Number(bar.dataset.snackbarDuration));
     } else if (
       button.hasAttribute("data-snackbar-close") ||
       button.hasAttribute("data-snackbar-action")
     ) {
-      timers.get(bar).stop();
-      bar.hidePopover();
+      dismiss(bar);
     } else return;
     button.dispatchEvent(
       new CustomEvent("md-snackbar-action", { bubbles: true }),
@@ -1228,8 +1238,7 @@
       for (const bar of document.querySelectorAll(
         ".md-snackbar:popover-open",
       )) {
-        timers.get(bar)?.stop();
-        bar.hidePopover();
+        dismiss(bar);
       }
   });
   document.addEventListener('tokens:assets-ready',()=>initialize());
