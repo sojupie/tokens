@@ -3,10 +3,11 @@ package web
 templ specimenSnackbar(c componentCase) {
 	if c.State=="interactive" {
 		<div data-snackbar-demo>
-			<button class="md-button md-outlined-button" type="button" data-snackbar-open>Show snackbar</button>
+			<button class="md-button md-outlined-button" type="button" data-snackbar-open aria-describedby={ c.ID() + "-shortcut" }>Show snackbar</button>
 			<div { c.Attributes()... } popover="manual" role="status" data-snackbar-duration="6000">
 				@snackbarContents(c)
 			</div>
+			<p class="md-typescale-body-small" id={ c.ID() + "-shortcut" }>Press F6 to focus the snackbar action.</p>
 			<output class="md-typescale-body-small" aria-live="polite"></output>
 		</div>
 	} else {

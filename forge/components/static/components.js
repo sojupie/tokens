@@ -1234,6 +1234,11 @@
     );
   });
   document.addEventListener("keydown", (event) => {
+    if (event.key === "F6" && !event.altKey && !event.ctrlKey && !event.metaKey && !event.shiftKey) {
+      const action = document.querySelector('.md-snackbar:popover-open [data-snackbar-action]:not(:disabled)');
+      if (action) { event.preventDefault(); action.focus({ preventScroll: true }); }
+      return;
+    }
     if (event.key === "Escape")
       for (const bar of document.querySelectorAll(
         ".md-snackbar:popover-open",

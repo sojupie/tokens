@@ -22,3 +22,16 @@ func TestStatusExamplesDescribeContent(t *testing.T) {
 		t.Error("Progress name must identify the affected content")
 	}
 }
+
+func TestSnackbarDocumentsItsFocusShortcut(t *testing.T) {
+	c := componentCase{Family: "snackbar", State: "interactive"}
+	var out bytes.Buffer
+	if err := specimenSnackbar(c).Render(context.Background(), &out); err != nil {
+		t.Fatal(err)
+	}
+	for _, want := range []string{`aria-describedby="` + c.ID() + `-shortcut"`, `id="` + c.ID() + `-shortcut"`, `Press F6 to focus the snackbar action.`} {
+		if !strings.Contains(out.String(), want) {
+			t.Errorf("missing %s", want)
+		}
+	}
+}
