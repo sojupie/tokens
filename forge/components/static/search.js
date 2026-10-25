@@ -38,7 +38,8 @@
     if(leading){leading.hidden=false;leading.inert=open;}
     if(open)filter(state);else state.panel.querySelector('output').textContent='';
     measure(state);
-    if(focus){state.restoring=!open;state.input.focus({preventScroll:true});state.restoring=false;}
+    state.opener?.setAttribute('aria-expanded',String(open));
+    if(focus){state.restoring=!open;(open?state.input:state.opener||state.input).focus({preventScroll:true});state.restoring=false;}
   }
   const scenes=new ResizeObserver(entries=>{for(const {target}of entries){const state=stateFor(target);if(state)measure(state);}});
   function init(){
@@ -55,6 +56,7 @@
   });
   document.addEventListener('click',event=>{
     const state=stateFor(event.target);if(!state)return;
+    const opener=event.target.closest('button[data-search-open]');if(opener){state.opener=opener;setOpen(state,true);return;}
     if(event.target.closest('.md-search-bar')&&!event.target.closest('button,.md-search-options')){setOpen(state,true);return;}
     if(event.target.closest('[data-search-back],.md-search-scrim')){setOpen(state,false);return;}
     if(event.target.closest('[data-search-clear]')){state.input.value='';state.submitted=false;filter(state);if(state.open)state.input.focus({preventScroll:true});return;}

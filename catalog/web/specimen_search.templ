@@ -67,35 +67,7 @@ templ searchScene(c componentCase) {
 		if c.Variant!="adaptive" {
 			@searchScrim()
 		}
-		<div { c.SearchPanel()... }>
-			<div { c.SearchBar()... }>
-				<span class="md-search-leading-slot">
-					if c.Shape=="icon" {
-						<span class="md-search-leading" aria-hidden="true">@materialSymbol("search")
-</span>
-					}
-					if c.Shape=="menu" {
-						<button class="md-icon-button md-standard-icon-button md-search-navigation" data-size="small" data-shape="round" type="button" data-search-navigation aria-label="Open navigation" aria-haspopup="dialog" aria-controls={ c.ID() + "-navigation" }>@materialSymbol("menu")
-</button>
-					}
-					<button class="md-icon-button md-standard-icon-button md-search-back" data-size="small" data-shape="round" type="button" aria-label="Close search" data-search-back hidden?={ !c.Expanded }>@materialSymbol("arrow_back")
-</button>
-				</span>
-				<input type="search" class="md-search-input" aria-label="Search tokens" aria-expanded={ fmt.Sprint(c.Expanded) } aria-controls={ c.ID() + "-results" } placeholder="Search tokens" value={ c.SearchQuery() } autocomplete="off" readonly?={ !c.Expanded }/>
-				@searchActions(c)
-			</div>
-			<div class={ "md-search-results",templ.KV("md-elevation",c.SearchElevation=="token") } id={ c.ID() + "-results" } hidden?={ !c.Expanded }>
-				<h3 class="md-search-results-heading" data-search-heading tabindex="-1">Suggestions</h3>
-				<ul class="md-list" data-size="one-line" data-shape="baseline" aria-label="Search suggestions and results">
-					for _, label := range searchExamples {
-						<li data-search-result={ label }><button class="md-list-item" type="button"><span class="md-list-leading md-list-icon" aria-hidden="true">@materialSymbol("search")
-</span><span class="md-list-body"><span class="md-list-label">{ label }</span></span></button></li>
-					}
-				</ul>
-				<p class="md-typescale-body-medium" data-search-empty hidden>No results</p>
-			</div>
-			<output class="md-search-status" aria-live="polite"></output>
-		</div>
+		@searchView(c)
 		if c.Shape=="menu" {
 			<dialog { c.SearchNavigationPanel()... }>@navigationContents(c.SearchNavigation())
 </dialog>
@@ -122,4 +94,36 @@ templ searchCompositionNavigation(c componentCase) {
 
 templ searchScrim() {
 	<button class="md-search-scrim" type="button" aria-label="Dismiss search" tabindex="-1" hidden></button>
+}
+
+templ searchView(c componentCase) {
+	<div { c.SearchPanel()... }>
+		<div { c.SearchBar()... }>
+			<span class="md-search-leading-slot">
+				if c.Shape=="icon" {
+					<span class="md-search-leading" aria-hidden="true">@materialSymbol("search")
+</span>
+				}
+				if c.Shape=="menu" {
+					<button class="md-icon-button md-standard-icon-button md-search-navigation" data-size="small" data-shape="round" type="button" data-search-navigation aria-label="Open navigation" aria-haspopup="dialog" aria-controls={ c.ID() + "-navigation" }>@materialSymbol("menu")
+</button>
+				}
+				<button class="md-icon-button md-standard-icon-button md-search-back" data-size="small" data-shape="round" type="button" aria-label="Close search" data-search-back hidden?={ !c.Expanded }>@materialSymbol("arrow_back")
+</button>
+			</span>
+			<input type="search" class="md-search-input" aria-label="Search tokens" aria-expanded={ fmt.Sprint(c.Expanded) } aria-controls={ c.ID() + "-results" } placeholder="Search tokens" value={ c.SearchQuery() } autocomplete="off" readonly?={ !c.Expanded }/>
+			@searchActions(c)
+		</div>
+		<div class={ "md-search-results",templ.KV("md-elevation",c.SearchElevation=="token") } id={ c.ID() + "-results" } hidden?={ !c.Expanded }>
+			<h3 class="md-search-results-heading" data-search-heading tabindex="-1">Suggestions</h3>
+			<ul class="md-list" data-size="one-line" data-shape="baseline" aria-label="Search suggestions and results">
+				for _, label := range searchExamples {
+					<li data-search-result={ label }><button class="md-list-item" type="button"><span class="md-list-leading md-list-icon" aria-hidden="true">@materialSymbol("search")
+</span><span class="md-list-body"><span class="md-list-label">{ label }</span></span></button></li>
+				}
+			</ul>
+			<p class="md-typescale-body-medium" data-search-empty hidden>No results</p>
+		</div>
+		<output class="md-search-status" aria-live="polite"></output>
+	</div>
 }

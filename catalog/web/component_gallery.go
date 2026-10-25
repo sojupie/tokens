@@ -7,6 +7,8 @@ import (
 
 // componentCase configures Catalog specimens; it is not a public component API.
 type componentCase struct {
+	// instanceID scopes nested controls without changing their token configuration.
+	instanceID      string
 	MenuMode        string `json:"menuMode,omitempty"`
 	SegmentDensity  string `json:"segmentDensity,omitempty"`
 	SearchContent   string `json:"searchContent,omitempty"`
@@ -42,6 +44,9 @@ type componentCase struct {
 }
 
 func (c componentCase) ID() string {
+	if c.instanceID != "" {
+		return c.instanceID
+	}
 	id := fmt.Sprintf("%s-%s-%s-%s-%s-%s-%t-%t-%t", c.Family, c.Variant, c.Size, c.Shape, c.Width, c.State, c.Selected, c.Elevated, c.Invalid)
 	if c.DialogHeadline == "hidden" {
 		id += "-no-headline"

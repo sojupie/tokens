@@ -3120,6 +3120,31 @@
   box-sizing: border-box;
   inline-size: min(100%, max(312px, 50%));
 }
+
+.md-appbar-demo.md-search-demo {
+  inline-size: 48rem;
+  max-block-size: none;
+  overflow: visible;
+}
+.md-appbar-search-scene > .md-search-page {
+  box-sizing: border-box;
+  block-size: 100%;
+  padding: 0;
+  overflow: auto;
+}
+.md-appbar-search-scene > .md-search-view[data-open="false"] {
+  visibility: hidden;
+  pointer-events: none;
+}
+button.md-appbar-search {
+  --_button-rest-shape: var(--_appbar-search-shape);
+  --_button-pressed-shape: var(--_appbar-search-shape);
+  border: 0;
+  font: var(--_appbar-search-font);
+  letter-spacing: var(--_appbar-search-tracking);
+  text-align: start;
+  cursor: pointer;
+}
 /* Toolbar geometry and colors override shared button anatomy. */
 .md-toolbar-scene {
   position: relative;

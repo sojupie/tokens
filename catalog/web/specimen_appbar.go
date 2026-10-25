@@ -58,3 +58,7 @@ func (c componentCase) BarFAB() templ.Attributes {
 func (c componentCase) BarExpanded() bool {
 	return c.Variant != "bottom" && c.Variant != "small" && c.Variant != "centered" && c.Variant != "baseline-small" && c.Variant != "baseline-centered"
 }
+
+func (c componentCase) AppbarSearch() componentCase {
+	return componentCase{instanceID: c.ID() + "-search", Family: "search", Variant: "adaptive", Control: "contained", Shape: "icon", Width: "clear", State: "interactive"}
+}
