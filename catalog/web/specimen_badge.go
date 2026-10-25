@@ -6,3 +6,10 @@ func (c componentCase) BadgeLabel() string {
 	}
 	return "New notification"
 }
+
+func (c componentCase) NavigationBadgeLabel() string {
+	if c.NavBadge == "labeled" {
+		return "3 unread files"
+	}
+	return "New notification"
+}

@@ -1,0 +1,11 @@
+<!doctype html><meta charset="utf-8"><title>Navigation badge checks</title>
+<style>body{font:16px system-ui;margin:24px}iframe{width:960px;max-width:100%;height:650px}pre{white-space:pre-wrap}</style>
+<h1>Navigation badge checks</h1><button id="run">Run badge checks</button><pre id="result">Ready</pre><div id="samples"></div>
+<script type="module">
+const button=document.querySelector('#run'),out=document.querySelector('#result'),samples=document.querySelector('#samples');
+button.onclick=async()=>{button.disabled=true;const checks=[];const assert=(ok,message)=>{if(!ok)throw Error(message);checks.push(message)};
+try{for(const variant of ['small','labeled']){samples.replaceChildren();const frame=document.createElement('iframe');samples.append(frame);await new Promise(resolve=>{frame.onload=resolve;frame.src=`/md3/components/navigation-rail?preview.compare=interactive&preview.badge=${variant}&preview.selection=selected`});const w=frame.contentWindow,d=frame.contentDocument;await w.TokenAssets.ready;
+const group=d.querySelector('#component-preview [data-navigation-group]'),badge=group.querySelector('.md-nav-badge'),destination=badge?.closest('[data-navigation-item]');assert(!!badge,`${variant}: unread destination has a badge`);assert(badge.getAttribute('aria-label')===(variant==='small'?'New notification':'3 unread files'),`${variant}: notification name matches the badge type`);assert(destination.querySelector('.md-nav-label').compareDocumentPosition(badge)&w.Node.DOCUMENT_POSITION_FOLLOWING,`${variant}: badge follows its destination label`);destination.click();assert(!badge.isConnected,`${variant}: selecting destination clears its badge`);group.querySelector('[data-navigation-item]').click();assert(!group.querySelector('.md-nav-badge'),`${variant}: badge stays cleared after leaving the destination`);
+}out.textContent=JSON.stringify({passed:checks.length,checks},null,2);
+}catch(error){out.textContent=JSON.stringify({passed:checks.length,checks,error:error.stack},null,2)}finally{button.disabled=false}};
+</script>
