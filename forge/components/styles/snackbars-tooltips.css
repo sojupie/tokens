@@ -111,10 +111,11 @@
   visibility: visible;
 }
 .md-tooltip[data-variant="rich"][popover] {
+  max-inline-size: min(24rem, calc(100% - 16px));
   inset: auto;
   position-anchor: --tooltip-trigger;
   top: anchor(bottom);
-  left: anchor(left);
+  left: anchor(right);
   margin-block: var(--md-sys-measurement-space100);
 }
 @supports not (top: anchor(bottom)) {
