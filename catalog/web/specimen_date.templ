@@ -79,10 +79,10 @@ templ specimenDate(c componentCase) {
 			</div>
 			<div class="md-date-inputs" data-date-inputs>
 				<div class="md-outlined-text-field">@outlinedFieldFrame("Date")
-<label for={ c.ID() + "-start" } data-slot="label">Date</label><input id={ c.ID() + "-start" } data-date-input="start" aria-describedby={ c.ID() + "-error" } placeholder="YYYY-MM-DD" value="2026-10-21" inputmode="numeric" maxlength="32" autocomplete="off"/></div>
+<label for={ c.ID() + "-start" } data-slot="label">Date</label><input id={ c.ID() + "-start" } data-date-input="start" aria-describedby={ c.ID() + "-start-format " + c.ID()+"-error" } placeholder="Date" value="2026-10-21" inputmode="numeric" maxlength="32" autocomplete="off"/><small data-slot="supporting-text" id={ c.ID() + "-start-format" }>YYYY-MM-DD</small></div>
 				if c.DateRange {
 					<div class="md-outlined-text-field">@outlinedFieldFrame("End date")
-<label for={ c.ID() + "-end" } data-slot="label">End date</label><input id={ c.ID() + "-end" } data-date-input="end" aria-describedby={ c.ID() + "-error" } placeholder="YYYY-MM-DD" value="2026-10-26" inputmode="numeric" maxlength="32" autocomplete="off"/></div>
+<label for={ c.ID() + "-end" } data-slot="label">End date</label><input id={ c.ID() + "-end" } data-date-input="end" aria-describedby={ c.ID() + "-end-format " + c.ID()+"-error" } placeholder="End date" value="2026-10-26" inputmode="numeric" maxlength="32" autocomplete="off"/><small data-slot="supporting-text" id={ c.ID() + "-end-format" }>YYYY-MM-DD</small></div>
 				}
 				<p id={ c.ID() + "-error" } class="md-typescale-body-small" data-date-error role="alert"></p>
 			</div>

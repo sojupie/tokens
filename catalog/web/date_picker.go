@@ -24,7 +24,7 @@ func (c componentCase) DateEntry(part string) templ.Attributes {
 	if part == "end" {
 		value = "2026-10-26"
 	}
-	a := templ.Attributes{"id": c.ID() + "-value-" + part, "type": "text", "data-date-value": part, "value": value, "placeholder": "YYYY-MM-DD", "inputmode": "numeric", "maxlength": "32", "autocomplete": "off", "aria-describedby": c.ID() + "-value-help-" + part}
+	a := templ.Attributes{"id": c.ID() + "-value-" + part, "type": "text", "data-date-value": part, "value": value, "placeholder": c.DateEntryLabel(part), "inputmode": "numeric", "maxlength": "32", "autocomplete": "off", "aria-describedby": c.ID() + "-value-help-" + part}
 	if c.Variant == "docked" {
 		a["aria-keyshortcuts"] = "Alt+ArrowDown"
 	}

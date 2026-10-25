@@ -98,3 +98,17 @@ func TestDatePreviewExposesEveryVariantForSingleAndRange(t *testing.T) {
 		}
 	}
 }
+
+func TestDateEntryPlaceholderMatchesPurpose(t *testing.T) {
+	for _, isRange := range []bool{false, true} {
+		c := componentCase{Family: "date", Variant: "docked", DateRange: isRange}
+		for _, part := range []string{"start", "end"} {
+			if c.DateEntry(part)["placeholder"] != c.DateEntryLabel(part) {
+				t.Fatalf("%s input placeholder differs from its label", part)
+			}
+			if c.DateEntry(part)["aria-describedby"] != c.ID()+"-value-help-"+part {
+				t.Fatal("Date format is not associated with the field")
+			}
+		}
+	}
+}
