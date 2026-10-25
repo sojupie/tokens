@@ -3484,7 +3484,10 @@ dialog.md-side-sheet[data-variant="detached"] {
 .md-sheet-body {
   flex: 1;
   min-block-size: 0;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior-y: contain;
+  overflow-wrap: anywhere;
   padding: var(--md-sys-measurement-space300);
 }
 .md-sheet-body p {
@@ -3555,6 +3558,29 @@ dialog.md-side-sheet[data-variant="detached"] {
   --_button-label-opacity: var(
     --md-comp-button-text-disabled-label-text-opacity
   );
+}
+
+/* A standard side sheet participates in its app frame's layout. Modal sheets
+   remain in the top layer and leave the underlying page width unchanged. */
+.md-sheet-frame:has(> .md-side-sheet[data-control="standard"]) {
+  display: flex;
+}
+.md-sheet-frame:has(> .md-side-sheet[data-control="standard"][data-orientation="start"]) {
+  flex-direction: row-reverse;
+}
+.md-sheet-frame > .md-sheet-page-label {
+  min-inline-size: 0;
+  flex: 1;
+}
+.md-sheet-frame > .md-side-sheet[data-control="standard"] {
+  position: relative;
+  inset: auto;
+  flex: 0 1 var(--_sheet-width);
+  block-size: 100%;
+}
+.md-sheet-frame > .md-side-sheet[data-control="standard"][data-variant="detached"] {
+  margin: var(--md-sys-measurement-space200);
+  block-size: auto;
 }
 /* Split geometry comes from split-button tokens; colors and feedback use common buttons. */
 .md-split-demo {
