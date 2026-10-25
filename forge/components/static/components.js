@@ -340,7 +340,7 @@
   function drawerDismissed(dx, dy, width, rtl) {
     return Math.abs(dx) >= width / 4 && Math.abs(dx) > Math.abs(dy) && (rtl ? dx > 0 : dx < 0);
   }
-  if (typeof module !== "undefined") module.exports = { drawerDismissed };
+  if (typeof module !== "undefined") Object.assign(module.exports, { drawerDismissed });
   if (typeof document === "undefined") return;
   const { navigationIndex } = globalThis.MaterialComponents;
   function selectNavigation(button) {
