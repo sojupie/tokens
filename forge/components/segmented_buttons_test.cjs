@@ -71,3 +71,9 @@ test('multi-select arrows move focus without changing selection', () => {
  globals.getComputedStyle=()=>({direction:'rtl',visibility:'visible'});
  handlers[0]({target:items[0],key:'ArrowLeft',preventDefault(){}});assert.equal(focused,items[1]);
 });
+
+test('switch Enter activation uses the native checkbox without repeats',()=>{
+ const h=harness('checkbox','switches.js');assert.equal(h.key(),true);assert.equal(h.clicks,1);
+ assert.equal(h.key('Enter',{repeat:true}),true);assert.equal(h.clicks,1);
+ assert.equal(h.key(' '),false);h.input.disabled=true;assert.equal(h.key(),false);assert.equal(h.clicks,1);
+});

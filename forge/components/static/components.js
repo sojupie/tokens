@@ -320,6 +320,17 @@
 })();
 (() => {
   if (typeof document === "undefined") return;
+  document.addEventListener("keydown", (event) => {
+    const input = event.target;
+    if (event.key !== "Enter" || event.defaultPrevented || event.isComposing ||
+        !input.matches?.('.md-switch > input[type="checkbox"]') ||
+        input.matches(":disabled") || input.closest('[inert],[aria-disabled="true"]')) return;
+    event.preventDefault();
+    if (!event.repeat) input.click();
+  });
+})();
+(() => {
+  if (typeof document === "undefined") return;
   const { navigationIndex } = globalThis.MaterialComponents;
   function selectNavigation(button) {
     const group = button.closest("[data-navigation-group]");

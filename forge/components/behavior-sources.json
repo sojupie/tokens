@@ -4,6 +4,7 @@
   "behaviors/tabs.js",
   "behaviors/button-groups.js",
   "behaviors/segmented-buttons.js",
+  "behaviors/switches.js",
   "behaviors/navigation.js",
   "behaviors/sliders.js",
   "behaviors/toolbars.js",

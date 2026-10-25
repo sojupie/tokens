@@ -1,0 +1,12 @@
+<!doctype html><meta charset="utf-8"><title>Switch keyboard checks</title>
+<style>body{font:16px system-ui;margin:24px}iframe{width:960px;max-width:100%;height:600px}pre{white-space:pre-wrap}</style>
+<h1>Switch keyboard checks</h1><button id="run">Run switch checks</button><pre id="result">Ready</pre><div id="samples"></div>
+<script type="module">
+const button=document.querySelector('#run'),out=document.querySelector('#result'),samples=document.querySelector('#samples');
+button.onclick=async()=>{button.disabled=true;const checks=[];const assert=(ok,message)=>{if(!ok)throw Error(message);checks.push(message)};
+try{samples.replaceChildren();const frame=document.createElement('iframe');samples.append(frame);await new Promise(resolve=>{frame.onload=resolve;frame.src='/md3/components/switch?preview.compare=interactive'});
+const w=frame.contentWindow,d=frame.contentDocument;await w.TokenAssets.ready;const input=d.querySelector('#component-preview .md-switch>input');let changes=0;input.addEventListener('change',()=>changes++);
+const enter=repeat=>{input.focus();const e=new w.KeyboardEvent('keydown',{key:'Enter',repeat,bubbles:true,cancelable:true});input.dispatchEvent(e);input.dispatchEvent(new w.KeyboardEvent('keyup',{key:'Enter',bubbles:true}));return e.defaultPrevented;};
+const initial=input.checked;assert(enter(false)&&input.checked!==initial,'Enter toggles the native switch');assert(changes===1,'Enter fires one native change event');assert(d.activeElement===input,'Focus remains on the input');assert(enter(true)&&changes===1,'Repeated Enter does not toggle again');enter(false);assert(input.checked===initial&&changes===2,'Second Enter toggles back');input.disabled=true;assert(!enter(false)&&changes===2,'Disabled switches do not activate');out.textContent=JSON.stringify({passed:checks.length,checks},null,2);
+}catch(error){out.textContent=JSON.stringify({passed:checks.length,checks,error:error.stack},null,2)}finally{button.disabled=false}};
+</script>
