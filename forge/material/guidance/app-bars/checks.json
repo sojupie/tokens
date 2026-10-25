@@ -585,17 +585,22 @@
           {
             "kind": "browser",
             "location": "forge/conformance/appbar-search.html; forge/conformance/appbar-search-width.html; forge/conformance/search-responsive.html; forge/conformance/headline-layout.html",
-            "result": "Chromium: 14 workflow assertions pass. Existing width, headline and shared-search fixtures also pass (6, 12 and 10 assertions)."
+            "result": "Chromium: 15 workflow and geometry assertions pass, including absence of a duplicate outer scrolling container. Existing width, headline and shared-search fixtures also pass (6, 12 and 10 assertions)."
           }
         ],
         "notes": "",
-        "assessedBaseline": "e23e979d8041e1fe8755e6f85051f8d076e0b928"
+        "assessedBaseline": "dd09cfc4987d96f5f78df4d4232b2dab1b525f7f"
       },
       "fixes": [
         {
           "commit": "25fe48c51f95bafcf1583466841cbd6d7b397a28",
           "sourceRevision": 1,
           "summary": "Open the shared search view from interactive app bars"
+        },
+        {
+          "commit": "ea76426e251d80ea13bfa138c7fbcbe55f6b1991",
+          "sourceRevision": 1,
+          "summary": "Keep composed app bar search within one scrolling boundary."
         }
       ]
     },
