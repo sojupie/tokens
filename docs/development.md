@@ -353,3 +353,6 @@ The [motion contract and browser checks](reference/components.md#motion-schemes-
 describe assignments, interruption handling, reduced motion and popup fallbacks.
 Run `go run ./forge/conformance` alongside Catalog and open
 `http://127.0.0.1:8082/motion.html` to repeat the checks.
+
+For repeatable input recipes, source-video frames and quantitative comparisons,
+see [motion inspection](reference/motion-inspection.md).

@@ -47,3 +47,6 @@ node_modules/
 
 # Immutable local implementation assessment snapshots.
 /snapshots/implementation-baselines/
+
+# Local motion inspection recordings and measurements.
+/snapshots/motion/

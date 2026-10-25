@@ -1,0 +1,34 @@
+{
+  "url": "http://127.0.0.1:8085/motion-inspection.html",
+  "source": "Calibration fixture: text translation 96 CSS px over 500 ms; cubic-bezier(.2,0,0,1). Opacity has independent 200 ms linear timing.",
+  "width": 1000,
+  "height": 700,
+  "duration": 1400,
+  "tracks": [
+    {
+      "name": "label.translateX",
+      "selector": "#label",
+      "property": "translateX",
+      "unit": "CSS px"
+    },
+    {
+      "name": "label.opacity",
+      "selector": "#label",
+      "property": "opacity",
+      "unit": "ratio"
+    },
+    {
+      "name": "label.width",
+      "selector": "#label",
+      "property": "width",
+      "unit": "CSS px"
+    },
+    {
+      "name": "container.width",
+      "selector": "#container",
+      "property": "width",
+      "unit": "CSS px"
+    }
+  ],
+  "actions": [{ "at": 250, "type": "click", "selector": "#toggle" }]
+}

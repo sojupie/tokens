@@ -10,7 +10,7 @@
     "check:components": "node forge/components/build-assets.mjs --check",
     "build:tokens": "node forge/build-tokens.mjs",
     "test:tokens": "node --test forge/*.test.mjs forge/material/*.test.mjs",
-    "test:ui": "node --test catalog/web/ui_test.cjs forge/components/*_test.cjs"
+    "test:ui": "node --test catalog/web/ui_test.cjs forge/components/*_test.cjs forge/motion/*_test.cjs"
   },
   "devDependencies": {
     "@material/material-color-utilities": "0.3.0",

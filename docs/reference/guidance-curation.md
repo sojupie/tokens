@@ -198,3 +198,7 @@ Validation is offline. It does not execute evidence, establish the accuracy of
 curation, inspect captured files or prove that a component conforms. Review source
 and implementation evidence as part of the same change. There is no approval gate
 or separate per-run compliance report.
+
+Use [motion inspection](motion-inspection.md) to capture actions, inspect source
+video frames and measure motion. Keep unresolved questions in its review file
+with a direct source-section link and the relevant timestamps.

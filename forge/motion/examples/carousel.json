@@ -1,0 +1,35 @@
+{
+  "url": "http://127.0.0.1:8081/md3/components/carousel?preview.compare=interactive&preview.variant=hero&preview.size=medium",
+  "source": "https://m3.material.io/components/carousel/guidelines#d43942fd-6a87-41ee-bd6f-9755498ce577",
+  "width": 1100,
+  "height": 900,
+  "duration": 1400,
+  "ready": "document.querySelector('#component-preview .md-carousel-item')?.style.width",
+  "tracks": [
+    {
+      "name": "card.x",
+      "selector": "#component-preview .md-carousel-slot:nth-child(2) .md-carousel-item",
+      "property": "x",
+      "unit": "CSS px"
+    },
+    {
+      "name": "card.width",
+      "selector": "#component-preview .md-carousel-slot:nth-child(2) .md-carousel-item",
+      "property": "width",
+      "unit": "CSS px"
+    },
+    {
+      "name": "art.x",
+      "selector": "#component-preview .md-carousel-slot:nth-child(2) .md-carousel-art",
+      "property": "x",
+      "unit": "CSS px"
+    }
+  ],
+  "actions": [
+    {
+      "at": 250,
+      "type": "click",
+      "selector": "#component-preview [data-carousel-step='1']"
+    }
+  ]
+}
