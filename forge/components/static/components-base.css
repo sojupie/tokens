@@ -1489,10 +1489,10 @@
 }
 .md-snackbar[popover] {
   inset: auto;
-  bottom: var(--md-sys-measurement-space200);
+  bottom: calc(var(--md-sys-measurement-space200) + env(safe-area-inset-bottom, 0px) + var(--_snackbar-avoid-offset, 0px));
   left: 50%;
   transform: translateX(-50%);
-  max-width: calc(100vw - var(--md-sys-measurement-space400));
+  max-width: calc(100% - var(--md-sys-measurement-space400));
 }
 .md-snackbar[popover]:not(:popover-open) {
   display: none;
@@ -1595,6 +1595,25 @@
 .md-snackbar-close:focus-visible {
   outline: var(--md-sys-state-focus-indicator-thickness) solid currentColor;
   outline-offset: var(--md-sys-state-focus-indicator-outer-offset);
+}
+
+.md-snackbar > .md-feedback-text {
+  min-inline-size: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.md-snackbar > :is(button, .md-button) {
+  flex: none;
+}
+@media (max-width: 599px) {
+  .md-snackbar {
+    min-block-size: var(--md-sys-measurement-space800);
+  }
+}
+@media (min-width: 600px) {
+  .md-snackbar > .md-feedback-text {
+    max-inline-size: 60ch;
+  }
 }
 /* Navigation anatomy. Unspecified item spacing uses system spacing; bar/rail
    inactive state opacity and focus rings use the corresponding system state. */

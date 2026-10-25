@@ -2,6 +2,21 @@
   if (typeof document === "undefined") return;
   const { snackbarTimer } = globalThis.MaterialComponents;
   const timers = new WeakMap(), openers = new WeakMap();
+  function position(bar) {
+    if (!bar.matches(":popover-open")) return;
+    bar.style.removeProperty("--_snackbar-avoid-offset");
+    const base = bar.getBoundingClientRect(), gap = parseFloat(getComputedStyle(bar).getPropertyValue("--md-sys-measurement-space200")) || 16;
+    const obstacles = new Set(document.querySelectorAll(".md-fab, .md-navigation-bar, .md-toolbar[data-variant='docked'], [data-snackbar-avoid]"));
+    if (document.activeElement && document.activeElement !== document.body && document.activeElement !== document.documentElement) obstacles.add(document.activeElement);
+    const boxes = [...obstacles].filter(element => element !== bar && !bar.contains(element) && element.getClientRects().length && getComputedStyle(element).visibility === "visible").map(element => element.getBoundingClientRect()).sort((a,b) => b.top-a.top);
+    let bottom = base.bottom;
+    for (const box of boxes) {
+      const top = bottom-base.height;
+      if (box.right>base.left && box.left<base.right && box.top<bottom && box.bottom>top) bottom=box.top-gap;
+    }
+    bar.style.setProperty("--_snackbar-avoid-offset", Math.max(0,base.bottom-bottom)+"px");
+  }
+  const reposition = () => { for (const bar of document.querySelectorAll(".md-snackbar:popover-open")) position(bar); };
   function dismiss(bar) {
     const restore = bar.contains(document.activeElement);
     timers.get(bar)?.stop();
@@ -32,6 +47,9 @@
     }
   }
   initialize();
+  window.addEventListener("resize", reposition);
+  window.addEventListener("scroll", reposition, true);
+  document.addEventListener("focusin", reposition);
   document.addEventListener("htmx:afterSwap", () => initialize());
   document.addEventListener("htmx:beforeCleanupElement", (event) => {
     const root = event.detail.elt;
@@ -47,6 +65,7 @@
     if (button.hasAttribute("data-snackbar-open")) {
       openers.set(bar, button);
       bar.showPopover();
+      position(bar);
       const inline = demo.querySelector("[data-snackbar-inline]");
       if (inline) inline.textContent = bar.querySelector(".md-feedback-text").textContent.trim();
       // Web notifications must remain available either in the actionable bar
