@@ -1,7 +1,7 @@
 package web
 
 templ specimenIcon(c componentCase) {
-	@plainTooltip(c.Label(), c.ID()+"-tip") {
+	@plainTooltip("Mark complete", c.ID()+"-tip") {
 	<button { c.Attributes()... }>@materialSymbol("check")
 </button>
 	}

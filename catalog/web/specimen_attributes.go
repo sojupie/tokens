@@ -138,7 +138,7 @@ func (c componentCase) Attributes() templ.Attributes {
 	if c.Family == "icon" {
 		attrs["aria-pressed"] = fmt.Sprint(c.Selected)
 		attrs["data-button-toggle"] = ""
-		attrs["aria-label"] = c.Label()
+		attrs["aria-label"] = "Mark complete"
 		attrs["type"] = "button"
 	}
 	if c.Family == "field" || c.Family == "select" || c.Family == "autocomplete" {
