@@ -116,3 +116,28 @@ func TestGuidanceValidationCLI(t *testing.T) {
 	}
 
 }
+
+func TestGuidanceCatalogSelection(t *testing.T) {
+	root := t.TempDir()
+	t.Chdir(root)
+	catalog := `{"schemaVersion":2,"pages":[{"url":"https://m3.material.io/components/buttons/specs","area":"components","subject":"buttons","pageType":"specs"},{"url":"https://m3.material.io/styles/color/tokens","area":"styles","subject":"color","pageType":"tokens"}]}`
+	if err := os.WriteFile("pages.json", []byte(catalog), 0644); err != nil {
+		t.Fatal(err)
+	}
+	for _, args := range [][]string{
+		{"--page-catalog", "pages.json", "--list"},
+		{"--page-catalog", "pages.json", "--component", "buttons", "--list"},
+		{"--page-catalog", "pages.json", "--component", "buttons", "--url", "https://m3.material.io/styles/motion/overview", "--list"},
+		{"--url", "https://m3.material.io/components/buttons/guidelines", "--list"},
+	} {
+		if err := runGuidance(args); err != nil {
+			t.Fatalf("%v: %v", args, err)
+		}
+	}
+	if err := runGuidance([]string{"--page-catalog", "pages.json", "--component", "missing", "--list"}); err == nil || !strings.Contains(err.Error(), "absent") {
+		t.Fatalf("unknown component: %v", err)
+	}
+	if err := runGuidance([]string{"--page-catalog", "missing.json", "--list"}); err == nil {
+		t.Fatal("accepted missing catalog")
+	}
+}

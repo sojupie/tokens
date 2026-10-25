@@ -5,15 +5,29 @@ It saves the selected page content as HTML, plain text and Markdown. Markdown
 conversion preserves headings, lists, tables, links and image descriptions.
 Extractor version 2 retains multiline table cells instead of flattening the table.
 
-Capture all four Tooltip documentation pages:
+Component selection uses the token crawler's existing `inputs/page-catalog.json`.
+For each component specs URL, it captures the fixed `overview`, `specs`,
+`guidelines` and `accessibility` pages. Style and foundation token pages are
+excluded. It does not perform another sitemap or link-discovery pass.
 
 ```sh
-go run ./cmd/tokens guidance \
-  --url https://m3.material.io/components/tooltips/overview \
-  --url https://m3.material.io/components/tooltips/specs \
-  --url https://m3.material.io/components/tooltips/guidelines \
-  --url https://m3.material.io/components/tooltips/accessibility
+# Preview all selected URLs without opening Chromium:
+go run ./cmd/tokens guidance --list
+
+# Capture all four pages for one component:
+go run ./cmd/tokens guidance --component tooltips
+
+# Capture every component in the existing catalog:
+go run ./cmd/tokens guidance
 ```
+
+Repeat `--component` to select several components. Unknown component slugs fail
+before capture. Use `--page-catalog PATH` to read another token crawler catalog.
+
+`--url URL` alone captures only the supplied URLs. Combine it with `--component`
+to include supplementary guidance, such as a linked transition-pattern page.
+URLs are deduplicated before capture. Catalog changes are managed by the existing
+token crawler; this command only reads the catalog.
 
 Use `--chrome-path PATH` if Chromium is not on the executable search path.
 `--selector` defaults to `main`. `--page-timeout` defaults to 45 seconds per page.
@@ -39,7 +53,7 @@ Markdown files. `htmlSha256` also detects markup changes. Extraction changes
 increment `extractorVersion`; compare captures made with the same version when
 checking upstream changes.
 
-Only the requested URLs are captured. The receipt's `complete` field means those
+Only the selected component tabs and explicit URLs are captured. The receipt's `complete` field means those
 pages were captured successfully, not that every page, interactive state or piece
 of guidance has been discovered. The command does not open collapsed controls or
 cycle through token-table configurations.

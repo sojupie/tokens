@@ -11,6 +11,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/sojupie/tokens/source/crawl"
 	"github.com/sojupie/tokens/source/guidance"
 )
 
@@ -25,7 +26,10 @@ func runGuidance(args []string) error {
 	}
 	flags := flag.NewFlagSet("tokens guidance", flag.ContinueOnError)
 	var cfg guidance.Config
-	var urls guidanceURLs
+	var urls, components guidanceURLs
+	catalog := flags.String("page-catalog", crawl.DefaultPageCatalogPath, "existing token crawler page catalog")
+	list := flags.Bool("list", false, "print selected URLs without capturing")
+	flags.Var(&components, "component", "component slug; repeat to select several, defaults to all catalog components")
 	flags.Var(&urls, "url", "documentation URL; repeat to capture several pages")
 	flags.StringVar(&cfg.Output, "output", "snapshots/material-guidance", "versioned capture directory")
 	flags.StringVar(&cfg.Selector, "selector", "main", "rendered documentation CSS selector")
@@ -40,7 +44,28 @@ func runGuidance(args []string) error {
 	if flags.NArg() > 0 {
 		return errors.New("guidance accepts URLs through --url")
 	}
+	if len(urls) == 0 || len(components) > 0 {
+		tokenPages, err := crawl.DiscoverPages(context.Background(), crawl.Config{PageCatalogPath: *catalog})
+		if err != nil {
+			return err
+		}
+		pages, err := guidance.MaterialComponentPages(tokenPages, components)
+		if err != nil {
+			return err
+		}
+		urls = append(guidanceURLs(pages), urls...)
+	}
 	cfg.URLs = urls
+	if *list {
+		seen := map[string]bool{}
+		for _, raw := range cfg.URLs {
+			if !seen[raw] {
+				fmt.Println(raw)
+				seen[raw] = true
+			}
+		}
+		return nil
+	}
 	path, err := guidance.Capture(context.Background(), cfg)
 	if path != "" {
 		fmt.Println("Documentation capture:", path)

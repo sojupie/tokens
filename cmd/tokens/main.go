@@ -63,7 +63,7 @@ func run(args []string) error {
 
 const topHelp = `Usage:
   tokens crawl [flags]
-  tokens guidance --url URL [--url URL] [flags]
+  tokens guidance [--component SLUG] [--url URL] [--list] [flags]
   tokens guidance validate [--file PATH] [--against REF]
   tokens publish [flags]
   tokens export [--published directory] [--context Name=Value] [--output directory]
