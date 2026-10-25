@@ -63,6 +63,14 @@ Read tables with their headers and row relationships intact. A lost table layout
 or an image description is insufficient evidence for an availability mapping or
 numeric measurement. Mark the relevant section unclear until inspected.
 
+When guidance embeds another component, preserve that component's shared contract.
+An instruction that appears to change a button's padding, shape or sizing needs
+comparison with the button's own spec and the diagram's measurement boundaries.
+Distinguish surrounding clearance from internal padding. Resolve conflicts before
+adding a local override; leave the interpretation unclear if the evidence cannot
+resolve them. Test against the shared primitive, rather than asserting the new
+override as its own proof of correctness.
+
 For keyboard and accessibility-label tables, compare every row with the checks.
 Retain each key/action mapping, label/role mapping and platform condition. A broad
 instruction such as “support keyboard navigation” does not cover a shortcut table.

@@ -445,26 +445,36 @@
       "implementation": {
         "status": "verified",
         "sourceRevision": 1,
+        "assessedBaseline": "205611a1976adfe25ad0137e60b4c8483b024fc3",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_carousel.templ; forge/components/styles/carousels.css",
-            "result": "A native Show all disclosure exposes the same six illustrations and labels vertically, with a 4px text-button inset. Full-screen specimens omit it. Both views reuse one artwork template; the settling runtime is unchanged."
+            "location": "catalog/web/specimen_carousel.templ; catalog/web/carousel.go; forge/components/styles/carousels.css",
+            "result": "Show all uses the shared small text-button class unchanged inside a wrapper with 4px padding. Its link opens /components/carousel/items, an SSR vertical page using the same six artworks. No duplicate list is rendered in the carousel preview. Full-screen previews omit the link."
+          },
+          {
+            "kind": "test",
+            "location": "catalog/web/carousel_items_test.go",
+            "result": "Go tests verify the link, absence of inline duplicate content and six SSR illustrations on the separate page."
           },
           {
             "kind": "browser",
             "location": "forge/conformance/carousel-all.html",
-            "result": "Chromium: seven assertions pass for disclosure, unchanged horizontal offset, complete content, padding, width and full-screen exclusion."
+            "result": "Chromium: eight assertions pass for external clearance, standard button padding/height, separate destination, vertical content, horizontal containment and full-screen exclusion. Actual navigation was also checked on the catalog page."
           }
         ],
-        "notes": "The source recommends a separate all-items destination; this specimen uses an inline vertical alternative because its six demonstration items have no destination pages.",
-        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
+        "notes": "The previous verification was invalid: it asserted an internal 4px button inset and accepted a custom inline disclosure. That implementation is replaced, and the test now compares the control against an ordinary text button."
       },
       "fixes": [
         {
           "commit": "75d4d9068f35f65fcbde4b2acb5bd5e7ea075687",
           "sourceRevision": 1,
           "summary": "Expose every carousel item through a vertical Show all view"
+        },
+        {
+          "commit": "8d4d8600fe2bef76ab02e123180a5101d2f50172",
+          "sourceRevision": 1,
+          "summary": "Replace the inline disclosure with a standard text-button link and dedicated all-items page; apply 4dp outside the button."
         }
       ]
     },
@@ -1229,7 +1239,7 @@
     },
     {
       "id": "carousel-all-items-controls",
-      "statement": "For carousels without headers, provide a Show all button with 4dp padding; for carousels with headers, a 48dp arrow may sit next to the leading-aligned header and open a page that also shows the header.",
+      "statement": "For carousels without headers, provide a standard Show all button with 4dp of clearance around it, opening a dedicated vertical all-items page. For carousels with headers, a 48dp arrow may sit next to the leading-aligned header and open a page that also shows the header.",
       "condition": "For carousels on vertically scrolling pages, except full-screen carousels.",
       "basis": "explicit",
       "notes": "",
@@ -1243,31 +1253,51 @@
           "markdownSha256": "198d68ec4b280ade6ce469ca472b3810c238eb2f89bc39e608dca601467faef3",
           "extractorVersion": 2,
           "summary": "Curated from the captured Requirements on scrolling pages instructions."
+        },
+        {
+          "change": "corrected",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/accessibility",
+          "section": "c7604765-52c6-4a7e-afe0-7ebaa59e30ce",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "198d68ec4b280ade6ce469ca472b3810c238eb2f89bc39e608dca601467faef3",
+          "extractorVersion": 2,
+          "summary": "Correct the interpretation of 4dp padding: clearance around the existing button, not a replacement for its internal button-token padding. Capture unchanged."
         }
       ],
       "implementation": {
         "status": "verified",
-        "sourceRevision": 1,
+        "sourceRevision": 2,
+        "assessedBaseline": "205611a1976adfe25ad0137e60b4c8483b024fc3",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_carousel.templ; forge/components/styles/carousels.css",
-            "result": "A native Show all disclosure exposes the same six illustrations and labels vertically, with a 4px text-button inset. Full-screen specimens omit it. Both views reuse one artwork template; the settling runtime is unchanged."
+            "location": "catalog/web/specimen_carousel.templ; catalog/web/carousel.go; forge/components/styles/carousels.css",
+            "result": "Show all uses the shared small text-button class unchanged inside a wrapper with 4px padding. Its link opens /components/carousel/items, an SSR vertical page using the same six artworks. No duplicate list is rendered in the carousel preview. Full-screen previews omit the link."
+          },
+          {
+            "kind": "test",
+            "location": "catalog/web/carousel_items_test.go",
+            "result": "Go tests verify the link, absence of inline duplicate content and six SSR illustrations on the separate page."
           },
           {
             "kind": "browser",
             "location": "forge/conformance/carousel-all.html",
-            "result": "Chromium: seven assertions pass for disclosure, unchanged horizontal offset, complete content, padding, width and full-screen exclusion."
+            "result": "Chromium: eight assertions pass for external clearance, standard button padding/height, separate destination, vertical content, horizontal containment and full-screen exclusion. Actual navigation was also checked on the catalog page."
           }
         ],
-        "notes": "The source recommends a separate all-items destination; this specimen uses an inline vertical alternative because its six demonstration items have no destination pages.",
-        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
+        "notes": "The previous verification was invalid: it asserted an internal 4px button inset and accepted a custom inline disclosure. That implementation is replaced, and the test now compares the control against an ordinary text button."
       },
       "fixes": [
         {
           "commit": "75d4d9068f35f65fcbde4b2acb5bd5e7ea075687",
           "sourceRevision": 1,
           "summary": "Expose every carousel item through a vertical Show all view"
+        },
+        {
+          "commit": "8d4d8600fe2bef76ab02e123180a5101d2f50172",
+          "sourceRevision": 2,
+          "summary": "Replace the inline disclosure with a standard text-button link and dedicated all-items page; apply 4dp outside the button."
         }
       ]
     },
