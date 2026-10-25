@@ -1,0 +1,12 @@
+<!doctype html><meta charset="utf-8"><title>Calendar semantics checks</title>
+<style>body{font:16px system-ui;margin:24px}iframe{width:960px;max-width:100%;height:650px}pre{white-space:pre-wrap}</style>
+<h1>Calendar semantics checks</h1><button id="run">Run calendar checks</button><pre id="result">Ready</pre><div id="samples"></div>
+<script type="module">
+const button=document.querySelector('#run'),out=document.querySelector('#result'),samples=document.querySelector('#samples');
+button.onclick=async()=>{button.disabled=true;const checks=[];const assert=(ok,message)=>{if(!ok)throw Error(message);checks.push(message)};
+try{samples.replaceChildren();const frame=document.createElement('iframe');samples.append(frame);await new Promise(resolve=>{frame.onload=resolve;frame.src='/md3/components/date-pickers?preview.compare=variants'});const w=frame.contentWindow,d=frame.contentDocument;await w.TokenAssets.ready;
+const grids=[...d.querySelectorAll('#component-preview [role=grid]')];assert(grids.length>0,'Calendar month uses grid semantics');
+for(const grid of grids){assert(/\d{4}/.test(grid.getAttribute('aria-label')),'Grid name includes the displayed month and year');const heads=[...grid.querySelectorAll('[role=columnheader]')];assert(heads.length===7,'Each weekday has a columnheader role');assert(new Set(heads.map(h=>h.getAttribute('aria-label'))).size===7&&heads.every(h=>h.getAttribute('aria-label').length>1),'Weekdays retain distinct full accessible names');}
+out.textContent=JSON.stringify({passed:checks.length,checks},null,2);
+}catch(error){out.textContent=JSON.stringify({passed:checks.length,checks,error:error.stack},null,2)}finally{button.disabled=false}};
+</script>
