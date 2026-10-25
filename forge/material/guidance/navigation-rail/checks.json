@@ -1,0 +1,361 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "navigation-rail",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/navigation-rail/overview",
+      "capture": "snapshots/material-guidance/20261025T000802.833742676Z-1206544418/capture.json",
+      "markdownSha256": "8fd06b6ded2a154f8a8fb9d271fa5fbc3dfa9b6543b0cfb5b71b4afd8fc63ad7",
+      "extractorVersion": 1,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Navigation rail",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "d529f73e-2107-485d-8013-523f2d1aa9be",
+          "title": "Availability & resources",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "8a87fc8b-1e69-4e45-a48c-68cdddee57a4",
+          "title": "M3 Expressive update",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "6aaeb85e-5336-465a-8bd8-53c0e6b03aa6",
+          "title": "Differences from M2",
+          "status": "pending",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/navigation-rail/specs",
+      "capture": "snapshots/material-guidance/20261025T000802.833742676Z-1206544418/capture.json",
+      "markdownSha256": "dffdbd6d27c6f2e7ad8d5ca70dea195532e1b60e87a8ec9f63b24b729ad97ce2",
+      "extractorVersion": 1,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Navigation rail",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "25d13d57-3467-4d70-bdbd-fb96b43fc9f7",
+          "title": "Variants",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "c8c4ae5c-369b-451e-9f92-b77c5913b056",
+          "title": "Baseline variants",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "272d0b54-d47f-42bc-80af-35ff411ff1b7",
+          "title": "Configurations",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "ac8ac985-9d8f-46ee-bf23-1b60c4dc85d9",
+          "title": "Tokens & specs",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "55668944-02e9-45b5-9810-ad2813ffd246",
+          "title": "Anatomy",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "8ae2e911-9ca0-4333-ba34-0b86171f1a10",
+          "title": "Color",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "8452f20c-f3e2-4e53-8dc1-a52e6d841eab",
+          "title": "States",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "5d3c368a-111d-4476-aa38-212838676b6f",
+          "title": "Measurements",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "3b4dc0bd-36f6-4da8-80f0-748fee3b9a4b",
+          "title": "Common layouts",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "0e5ce386-7f99-4e83-9c50-f284924ee710",
+          "title": "Baseline navigation rail",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "d4d97764-20ec-496f-a6f3-0d423940ec5a",
+          "title": "Tokens & specs",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "d23991f1-0c3b-4e22-a7a8-71b50ac0eec2",
+          "title": "Color",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "9cae5bfb-1d84-4b74-a049-6793688e422d",
+          "title": "States",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "786c9861-2d9e-47e0-9cb7-7e6b397ed452",
+          "title": "Measurements",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "f0ac4694-df75-4b97-8f67-7bb8fb3f5a45",
+          "title": "Configurations",
+          "status": "pending",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/navigation-rail/guidelines",
+      "capture": "snapshots/material-guidance/20261025T000802.833742676Z-1206544418/capture.json",
+      "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+      "extractorVersion": 1,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Navigation rail",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "d9d85ba1-db8f-491a-a555-c1f5221c69f8",
+          "title": "Usage",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "2ce36141-cffb-4dec-9920-85ebb9ec61f5",
+          "title": "Collapsed",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "2679d9cc-f07c-406f-897e-b343343754f7",
+          "title": "Expanded",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "b51e4558-351f-4368-af8d-bbf1f63f68b4",
+          "title": "Anatomy",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "2a0733ed-6753-4358-9b05-203a9c1277d7",
+          "title": "Container",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "310aa883-0496-4cdb-aaae-4e38ade9d76a",
+          "title": "Menu (optional)",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "3bdde9e4-7698-4dfb-9ffb-36285bca6329",
+          "title": "Floating action button (FAB) (optional)",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "8ed5c071-9ded-427f-9055-704e6ed9ffa7",
+          "title": "Active indicator",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "39b8de9a-0d7d-421b-ba8b-def057484a00",
+          "title": "Icons",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "b59dc6d4-54fd-4e94-8243-838505acbaf4",
+          "title": "Label text",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "9d866fc5-e27b-4b3d-aaca-7b8df55bb6cb",
+          "title": "Badges",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "368a70ed-784f-47ab-95f5-4a2f403ddae7",
+          "title": "Divider (optional)",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "5802f97a-4b57-4d32-8e06-5e02a3e78ac2",
+          "title": "Placement",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "833be642-c952-4c72-bbdb-9d4c3f722df5",
+          "title": "Adaptive design",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "250762ac-446f-4652-9d30-f1e8f437570c",
+          "title": "Resizing",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "c4ee17d8-8744-49da-aa55-8d5ab9c51af9",
+          "title": "Presentation",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "a8ca0fbf-4923-41de-83a2-3ecc9cb81021",
+          "title": "Behavior",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "833fb41a-f313-4d27-869c-a1df51b82b65",
+          "title": "Scrolling",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "8948a184-9a01-47d9-900d-e7f277a807d0",
+          "title": "Selection",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "8adc88cf-830b-49b7-9d16-90b38e79786f",
+          "title": "Back",
+          "status": "pending",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/navigation-rail/accessibility",
+      "capture": "snapshots/material-guidance/20261025T000802.833742676Z-1206544418/capture.json",
+      "markdownSha256": "97be8aa1b310099941b19a4b6cbe083fc76d37f7f5ad83d89cf9eb2062db6713",
+      "extractorVersion": 1,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Navigation rail",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "5a80f844-0997-43d3-88ad-29dd8757ea5d",
+          "title": "Use cases",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "0e7aba92-b082-47cb-a547-982996e6d186",
+          "title": "Interaction & style",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "88aff451-dd18-4b08-9939-3bbf43564593",
+          "title": "Text scaling and truncation",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "daf53388-d7f7-4c38-9d2a-3f64abab9b13",
+          "title": "Initial focus",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "1409bd2d-4d1a-4ca8-91c4-13cbbe90bb58",
+          "title": "Visual indicators",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "cceea166-591b-4429-bfdc-10cd98559e26",
+          "title": "Keyboard navigation",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "5c621a2e-eeb9-40a9-aea1-bafc1f3426d0",
+          "title": "Labeling elements",
+          "status": "pending",
+          "notes": ""
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "leading-edge-placement",
+      "statement": "Place the navigation rail vertically along the leading edge of the window.",
+      "condition": "When integrating a navigation rail: left for LTR content, right for RTL content.",
+      "basis": "explicit",
+      "notes": "Initial example of the curation contract; implementation has not been assessed under this format.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "2a0733ed-6753-4358-9b05-203a9c1277d7",
+          "capture": "snapshots/material-guidance/20261025T000802.833742676Z-1206544418/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 1,
+          "summary": "Record the captured Container instruction without importing the exploratory audit assessments."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

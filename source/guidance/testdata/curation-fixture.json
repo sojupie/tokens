@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "example",
+  "sources": [
+    {
+      "url": "https://example.com/guidelines",
+      "capture": "snapshots/example/capture.json",
+      "markdownSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "extractorVersion": 1,
+      "sections": [
+        {
+          "id": "keyboard",
+          "title": "Keyboard",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "keyboard-traversal",
+      "statement": "Arrow keys move focus between visible items.",
+      "condition": "When keyboard focus is on a navigation item.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://example.com/guidelines",
+          "section": "keyboard",
+          "capture": "snapshots/example/capture.json",
+          "markdownSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "extractorVersion": 1,
+          "summary": "Record the keyboard instruction."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

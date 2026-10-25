@@ -5,6 +5,10 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/sojupie/tokens/source/guidance"
@@ -16,6 +20,9 @@ func (u *guidanceURLs) String() string         { return fmt.Sprint([]string(*u))
 func (u *guidanceURLs) Set(value string) error { *u = append(*u, value); return nil }
 
 func runGuidance(args []string) error {
+	if len(args) > 0 && args[0] == "validate" {
+		return validateGuidance(args[1:])
+	}
 	flags := flag.NewFlagSet("tokens guidance", flag.ContinueOnError)
 	var cfg guidance.Config
 	var urls guidanceURLs
@@ -39,4 +46,91 @@ func runGuidance(args []string) error {
 		fmt.Println("Documentation capture:", path)
 	}
 	return err
+}
+
+// Validation stays offline: Git resolves implementation commits; captured content
+// and the truth of assessment evidence still require curation.
+func validateGuidance(args []string) error {
+	flags := flag.NewFlagSet("tokens guidance validate", flag.ContinueOnError)
+	file := flags.String("file", "", "one canonical checks.json; defaults to every component")
+	against := flags.String("against", "HEAD", "Git revision used to check retained IDs and append-only history")
+	if err := flags.Parse(args); err != nil {
+		if errors.Is(err, flag.ErrHelp) {
+			return nil
+		}
+		return err
+	}
+	if flags.NArg() > 0 {
+		return errors.New("guidance validate does not accept positional arguments")
+	}
+	if _, err := exec.Command("git", "rev-parse", "--verify", *against+"^{commit}").Output(); err != nil {
+		return fmt.Errorf("invalid comparison commit %q", *against)
+	}
+	files := []string{*file}
+	if *file == "" {
+		var err error
+		files, err = filepath.Glob("forge/*/guidance/*/checks.json")
+		if err != nil {
+			return err
+		}
+	}
+	if *file == "" {
+		tracked, err := exec.Command("git", "ls-tree", "-r", "--name-only", *against, "--", "forge").Output()
+		if err != nil {
+			return err
+		}
+		for _, path := range strings.Split(strings.TrimSpace(string(tracked)), "\n") {
+			match, _ := filepath.Match("forge/*/guidance/*/checks.json", path)
+			if match {
+				if _, err := os.Stat(path); err != nil {
+					return fmt.Errorf("canonical guidance file was deleted or is unreadable: %s; retain its checks and record removals", path)
+				}
+			}
+		}
+	}
+	if len(files) == 0 {
+		return errors.New("no component checks.json files found")
+	}
+	for _, path := range files {
+		root, err := os.Getwd()
+		if err != nil {
+			return err
+		}
+		absolute, err := filepath.Abs(path)
+		if err != nil {
+			return err
+		}
+		relative, err := filepath.Rel(root, absolute)
+		if err != nil {
+			return err
+		}
+		path = filepath.ToSlash(relative)
+		data, err := os.ReadFile(path)
+		if err != nil {
+			return err
+		}
+		var previous []byte
+		if exec.Command("git", "cat-file", "-e", *against+":"+path).Run() == nil {
+			previous, err = exec.Command("git", "show", *against+":"+path).Output()
+			if err != nil {
+				return err
+			}
+		}
+		summary, err := guidance.ValidateChecks(data, previous)
+		if err != nil {
+			return fmt.Errorf("%s: %w", path, err)
+		}
+		canonical := "forge/" + summary.DesignSystem + "/guidance/" + summary.Component + "/checks.json"
+		if path != canonical {
+			return fmt.Errorf("component checks belong at %s, got %s", canonical, path)
+		}
+		for _, commit := range summary.Commits {
+			if err := exec.Command("git", "cat-file", "-e", commit+"^{commit}").Run(); err != nil {
+				return fmt.Errorf("%s: implementation commit does not exist locally: %s", path, commit)
+			}
+		}
+		fmt.Printf("%s: valid format and history; %d checks, %d removed, %d withdrawn, %d pending/unclear sections\n", path, summary.Checks, summary.Removed, summary.Withdrawn, summary.PendingSections)
+	}
+	fmt.Println("Validation does not execute evidence or establish component conformance.")
+	return nil
 }

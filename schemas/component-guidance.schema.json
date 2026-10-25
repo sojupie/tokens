@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/sojupie/tokens/schemas/component-guidance.schema.json",
+  "title": "Curated component guidance",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "designSystem", "component", "sources", "checks"],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "designSystem": {"$ref": "#/$defs/id"},
+    "component": {"$ref": "#/$defs/id"},
+    "sources": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/source"}},
+    "checks": {"type": "array", "items": {"$ref": "#/$defs/check"}}
+  },
+  "$defs": {
+    "text": {"type": "string", "pattern": "\\S"},
+    "id": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"},
+    "hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "commit": {"type": "string", "pattern": "^(?:[a-f0-9]{40}|[a-f0-9]{64})$"},
+    "url": {"type": "string", "format": "uri", "pattern": "^https?://"},
+    "source": {
+      "type": "object", "additionalProperties": false,
+      "required": ["url", "capture", "markdownSha256", "extractorVersion", "sections"],
+      "properties": {
+        "url": {"$ref": "#/$defs/url"},
+        "capture": {"$ref": "#/$defs/text"},
+        "markdownSha256": {"$ref": "#/$defs/hash"},
+        "extractorVersion": {"type": "integer", "minimum": 1},
+        "sections": {"type": "array", "minItems": 1, "items": {
+          "type": "object", "additionalProperties": false,
+          "required": ["id", "title", "status", "notes"],
+          "properties": {
+            "id": {"$ref": "#/$defs/text"}, "title": {"$ref": "#/$defs/text"},
+            "status": {"enum": ["pending", "mapped", "no-requirements", "unclear"]},
+            "notes": {"type": "string"}
+          },
+          "if": {"properties": {"status": {"enum": ["no-requirements", "unclear"]}}},
+          "then": {"properties": {"notes": {"$ref": "#/$defs/text"}}}
+        }}
+      }
+    },
+    "history": {
+      "type": "object", "additionalProperties": false,
+      "required": ["change", "date", "url", "section", "capture", "markdownSha256", "extractorVersion", "summary"],
+      "properties": {
+        "change": {"enum": ["added", "changed", "removed", "restored", "corrected", "withdrawn"]},
+        "date": {"type": "string", "format": "date"},
+        "url": {"$ref": "#/$defs/url"}, "section": {"$ref": "#/$defs/text"},
+        "capture": {"$ref": "#/$defs/text"}, "markdownSha256": {"$ref": "#/$defs/hash"},
+        "extractorVersion": {"type": "integer", "minimum": 1},
+        "summary": {"$ref": "#/$defs/text"}
+      }
+    },
+    "evidence": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "location", "result"],
+      "properties": {
+        "kind": {"enum": ["code", "test", "browser"]},
+        "location": {"$ref": "#/$defs/text"}, "result": {"$ref": "#/$defs/text"}
+      }
+    },
+    "implementation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "sourceRevision", "evidence", "notes"],
+      "properties": {
+        "status": {"enum": ["unassessed", "implemented", "verified", "failing", "not-applicable", "unclear"]},
+        "sourceRevision": {"type": "integer", "minimum": 1},
+        "assessedCommit": {"$ref": "#/$defs/commit"},
+        "evidence": {"type": "array", "items": {"$ref": "#/$defs/evidence"}},
+        "notes": {"type": "string"}
+      },
+      "allOf": [
+        {"if": {"properties": {"status": {"enum": ["implemented", "verified", "failing"]}}},
+         "then": {"required": ["assessedCommit"], "properties": {"evidence": {"minItems": 1}}}},
+        {"if": {"properties": {"status": {"enum": ["unclear", "not-applicable"]}}},
+         "then": {"properties": {"notes": {"$ref": "#/$defs/text"}}}},
+        {"if": {"properties": {"status": {"enum": ["verified", "failing"]}}},
+         "then": {"properties": {"evidence": {"contains": {"properties": {"kind": {"enum": ["test", "browser"]}}, "required": ["kind"]}}}}}
+      ]
+    },
+    "check": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "statement", "condition", "basis", "notes", "sourceHistory", "implementation", "fixes"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"}, "statement": {"$ref": "#/$defs/text"},
+        "condition": {"$ref": "#/$defs/text"},
+        "basis": {"enum": ["explicit", "interpretation"]}, "notes": {"type": "string"},
+        "sourceHistory": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/history"}},
+        "implementation": {"$ref": "#/$defs/implementation"},
+        "fixes": {"type": "array", "items": {
+          "type": "object", "additionalProperties": false,
+          "required": ["commit", "sourceRevision", "summary"],
+          "properties": {
+            "commit": {"$ref": "#/$defs/commit"},
+            "sourceRevision": {"type": "integer", "minimum": 1},
+            "summary": {"$ref": "#/$defs/text"}
+          }
+        }}
+      },
+      "if": {"properties": {"basis": {"const": "interpretation"}}},
+      "then": {"properties": {"notes": {"$ref": "#/$defs/text"}}}
+    }
+  }
+}

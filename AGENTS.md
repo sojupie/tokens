@@ -16,7 +16,12 @@ Use the current captured token data and source guidance for component states.
 Check computed styles and behavior on the real pages as well as the component lab.
 
 Keep token overrides in `forge/material/overrides.json`. Generate CSS usage reports
-from the source; do not add approval workflows or manually maintained review records.
+from the source; do not add approval workflows or duplicate review records.
+Maintain curated component guidance in one
+`forge/<design-system>/guidance/<component>/checks.json`, following
+`docs/reference/guidance-curation.md`. Keep source changes, implementation evidence
+and fix commits distinct. Run `go run ./cmd/tokens guidance validate` after
+editing checks, and compare with the branch base using `--against REF`.
 Use Go for CLI commands, validation and reports. Node handles Style Dictionary
 and browser-side JavaScript.
 

@@ -50,3 +50,6 @@ implementation coverage.
 
 Generated captures stay outside Git. This command does not change token snapshots,
 DTCG exports, publications or the website.
+
+[Guidance curation](guidance-curation.md) defines the maintained per-component
+checks file, source history, implementation evidence and validation command.
