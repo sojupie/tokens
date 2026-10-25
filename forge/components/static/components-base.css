@@ -3644,6 +3644,8 @@ dialog.md-side-sheet[data-variant="detached"] {
   --_split-inner: var(--_split-item-selected-inner);
 }
 .md-button-group-demo {
+  inline-size: 100%;
+  max-inline-size: 40rem;
   display: grid;
   justify-items: start;
   gap: var(--md-sys-measurement-space100);
@@ -3762,6 +3764,13 @@ dialog.md-side-sheet[data-variant="detached"] {
   inset-block-start: 50%;
   block-size: var(--md-sys-measurement-space600);
   transform: translateY(-50%);
+}
+
+.md-button-group[data-control="connected"] {
+  inline-size: 100%;
+}
+.md-button-group[data-control="connected"] > .md-button {
+  flex: 1;
 }
 .md-fab-menu {
   position: relative;

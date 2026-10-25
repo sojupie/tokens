@@ -274,11 +274,16 @@
       new CustomEvent("md-button-group-action", { bubbles: true }),
     );
   });
+  document.addEventListener("focusin", event => {
+    const button = event.target.closest?.("[data-group-button]");
+    if (button) for (const item of button.closest(".md-button-group").querySelectorAll("button")) item.tabIndex = item === button ? 0 : -1;
+  });
   document.addEventListener("keydown", (event) => {
     const button = event.target.closest?.("[data-group-button]");
     if (!button) return;
     const group = button.closest(".md-button-group"),
-      items = [...group.querySelectorAll("button:not(:disabled)")];
+      items = [...group.querySelectorAll("button:not(:disabled):not([aria-disabled=\"true\"])")].filter(item => item.getClientRects().length && !item.closest("[inert]") && getComputedStyle(item).visibility === "visible");
+    if (!items.includes(button)) return;
     const next = navigationIndex(
       items.indexOf(button),
       items.length,
@@ -288,6 +293,7 @@
     );
     if (next !== null) {
       event.preventDefault();
+      for (const item of group.querySelectorAll("button")) item.tabIndex = item === items[next] ? 0 : -1;
       items[next]?.focus();
     }
   });

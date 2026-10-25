@@ -26,5 +26,9 @@ func (c componentCase) GroupButton(index int) templ.Attributes {
 	}
 	attrs := (buttonCase{Variant: c.Variant, Size: c.Size, Shape: "round", State: state, Selection: selection}).Attributes()
 	attrs["data-group-button"] = fmt.Sprint(index)
+	attrs["tabindex"] = "-1"
+	if index == 0 {
+		attrs["tabindex"] = "0"
+	}
 	return attrs
 }
