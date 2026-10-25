@@ -38,7 +38,7 @@ func componentStylesheet(ctx context.Context) string {
 var componentScriptSources = sync.OnceValue(func() string {
 	sources := map[string]string{}
 	for _, name := range []string{
-		"runtime/chips.js", "runtime/tabs.js", "runtime/button-groups.js", "runtime/navigation.js",
+		"runtime/chips.js", "runtime/tabs.js", "runtime/button-groups.js", "runtime/segmented-buttons.js", "runtime/navigation.js",
 		"runtime/sliders.js", "runtime/toolbars.js", "runtime/app-bars.js", "runtime/snackbars.js",
 		"runtime/fab-menus.js", "runtime/split-buttons.js", "runtime/tooltips.js",
 		"progress.js", "sheets.js", "lists.js", "carousel.js", "search.js", "date-picker.js",

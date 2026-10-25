@@ -1,0 +1,39 @@
+<!doctype html><meta charset="utf-8"><title>Segmented button keyboard checks</title>
+<style>body{font:16px system-ui;margin:24px}iframe{width:960px;max-width:100%;height:600px}pre{white-space:pre-wrap}</style>
+<h1>Segmented button keyboard checks</h1>
+<p>Checks Enter activation and native selection events on rendered single-select and multi-select controls.</p>
+<button id="run">Run segmented button checks</button><pre id="result">Ready</pre><div id="samples"></div>
+<script type="module">
+const result=document.querySelector('#result'),button=document.querySelector('#run'),samples=document.querySelector('#samples');
+button.onclick=async()=>{
+ button.disabled=true;const checks=[];
+ const assert=(condition,message)=>{if(!condition)throw Error(message);checks.push(message);};
+ try{
+  for(const variant of ['single','multiple']){
+   samples.replaceChildren();const frame=document.createElement('iframe');samples.append(frame);
+   await new Promise((resolve,reject)=>{frame.onload=resolve;frame.onerror=reject;frame.src=`/md3/components/segmented-buttons?preview.compare=interactive&preview.variant=${variant}`;});
+   const w=frame.contentWindow,d=frame.contentDocument;await w.TokenAssets.ready;
+   const inputs=[...d.querySelectorAll('#component-preview .md-segmented-button > input')],home=inputs[0];
+   let changes=0,inputEvents=0;home.addEventListener('change',()=>changes++);home.addEventListener('input',()=>inputEvents++);
+   const enter=(input,repeat=false)=>{input.focus();const event=new w.KeyboardEvent('keydown',{key:'Enter',repeat,bubbles:true,cancelable:true});input.dispatchEvent(event);input.dispatchEvent(new w.KeyboardEvent('keyup',{key:'Enter',bubbles:true}));return event.defaultPrevented;};
+   assert(!home.checked,`${variant}: Home starts unselected`);
+   assert(enter(home)&&home.checked,`${variant}: Enter selects the focused input and prevents implicit form submission`);
+   assert(changes===1&&inputEvents===1,`${variant}: selection emits one native input/change pair`);
+   assert(d.activeElement===home,`${variant}: activation retains input focus`);
+   assert(enter(home,true)&&home.checked&&changes===1,`${variant}: repeated Enter is consumed without reactivation`);
+   if(variant==='single'){
+    assert(inputs.filter(input=>input.checked).length===1,'Single-select activation preserves radio exclusivity');
+    enter(home);assert(home.checked&&changes===1,'Enter on selected radio preserves its native selection');
+   }else{
+    enter(home);assert(!home.checked&&changes===2&&inputEvents===2,'Multi-select Enter deselects with one native event pair');
+    for(const input of inputs)if(!input.checked)enter(input);
+    assert(inputs.every(input=>input.checked),'Multi-select Enter can select every segment');
+   }
+   home.disabled=true;const before=home.checked;
+   assert(!enter(home)&&home.checked===before,`${variant}: disabled input is unchanged`);
+  }
+  result.textContent=JSON.stringify({passed:checks.length,checks},null,2);
+ }catch(error){result.textContent=JSON.stringify({passed:checks.length,checks,error:error.stack},null,2);}
+ finally{button.disabled=false;}
+};
+</script>

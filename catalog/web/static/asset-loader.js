@@ -8,6 +8,7 @@
     ["runtime/chips.js", '[data-family="chip"]'],
     ["runtime/tabs.js", ".md-tabs-example"],
     ["runtime/button-groups.js", ".md-button-group"],
+    ["runtime/segmented-buttons.js", ".md-segmented-button"],
     ["runtime/navigation.js", "[data-navigation-group]"],
     ["runtime/sliders.js", ".md-slider"],
     ["runtime/toolbars.js", ".md-toolbar"],
