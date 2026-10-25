@@ -23,7 +23,7 @@ import (
 	"github.com/chromedp/chromedp"
 )
 
-const ExtractorVersion = 1
+const ExtractorVersion = 2
 
 type Config struct {
 	URLs       []string
@@ -196,7 +196,7 @@ func capturePage(browser context.Context, raw, selector string, timeout time.Dur
 }
 
 func markdown(doc document) (string, error) {
-	conv := converter.NewConverter(converter.WithPlugins(base.NewBasePlugin(), commonmark.NewCommonmarkPlugin(), table.NewTablePlugin()))
+	conv := converter.NewConverter(converter.WithPlugins(base.NewBasePlugin(), commonmark.NewCommonmarkPlugin(), table.NewTablePlugin(table.WithNewlineBehavior(table.NewlineBehaviorPreserve))))
 	root, err := html.Parse(strings.NewReader(doc.HTML))
 	if err != nil {
 		return "", err

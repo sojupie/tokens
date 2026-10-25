@@ -3,6 +3,7 @@
 `tokens guidance` captures rendered documentation separately from token payloads.
 It saves the selected page content as HTML, plain text and Markdown. Markdown
 conversion preserves headings, lists, tables, links and image descriptions.
+Extractor version 2 retains multiline table cells instead of flattening the table.
 
 Capture all four Tooltip documentation pages:
 

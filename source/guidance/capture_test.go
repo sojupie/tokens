@@ -134,3 +134,18 @@ func TestRenderedCapture(t *testing.T) {
 		t.Fatal("unchanged content changed hash or previous run was altered")
 	}
 }
+
+func TestMultilineTableCells(t *testing.T) {
+	md, err := markdown(document{URL: "https://example.com/specs", HTML: `<main><table><tr><th>Variant</th><th>M3</th><th>M3 Expressive</th></tr><tr><td><p>Baseline</p><p>rail</p></td><td><p>Available</p></td><td><p>Not recommended</p><p>Use collapsed</p></td></tr></table></main>`})
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, want := range []string{"| Variant", "| M3", "Baseline", "Not recommended", "Use collapsed"} {
+		if !strings.Contains(md, want) {
+			t.Fatalf("missing %q: %s", want, md)
+		}
+	}
+	if strings.Count(md, "|") < 12 {
+		t.Fatalf("lost table structure: %s", md)
+	}
+}
