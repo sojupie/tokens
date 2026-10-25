@@ -81,6 +81,16 @@
  function init(){for(const root of document.querySelectorAll('.md-time-demo')){
   if(states.has(root))continue;const panel=root.querySelector('.md-time-panel'),state={root,panel,opener:root.querySelector('[data-time-open]'),dial:panel.querySelector('[data-time-dial]'),is24:panel.dataset.format==='24h',hour:10,minute:10,active:panel.dataset.active};state.committed={hour:10,minute:10};states.set(root,state);render(state);
   panel.addEventListener('cancel',event=>{event.preventDefault();close(state,false);});
+  let backdropPointer;
+  const outside=event=>{const r=panel.getBoundingClientRect();return event.target===panel&&(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom);};
+  panel.addEventListener('pointerdown',event=>{
+   backdropPointer=panel.open&&!panel.hasAttribute('data-time-inline')&&event.button===0&&event.isPrimary!==false&&outside(event)?event.pointerId:undefined;
+  });
+  panel.addEventListener('pointercancel',()=>{backdropPointer=undefined;});
+  panel.addEventListener('pointerup',event=>{
+   const dismiss=backdropPointer===event.pointerId&&outside(event);backdropPointer=undefined;
+   if(dismiss)close(state,false);
+  });
  }}
  document.addEventListener('click',event=>{
   const state=stateFor(event.target);if(!state)return;
