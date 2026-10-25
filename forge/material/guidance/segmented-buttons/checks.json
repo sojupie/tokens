@@ -751,17 +751,38 @@
       "implementation": {
         "status": "failing",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "f98f2b61fd4695b51e5e7e039ed68904d1fc4e3e",
         "evidence": [
           {
+            "kind": "code",
+            "location": "forge/components/behaviors/segmented-buttons.js:1-13; catalog/web/specimen_segmented.go:18-24",
+            "result": "Enter now invokes native radio/checkbox activation once and prevents implicit form submission. Repeat is consumed without another click. Space and native radio arrows are unchanged. The module has no multi-select arrow-focus handler; native radios also retain a checked selection on reactivation."
+          },
+          {
+            "kind": "test",
+            "location": "forge/components/segmented_buttons_test.cjs; node --test forge/components/segmented_buttons_test.cjs",
+            "result": "Six tests pass for radio/checkbox Enter activation, repeat suppression, native-key preservation, disabled/unavailable controls, handled/composing events and unrelated targets. The two Enter tests failed before the handler was implemented."
+          },
+          {
             "kind": "browser",
-            "location": "Chromium baseline http://127.0.0.1:8081/md3/components/segmented-buttons?preview.compare=interactive; focus Home with locator, press Enter, inspect checked input values",
-            "result": "On the single-select specimen, Enter left Home unchecked and Saved selected; the required Enter activation did not select the focused segment."
+            "location": "forge/conformance/segmented-buttons.html; http://127.0.0.1:8085/segmented-buttons.html",
+            "result": "Chromium with published-review material-2026-10-15-review: 16 assertions pass for native event counts, selection, exclusivity, repeat and disabled controls. The fixture failed at Enter activation on the pre-fix server. Its key events are dispatched to focused DOM inputs."
+          },
+          {
+            "kind": "browser",
+            "location": "http://127.0.0.1:8081/md3/components/segmented-buttons?preview.compare=interactive&preview.variant=multiple",
+            "result": "Actual Chromium keyboard input: Enter selects Home and Space deselects it. Remaining failure: ArrowRight from focused Home leaves focus on Home rather than moving to Files. On the single-select page, Enter selects Home exclusively and ArrowRight selects/focuses Files. No iOS or assistive-technology test was performed."
           }
         ],
-        "notes": "Browser observation supplied by parent on the frozen baseline; native radio behavior matches the authored input implementation."
+        "notes": "Enter activation is corrected. The combined requirement remains failing because multi-select arrow navigation is absent. Single-select deselection wording also needs reconciliation with the current native-radio selection model before changing that model."
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "fc8415c311494d7013bfc4de2f4770e12257e8e7",
+          "sourceRevision": 1,
+          "summary": "Add Enter activation for native segmented radio/checkbox inputs, consuming repeats and preventing implicit form submission. This is a partial fix: multi-select arrow traversal and single-select deselection are not implemented."
+        }
+      ]
     },
     {
       "id": "segmented-button-contrast-selection",
