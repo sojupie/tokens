@@ -22,7 +22,13 @@
     const button = event.target.closest?.("[data-navigation-item]");
     if (!button) return;
     const group = button.closest("[data-navigation-group]"),
-      items = [...group.querySelectorAll("[data-navigation-item]")];
+      items = [...group.querySelectorAll("[data-navigation-item]")].filter(
+        (item) => item.getClientRects().length &&
+          getComputedStyle(item).visibility === "visible" &&
+          !item.matches(':disabled,[aria-disabled="true"]') &&
+          !item.closest("[inert]"),
+      );
+    if (!items.includes(button)) return;
     const next = navigationIndex(
       items.indexOf(button),
       items.length,
