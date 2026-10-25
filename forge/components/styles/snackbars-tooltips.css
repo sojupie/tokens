@@ -56,7 +56,7 @@
   padding: var(--md-sys-measurement-space150) var(--md-sys-measurement-space200)
     var(--md-sys-measurement-space100);
   width: max-content;
-  max-width: 24rem;
+  max-width: min(24rem, calc(100vw - 16px));
   text-align: start;
 }
 .md-tooltip[data-variant="plain"] {
@@ -106,7 +106,7 @@
   bottom: auto;
   top: calc(100% + var(--_tooltip-parent-gap, var(--md-sys-measurement-space50)));
 }
-.md-tooltip-demo:is(:hover, :focus-within):not([data-tooltip-dismissed])
+.md-tooltip-demo:is([data-tooltip-visible], :not([data-tooltip-managed]):is(:hover, :focus-within)):not([data-tooltip-dismissed])
   > .md-tooltip[data-variant="plain"] {
   visibility: visible;
 }
