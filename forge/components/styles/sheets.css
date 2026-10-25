@@ -50,7 +50,7 @@ dialog.md-sheet:not([open]) {
   inset-block-end: 0;
   inline-size: 100%;
   block-size: var(--_sheet-expanded-height);
-  max-block-size: 100%;
+  max-block-size: calc(100% - 72px);
   transition: border-radius var(--_sheet-duration)
     var(--_motion-default-spatial-easing);
 }
@@ -107,6 +107,10 @@ dialog.md-bottom-sheet {
   margin-inline: auto;
   max-block-size: 85svh;
 }
+dialog.md-bottom-sheet[data-control="modal"] {
+  block-size: min(var(--_sheet-expanded-height, 24rem), 50svh);
+  max-block-size: calc(100svh - 72px);
+}
 dialog.md-side-sheet {
   block-size: 100svh;
 }
@@ -159,7 +163,7 @@ dialog.md-side-sheet[data-variant="detached"] {
   flex: none;
   inline-size: var(--md-sys-measurement-space600);
   block-size: var(--md-sys-measurement-space600);
-  margin: var(--md-sys-measurement-space50) auto;
+  margin: 0 auto;
   padding: 0;
   border: 0;
   border-radius: var(--md-sys-shape-corner-full);
@@ -301,4 +305,17 @@ dialog.md-side-sheet[data-variant="detached"] {
 .md-sheet-frame > .md-side-sheet[data-control="standard"][data-variant="detached"] {
   margin: var(--md-sys-measurement-space200);
   block-size: auto;
+}
+
+dialog.md-bottom-sheet[data-control="modal"][data-sheet-full-height] {
+  block-size: calc(100svh - 72px);
+}
+@media (min-width: 641px) {
+  dialog.md-bottom-sheet[data-control="modal"] {
+    inline-size: min(640px, calc(100svw - 112px));
+    max-block-size: calc(100svh - 56px);
+  }
+  dialog.md-bottom-sheet[data-control="modal"][data-sheet-full-height] {
+    block-size: calc(100svh - 56px);
+  }
 }

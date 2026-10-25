@@ -41,15 +41,17 @@
     return animation.finished.then(()=>{if(state.animation!==animation)return false;state.animation=null;animation.cancel();return true;},()=>false);
   }
   function bounds(sheet,variant){
-    const old=sheet.dataset.variant,height=sheet.style.height;
+    const old=sheet.dataset.variant,height=sheet.style.height,full=sheet.hasAttribute('data-sheet-full-height');
+    if(sheet.matches('dialog.md-bottom-sheet[data-control="modal"]'))sheet.toggleAttribute('data-sheet-full-height',variant==='expanded');
     sheet.style.height='';sheet.dataset.variant=variant;
     const value=sheet.getBoundingClientRect().height;
-    sheet.dataset.variant=old;sheet.style.height=height;return value;
+    sheet.dataset.variant=old;sheet.style.height=height;sheet.toggleAttribute('data-sheet-full-height',full);return value;
   }
   async function resize(sheet,variant,velocity=0){
     const state=entry(sheet);if(state.phase==='closing'||state.phase==='closed')return;
     const from=sheet.getBoundingClientRect().height;
     state.animation?.cancel();state.phase='resizing';
+    if(sheet.matches('dialog.md-bottom-sheet[data-control="modal"]'))sheet.toggleAttribute('data-sheet-full-height',variant==='expanded');
     content(sheet,true,variant==='expanded');sheet.dataset.variant=variant;updateHandle(sheet);
     const to=bounds(sheet,variant);sheet.style.height=to+'px';
     if(await animate(sheet,[{height:from+'px'},{height:to+'px'}],false,velocity)){sheet.style.height='';state.phase='open';content(sheet,variant==='expanded');}
@@ -60,6 +62,7 @@
     const interrupted=state.phase==='closing',style=getComputedStyle(sheet),from=interrupted?style.transform:exit(sheet),fromHeight=interrupted?sheet.getBoundingClientRect().height:0;
     state.animation?.cancel();state.phase='opening';state.opener=opener;state.saved=sheet.querySelector('input')?.value;
     const status=demo(sheet).querySelector('[data-sheet-status]');if(status)status.textContent='';
+    if(!interrupted)sheet.removeAttribute('data-sheet-full-height');
     sheet.inert=false;sheet.removeAttribute('data-sheet-closing');
     if(sheet instanceof HTMLDialogElement){if(!sheet.open){if(sheet.dataset.control==='standard')sheet.show();else sheet.showModal();}}else sheet.hidden=false;
     content(sheet,sheet.dataset.variant!=='minimized');updateHandle(sheet);
@@ -75,7 +78,7 @@
     sheet.style.height=height+'px';state.phase='closing';sheet.inert=true;sheet.setAttribute('data-sheet-closing','');
     if(!await animate(sheet,[{transform:from},{transform:exit(sheet)}],true,velocity))return;
     if(sheet instanceof HTMLDialogElement)sheet.close();else sheet.hidden=true;
-    sheet.inert=false;sheet.style.height='';sheet.removeAttribute('data-sheet-closing');state.phase='closed';
+    sheet.inert=false;sheet.style.height='';sheet.removeAttribute('data-sheet-closing');sheet.removeAttribute('data-sheet-full-height');state.phase='closed';
     const opener=state.opener;opener?.setAttribute('aria-expanded','false');if(restoreFocus)opener?.focus({preventScroll:true});
     const status=demo(sheet).querySelector('[data-sheet-status]');if(status)status.textContent='Sheet closed.';
   }
