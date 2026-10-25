@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "baselines": {
+    "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e": {
+      "baseCommit": "204b753317f325011d6cc2442b38c37a0a961c91",
+      "archive": "snapshots/implementation-baselines/fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e.tar",
+      "archiveSha256": "ae5dab0358d5c3c2343f89c20d79d4f6cd11fb70c4724b2466044d1cece77d51",
+      "createdAt": "2026-10-25T17:56:27Z"
+    }
+  }
+}

@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"flag"
 	"fmt"
@@ -21,6 +22,9 @@ func (u *guidanceURLs) String() string         { return fmt.Sprint([]string(*u))
 func (u *guidanceURLs) Set(value string) error { *u = append(*u, value); return nil }
 
 func runGuidance(args []string) error {
+	if len(args) > 0 && args[0] == "baseline" {
+		return captureGuidanceBaseline(args[1:])
+	}
 	if len(args) > 0 && args[0] == "validate" {
 		return validateGuidance(args[1:])
 	}
@@ -170,6 +174,29 @@ func validateGuidance(args []string) error {
 		canonical := "forge/" + summary.DesignSystem + "/guidance/" + summary.Component + "/checks.json"
 		if path != canonical {
 			return fmt.Errorf("component checks belong at %s, got %s", canonical, path)
+		}
+		if len(summary.Baselines) > 0 {
+			baselineFile := "forge/" + summary.DesignSystem + "/guidance/baselines.json"
+			raw, err := os.ReadFile(baselineFile)
+			if err != nil {
+				return err
+			}
+			var registry guidanceBaselines
+			if err = json.Unmarshal(raw, &registry); err != nil {
+				return err
+			}
+			for _, id := range summary.Baselines {
+				b, ok := registry.Baselines[id]
+				if !ok {
+					return fmt.Errorf("%s: unknown assessment baseline %s", path, id)
+				}
+				if len(b.ArchiveSHA256) != 64 || b.Archive == "" {
+					return fmt.Errorf("%s: invalid baseline archive record", baselineFile)
+				}
+				if err = exec.Command("git", "cat-file", "-e", b.BaseCommit+"^{commit}").Run(); err != nil {
+					return fmt.Errorf("baseline base commit is absent: %s", b.BaseCommit)
+				}
+			}
 		}
 		for _, commit := range summary.Commits {
 			if err := exec.Command("git", "cat-file", "-e", commit+"^{commit}").Run(); err != nil {

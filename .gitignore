@@ -44,3 +44,6 @@ node_modules/
 
 # Rendered documentation captures and version receipts.
 /snapshots/material-guidance/
+
+# Immutable local implementation assessment snapshots.
+/snapshots/implementation-baselines/

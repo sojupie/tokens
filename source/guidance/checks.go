@@ -18,6 +18,7 @@ type CheckSummary struct {
 	Removed         int
 	Withdrawn       int
 	Commits         []string
+	Baselines       []string
 }
 
 func parseChecks(data []byte) (map[string]any, error) {
@@ -101,6 +102,7 @@ func ValidateChecks(data, previous []byte) (CheckSummary, error) {
 	current := map[string]map[string]any{}
 	mapped := map[string]bool{}
 	commits := map[string]bool{}
+	baselines := map[string]bool{}
 	for _, entry := range doc["checks"].([]any) {
 		check := entry.(map[string]any)
 		id := check["id"].(string)
@@ -150,7 +152,7 @@ func ValidateChecks(data, previous []byte) (CheckSummary, error) {
 			return fail("implementation assessment references an old or nonexistent source revision; reassess or reset to unassessed")
 		}
 		status := impl["status"].(string)
-		if status == "implemented" {
+		if status == "implemented" || status == "missing" {
 			hasCode := false
 			for _, entry := range impl["evidence"].([]any) {
 				if entry.(map[string]any)["kind"] == "code" {
@@ -158,11 +160,14 @@ func ValidateChecks(data, previous []byte) (CheckSummary, error) {
 				}
 			}
 			if !hasCode {
-				return fail("implemented requires code evidence")
+				return fail("implemented or missing requires code evidence")
 			}
 		}
-		if status == "unassessed" && (len(impl["evidence"].([]any)) != 0 || impl["assessedCommit"] != nil) {
-			return fail("unassessed must not retain an assessment commit or evidence")
+		if status == "unassessed" && (len(impl["evidence"].([]any)) != 0 || impl["assessedCommit"] != nil || impl["assessedBaseline"] != nil) {
+			return fail("unassessed must not retain an assessment reference or evidence")
+		}
+		if baseline, ok := impl["assessedBaseline"].(string); ok {
+			baselines[baseline] = true
 		}
 		if commit, ok := impl["assessedCommit"].(string); ok {
 			commits[commit] = true
@@ -218,6 +223,10 @@ func ValidateChecks(data, previous []byte) (CheckSummary, error) {
 	for commit := range commits {
 		summary.Commits = append(summary.Commits, commit)
 	}
+	for baseline := range baselines {
+		summary.Baselines = append(summary.Baselines, baseline)
+	}
+	sort.Strings(summary.Baselines)
 	sort.Strings(summary.Commits)
 	return summary, nil
 }

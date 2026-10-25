@@ -63,15 +63,19 @@
       "type": "object", "additionalProperties": false,
       "required": ["status", "sourceRevision", "evidence", "notes"],
       "properties": {
-        "status": {"enum": ["unassessed", "implemented", "verified", "failing", "not-applicable", "unclear"]},
+        "status": {"enum": ["unassessed", "implemented", "missing", "verified", "failing", "not-applicable", "unclear"]},
         "sourceRevision": {"type": "integer", "minimum": 1},
         "assessedCommit": {"$ref": "#/$defs/commit"},
+        "assessedBaseline": {"$ref": "#/$defs/commit"},
         "evidence": {"type": "array", "items": {"$ref": "#/$defs/evidence"}},
         "notes": {"type": "string"}
       },
       "allOf": [
-        {"if": {"properties": {"status": {"enum": ["implemented", "verified", "failing"]}}},
-         "then": {"required": ["assessedCommit"], "properties": {"evidence": {"minItems": 1}}}},
+        {"if": {"properties": {"status": {"enum": ["implemented", "missing", "verified", "failing"]}}},
+         "then": {"oneOf": [
+           {"required": ["assessedCommit"], "not": {"required": ["assessedBaseline"]}},
+           {"required": ["assessedBaseline"], "not": {"required": ["assessedCommit"]}}
+         ], "properties": {"evidence": {"minItems": 1}}}},
         {"if": {"properties": {"status": {"enum": ["unclear", "not-applicable"]}}},
          "then": {"properties": {"notes": {"$ref": "#/$defs/text"}}}},
         {"if": {"properties": {"status": {"enum": ["verified", "failing"]}}},

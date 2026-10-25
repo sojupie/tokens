@@ -230,3 +230,28 @@ func TestRetirementArchive(t *testing.T) {
 		t.Fatal("accepted active archived check")
 	}
 }
+
+func TestAssessmentBaselineReference(t *testing.T) {
+	before, doc := curationFixture(t)
+	impl := firstCheck(doc)["implementation"].(map[string]any)
+	impl["status"] = "implemented"
+	impl["assessedBaseline"] = strings.Repeat("a", 40)
+	impl["evidence"] = []any{map[string]any{"kind": "code", "location": "forge/components/static/buttons.js:1", "result": "Concrete behavior inspected."}}
+	data, _ := json.Marshal(doc)
+	summary, err := ValidateChecks(data, before)
+	if err != nil || len(summary.Baselines) != 1 || len(summary.Commits) != 0 {
+		t.Fatalf("baseline assessment: %+v %v", summary, err)
+	}
+	impl["assessedCommit"] = strings.Repeat("b", 40)
+	data, _ = json.Marshal(doc)
+	if _, err = ValidateChecks(data, before); err == nil {
+		t.Fatal("accepted ambiguous commit and baseline references")
+	}
+	delete(impl, "assessedCommit")
+	impl["status"] = "unassessed"
+	impl["evidence"] = []any{}
+	data, _ = json.Marshal(doc)
+	if _, err = ValidateChecks(data, before); err == nil {
+		t.Fatal("accepted unassessed with baseline reference")
+	}
+}

@@ -117,9 +117,10 @@ records remain unchanged until restored. Removal is not an implementation fix.
 | Status | Required evidence |
 | --- | --- |
 | `unassessed` | No assessment commit or evidence. Use for new or stale assessments. |
-| `implemented` | Exact assessed commit and code location explaining how the condition is handled. |
-| `verified` | Exact assessed commit and a test or browser result that exercises the condition. |
-| `failing` | Exact assessed commit and a test or browser result showing the unmet expectation. |
+| `implemented` | Exact assessed commit or baseline and code location explaining how the condition is handled. |
+| `missing` | Exact assessed commit or baseline and code evidence identifying the absent required behavior and inspected scope. |
+| `verified` | Exact assessed commit or baseline and a test or browser result that exercises the condition. |
+| `failing` | Exact assessed commit or baseline and a test or browser result showing the unmet expectation. |
 | `not-applicable` | Reason explaining which condition or platform does not apply. |
 | `unclear` | Reason explaining the unresolved source interpretation or implementation evidence. |
 
@@ -131,9 +132,24 @@ Include reproduction steps so another person can repeat the check. Record
 screenshots or saved captures where useful. A code reference alone does not
 establish runtime correctness. Passing unrelated tests does not verify a check.
 
-`assessedCommit` identifies the implementation actually inspected. If working-tree
-changes affect the result, do not claim that the assessment applies to HEAD.
-Commit those implementation changes before recording a committed assessment.
+Use `assessedCommit` for an implementation inspected at a committed revision.
+For the initial assessment of a dirty working tree, use `assessedBaseline` instead.
+Create one shared baseline with `tokens guidance baseline`. It snapshots tracked
+and nonignored new files through a private Git index without changing the real
+index, working files or branch. The generated registry is
+`forge/<design-system>/guidance/baselines.json`; each ID is the captured Git tree.
+The local archive and its SHA-256 preserve the inspected source outside Git.
+Keep the registry with the assessments and retain the archive for reproduction.
+
+Every assessment in an initial pass should reference the same baseline. Existing
+code is baseline evidence, not a new fix. Leave `fixes` empty unless an actual
+implementation change is made later. Do not reconstruct historical fix commits.
+
+`implemented` means code supports the rule; it does not establish rendered or
+interactive correctness. `missing` identifies a required behavior absent from the
+inspected code. Use `verified` and `failing` only for exercised tests or browser
+observations, with exact reproduction details. Preserve uncertainty when either
+the source instruction or implementation evidence is insufficient.
 
 An active check's `implementation.sourceRevision` must match its current history
 length. Following a source change, reassess it or reset it to `unassessed` at the

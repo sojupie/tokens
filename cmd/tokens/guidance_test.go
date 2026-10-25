@@ -61,6 +61,30 @@ func TestGuidanceValidationCLI(t *testing.T) {
 	if err = runGuidance([]string{"validate"}); err != nil {
 		t.Fatalf("existing commit: %v", err)
 	}
+	check["fixes"] = []any{}
+	assessment := check["implementation"].(map[string]any)
+	assessment["status"] = "implemented"
+	assessment["assessedBaseline"] = strings.Repeat("c", 40)
+	assessment["evidence"] = []any{map[string]any{"kind": "code", "location": "example.go:1", "result": "The inspected code implements traversal."}}
+	registry := guidanceBaselines{SchemaVersion: 1, Baselines: map[string]guidanceBaseline{}}
+	writeRegistry := func() {
+		t.Helper()
+		raw, _ := json.Marshal(registry)
+		if err := os.WriteFile("forge/material/guidance/baselines.json", raw, 0644); err != nil {
+			t.Fatal(err)
+		}
+	}
+	writeRegistry()
+	data, _ = json.Marshal(doc)
+	write(data)
+	if err = runGuidance([]string{"validate"}); err == nil || !strings.Contains(err.Error(), "unknown assessment baseline") {
+		t.Fatalf("unknown baseline: %v", err)
+	}
+	registry.Baselines[strings.Repeat("c", 40)] = guidanceBaseline{BaseCommit: git("rev-parse", "HEAD"), Archive: "snapshots/example.tar", ArchiveSHA256: strings.Repeat("a", 64)}
+	writeRegistry()
+	if err = runGuidance([]string{"validate"}); err != nil {
+		t.Fatalf("registered baseline: %v", err)
+	}
 	write(fixture)
 	if err = os.WriteFile("checks.json", fixture, 0644); err != nil {
 		t.Fatal(err)
