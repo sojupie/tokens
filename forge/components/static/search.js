@@ -3,13 +3,13 @@
     const value=query.trim().toLocaleLowerCase(),name=label.toLocaleLowerCase();
     return !value || (exact?name===value:name.includes(value));
   };
-  const searchLayout=layout=>layout==='adaptive'?'docked':layout;
+  const searchLayout=(layout,width)=>layout==='adaptive'?(width<600?'full-screen':'docked'):layout;
   if(typeof module!=='undefined')module.exports={matches,searchLayout};
   if(typeof document==='undefined')return;
   const examples=new WeakMap();
   const stateFor=target=>examples.get(target.closest?.('.md-search-demo'));
   function measure(state){
-    state.panel.dataset.variant=searchLayout(state.panel.dataset.layout,state.scene.clientWidth);
+    state.panel.dataset.variant=searchLayout(state.panel.dataset.layout,(state.root.querySelector('.md-search-workspace')||state.scene).clientWidth);
     state.panel.style.setProperty('--_search-results-height',state.results.scrollHeight+'px');
     const workspace=state.root.querySelector('.md-search-workspace');if(workspace)state.root.querySelector('[data-search-composition-width-label]').textContent=Math.round(workspace.getBoundingClientRect().width)+'px';
   }
