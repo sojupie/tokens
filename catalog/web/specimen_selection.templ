@@ -1,0 +1,8 @@
+package web
+
+templ selectionExample(id, label string) {
+ <div class="tokens-selection-example">
+  { children... }
+  <label id={ id + "-label" } for={ id + "-input" }>{ label }</label>
+ </div>
+}

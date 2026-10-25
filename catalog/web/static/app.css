@@ -372,3 +372,6 @@ button:not(:disabled), [role=button]:not([aria-disabled=true]) { cursor:pointer;
 .tokens-art-canvas { position:absolute;inset:0;inline-size:100%;block-size:100%;visibility:hidden; }
 [data-canvas-ready] > .tokens-art-canvas { visibility:visible; }
 [data-canvas-ready] > .tokens-art-column { display:none; }
+
+.tokens-selection-example { display:inline-flex; align-items:center; gap:var(--md-sys-measurement-space200); }
+.tokens-selection-example > label:last-child { cursor:pointer; }
