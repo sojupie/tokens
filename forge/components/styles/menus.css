@@ -185,3 +185,9 @@
   ) {
   inline-size: calc(280px + 12rem + var(--md-sys-measurement-space100));
 }
+
+.md-menu[data-menu-scrollable] {
+  --_menu-gap: 0px;
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
+}

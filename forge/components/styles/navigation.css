@@ -263,3 +263,45 @@
 .md-navigation-drawer .md-nav-item {
   flex: none;
 }
+
+/* Retain token padding while label height grows with browser text scaling. */
+.md-navigation-bar {
+  min-block-size: var(--_nav-height);
+  block-size: auto;
+}
+.md-navigation-bar > .md-nav-items {
+  min-block-size: inherit;
+  block-size: auto;
+}
+.md-navigation-bar[data-orientation="vertical"] .md-nav-item {
+  --_nav-label-height: 1lh;
+  --_nav-text-padding: max(0px, calc((var(--_nav-height) - var(--_nav-item-indicator-height, var(--_nav-indicator-height)) - var(--md-sys-typescale-label-medium-line-height) - var(--_nav-item-label-gap)) / 2));
+  container-type: inline-size;
+  min-block-size: max(var(--_nav-height), calc(var(--_nav-item-indicator-height, var(--_nav-indicator-height)) + var(--_nav-label-height) + var(--_nav-item-label-gap) + 2 * var(--_nav-text-padding)));
+}
+.md-navigation-bar[data-orientation="vertical"] .md-nav-indicator {
+  transform: translateY(calc((var(--_nav-item-label-gap) + var(--_nav-label-height)) / -2));
+}
+.md-navigation-bar .md-nav-label {
+  white-space: normal;
+  text-align: center;
+  hyphens: auto;
+}
+.md-navigation-bar[data-orientation="vertical"] .md-nav-label {
+  inline-size: max-content;
+  max-inline-size: calc(100cqw - 2 * var(--md-sys-measurement-space100));
+}
+/* Equal intrinsic columns keep horizontal destinations together, with spare
+   surface width at the ends rather than between destinations. */
+.md-navigation-bar[data-orientation="horizontal"] > .md-nav-items {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  inline-size: max-content;
+  max-inline-size: 100%;
+  margin-inline: auto;
+}
+.md-navigation-bar[data-orientation="horizontal"] .md-nav-indicator {
+  min-block-size: var(--_nav-item-indicator-height, var(--_nav-indicator-height));
+  block-size: auto;
+}

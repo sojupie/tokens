@@ -387,6 +387,9 @@
           railLabelSizes.observe(label);
         }
     }
+    for (const label of document.querySelectorAll(".md-navigation-bar .md-nav-label")) {
+      if (!railLabels.has(label)) { railLabels.add(label); railLabelSizes.observe(label); }
+    }
   }
   document.addEventListener("keydown", (event) => {
     const frame = event.target.closest?.(".md-rail-frame");
@@ -416,7 +419,7 @@
   document.addEventListener("htmx:beforeCleanupElement", (event) => {
     const root = event.detail.elt;
     for (const label of root.querySelectorAll?.(
-      ".md-rail-frame .md-nav-label",
+      ".md-rail-frame .md-nav-label, .md-navigation-bar .md-nav-label",
     ) || [])
       railLabelSizes.unobserve(label);
   });
