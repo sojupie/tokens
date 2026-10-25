@@ -1,4 +1,9 @@
 (() => {
+  // A quarter-width horizontal swipe dismisses toward the logical start edge.
+  function drawerDismissed(dx, dy, width, rtl) {
+    return Math.abs(dx) >= width / 4 && Math.abs(dx) > Math.abs(dy) && (rtl ? dx > 0 : dx < 0);
+  }
+  if (typeof module !== "undefined") module.exports = { drawerDismissed };
   if (typeof document === "undefined") return;
   const { navigationIndex } = globalThis.MaterialComponents;
   function selectNavigation(button) {
@@ -420,6 +425,21 @@
   if (document.readyState === "loading")
     document.addEventListener("DOMContentLoaded", initRailFrames);
   else initRailFrames();
+  let drawerSwipe;
+  document.addEventListener("pointerdown", (event) => {
+    const drawer = event.target.closest?.("[data-navigation-modal][open]");
+    if (!drawer || event.pointerType !== "touch" || !event.isPrimary) return;
+    const box = drawer.getBoundingClientRect();
+    if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) return;
+    drawerSwipe = { drawer, id: event.pointerId, x: event.clientX, y: event.clientY, width: box.width, rtl: getComputedStyle(drawer).direction === "rtl" };
+  });
+  document.addEventListener("pointerup", (event) => {
+    if (!drawerSwipe || drawerSwipe.id !== event.pointerId) return;
+    const {drawer, x, y, width, rtl} = drawerSwipe;
+    drawerSwipe = null;
+    if (drawer.open && drawerDismissed(event.clientX - x, event.clientY - y, width, rtl)) drawer.close();
+  });
+  document.addEventListener("pointercancel", () => { drawerSwipe = null; });
   document.addEventListener("click", (event) => {
     if (!(event.target instanceof Element)) return;
     const modal = event.target.closest("[data-navigation-modal]");
