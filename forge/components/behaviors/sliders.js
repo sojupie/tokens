@@ -1,6 +1,38 @@
 (() => {
   if (typeof document === "undefined") return;
   const { sliderValues } = globalThis.MaterialComponents;
+  let spaceInput;
+  const clearSpace = () => { spaceInput = undefined; };
+  document.addEventListener("keyup", event => {
+    if (event.key === " ") clearSpace();
+  });
+  document.addEventListener("focusout", clearSpace);
+  window.addEventListener("blur", clearSpace);
+  document.addEventListener("keydown", event => {
+    const input = event.target, slider = input.closest?.(".md-slider");
+    if (!slider || !input.matches('input[type="range"]:not(:disabled)') ||
+        event.defaultPrevented || event.isComposing || input.closest('[inert],[aria-disabled="true"]')) return;
+    if (event.key === " ") {
+      event.preventDefault();
+      spaceInput = input;
+      return;
+    }
+    if (spaceInput !== input || !["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(event.key)) return;
+    event.preventDefault();
+    let sign = ["ArrowRight", "ArrowUp"].includes(event.key) ? 1 : -1;
+    if (slider.dataset.orientation !== "vertical" &&
+        ["ArrowLeft", "ArrowRight"].includes(event.key) && getComputedStyle(slider).direction === "rtl") sign *= -1;
+    const min = Number(input.min), max = Number(input.max), step = Number(input.step) || 1;
+    // Discrete sliders advance one stop. Continuous sliders use a tenth of the
+    // range, rounded to a whole number of native steps.
+    const interval = slider.dataset.variant === "discrete" ? step :
+      Math.max(step, Math.round((max - min) / (10 * step)) * step);
+    const previous = input.valueAsNumber;
+    input.valueAsNumber = Math.max(min, Math.min(max, previous + sign * interval));
+    if (input.valueAsNumber === previous) return;
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+    input.dispatchEvent(new Event("change", { bubbles: true }));
+  });
   function syncSlider(slider, changed) {
     const inputs = [...slider.querySelectorAll('input[type="range"]')];
     const min = Number(inputs[0].min),
