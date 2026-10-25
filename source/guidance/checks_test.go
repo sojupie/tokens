@@ -209,6 +209,10 @@ func TestRetirementArchive(t *testing.T) {
 			retired = marshal(archive)
 		})
 	}
+	// An active and a retired record must not share an ID, even with distinct history.
+	if _, err := ValidateCheckFiles(before, retired, nil, nil); err == nil || !strings.Contains(err.Error(), "duplicate ID") {
+		t.Fatalf("cross-file duplicate: %v", err)
+	}
 	// Restore the same ID, keeping every earlier source event and fix.
 	addSourceEvent(check, "restored")
 	check["implementation"].(map[string]any)["sourceRevision"] = 3

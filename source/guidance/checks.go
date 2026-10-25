@@ -194,7 +194,7 @@ func ValidateChecks(data, previous []byte) (CheckSummary, error) {
 			id := prior["id"].(string)
 			next := current[id]
 			if next == nil {
-				return summary, fmt.Errorf("check %s was deleted; retain it and append a removed or withdrawn event", id)
+				return summary, fmt.Errorf("check %s was deleted; move the complete record to retired-checks.json with a removed or withdrawn event", id)
 			}
 			for _, field := range []string{"sourceHistory", "fixes"} {
 				a, b := prior[field].([]any), next[field].([]any)
