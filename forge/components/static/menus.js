@@ -21,6 +21,8 @@
  function activity(menu){const demo=menu.closest('[data-menu-example]');for(const p of demo.querySelectorAll('[data-menu-panel]'))if(p===menu||p.matches(':popover-open')||p.hasAttribute('data-menu-main'))p.dataset.menuActivity=p===menu?'active':'inactive';}
  function focus(menu,item){if(!item)return;for(const node of items(menu))node.tabIndex=node===item?0:-1;item.focus({preventScroll:true});activity(menu);}
  function position(menu){
+  menu.removeAttribute('data-menu-scrollable');
+  menu.toggleAttribute('data-menu-scrollable',menu.scrollHeight>menu.clientHeight);
   const trigger=triggerFor(menu);if(!trigger)return;const r=trigger.getBoundingClientRect(),b={width:menu.offsetWidth,height:menu.offsetHeight},rtl=getComputedStyle(trigger).direction==='rtl',viewport=document.documentElement.clientWidth,gap=Number.parseFloat(getComputedStyle(menu).getPropertyValue('--md-sys-measurement-space100'));
   let x,y;
   if(menu.hasAttribute('data-menu-main')){x=rtl?r.right-b.width:r.left;y=r.bottom+gap;if(y+b.height>innerHeight-gap)y=r.top-b.height-gap;}

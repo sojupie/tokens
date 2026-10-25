@@ -7466,6 +7466,12 @@ dialog.md-side-sheet[data-variant="detached"] {
   overflow-y: scroll;
   scrollbar-gutter: stable;
 }
+
+.md-menu[data-menu-scrollable] {
+  --_menu-gap: 0px;
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
+}
 /* Date-picker composition from the guidelines; token replacements live in overrides.json. */
 .md-date-panel:not([data-variant="docked"]) .md-date-header {
   border-block-end: var(--md-comp-divider-thickness) solid
