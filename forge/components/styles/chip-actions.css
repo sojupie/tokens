@@ -134,3 +134,25 @@
       transparent
     );
 }
+
+/* Reserve separate horizontal targets so remove cannot intercept select. The
+   transparent vertical extension keeps the captured 32dp visible chip height. */
+:is(.md-filter-chip, .md-input-chip):has(> .md-chip-remove) > .md-chip-primary {
+  min-inline-size: var(--md-sys-measurement-space600);
+}
+.md-chip-remove {
+  flex: none;
+  inline-size: var(--md-sys-measurement-space600);
+  justify-content: flex-end;
+  padding-inline: 0 var(--md-sys-measurement-space100);
+}
+.md-chip-primary::before,
+.md-chip-remove::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: 50%;
+  min-block-size: var(--md-sys-measurement-space600);
+  block-size: 100%;
+  transform: translateY(-50%);
+}
