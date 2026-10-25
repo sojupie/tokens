@@ -209,19 +209,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_navigation.templ; forge/components/styles/navigation-rail.css",
-            "result": "The badge already has logical-edge positioning and RTL mirroring; the earlier claim of no placement rule was wrong. It remains a sibling positioned against the indicator, including a negative block translation, rather than being constrained to the icon box."
+            "location": "catalog/web/specimen_navigation.templ; catalog/web/specimen_navigation.go; forge/components/styles/navigation-rail.css; forge/components/behaviors/navigation.js",
+            "result": "Badges are children of the icon, remain within its bounds at the logical ending edge and mirror in RTL. The destination accessible name puts its label before the notification; the visual badge is hidden from duplicate announcement. Selecting the destination removes the badge and the notification name."
+          },
+          {
+            "kind": "test",
+            "location": "catalog/web/navigation_badge_test.go",
+            "result": "Rendered destination names and badge markup pass."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/navigation-badges.html",
+            "result": "Chromium: 20 assertions pass for both badge types, LTR/RTL bounds, destination/notification name order and acknowledgement persistence."
           }
         ],
-        "notes": "Remaining issue is icon-relative geometry, not absent RTL support. No placement change made in this batch.",
-        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
+        "notes": "Replaces the old sibling-order evidence: name ordering is now explicit, since the visual badge belongs inside the icon.",
+        "assessedBaseline": "e23e979d8041e1fe8755e6f85051f8d076e0b928"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "50dbb8b048fb005b5aa65500ce5940bc19a468cd",
+          "sourceRevision": 1,
+          "summary": "Anchor navigation badges inside icons while preserving announcement order"
+        }
+      ]
     },
     {
       "id": "default-color-contrast",
@@ -343,31 +359,36 @@
       "implementation": {
         "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_badge.go; catalog/web/specimen_navigation.templ; forge/components/behaviors/navigation.js",
-            "result": "Notification dots use New notification; numerical badges include the count after the destination label. Initially selected destinations omit unread badges. Selecting an unread destination removes its badge permanently for that rendered instance."
+            "location": "catalog/web/specimen_navigation.templ; catalog/web/specimen_navigation.go; forge/components/styles/navigation-rail.css; forge/components/behaviors/navigation.js",
+            "result": "Badges are children of the icon, remain within its bounds at the logical ending edge and mirror in RTL. The destination accessible name puts its label before the notification; the visual badge is hidden from duplicate announcement. Selecting the destination removes the badge and the notification name."
           },
           {
             "kind": "test",
-            "location": "catalog/web/navigation_badge_test.go; catalog/web/status_labels_test.go",
-            "result": "Go regression failed old dot naming and selected-destination markup, then passed. Standalone count and dot names also pass."
+            "location": "catalog/web/navigation_badge_test.go",
+            "result": "Rendered destination names and badge markup pass."
           },
           {
             "kind": "browser",
             "location": "forge/conformance/navigation-badges.html",
-            "result": "Chromium: ten assertions pass across dot/count badges for naming, document order, acknowledgement and remaining cleared after leaving. Actual page accessibility tree names the destination Files New notification."
+            "result": "Chromium: 20 assertions pass for both badge types, LTR/RTL bounds, destination/notification name order and acknowledgement persistence."
           }
         ],
-        "notes": "Browser accessibility-tree names and DOM behavior verified. Spoken output on individual screen readers has not been listened to."
+        "notes": "Replaces the old sibling-order evidence: name ordering is now explicit, since the visual badge belongs inside the icon.",
+        "assessedBaseline": "e23e979d8041e1fe8755e6f85051f8d076e0b928"
       },
       "fixes": [
         {
           "commit": "f7e62cda6cef769725230018adb0f31398e30c5b",
           "sourceRevision": 1,
           "summary": "Clear navigation badges on selection and name notification dots"
+        },
+        {
+          "commit": "50dbb8b048fb005b5aa65500ce5940bc19a468cd",
+          "sourceRevision": 1,
+          "summary": "Anchor navigation badges inside icons while preserving announcement order"
         }
       ]
     },
@@ -392,25 +413,25 @@
       "implementation": {
         "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_badge.go; catalog/web/specimen_navigation.templ; forge/components/behaviors/navigation.js",
-            "result": "Notification dots use New notification; numerical badges include the count after the destination label. Initially selected destinations omit unread badges. Selecting an unread destination removes its badge permanently for that rendered instance."
+            "location": "catalog/web/specimen_navigation.templ; catalog/web/specimen_navigation.go; forge/components/styles/navigation-rail.css; forge/components/behaviors/navigation.js",
+            "result": "Badges are children of the icon, remain within its bounds at the logical ending edge and mirror in RTL. The destination accessible name puts its label before the notification; the visual badge is hidden from duplicate announcement. Selecting the destination removes the badge and the notification name."
           },
           {
             "kind": "test",
-            "location": "catalog/web/navigation_badge_test.go; catalog/web/status_labels_test.go",
-            "result": "Go regression failed old dot naming and selected-destination markup, then passed. Standalone count and dot names also pass."
+            "location": "catalog/web/navigation_badge_test.go",
+            "result": "Rendered destination names and badge markup pass."
           },
           {
             "kind": "browser",
             "location": "forge/conformance/navigation-badges.html",
-            "result": "Chromium: ten assertions pass across dot/count badges for naming, document order, acknowledgement and remaining cleared after leaving. Actual page accessibility tree names the destination Files New notification."
+            "result": "Chromium: 20 assertions pass for both badge types, LTR/RTL bounds, destination/notification name order and acknowledgement persistence."
           }
         ],
-        "notes": "Browser accessibility-tree names and DOM behavior verified. Spoken output on individual screen readers has not been listened to."
+        "notes": "Replaces the old sibling-order evidence: name ordering is now explicit, since the visual badge belongs inside the icon.",
+        "assessedBaseline": "e23e979d8041e1fe8755e6f85051f8d076e0b928"
       },
       "fixes": [
         {
@@ -422,6 +443,11 @@
           "commit": "f7e62cda6cef769725230018adb0f31398e30c5b",
           "sourceRevision": 1,
           "summary": "Clear navigation badges on selection and name notification dots"
+        },
+        {
+          "commit": "50dbb8b048fb005b5aa65500ce5940bc19a468cd",
+          "sourceRevision": 1,
+          "summary": "Anchor navigation badges inside icons while preserving announcement order"
         }
       ]
     },

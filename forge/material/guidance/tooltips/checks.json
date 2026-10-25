@@ -385,17 +385,22 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_tooltip.templ:24-34; forge/material/generate-components.mjs:1039-1042",
-            "result": "The rich renderer always emits Details and exactly one Got it button. The configuration matrix exposes variant/state, with no headline visibility or zero/two-action configuration."
+            "location": "catalog/web/specimen_tooltip.templ; forge/components/styles/snackbars-tooltips.css",
+            "result": "The rich tooltip structure already supports an optional headline, a body and zero to two native action buttons. These compositions fit within the existing surface styles; no missing runtime behavior was established."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/rich-tooltip.html",
+            "result": "Chromium: optional-headline and zero/one/two-action compositions fit without horizontal clipping."
           }
         ],
-        "notes": ""
+        "notes": "The playground currently renders one composition. An exhaustive preset picker is not required for the underlying HTML/CSS to support the permitted content. No historical fix commit is assigned to existing behavior.",
+        "assessedBaseline": "e23e979d8041e1fe8755e6f85051f8d076e0b928"
       },
       "fixes": []
     },
@@ -576,19 +581,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/snackbars-tooltips.css:131-146; forge/components/behaviors/tooltips.js:3-20",
-            "result": "The anchor path positions below the trigger left edge with an 8px gap. It has no onscreen fallback/8px adjustment rule. The non-anchor JS path clamps/flips using raw viewport coordinates rather than 8px increments. Default bottom-right placement and guaranteed avoidance of parent overlap are not established."
+            "location": "forge/components/behaviors/tooltips.js; forge/components/styles/snackbars-tooltips.css",
+            "result": "Rich tooltips prefer bottom-right placement, test alternatives without covering the parent and adjust on an 8px grid. Short windows constrain the surface with its own vertical scrolling. Own scrolling does not reset the content position."
+          },
+          {
+            "kind": "test",
+            "location": "forge/components/tooltips_test.cjs",
+            "result": "Five Node tests pass, including placement candidates and retaining hovered/focused plain tooltips."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/rich-tooltip.html",
+            "result": "Chromium: 20 assertions pass for corner placement, short windows, trigger clearance, scrolling and content compositions."
           }
         ],
-        "notes": ""
+        "notes": "",
+        "assessedBaseline": "e23e979d8041e1fe8755e6f85051f8d076e0b928"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "40d265ae2a380c845e1c9fa733cc2466ad9d9c7d",
+          "sourceRevision": 1,
+          "summary": "Position rich tooltips within the viewport without covering their trigger"
+        }
+      ]
     },
     {
       "id": "tooltip-transient-behavior",

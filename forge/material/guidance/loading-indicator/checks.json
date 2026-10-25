@@ -350,19 +350,30 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/loading.css:1-18; forge/material/generate-components.mjs:321-328; browser Chromium http://127.0.0.1:8081/md3/components/loading-indicator",
-            "result": "Reproduction: inspect default contained and uncontained previews. Both containers render 48×48 CSS px with a 38×38 active indicator, within the stated range. The implementation keeps those fixed token dimensions at larger panes and has no responsive scale-up path."
+            "location": "forge/components/styles/loading.css; catalog/web/specimen_loading.templ",
+            "result": "The current 48px source container scales from 0.5 to 5 with the active artwork, enforcing 24–240px bounds. Interactive panes use 2x at 600px and 3x at 1200px; explicit reference previews retain the token size."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/loading-size.html",
+            "result": "Chromium: seven assertions pass for pane sizes, proportional artwork and lower/upper bounds."
           }
         ],
-        "notes": "The exposed default dimensions satisfy the 24dp–240dp bound and preserve the 38/48 relationship; the unmet part is scaling the indicator with larger panes. This is not marked missing because an arbitrary-token clamp is absent."
+        "notes": "600/1200px pane thresholds and their scale factors are renderer policy, not captured measurement tokens. The clamp assumes the current captured 48px container.",
+        "assessedBaseline": "e23e979d8041e1fe8755e6f85051f8d076e0b928"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "ad3b34d98ee2a693865a073bb0f8c84a9d8cfdf6",
+          "sourceRevision": 1,
+          "summary": "Scale loading indicators with their pane within the documented size limits"
+        }
+      ]
     },
     {
       "id": "loading-indicator-assistive-use-cases",
@@ -548,19 +559,30 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/loading.css:1-18; forge/material/generate-components.mjs:321-328; browser Chromium http://127.0.0.1:8081/md3/components/loading-indicator",
-            "result": "At the default page size both variants remain 48×48 CSS px; the stylesheet has no viewport or available-pane observer/media rule that scales the default indicator upward on larger windows."
+            "location": "forge/components/styles/loading.css; catalog/web/specimen_loading.templ",
+            "result": "The current 48px source container scales from 0.5 to 5 with the active artwork, enforcing 24–240px bounds. Interactive panes use 2x at 600px and 3x at 1200px; explicit reference previews retain the token size."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/loading-size.html",
+            "result": "Chromium: seven assertions pass for pane sizes, proportional artwork and lower/upper bounds."
           }
         ],
-        "notes": "The source explicitly requires proportional scale-up on larger windows. The implementation retains fixed default token dimensions, so the large-window behavior is absent; this is independent of the 240dp bound."
+        "notes": "600/1200px pane thresholds and their scale factors are renderer policy, not captured measurement tokens. The clamp assumes the current captured 48px container.",
+        "assessedBaseline": "e23e979d8041e1fe8755e6f85051f8d076e0b928"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "ad3b34d98ee2a693865a073bb0f8c84a9d8cfdf6",
+          "sourceRevision": 1,
+          "summary": "Scale loading indicators with their pane within the documented size limits"
+        }
+      ]
     },
     {
       "id": "loading-indicators-are-intended-for-processes-under",

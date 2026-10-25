@@ -1178,19 +1178,30 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "implemented",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/button-groups.css:6-18",
-            "result": "Group uses a content-sized inline-flex and token-derived button sizing with no breakpoint-specific fixed/flexible width or maximum-width logic."
+            "location": "forge/components/styles/button-groups.css",
+            "result": "Standard groups retain content-sized fixed buttons. Connected groups fill the available surface and flex their buttons within a 40rem specimen cap. Existing size/width controls remain explicit; there is no requirement to apply both fixed and flexible resizing to every group."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/button-group-focus.html",
+            "result": "Chromium: 13 assertions pass, including the connected group filling its available surface."
           }
         ],
-        "notes": "Group uses a content-sized inline-flex and token-derived button sizing with no breakpoint-specific fixed/flexible width or maximum-width logic."
+        "notes": "The source offers fixed and flexible policies; the old finding treated breakpoint automation as mandatory for both. The 40rem specimen cap is renderer layout policy, not a captured button maximum-width token.",
+        "assessedBaseline": "e23e979d8041e1fe8755e6f85051f8d076e0b928"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "d3266d1c35f9d0b6759b1ea906004c4c29915d7f",
+          "sourceRevision": 1,
+          "summary": "Keep one keyboard entry in button groups and fill connected surfaces"
+        }
+      ]
     },
     {
       "id": "group-breakpoint-size-icon-limits",
@@ -1211,17 +1222,17 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/button-groups.css:6-18",
-            "result": "No group breakpoint styles change button widths or sizes; no icon-button-specific max-width behavior exists in this group stylesheet."
+            "location": "catalog/web/specimen_button_group.templ; forge/components/styles/button-groups.css",
+            "result": "The offered groups contain text actions with an explicit size selection and preserve their action hierarchy. The source says to consider size changes; it does not require automatic XS/XL changes. The icon-only maximum-width condition is not exercised by these groups."
           }
         ],
-        "notes": "No group breakpoint styles change button widths or sizes; no icon-button-specific max-width behavior exists in this group stylesheet."
+        "notes": "Do not override a requested specimen size to satisfy an optional product-layout recommendation. Reassess the width condition if icon-only groups are introduced.",
+        "assessedBaseline": "e23e979d8041e1fe8755e6f85051f8d076e0b928"
       },
       "fixes": []
     },

@@ -536,17 +536,17 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "implemented",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/tabs.css:27-56",
-            "result": "Tab labels are forced to one unwrapped line and the tablist has no scrollable overflow mode, first-item offset, or intrinsic-width scrollable variant."
+            "location": "catalog/web/specimen_tabs.templ; forge/components/styles/tabs.css",
+            "result": "The implemented fixed tab row uses short Home, Files and Saved labels with consistent padding. The source permits scrollable tabs as an alternative for longer labels; this specimen does not offer scrollable tabs or arbitrary label content."
           }
         ],
-        "notes": ""
+        "notes": "The 52dp leading-offset condition applies when using scrollable tabs. It does not require adding scrollable mode to an already-fitting fixed row. No implementation change or historical fix is claimed.",
+        "assessedBaseline": "e23e979d8041e1fe8755e6f85051f8d076e0b928"
       },
       "fixes": []
     },

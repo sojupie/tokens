@@ -881,19 +881,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/time_picker.go:20-25",
-            "result": "Orientation and mode are fixed input attributes; the runtime has no ResizeObserver or viewport-height rule to switch to landscape or input when the dial cannot fit."
+            "location": "forge/components/static/time-picker.js:adapt",
+            "result": "An opened modal measures its actual content against available space. It keeps the selected layout when it fits, tries landscape clock when needed, then falls back to input. Resizing restores the preferred layout when it fits again, preserving the time and keeping focus on a visible control. Inline reference previews remain explicit."
+          },
+          {
+            "kind": "test",
+            "location": "forge/components/time_picker_test.cjs",
+            "result": "Three parsing/dial/angle tests pass."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/time-picker-fit.html; forge/conformance/time-picker-dismissal.html",
+            "result": "Chromium: 20 fit/time/focus assertions pass at 390×800, 900×450 and 390×390, including restoration; nine existing dismissal assertions also pass."
           }
         ],
-        "notes": ""
+        "notes": "Overflow remains an accessibility fallback if even text input cannot fit an exceptionally small viewport. Actual iOS keyboard and visual-viewport behavior remains unverified.",
+        "assessedBaseline": "e23e979d8041e1fe8755e6f85051f8d076e0b928"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "eebc4b47fef206f38052d4b4511a71a896352f28",
+          "sourceRevision": 1,
+          "summary": "Fit time picker dialogs before falling back to scrolling"
+        }
+      ]
     },
     {
       "id": "time-picker-density",
@@ -1018,19 +1034,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/time-pickers.css:19-27",
-            "result": "The dialog explicitly uses overflow:auto, so the picker itself can scroll instead of switching orientation or variant to fit."
+            "location": "forge/components/static/time-picker.js:adapt",
+            "result": "An opened modal measures its actual content against available space. It keeps the selected layout when it fits, tries landscape clock when needed, then falls back to input. Resizing restores the preferred layout when it fits again, preserving the time and keeping focus on a visible control. Inline reference previews remain explicit."
+          },
+          {
+            "kind": "test",
+            "location": "forge/components/time_picker_test.cjs",
+            "result": "Three parsing/dial/angle tests pass."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/time-picker-fit.html; forge/conformance/time-picker-dismissal.html",
+            "result": "Chromium: 20 fit/time/focus assertions pass at 390×800, 900×450 and 390×390, including restoration; nine existing dismissal assertions also pass."
           }
         ],
-        "notes": ""
+        "notes": "Overflow remains an accessibility fallback if even text input cannot fit an exceptionally small viewport. Actual iOS keyboard and visual-viewport behavior remains unverified.",
+        "assessedBaseline": "e23e979d8041e1fe8755e6f85051f8d076e0b928"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "eebc4b47fef206f38052d4b4511a71a896352f28",
+          "sourceRevision": 1,
+          "summary": "Fit time picker dialogs before falling back to scrolling"
+        }
+      ]
     },
     {
       "id": "time-picker-assistive-tasks",

@@ -462,17 +462,17 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_dialog.templ:11-25; forge/components/styles/dialogs.css:99-135",
-            "result": "Basic/full-screen variant is selected by case; there is no breakpoint rule/controller switching full-screen compact dialogs to basic on medium/expanded layouts."
+            "location": "catalog/web/specimen_dialog.templ",
+            "result": "The catalog exposes basic prompts and a separately selected full-screen form as reference implementations. It is not an application task flow selecting a dialog variant according to its form complexity and window class."
           }
         ],
-        "notes": "Basic/full-screen variant is selected by case; there is no breakpoint rule/controller switching full-screen compact dialogs to basic on medium/expanded layouts."
+        "notes": "The product-level recommendation remains in the check. It does not justify replacing the explicitly selected basic or full-screen reference preview.",
+        "assessedBaseline": "e23e979d8041e1fe8755e6f85051f8d076e0b928"
       },
       "fixes": []
     },
@@ -1346,7 +1346,7 @@
     },
     {
       "id": "dialog-adapt-variant-by-breakpoint",
-      "statement": "Allow the dialog variant to change with the breakpoint, such as changing a full-screen dialog to a basic dialog on a larger screen.",
+      "statement": "Dialogs can swap variants as the breakpoint changes; a full-screen dialog can become a basic dialog at a larger breakpoint.",
       "condition": "For the dialog variant or interaction described by the source.",
       "basis": "explicit",
       "notes": "Captures responsive variant substitution.",
@@ -1360,20 +1360,30 @@
           "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
           "extractorVersion": 2,
           "summary": "Captures responsive variant substitution."
+        },
+        {
+          "change": "corrected",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "9d723c7a-03d1-4e7c-95af-a20ed4b66533",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Correct a mandatory-controller interpretation of the captured optional can-swap example. Capture unchanged."
         }
       ],
       "implementation": {
-        "status": "missing",
-        "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "status": "not-applicable",
+        "sourceRevision": 2,
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_dialog.templ:11-25; forge/components/styles/dialogs.css:99-135",
-            "result": "Variant is fixed in markup/configuration and no breakpoint controller changes full-screen to basic dialog."
+            "location": "catalog/web/specimen_dialog.templ; catalog/web/specimen_dialog.go",
+            "result": "Basic and full-screen specimens are separately available. There is no adaptive dialog composition claiming to swap them; the source describes that as an allowed product choice."
           }
         ],
-        "notes": "Variant is fixed in markup/configuration and no breakpoint controller changes full-screen to basic dialog."
+        "notes": "Keep the selected reference variant addressable and stable. An optional app composition can use both implementations without silently changing this preview.",
+        "assessedBaseline": "e23e979d8041e1fe8755e6f85051f8d076e0b928"
       },
       "fixes": []
     },

@@ -534,19 +534,30 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/switches.css:10,61-71; forge/components/static/components.css:1",
-            "result": "The switch and its input inherit cursor:pointer, and the generated pressed-state binding maps the handle width/height to the pressed-size tokens consumed by the authored handle rules. No hover-area growth rule is present, so that part of the feedback guidance is absent."
+            "location": "forge/components/styles/switches.css",
+            "result": "The feedback circle grows from 80% to full size on hover, focus and press using motion tokens. Existing handle growth remains. The hit area does not change."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/switch-feedback.html",
+            "result": "Chromium: ten assertions pass across both states for feedback scaling, handle feedback, target stability and reduced motion."
           }
         ],
-        "notes": ""
+        "notes": "",
+        "assessedBaseline": "e23e979d8041e1fe8755e6f85051f8d076e0b928"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "7ad0ca25447727a6a306fb387da6ac45c18e4890",
+          "sourceRevision": 1,
+          "summary": "Grow switch feedback without moving its hit target"
+        }
+      ]
     },
     {
       "id": "switch-density-target",

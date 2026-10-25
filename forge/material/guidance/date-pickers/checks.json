@@ -390,7 +390,7 @@
     },
     {
       "id": "date-picker-breakpoint",
-      "statement": "Use modal pickers in compact layouts and docked pickers with a text field/dropdown in medium or expanded layouts.",
+      "statement": "Date pickers can be embedded in dialogs on compact breakpoints or text-field dropdowns on medium and expanded breakpoints. Choose a variant suited to its context.",
       "condition": "When adapting date picker presentation.",
       "basis": "explicit",
       "notes": "",
@@ -404,20 +404,30 @@
           "markdownSha256": "0792e87dbe72b4ad689094d3e5a85f956b1939a58c9731fdae580b13f5d0c930",
           "extractorVersion": 2,
           "summary": "Curated from the captured Usage guidance."
+        },
+        {
+          "change": "corrected",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/guidelines",
+          "section": "bdb0ccd6-7e65-416e-8943-8896b8eca2ca",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "0792e87dbe72b4ad689094d3e5a85f956b1939a58c9731fdae580b13f5d0c930",
+          "extractorVersion": 2,
+          "summary": "Correct the earlier mandatory breakpoint-switch interpretation. The captured Usage section says can be embedded; it does not require an automatic variant controller. Capture unchanged."
         }
       ],
       "implementation": {
-        "status": "missing",
-        "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "status": "implemented",
+        "sourceRevision": 2,
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_date.templ:5-16; forge/components/styles/date-pickers.css:1-15; forge/components/static/date-picker.js:173-180",
-            "result": "Variant is selected in the component case and no breakpoint handler swaps compact modal to medium/expanded docked presentation."
+            "location": "catalog/web/specimen_date.templ; catalog/web/date_picker.go",
+            "result": "Both modal and text-field/docked compositions are implemented and separately selectable. The specimen preserves that explicit choice at every viewport width."
           }
         ],
-        "notes": "Variant is selected in the component case and no breakpoint handler swaps compact modal to medium/expanded docked presentation."
+        "notes": "Application-level choice depends on the surrounding task. Automatic switching is not a missing requirement in the cited Usage section.",
+        "assessedBaseline": "e23e979d8041e1fe8755e6f85051f8d076e0b928"
       },
       "fixes": []
     },

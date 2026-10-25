@@ -569,19 +569,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_appbar.templ:13-16; forge/components/behaviors/app-bars.js:3-12",
-            "result": "The search variant renders a native search input. The only app-bar behavior marks scroll state; it does not open a search view on selection."
+            "location": "catalog/web/specimen_appbar.templ; catalog/web/specimen_search.templ; catalog/web/specimen_appbar.go; forge/components/static/search.js",
+            "result": "The interactive app-bar search trigger opens the shared adaptive search view, reusing filtering, dismissal, query retention and result selection. Nested instances receive scoped IDs. Escape restores the trigger; selecting a result updates and focuses the page heading."
+          },
+          {
+            "kind": "test",
+            "location": "catalog/web/appbar_search_test.go",
+            "result": "Scoped ID, composed markup and ordinary app-bar isolation tests pass."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/appbar-search.html; forge/conformance/appbar-search-width.html; forge/conformance/search-responsive.html; forge/conformance/headline-layout.html",
+            "result": "Chromium: 14 workflow assertions pass. Existing width, headline and shared-search fixtures also pass (6, 12 and 10 assertions)."
           }
         ],
-        "notes": "The search variant renders a native search input. The only app-bar behavior marks scroll state; it does not open a search view on selection."
+        "notes": "",
+        "assessedBaseline": "e23e979d8041e1fe8755e6f85051f8d076e0b928"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "25fe48c51f95bafcf1583466841cbd6d7b397a28",
+          "sourceRevision": 1,
+          "summary": "Open the shared search view from interactive app bars"
+        }
+      ]
     },
     {
       "id": "contextual-essential-actions",

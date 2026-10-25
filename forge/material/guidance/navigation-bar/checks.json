@@ -498,15 +498,15 @@
       "implementation": {
         "status": "missing",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/navigation.css:13-23; catalog/web/navigation.go:44-49",
-            "result": "The bar uses a uniform flex row and all items flex equally; the specimen chooses orientation from variant, with no medium-window breakpoint, fixed horizontal item widths or breakpoint-specific centering/padding."
+            "location": "forge/components/styles/navigation.css; catalog/web/specimen_navigation.templ",
+            "result": "Explicit horizontal items now retain intrinsic widths and centered spacing as the bar grows, with text scaling support. An adaptive bar composition that selects horizontal items at the medium breakpoint is still absent."
           }
         ],
-        "notes": "This specimen provides static vertical/horizontal variants, not the stated medium-breakpoint adaptation and horizontal width/centering behavior."
+        "notes": "The old assessment conflated the missing adaptive composition with absent horizontal width/centering styles. Preserve the explicit orientation control; add a distinct adaptive example if this integration is implemented.",
+        "assessedBaseline": "e23e979d8041e1fe8755e6f85051f8d076e0b928"
       },
       "fixes": []
     },
