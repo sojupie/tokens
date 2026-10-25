@@ -4,7 +4,7 @@ import "testing"
 
 func TestListSemanticsFollowBehavior(t *testing.T) {
 	c := componentCase{Family: "list", Control: "select", Selection: "single", State: "disabled"}
-	if c.ListItem(0)["aria-pressed"] != "false" || c.ListItem(1)["aria-pressed"] != "true" || c.ListItem(0)["disabled"] != true {
+	if c.ListItem(0)["aria-selected"] != "false" || c.ListItem(1)["aria-selected"] != "true" || c.ListItem(0)["disabled"] != true {
 		t.Fatal("single selection and disabled state are not reflected in native controls")
 	}
 	c.Control = "expand"
@@ -80,5 +80,28 @@ func TestListBehaviorCompositions(t *testing.T) {
 	}
 	if _, ok := (componentCase{Control: "reorder"}).ListItem(0)["aria-pressed"]; ok {
 		t.Fatal("reordering must not toggle persistent row selection")
+	}
+}
+
+func TestListSelectionOwnsFocusAndNames(t *testing.T) {
+	for _, mode := range []string{"single", "multiple"} {
+		c := componentCase{Family: "list", Control: "select", Selection: mode, Width: "checkbox", State: "interactive"}
+		a := c.ListContainerAttributes()
+		if a["role"] != "listbox" || a["aria-multiselectable"] != "false" && mode == "single" || a["aria-multiselectable"] != "true" && mode == "multiple" {
+			t.Fatalf("wrong listbox mode: %v", a)
+		}
+		for i := range 3 {
+			item, input := c.ListItem(i), c.ListControlInput(i)
+			if item["role"] != "option" || item["aria-label"] != c.ListLabel(i) || item["aria-selected"] == nil {
+				t.Fatalf("option semantics missing: %v", item)
+			}
+			if input["aria-hidden"] != "true" || input["tabindex"] != "-1" {
+				t.Fatalf("duplicate nested control: %v", input)
+			}
+		}
+	}
+	c := componentCase{Family: "list", Control: "expand"}
+	if c.ListContainerAttributes()["role"] == "listbox" || c.ListItem(0)["role"] == "option" {
+		t.Fatal("disclosure rows became selection options")
 	}
 }

@@ -7,6 +7,14 @@
   let gesture=null;
   const rows=list=>[...list.querySelectorAll(':scope > [data-list-row]')];
   const primary=row=>row.querySelector('.md-list-row > .md-list-item');
+  const options=list=>[...list.querySelectorAll('[role="option"]')].filter(item=>!item.matches(':disabled,[aria-disabled="true"]')&&!item.closest('[inert]')&&item.getClientRects().length&&getComputedStyle(item).visibility==='visible');
+  function optionFocus(list,item){for(const option of list.querySelectorAll('[role="option"]'))option.tabIndex=option===item?0:-1;}
+  function selectOption(list,item){
+    const selected=list.dataset.selectionMode==='single'||item.getAttribute('aria-selected')!=='true';
+    if(list.dataset.selectionMode==='single')for(const option of list.querySelectorAll('[role="option"]'))option.setAttribute('aria-selected','false');
+    item.setAttribute('aria-selected',String(selected));
+    announce(list,item.dataset.listLabel+(selected?' selected.':' unselected.'));
+  }
   const announce=(list,text)=>{for(const output of list.closest('.md-list-demo').querySelectorAll('output'))output.textContent=text;};
   const timing=element=>MaterialMotion.timing(element,'default-spatial');
   const cancelFeedback=button=>button.dispatchEvent(new CustomEvent('material:cancel-feedback',{bubbles:true}));
@@ -25,7 +33,7 @@
     const input=event.target;if(!input.matches('.md-list-selection-control > input'))return;
     const list=input.closest('.md-list');
     if(input.checked&&list.dataset.selectionMode==='single')for(const other of list.querySelectorAll('.md-list-selection-control > input'))if(other!==input)other.checked=false;
-    for(const item of list.querySelectorAll('.md-list-item')){const control=item.querySelector('.md-list-selection-control > input');if(control)item.dataset.selected=String(control.checked);}
+    for(const item of list.querySelectorAll('.md-list-item')){const control=item.querySelector('.md-list-selection-control > input');if(control){item.dataset.selected=String(control.checked);if(item.getAttribute('role')==='option')item.setAttribute('aria-selected',String(control.checked));}}
     announce(list,input.getAttribute('aria-label')+(input.checked?' selected.':' unselected.'));
   });
   function reveal(row,open) {
@@ -94,12 +102,21 @@
     }
     if(!button.matches('.md-list-item'))return;
     if(button.hasAttribute('aria-controls')){expand(button);return;}
+    if(button.getAttribute('role')==='option'){selectOption(list,button);return;}
     if(list.dataset.selectionMode==='single')for(const item of rows(list))primary(item).setAttribute('aria-pressed',String(item===row));
     announce(list,button.dataset.listLabel+(button.getAttribute('aria-pressed')==='true'?' selected.':' activated.'));
   });
+  document.addEventListener('focusin',event=>{const item=event.target.closest?.('[role="option"]');if(item)optionFocus(item.closest('.md-list'),item);});
   document.addEventListener('keydown',event=>{
     if(event.target.closest?.('[data-list-reorder-sheet]'))return;
     const list=event.target.closest?.('.md-list');if(!list)return;
+    const option=event.target.closest?.('[role="option"]');
+    if(option&&list.getAttribute('role')==='listbox'){
+      const items=options(list),index=items.indexOf(option);if(index<0)return;
+      if(event.key==='Enter'||event.key===' '){event.preventDefault();const input=option.querySelector('.md-list-selection-control > input');if(input){if(list.dataset.selectionMode!=='single'||!input.checked)input.click();}else option.click();return;}
+      const next=globalThis.MaterialComponents.navigationIndex(index,items.length,event.key,['ArrowLeft','ArrowRight'].includes(event.key),getComputedStyle(list).direction==='rtl');
+      if(next!==null){event.preventDefault();optionFocus(list,items[next]);items[next].focus({preventScroll:true});}return;
+    }
     if(event.key==='Escape'&&gesture){event.preventDefault();finish(true);return;}
     const row=event.target.closest('[data-list-row]');
     if(list.dataset.control==='reveal'&&row&&event.key==='Escape'){event.preventDefault();reveal(row,false);return;}
@@ -115,6 +132,7 @@
   });
   document.addEventListener('pointerdown',event=>{
     if(event.button!==0||event.isPrimary===false)return;
+    const option=event.target.closest?.('[role="option"]');if(option&&option.getAttribute('aria-disabled')!=='true'){event.preventDefault();option.focus({preventScroll:true});}
     const row=event.target.closest?.('[data-list-row]'),button=event.target.closest?.('button');if(!row||!button||button.disabled)return;
     row.removeAttribute('data-list-suppress-click');const list=row.closest('.md-list');
     if(list.dataset.control==='reorder'&&button.matches('.md-list-item,[data-list-grip]')){gesture={type:'reorder',row,list,handle:button,id:event.pointerId,x:event.clientX,y:event.clientY,top:row.getBoundingClientRect().top,moved:false};return;}

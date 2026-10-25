@@ -86,6 +86,22 @@ func (c componentCase) listDivider() string {
 	}
 	return c.ListDivider
 }
+
+// Selection lists expose one option per row. Nested check marks remain visual
+// controls; the option owns focus and announces the row's selected state.
+func (c componentCase) ListContainerAttributes() templ.Attributes {
+	a := c.Attributes()
+	if c.Control == "select" {
+		a["role"] = "listbox"
+		a["aria-label"] = "Single selection"
+		a["aria-multiselectable"] = fmt.Sprint(c.Selection != "single")
+		if c.Selection != "single" {
+			a["aria-label"] = "Multiple selection"
+		}
+	}
+	return a
+}
+
 func (c componentCase) ListNativeKind() string {
 	if c.Width == "checkbox" || c.Width == "radio" {
 		return c.Width
@@ -121,6 +137,10 @@ func (c componentCase) ListControlInput(index int) templ.Attributes {
 	if kind == "switch" {
 		a["role"] = "switch"
 	}
+	if c.Control == "select" {
+		a["tabindex"] = "-1"
+		a["aria-hidden"] = "true"
+	}
 	return a
 }
 
@@ -138,9 +158,13 @@ func (c componentCase) ListItem(index int) templ.Attributes {
 func (c componentCase) ListItemWithLabel(index int, label string) templ.Attributes {
 	attrs := templ.Attributes{"type": "button", "class": "md-list-item", "data-list-item": "", "data-list-label": label}
 	if c.Control == "select" {
-		selected := c.ListSelected(index)
-		attrs["aria-pressed"] = fmt.Sprint(selected)
-		attrs["data-button-toggle"] = ""
+		attrs["role"] = "option"
+		attrs["aria-label"] = label
+		attrs["aria-selected"] = fmt.Sprint(c.ListSelected(index))
+		attrs["tabindex"] = "-1"
+		if index == 0 && c.State != "disabled" || index == 1 && c.State == "disabled" {
+			attrs["tabindex"] = "0"
+		}
 	}
 	if c.Control == "expand" && index < 3 {
 		attrs["aria-expanded"] = fmt.Sprint(c.Expanded && index == 0)
@@ -225,4 +249,11 @@ func (c componentCase) ListMoveAction(index int, action string) templ.Attributes
 		attrs["disabled"] = true
 	}
 	return attrs
+}
+
+func (c componentCase) ListRowRole() string {
+	if c.Control == "select" {
+		return "presentation"
+	}
+	return "listitem"
 }

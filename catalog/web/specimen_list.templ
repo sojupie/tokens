@@ -4,9 +4,9 @@ import "fmt"
 
 templ specimenList(c componentCase) {
 	<div class={ "md-list-demo", templ.KV("md-sheet-demo",c.Control=="reorder") } data-interactive="true">
-		<ul { c.Attributes()... }>
+		<ul { c.ListContainerAttributes()... }>
 			for index := range 3 {
-				<li data-list-row data-list-label={ c.ListLabel(index) } data-list-expanded={ fmt.Sprint(c.Control == "expand" && c.Expanded && index == 0) }>
+				<li role={ c.ListRowRole() } data-list-row data-list-label={ c.ListLabel(index) } data-list-expanded={ fmt.Sprint(c.Control == "expand" && c.Expanded && index == 0) }>
 					<div class="md-list-row">
 						if c.Control=="reveal" {
 							<button { c.ListUtility(index,true)... }>@materialSymbol("check")
