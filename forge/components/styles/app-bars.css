@@ -198,3 +198,12 @@
     inset-inline: max(var(--md-sys-measurement-space200), calc((100% - 75rem) / 2));
   }
 }
+
+.md-appbar-row:has(> .md-appbar-search) {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr) max-content;
+}
+.md-appbar-search {
+  box-sizing: border-box;
+  inline-size: min(100%, max(312px, 50%));
+}
