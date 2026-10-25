@@ -2881,8 +2881,10 @@
 .md-loading {
   display: grid;
   place-items: center;
-  inline-size: var(--_loading-width);
-  block-size: var(--_loading-height);
+  /* The current Material container is 48dp; .5–5 keeps it within 24–240dp. */
+  --_loading-multiplier: clamp(.5, var(--_loading-scale, 1), 5);
+  inline-size: calc(var(--_loading-width) * var(--_loading-multiplier));
+  block-size: calc(var(--_loading-height) * var(--_loading-multiplier));
   border-radius: var(--_loading-shape);
   background: var(--_loading-container, transparent);
   color: var(--_loading-color);
@@ -2893,9 +2895,20 @@
 }
 .md-loading svg {
   display: block;
-  inline-size: var(--_loading-size);
-  block-size: var(--_loading-size);
+  inline-size: calc(var(--_loading-size) * var(--_loading-multiplier));
+  block-size: calc(var(--_loading-size) * var(--_loading-multiplier));
   fill: currentColor;
+}
+
+.md-progress-demo[data-loading-adaptive] {
+  container: loading-pane / inline-size;
+  inline-size: 100%;
+}
+@container loading-pane (min-width: 600px) {
+  .md-loading { --_loading-scale: 2; }
+}
+@container loading-pane (min-width: 1200px) {
+  .md-loading { --_loading-scale: 3; }
 }
 /* App bar structure. Insets without component tokens use system spacing. */
 .md-appbar-demo {
