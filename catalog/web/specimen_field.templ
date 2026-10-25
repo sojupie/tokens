@@ -17,7 +17,8 @@ templ specimenField(c componentCase) {
 		}
 		<input { c.FieldInput()... }/>
 		if c.Shape=="affixes" {
-			<span data-slot="suffix" aria-hidden="true">kg</span>
+			<span data-slot="suffix" aria-hidden="true">/kg</span>
+			<span class="tokens-visually-hidden" id={ c.ID() + "-units" }>US dollars per kilogram</span>
 		}
 		if c.Family!="field" {
 			<button type="button" class="md-field-toggle" data-field-toggle tabindex="-1" aria-label="Show options" aria-controls={ c.ID() + "-options" } disabled?={ c.State=="disabled" }><span data-slot="trailing-icon">@materialSymbol("expand_more")
@@ -26,7 +27,13 @@ templ specimenField(c componentCase) {
 			<span data-slot="trailing-icon" aria-hidden="true">@materialSymbol("info")
 </span>
 		}
-		<small id={ c.ID() + "-help" } data-slot="supporting-text">Supporting text</small>
+		<small id={ c.ID() + "-help" } data-slot="supporting-text" { c.FieldHelpAttributes()... }>
+			if c.Invalid {
+				Enter a valid value.
+			} else {
+				Supporting text
+			}
+		</small>
 		if c.Family!="field" {
 			<div class="md-field-menu" id={ c.ID() + "-options" } role="listbox" aria-label={ c.FieldLabel() } popover="auto">
 				for index,value := range fieldOptions {

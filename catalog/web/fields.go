@@ -8,6 +8,9 @@ import (
 var fieldOptions = []string{"Option one", "Option two", "Option three"}
 
 func (c componentCase) FieldLabel() string {
+	if c.Shape == "affixes" {
+		return "Price per kilogram"
+	}
 	if c.Family == "select" {
 		return "Choose a value"
 	}
@@ -25,6 +28,9 @@ func (c componentCase) FieldInput() templ.Attributes {
 		}
 	}
 	a := templ.Attributes{"id": c.ID() + "-input", "type": "text", "value": value, "placeholder": "Input text", "aria-describedby": c.ID() + "-help", "aria-invalid": fmt.Sprint(c.Invalid), "disabled": c.State == "disabled", "autocomplete": "off"}
+	if c.Shape == "affixes" {
+		a["aria-describedby"] = c.ID() + "-units " + c.ID() + "-help"
+	}
 	if c.Family != "field" {
 		a["placeholder"] = " "
 		a["role"] = "combobox"
@@ -37,6 +43,14 @@ func (c componentCase) FieldInput() templ.Attributes {
 			a["readonly"] = true
 			a["aria-autocomplete"] = "none"
 		}
+	}
+	return a
+}
+
+func (c componentCase) FieldHelpAttributes() templ.Attributes {
+	a := templ.Attributes{}
+	if c.Invalid {
+		a["role"] = "alert"
 	}
 	return a
 }
