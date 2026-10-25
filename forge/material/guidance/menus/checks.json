@@ -1691,19 +1691,30 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/menus.css:83-92",
-            "result": "The menu is capped to viewport height and uses overflow:auto, but the scroll container does not set scrollbar-gutter or another persistent-scrollbar mechanism; its gap variables are not reset for scrollable menus."
+            "location": "forge/components/static/menus.js; forge/components/styles/menus.css",
+            "result": "Open/reposition detects overflow, removes menu gaps and requests overflow-y:scroll with stable scrollbar space. Short menus restore their ordinary treatment."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/menu-scroll.html",
+            "result": "Chromium: six assertions pass for overflow detection, zero gaps, scrollbar CSS, scrolling and reset after content shrinks."
           }
         ],
-        "notes": "The code permits scrolling but does not reserve/show a persistent scrollbar and has no scroll-specific prohibition on nonzero gaps. The exact visual scrollbar behavior also depends on browser/OS settings.",
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
+        "notes": "Native overlay-scrollbar visibility still follows browser/OS preferences; this does not install a custom scrollbar.",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "4fa1856065a5de5f677c1a6c36a7ba08d9fe6d4e",
+          "sourceRevision": 1,
+          "summary": "Remove gaps and reserve scrollbar space in overflowing menus"
+        }
+      ]
     },
     {
       "id": "disabled-menu-item-focus-and-decoration-focus",

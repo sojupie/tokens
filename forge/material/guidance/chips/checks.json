@@ -954,19 +954,30 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_chip.templ:18-22; forge/components/styles/chips.css:121-136",
-            "result": "The remove button is an independent secondary action, but no 48dp minimum hit area or 88dp chip/42dp label minimum is implemented in the inspected styles."
+            "location": "forge/components/styles/chip-actions.css",
+            "result": "Separate primary/remove targets reserve at least 48px each horizontally and extend to 48px vertically without overlapping. The visible chip remains 32px tall, with an 8px trailing icon inset."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/chip-targets.html",
+            "result": "Chromium: ten assertions pass, including elementFromPoint hit testing above/below each action and independent select/remove activation."
           }
         ],
-        "notes": "The remove button is an independent secondary action, but no 48dp minimum hit area or 88dp chip/42dp label minimum is implemented in the inspected styles."
+        "notes": "",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "c352d462ab8583273b494e673a2b991dfe0138cc",
+          "sourceRevision": 1,
+          "summary": "Give removable chips separate 48px touch targets"
+        }
+      ]
     },
     {
       "id": "assist-chip-action-feedback",
@@ -1053,17 +1064,17 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_chip.templ:18-22; forge/components/styles/chips.css:121-136",
-            "result": "Removable filter action remains a trailing button at all widths; no breakpoint makes the whole compact chip open a menu."
+            "location": "catalog/web/specimen_chip.templ; forge/components/styles/chip-actions.css",
+            "result": "The current trailing action removes a chip and now has an independent 48px target at compact widths. It is not a small trailing menu target requiring whole-chip menu activation."
           }
         ],
-        "notes": "Removable filter action remains a trailing button at all widths; no breakpoint makes the whole compact chip open a menu."
+        "notes": "Do not add a menu to a remove action solely because the source also describes compact chips that open menus.",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
       "fixes": []
     },

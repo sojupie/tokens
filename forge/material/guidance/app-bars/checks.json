@@ -701,19 +701,25 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "implemented",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/app-bars.css:2-5; forge/components/styles/app-bars.css:6-14",
-            "result": "The demo wrapper caps at 28rem and the component fills its parent; no large-breakpoint content max-width and centering rule exists."
+            "location": "forge/components/styles/app-bars.css",
+            "result": "At wide window sizes, action rows and flexible headlines are centered with a 75rem content cap. The cap is renderer layout, not an upstream token value."
           }
         ],
-        "notes": "The demo wrapper caps at 28rem and the component fills its parent; no large-breakpoint content max-width and centering rule exists."
+        "notes": "",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "b0a5fab5e7a9b87e835fe51dd382424791941e60",
+          "sourceRevision": 1,
+          "summary": "Allow flexible app-bar headlines to wrap and expose heading semantics"
+        }
+      ]
     },
     {
       "id": "scroll-fill",
@@ -866,19 +872,30 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/app-bars.css:36-43; forge/components/styles/app-bars.css:49-54",
-            "result": "Baseline title typography is set, but all title variants inherit nowrap/ellipsis, so the required multiline headline support is absent."
+            "location": "forge/components/styles/app-bars.css; catalog/web/specimen_appbar.templ",
+            "result": "Flexible medium/large headlines wrap to two lines and grow their surface below the action row. Small headlines remain single-line. Titles use HTML headings; native buttons retain their action labels."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/headline-layout.html",
+            "result": "Chromium: 12 assertions pass for heading semantics, small single-line layout and two-line flexible headlines without overlap."
           }
         ],
-        "notes": "Baseline title typography is set, but all title variants inherit nowrap/ellipsis, so the required multiline headline support is absent."
+        "notes": "HTML heading semantics express the source’s native Title role. Baseline specimens remain available as reference configurations; application adoption recommendations do not require deleting them.",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "b0a5fab5e7a9b87e835fe51dd382424791941e60",
+          "sourceRevision": 1,
+          "summary": "Allow flexible app-bar headlines to wrap and expose heading semantics"
+        }
+      ]
     },
     {
       "id": "small-image-replaces-title",
@@ -1394,19 +1411,30 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/app-bars.css:36-43",
-            "result": "Every app-bar title is forced to one line and clipped with ellipsis; flexible variants therefore cannot wrap to two lines as recommended."
+            "location": "forge/components/styles/app-bars.css; catalog/web/specimen_appbar.templ",
+            "result": "Flexible medium/large headlines wrap to two lines and grow their surface below the action row. Small headlines remain single-line. Titles use HTML headings; native buttons retain their action labels."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/headline-layout.html",
+            "result": "Chromium: 12 assertions pass for heading semantics, small single-line layout and two-line flexible headlines without overlap."
           }
         ],
-        "notes": "Every app-bar title is forced to one line and clipped with ellipsis; flexible variants therefore cannot wrap to two lines as recommended."
+        "notes": "HTML heading semantics express the source’s native Title role. Baseline specimens remain available as reference configurations; application adoption recommendations do not require deleting them.",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "b0a5fab5e7a9b87e835fe51dd382424791941e60",
+          "sourceRevision": 1,
+          "summary": "Allow flexible app-bar headlines to wrap and expose heading semantics"
+        }
+      ]
     },
     {
       "id": "subtitle-alignment",
@@ -1625,19 +1653,30 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/app-bars.css:112-134",
-            "result": "Search uses flex:1 and full-width input; there is no 312dp cap or rule limiting growth to half of available width."
+            "location": "forge/components/styles/app-bars.css",
+            "result": "The search row separates its leading/trailing controls from available search space. Search fills that space up to 312px, then grows to half of available space without a discontinuous width reduction."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/appbar-search-width.html",
+            "result": "Chromium: six geometry assertions pass at 280px, 600px and 1100px, including clearance from trailing actions."
           }
         ],
-        "notes": "Search uses flex:1 and full-width input; there is no 312dp cap or rule limiting growth to half of available width."
+        "notes": "",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "ef3bf16f33ebcc8011f072803363fe451eb8394e",
+          "sourceRevision": 1,
+          "summary": "Size app-bar search within the space between its controls"
+        }
+      ]
     },
     {
       "id": "appbar-rtl-mirroring",
@@ -1922,19 +1961,30 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_appbar.templ:17-22; catalog/web/specimen_appbar.templ:41-47; catalog/web/specimen_appbar.templ:8-10",
-            "result": "Title is a span inside a group, not exposed with the Title role; leading/trailing controls are native buttons with labels, but title-role requirement is absent."
+            "location": "forge/components/styles/app-bars.css; catalog/web/specimen_appbar.templ",
+            "result": "Flexible medium/large headlines wrap to two lines and grow their surface below the action row. Small headlines remain single-line. Titles use HTML headings; native buttons retain their action labels."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/headline-layout.html",
+            "result": "Chromium: 12 assertions pass for heading semantics, small single-line layout and two-line flexible headlines without overlap."
           }
         ],
-        "notes": "Title is a span inside a group, not exposed with the Title role; leading/trailing controls are native buttons with labels, but title-role requirement is absent."
+        "notes": "HTML heading semantics express the source’s native Title role. Baseline specimens remain available as reference configurations; application adoption recommendations do not require deleting them.",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "b0a5fab5e7a9b87e835fe51dd382424791941e60",
+          "sourceRevision": 1,
+          "summary": "Allow flexible app-bar headlines to wrap and expose heading semantics"
+        }
+      ]
     }
   ]
 }

@@ -380,19 +380,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/sheets.css:2-5; forge/components/styles/sheets.css:100-109; forge/components/static/sheets.js:43-56",
-            "result": "Modal height is fixed to peek/expanded renderer presets with an 85svh maximum; there is no initial-open 50%-of-viewport cap or automatic full-height expansion policy."
+            "location": "forge/components/styles/sheets.css; forge/components/static/sheets.js",
+            "result": "Modal sheets open within half the viewport height and can expand with the handle; reopening resets the cap. Modal top clearance is 72px, or 56px above 640px window width, with a 640px width cap and 56px side clearance. The 48px handle centers its 4px mark with 22px above/below. Standard assisted-reorder dialogs retain their content-sized layout."
+          },
+          {
+            "kind": "test",
+            "location": "forge/components/sheets_test.cjs",
+            "result": "Three existing gesture/direction tests pass."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/bottom-sheet-sizing.html",
+            "result": "Chromium: 16 assertions pass at 390px and 1000px window widths with 600px height, long content, expansion and reopen. Actual list reorder page still renders a 128px action sheet and one highlighted target row."
           }
         ],
-        "notes": "Modal height is fixed to peek/expanded renderer presets with an 85svh maximum; there is no initial-open 50%-of-viewport cap or automatic full-height expansion policy."
+        "notes": "Wide-window viewport margins apply to modal dialogs, not the small embedded app-frame specimens.",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "ebc9377a71a3a65a36b793136d9f72fe06436204",
+          "sourceRevision": 1,
+          "summary": "Cap initial modal sheets and allow expansion within window clearances"
+        }
+      ]
     },
     {
       "id": "modal-dismiss-options",
@@ -677,19 +693,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/sheets.css:154-171; forge/components/styles/sheets.css:182-189",
-            "result": "Handle uses a 48px square target with 4px block margins and 4px header padding; there is no 72dp top margin, 22dp handle vertical padding, or 56dp expanded-window inset/max-width layout for the standard sheet."
+            "location": "forge/components/styles/sheets.css; forge/components/static/sheets.js",
+            "result": "Modal sheets open within half the viewport height and can expand with the handle; reopening resets the cap. Modal top clearance is 72px, or 56px above 640px window width, with a 640px width cap and 56px side clearance. The 48px handle centers its 4px mark with 22px above/below. Standard assisted-reorder dialogs retain their content-sized layout."
+          },
+          {
+            "kind": "test",
+            "location": "forge/components/sheets_test.cjs",
+            "result": "Three existing gesture/direction tests pass."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/bottom-sheet-sizing.html",
+            "result": "Chromium: 16 assertions pass at 390px and 1000px window widths with 600px height, long content, expansion and reopen. Actual list reorder page still renders a 128px action sheet and one highlighted target row."
           }
         ],
-        "notes": "Handle uses a 48px square target with 4px block margins and 4px header padding; there is no 72dp top margin, 22dp handle vertical padding, or 56dp expanded-window inset/max-width layout for the standard sheet."
+        "notes": "Wide-window viewport margins apply to modal dialogs, not the small embedded app-frame specimens.",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "ebc9377a71a3a65a36b793136d9f72fe06436204",
+          "sourceRevision": 1,
+          "summary": "Cap initial modal sheets and allow expansion within window clearances"
+        }
+      ]
     },
     {
       "id": "sheet-supplementary-layouts",

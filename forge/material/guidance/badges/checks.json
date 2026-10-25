@@ -211,15 +211,15 @@
       "implementation": {
         "status": "missing",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_navigation.templ:83-101; forge/components/styles/navigation.css:79-101",
-            "result": "Navigation badge is an inline sibling inside the item indicator and badge CSS has no position/anchor rule, so edge anchoring and RTL mirrored placement are not implemented."
+            "location": "catalog/web/specimen_navigation.templ; forge/components/styles/navigation-rail.css",
+            "result": "The badge already has logical-edge positioning and RTL mirroring; the earlier claim of no placement rule was wrong. It remains a sibling positioned against the indicator, including a negative block translation, rather than being constrained to the icon box."
           }
         ],
-        "notes": "Navigation badge is an inline sibling inside the item indicator and badge CSS has no position/anchor rule, so edge anchoring and RTL mirrored placement are not implemented."
+        "notes": "Remaining issue is icon-relative geometry, not absent RTL support. No placement change made in this batch.",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
       "fixes": []
     },

@@ -554,19 +554,30 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/sheets.css:61-67",
-            "result": "The side sheet is absolutely positioned at a fixed token width; the frame/page content is not resized or given a trailing margin when a standard sheet opens."
+            "location": "forge/components/styles/sheets.css",
+            "result": "Standard sheets participate in the app frame’s flex layout, reserve page width on the selected logical edge and release it on close. Sheet bodies scroll vertically with fixed header/footer, wrap long content and suppress horizontal scrolling."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/sheet-layout.html",
+            "result": "Chromium: 12 assertions pass for start/end placement, reserved width, independent body scrolling, long-content containment and releasing space on close."
           }
         ],
-        "notes": ""
+        "notes": "Vertical body scrolling already existed; the old assessment overlooked overflow:auto. The fix adds explicit vertical containment and page layout participation.",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "79493fc64efc24d1b921cb0a9cbe6acb46a5b550",
+          "sourceRevision": 1,
+          "summary": "Reserve page space for standard side sheets and contain body scrolling"
+        }
+      ]
     },
     {
       "id": "side-sheet-rtl-placement",
@@ -620,19 +631,30 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/sheets.css:138-148",
-            "result": "Sheet content is overflow-hidden and the body has no independent vertical overflow rule; oversized content cannot scroll inside the sheet."
+            "location": "forge/components/styles/sheets.css",
+            "result": "Standard sheets participate in the app frame’s flex layout, reserve page width on the selected logical edge and release it on close. Sheet bodies scroll vertically with fixed header/footer, wrap long content and suppress horizontal scrolling."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/sheet-layout.html",
+            "result": "Chromium: 12 assertions pass for start/end placement, reserved width, independent body scrolling, long-content containment and releasing space on close."
           }
         ],
-        "notes": ""
+        "notes": "Vertical body scrolling already existed; the old assessment overlooked overflow:auto. The fix adds explicit vertical containment and page layout participation.",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "79493fc64efc24d1b921cb0a9cbe6acb46a5b550",
+          "sourceRevision": 1,
+          "summary": "Reserve page space for standard side sheets and contain body scrolling"
+        }
+      ]
     },
     {
       "id": "side-sheet-predictive-back",

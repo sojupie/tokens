@@ -787,19 +787,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 2,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_date.templ:81-88; catalog/web/specimen_date.templ:96-106",
-            "result": "Input labels identify Date/End date while placeholders are YYYY-MM-DD; the label does not match the empty-field placeholder text."
+            "location": "catalog/web/date_picker.go; catalog/web/specimen_date.templ",
+            "result": "Date placeholders match purpose labels. YYYY-MM-DD remains a separate, associated format description in both entry fields and dialog inputs; error descriptions remain attached."
+          },
+          {
+            "kind": "test",
+            "location": "catalog/web/date_picker_test.go",
+            "result": "Date entry purpose/placeholder and description references pass."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/date-field-labels.html",
+            "result": "Chromium: 12 assertions pass across docked/input configurations for label equality, resolving description IDs and associated format text."
           }
         ],
-        "notes": "Input labels identify Date/End date while placeholders are YYYY-MM-DD; the label does not match the empty-field placeholder text."
+        "notes": "",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "7542063d40f4ce59b99a4d481d7f9dde31bb0ab3",
+          "sourceRevision": 2,
+          "summary": "Separate date field purpose labels from format descriptions"
+        }
+      ]
     },
     {
       "id": "date-picker-m3-variant-names",

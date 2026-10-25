@@ -829,19 +829,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_icon.templ:3-5",
-            "result": "The icon specimen is a button containing only the icon; it has no tooltip element, trigger or hover behavior."
+            "location": "catalog/web/specimen_icon.templ; catalog/web/plain_tooltip.templ; catalog/web/specimen_attributes.go",
+            "result": "Icon toggle accessibility and tooltip text say Mark complete, describing the action rather than listing specimen dimensions. Hover/keyboard focus share the plain tooltip controller."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/tooltip-disclosure.html",
+            "result": "Chromium: the icon control exposes matching tooltip text on keyboard focus and synthetic touch hold, with delayed exit and pointer-cancel dismissal."
           }
         ],
-        "notes": "The web example does not render the source-required hover tooltip.",
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
+        "notes": "",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "5f4c8017a040b424bb97a5410c80b8e122dad1fd",
+          "sourceRevision": 1,
+          "summary": "Add the shared plain tooltip to icon controls."
+        },
+        {
+          "commit": "2ff8c5d8cfd7426e96e848f4bde07ecea93533b9",
+          "sourceRevision": 1,
+          "summary": "Name the icon toggle by its action in tooltips and accessibility labels"
+        }
+      ]
     },
     {
       "id": "on-web-show-a-tooltip-with-the",
@@ -862,19 +878,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_icon.templ:3-5; catalog/web/specimen_attributes.go:138-143",
-            "result": "The button receives an aria-label, but the specimen contains no visible tooltip that exposes that same label on web."
+            "location": "catalog/web/specimen_icon.templ; catalog/web/plain_tooltip.templ; catalog/web/specimen_attributes.go",
+            "result": "Icon toggle accessibility and tooltip text say Mark complete, describing the action rather than listing specimen dimensions. Hover/keyboard focus share the plain tooltip controller."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/tooltip-disclosure.html",
+            "result": "Chromium: the icon control exposes matching tooltip text on keyboard focus and synthetic touch hold, with delayed exit and pointer-cancel dismissal."
           }
         ],
-        "notes": "Accessible naming is present, while the separately required visible web tooltip is absent.",
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
+        "notes": "",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "5f4c8017a040b424bb97a5410c80b8e122dad1fd",
+          "sourceRevision": 1,
+          "summary": "Add the shared plain tooltip to icon controls."
+        },
+        {
+          "commit": "2ff8c5d8cfd7426e96e848f4bde07ecea93533b9",
+          "sourceRevision": 1,
+          "summary": "Name the icon toggle by its action in tooltips and accessibility labels"
+        }
+      ]
     },
     {
       "id": "small-icon-button-target-size",

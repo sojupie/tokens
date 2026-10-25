@@ -404,19 +404,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/button-groups.css:6-10",
-            "result": "Both controls render inline-flex max-content with a token gap; there is no connected-group full-surface width or large-window max-width behavior."
+            "location": "catalog/web/button_group.go; forge/components/behaviors/button-groups.js; forge/components/styles/button-groups.css",
+            "result": "Connected groups fill their surface within a 40rem renderer cap and distribute width across buttons. Standard groups hug content. Groups have one roving Tab entry and arrow traversal skips unavailable controls."
+          },
+          {
+            "kind": "test",
+            "location": "forge/components/button_group_test.cjs",
+            "result": "Node regression verifies the sole Tab stop and disabled-item filtering."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/button-group-focus.html",
+            "result": "Chromium: 13 assertions pass for standard/connected groups, wrapping, disabled filtering, RTL and connected surface width."
           }
         ],
-        "notes": "Both controls render inline-flex max-content with a token gap; there is no connected-group full-surface width or large-window max-width behavior."
+        "notes": "",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "d3266d1c35f9d0b6759b1ea906004c4c29915d7f",
+          "sourceRevision": 1,
+          "summary": "Keep one keyboard entry in button groups and fill connected surfaces"
+        }
+      ]
     },
     {
       "id": "no-wrap",
@@ -536,19 +552,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_button_group.templ:5-18; forge/components/behaviors/button-groups.js:18-33",
-            "result": "All child buttons retain native sequential tab stops; the key handler moves focus with arrows but no roving tabindex makes Tab enter only at the first button."
+            "location": "catalog/web/button_group.go; forge/components/behaviors/button-groups.js; forge/components/styles/button-groups.css",
+            "result": "Connected groups fill their surface within a 40rem renderer cap and distribute width across buttons. Standard groups hug content. Groups have one roving Tab entry and arrow traversal skips unavailable controls."
+          },
+          {
+            "kind": "test",
+            "location": "forge/components/button_group_test.cjs",
+            "result": "Node regression verifies the sole Tab stop and disabled-item filtering."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/button-group-focus.html",
+            "result": "Chromium: 13 assertions pass for standard/connected groups, wrapping, disabled filtering, RTL and connected surface width."
           }
         ],
-        "notes": "All child buttons retain native sequential tab stops; the key handler moves focus with arrows but no roving tabindex makes Tab enter only at the first button."
+        "notes": "",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "d3266d1c35f9d0b6759b1ea906004c4c29915d7f",
+          "sourceRevision": 1,
+          "summary": "Keep one keyboard entry in button groups and fill connected surfaces"
+        }
+      ]
     },
     {
       "id": "group-button-sizes",
@@ -1097,19 +1129,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/button-groups.css:6-10",
-            "result": "Connected and standard groups both use inline-size:max-content; there is no connected surface-fill or breakpoint max-width rule."
+            "location": "catalog/web/button_group.go; forge/components/behaviors/button-groups.js; forge/components/styles/button-groups.css",
+            "result": "Connected groups fill their surface within a 40rem renderer cap and distribute width across buttons. Standard groups hug content. Groups have one roving Tab entry and arrow traversal skips unavailable controls."
+          },
+          {
+            "kind": "test",
+            "location": "forge/components/button_group_test.cjs",
+            "result": "Node regression verifies the sole Tab stop and disabled-item filtering."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/button-group-focus.html",
+            "result": "Chromium: 13 assertions pass for standard/connected groups, wrapping, disabled filtering, RTL and connected surface width."
           }
         ],
-        "notes": "Connected and standard groups both use inline-size:max-content; there is no connected surface-fill or breakpoint max-width rule."
+        "notes": "",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "d3266d1c35f9d0b6759b1ea906004c4c29915d7f",
+          "sourceRevision": 1,
+          "summary": "Keep one keyboard entry in button groups and fill connected surfaces"
+        }
+      ]
     },
     {
       "id": "group-fixed-flexible-sizing",

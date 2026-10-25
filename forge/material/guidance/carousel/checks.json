@@ -443,19 +443,30 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_carousel.templ:29-35",
-            "result": "Preview provides previous/next item controls only; no Show all destination or vertical-page alternative is rendered."
+            "location": "catalog/web/specimen_carousel.templ; forge/components/styles/carousels.css",
+            "result": "A native Show all disclosure exposes the same six illustrations and labels vertically, with a 4px text-button inset. Full-screen specimens omit it. Both views reuse one artwork template; the settling runtime is unchanged."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/carousel-all.html",
+            "result": "Chromium: seven assertions pass for disclosure, unchanged horizontal offset, complete content, padding, width and full-screen exclusion."
           }
         ],
-        "notes": "Preview provides previous/next item controls only; no Show all destination or vertical-page alternative is rendered."
+        "notes": "The source recommends a separate all-items destination; this specimen uses an inline vertical alternative because its six demonstration items have no destination pages.",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "75d4d9068f35f65fcbde4b2acb5bd5e7ea075687",
+          "sourceRevision": 1,
+          "summary": "Expose every carousel item through a vertical Show all view"
+        }
+      ]
     },
     {
       "id": "multibrowse-content",
@@ -1202,17 +1213,17 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "unclear",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/static/carousel.js:112-129",
-            "result": "Item positions and artwork transforms are updated with shared scroll position; there is no per-item parallax offset or media-motion effect."
+            "location": "forge/components/static/carousel.js:itemFrame,paint",
+            "result": "The runtime changes keyline positions and mask widths while translating full-size artwork by (maskWidth-logicalWidth)/2. The earlier finding incorrectly said there was no artwork offset. Whether this matches the precise upstream illustrated parallax has not been established."
           }
         ],
-        "notes": "Item positions and artwork transforms are updated with shared scroll position; there is no per-item parallax offset or media-motion effect."
+        "notes": "Keep the established settling pipeline until a comparison with the source motion establishes a concrete difference.",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
       "fixes": []
     },
@@ -1235,19 +1246,30 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_carousel.templ:29-35",
-            "result": "The demo has 48px previous/next icon buttons but no Show all button, header, or all-items destination."
+            "location": "catalog/web/specimen_carousel.templ; forge/components/styles/carousels.css",
+            "result": "A native Show all disclosure exposes the same six illustrations and labels vertically, with a 4px text-button inset. Full-screen specimens omit it. Both views reuse one artwork template; the settling runtime is unchanged."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/carousel-all.html",
+            "result": "Chromium: seven assertions pass for disclosure, unchanged horizontal offset, complete content, padding, width and full-screen exclusion."
           }
         ],
-        "notes": "The demo has 48px previous/next icon buttons but no Show all button, header, or all-items destination."
+        "notes": "The source recommends a separate all-items destination; this specimen uses an inline vertical alternative because its six demonstration items have no destination pages.",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "75d4d9068f35f65fcbde4b2acb5bd5e7ea075687",
+          "sourceRevision": 1,
+          "summary": "Expose every carousel item through a vertical Show all view"
+        }
+      ]
     },
     {
       "id": "carousel-alternative-controls-placement",

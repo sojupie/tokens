@@ -284,17 +284,17 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "not-applicable",
         "sourceRevision": 1,
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_fab.templ:5-6; catalog/web/specimen_attributes.go:70-74,171-175",
-            "result": "The FAB specimen renders the button for every component state. `Attributes()` sets aria-disabled=\"true\" when disabled but does not set the native disabled attribute or omit the button for an unavailable action."
+            "location": "forge/material/generate-components.mjs; catalog/web/component_gallery.go",
+            "result": "The published FAB matrix offers enabled, hovered, focused and pressed states only. A disabled FAB is not selectable: GET /md3/components/floating-action-button?preview.compare=interactive&preview.state=disabled returns HTTP 400, invalid preview selection: state disabled."
           }
         ],
-        "notes": "The code exposes a disabled-state specimen rather than omitting an unavailable FAB; the required omission rule is not implemented by the component/page path. The stated 3:1 contrast is token-driven and not established by this missing-state finding.",
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
+        "notes": "The old finding constructed a componentCase with an unsupported state, rather than inspecting a reachable configuration. Product actions becoming unavailable are not modeled by this specimen.",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
       "fixes": []
     },
@@ -944,19 +944,30 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_fab.templ:5-6; catalog/web/specimen_attributes.go:70-74",
-            "result": "The example renders a plus Material Symbol and aria-label Create, but it adds no visible text label or tooltip element/trigger on hover."
+            "location": "catalog/web/specimen_fab.templ; catalog/web/plain_tooltip.templ",
+            "result": "The existing plus icon has a Create tooltip, matching its accessible action name, with hover/focus/hold disclosure."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/tooltip-disclosure.html",
+            "result": "Chromium: the FAB tooltip matches its name, opens on focus/hold, retains exit grace and closes on pointer cancellation."
           }
         ],
-        "notes": "The web instruction requires a tooltip together with the icon; the specimen supplies only the icon and accessible name, so the visible hover tooltip requirement is absent.",
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
+        "notes": "",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "5f4c8017a040b424bb97a5410c80b8e122dad1fd",
+          "sourceRevision": 1,
+          "summary": "Add tooltip hold and exit timing and label icon controls on hover"
+        }
+      ]
     },
     {
       "id": "use-at-most-one-fab-per-screen",

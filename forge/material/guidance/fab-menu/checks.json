@@ -1232,17 +1232,17 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "not-applicable",
         "sourceRevision": 1,
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/behaviors/fab-menus.js:9-28",
-            "result": "The panel top is always `anchor.top - closeGap - box.height`, independent of opener size; no larger-FAB size selector or breakpoint clearance increment appears in the positioner."
+            "location": "catalog/web/fab_menu.go:FABMenuOpener",
+            "result": "The opener explicitly uses the default FAB size. No larger-FAB configuration is offered, so the source condition for extra clearance is absent."
           }
         ],
-        "notes": "The source requires a higher panel and larger below-margin for larger FABs, but the runtime uses the same anchor-gap formula for every opener size.",
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
+        "notes": "Do not add large-FAB positioning machinery to satisfy an unsupported composition. Retain the instruction for a future larger opener.",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
       "fixes": []
     }

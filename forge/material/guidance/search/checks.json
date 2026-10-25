@@ -845,19 +845,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/static/search.js:6-13",
-            "result": "Adaptive layout always resolves to docked; measurement only recomputes that same layout, and no breakpoint rule switches compact windows to full-screen."
+            "location": "forge/components/static/search.js",
+            "result": "Adaptive search uses the host app width: full-screen below 600px and docked above it. Explicit docked/full-screen configurations remain explicit; changing layout preserves open state and query."
+          },
+          {
+            "kind": "test",
+            "location": "forge/components/search_test.cjs",
+            "result": "Three tests pass for matching and layout boundaries."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/search-responsive.html",
+            "result": "Chromium: ten assertions pass across 390px, 900px and 500px while retaining the query and open state."
           }
         ],
-        "notes": ""
+        "notes": "",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "eb2d64e850cfe6618112ee2457b7dfda5232fdec",
+          "sourceRevision": 1,
+          "summary": "Adapt search results to the host app width without losing input"
+        }
+      ]
     },
     {
       "id": "search-container-shape-margins",
@@ -1295,17 +1311,17 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "implemented",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_search.templ:75-90; forge/components/static/search.js:28-42",
-            "result": "Opening search focuses the text input, while the earlier Close search button is revealed and remains non-inert; in the menu-leading variant the navigation button is inert on open. Thus focus skips the first interactive element, the close button."
+            "location": "catalog/web/specimen_search.templ; forge/components/static/search.js",
+            "result": "Resting search presents the leading navigation control before its text field in normal document order. Activating search focuses its text entry; the close control is revealed only for the opened view."
           }
         ],
-        "notes": ""
+        "notes": "The previous finding conflated initial navigation into the resting search bar with opening it to type. It does not establish a reason to redirect an explicit search activation to Close.",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
       "fixes": []
     },

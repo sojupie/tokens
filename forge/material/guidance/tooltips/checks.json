@@ -592,7 +592,7 @@
     },
     {
       "id": "tooltip-transient-behavior",
-      "statement": "On desktop, hover the parent to show a tooltip; on mobile, tap and hold. Persistent rich tooltips require a click or tap. Both variants disappear 1.5 seconds after leaving the target region, and opening a new tooltip closes any other one.",
+      "statement": "On desktop, hover the parent to show a transient tooltip; on mobile, tap and hold. Transient tooltips disappear 1.5 seconds after leaving the target region. Persistent rich tooltips require click or tap and remain until another interaction. Opening a tooltip closes any other tooltip.",
       "condition": "When showing transient tooltips or opening a new tooltip.",
       "basis": "explicit",
       "notes": "",
@@ -606,22 +606,48 @@
           "markdownSha256": "b8cf137fea326344d961b2d0d092c59748eca39a06048465dad26a1db8117e39",
           "extractorVersion": 2,
           "summary": "Transient guidance specifies input triggers, dismissal delay, and one-at-a-time display."
+        },
+        {
+          "change": "corrected",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tooltips/guidelines",
+          "section": "b0386365-fe47-4e46-b4e0-e8f62ae55395",
+          "capture": "snapshots/material-guidance/20261025T170049.028123329Z-1117351123/capture.json",
+          "markdownSha256": "b8cf137fea326344d961b2d0d092c59748eca39a06048465dad26a1db8117e39",
+          "extractorVersion": 2,
+          "summary": "Distinguish the source’s transient 1.5-second exit rule from persistent rich tooltips, which remain until another interaction. The old combined statement implied every rich tooltip must expire; capture unchanged."
         }
       ],
       "implementation": {
-        "status": "missing",
-        "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "status": "verified",
+        "sourceRevision": 2,
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/snackbars-tooltips.css:119-130; forge/components/behaviors/tooltips.js:21-57",
-            "result": "Plain disclosure follows hover/focus-within directly. The behavior module contains no pointer-hold recognition or1.5second exit timer, and plain CSS tooltips have no shared close-previous coordination. Rich is implemented only as a click-activated persistent popover."
+            "location": "forge/components/behaviors/tooltips.js; forge/components/styles/snackbars-tooltips.css",
+            "result": "Plain tooltips support hover, keyboard focus, touch hold, 1.5-second exit grace, re-entry cancellation and one active disclosure. Touch movement/cancellation cancels a pending hold. Rich popovers retain their native persistent click/tap behavior and close previous plain disclosure."
+          },
+          {
+            "kind": "test",
+            "location": "forge/components/tooltips_test.cjs",
+            "result": "Three timer/gesture tests pass for exit grace, hold/tap/movement and coordination/Escape."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/tooltip-disclosure.html",
+            "result": "Chromium: 12 assertions pass across icon and FAB examples for naming, focus/hold disclosure, exit grace and pointer cancellation."
           }
         ],
-        "notes": ""
+        "notes": "The 500ms hold threshold is a renderer choice; the source specifies tap-and-hold without a web duration. Actual iOS long-press/context-menu behavior remains unverified.",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "5f4c8017a040b424bb97a5410c80b8e122dad1fd",
+          "sourceRevision": 2,
+          "summary": "Add tooltip hold and exit timing and label icon controls on hover"
+        }
+      ]
     },
     {
       "id": "tooltip-persistent-rich",

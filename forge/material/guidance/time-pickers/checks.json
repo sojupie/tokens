@@ -749,17 +749,17 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "unclear",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/time_picker.go:69-96",
-            "result": "For 24-hour mode, the code places all values 12–23 in the inner ring and 0–11 outside; it does not place even values inside and odd values outside as this check requires."
+            "location": "snapshots/material-guidance (time-pickers/guidelines); catalog/web/time_picker.go; forge/components/static/time-picker.js",
+            "result": "The captured guideline prose says even hours inside/odd outside, while the same page’s 24-hour example explicitly describes 0–11 outside and 12–23 inside. The current dial follows that example."
           }
         ],
-        "notes": ""
+        "notes": "Do not replace the current rings from this contradictory check. Confirm the intended upstream instruction before changing behavior.",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
       "fixes": []
     },

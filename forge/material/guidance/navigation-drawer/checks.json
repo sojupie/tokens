@@ -284,17 +284,17 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "implemented",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_navigation.templ:35-45; forge/components/behaviors/navigation.js:416-449",
-            "result": "The template includes an external opener only for the modal dialog variant. Standard drawer cases render the navigation directly and have no visible menu control or dismissible state handler."
+            "location": "catalog/web/specimen_navigation.templ; catalog/web/navigation.go",
+            "result": "The standard specimen is the permanently visible configuration: it has no dismissal control and remains present. The separate modal configuration has an external opener and native dismissal behavior."
           }
         ],
-        "notes": "The required standard-drawer control behavior is absent from the specimen runtime; it cannot show a dismissible/permanent standard drawer distinction."
+        "notes": "The source permits dismissible and permanent standard drawers; it does not require every example to offer both. The earlier finding treated absence of an optional dismissible configuration as absent permanent-drawer behavior.",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
       "fixes": []
     },
@@ -350,19 +350,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/navigation.css:217-223",
-            "result": "Modal placement uses physical left (`inset: 0 auto 0 0`) instead of the logical inline-start edge, so RTL does not move the drawer to the right."
+            "location": "forge/components/styles/navigation.css; forge/components/behaviors/navigation.js",
+            "result": "Modal drawers use logical start-edge positioning, isolate destination scrolling below their heading and support touch dismissal toward the anchor. Existing native modal scrim and selection dismissal remain."
+          },
+          {
+            "kind": "test",
+            "location": "forge/components/drawer_test.cjs; forge/components/navigation_test.cjs",
+            "result": "Six Node assertions/tests pass for logical swipe direction and existing navigation behavior."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/drawer-layout.html",
+            "result": "Chromium: 14 assertions pass across LTR/RTL for placement, destination scrolling, fixed heading and synthetic touch-swipe dismissal. Actual iOS touch/compositor behavior is unverified."
           }
         ],
-        "notes": "The CSS placement is left-anchored for both directions; it does not implement the required RTL start edge."
+        "notes": "",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "9cf73bb50229929a01933fb7a77aaee4fd2084fb",
+          "sourceRevision": 1,
+          "summary": "Anchor drawers logically and isolate destination scrolling with touch dismissal"
+        }
+      ]
     },
     {
       "id": "avoid-pairing-a-drawer-with-another-primary",
@@ -779,19 +795,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/navigation.css:174-223",
-            "result": "The standard drawer has no constrained block size or overflow container. Only modal dialogs scroll as one whole dialog; destinations do not have an independent scroll region while the page remains fixed."
+            "location": "forge/components/styles/navigation.css; forge/components/behaviors/navigation.js",
+            "result": "Modal drawers use logical start-edge positioning, isolate destination scrolling below their heading and support touch dismissal toward the anchor. Existing native modal scrim and selection dismissal remain."
+          },
+          {
+            "kind": "test",
+            "location": "forge/components/drawer_test.cjs; forge/components/navigation_test.cjs",
+            "result": "Six Node assertions/tests pass for logical swipe direction and existing navigation behavior."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/drawer-layout.html",
+            "result": "Chromium: 14 assertions pass across LTR/RTL for placement, destination scrolling, fixed heading and synthetic touch-swipe dismissal. Actual iOS touch/compositor behavior is unverified."
           }
         ],
-        "notes": "The stated independent destination scrolling behavior is not implemented for standard or modal drawer contents."
+        "notes": "",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "9cf73bb50229929a01933fb7a77aaee4fd2084fb",
+          "sourceRevision": 1,
+          "summary": "Anchor drawers logically and isolate destination scrolling with touch dismissal"
+        }
+      ]
     },
     {
       "id": "tab-focuses-the-first-destination-space-or",
@@ -944,19 +976,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/behaviors/navigation.js:416-428; catalog/web/specimen_navigation.templ:35-45",
-            "result": "The modal dialog blocks the page, closes on backdrop click, and closes on destination selection. No touch/pointer swipe recognizer opens or dismisses the drawer toward its anchoring edge."
+            "location": "forge/components/styles/navigation.css; forge/components/behaviors/navigation.js",
+            "result": "Modal drawers use logical start-edge positioning, isolate destination scrolling below their heading and support touch dismissal toward the anchor. Existing native modal scrim and selection dismissal remain."
+          },
+          {
+            "kind": "test",
+            "location": "forge/components/drawer_test.cjs; forge/components/navigation_test.cjs",
+            "result": "Six Node assertions/tests pass for logical swipe direction and existing navigation behavior."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/drawer-layout.html",
+            "result": "Chromium: 14 assertions pass across LTR/RTL for placement, destination scrolling, fixed heading and synthetic touch-swipe dismissal. Actual iOS touch/compositor behavior is unverified."
           }
         ],
-        "notes": "The backdrop and selection dismissal paths are implemented; the source’s swipe-toward-anchor dismissal path is absent from the web interaction code."
+        "notes": "",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "9cf73bb50229929a01933fb7a77aaee4fd2084fb",
+          "sourceRevision": 1,
+          "summary": "Anchor drawers logically and isolate destination scrolling with touch dismissal"
+        }
+      ]
     },
     {
       "id": "use-full-width-dividers-between-groups-of-destinations",

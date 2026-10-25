@@ -353,19 +353,30 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/navigation.css:102-104",
-            "result": "The navigation label is forced to white-space:nowrap and the bar has a token height at navigation.css:17-22; no scaling rule grows the bar or permits wrapped labels."
+            "location": "forge/components/styles/navigation.css; forge/components/behaviors/navigation.js",
+            "result": "Vertical labels are measured with the existing shared ResizeObserver; the surface grows while retaining token padding. Horizontal destinations use equal intrinsic grid columns centered within the surface instead of stretching between the window edges."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/navigation-text.html",
+            "result": "Chromium: 22 assertions pass at 2x text size for compact vertical and medium horizontal layouts, checking every label and horizontal overflow."
           }
         ],
-        "notes": "The code preserves a single line and fixed token height, so the stated growth and 2× visibility behavior is not implemented in this specimen."
+        "notes": "The preview still selects orientation explicitly. This does not implement automatic breakpoint selection of horizontal versus vertical items.",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "0040fa90ad6fbd107dd6748d14a172d5a87d312d",
+          "sourceRevision": 1,
+          "summary": "Grow navigation bars for scaled labels and center horizontal destinations"
+        }
+      ]
     },
     {
       "id": "baseline-navigation-bar-replacement",
@@ -1178,19 +1189,30 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/navigation.css:13-23,39-67",
-            "result": "All bar items use flex:1, so horizontal items divide the available width equally; there is no fixed-width horizontal item rule or extra space assigned only to bar ends."
+            "location": "forge/components/styles/navigation.css; forge/components/behaviors/navigation.js",
+            "result": "Vertical labels are measured with the existing shared ResizeObserver; the surface grows while retaining token padding. Horizontal destinations use equal intrinsic grid columns centered within the surface instead of stretching between the window edges."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/navigation-text.html",
+            "result": "Chromium: 22 assertions pass at 2x text size for compact vertical and medium horizontal layouts, checking every label and horizontal overflow."
           }
         ],
-        "notes": "The code implements equal flexible sizing for every orientation, not the stated fixed horizontal widths with end spacing."
+        "notes": "The preview still selects orientation explicitly. This does not implement automatic breakpoint selection of horizontal versus vertical items.",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "0040fa90ad6fbd107dd6748d14a172d5a87d312d",
+          "sourceRevision": 1,
+          "summary": "Grow navigation bars for scaled labels and center horizontal destinations"
+        }
+      ]
     }
   ]
 }

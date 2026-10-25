@@ -1845,19 +1845,25 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "implemented",
         "sourceRevision": 1,
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/navigation-rail.css:102-105",
-            "result": "Rail labels set overflow-wrap:anywhere, which can break within words rather than preferring word boundaries or hyphenation; the specimen has no hyphenation rule."
+            "location": "forge/components/styles/navigation-rail.css",
+            "result": "Labels use normal word wrapping and automatic hyphenation instead of overflow-wrap:anywhere."
           }
         ],
-        "notes": "The current wrap rule permits arbitrary word breaks and does not implement the source’s preferred between-word/hyphenated behavior.",
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
+        "notes": "",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "b0a5fab5e7a9b87e835fe51dd382424791941e60",
+          "sourceRevision": 1,
+          "summary": "Allow flexible app-bar headlines to wrap and expose heading semantics"
+        }
+      ]
     },
     {
       "id": "label-size-and-truncation",

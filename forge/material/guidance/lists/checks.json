@@ -1814,33 +1814,38 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/static/lists.js",
-            "result": "Ordinary button-backed items now wrap with all four arrows using the shared navigation helper; unavailable items are skipped. Reorder/reveal retain their existing action navigation."
+            "location": "catalog/web/lists.go; catalog/web/specimen_list.templ; forge/components/static/lists.js",
+            "result": "Selection lists expose a named listbox and named options with aria-selected and one roving Tab stop. Arrow keys wrap and activation selects/toggles appropriately. Nested check marks do not duplicate accessible controls. Reorder/disclosure lists retain their separate behavior."
           },
           {
             "kind": "test",
-            "location": "forge/components/lists_test.cjs",
-            "result": "Five tests pass; the new wrapping regression failed before correction."
+            "location": "catalog/web/lists_test.go; forge/components/lists_test.cjs",
+            "result": "Go list tests and five Node list tests pass."
           },
           {
             "kind": "browser",
-            "location": "forge/conformance/list-keyboard.html",
-            "result": "Chromium: eight assertions pass for both directions, wrapping, hidden/disabled/inert filtering and RTL. Pre-fix page failed the first wrap assertion."
+            "location": "forge/conformance/list-selection.html",
+            "result": "Chromium: 47 assertions pass for plain single/multiple selection, radios, checkboxes and switches. A native pointer click also retains focus on the option and synchronizes its input and aria-selected state."
           }
         ],
-        "notes": "Partial correction: ordinary buttons retain their native Tab sequence; checkbox/radio/switch-backed rows and the full listbox focus/selection pattern remain unimplemented."
+        "notes": "",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
       "fixes": [
         {
           "commit": "e2a7a97f3dc94aadb47525e594554d637c373771",
           "sourceRevision": 1,
           "summary": "Wrap ordinary list focus with directional keys"
+        },
+        {
+          "commit": "e12e7b0dd6719b339d0440c23bc3a982494ae3b3",
+          "sourceRevision": 1,
+          "summary": "Unify selectable list semantics and keyboard focus across control types"
         }
       ]
     },
@@ -1962,19 +1967,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_list.templ:7-21; catalog/web/lists.go:108-124,135-169",
-            "result": "The web multi-select specimen exposes a native `ul` with buttons and checkboxes, but the container has no `role=listbox` and each item has no `role=option` or `aria-selected`; the group is not labeled with the selection type."
+            "location": "catalog/web/lists.go; catalog/web/specimen_list.templ; forge/components/static/lists.js",
+            "result": "Selection lists expose a named listbox and named options with aria-selected and one roving Tab stop. Arrow keys wrap and activation selects/toggles appropriately. Nested check marks do not duplicate accessible controls. Reorder/disclosure lists retain their separate behavior."
+          },
+          {
+            "kind": "test",
+            "location": "catalog/web/lists_test.go; forge/components/lists_test.cjs",
+            "result": "Go list tests and five Node list tests pass."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/list-selection.html",
+            "result": "Chromium: 47 assertions pass for plain single/multiple selection, radios, checkboxes and switches. A native pointer click also retains focus on the option and synchronizes its input and aria-selected state."
           }
         ],
-        "notes": "The Web-specific listbox/option semantics and selection-type label required by the source are absent from this path. Android/Compose mappings are outside the web implementation.",
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
+        "notes": "",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "e12e7b0dd6719b339d0440c23bc3a982494ae3b3",
+          "sourceRevision": 1,
+          "summary": "Unify selectable list semantics and keyboard focus across control types"
+        }
+      ]
     },
     {
       "id": "multi-select-list-control-limits",
@@ -2160,19 +2181,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_list.templ:7-21; catalog/web/lists.go:108-124,135-169",
-            "result": "The web single-select example has a native `ul` and item buttons with aria-pressed or a radio input, but no List box container role and no Option item role/aria-selected semantics or selection-type label."
+            "location": "catalog/web/lists.go; catalog/web/specimen_list.templ; forge/components/static/lists.js",
+            "result": "Selection lists expose a named listbox and named options with aria-selected and one roving Tab stop. Arrow keys wrap and activation selects/toggles appropriately. Nested check marks do not duplicate accessible controls. Reorder/disclosure lists retain their separate behavior."
+          },
+          {
+            "kind": "test",
+            "location": "catalog/web/lists_test.go; forge/components/lists_test.cjs",
+            "result": "Go list tests and five Node list tests pass."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/list-selection.html",
+            "result": "Chromium: 47 assertions pass for plain single/multiple selection, radios, checkboxes and switches. A native pointer click also retains focus on the option and synchronizes its input and aria-selected state."
           }
         ],
-        "notes": "The required Web listbox/option roles and selected/not-selected state mapping are absent from this rendered web selection path. Android/Compose mappings are outside scope.",
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
+        "notes": "",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "e12e7b0dd6719b339d0440c23bc3a982494ae3b3",
+          "sourceRevision": 1,
+          "summary": "Unify selectable list semantics and keyboard focus across control types"
+        }
+      ]
     },
     {
       "id": "single-select-list-interaction-limits",

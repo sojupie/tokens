@@ -545,19 +545,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/snackbars-tooltips.css:64-70",
-            "result": "The snackbar popover is fixed at the viewport bottom and horizontally centered; no collision-avoidance or adjustment above a FAB, toolbar, navigation, or focused control is implemented."
+            "location": "forge/components/styles/snackbars-tooltips.css; forge/components/behaviors/snackbars.js",
+            "result": "Messages wrap, compact bars have a 64px minimum height and wide messages are capped at 60ch. Popovers retain client-viewport margins and avoid intersecting FAB/navigation/docked toolbar, explicitly marked obstacles and the focused element. Placement resets on reopen and re-evaluates on scroll, resize and focus."
+          },
+          {
+            "kind": "test",
+            "location": "forge/components/snackbars_test.cjs",
+            "result": "Four tests pass, including overlap clearance and resetting the offset."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/snackbar-layout.html",
+            "result": "Chromium: ten assertions pass at compact/wide sizes for bottom-control clearance, viewport margins, wrapping, sizing and reset."
           }
         ],
-        "notes": ""
+        "notes": "Placement is evaluated on open/scroll/resize/focus; an independently animated obstacle that moves without those events has not been tested.",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "36e026fd1f1eccf79de273bf614703eec4109a5b",
+          "sourceRevision": 1,
+          "summary": "Wrap snackbar messages and avoid overlapping navigation and focused controls"
+        }
+      ]
     },
     {
       "id": "snackbar-compact-layout",
@@ -578,19 +594,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/snackbars-tooltips.css:1-17",
-            "result": "The container has a token-backed fixed minimum height and no compact breakpoint rule that expands it to 64dp or sets leading/trailing/bottom viewport margins."
+            "location": "forge/components/styles/snackbars-tooltips.css; forge/components/behaviors/snackbars.js",
+            "result": "Messages wrap, compact bars have a 64px minimum height and wide messages are capped at 60ch. Popovers retain client-viewport margins and avoid intersecting FAB/navigation/docked toolbar, explicitly marked obstacles and the focused element. Placement resets on reopen and re-evaluates on scroll, resize and focus."
+          },
+          {
+            "kind": "test",
+            "location": "forge/components/snackbars_test.cjs",
+            "result": "Four tests pass, including overlap clearance and resetting the offset."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/snackbar-layout.html",
+            "result": "Chromium: ten assertions pass at compact/wide sizes for bottom-control clearance, viewport margins, wrapping, sizing and reset."
           }
         ],
-        "notes": ""
+        "notes": "Placement is evaluated on open/scroll/resize/focus; an independently animated obstacle that moves without those events has not been tested.",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "36e026fd1f1eccf79de273bf614703eec4109a5b",
+          "sourceRevision": 1,
+          "summary": "Wrap snackbar messages and avoid overlapping navigation and focused controls"
+        }
+      ]
     },
     {
       "id": "snackbar-large-layout",
@@ -611,19 +643,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/snackbars-tooltips.css:1-20",
-            "result": "The snackbar uses max-content width with no medium/expanded breakpoint sizing or target line length; its text is explicitly nowrap."
+            "location": "forge/components/styles/snackbars-tooltips.css; forge/components/behaviors/snackbars.js",
+            "result": "Messages wrap, compact bars have a 64px minimum height and wide messages are capped at 60ch. Popovers retain client-viewport margins and avoid intersecting FAB/navigation/docked toolbar, explicitly marked obstacles and the focused element. Placement resets on reopen and re-evaluates on scroll, resize and focus."
+          },
+          {
+            "kind": "test",
+            "location": "forge/components/snackbars_test.cjs",
+            "result": "Four tests pass, including overlap clearance and resetting the offset."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/snackbar-layout.html",
+            "result": "Chromium: ten assertions pass at compact/wide sizes for bottom-control clearance, viewport margins, wrapping, sizing and reset."
           }
         ],
-        "notes": ""
+        "notes": "Placement is evaluated on open/scroll/resize/focus; an independently animated obstacle that moves without those events has not been tested.",
+        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "36e026fd1f1eccf79de273bf614703eec4109a5b",
+          "sourceRevision": 1,
+          "summary": "Wrap snackbar messages and avoid overlapping navigation and focused controls"
+        }
+      ]
     },
     {
       "id": "snackbar-dismissal-behavior",
