@@ -1305,6 +1305,19 @@
     display: none !important;
   }
 }
+
+/* Grow the token-sized feedback circle without changing the input's hit area. */
+.md-switch-handle::before {
+  transform: translate(-50%, -50%) scale(.8);
+  transition: transform var(--_motion-fast-spatial-duration) var(--_motion-fast-spatial-easing);
+}
+.md-switch:where(:hover, [data-component-state="hovered"]):not([data-touch]):not(:has(> input:disabled)) .md-switch-handle::before,
+.md-switch:where(:active, :has(> input:focus-visible), [data-pressed], [data-component-state="focused"], [data-component-state="pressed"]):not(:has(> input:disabled)) .md-switch-handle::before {
+  transform: translate(-50%, -50%) scale(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .md-switch-handle::before { transition: none; }
+}
 .md-checkbox {
   --_checkbox-background-state-color: transparent;
   --_checkbox-background-state-opacity: 0;
