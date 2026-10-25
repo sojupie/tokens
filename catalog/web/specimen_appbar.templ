@@ -14,7 +14,7 @@ templ specimenAppbar(c componentCase) {
 <input type="search" placeholder="Search" aria-label="Search preview"/></label>
 					} else {
 						<span class="md-appbar-copy">
-							<span class="md-appbar-title">Title</span>
+							<h3 class="md-appbar-title">Title</h3>
 							if c.Control=="subtitle" {
 								<span class="md-appbar-subtitle">Subtitle</span>
 							}
@@ -38,7 +38,7 @@ templ specimenAppbar(c componentCase) {
 			</div>
 			if c.BarExpanded() {
 				<div class="md-appbar-copy md-appbar-expanded">
-					<span class="md-appbar-title">Title</span>
+					<h3 class="md-appbar-title">Title</h3>
 					if c.Control=="subtitle" {
 						<span class="md-appbar-subtitle">Subtitle</span>
 					}

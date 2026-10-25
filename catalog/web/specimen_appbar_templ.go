@@ -87,7 +87,7 @@ func specimenAppbar(c componentCase) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			} else {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<span class=\"md-appbar-copy\"><span class=\"md-appbar-title\">Title</span> ")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<span class=\"md-appbar-copy\"><h3 class=\"md-appbar-title\">Title</h3>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -169,7 +169,7 @@ func specimenAppbar(c componentCase) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		if c.BarExpanded() {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "<div class=\"md-appbar-copy md-appbar-expanded\"><span class=\"md-appbar-title\">Title</span> ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "<div class=\"md-appbar-copy md-appbar-expanded\"><h3 class=\"md-appbar-title\">Title</h3>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

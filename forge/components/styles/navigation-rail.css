@@ -113,7 +113,8 @@
 }
 .md-navigation-rail .md-nav-label {
   white-space: normal;
-  overflow-wrap: anywhere;
+  overflow-wrap: normal;
+  hyphens: auto;
 }
 .md-navigation-rail[data-orientation="horizontal"] .md-nav-item {
   justify-content: flex-start;
