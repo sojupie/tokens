@@ -1,0 +1,12 @@
+<!doctype html><meta charset="utf-8"><title>List keyboard checks</title>
+<style>body{font:16px system-ui;margin:24px}iframe{width:960px;max-width:100%;height:600px}pre{white-space:pre-wrap}</style>
+<h1>List keyboard checks</h1><button id="run">Run list checks</button><pre id="result">Ready</pre><div id="samples"></div>
+<script type="module">
+const button=document.querySelector('#run'),out=document.querySelector('#result'),samples=document.querySelector('#samples');
+button.onclick=async()=>{button.disabled=true;const checks=[];const assert=(ok,message)=>{if(!ok)throw Error(message);checks.push(message)};
+try{samples.replaceChildren();const frame=document.createElement('iframe');samples.append(frame);await new Promise(resolve=>{frame.onload=resolve;frame.src='/md3/components/lists?preview.compare=interactive&preview.control=select&preview.width=icon'});const w=frame.contentWindow,d=frame.contentDocument;await w.TokenAssets.ready;
+const list=d.querySelector('#component-preview .md-list'),items=[...list.querySelectorAll('.md-list-item')],key=(item,name)=>{item.focus();item.dispatchEvent(new w.KeyboardEvent('keydown',{key:name,bubbles:true,cancelable:true}));return d.activeElement};
+assert(key(items[0],'ArrowUp')===items.at(-1),'Up wraps to the final item');assert(key(items.at(-1),'ArrowDown')===items[0],'Down wraps to the first item');assert(key(items[0],'ArrowRight')===items[1],'Right moves to the next item');assert(key(items[0],'ArrowLeft')===items.at(-1),'Left wraps to the previous item');items[1].style.visibility='hidden';assert(key(items[0],'ArrowDown')===items[2],'Hidden item is skipped');items[1].style.visibility='visible';items[1].disabled=true;assert(key(items[0],'ArrowDown')===items[2],'Disabled item is skipped');items[1].disabled=false;items[1].inert=true;assert(key(items[0],'ArrowDown')===items[2],'Inert item is skipped');items[1].inert=false;list.style.direction='rtl';assert(key(items[0],'ArrowLeft')===items[1],'RTL reverses horizontal navigation');
+out.textContent=JSON.stringify({passed:checks.length,checks},null,2);
+}catch(error){out.textContent=JSON.stringify({passed:checks.length,checks,error:error.stack},null,2)}finally{button.disabled=false}};
+</script>

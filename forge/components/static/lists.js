@@ -107,9 +107,10 @@
       const actions=[...list.querySelectorAll('button:not(:disabled)')].filter(b=>b.getClientRects().length&&getComputedStyle(b).visibility!=='hidden'),index=actions.indexOf(event.target.closest('button'));
       if(index<0)return;event.preventDefault();const next=event.key==='Home'?0:event.key==='End'?actions.length-1:(index+(['ArrowUp','ArrowLeft'].includes(event.key)?-1:1)+actions.length)%actions.length;actions[next]?.focus();return;
     }
-    if(event.target.matches('.md-list-item')&&['ArrowUp','ArrowDown','Home','End'].includes(event.key)){
-      const buttons=[...list.querySelectorAll('.md-list-item:not(:disabled):not([aria-disabled="true"])')].filter(item=>item.getClientRects().length&&!item.closest('[inert]')),index=buttons.indexOf(event.target);if(index<0)return;
-      event.preventDefault();buttons[event.key==='Home'?0:event.key==='End'?buttons.length-1:moveIndex(index,event.key==='ArrowUp'?-1:1,buttons.length)]?.focus();
+    if(event.target.matches('.md-list-item')&&['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Home','End'].includes(event.key)){
+      const buttons=[...list.querySelectorAll('.md-list-item:not(:disabled):not([aria-disabled="true"])')].filter(item=>item.getClientRects().length&&!item.closest('[inert]')&&getComputedStyle(item).visibility==='visible'),index=buttons.indexOf(event.target);if(index<0)return;
+      const horizontal=['ArrowLeft','ArrowRight'].includes(event.key),next=globalThis.MaterialComponents.navigationIndex(index,buttons.length,event.key,horizontal,getComputedStyle(list).direction==='rtl');
+      event.preventDefault();buttons[next]?.focus({preventScroll:true});
     }
   });
   document.addEventListener('pointerdown',event=>{
