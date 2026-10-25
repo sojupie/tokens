@@ -202,9 +202,15 @@
       frames = capture.presentation.frames;
     if (referenceCapture?.presentation.video)
       $("#video").src = referenceCapture.presentation.video;
-    $("#source").textContent = capture.recipe.source
-      ? "Source: " + capture.recipe.source
-      : "URL: " + capture.recipe.url;
+    const sourceURL = capture.recipe.source || capture.recipe.url;
+    if (/^https?:\/\//.test(sourceURL)) {
+      const link = document.createElement("a");
+      link.href = sourceURL;
+      link.textContent = capture.recipe.source
+        ? "Open source section"
+        : "Open captured page";
+      $("#source").replaceChildren(link);
+    } else $("#source").textContent = sourceURL;
     $("#status").textContent =
       (capture.complete
         ? "Capture complete. "
