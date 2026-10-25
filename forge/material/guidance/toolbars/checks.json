@@ -326,10 +326,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "Choosing page-specific versus global toolbar use and coexistence with navigation are host application decisions."
       },
       "fixes": []
     },
@@ -352,9 +353,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/toolbars.css:73-86",
+            "result": "The renderer supports docked and floating variants, including horizontal and vertical floating layouts, and the specimen can pair floating toolbar with a FAB."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -378,10 +386,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "This baseline exposes toolbar variants rather than the separate legacy M3 bottom app bar and its FAB integration."
       },
       "fixes": []
     },
@@ -404,10 +413,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "The source compares M3/Expressive and Jetpack Compose catalogs; this web baseline does not implement version/platform availability matrices."
       },
       "fixes": []
     },
@@ -430,10 +440,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/toolbars.css:58-87,109-145",
+            "result": "The CSS exposes token-driven color/shape variables and horizontal/vertical layouts, but the full standard/vibrant and FAB availability matrix was not resolved by platform."
+          }
+        ],
+        "notes": "This baseline is web-only and lacks the platform configuration table."
       },
       "fixes": []
     },
@@ -456,10 +473,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_toolbar.templ:10-48",
+            "result": "The specimen contains button actions and an overflow menu, but the rendered toolbar template is fixed to three actions rather than demonstrating arbitrary child slots such as text fields or custom components."
+          }
+        ],
+        "notes": "The component abstraction’s caller-slot API was not established."
       },
       "fixes": []
     },
@@ -482,10 +506,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/toolbars.css:58-77",
+            "result": "Toolbar height, external padding and spacing are token-bound, and the docked container centers its contents; resolved 64dp/16dp/default gap values were not computed."
+          }
+        ],
+        "notes": "Requires computed values."
       },
       "fixes": []
     },
@@ -508,10 +539,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "Choosing page context, global persistence and color emphasis is product-level toolbar usage."
       },
       "fixes": []
     },
@@ -534,10 +566,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "Whether navigation bars and toolbars coexist depends on the host screen hierarchy; the isolated toolbar specimen does not compose app navigation."
       },
       "fixes": []
     },
@@ -560,9 +593,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/toolbars.css:37-43,73-98",
+            "result": "Docked toolbar spans its scene width, has straight/variable corners from token mapping, and each action receives an expanded minimum 48dp target; floating uses bounded scene placement."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -586,9 +626,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/toolbars.css:58-60,78-80",
+            "result": "The toolbar elevation level is token-backed and floating variant retains that elevation unless its token mapping removes it."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -612,10 +659,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "Action hierarchy and mixing control types are page composition decisions; the specimen contains a fixed example set."
       },
       "fixes": []
     },
@@ -638,9 +686,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_toolbar.templ:34-37",
+            "result": "A floating toolbar conditionally renders a separate FAB beside the action group."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -664,10 +719,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/toolbars.css:28-56",
+            "result": "Docked toolbars anchor to the bottom of the specimen; horizontal and vertical floating toolbars have clearance positioning, but the required navigation-rail opposite-side rule and compact-screen exceptions are host-layout decisions not represented here."
+          }
+        ],
+        "notes": "This specimen does not model a navigation rail or mobile layout policy."
       },
       "fixes": []
     },
@@ -690,9 +752,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/toolbars.js:20-43",
+            "result": "The docked toolbar measures available width, hides excess actions and computes a fitting inter-item gap; CSS uses full width and safe centering."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -716,9 +785,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/toolbars.js:44-79",
+            "result": "Floating layout measures scene clearance and FAB space, hides items that do not fit, and exposes corresponding overflow-menu proxies."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -742,10 +818,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/toolbars.js:20-79",
+            "result": "Overflow actions collapse based on fit and can reappear after resize, but the component does not coordinate multiple floating toolbars across breakpoints or enforce one toolbar in compact product layouts."
+          }
+        ],
+        "notes": "Multiple toolbar count is a host page integration condition."
       },
       "fixes": []
     },
@@ -768,9 +851,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/toolbars.js:110-120",
+            "result": "Keyboard traversal passes computed RTL direction to navigationIndex, while CSS flex/logical properties follow the toolbar’s direction."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -794,10 +884,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "No docked/floating scroll-transition or collapse mode is configured in the web toolbar baseline; this source describes permitted product scroll policies."
       },
       "fixes": []
     },
@@ -820,10 +911,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_toolbar.templ:10-49",
+            "result": "The toolbar exposes named toolbar semantics, button actions and an overflow menu; the example has no back button and no scroll/collapse case to verify the remaining conditional tasks."
+          }
+        ],
+        "notes": "No back or scroll/collapse context is present."
       },
       "fixes": []
     },
@@ -846,9 +944,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_toolbar.templ:10-31",
+            "result": "Toolbar controls are native buttons; toolbar itself has no click behavior and the shared component button system supplies control feedback."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -872,9 +977,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/toolbars.js:122-135",
+            "result": "Initialization assigns tabindex=0 to the first non-disabled toolbar action, and subsequent Tab reaches the roving focus target."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -898,9 +1010,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/toolbars.js:101-120",
+            "result": "Arrow navigation uses orientation and RTL context; the actions are native buttons and therefore activate with Space or Enter."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -924,9 +1043,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_toolbar.templ:9-10,39-48",
+            "result": "The container has role=toolbar and an accessible name; the overflow navigation has role=menu and its actions have menuitem roles."
+          }
+        ],
         "notes": ""
       },
       "fixes": []

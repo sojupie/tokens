@@ -200,9 +200,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/split-buttons.css:96-127",
+            "result": "The trailing icon rotates 180 degrees when activated/open and size-dependent optical offsets are provided; button dimensions and colors inherit the shared button implementation."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -226,9 +233,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:804-830",
+            "result": "The Material generator includes split-button component token sets and emits per-size implementation mappings, so this Expressive component is present in the Material component catalog."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -252,10 +266,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/split-buttons.css:8-15",
+            "result": "The CSS consumes per-size token values and explicitly sets M/L/XL icon offsets while default offset covers smaller sizes; the full XS/S/M/L/XL style configuration matrix was not resolved."
+          }
+        ],
+        "notes": "Need verify all generated size/color variants in the rendered catalog."
       },
       "fixes": []
     },
@@ -278,9 +299,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_split.templ:6-19",
+            "result": "The split control renders a leading action and trailing menu button; the trailing button always contains the expand icon."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -304,9 +332,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/split-buttons.css:1-3",
+            "result": "Colors and interaction layers are inherited from common button styles, while split-specific CSS changes geometry rather than selected fill."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -330,9 +365,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/split-buttons.css:33-38",
+            "result": "The leading button maps rest and pressed states to split-specific outer/inner corner radii; common button styles provide hover/focus/disabled handling."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -356,9 +398,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/split-buttons.css:40-60",
+            "result": "The trailing control has mirrored inner/outer rest and pressed radii, including RTL, and an expanded-menu selected shape mapping."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -382,10 +431,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/split-buttons.css:8-15",
+            "result": "Gap and radii are token-bound and optical offsets are explicit per size, but the asymmetric content alignment and all resolved radius values were not measured."
+          }
+        ],
+        "notes": "Token-resolved 2dp gap and size radii need computed-style verification."
       },
       "fixes": []
     },
@@ -408,10 +464,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "Choosing when to use this control and sizing it relative to other page controls are product design decisions."
       },
       "fixes": []
     },
@@ -434,10 +491,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_split.templ:7-16",
+            "result": "RTL reverses logical button corner and icon offset behavior, but the example’s leading label “Add to cart” is three words and semantic icon-label fit is a product copy decision."
+          }
+        ],
+        "notes": "The specimen does preserve the trailing expand icon and supports RTL logical ordering."
       },
       "fixes": []
     },
@@ -460,9 +524,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/split-buttons.css:96-127",
+            "result": "Opening the menu changes aria-expanded, causing the trailing icon to rotate inward by 180 degrees with the standard fast spatial motion tokens."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -486,9 +557,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/split-buttons.js:4-32",
+            "result": "The positioning helper measures trigger/menu/viewport and direction, using a 4dp gap and 8dp margin to choose a visible aligned placement."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -512,9 +590,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/split_button.go:5-24",
+            "result": "Both controls are buttons; the trailing button exposes menu popup state and the opened menu has a labeled menu role and focusable items."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -538,9 +623,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/split-buttons.css:80-95",
+            "result": "Both button hit targets receive at least a 48dp minimum width and height through pseudo-element target expansion."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -564,9 +656,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_split.templ:6-19",
+            "result": "The leading button precedes the trailing button in DOM order; opening the menu focuses an item and selecting an option returns focus to the trailing trigger."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -590,9 +689,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/split-buttons.js:53-90",
+            "result": "Trailing-button arrow keys open and focus the menu; menu items support arrow navigation and Tab closes the menu, while both controls are native buttons for Space/Enter."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -616,9 +722,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/split_button.go:10-22",
+            "result": "The icon-only leading action is named Add to cart; trailing button has a related-options name and aria-expanded updates with menu state; the menu has a label."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -642,9 +755,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:827-830",
+            "result": "The generator includes split-button token sets in the component-binding pipeline and emits style mappings from the token set for the component size."
+          }
+        ],
         "notes": ""
       },
       "fixes": []

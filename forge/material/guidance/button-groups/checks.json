@@ -272,10 +272,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:984-990; catalog/web/specimen_button_group.templ:5-18",
+            "result": "Generation exposes standard and connected group controls; the catalog uses label/action buttons for standard and selectable buttons for connected."
+          }
+        ],
+        "notes": "Generation exposes standard and connected group controls; the catalog uses label/action buttons for standard and selectable buttons for connected."
       },
       "fixes": []
     },
@@ -298,10 +305,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:984-990",
+            "result": "The component matrix generates both standard and connected controls, and separate segmented-button family remains available for the baseline pattern."
+          }
+        ],
+        "notes": "The component matrix generates both standard and connected controls, and separate segmented-button family remains available for the baseline pattern."
       },
       "fixes": []
     },
@@ -324,10 +338,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/button_group.go:15-29; forge/components/styles/button-groups.css:12-18",
+            "result": "All preview children receive the group size and a round shape, but no actual width/shape values are evaluated for a hero exception or product-specific meaning."
+          }
+        ],
+        "notes": "All preview children receive the group size and a round shape, but no actual width/shape values are evaluated for a hero exception or product-specific meaning."
       },
       "fixes": []
     },
@@ -350,10 +371,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/button_group.go:20-29; forge/components/behaviors/button-groups.js:4-16",
+            "result": "Connected preview uses toggle button attributes and implements single-selection state; each group uses one shared variant, preventing mixed styles in this renderer."
+          }
+        ],
+        "notes": "Connected preview uses toggle button attributes and implements single-selection state; each group uses one shared variant, preventing mixed styles in this renderer."
       },
       "fixes": []
     },
@@ -376,10 +404,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/button-groups.css:6-10",
+            "result": "Both controls render inline-flex max-content with a token gap; there is no connected-group full-surface width or large-window max-width behavior."
+          }
+        ],
+        "notes": "Both controls render inline-flex max-content with a token gap; there is no connected-group full-surface width or large-window max-width behavior."
       },
       "fixes": []
     },
@@ -402,10 +437,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/button-groups.css:6-10",
+            "result": "Group is inline-flex with max-content width and no wrapping rule, so the group remains one line in its containing block."
+          }
+        ],
+        "notes": "Group is inline-flex with max-content width and no wrapping rule, so the group remains one line in its containing block."
       },
       "fixes": []
     },
@@ -428,10 +470,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_button_group.templ:5-18; forge/components/styles/button-groups.css:6-10",
+            "result": "All three group buttons always render in the group; no breakpoint overflow menu or trailing placement is implemented."
+          }
+        ],
+        "notes": "All three group buttons always render in the group; no breakpoint overflow menu or trailing placement is implemented."
       },
       "fixes": []
     },
@@ -454,10 +503,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/button-groups.css:95-120; forge/material/generate-components.mjs:984-990",
+            "result": "XS/S connected groups add 48px min height/width targets while preserving smaller token button height; group sizes are generated for all five sizes."
+          }
+        ],
+        "notes": "XS/S connected groups add 48px min height/width targets while preserving smaller token button height; group sizes are generated for all five sizes."
       },
       "fixes": []
     },
@@ -480,10 +536,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_button_group.templ:5-18; forge/components/behaviors/button-groups.js:18-33",
+            "result": "All child buttons retain native sequential tab stops; the key handler moves focus with arrows but no roving tabindex makes Tab enter only at the first button."
+          }
+        ],
+        "notes": "All child buttons retain native sequential tab stops; the key handler moves focus with arrows but no roving tabindex makes Tab enter only at the first button."
       },
       "fixes": []
     },
@@ -506,10 +569,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:984-990; catalog/web/button_group.go:15-29",
+            "result": "Generated cases and token selector cover xsmall through xlarge and pass the selected size to each child button."
+          }
+        ],
+        "notes": "Generated cases and token selector cover xsmall through xlarge and pass the selected size to each child button."
       },
       "fixes": []
     },
@@ -532,10 +602,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/button_group.go:20-29; forge/components/behaviors/button-groups.js:4-16",
+            "result": "Single selection is implemented; multiple-selection toggles use shared button behavior, but selection-required group semantics are not represented by a distinct group mode in this runtime."
+          }
+        ],
+        "notes": "Single selection is implemented; multiple-selection toggles use shared button behavior, but selection-required group semantics are not represented by a distinct group mode in this runtime."
       },
       "fixes": []
     },
@@ -558,10 +635,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:984-990",
+            "result": "The generator creates all five sizes for standard/connected controls and single/multiple connected shapes; baseline segmented buttons are a separate generated family."
+          }
+        ],
+        "notes": "The generator creates all five sizes for standard/connected controls and single/multiple connected shapes; baseline segmented buttons are a separate generated family."
       },
       "fixes": []
     },
@@ -584,10 +668,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:984-990; forge/components/behaviors/button-groups.js:4-16",
+            "result": "Connected single/multiple are generated and single selection is handled; selection-required is not a separate runtime/configuration mode."
+          }
+        ],
+        "notes": "Connected single/multiple are generated and single selection is handled; selection-required is not a separate runtime/configuration mode."
       },
       "fixes": []
     },
@@ -610,10 +701,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:234-239; forge/components/styles/button-groups.css:6-15",
+            "result": "Standard group height and gap are token-bound through variables, but resolved 32dp and 18dp values are not visible in these authored rules; inspect generated token resolution."
+          }
+        ],
+        "notes": "Standard group height and gap are token-bound through variables, but resolved 32dp and 18dp values are not visible in these authored rules; inspect generated token resolution."
       },
       "fixes": []
     },
@@ -636,10 +734,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_button_group.templ:5-18; forge/components/styles/button-groups.css:6-15",
+            "result": "Group container itself has no visible background/border and uses layout/gap styling; the catalog populates it with buttons as a preview."
+          }
+        ],
+        "notes": "Group container itself has no visible background/border and uses layout/gap styling; the catalog populates it with buttons as a preview."
       },
       "fixes": []
     },
@@ -662,10 +767,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/button_group.go:15-29; forge/material/generate-components.mjs:984-990",
+            "result": "Group children are rendered as matching button variants, but the generator matrix lists only filled/tonal/outlined/elevated, and does not establish integration behavior for icon/text buttons."
+          }
+        ],
+        "notes": "Group children are rendered as matching button variants, but the generator matrix lists only filled/tonal/outlined/elevated, and does not establish integration behavior for icon/text buttons."
       },
       "fixes": []
     },
@@ -688,10 +800,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/buttons.js:14-19; forge/components/static/buttons.js:146-150",
+            "result": "Shared button behavior computes neighbor width compression for buttons in standard groups and triggers the transition when a group button is pressed."
+          }
+        ],
+        "notes": "Shared button behavior computes neighbor width compression for buttons in standard groups and triggers the transition when a group button is pressed."
       },
       "fixes": []
     },
@@ -714,10 +833,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/button-groups.js:8-16; forge/components/styles/button-groups.css:64-66",
+            "result": "Connected single-mode click updates aria-pressed on siblings; connected styling changes selected inner radius on the selected button only."
+          }
+        ],
+        "notes": "Connected single-mode click updates aria-pressed on siblings; connected styling changes selected inner radius on the selected button only."
       },
       "fixes": []
     },
@@ -740,10 +866,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:234-239; forge/components/styles/button-groups.css:6-15",
+            "result": "Group gap is token-bound, but exact 18/12/8dp values for size categories are not readable in the authored CSS; needs resolved token check."
+          }
+        ],
+        "notes": "Group gap is token-bound, but exact 18/12/8dp values for size categories are not readable in the authored CSS; needs resolved token check."
       },
       "fixes": []
     },
@@ -766,10 +899,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:234-239; forge/components/styles/button-groups.css:19-65",
+            "result": "Inner/outer and selected/pressed corner radii are token-bound and CSS applies first/last corner rules; actual 2dp and size-specific radius values require resolved token inspection."
+          }
+        ],
+        "notes": "Inner/outer and selected/pressed corner radii are token-bound and CSS applies first/last corner rules; actual 2dp and size-specific radius values require resolved token inspection."
       },
       "fixes": []
     },
@@ -792,10 +932,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/button-groups.css:95-120",
+            "result": "XS/S connected groups set minimum group/button inline size and generated pseudo target to space600."
+          }
+        ],
+        "notes": "XS/S connected groups set minimum group/button inline size and generated pseudo target to space600."
       },
       "fixes": []
     },
@@ -818,10 +965,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/button-groups.css:12-15; forge/material/generate-components.mjs:984-990",
+            "result": "Group buttons take their height from token-derived group height; child button size/state is retained, so density-specific button values can drive group height."
+          }
+        ],
+        "notes": "Group buttons take their height from token-derived group height; child button size/state is retained, so density-specific button values can drive group height."
       },
       "fixes": []
     },
@@ -844,10 +998,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/buttons.js:14-19; forge/components/styles/button-groups.css:64-66",
+            "result": "Standard group pressed interactions use neighbor width compression; selected button uses selected shape/color custom properties in shared button styles."
+          }
+        ],
+        "notes": "Standard group pressed interactions use neighbor width compression; selected button uses selected shape/color custom properties in shared button styles."
       },
       "fixes": []
     },
@@ -870,10 +1031,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/button_group.go:20-29; forge/components/behaviors/button-groups.js:4-16",
+            "result": "Connected variant creates selectable toggle buttons, and single mode updates the selected item on activation."
+          }
+        ],
+        "notes": "Connected variant creates selectable toggle buttons, and single mode updates the selected item on activation."
       },
       "fixes": []
     },
@@ -896,10 +1064,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/button_group.go:15-29",
+            "result": "Every button receives the same `c.Variant` when built by the group helper, so this renderer does not mix color styles within a group."
+          }
+        ],
+        "notes": "Every button receives the same `c.Variant` when built by the group helper, so this renderer does not mix color styles within a group."
       },
       "fixes": []
     },
@@ -922,10 +1097,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/button-groups.css:6-10",
+            "result": "Connected and standard groups both use inline-size:max-content; there is no connected surface-fill or breakpoint max-width rule."
+          }
+        ],
+        "notes": "Connected and standard groups both use inline-size:max-content; there is no connected surface-fill or breakpoint max-width rule."
       },
       "fixes": []
     },
@@ -948,10 +1130,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/button-groups.css:6-18",
+            "result": "Group uses a content-sized inline-flex and token-derived button sizing with no breakpoint-specific fixed/flexible width or maximum-width logic."
+          }
+        ],
+        "notes": "Group uses a content-sized inline-flex and token-derived button sizing with no breakpoint-specific fixed/flexible width or maximum-width logic."
       },
       "fixes": []
     },
@@ -974,10 +1163,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/button-groups.css:6-18",
+            "result": "No group breakpoint styles change button widths or sizes; no icon-button-specific max-width behavior exists in this group stylesheet."
+          }
+        ],
+        "notes": "No group breakpoint styles change button widths or sizes; no icon-button-specific max-width behavior exists in this group stylesheet."
       },
       "fixes": []
     },
@@ -1000,10 +1196,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/buttons.js:14-19; forge/components/styles/button-groups.css:19-62",
+            "result": "Standard groups adjust pressed-item and neighboring widths; connected groups apply pressed inner shape only to the pressed button."
+          }
+        ],
+        "notes": "Standard groups adjust pressed-item and neighboring widths; connected groups apply pressed inner shape only to the pressed button."
       },
       "fixes": []
     },
@@ -1026,10 +1229,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/button-groups.css:19-66; forge/components/static/buttons.js:554-560",
+            "result": "Selection toggles aria-pressed and connected CSS derives its current inner radius from selected state; standard button styles supply selected shape mappings."
+          }
+        ],
+        "notes": "Selection toggles aria-pressed and connected CSS derives its current inner radius from selected state; standard button styles supply selected shape mappings."
       },
       "fixes": []
     },
@@ -1052,10 +1262,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_button_group.templ:5-19; catalog/web/button_group.go:15-29; forge/components/behaviors/button-groups.js:4-16",
+            "result": "Group has role=group and accessible name; child native buttons expose aria-pressed for connected selection, with each action reachable."
+          }
+        ],
+        "notes": "Group has role=group and accessible name; child native buttons expose aria-pressed for connected selection, with each action reachable."
       },
       "fixes": []
     },
@@ -1078,10 +1295,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_button_group.templ:5-16; catalog/web/specimen_attributes.go:103-107",
+            "result": "Container is named as Actions and each button has visible text labels (Back/Edit/Next or First/Second/Third)."
+          }
+        ],
+        "notes": "Container is named as Actions and each button has visible text labels (Back/Edit/Next or First/Second/Third)."
       },
       "fixes": []
     },
@@ -1104,10 +1328,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/buttons.js:14-19; forge/components/styles/button-groups.css:12-18",
+            "result": "Width and neighboring compression is implemented for standard groups; there is no explicit padding adjustment in group styles, and shared button width animation does not itself show selected padding changes."
+          }
+        ],
+        "notes": "Width and neighboring compression is implemented for standard groups; there is no explicit padding adjustment in group styles, and shared button width animation does not itself show selected padding changes."
       },
       "fixes": []
     }

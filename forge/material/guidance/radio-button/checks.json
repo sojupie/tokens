@@ -194,10 +194,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_radio.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When configuring a selection group.”."
+          }
+        ],
+        "notes": "The condition is “When configuring a selection group.” and the instruction is “Allow only one selected option in the group; use checkboxes when multiple selections are allowed.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -220,10 +227,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/radio.go:15-27; catalog/web/specimen_radio.templ:7-13",
+            "result": "Each option is a native input type=radio with the same name within the group; the browser supplies radio-group arrow-key selection and wrapping semantics."
+          }
+        ],
+        "notes": "Native same-name radio inputs provide one selected option and standard browser arrow/Space behavior. This is code-level evidence, not a browser exercise.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -246,10 +260,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_radio.templ:19-26",
+            "result": "Each radio input and its custom icon and adjacent text are inside one wrapping `<label>`, so activating either the control or label selects the native radio input."
+          }
+        ],
+        "notes": "The rendered label associates the visible option text and icon with the native radio; selection occurs through standard input behavior.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -272,10 +293,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_radio.templ:5-26; forge/components/styles/radios.css:1-44",
+            "result": "The radio example has no density option or density control; the native input target fills the tokenized 40dp state layer and no smaller density override is selected."
+          }
+        ],
+        "notes": "The component uses its normal radio geometry and exposes no user density setting by default.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -298,10 +326,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_radio.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When structuring selection controls.”."
+          }
+        ],
+        "notes": "The condition is “When structuring selection controls.” and the instruction is “Do not nest radio buttons or use them for multiple selection.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -324,10 +359,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_radio.templ:19-26; catalog/web/radio.go:15-20",
+            "result": "Each native input is wrapped by a label that contains its visible “Option N” text; the input also receives the matching aria-label."
+          }
+        ],
+        "notes": "Every radio has an adjacent visible label programmatically associated through the wrapping label element.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -350,10 +392,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_radio.templ:7-13,19-26",
+            "result": "Interactive options are grouped in a fieldset with role=radiogroup and legend “Options”; each native input is named by its adjacent visible label and matching aria-label."
+          }
+        ],
+        "notes": "The web group role/name and option names are explicit in the specimen. The exact category title is example content, not product data.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -376,10 +425,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_radio.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When laying out a radio group.”."
+          }
+        ],
+        "notes": "The condition is “When laying out a radio group.” and the instruction is “Prefer a vertically stacked list and preselect one option; avoid horizontal radio lists.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -402,10 +458,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_radio.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When choosing between radio buttons and a dropdown.”."
+          }
+        ],
+        "notes": "The condition is “When choosing between radio buttons and a dropdown.” and the instruction is “Use radio buttons for five or fewer choices; consider a dropdown when screen space is constrained, while accounting for the extra clicks and cognitive effort.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -428,10 +491,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/radios.css:13-44,55-61; catalog/web/specimen_radio.templ:21-26",
+            "result": "The visible icon and state target use their tokenized dimensions, but the input fills only the 40dp state-layer box; the label row adds no 48dp minimum block size or expanded hit target."
+          }
+        ],
+        "notes": "The icon/state dimensions are tokenized, but the 48dp interaction target required by the source is absent; the input’s clickable box is limited to the 40dp radio wrapper.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -454,10 +524,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_radio.templ:7-26; catalog/web/radio.go:15-27",
+            "result": "The web specimen names the radiogroup through a legend and each option through a label; native radio inputs expose checked state. No screen-reader observation was performed."
+          }
+        ],
+        "notes": "The DOM provides the expected web group/option names and native selection state, but announcement and feedback behavior has not been tested with assistive technology.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -480,10 +557,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/radio.go:15-27",
+            "result": "All options in a rendered group share the same radio `name`; one input is checked from the selected state, and native radio behavior does not toggle off the currently selected option."
+          }
+        ],
+        "notes": "Same-name native radio inputs enforce single selection and preserve the selected option when activated again.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -506,10 +590,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/radio.go:15-27; catalog/web/specimen_radio.templ:7-13",
+            "result": "The group is composed of same-name native radio inputs with one checked option or none; the browser implements radio-group Tab entry and arrow focus/selection behavior."
+          }
+        ],
+        "notes": "Native radio keyboard semantics provide the selected/first Tab entry, selected/last Shift+Tab entry, and arrow traversal described by the source.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -532,10 +623,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/radios.css:107-114; catalog/web/specimen_radio.templ:21-26",
+            "result": "The adjacent label text is outside the `.md-radio` control and uses inherited surrounding text color; checked-state CSS changes the inner radio dot, not the label text color."
+          }
+        ],
+        "notes": "The label text remains ordinary inherited text and is not switched between selected and unselected states by radio CSS.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -558,10 +656,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_radio.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When choosing a control for the number of choices or available space.”."
+          }
+        ],
+        "notes": "The condition is “When choosing a control for the number of choices or available space.” and the instruction is “Use radio buttons for five or fewer options; consider a dropdown when space is constrained, accounting for its extra interaction and cognitive effort.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -584,10 +689,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_radio.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When selecting one item from a list.”."
+          }
+        ],
+        "notes": "The condition is “When selecting one item from a list.” and the instruction is “Use radio buttons when a person must choose one option from a set; do not substitute switches for single selection.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     }

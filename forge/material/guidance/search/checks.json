@@ -380,10 +380,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "Choosing which design-system style to recommend is product/design-system policy; the baseline exposes both variants but does not select a product recommendation."
       },
       "fixes": []
     },
@@ -406,9 +407,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/search.css:228-243",
+            "result": "Opening focused search expands the view from the closed bar to a results surface and transitions its width/position; contained and divided styles both share this open-state layout."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -432,9 +440,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/search.css:212-227",
+            "result": "The closed surface has no shadow by default; the bar uses token-backed container, shape, and surface color variables."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -458,10 +473,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "This web baseline implements one Material token/variant model and does not select between separately versioned M3 and Expressive products."
       },
       "fixes": []
     },
@@ -484,9 +500,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/search.go:62-73",
+            "result": "The preview exposes baseline/divided and contained choices; CSS gives baseline its divider and contained its filled-bar treatment."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -510,9 +533,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/search.go:84-89",
+            "result": "SearchLayout preserves docked/full-screen choices (adaptive currently resolves to docked); CSS has separate docked and full-screen open-state rules."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -536,9 +566,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_search.templ:75-102",
+            "result": "The rendered search view includes a search bar and results container; results use the list component, and baseline style adds a top divider."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -562,10 +599,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/search.css:399-420",
+            "result": "Code defines focus-visible and pressed styling, but this evidence does not establish the required hover state or that all enabled-state appearance matches the guidance."
+          }
+        ],
+        "notes": "No focused browser/style inspection was run for the state set."
       },
       "fixes": []
     },
@@ -588,9 +632,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_search.templ:94-99",
+            "result": "Each suggestion/result is a list-item button, so the result controls use the shared list-item interaction states rather than a custom search-only state layer."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -614,10 +665,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "Whether a product collection is large enough to need search is a product-level choice, not established by the reusable search implementation."
       },
       "fixes": []
     },
@@ -640,10 +692,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "Choosing a local bar, persistent app-bar search, or secondary icon entry point is product navigation architecture; this component implements the search experience after entry."
       },
       "fixes": []
     },
@@ -666,9 +719,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/search.js:16-26",
+            "result": "Opening search filters and announces suggestions; typing filters results and updates the heading to quick results/results while retaining per-item list controls."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -692,9 +752,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_search.templ:94-100",
+            "result": "The example uses the list component and adds a leading search icon plus labels; category labels, avatars and chips are optional context additions and are not required for every result set."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -718,10 +785,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "The captured demo has one undivided result list, so the condition of distinct result groups is not present."
       },
       "fixes": []
     },
@@ -744,9 +812,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/search.css:180-190",
+            "result": "The search view is positioned at the top of its bounded scene with a token-backed top inset."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -770,9 +845,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/search.js:6-13",
+            "result": "Adaptive layout always resolves to docked; measurement only recomputes that same layout, and no breakpoint rule switches compact windows to full-screen."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -796,10 +878,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/search.css:222-245",
+            "result": "Open and closed states have explicit contained/baseline treatments and margin variables, but the token bindings/actual resolved margins and shape equality were not exercised at runtime."
+          }
+        ],
+        "notes": "Runtime-resolved values for the two margin states remain unobserved."
       },
       "fixes": []
     },
@@ -822,10 +911,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/search.css:320-345",
+            "result": "Container/background and text colors are token-bound, but source code alone does not prove the specified relative surface step or rendered contrast for every background."
+          }
+        ],
+        "notes": "Resolved color pairs were not measured."
       },
       "fixes": []
     },
@@ -848,9 +944,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_search.templ:77-89",
+            "result": "The example supports a decorative search leading icon or an accessible menu navigation button; the open-state back button replaces the leading element."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -874,9 +977,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/search.go:69-75",
+            "result": "Configured action sets include one/two trailing action combinations and an avatar combination; clear is a separate optional query-dependent action."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -900,9 +1010,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_search.templ:89-90",
+            "result": "The input has the concise “Search tokens” placeholder and matching accessible name while empty."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -926,9 +1043,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_search.templ:89-90",
+            "result": "The input is a native search field with value bound to the query, so entered text replaces its placeholder."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -952,9 +1076,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/search.css:274-280",
+            "result": "Adaptive search width is calculated from its parent layout and margins; the bar and its inner controls remain in the same flex container."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -978,10 +1109,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/search.js:28-42",
+            "result": "Back closes the view and restores the collapsed state, but the same close path focuses the search input again; this differs from the source instruction to release focus and needs runtime/focus interpretation."
+          }
+        ],
+        "notes": "The intended focus target after choosing Back is ambiguous against the focus-preserving open/close code."
       },
       "fixes": []
     },
@@ -1004,10 +1142,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "The source presents two permitted product scroll policies; this reusable component does not expose a product-level fixed-versus-scroll-away configuration."
       },
       "fixes": []
     },
@@ -1030,9 +1169,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/search.js:81-96",
+            "result": "Enter marks the query submitted and focuses a result heading; filtered results stay beneath the bar, and selecting a result opens its content."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -1056,10 +1202,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "Predictive-back animation is Android platform integration; this implementation is a web component."
       },
       "fixes": []
     },
@@ -1082,9 +1229,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_search.templ:86-102",
+            "result": "The input has a search name and native text entry; the list has named buttons, clear is labeled, and status output is polite live content."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -1108,9 +1262,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/search.js:16-26",
+            "result": "Filtering writes suggestion/result availability and count into the search panel live output when suggestions/results are updated."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -1134,9 +1295,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_search.templ:75-90; forge/components/static/search.js:28-42",
+            "result": "Opening search focuses the text input, while the earlier Close search button is revealed and remains non-inert; in the menu-leading variant the navigation button is inert on open. Thus focus skips the first interactive element, the close button."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -1160,10 +1328,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/search.js:81-96",
+            "result": "Arrow keys move through results and Tab/Shift+Tab cycle controls; Enter submits. The implementation has no explicit Space activation path, while the native search input treats Space as query text, so the source’s Space-to-activate wording needs platform/runtime interpretation."
+          }
+        ],
+        "notes": "The required Space behavior is not mapped to the web textbox semantics."
       },
       "fixes": []
     },
@@ -1186,10 +1361,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_search.templ:83-90",
+            "result": "The web example labels the native type=search input and icon buttons; Android Text field and iOS Search field role mappings are platform-specific and are not implemented by this web specimen."
+          }
+        ],
+        "notes": "Only web semantics were assessed; mobile platform role distinctions are outside this runtime."
       },
       "fixes": []
     },
@@ -1212,9 +1394,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_search.templ:94-99",
+            "result": "Suggestions are rendered as a named ul with li rows and list-item buttons, preserving list semantics for screen readers."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -1238,10 +1427,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "Emphasizing global product search versus page-local search is a product navigation decision, not behavior of this reusable search view."
       },
       "fixes": []
     },
@@ -1264,9 +1454,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:162-177",
+            "result": "The token generator separately binds md.comp.search-bar to the collapsed bar selector and md.comp.search-view to the focused view selector; interaction tokens are therefore resolved against the view mapping."
+          }
+        ],
         "notes": ""
       },
       "fixes": []

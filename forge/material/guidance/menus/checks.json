@@ -404,10 +404,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/menus.js:29-45; forge/components/styles/menus.css:83-92",
+            "result": "The runtime positions the main menu below its trigger, flips it above when it would exceed innerHeight, clamps left/top to viewport bounds, and CSS constrains width/height while enabling overflow scrolling."
+          }
+        ],
+        "notes": "The menu placement path preserves trigger-relative placement and clamps the panel to the viewport; CSS constrains the panel to the available viewport and scrolls overflowing content.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -430,10 +437,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_menu.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When showing a context menu.”."
+          }
+        ],
+        "notes": "The condition is “When showing a context menu.” and the instruction is “Associate context-menu actions with the specific selected object or text.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -456,10 +470,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/menus.css:137-179; forge/components/styles/menu-items.css:29-38,69-77",
+            "result": "Baseline CSS sets minimum width 112px, maximum 280px, zero expressive group gap, tokenized vertical padding, 48dp tokenized item height and tokenized horizontal/item spacing; item geometry is consumed directly from menu tokens."
+          }
+        ],
+        "notes": "The baseline variant has the source width bounds and uses the captured measurement variables for item height, spacing, divider and padding. The token values remain those provided by Material input data.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -482,10 +503,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_menu.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When the menu must display additional items or long labels on a small screen.”."
+          }
+        ],
+        "notes": "The condition is “When the menu must display additional items or long labels on a small screen.” and the instruction is “On compact screens, consider replacing a menu with a bottom sheet when longer labels or more items need space.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -508,10 +536,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/menus.go:39-50; forge/components/static/menus.js:24,53",
+            "result": "The disabled preview state leaves its menu item rendered with aria-disabled=true; the roving menu item list retains aria-disabled entries, while click selection explicitly returns for aria-disabled=true."
+          }
+        ],
+        "notes": "The implementation keeps the conditional item visible, allows it into menu focus management, and prevents its action from being selected.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -534,10 +569,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/menus.go:9-37,88-103; forge/components/styles/menus.css:137-155",
+            "result": "The menu preview has no density control or density attribute; baseline item geometry uses the standard tokenized padding/spacing, with no smaller-density override selected by default."
+          }
+        ],
+        "notes": "The default web example applies the standard dimensions and does not activate a density reduction; user-selectable density changes are not exposed.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -560,10 +602,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/menus.go:39-74; catalog/web/specimen_menu.templ:18-48",
+            "result": "MenuPanel sets role=menu and a name; ordinary items use role=menuitem; selectable items use menuitemcheckbox/menuitemradio with aria-checked; icon-only items receive a text aria-label; visible text items keep their visible label."
+          }
+        ],
+        "notes": "Web role and naming are assigned by the rendered menu helpers. The Android/Compose role mappings in the source do not apply to this web path.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -586,10 +635,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_menu.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When grouping menu items.”."
+          }
+        ],
+        "notes": "The condition is “When grouping menu items.” and the instruction is “Group related actions with gaps or dividers where they improve scanning; preserve meaningful group boundaries.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -612,10 +668,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/menus.js:24-28,46-49,68-77; forge/components/styles/menu-items.css:97-101",
+            "result": "The menu manager keeps one enabled menu item at tabindex=0, moves focus via the keyboard map, restores focus to the trigger/parent on close, and item CSS renders a focus-visible outline."
+          }
+        ],
+        "notes": "The focus manager and focus style cover the menu-item path; tested Chromium behavior is separately captured under the keyboard check.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -638,10 +701,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_menu.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When writing menu item content.”."
+          }
+        ],
+        "notes": "The condition is “When writing menu item content.” and the instruction is “Keep menu item labels concise and make each item’s action clear.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -664,10 +734,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/menus.js:29-45; forge/components/styles/menus.css:83-92",
+            "result": "The positioner reads the trigger rectangle, places the menu below or above it, flips submenus as space requires, clamps the panel within viewport margins and repositions on resize/scroll."
+          }
+        ],
+        "notes": "The runtime maintains the trigger relation and viewport bounds, while the popover CSS caps the panel to viewport dimensions.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -690,10 +767,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/menus.go:9-16,39-74; forge/components/static/menus.js:46-77",
+            "result": "The rendered web menu exposes menu/item roles and labels, and the handler opens/closes, focuses, moves and selects items. No screen-reader/browser accessibility observation was run."
+          }
+        ],
+        "notes": "Code supplies web menu semantics and keyboard focus management, but this check also asks whether assistive technology can understand and operate the control; that announcement behavior remains unverified.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -716,10 +800,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:642-697; forge/components/styles/menu-items.css:1-8",
+            "result": "The mapper exposes baseline menu tokens separately from expressive standard/vibrant menu sets and passes container, label, icon, selected-state and outline roles to the menu selectors; menu CSS applies the generated container and text variables."
+          }
+        ],
+        "notes": "The implementation maps the standard and vibrant color variants into component properties. The recommendation to use vibrant menus sparingly is a caller/product choice, not a runtime policy.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -742,10 +833,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_menu.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When adapting menus to medium or larger windows.”."
+          }
+        ],
+        "notes": "The condition is “When adapting menus to medium or larger windows.” and the instruction is “On medium and expanded windows, keep menus in the context of their related content; larger screens can accommodate more visible items and submenus for complex choices.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -768,10 +866,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_menu.templ:13-18; forge/components/styles/menus.css:171-175",
+            "result": "The specimen uses a divider only between grouped actions; baseline styling consumes the menu divider token and adds vertical margin."
+          }
+        ],
+        "notes": "The menu example places the divider between action items and the baseline rule provides the mapped divider geometry.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -794,10 +899,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_menu.templ:49-59",
+            "result": "The captured specimen does not instantiate the feature named by the condition."
+          }
+        ],
+        "notes": "The specimen contains no filter text field, so the conditional filtering behavior is not in scope for this rendered menu.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -820,10 +932,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/menu-items.css:9-14,29-38; forge/components/styles/menus.css:137-155",
+            "result": "The web stylesheet consumes --_menu-gap for sections and list items, while baseline explicitly zeroes it; there is no persistent-scrollbar rule in these sections."
+          }
+        ],
+        "notes": "The code exposes a tokenized gap in web menu layout while the upstream rule says gaps are unavailable on web and forbidden in scrollable menus. Whether generated variants ever supply a nonzero gap is not established by this authored CSS; reconcile the token mapping before assessment.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -846,10 +965,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/menus.js:46-49,50-67,68-77; catalog/web/menus.go:9-28",
+            "result": "Keyboard open focuses the first item (or selected edge); selecting an action closes the menu and restores trigger focus; Escape closes and restores focus; native auto popover dismisses on outside interaction."
+          }
+        ],
+        "notes": "The implementation covers the web-relevant selection, Escape, outside-dismissal and focus-restoration paths. System Back is not a web interaction in this component.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -872,10 +998,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/menus.js:46-49; forge/components/styles/menus.css:7-10",
+            "result": "The runtime sets aria-expanded and positions the panel; the stylesheet only declares a border-radius transition here. The observed check did not inspect trigger pressed styling or touch ripple."
+          }
+        ],
+        "notes": "The source requires an enter/exit transition related to the trigger and a pressed trigger state; the cited code shows open state and panel transition but does not establish that relationship or item-selection ripple.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -898,10 +1031,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/menus.js:53-67; catalog/web/menus.go:61-87",
+            "result": "Single-select clicks set the chosen item and clear same-role siblings; multi-select toggles aria-checked and leaves the menu open, while action/single modes close after selection."
+          }
+        ],
+        "notes": "The runtime implements the selected-item cardinality and dismissal distinction for single and multiple menu modes.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -924,10 +1064,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/menus.js:57-64; catalog/web/specimen_menu.templ:21-25,40-42; forge/components/styles/menus.css:118-124",
+            "result": "Selection toggles aria-checked/data-selected and swaps checked versus unchecked icons; the template renders a checkmark for selected items."
+          }
+        ],
+        "notes": "The selected state has both a state attribute and a checkmark cue; color/contrast conformance is token-driven and requires rendered contrast inspection.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -950,10 +1097,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_menu.templ:18-48; forge/components/styles/menu-items.css:69-101",
+            "result": "Each menu item is one button with nested spans/SVGs only; it has tokenized min-height/padding and a focus outline. No nested button, switch or independent direct action appears in the specimen."
+          }
+        ],
+        "notes": "The specimen keeps slot content non-interactive inside one actionable button and uses the tokenized target height and padding for the item.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -976,10 +1130,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/menus.js:29-45; catalog/web/specimen_menu.templ:5-8",
+            "result": "The trigger’s rectangle is the origin; main menus open below it by default and flip above only when the lower position would exceed the viewport."
+          }
+        ],
+        "notes": "The open position is trigger-relative and defaults downward, with an upward fallback to prevent bottom-edge clipping.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1002,10 +1163,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/menus.js:46-49",
+            "result": "Opening updates aria-expanded on the trigger; this code does not itself add a pressed-state attribute or class. CSS state styling for the trigger was not fully traced."
+          }
+        ],
+        "notes": "The required open pressed state and unchanged appearance are not established by the cited handler alone.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1028,10 +1196,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/menus.go:23-28; forge/components/static/menus.js:46-49",
+            "result": "Interactive menus are native auto popovers opened from their trigger, placing the panel in the browser top layer above permanent page content."
+          }
+        ],
+        "notes": "The web menu uses the popover top layer for the overlay and opens in response to its trigger.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1054,10 +1229,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/menus.js:33-44; forge/components/static/menus.js:7-12",
+            "result": "The submenu positioner tries the adjacent side of the parent item, flips sides when needed, and only uses an in-place replacement when neither side fits; replacement hides the parent menu content rather than painting over the visible parent item."
+          }
+        ],
+        "notes": "The normal placement is next to the parent item with viewport-aware side flipping; the constrained-width fallback replaces the parent menu view, avoiding simultaneous overlap with that item.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1080,10 +1262,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/menu-items.css:69-77",
+            "result": "Menu-item minimum height is read from the captured --_menu-item-height token, and padding comes from the measured leading/trailing/top/bottom token values."
+          }
+        ],
+        "notes": "The menu target geometry is token-driven; the exact 48dp value is supplied by the captured Material token set.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1106,10 +1295,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:642-697; forge/components/styles/menu-items.css:1-8",
+            "result": "The mapper exposes baseline menu tokens separately from expressive standard/vibrant menu sets and passes container, label, icon, selected-state and outline roles to the menu selectors; menu CSS applies the generated container and text variables."
+          }
+        ],
+        "notes": "The implementation maps the standard and vibrant color variants into component properties. The recommendation to use vibrant menus sparingly is a caller/product choice, not a runtime policy.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1132,10 +1328,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/menus.js:27-28,78-84; forge/components/styles/menus.css:7-10",
+            "result": "The runtime activates one hovered/focused submenu and tracks menu activity; the panel CSS transitions border radius, but no evidence here maps the focused and unfocused submenu radii independently."
+          }
+        ],
+        "notes": "The focus/hover activation mechanism is present, but this code path does not establish the required opposing corner morph for focused versus unfocused submenus.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1158,10 +1361,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/menus.js:33-44; forge/components/styles/menus.css:106-115",
+            "result": "The runtime supports submenu placement and CSS switches static submenu layout under 600px, but the code does not implement a product-level large-screen recommendation or Compose renderer."
+          }
+        ],
+        "notes": "Web submenus are implemented and have a compact fallback; the large-screen recommendation is integration policy, and Jetpack Compose availability is outside this web repository.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1184,10 +1394,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/menus.js:68-76; Chromium/IAB /md3/components/menus?preview.compare=interactive",
+            "result": "The handler maps Up/Down and horizontal RTL-aware menu traversal, opens/closes submenus with directional keys, moves focus by typed starting letters, and closes on Escape. Chromium probe: Enter opens and focuses Favorite; End focuses Edit; ArrowDown wraps to Favorite; Escape closes and restores focus to Open menu."
+          }
+        ],
+        "notes": "The source implements the listed web key mappings; Chromium exercised opener focus, End, wrapped ArrowDown and Escape. Left/Right, typeahead, Tab, Space and submenu traversal are code-supported but were not included in that browser probe.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1210,10 +1427,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_menu.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When presenting a temporary set of choices.”."
+          }
+        ],
+        "notes": "The condition is “When presenting a temporary set of choices.” and the instruction is “Use a menu for temporary actions and prefer it over radio buttons or chips when the menu uses less space.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1236,10 +1460,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_menu.templ:18-48; forge/components/styles/menu-items.css:69-101",
+            "result": "The web menu renders fixed label/icon/supporting/shortcut slots and does not accept consumer-supplied custom slot content."
+          }
+        ],
+        "notes": "This condition only applies to custom slots. The current menu has fixed built-in slots, so there is no custom-slot content whose interaction or target behavior can be assessed.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1262,10 +1493,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_menu.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When adding optional gaps or dividers.”."
+          }
+        ],
+        "notes": "The condition is “When adding optional gaps or dividers.” and the instruction is “Use gaps or dividers only to separate related groups; do not use them to imply unrelated hierarchy.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1288,10 +1526,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_menu.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When choosing a menu pattern.”."
+          }
+        ],
+        "notes": "The condition is “When choosing a menu pattern.” and the instruction is “Use menus for temporary actions or choices; use a toolbar for actions that must remain on screen. Context menus apply to a specific element and commonly open by secondary click.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1314,10 +1559,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/menus.css:30-53,137-155; catalog/web/menus.go:9-14",
+            "result": "The web renderer accepts horizontal and vertical orientation and baseline versus expressive variant data; CSS supplies horizontal layout and token-driven grouped spacing."
+          }
+        ],
+        "notes": "The implementation exposes vertical/horizontal layout and baseline/expressive configuration hooks; the captured token mapping controls which expressive styles are actually populated.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1340,10 +1592,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/menu-items.css:9-14,29-38,64-77; forge/components/styles/menus.css:137-155",
+            "result": "The menu styling has token-driven grouping gaps, group shape, item shape, and item height; this evidence does not establish every expressive feature or recommendation in the source table."
+          }
+        ],
+        "notes": "The code has variant-driven expressive geometry hooks, but the full feature list and recommendation cannot be confirmed from this excerpted component path alone.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1366,10 +1625,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/menus.go:9-28",
+            "result": "The menu renderer exposes baseline/expressive variant configuration, but a new product design and its menu use context are not part of this component package."
+          }
+        ],
+        "notes": "This is a design-generation recommendation for new product designs; the reusable component can expose variants but cannot decide which variant a new screen should choose.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1392,10 +1658,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/menus.go:9-37,88-103; forge/components/styles/menus.css:137-155",
+            "result": "The menu configuration exposes action mode but no density setting; CSS has no density selector and uses the same item top/bottom padding and gap variables for all web menu instances."
+          }
+        ],
+        "notes": "The source requires web density levels to reduce item spacing and vertical padding, but the component has no density attribute, configuration option, or density-specific CSS mapping.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1418,10 +1691,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/menus.css:83-92",
+            "result": "The menu is capped to viewport height and uses overflow:auto, but the scroll container does not set scrollbar-gutter or another persistent-scrollbar mechanism; its gap variables are not reset for scrollable menus."
+          }
+        ],
+        "notes": "The code permits scrolling but does not reserve/show a persistent scrollbar and has no scroll-specific prohibition on nonzero gaps. The exact visual scrollbar behavior also depends on browser/OS settings.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1444,10 +1724,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/menus.js:24,49; catalog/web/specimen_menu.templ:20-29",
+            "result": "The keyboard item list excludes native disabled controls, while click handling rejects aria-disabled items; the specimen marks icon spans aria-hidden. Dividers/gaps are not menuitem elements."
+          }
+        ],
+        "notes": "The implementation does not include native disabled items in roving focus (contrary to the source allowance that they may receive focus), though it prevents their selection. Decorative icons and divider roles are established; focus behavior needs a targeted disabled-item probe.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1470,10 +1757,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_menu.templ:19-29,40-45",
+            "result": "Icons inside text menu items are wrapped with aria-hidden=true, and icon-only menu items receive a text aria-label in menus.go."
+          }
+        ],
+        "notes": "For items with visible text, the SVG icon is hidden from accessibility APIs, preventing duplicate naming; icon-only items instead receive an explicit action name.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     }

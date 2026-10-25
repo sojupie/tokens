@@ -188,10 +188,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_checkbox.templ:5-8",
+            "result": "The isolated checkbox specimen has no product choice set or setting context to classify against radio buttons and switches."
+          }
+        ],
+        "notes": "The isolated checkbox specimen has no product choice set or setting context to classify against radio buttons and switches."
       },
       "fixes": []
     },
@@ -214,10 +221,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_checkbox.templ:5-8; forge/components/styles/checkboxes.css:1-20",
+            "result": "There is no adjacent visible label text in the specimen; it cannot demonstrate stable on-surface label color across selected states."
+          }
+        ],
+        "notes": "There is no adjacent visible label text in the specimen; it cannot demonstrate stable on-surface label color across selected states."
       },
       "fixes": []
     },
@@ -240,10 +254,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_checkbox.templ:5-8; forge/components/static/buttons.js:1-9",
+            "result": "Template supports a single indeterminate native input, but no parent-child selection logic propagates state or clears/checks children."
+          }
+        ],
+        "notes": "Template supports a single indeterminate native input, but no parent-child selection logic propagates state or clears/checks children."
       },
       "fixes": []
     },
@@ -266,10 +287,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_checkbox.templ:5-8",
+            "result": "Native checkbox input toggles its checked state, but the specimen has no item/action binding to establish immediate execution of an application action."
+          }
+        ],
+        "notes": "Native checkbox input toggles its checked state, but the specimen has no item/action binding to establish immediate execution of an application action."
       },
       "fixes": []
     },
@@ -292,10 +320,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_checkbox.templ:5-8",
+            "result": "The checkbox input is nested in its label element, making activation of the associated label target toggle the native input."
+          }
+        ],
+        "notes": "The checkbox input is nested in its label element, making activation of the associated label target toggle the native input."
       },
       "fixes": []
     },
@@ -318,10 +353,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_checkbox.templ:5-8",
+            "result": "The component specimen has no density customization control or dense settings layout."
+          }
+        ],
+        "notes": "The component specimen has no density customization control or dense settings layout."
       },
       "fixes": []
     },
@@ -344,10 +386,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_checkbox.templ:5-8; catalog/web/component_gallery.go:70-99",
+            "result": "The input’s aria-label is a generated state string such as “checkbox · selected · enabled”; there is no adjacent UI label text in the enclosing label."
+          }
+        ],
+        "notes": "The input’s aria-label is a generated state string such as “checkbox · selected · enabled”; there is no adjacent UI label text in the enclosing label."
       },
       "fixes": []
     },
@@ -370,10 +419,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/checkboxes.css:41-80",
+            "result": "Checked and indeterminate native states display distinct check/dash glyphs and tokenized container/icon state styles."
+          }
+        ],
+        "notes": "Checked and indeterminate native states display distinct check/dash glyphs and tokenized container/icon state styles."
       },
       "fixes": []
     },
@@ -396,10 +452,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_checkbox.templ:5-8; forge/components/static/buttons.js:1-9; forge/components/styles/checkboxes.css:71-87",
+            "result": "Input supports indeterminate and aria-invalid states; CSS renders the dash, and Material button-state bindings provide selected/error visuals."
+          }
+        ],
+        "notes": "Input supports indeterminate and aria-invalid states; CSS renders the dash, and Material button-state bindings provide selected/error visuals."
       },
       "fixes": []
     },
@@ -422,10 +485,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_checkbox.templ:5-8",
+            "result": "The sample is a single checkbox without a settings/list context to judge content selection or desktop on/off use."
+          }
+        ],
+        "notes": "The sample is a single checkbox without a settings/list context to judge content selection or desktop on/off use."
       },
       "fixes": []
     },
@@ -448,10 +518,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_checkbox.templ:5-8",
+            "result": "No single-choice or standalone setting context is present to select among checkbox, radio and switch patterns."
+          }
+        ],
+        "notes": "No single-choice or standalone setting context is present to select among checkbox, radio and switch patterns."
       },
       "fixes": []
     },
@@ -474,10 +551,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_checkbox.templ:5-8",
+            "result": "The specimen is not an expanded-breakpoint side sheet or grouped setting region."
+          }
+        ],
+        "notes": "The specimen is not an expanded-breakpoint side sheet or grouped setting region."
       },
       "fixes": []
     },
@@ -500,10 +584,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_checkbox.templ:5-8",
+            "result": "The component is a native checkbox with independent checked state; it is not constrained by a radio-group mechanism."
+          }
+        ],
+        "notes": "The component is a native checkbox with independent checked state; it is not constrained by a radio-group mechanism."
       },
       "fixes": []
     },
@@ -526,10 +617,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_checkbox.templ:5-8; forge/components/styles/checkboxes.css:82-87",
+            "result": "Native checkbox exposes input role/state and focus styling; the aria label identifies the demo state, though not a meaningful option label."
+          }
+        ],
+        "notes": "Native checkbox exposes input role/state and focus styling; the aria label identifies the demo state, though not a meaningful option label."
       },
       "fixes": []
     },
@@ -552,10 +650,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_checkbox.templ:5-8",
+            "result": "Each specimen uses a native checkbox input without shared radio name or group state controller."
+          }
+        ],
+        "notes": "Each specimen uses a native checkbox input without shared radio name or group state controller."
       },
       "fixes": []
     },
@@ -578,10 +683,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_checkbox.templ:5-8",
+            "result": "No density setting is offered by this standalone checkbox specimen."
+          }
+        ],
+        "notes": "No density setting is offered by this standalone checkbox specimen."
       },
       "fixes": []
     }

@@ -284,10 +284,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_fab.templ:5-6; catalog/web/specimen_attributes.go:70-74,171-175",
+            "result": "The FAB specimen renders the button for every component state. `Attributes()` sets aria-disabled=\"true\" when disabled but does not set the native disabled attribute or omit the button for an unavailable action."
+          }
+        ],
+        "notes": "The code exposes a disabled-state specimen rather than omitting an unavailable FAB; the required omission rule is not implemented by the component/page path. The stated 3:1 contrast is token-driven and not established by this missing-state finding.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -310,10 +317,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_fab.templ:5-6; catalog/web/specimen_attributes.go:70-74",
+            "result": "The specimen uses a native button, and the shared FAB attributes set type=button and aria-label=\"Create\"."
+          }
+        ],
+        "notes": "The rendered control has a programmatic name describing the represented create action and native button focus/activation semantics.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -336,10 +350,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_fab.templ:5-6; catalog/web/specimen_attributes.go:70-74",
+            "result": "The FAB is a native button named Create. Extended FABs are rendered as one native button as well; their optional expansion/minimization remains application behavior."
+          }
+        ],
+        "notes": "This specimen exposes a focusable, activatable named button. The additional extended-FAB expand/minimize behavior is not part of the standard FAB path.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -362,10 +383,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_fab.templ:5-6; catalog/web/specimen_attributes.go:70-74",
+            "result": "The FAB is a native button named Create. Extended FABs are rendered as one native button as well; their optional expansion/minimization remains application behavior."
+          }
+        ],
+        "notes": "This specimen exposes a focusable, activatable named button. The additional extended-FAB expand/minimize behavior is not part of the standard FAB path.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -388,10 +416,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_fab.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When the FAB opens expanded content or related actions.”."
+          }
+        ],
+        "notes": "The condition is “When the FAB opens expanded content or related actions.” and the instruction is “A FAB may transform into an expanded surface or full-screen shape, or transition into a FAB menu.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -414,10 +449,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_fab.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When the FAB appears or the screen changes.”."
+          }
+        ],
+        "notes": "The condition is “When the FAB appears or the screen changes.” and the instruction is “Animate the FAB expanding outward from a central point. Across screen transitions, hide and re-show it; show it again only when relevant to the new screen and in the same position when possible.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -440,10 +482,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_fab.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When content scrolls behind a FAB.”."
+          }
+        ],
+        "notes": "The condition is “When content scrolls behind a FAB.” and the instruction is “Keep a standard FAB in place while content scrolls; an extended FAB may collapse to a FAB during scrolling and expand again at the bottom of the view.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -466,10 +515,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_fab.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When content scrolls behind a FAB.”."
+          }
+        ],
+        "notes": "The condition is “When content scrolls behind a FAB.” and the instruction is “Keep a FAB in place while its background scrolls. An extended FAB may collapse while scrolling and expand again at the bottom of the view.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -492,10 +548,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:459-469",
+            "result": "The token mapper recognizes default, small, medium and large FAB size sets, scopes each to the matching data-size selector and maps height/width/shape/icon geometry."
+          }
+        ],
+        "notes": "The generated Material styling exposes the named size variants stated by the source; the recommendation among them depends on product context.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -518,10 +581,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_fab.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When the user switches destination tabs.”."
+          }
+        ],
+        "notes": "The condition is “When the user switches destination tabs.” and the instruction is “When switching tabs, briefly hide the FAB and show it again after new content settles; do not animate it with body content or leave it visible through the tab change.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -544,10 +614,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:471-478; forge/components/styles/fabs.css:9-25",
+            "result": "For primary, secondary, tertiary and their container variants, the mapper accepts icon.color and state-layer color/opacity; the shared FAB style consumes icon and state-layer variables."
+          }
+        ],
+        "notes": "The same variant selector receives both icon and state-layer role tokens, so the non-default mapping can keep their color roles aligned.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -570,10 +647,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:471-478",
+            "result": "The variant mapper explicitly supports primary/secondary/tertiary container sets and primary/secondary/tertiary tonal sets, mapping each role into a distinct `data-variant` selector."
+          }
+        ],
+        "notes": "The code exposes the expressive container role names and the additional tonal roles through separate selectors.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -596,10 +680,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_fab.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When rendering the FAB container.”."
+          }
+        ],
+        "notes": "The condition is “When rendering the FAB container.” and the instruction is “Keep the FAB container visible rather than covered by badges or other elements, and provide sufficient contrast against its surface.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -622,10 +713,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/fabs.css:40-47",
+            "result": "The FAB and extended FAB `:focus-visible` state receives a secondary-color outline with configured thickness and outer offset."
+          }
+        ],
+        "notes": "The component draws a focus indicator outside the button bounds; this code path does not establish that app content never obscures it.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -648,10 +746,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_fab.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When scrolling or changing tabs.”."
+          }
+        ],
+        "notes": "The condition is “When scrolling or changing tabs.” and the instruction is “Keep the FAB stationary while content scrolls; when switching tabs, briefly hide and re-show it after new content settles rather than animating with body content.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -674,10 +779,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_fab.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When adapting placement and size to breakpoint.”."
+          }
+        ],
+        "notes": "The condition is “When adapting placement and size to breakpoint.” and the instruction is “On compact and medium windows, the lower-right position is typical; on expanded windows, consider the upper-left region or navigation rail. Use medium for mobile and large for tablets and large screens.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -700,10 +812,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:459-469",
+            "result": "The component exposes several sizes, but no application content or breakpoint policy selects a size for a product."
+          }
+        ],
+        "notes": "This is a product recommendation about typical size choice; the component maps sizes but cannot know what “most use” means for a consuming screen.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -726,10 +845,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_fab.templ:3-6; catalog/web/specimen_attributes.go:70-74",
+            "result": "The specimen provides a named native button; its focus order is the DOM order chosen by the consuming page, and no tooltip-on-focus interaction is installed here."
+          }
+        ],
+        "notes": "The check’s focus-order priority depends on page composition. The optional web tooltip is not part of this standalone specimen and is separately checked under tooltip rendering.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -752,10 +878,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:471-478",
+            "result": "The renderer maps the six current primary/secondary/tertiary and container color variants to their own data-variant selectors."
+          }
+        ],
+        "notes": "The supported pairings are represented as explicit generated variants; choice by visual preference is left to the product.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -778,10 +911,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_fab.templ:5-6",
+            "result": "The control is an enabled native HTML button; browser Tab focus and Space/Enter activation use native button semantics."
+          }
+        ],
+        "notes": "No custom handler replaces native keyboard behavior for this button.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -804,10 +944,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_fab.templ:5-6; catalog/web/specimen_attributes.go:70-74",
+            "result": "The example renders a plus Material Symbol and aria-label Create, but it adds no visible text label or tooltip element/trigger on hover."
+          }
+        ],
+        "notes": "The web instruction requires a tooltip together with the icon; the specimen supplies only the icon and accessible name, so the visible hover tooltip requirement is absent.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -830,10 +977,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_fab.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When placing a FAB.”."
+          }
+        ],
+        "notes": "The condition is “When placing a FAB.” and the instruction is “Use at most one FAB per screen; it may align left, center, or right and sit above or within navigation.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -856,10 +1010,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_fab.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When deciding whether an action belongs in a FAB.”."
+          }
+        ],
+        "notes": "The condition is “When deciding whether an action belongs in a FAB.” and the instruction is “Use FABs for constructive primary actions such as create, favorite, share, or starting a process; avoid minor, destructive, unclear, overflow, or toolbar-control actions.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -882,10 +1043,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_fab.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When selecting FAB size by emphasis and breakpoint.”."
+          }
+        ],
+        "notes": "The condition is “When selecting FAB size by emphasis and breakpoint.” and the instruction is “Use medium FAB for most situations, the small FAB only where compactness is needed despite its no-longer-recommended status, and large FAB when the primary action needs stronger prominence.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -908,10 +1076,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_fab.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When a screen needs a prominent primary action.”."
+          }
+        ],
+        "notes": "The condition is “When a screen needs a prominent primary action.” and the instruction is “Use one FAB for the screen’s most common or important constructive action, and give it a clear, understandable icon.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -934,10 +1109,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:471-479",
+            "result": "The current mapper accepts six named color variants and explicitly excludes the older combined FAB set; this code does not establish whether a baseline surface variant remains available from another token source."
+          }
+        ],
+        "notes": "The source says legacy surface styling remains available in baseline; the inspected current mapping excludes the older combined set, so availability in the baseline implementation remains unresolved.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     }

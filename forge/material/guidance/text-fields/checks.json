@@ -332,9 +332,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/text-fields.css:24-59",
+            "result": "Field container, input and outline colors are resolved through Material component token variables rather than fixed palette values."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -358,10 +365,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/text-fields.css:1-78",
+            "result": "Filled fields share state/outline variables and an explicit focus ring; enabled, hover and disabled populated/empty states are not fully evidenced in this CSS excerpt."
+          }
+        ],
+        "notes": "The full state matrix was not exercised."
       },
       "fixes": []
     },
@@ -384,10 +398,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/text-fields.css:1-78",
+            "result": "The field style has state variables but this specimen does not render an error message state or prove the required empty/populated error variants."
+          }
+        ],
+        "notes": "The error-state implementation path needs further inspection."
       },
       "fixes": []
     },
@@ -410,10 +431,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/text-fields.css:17-59",
+            "result": "Height, padding, gaps and typography use component/system token variables; resolved values for every measurement and icon condition were not captured."
+          }
+        ],
+        "notes": "Computed dimensions were not measured."
       },
       "fixes": []
     },
@@ -436,10 +464,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/text-fields.css:1-78",
+            "result": "Outlined fields share state/outline variables and an explicit focus ring; enabled, hover and disabled populated/empty states are not fully evidenced in this CSS excerpt."
+          }
+        ],
+        "notes": "The full state matrix was not exercised."
       },
       "fixes": []
     },
@@ -462,10 +497,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/text-fields.css:1-78",
+            "result": "The field style has state variables but this specimen does not render an error message state or prove the required empty/populated error variants."
+          }
+        ],
+        "notes": "The error-state implementation path needs further inspection."
       },
       "fixes": []
     },
@@ -488,10 +530,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/text-fields.css:17-59",
+            "result": "Height, padding, gaps and typography use component/system token variables; resolved values for every measurement and icon condition were not captured."
+          }
+        ],
+        "notes": "Computed dimensions were not measured."
       },
       "fixes": []
     },
@@ -514,10 +563,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "Whether a given product input collects contact/payment information is a product form decision."
       },
       "fixes": []
     },
@@ -540,10 +590,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "Choosing the relative visual emphasis of outlined fields in a form is a product design decision."
       },
       "fixes": []
     },
@@ -566,10 +617,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "Selecting filled versus outlined for the app visual style is a product design decision; both variants are implemented."
       },
       "fixes": []
     },
@@ -592,10 +644,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "Whether variants are mixed within the same product region is host form composition."
       },
       "fixes": []
     },
@@ -618,9 +671,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/text-fields.css:24-47",
+            "result": "Field shape and fill/stroke are token-bound, supporting separate outlined and filled containers."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -644,9 +704,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_field.templ:7-18",
+            "result": "Each input has a visible associated label, and CSS moves it from center to the top when focused or populated."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -670,10 +737,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "The specimen always uses an internal visible label; no separate adjacent-label form layout is present."
       },
       "fixes": []
     },
@@ -696,10 +764,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/fields.go:19-41",
+            "result": "The field input attributes do not expose a required flag and the specimen has no asterisk/required explanatory note; caller-supplied required-field behavior is not demonstrated."
+          }
+        ],
+        "notes": "No required-field variant exists in the assessed example."
       },
       "fixes": []
     },
@@ -722,10 +797,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "This package renders single-line text fields; multiline and textarea mode selection is a separate form control choice."
       },
       "fixes": []
     },
@@ -748,9 +824,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_field.templ:15-20",
+            "result": "The affix configuration renders a prefix slot before input and a suffix slot after it, with token-bound prefix/suffix colors."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -774,9 +857,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_field.templ:15-20",
+            "result": "The affix configuration renders a suffix slot after input, with styling specific to suffix text."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -800,10 +890,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_field.templ:29-29",
+            "result": "Supporting text is linked below the field, but there is no character/word counter or counter label implementation."
+          }
+        ],
+        "notes": "The specimen does not represent a field with a configured limit."
       },
       "fixes": []
     },
@@ -826,9 +923,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_field.templ:29-49",
+            "result": "The specimen always renders static supporting text and has no error-message slot/state to replace it after validation."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -852,10 +956,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "The example has no error state or error icon; the source only recommends the icon conditionally."
       },
       "fixes": []
     },
@@ -878,10 +983,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_field.templ:11-27",
+            "result": "Leading and trailing icon slots are present, but the example has no clear action gated by input content, no RTL mirroring rule shown here, and no image slot."
+          }
+        ],
+        "notes": "Optional icon configuration coverage is partial."
       },
       "fixes": []
     },
@@ -904,9 +1016,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/fields.go:27-39",
+            "result": "The select variant marks its field input read-only while keeping it in the same field style system."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -930,10 +1049,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/text-fields.css:17-25",
+            "result": "The field has max-width 100% and flexible input width, but the snippet does not establish compact full-width versus medium/expanded margin/container behavior."
+          }
+        ],
+        "notes": "No responsive breakpoint layout was observed."
       },
       "fixes": []
     },
@@ -956,10 +1082,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "No density control is offered for text fields in this implementation."
       },
       "fixes": []
     },
@@ -982,9 +1109,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_field.templ:10-18,29-36",
+            "result": "The input is associated with a visible label and supporting description; select/autocomplete options are exposed through listbox/option semantics."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -1008,10 +1142,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/text-fields.css:24-53",
+            "result": "Outline/fill/text colors are token-bound and state-dependent, but outlined-container contrast against its rendered background was not measured."
+          }
+        ],
+        "notes": "The 3:1 conditional threshold needs resolved color measurement."
       },
       "fixes": []
     },
@@ -1034,9 +1175,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_field.templ:10-18",
+            "result": "The enabled field is a native text input with an associated label and ordinary sequential keyboard focus."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -1060,10 +1208,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_field.templ:10,15-20,29; catalog/web/fields.go:19-41",
+            "result": "The label is associated with the input and supporting text is described, but in the rendered affixes variant the visible \"$\" prefix and \"kg\" suffix are both aria-hidden and have no spoken-value IDs/reference. This is the concrete accessible-labeling gap in the present specimen."
+          }
+        ],
+        "notes": "The finding is limited to present affixes: their spoken values are excluded. Error/counter/required-marker behaviors are conditional features not rendered in this specimen and are not treated as absent implementation requirements."
       },
       "fixes": []
     }

@@ -344,10 +344,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/carousel.js:5-32; forge/material/generate-components.mjs:1090-1093",
+            "result": "Renderer has layout algorithms for uncontained, full-screen, hero and multi-browse variants; centered alignment is controlled by the selected case/configuration."
+          }
+        ],
+        "notes": "Renderer has layout algorithms for uncontained, full-screen, hero and multi-browse variants; centered alignment is controlled by the selected case/configuration."
       },
       "fixes": []
     },
@@ -370,10 +377,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/carousels.css:21-30; forge/components/static/carousel.js:5-9",
+            "result": "Viewport uses native free scrolling for uncontained layout and mandatory horizontal snap; renderer selects uncontained behavior for that variant."
+          }
+        ],
+        "notes": "Viewport uses native free scrolling for uncontained layout and mandatory horizontal snap; renderer selects uncontained behavior for that variant."
       },
       "fixes": []
     },
@@ -396,10 +410,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/carousel.js:5-32; forge/components/styles/carousels.css:84-129",
+            "result": "Algorithm sizes and clips item windows and keeps the artwork at full visual size, but recognizability of imagery/text is a content decision and needs visual review."
+          }
+        ],
+        "notes": "Algorithm sizes and clips item windows and keeps the artwork at full visual size, but recognizability of imagery/text is a content decision and needs visual review."
       },
       "fixes": []
     },
@@ -422,10 +443,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_carousel.templ:29-35",
+            "result": "Preview provides previous/next item controls only; no Show all destination or vertical-page alternative is rendered."
+          }
+        ],
+        "notes": "Preview provides previous/next item controls only; no Show all destination or vertical-page alternative is rendered."
       },
       "fixes": []
     },
@@ -448,10 +476,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_carousel.templ:15-25",
+            "result": "The specimen uses six simple decorative landscape images and no text-bearing content, so content complexity/compact text-item limits do not apply."
+          }
+        ],
+        "notes": "The specimen uses six simple decorative landscape images and no text-bearing content, so content complexity/compact text-item limits do not apply."
       },
       "fixes": []
     },
@@ -474,10 +509,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/carousel.js:5-32; forge/components/styles/carousels.css:35-49",
+            "result": "Renderer supports uncontained sizing, but all six sample items use the same preferred dimensions; no multi-aspect data/configuration is shown."
+          }
+        ],
+        "notes": "Renderer supports uncontained sizing, but all six sample items use the same preferred dimensions; no multi-aspect data/configuration is shown."
       },
       "fixes": []
     },
@@ -500,10 +542,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/carousels.css:21-30; forge/components/static/carousel.js:5-32",
+            "result": "All contained layouts use mandatory snap scrolling, including hero; uncontained explicitly uses free scrolling."
+          }
+        ],
+        "notes": "All contained layouts use mandatory snap scrolling, including hero; uncontained explicitly uses free scrolling."
       },
       "fixes": []
     },
@@ -526,10 +575,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/carousel.js:5-9; forge/components/styles/carousels.css:2-20",
+            "result": "Full-screen algorithm fills its viewport width, but the specimen has a 40rem max-width and no breakpoint/orientation gate for portrait-only compact/medium use."
+          }
+        ],
+        "notes": "Full-screen algorithm fills its viewport width, but the specimen has a 40rem max-width and no breakpoint/orientation gate for portrait-only compact/medium use."
       },
       "fixes": []
     },
@@ -552,10 +608,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_carousel.templ:7-35; forge/components/static/carousel.js:168-179",
+            "result": "Focusable viewport precedes item buttons and previous/next controls follow; arrow keys move items and Home/End move endpoints, but no up/down exit behavior is implemented."
+          }
+        ],
+        "notes": "Focusable viewport precedes item buttons and previous/next controls follow; arrow keys move items and Home/End move endpoints, but no up/down exit behavior is implemented."
       },
       "fixes": []
     },
@@ -578,10 +641,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/carousel.js:61-61; forge/components/static/carousel.js:75-102; forge/components/styles/carousels.css:84-129",
+            "result": "Reduced-motion branch removes animated settling, but layout still changes item widths and no parallax or edge clipping setting is explicitly disabled by preference."
+          }
+        ],
+        "notes": "Reduced-motion branch removes animated settling, but layout still changes item widths and no parallax or edge clipping setting is explicitly disabled by preference."
       },
       "fixes": []
     },
@@ -604,10 +674,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_carousel.templ:7-8; catalog/web/specimen_carousel.templ:29-35; forge/components/static/carousel.js:104-110",
+            "result": "Carousel section has label and roledescription, and live output announces “Item n of 6” after settling."
+          }
+        ],
+        "notes": "Carousel section has label and roledescription, and live output announces “Item n of 6” after settling."
       },
       "fixes": []
     },
@@ -630,10 +707,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/carousel.js:5-9; forge/material/generate-components.mjs:1090-1093",
+            "result": "Uncontained variant is generated and renderer has a dedicated uncontained layout branch; upstream introduction dates do not constrain runtime behavior."
+          }
+        ],
+        "notes": "Uncontained variant is generated and renderer has a dedicated uncontained layout branch; upstream introduction dates do not constrain runtime behavior."
       },
       "fixes": []
     },
@@ -656,10 +740,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/carousel.js:5-32; forge/components/styles/carousels.css:2-20",
+            "result": "Widths adapt to the viewport for multi-browse/hero/full-screen layouts and small is 56px; no 40–56dp small-size bound or maximum large-item rule is enforced."
+          }
+        ],
+        "notes": "Widths adapt to the viewport for multi-browse/hero/full-screen layouts and small is 56px; no 40–56dp small-size bound or maximum large-item rule is enforced."
       },
       "fixes": []
     },
@@ -682,10 +773,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/carousel.js:10-31",
+            "result": "Multi-browse keyline plan includes small edge items, large items, and an interpolated medium item when the layout fits."
+          }
+        ],
+        "notes": "Multi-browse keyline plan includes small edge items, large items, and an interpolated medium item when the layout fits."
       },
       "fixes": []
     },
@@ -708,10 +806,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/carousels.css:21-30; forge/components/static/carousel.js:137-145",
+            "result": "Viewport has symmetric inline padding and scroll-padding for the contained layout."
+          }
+        ],
+        "notes": "Viewport has symmetric inline padding and scroll-padding for the contained layout."
       },
       "fixes": []
     },
@@ -734,10 +839,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/carousels.css:21-43; forge/components/static/carousel.js:5-9",
+            "result": "Viewport negative margins create edge bleed and uncontained free scrolling, but no variant-specific uncontained padding/bleed choice is explicit."
+          }
+        ],
+        "notes": "Viewport negative margins create edge bleed and uncontained free scrolling, but no variant-specific uncontained padding/bleed choice is explicit."
       },
       "fixes": []
     },
@@ -760,10 +872,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/carousels.css:35-43; forge/components/static/carousel.js:5-9",
+            "result": "Track has a gap and inline-end padding; no dedicated uncontained multi-aspect variant rule establishes leading-only padding or resolved 8dp gap."
+          }
+        ],
+        "notes": "Track has a gap and inline-end padding; no dedicated uncontained multi-aspect variant rule establishes leading-only padding or resolved 8dp gap."
       },
       "fixes": []
     },
@@ -786,10 +905,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/carousels.css:21-30; forge/components/static/carousel.js:10-32",
+            "result": "Hero uses the same viewport with symmetric inline padding and computes side small-item keylines."
+          }
+        ],
+        "notes": "Hero uses the same viewport with symmetric inline padding and computes side small-item keylines."
       },
       "fixes": []
     },
@@ -812,10 +938,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/carousels.css:21-30; forge/components/static/carousel.js:23-31",
+            "result": "Hero keylines center the main item and the viewport supplies inline padding at both edges."
+          }
+        ],
+        "notes": "Hero keylines center the main item and the viewport supplies inline padding at both edges."
       },
       "fixes": []
     },
@@ -838,10 +971,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/carousels.css:2-10",
+            "result": "Carousel root is fixed at 40rem with max-inline-size:100%; no full-window breakout/edge-to-edge rule exists."
+          }
+        ],
+        "notes": "Carousel root is fixed at 40rem with max-inline-size:100%; no full-window breakout/edge-to-edge rule exists."
       },
       "fixes": []
     },
@@ -864,10 +1004,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/carousel.js:23-31",
+            "result": "Hero keylines place small preview items at both edges with the large focal item centered."
+          }
+        ],
+        "notes": "Hero keylines place small preview items at both edges with the large focal item centered."
       },
       "fixes": []
     },
@@ -890,10 +1037,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/carousels.css:2-20; forge/components/static/carousel.js:5-32",
+            "result": "Container width adapts to its parent and item count/layout changes visible keylines, but rectangular shape and breakpoint-specific count are not asserted in code."
+          }
+        ],
+        "notes": "Container width adapts to its parent and item count/layout changes visible keylines, but rectangular shape and breakpoint-specific count are not asserted in code."
       },
       "fixes": []
     },
@@ -916,10 +1070,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/carousels.css:2-20; forge/components/static/carousel.js:5-32",
+            "result": "Renderer supports three preset preferred widths and dynamic large/medium/small keylines, but no 40–56dp small range or compact-only large maximum is enforced."
+          }
+        ],
+        "notes": "Renderer supports three preset preferred widths and dynamic large/medium/small keylines, but no 40–56dp small range or compact-only large maximum is enforced."
       },
       "fixes": []
     },
@@ -942,10 +1103,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_carousel.templ:19-23",
+            "result": "The specimen items contain decorative SVG art and an aria-hidden number, with no visible text label to wrap or truncate."
+          }
+        ],
+        "notes": "The specimen items contain decorative SVG art and an aria-hidden number, with no visible text label to wrap or truncate."
       },
       "fixes": []
     },
@@ -968,10 +1136,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_carousel.templ:15-25",
+            "result": "Only decorative imagery is shown, so a text-heavy content layout is not represented."
+          }
+        ],
+        "notes": "Only decorative imagery is shown, so a text-heavy content layout is not represented."
       },
       "fixes": []
     },
@@ -994,10 +1169,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/carousel.js:5-32; forge/components/styles/carousels.css:2-20",
+            "result": "Multi-browse computes keylines from width, but no compact breakpoint caps visible count at three or forces full-screen to one."
+          }
+        ],
+        "notes": "Multi-browse computes keylines from width, but no compact breakpoint caps visible count at three or forces full-screen to one."
       },
       "fixes": []
     },
@@ -1020,10 +1202,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/carousel.js:112-129",
+            "result": "Item positions and artwork transforms are updated with shared scroll position; there is no per-item parallax offset or media-motion effect."
+          }
+        ],
+        "notes": "Item positions and artwork transforms are updated with shared scroll position; there is no per-item parallax offset or media-motion effect."
       },
       "fixes": []
     },
@@ -1046,10 +1235,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_carousel.templ:29-35",
+            "result": "The demo has 48px previous/next icon buttons but no Show all button, header, or all-items destination."
+          }
+        ],
+        "notes": "The demo has 48px previous/next icon buttons but no Show all button, header, or all-items destination."
       },
       "fixes": []
     },
@@ -1072,10 +1268,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_carousel.templ:29-35",
+            "result": "Previous/next controls are placed outside the viewport, below the carousel items."
+          }
+        ],
+        "notes": "Previous/next controls are placed outside the viewport, below the carousel items."
       },
       "fixes": []
     },
@@ -1098,10 +1301,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_carousel.templ:7-35; forge/components/static/carousel.js:162-179",
+            "result": "Named carousel, live item count and native item buttons permit navigation/activation; no explicit skip-past control or focus exit with vertical arrows is implemented."
+          }
+        ],
+        "notes": "Named carousel, live item count and native item buttons permit navigation/activation; no explicit skip-past control or focus exit with vertical arrows is implemented."
       },
       "fixes": []
     },
@@ -1124,10 +1334,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/buttons.js:75-79; forge/components/static/buttons.js:395-425; forge/components/styles/carousels.css:131-144",
+            "result": "Shared feedback runtime treats carousel items as button controls and inserts pointer-origin ripple; CSS layers ripple and token state feedback over item artwork."
+          }
+        ],
+        "notes": "Shared feedback runtime treats carousel items as button controls and inserts pointer-origin ripple; CSS layers ripple and token state feedback over item artwork."
       },
       "fixes": []
     },
@@ -1150,10 +1367,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/carousels.css:84-149; forge/components/static/buttons.js:455-478",
+            "result": "Item has state layer/ripple and focus styling; this stylesheet contains no explicit hover selector, so generated hover token mapping needs computed browser confirmation."
+          }
+        ],
+        "notes": "Item has state layer/ripple and focus styling; this stylesheet contains no explicit hover selector, so generated hover token mapping needs computed browser confirmation."
       },
       "fixes": []
     },
@@ -1176,10 +1400,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/carousels.css:155-189",
+            "result": "Artwork occupies the item mask and item number overlays within it; surrounding controls are outside the viewport and remain unmasked."
+          }
+        ],
+        "notes": "Artwork occupies the item mask and item number overlays within it; surrounding controls are outside the viewport and remain unmasked."
       },
       "fixes": []
     },
@@ -1202,10 +1433,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/carousel.js:168-179",
+            "result": "ArrowLeft/ArrowRight move to adjacent enabled item; Home/End move to first/last, focusing the target after scroll settles."
+          }
+        ],
+        "notes": "ArrowLeft/ArrowRight move to adjacent enabled item; Home/End move to first/last, focusing the target after scroll settles."
       },
       "fixes": []
     },
@@ -1228,10 +1466,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_carousel.templ:17-23",
+            "result": "Each carousel item is a native button, so focused-item activation uses browser Space/Enter button semantics."
+          }
+        ],
+        "notes": "Each carousel item is a native button, so focused-item activation uses browser Space/Enter button semantics."
       },
       "fixes": []
     }

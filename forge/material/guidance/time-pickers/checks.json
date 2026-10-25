@@ -326,9 +326,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/time-pickers.css:15-26",
+            "result": "Picker container and text colors are bound to Material component/system color tokens."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -352,10 +359,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/time-pickers.css:81-121",
+            "result": "Time values use shared button-state token variables and fields/dial have focus styling; the complete enabled/hover/pressed matrix was not observed."
+          }
+        ],
+        "notes": "The combined picker state matrix needs runtime inspection."
       },
       "fixes": []
     },
@@ -378,10 +392,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/time-pickers.css:19-27,250-298",
+            "result": "Container, selector, dial, handle, center and track dimensions use component/system tokens; their resolved vertical-dial measurements were not measured."
+          }
+        ],
+        "notes": "Requires computed style values."
       },
       "fixes": []
     },
@@ -404,10 +425,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/time-pickers.css:19-27,250-298,377-410",
+            "result": "Landscape CSS places selector and dial side by side and sizing remains token-bound, but the horizontal dimensions and 24-hour width exception were not resolved."
+          }
+        ],
+        "notes": "Requires computed style values."
       },
       "fixes": []
     },
@@ -430,10 +458,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/time-pickers.css:19-27,63-80,200-220",
+            "result": "Input and period dimensions are token-bound and a left-aligned headline is rendered, but the specified 96×72/52×72 dimensions and 24dp padding were not measured."
+          }
+        ],
+        "notes": "Requires computed style values."
       },
       "fixes": []
     },
@@ -456,9 +491,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/time_picker.go:20-26",
+            "result": "Orientation is carried into the panel and CSS provides a landscape selector/dial layout; the default component configuration uses vertical/portrait mode."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -482,9 +524,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/time_picker.go:69-96",
+            "result": "The dial builder supports 24-hour inner and outer rings, and the same orientation attribute controls vertical or landscape rendering."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -508,9 +557,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/time_picker.go:20-25",
+            "result": "The picker receives 12h/24h format as a panel attribute; logic and rendering use that flag for hour validation, period visibility and display."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -534,10 +590,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "Choosing time-entry use cases and the product’s modal interaction model is a product-level decision."
       },
       "fixes": []
     },
@@ -560,9 +617,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_time.templ:42-44",
+            "result": "The keyboard-icon control is present and runtime switches the panel from clock to input mode."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -586,9 +650,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/time_picker.go:69-96",
+            "result": "For 24-hour mode the tick builder renders 0–11 on the outer ring and 12–23 on the inner ring."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -612,9 +683,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/time-pickers.css:15-42",
+            "result": "The picker is a modal dialog with a ::backdrop using a token-bound scrim color and opacity."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -638,9 +716,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_time.templ:13-24",
+            "result": "Hours and minutes have separate labeled inputs; AM/PM is hidden when the 24-hour format is active and appears after the minute selector for 12-hour mode."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -664,9 +749,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/time_picker.go:69-96",
+            "result": "For 24-hour mode, the code places all values 12–23 in the inner ring and 0–11 outside; it does not place even values inside and odd values outside as this check requires."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -690,9 +782,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_time.templ:42-44",
+            "result": "The mode toggle contains keyboard and clock glyphs, and footer buttons provide Cancel and OK actions."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -716,9 +815,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/time-pickers.css:377-410",
+            "result": "Landscape orientation lays out the time selectors beside the dial and changes AM/PM controls to a horizontal row."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -742,10 +848,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/time-pickers.css:15-27",
+            "result": "The dialog has viewport-relative maximum dimensions and remains in the modal top layer, but overflow:auto permits scrolling and crop-free placement was not exercised at constrained sizes."
+          }
+        ],
+        "notes": "No small-viewport browser observation."
       },
       "fixes": []
     },
@@ -768,9 +881,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/time_picker.go:20-25",
+            "result": "Orientation and mode are fixed input attributes; the runtime has no ResizeObserver or viewport-height rule to switch to landscape or input when the dial cannot fit."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -794,10 +914,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "This time-picker implementation offers no density configuration."
       },
       "fixes": []
     },
@@ -820,9 +941,21 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/time-picker.js:72-83,85-92",
+            "result": "Confirm, Cancel and Escape close the dialog and restore trigger focus, but no outside-click/backdrop dismissal handler is present."
+          },
+          {
+            "kind": "browser",
+            "location": "/tmp/tokens-assessment-fd88b0dd/forge/conformance/check-motion.mjs:85-98",
+            "result": "The Chromium motion probe cancelled an opening picker, confirmed the interrupted exit starts below full opacity, kept the closing panel inert, observed closure and inert clearing, then verified a reduced-motion change finishes another in-flight dismissal. It did not exercise confirmation, Cancel-button activation, outside dismissal, or focus retention."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -846,9 +979,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/time-picker.js:85-91",
+            "result": "Activating the keyboard/clock toggle switches mode, validates input when leaving input mode, and moves focus to the corresponding control."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -872,9 +1012,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/time-pickers.css:19-27",
+            "result": "The dialog explicitly uses overflow:auto, so the picker itself can scroll instead of switching orientation or variant to fit."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -898,9 +1045,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_time.templ:13-24,41-44",
+            "result": "Separate hour/minute text inputs, period controls, mode switch and Cancel/OK actions support manual entry and 12/24-hour selection."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -924,10 +1078,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_time.templ:42-44",
+            "result": "Manual input can be opened from the clock through the keyboard toggle and dial dimensions are token-bound, but no small-screen auto-fallback is implemented; the source says to consider input when space is insufficient."
+          }
+        ],
+        "notes": "The platform-specific Android Views exception does not apply to web."
       },
       "fixes": []
     },
@@ -950,10 +1111,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/time-pickers.css:250-298",
+            "result": "The dial itself is a single slider hit target with a token-sized handle; tick labels are aria-hidden and not separate 48×48 interactive targets."
+          }
+        ],
+        "notes": "Guidance target may refer to dial interaction zones; no per-tick target geometry is implemented."
       },
       "fixes": []
     },
@@ -976,9 +1144,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/time-picker.js:101-113",
+            "result": "The dial and input controls are keyboard-focusable, hour/minute buttons and period controls use native button activation, and Enter/Space on the dial advances the active part."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -1002,10 +1177,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/time-picker.js:43-46",
+            "result": "The dial exposes current value and aria-valuetext, but it announces a value/unit without the documented “of total” phrase; native text inputs expose textbox semantics."
+          }
+        ],
+        "notes": "The web role mapping is not specified in the captured platform examples."
       },
       "fixes": []
     },
@@ -1028,9 +1210,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/time_picker.go:36-41",
+            "result": "Hour/minute inputs are named “Hours” and “Minutes” rather than “Hour” and “Minute”; the toggle label is “Use clock” rather than “Toggle dial picker.” Cancel and OK remain native buttons."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -1054,10 +1243,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_time.templ:13-24,42-44",
+            "result": "Hour/minute fields are text inputs and controls are buttons; the period choices are a labeled group of aria-pressed buttons, not the platform-specific mobile radio/checkbox list semantics. Web-specific role expectations for the dial are absent from this merged rule."
+          }
+        ],
+        "notes": "Captured role mapping is platform-specific to Wiz/Compose and Android Views; do not infer those roles for web."
       },
       "fixes": []
     },
@@ -1080,9 +1276,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/time_picker.go:36-41",
+            "result": "Input fields have textbox roles through native inputs, but their accessible names are plural (“Hours”, “Minutes”) instead of the required “Hour” and “Minute”; the mode toggle uses a different label from “Toggle dial picker.”"
+          }
+        ],
         "notes": ""
       },
       "fixes": []

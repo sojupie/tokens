@@ -176,10 +176,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:430-440; catalog/web/specimen_badge.templ:5-8",
+            "result": "The generator and specimen expose dot and labeled forms; labeled sample has count text while dot has no text."
+          }
+        ],
+        "notes": "The generator and specimen expose dot and labeled forms; labeled sample has count text while dot has no text."
       },
       "fixes": []
     },
@@ -202,10 +209,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:83-101; forge/components/styles/navigation.css:79-101",
+            "result": "Navigation badge is an inline sibling inside the item indicator and badge CSS has no position/anchor rule, so edge anchoring and RTL mirrored placement are not implemented."
+          }
+        ],
+        "notes": "Navigation badge is an inline sibling inside the item indicator and badge CSS has no position/anchor rule, so edge anchoring and RTL mirrored placement are not implemented."
       },
       "fixes": []
     },
@@ -228,10 +242,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:430-440; forge/components/styles/badges.css:1-20",
+            "result": "Badge container and label color are token-bound; no code assertion or computed contrast measurement establishes the 3:1 relation to badge label and nearby content."
+          }
+        ],
+        "notes": "Badge container and label color are token-bound; no code assertion or computed contrast measurement establishes the 3:1 relation to badge label and nearby content."
       },
       "fixes": []
     },
@@ -254,10 +275,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_badge.templ:5-8; forge/components/styles/badges.css:12-20",
+            "result": "The demo hard-codes “99+”; no count-formatting/truncation or collision-handling logic exists for dynamic labels."
+          }
+        ],
+        "notes": "The demo hard-codes “99+”; no count-formatting/truncation or collision-handling logic exists for dynamic labels."
       },
       "fixes": []
     },
@@ -280,10 +308,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:430-440; catalog/web/specimen_navigation.templ:93-99",
+            "result": "Navigation badge configuration supports dot and labeled variants, and the compact demo uses the selected variant; application-context choice is selectable."
+          }
+        ],
+        "notes": "Navigation badge configuration supports dot and labeled variants, and the compact demo uses the selected variant; application-context choice is selectable."
       },
       "fixes": []
     },
@@ -306,10 +341,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:93-100",
+            "result": "The navigation badge remains in item markup regardless of selected state; the inspected template has no selected-destination suppression condition."
+          }
+        ],
+        "notes": "The navigation badge remains in item markup regardless of selected state; the inspected template has no selected-destination suppression condition."
       },
       "fixes": []
     },
@@ -332,10 +374,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_badge.templ:5-8; catalog/web/specimen_navigation.templ:93-99",
+            "result": "Standalone badge always announces “Unread notifications” and navigation badge says “3 unread files”; neither composes a numeric count after the destination label nor uses “New notification” for a dot."
+          }
+        ],
+        "notes": "Standalone badge always announces “Unread notifications” and navigation badge says “3 unread files”; neither composes a numeric count after the destination label nor uses “New notification” for a dot."
       },
       "fixes": []
     },
@@ -358,10 +407,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:430-440; forge/components/styles/badges.css:1-20",
+            "result": "Badge and label use tokenized color variables but the specified 3:1 contrast cannot be confirmed without resolving rendered token values."
+          }
+        ],
+        "notes": "Badge and label use tokenized color variables but the specified 3:1 contrast cannot be confirmed without resolving rendered token values."
       },
       "fixes": []
     },
@@ -384,10 +440,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/badges.css:1-20; forge/material/generate-components.mjs:430-440",
+            "result": "Size, shape, padding and offsets are variable-driven; the source code does not show resolved 6dp/16dp dimensions or icon-corner offset, so measure computed layout."
+          }
+        ],
+        "notes": "Size, shape, padding and offsets are variable-driven; the source code does not show resolved 6dp/16dp dimensions or icon-corner offset, so measure computed layout."
       },
       "fixes": []
     },
@@ -410,10 +473,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_badge.templ:5-8; catalog/web/specimen_navigation.templ:93-99",
+            "result": "Dot variant renders no label text, while labeled variant renders a count; navigation integration supplies count text for the labeled form."
+          }
+        ],
+        "notes": "Dot variant renders no label text, while labeled variant renders a count; navigation integration supplies count text for the labeled form."
       },
       "fixes": []
     },
@@ -436,10 +506,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:76-100",
+            "result": "Badge resides within a button navigation item and has a static unread-files label, but the item accessible name composition and destination remediation outcome need browser/screen-reader confirmation."
+          }
+        ],
+        "notes": "Badge resides within a button navigation item and has a static unread-files label, but the item accessible name composition and destination remediation outcome need browser/screen-reader confirmation."
       },
       "fixes": []
     }

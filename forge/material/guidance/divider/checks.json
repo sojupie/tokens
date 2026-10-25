@@ -146,10 +146,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_divider.templ:3-9",
+            "result": "The specimen previews an isolated divider and cannot establish whether open space would group the surrounding product content better or whether every item is separated."
+          }
+        ],
+        "notes": "The specimen previews an isolated divider and cannot establish whether open space would group the surrounding product content better or whether every item is separated."
       },
       "fixes": []
     },
@@ -172,10 +179,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_divider.templ:3-9; forge/components/styles/dividers.css:3-9",
+            "result": "Renderer supports full-width geometry, but the preview does not represent larger/unrelated page sections or sparing use."
+          }
+        ],
+        "notes": "Renderer supports full-width geometry, but the preview does not represent larger/unrelated page sections or sparing use."
       },
       "fixes": []
     },
@@ -198,10 +212,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/dividers.css:10-15; catalog/web/specimen_attributes.go:90-92; catalog/web/specimen_divider.go:3-11",
+            "result": "Divider configuration selects start or middle inset and stylesheet applies logical 16px start/both-side insets."
+          }
+        ],
+        "notes": "Divider configuration selects start or middle inset and stylesheet applies logical 16px start/both-side insets."
       },
       "fixes": []
     },
@@ -224,10 +245,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_divider.templ:3-9",
+            "result": "The isolated specimen does not combine full-width and inset dividers across a page hierarchy."
+          }
+        ],
+        "notes": "The isolated specimen does not combine full-width and inset dividers across a page hierarchy."
       },
       "fixes": []
     },
@@ -250,10 +278,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_divider.templ:3-9; forge/components/styles/dividers.css:3-15",
+            "result": "The inspected divider stylesheet has horizontal border geometry only; vertical orientation and a large-screen text/video/image layout are not represented."
+          }
+        ],
+        "notes": "The inspected divider stylesheet has horizontal border geometry only; vertical orientation and a large-screen text/video/image layout are not represented."
       },
       "fixes": []
     },
@@ -276,10 +311,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:727-730; forge/components/styles/dividers.css:3-8",
+            "result": "Generator maps divider color/thickness tokens to the divider custom properties consumed by the rule."
+          }
+        ],
+        "notes": "Generator maps divider color/thickness tokens to the divider custom properties consumed by the rule."
       },
       "fixes": []
     },
@@ -302,10 +344,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/dividers.css:3-15",
+            "result": "The rule stretches to its parent and applies tokenized 16px logical inset margins; resolved 100% width and exact 16/0/16dp values require computed layout verification."
+          }
+        ],
+        "notes": "The rule stretches to its parent and applies tokenized 16px logical inset margins; resolved 100% width and exact 16/0/16dp values require computed layout verification."
       },
       "fixes": []
     },
@@ -328,10 +377,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_divider.templ:3-9; forge/components/styles/dividers.css:22-37",
+            "result": "Supporting variant places text after the divider with a space50 top margin; optional right/bottom margins use space100. The exact measurements are token-resolved and not computed here."
+          }
+        ],
+        "notes": "Supporting variant places text after the divider with a space50 top margin; optional right/bottom margins use space100. The exact measurements are token-resolved and not computed here."
       },
       "fixes": []
     },
@@ -354,10 +410,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_divider.templ:3-9; forge/components/styles/dividers.css:3-8",
+            "result": "Rendered element is a noninteractive hr with tokenized color and thickness; no minimum contrast rule is attached to it."
+          }
+        ],
+        "notes": "Rendered element is a noninteractive hr with tokenized color and thickness; no minimum contrast rule is attached to it."
       },
       "fixes": []
     }

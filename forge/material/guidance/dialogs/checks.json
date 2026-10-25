@@ -320,10 +320,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_dialog.templ:5-76",
+            "result": "The dialog is a generic component preview, not an application prompt whose criticality or decision task can be assessed."
+          }
+        ],
+        "notes": "The dialog is a generic component preview, not an application prompt whose criticality or decision task can be assessed."
       },
       "fixes": []
     },
@@ -346,10 +353,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_dialog.templ:5-10",
+            "result": "The specimen does not show a product message-priority choice or snackbar alternative."
+          }
+        ],
+        "notes": "The specimen does not show a product message-priority choice or snackbar alternative."
       },
       "fixes": []
     },
@@ -372,10 +386,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_dialog.templ:16-18; catalog/web/dialogs.go:30-35",
+            "result": "Visible headline is fixed to “New item” or “Edit item”; it names the demo task but cannot establish application-specific clarity or tone."
+          }
+        ],
+        "notes": "Visible headline is fixed to “New item” or “Edit item”; it names the demo task but cannot establish application-specific clarity or tone."
       },
       "fixes": []
     },
@@ -408,10 +429,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 2,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_dialog.templ:12-25; catalog/web/specimen_dialog.templ:43-50",
+            "result": "Basic dialog renders one or two actions; full-screen configurations present Save/Cancel actions either in the header or footer, with close affordance separately in the app bar."
+          }
+        ],
+        "notes": "Basic dialog renders one or two actions; full-screen configurations present Save/Cancel actions either in the header or footer, with close affordance separately in the app bar."
       },
       "fixes": []
     },
@@ -434,10 +462,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_dialog.templ:11-25; forge/components/styles/dialogs.css:99-135",
+            "result": "Basic/full-screen variant is selected by case; there is no breakpoint rule/controller switching full-screen compact dialogs to basic on medium/expanded layouts."
+          }
+        ],
+        "notes": "Basic/full-screen variant is selected by case; there is no breakpoint rule/controller switching full-screen compact dialogs to basic on medium/expanded layouts."
       },
       "fixes": []
     },
@@ -460,10 +495,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_dialog.templ:20; catalog/web/specimen_dialog.templ:48-49; forge/components/static/dialogs.js:11-11",
+            "result": "Confirmation button is labeled Save and enabled on full-screen variants; this generic label cannot be tied to a specific application action such as Create/Send."
+          }
+        ],
+        "notes": "Confirmation button is labeled Save and enabled on full-screen variants; this generic label cannot be tied to a specific application action such as Create/Send."
       },
       "fixes": []
     },
@@ -486,10 +528,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_dialog.templ:53-58; forge/components/static/dialogs.js:18-21",
+            "result": "When full-screen input differs from committed value, dismissal opens a nested alert dialog asking whether to discard edits."
+          }
+        ],
+        "notes": "When full-screen input differs from committed value, dismissal opens a nested alert dialog asking whether to discard edits."
       },
       "fixes": []
     },
@@ -512,10 +561,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_dialog.templ:67-70; forge/components/static/dialogs.js:11-11; forge/components/static/dialogs.js:42-42",
+            "result": "Sample required-field error is rendered beside the field and save validation focuses the invalid input; general save failure behavior is not modeled."
+          }
+        ],
+        "notes": "Sample required-field error is rendered beside the field and save validation focuses the invalid input; general save failure behavior is not modeled."
       },
       "fixes": []
     },
@@ -538,10 +594,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_dialog.templ:12-25; catalog/web/dialogs.go:48-53",
+            "result": "Full-screen navigation control is the close icon; Save may appear as an action, while no Back/menu navigation is rendered."
+          }
+        ],
+        "notes": "Full-screen navigation control is the close icon; Save may appear as an action, while no Back/menu navigation is rendered."
       },
       "fixes": []
     },
@@ -564,10 +627,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_dialog.templ:13-50; forge/components/styles/dialogs.css:52-58; forge/components/styles/dialogs.css:106-128",
+            "result": "Dialog content is an independently scrolling grid row; full-screen header and optional action bar occupy separate pinned grid rows."
+          }
+        ],
+        "notes": "Dialog content is an independently scrolling grid row; full-screen header and optional action bar occupy separate pinned grid rows."
       },
       "fixes": []
     },
@@ -590,10 +660,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/dialogs.js:13-16; forge/components/static/dialogs.js:27-32",
+            "result": "Open uses native showModal, focuses the first interactive element, and explicitly cycles Tab/Shift+Tab between first and last visible controls."
+          }
+        ],
+        "notes": "Open uses native showModal, focuses the first interactive element, and explicitly cycles Tab/Shift+Tab between first and last visible controls."
       },
       "fixes": []
     },
@@ -616,10 +693,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/dialogs.go:11-23",
+            "result": "Basic dialog gets alertdialog role and aria-labelledby pointing to its visible title (or aria-label when title hidden); full-screen uses dialog role."
+          }
+        ],
+        "notes": "Basic dialog gets alertdialog role and aria-labelledby pointing to its visible title (or aria-label when title hidden); full-screen uses dialog role."
       },
       "fixes": []
     },
@@ -642,10 +726,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/dialogs.js:13-16; forge/components/static/dialogs.js:18-25",
+            "result": "Modal open uses HTMLDialogElement.showModal() and closes only after an action/dismissal flow; browser modal behavior blocks background interaction."
+          }
+        ],
+        "notes": "Modal open uses HTMLDialogElement.showModal() and closes only after an action/dismissal flow; browser modal behavior blocks background interaction."
       },
       "fixes": []
     },
@@ -668,10 +759,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_dialog.templ:5-10",
+            "result": "No message severity or snackbar comparison is present in the generic dialog specimen."
+          }
+        ],
+        "notes": "No message severity or snackbar comparison is present in the generic dialog specimen."
       },
       "fixes": []
     },
@@ -694,10 +792,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_dialog.templ:16-20; catalog/web/specimen_dialog.templ:27-50",
+            "result": "The dialog has a title and labeled Save/Cancel actions communicating the sample edit task."
+          }
+        ],
+        "notes": "The dialog has a title and labeled Save/Cancel actions communicating the sample edit task."
       },
       "fixes": []
     },
@@ -720,10 +825,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_dialog.templ:16-18; forge/components/styles/dialogs.css:150-163",
+            "result": "Full-screen headline is single-line with ellipsis; sample text is short, but no alternative access to truncated title text or second-line wrapping is provided."
+          }
+        ],
+        "notes": "Full-screen headline is single-line with ellipsis; sample text is short, but no alternative access to truncated title text or second-line wrapping is provided."
       },
       "fixes": []
     },
@@ -746,10 +858,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/dialogs.css:80-85; forge/components/styles/dialogs.css:185-197",
+            "result": "Action rows justify content to flex-end and use logical flow, so trailing alignment and RTL ordering follow writing direction."
+          }
+        ],
+        "notes": "Action rows justify content to flex-end and use logical flow, so trailing alignment and RTL ordering follow writing direction."
       },
       "fixes": []
     },
@@ -772,10 +891,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_dialog.templ:43-50",
+            "result": "Cancel is emitted before Save in DOM order, placing dismissal left of confirmation in LTR; flex-end preserves the sequence."
+          }
+        ],
+        "notes": "Cancel is emitted before Save in DOM order, placing dismissal left of confirmation in LTR; flex-end preserves the sequence."
       },
       "fixes": []
     },
@@ -798,10 +924,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/dialogs.css:80-85",
+            "result": "Basic actions display side by side but flex-wrap when space is constrained; there is no label-length rule or explicit stacked confirmation-above-dismissal order."
+          }
+        ],
+        "notes": "Basic actions display side by side but flex-wrap when space is constrained; there is no label-length rule or explicit stacked confirmation-above-dismissal order."
       },
       "fixes": []
     },
@@ -824,10 +957,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_dialog.templ:43-50",
+            "result": "Basic dialog renders only Cancel and Save; no third Learn more action is present."
+          }
+        ],
+        "notes": "Basic dialog renders only Cancel and Save; no third Learn more action is present."
       },
       "fixes": []
     },
@@ -850,10 +990,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_dialog.templ:64-76",
+            "result": "Basic preview demonstrates editing and a form field, not urgent alert, quick selection, or picker-in-dialog integration."
+          }
+        ],
+        "notes": "Basic preview demonstrates editing and a form field, not urgent alert, quick selection, or picker-in-dialog integration."
       },
       "fixes": []
     },
@@ -876,10 +1023,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/dialogs.js:18-25; forge/components/static/dialogs.js:41-42",
+            "result": "Save/cancel/Escape/outside dismissal are explicit actions; invalid form submission keeps the dialog open until corrected."
+          }
+        ],
+        "notes": "Save/cancel/Escape/outside dismissal are explicit actions; invalid form submission keeps the dialog open until corrected."
       },
       "fixes": []
     },
@@ -902,10 +1056,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/dialogs.js:13-16; forge/components/styles/dialogs.css:99-123",
+            "result": "Full-screen dialog opens with a translateY slide from offscreen; no FAB source element or container-transform pairing is implemented."
+          }
+        ],
+        "notes": "Full-screen dialog opens with a translateY slide from offscreen; no FAB source element or container-transform pairing is implemented."
       },
       "fixes": []
     },
@@ -928,10 +1089,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_dialog.templ:53-58; forge/components/static/dialogs.js:18-21",
+            "result": "Full-screen dirty-state dismissal opens a second native modal alertdialog above the full-screen dialog."
+          }
+        ],
+        "notes": "Full-screen dirty-state dismissal opens a second native modal alertdialog above the full-screen dialog."
       },
       "fixes": []
     },
@@ -954,10 +1122,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_dialog.templ:12-25; catalog/web/specimen_dialog.templ:43-50; forge/components/static/dialogs.js:18-25",
+            "result": "Save commits input; close and Cancel dismiss without committing, and full-screen header can host Save or dismissal controls."
+          }
+        ],
+        "notes": "Save commits input; close and Cancel dismiss without committing, and full-screen header can host Save or dismissal controls."
       },
       "fixes": []
     },
@@ -980,10 +1155,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_dialog.templ:5-76",
+            "result": "The static preview does not model a product flow with multiple steps, keyboard-input complexity, unsaved work, or nested application dialogs as a selection criterion."
+          }
+        ],
+        "notes": "The static preview does not model a product flow with multiple steps, keyboard-input complexity, unsaved work, or nested application dialogs as a selection criterion."
       },
       "fixes": []
     },
@@ -1006,10 +1188,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_dialog.templ:12-25; forge/components/static/dialogs.js:18-25",
+            "result": "Close and Cancel use dismiss handlers; Save uses validation/commit and is not used to dismiss as a cancellation action."
+          }
+        ],
+        "notes": "Close and Cancel use dismiss handlers; Save uses validation/commit and is not used to dismiss as a cancellation action."
       },
       "fixes": []
     },
@@ -1032,10 +1221,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/dialogs.js:18-25",
+            "result": "Nested discard prompt is triggered only for a dismissal with dirty input; successful Save commits and closes without a second dialog."
+          }
+        ],
+        "notes": "Nested discard prompt is triggered only for a dismissal with dirty input; successful Save commits and closes without a second dialog."
       },
       "fixes": []
     },
@@ -1058,10 +1254,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_dialog.templ:67-70; forge/components/static/dialogs.js:11-11",
+            "result": "The sample has one required field and one inline error; there is no multi-field case proving simultaneous display of all errors."
+          }
+        ],
+        "notes": "The sample has one required field and one inline error; there is no multi-field case proving simultaneous display of all errors."
       },
       "fixes": []
     },
@@ -1084,10 +1287,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_dialog.templ:67-70",
+            "result": "The only field in the preview is a text input with built-in adjacent error messaging; no checkbox/radio without native error messaging is included."
+          }
+        ],
+        "notes": "The only field in the preview is a text input with built-in adjacent error messaging; no checkbox/radio without native error messaging is included."
       },
       "fixes": []
     },
@@ -1110,10 +1320,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/dialogs.css:99-123; forge/components/styles/dialogs.css:227-233",
+            "result": "Full-screen dialog covers the viewport and has tokenized elevation, but no app-level perceived-elevation reset or overlay stacking demonstration is present."
+          }
+        ],
+        "notes": "Full-screen dialog covers the viewport and has tokenized elevation, but no app-level perceived-elevation reset or overlay stacking demonstration is present."
       },
       "fixes": []
     },
@@ -1136,10 +1353,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_dialog.templ:11-25; forge/components/styles/dialogs.css:99-135",
+            "result": "Variant is fixed in markup/configuration and no breakpoint controller changes full-screen to basic dialog."
+          }
+        ],
+        "notes": "Variant is fixed in markup/configuration and no breakpoint controller changes full-screen to basic dialog."
       },
       "fixes": []
     },
@@ -1162,10 +1386,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_dialog.templ:11-12; forge/components/styles/dialogs.css:11-23",
+            "result": "Basic modal uses native showModal with viewport-bounded dimensions and browser-centered placement; inline examples are explicitly separate previews."
+          }
+        ],
+        "notes": "Basic modal uses native showModal with viewport-bounded dimensions and browser-centered placement; inline examples are explicitly separate previews."
       },
       "fixes": []
     },
@@ -1188,10 +1419,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/dialogs.css:11-23",
+            "result": "Basic dialog is centered and viewport-bounded to 560px, but no expanded-screen custom positioning or 56dp edge-margin API is implemented."
+          }
+        ],
+        "notes": "Basic dialog is centered and viewport-bounded to 560px, but no expanded-screen custom positioning or 56dp edge-margin API is implemented."
       },
       "fixes": []
     },
@@ -1214,10 +1452,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/dialogs.css:2-6; forge/components/static/dialogs.js:13-16; forge/components/static/dialogs.js:23-25",
+            "result": "Basic and full-screen dialogs have distinct token motion timing and open/close animation paths."
+          }
+        ],
+        "notes": "Basic and full-screen dialogs have distinct token motion timing and open/close animation paths."
       },
       "fixes": []
     },
@@ -1240,10 +1485,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/dialogs.js:13-16; forge/components/styles/dialogs.css:11-23",
+            "result": "Native showModal keeps focus in the modal layer and CSS bounds the basic dialog within the viewport; full-screen variant covers the viewport."
+          }
+        ],
+        "notes": "Native showModal keeps focus in the modal layer and CSS bounds the basic dialog within the viewport; full-screen variant covers the viewport."
       },
       "fixes": []
     },
@@ -1266,10 +1518,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/dialogs.css:52-58; forge/components/static/dialogs.js:8-9",
+            "result": "Content region scrolls independently with overscroll containment, while script records top/bottom scroll state."
+          }
+        ],
+        "notes": "Content region scrolls independently with overscroll containment, while script records top/bottom scroll state."
       },
       "fixes": []
     },
@@ -1292,10 +1551,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_dialog.templ:9-10; catalog/web/specimen_dialog.templ:40-50; forge/components/static/dialogs.js:13-25; forge/components/styles/dialogs.css:52-58",
+            "result": "Native opener/buttons, modal semantics, first-focus/trap behavior, form validation, cancel/save handlers and scrollable body are all present in the preview path."
+          }
+        ],
+        "notes": "Native opener/buttons, modal semantics, first-focus/trap behavior, form validation, cancel/save handlers and scrollable body are all present in the preview path."
       },
       "fixes": []
     },
@@ -1318,10 +1584,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_dialog.templ:11-18",
+            "result": "The requirement is Android-specific; this implementation is a web preview and has no Android text-scaling runtime."
+          }
+        ],
+        "notes": "The requirement is Android-specific; this implementation is a web preview and has no Android text-scaling runtime."
       },
       "fixes": []
     },
@@ -1344,10 +1617,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_dialog.templ:40-42; catalog/web/specimen_dialog.templ:64-76",
+            "result": "Sample text field has explicit label/error description and controls are native buttons; coverage of every possible child component cannot be established by the single sample."
+          }
+        ],
+        "notes": "Sample text field has explicit label/error description and controls are native buttons; coverage of every possible child component cannot be established by the single sample."
       },
       "fixes": []
     },
@@ -1370,10 +1650,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/dialogs.js:27-32",
+            "result": "Tab from last visible dialog control wraps to first; Shift+Tab from first wraps to last."
+          }
+        ],
+        "notes": "Tab from last visible dialog control wraps to first; Shift+Tab from first wraps to last."
       },
       "fixes": []
     },
@@ -1396,10 +1683,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_dialog.templ:9-10; catalog/web/specimen_dialog.templ:14-20; forge/components/static/dialogs.js:36-41",
+            "result": "Native buttons support Space/Enter activation and native modal cancel event is intercepted to run Escape dismissal behavior."
+          }
+        ],
+        "notes": "Native buttons support Space/Enter activation and native modal cancel event is intercepted to run Escape dismissal behavior."
       },
       "fixes": []
     },
@@ -1422,10 +1716,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_dialog.templ:67-70",
+            "result": "Sample child field has a visible associated Name label and described error; action buttons have visible labels."
+          }
+        ],
+        "notes": "Sample child field has a visible associated Name label and described error; action buttons have visible labels."
       },
       "fixes": []
     },
@@ -1448,10 +1749,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/dialogs.css:11-23; forge/components/styles/dialogs.css:33-47",
+            "result": "Basic width bounds match 280–560px via token/min/max rules, but exact corner radius, padding, divider thickness, and icon size are token-resolved and not verified here."
+          }
+        ],
+        "notes": "Basic width bounds match 280–560px via token/min/max rules, but exact corner radius, padding, divider thickness, and icon size are token-resolved and not verified here."
       },
       "fixes": []
     },
@@ -1474,10 +1782,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/dialogs.css:33-51; forge/components/styles/dialogs.css:52-92",
+            "result": "Icon variant center-aligns header; spacing is token-backed, but exact 16/24/8dp values and no-icon start alignment need computed layout verification."
+          }
+        ],
+        "notes": "Icon variant center-aligns header; spacing is token-backed, but exact 16/24/8dp values and no-icon start alignment need computed layout verification."
       },
       "fixes": []
     },
@@ -1500,10 +1815,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/dialogs.css:99-148; forge/components/styles/dialogs.css:185-197",
+            "result": "Full-screen covers viewport, uses tokenized shape/header/bar sizes and 24px close icon token; resolved zero corner radius, max width and 56dp/24dp metrics are not checked."
+          }
+        ],
+        "notes": "Full-screen covers viewport, uses tokenized shape/header/bar sizes and 24px close icon token; resolved zero corner radius, max width and 56dp/24dp metrics are not checked."
       },
       "fixes": []
     },
@@ -1526,10 +1848,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/dialogs.css:136-163; forge/components/styles/dialogs.css:169-183",
+            "result": "Header uses flex layout and content uses tokenized body/title typography; exact 8dp spacing and optional 1dp divider size require computed token values."
+          }
+        ],
+        "notes": "Header uses flex layout and content uses tokenized body/title typography; exact 8dp spacing and optional 1dp divider size require computed token values."
       },
       "fixes": []
     },
@@ -1552,10 +1881,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/dialogs.css:227-233; forge/components/static/dialogs.js:13-16",
+            "result": "Native modal dialog backdrop receives a translucent scrim while dialog is open."
+          }
+        ],
+        "notes": "Native modal dialog backdrop receives a translucent scrim while dialog is open."
       },
       "fixes": []
     },
@@ -1578,10 +1914,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/dialogs.go:36-46; forge/components/static/dialogs.js:11-11",
+            "result": "Full-screen Save is not disabled by validation logic; invalidity only disables save for non-full-screen variants."
+          }
+        ],
+        "notes": "Full-screen Save is not disabled by validation logic; invalidity only disables save for non-full-screen variants."
       },
       "fixes": []
     },
@@ -1604,10 +1947,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_dialog.templ:64-70; forge/components/static/dialogs.js:11-11",
+            "result": "The demo gates Basic Save on required text-field validity, not on a required choice control; no choice-dependent dialog is rendered."
+          }
+        ],
+        "notes": "The demo gates Basic Save on required text-field validity, not on a required choice control; no choice-dependent dialog is rendered."
       },
       "fixes": []
     },
@@ -1630,10 +1980,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:588-619; forge/components/styles/dialogs.css:30-42; forge/components/styles/dialogs.css:120-148",
+            "result": "Basic/full-screen container, text, icon and action colors are mapped to token-backed variables consumed by dialog styles."
+          }
+        ],
+        "notes": "Basic/full-screen container, text, icon and action colors are mapped to token-backed variables consumed by dialog styles."
       },
       "fixes": []
     }

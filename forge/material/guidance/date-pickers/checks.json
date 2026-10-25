@@ -374,10 +374,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_date.templ:5-93",
+            "result": "The specimen offers docked, modal calendar and modal input variants but has no product date-use context for choosing among them."
+          }
+        ],
+        "notes": "The specimen offers docked, modal calendar and modal input variants but has no product date-use context for choosing among them."
       },
       "fixes": []
     },
@@ -400,10 +407,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_date.templ:5-16; forge/components/styles/date-pickers.css:1-15; forge/components/static/date-picker.js:173-180",
+            "result": "Variant is selected in the component case and no breakpoint handler swaps compact modal to medium/expanded docked presentation."
+          }
+        ],
+        "notes": "Variant is selected in the component case and no breakpoint handler swaps compact modal to medium/expanded docked presentation."
       },
       "fixes": []
     },
@@ -436,10 +450,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 2,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_date.templ:8-14; catalog/web/specimen_date.templ:96-106; forge/components/static/date-picker.js:113-117",
+            "result": "Interactive docked cases render a labeled date input and calendar opener; the calendar is positioned relative to the anchor."
+          }
+        ],
+        "notes": "Interactive docked cases render a labeled date input and calendar opener; the calendar is positioned relative to the anchor."
       },
       "fixes": []
     },
@@ -462,10 +483,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_date.templ:5-93",
+            "result": "The specimen uses fixed sample dates and does not choose presentation based on a product date such as a birth date."
+          }
+        ],
+        "notes": "The specimen uses fixed sample dates and does not choose presentation based on a product date such as a birth date."
       },
       "fixes": []
     },
@@ -498,10 +526,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 2,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_date.templ:55-60; forge/components/static/date-picker.js:6; forge/components/static/date-picker.js:186-187",
+            "result": "Range mode renders two calendars and selection stores start then end date, allowing users to select both endpoints."
+          }
+        ],
+        "notes": "Range mode renders two calendars and selection stores start then end date, allowing users to select both endpoints."
       },
       "fixes": []
     },
@@ -524,10 +559,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_date.templ:21-25; catalog/web/specimen_date.templ:81-89; forge/components/static/date-picker.js:39-48",
+            "result": "Modal input mode renders date fields and edit/calendar icon toggles between input and calendar modes."
+          }
+        ],
+        "notes": "Modal input mode renders date fields and edit/calendar icon toggles between input and calendar modes."
       },
       "fixes": []
     },
@@ -550,10 +592,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_date.templ:16-20; forge/components/styles/date-pickers.css:55-65",
+            "result": "Full-screen mode fills the viewport when selected, but no compact-breakpoint selection or restriction to compact/medium screens is implemented."
+          }
+        ],
+        "notes": "Full-screen mode fills the viewport when selected, but no compact-breakpoint selection or restriction to compact/medium screens is implemented."
       },
       "fixes": []
     },
@@ -576,10 +625,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/date-pickers.css:16-33; forge/components/styles/date-pickers.css:124-136",
+            "result": "Picker width/height are fixed token dimensions; max viewport bounds only constrain overflow and do not scale dimensions at breakpoints."
+          }
+        ],
+        "notes": "Picker width/height are fixed token dimensions; max viewport bounds only constrain overflow and do not scale dimensions at breakpoints."
       },
       "fixes": []
     },
@@ -612,10 +668,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 2,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/date-picker.js:7-14; forge/components/static/date-picker.js:149-156; forge/components/static/date-picker.js:196-202",
+            "result": "Input normalizes ISO and month-first values on change/validation or Enter; no input-time masking is inserted."
+          }
+        ],
+        "notes": "Input normalizes ISO and month-first values on change/validation or Enter; no input-time masking is inserted."
       },
       "fixes": []
     },
@@ -638,10 +701,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_date.templ:81-91",
+            "result": "No Clear action is rendered in the date picker template."
+          }
+        ],
+        "notes": "No Clear action is rendered in the date picker template."
       },
       "fixes": []
     },
@@ -674,10 +744,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 2,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/date-pickers.css:265-299; forge/components/styles/date-pickers.css:300-317",
+            "result": "Date labels and range surfaces use token-backed colors, but no computed contrast result establishes the required 4.5:1 ratio."
+          }
+        ],
+        "notes": "Date labels and range surfaces use token-backed colors, but no computed contrast result establishes the required 4.5:1 ratio."
       },
       "fixes": []
     },
@@ -710,10 +787,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 2,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_date.templ:81-88; catalog/web/specimen_date.templ:96-106",
+            "result": "Input labels identify Date/End date while placeholders are YYYY-MM-DD; the label does not match the empty-field placeholder text."
+          }
+        ],
+        "notes": "Input labels identify Date/End date while placeholders are YYYY-MM-DD; the label does not match the empty-field placeholder text."
       },
       "fixes": []
     },
@@ -736,10 +820,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_attributes.go:55-68; catalog/web/specimen_date.templ:27-53; catalog/web/specimen_date.templ:81-90",
+            "result": "Configuration distinguishes docked calendar, modal calendar, and modal input surfaces through variant/mode attributes and the rendered fields."
+          }
+        ],
+        "notes": "Configuration distinguishes docked calendar, modal calendar, and modal input surfaces through variant/mode attributes and the rendered fields."
       },
       "fixes": []
     },
@@ -762,10 +853,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_date.templ:16-20; catalog/web/specimen_date.templ:96-106; forge/components/static/date-picker.js:113-117; forge/components/static/date-picker.js:133-136",
+            "result": "Modal presentation uses dialog.showModal(); docked presentation is a popover positioned relative to the date field anchor."
+          }
+        ],
+        "notes": "Modal presentation uses dialog.showModal(); docked presentation is a popover positioned relative to the date field anchor."
       },
       "fixes": []
     },
@@ -788,10 +886,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_date.templ:5-93",
+            "result": "The specimen uses fixed illustrative dates and has no product-specific date range for selecting a suitable presentation."
+          }
+        ],
+        "notes": "The specimen uses fixed illustrative dates and has no product-specific date range for selecting a suitable presentation."
       },
       "fixes": []
     },
@@ -814,10 +919,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_date.templ:96-106; forge/components/static/date-picker.js:197-212",
+            "result": "Docked text input is a native entry point and the calendar supports keyboard date navigation as soon as focus enters it."
+          }
+        ],
+        "notes": "Docked text input is a native entry point and the calendar supports keyboard date navigation as soon as focus enters it."
       },
       "fixes": []
     },
@@ -840,10 +952,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_date.templ:27-35; catalog/web/specimen_date.templ:47-53; forge/components/static/date-picker.js:183-195",
+            "result": "Docked view renders previous/next month buttons and a month dropdown; click handler changes month or opens month pane."
+          }
+        ],
+        "notes": "Docked view renders previous/next month buttons and a month dropdown; click handler changes month or opens month pane."
       },
       "fixes": []
     },
@@ -866,10 +985,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_date.templ:37-43; catalog/web/specimen_date.templ:61-79; forge/components/static/date-picker.js:191-194",
+            "result": "Docked view provides previous/next year steps plus a year-list dropdown and selecting a year updates the calendar."
+          }
+        ],
+        "notes": "Docked view provides previous/next year steps plus a year-list dropdown and selecting a year updates the calendar."
       },
       "fixes": []
     },
@@ -892,10 +1018,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_date.templ:47-53; catalog/web/specimen_date.templ:61-79; forge/components/static/date-picker.js:177-180; forge/components/static/date-picker.js:191-192",
+            "result": "Modal calendar supports horizontal pointer swipes between months, vertically scrollable month lists in range mode, and year selection through year list controls."
+          }
+        ],
+        "notes": "Modal calendar supports horizontal pointer swipes between months, vertically scrollable month lists in range mode, and year selection through year list controls."
       },
       "fixes": []
     },
@@ -918,10 +1051,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/date-picker.js:79-83; forge/components/static/date-picker.js:162-170",
+            "result": "Modal range mode renders a vertically scrollable month sequence and dynamically extends it at either edge."
+          }
+        ],
+        "notes": "Modal range mode renders a vertically scrollable month sequence and dynamically extends it at either edge."
       },
       "fixes": []
     },
@@ -944,10 +1084,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_date.templ:81-89; forge/components/static/date-picker.js:39-48",
+            "result": "Modal input mode provides a manual date field and supports one-date or two-date range input."
+          }
+        ],
+        "notes": "Modal input mode provides a manual date field and supports one-date or two-date range input."
       },
       "fixes": []
     },
@@ -970,10 +1117,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_date.templ:21-25; forge/components/static/date-picker.js:189-190",
+            "result": "The edit/calendar icon toggles calendar/input mode and updates the accessible action label."
+          }
+        ],
+        "notes": "The edit/calendar icon toggles calendar/input mode and updates the accessible action label."
       },
       "fixes": []
     },
@@ -996,10 +1150,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_attributes.go:71-101; forge/components/styles/date-pickers.css:300-317",
+            "result": "Today and selected states are marked on date controls; range start/end cells and intermediate cells receive separate data attributes and continuous highlight styling."
+          }
+        ],
+        "notes": "Today and selected states are marked on date controls; range start/end cells and intermediate cells receive separate data attributes and continuous highlight styling."
       },
       "fixes": []
     },
@@ -1022,10 +1183,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_date.templ:18-20; catalog/web/specimen_date.templ:90-92; forge/components/static/date-picker.js:118-137; forge/components/static/date-picker.js:193-216",
+            "result": "Save/OK and Cancel/Close controls are present, modal uses native dialog, outside pointer closes modal or docked picker, and docked popover is positioned relative to its input."
+          }
+        ],
+        "notes": "Save/OK and Cancel/Close controls are present, modal uses native dialog, outside pointer closes modal or docked picker, and docked popover is positioned relative to its input."
       },
       "fixes": []
     },
@@ -1048,10 +1216,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_date.templ:81-89; catalog/web/specimen_date.templ:96-106; forge/components/static/date-picker.js:39-48",
+            "result": "Docked entry fields are independently labeled; modal calendar toggles to text inputs with error feedback."
+          }
+        ],
+        "notes": "Docked entry fields are independently labeled; modal calendar toggles to text inputs with error feedback."
       },
       "fixes": []
     },
@@ -1074,10 +1249,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/date-pickers.css:101-123; forge/components/styles/date-pickers.css:213-230; forge/components/styles/date-pickers.css:259-299",
+            "result": "Navigation/menu/day hit dimensions are tokenized; CSS has no explicit 48dp minimum for every date control and rendered resolved targets need measurement."
+          }
+        ],
+        "notes": "Navigation/menu/day hit dimensions are tokenized; CSS has no explicit 48dp minimum for every date control and rendered resolved targets need measurement."
       },
       "fixes": []
     },
@@ -1100,10 +1282,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_date.templ:96-106",
+            "result": "Date text field and separate calendar-opener button are sibling controls with distinct native tab stops; only the icon button opens the picker."
+          }
+        ],
+        "notes": "Date text field and separate calendar-opener button are sibling controls with distinct native tab stops; only the icon button opens the picker."
       },
       "fixes": []
     },
@@ -1126,10 +1315,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/date-picker.js:7-14",
+            "result": "Normalizer accepts year-first or month-first formats split by hyphen, slash, dot, or whitespace, including zero-padded values."
+          }
+        ],
+        "notes": "Normalizer accepts year-first or month-first formats split by hyphen, slash, dot, or whitespace, including zero-padded values."
       },
       "fixes": []
     },
@@ -1152,10 +1348,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_date.templ:96-103; catalog/web/date_picker.go:140-171",
+            "result": "Shortcut is exposed in title and aria-keyshortcuts metadata, but the linked hint text/aria-describedby does not include the shortcut; screen-reader announcement is not established."
+          }
+        ],
+        "notes": "Shortcut is exposed in title and aria-keyshortcuts metadata, but the linked hint text/aria-describedby does not include the shortcut; screen-reader announcement is not established."
       },
       "fixes": []
     },
@@ -1178,10 +1381,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_date.templ:115-120; catalog/web/date_picker.go:9-10",
+            "result": "Weekday labels are nonfocusable spans with full weekday names in title attributes and visible one-letter abbreviations."
+          }
+        ],
+        "notes": "Weekday labels are nonfocusable spans with full weekday names in title attributes and visible one-letter abbreviations."
       },
       "fixes": []
     },
@@ -1204,10 +1414,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_date.templ:96-106",
+            "result": "Date field has supporting text below it showing the YYYY-MM-DD format; error state replaces the helper text when validation fails."
+          }
+        ],
+        "notes": "Date field has supporting text below it showing the YYYY-MM-DD format; error state replaces the helper text when validation fails."
       },
       "fixes": []
     },
@@ -1230,10 +1447,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/date_picker.go:40-51; catalog/web/date_picker.go:71-78; forge/components/static/date-picker.js:51-58",
+            "result": "Each date control’s aria-label contains weekday, month, day and year; dynamic calendar controls generate the same complete date label."
+          }
+        ],
+        "notes": "Each date control’s aria-label contains weekday, month, day and year; dynamic calendar controls generate the same complete date label."
       },
       "fixes": []
     },
@@ -1256,10 +1480,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/date-picker.js:205-212",
+            "result": "Enter on a date button selects it and, for the single-date calendar, validates and closes/saves the picker; range selection validates and closes once both endpoints exist."
+          }
+        ],
+        "notes": "Enter on a date button selects it and, for the single-date calendar, validates and closes/saves the picker; range selection validates and closes once both endpoints exist."
       },
       "fixes": []
     },
@@ -1282,10 +1513,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/date-picker.js:205-212",
+            "result": "PageUp/PageDown adjust the focused ISO date by one month, preserving the day where possible."
+          }
+        ],
+        "notes": "PageUp/PageDown adjust the focused ISO date by one month, preserving the day where possible."
       },
       "fixes": []
     },
@@ -1308,10 +1546,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/date-picker.js:205-212",
+            "result": "Home subtracts day-of-month minus one and End adds the remaining days through month end, moving to first/last date of the month."
+          }
+        ],
+        "notes": "Home subtracts day-of-month minus one and End adds the remaining days through month end, moving to first/last date of the month."
       },
       "fixes": []
     },
@@ -1334,10 +1579,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/date-picker.js:205-212",
+            "result": "Shift+PageUp/PageDown uses a 12-month delta, preserving the selected day where possible."
+          }
+        ],
+        "notes": "Shift+PageUp/PageDown uses a 12-month delta, preserving the selected day where possible."
       },
       "fixes": []
     },
@@ -1360,10 +1612,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/date-picker.js:197-204",
+            "result": "Shift+M opens the month pane, renders it and moves focus to the active month control."
+          }
+        ],
+        "notes": "Shift+M opens the month pane, renders it and moves focus to the active month control."
       },
       "fixes": []
     },
@@ -1386,10 +1645,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/date-picker.js:197-204",
+            "result": "Shift+Y opens the year pane, renders it and moves focus to the active year control."
+          }
+        ],
+        "notes": "Shift+Y opens the year pane, renders it and moves focus to the active year control."
       },
       "fixes": []
     },
@@ -1412,10 +1678,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_date.templ:27-53; catalog/web/date_picker.go:140-172",
+            "result": "Previous/next controls are labeled native buttons and dropdowns expose button semantics; modal month dropdown lacks an explicit aria-label, so exact label mapping across all variants is incomplete."
+          }
+        ],
+        "notes": "Previous/next controls are labeled native buttons and dropdowns expose button semantics; modal month dropdown lacks an explicit aria-label, so exact label mapping across all variants is incomplete."
       },
       "fixes": []
     },
@@ -1438,10 +1711,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_date.templ:115-120; forge/components/static/date-picker.js:60-65",
+            "result": "Weekday headers have role=columnheader and their full weekday name as aria-label, not the required exact “Column header” label."
+          }
+        ],
+        "notes": "Weekday headers have role=columnheader and their full weekday name as aria-label, not the required exact “Column header” label."
       },
       "fixes": []
     },
@@ -1464,10 +1744,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_date.templ:115-119; forge/components/static/date-picker.js:60-65",
+            "result": "Month calendar grid has role=grid but its accessible name is the month/year string, not the required exact “Grid” label."
+          }
+        ],
+        "notes": "Month calendar grid has role=grid but its accessible name is the month/year string, not the required exact “Grid” label."
       },
       "fixes": []
     }

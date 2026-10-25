@@ -236,10 +236,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/sheets.css:61-80",
+            "result": "CSS supports start-side orientation and reverses corner assignments, while modal shape comes from token-bound radii; no locale binding demonstrates automatic RTL mirroring."
+          }
+        ],
+        "notes": "The orientation must be set by caller and was not verified against RTL locale direction."
       },
       "fixes": []
     },
@@ -262,10 +269,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/sheets.css:183-240",
+            "result": "Sheet header/body/footer use token-bound spacing, width and action variables; this code inspection does not establish resolved 24dp/12dp/72dp/400dp values for the standard variant."
+          }
+        ],
+        "notes": "Token-resolved dimensions were not measured."
       },
       "fixes": []
     },
@@ -288,10 +302,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/sheets.css:183-240",
+            "result": "The modal uses the same sheet layout slots with token-bound spacing and width variables, but the modal back-icon conditional padding and resolved dimensions were not verified."
+          }
+        ],
+        "notes": "The specimen omits a back icon, so its conditional 16dp start padding is not exercised."
       },
       "fixes": []
     },
@@ -314,10 +335,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "Selecting standard versus modal by breakpoint is an application integration decision; the specimen exposes the variants but does not implement responsive product selection."
       },
       "fixes": []
     },
@@ -340,9 +362,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_sheet.templ:15-23",
+            "result": "The side sheet is represented by a container whose content is nested and optional; the sheet element itself exists without any requirement that each optional slot be populated."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -366,10 +395,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "The side-sheet example does not implement a back-navigation flow or nested experience; the back affordance is optional when such navigation exists."
       },
       "fixes": []
     },
@@ -392,9 +422,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_sheet.templ:36-40",
+            "result": "The sheet content includes a labeled close button wired to the close action."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -418,9 +455,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_sheet.templ:47-49",
+            "result": "The footer exposes two text actions and the side-sheet action class receives its component styling."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -444,9 +488,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/sheets.css:81-88",
+            "result": "Docked standard side sheets use a token-bound divider at the inline edge between sheet and primary content."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -470,9 +521,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_sheet.templ:36-49",
+            "result": "The content slot includes body content and footer actions; the container itself allows caller-provided content, but no responsive modal-to-standard transition is implemented."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -496,9 +554,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/sheets.css:61-67",
+            "result": "The side sheet is absolutely positioned at a fixed token width; the frame/page content is not resized or given a trailing margin when a standard sheet opens."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -522,10 +587,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/sheets.css:61-80",
+            "result": "A caller-selected start orientation moves the sheet to the start edge and reverses corners, but no code derives that orientation from RTL direction."
+          }
+        ],
+        "notes": "Locale-driven RTL placement is not demonstrated."
       },
       "fixes": []
     },
@@ -548,9 +620,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/sheets.css:138-148",
+            "result": "Sheet content is overflow-hidden and the body has no independent vertical overflow rule; oversized content cannot scroll inside the sheet."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -574,10 +653,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "Android predictive-back preview/scale is a platform integration effect; this implementation is web-only."
       },
       "fixes": []
     },
@@ -600,9 +680,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/sheets.js:71-85",
+            "result": "The close button and native dialog cancel event call close(), and standard modal/outside interactions also close the sheet."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -626,9 +713,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_sheet.templ:36-40",
+            "result": "Every rendered sheet variant includes the labeled close button within the content header."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -652,9 +746,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_sheet.templ:36-40",
+            "result": "The close control is a native button and remains in normal sequential keyboard focus order; Enter/Space activation is provided by native button semantics."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -678,10 +779,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_sheet.templ:15-23",
+            "result": "Modal side sheets use a native dialog, while standard sheets use a section with role=region; the source does not distinguish modal/non-modal role requirements."
+          }
+        ],
+        "notes": "Only modal dialog semantics are established; applying Dialog to standard side sheets conflicts with the current non-modal region."
       },
       "fixes": []
     }

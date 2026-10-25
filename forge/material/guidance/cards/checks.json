@@ -380,10 +380,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_card.templ:3-6",
+            "result": "The specimen groups title, supporting text, and icon in one interactive card, but does not represent a real subject or content-driven sizing case."
+          }
+        ],
+        "notes": "The specimen groups title, supporting text, and icon in one interactive card, but does not represent a real subject or content-driven sizing case."
       },
       "fixes": []
     },
@@ -406,10 +413,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_card.templ:3-6",
+            "result": "This component showcase renders every card as one button with no nested action; it does not expose a non-actionable-container mode for cards with separate actions."
+          }
+        ],
+        "notes": "This component showcase renders every card as one button with no nested action; it does not expose a non-actionable-container mode for cards with separate actions."
       },
       "fixes": []
     },
@@ -432,10 +446,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_card.templ:3-6",
+            "result": "The preview has one card-level button action and no independent actions to compare."
+          }
+        ],
+        "notes": "The preview has one card-level button action and no independent actions to compare."
       },
       "fixes": []
     },
@@ -458,10 +479,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:507-510; forge/components/styles/cards.css:3-29",
+            "result": "Generated elevated/filled/outlined variants map container, elevation, outline, and shape tokens into the shared card surface."
+          }
+        ],
+        "notes": "Generated elevated/filled/outlined variants map container, elevation, outline, and shape tokens into the shared card surface."
       },
       "fixes": []
     },
@@ -484,10 +512,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_card.templ:3-6",
+            "result": "The single card specimen has no responsive card collection or adaptive order."
+          }
+        ],
+        "notes": "The single card specimen has no responsive card collection or adaptive order."
       },
       "fixes": []
     },
@@ -510,10 +545,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_card.templ:3-6",
+            "result": "The card implementation exposes no drag or swipe behavior, so no alternative for such an action is required by this component path."
+          }
+        ],
+        "notes": "The card implementation exposes no drag or swipe behavior, so no alternative for such an action is required by this component path."
       },
       "fixes": []
     },
@@ -536,10 +578,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_card.templ:3-6",
+            "result": "The direct-action card is a native button and therefore a tab stop; the specimen has no non-actionable card wrapper."
+          }
+        ],
+        "notes": "The direct-action card is a native button and therefore a tab stop; the specimen has no non-actionable card wrapper."
       },
       "fixes": []
     },
@@ -562,10 +611,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_card.templ:3-6",
+            "result": "The actionable card is rendered as a native button; the check icon is decorative content within that button."
+          }
+        ],
+        "notes": "The actionable card is rendered as a native button; the check icon is decorative content within that button."
       },
       "fixes": []
     },
@@ -588,10 +644,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_card.templ:3-6; forge/material/generate-components.mjs:1054-1058",
+            "result": "The preview exposes elevated, filled and outlined interactive card variants, but product legibility and topic suitability are application-level choices."
+          }
+        ],
+        "notes": "The preview exposes elevated, filled and outlined interactive card variants, but product legibility and topic suitability are application-level choices."
       },
       "fixes": []
     },
@@ -614,10 +677,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_card.templ:3-6",
+            "result": "The specimen displays one card and does not represent an information architecture or card collection."
+          }
+        ],
+        "notes": "The specimen displays one card and does not represent an information architecture or card collection."
       },
       "fixes": []
     },
@@ -640,10 +710,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_card.templ:3-6; forge/components/styles/cards.css:3-29",
+            "result": "The card is the sole required wrapper, contains title/supporting text/icon, and its dimensions follow its content with padding."
+          }
+        ],
+        "notes": "The card is the sole required wrapper, contains title/supporting text/icon, and its dimensions follow its content with padding."
       },
       "fixes": []
     },
@@ -666,10 +743,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_card.templ:3-6; forge/components/styles/cards.css:3-35",
+            "result": "The template provides title and supporting-text spans but no distinct typography hierarchy rules for those spans in the card stylesheet."
+          }
+        ],
+        "notes": "The template provides title and supporting-text spans but no distinct typography hierarchy rules for those spans in the card stylesheet."
       },
       "fixes": []
     },
@@ -692,10 +776,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_card.templ:3-6",
+            "result": "The sample card contains no divider."
+          }
+        ],
+        "notes": "The sample card contains no divider."
       },
       "fixes": []
     },
@@ -718,10 +809,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_card.templ:3-6",
+            "result": "No image or overlaid text/icon appears in this card specimen."
+          }
+        ],
+        "notes": "No image or overlaid text/icon appears in this card specimen."
       },
       "fixes": []
     },
@@ -744,10 +842,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_card.templ:3-6",
+            "result": "The card is one large native button target and contains no nested actions, matching the allowed single-action area."
+          }
+        ],
+        "notes": "The card is one large native button target and contains no nested actions, matching the allowed single-action area."
       },
       "fixes": []
     },
@@ -770,10 +875,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_card.templ:3-6",
+            "result": "The specimen has no overflow menu."
+          }
+        ],
+        "notes": "The specimen has no overflow menu."
       },
       "fixes": []
     },
@@ -796,10 +908,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_card.templ:3-6",
+            "result": "The component specimen renders a single card, not a collection with comparable resting elevations."
+          }
+        ],
+        "notes": "The component specimen renders a single card, not a collection with comparable resting elevations."
       },
       "fixes": []
     },
@@ -822,10 +941,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_card.templ:3-6",
+            "result": "No card collection or collection-level filter/sort control is present."
+          }
+        ],
+        "notes": "No card collection or collection-level filter/sort control is present."
       },
       "fixes": []
     },
@@ -848,10 +974,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_card.templ:3-6",
+            "result": "The single preview card has no breakpoint-specific orientation or media layout."
+          }
+        ],
+        "notes": "The single preview card has no breakpoint-specific orientation or media layout."
       },
       "fixes": []
     },
@@ -874,10 +1007,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_card.templ:3-6",
+            "result": "The card preview does not adapt to device breakpoint content regions."
+          }
+        ],
+        "notes": "The card preview does not adapt to device breakpoint content regions."
       },
       "fixes": []
     },
@@ -900,10 +1040,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_card.templ:3-6",
+            "result": "Collection columns and expanded-screen layout are owned by the consuming page, not this standalone card specimen."
+          }
+        ],
+        "notes": "Collection columns and expanded-screen layout are owned by the consuming page, not this standalone card specimen."
       },
       "fixes": []
     },
@@ -926,10 +1073,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_card.templ:3-6",
+            "result": "The component preview does not choose between card and list presentation at compact breakpoints."
+          }
+        ],
+        "notes": "The component preview does not choose between card and list presentation at compact breakpoints."
       },
       "fixes": []
     },
@@ -952,10 +1106,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_card.templ:3-6; forge/components/styles/cards.css:37-51",
+            "result": "Interactive cards have button feedback and focus styling but no expansion/content-reveal or container-transform behavior."
+          }
+        ],
+        "notes": "Interactive cards have button feedback and focus styling but no expansion/content-reveal or container-transform behavior."
       },
       "fixes": []
     },
@@ -978,10 +1139,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_card.templ:3-6; forge/components/styles/cards.css:57-60",
+            "result": "No card navigation transition or forward/backward hierarchy animation is present in the inspected card component path."
+          }
+        ],
+        "notes": "No card navigation transition or forward/backward hierarchy animation is present in the inspected card component path."
       },
       "fixes": []
     },
@@ -1004,10 +1172,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_card.templ:3-6",
+            "result": "No card swipe gesture is implemented in this path."
+          }
+        ],
+        "notes": "No card swipe gesture is implemented in this path."
       },
       "fixes": []
     },
@@ -1030,10 +1205,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_card.templ:3-6; forge/components/styles/cards.css:37-48",
+            "result": "Card has no drag/reorder behavior or picked-up elevation state."
+          }
+        ],
+        "notes": "Card has no drag/reorder behavior or picked-up elevation state."
       },
       "fixes": []
     },
@@ -1056,10 +1238,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_card.templ:3-6",
+            "result": "The sample has short fixed content and no mobile-specific overflow/expand interaction."
+          }
+        ],
+        "notes": "The sample has short fixed content and no mobile-specific overflow/expand interaction."
       },
       "fixes": []
     },
@@ -1082,10 +1271,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_card.templ:3-6",
+            "result": "The sample has no long desktop card content or inner scrolling region."
+          }
+        ],
+        "notes": "The sample has no long desktop card content or inner scrolling region."
       },
       "fixes": []
     },
@@ -1108,10 +1304,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_card.templ:3-6",
+            "result": "Native button supplies an actionable focus target and its text content contributes to its accessible name; icon is decorative span content."
+          }
+        ],
+        "notes": "Native button supplies an actionable focus target and its text content contributes to its accessible name; icon is decorative span content."
       },
       "fixes": []
     },
@@ -1134,10 +1337,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_card.templ:3-6",
+            "result": "The entire card is one button containing only noninteractive spans; no nested button/link is present."
+          }
+        ],
+        "notes": "The entire card is one button containing only noninteractive spans; no nested button/link is present."
       },
       "fixes": []
     },
@@ -1160,10 +1370,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/buttons.js:75-79; forge/components/static/buttons.js:395-425; forge/components/styles/cards.css:37-48",
+            "result": "Shared feedback runtime classifies `.md-interactive-card` as a button control and creates pointer-origin ripple feedback for pointer/touch activation."
+          }
+        ],
+        "notes": "Shared feedback runtime classifies `.md-interactive-card` as a button control and creates pointer-origin ripple feedback for pointer/touch activation."
       },
       "fixes": []
     },
@@ -1186,10 +1403,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/cards.css:37-51; forge/components/static/buttons.css:32-40",
+            "result": "Card has state-layer variables and ripple support, but no card-specific hover selector is present in authored card CSS; token-generated hover roles need browser computed-style confirmation."
+          }
+        ],
+        "notes": "Card has state-layer variables and ripple support, but no card-specific hover selector is present in authored card CSS; token-generated hover roles need browser computed-style confirmation."
       },
       "fixes": []
     },
@@ -1212,10 +1436,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/cards.css:49-51; forge/components/static/buttons.js:488-516",
+            "result": "Actionable card has focus-visible outline and shared button runtime recognizes Enter/Space for interactive cards; native button dispatches activation."
+          }
+        ],
+        "notes": "Actionable card has focus-visible outline and shared button runtime recognizes Enter/Space for interactive cards; native button dispatches activation."
       },
       "fixes": []
     },
@@ -1238,10 +1469,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_card.templ:3-6",
+            "result": "Each rendered card is a native button, so it is a single tab stop; there are no internal action controls in the button."
+          }
+        ],
+        "notes": "Each rendered card is a native button, so it is a single tab stop; there are no internal action controls in the button."
       },
       "fixes": []
     },
@@ -1264,10 +1502,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_card.templ:3-6",
+            "result": "The card is native button markup, which supports Tab focus and Space/Enter activation."
+          }
+        ],
+        "notes": "The card is native button markup, which supports Tab focus and Space/Enter activation."
       },
       "fixes": []
     },
@@ -1290,10 +1535,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_card.templ:3-6",
+            "result": "No draggable/swipeable card behavior exists in the implementation path."
+          }
+        ],
+        "notes": "No draggable/swipeable card behavior exists in the implementation path."
       },
       "fixes": []
     },
@@ -1316,10 +1568,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_card.templ:3-6",
+            "result": "No draggable state or action menu is implemented for the card."
+          }
+        ],
+        "notes": "No draggable state or action menu is implemented for the card."
       },
       "fixes": []
     }

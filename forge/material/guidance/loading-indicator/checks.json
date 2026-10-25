@@ -218,10 +218,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_loading.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When a button action takes a few seconds.”."
+          }
+        ],
+        "notes": "The condition is “When a button action takes a few seconds.” and the instruction is “A loading indicator may appear inside a button while its action is in progress.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -244,10 +251,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_loading.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When positioning loading feedback.”."
+          }
+        ],
+        "notes": "The condition is “When positioning loading feedback.” and the instruction is “Center the indicator on the loading page or container; for appended items place it in the empty space where content will appear without covering existing content.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -270,10 +284,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_loading.templ:3-14; forge/components/static/loading.js:27-33",
+            "result": "The loading specimen is separate from the progress specimen and does not transition either component or content between them."
+          }
+        ],
+        "notes": "The check applies when a single process changes from unknown to known progress. The baseline has no process controller that transitions this indicator, so the component cannot violate or perform that transition.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -296,10 +317,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_loading.templ:6-9; catalog/web/specimen_progress.go:7-16",
+            "result": "The rendered path calls ProgressAttributes(), which adds role=progressbar and aria-label=\"Loading\"; however the label is fixed and does not identify the affected content for a concrete operation."
+          }
+        ],
+        "notes": "The role and an accessible name are present, correcting the earlier false absence claim. The remaining ambiguity is whether a generic “Loading” label is sufficient for this context-free specimen; the helper provides no operation/content-specific name."
       },
       "fixes": []
     },
@@ -322,10 +350,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/loading.css:1-18; forge/material/generate-components.mjs:321-328; browser Chromium http://127.0.0.1:8081/md3/components/loading-indicator",
+            "result": "Reproduction: inspect default contained and uncontained previews. Both containers render 48×48 CSS px with a 38×38 active indicator, within the stated range. The implementation keeps those fixed token dimensions at larger panes and has no responsive scale-up path."
+          }
+        ],
+        "notes": "The exposed default dimensions satisfy the 24dp–240dp bound and preserve the 38/48 relationship; the unmet part is scaling the indicator with larger panes. This is not marked missing because an arbitrary-token clamp is absent."
       },
       "fixes": []
     },
@@ -348,10 +383,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_loading.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When exposing loading feedback and refresh.”."
+          }
+        ],
+        "notes": "The condition is “When exposing loading feedback and refresh.” and the instruction is “People using assistive technology must be able to reach the indicator, understand the progress, and initiate refresh without relying on a gesture.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -374,10 +416,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:321-328; forge/components/styles/loading.css:1-18",
+            "result": "The mapper accepts base and contained active-indicator color plus contained container color and scopes contained tokens to data-variant=contained; CSS applies container and currentColor to the shape."
+          }
+        ],
+        "notes": "The contained style consumes separately mapped active/container colors through the contained variant selector.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -400,10 +449,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:321-328; forge/components/styles/loading.css:1-13",
+            "result": "The component mapper has a contained variant selector and the CSS explicitly makes the uncontained variant transparent."
+          }
+        ],
+        "notes": "The web component exposes uncontained and contained visual variants through token mapping and variant selector.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -426,10 +482,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:321-328; forge/components/styles/loading.css:7-18",
+            "result": "The default active-indicator color maps to `--_loading-color` and drives the shape’s currentColor; the uncontained variant makes only the background transparent."
+          }
+        ],
+        "notes": "The default indicator color is applied independently of container fill; the exact primary role value is supplied by source tokens.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -452,10 +515,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "verified",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "catalog/web/specimen_loading.templ:6-9; catalog/web/specimen_progress.go:7-16; forge/components/styles/loading.css:1-18",
+            "result": "The actual rendered uncontained and contained indicators are 48×48 CSS px with a 38×38 active shape, matching the configured default container/indicator dimensions."
+          }
+        ],
+        "notes": "The initial assessment reversed the active and container measurements; the observed geometry confirms a 48px container around a 38px active indicator."
       },
       "fixes": []
     },
@@ -478,10 +548,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/loading.css:1-18; forge/material/generate-components.mjs:321-328; browser Chromium http://127.0.0.1:8081/md3/components/loading-indicator",
+            "result": "At the default page size both variants remain 48×48 CSS px; the stylesheet has no viewport or available-pane observer/media rule that scales the default indicator upward on larger windows."
+          }
+        ],
+        "notes": "The source explicitly requires proportional scale-up on larger windows. The implementation retains fixed default token dimensions, so the large-window behavior is absent; this is independent of the 240dp bound."
       },
       "fixes": []
     },
@@ -504,10 +581,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_loading.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When choosing the expressive loading indicator.”."
+          }
+        ],
+        "notes": "The condition is “When choosing the expressive loading indicator.” and the instruction is “Loading indicators are intended for processes under five seconds, can be contained or uncontained, and are used for pull-to-refresh.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -530,10 +614,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/loading.css:7-18",
+            "result": "The active indicator and background use tokenized colors, but no source rule computes or guards contrast between them."
+          }
+        ],
+        "notes": "The 3:1 requirement depends on the resolved theme tokens and surface behind the indicator; the code does not enforce it and a computed-style contrast check is needed.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -556,10 +647,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_loading.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When pull-to-refresh is available.”."
+          }
+        ],
+        "notes": "The condition is “When pull-to-refresh is available.” and the instruction is “Provide a single-pointer refresh action in addition to swipe; the gesture alone is insufficient for accessible refresh.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -582,10 +680,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_loading.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When implementing pull-to-refresh.”."
+          }
+        ],
+        "notes": "The condition is “When implementing pull-to-refresh.” and the instruction is “Pull-to-refresh support is specific to Jetpack Compose; use it for dynamic content likely to have new results after refresh.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -608,10 +713,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_loading.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When handling pull-to-refresh.”."
+          }
+        ],
+        "notes": "The condition is “When handling pull-to-refresh.” and the instruction is “Require the pull gesture to cross a threshold before refresh begins; reversing past it cancels refresh. Keep the indicator visible until refresh and new content finish or the user leaves.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -634,10 +746,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_loading.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When handling pull-to-refresh state.”."
+          }
+        ],
+        "notes": "The condition is “When handling pull-to-refresh state.” and the instruction is “Start refresh only after the gesture passes its threshold; reversing beyond the threshold cancels it. Keep the indicator visible until refresh and new content complete or the user leaves.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -660,10 +779,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_loading.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When choosing contained or uncontained presentation.”."
+          }
+        ],
+        "notes": "The condition is “When choosing contained or uncontained presentation.” and the instruction is “Use a container when the indicator overlays other content, and with pull-to-refresh; omit it directly on a surface. When present, use on-primary-container for the active shape instead of primary.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -686,10 +812,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_loading.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When selecting feedback by expected duration.”."
+          }
+        ],
+        "notes": "The condition is “When selecting feedback by expected duration.” and the instruction is “Use a loading indicator for an indeterminate wait of 200ms to 5s; show content below 200ms and use a progress indicator above 5s.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -712,10 +845,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_loading.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When showing a short wait state.”."
+          }
+        ],
+        "notes": "The condition is “When showing a short wait state.” and the instruction is “Use loading indicators only for ongoing, short, indeterminate processes; they are not decoration and are not for processes that later become determinate.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     }

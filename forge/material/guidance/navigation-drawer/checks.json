@@ -284,10 +284,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:35-45; forge/components/behaviors/navigation.js:416-449",
+            "result": "The template includes an external opener only for the modal dialog variant. Standard drawer cases render the navigation directly and have no visible menu control or dismissible state handler."
+          }
+        ],
+        "notes": "The required standard-drawer control behavior is absent from the specimen runtime; it cannot show a dismissible/permanent standard drawer distinction."
       },
       "fixes": []
     },
@@ -310,10 +317,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/navigation.js:416-428; catalog/web/specimen_navigation.templ:35-45",
+            "result": "A click on the native dialog backdrop targets the dialog outside its bounding rectangle; the click handler detects that coordinate and calls dialog.close()."
+          }
+        ],
+        "notes": "The native modal drawer closes when its scrim/backdrop is activated."
       },
       "fixes": []
     },
@@ -336,10 +350,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/navigation.css:217-223",
+            "result": "Modal placement uses physical left (`inset: 0 auto 0 0`) instead of the logical inline-start edge, so RTL does not move the drawer to the right."
+          }
+        ],
+        "notes": "The CSS placement is left-anchored for both directions; it does not implement the required RTL start edge."
       },
       "fixes": []
     },
@@ -362,10 +383,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:35-45",
+            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition “When selecting primary navigation.”."
+          }
+        ],
+        "notes": "The source instruction is “Avoid pairing a drawer with another primary navigation component; choose one pattern by breakpoint: bar for compact, rail for medium/expanded, standard drawer for expanded and larger.” under “When selecting primary navigation.”. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
       },
       "fixes": []
     },
@@ -388,10 +416,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:83-90; forge/components/styles/navigation.css:93-101",
+            "result": "Drawer destinations include outline and filled glyphs; aria-current paints the indicator and active icon token, while the inactive glyph remains outlined."
+          }
+        ],
+        "notes": "The selected destination is differentiated by the active indicator and token-mapped selected icon style."
       },
       "fixes": []
     },
@@ -414,10 +449,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:35-45",
+            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition “When the window breakpoint or orientation changes.”."
+          }
+        ],
+        "notes": "The source instruction is “Change the navigation component with the breakpoint and form factor; animate component swaps, such as transforming a navigation rail into a drawer when changing from portrait to landscape.” under “When the window breakpoint or orientation changes.”. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
       },
       "fixes": []
     },
@@ -440,10 +482,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:35-45",
+            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition “When adapting large web layouts.”."
+          }
+        ],
+        "notes": "The source instruction is “For laptop and desktop web, use a standard drawer or a rail that transitions to a modal drawer.” under “When adapting large web layouts.”. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
       },
       "fixes": []
     },
@@ -466,10 +515,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:35-45,67-80; forge/components/behaviors/navigation.js:4-19,21-36; catalog/web/static/component-demos.js:25-30",
+            "result": "The modal has a dialog name and native modal semantics, destination buttons are in a named nav landmark, click selection updates current-page state, and a polite output announces the selected label."
+          }
+        ],
+        "notes": "The web specimen exposes navigation and selection feedback. Destination routing remains outside the isolated component."
       },
       "fixes": []
     },
@@ -492,10 +548,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:35-45",
+            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition “When maintaining baseline drawer tokens or choosing an expressive alternative.”."
+          }
+        ],
+        "notes": "The source instruction is “The baseline navigation drawer remains represented by its token set, but M3 Expressive recommends using an expanded navigation rail.” under “When maintaining baseline drawer tokens or choosing an expressive alternative.”. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
       },
       "fixes": []
     },
@@ -518,10 +581,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:35-45",
+            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition “When selecting drawer type by breakpoint or design generation.”."
+          }
+        ],
+        "notes": "The source instruction is “Use standard drawers in expanded, large and extra-large breakpoints, and modal drawers in compact and medium breakpoints; M3 Expressive recommends an expanded navigation rail instead.” under “When selecting drawer type by breakpoint or design generation.”. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
       },
       "fixes": []
     },
@@ -544,10 +614,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:35-45",
+            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition “When adopting M3 Expressive.”."
+          }
+        ],
+        "notes": "The source instruction is “The navigation drawer is no longer recommended in M3 Expressive; use an expanded navigation rail instead.” under “When adopting M3 Expressive.”. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
       },
       "fixes": []
     },
@@ -570,9 +647,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/buttons.js:76-80,249-305; forge/components/behaviors/navigation.js:4-19; forge/components/styles/navigation.css:93-101,118-145; forge/material/generate-components.mjs:390-427,881-907; forge/components/styles/navigation-rail.css:2-21",
+            "result": "Shared feedback recognizes .md-nav-item and injects an animated ripple into its indicator. Selection updates aria-current and navigation CSS switches outlined/filled glyphs. Generated drawer hover selectors bind state opacity and active icon/label colors separately; their component aliases follow the selected appearance. The generic authored hover exclusion does not remove these drawer-specific generated rules."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -596,10 +680,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:35-45; forge/components/styles/navigation.css:217-234",
+            "result": "The native modal dialog creates a backdrop behind the dialog sheet and browser modal semantics block interaction with the rest of the page."
+          }
+        ],
+        "notes": "The modal drawer uses a native dialog whose ::backdrop is painted behind the drawer; click-to-dismiss is assessed separately."
       },
       "fixes": []
     },
@@ -622,10 +713,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:35-45",
+            "result": "The specimen uses native dialog showModal without an explicit focus target; browser default dialog focus selection varies with the exact focusable contents and was not probed here."
+          }
+        ],
+        "notes": "The specimen uses native dialog showModal without an explicit focus target; browser default dialog focus selection varies with the exact focusable contents and was not probed here."
       },
       "fixes": []
     },
@@ -648,10 +746,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:67-90; forge/components/styles/navigation.css:102-104,181-191",
+            "result": "The sample uses concise single-word labels, renders an icon before each label, and keeps the indicator contents in a non-wrapping label flow."
+          }
+        ],
+        "notes": "The specimen uses short labels, consistent leading icons and a single-line text style; it does not shrink text."
       },
       "fixes": []
     },
@@ -674,10 +779,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/navigation.css:174-223",
+            "result": "The standard drawer has no constrained block size or overflow container. Only modal dialogs scroll as one whole dialog; destinations do not have an independent scroll region while the page remains fixed."
+          }
+        ],
+        "notes": "The stated independent destination scrolling behavior is not implemented for standard or modal drawer contents."
       },
       "fixes": []
     },
@@ -700,10 +812,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/navigation.js:21-36; catalog/web/specimen_navigation.templ:35-45",
+            "result": "Native buttons and shared directional navigation exist, but the check also requires focus to enter a newly opened app section after activation; this specimen has no routed section lifecycle and the combined interaction was not browser-probed."
+          }
+        ],
+        "notes": "Native buttons and shared directional navigation exist, but the check also requires focus to enter a newly opened app section after activation; this specimen has no routed section lifecycle and the combined interaction was not browser-probed."
       },
       "fixes": []
     },
@@ -726,10 +845,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:35-45",
+            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition “When choosing medium or expanded layout.”."
+          }
+        ],
+        "notes": "The source instruction is “Use a modal drawer alone or with a navigation rail; repeated destinations are acceptable only when the drawer visually separates hierarchy levels. Standard drawer is suitable for single-pane expanded layouts.” under “When choosing medium or expanded layout.”. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
       },
       "fixes": []
     },
@@ -752,10 +878,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:35-45",
+            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition “When adapting compact web layouts.”."
+          }
+        ],
+        "notes": "The source instruction is “Use a modal drawer or replace it with a navigation bar; on web below 320 CSS pixels, use a navigation bar.” under “When adapting compact web layouts.”. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
       },
       "fixes": []
     },
@@ -778,10 +911,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:35-45",
+            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition “When choosing a navigation drawer.”."
+          }
+        ],
+        "notes": "The source instruction is “Use a navigation drawer for five or more top-level destinations, multiple navigation levels, quick movement among unrelated destinations, or as large-screen primary navigation.” under “When choosing a navigation drawer.”. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
       },
       "fixes": []
     },
@@ -804,10 +944,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/navigation.js:416-428; catalog/web/specimen_navigation.templ:35-45",
+            "result": "The modal dialog blocks the page, closes on backdrop click, and closes on destination selection. No touch/pointer swipe recognizer opens or dismisses the drawer toward its anchoring edge."
+          }
+        ],
+        "notes": "The backdrop and selection dismissal paths are implemented; the source’s swipe-toward-anchor dismissal path is absent from the web interaction code."
       },
       "fixes": []
     },
@@ -830,10 +977,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:64-78; forge/components/styles/navigation.css:212-216",
+            "result": "The drawer inserts an hr before the Workspace group heading, not between individual destination buttons; the hr spans the drawer content width."
+          }
+        ],
+        "notes": "The example uses a full-content-width divider only at the group boundary."
       },
       "fixes": []
     },
@@ -856,10 +1010,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:64-78",
+            "result": "The drawer uses concise “Library” and “Workspace” section labels to group destinations."
+          }
+        ],
+        "notes": "The specimen demonstrates short section headings for a longer list."
       },
       "fixes": []
     },
@@ -882,10 +1043,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:35-45",
+            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition “When choosing standard versus modal drawer by breakpoint.”."
+          }
+        ],
+        "notes": "The source instruction is “Use standard drawers on expanded, large and extra-large layouts; keep them permanently visible for frequent switching or dismissible with a visible menu control when content deserves priority. Use modal drawers in compact and medium layouts.” under “When choosing standard versus modal drawer by breakpoint.”. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
       },
       "fixes": []
     },
@@ -908,10 +1076,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.go:7-21; catalog/web/specimen_navigation.templ:67-90",
+            "result": "Visible button text supplies the web accessible name, but the combined check also states Android Views role-announcement limitations that do not map to web; no explicit web role announcement is encoded."
+          }
+        ],
+        "notes": "The web-visible-name portion is supported; the Android-only role announcement portion has no web mapping and is not being inferred."
       },
       "fixes": []
     },
@@ -934,10 +1109,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/bundles/navigation.css:1; forge/components/styles/navigation.css:118-145",
+            "result": "Generated drawer selectors bind hover, focus and pressed state colors for active and inactive items; enabled is the native button default."
+          }
+        ],
+        "notes": "The component stylesheet and native button provide enabled, hovered, focused and pressed states."
       },
       "fixes": []
     },
@@ -960,10 +1142,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:64-80",
+            "result": "The drawer composes a heading, destination list, divider and second section heading; the section label is present and destination buttons form the list content."
+          }
+        ],
+        "notes": "The demo shows the requested organization for a longer destination list."
       },
       "fixes": []
     }

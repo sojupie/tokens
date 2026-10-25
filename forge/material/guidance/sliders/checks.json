@@ -272,10 +272,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "This is a web implementation assessment; Android Views preset availability and the cross-version Expressive configuration matrix are not implemented by this single baseline."
       },
       "fixes": []
     },
@@ -298,9 +299,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/sliders.css:56-85",
+            "result": "The active track is dynamically bounded by the two handle fractions and uses token-driven shape values; handle geometry transitions are defined in the slider rules."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -324,9 +332,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/sliders.css:56-70",
+            "result": "Active track color is bound through the Material slider token variable, with separate active/inactive track colors rather than hard-coded palette values."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -350,10 +365,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "The check compares upstream M3 and Expressive catalogs; this baseline is a single web Material implementation without separate versioned component catalogs."
       },
       "fixes": []
     },
@@ -376,10 +392,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "The source matrix includes Android Views and Expressive platform presets; the assessed runtime is web and does not implement that cross-platform availability matrix."
       },
       "fixes": []
     },
@@ -402,9 +419,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/sliders.css:169-172",
+            "result": "Disabled ticks are styled from native disabled inputs; handle focus/pressed and hover states are separately targeted by the component rules."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -428,10 +452,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/sliders.css:3-31",
+            "result": "The CSS uses token-backed track/handle/label dimensions and size-specific token selectors, but the resolved XS–XL measurement set and icon size exclusions were not measured in the browser."
+          }
+        ],
+        "notes": "Requires resolved token values for each size."
       },
       "fixes": []
     },
@@ -454,9 +485,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/sliders.js:110-138",
+            "result": "Native range input events immediately synchronize track fractions, values and visible labels as the handle changes."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -480,10 +518,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "Choosing the slider type for a domain range is a product modeling decision; the reusable renderer offers standard, centered and range configurations."
       },
       "fixes": []
     },
@@ -506,9 +545,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/sliders.js:15-19",
+            "result": "The runtime computes active range endpoints from normalized native input values, while CSS uses inline-start/end properties so the axis follows directionality."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -532,9 +578,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/sliders.css:221-243",
+            "result": "Each visible handle overlays a native range input; pressed/focus state selectors change handle presentation."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -558,9 +611,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/sliders.js:38-41",
+            "result": "The displayed value is synchronized per handle; range mode has one value element within each handle, and focused handle value visibility is controlled in CSS."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -584,10 +644,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_slider.go:32-36",
+            "result": "Discrete mode sets native input step=10 and renders tick marks; the code evidence does not establish that the M3 stop-indicator variants snap to nearest documented stops for all configurations."
+          }
+        ],
+        "notes": "The preview models discrete values using native input step but does not establish every source stop/end contrast exception."
       },
       "fixes": []
     },
@@ -610,9 +677,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/sliders.css:424-460",
+            "result": "Vertical orientation has dedicated layout rules that rotate the range track and active/inactive regions."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -636,10 +710,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_slider.templ:16-20",
+            "result": "The preview adds endpoint icons for medium, large and extra-large size values, but does not gate them against centered or range variants as the guidance requires."
+          }
+        ],
+        "notes": "Configuration-specific availability across size and variant combinations needs confirmation."
       },
       "fixes": []
     },
@@ -662,10 +743,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "Choosing emphasis and reserving XL for hero moments is a product hierarchy decision; the component exposes size tokens."
       },
       "fixes": []
     },
@@ -688,9 +770,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_slider.go:32-36",
+            "result": "The native range control handles dragging, and discrete preview uses step 10 so dragged values snap to configured increments."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -714,9 +803,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/sliders.css:221-230",
+            "result": "The full-width native range input overlays the slider track, so pointer selection on the track uses native range behavior and its configured step."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -740,9 +836,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/sliders.js:110-138",
+            "result": "The behavior module handles input/focus/pointer events but has no Space+arrow key path; native range step movement does not implement the source-required larger Space-modified interval."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -766,9 +869,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_slider.go:24-36",
+            "result": "Each handle is a native range input with min/max/step, a handle-specific accessible label and disabled state; range values remain independently adjustable."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -792,9 +902,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/sliders.js:139-162",
+            "result": "Pointer movement marks only the hovered handle and styles use data-slider-hover/focus/pressed to grow the handle and expose its value."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -818,9 +935,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_slider.templ:22-26",
+            "result": "Each slider handle contains the focusable native range input; that input owns keyboard navigation."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -844,10 +968,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/sliders.css:131-168",
+            "result": "Stop markers and active/inactive track colors are present, but the inactive endpoint color ratio is token-resolved and no contrast calculation was run."
+          }
+        ],
+        "notes": "The 3:1 condition is conditional on the inactive track contrast, which remains unmeasured."
       },
       "fixes": []
     },
@@ -870,9 +1001,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/sliders.js:110-138",
+            "result": "No custom keydown handling implements the source-required Space+arrow increment; native input behavior provides the other range-key movement but not that documented mapping."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -896,9 +1034,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_slider.go:24-36",
+            "result": "Each native type=range input has the Slider role and an explicit Value/Lower value/Upper value accessible name."
+          }
+        ],
         "notes": ""
       },
       "fixes": []

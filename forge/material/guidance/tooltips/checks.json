@@ -248,9 +248,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_tooltip.templ:3-34",
+            "result": "Plain variant renders descriptive text beside an icon-only Details trigger; rich variant renders a heading, supporting paragraph and text action. Application content authors choose which information belongs in each variant."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -274,9 +281,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/snackbars-tooltips.css:74-108; forge/material/generate-components.mjs:442-457",
+            "result": "Container shape, background and text colors bind to plain/rich component tokens instead of fixed M2 values. The rich specimen resolves to 12px corners and rgb(242,236,244) in light/default."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -300,10 +314,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/snackbars-tooltips.css:88-99",
+            "result": "The plain rule sets a 24px minimum height and 4px vertical/8px horizontal padding. Chromium measured a 24px height with those paddings. The captured requirement says 8dp padding without identifying its axes; confirming the diagram is needed before treating the vertical padding as a mismatch."
+          }
+        ],
+        "notes": "The plain rule sets a 24px minimum height and 4px vertical/8px horizontal padding. Chromium measured a 24px height with those paddings. The captured requirement says 8dp padding without identifying its axes; confirming the diagram is needed before treating the vertical padding as a mismatch."
       },
       "fixes": []
     },
@@ -326,9 +347,21 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "verified",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/snackbars-tooltips.css:82-83",
+            "result": "The rich surface uses space150/space200/space100, resolving to 12px top,16px sides,8px bottom."
+          },
+          {
+            "kind": "browser",
+            "location": "http://127.0.0.1:8081/md3/components/tooltips?preview.compare=interactive&preview.variant=rich",
+            "result": "Chromium, light/default, rich variant. Enter on Show details opens the surface; getComputedStyle reports padding top 12px/right 16px/bottom 8px/left 16px."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -352,9 +385,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_tooltip.templ:24-34; forge/material/generate-components.mjs:1039-1042",
+            "result": "The rich renderer always emits Details and exactly one Got it button. The configuration matrix exposes variant/state, with no headline visibility or zero/two-action configuration."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -378,10 +418,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "Choosing context, omitting critical information and deciding whether a dialog is required are application content decisions. The isolated specimen supplies noncritical example text and no application decision flow."
       },
       "fixes": []
     },
@@ -404,10 +445,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "This is a content-authoring instruction. The specimen uses the short single-line More information text; the reusable stylesheet does not enforce semantic brevity or prohibit multiline caller content."
       },
       "fixes": []
     },
@@ -430,10 +472,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "Subhead wording and whether a product explanation appears automatically are authoring decisions. The specimen has a brief Details heading and only opens interactively; there is no page-load tooltip flow to assess."
       },
       "fixes": []
     },
@@ -456,9 +499,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_tooltip.templ:30-34; forge/components/styles/snackbars-tooltips.css:110-113",
+            "result": "The rendered rich example contains one short Got it text button relevant to dismissing its explanatory text. It does not stack actions. Configuring a second action is assessed separately under rich-tooltip-configurations."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -482,9 +532,21 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "failing",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/snackbars-tooltips.css:119-125",
+            "result": "The plain tooltip is absolutely positioned at top:100% and horizontally centered, with no parent gap or app-bar placement distinction. This places it directly below the parent."
+          },
+          {
+            "kind": "browser",
+            "location": "http://127.0.0.1:8081/md3/components/tooltips?preview.compare=interactive",
+            "result": "Chromium, light/default, plain variant. Measured parent bottom 380px and tooltip top 380px: gap 0px below parent. Focus on Details reveals the tooltip. Expected above with 4px boundary gap."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -508,9 +570,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/snackbars-tooltips.css:131-146; forge/components/behaviors/tooltips.js:3-20",
+            "result": "The anchor path positions below the trigger left edge with an 8px gap. It has no onscreen fallback/8px adjustment rule. The non-anchor JS path clamps/flips using raw viewport coordinates rather than 8px increments. Default bottom-right placement and guaranteed avoidance of parent overlap are not established."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -534,9 +603,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/snackbars-tooltips.css:119-130; forge/components/behaviors/tooltips.js:21-57",
+            "result": "Plain disclosure follows hover/focus-within directly. The behavior module contains no pointer-hold recognition or1.5second exit timer, and plain CSS tooltips have no shared close-previous coordination. Rich is implemented only as a click-activated persistent popover."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -560,9 +636,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_tooltip.templ:12-14; forge/components/behaviors/tooltips.js:37-41",
+            "result": "Rich uses native popover=auto on a labeled Show details button. Activation toggles it; no hover handler opens/closes it. Light dismissal and Got it close it, while pointer leave has no dismissal handler. No automatic page-load example is requested."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -586,10 +669,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_tooltip.templ:8-14",
+            "result": "Plain trigger has aria-describedby pointing to role=tooltip. Rich has a labeled nonmodal dialog and native trigger/action buttons; keyboard activation was exercised. Actual screen-reader and switch-control delivery were not tested."
+          }
+        ],
+        "notes": "Plain trigger has aria-describedby pointing to role=tooltip. Rich has a labeled nonmodal dialog and native trigger/action buttons; keyboard activation was exercised. Actual screen-reader and switch-control delivery were not tested."
       },
       "fixes": []
     },
@@ -612,9 +702,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/snackbars-tooltips.css:119-130; catalog/web/specimen_tooltip.templ:8-14",
+            "result": "Plain remains visible while focus is in its demo and while hovered, with no read timeout. Rich remains a nonmodal popover until dismissed. Native popover does not make the page inert; the specimen text is supplemental. The separate transient-delay requirement remains missing."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -638,9 +735,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_tooltip.templ:12-14; forge/components/behaviors/tooltips.js:1-57",
+            "result": "The rich popover contains one native action in DOM order and no key handler trapping Tab. Chromium Tab moved Show details to Got it then to the next Token set control. No screen-reader navigation run was performed."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -664,9 +768,21 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "verified",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_tooltip.templ:12-14; forge/components/behaviors/tooltips.js:37-41",
+            "result": "Trigger/action are native buttons. Tab enters the action; native Space/Enter activation opens or dismisses the popover."
+          },
+          {
+            "kind": "browser",
+            "location": "http://127.0.0.1:8081/md3/components/tooltips?preview.compare=interactive&preview.variant=rich",
+            "result": "Chromium, rich variant. Enter on Show details opens; Tab focuses Got it; Tab again reaches Token set:Plain. Space on Got it closes; Space on Show details reopens; Enter on Got it closes. Focus returns to Show details."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -690,9 +806,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_tooltip.templ:8-14,24-34",
+            "result": "Plain has role=tooltip and its trigger references the tooltip ID with aria-describedby. Interactive rich content uses a labeled role=dialog rather than placing a button inside a tooltip role. Its Got it child is a native labeled button; static comparison samples are presentation-only sections."
+          }
+        ],
         "notes": ""
       },
       "fixes": []

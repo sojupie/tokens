@@ -242,10 +242,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/fab-menus.css:1-6,31-33; forge/components/behaviors/fab-menus.js:19-28",
+            "result": "The root lays out close/menu controls on the trailing side; the positioner reads computed direction and aligns the LTR panel’s right edge or RTL panel’s left edge to the opener, then clamps it within viewport margin."
+          }
+        ],
+        "notes": "The component uses logical flex alignment and a direction-aware opener edge for menu placement; it does not reverse the internal order of menu-item text, which is separately assessed by the item layout rule.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -268,10 +275,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/fab-menus.js:9-28; forge/components/styles/fab-menus.css:1-11",
+            "result": "The panel is positioned above the opener from its current rectangle with a fixed space200 margin; there is no breakpoint-specific 24dp margin rule for large/extra-large windows."
+          }
+        ],
+        "notes": "The opener anchor is retained, but the required larger-window margin increase is absent from the inspected handler and stylesheet.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -294,10 +308,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_fab_menu.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When those components are present.”."
+          }
+        ],
+        "notes": "The condition is “When those components are present.” and the instruction is “Do not use a FAB menu alongside a floating toolbar or navigation rail.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -320,10 +341,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "Chromium/IAB http://127.0.0.1:8081/md3/components/fab-menu?preview.compare=interactive; forge/components/behaviors/fab-menus.js:59-100",
+            "result": "ArrowDown/ArrowUp opening focused the first/last item; Escape returned focus; Enter on New project selected and closed; Space/Enter on Create opened while retaining opener focus; Tab from open opener closed and advanced to the next Common token-set control. Space-on-item and Tab-from-item were not exercised."
+          }
+        ],
+        "notes": "The observed subset supports opener and item activation paths, but the check combines Tab traversal and Space/Enter activation across close button and menu items; the missing item-level Space and Tab paths prevent a whole-check verdict.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -346,10 +374,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_fab_menu.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When implementing FAB menu semantics on Android.”."
+          }
+        ],
+        "notes": "The condition is “When implementing FAB menu semantics on Android.” and the instruction is “On Android, expose the close control as a button labeled “Toggle menu” with expanded/collapsed state; label each menu item to match its visible UI text and expose it as a button.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -372,10 +407,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_fab_menu.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When exposing the FAB menu to assistive technology.”."
+          }
+        ],
+        "notes": "The condition is “When exposing the FAB menu to assistive technology.” and the instruction is “People using assistive technology must be able to navigate and interact with the menu and maintain correct focus while navigating it.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -398,10 +440,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_fab_menu.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When exposing the menu to assistive technology.”."
+          }
+        ],
+        "notes": "The condition is “When exposing the menu to assistive technology.” and the instruction is “People using assistive technology must be able to navigate and interact with the FAB menu and maintain correct focus while doing so.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -424,10 +473,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/fab-menus.js:11-18,28; forge/components/styles/fab-menus.css:31-39,90-115",
+            "result": "The close control height and panel-to-close spacing are supplied through dedicated token variables; the positioner subtracts the configured close gap from the opener top when positioning the panel."
+          }
+        ],
+        "notes": "The web layout consumes the configured close-button height and inter-control gap rather than a hard-coded unrelated offset; the 4dp web recommendation is not enforced as a fixed numeric value.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -450,10 +506,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/fab-menus.css:90-115",
+            "result": "The close control binds button height, shape, icon, state, pressed-state and elevation variables to the shared button styles."
+          }
+        ],
+        "notes": "The close button is an enabled native button styled through the shared button state variables; hover/focus/pressed states are supplied by the shared button behavior and CSS.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -476,10 +539,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/fab-menus.css:90-115",
+            "result": "The close control binds button height, shape, icon, state, pressed-state and elevation variables to the shared button styles."
+          }
+        ],
+        "notes": "The close button is an enabled native button styled through the shared button state variables; hover/focus/pressed states are supplied by the shared button behavior and CSS.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -502,10 +572,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:459-478",
+            "result": "The FAB-menu token mapper exposes primary, secondary and tertiary color sets with container, icon and label color properties for the component variants."
+          }
+        ],
+        "notes": "The current color sets are mapped to explicit component selectors; availability is reflected in the variant token mapping.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -528,10 +605,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/fab-menus.css:1-11,31-39,90-115; forge/components/behaviors/fab-menus.js:23-28",
+            "result": "The panel and close control share trailing-edge alignment and space200 outer inset; the close control occupies the opener’s position."
+          }
+        ],
+        "notes": "The compact layout uses the configured 16dp margin and aligns the close/opener to the menu’s top trailing corner.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -554,10 +638,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/fab-menus.css:1-11; forge/material/generate-components.mjs:459-478",
+            "result": "The component maps FAB-menu tokens and its style selectors; `data-variant` is supplied by the specimen’s selected component case."
+          }
+        ],
+        "notes": "The web package provides the single configured FAB-menu component and color variants; the source’s generation-availability statement is represented by the current Material-specific component mapping.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -580,10 +671,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "Chromium/IAB http://127.0.0.1:8081/md3/components/fab-menu?preview.compare=interactive; forge/components/behaviors/fab-menus.js:38-55,69-81",
+            "result": "Space/Enter opening retains focus on the opener, which becomes the Close menu control; ArrowDown/ArrowUp opening instead focuses the first/last menu item. Escape and action selection return focus to Create. Tab sequence from the close control through items was not fully exercised."
+          }
+        ],
+        "notes": "The observed close-control retention on activation and arrow-key entry both match the intended initial-focus options, but the subsequent focus sequence through all menu items remains untested.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -606,10 +704,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_fab_menu.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When a menu item expands after selection.”."
+          }
+        ],
+        "notes": "The condition is “When a menu item expands after selection.” and the instruction is “A FAB menu item may expand into a surface or full-screen shape using a container-transform transition.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -632,10 +737,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_fab_menu.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When the primary FAB needs to reveal related actions.”."
+          }
+        ],
+        "notes": "The condition is “When the primary FAB needs to reveal related actions.” and the instruction is “Use a FAB menu to show multiple related actions in a prominent, expressive style.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -658,10 +770,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_fab_menu.templ:8-15; catalog/web/fab_menu.go:5-14,17-45",
+            "result": "The opener is a native FAB button with `aria-haspopup=\"menu\"`, `aria-expanded`, and a label; the panel exposes role=menu, and each item is a button with role=menuitem."
+          }
+        ],
+        "notes": "The rendered web example composes the native FAB opener with a labeled menu and actionable menu items, rather than exposing an unnamed generic panel.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -684,10 +803,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/fab_menu.go:5-14,17-45; catalog/web/specimen_fab_menu.templ:12-20",
+            "result": "The opener has aria-label Create; the close button has aria-label Close menu; each menu item includes visible text within its button."
+          }
+        ],
+        "notes": "All controls in the specimen have an accessible name tied to their action: opener, close control and item labels.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -710,10 +836,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_fab_menu.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When choosing menu items.”."
+          }
+        ],
+        "notes": "The condition is “When choosing menu items.” and the instruction is “Include 2–6 closely related actions under one concept; do not use a single-item menu or group unrelated actions.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -736,10 +869,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_fab_menu.templ:12-16",
+            "result": "Every item renders an icon followed by a visible text span (New file, New folder, New project)."
+          }
+        ],
+        "notes": "The specimen keeps visible text labels on all items while also retaining distinguishing icons.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -762,10 +902,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/fab-menus.css:62-89,147-164",
+            "result": "Items use max-content menu width and tokenized content padding, but the button rule also sets overflow:hidden and its content wrapper is flex:none; truncation and label wrapping behavior were not exercised."
+          }
+        ],
+        "notes": "The code provides token-driven intrinsic width/padding but does not establish that long localized labels remain untruncated or that the rounded item shape is preserved in every configured size.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -788,10 +935,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/fab-menus.css:136-168; forge/components/behaviors/fab-menus.js:23-28",
+            "result": "The panel is a fixed-position popover above page content; the placement code clamps to viewport edges but does not inspect the focus indicator of content behind it."
+          }
+        ],
+        "notes": "The check concerns overlap with actionable page content’s focus indicator. The top-layer panel can overlap such content and its positioner has no focus-indicator avoidance logic; partial versus complete obstruction needs a page-level browser probe.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -814,10 +968,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_fab_menu.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When implementing the FAB menu on web or larger windows.”."
+          }
+        ],
+        "notes": "The condition is “When implementing the FAB menu on web or larger windows.” and the instruction is “On web, use the menu component to match desktop menu behavior; pair the FAB menu with a FAB size suitable for the window class.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -840,10 +1001,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/fab_menu.go:5-14-71; catalog/web/specimen_fab_menu.templ:7-12; forge/components/behaviors/fab-menus.js:30-43",
+            "result": "The interactive opener is a `md-fab` button targeting the panel’s popover id; its toggle handler updates aria-expanded, transforms the opener into the close control, and positions the panel from its rectangle."
+          }
+        ],
+        "notes": "The example opens the menu from a standard FAB and the runtime keeps the panel anchored to that same opener.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -866,10 +1034,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:459-478",
+            "result": "The mapper contains separate primary, secondary and tertiary variant selectors for the menu/FAB token family and scopes related component token properties by the same variant name."
+          }
+        ],
+        "notes": "The variant mapping supports same-family color pairings; choosing among them remains a product style choice.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -892,10 +1067,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/fab-menus.css:62-89,90-115",
+            "result": "Menu-item and close-control heights come from their Material component tokens; the specimen sets item controls to small size and close button to its dedicated close size."
+          }
+        ],
+        "notes": "The component uses generated minimum-height tokens for menu items and the configured close-button height; numeric 48dp/56dp values are supplied by the captured token data.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -918,10 +1100,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/fab-menus.js:38-43; forge/components/styles/fab-menus.css:117-145",
+            "result": "The same opener toggles the close class, aria-expanded and label; its icon rotates 45 degrees. The panel is positioned above the opener, but the transition origin is not explicitly set from a trailing FAB corner in the cited styles."
+          }
+        ],
+        "notes": "The control replacement is implemented in place, but this evidence does not establish the required transition origin at a trailing corner or the full container-transform motion.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -944,10 +1133,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_fab_menu.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When a primary FAB needs to reveal related actions.”."
+          }
+        ],
+        "notes": "The condition is “When a primary FAB needs to reveal related actions.” and the instruction is “Use a FAB menu to open 2–6 related actions from a standard FAB; do not open it from an extended FAB.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -970,10 +1166,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_fab_menu.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When replacing a speed dial or stacked small FAB pattern.”."
+          }
+        ],
+        "notes": "The condition is “When replacing a speed dial or stacked small FAB pattern.” and the instruction is “Use the FAB menu in place of speed dials or stacked small FABs.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -996,10 +1199,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/fab-menus.css:45-58,90-115",
+            "result": "The `ul` is a max-height overflow:auto scroll container and the close control is a separate sibling after it; scrolling is confined to the item list, so items do not pass behind the close button."
+          }
+        ],
+        "notes": "The short-window condition is handled with list scrolling, but the required behind-close-button scrolling behavior is absent from this layout.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1022,10 +1232,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/fab-menus.js:9-28",
+            "result": "The panel top is always `anchor.top - closeGap - box.height`, independent of opener size; no larger-FAB size selector or breakpoint clearance increment appears in the positioner."
+          }
+        ],
+        "notes": "The source requires a higher panel and larger below-margin for larger FABs, but the runtime uses the same anchor-gap formula for every opener size.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     }

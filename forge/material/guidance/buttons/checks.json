@@ -396,10 +396,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 2,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_button.templ:3-5",
+            "result": "The specimen’s visible label is “Button”, in sentence case; generated cases do not provide product label authoring rules."
+          }
+        ],
+        "notes": "The specimen’s visible label is “Button”, in sentence case; generated cases do not provide product label authoring rules."
       },
       "fixes": []
     },
@@ -422,10 +429,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/buttons.css:61-76",
+            "result": "Small button leading/trailing padding comes from token variables; code does not resolve their current dp values to 16 versus 24."
+          }
+        ],
+        "notes": "Small button leading/trailing padding comes from token variables; code does not resolve their current dp values to 16 versus 24."
       },
       "fixes": []
     },
@@ -448,10 +462,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_button.templ:3-5",
+            "result": "An isolated specimen contains one sample button and no page-level action hierarchy to evaluate."
+          }
+        ],
+        "notes": "An isolated specimen contains one sample button and no page-level action hierarchy to evaluate."
       },
       "fixes": []
     },
@@ -474,10 +495,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/button_gallery.go:28-33; forge/components/static/buttons.css:136-149",
+            "result": "Toggle cases expose aria-pressed and tokenized selected/unselected color styles; the catalog has selected/unselected rendering states."
+          }
+        ],
+        "notes": "Toggle cases expose aria-pressed and tokenized selected/unselected color styles; the catalog has selected/unselected rendering states."
       },
       "fixes": []
     },
@@ -500,10 +528,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_button.templ:3-5; forge/components/static/buttons.css:13-18",
+            "result": "The sample label is one word and button typography uses no-wrap/fit-content sizing."
+          }
+        ],
+        "notes": "The sample label is one word and button typography uses no-wrap/fit-content sizing."
       },
       "fixes": []
     },
@@ -536,10 +571,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 2,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_button.templ:3-5; forge/components/static/buttons.css:13-20",
+            "result": "Icon SVG precedes the label in DOM, and inline flex follows text direction so the leading icon mirrors in RTL."
+          }
+        ],
+        "notes": "Icon SVG precedes the label in DOM, and inline flex follows text direction so the leading icon mirrors in RTL."
       },
       "fixes": []
     },
@@ -562,10 +604,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_button.templ:3-5",
+            "result": "The single generic button specimen has no task flow or page actions that establish whether it is a final primary action."
+          }
+        ],
+        "notes": "The single generic button specimen has no task flow or page actions that establish whether it is a final primary action."
       },
       "fixes": []
     },
@@ -588,10 +637,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_button.templ:3-5",
+            "result": "The specimen does not render a text-style button in a real page context with surrounding copy to judge its priority or distinction."
+          }
+        ],
+        "notes": "The specimen does not render a text-style button in a real page context with surrounding copy to judge its priority or distinction."
       },
       "fixes": []
     },
@@ -614,10 +670,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_button.templ:3-5",
+            "result": "Dialog action layout is owned by the dialog specimen; the standalone button sample has no dialog container."
+          }
+        ],
+        "notes": "Dialog action layout is owned by the dialog specimen; the standalone button sample has no dialog container."
       },
       "fixes": []
     },
@@ -640,10 +703,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/buttons.css:21-23; forge/components/static/buttons.css:129-135",
+            "result": "Button label/container colors are token-driven by style, but the 3:1 ratio against the correct backgrounds has not been computed for all styles."
+          }
+        ],
+        "notes": "Button label/container colors are token-driven by style, but the 3:1 ratio against the correct backgrounds has not been computed for all styles."
       },
       "fixes": []
     },
@@ -666,10 +736,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/buttons.css:13-18",
+            "result": "Button content uses no wrapping and a min-content width, but the web renderer does not implement Android 200% font scaling or a single-tap reveal for clipped labels."
+          }
+        ],
+        "notes": "Button content uses no wrapping and a min-content width, but the web renderer does not implement Android 200% font scaling or a single-tap reveal for clipped labels."
       },
       "fixes": []
     },
@@ -692,10 +769,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_button.templ:3-5; catalog/web/specimen_attributes.go:10-13",
+            "result": "The sample button’s accessible name is its visible text; it has no aria-label that overrides or diverges from “Button”."
+          }
+        ],
+        "notes": "The sample button’s accessible name is its visible text; it has no aria-label that overrides or diverges from “Button”."
       },
       "fixes": []
     },
@@ -718,10 +802,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/buttons.css:44-128",
+            "result": "Styles bind xsmall, small, medium, large, and xlarge data-size values to button measurements and typography."
+          }
+        ],
+        "notes": "Styles bind xsmall, small, medium, large, and xlarge data-size values to button measurements and typography."
       },
       "fixes": []
     },
@@ -744,10 +835,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/buttons.css:129-135; forge/components/static/buttons.css:218-224",
+            "result": "Separate class mappings provide elevated and filled styles; corresponding tonal, outlined and text style rules are defined in the same stylesheet."
+          }
+        ],
+        "notes": "Separate class mappings provide elevated and filled styles; corresponding tonal, outlined and text style rules are defined in the same stylesheet."
       },
       "fixes": []
     },
@@ -770,10 +868,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/buttons.css:26-28; forge/components/static/buttons.css:44-59",
+            "result": "The stylesheet selects round or square rest shapes and selected-state shape token variables."
+          }
+        ],
+        "notes": "The stylesheet selects round or square rest shapes and selected-state shape token variables."
       },
       "fixes": []
     },
@@ -796,10 +901,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/buttons.css:61-76",
+            "result": "Small leading/trailing paddings are variable-backed; the source rules do not resolve the recommendation’s specific 16dp value."
+          }
+        ],
+        "notes": "Small leading/trailing paddings are variable-backed; the source rules do not resolve the recommendation’s specific 16dp value."
       },
       "fixes": []
     },
@@ -822,10 +934,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/buttons.css:61-77",
+            "result": "Default/small buttons use tokenized height and round shape variables; values for 40dp and full rounding are not resolved in the authored rule."
+          }
+        ],
+        "notes": "Default/small buttons use tokenized height and round shape variables; values for 40dp and full rounding are not resolved in the authored rule."
       },
       "fixes": []
     },
@@ -848,10 +967,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/buttons.css:61-76",
+            "result": "Small leading/trailing icon size is token-bound; this stylesheet does not establish the exact 20dp value."
+          }
+        ],
+        "notes": "Small leading/trailing icon size is token-bound; this stylesheet does not establish the exact 20dp value."
       },
       "fixes": []
     },
@@ -874,10 +1000,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/buttons.css:129-135; forge/components/static/buttons.css:218-224",
+            "result": "Color style classes expose text and filled styles, but there is no implementation-level recommendation metadata for a neutral text color."
+          }
+        ],
+        "notes": "Color style classes expose text and filled styles, but there is no implementation-level recommendation metadata for a neutral text color."
       },
       "fixes": []
     },
@@ -900,10 +1033,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/buttons.css:136-149; forge/components/static/buttons.css:225-234",
+            "result": "Toggle style rules select distinct selected/unselected token roles; default button styles support the listed styles, while toggle text style availability is not represented by a separate toggle mode."
+          }
+        ],
+        "notes": "Toggle style rules select distinct selected/unselected token roles; default button styles support the listed styles, while toggle text style availability is not represented by a separate toggle mode."
       },
       "fixes": []
     },
@@ -926,10 +1066,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/buttons.css:21-23",
+            "result": "Custom color variables can be overridden, but no runtime contrast constraint/check ensures 3:1 for custom container and text roles."
+          }
+        ],
+        "notes": "Custom color variables can be overridden, but no runtime contrast constraint/check ensures 3:1 for custom container and text roles."
       },
       "fixes": []
     },
@@ -952,10 +1099,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/buttons.css:129-135; forge/components/static/buttons.css:209-217",
+            "result": "Elevated rest/disabled elevations are token-bound; authored CSS selects them but does not resolve values 1 and 0."
+          }
+        ],
+        "notes": "Elevated rest/disabled elevations are token-bound; authored CSS selects them but does not resolve values 1 and 0."
       },
       "fixes": []
     },
@@ -978,10 +1132,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/buttons.css:29-30; forge/components/static/buttons.css:32-35",
+            "result": "Outlined container is transparent at rest and focus/interaction state layers are driven by button state variables."
+          }
+        ],
+        "notes": "Outlined container is transparent at rest and focus/interaction state layers are driven by button state variables."
       },
       "fixes": []
     },
@@ -1004,10 +1165,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/buttons.css:32-35",
+            "result": "Shared button state pseudo-element provides interaction-only state layer, and no selected/toggle text-style selector is declared."
+          }
+        ],
+        "notes": "Shared button state pseudo-element provides interaction-only state layer, and no selected/toggle text-style selector is declared."
       },
       "fixes": []
     },
@@ -1030,10 +1198,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/buttons.css:26-31; forge/components/static/buttons.css:44-59",
+            "result": "Pressed state uses a shared shape variable, with size-specific pressed corner tokens for every button size."
+          }
+        ],
+        "notes": "Pressed state uses a shared shape variable, with size-specific pressed corner tokens for every button size."
       },
       "fixes": []
     },
@@ -1056,10 +1231,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/buttons.css:26-28; forge/components/static/buttons.css:44-59",
+            "result": "aria-pressed selects separate round/square selected shape tokens relative to the chosen unselected shape."
+          }
+        ],
+        "notes": "aria-pressed selects separate round/square selected shape tokens relative to the chosen unselected shape."
       },
       "fixes": []
     },
@@ -1082,10 +1264,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/icon-buttons.css:24-38",
+            "result": "Icon button minimum width is icon size plus token leading/trailing insets; no code here enforces a 48×48dp target for XS/S sizes."
+          }
+        ],
+        "notes": "Icon button minimum width is icon size plus token leading/trailing insets; no code here enforces a 48×48dp target for XS/S sizes."
       },
       "fixes": []
     },
@@ -1108,10 +1297,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_button.templ:3-5",
+            "result": "A single component specimen does not represent a screen’s action density or hierarchy."
+          }
+        ],
+        "notes": "A single component specimen does not represent a screen’s action density or hierarchy."
       },
       "fixes": []
     },
@@ -1134,10 +1330,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/buttons.css:13-18",
+            "result": "Buttons use min-inline-size:max-content and no-wrap labels, preventing the container from becoming narrower than text."
+          }
+        ],
+        "notes": "Buttons use min-inline-size:max-content and no-wrap labels, preventing the container from becoming narrower than text."
       },
       "fixes": []
     },
@@ -1160,10 +1363,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_button.templ:3-5",
+            "result": "The standalone button preview has no related action group to compare for primary emphasis."
+          }
+        ],
+        "notes": "The standalone button preview has no related action group to compare for primary emphasis."
       },
       "fixes": []
     },
@@ -1186,10 +1396,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/button_gallery.go:28-33",
+            "result": "Toggle configuration emits aria-pressed and data-button-toggle for binary selection states."
+          }
+        ],
+        "notes": "Toggle configuration emits aria-pressed and data-button-toggle for binary selection states."
       },
       "fixes": []
     },
@@ -1212,10 +1429,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/buttons.css:136-149",
+            "result": "Selected and unselected icon/color tokens are separately selected by aria-pressed; symbol glyph variants are not automatically swapped by the generic button."
+          }
+        ],
+        "notes": "Selected and unselected icon/color tokens are separately selected by aria-pressed; symbol glyph variants are not automatically swapped by the generic button."
       },
       "fixes": []
     },
@@ -1238,10 +1462,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_button.templ:3-5",
+            "result": "The sample has a fixed label and no state-dependent label change."
+          }
+        ],
+        "notes": "The sample has a fixed label and no state-dependent label change."
       },
       "fixes": []
     },
@@ -1264,10 +1495,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_button.templ:3-5",
+            "result": "The isolated button does not appear beside chips or similar text, so adjacent-element distinction is a product layout concern."
+          }
+        ],
+        "notes": "The isolated button does not appear beside chips or similar text, so adjacent-element distinction is a product layout concern."
       },
       "fixes": []
     },
@@ -1290,10 +1528,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/buttons.css:13-18",
+            "result": "Button is inline-flex with max-content minimum width and content-driven width rather than a fixed container width."
+          }
+        ],
+        "notes": "Button is inline-flex with max-content minimum width and content-driven width rather than a fixed container width."
       },
       "fixes": []
     },
@@ -1316,10 +1561,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/buttons.css:32-35",
+            "result": "Base container is transparent and the pseudo state layer receives state color/opacity only for interaction states."
+          }
+        ],
+        "notes": "Base container is transparent and the pseudo state layer receives state color/opacity only for interaction states."
       },
       "fixes": []
     },
@@ -1342,10 +1594,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_button.templ:3-5",
+            "result": "An isolated style specimen has no visually prominent host background or page hierarchy to determine whether elevation is necessary."
+          }
+        ],
+        "notes": "An isolated style specimen has no visually prominent host background or page hierarchy to determine whether elevation is necessary."
       },
       "fixes": []
     },
@@ -1368,10 +1627,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_button.templ:3-5",
+            "result": "The sample is not associated with a workflow or page, so final-action priority and per-page filled-button count cannot be assessed."
+          }
+        ],
+        "notes": "The sample is not associated with a workflow or page, so final-action priority and per-page filled-button count cannot be assessed."
       },
       "fixes": []
     },
@@ -1394,10 +1660,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_button.templ:3-5",
+            "result": "The isolated specimen has no primary action or supporting-action hierarchy."
+          }
+        ],
+        "notes": "The isolated specimen has no primary action or supporting-action hierarchy."
       },
       "fixes": []
     },
@@ -1420,10 +1693,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_button.templ:3-5",
+            "result": "No task context exists to classify the sample as supporting action or pair it with a primary action."
+          }
+        ],
+        "notes": "No task context exists to classify the sample as supporting action or pair it with a primary action."
       },
       "fixes": []
     },
@@ -1446,10 +1726,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_button.templ:3-5",
+            "result": "The generic specimen renders on the component showcase background; its local container/background treatment is not defined in this template."
+          }
+        ],
+        "notes": "The generic specimen renders on the component showcase background; its local container/background treatment is not defined in this template."
       },
       "fixes": []
     },
@@ -1472,10 +1759,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_button.templ:3-5",
+            "result": "The preview has no surrounding action hierarchy or hyperlink content."
+          }
+        ],
+        "notes": "The preview has no surrounding action hierarchy or hyperlink content."
       },
       "fixes": []
     },
@@ -1498,10 +1792,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/buttons.css:21-23; catalog/web/specimen_button.templ:3-5",
+            "result": "Text color is token-backed, but distinction from surrounding text requires resolved color contrast; dialog alignment is outside this standalone specimen."
+          }
+        ],
+        "notes": "Text color is token-backed, but distinction from surrounding text requires resolved color contrast; dialog alignment is outside this standalone specimen."
       },
       "fixes": []
     },
@@ -1524,10 +1825,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/buttons.css:13-18",
+            "result": "The button uses inline-flex with align-items and justify-content center, keeping icon and label grouped as width changes."
+          }
+        ],
+        "notes": "The button uses inline-flex with align-items and justify-content center, keeping icon and label grouped as width changes."
       },
       "fixes": []
     },
@@ -1550,10 +1858,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_button.templ:3-5",
+            "result": "The specimen is a single isolated button and has no large-window surrounding layout to adapt."
+          }
+        ],
+        "notes": "The specimen is a single isolated button and has no large-window surrounding layout to adapt."
       },
       "fixes": []
     },
@@ -1576,10 +1891,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_button.templ:3-5",
+            "result": "The button specimen has no adaptive parent layout or sibling action order."
+          }
+        ],
+        "notes": "The button specimen has no adaptive parent layout or sibling action order."
       },
       "fixes": []
     },
@@ -1602,10 +1924,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_button.templ:3-5; forge/components/static/buttons.css:13-20",
+            "result": "Native button markup exposes an accessible name from visible text and standard activation semantics."
+          }
+        ],
+        "notes": "Native button markup exposes an accessible name from visible text and standard activation semantics."
       },
       "fixes": []
     },
@@ -1628,10 +1957,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/buttons.css:11-23; forge/components/static/buttons.js:48-61",
+            "result": "Button has state transition timing and ripple animation lifecycle, but no separate rapid-activation motion curve is explicit in this stylesheet; shared motion runtime needs targeted browser exercise."
+          }
+        ],
+        "notes": "Button has state transition timing and ripple animation lifecycle, but no separate rapid-activation motion curve is explicit in this stylesheet; shared motion runtime needs targeted browser exercise."
       },
       "fixes": []
     },
@@ -1654,10 +1990,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_button.templ:3-5",
+            "result": "The preview’s check icon is paired with the generic label “Button”; it does not identify a particular action, so icon meaning cannot be judged as an application control."
+          }
+        ],
+        "notes": "The preview’s check icon is paired with the generic label “Button”; it does not identify a particular action, so icon meaning cannot be judged as an application control."
       },
       "fixes": []
     },
@@ -1680,10 +2023,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_button.templ:3-5; forge/components/static/buttons.css:13-20",
+            "result": "Icon SVG and label span are horizontal inline-flex children, not vertically stacked."
+          }
+        ],
+        "notes": "Icon SVG and label span are horizontal inline-flex children, not vertically stacked."
       },
       "fixes": []
     },
@@ -1706,10 +2056,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_button.templ:3-5",
+            "result": "The sample contains one check icon and one visible label, with no second icon."
+          }
+        ],
+        "notes": "The sample contains one check icon and one visible label, with no second icon."
       },
       "fixes": []
     },
@@ -1732,10 +2089,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_button.templ:3-5",
+            "result": "The rendered control is a native `<button type=button>` from the component helper; browser keyboard semantics provide Tab focus and Space/Enter activation."
+          }
+        ],
+        "notes": "The rendered control is a native `<button type=button>` from the component helper; browser keyboard semantics provide Tab focus and Space/Enter activation."
       },
       "fixes": []
     }

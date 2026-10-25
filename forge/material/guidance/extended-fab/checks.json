@@ -320,10 +320,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_extended_fab.templ:5-6; catalog/web/specimen_attributes.go:70-74",
+            "result": "The demo includes a plus icon and visible Create text; the shared attributes set aria-label=\"Create\". Whether an icon intuitively communicates every configured action depends on the product action, which this specimen does not vary."
+          }
+        ],
+        "notes": "The web specimen establishes the shown icon/label pairing but cannot establish the semantic appropriateness of a configurable icon for the represented product action.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -346,10 +353,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_extended_fab.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When placing the extended FAB responsively.”."
+          }
+        ],
+        "notes": "The condition is “When placing the extended FAB responsively.” and the instruction is “At compact and medium breakpoints, place the extended FAB at the bottom, centered or at the trailing edge; at expanded and larger breakpoints, place it at the bottom-right in either text direction or within the navigation rail.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -372,10 +386,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_extended_fab.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When the screen has a floating toolbar.”."
+          }
+        ],
+        "notes": "The condition is “When the screen has a floating toolbar.” and the instruction is “Avoid showing a floating toolbar at the same time as an extended FAB.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -398,10 +419,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:459-479; forge/components/styles/fabs.css:9-25",
+            "result": "The mapper accepts the current FAB color sets, scopes each data-variant, and maps container, icon and label color properties; the stylesheet consumes those generated color variables."
+          }
+        ],
+        "notes": "The code maps the baseline/current color variants into the extended-FAB selector and applies their container, icon, label and state variables. Selection by visual preference remains a product choice.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -424,10 +452,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:465-469; forge/components/styles/fabs.css:33-38",
+            "result": "The mapper maps extended-FAB container height/width/shape, icon size, icon-label gap, leading/trailing space and label type into size-scoped properties; the extended-FAB selector consumes those variables."
+          }
+        ],
+        "notes": "The implementation path carries the baseline geometry and typography tokens into the extended-FAB styles; actual numeric token values come from the Material input set.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -450,10 +485,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_extended_fab.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When selecting an M3 Expressive extended FAB size.”."
+          }
+        ],
+        "notes": "The condition is “When selecting an M3 Expressive extended FAB size.” and the instruction is “Choose small, medium, or large according to the required emphasis; large can suit a compact window with one prominent action, while medium or large suit larger breakpoints.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -476,10 +518,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_extended_fab.templ:3-6",
+            "result": "The specimen renders the visible Create label directly in the button and contains no tooltip or tooltip trigger for that label."
+          }
+        ],
+        "notes": "For this specimen condition, the visible label is present and no tooltip is added to repeat it.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -502,10 +551,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:459-469; forge/components/styles/fabs.css:33-38",
+            "result": "The mapper recognizes extended-fab default, small, medium and large size sets, creates a matching data-size selector, and maps their geometry/typography tokens."
+          }
+        ],
+        "notes": "The implementation exposes the expressive size variants and uses generated token properties for each; product choice of the recommended replacement remains an integration decision.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -528,10 +584,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_extended_fab.templ:5-6; catalog/web/specimen_attributes.go:70-74",
+            "result": "The specimen is a native button with type=button and aria-label=\"Create\"; the browser provides the button’s standard keyboard focus and activation semantics."
+          }
+        ],
+        "notes": "The specimen exposes a focusable, activatable native button with an accessible name. This code evidence does not claim a screen-reader/browser exercise.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -554,10 +617,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_extended_fab.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When placing the extended FAB for assistive-technology users.”."
+          }
+        ],
+        "notes": "The condition is “When placing the extended FAB for assistive-technology users.” and the instruction is “For screen-reader reachability, consider the upper-left region or expanded navigation rail on large web screens; in smaller windows the lower-right corner is best. Keep the FAB reachable and do not obstruct other actions.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -580,10 +650,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_extended_fab.templ:5-6; catalog/web/specimen_attributes.go:70-74",
+            "result": "The specimen is a native button with type=button and aria-label=\"Create\"; the browser provides the button’s standard keyboard focus and activation semantics."
+          }
+        ],
+        "notes": "The specimen exposes a focusable, activatable native button with an accessible name. This code evidence does not claim a screen-reader/browser exercise.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -606,10 +683,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:471-478",
+            "result": "The mapper explicitly accepts primary, secondary, tertiary and their container variants and maps container/icon/label color roles into each variant selector."
+          }
+        ],
+        "notes": "All six documented current color pairings have explicit variant selectors and token-property mappings.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -632,10 +716,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_extended_fab.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When activating an extended FAB that opens expanded content.”."
+          }
+        ],
+        "notes": "The condition is “When activating an extended FAB that opens expanded content.” and the instruction is “An extended FAB may expand into a surface or full-screen shape using a container-transform transition.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -658,10 +749,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_extended_fab.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When placing an M3 Expressive extended FAB.”."
+          }
+        ],
+        "notes": "The condition is “When placing an M3 Expressive extended FAB.” and the instruction is “Keep 16dp margins around extended FABs.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -684,10 +782,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_extended_fab.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When implementing optional scroll transformation.”."
+          }
+        ],
+        "notes": "The condition is “When implementing optional scroll transformation.” and the instruction is “An extended FAB may transform into a FAB while scrolling to take up less space.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -710,10 +815,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:459-469",
+            "result": "The generator maps default, small, medium and large extended-FAB size sets to explicit data-size selectors."
+          }
+        ],
+        "notes": "The web implementation exposes the baseline default and expressive named sizes; recommendation by design generation is separate from availability.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -736,10 +848,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_extended_fab.templ:5-6; catalog/web/specimen_attributes.go:70-74",
+            "result": "The displayed plus icon and visible label are in one button, and aria-label=\"Create\" matches the first word and full visible label."
+          }
+        ],
+        "notes": "The example presents one focusable control with a single action name aligned to its visible label.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -762,10 +881,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_extended_fab.templ:3-6",
+            "result": "The standalone specimen renders one native button; its position in the containing page’s focus order depends on where the application inserts this specimen."
+          }
+        ],
+        "notes": "The component supplies one focusable control, but the repository does not define a consuming screen’s overall assistive-technology focus order.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -788,10 +914,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/fabs.css:33-38",
+            "result": "The extended-FAB styling delegates width to generated size-specific width and leading/trailing/gap variables instead of assigning a fixed inline width in this selector."
+          }
+        ],
+        "notes": "The component uses the token-driven extended-FAB width and content-space properties, allowing the configured label to determine the container width.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -814,10 +947,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_extended_fab.templ:5-6; forge/components/styles/fabs.css:33-38",
+            "result": "The specimen renders icon before label and the stylesheet applies tokenized leading/trailing spaces; no RTL-specific order rule is present in this component stylesheet."
+          }
+        ],
+        "notes": "The web implementation does not explicitly reverse icon and label order for RTL in the inspected component path; surrounding bidi/flex behavior has not been browser-checked.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -840,10 +980,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_extended_fab.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When using the optional scroll transformation.”."
+          }
+        ],
+        "notes": "The condition is “When using the optional scroll transformation.” and the instruction is “On downward scroll, the extended FAB may collapse to a FAB; on upward scroll it may expand again, moving the icon left and fading in the label.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -866,10 +1013,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_extended_fab.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When positioning an extended FAB.”."
+          }
+        ],
+        "notes": "The condition is “When positioning an extended FAB.” and the instruction is “Place the extended FAB above the UI; do not overlay toolbars, place it in the upper half of a mobile screen, or put it inside a card or other container.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -892,10 +1046,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_extended_fab.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When the primary action needs both icon and label context.”."
+          }
+        ],
+        "notes": "The condition is “When the primary action needs both icon and label context.” and the instruction is “Prefer the extended FAB when an icon alone would be ambiguous, and keep the icon’s meaning aligned with its label.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -918,10 +1079,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:459-479",
+            "result": "The generator maps only the current six color variants for FAB tokens; no surface variant is listed in this current mapping branch."
+          }
+        ],
+        "notes": "The current expressive mapping does not expose a surface color variant; this supports the source’s distinction that legacy surface styling is not a current expressive choice.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -944,10 +1112,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_extended_fab.templ:5-6",
+            "result": "The specimen uses an enabled native button, so standard browser Tab focus and Space/Enter activation are provided by the HTML button element."
+          }
+        ],
+        "notes": "The rendered control is a native button and does not replace its browser keyboard semantics; no custom keyboard handler is required for this condition.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -970,10 +1145,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_extended_fab.templ:5-6",
+            "result": "The demo label is the short single word Create and is rendered in one span; no localization or constrained-width scenario is exercised."
+          }
+        ],
+        "notes": "The shown label meets the short-label example, but the implementation does not exercise localization expansion, wrapping, or truncation conditions.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -996,10 +1178,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_extended_fab.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When a screen has long scrolling content and needs persistent access to its primary action.”."
+          }
+        ],
+        "notes": "The condition is “When a screen has long scrolling content and needs persistent access to its primary action.” and the instruction is “Use an extended FAB for persistent access to a primary action on a long scrolling screen.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1022,10 +1211,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_extended_fab.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When emphasizing a primary action or presenting a group of actions.”."
+          }
+        ],
+        "notes": "The condition is “When emphasizing a primary action or presenting a group of actions.” and the instruction is “Use no more than one extended FAB on a screen; use a button when presenting one option among a set of actions.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1048,10 +1244,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_extended_fab.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When choosing between a FAB and extended FAB.”."
+          }
+        ],
+        "notes": "The condition is “When choosing between a FAB and extended FAB.” and the instruction is “Use the extended FAB for the screen’s primary action when label text is needed to make the action understandable.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1074,10 +1277,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_extended_fab.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When adapting the primary action to available space or rail state.”."
+          }
+        ],
+        "notes": "The condition is “When adapting the primary action to available space or rail state.” and the instruction is “When space is limited, the extended FAB may transform into a standard FAB; a collapsed navigation rail uses a FAB, while an expanded rail can use an extended FAB.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1100,10 +1310,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:471-478; forge/components/styles/fabs.css:9-25",
+            "result": "The mapper accepts the icon and state-layer color tokens for each supported color variant and emits them into the same variant-scoped extended-FAB selector."
+          }
+        ],
+        "notes": "Icon and state-layer values share the same explicit color-variant selector, allowing the generated mapping to keep their roles together; primary mapping is also included in the same mapper branch.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     }

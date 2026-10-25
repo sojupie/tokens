@@ -266,9 +266,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/snackbars.js:10-18",
+            "result": "The popover behavior creates a timer and hides each open snackbar when it expires; there is no non-dismissive mode or actionless/action mode configuration."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -292,10 +299,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_snackbar.templ:18-31",
+            "result": "The specimen provides one action and a dismiss button, but usage frequency, priority threshold and whether a product action is core are application decisions not enforced by the component."
+          }
+        ],
+        "notes": "No application-level priority/frequency integration is included."
       },
       "fixes": []
     },
@@ -318,9 +332,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_snackbar.templ:5-14",
+            "result": "The nearby live output is empty in the template and the runtime does not populate it; auto-dismiss information is not repeated near the triggering action."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -344,9 +365,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/snackbars.js:13-18",
+            "result": "The configured 6000ms timer runs regardless of whether the snackbar has its Undo action, so actionable web snackbars disappear before user action."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -370,10 +398,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_snackbar.templ:18-30",
+            "result": "The specimen uses plain text and one/two-line variants, but its two-line content includes an explicit line break and no responsive compact wrapping rule is evidenced."
+          }
+        ],
+        "notes": "Copy quality and compact rendered line count require product/content and viewport review."
       },
       "fixes": []
     },
@@ -396,10 +431,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/snackbars-tooltips.css:1-17",
+            "result": "Container shape and fill are token-bound and action uses a text-button variant, but opacity and gray-container contrast are not established without resolved token/color inspection."
+          }
+        ],
+        "notes": "Actual opacity and contrast were not measured."
       },
       "fixes": []
     },
@@ -422,9 +464,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_snackbar.templ:18-31",
+            "result": "The snackbar includes one Undo text button plus a separate labeled dismiss icon; the action is not the only way to dismiss the snackbar."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -448,9 +497,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/snackbars-tooltips.css:64-70",
+            "result": "The snackbar popover is fixed at the viewport bottom and horizontally centered; no collision-avoidance or adjustment above a FAB, toolbar, navigation, or focused control is implemented."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -474,9 +530,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/snackbars-tooltips.css:1-17",
+            "result": "The container has a token-backed fixed minimum height and no compact breakpoint rule that expands it to 64dp or sets leading/trailing/bottom viewport margins."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -500,9 +563,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/snackbars-tooltips.css:1-20",
+            "result": "The snackbar uses max-content width with no medium/expanded breakpoint sizing or target line length; its text is explicitly nowrap."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -526,9 +596,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/snackbars.js:10-25",
+            "result": "The same timer hides the bar after its duration even when an action is present; pointer/focus only pauses and later resumes the timer."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -552,10 +629,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/snackbars.js:10-18",
+            "result": "A timer is stored per snackbar element and each demo can open its own popover; there is no cross-demo queue/replacement controller."
+          }
+        ],
+        "notes": "Component-local source does not establish whether the host app guarantees a single global snackbar."
       },
       "fixes": []
     },
@@ -578,9 +662,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_snackbar.templ:7-10",
+            "result": "The visible snackbar exposes status semantics and has focusable action/dismiss buttons with an accessible label for the icon control."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -604,9 +695,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/snackbars.js:13-18",
+            "result": "The default six-second timer also applies to actionable bars; code does not keep them open until action/dismissal."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -630,9 +728,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_snackbar.templ:5-14",
+            "result": "The aria-live output is empty and no event handler writes an inline copy of snackbar content next to the trigger."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -656,9 +761,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/snackbars.js:13-18",
+            "result": "Actionable snackbar timers are started on open and hide the bar at expiry even if the user has not acted."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -682,9 +794,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/snackbars.js:36-63",
+            "result": "Open/close logic shows/hides the popover without a documented shortcut to move focus to actionable bars or a focus restoration policy; Escape dismisses globally."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -708,9 +827,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/snackbars.js:55-63",
+            "result": "Action and close controls are native buttons in tab order; Escape hides any open snackbar."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -734,9 +860,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_snackbar.templ:7-14",
+            "result": "The snackbar has role=status and the demo contains an aria-live=polite output; the popover is not focused on open."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -760,10 +893,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_snackbar.templ:18-31",
+            "result": "The specimen branches between one-line and two-line content and always includes an action, but no long-action configuration or responsive line behavior is exercised."
+          }
+        ],
+        "notes": "Only a subset of the listed combinations is represented by the specimen."
       },
       "fixes": []
     }

@@ -356,10 +356,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_icon.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When sizing a group of icon buttons.”."
+          }
+        ],
+        "notes": "The condition is “When sizing a group of icon buttons.” and the instruction is “Choose among XS 32dp, S 40dp, M 56dp, L 96dp and XL 136dp, and default/narrow/wide widths to establish hierarchy; use equal sizes for equally important actions.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -382,10 +389,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_icon.templ:3-5",
+            "result": "The standalone icon specimen has no density selector or user-facing density control."
+          }
+        ],
+        "notes": "This condition applies when an application offers user-selectable density. No such preference/control exists in the icon-button component specimen.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -408,10 +422,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:511-550; forge/components/styles/icon-buttons.css:54-67",
+            "result": "The token mapper recognizes five named sizes and maps pressed-shape and selected round/square shape tokens; CSS selects the resting shape from `data-shape` and `aria-pressed`."
+          }
+        ],
+        "notes": "The expressive size/shape and selected-state shape change are token-mapped and applied from button state attributes. Inter-button group interaction is outside the standalone icon button.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -434,10 +455,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/icon-buttons.css:24-35; catalog/web/specimen_icon.templ:3-5",
+            "result": "The icon button’s hit box is the button itself: CSS sets its height to `--_icon-height` and width from icon size plus spacing. No pseudo-element or wrapper expands small targets to 48dp."
+          }
+        ],
+        "notes": "The component has no separate 48dp minimum target around its smaller XS/S visual button; nested contexts also do not receive a larger target from this selector.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -460,10 +488,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_icon.templ:3-5; catalog/web/specimen_attributes.go:138-143",
+            "result": "The example is a native button with `aria-label` from the component case; no tooltip is rendered and no screen-reader observation was performed."
+          }
+        ],
+        "notes": "The code provides a name and native focus/activation, but the check also makes tooltip use conditional on whether the icon’s purpose needs explanation; that judgment and announcement behavior are not established here.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -486,10 +521,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:511-550; forge/components/styles/icon-buttons.css:1-19,39-48",
+            "result": "Token generation scopes each filled/tonal/outlined/standard style and size to icon-button selectors and maps container, icon, outline, state and selected tokens into variables consumed by the stylesheet."
+          }
+        ],
+        "notes": "The style-family token mapping is explicit and the CSS applies separate container/icon/outline/state values by variant; numeric rendered contrast is not implied by this mapping.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -512,10 +554,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_icon.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When an icon button needs visual separation.”."
+          }
+        ],
+        "notes": "The condition is “When an icon button needs visual separation.” and the instruction is “Use a container when an icon button needs more contrast or visual hierarchy against its background or other elements.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -538,10 +587,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:517-550; forge/components/styles/icon-buttons.css:20-22,54-61",
+            "result": "The generator maps round and square base shapes, size-specific pressed shapes and selected round/square shapes; CSS switches to the shape selected by data-shape and aria-pressed."
+          }
+        ],
+        "notes": "Resting, pressed and selected corner radii are carried through distinct token properties and state selectors.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -564,10 +620,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:517-550; forge/components/styles/icon-buttons.css:20-22",
+            "result": "Pressed `container.shape` tokens map to `pressed-shape`, including spring parameters; the shared button style consumes the pressed shape and motion values."
+          }
+        ],
+        "notes": "The code distinguishes each starting shape from its pressed shape and tokenizes the shape transition; the exact rendered morph has not been browser-exercised.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -590,10 +653,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:511-550; forge/components/styles/icon-buttons.css:8-19",
+            "result": "Generator and CSS carry hover/focus/pressed/disabled state-layer properties, but this evidence does not inspect the current token values for the exact 10%/8%/10% percentages."
+          }
+        ],
+        "notes": "The state layers are mapped into component CSS; the specific numeric opacity values require checking the generated Material token data or a computed-style probe.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -616,10 +686,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_icon.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When choosing an icon for an icon button.”."
+          }
+        ],
+        "notes": "The condition is “When choosing an icon for an icon button.” and the instruction is “Use a system icon with a clear meaning.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -642,10 +719,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_icon.templ:3-5",
+            "result": "The specimen uses a single check icon and does not provide a toggle pair with missing filled glyphs."
+          }
+        ],
+        "notes": "This instruction is conditional on a selected toggle icon lacking a filled version; that condition is not present in the specimen.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -668,10 +752,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/icon-buttons.css:39-48; forge/material/generate-components.mjs:511-550",
+            "result": "The style applies tokenized icon and container color/opacity values; source code alone does not calculate their contrast ratio."
+          }
+        ],
+        "notes": "The exact 3:1 contrast is a computed-color requirement, not inferable from variable names; a computed-style/contrast probe is needed for each variant/background.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -694,10 +785,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_icon.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When providing an accessible label.”."
+          }
+        ],
+        "notes": "The condition is “When providing an accessible label.” and the instruction is “Name the action performed, such as Add to favorites or Send message.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -720,10 +818,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_icon.templ:3-5",
+            "result": "The icon specimen is a button containing only the icon; it has no tooltip element, trigger or hover behavior."
+          }
+        ],
+        "notes": "The web example does not render the source-required hover tooltip.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -746,10 +851,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_icon.templ:3-5; catalog/web/specimen_attributes.go:138-143",
+            "result": "The button receives an aria-label, but the specimen contains no visible tooltip that exposes that same label on web."
+          }
+        ],
+        "notes": "Accessible naming is present, while the separately required visible web tooltip is absent.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -772,10 +884,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/icon-buttons.css:24-35",
+            "result": "The button height and width are the tokenized visible container dimensions; no 48dp target expansion exists in the icon-button stylesheet."
+          }
+        ],
+        "notes": "Extra-small/small visual sizes are not wrapped or padded to a 48dp hit target in this component path.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -798,10 +917,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_icon.templ:3-5; catalog/web/specimen_attributes.go:138-175",
+            "result": "The specimen uses a native button; disabled cases receive the HTML `disabled` attribute, while enabled cases keep native Tab and Space/Enter semantics."
+          }
+        ],
+        "notes": "The HTML button provides the required keyboard operation; disabled controls are excluded by native browser focus behavior.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -824,10 +950,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_attributes.go:138-143; forge/components/styles/icon-buttons.css:54-61",
+            "result": "The specimen marks its toggle state with `aria-pressed` and shape via `data-shape`; the stylesheet makes selected round controls use selected-round shape and selected square controls use selected-square shape."
+          }
+        ],
+        "notes": "The component selects resting shapes from the source shape/state attributes; whether a selected round toggle should become square is determined by the generated selected-shape token.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -850,10 +983,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_icon.templ:3-5",
+            "result": "The specimen uses a check Material Symbol for every icon-button case; it does not vary default/selected glyphs or test their meaning against a product action."
+          }
+        ],
+        "notes": "The code path proves only that an icon is rendered. Its semantic clarity and filled/outlined alternation depend on a product-specific icon set and require a varied specimen or consumer review.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -876,10 +1016,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_icon.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When selecting icon-button behavior.”."
+          }
+        ],
+        "notes": "The condition is “When selecting icon-button behavior.” and the instruction is “Use default icon buttons for actions that open another element and toggle icon buttons only for binary selected/unselected actions.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -902,10 +1049,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_icon.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When placing icon buttons.”."
+          }
+        ],
+        "notes": "The condition is “When placing icon buttons.” and the instruction is “Use only a few icon buttons at once for common, easily understood actions; group popular actions in toolbars or button groups in dense layouts.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -928,10 +1082,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_icon.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When choosing an icon-button color style.”."
+          }
+        ],
+        "notes": "The condition is “When choosing an icon-button color style.” and the instruction is “Use the four styles in emphasis order: filled highest, tonal middle, outlined medium, standard lowest; use a container style when separation from the background is needed and avoid overusing filled buttons.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -954,10 +1115,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_icon.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When choosing toggle behavior.”."
+          }
+        ],
+        "notes": "The condition is “When choosing toggle behavior.” and the instruction is “Use toggles only for actions with a persistent selected state; do not use them for one-shot actions such as opening an overflow menu.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     }

@@ -206,9 +206,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/switches.css:28-52",
+            "result": "Track width/height, outline and color are sourced from the switch token bindings; the state size and icon slots are separately tokenized."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -232,10 +239,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_switch.templ:3-5",
+            "result": "The switch input carries a configured aria-label, but no visible adjacent text is rendered by this specimen and the adjacent-label color state cannot be confirmed."
+          }
+        ],
+        "notes": "Visible label color behavior is not represented in this example."
       },
       "fixes": []
     },
@@ -258,10 +272,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/switches.css:73-124",
+            "result": "Checked, disabled and focus-visible states are explicit; the local rules do not establish hover and pressed appearance across all on/off combinations."
+          }
+        ],
+        "notes": "Full hover/pressed state rendering was not observed."
       },
       "fixes": []
     },
@@ -284,9 +305,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/switches.css:12-38",
+            "result": "The invisible native checkbox covers the control target; track, handle and state-layer dimensions use their specific token variables."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -310,10 +338,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "Choosing a standalone binary setting and whether changes save immediately is product behavior, not decided by the switch primitive."
       },
       "fixes": []
     },
@@ -336,10 +365,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "Choosing switch versus checkbox, radio, connected group or action button depends on the product interaction model."
       },
       "fixes": []
     },
@@ -362,10 +392,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "The meaning of optional on/off handle glyphs is a content choice; the specimen does not include descriptive visible labels."
       },
       "fixes": []
     },
@@ -388,9 +419,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_switch.templ:3-5",
+            "result": "The switch example wraps the input and decorative track/handle in a label but provides no visible text describing what the on state controls."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -414,9 +452,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/switches.css:53-74",
+            "result": "The native checkbox owns toggling and checked state moves the handle to the opposite end with a token-driven transition."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -440,9 +485,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_switch.templ:3-5",
+            "result": "A native checkbox is exposed with role=switch, an accessible name, and disabled/checked state."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -466,9 +518,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/switches.css:10,61-71; forge/components/static/components.css:1",
+            "result": "The switch and its input inherit cursor:pointer, and the generated pressed-state binding maps the handle width/height to the pressed-size tokens consumed by the authored handle rules. No hover-area growth rule is present, so that part of the feedback guidance is absent."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -492,10 +551,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "No switch density control is offered in this implementation, so the conditional minimum target for a reversible density setting does not apply."
       },
       "fixes": []
     },
@@ -518,9 +578,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/switches.css:12-20",
+            "result": "The transparent native checkbox is the actual focusable control and overlays the full switch target; focus-visible styling is drawn around the switch."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -544,9 +611,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_switch.templ:3-5",
+            "result": "The checkbox receives native Space toggling, but no Enter key handling is authored; the check explicitly permits Space or Enter activation."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -570,9 +644,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_switch.templ:3-5",
+            "result": "The input role=switch receives c.Label() as its accessible name, followed by the platform-provided switch role."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -596,10 +677,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/switches.css:101-115",
+            "result": "CSS can suppress icons when data-with-icon is false and distinguishes on/off icon visibility, but the specimen always renders both SVGs and does not show selected-only versus both-icon configuration wiring."
+          }
+        ],
+        "notes": "The configuration attribute binding is not visible in this specimen."
       },
       "fixes": []
     }

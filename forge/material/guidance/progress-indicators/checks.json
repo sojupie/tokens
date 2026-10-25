@@ -218,10 +218,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_progress.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When choosing indicator shape.”."
+          }
+        ],
+        "notes": "The condition is “When choosing indicator shape.” and the instruction is “Choose flat or wavy shape to suit the product tone; account for the wavy shape increasing component height and becoming less visible at very small sizes.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -244,10 +251,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_progress.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When selecting process feedback by expected wait time.”."
+          }
+        ],
+        "notes": "The condition is “When selecting process feedback by expected wait time.” and the instruction is “Choose no indicator for waits under 200ms, a loading indicator for 200ms–5s, and a progress indicator for waits over 5s; for very long work, consider letting people leave while it completes.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -270,10 +284,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_progress.go:7-16; catalog/web/specimen_progress.templ:5-8",
+            "result": "ProgressAttributes sets role=progressbar and aria-label=\"Loading\"; determinate mode adds min/max/current values. It does not name the affected process or content (for example, loading an article)."
+          }
+        ],
+        "notes": "The required progressbar semantics and values exist, but the accessible name is only the generic Loading string and does not identify affected content.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -296,10 +317,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_progress.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When showing button-level progress.”."
+          }
+        ],
+        "notes": "The condition is “When showing button-level progress.” and the instruction is “For a button action, a circular indicator may show activity; use a flat shape in very small buttons, match indicator color to icon or label text, remove the track, and avoid applying indicators to every button in a list.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -322,10 +350,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/progress.css:8-16; forge/components/static/progress.js:64-72",
+            "result": "Circular size and linear thickness are tokenized, but CSS has no min/max clamp, 240dp cap, element-under-40dp guard or explicit 4dp trailing inset."
+          }
+        ],
+        "notes": "The sizing is token-driven and the demo caps to its container, but the source limits are not explicitly enforced in the implementation. Resolved numeric values and page container integration need checking.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -348,10 +383,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_progress.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When choosing and reusing indicator variants.”."
+          }
+        ],
+        "notes": "The condition is “When choosing and reusing indicator variants.” and the instruction is “Keep the same linear or circular variant for the same process throughout the product; use linear at a container edge and circular centered in an element.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -374,10 +416,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_progress.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When a linear indicator is inset from the screen edge.”."
+          }
+        ],
+        "notes": "The condition is “When a linear indicator is inset from the screen edge.” and the instruction is “Inset a linear progress indicator 4dp from the screen edge.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -400,10 +449,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/progress.css:30-37; forge/components/static/progress.js:82-90",
+            "result": "Active and track paths consume separate tokenized colors; the runtime does not calculate contrast or remove the track when another component supplies the indicator."
+          }
+        ],
+        "notes": "The source contrast and integrated-component color conditions depend on computed theme colors and integration context; no enforcement or contrast probe was found in this component path.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -426,10 +482,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/progress.css:14-25",
+            "result": "Only linear variants are flipped with `:dir(rtl)`; circular variants have fixed square geometry and no RTL transform."
+          }
+        ],
+        "notes": "The implementation mirrors linear progress for RTL and leaves circular progress unmirrored.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -452,10 +515,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_progress.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When placing progress feedback.”."
+          }
+        ],
+        "notes": "The condition is “When placing progress feedback.” and the instruction is “Place linear indicators along the loading container edge (or its changing edge) and circular indicators centered on the loading container or page. Use one page-level indicator for page-wide loading.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -478,10 +548,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_progress.go:7-16; catalog/web/specimen_progress.templ:5-8",
+            "result": "The progress element has role=progressbar and aria-label Loading; determinate mode exposes aria-valuemin/max/now while indeterminate mode omits numeric values. No screen-reader observation was run."
+          }
+        ],
+        "notes": "The code supplies a named progressbar and values where known, but whether the label and reported progress are understandable to assistive technology has not been observed with a screen reader.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -504,10 +581,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:329-343; forge/components/static/progress.js:64-70",
+            "result": "The mapper separates linear/circular variants and supports token-driven thickness, shape and wave amplitude/wavelength; the runtime reads shape=wave and measures those values."
+          }
+        ],
+        "notes": "The implementation exposes both geometry modes and the expressive wave/thickness configuration through generated tokens and runtime geometry.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -530,10 +614,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:329-343; forge/components/styles/progress.css:14-16",
+            "result": "The mapper emits separate linear/circular selectors, and CSS sizes circular variants from the component size tokens while linear variants use their container geometry."
+          }
+        ],
+        "notes": "Both documented progress forms have separate supported selectors in the renderer.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -556,10 +647,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/progress.js:92-95; catalog/web/specimen_progress.templ:7-8",
+            "result": "The runtime displays the stop rectangle for determinate, non-circular progress whenever the stop token exists and progress is below 100%; it hides it for circular or indeterminate states."
+          }
+        ],
+        "notes": "The stop remains visible for linear determinate progress throughout incomplete values; the source’s conditional contrast trigger is not used to remove it.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -582,10 +680,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_progress.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When the same process appears in multiple places.”."
+          }
+        ],
+        "notes": "The condition is “When the same process appears in multiple places.” and the instruction is “Use the same progress-indicator configuration for all instances of the same process.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -608,10 +713,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/progress.js:74-95",
+            "result": "Initialization measures the indicator and paints it at time zero; determinate path/stop geometry derives from aria-valuenow, including a non-empty stop at incomplete low progress."
+          }
+        ],
+        "notes": "The active path is painted immediately at initialization; the stop geometry represents the trailing edge for low determinate values rather than waiting for an animation delay.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -634,10 +746,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_progress.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When progress information is known or changes.”."
+          }
+        ],
+        "notes": "The condition is “When progress information is known or changes.” and the instruction is “Use determinate progress only when progress and wait time are known, and represent measured progress accurately; otherwise use indeterminate and switch to determinate when information becomes available.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -660,10 +779,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_progress.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When multiple items are loading.”."
+          }
+        ],
+        "notes": "The condition is “When multiple items are loading.” and the instruction is “Use one indicator for a group of loading items rather than one per activity, unless items are activated independently.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -686,10 +812,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:329-343; forge/components/static/progress.js:92-95",
+            "result": "Stop size, shape and trailing spacing are mapped from progress tokens; runtime displays the stop only for incomplete linear determinate progress."
+          }
+        ],
+        "notes": "The linear stop geometry is token-driven and the runtime excludes indeterminate/circular states; the 4dp value and contrast requirement depend on captured token data.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -712,10 +845,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:329-343; forge/components/static/progress.js:64-70,43-58",
+            "result": "Wave amplitude and wavelength are mapped from the `with-wave` token set; runtime uses amplitude to derive the path radius/height and wavelength to set wave count along the path."
+          }
+        ],
+        "notes": "The path generator uses container dimensions, active thickness, amplitude and wavelength in the geometry described by the source; thicker sample sizes remain token inputs.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     }

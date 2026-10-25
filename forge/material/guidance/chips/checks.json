@@ -350,10 +350,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_chip.templ:5-27; catalog/web/chips.go:3-14",
+            "result": "The preview presents one chip at a time with generic labels and no task/product context for judging contextual relevance."
+          }
+        ],
+        "notes": "The preview presents one chip at a time with generic labels and no task/product context for judging contextual relevance."
       },
       "fixes": []
     },
@@ -376,10 +383,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_chip.templ:5-27",
+            "result": "The isolated chip has no primary task flow or progression action to compare against a button."
+          }
+        ],
+        "notes": "The isolated chip has no primary task flow or progression action to compare against a button."
       },
       "fixes": []
     },
@@ -402,10 +416,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_chip.templ:5-17; catalog/web/chips.go:3-14",
+            "result": "Renderer exposes separate assist, filter, suggestion and input markup/configuration paths with variant-specific sample labels."
+          }
+        ],
+        "notes": "Renderer exposes separate assist, filter, suggestion and input markup/configuration paths with variant-specific sample labels."
       },
       "fixes": []
     },
@@ -428,10 +449,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/chips.css:1-25; catalog/web/specimen_attributes.go:153-162",
+            "result": "Chip styles map elevation/container separately from pressed state; case attributes select elevated independently."
+          }
+        ],
+        "notes": "Chip styles map elevation/container separately from pressed state; case attributes select elevated independently."
       },
       "fixes": []
     },
@@ -454,10 +482,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/chips.go:3-14",
+            "result": "All fixed sample labels are at most 13 characters, under the 20-character limit."
+          }
+        ],
+        "notes": "All fixed sample labels are at most 13 characters, under the 20-character limit."
       },
       "fixes": []
     },
@@ -490,10 +525,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 2,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_chip.templ:18-22; forge/components/styles/chips.css:121-136",
+            "result": "Input chips always render a trailing remove control; removable filter chips render it conditionally. The control is separate but no minimum 48dp action hit area is declared here."
+          }
+        ],
+        "notes": "Input chips always render a trailing remove control; removable filter chips render it conditionally. The control is separate but no minimum 48dp action hit area is declared here."
       },
       "fixes": []
     },
@@ -516,10 +558,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/chips.go:3-14; catalog/web/specimen_chip.templ:7-11",
+            "result": "Assist sample text is “Assist chip” rather than a leading-verb action; no dynamic state label or placement after primary content is modeled."
+          }
+        ],
+        "notes": "Assist sample text is “Assist chip” rather than a leading-verb action; no dynamic state label or placement after primary content is modeled."
       },
       "fixes": []
     },
@@ -542,10 +591,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/chips.go:3-14; catalog/web/specimen_chip.templ:13-17",
+            "result": "Filter label is generic and selected state is available; the preview does not represent a category inclusion/exclusion set or enforce consistent page selection mode."
+          }
+        ],
+        "notes": "Filter label is generic and selected state is available; the preview does not represent a category inclusion/exclusion set or enforce consistent page selection mode."
       },
       "fixes": []
     },
@@ -568,10 +624,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_chip.templ:5-27; forge/components/styles/chips.css:97-108",
+            "result": "Native action buttons and focus outlines convey interactivity, but no prompt/group context or computed 3:1 outline contrast is established."
+          }
+        ],
+        "notes": "Native action buttons and focus outlines convey interactivity, but no prompt/group context or computed 3:1 outline contrast is established."
       },
       "fixes": []
     },
@@ -594,10 +657,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_chip.templ:13-23; forge/components/behaviors/chips.js:32-63",
+            "result": "Input chip has separate selection and remove controls; removal becomes keyboard reachable when selected/focused and primary/remove focus is managed."
+          }
+        ],
+        "notes": "Input chip has separate selection and remove controls; removal becomes keyboard reachable when selected/focused and primary/remove focus is managed."
       },
       "fixes": []
     },
@@ -620,10 +690,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_chip.templ:5-27",
+            "result": "Generic standalone preview has no current task context to evaluate usefulness."
+          }
+        ],
+        "notes": "Generic standalone preview has no current task context to evaluate usefulness."
       },
       "fixes": []
     },
@@ -646,10 +723,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_chip.templ:5-27",
+            "result": "The specimen intentionally previews one instance; it does not create a product chip set."
+          }
+        ],
+        "notes": "The specimen intentionally previews one instance; it does not create a product chip set."
       },
       "fixes": []
     },
@@ -672,10 +756,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_chip.templ:5-27",
+            "result": "No page action flow or button arrangement is represented by one chip specimen."
+          }
+        ],
+        "notes": "No page action flow or button arrangement is represented by one chip specimen."
       },
       "fixes": []
     },
@@ -698,10 +789,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/chips.css:1-25; forge/material/generate-components.mjs:572-590",
+            "result": "Shape, outline, and elevation are token-backed; the specified 8dp radius and when-to-elevate rule depend on resolved values and host background."
+          }
+        ],
+        "notes": "Shape, outline, and elevation are token-backed; the specified 8dp radius and when-to-elevate rule depend on resolved values and host background."
       },
       "fixes": []
     },
@@ -724,10 +822,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/chips.css:47-56",
+            "result": "Chip label receives token-backed component font family, size, line-height, tracking, and weight."
+          }
+        ],
+        "notes": "Chip label receives token-backed component font family, size, line-height, tracking, and weight."
       },
       "fixes": []
     },
@@ -750,10 +855,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_chip.templ:30-44; forge/components/styles/chips.css:76-95",
+            "result": "Category icons are provided as check/star SVGs and use tokenized icon color; primary vs on-surface-variant role depends on variant/state resolution."
+          }
+        ],
+        "notes": "Category icons are provided as check/star SVGs and use tokenized icon color; primary vs on-surface-variant role depends on variant/state resolution."
       },
       "fixes": []
     },
@@ -776,10 +888,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_chip.templ:30-44",
+            "result": "The preview uses an initial avatar letter and vector icons, not a leading image asset whose larger circular size can be judged."
+          }
+        ],
+        "notes": "The preview uses an initial avatar letter and vector icons, not a leading image asset whose larger circular size can be judged."
       },
       "fixes": []
     },
@@ -802,10 +921,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_chip.templ:18-22",
+            "result": "Removable filter configuration includes a trailing close control; a menu action is not part of this preview."
+          }
+        ],
+        "notes": "Removable filter configuration includes a trailing close control; a menu action is not part of this preview."
       },
       "fixes": []
     },
@@ -828,10 +954,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_chip.templ:18-22; forge/components/styles/chips.css:121-136",
+            "result": "The remove button is an independent secondary action, but no 48dp minimum hit area or 88dp chip/42dp label minimum is implemented in the inspected styles."
+          }
+        ],
+        "notes": "The remove button is an independent secondary action, but no 48dp minimum hit area or 88dp chip/42dp label minimum is implemented in the inspected styles."
       },
       "fixes": []
     },
@@ -854,10 +987,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/chips.js:20-25",
+            "result": "Assist chip emits a semantic action event, but no modal/full-screen/inline result or progress/confirmation feedback is bound by this generic specimen."
+          }
+        ],
+        "notes": "Assist chip emits a semantic action event, but no modal/full-screen/inline result or progress/confirmation feedback is bound by this generic specimen."
       },
       "fixes": []
     },
@@ -880,10 +1020,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_chip.templ:30-39; forge/components/styles/chips.css:128-130",
+            "result": "Filter chip includes a leading check icon and selected-state styling; single/multi set mode is left to its containing page."
+          }
+        ],
+        "notes": "Filter chip includes a leading check icon and selected-state styling; single/multi set mode is left to its containing page."
       },
       "fixes": []
     },
@@ -906,10 +1053,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_chip.templ:18-22; forge/components/styles/chips.css:121-136",
+            "result": "Removable filter action remains a trailing button at all widths; no breakpoint makes the whole compact chip open a menu."
+          }
+        ],
+        "notes": "Removable filter action remains a trailing button at all widths; no breakpoint makes the whole compact chip open a menu."
       },
       "fixes": []
     },
@@ -932,10 +1086,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_chip.templ:5-27",
+            "result": "Single preview does not render a set of filter options or wrapped rows to assess count/organization."
+          }
+        ],
+        "notes": "Single preview does not render a set of filter options or wrapped rows to assess count/organization."
       },
       "fixes": []
     },
@@ -958,10 +1119,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/chips.js:32-52",
+            "result": "Chip keyboard handler supports arrow movement and removal with Backspace/Delete, but has no editable text/cursor-before-chip select-then-delete behavior."
+          }
+        ],
+        "notes": "Chip keyboard handler supports arrow movement and removal with Backspace/Delete, but has no editable text/cursor-before-chip select-then-delete behavior."
       },
       "fixes": []
     },
@@ -984,10 +1152,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_chip.templ:13-23; forge/components/behaviors/chips.js:3-52",
+            "result": "The input-chip specimen supports selection and removal only; no reorder/move-between-fields or container-transform expansion is implemented."
+          }
+        ],
+        "notes": "The input-chip specimen supports selection and removal only; no reorder/move-between-fields or container-transform expansion is implemented."
       },
       "fixes": []
     },
@@ -1010,10 +1185,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_chip.templ:5-27",
+            "result": "This isolated chip is not placed within a text field or multi-chip collection, so wrapping/stacked/scroll placement is not exercised."
+          }
+        ],
+        "notes": "This isolated chip is not placed within a text field or multi-chip collection, so wrapping/stacked/scroll placement is not exercised."
       },
       "fixes": []
     },
@@ -1036,10 +1218,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_chip.templ:18-22; forge/components/styles/chips.css:121-136",
+            "result": "Trailing icon is a logical trailing action and CSS adjusts inline-end padding; RTL direction is inherited by inline flex layout."
+          }
+        ],
+        "notes": "Trailing icon is a logical trailing action and CSS adjusts inline-end padding; RTL direction is inherited by inline flex layout."
       },
       "fixes": []
     },
@@ -1062,10 +1251,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/chips.go:3-14",
+            "result": "Suggestion sample is “Suggestion chip”, a short context-neutral noun phrase under 20 characters."
+          }
+        ],
+        "notes": "Suggestion sample is “Suggestion chip”, a short context-neutral noun phrase under 20 characters."
       },
       "fixes": []
     },
@@ -1088,10 +1284,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/chips.css:26-39; catalog/web/specimen_chip.templ:5-27",
+            "result": "Chip has flex layout, tokenized gaps and min-height, but no chip-set wrapper implementing wrapping/scrolling or 48dp target for the group."
+          }
+        ],
+        "notes": "Chip has flex layout, tokenized gaps and min-height, but no chip-set wrapper implementing wrapping/scrolling or 48dp target for the group."
       },
       "fixes": []
     },
@@ -1114,10 +1317,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/chips.css:26-39; forge/components/styles/chips.css:61-68",
+            "result": "Chip labels can wrap anywhere and chip is max-width 100%, but no >20-character truncation/ellipsis rule is present."
+          }
+        ],
+        "notes": "Chip labels can wrap anywhere and chip is max-width 100%, but no >20-character truncation/ellipsis rule is present."
       },
       "fixes": []
     },
@@ -1140,10 +1350,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_chip.templ:7-23; forge/components/behaviors/chips.js:3-30",
+            "result": "Assist/suggestion controls are native buttons; selectable and removable variants expose separate button controls and dispatch action/remove events."
+          }
+        ],
+        "notes": "Assist/suggestion controls are native buttons; selectable and removable variants expose separate button controls and dispatch action/remove events."
       },
       "fixes": []
     },
@@ -1166,10 +1383,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/chips.css:42-56; catalog/web/specimen_chip.templ:7-23",
+            "result": "Label/container colors are tokenized and actions use native buttons, but 3:1 contrast is not computed; Web source guidance may expect gridcell roles unlike current button/span markup."
+          }
+        ],
+        "notes": "Label/container colors are tokenized and actions use native buttons, but 3:1 contrast is not computed; Web source guidance may expect gridcell roles unlike current button/span markup."
       },
       "fixes": []
     },
@@ -1192,10 +1416,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_chip.templ:5-27",
+            "result": "No chip-set overflow, Show all item, or following-content shift behavior is implemented."
+          }
+        ],
+        "notes": "No chip-set overflow, Show all item, or following-content shift behavior is implemented."
       },
       "fixes": []
     },
@@ -1218,10 +1449,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_chip.templ:5-27",
+            "result": "The single chip specimen has no overflowing chip set or leading Show all control."
+          }
+        ],
+        "notes": "The single chip specimen has no overflowing chip set or leading Show all control."
       },
       "fixes": []
     },
@@ -1244,10 +1482,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_chip.templ:5-27",
+            "result": "The chip preview has no density customization control."
+          }
+        ],
+        "notes": "The chip preview has no density customization control."
       },
       "fixes": []
     },
@@ -1270,10 +1515,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_chip.templ:14-20; catalog/web/chips.go:3-14",
+            "result": "Visible chip label supplies the primary control name; remove button has a separate “Remove {chip label}” aria-label."
+          }
+        ],
+        "notes": "Visible chip label supplies the primary control name; remove button has a separate “Remove {chip label}” aria-label."
       },
       "fixes": []
     },
@@ -1296,10 +1548,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_chip.templ:13-17; forge/components/behaviors/chips.js:32-52",
+            "result": "Each filter chip exposes a native selection button and Space/Enter activation; no one-tab-stop roving focus or chip-set keyboard controller exists."
+          }
+        ],
+        "notes": "Each filter chip exposes a native selection button and Space/Enter activation; no one-tab-stop roving focus or chip-set keyboard controller exists."
       },
       "fixes": []
     },
@@ -1322,10 +1581,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_chip.templ:5-27",
+            "result": "No chip dropdown list is rendered."
+          }
+        ],
+        "notes": "No chip dropdown list is rendered."
       },
       "fixes": []
     },
@@ -1348,10 +1614,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_chip.templ:18-22; forge/components/behaviors/chips.js:32-63",
+            "result": "Remove-only/mobile combined focus mode is absent; two-action chips use separate controls and arrow movement, but the current template sets the remove button tabindex=-1 until focus management changes."
+          }
+        ],
+        "notes": "Remove-only/mobile combined focus mode is absent; two-action chips use separate controls and arrow movement, but the current template sets the remove button tabindex=-1 until focus management changes."
       },
       "fixes": []
     },
@@ -1374,10 +1647,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_chip.templ:7-23; forge/components/behaviors/chips.js:54-63",
+            "result": "Action chips are native buttons and therefore tab reachable; the set/group has no roving entry controller and enabled-chip/group navigation cannot be verified in this single-chip preview."
+          }
+        ],
+        "notes": "Action chips are native buttons and therefore tab reachable; the set/group has no roving entry controller and enabled-chip/group navigation cannot be verified in this single-chip preview."
       },
       "fixes": []
     },
@@ -1400,10 +1680,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/chips.js:32-52",
+            "result": "For chips with separate selection/removal actions, logical arrow direction moves focus between the two controls; no group-to-group traversal is present."
+          }
+        ],
+        "notes": "For chips with separate selection/removal actions, logical arrow direction moves focus between the two controls; no group-to-group traversal is present."
       },
       "fixes": []
     },
@@ -1426,10 +1713,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_chip.templ:7-23; forge/components/behaviors/chips.js:3-30",
+            "result": "Chip actions use native buttons; click handler toggles filter selection and dispatches assist/suggestion action events."
+          }
+        ],
+        "notes": "Chip actions use native buttons; click handler toggles filter selection and dispatches assist/suggestion action events."
       },
       "fixes": []
     },
@@ -1452,10 +1746,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/chips.js:32-42",
+            "result": "Backspace/Delete on a focused input chip calls its remove button and hides the chip."
+          }
+        ],
+        "notes": "Backspace/Delete on a focused input chip calls its remove button and hides the chip."
       },
       "fixes": []
     },
@@ -1478,10 +1779,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_chip.templ:30-42",
+            "result": "Leading avatar and icon spans are visual affordances; they are not assigned accessible names and share the control’s text label."
+          }
+        ],
+        "notes": "Leading avatar and icon spans are visual affordances; they are not assigned accessible names and share the control’s text label."
       },
       "fixes": []
     },
@@ -1504,10 +1812,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_chip.templ:7-17",
+            "result": "One-action assist/suggestion chips are native buttons on Web, while the captured platform table requires gridcell for Web; no platform-specific role wrapper is present."
+          }
+        ],
+        "notes": "One-action assist/suggestion chips are native buttons on Web, while the captured platform table requires gridcell for Web; no platform-specific role wrapper is present."
       },
       "fixes": []
     },
@@ -1530,10 +1845,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_chip.templ:13-17",
+            "result": "Selectable chip is an inner native button with aria-pressed inside a span; Web table requires gridcell and Android Views/Compose roles are not implemented in this web path."
+          }
+        ],
+        "notes": "Selectable chip is an inner native button with aria-pressed inside a span; Web table requires gridcell and Android Views/Compose roles are not implemented in this web path."
       },
       "fixes": []
     },
@@ -1556,10 +1878,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_chip.templ:18-20",
+            "result": "Remove action uses the exact accessible label pattern “Remove ” plus the visible chip content; source table assigns no separate role for this row."
+          }
+        ],
+        "notes": "Remove action uses the exact accessible label pattern “Remove ” plus the visible chip content; source table assigns no separate role for this row."
       },
       "fixes": []
     },
@@ -1582,10 +1911,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_chip.templ:13-22",
+            "result": "Select and remove controls are both native buttons on Web; the captured platform matrix requires the distinct Web/Android Views/Compose button or checkbox roles, not represented by a platform-specific role mapping."
+          }
+        ],
+        "notes": "Select and remove controls are both native buttons on Web; the captured platform matrix requires the distinct Web/Android Views/Compose button or checkbox roles, not represented by a platform-specific role mapping."
       },
       "fixes": []
     }

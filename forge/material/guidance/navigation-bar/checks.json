@@ -320,10 +320,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:35-45",
+            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition “When moving beyond compact layout.”."
+          }
+        ],
+        "notes": "The source instruction is “Adapt or replace the navigation bar at larger breakpoints with an appropriate rail or drawer.” under “When moving beyond compact layout.”. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
       },
       "fixes": []
     },
@@ -346,10 +353,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/navigation.css:102-104",
+            "result": "The navigation label is forced to white-space:nowrap and the bar has a token height at navigation.css:17-22; no scaling rule grows the bar or permits wrapped labels."
+          }
+        ],
+        "notes": "The code preserves a single line and fixed token height, so the stated growth and 2× visibility behavior is not implemented in this specimen."
       },
       "fixes": []
     },
@@ -372,10 +386,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:35-45",
+            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition “When maintaining baseline navigation or adopting M3 Expressive.”."
+          }
+        ],
+        "notes": "The source instruction is “The baseline navigation bar is no longer recommended; replace it with the shorter flexible navigation bar, which supports horizontal items in medium windows.” under “When maintaining baseline navigation or adopting M3 Expressive.”. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
       },
       "fixes": []
     },
@@ -398,10 +419,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:83-90; forge/components/styles/navigation.css:17-21,75-78; forge/material/generate-components.mjs:390-416",
+            "result": "The selected glyph is explicitly filled and the active label uses a tokenized item font; the available source does not demonstrate that this token resolves to the stated bold weight for all applicable designs."
+          }
+        ],
+        "notes": "The filled-icon behavior is explicit. The active-label boldness is token-derived and its resolved weight has not been inspected, so the full combined rule remains unclear."
       },
       "fixes": []
     },
@@ -424,10 +452,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:35-45",
+            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition “When selecting M3 Expressive navigation variants.”."
+          }
+        ],
+        "notes": "The source instruction is “M3 Expressive adds the flexible navigation bar and recommends it over the available baseline navigation bar.” under “When selecting M3 Expressive navigation variants.”. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
       },
       "fixes": []
     },
@@ -450,10 +485,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/navigation.css:13-23; catalog/web/navigation.go:44-49",
+            "result": "The bar uses a uniform flex row and all items flex equally; the specimen chooses orientation from variant, with no medium-window breakpoint, fixed horizontal item widths or breakpoint-specific centering/padding."
+          }
+        ],
+        "notes": "This specimen provides static vertical/horizontal variants, not the stated medium-breakpoint adaptation and horizontal width/centering behavior."
       },
       "fixes": []
     },
@@ -476,10 +518,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/navigation.js:4-19; catalog/web/navigation.go:55-62",
+            "result": "The click handler clears aria-current from all items in the navigation group, selects the clicked destination and emits its label; the bar renders a stable Home/Files/Saved order."
+          }
+        ],
+        "notes": "The specimen keeps item order stable and permits one current destination at a time."
       },
       "fixes": []
     },
@@ -502,10 +551,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.go:7-21; catalog/web/specimen_navigation.templ:83-90",
+            "result": "Web buttons derive their accessible name from visible label text, but the check also includes Android Views role-announcement constraints that have no web counterpart; the combined source instruction cannot be fully mapped to this specimen."
+          }
+        ],
+        "notes": "Web buttons derive their accessible name from visible label text, but the check also includes Android Views role-announcement constraints that have no web counterpart; the combined source instruction cannot be fully mapped to this specimen."
       },
       "fixes": []
     },
@@ -528,10 +584,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:35-45,67-80; forge/components/behaviors/navigation.js:4-19,21-36; catalog/web/static/component-demos.js:25-30",
+            "result": "The specimen exposes a named nav landmark with native buttons, current-page state and a polite selection output; keyboard arrows move focus and native Space/Enter activate the buttons."
+          }
+        ],
+        "notes": "These code paths provide navigation, selection and feedback for the isolated web example; route changes remain app-owned."
       },
       "fixes": []
     },
@@ -554,10 +617,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:83-101; forge/components/styles/navigation.css:17-23",
+            "result": "The navigation-bar specimen does not render a badge, and the shared optional badge markup is only present for the rail. There is no bar badge placement path to compare with the source rule."
+          }
+        ],
+        "notes": "The navigation-bar specimen does not render a badge, and the shared optional badge markup is only present for the rail. There is no bar badge placement path to compare with the source rule."
       },
       "fixes": []
     },
@@ -580,10 +650,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:35-45",
+            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition “When laying out the navigation bar.”."
+          }
+        ],
+        "notes": "The source instruction is “Place the navigation-bar container at the bottom, spanning the full window; center navigation items within it and use a color fill to separate it from content.” under “When laying out the navigation bar.”. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
       },
       "fixes": []
     },
@@ -606,10 +683,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/navigation.go:44-49; catalog/web/component_preview.go:1-160",
+            "result": "Preview cases set vertical versus horizontal by variant, but this file does not encode the upstream M3 versus M3 Expressive generation availability table; no per-generation mapping is present in this specimen."
+          }
+        ],
+        "notes": "Preview cases set vertical versus horizontal by variant, but this file does not encode the upstream M3 versus M3 Expressive generation availability table; no per-generation mapping is present in this specimen."
       },
       "fixes": []
     },
@@ -632,10 +716,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:35-45",
+            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition “When allowing the bar to respond to scrolling.”."
+          }
+        ],
+        "notes": "The source instruction is “The navigation bar may hide on downward scroll and reappear on upward scroll, but must not hide while a screen reader is active.” under “When allowing the bar to respond to scrolling.”. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
       },
       "fixes": []
     },
@@ -658,10 +749,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/buttons.js:76-80,249-305; forge/components/behaviors/navigation.js:4-19; forge/components/styles/navigation.css:93-101,118-145; forge/material/generate-components.mjs:390-427,881-907; forge/components/styles/navigation-rail.css:2-21",
+            "result": "Shared feedback recognizes .md-nav-item and injects its animated ripple into .md-nav-indicator at activation. Selection sets aria-current, and navigation CSS switches to filled glyphs and selected token colors. Hover uses a state layer. The captured description of a reduced hover indicator has not been established against resolved hover geometry."
+          }
+        ],
+        "notes": "Shared feedback recognizes .md-nav-item and injects its animated ripple into .md-nav-indicator at activation. Selection sets aria-current, and navigation CSS switches to filled glyphs and selected token colors. Hover uses a state layer. The captured description of a reduced hover indicator has not been established against resolved hover geometry."
       },
       "fixes": []
     },
@@ -684,10 +782,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/navigation.js:4-19",
+            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition “When handling destination selection and re-selection.”."
+          }
+        ],
+        "notes": "The source instruction is “On destination change, choose either preserve per-destination state or reset it based on product needs; selecting the already active destination resets scroll to the top. Do not use swipe between destinations.” under “When handling destination selection and re-selection.”. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
       },
       "fixes": []
     },
@@ -710,10 +815,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/navigation.css:79-95; forge/components/behaviors/navigation.js:4-19",
+            "result": "Selection changes aria-current and paints the indicator; no indicator geometry animation from the icon center or top-level page transition exists in this component/demo handler."
+          }
+        ],
+        "notes": "The selected indicator appears, but the source’s center-expansion and top-level transition behavior is absent from the available web path; the demo emits a selection event and changes state without a page transition."
       },
       "fixes": []
     },
@@ -736,10 +848,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:67-80; catalog/web/specimen_navigation.go:7-21",
+            "result": "Destination buttons are emitted in DOM order as native buttons and remain tabbable; the first destination is therefore the first focusable navigation item when focus enters the bar."
+          }
+        ],
+        "notes": "No script steals focus on page load; ordinary sequential keyboard focus starts at the first rendered destination."
       },
       "fixes": []
     },
@@ -762,10 +881,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:35-45",
+            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition “When positioning the bar.”."
+          }
+        ],
+        "notes": "The source instruction is “Place the navigation bar at the bottom of compact layouts.” under “When positioning the bar.”. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
       },
       "fixes": []
     },
@@ -788,10 +914,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/navigation.css:79-95",
+            "result": "The aria-current destination paints the active indicator with the configured token color while inactive items have a transparent background."
+          }
+        ],
+        "notes": "The selected state has a distinct indicator layer in the component stylesheet."
       },
       "fixes": []
     },
@@ -814,10 +947,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/navigation.js:21-36; forge/components/behaviors/utils.js:52-66; catalog/web/specimen_navigation.go:7-21",
+            "result": "Tab uses native button sequential focus; the key handler maps directional keys through navigationIndex and native buttons activate on Space or Enter, with click selection updating aria-current."
+          }
+        ],
+        "notes": "The implementation supports browser Tab order and keyboard activation; directional key mapping is shared through navigationIndex."
       },
       "fixes": []
     },
@@ -840,10 +980,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:35-45",
+            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition “When selecting primary navigation.”."
+          }
+        ],
+        "notes": "The source instruction is “Use a navigation bar for a small set of primary destinations; do not combine it with another primary navigation component on the same screen.” under “When selecting primary navigation.”. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
       },
       "fixes": []
     },
@@ -866,10 +1013,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:35-45",
+            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition “When choosing primary navigation for compact windows.”."
+          }
+        ],
+        "notes": "The source instruction is “Use a navigation bar to move among primary destinations on smaller devices.” under “When choosing primary navigation for compact windows.”. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
       },
       "fixes": []
     },
@@ -892,10 +1046,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/navigation.go:55-62; forge/components/styles/navigation.css:102-104",
+            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition “When labeling destinations.”."
+          }
+        ],
+        "notes": "The source instruction is “Use clear destination labels and preserve visibility as text size increases.” under “When labeling destinations.”. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
       },
       "fixes": []
     },
@@ -918,10 +1079,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:83-90; catalog/web/navigation.go:55-66",
+            "result": "Each destination renders an icon from the same icon family, with one fixed icon per destination in the specimen."
+          }
+        ],
+        "notes": "The sample applies icons consistently to every destination."
       },
       "fixes": []
     },
@@ -944,10 +1112,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:35-45",
+            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition “When selecting M3 Expressive navigation.”."
+          }
+        ],
+        "notes": "The source instruction is “Use the expressive navigation bar as the recommended variant for new designs; preserve the distinction from baseline availability and styling.” under “When selecting M3 Expressive navigation.”. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
       },
       "fixes": []
     },
@@ -970,10 +1145,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:48-80,83-101; forge/components/styles/navigation.css:79-95",
+            "result": "The nav contains item buttons with icon, visible label and active indicator; optional badges are not rendered, which is permitted by the source wording."
+          }
+        ],
+        "notes": "The required anatomy is present; optional badges need not appear."
       },
       "fixes": []
     },
@@ -996,10 +1178,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/navigation.css:13-23,39-67",
+            "result": "All bar items use flex:1, so horizontal items divide the available width equally; there is no fixed-width horizontal item rule or extra space assigned only to bar ends."
+          }
+        ],
+        "notes": "The code implements equal flexible sizing for every orientation, not the stated fixed horizontal widths with end spacing."
       },
       "fixes": []
     }

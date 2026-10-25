@@ -560,10 +560,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When list width changes.”."
+          }
+        ],
+        "notes": "The condition is “When list width changes.” and the instruction is “Adapt list elements and layout to available width rather than allowing long lines to reduce readability.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -586,10 +593,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/lists.css:7-18; catalog/web/specimen_list.templ:7-21",
+            "result": "The web renderer uses the same `.md-list` implementation with standard and segmented variant selectors; captured token-backed classes supply available item slots and selection styling."
+          }
+        ],
+        "notes": "The web code builds expressive list variants over the shared baseline list element; baseline/expressive recommendation remains a product-generation choice.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -612,10 +626,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When configuring list selection.”."
+          }
+        ],
+        "notes": "The condition is “When configuring list selection.” and the instruction is “Choose a single selection mode for a list and keep interaction behavior consistent.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -638,10 +659,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/lists.go:139-144,160-168; forge/components/styles/lists.css:46-54,141-143",
+            "result": "Selectable list buttons expose `aria-pressed`; native checkbox/radio controls expose their checked state; CSS adds a visible focus outline and selected-state styling from component variables."
+          }
+        ],
+        "notes": "Selection is communicated semantically through pressed/checked state in addition to token-driven visual selection.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -664,10 +692,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When presenting a list on a compact screen.”."
+          }
+        ],
+        "notes": "The condition is “When presenting a list on a compact screen.” and the instruction is “In compact windows, extend lists edge-to-edge; selecting an item should open its detail page.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -690,10 +725,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/lists.css:7-20; forge/components/styles/list-expansion.css:12-16",
+            "result": "The segmented list selector applies the captured list gap and shape token; expanded segmented items use the matching segmented surface token."
+          }
+        ],
+        "notes": "The expressive segmented variant has its own rounded container and item geometry tokens, rather than inheriting the standard list shape unchanged.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -716,10 +758,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When selecting baseline or expressive lists by platform.”."
+          }
+        ],
+        "notes": "The condition is “When selecting baseline or expressive lists by platform.” and the instruction is “Use expressive lists for new designs when flexible styling, highlighted selection states and customizable slots are needed; baseline lists remain available but do not include these features.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -742,10 +791,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/lists.go:145-148; catalog/web/specimen_list.templ:32-38; forge/components/static/lists.js:37-46",
+            "result": "Expandable buttons expose aria-expanded and aria-controls; the child list has an associated id and hidden state; the handler updates the disclosure state, panel visibility/inertness and animates its measured height."
+          }
+        ],
+        "notes": "The control announces expanded/collapsed state and directly identifies the content it reveals; the runtime keeps the panel hidden/inert when collapsed.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -768,10 +824,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/lists.css:69-73,131-144; forge/material/generate-components.mjs:??",
+            "result": "List item base/pressed shapes use variant and state-specific token properties; selection state is applied by `aria-pressed` or data-selected."
+          }
+        ],
+        "notes": "The renderer consumes distinct selected/pressed shape tokens. Numeric 4dp/16dp values are supplied by the captured token input; confirm generated values when checking this precise radius.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -794,10 +857,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:7-21; catalog/web/lists.go:127-169",
+            "result": "The outer list is a native `ul` with aria-label Example list; interactive rows are native buttons whose visible text supplies their accessible name, and native selection controls have labels."
+          }
+        ],
+        "notes": "The example uses native list/list-item structure and names each actionable item from its visible label; specialized listbox semantics are assessed separately.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -820,10 +890,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:7-22,63-93",
+            "result": "The specimen always renders the outer `ul` and `.md-list-label`; supporting text, leading media and trailing controls are conditional on selected size/slot configuration."
+          }
+        ],
+        "notes": "The list and label remain in the template while optional slots are conditional.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -846,10 +923,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:69-100; forge/components/styles/lists.css:145-153,195-224",
+            "result": "Leading/tail slots are `flex:none`, the central body uses the flexible row slot, and tail controls are grouped separately; body text can wrap according to its configured layout."
+          }
+        ],
+        "notes": "The row template separates fixed-width edge slots from the flexible center content slot, preserving the middle area for label/supporting text.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -872,10 +956,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When a list item has multiple actions.”."
+          }
+        ],
+        "notes": "The condition is “When a list item has multiple actions.” and the instruction is “Keep the item’s primary action distinct from any secondary actions.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -898,10 +989,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When the list spans different window sizes.”."
+          }
+        ],
+        "notes": "The condition is “When the list spans different window sizes.” and the instruction is “Across breakpoints, adapt list margins, spacing, density, size and content placement; larger screens can reveal more supporting text or imagery.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -924,10 +1022,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:7-22; catalog/web/lists.go:127-169; forge/components/static/lists.js:24-29",
+            "result": "The specimen gives the list and controls accessible names and exposes selection/expansion state; the runtime announces selection changes through a polite output. No screen-reader observation was run."
+          }
+        ],
+        "notes": "The code provides named native controls and live feedback, but actual assistive navigation/announcement behavior has not been observed in a browser with a screen reader.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -950,10 +1055,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When choosing a list image shape.”."
+          }
+        ],
+        "notes": "The condition is “When choosing a list image shape.” and the instruction is “Use an expressive circular avatar for a person or entity; use square or rectangular images for products, videos or other content.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -976,10 +1088,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/lists.css:49-54,131-143; forge/components/static/lists.js:63-75",
+            "result": "The stylesheet handles disabled, focus-visible and pressed states; pointer reorder logic sets dragged state, and the item styles change cursor/overflow accordingly."
+          }
+        ],
+        "notes": "Enabled is the default style; disabled/focus/pressed are represented in CSS, and drag gestures mark the row and item as dragged.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1002,10 +1121,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When adapting a list to medium or expanded layouts.”."
+          }
+        ],
+        "notes": "The condition is “When adapting a list to medium or expanded layouts.” and the instruction is “At medium or expanded breakpoints, show list and primary/secondary detail content together when useful; lists may become carousels or reveal more item content as they expand.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1028,10 +1154,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When separating list groups.”."
+          }
+        ],
+        "notes": "The condition is “When separating list groups.” and the instruction is “Use spacing and dividers to group related list items without reducing scannability.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1054,10 +1187,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When including icons in list items.”."
+          }
+        ],
+        "notes": "The condition is “When including icons in list items.” and the instruction is “Use recognizable icons and keep icon usage consistent across items in the same list.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1080,10 +1220,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/lists.css:93-119,154-163; forge/components/static/lists.js:13-18",
+            "result": "Each item’s minimum height comes from its tokenized height and vertical padding; a ResizeObserver detects rows at least 88dp tall and top-aligns their contents. Media gets a distinct leading slot and colors are token-backed."
+          }
+        ],
+        "notes": "Row height and media color use component variables; the runtime top-aligns content when image or wrapped text makes the item tall.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1106,10 +1253,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:11-30,85-100; forge/components/styles/lists.css:145-153",
+            "result": "The row puts the primary item button in the central content area and utility actions at the trailing side; trailing slot controls are separate from the main button."
+          }
+        ],
+        "notes": "The template reserves a distinct primary item button and separate trailing utility actions, preserving a larger central action area.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1132,10 +1286,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/lists.js:101-114; catalog/web/specimen_list.templ:7-29",
+            "result": "The runtime supports arrow/Home/End focus movement for item buttons and separate action movement for reveal/reorder controls; actions are native buttons/inputs with accessible names."
+          }
+        ],
+        "notes": "The source exposes native keyboard-operable controls and explicit movement for list/reorder/reveal controls. Exact wrap behavior is separately checked under the dedicated key mapping check.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1158,10 +1319,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:85-93; forge/components/styles/lists.css:195-224",
+            "result": "The specimen renders labels and optional supporting text, with wrapped content support; no explicit 1–3 line clamp or breakpoint truncation rule appears in these cited paths."
+          }
+        ],
+        "notes": "The example permits wrapping, but the code does not enforce the source’s supporting-text line-count and screen-size truncation limits.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1184,10 +1352,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When adding media to a list item.”."
+          }
+        ],
+        "notes": "The condition is “When adding media to a list item.” and the instruction is “Place avatars, images and video thumbnails at the leading edge, not the center, to preserve scanning; leading video may open a player or play within the list.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1210,10 +1385,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When list text reflows across window sizes.”."
+          }
+        ],
+        "notes": "The condition is “When list text reflows across window sizes.” and the instruction is “In fluid layouts, adjust margins, typography or columns to avoid overly long lines; aim for 40–60 characters and allow up to 120 on large screens, increasing line height near 120 characters.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1236,10 +1418,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When adapting a text-heavy list across breakpoints.”."
+          }
+        ],
+        "notes": "The condition is “When adapting a text-heavy list across breakpoints.” and the instruction is “Reduce information shown at compact breakpoints; at expanded sizes, a compact list may become two columns and expose more item details.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1262,10 +1451,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/lists.css:46-54,69-92,131-143; forge/components/static/lists.js:24-29",
+            "result": "Selection input changes update data-selected; item CSS consumes selection/state token variables and supplies focus/pressed styles; drag behavior is represented independently."
+          }
+        ],
+        "notes": "The component has tokenized selected styling and the enabled/disabled/hover/focus/pressed/dragged state hooks; actual rendered token colors remain data-driven.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1288,10 +1484,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:69-83,94-100; catalog/web/lists.go:89-124",
+            "result": "Checkbox/radio controls can occupy the leading slot, while trailing selection controls are rendered in the tail; single-select radio and multi-select checkbox/switch choices are configured separately."
+          }
+        ],
+        "notes": "The template and configuration helpers support leading or trailing placement and select control types by selection mode.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1314,10 +1517,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:12-29; catalog/web/lists.go:9-18,89-96,135-169",
+            "result": "Each preview case has one control mode; configuration chooses one leading/native selection control type and the template renders either its primary button or one native selection control path."
+          }
+        ],
+        "notes": "The specimen’s configuration selects one mode and one control family at a time; it does not combine single-action, multi-action, single-select and multi-select semantics in one row.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1340,10 +1550,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:63-101; forge/components/styles/lists.css:145-224",
+            "result": "The built-in slots have semantic labels and tokenized geometry, but the template does not expose a consumer custom-slot API. The item controls’ minimum target size is token-based and not separately expanded here."
+          }
+        ],
+        "notes": "Built-in slots are covered; the source requirement for arbitrary custom-slot accessibility and 48dp targets cannot be established because the web specimen has no custom slot contract and nested target enlargement is not implemented in this component stylesheet.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1366,10 +1583,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:69-100; forge/components/styles/lists.css:145-153,195-224",
+            "result": "The template places optional leading content before the body and trailing metadata/actions after it; CSS keeps leading and tail non-growing while the body takes flexible width."
+          }
+        ],
+        "notes": "The code preserves leading/body/trailing order and gives the central body the flexible space between edge slots.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1392,10 +1616,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/lists.css:7-20,46-54; forge/components/static/lists.js:24-29,101-114",
+            "result": "Standard/segmented selectors change list spacing/shape; selection and keyboard handlers operate on the same `.md-list`/`.md-list-item` structure regardless of variant."
+          }
+        ],
+        "notes": "The two visual variants alter CSS geometry while sharing selection and keyboard behavior selectors.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1418,10 +1649,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/lists.go:173-196; forge/components/static/lists.js:78-86,116-147",
+            "result": "Reveal mode renders a named “Reveal actions” button and a named revealed action alongside pointer swipe handling; the button toggles the same reveal state without a gesture."
+          }
+        ],
+        "notes": "Swipe is not the only way to reveal or activate the action; the specimen provides a keyboard-operable reveal control and action button.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1444,10 +1682,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/lists.js:116-147; catalog/web/lists.go:173-196",
+            "result": "The web implementation supports pointer swipe-to-reveal and also supplies a named click/tap reveal toggle and action button."
+          }
+        ],
+        "notes": "The project adds a web pointer gesture beyond the upstream Android Views availability statement; it retains an accessible non-swipe control, so swipe is not the only path.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1470,10 +1715,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When adapting a list for a larger breakpoint.”."
+          }
+        ],
+        "notes": "The condition is “When adapting a list for a larger breakpoint.” and the instruction is “At larger breakpoints, consider replacing a compact list with a similarly purposed card or carousel component to use the available space.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1496,10 +1748,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/lists.css:78-92,114-119,131-143; forge/components/static/lists.js:78-100",
+            "result": "Interactive items use tokenized hover/pressed/focus state layers; selection and action clicks announce the outcome through a polite live region."
+          }
+        ],
+        "notes": "The code provides visual pressed/focus feedback and announces selection/action outcomes; the actual tactile feedback is browser/device dependent.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1522,10 +1781,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When including trailing text.”."
+          }
+        ],
+        "notes": "The condition is “When including trailing text.” and the instruction is “Use trailing text for supplemental item metadata such as price, count or date.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1548,10 +1814,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/lists.js:101-114; catalog/web/specimen_list.templ:7-29",
+            "result": "The ordinary item handler moves only on ArrowUp/ArrowDown and clamps at either end; ArrowLeft/ArrowRight are not handled for ordinary items, and movement does not wrap. All enabled item buttons remain native Tab stops."
+          }
+        ],
+        "notes": "The required map includes Right/Left and wrapping at both ends; ordinary list items only handle bounded Up/Down movement, so the keyboard mapping is incomplete.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1574,10 +1847,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:11-30; catalog/web/lists.go:173-208",
+            "result": "The specimen’s reveal/reorder rows expose named utility buttons separately from the main item, but there is no generic multi-action list mode contract."
+          }
+        ],
+        "notes": "The shown utilities are individually named; the broader multi-action composition rule is not represented as a general component mode.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1600,10 +1880,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/lists.js:101-114; catalog/web/specimen_list.templ:23-29",
+            "result": "Reveal/reorder modes support arrow movement among visible buttons, but the handler does not implement the full source mapping from an item’s last action to the previous item’s last action, and generic multi-action rows are absent."
+          }
+        ],
+        "notes": "The available utility mode has partial action traversal; the exact cross-item multi-action key sequence is not implemented by this example and no generic multi-action scenario exists to verify.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1626,10 +1913,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When a list item supports multiple actions.”."
+          }
+        ],
+        "notes": "The condition is “When a list item supports multiple actions.” and the instruction is “In a multi-action item, give the primary action most of the leading and content area; place supplementary actions such as bookmark or menu at the trailing edge.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1652,10 +1946,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:7-21; catalog/web/lists.go:108-124,135-169",
+            "result": "The web multi-select specimen exposes a native `ul` with buttons and checkboxes, but the container has no `role=listbox` and each item has no `role=option` or `aria-selected`; the group is not labeled with the selection type."
+          }
+        ],
+        "notes": "The Web-specific listbox/option semantics and selection-type label required by the source are absent from this path. Android/Compose mappings are outside the web implementation.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1678,10 +1979,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When configuring multiple selection in a list.”."
+          }
+        ],
+        "notes": "The condition is “When configuring multiple selection in a list.” and the instruction is “A multi-select list may use checkboxes or switches, but items must not have nested secondary actions and must not use radio buttons.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1704,10 +2012,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:7-22; catalog/web/lists.go:135-169",
+            "result": "The outer list is a semantic `ul`, but the default item path renders a button even when no selection control is configured; this specimen does not provide a non-interactive mode."
+          }
+        ],
+        "notes": "The required non-interactive list has no interactive role; the current specimen’s item button path means the exact non-interactive condition is not represented.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1730,10 +2045,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:16-22; catalog/web/lists.go:135-170",
+            "result": "For the single-action path, each whole row is one native button containing the visible item content; when native selection controls are selected, the renderer switches to one non-button row plus its input."
+          }
+        ],
+        "notes": "The single-action example exposes one actionable target for the row and does not place nested buttons inside that button.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1756,10 +2078,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When each list item performs one action, such as navigation.”."
+          }
+        ],
+        "notes": "The condition is “When each list item performs one action, such as navigation.” and the instruction is “In a single-action list, the whole item performs one action and cannot contain nested secondary actions or retain a toggled selection state.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1782,10 +2111,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/lists.js:101-114; catalog/web/specimen_list.templ:16-22",
+            "result": "The rows are native buttons and therefore activate with Space/Enter, while arrow handling only runs when a row is focused and does not move initial focus into the selected/first item when entering the list."
+          }
+        ],
+        "notes": "Native activation is present, but the source’s initial focus-on-entry rule is not implemented by the cited handler and was not exercised in a browser.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1808,10 +2144,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:7-21; catalog/web/lists.go:108-124,135-169",
+            "result": "The web single-select example has a native `ul` and item buttons with aria-pressed or a radio input, but no List box container role and no Option item role/aria-selected semantics or selection-type label."
+          }
+        ],
+        "notes": "The required Web listbox/option roles and selected/not-selected state mapping are absent from this rendered web selection path. Android/Compose mappings are outside scope.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1834,10 +2177,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When configuring single selection in a list.”."
+          }
+        ],
+        "notes": "The condition is “When configuring single selection in a list.” and the instruction is “A single-select list may use radio buttons, but items must not have multi-actions or nested secondary actions and must not use checkboxes.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1860,10 +2210,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/lists.js:78-86,116-147; catalog/web/lists.go:173-196",
+            "result": "The web project implements swipe as a pointer gesture and supplies an explicit named reveal button as an alternative."
+          }
+        ],
+        "notes": "The web implementation adds the gesture but keeps the revealed action discoverable through a separate accessible control.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1886,10 +2243,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:63-101",
+            "result": "The specimen has fixed built-in leading/body/tail markup, not a consumer-provided custom-slot API."
+          }
+        ],
+        "notes": "The check is conditional on custom slots. The current list implementation does not expose custom slots, so there is no custom slot content to assess for its accessibility, padding or target size.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1912,10 +2276,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When visually separating list items.”."
+          }
+        ],
+        "notes": "The condition is “When visually separating list items.” and the instruction is “Use gaps or dividers to create meaningful groups; do not treat each item as an isolated group.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1938,10 +2309,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When presenting a set of related items.”."
+          }
+        ],
+        "notes": "The condition is “When presenting a set of related items.” and the instruction is “Use lists to help people find and act on a specific item; order items logically, keep them short and scannable, keep icons/text/actions consistent, and choose standard or segmented styling.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1964,10 +2342,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When designing a list.”."
+          }
+        ],
+        "notes": "The condition is “When designing a list.” and the instruction is “Use lists to help people find and act on a specific item; keep items short, logically ordered, scannable and consistently formatted.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1990,10 +2375,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When adding selection controls to a list item.”."
+          }
+        ],
+        "notes": "The condition is “When adding selection controls to a list item.” and the instruction is “Use only one selection interaction in each list item.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -2016,10 +2408,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:3",
+            "result": "The cited specimen is a standalone web example; it contains no application screen/navigation policy that can enforce this condition: “When configuring list interactions.”."
+          }
+        ],
+        "notes": "The condition is “When configuring list interactions.” and the instruction is “Use only one selection mode per list; single-action, multi-action, single-select and multi-select are distinct configurations.”. This is an app-level content, layout, or product-selection decision; the standalone reusable control/specimen does not have the surrounding screen context needed to apply it. This disposition covers this exact condition only.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -2042,10 +2441,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/lists.css:7-20; catalog/web/specimen_list.templ:7-22",
+            "result": "The shared list element has standard and segmented variants; the same web markup is styled by variant selectors, so expressive styling is layered on the baseline list structure."
+          }
+        ],
+        "notes": "The web implementation keeps the baseline list structure while adding an expressive segmented presentation; recommending one generation for new work is a product choice.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -2068,10 +2474,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_list.templ:63-100",
+            "result": "The list item always renders the label inside the body slot; supporting text, leading content, trailing metadata/icons and controls are conditional on size/slot configuration."
+          }
+        ],
+        "notes": "The template retains the required list/label anatomy and conditionally supplies the optional slots described by the check.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     }

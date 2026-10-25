@@ -360,10 +360,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 2,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/navigation-rail.css:315-320; catalog/web/specimen_navigation.templ:5-13",
+            "result": "The rail surface occupies the first inline flex slot; modal placement uses inset-inline-start:0, which follows LTR/RTL direction."
+          }
+        ],
+        "notes": "The rail is placed at the logical leading edge, including in its modal layout.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -386,10 +393,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:5-32",
+            "result": "The standalone specimen has no app-level integration context for this exact condition: “When the app uses a navigation rail.”."
+          }
+        ],
+        "notes": "The source says “Always put the rail in the same place across screens of an app.” under “When the app uses a navigation rail.”. This condition concerns destination hierarchy, app layout, product choice, or a screen transition that the isolated navigation-rail specimen does not own. This disposition applies only to that integration condition.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -412,10 +426,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/navigation.go:59-62",
+            "result": "The rail specimen renders six destinations, within the stated 3–7 range."
+          }
+        ],
+        "notes": "The current specimen count satisfies the explicit allowed range; optional FAB is separately configured.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -438,10 +459,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_attributes.go:116-128; catalog/web/navigation.go:44-49",
+            "result": "The navigation specimen exposes collapsed/baseline and expanded cases; the case variant sets collapsed vertical versus expanded horizontal orientation."
+          }
+        ],
+        "notes": "Both collapsed and expanded rail render paths exist in the component specimen.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -464,10 +492,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:5-32",
+            "result": "The standalone specimen has no app-level integration context for this exact condition: “When choosing a rail configuration under M3 Expressive.”."
+          }
+        ],
+        "notes": "The source says “The baseline navigation rail is no longer recommended; use the collapsed rail instead.” under “When choosing a rail configuration under M3 Expressive.”. This condition concerns destination hierarchy, app layout, product choice, or a screen transition that the isolated navigation-rail specimen does not own. This disposition applies only to that integration condition.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -490,10 +525,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:5-32",
+            "result": "The standalone specimen has no app-level integration context for this exact condition: “When choosing the corresponding M3 Expressive navigation component.”."
+          }
+        ],
+        "notes": "The source says “The expanded navigation rail replaces the navigation drawer.” under “When choosing the corresponding M3 Expressive navigation component.”. This condition concerns destination hierarchy, app layout, product choice, or a screen transition that the isolated navigation-rail specimen does not own. This disposition applies only to that integration condition.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -516,10 +558,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_attributes.go:116-128; catalog/web/navigation.go:44-49",
+            "result": "The specimen renders baseline and expressive variants, but does not associate them with M3 versus M3 Expressive generation metadata; upstream availability cannot be inferred from the visible component choices."
+          }
+        ],
+        "notes": "Variant display is present but generation-specific availability/recommendation mapping is absent.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -542,10 +591,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/navigation.go:9-42; catalog/web/specimen_navigation.templ:5-16",
+            "result": "The preview exposes standard/modal expanded layouts, but the combined source statement also maps their M3 predecessors to navigation drawers; this preview does not encode that generation crosswalk."
+          }
+        ],
+        "notes": "The web preview supports layout modes but does not expose the source design-generation mapping.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -568,10 +624,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/navigation.go:9-42; forge/components/behaviors/navigation.js:51-68",
+            "result": "The collapse preview supports collapsed-rail and hidden modes; syncRail hides the navigation surface only when the rail is collapsed and hide mode is selected."
+          }
+        ],
+        "notes": "The behavior is explicitly limited to the expanded-rail layout state and the specimen control offers the configuration.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -594,10 +657,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:48-101; forge/components/behaviors/navigation.js:76-83",
+            "result": "The rail item has icon, indicator and visible label; optional menu, FAB/extended FAB and badge render paths are present."
+          }
+        ],
+        "notes": "The specimen implements the required destination anatomy and demonstrates optional controls/badges.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -620,10 +690,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:390-416; forge/components/styles/navigation-rail.css:93-101,115-120,147-159; forge/components/styles/navigation-rail.css:241-255",
+            "result": "Generator maps rail state and role tokens to component custom properties; CSS applies active icon/indicator/label, inactive icon/label and error badge bindings, with horizontal labels using the active on-container icon color."
+          }
+        ],
+        "notes": "The renderer binds the stated component roles through the Material token mapping. The optional container and theme values are supplied by generated tokens.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -646,10 +723,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/navigation-rail.css:88-93; forge/components/styles/navigation-rail.css:84-93",
+            "result": "Each navigation item has inline-size:100% within the rail item list; the indicator can independently hug content."
+          }
+        ],
+        "notes": "The interactive button target spans the rail width even when its indicator is narrower.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -672,10 +756,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/navigation.css:118-145; forge/components/static/bundles/navigation.css:1",
+            "result": "Navigation item styles define hover, focus-visible and pressed state layers; the native button provides enabled state."
+          }
+        ],
+        "notes": "The state styling covers the four listed interaction states.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -698,10 +789,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:390-416; forge/components/styles/navigation-rail.css:79-92",
+            "result": "The component consumes generated navigation measurement variables, but the immutable assessment copy does not expose resolved values for this measurement."
+          }
+        ],
+        "notes": "The source defines nominal dp measurements; CSS consumes generated token custom properties, but the frozen baseline generated token stylesheet exposing the resolved values is not present in this assessment archive.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -724,10 +822,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:390-416; forge/components/styles/navigation-rail.css:79-92",
+            "result": "The component consumes generated navigation measurement variables, but the immutable assessment copy does not expose resolved values for this measurement."
+          }
+        ],
+        "notes": "The icon dimension is tokenized, but this archive does not include the resolved generated Material token stylesheet needed to confirm the exact 24dp value.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -750,10 +855,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:390-416; forge/components/styles/navigation-rail.css:79-92",
+            "result": "The component consumes generated navigation measurement variables, but the immutable assessment copy does not expose resolved values for this measurement."
+          }
+        ],
+        "notes": "CSS maps the indicator height and insets to component tokens, but the frozen archive lacks the resolved token values needed to compare 56dp/36dp/16dp.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -776,10 +888,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/navigation-rail.css:147-159",
+            "result": "Expanded section headers use margin-block start space150 and end space100, corresponding to the source’s 12dp above and 8dp below tokens."
+          }
+        ],
+        "notes": "The header spacing is explicitly tokenized to the requested 12dp/8dp rhythm.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -802,10 +921,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:390-416; forge/components/styles/navigation-rail.css:79-92",
+            "result": "The component consumes generated navigation measurement variables, but the immutable assessment copy does not expose resolved values for this measurement."
+          }
+        ],
+        "notes": "The gap is token-bound in the component CSS, but the exact resolved value cannot be confirmed from this frozen source archive.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -828,10 +954,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:390-416; forge/components/styles/navigation.css:93-101",
+            "result": "Baseline active icon and indicator, active label, inactive icon/label and badge colors are bound to nav state tokens."
+          }
+        ],
+        "notes": "The renderer maps the baseline roles to the corresponding current/active and inactive token variables.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -854,10 +987,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/navigation.css:118-145; forge/components/static/bundles/navigation.css:1",
+            "result": "The shared navigation item stylesheet covers hover, focus-visible and pressed state layers; native destination buttons are enabled by default."
+          }
+        ],
+        "notes": "The CSS state selectors apply to baseline and expressive rail items.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -880,10 +1020,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:390-416; forge/components/styles/navigation-rail.css:79-92",
+            "result": "The implementation uses token variables for these measurements, but exact values cannot be validated from the available frozen baseline files."
+          }
+        ],
+        "notes": "The baseline rail and item dimensions are sourced from generated component variables; the frozen assessment archive lacks the resolved token stylesheet needed to confirm the stated 80dp/24dp/56×32dp/56dp measurements.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -906,10 +1053,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:390-416; forge/components/styles/navigation-rail.css:79-92",
+            "result": "The implementation uses token variables for these measurements, but exact values cannot be validated from the available frozen baseline files."
+          }
+        ],
+        "notes": "The indicator margins and item spacing are mapped to measurement variables, but resolved values are unavailable in the frozen source copy.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -932,10 +1086,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "verified",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "forge/components/behaviors/navigation.js:85-365; forge/conformance/check-motion.mjs:1-212",
+            "result": "Chromium component-only motion harness at http://127.0.0.1:8082/assessment-motion.html passed 233 assertions; this included navigation-rail LTR/RTL transition geometry and menu state transitions."
+          }
+        ],
+        "notes": "The inspected menu-trigger path switches variant/orientation, moves focus, animates geometry and restores state. Harness omitted the unrelated asset-navigation setup and obsolete Hero DOM group; it passed the component-only rail assertions.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -958,10 +1119,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/navigation.js:51-68; forge/components/styles/navigation-rail.css:23-58",
+            "result": "The surface is hidden only when the selected collapse mode is hidden; the collapsed-rail mode leaves the surface visible and scrollable."
+          }
+        ],
+        "notes": "The default collapsed-rail behavior keeps the rail shown.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -984,10 +1152,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:5-32",
+            "result": "The standalone specimen has no app-level integration context for this exact condition: “When choosing persistent navigation for compact windows.”."
+          }
+        ],
+        "notes": "The source says “Compact windows should use a navigation bar instead of a standard rail.” under “When choosing persistent navigation for compact windows.”. This condition concerns destination hierarchy, app layout, product choice, or a screen transition that the isolated navigation-rail specimen does not own. This disposition applies only to that integration condition.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1010,10 +1185,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:5-32",
+            "result": "The standalone specimen has no app-level integration context for this exact condition: “When using a rail; tabs may provide a separate navigation level.”."
+          }
+        ],
+        "notes": "The source says “A navigation rail should be the only visible primary navigation element.” under “When using a rail; tabs may provide a separate navigation level.”. This condition concerns destination hierarchy, app layout, product choice, or a screen transition that the isolated navigation-rail specimen does not own. This disposition applies only to that integration condition.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1036,10 +1218,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:5-32",
+            "result": "The standalone specimen has no app-level integration context for this exact condition: “When choosing navigation for a medium window.”."
+          }
+        ],
+        "notes": "The source says “Consider a navigation bar in medium windows with few destinations.” under “When choosing navigation for a medium window.”. This condition concerns destination hierarchy, app layout, product choice, or a screen transition that the isolated navigation-rail specimen does not own. This disposition applies only to that integration condition.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1062,10 +1251,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:48-62; forge/components/behaviors/navigation.js:437-445",
+            "result": "The menu icon button carries data-navigation-expand and the click handler toggles between collapsed and expanded variants."
+          }
+        ],
+        "notes": "Both standard and modal expanded rail states use the visible menu control.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1088,10 +1284,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:67-79; forge/components/styles/navigation-rail.css:143-146",
+            "result": "The specimen marks Archive and Trash as secondary destinations; CSS hides these entries and their section label while collapsed."
+          }
+        ],
+        "notes": "The expanded state reveals secondary destinations that are hidden in collapsed mode.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1114,10 +1317,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/navigation-rail.css:315-320; forge/components/styles/navigation-rail.css:299-328",
+            "result": "Standard expanded rail occupies its adjacent slot; modal mode positions the rail surface over content and shows a scrim."
+          }
+        ],
+        "notes": "The layout selector produces side-by-side standard and overlay modal placement.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1140,10 +1350,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:5-32",
+            "result": "The standalone specimen has no app-level integration context for this exact condition: “When choosing standard versus modal expanded navigation.”."
+          }
+        ],
+        "notes": "The source says “Use a modal expanded rail for information-dense layouts with limited space or products with many navigation items.” under “When choosing standard versus modal expanded navigation.”. This condition concerns destination hierarchy, app layout, product choice, or a screen transition that the isolated navigation-rail specimen does not own. This disposition applies only to that integration condition.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1166,10 +1383,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/navigation.go:9-42; forge/components/behaviors/navigation.js:51-80,134-165",
+            "result": "In hidden mode the rail surface is hidden while the external menu control remains exposed; selecting the menu expands the rail."
+          }
+        ],
+        "notes": "The specimen preserves an accessible opener outside the hidden rail.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1192,10 +1416,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:390-416; forge/components/styles/navigation-rail.css:93-120,147-159",
+            "result": "The renderer maps active and inactive text/icon colors to Material roles, but no code enforces a 3:1 threshold when the rail container is transparent; the supplied browser harness tested only horizontal selected-label contrast."
+          }
+        ],
+        "notes": "The exact transparent-container condition and all rail item states were not covered by the harness. Token role mapping is present, but the contrast threshold remains unverified."
       },
       "fixes": []
     },
@@ -1218,10 +1449,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_attributes.go:116-128; forge/components/styles/navigation-rail.css:88-142",
+            "result": "Collapsed rail cases set vertical orientation and use column items with vertical icon-label placement; expanded cases set horizontal orientation for their expanded variant."
+          }
+        ],
+        "notes": "The rail layout is vertically arranged as the side navigation pattern, with the expanded horizontal item variant supported separately.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1244,10 +1482,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/navigation.go:9-42; forge/components/styles/navigation-rail.css:256-258",
+            "result": "The specimen exposes top/center alignment; center mode applies automatic block margins to the destination group."
+          }
+        ],
+        "notes": "The choice is configurable in the preview, so the alignment behavior is available; tablet recommendation is app policy.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1270,10 +1515,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:48-63; forge/components/styles/navigation-rail.css:60-74",
+            "result": "The optional menu/FAB controls render in the rail header before the destination list; the header is a non-growing flex column."
+          }
+        ],
+        "notes": "Optional controls remain above the destination group.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1296,10 +1548,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:51-56; forge/components/styles/navigation-rail.css:187-215; forge/components/behaviors/navigation.js:69-74",
+            "result": "The menu and collapse glyphs occupy one slot; expanded state changes aria-label and CSS crossfades/rotates to the collapse icon."
+          }
+        ],
+        "notes": "The expanded control communicates and visually shows the collapse action.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1322,10 +1581,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/navigation-rail.css:160-166",
+            "result": "A FAB nested in the rail sets its elevation level to system level 0."
+          }
+        ],
+        "notes": "The rail-specific FAB rule sets the required resting elevation token.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1348,10 +1614,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:48-79",
+            "result": "Optional FAB renders inside the rail header before the navigation item list."
+          }
+        ],
+        "notes": "The specimen places the FAB before the destinations.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1374,10 +1647,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:51-56",
+            "result": "The rail expansion control renders the Material menu/menu_open glyph, not a brand logo."
+          }
+        ],
+        "notes": "The menu action is represented with a recognizable menu icon.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1400,10 +1680,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.go:7-14; forge/components/behaviors/navigation.js:4-10",
+            "result": "Selection clears aria-current from every destination and sets it only on the clicked button; the active indicator selector is tied to aria-current."
+          }
+        ],
+        "notes": "At most one item receives the current-page state and visible indicator.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1426,10 +1713,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/navigation-rail.css:176-181; forge/components/styles/navigation-rail.css:79-95; catalog/web/specimen_attributes.go:116-128",
+            "result": "The default indicator width is based on its contents; an explicit data-indicator=fill selector expands it to the full item width."
+          }
+        ],
+        "notes": "The component offers both hugging and full-width override while retaining a full-width target.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1452,10 +1746,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:5-32",
+            "result": "The standalone specimen has no app-level integration context for this exact condition: “When choosing destination icons.”."
+          }
+        ],
+        "notes": "The source says “Navigation items must use icons that symbolize their destination’s content.” under “When choosing destination icons.”. This condition concerns destination hierarchy, app layout, product choice, or a screen transition that the isolated navigation-rail specimen does not own. This disposition applies only to that integration condition.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1478,10 +1779,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:83-90; forge/components/styles/navigation-rail.css:14-21",
+            "result": "Both outline and filled glyphs are rendered; aria-current swaps visibility and token styles the selected icon."
+          }
+        ],
+        "notes": "Selection uses filled icon styling and the active indicator.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1504,10 +1812,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/navigation.go:55-62; catalog/web/specimen_navigation.templ:83-90",
+            "result": "Every destination renders short, one-word visible labels such as Home, Files, Saved and Recent."
+          }
+        ],
+        "notes": "The sample provides concise meaningful labels for each item.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1530,10 +1845,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/navigation-rail.css:102-105",
+            "result": "Rail labels set overflow-wrap:anywhere, which can break within words rather than preferring word boundaries or hyphenation; the specimen has no hyphenation rule."
+          }
+        ],
+        "notes": "The current wrap rule permits arbitrary word breaks and does not implement the source’s preferred between-word/hyphenated behavior.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1556,10 +1878,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/navigation-rail.css:102-105,121-142; forge/components/behaviors/navigation.js:39-50",
+            "result": "Rail labels can wrap and measured label height contributes to item block-size; there is no font shrinking or ellipsis rule."
+          }
+        ],
+        "notes": "The style grows item height for label content and does not shrink or ellipsize labels.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1582,10 +1911,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:93-100; forge/components/styles/navigation-rail.css:241-255",
+            "result": "Collapsed vertical badges are positioned at the upper-right of the indicator/icon; expanded horizontal badges remain after the label in the flex item."
+          }
+        ],
+        "notes": "The template places the badge after the label and CSS moves the collapsed case to the icon corner.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1608,10 +1944,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:5-32",
+            "result": "The standalone specimen has no app-level integration context for this exact condition: “When separating rail and body content with a divider.”."
+          }
+        ],
+        "notes": "The source says “An optional divider should be vertical and sit on the rail edge adjacent to app content.” under “When separating rail and body content with a divider.”. This condition concerns destination hierarchy, app layout, product choice, or a screen transition that the isolated navigation-rail specimen does not own. This disposition applies only to that integration condition.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1634,10 +1977,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:5-32",
+            "result": "The standalone specimen has no app-level integration context for this exact condition: “When integrating navigation into an adaptive layout.”."
+          }
+        ],
+        "notes": "The source says “The rail should sit outside body-content panes along the leading edge of the window.” under “When integrating navigation into an adaptive layout.”. This condition concerns destination hierarchy, app layout, product choice, or a screen transition that the isolated navigation-rail specimen does not own. This disposition applies only to that integration condition.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1660,10 +2010,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:14-16; forge/components/behaviors/navigation.js:51-80,134-165; forge/components/styles/navigation-rail.css:275-277",
+            "result": "When the rail is hidden, the external menu button remains outside the hidden surface and clicking it expands the rail; the body occupies the available flex space."
+          }
+        ],
+        "notes": "The hidden mode preserves an opener and lets adjacent content use the vacated slot.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1686,10 +2043,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:5-32",
+            "result": "The standalone specimen has no app-level integration context for this exact condition: “When adapting navigation across window sizes.”."
+          }
+        ],
+        "notes": "The source says “Use a navigation bar for compact layouts and a navigation rail for expanded to extra-large layouts; never show the bar and rail simultaneously.” under “When adapting navigation across window sizes.”. This condition concerns destination hierarchy, app layout, product choice, or a screen transition that the isolated navigation-rail specimen does not own. This disposition applies only to that integration condition.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1712,10 +2076,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:5-32",
+            "result": "The standalone specimen has no app-level integration context for this exact condition: “When following the Resizing section’s medium-window recommendation.”."
+          }
+        ],
+        "notes": "The source says “Use a navigation rail at medium breakpoints and larger rather than a navigation bar.” under “When following the Resizing section’s medium-window recommendation.”. This condition concerns destination hierarchy, app layout, product choice, or a screen transition that the isolated navigation-rail specimen does not own. This disposition applies only to that integration condition.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1738,10 +2109,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:5-32",
+            "result": "The standalone specimen has no app-level integration context for this exact condition: “When choosing adaptive navigation for many destinations.”."
+          }
+        ],
+        "notes": "The source says “Consider a modal expanded rail when there are more than five destinations.” under “When choosing adaptive navigation for many destinations.”. This condition concerns destination hierarchy, app layout, product choice, or a screen transition that the isolated navigation-rail specimen does not own. This disposition applies only to that integration condition.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1764,10 +2142,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/navigation-rail.css:23-46,259-282; forge/components/behaviors/navigation.js:129-166,317-329",
+            "result": "Rail slot width is reserved at the expanded endpoint and the adjacent body is flexed; the transition animates rail width while preserving the destination layout."
+          }
+        ],
+        "notes": "The standard expanded rail changes the available body width so page content adjusts alongside it.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1790,10 +2175,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/navigation.js:76-83,121-142,323-343",
+            "result": "The rail toggles its nested control between md-fab and md-extended-fab classes; the transition path measures and animates the FAB width."
+          }
+        ],
+        "notes": "The optional FAB changes from compact to extended form with the rail state.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1816,10 +2208,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:5-32",
+            "result": "The standalone specimen has no app-level integration context for this exact condition: “When space permits an expanded rail beside content.”."
+          }
+        ],
+        "notes": "The source says “Use a standard expanded rail for secondary destinations or actions with lower priority than primary navigation.” under “When space permits an expanded rail beside content.”. This condition concerns destination hierarchy, app layout, product choice, or a screen transition that the isolated navigation-rail specimen does not own. This disposition applies only to that integration condition.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1842,10 +2241,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/navigation-rail.css:53-58,278-282",
+            "result": "Rail and content screen are separate overflow containers; scrolling the body screen does not move the rail destinations."
+          }
+        ],
+        "notes": "The showcase keeps destinations in the rail while its body pane scrolls independently.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1868,10 +2274,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:5-32",
+            "result": "The standalone specimen has no app-level integration context for this exact condition: “When the layout scrolls horizontally beneath a visible rail.”."
+          }
+        ],
+        "notes": "The source says “A rail may stay fixed or scroll off-screen during horizontal scrolling; use a divider or rail elevation to distinguish content scrolling underneath.” under “When the layout scrolls horizontally beneath a visible rail.”. This condition concerns destination hierarchy, app layout, product choice, or a screen transition that the isolated navigation-rail specimen does not own. This disposition applies only to that integration condition.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1894,10 +2307,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/navigation.js:4-19; catalog/web/static/component-demos.js:25-40; forge/components/styles/navigation-rail.css:14-21",
+            "result": "The selected state swaps the icon and demo text immediately. No animation of the active indicator expanding from the icon center or app-route transition is present; route transition is outside this isolated preview."
+          }
+        ],
+        "notes": "The selection visuals are implemented, but the check combines an app-level top-level page transition with an indicator animation. The component has no route lifecycle, and the indicator animation requirement is not independently resolved."
       },
       "fixes": []
     },
@@ -1920,10 +2340,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/navigation.js:366-450",
+            "result": "This check is explicitly conditional on Android predictive back and a modal expanded rail; the web implementation has no Android system back gesture or preview API."
+          }
+        ],
+        "notes": "The platform-specific predictive-back behavior cannot apply to the web specimen; no web behavior is inferred from it.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1946,10 +2373,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:5-16,67-80; forge/components/behaviors/navigation.js:4-36; catalog/web/static/component-demos.js:25-40",
+            "result": "The rail is a named nav landmark containing native buttons; selection updates current-page state and a polite output, while the shared key handler supports directional movement."
+          }
+        ],
+        "notes": "The specimen provides semantic navigation, selection feedback and keyboard operation.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -1972,9 +2406,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/buttons.js:76-80,249-305; forge/components/behaviors/navigation.js:4-19; forge/components/styles/navigation.css:93-101,118-145; forge/material/generate-components.mjs:390-427,881-907; forge/components/styles/navigation-rail.css:2-21",
+            "result": "Selection updates aria-current, switches outlined glyphs to filled glyphs and applies active icon/label/indicator tokens. The shared feedback handler recognizes .md-nav-item and appends animated ripple ink to its .md-nav-indicator; ripple markup is created at activation rather than authored in the template. This is code-supported behavior, not full browser verification of selection feedback."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -1998,10 +2439,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/navigation.css:118-145; forge/components/static/bundles/navigation.css:1",
+            "result": "Hover selectors apply a state layer to navigation items when the pointer is not touch; the shared component button behavior handles pointer feedback."
+          }
+        ],
+        "notes": "A cursor hover state is present for interactive destinations.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -2024,10 +2472,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:390-416; forge/components/styles/navigation-rail.css:93-120,147-159",
+            "result": "Active and inactive destination colors are token-mapped, but the check also limits total colors and requires contrast against the container; the browser harness did not exercise every active/inactive color context or the two-color limit."
+          }
+        ],
+        "notes": "The harness result cannot establish this combined requirement. Keep the token role mapping visible while leaving full contrast and color-count conformance unresolved."
       },
       "fixes": []
     },
@@ -2050,10 +2505,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:83-90",
+            "result": "The demonstrated navigation icon family has both outlined and filled SVG glyphs, so the source fallback for icon families without a filled style is not exercised by this specimen."
+          }
+        ],
+        "notes": "The unmet condition is “when the icon family lacks a filled variant”; this specimen supplies both variants.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -2076,10 +2538,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/navigation.js:39-50; forge/components/styles/navigation-rail.css:121-142",
+            "result": "A ResizeObserver measures destination label height and updates a CSS variable; vertical item height is max of the token height and indicator, label gap/height and vertical padding."
+          }
+        ],
+        "notes": "The item can grow vertically as labels wrap at larger text sizes while retaining tokenized padding.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -2102,10 +2571,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/navigation.js:39-50; forge/components/styles/navigation-rail.css:102-105,121-142",
+            "result": "The label is not line-clamped or ellipsized; a ResizeObserver measures its full height and the item grows to contain the label."
+          }
+        ],
+        "notes": "The implementation keeps full text visible through wrapping; no truncation threshold is encoded, so labels also remain untruncated beyond 2×.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -2128,10 +2604,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:51-79; catalog/web/specimen_navigation.go:7-21",
+            "result": "Native focus order starts with the rendered menu/FAB controls and then destination buttons; no focus is moved on page load."
+          }
+        ],
+        "notes": "The first focusable rail action matches the configured menu, FAB or first destination order without stealing focus.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -2154,10 +2637,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:51-79; catalog/web/specimen_navigation.go:7-21",
+            "result": "The optional header buttons precede the destination buttons in DOM order, so Tab advances from menu/FAB into destinations."
+          }
+        ],
+        "notes": "Sequential keyboard focus follows the required control-to-destination order.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -2180,10 +2670,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:83-90; forge/components/styles/navigation-rail.css:14-21",
+            "result": "The template supplies outline and filled icon glyphs; the aria-current selector hides outline and shows filled only for the selected destination."
+          }
+        ],
+        "notes": "The selected and inactive icon appearances are distinct.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -2206,10 +2703,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "failing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "forge/components/behaviors/navigation.js:21-36; browser Chromium http://127.0.0.1:8081/md3/components/navigation-rail?preview.compare=interactive",
+            "result": "Reproduction: open the collapsed rail preview, focus Recent, press ArrowDown. Focus remains on Recent; Archive/Trash are display:none but are still included in the [data-navigation-item] array before navigationIndex selects the next index."
+          }
+        ],
+        "notes": "The current directional-key handler includes hidden destinations and the observed ArrowDown did not advance to Home; this fails the expected traversal for the collapsed rail.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -2232,10 +2736,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.templ:67-80; forge/components/behaviors/navigation.js:4-19,416-449",
+            "result": "Destination controls are native buttons; Space/Enter produce click activation, which updates aria-current, dispatches the selection event and dismisses modal/expanded navigation as applicable."
+          }
+        ],
+        "notes": "Native button activation is handled by the common click selection path.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     },
@@ -2258,10 +2769,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_navigation.go:7-21; catalog/web/specimen_navigation.templ:83-90",
+            "result": "Navigation item buttons have visible text labels, while the named nav landmark describes the group; the button’s accessible name derives from its label text."
+          }
+        ],
+        "notes": "The web specimen uses the visible destination label as the accessible name. More descriptive app-specific names remain available only if surrounding content needs them.",
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
       },
       "fixes": []
     }

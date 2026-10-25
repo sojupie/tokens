@@ -404,10 +404,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_appbar.templ:8-39",
+            "result": "The preview renders a Back control, visible title, and two trailing actions, but it does not establish real page context or whether those actions are essential."
+          }
+        ],
+        "notes": "The preview renders a Back control, visible title, and two trailing actions, but it does not establish real page context or whether those actions are essential."
       },
       "fixes": []
     },
@@ -430,10 +437,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_appbar.go:58-60; forge/material/generate-components.mjs:999-1005",
+            "result": "The variant matrix exposes flexible medium/large alongside baseline medium/large variants; the catalog does not enforce the recommendation when an application selects one."
+          }
+        ],
+        "notes": "The variant matrix exposes flexible medium/large alongside baseline medium/large variants; the catalog does not enforce the recommendation when an application selects one."
       },
       "fixes": []
     },
@@ -456,10 +470,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:999-1005",
+            "result": "Generated app-bar configurations enumerate search control and flexible variants; availability is configured as variants, not gated by an app-level Material mode."
+          }
+        ],
+        "notes": "Generated app-bar configurations enumerate search control and flexible variants; availability is configured as variants, not gated by an app-level Material mode."
       },
       "fixes": []
     },
@@ -482,10 +503,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/app-bars.css:95-101; forge/material/generate-components.mjs:999-1005",
+            "result": "Centered and baseline-centered selectors/configurations exist, while the regular copy remains leading aligned; mode availability is a caller choice."
+          }
+        ],
+        "notes": "Centered and baseline-centered selectors/configurations exist, while the regular copy remains leading aligned; mode availability is a caller choice."
       },
       "fixes": []
     },
@@ -508,10 +536,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_appbar.templ:17-22; catalog/web/specimen_appbar.templ:25-38",
+            "result": "The specimen includes title/subtitle and two actions, but does not implement application-level limits on custom contents or typography."
+          }
+        ],
+        "notes": "The specimen includes title/subtitle and two actions, but does not implement application-level limits on custom contents or typography."
       },
       "fixes": []
     },
@@ -534,10 +569,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_appbar.templ:13-16; forge/components/behaviors/app-bars.js:3-12",
+            "result": "The search variant renders a native search input. The only app-bar behavior marks scroll state; it does not open a search view on selection."
+          }
+        ],
+        "notes": "The search variant renders a native search input. The only app-bar behavior marks scroll state; it does not open a search view on selection."
       },
       "fixes": []
     },
@@ -560,10 +602,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_appbar.templ:25-38",
+            "result": "The preview hard-codes two trailing actions and a menu icon; it does not know the page context or relocate excess actions to a toolbar."
+          }
+        ],
+        "notes": "The preview hard-codes two trailing actions and a menu icon; it does not know the page context or relocate excess actions to a toolbar."
       },
       "fixes": []
     },
@@ -586,10 +635,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_appbar.templ:25-38",
+            "result": "The app-bar preview has icon actions and an optional single FAB; it does not place multiple filled/tonal emphasis buttons in one app bar."
+          }
+        ],
+        "notes": "The app-bar preview has icon actions and an optional single FAB; it does not place multiple filled/tonal emphasis buttons in one app bar."
       },
       "fixes": []
     },
@@ -612,10 +668,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/app-bars.js:3-12; forge/components/styles/app-bars.css:159-167",
+            "result": "Scroll behavior only adds data-scrolled while the app bar stays sticky; no variant transition selects a small bar."
+          }
+        ],
+        "notes": "Scroll behavior only adds data-scrolled while the app bar stays sticky; no variant transition selects a small bar."
       },
       "fixes": []
     },
@@ -638,10 +701,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/app-bars.css:2-5; forge/components/styles/app-bars.css:6-14",
+            "result": "The demo wrapper caps at 28rem and the component fills its parent; no large-breakpoint content max-width and centering rule exists."
+          }
+        ],
+        "notes": "The demo wrapper caps at 28rem and the component fills its parent; no large-breakpoint content max-width and centering rule exists."
       },
       "fixes": []
     },
@@ -664,10 +734,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/app-bars.js:3-12; forge/components/styles/app-bars.css:15-19",
+            "result": "The scroll handler only toggles data-scrolled; stylesheet transitions background but contains no scrolled-state container fill or no-shadow rule. Generated token selector is present, so the computed fill/elevation outcome needs a rendered-style check."
+          }
+        ],
+        "notes": "The scroll handler only toggles data-scrolled; stylesheet transitions background but contains no scrolled-state container fill or no-shadow rule. Generated token selector is present, so the computed fill/elevation outcome needs a rendered-style check."
       },
       "fixes": []
     },
@@ -690,10 +767,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_appbar.templ:10-39",
+            "result": "Native controls occur in DOM order (leading Back, search/title, then trailing buttons); the preview adds no positive tabindex or custom focus movement."
+          }
+        ],
+        "notes": "Native controls occur in DOM order (leading Back, search/title, then trailing buttons); the preview adds no positive tabindex or custom focus movement."
       },
       "fixes": []
     },
@@ -716,10 +800,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_appbar.templ:17-22; catalog/web/specimen_appbar.templ:41-47; catalog/web/specimen_appbar.go:9-51",
+            "result": "Title text is rendered visibly; icon actions receive action-specific aria-labels from BarAction. The heading itself has no explicit accessible-name override."
+          }
+        ],
+        "notes": "Title text is rendered visibly; icon actions receive action-specific aria-labels from BarAction. The heading itself has no explicit accessible-name override."
       },
       "fixes": []
     },
@@ -742,10 +833,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_appbar.templ:17-22; forge/components/styles/app-bars.css:30-48; forge/components/styles/app-bars.css:56-60",
+            "result": "Flexible variants render title/subtitle and expanded placement, but the title rule forces nowrap and ellipsis; larger typography/image/filled-button capability needs variant-specific rendered assessment."
+          }
+        ],
+        "notes": "Flexible variants render title/subtitle and expanded placement, but the title rule forces nowrap and ellipsis; larger typography/image/filled-button capability needs variant-specific rendered assessment."
       },
       "fixes": []
     },
@@ -768,10 +866,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/app-bars.css:36-43; forge/components/styles/app-bars.css:49-54",
+            "result": "Baseline title typography is set, but all title variants inherit nowrap/ellipsis, so the required multiline headline support is absent."
+          }
+        ],
+        "notes": "Baseline title typography is set, but all title variants inherit nowrap/ellipsis, so the required multiline headline support is absent."
       },
       "fixes": []
     },
@@ -794,10 +899,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_appbar.templ:17-22",
+            "result": "The small variant renders only text or a search field in the title slot; there is no image/logo replacement slot."
+          }
+        ],
+        "notes": "The small variant renders only text or a search field in the title slot; there is no image/logo replacement slot."
       },
       "fixes": []
     },
@@ -820,10 +932,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_appbar.templ:25-38",
+            "result": "The preview supplies two trailing icon buttons and a separate optional FAB, but does not expose a filled/tonal icon-button trailing style; actual caller composition is not constrained."
+          }
+        ],
+        "notes": "The preview supplies two trailing icon buttons and a separate optional FAB, but does not expose a filled/tonal icon-button trailing style; actual caller composition is not constrained."
       },
       "fixes": []
     },
@@ -846,10 +965,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_appbar.go:58-60; forge/components/styles/app-bars.css:6-12; forge/components/styles/app-bars.css:41-60",
+            "result": "Flexible variants have a fixed app-bar block-size token and absolutely positioned expanded copy; source does not show content-driven height growth when a subtitle is present."
+          }
+        ],
+        "notes": "Flexible variants have a fixed app-bar block-size token and absolutely positioned expanded copy; source does not show content-driven height growth when a subtitle is present."
       },
       "fixes": []
     },
@@ -872,10 +998,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:268-284; forge/components/behaviors/app-bars.js:3-12",
+            "result": "Generator maps app-bar container color and data-scrolled token selectors, but the behavior only toggles the attribute; the resulting token-resolved role needs computed-style inspection."
+          }
+        ],
+        "notes": "Generator maps app-bar container color and data-scrolled token selectors, but the behavior only toggles the attribute; the resulting token-resolved role needs computed-style inspection."
       },
       "fixes": []
     },
@@ -898,10 +1031,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:268-284; forge/components/styles/app-bars.css:112-138",
+            "result": "Search color variables are token-bound and search input inherits its field color, but no explicit scrolled-search selector appears in this stylesheet; verify generated selectors and resolved colors in browser."
+          }
+        ],
+        "notes": "Search color variables are token-bound and search input inherits its field color, but no explicit scrolled-search selector appears in this stylesheet; verify generated selectors and resolved colors in browser."
       },
       "fixes": []
     },
@@ -924,10 +1064,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_appbar.templ:5-56",
+            "result": "This is an isolated component preview without a product home page or task analytics, so centrality of search to a product cannot be established."
+          }
+        ],
+        "notes": "This is an isolated component preview without a product home page or task analytics, so centrality of search to a product cannot be established."
       },
       "fixes": []
     },
@@ -950,10 +1097,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_appbar.templ:14-16",
+            "result": "The rendered placeholder is “Search” and the input has an accessible name “Search preview”."
+          }
+        ],
+        "notes": "The rendered placeholder is “Search” and the input has an accessible name “Search preview”."
       },
       "fixes": []
     },
@@ -976,10 +1130,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_appbar.templ:25-38",
+            "result": "The preview can show two trailing controls and an avatar variant, but has no mobile breakpoint or ordering logic tied to usage frequency."
+          }
+        ],
+        "notes": "The preview can show two trailing controls and an avatar variant, but has no mobile breakpoint or ordering logic tied to usage frequency."
       },
       "fixes": []
     },
@@ -1002,10 +1163,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_appbar.templ:8-39",
+            "result": "The specimen has a Back icon as its leading control and no leading-logo configuration, so logo navigation behavior is not exercised."
+          }
+        ],
+        "notes": "The specimen has a Back icon as its leading control and no leading-logo configuration, so logo navigation behavior is not exercised."
       },
       "fixes": []
     },
@@ -1028,10 +1196,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_appbar.templ:25-38",
+            "result": "The preview renders two trailing buttons or one button plus avatar; no responsive overflow/toolbar relocation behavior is wired to action count."
+          }
+        ],
+        "notes": "The preview renders two trailing buttons or one button plus avatar; no responsive overflow/toolbar relocation behavior is wired to action count."
       },
       "fixes": []
     },
@@ -1054,10 +1229,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_appbar.templ:25-38; forge/components/styles/app-bars.css:2-5",
+            "result": "The specimen fixes two trailing buttons; its 28rem demo width does not implement a larger-screen breakpoint allowing four."
+          }
+        ],
+        "notes": "The specimen fixes two trailing buttons; its 28rem demo width does not implement a larger-screen breakpoint allowing four."
       },
       "fixes": []
     },
@@ -1080,10 +1262,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:268-284; forge/components/styles/app-bars.css:112-138",
+            "result": "Token-backed field/container colors are assigned, but the required 3:1 ratio and bright-vs-container choice are not established by source alone; needs computed-color/contrast probe."
+          }
+        ],
+        "notes": "Token-backed field/container colors are assigned, but the required 3:1 ratio and bright-vs-container choice are not established by source alone; needs computed-color/contrast probe."
       },
       "fixes": []
     },
@@ -1106,10 +1295,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/app-bars.css:6-14",
+            "result": "Container fills its parent and uses tokenized height/shape; the resolved default height/straight-corner geometry and window-width scope need runtime token values (demo is capped at 28rem)."
+          }
+        ],
+        "notes": "Container fills its parent and uses tokenized height/shape; the resolved default height/straight-corner geometry and window-width scope need runtime token values (demo is capped at 28rem)."
       },
       "fixes": []
     },
@@ -1132,10 +1328,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_appbar.templ:8-47",
+            "result": "No logo asset is rendered in the app-bar specimen; logo quality and relevance are product content decisions."
+          }
+        ],
+        "notes": "No logo asset is rendered in the app-bar specimen; logo quality and relevance are product content decisions."
       },
       "fixes": []
     },
@@ -1158,10 +1361,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_appbar.templ:10-11; catalog/web/specimen_appbar.go:9-11",
+            "result": "The preview’s leading icon is labeled Back, matching a return-navigation purpose; actual destination behavior is outside the specimen."
+          }
+        ],
+        "notes": "The preview’s leading icon is labeled Back, matching a return-navigation purpose; actual destination behavior is outside the specimen."
       },
       "fixes": []
     },
@@ -1184,10 +1394,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/app-bars.css:36-43",
+            "result": "Every app-bar title is forced to one line and clipped with ellipsis; flexible variants therefore cannot wrap to two lines as recommended."
+          }
+        ],
+        "notes": "Every app-bar title is forced to one line and clipped with ellipsis; flexible variants therefore cannot wrap to two lines as recommended."
       },
       "fixes": []
     },
@@ -1210,10 +1427,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/app-bars.css:30-48; forge/components/styles/app-bars.css:95-101",
+            "result": "Title and subtitle share one grid copy container; centered variant centers that container’s text and other variants use leading alignment."
+          }
+        ],
+        "notes": "Title and subtitle share one grid copy container; centered variant centers that container’s text and other variants use leading alignment."
       },
       "fixes": []
     },
@@ -1236,10 +1460,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_appbar.templ:25-38; forge/components/styles/app-bars.css:62-67",
+            "result": "The template orders two icon actions and uses flex layout; it cannot determine action importance or enforce filled/tonal count for application content."
+          }
+        ],
+        "notes": "The template orders two icon actions and uses flex layout; it cannot determine action importance or enforce filled/tonal count for application content."
       },
       "fixes": []
     },
@@ -1262,10 +1493,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_appbar.templ:25-38",
+            "result": "The preview includes a menu icon but no more-actions menu/toolbar relocation; the component cannot determine whether a page has excess actions."
+          }
+        ],
+        "notes": "The preview includes a menu icon but no more-actions menu/toolbar relocation; the component cannot determine whether a page has excess actions."
       },
       "fixes": []
     },
@@ -1288,10 +1526,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_appbar.templ:25-38; catalog/web/specimen_appbar.go:9-11",
+            "result": "App-bar trailing controls use the standard icon-button class and no forced filled variant; selection of an optional style remains available through token styling."
+          }
+        ],
+        "notes": "App-bar trailing controls use the standard icon-button class and no forced filled variant; selection of an optional style remains available through token styling."
       },
       "fixes": []
     },
@@ -1314,10 +1559,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/app-bars.css:2-5; forge/components/styles/app-bars.css:6-14",
+            "result": "The component is 100% of its containing block, but the showcase parent is capped at 28rem; a real window-wide host is not present in this specimen."
+          }
+        ],
+        "notes": "The component is 100% of its containing block, but the showcase parent is capped at 28rem; a real window-wide host is not present in this specimen."
       },
       "fixes": []
     },
@@ -1340,10 +1592,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_appbar.templ:25-38; forge/components/styles/app-bars.css:62-67",
+            "result": "The template always renders the same trailing controls and stylesheet has no breakpoint/overflow menu for app-bar actions."
+          }
+        ],
+        "notes": "The template always renders the same trailing controls and stylesheet has no breakpoint/overflow menu for app-bar actions."
       },
       "fixes": []
     },
@@ -1366,10 +1625,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/app-bars.css:112-134",
+            "result": "Search uses flex:1 and full-width input; there is no 312dp cap or rule limiting growth to half of available width."
+          }
+        ],
+        "notes": "Search uses flex:1 and full-width input; there is no 312dp cap or rule limiting growth to half of available width."
       },
       "fixes": []
     },
@@ -1392,10 +1658,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/app-bars.css:21-27; forge/components/styles/app-bars.css:56-66",
+            "result": "The row, expanded title, and action placement use logical inline padding/insets and margin-inline-start, allowing direction-based mirroring."
+          }
+        ],
+        "notes": "The row, expanded title, and action placement use logical inline padding/insets and margin-inline-start, allowing direction-based mirroring."
       },
       "fixes": []
     },
@@ -1418,10 +1691,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/app-bars.css:6-19; forge/components/behaviors/app-bars.js:3-12",
+            "result": "The bar remains sticky and tokenized; no hide/reappear or transparent scrolled-container treatment is implemented in the inspected app-bar behavior/CSS. Generated tokens may configure fill, but optional icon fills are not resolved here."
+          }
+        ],
+        "notes": "The bar remains sticky and tokenized; no hide/reappear or transparent scrolled-container treatment is implemented in the inspected app-bar behavior/CSS. Generated tokens may configure fill, but optional icon fills are not resolved here."
       },
       "fixes": []
     },
@@ -1444,10 +1724,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/app-bars.js:3-12; forge/components/styles/app-bars.css:159-167",
+            "result": "The sole scroll behavior toggles data-scrolled and CSS keeps the bar sticky; no flexible-to-small state transition or return-to-top restoration exists."
+          }
+        ],
+        "notes": "The sole scroll behavior toggles data-scrolled and CSS keeps the bar sticky; no flexible-to-small state transition or return-to-top restoration exists."
       },
       "fixes": []
     },
@@ -1470,10 +1757,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_appbar.templ:8-55; catalog/web/specimen_appbar.go:9-51",
+            "result": "The group and action labels are present, and actions remain in the sticky bar, but the title is a span and page/destination semantics are not supplied by this preview."
+          }
+        ],
+        "notes": "The group and action labels are present, and actions remain in the sticky bar, but the title is a span and page/destination semantics are not supplied by this preview."
       },
       "fixes": []
     },
@@ -1496,10 +1790,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/icon-buttons.css:24-53",
+            "result": "App-bar icon actions use shared icon-button styles and button state-layer variables; actual touch ripple rendering is supplied through shared button assets, not exercised in this code-only review."
+          }
+        ],
+        "notes": "App-bar icon actions use shared icon-button styles and button state-layer variables; actual touch ripple rendering is supplied through shared button assets, not exercised in this code-only review."
       },
       "fixes": []
     },
@@ -1522,10 +1823,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:21-28; forge/material/generate-components.mjs:880-909; forge/components/styles/app-bars.css:76-93; forge/components/static/buttons.js:455-478",
+            "result": "Generator maps hovered app-bar tokens and shared pointer listeners create ripple feedback, but app-bar CSS does not connect the generated hover state-layer roles to the icon-button state variables; rendered hover cue is unresolved."
+          }
+        ],
+        "notes": "Generator maps hovered app-bar tokens and shared pointer listeners create ripple feedback, but app-bar CSS does not connect the generated hover state-layer roles to the icon-button state variables; rendered hover cue is unresolved."
       },
       "fixes": []
     },
@@ -1548,10 +1856,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:52-56; forge/components/styles/icon-buttons.css:1-53; forge/components/styles/app-bars.css:76-93",
+            "result": "Focus indicator token bindings exist, but the inspected icon-button/app-bar CSS contains no explicit focus outline rule for the app-bar actions; browser-native focus styling was not exercised."
+          }
+        ],
+        "notes": "Focus indicator token bindings exist, but the inspected icon-button/app-bar CSS contains no explicit focus outline rule for the app-bar actions; browser-native focus styling was not exercised."
       },
       "fixes": []
     },
@@ -1574,10 +1889,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs:268-284; forge/components/styles/app-bars.css:6-14",
+            "result": "Generator maps app-bar container, title, subtitle, and icon roles to custom properties consumed by the app-bar stylesheet."
+          }
+        ],
+        "notes": "Generator maps app-bar container, title, subtitle, and icon roles to custom properties consumed by the app-bar stylesheet."
       },
       "fixes": []
     },
@@ -1600,10 +1922,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_appbar.templ:17-22; catalog/web/specimen_appbar.templ:41-47; catalog/web/specimen_appbar.templ:8-10",
+            "result": "Title is a span inside a group, not exposed with the Title role; leading/trailing controls are native buttons with labels, but title-role requirement is absent."
+          }
+        ],
+        "notes": "Title is a span inside a group, not exposed with the Title role; leading/trailing controls are native buttons with labels, but title-role requirement is absent."
       },
       "fixes": []
     }

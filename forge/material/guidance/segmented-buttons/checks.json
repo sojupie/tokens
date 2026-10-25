@@ -236,10 +236,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "Choosing between segmented buttons and connected button groups is a product component-selection policy; this package implements the segmented-button component."
       },
       "fixes": []
     },
@@ -262,9 +263,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/segmented-buttons.css:19-29",
+            "result": "Default height uses the 40dp space600 token, and selected icon/check replacement and dynamic component token bindings are present."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -288,9 +296,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/segmented-buttons.css:39-87",
+            "result": "The segment style is bound through the generated per-component token variables for label, outline, state and container colors."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -314,10 +329,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/segmented-buttons.css:154-163",
+            "result": "Disabled and focus-visible states are explicit, and pressed state has a state layer; hover and enabled appearance rely on shared button/state bindings not demonstrated by this local selector."
+          }
+        ],
+        "notes": "The full hover-state rendering was not exercised."
       },
       "fixes": []
     },
@@ -340,10 +362,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/segmented-buttons.css:141-163",
+            "result": "Checked inputs switch icon/check visibility and focus/pressed styling is present, but selected-hover and selected-pressed combinations are not established by the inspected local rules."
+          }
+        ],
+        "notes": "No browser check of combined selected interaction states."
       },
       "fixes": []
     },
@@ -366,9 +395,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/segmented-buttons.css:19-29",
+            "result": "Segments use equal 1fr columns in a max-content grid and a 40dp minimum container height; segment rules set centered content, 12dp inline padding, 8dp icon gap, and at least 48dp target height."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -392,9 +428,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/segmented-buttons.css:19-38",
+            "result": "Density modifies only the segment-height expression in 4dp increments while the minimum target height remains 48dp."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -418,10 +461,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "Choice counts and whether options are simple enough for segmented buttons are product information-architecture decisions."
       },
       "fixes": []
     },
@@ -444,10 +488,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "The reusable renderer accepts caller-provided segments; the three-item specimen does not constrain production option count or authoring/content policy."
       },
       "fixes": []
     },
@@ -470,9 +515,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/segmented-buttons.css:91-98",
+            "result": "First and last segment corners use the mapped segmented-button shape at both inline ends."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -496,10 +548,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "Whether a product icon communicates its option is a content/design review; the example uses icon-plus-text labels."
       },
       "fixes": []
     },
@@ -522,10 +575,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "Label wording, consistency and wrapping are content authoring decisions; the reusable component renders caller-provided labels."
       },
       "fixes": []
     },
@@ -548,10 +602,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "Whether one choice is mandatory is a product selection-model decision, not decided by the reusable control."
       },
       "fixes": []
     },
@@ -574,10 +629,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "Whether none, one or several choices are allowed is a product selection-model decision, not decided by the reusable control."
       },
       "fixes": []
     },
@@ -600,10 +656,11 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
-        "notes": ""
+        "notes": "Screen/pane placement and margins are caller layout decisions; the specimen only sizes the control to its content."
       },
       "fixes": []
     },
@@ -626,9 +683,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/segmented-buttons.css:141-153",
+            "result": "For icon-plus-label segments, checked inputs hide the original icon and expose the check glyph while preserving its grid slot."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -652,9 +716,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_segmented.templ:5-18",
+            "result": "Segments are labeled native radio/checkbox inputs inside clickable labels, providing keyboard focus and activation with the selection label."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -678,10 +749,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "failing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "Chromium baseline http://127.0.0.1:8081/md3/components/segmented-buttons?preview.compare=interactive; focus Home with locator, press Enter, inspect checked input values",
+            "result": "On the single-select specimen, Enter left Home unchecked and Saved selected; the required Enter activation did not select the focused segment."
+          }
+        ],
+        "notes": "Browser observation supplied by parent on the frozen baseline; native radio behavior matches the authored input implementation."
       },
       "fixes": []
     },
@@ -704,10 +782,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/segmented-buttons.css:68-80",
+            "result": "The selected state changes token-bound label/container colors and uses a check glyph, but this source inspection does not calculate the outline-to-surface contrast ratio."
+          }
+        ],
+        "notes": "The 3:1 contrast threshold needs resolved rendered colors."
       },
       "fixes": []
     },
@@ -730,10 +815,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_segmented.templ:5-18",
+            "result": "No code explicitly moves initial focus to the first segment; native radio tab behavior may focus the checked option instead."
+          }
+        ],
+        "notes": "Requires runtime confirmation of initial focus in checked and unchecked configurations."
       },
       "fixes": []
     },
@@ -756,9 +848,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_segmented.templ:5-18",
+            "result": "Inputs expose radio/checkbox roles and visible label text, but their common wrapper uses role=group for both variants; single-select lacks the required Radiogroup role."
+          }
+        ],
         "notes": ""
       },
       "fixes": []

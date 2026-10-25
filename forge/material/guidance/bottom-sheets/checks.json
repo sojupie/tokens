@@ -248,10 +248,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_sheet.templ:11-49",
+            "result": "The specimen presents supporting text and a sample field/actions, but contains no primary application content/context to judge whether the sheet is supplementary."
+          }
+        ],
+        "notes": "The specimen presents supporting text and a sample field/actions, but contains no primary application content/context to judge whether the sheet is supplementary."
       },
       "fixes": []
     },
@@ -274,10 +281,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_sheet.templ:15-22; forge/components/styles/sheets.css:117-136",
+            "result": "Modal control uses native dialog, which renders its backdrop; standard control uses a section and has no backdrop."
+          }
+        ],
+        "notes": "Modal control uses native dialog, which renders its backdrop; standard control uses a section and has no backdrop."
       },
       "fixes": []
     },
@@ -300,10 +314,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_sheet.templ:19-22; forge/components/styles/sheets.css:48-59",
+            "result": "Standard sheet is an absolutely positioned bottom sheet in a clipped demo frame, so concurrent interaction with a real main screen and full-screen collapse control are not represented."
+          }
+        ],
+        "notes": "Standard sheet is an absolutely positioned bottom sheet in a clipped demo frame, so concurrent interaction with a real main screen and full-screen collapse control are not represented."
       },
       "fixes": []
     },
@@ -326,10 +347,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_sheet.templ:15-22",
+            "result": "This implementation is a web component preview; the source recommendation limits modal bottom sheets to mobile apps, whose platform behavior is not represented here."
+          }
+        ],
+        "notes": "This implementation is a web component preview; the source recommendation limits modal bottom sheets to mobile apps, whose platform behavior is not represented here."
       },
       "fixes": []
     },
@@ -352,10 +380,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/sheets.css:2-5; forge/components/styles/sheets.css:100-109; forge/components/static/sheets.js:43-56",
+            "result": "Modal height is fixed to peek/expanded renderer presets with an 85svh maximum; there is no initial-open 50%-of-viewport cap or automatic full-height expansion policy."
+          }
+        ],
+        "notes": "Modal height is fixed to peek/expanded renderer presets with an 85svh maximum; there is no initial-open 50%-of-viewport cap or automatic full-height expansion policy."
       },
       "fixes": []
     },
@@ -378,10 +413,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/sheets.js:57-103; forge/components/static/sheets.js:104-144",
+            "result": "Actions/close button call close, native dialog handles Escape, backdrop pointer gesture closes, and pointer drag can resize or dismiss; full-screen-specific close visibility is not conditionally enforced."
+          }
+        ],
+        "notes": "Actions/close button call close, native dialog handles Escape, backdrop pointer gesture closes, and pointer drag can resize or dismiss; full-screen-specific close visibility is not conditionally enforced."
       },
       "fixes": []
     },
@@ -404,10 +446,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/sheets.css:48-59; forge/components/styles/sheets.css:100-109",
+            "result": "Standard sheet fills parent width; modal dialog caps at 40rem. The demo parent itself is 28rem and has no responsive side-sheet substitution, so breakpoint behavior needs host-level assessment."
+          }
+        ],
+        "notes": "Standard sheet fills parent width; modal dialog caps at 40rem. The demo parent itself is 28rem and has no responsive side-sheet substitution, so breakpoint behavior needs host-level assessment."
       },
       "fixes": []
     },
@@ -430,10 +479,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_sheet.templ:33-35; forge/components/static/sheets.js:82-103",
+            "result": "The focusable handle toggles between minimized and expanded states on click/keyboard without requiring drag."
+          }
+        ],
+        "notes": "The focusable handle toggles between minimized and expanded states on click/keyboard without requiring drag."
       },
       "fixes": []
     },
@@ -456,10 +512,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_sheet.templ:33-35; forge/components/static/sheets.js:82-103",
+            "result": "A button handle cycles the two preset states on activation, providing a single-pointer alternative to dragging."
+          }
+        ],
+        "notes": "A button handle cycles the two preset states on activation, providing a single-pointer alternative to dragging."
       },
       "fixes": []
     },
@@ -482,10 +545,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_sheet.templ:33-35; forge/components/static/sheets.js:18-21; forge/components/styles/sheets.css:265-272",
+            "result": "Handle is a native button, receives dynamic expanded/label attributes, and has visible focus styling on its mark."
+          }
+        ],
+        "notes": "Handle is a native button, receives dynamic expanded/label attributes, and has visible focus styling on its mark."
       },
       "fixes": []
     },
@@ -508,10 +578,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_sheet.templ:33-35; forge/components/static/sheets.js:18-21",
+            "result": "The handle is a button with no visible text; runtime assigns the action name Expand sheet or Minimize sheet."
+          }
+        ],
+        "notes": "The handle is a button with no visible text; runtime assigns the action name Expand sheet or Minimize sheet."
       },
       "fixes": []
     },
@@ -534,10 +611,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/sheets.css:26-56; forge/components/styles/sheets.css:100-109; forge/components/styles/sheets.css:154-171",
+            "result": "Shape is tokenized and handle target is space600; 40rem max width applies only to modal dialog, while standard bottom sheet fills its parent. The requested resolved radius and all-variant max width need token/layout verification."
+          }
+        ],
+        "notes": "Shape is tokenized and handle target is space600; 40rem max width applies only to modal dialog, while standard bottom sheet fills its parent. The requested resolved radius and all-variant max width need token/layout verification."
       },
       "fixes": []
     },
@@ -560,10 +644,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/sheets.css:26-43; forge/components/styles/sheets.css:117-126; forge/material/generate-components.mjs:329",
+            "result": "Sheet/scrim use token-backed custom properties, but this code does not establish the exact surface-container-low and on-surface-variant role values or Android system-managed scrim."
+          }
+        ],
+        "notes": "Sheet/scrim use token-backed custom properties, but this code does not establish the exact surface-container-low and on-surface-variant role values or Android system-managed scrim."
       },
       "fixes": []
     },
@@ -586,10 +677,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/sheets.css:154-171; forge/components/styles/sheets.css:182-189",
+            "result": "Handle uses a 48px square target with 4px block margins and 4px header padding; there is no 72dp top margin, 22dp handle vertical padding, or 56dp expanded-window inset/max-width layout for the standard sheet."
+          }
+        ],
+        "notes": "Handle uses a 48px square target with 4px block margins and 4px header padding; there is no 72dp top margin, 22dp handle vertical padding, or 56dp expanded-window inset/max-width layout for the standard sheet."
       },
       "fixes": []
     },
@@ -612,10 +710,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_sheet.templ:36-49; forge/components/styles/sheets.css:204-229",
+            "result": "The content region supports supporting text, a field and actions through a flex body/footer; arbitrary media/list types are not constrained by the container."
+          }
+        ],
+        "notes": "The content region supports supporting text, a field and actions through a flex body/footer; arbitrary media/list types are not constrained by the container."
       },
       "fixes": []
     },
@@ -638,10 +743,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_sheet.templ:31-50; forge/components/styles/sheets.css:48-59",
+            "result": "The template includes optional handle, header/body/footer, while sheet height is fixed by renderer presets rather than content; intrinsic content-sizing behavior is not established."
+          }
+        ],
+        "notes": "The template includes optional handle, header/body/footer, while sheet height is fixed by renderer presets rather than content; intrinsic content-sizing behavior is not established."
       },
       "fixes": []
     },
@@ -664,10 +776,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/sheets.css:48-59; forge/components/styles/sheets.css:204-208; forge/components/static/sheets.js:43-56",
+            "result": "Body scrolls independently and has minimized/expanded states; support for standard sheets continuing below the viewport or a full-screen preset is not shown."
+          }
+        ],
+        "notes": "Body scrolls independently and has minimized/expanded states; support for standard sheets continuing below the viewport or a full-screen preset is not shown."
       },
       "fixes": []
     },
@@ -690,10 +809,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_sheet.templ:15-18; forge/components/static/sheets.js:57-80",
+            "result": "Modal sheet is a native dialog opened modally and remains open until action/close, Escape, backdrop or drag dismissal."
+          }
+        ],
+        "notes": "Modal sheet is a native dialog opened modally and remains open until action/close, Escape, backdrop or drag dismissal."
       },
       "fixes": []
     },
@@ -716,10 +842,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/sheets.css:2-10; forge/components/styles/sheets.css:100-109",
+            "result": "Only the specimen parent and modal width are capped; no medium/expanded breakpoint or floating-sheet layout is present for application flows."
+          }
+        ],
+        "notes": "Only the specimen parent and modal width are capped; no medium/expanded breakpoint or floating-sheet layout is present for application flows."
       },
       "fixes": []
     },
@@ -742,10 +875,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/sheets.css:48-56; forge/components/styles/sheets.css:100-109",
+            "result": "Standard sheet spans its containing frame; modal sheet uses 100svw when narrower than the 40rem cap and anchors to the bottom."
+          }
+        ],
+        "notes": "Standard sheet spans its containing frame; modal sheet uses 100svw when narrower than the 40rem cap and anchors to the bottom."
       },
       "fixes": []
     },
@@ -768,10 +908,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_sheet.templ:5-28",
+            "result": "This owned component preview exercises bottom sheets; the separate side-sheet family owns the expanded desktop alternative."
+          }
+        ],
+        "notes": "This owned component preview exercises bottom sheets; the separate side-sheet family owns the expanded desktop alternative."
       },
       "fixes": []
     },
@@ -794,10 +941,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/sheets.js:18-21; forge/components/static/sheets.js:43-56; forge/components/static/sheets.js:82-103",
+            "result": "Runtime exposes minimized/expanded states, updates aria-expanded and allows click/keyboard toggling; pointer drag also selects a preset."
+          }
+        ],
+        "notes": "Runtime exposes minimized/expanded states, updates aria-expanded and allows click/keyboard toggling; pointer drag also selects a preset."
       },
       "fixes": []
     },
@@ -820,10 +974,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/sheets.css:182-208",
+            "result": "Sheet content is a flex column with a min-block-size:0 body using overflow:auto, independent of the page/frame."
+          }
+        ],
+        "notes": "Sheet content is a flex column with a min-block-size:0 body using overflow:auto, independent of the page/frame."
       },
       "fixes": []
     },
@@ -846,10 +1007,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/sheets.js:98-103",
+            "result": "The implementation is browser JavaScript using HTMLDialogElement and has no Android predictive-back integration or native Android runtime."
+          }
+        ],
+        "notes": "The implementation is browser JavaScript using HTMLDialogElement and has no Android predictive-back integration or native Android runtime."
       },
       "fixes": []
     },
@@ -872,10 +1040,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_sheet.templ:33-35; forge/components/static/sheets.js:98-103",
+            "result": "Resizing is available from a focusable button via keyboard in addition to pointer gestures."
+          }
+        ],
+        "notes": "Resizing is available from a focusable button via keyboard in addition to pointer gestures."
       },
       "fixes": []
     },
@@ -898,10 +1073,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/styles/sheets.css:154-171",
+            "result": "Handle has a space600 square target, but the requirement reserves the sheet top 48dp as a resize interaction area; this code only makes the handle itself interactive."
+          }
+        ],
+        "notes": "Handle has a space600 square target, but the requirement reserves the sheet top 48dp as a resize interaction area; this code only makes the handle itself interactive."
       },
       "fixes": []
     },
@@ -924,10 +1106,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_sheet.templ:33-35; forge/components/styles/sheets.css:265-272",
+            "result": "The drag handle is a native button with a visible focus outline treatment."
+          }
+        ],
+        "notes": "The drag handle is a native button with a visible focus outline treatment."
       },
       "fixes": []
     },
@@ -950,10 +1139,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "missing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/static/sheets.js:98-103",
+            "result": "Keyboard handler maps ArrowUp/Home and ArrowDown/End, but Space/Enter use a click toggle and are not explicitly tested; native button activation is present yet exact toggling requirement is supported by default activation semantics. Use focusable native button as implementation evidence."
+          }
+        ],
+        "notes": "Keyboard handler maps ArrowUp/Home and ArrowDown/End, but Space/Enter use a click toggle and are not explicitly tested; native button activation is present yet exact toggling requirement is supported by default activation semantics. Use focusable native button as implementation evidence."
       },
       "fixes": []
     }
