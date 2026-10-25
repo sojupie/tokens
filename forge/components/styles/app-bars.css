@@ -151,7 +151,7 @@
 .md-app-bar[data-variant="bottom"] .md-icon-button {
   margin-inline: var(--md-sys-measurement-space50);
 }
-.md-appbar-demo[data-interactive="true"]:has(.md-appbar-content) {
+.md-appbar-demo:not(.md-search-demo)[data-interactive="true"]:has(.md-appbar-content) {
   max-block-size: 20rem;
   overflow: auto;
 }
