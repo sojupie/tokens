@@ -1,0 +1,8 @@
+<!doctype html><meta charset="utf-8"><title>Date field label checks</title>
+<style>body{font:16px system-ui;margin:24px}iframe{width:900px;height:700px}pre{white-space:pre-wrap}</style>
+<h1>Date field label checks</h1><button id="run">Run date label checks</button><pre id="result">Ready</pre><div id="samples"></div>
+<script type="module">
+const run=document.querySelector('#run'),out=document.querySelector('#result'),samples=document.querySelector('#samples');run.onclick=async()=>{run.disabled=true;const checks=[],assert=(ok,message)=>{if(!ok)throw Error(message);checks.push(message)};
+try{for(const variant of ['docked','input']){samples.replaceChildren();const f=document.createElement('iframe');samples.append(f);await new Promise(resolve=>{f.onload=resolve;f.src=`/md3/components/date-pickers?preview.compare=interactive&preview.variant=${variant}`});const w=f.contentWindow,d=f.contentDocument;await w.TokenAssets.ready;for(const input of d.querySelectorAll('#component-preview input[data-date-value],#component-preview input[data-date-input]')){assert(input.placeholder===input.labels[0].textContent,'Placeholder matches the visible purpose label');const ids=input.getAttribute('aria-describedby').split(' ');assert(ids.every(id=>!!d.getElementById(id)),'Every field description reference resolves');assert(ids.some(id=>d.getElementById(id).textContent==='YYYY-MM-DD'),'Format is supplied as a field description');}}
+out.textContent=JSON.stringify({passed:checks.length,checks},null,2)}catch(error){out.textContent=JSON.stringify({passed:checks.length,checks,error:error.stack},null,2)}finally{run.disabled=false}};
+</script>
