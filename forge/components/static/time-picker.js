@@ -50,6 +50,22 @@
   dial.dataset.ring=state.active==='hour'&&state.is24&&pm?'inner':'outer';dial.dataset.dot=String(state.active==='minute'&&state.minute%5!==0);
   if(panel.dataset.mode==='clock')face(state);
  }
+ // Fit real modal content, including text scaling, instead of guessing its height.
+ function adapt(state){
+  const panel=state.panel;if(!panel.open||panel.hasAttribute('data-time-inline'))return;
+  const focused=document.activeElement;
+  panel.dataset.mode=state.preferredMode;panel.dataset.orientation=state.preferredOrientation;render(state,false);
+  const fits=()=>panel.scrollHeight<=panel.clientHeight+1&&panel.scrollWidth<=panel.clientWidth+1;
+  if(panel.dataset.mode==='clock'&&!fits()){
+   panel.dataset.orientation='landscape';
+   if(!fits())panel.dataset.mode='input';
+   render(state,false);
+  }
+  // A mode change must not strand focus in the now-hidden dial or input.
+  if(panel.contains(focused)&&!focused.getClientRects().length){
+   const next=panel.dataset.mode==='input'?panel.querySelector(`[data-time-input="${state.active}"]`):panel.querySelector(`[data-time-value="${state.active}"]`);next.focus({preventScroll:true});
+  }
+ }
  function validate(state,show=true){
   if(state.panel.dataset.mode!=='input')return true;
   const hour=state.panel.querySelector('[data-time-input="hour"]'),minute=state.panel.querySelector('[data-time-input="minute"]'),value=parseFields(hour.value,minute.value,state.is24,state.hour>=12);
@@ -64,7 +80,7 @@
  function open(state){
   if(state.panel.open&&!state.closing)return;
   const from=state.panel.open?getComputedStyle(state.panel).opacity:0;state.closing=false;state.panel.inert=false;
-  state.revision=(state.revision||0)+1;state.animation?.cancel();render(state);if(!state.panel.open)state.panel.showModal();state.opener.setAttribute('aria-expanded','true');
+  state.revision=(state.revision||0)+1;state.animation?.cancel();render(state);if(!state.panel.open)state.panel.showModal();adapt(state);state.opener.setAttribute('aria-expanded','true');
   if(state.panel.dataset.mode==='input'){const input=state.panel.querySelector('[data-time-input="hour"]');input.focus({preventScroll:true});input.select();}
   else state.panel.querySelector(`[data-time-value="${state.active}"]`).focus({preventScroll:true});
   if(!reduced.matches)state.animation=state.panel.animate([{opacity:from},{opacity:1}],timing(state));
@@ -79,7 +95,7 @@
   state.panel.close();state.panel.inert=false;state.closing=false;state.opener.setAttribute('aria-expanded','false');state.opener.focus({preventScroll:true});
  }
  function init(){for(const root of document.querySelectorAll('.md-time-demo')){
-  if(states.has(root))continue;const panel=root.querySelector('.md-time-panel'),state={root,panel,opener:root.querySelector('[data-time-open]'),dial:panel.querySelector('[data-time-dial]'),is24:panel.dataset.format==='24h',hour:10,minute:10,active:panel.dataset.active};state.committed={hour:10,minute:10};states.set(root,state);render(state);
+  if(states.has(root))continue;const panel=root.querySelector('.md-time-panel'),state={root,panel,opener:root.querySelector('[data-time-open]'),dial:panel.querySelector('[data-time-dial]'),is24:panel.dataset.format==='24h',hour:10,minute:10,active:panel.dataset.active,preferredMode:panel.dataset.mode,preferredOrientation:panel.dataset.orientation};state.committed={hour:10,minute:10};states.set(root,state);render(state);
   panel.addEventListener('cancel',event=>{event.preventDefault();close(state,false);});
   let backdropPointer;
   const outside=event=>{const r=panel.getBoundingClientRect();return event.target===panel&&(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom);};
@@ -97,7 +113,7 @@
   if(event.target.closest('[data-time-open]')){open(state);return;}
   const value=event.target.closest('[data-time-value]');if(value){state.active=value.dataset.timeValue;render(state,false);return;}
   const period=event.target.closest('[data-time-period]');if(period){state.hour=state.hour%12+(period.dataset.timePeriod==='pm'?12:0);render(state,false);return;}
-  if(event.target.closest('[data-time-mode]')){if(!validate(state))return;cancelGesture(state);state.panel.dataset.mode=state.panel.dataset.mode==='clock'?'input':'clock';render(state);if(state.panel.dataset.mode==='input'){const input=state.panel.querySelector(`[data-time-input="${state.active}"]`);input.focus({preventScroll:true});input.select();}else state.panel.querySelector(`[data-time-value="${state.active}"]`).focus({preventScroll:true});return;}
+  if(event.target.closest('[data-time-mode]')){if(!validate(state))return;cancelGesture(state);state.preferredMode=state.panel.dataset.mode==='clock'?'input':'clock';state.panel.dataset.mode=state.preferredMode;render(state);adapt(state);if(state.panel.dataset.mode==='input'){const input=state.panel.querySelector(`[data-time-input="${state.active}"]`);input.focus({preventScroll:true});input.select();}else state.panel.querySelector(`[data-time-value="${state.active}"]`).focus({preventScroll:true});return;}
   if(event.target.closest('[data-time-save]'))close(state,true);if(event.target.closest('[data-time-cancel]'))close(state,false);
  });
  document.addEventListener('input',event=>{
@@ -129,6 +145,8 @@
  document.addEventListener('pointermove',event=>{const state=stateFor(event.target);if(state?.gesture?.id===event.pointerId){event.preventDefault();point(state,event);}});
  function finishPointer(event,cancel){const state=stateFor(event.target),gesture=state?.gesture;if(!gesture||gesture.id!==event.pointerId)return;cancelGesture(state);if(cancel){state.hour=gesture.hour;state.minute=gesture.minute;}else if(gesture.part==='hour')state.active='minute';render(state,false);}
  document.addEventListener('pointerup',event=>finishPointer(event,false));document.addEventListener('pointercancel',event=>finishPointer(event,true));document.addEventListener('lostpointercapture',event=>finishPointer(event,true));
+ window.addEventListener('resize',()=>{for(const root of document.querySelectorAll('.md-time-demo')){const state=states.get(root);if(state)adapt(state);}});
+ window.visualViewport?.addEventListener('resize',()=>{for(const root of document.querySelectorAll('.md-time-demo')){const state=states.get(root);if(state)adapt(state);}});
  window.addEventListener('blur',()=>{for(const panel of document.querySelectorAll('.md-time-panel')){const state=stateFor(panel);if(state?.gesture){const g=state.gesture;cancelGesture(state);state.hour=g.hour;state.minute=g.minute;render(state,false);}}});
  document.addEventListener('htmx:beforeCleanupElement',event=>{const node=event.detail?.elt;if(!node)return;for(const root of [...(node.matches?.('.md-time-demo')?[node]:[]),...node.querySelectorAll('.md-time-demo')]){const state=states.get(root);if(!state)continue;state.revision++;cancelGesture(state);state.animation?.cancel();if(state.panel.open)state.panel.close();states.delete(root);}});
  reduced.addEventListener('change',()=>{if(!reduced.matches)return;for(const root of document.querySelectorAll('.md-time-demo')){const state=states.get(root);if(!state)continue;state.animation?.finish();state.monthAnimation?.finish();}});
