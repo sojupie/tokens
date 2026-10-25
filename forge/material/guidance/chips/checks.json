@@ -1119,17 +1119,17 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/behaviors/chips.js:32-52",
-            "result": "Chip keyboard handler supports arrow movement and removal with Backspace/Delete, but has no editable text/cursor-before-chip select-then-delete behavior."
+            "location": "catalog/web/specimen_chip.templ",
+            "result": "The specimen contains standalone chips, not editable chips embedded in a text field. There is no text-field cursor before a chip; the captured editing condition is absent."
           }
         ],
-        "notes": "Chip keyboard handler supports arrow movement and removal with Backspace/Delete, but has no editable text/cursor-before-chip select-then-delete behavior."
+        "notes": "The specimen contains standalone chips, not editable chips embedded in a text field. There is no text-field cursor before a chip; the captured editing condition is absent."
       },
       "fixes": []
     },
@@ -1152,17 +1152,17 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_chip.templ:13-23; forge/components/behaviors/chips.js:3-52",
-            "result": "The input-chip specimen supports selection and removal only; no reorder/move-between-fields or container-transform expansion is implemented."
+            "location": "catalog/web/specimen_chip.templ",
+            "result": "This chip specimen supports selection and removal, not moving between fields, reordering or expansion. These are optional application compositions; the stated condition is absent."
           }
         ],
-        "notes": "The input-chip specimen supports selection and removal only; no reorder/move-between-fields or container-transform expansion is implemented."
+        "notes": "This chip specimen supports selection and removal, not moving between fields, reordering or expansion. These are optional application compositions; the stated condition is absent."
       },
       "fixes": []
     },
@@ -1416,17 +1416,17 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_chip.templ:5-27",
-            "result": "No chip-set overflow, Show all item, or following-content shift behavior is implemented."
+            "location": "catalog/web/specimen_chip.templ; catalog/web/component_preview.templ",
+            "result": "Each specimen is an individual chip. The preview comparison grid is not a logical overflowing chip collection; there is no chip-set collection requiring a Show all action."
           }
         ],
-        "notes": "No chip-set overflow, Show all item, or following-content shift behavior is implemented."
+        "notes": "Each specimen is an individual chip. The preview comparison grid is not a logical overflowing chip collection; there is no chip-set collection requiring a Show all action."
       },
       "fixes": []
     },
@@ -1812,17 +1812,17 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "unclear",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_chip.templ:7-17",
-            "result": "One-action assist/suggestion chips are native buttons on Web, while the captured platform table requires gridcell for Web; no platform-specific role wrapper is present."
+            "location": "catalog/web/specimen_chip.templ",
+            "result": "Standalone chips use native action buttons. The source lists gridcell for Web, which requires a grid and row ownership pattern absent from these individual specimens."
           }
         ],
-        "notes": "One-action assist/suggestion chips are native buttons on Web, while the captured platform table requires gridcell for Web; no platform-specific role wrapper is present."
+        "notes": "Resolve the intended chip-set/grid composition before replacing native button roles. An orphan gridcell is not a valid correction; Android and Compose mappings do not apply to this web renderer."
       },
       "fixes": []
     },
@@ -1845,17 +1845,17 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "unclear",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_chip.templ:13-17",
-            "result": "Selectable chip is an inner native button with aria-pressed inside a span; Web table requires gridcell and Android Views/Compose roles are not implemented in this web path."
+            "location": "catalog/web/specimen_chip.templ",
+            "result": "Standalone chips use native action buttons. The source lists gridcell for Web, which requires a grid and row ownership pattern absent from these individual specimens."
           }
         ],
-        "notes": "Selectable chip is an inner native button with aria-pressed inside a span; Web table requires gridcell and Android Views/Compose roles are not implemented in this web path."
+        "notes": "Resolve the intended chip-set/grid composition before replacing native button roles. An orphan gridcell is not a valid correction; Android and Compose mappings do not apply to this web renderer."
       },
       "fixes": []
     },
@@ -1911,17 +1911,17 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "implemented",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_chip.templ:13-22",
-            "result": "Select and remove controls are both native buttons on Web; the captured platform matrix requires the distinct Web/Android Views/Compose button or checkbox roles, not represented by a platform-specific role mapping."
+            "location": "catalog/web/specimen_chip.templ",
+            "result": "Primary selection and Remove controls are native buttons. The primary accessible name is its label and Remove has its own Remove {label} name. This matches the captured Web table choice button or checkbox."
           }
         ],
-        "notes": "Select and remove controls are both native buttons on Web; the captured platform matrix requires the distinct Web/Android Views/Compose button or checkbox roles, not represented by a platform-specific role mapping."
+        "notes": "The prior finding wrongly treated Android and Compose mappings as missing Web behavior. Those platforms are outside this implementation. Actual screen-reader order has not been listened to."
       },
       "fixes": []
     }

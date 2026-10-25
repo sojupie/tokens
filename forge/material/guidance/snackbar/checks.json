@@ -266,19 +266,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "implemented",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/behaviors/snackbars.js:10-18",
-            "result": "The popover behavior creates a timer and hides each open snackbar when it expires; there is no non-dismissive mode or actionless/action mode configuration."
+            "location": "forge/components/behaviors/snackbars.js; catalog/web/specimen_snackbar.templ",
+            "result": "Actionable bars do not schedule auto-dismissal. Actionless bars require a data-snackbar-inline target before a timer starts; their message is copied there. Dismissal restores focus only when it was inside the bar. F6 focuses an available action and is documented beside the trigger."
+          },
+          {
+            "kind": "test",
+            "location": "forge/components/snackbars_test.cjs; catalog/web/status_labels_test.go",
+            "result": "Three runtime tests pass for persistent/actionless timing, inline retention, focus restoration and F6 guards. Go checks the associated visible shortcut hint."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/snackbar-lifetime.html",
+            "result": "Chromium: seven assertions pass, including staying open after the former six-second timeout, focus on open, F6, action dismissal and Escape. Lifetime and F6 failed on their respective pre-fix versions. Real F6 input on the component page focuses Undo."
           }
         ],
-        "notes": ""
+        "notes": "The actual page contains an action. The optional actionless/inline composition is unit-tested, not exposed as a separate playground configuration. Screen-reader announcements have not been listened to."
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "6d6b07891d515b3be98bd08cdfbd327f1cb88aa8",
+          "sourceRevision": 1,
+          "summary": "Keep snackbar actions available and restore focus on dismissal"
+        }
+      ]
     },
     {
       "id": "snackbar-use-frequency-and-actions",
@@ -332,19 +348,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "implemented",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_snackbar.templ:5-14",
-            "result": "The nearby live output is empty in the template and the runtime does not populate it; auto-dismiss information is not repeated near the triggering action."
+            "location": "forge/components/behaviors/snackbars.js; catalog/web/specimen_snackbar.templ",
+            "result": "Actionable bars do not schedule auto-dismissal. Actionless bars require a data-snackbar-inline target before a timer starts; their message is copied there. Dismissal restores focus only when it was inside the bar. F6 focuses an available action and is documented beside the trigger."
+          },
+          {
+            "kind": "test",
+            "location": "forge/components/snackbars_test.cjs; catalog/web/status_labels_test.go",
+            "result": "Three runtime tests pass for persistent/actionless timing, inline retention, focus restoration and F6 guards. Go checks the associated visible shortcut hint."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/snackbar-lifetime.html",
+            "result": "Chromium: seven assertions pass, including staying open after the former six-second timeout, focus on open, F6, action dismissal and Escape. Lifetime and F6 failed on their respective pre-fix versions. Real F6 input on the component page focuses Undo."
           }
         ],
-        "notes": ""
+        "notes": "The actual page contains an action. The optional actionless/inline composition is unit-tested, not exposed as a separate playground configuration. Screen-reader announcements have not been listened to."
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "6d6b07891d515b3be98bd08cdfbd327f1cb88aa8",
+          "sourceRevision": 1,
+          "summary": "Keep snackbar actions available and restore focus on dismissal"
+        }
+      ]
     },
     {
       "id": "snackbar-web-actionable",
@@ -365,19 +397,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "implemented",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/behaviors/snackbars.js:13-18",
-            "result": "The configured 6000ms timer runs regardless of whether the snackbar has its Undo action, so actionable web snackbars disappear before user action."
+            "location": "forge/components/behaviors/snackbars.js; catalog/web/specimen_snackbar.templ",
+            "result": "Actionable bars do not schedule auto-dismissal. Actionless bars require a data-snackbar-inline target before a timer starts; their message is copied there. Dismissal restores focus only when it was inside the bar. F6 focuses an available action and is documented beside the trigger."
+          },
+          {
+            "kind": "test",
+            "location": "forge/components/snackbars_test.cjs; catalog/web/status_labels_test.go",
+            "result": "Three runtime tests pass for persistent/actionless timing, inline retention, focus restoration and F6 guards. Go checks the associated visible shortcut hint."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/snackbar-lifetime.html",
+            "result": "Chromium: seven assertions pass, including staying open after the former six-second timeout, focus on open, F6, action dismissal and Escape. Lifetime and F6 failed on their respective pre-fix versions. Real F6 input on the component page focuses Undo."
           }
         ],
-        "notes": ""
+        "notes": "The actual page contains an action. The optional actionless/inline composition is unit-tested, not exposed as a separate playground configuration. Screen-reader announcements have not been listened to."
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "6d6b07891d515b3be98bd08cdfbd327f1cb88aa8",
+          "sourceRevision": 1,
+          "summary": "Keep snackbar actions available and restore focus on dismissal"
+        }
+      ]
     },
     {
       "id": "snackbar-text-label",
@@ -596,19 +644,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "implemented",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/behaviors/snackbars.js:10-25",
-            "result": "The same timer hides the bar after its duration even when an action is present; pointer/focus only pauses and later resumes the timer."
+            "location": "forge/components/behaviors/snackbars.js; catalog/web/specimen_snackbar.templ",
+            "result": "Actionable bars do not schedule auto-dismissal. Actionless bars require a data-snackbar-inline target before a timer starts; their message is copied there. Dismissal restores focus only when it was inside the bar. F6 focuses an available action and is documented beside the trigger."
+          },
+          {
+            "kind": "test",
+            "location": "forge/components/snackbars_test.cjs; catalog/web/status_labels_test.go",
+            "result": "Three runtime tests pass for persistent/actionless timing, inline retention, focus restoration and F6 guards. Go checks the associated visible shortcut hint."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/snackbar-lifetime.html",
+            "result": "Chromium: seven assertions pass, including staying open after the former six-second timeout, focus on open, F6, action dismissal and Escape. Lifetime and F6 failed on their respective pre-fix versions. Real F6 input on the component page focuses Undo."
           }
         ],
-        "notes": ""
+        "notes": "The actual page contains an action. The optional actionless/inline composition is unit-tested, not exposed as a separate playground configuration. Screen-reader announcements have not been listened to."
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "6d6b07891d515b3be98bd08cdfbd327f1cb88aa8",
+          "sourceRevision": 1,
+          "summary": "Keep snackbar actions available and restore focus on dismissal"
+        }
+      ]
     },
     {
       "id": "snackbar-sequential-display",
@@ -695,19 +759,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "implemented",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/behaviors/snackbars.js:13-18",
-            "result": "The default six-second timer also applies to actionable bars; code does not keep them open until action/dismissal."
+            "location": "forge/components/behaviors/snackbars.js; catalog/web/specimen_snackbar.templ",
+            "result": "Actionable bars do not schedule auto-dismissal. Actionless bars require a data-snackbar-inline target before a timer starts; their message is copied there. Dismissal restores focus only when it was inside the bar. F6 focuses an available action and is documented beside the trigger."
+          },
+          {
+            "kind": "test",
+            "location": "forge/components/snackbars_test.cjs; catalog/web/status_labels_test.go",
+            "result": "Three runtime tests pass for persistent/actionless timing, inline retention, focus restoration and F6 guards. Go checks the associated visible shortcut hint."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/snackbar-lifetime.html",
+            "result": "Chromium: seven assertions pass, including staying open after the former six-second timeout, focus on open, F6, action dismissal and Escape. Lifetime and F6 failed on their respective pre-fix versions. Real F6 input on the component page focuses Undo."
           }
         ],
-        "notes": ""
+        "notes": "The actual page contains an action. The optional actionless/inline composition is unit-tested, not exposed as a separate playground configuration. Screen-reader announcements have not been listened to."
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "6d6b07891d515b3be98bd08cdfbd327f1cb88aa8",
+          "sourceRevision": 1,
+          "summary": "Keep snackbar actions available and restore focus on dismissal"
+        }
+      ]
     },
     {
       "id": "snackbar-web-accessibility-inline",
@@ -728,19 +808,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "implemented",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_snackbar.templ:5-14",
-            "result": "The aria-live output is empty and no event handler writes an inline copy of snackbar content next to the trigger."
+            "location": "forge/components/behaviors/snackbars.js; catalog/web/specimen_snackbar.templ",
+            "result": "Actionable bars do not schedule auto-dismissal. Actionless bars require a data-snackbar-inline target before a timer starts; their message is copied there. Dismissal restores focus only when it was inside the bar. F6 focuses an available action and is documented beside the trigger."
+          },
+          {
+            "kind": "test",
+            "location": "forge/components/snackbars_test.cjs; catalog/web/status_labels_test.go",
+            "result": "Three runtime tests pass for persistent/actionless timing, inline retention, focus restoration and F6 guards. Go checks the associated visible shortcut hint."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/snackbar-lifetime.html",
+            "result": "Chromium: seven assertions pass, including staying open after the former six-second timeout, focus on open, F6, action dismissal and Escape. Lifetime and F6 failed on their respective pre-fix versions. Real F6 input on the component page focuses Undo."
           }
         ],
-        "notes": ""
+        "notes": "The actual page contains an action. The optional actionless/inline composition is unit-tested, not exposed as a separate playground configuration. Screen-reader announcements have not been listened to."
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "6d6b07891d515b3be98bd08cdfbd327f1cb88aa8",
+          "sourceRevision": 1,
+          "summary": "Keep snackbar actions available and restore focus on dismissal"
+        }
+      ]
     },
     {
       "id": "snackbar-web-accessibility-actionable",
@@ -761,19 +857,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "implemented",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/behaviors/snackbars.js:13-18",
-            "result": "Actionable snackbar timers are started on open and hide the bar at expiry even if the user has not acted."
+            "location": "forge/components/behaviors/snackbars.js; catalog/web/specimen_snackbar.templ",
+            "result": "Actionable bars do not schedule auto-dismissal. Actionless bars require a data-snackbar-inline target before a timer starts; their message is copied there. Dismissal restores focus only when it was inside the bar. F6 focuses an available action and is documented beside the trigger."
+          },
+          {
+            "kind": "test",
+            "location": "forge/components/snackbars_test.cjs; catalog/web/status_labels_test.go",
+            "result": "Three runtime tests pass for persistent/actionless timing, inline retention, focus restoration and F6 guards. Go checks the associated visible shortcut hint."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/snackbar-lifetime.html",
+            "result": "Chromium: seven assertions pass, including staying open after the former six-second timeout, focus on open, F6, action dismissal and Escape. Lifetime and F6 failed on their respective pre-fix versions. Real F6 input on the component page focuses Undo."
           }
         ],
-        "notes": ""
+        "notes": "The actual page contains an action. The optional actionless/inline composition is unit-tested, not exposed as a separate playground configuration. Screen-reader announcements have not been listened to."
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "6d6b07891d515b3be98bd08cdfbd327f1cb88aa8",
+          "sourceRevision": 1,
+          "summary": "Keep snackbar actions available and restore focus on dismissal"
+        }
+      ]
     },
     {
       "id": "snackbar-focus-management",
@@ -794,19 +906,40 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "implemented",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/behaviors/snackbars.js:36-63",
-            "result": "Open/close logic shows/hides the popover without a documented shortcut to move focus to actionable bars or a focus restoration policy; Escape dismisses globally."
+            "location": "forge/components/behaviors/snackbars.js; catalog/web/specimen_snackbar.templ",
+            "result": "Actionable bars do not schedule auto-dismissal. Actionless bars require a data-snackbar-inline target before a timer starts; their message is copied there. Dismissal restores focus only when it was inside the bar. F6 focuses an available action and is documented beside the trigger."
+          },
+          {
+            "kind": "test",
+            "location": "forge/components/snackbars_test.cjs; catalog/web/status_labels_test.go",
+            "result": "Three runtime tests pass for persistent/actionless timing, inline retention, focus restoration and F6 guards. Go checks the associated visible shortcut hint."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/snackbar-lifetime.html",
+            "result": "Chromium: seven assertions pass, including staying open after the former six-second timeout, focus on open, F6, action dismissal and Escape. Lifetime and F6 failed on their respective pre-fix versions. Real F6 input on the component page focuses Undo."
           }
         ],
-        "notes": ""
+        "notes": "The actual page contains an action. The optional actionless/inline composition is unit-tested, not exposed as a separate playground configuration. Screen-reader announcements have not been listened to."
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "6d6b07891d515b3be98bd08cdfbd327f1cb88aa8",
+          "sourceRevision": 1,
+          "summary": "Keep snackbar actions available and restore focus on dismissal"
+        },
+        {
+          "commit": "9e95280b823d11b0e54095181693c93de02c39d4",
+          "sourceRevision": 1,
+          "summary": "Document and support F6 focus for snackbar actions"
+        }
+      ]
     },
     {
       "id": "snackbar-keyboard-navigation",

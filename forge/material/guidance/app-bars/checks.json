@@ -899,17 +899,17 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_appbar.templ:17-22",
-            "result": "The small variant renders only text or a search field in the title slot; there is no image/logo replacement slot."
+            "location": "catalog/web/specimen_appbar.templ",
+            "result": "No small-bar configuration replaces its title with an image. The source permits that optional composition; its absence is not a failed requirement."
           }
         ],
-        "notes": "The small variant renders only text or a search field in the title slot; there is no image/logo replacement slot."
+        "notes": "No small-bar configuration replaces its title with an image. The source permits that optional composition; its absence is not a failed requirement."
       },
       "fixes": []
     },
@@ -1592,17 +1592,17 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_appbar.templ:25-38; forge/components/styles/app-bars.css:62-67",
-            "result": "The template always renders the same trailing controls and stylesheet has no breakpoint/overflow menu for app-bar actions."
+            "location": "catalog/web/specimen_appbar.templ",
+            "result": "The source permits collapsing actions into overflow; this specimen does not select a responsive-overflow policy. No overflow workflow is provided to assess."
           }
         ],
-        "notes": "The template always renders the same trailing controls and stylesheet has no breakpoint/overflow menu for app-bar actions."
+        "notes": "The source permits collapsing actions into overflow; this specimen does not select a responsive-overflow policy. No overflow workflow is provided to assess."
       },
       "fixes": []
     },
@@ -1724,17 +1724,17 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/behaviors/app-bars.js:3-12; forge/components/styles/app-bars.css:159-167",
-            "result": "The sole scroll behavior toggles data-scrolled and CSS keeps the bar sticky; no flexible-to-small state transition or return-to-top restoration exists."
+            "location": "forge/components/behaviors/app-bars.js; catalog/web/specimen_appbar.templ",
+            "result": "This specimen does not offer the optional flexible-to-small scroll transformation. Its scrolled treatment is a different configuration; the source condition explicitly refers to using the transformation."
           }
         ],
-        "notes": "The sole scroll behavior toggles data-scrolled and CSS keeps the bar sticky; no flexible-to-small state transition or return-to-top restoration exists."
+        "notes": "This specimen does not offer the optional flexible-to-small scroll transformation. Its scrolled treatment is a different configuration; the source condition explicitly refers to using the transformation."
       },
       "fixes": []
     },

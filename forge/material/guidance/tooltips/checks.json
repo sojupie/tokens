@@ -532,24 +532,30 @@
         }
       ],
       "implementation": {
-        "status": "failing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/snackbars-tooltips.css:119-125",
-            "result": "The plain tooltip is absolutely positioned at top:100% and horizontally centered, with no parent gap or app-bar placement distinction. This places it directly below the parent."
+            "location": "forge/components/styles/snackbars-tooltips.css",
+            "result": "Plain tooltips sit above their trigger. A standard icon button uses the unbounded 8px gap; other bounded triggers use 4px. App-bar placement is below at the same gap."
           },
           {
             "kind": "browser",
-            "location": "http://127.0.0.1:8081/md3/components/tooltips?preview.compare=interactive",
-            "result": "Chromium, light/default, plain variant. Measured parent bottom 380px and tooltip top 380px: gap 0px below parent. Focus on Details reveals the tooltip. Expected above with 4px boundary gap."
+            "location": "forge/conformance/tooltip-placement.html",
+            "result": "Chromium: six measured-geometry assertions pass for focus visibility, centering, bounded/unbounded gaps and app-bar placement. Pre-fix page failed the above-trigger gap assertion."
           }
         ],
         "notes": ""
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "043828f89992561f6232c3b84abbcd87d39b4000",
+          "sourceRevision": 1,
+          "summary": "Place plain tooltips above controls with boundary-aware gaps"
+        }
+      ]
     },
     {
       "id": "rich-tooltip-placement",

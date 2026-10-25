@@ -284,19 +284,30 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_progress.go:7-16; catalog/web/specimen_progress.templ:5-8",
-            "result": "ProgressAttributes sets role=progressbar and aria-label=\"Loading\"; determinate mode adds min/max/current values. It does not name the affected process or content (for example, loading an article)."
+            "location": "catalog/web/specimen_progress.go",
+            "result": "ProgressAttributes exposes progressbar semantics and names the process/content Loading preview content. Determinate examples retain range/value attributes."
+          },
+          {
+            "kind": "test",
+            "location": "catalog/web/status_labels_test.go",
+            "result": "The process/content accessible-name regression failed before correction and passes afterward."
           }
         ],
-        "notes": "The required progressbar semantics and values exist, but the accessible name is only the generic Loading string and does not identify affected content.",
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
+        "notes": ""
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "94d2eaa7a3a956ea537dfe5bd8080c62010c2e96",
+          "sourceRevision": 1,
+          "summary": "Name notification counts and progress content accessibly"
+        }
+      ]
     },
     {
       "id": "for-a-button-action-a-circular-indicator",

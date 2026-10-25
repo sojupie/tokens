@@ -1658,17 +1658,17 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "not-applicable",
         "sourceRevision": 1,
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/menus.go:9-37,88-103; forge/components/styles/menus.css:137-155",
-            "result": "The menu configuration exposes action mode but no density setting; CSS has no density selector and uses the same item top/bottom padding and gap variables for all web menu instances."
+            "location": "catalog/web/specimen_menu.templ; forge/components/styles/menu-items.css",
+            "result": "No menu density setting is offered. The requirement applies when offering web density controls, not as a demand to invent one."
           }
         ],
-        "notes": "The source requires web density levels to reduce item spacing and vertical padding, but the component has no density attribute, configuration option, or density-specific CSS mapping.",
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
+        "notes": "No menu density setting is offered. The requirement applies when offering web density controls, not as a demand to invent one."
       },
       "fixes": []
     },

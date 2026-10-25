@@ -1106,17 +1106,17 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_card.templ:3-6; forge/components/styles/cards.css:37-51",
-            "result": "Interactive cards have button feedback and focus styling but no expansion/content-reveal or container-transform behavior."
+            "location": "catalog/web/specimen_card.templ",
+            "result": "The current specimen has short static content and no additional detail content or internal scrolling. The condition that content requires expansion is absent."
           }
         ],
-        "notes": "Interactive cards have button feedback and focus styling but no expansion/content-reveal or container-transform behavior."
+        "notes": "The current specimen has short static content and no additional detail content or internal scrolling. The condition that content requires expansion is absent."
       },
       "fixes": []
     },
@@ -1139,17 +1139,17 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_card.templ:3-6; forge/components/styles/cards.css:57-60",
-            "result": "No card navigation transition or forward/backward hierarchy animation is present in the inspected card component path."
+            "location": "catalog/web/specimen_card.templ",
+            "result": "The card specimen is a button example without a destination or related detail hierarchy. The optional detail-screen transition condition is absent."
           }
         ],
-        "notes": "No card navigation transition or forward/backward hierarchy animation is present in the inspected card component path."
+        "notes": "The card specimen is a button example without a destination or related detail hierarchy. The optional detail-screen transition condition is absent."
       },
       "fixes": []
     },

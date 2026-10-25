@@ -836,19 +836,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/behaviors/sliders.js:110-138",
-            "result": "The behavior module handles input/focus/pointer events but has no Space+arrow key path; native range step movement does not implement the source-required larger Space-modified interval."
+            "location": "forge/components/behaviors/sliders.js; catalog/web/specimen_slider.go",
+            "result": "Space+arrows adjusts continuous sliders by ten percent of range aligned to native step, and discrete sliders by one stop. Input/change events reuse existing range-handle clamping. Ordinary native keys are not consumed."
+          },
+          {
+            "kind": "test",
+            "location": "forge/components/sliders_test.cjs",
+            "result": "Four tests pass for coarse increments, limits, discrete stops, RTL/vertical direction, and releasing the modifier on keyup/focusout/window blur. Three failed before implementation."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/slider-keyboard.html",
+            "result": "Chromium: eight assertions pass on actual range inputs, including non-crossing handles, focus retention, RTL and discrete adjustment. The pre-fix page failed Space handling."
           }
         ],
         "notes": ""
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "794b1bf402c5cdb54361980f3da364f3e1eaa7cf",
+          "sourceRevision": 1,
+          "summary": "Support coarse slider adjustment with Space and arrows"
+        }
+      ]
     },
     {
       "id": "slider-assistive-tasks",
@@ -1001,19 +1017,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/behaviors/sliders.js:110-138",
-            "result": "No custom keydown handling implements the source-required Space+arrow increment; native input behavior provides the other range-key movement but not that documented mapping."
+            "location": "forge/components/behaviors/sliders.js; catalog/web/specimen_slider.go",
+            "result": "Space+arrows adjusts continuous sliders by ten percent of range aligned to native step, and discrete sliders by one stop. Input/change events reuse existing range-handle clamping. Ordinary native keys are not consumed."
+          },
+          {
+            "kind": "test",
+            "location": "forge/components/sliders_test.cjs",
+            "result": "Four tests pass for coarse increments, limits, discrete stops, RTL/vertical direction, and releasing the modifier on keyup/focusout/window blur. Three failed before implementation."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/slider-keyboard.html",
+            "result": "Chromium: eight assertions pass on actual range inputs, including non-crossing handles, focus retention, RTL and discrete adjustment. The pre-fix page failed Space handling."
           }
         ],
         "notes": ""
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "794b1bf402c5cdb54361980f3da364f3e1eaa7cf",
+          "sourceRevision": 1,
+          "summary": "Support coarse slider adjustment with Space and arrows"
+        }
+      ]
     },
     {
       "id": "slider-accessible-label-role",

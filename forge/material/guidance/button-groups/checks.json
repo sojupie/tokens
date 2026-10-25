@@ -470,17 +470,17 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_button_group.templ:5-18; forge/components/styles/button-groups.css:6-10",
-            "result": "All three group buttons always render in the group; no breakpoint overflow menu or trailing placement is implemented."
+            "location": "forge/components/behaviors/button-groups.js; catalog/web/specimen_button_group.templ",
+            "result": "No responsive-overflow mode is configured. The captured requirement describes where to place overflow when that optional mode is used."
           }
         ],
-        "notes": "All three group buttons always render in the group; no breakpoint overflow menu or trailing placement is implemented."
+        "notes": "No responsive-overflow mode is configured. The captured requirement describes where to place overflow when that optional mode is used."
       },
       "fixes": []
     },

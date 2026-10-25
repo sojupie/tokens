@@ -1040,7 +1040,7 @@
     {
       "id": "fullscreen-dialog-container-transform",
       "statement": "Use a container-transform transition to transform a FAB into a full-screen dialog.",
-      "condition": "For the dialog variant or interaction described by the source.",
+      "condition": "When a FAB opens a full-screen dialog.",
       "basis": "explicit",
       "notes": "Captures the transition pattern named by the source.",
       "sourceHistory": [
@@ -1053,20 +1053,30 @@
           "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
           "extractorVersion": 2,
           "summary": "Captures the transition pattern named by the source."
+        },
+        {
+          "change": "corrected",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "007536b9-76b1-474a-a152-2f340caaff6f",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Correct our overbroad condition: the captured transition transforms a FAB into a full-screen dialog, not every dialog opened from any trigger. Upstream capture unchanged."
         }
       ],
       "implementation": {
-        "status": "missing",
-        "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "status": "not-applicable",
+        "sourceRevision": 2,
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/static/dialogs.js:13-16; forge/components/styles/dialogs.css:99-123",
-            "result": "Full-screen dialog opens with a translateY slide from offscreen; no FAB source element or container-transform pairing is implemented."
+            "location": "catalog/web/specimen_dialog.templ",
+            "result": "The current dialog opener is a text button, not a FAB. There is no FAB-to-dialog transition to assess."
           }
         ],
-        "notes": "Full-screen dialog opens with a translateY slide from offscreen; no FAB source element or container-transform pairing is implemented."
+        "notes": "The source-specific trigger condition is absent. Keep the source instruction for a future FAB composition."
       },
       "fixes": []
     },

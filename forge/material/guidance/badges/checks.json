@@ -275,17 +275,17 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "implemented",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_badge.templ:5-8; forge/components/styles/badges.css:12-20",
-            "result": "The demo hard-codes “99+”; no count-formatting/truncation or collision-handling logic exists for dynamic labels."
+            "location": "catalog/web/specimen_badge.templ; catalog/web/specimen_navigation.templ",
+            "result": "The only supported numerical contents are 99+ and 3, both below the four-character maximum."
           }
         ],
-        "notes": "The demo hard-codes “99+”; no count-formatting/truncation or collision-handling logic exists for dynamic labels."
+        "notes": "The specimen accepts no arbitrary count input. A general count-formatting API is not present; the old finding projected such an input onto fixed-content examples."
       },
       "fixes": []
     },
@@ -341,19 +341,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_navigation.templ:93-100",
-            "result": "The navigation badge remains in item markup regardless of selected state; the inspected template has no selected-destination suppression condition."
+            "location": "catalog/web/specimen_badge.go; catalog/web/specimen_navigation.templ; forge/components/behaviors/navigation.js",
+            "result": "Notification dots use New notification; numerical badges include the count after the destination label. Initially selected destinations omit unread badges. Selecting an unread destination removes its badge permanently for that rendered instance."
+          },
+          {
+            "kind": "test",
+            "location": "catalog/web/navigation_badge_test.go; catalog/web/status_labels_test.go",
+            "result": "Go regression failed old dot naming and selected-destination markup, then passed. Standalone count and dot names also pass."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/navigation-badges.html",
+            "result": "Chromium: ten assertions pass across dot/count badges for naming, document order, acknowledgement and remaining cleared after leaving. Actual page accessibility tree names the destination Files New notification."
           }
         ],
-        "notes": "The navigation badge remains in item markup regardless of selected state; the inspected template has no selected-destination suppression condition."
+        "notes": "Browser accessibility-tree names and DOM behavior verified. Spoken output on individual screen readers has not been listened to."
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "f7e62cda6cef769725230018adb0f31398e30c5b",
+          "sourceRevision": 1,
+          "summary": "Clear navigation badges on selection and name notification dots"
+        }
+      ]
     },
     {
       "id": "badge-announcement",
@@ -374,19 +390,40 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_badge.templ:5-8; catalog/web/specimen_navigation.templ:93-99",
-            "result": "Standalone badge always announces “Unread notifications” and navigation badge says “3 unread files”; neither composes a numeric count after the destination label nor uses “New notification” for a dot."
+            "location": "catalog/web/specimen_badge.go; catalog/web/specimen_navigation.templ; forge/components/behaviors/navigation.js",
+            "result": "Notification dots use New notification; numerical badges include the count after the destination label. Initially selected destinations omit unread badges. Selecting an unread destination removes its badge permanently for that rendered instance."
+          },
+          {
+            "kind": "test",
+            "location": "catalog/web/navigation_badge_test.go; catalog/web/status_labels_test.go",
+            "result": "Go regression failed old dot naming and selected-destination markup, then passed. Standalone count and dot names also pass."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/navigation-badges.html",
+            "result": "Chromium: ten assertions pass across dot/count badges for naming, document order, acknowledgement and remaining cleared after leaving. Actual page accessibility tree names the destination Files New notification."
           }
         ],
-        "notes": "Standalone badge always announces “Unread notifications” and navigation badge says “3 unread files”; neither composes a numeric count after the destination label nor uses “New notification” for a dot."
+        "notes": "Browser accessibility-tree names and DOM behavior verified. Spoken output on individual screen readers has not been listened to."
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "94d2eaa7a3a956ea537dfe5bd8080c62010c2e96",
+          "sourceRevision": 1,
+          "summary": "Name notification counts and progress content accessibly"
+        },
+        {
+          "commit": "f7e62cda6cef769725230018adb0f31398e30c5b",
+          "sourceRevision": 1,
+          "summary": "Clear navigation badges on selection and name notification dots"
+        }
+      ]
     },
     {
       "id": "badge-contrast",

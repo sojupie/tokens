@@ -1139,17 +1139,22 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/static/sheets.js:98-103",
-            "result": "Keyboard handler maps ArrowUp/Home and ArrowDown/End, but Space/Enter use a click toggle and are not explicitly tested; native button activation is present yet exact toggling requirement is supported by default activation semantics. Use focusable native button as implementation evidence."
+            "location": "catalog/web/specimen_sheet.templ; forge/components/static/sheets.js:90-103",
+            "result": "The drag handle is a native button. Its click handler toggles available sheet heights; native Space/Enter activation reaches that handler."
+          },
+          {
+            "kind": "browser",
+            "location": "http://127.0.0.1:8081/md3/components/bottom-sheets?preview.compare=interactive",
+            "result": "Chromium: open the sheet, press Space on Minimize sheet, then Enter on Expand sheet. The available heights toggle and focus remains on the handle. Existing behavior; no implementation change."
           }
         ],
-        "notes": "Keyboard handler maps ArrowUp/Home and ArrowDown/End, but Space/Enter use a click toggle and are not explicitly tested; native button activation is present yet exact toggling requirement is supported by default activation semantics. Use focusable native button as implementation evidence."
+        "notes": ""
       },
       "fixes": []
     }

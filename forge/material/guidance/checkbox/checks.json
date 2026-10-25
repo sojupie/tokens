@@ -254,17 +254,17 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_checkbox.templ:5-8; forge/components/static/buttons.js:1-9",
-            "result": "Template supports a single indeterminate native input, but no parent-child selection logic propagates state or clears/checks children."
+            "location": "catalog/web/specimen_checkbox.templ",
+            "result": "This is an individual checkbox specimen, not a parent/child checkbox group. Standalone indeterminate state is separate from hierarchical selection propagation."
           }
         ],
-        "notes": "Template supports a single indeterminate native input, but no parent-child selection logic propagates state or clears/checks children."
+        "notes": "This is an individual checkbox specimen, not a parent/child checkbox group. Standalone indeterminate state is separate from hierarchical selection propagation."
       },
       "fixes": []
     },
@@ -386,19 +386,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_checkbox.templ:5-8; catalog/web/component_gallery.go:70-99",
-            "result": "The input’s aria-label is a generated state string such as “checkbox · selected · enabled”; there is no adjacent UI label text in the enclosing label."
+            "location": "catalog/web/specimen_checkbox.templ; catalog/web/specimen_selection.templ",
+            "result": "The visible option label names its native input via aria-labelledby and activates it via for/id."
+          },
+          {
+            "kind": "test",
+            "location": "catalog/web/selection_labels_test.go",
+            "result": "Both specimen renderings contain unique matching input, label and accessible-name references."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/selection-labels.html",
+            "result": "Chromium: six assertions pass for visible names, associations and toggling by clicking the label."
           }
         ],
-        "notes": "The input’s aria-label is a generated state string such as “checkbox · selected · enabled”; there is no adjacent UI label text in the enclosing label."
+        "notes": ""
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "c3e129cd4c069bf272ac490d777e700b11a99e42",
+          "sourceRevision": 1,
+          "summary": "Label checkbox and switch examples with visible text"
+        }
+      ]
     },
     {
       "id": "selected-visual-prominence",

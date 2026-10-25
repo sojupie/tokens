@@ -419,19 +419,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_switch.templ:3-5",
-            "result": "The switch example wraps the input and decorative track/handle in a label but provides no visible text describing what the on state controls."
+            "location": "catalog/web/specimen_switch.templ; catalog/web/specimen_selection.templ",
+            "result": "The visible option label names its native input via aria-labelledby and activates it via for/id."
+          },
+          {
+            "kind": "test",
+            "location": "catalog/web/selection_labels_test.go",
+            "result": "Both specimen renderings contain unique matching input, label and accessible-name references."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/selection-labels.html",
+            "result": "Chromium: six assertions pass for visible names, associations and toggling by clicking the label."
           }
         ],
         "notes": ""
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "c3e129cd4c069bf272ac490d777e700b11a99e42",
+          "sourceRevision": 1,
+          "summary": "Label checkbox and switch examples with visible text"
+        }
+      ]
     },
     {
       "id": "switch-toggle-behavior",
@@ -611,19 +627,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_switch.templ:3-5",
-            "result": "The checkbox receives native Space toggling, but no Enter key handling is authored; the check explicitly permits Space or Enter activation."
+            "location": "forge/components/behaviors/switches.js; catalog/web/specimen_switch.templ",
+            "result": "Enter invokes native input.click once; repeats do not toggle. Space and Tab remain native."
+          },
+          {
+            "kind": "test",
+            "location": "forge/components/segmented_buttons_test.cjs",
+            "result": "Switch activation regression passes for Enter, repeat, disabled and native Space preservation."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/switch-keyboard.html",
+            "result": "Chromium: six assertions pass for toggle/change counts, retained focus, repeats and disabled behavior; pre-fix page failed Enter."
           }
         ],
         "notes": ""
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "980c1d0c27071cbf3d71aef0104adef724402892",
+          "sourceRevision": 1,
+          "summary": "Support native switch activation with Enter"
+        }
+      ]
     },
     {
       "id": "switch-accessible-label",

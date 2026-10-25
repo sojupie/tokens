@@ -455,19 +455,30 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "implemented",
         "sourceRevision": 1,
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/icon-buttons.css:24-35; catalog/web/specimen_icon.templ:3-5",
-            "result": "The icon button’s hit box is the button itself: CSS sets its height to `--_icon-height` and width from icon size plus spacing. No pseudo-element or wrapper expands small targets to 48dp."
+            "location": "forge/components/styles/icon-buttons.css; forge/components/styles/app-bars.css",
+            "result": "The shared transparent pseudo-element supplies a centered minimum 48x48 CSS-pixel target using the existing space600 token. Larger visual controls retain their full area. The obsolete bottom-app-bar pseudo-element override is removed."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/touch-targets.html",
+            "result": "Chromium: 12 assertions pass across XS icons and radio controls. Points 23px from center hit the control in each direction; activation works and the visible size stays compact. XS icon hit test failed before fix."
           }
         ],
-        "notes": "The component has no separate 48dp minimum target around its smaller XS/S visual button; nested contexts also do not receive a larger target from this selector.",
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
+        "notes": "Nested icon-button compositions have not all been individually hit-tested."
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "48ac333b9323c4005feda4bf96504fdd190c7dcb",
+          "sourceRevision": 1,
+          "summary": "Expand compact icon and radio hit targets to 48 pixels"
+        }
+      ]
     },
     {
       "id": "icon-button-assistive-use-cases",
@@ -884,19 +895,30 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/icon-buttons.css:24-35",
-            "result": "The button height and width are the tokenized visible container dimensions; no 48dp target expansion exists in the icon-button stylesheet."
+            "location": "forge/components/styles/icon-buttons.css; forge/components/styles/app-bars.css",
+            "result": "The shared transparent pseudo-element supplies a centered minimum 48x48 CSS-pixel target using the existing space600 token. Larger visual controls retain their full area. The obsolete bottom-app-bar pseudo-element override is removed."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/touch-targets.html",
+            "result": "Chromium: 12 assertions pass across XS icons and radio controls. Points 23px from center hit the control in each direction; activation works and the visible size stays compact. XS icon hit test failed before fix."
           }
         ],
-        "notes": "Extra-small/small visual sizes are not wrapped or padded to a 48dp hit target in this component path.",
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
+        "notes": ""
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "48ac333b9323c4005feda4bf96504fdd190c7dcb",
+          "sourceRevision": 1,
+          "summary": "Expand compact icon and radio hit targets to 48 pixels"
+        }
+      ]
     },
     {
       "id": "tab-focuses-a-non-disabled-icon-button-space",

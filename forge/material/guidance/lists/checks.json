@@ -1816,17 +1816,33 @@
       "implementation": {
         "status": "missing",
         "sourceRevision": 1,
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/static/lists.js:101-114; catalog/web/specimen_list.templ:7-29",
-            "result": "The ordinary item handler moves only on ArrowUp/ArrowDown and clamps at either end; ArrowLeft/ArrowRight are not handled for ordinary items, and movement does not wrap. All enabled item buttons remain native Tab stops."
+            "location": "forge/components/static/lists.js",
+            "result": "Ordinary button-backed items now wrap with all four arrows using the shared navigation helper; unavailable items are skipped. Reorder/reveal retain their existing action navigation."
+          },
+          {
+            "kind": "test",
+            "location": "forge/components/lists_test.cjs",
+            "result": "Five tests pass; the new wrapping regression failed before correction."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/list-keyboard.html",
+            "result": "Chromium: eight assertions pass for both directions, wrapping, hidden/disabled/inert filtering and RTL. Pre-fix page failed the first wrap assertion."
           }
         ],
-        "notes": "The required map includes Right/Left and wrapping at both ends; ordinary list items only handle bounded Up/Down movement, so the keyboard mapping is incomplete.",
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
+        "notes": "Partial correction: ordinary buttons retain their native Tab sequence; checkbox/radio/switch-backed rows and the full listbox focus/selection pattern remain unimplemented."
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "e2a7a97f3dc94aadb47525e594554d637c373771",
+          "sourceRevision": 1,
+          "summary": "Wrap ordinary list focus with directional keys"
+        }
+      ]
     },
     {
       "id": "multi-action-list-accessibility",

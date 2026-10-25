@@ -941,24 +941,30 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/static/time-picker.js:72-83,85-92",
-            "result": "Confirm, Cancel and Escape close the dialog and restore trigger focus, but no outside-click/backdrop dismissal handler is present."
+            "location": "forge/components/static/time-picker.js; catalog/web/specimen_time.templ",
+            "result": "Native modal dialog retains its existing enter/exit, OK/Cancel, focus and Escape behavior. Backdrop gestures now invoke the same cancellation path and restore focus."
           },
           {
             "kind": "browser",
-            "location": "/tmp/tokens-assessment-fd88b0dd/forge/conformance/check-motion.mjs:85-98",
-            "result": "The Chromium motion probe cancelled an opening picker, confirmed the interrupted exit starts below full opacity, kept the closing panel inert, observed closure and inert clearing, then verified a reduced-motion change finishes another in-flight dismissal. It did not exercise confirmation, Cancel-button activation, outside dismissal, or focus retention."
+            "location": "forge/conformance/time-picker-dismissal.html",
+            "result": "Chromium: nine assertions pass, including six dismissal/focus checks and three control-name checks. Drag-out/in and pointer cancellation keep the panel open; a complete backdrop gesture dismisses and restores opener focus. The original backdrop assertion failed before its fix."
           }
         ],
         "notes": ""
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "7ac89b3551497689a7516d2e7652541d4ebe0f38",
+          "sourceRevision": 1,
+          "summary": "Dismiss time pickers through guarded backdrop gestures"
+        }
+      ]
     },
     {
       "id": "time-picker-toggle-mode",
@@ -1210,19 +1216,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/time_picker.go:36-41",
-            "result": "Hour/minute inputs are named “Hours” and “Minutes” rather than “Hour” and “Minute”; the toggle label is “Use clock” rather than “Toggle dial picker.” Cancel and OK remain native buttons."
+            "location": "catalog/web/time_picker.go; catalog/web/specimen_time.templ; forge/components/static/time-picker.js",
+            "result": "Input fields are named Hour and Minute. Native mode buttons say Toggle dial picker in input mode and Toggle input picker in clock mode; OK and Cancel retain native button semantics."
+          },
+          {
+            "kind": "test",
+            "location": "catalog/web/time_picker_test.go",
+            "result": "Input-label regression fails before normalization and passes after."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/time-picker-dismissal.html",
+            "result": "Chromium: nine assertions pass for mode labels, Hour/Minute input names and existing dismissal protections. Old mode label failed the pre-fix test."
           }
         ],
         "notes": ""
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "5632036d9dc2811be130e1e6d3b56509dd99dcae",
+          "sourceRevision": 1,
+          "summary": "Match time picker control names to their visible labels"
+        }
+      ]
     },
     {
       "id": "time-picker-dial-roles",
@@ -1276,19 +1298,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/time_picker.go:36-41",
-            "result": "Input fields have textbox roles through native inputs, but their accessible names are plural (“Hours”, “Minutes”) instead of the required “Hour” and “Minute”; the mode toggle uses a different label from “Toggle dial picker.”"
+            "location": "catalog/web/time_picker.go; catalog/web/specimen_time.templ; forge/components/static/time-picker.js",
+            "result": "Input fields are named Hour and Minute. Native mode buttons say Toggle dial picker in input mode and Toggle input picker in clock mode; OK and Cancel retain native button semantics."
+          },
+          {
+            "kind": "test",
+            "location": "catalog/web/time_picker_test.go",
+            "result": "Input-label regression fails before normalization and passes after."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/time-picker-dismissal.html",
+            "result": "Chromium: nine assertions pass for mode labels, Hour/Minute input names and existing dismissal protections. Old mode label failed the pre-fix test."
           }
         ],
         "notes": ""
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "5632036d9dc2811be130e1e6d3b56509dd99dcae",
+          "sourceRevision": 1,
+          "summary": "Match time picker control names to their visible labels"
+        }
+      ]
     }
   ]
 }

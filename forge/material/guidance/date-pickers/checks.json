@@ -1694,10 +1694,10 @@
     },
     {
       "id": "date-weekday-column-header-label",
-      "statement": "Expose days of the week with the accessibility label “Column header”.",
+      "statement": "Expose weekday headings with the columnheader role and meaningful weekday names.",
       "condition": "For the calendar weekday headings.",
-      "basis": "explicit",
-      "notes": "Preserves the table label assigned to the days-of-week element; no role is listed in the source row.",
+      "basis": "interpretation",
+      "notes": "The captured table places structural role names in its A11y label column. Preserve meaningful weekday/month names and apply the structural roles; do not replace those names with generic role text.",
       "sourceHistory": [
         {
           "change": "added",
@@ -1708,29 +1708,44 @@
           "markdownSha256": "1f48570e572e817a55b2e680bcec23647f8c5d68959368d957e5ead36b7b346d",
           "extractorVersion": 2,
           "summary": "Preserves the table label assigned to the days-of-week element; no role is listed in the source row."
+        },
+        {
+          "change": "corrected",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/accessibility",
+          "section": "34be85b9-4fe7-4940-8018-5edc6421a783",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "1f48570e572e817a55b2e680bcec23647f8c5d68959368d957e5ead36b7b346d",
+          "extractorVersion": 2,
+          "summary": "Correct our literal-label interpretation of the captured accessibility table. Column header and Grid identify structural roles, not replacement names. Upstream capture is unchanged."
         }
       ],
       "implementation": {
-        "status": "missing",
-        "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "status": "verified",
+        "sourceRevision": 2,
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_date.templ:115-120; forge/components/static/date-picker.js:60-65",
-            "result": "Weekday headers have role=columnheader and their full weekday name as aria-label, not the required exact “Column header” label."
+            "location": "catalog/web/specimen_date.templ; forge/components/static/date-picker.js",
+            "result": "Calendar grids already expose role=grid and month/year names. Weekday headings already expose role=columnheader and distinct full weekday names."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/calendar-semantics.html",
+            "result": "Chromium: 13 assertions pass across four rendered calendars for grid roles, month/year names, seven columnheaders and distinct full weekday names. Existing behavior, not a new implementation fix."
           }
         ],
-        "notes": "Weekday headers have role=columnheader and their full weekday name as aria-label, not the required exact “Column header” label."
+        "notes": ""
       },
       "fixes": []
     },
     {
       "id": "date-month-grid-label",
-      "statement": "Expose the month grid with the accessibility label “Grid”.",
+      "statement": "Expose the month calendar with the grid role and a meaningful month and year name.",
       "condition": "For the calendar month grid.",
-      "basis": "explicit",
-      "notes": "Preserves the table accessibility label for the month grid; no role is listed in the source row.",
+      "basis": "interpretation",
+      "notes": "The captured table places structural role names in its A11y label column. Preserve meaningful weekday/month names and apply the structural roles; do not replace those names with generic role text.",
       "sourceHistory": [
         {
           "change": "added",
@@ -1741,20 +1756,35 @@
           "markdownSha256": "1f48570e572e817a55b2e680bcec23647f8c5d68959368d957e5ead36b7b346d",
           "extractorVersion": 2,
           "summary": "Preserves the table accessibility label for the month grid; no role is listed in the source row."
+        },
+        {
+          "change": "corrected",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/accessibility",
+          "section": "34be85b9-4fe7-4940-8018-5edc6421a783",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "1f48570e572e817a55b2e680bcec23647f8c5d68959368d957e5ead36b7b346d",
+          "extractorVersion": 2,
+          "summary": "Correct our literal-label interpretation of the captured accessibility table. Column header and Grid identify structural roles, not replacement names. Upstream capture is unchanged."
         }
       ],
       "implementation": {
-        "status": "missing",
-        "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "status": "verified",
+        "sourceRevision": 2,
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_date.templ:115-119; forge/components/static/date-picker.js:60-65",
-            "result": "Month calendar grid has role=grid but its accessible name is the month/year string, not the required exact “Grid” label."
+            "location": "catalog/web/specimen_date.templ; forge/components/static/date-picker.js",
+            "result": "Calendar grids already expose role=grid and month/year names. Weekday headings already expose role=columnheader and distinct full weekday names."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/calendar-semantics.html",
+            "result": "Chromium: 13 assertions pass across four rendered calendars for grid roles, month/year names, seven columnheaders and distinct full weekday names. Existing behavior, not a new implementation fix."
           }
         ],
-        "notes": "Month calendar grid has role=grid but its accessible name is the month/year string, not the required exact “Grid” label."
+        "notes": ""
       },
       "fixes": []
     }

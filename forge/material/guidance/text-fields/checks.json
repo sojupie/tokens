@@ -923,19 +923,30 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "implemented",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_field.templ:29-49",
-            "result": "The specimen always renders static supporting text and has no error-message slot/state to replace it after validation."
+            "location": "catalog/web/specimen_field.templ; catalog/web/fields.go",
+            "result": "Invalid examples replace supporting text in the existing supporting-text slot, with an alert and recovery instruction. Normal examples retain supporting text."
+          },
+          {
+            "kind": "test",
+            "location": "catalog/web/field_accessibility_test.go",
+            "result": "Rendered invalid example contains alert-role error text and the existing described-by help reference."
           }
         ],
-        "notes": ""
+        "notes": "The specimen exposes a forced invalid state, not a product-specific validator. Error selection for real validation constraints and long-error layout have not been exercised."
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "0c8a26500f51a358cc081b266ffc64644f4a7b72",
+          "sourceRevision": 1,
+          "summary": "Describe field units and replace supporting text in error states"
+        }
+      ]
     },
     {
       "id": "text-field-error-icon",
@@ -1208,19 +1219,35 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "implemented",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_field.templ:10,15-20,29; catalog/web/fields.go:19-41",
-            "result": "The label is associated with the input and supporting text is described, but in the rendered affixes variant the visible \"$\" prefix and \"kg\" suffix are both aria-hidden and have no spoken-value IDs/reference. This is the concrete accessible-labeling gap in the present specimen."
+            "location": "catalog/web/specimen_field.templ; catalog/web/fields.go",
+            "result": "Native label/for names the textbox. Prefix and suffix have unique IDs, meaningful spoken units and explicit described-by references. Invalid supporting content has an alert role. Existing toggle button retains its functional accessible name."
+          },
+          {
+            "kind": "test",
+            "location": "catalog/web/field_accessibility_test.go",
+            "result": "Go render test checks distinct affix IDs, spoken values, description order, alert markup and the unadorned field description."
           }
         ],
-        "notes": "The finding is limited to present affixes: their spoken values are excluded. Error/counter/required-marker behaviors are conditional features not rendered in this specimen and are not treated as absent implementation requirements."
+        "notes": "The current specimen has no required marker, counter or separate non-actionable error icon, so those conditional naming rules do not apply. Actual screen-reader speech has not been tested."
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "0c8a26500f51a358cc081b266ffc64644f4a7b72",
+          "sourceRevision": 1,
+          "summary": "Describe field units and replace supporting text in error states"
+        },
+        {
+          "commit": "96eae2339c8af1d73e79651d1af9c3a9e1ab9e73",
+          "sourceRevision": 1,
+          "summary": "Associate each field affix with its spoken unit label"
+        }
+      ]
     }
   ]
 }

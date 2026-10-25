@@ -491,19 +491,30 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "implemented",
         "sourceRevision": 1,
+        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/radios.css:13-44,55-61; catalog/web/specimen_radio.templ:21-26",
-            "result": "The visible icon and state target use their tokenized dimensions, but the input fills only the 40dp state-layer box; the label row adds no 48dp minimum block size or expanded hit target."
+            "location": "forge/components/styles/radios.css",
+            "result": "The native input has a centered minimum 48x48 target while the icon and state-layer dimensions remain tokenized."
+          },
+          {
+            "kind": "browser",
+            "location": "forge/conformance/touch-targets.html",
+            "result": "Chromium: the expanded radio input accepts hit tests in all four directions, activates once, and the visible root remains below 48px."
           }
         ],
-        "notes": "The icon/state dimensions are tokenized, but the 48dp interaction target required by the source is absent; the input’s clickable box is limited to the 40dp radio wrapper.",
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
+        "notes": "Hit target exercised; exact 20px icon and 40px state-layer values remain code evidence rather than independently measured fixture assertions."
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "48ac333b9323c4005feda4bf96504fdd190c7dcb",
+          "sourceRevision": 1,
+          "summary": "Expand compact icon and radio hit targets to 48 pixels"
+        }
+      ]
     },
     {
       "id": "radio-group-assistive-use-cases",
