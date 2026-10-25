@@ -2703,19 +2703,40 @@
         }
       ],
       "implementation": {
-        "status": "failing",
+        "status": "verified",
         "sourceRevision": 1,
+        "assessedBaseline": "82d1ed0e4bc39302611c8472bfd73bbc2c2dc9f1",
         "evidence": [
           {
+            "kind": "code",
+            "location": "forge/components/behaviors/navigation.js:21-42",
+            "result": "Destination traversal filters layout-hidden, visibility-hidden, disabled and inert controls before passing the visible sequence to the existing orientation/RTL index helper. A target outside that sequence does not consume the key."
+          },
+          {
+            "kind": "test",
+            "location": "forge/components/navigation_test.cjs; node --test forge/components/navigation_test.cjs",
+            "result": "Five handler regression tests pass. Four failed against the original implementation; coverage includes collapsed/expanded destinations, Home/End, unavailable controls, RTL and unrelated keys."
+          },
+          {
             "kind": "browser",
-            "location": "forge/components/behaviors/navigation.js:21-36; browser Chromium http://127.0.0.1:8081/md3/components/navigation-rail?preview.compare=interactive",
-            "result": "Reproduction: open the collapsed rail preview, focus Recent, press ArrowDown. Focus remains on Recent; Archive/Trash are display:none but are still included in the [data-navigation-item] array before navigationIndex selects the next index."
+            "location": "forge/conformance/navigation.html; http://127.0.0.1:8085/navigation.html",
+            "result": "Chromium, real Catalog markup/scripts with published-review material-2026-10-15-review data: 26 assertions pass across rail, bar and drawer. The same fixture against saved baseline fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e fails its first rail forward-wrap assertion. Fixture keyboard events are dispatched to focused DOM controls."
+          },
+          {
+            "kind": "browser",
+            "location": "http://127.0.0.1:8081/md3/components/navigation-rail?preview.compare=interactive",
+            "result": "Chromium, light/default, collapsed rail, actual keyboard input: ArrowDown from Recent focuses Home; End from Home focuses Recent; Tab from Recent exits to the workspace screen. No iOS or assistive-technology run was performed."
           }
         ],
-        "notes": "The current directional-key handler includes hidden destinations and the observed ArrowDown did not advance to Home; this fails the expected traversal for the collapsed rail.",
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e"
+        "notes": "Verified against the recorded current-worktree baseline, which includes the existing uncommitted component work plus the linked fix commit."
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "33f6c00425265b3a4ec141e5d3ca9650abf542a4",
+          "sourceRevision": 1,
+          "summary": "Filter unavailable destinations before directional traversal so collapsed rails wrap through visible items and expanded secondary destinations remain reachable."
+        }
+      ]
     },
     {
       "id": "keyboard-activation",
