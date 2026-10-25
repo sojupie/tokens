@@ -1,0 +1,767 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "segmented-buttons",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/segmented-buttons/overview",
+      "capture": "snapshots/material-guidance/20261025T165823.822826673Z-2959150497/capture.json",
+      "markdownSha256": "0ae364426973a287f27cc228c81cd73c787f9c2f5d068811cf6ca35dbbc5ee8d",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Segmented buttons",
+          "status": "no-requirements",
+          "notes": "The simple two-to-five choice limit is represented by `segmented-button-use-cases` from guidelines."
+        },
+        {
+          "id": "8ff9ef3a-e271-435b-9570-ce5df85389e6",
+          "title": "Availability & resources",
+          "status": "no-requirements",
+          "notes": "Resource links and upstream platform availability only."
+        },
+        {
+          "id": "e5c79be6-5e10-4f47-bb05-ee53fa449c44",
+          "title": "M3 Expressive update",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "aee6edc3-c843-497a-8882-dfb4fdef1657",
+          "title": "Differences from M2",
+          "status": "unclear",
+          "notes": "The overview describes the selected-state check icon as optional, while accessibility guidance requires both a checkmark and color change. The captured source does not reconcile whether this is optional generally or only in some configurations."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/segmented-buttons/specs",
+      "capture": "snapshots/material-guidance/20261025T165823.822826673Z-2959150497/capture.json",
+      "markdownSha256": "86c5a3f2787dae18946f7574817ece627f6b958e2b7c8dc43c0a85619f5684d3",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Segmented buttons",
+          "status": "no-requirements",
+          "notes": "Repeated component definition and linked expressive notice; specific requirements appear in sections below and overview."
+        },
+        {
+          "id": "031ab049-f67f-4587-bdaf-4917a64df6bd",
+          "title": "Tokens and specs",
+          "status": "no-requirements",
+          "notes": "Token browser lists design tokens and state names; state behavior is covered in the state sections and no independent instruction is stated."
+        },
+        {
+          "id": "41a49059-c9aa-47e6-b350-2aecd6a66427",
+          "title": "Color",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "cebb5a35-54fe-4de1-b339-9f06b10b8883",
+          "title": "States",
+          "status": "no-requirements",
+          "notes": "Parent heading; enabled and selected state sets are mapped in child sections."
+        },
+        {
+          "id": "a5723b8a-3111-4e88-b60b-485888a40a4f",
+          "title": "Unselected",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "7cc48669-a532-4fd0-b8fe-c90ab5deca06",
+          "title": "Selected",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "8cf8bc9f-60e5-4b41-bb92-b6a7cb87cca8",
+          "title": "Measurements",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "6d778e03-d297-4a98-922a-cfef696f7e7c",
+          "title": "Density",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/segmented-buttons/guidelines",
+      "capture": "snapshots/material-guidance/20261025T165823.822826673Z-2959150497/capture.json",
+      "markdownSha256": "88a85c4aa70dd516871b9707d179d68a253a0615602cd33fc97062f27424ad83",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Segmented buttons",
+          "status": "no-requirements",
+          "notes": "Introductory definition and repeated expressive recommendation; actionable guidance appears below."
+        },
+        {
+          "id": "91e58fbd-7fa8-401e-87b9-f02caab20d03",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "75ec9219-0196-4c59-bd6a-ed9a1b481013",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "Anatomy is conveyed by an uninspected diagram; actionable element requirements are described in the child sections."
+        },
+        {
+          "id": "cba6308d-3a78-43f9-8e7b-68692e789f94",
+          "title": "Segments",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "43abb6bc-562f-43d3-a7cc-b926af65acdf",
+          "title": "Container",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "2aea894a-9529-4c1b-b0f8-3d3ef41bda2a",
+          "title": "Icons",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "88818243-1821-4b32-8b47-6d9889d4e9dd",
+          "title": "Label text",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "0756bfa1-f277-46d9-83bf-52924f6548d6",
+          "title": "Single-select",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "047e9c0e-0344-4205-a8d8-f20db8245e92",
+          "title": "Multi-select",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "402c3aa6-8a21-4e2e-8361-1bdf354052a0",
+          "title": "Placement",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "82959050-6d87-427b-8952-beaca4137975",
+          "title": "Behavior",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/segmented-buttons/accessibility",
+      "capture": "snapshots/material-guidance/20261025T165823.822826673Z-2959150497/capture.json",
+      "markdownSha256": "18567c6a9d45864cb37cb37e9135b4bb541d58f6ce10f032ee8c8e48d0686807",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Segmented buttons",
+          "status": "no-requirements",
+          "notes": "Introductory definition and repeated M3 Expressive recommendation; accessibility instructions are in named sections below."
+        },
+        {
+          "id": "f4722a0e-a9ee-4a2f-9065-69ee8d0d9825",
+          "title": "Use cases",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "67fe05a4-7d6a-459e-b855-a97c84990faf",
+          "title": "Interaction & style",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "41c099ce-a57c-4b5b-a1c8-cd7a6a0ce9df",
+          "title": "Color contrast",
+          "status": "unclear",
+          "notes": "Accessibility requires a checkmark plus color change for selected state, but the overview says a check icon is optional. Resolve the scope of this difference before treating selection styling as fully specified."
+        },
+        {
+          "id": "1b1b684c-4457-4c08-aaa1-aaf2f09d8087",
+          "title": "Initial focus",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "f31700cb-0828-4b4c-999f-28b73a8e3b3a",
+          "title": "Keyboard navigation",
+          "status": "no-requirements",
+          "notes": "The table restates Tab, arrow, Space, and Enter behavior already mapped in Interaction & style; one check preserves the variant-specific detail."
+        },
+        {
+          "id": "d409399b-24f2-44a2-9feb-36dcb344742a",
+          "title": "Labeling elements",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "segmented-buttons-expressive-recommendation",
+      "statement": "For products updated to the M3 Expressive system, segmented buttons are no longer recommended; use a connected button group instead, which has mostly the same functionality and an updated visual design.",
+      "condition": "When choosing a component for an M3 Expressive product.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/segmented-buttons/overview",
+          "section": "e5c79be6-5e10-4f47-bb05-ee53fa449c44",
+          "capture": "snapshots/material-guidance/20261025T165823.822826673Z-2959150497/capture.json",
+          "markdownSha256": "0ae364426973a287f27cc228c81cd73c787f9c2f5d068811cf6ca35dbbc5ee8d",
+          "extractorVersion": 2,
+          "summary": "Expressive notice withdraws recommendation for segmented buttons and points to connected button groups."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "segmented-buttons-m3-changes",
+      "statement": "M3 segmented buttons have fully rounded corners, 40dp container height, sentence-case labels, optional check icons for selected state, new color mappings compatible with dynamic color, and official single-select and multi-select variants; M2 called them toggle buttons.",
+      "condition": "When implementing M3 styling or migrating from M2.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/segmented-buttons/overview",
+          "section": "aee6edc3-c843-497a-8882-dfb4fdef1657",
+          "capture": "snapshots/material-guidance/20261025T165823.822826673Z-2959150497/capture.json",
+          "markdownSha256": "0ae364426973a287f27cc228c81cd73c787f9c2f5d068811cf6ca35dbbc5ee8d",
+          "extractorVersion": 2,
+          "summary": "M2 comparison enumerates M3 shape, height, typography, selection indicator, colors, and naming changes."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "segmented-button-color-roles",
+      "statement": "Use on-surface, outline, secondary-container, and on-secondary-container color roles for the segmented button color mapping.",
+      "condition": "When styling segmented buttons for light or dark schemes.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/segmented-buttons/specs",
+          "section": "41a49059-c9aa-47e6-b350-2aecd6a66427",
+          "capture": "snapshots/material-guidance/20261025T165823.822826673Z-2959150497/capture.json",
+          "markdownSha256": "86c5a3f2787dae18946f7574817ece627f6b958e2b7c8dc43c0a85619f5684d3",
+          "extractorVersion": 2,
+          "summary": "Color diagram caption names the four roles used for segmented buttons."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "segmented-button-unselected-states",
+      "statement": "Support enabled, disabled, hovered, focused, and pressed states for unselected segments.",
+      "condition": "For unselected segmented button segments.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/segmented-buttons/specs",
+          "section": "a5723b8a-3111-4e88-b60b-485888a40a4f",
+          "capture": "snapshots/material-guidance/20261025T165823.822826673Z-2959150497/capture.json",
+          "markdownSha256": "86c5a3f2787dae18946f7574817ece627f6b958e2b7c8dc43c0a85619f5684d3",
+          "extractorVersion": 2,
+          "summary": "Unselected state list names five interaction states."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "segmented-button-selected-states",
+      "statement": "Support selected, hovered-selected, focused-selected, and pressed-selected states.",
+      "condition": "For selected segmented button segments.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/segmented-buttons/specs",
+          "section": "7cc48669-a532-4fd0-b8fe-c90ab5deca06",
+          "capture": "snapshots/material-guidance/20261025T165823.822826673Z-2959150497/capture.json",
+          "markdownSha256": "86c5a3f2787dae18946f7574817ece627f6b958e2b7c8dc43c0a85619f5684d3",
+          "extractorVersion": 2,
+          "summary": "Selected state list names the selected and three selected interaction states."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "segmented-button-measurements",
+      "statement": "Size the container dynamically to its labels and divide its width evenly among segments; use 40dp height, 1dp outline, centered labels, at least 12dp left/right padding, 8dp between elements, and 48dp target size.",
+      "condition": "When sizing and laying out a segmented button at the documented default density.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/segmented-buttons/specs",
+          "section": "8cf8bc9f-60e5-4b41-bb92-b6a7cb87cca8",
+          "capture": "snapshots/material-guidance/20261025T165823.822826673Z-2959150497/capture.json",
+          "markdownSha256": "86c5a3f2787dae18946f7574817ece627f6b958e2b7c8dc43c0a85619f5684d3",
+          "extractorVersion": 2,
+          "summary": "Measurements table specifies container and segment sizing, height, outline, alignment, padding, spacing, and target size."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "segmented-button-density",
+      "statement": "Density changes only the component height; each step down in density removes 4dp from the height.",
+      "condition": "When reducing segmented-button density for a space-constrained UI.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/segmented-buttons/specs",
+          "section": "6d778e03-d297-4a98-922a-cfef696f7e7c",
+          "capture": "snapshots/material-guidance/20261025T165823.822826673Z-2959150497/capture.json",
+          "markdownSha256": "86c5a3f2787dae18946f7574817ece627f6b958e2b7c8dc43c0a85619f5684d3",
+          "extractorVersion": 2,
+          "summary": "Density section states density affects height only and each step removes 4dp."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "segmented-button-use-cases",
+      "statement": "Use segmented buttons for a simple set of two to five options to select, switch views, or sort; for more choices or complex choices, use another component such as chips.",
+      "condition": "When selecting a component for a small set of related options.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/segmented-buttons/guidelines",
+          "section": "91e58fbd-7fa8-401e-87b9-f02caab20d03",
+          "capture": "snapshots/material-guidance/20261025T165823.822826673Z-2959150497/capture.json",
+          "markdownSha256": "88a85c4aa70dd516871b9707d179d68a253a0615602cd33fc97062f27424ad83",
+          "extractorVersion": 2,
+          "summary": "Usage guidance limits segmented buttons to simple choices and redirects larger or complex sets."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "segmented-button-segment-count-content",
+      "statement": "Use two to five clearly divided segments. Each segment may contain label text, an icon, or both; do not exceed five, and consider chips for more choices.",
+      "condition": "When defining the options in a segmented button.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/segmented-buttons/guidelines",
+          "section": "cba6308d-3a78-43f9-8e7b-68692e789f94",
+          "capture": "snapshots/material-guidance/20261025T165823.822826673Z-2959150497/capture.json",
+          "markdownSha256": "88a85c4aa70dd516871b9707d179d68a253a0615602cd33fc97062f27424ad83",
+          "extractorVersion": 2,
+          "summary": "Segments guidance specifies count, separation, content, and the five-segment limit."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "segmented-button-rounded-container",
+      "statement": "Use fully rounded corners on the segmented-button container by default.",
+      "condition": "When styling the segmented-button container.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/segmented-buttons/guidelines",
+          "section": "43abb6bc-562f-43d3-a7cc-b926af65acdf",
+          "capture": "snapshots/material-guidance/20261025T165823.822826673Z-2959150497/capture.json",
+          "markdownSha256": "88a85c4aa70dd516871b9707d179d68a253a0615602cd33fc97062f27424ad83",
+          "extractorVersion": 2,
+          "summary": "Container guidance specifies fully rounded default corners."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "segmented-button-icon-meaning",
+      "statement": "Icons may label a segment by themselves or appear with text; an icon used alone must clearly communicate the option it represents.",
+      "condition": "When using icons in segmented-button labels.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/segmented-buttons/guidelines",
+          "section": "2aea894a-9529-4c1b-b0f8-3d3ef41bda2a",
+          "capture": "snapshots/material-guidance/20261025T165823.822826673Z-2959150497/capture.json",
+          "markdownSha256": "88a85c4aa70dd516871b9707d179d68a253a0615602cd33fc97062f27424ad83",
+          "extractorVersion": 2,
+          "summary": "Icon guidance allows icon-only or icon-plus-text labels and requires clear icon meaning when alone."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "segmented-button-label-consistency",
+      "statement": "Keep labels short, clear, and consistent in length and label type; do not allow labels to wrap. If text does not fit, consider using an icon alone, and avoid mixing icon-only labels with text labels across segments.",
+      "condition": "When segments use visible labels.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/segmented-buttons/guidelines",
+          "section": "88818243-1821-4b32-8b47-6d9889d4e9dd",
+          "capture": "snapshots/material-guidance/20261025T165823.822826673Z-2959150497/capture.json",
+          "markdownSha256": "88a85c4aa70dd516871b9707d179d68a253a0615602cd33fc97062f27424ad83",
+          "extractorVersion": 2,
+          "summary": "Label guidance specifies concise, consistent, single-line labels and consistent label type."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "segmented-button-single-select-use",
+      "statement": "Use single-select when one option must be selected from a set, to choose an option, switch views, or sort across up to five options.",
+      "condition": "When exactly one choice is required from the set.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/segmented-buttons/guidelines",
+          "section": "0756bfa1-f277-46d9-83bf-52924f6548d6",
+          "capture": "snapshots/material-guidance/20261025T165823.822826673Z-2959150497/capture.json",
+          "markdownSha256": "88a85c4aa70dd516871b9707d179d68a253a0615602cd33fc97062f27424ad83",
+          "extractorVersion": 2,
+          "summary": "Single-select guidance covers selecting one option, switching views, and sorting up to five options."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "segmented-button-multi-select-use",
+      "statement": "Use multi-select for two to five options when selection is optional; users may select none, one, or multiple options, including all options.",
+      "condition": "When users can independently select multiple options.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/segmented-buttons/guidelines",
+          "section": "047e9c0e-0344-4205-a8d8-f20db8245e92",
+          "capture": "snapshots/material-guidance/20261025T165823.822826673Z-2959150497/capture.json",
+          "markdownSha256": "88a85c4aa70dd516871b9707d179d68a253a0615602cd33fc97062f27424ad83",
+          "extractorVersion": 2,
+          "summary": "Multi-select guidance specifies option count and permits any selected subset, including none or all."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "segmented-button-placement",
+      "statement": "Leave adequate margins between the segmented button and viewport or frame edges. On larger screens, constrain segment padding so the set does not span the full width or leave excessive space around labels; segmented buttons may also appear within components such as bottom sheets or full-screen dialogs.",
+      "condition": "When placing segmented buttons in a screen, pane, or container.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/segmented-buttons/guidelines",
+          "section": "402c3aa6-8a21-4e2e-8361-1bdf354052a0",
+          "capture": "snapshots/material-guidance/20261025T165823.822826673Z-2959150497/capture.json",
+          "markdownSha256": "88a85c4aa70dd516871b9707d179d68a253a0615602cd33fc97062f27424ad83",
+          "extractorVersion": 2,
+          "summary": "Placement guidance describes edge margins, large-screen width/padding limits, and allowed nested placement."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "segmented-button-selected-check-icon",
+      "statement": "When a segment uses both an icon and label text, replace its icon with a checkmark when selected.",
+      "condition": "When a selected segment has both an icon and visible label text.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/segmented-buttons/guidelines",
+          "section": "82959050-6d87-427b-8952-beaca4137975",
+          "capture": "snapshots/material-guidance/20261025T165823.822826673Z-2959150497/capture.json",
+          "markdownSha256": "88a85c4aa70dd516871b9707d179d68a253a0615602cd33fc97062f27424ad83",
+          "extractorVersion": 2,
+          "summary": "Behavior guidance specifies replacement of the icon with a checkmark on selection."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "segmented-button-accessible-tasks",
+      "statement": "Assistive-technology users must be able to navigate to and activate segmented buttons and understand what each selection does.",
+      "condition": "For accessible segmented buttons.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/segmented-buttons/accessibility",
+          "section": "f4722a0e-a9ee-4a2f-9065-69ee8d0d9825",
+          "capture": "snapshots/material-guidance/20261025T165823.822826673Z-2959150497/capture.json",
+          "markdownSha256": "18567c6a9d45864cb37cb37e9135b4bb541d58f6ce10f032ee8c8e48d0686807",
+          "extractorVersion": 2,
+          "summary": "Use cases list navigation, activation, and understandable selection outcomes."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "segmented-button-key-interaction",
+      "statement": "Use Tab to navigate between buttons and arrow keys to move between segments. For single-select segments, Space or Enter selects or unselects the focused segment. For multi-select segments, Space or Enter selects an unselected segment, can select all segments, and can unselect a selected segment.",
+      "condition": "When operating segmented buttons with a keyboard.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/segmented-buttons/accessibility",
+          "section": "67fe05a4-7d6a-459e-b855-a97c84990faf",
+          "capture": "snapshots/material-guidance/20261025T165823.822826673Z-2959150497/capture.json",
+          "markdownSha256": "18567c6a9d45864cb37cb37e9135b4bb541d58f6ce10f032ee8c8e48d0686807",
+          "extractorVersion": 2,
+          "summary": "Interaction guidance distinguishes keyboard behavior for single-select and multi-select variants."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "segmented-button-contrast-selection",
+      "statement": "Give the outline at least 3:1 contrast against its background or surface. Show selection with both a checkmark and a color change so color is not the only indicator.",
+      "condition": "When rendering segmented-button boundaries and selected states.",
+      "basis": "explicit",
+      "notes": "The accessibility page explicitly requires both indicators; the overview describes the check icon as optional. The source does not reconcile this difference, so the related section remains unclear.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/segmented-buttons/accessibility",
+          "section": "41c099ce-a57c-4b5b-a1c8-cd7a6a0ce9df",
+          "capture": "snapshots/material-guidance/20261025T165823.822826673Z-2959150497/capture.json",
+          "markdownSha256": "18567c6a9d45864cb37cb37e9135b4bb541d58f6ce10f032ee8c8e48d0686807",
+          "extractorVersion": 2,
+          "summary": "Contrast guidance sets the minimum outline contrast and requires a non-color selection indicator."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "segmented-button-initial-focus",
+      "statement": "Place initial focus on the first segment, whether or not it is selected; in left-to-right languages this is the leftmost segment and in right-to-left languages the rightmost.",
+      "condition": "When segmented buttons receive initial focus.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/segmented-buttons/accessibility",
+          "section": "1b1b684c-4457-4c08-aaa1-aaf2f09d8087",
+          "capture": "snapshots/material-guidance/20261025T165823.822826673Z-2959150497/capture.json",
+          "markdownSha256": "18567c6a9d45864cb37cb37e9135b4bb541d58f6ce10f032ee8c8e48d0686807",
+          "extractorVersion": 2,
+          "summary": "Initial-focus guidance specifies first segment and language-direction-dependent side."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "segmented-button-accessible-labels-roles",
+      "statement": "Use visible label text as the accessibility label. For icon-only segments, label the represented action. Expose single-select as a Radiogroup and multi-select options as Checkboxes.",
+      "condition": "When exposing segments and their selection model to assistive technology.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/segmented-buttons/accessibility",
+          "section": "d409399b-24f2-44a2-9feb-36dcb344742a",
+          "capture": "snapshots/material-guidance/20261025T165823.822826673Z-2959150497/capture.json",
+          "markdownSha256": "18567c6a9d45864cb37cb37e9135b4bb541d58f6ce10f032ee8c8e48d0686807",
+          "extractorVersion": 2,
+          "summary": "Labeling guidance defines text/icon labels and variant-specific accessibility roles."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

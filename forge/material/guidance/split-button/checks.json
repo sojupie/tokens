@@ -1,0 +1,653 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "split-button",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/split-button/overview",
+      "capture": "snapshots/material-guidance/20261025T165911.881828085Z-88544552/capture.json",
+      "markdownSha256": "db4aee9932c2f1fdbb65dd54b998ef3e1d824714a57ae1744e7454513d481035",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Split buttons",
+          "status": "no-requirements",
+          "notes": "The main action with a menu of related actions is covered by `split-button-use-and-size` in guidelines."
+        },
+        {
+          "id": "300f3afb-a659-413c-a0b3-ef31d4b30a33",
+          "title": "Availability & resources",
+          "status": "no-requirements",
+          "notes": "Upstream implementation availability only."
+        },
+        {
+          "id": "fa43e2c1-a63b-45ce-9681-173ea2007082",
+          "title": "M3 Expressive update",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/split-button/specs",
+      "capture": "snapshots/material-guidance/20261025T165911.881828085Z-88544552/capture.json",
+      "markdownSha256": "cd7fd5f03974503dab91f1301932cc50f3b2d8d379f50b1a2d04b303cade8d75",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Split buttons",
+          "status": "no-requirements",
+          "notes": "Repeated component description only."
+        },
+        {
+          "id": "e35bde4a-1c7b-4c63-8587-64b18ed0d2f5",
+          "title": "Variants",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "7ab35b6d-d0f2-4d3e-b971-0fce5a205cd0",
+          "title": "Configurations",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "19747f10-a783-4d0f-946b-2c409052a0ee",
+          "title": "Tokens & specs",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "a00dabf8-f1ab-4bc3-b19e-2491dfaa6f4b",
+          "title": "Anatomy",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "e40b2824-929e-428b-b144-641888b2ac05",
+          "title": "Color",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "3bc09c2f-195a-4e85-8008-5bdac7fdaef1",
+          "title": "States",
+          "status": "no-requirements",
+          "notes": "Parent heading; shape changes and named states are mapped in child sections."
+        },
+        {
+          "id": "2296f443-a837-4f4d-a96c-217737063155",
+          "title": "Leading button shape",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "e0923cf5-6027-4a35-bf70-b51271d5e97e",
+          "title": "Trailing button shape",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "2a1bfc70-e042-485e-a5e2-b2d464b97fd8",
+          "title": "Measurements",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/split-button/guidelines",
+      "capture": "snapshots/material-guidance/20261025T165911.881828085Z-88544552/capture.json",
+      "markdownSha256": "a602a1bfeac7d40c335882b685e6fbea6f3cfa9d1900027283c8077af90c21ae",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Split buttons",
+          "status": "no-requirements",
+          "notes": "Introductory description only."
+        },
+        {
+          "id": "3b1eb38f-c709-4028-bbaf-cb221e6a3426",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "551f6e11-0f95-41c2-9398-cd4066755806",
+          "title": "Anatomy",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "3c9e606d-7b79-4c1c-98bb-912b372fdc9d",
+          "title": "Behavior",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "62d58917-0280-45d6-aff1-ea7cd54c71cf",
+          "title": "Menu placement",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/split-button/accessibility",
+      "capture": "snapshots/material-guidance/20261025T165911.881828085Z-88544552/capture.json",
+      "markdownSha256": "812bf6357ae25e9d0b874dc565ee9d4a3db5f2edf13818971f98660b4873a82a",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Split buttons",
+          "status": "no-requirements",
+          "notes": "Introductory description only."
+        },
+        {
+          "id": "f0827eec-556d-4307-a263-7b481bcc6de4",
+          "title": "Use cases",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "866012e6-331f-4e46-943a-7fa4f1ea60a7",
+          "title": "Interaction & style",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "4a9a0d91-2c3f-4989-ab95-1993aba28f1c",
+          "title": "Initial focus",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "389e5e0c-e6cd-4bec-b599-9f7d70b771e9",
+          "title": "Keyboard navigation",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "ced3a789-c9cc-468d-8648-f15dc3ad7b72",
+          "title": "Labeling elements",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "split-button-expressive-motion-sizes",
+      "statement": "The trailing menu button spins and changes shape when activated; use split buttons alongside buttons of the same size. Expressive sizes are XS, S, M, L, and XL, with elevated, filled, tonal, or outlined color styles.",
+      "condition": "When implementing or styling an M3 Expressive split button.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/split-button/overview",
+          "section": "fa43e2c1-a63b-45ce-9681-173ea2007082",
+          "capture": "snapshots/material-guidance/20261025T165911.881828085Z-88544552/capture.json",
+          "markdownSha256": "db4aee9932c2f1fdbb65dd54b998ef3e1d824714a57ae1744e7454513d481035",
+          "extractorVersion": 2,
+          "summary": "Expressive update describes menu-button motion and the available sizes and color styles."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "split-button-availability",
+      "statement": "The split button is unavailable in M3 and available in M3 Expressive.",
+      "condition": "When selecting the documented split-button variant by design-system version.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/split-button/specs",
+          "section": "e35bde4a-1c7b-4c63-8587-64b18ed0d2f5",
+          "capture": "snapshots/material-guidance/20261025T165911.881828085Z-88544552/capture.json",
+          "markdownSha256": "cd7fd5f03974503dab91f1301932cc50f3b2d8d379f50b1a2d04b303cade8d75",
+          "extractorVersion": 2,
+          "summary": "Variant table marks availability only in M3 Expressive."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "split-button-configurations",
+      "statement": "M3 Expressive split buttons support sizes XS, S, M, L, and XL and elevated, filled, tonal, or outlined color styles; these configurations are unavailable in M3.",
+      "condition": "When selecting split-button size and style across versions.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/split-button/specs",
+          "section": "7ab35b6d-d0f2-4d3e-b971-0fce5a205cd0",
+          "capture": "snapshots/material-guidance/20261025T165911.881828085Z-88544552/capture.json",
+          "markdownSha256": "cd7fd5f03974503dab91f1301932cc50f3b2d8d379f50b1a2d04b303cade8d75",
+          "extractorVersion": 2,
+          "summary": "Configuration table shows expressive-only sizes and color styles."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "split-button-anatomy",
+      "statement": "Use a leading button with an optional icon, label, or both, and a trailing button that always contains a menu icon.",
+      "condition": "When constructing a split button.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/split-button/specs",
+          "section": "a00dabf8-f1ab-4bc3-b19e-2491dfaa6f4b",
+          "capture": "snapshots/material-guidance/20261025T165911.881828085Z-88544552/capture.json",
+          "markdownSha256": "cd7fd5f03974503dab91f1301932cc50f3b2d8d379f50b1a2d04b303cade8d75",
+          "extractorVersion": 2,
+          "summary": "Anatomy prose specifies the leading button's content options and required trailing menu icon."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "split-button-color-behavior",
+      "statement": "Use the same color schemes, states, and state layers as standard buttons. Unlike toggle buttons, the split-button color does not change when selected; only a state layer is applied.",
+      "condition": "When styling selected and unselected split-button states.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/split-button/specs",
+          "section": "e40b2824-929e-428b-b144-641888b2ac05",
+          "capture": "snapshots/material-guidance/20261025T165911.881828085Z-88544552/capture.json",
+          "markdownSha256": "cd7fd5f03974503dab91f1301932cc50f3b2d8d379f50b1a2d04b303cade8d75",
+          "extractorVersion": 2,
+          "summary": "Color section distinguishes split-button selection treatment and refers to common button schemes."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "split-button-leading-shape-states",
+      "statement": "Change the leading button's inner corners in hovered, focused, and pressed states; represent enabled and disabled states as well.",
+      "condition": "For leading-button interaction states.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/split-button/specs",
+          "section": "2296f443-a837-4f4d-a96c-217737063155",
+          "capture": "snapshots/material-guidance/20261025T165911.881828085Z-88544552/capture.json",
+          "markdownSha256": "cd7fd5f03974503dab91f1301932cc50f3b2d8d379f50b1a2d04b303cade8d75",
+          "extractorVersion": 2,
+          "summary": "Leading shape state list specifies enabled, disabled, hover, focus, and press, with inner-corner changes for hover/focus/press."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "split-button-trailing-shape-states",
+      "statement": "Change the trailing button's inner corners in hovered, focused, and pressed states; center its menu icon when selected. Represent enabled, disabled, hovered, focused, pressed, and selected states, including focused variants of pressed and selected.",
+      "condition": "For trailing menu-button interaction states.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/split-button/specs",
+          "section": "e0923cf5-6027-4a35-bf70-b51271d5e97e",
+          "capture": "snapshots/material-guidance/20261025T165911.881828085Z-88544552/capture.json",
+          "markdownSha256": "cd7fd5f03974503dab91f1301932cc50f3b2d8d379f50b1a2d04b303cade8d75",
+          "extractorVersion": 2,
+          "summary": "Trailing shape state list specifies states, inner-corner changes, and selected icon centering."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "split-button-measurements",
+      "statement": "Optically center text and icons when the buttons are asymmetrical and center them normally when symmetrical. Keep the inner space at 2dp. Use inner corner radii of 4dp for XS/S/M, 8dp for L, and 12dp for XL. Unselected menu icon offsets from center are XS/S −1dp, M −2dp, L −3dp, and XL −6dp.",
+      "condition": "When sizing and centering split-button content.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/split-button/specs",
+          "section": "2a1bfc70-e042-485e-a5e2-b2d464b97fd8",
+          "capture": "snapshots/material-guidance/20261025T165911.881828085Z-88544552/capture.json",
+          "markdownSha256": "cd7fd5f03974503dab91f1301932cc50f3b2d8d379f50b1a2d04b303cade8d75",
+          "extractorVersion": 2,
+          "summary": "Measurement text gives optical-centering behavior, inner spacing/radii, and size-specific icon offsets."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "split-button-use-and-size",
+      "statement": "Use a split button to pair a main action with a menu of related actions, reducing visual complexity by hiding extra options. It may stand alone or accompany common buttons and icon buttons/button groups. Choose among XS, S, M, L, and XL to match button/icon-button sizes; the default is S. Scale up at large breakpoints or to add emphasis, and sizes may differ from other page controls because split buttons take more space. The menu may open another component, but keep the menu standard rather than unusually modified.",
+      "condition": "When choosing and placing a split button in a product.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/split-button/guidelines",
+          "section": "3b1eb38f-c709-4028-bbaf-cb221e6a3426",
+          "capture": "snapshots/material-guidance/20261025T165911.881828085Z-88544552/capture.json",
+          "markdownSha256": "a602a1bfeac7d40c335882b685e6fbea6f3cfa9d1900027283c8077af90c21ae",
+          "extractorVersion": 2,
+          "summary": "Usage guidance covers main/menu purpose, grouping, size selection and emphasis, and expected menu behavior."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "split-button-label-icon-rtl",
+      "statement": "Keep the leading action label brief (one or two words) with an icon that matches the action. Keep the trailing expand/collapse icon and do not replace it. Mirror component element order in RTL languages.",
+      "condition": "When labeling or localizing split buttons.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/split-button/guidelines",
+          "section": "551f6e11-0f95-41c2-9398-cd4066755806",
+          "capture": "snapshots/material-guidance/20261025T165911.881828085Z-88544552/capture.json",
+          "markdownSha256": "a602a1bfeac7d40c335882b685e6fbea6f3cfa9d1900027283c8077af90c21ae",
+          "extractorVersion": 2,
+          "summary": "Anatomy guidance specifies concise leading labels, matching icons, fixed trailing icon, and RTL mirroring."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "split-button-menu-motion",
+      "statement": "Rotate the trailing menu icon inward by 180 degrees when the menu opens and closes, using the standard motion scheme rather than the expressive motion scheme; selection also applies a shape morph.",
+      "condition": "When opening or closing the trailing menu button.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/split-button/guidelines",
+          "section": "3c9e606d-7b79-4c1c-98bb-912b372fdc9d",
+          "capture": "snapshots/material-guidance/20261025T165911.881828085Z-88544552/capture.json",
+          "markdownSha256": "a602a1bfeac7d40c335882b685e6fbea6f3cfa9d1900027283c8077af90c21ae",
+          "extractorVersion": 2,
+          "summary": "Behavior guidance specifies rotation, motion scheme, and shape morph."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "split-button-menu-placement",
+      "statement": "Align an opened menu with the trailing button when possible; otherwise align it with a side of either button and keep it 4dp from the split button. Adapt the aligned edge to breakpoint, scroll position, and available space.",
+      "condition": "When positioning the menu opened by the trailing button.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/split-button/guidelines",
+          "section": "62d58917-0280-45d6-aff1-ea7cd54c71cf",
+          "capture": "snapshots/material-guidance/20261025T165911.881828085Z-88544552/capture.json",
+          "markdownSha256": "a602a1bfeac7d40c335882b685e6fbea6f3cfa9d1900027283c8077af90c21ae",
+          "extractorVersion": 2,
+          "summary": "Menu-placement guidance gives preferred alignment, fallback, spacing, and adaptive placement."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "split-button-accessible-tasks",
+      "statement": "Assistive-technology users must be able to navigate to and use each button, navigate to elements opened by the trailing button, and understand the current selection state.",
+      "condition": "For accessible split buttons and their opened menus.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/split-button/accessibility",
+          "section": "f0827eec-556d-4307-a263-7b481bcc6de4",
+          "capture": "snapshots/material-guidance/20261025T165911.881828085Z-88544552/capture.json",
+          "markdownSha256": "812bf6357ae25e9d0b874dc565ee9d4a3db5f2edf13818971f98660b4873a82a",
+          "extractorVersion": 2,
+          "summary": "Use cases list button interaction, menu navigation, and state understanding."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "split-button-target-size",
+      "statement": "Give each button a minimum target area of 48×48dp. Because XS and S buttons are shorter than 48dp, extend their surrounding target areas to at least 48dp high.",
+      "condition": "When sizing split-button targets, especially XS and S.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/split-button/accessibility",
+          "section": "866012e6-331f-4e46-943a-7fa4f1ea60a7",
+          "capture": "snapshots/material-guidance/20261025T165911.881828085Z-88544552/capture.json",
+          "markdownSha256": "812bf6357ae25e9d0b874dc565ee9d4a3db5f2edf13818971f98660b4873a82a",
+          "extractorVersion": 2,
+          "summary": "Interaction guidance sets target minimums and calls out short sizes."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "split-button-focus-order",
+      "statement": "Focus should land on the leading button and then move to the trailing button; this order may depend on operating-system settings.",
+      "condition": "When a split button receives keyboard focus.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/split-button/accessibility",
+          "section": "4a9a0d91-2c3f-4989-ab95-1993aba28f1c",
+          "capture": "snapshots/material-guidance/20261025T165911.881828085Z-88544552/capture.json",
+          "markdownSha256": "812bf6357ae25e9d0b874dc565ee9d4a3db5f2edf13818971f98660b4873a82a",
+          "extractorVersion": 2,
+          "summary": "Initial-focus guidance specifies button order and OS-dependent behavior."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "split-button-keyboard",
+      "statement": "Tab navigates between the two buttons; Space or Enter activates the focused button.",
+      "condition": "When keyboard-operating a split button.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/split-button/accessibility",
+          "section": "389e5e0c-e6cd-4bec-b599-9f7d70b771e9",
+          "capture": "snapshots/material-guidance/20261025T165911.881828085Z-88544552/capture.json",
+          "markdownSha256": "812bf6357ae25e9d0b874dc565ee9d4a3db5f2edf13818971f98660b4873a82a",
+          "extractorVersion": 2,
+          "summary": "Keyboard table maps Tab and activation keys."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "split-button-accessible-labels",
+      "statement": "Give the leading button the same accessibility label as a common button. Label the trailing button to communicate both that more related choices are available and whether its menu is expanded or collapsed; label the opened menu according to menu accessibility guidance.",
+      "condition": "When exposing split-button controls and their menu to assistive technology.",
+      "basis": "explicit",
+      "notes": "Captured menus/accessibility guidance says labels should match the visible menu-item text and that roles vary by platform; menu items with accompanying icons should mark those icons decorative. Apply the menu-specific guidance to the opened menu.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/split-button/accessibility",
+          "section": "ced3a789-c9cc-468d-8648-f15dc3ad7b72",
+          "capture": "snapshots/material-guidance/20261025T165911.881828085Z-88544552/capture.json",
+          "markdownSha256": "812bf6357ae25e9d0b874dc565ee9d4a3db5f2edf13818971f98660b4873a82a",
+          "extractorVersion": 2,
+          "summary": "Labeling guidance specifies main-action label, secondary-action meaning and state, and menu labeling dependency."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "split-button-token-sets",
+      "statement": "Select the split-button token set from the table menu; token sets are organized by size.",
+      "condition": "When inspecting or selecting split-button design tokens.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/split-button/specs",
+          "section": "19747f10-a783-4d0f-946b-2c409052a0ee",
+          "capture": "snapshots/material-guidance/20261025T165911.881828085Z-88544552/capture.json",
+          "markdownSha256": "cd7fd5f03974503dab91f1301932cc50f3b2d8d379f50b1a2d04b303cade8d75",
+          "extractorVersion": 2,
+          "summary": "Token section directs users to select a token set and states split-button sets are organized by size."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

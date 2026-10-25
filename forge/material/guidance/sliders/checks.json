@@ -1,0 +1,907 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "sliders",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/sliders/overview",
+      "capture": "snapshots/material-guidance/20261025T165902.634813288Z-1790060637/capture.json",
+      "markdownSha256": "4c94a36b8afcd0a9ee05d34f8fa1b4124fbf8947b92f0e32c982ce8118121d7e",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Sliders",
+          "status": "no-requirements",
+          "notes": "Full-range presentation and immediate effect are covered by `slider-track-range-direction` and `slider-purpose-immediate-effect` in guidelines."
+        },
+        {
+          "id": "7bcfb2cf-8590-44eb-b6ce-d917f2c438b7",
+          "title": "Availability & resources",
+          "status": "no-requirements",
+          "notes": "Platform and library availability only."
+        },
+        {
+          "id": "1eade1f8-41d4-43dd-b8f6-c99ea8eec510",
+          "title": "M3 Expressive update",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "10c731ab-bd1e-4489-85a2-d21178ec8116",
+          "title": "Previous updates",
+          "status": "no-requirements",
+          "notes": "Historical update summary is superseded by current configuration and usage guidance."
+        },
+        {
+          "id": "79de9466-a59c-4236-9099-735e67a38e53",
+          "title": "Visual refresh to improve non-text contrast",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "b6747f2f-c337-4813-af6c-77dd85f7de2c",
+          "title": "Differences from M2",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/sliders/specs",
+      "capture": "snapshots/material-guidance/20261025T165902.634813288Z-1790060637/capture.json",
+      "markdownSha256": "043ece454358a7ce72537d177fe1a4dc6af84be8c0f2d5138e696cf3fbce293c",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Sliders",
+          "status": "no-requirements",
+          "notes": "Repeated introductory description only."
+        },
+        {
+          "id": "0cd05e98-223c-4961-96e6-e1b36a2e44cf",
+          "title": "Variants",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "ac377e23-2948-43ef-80fd-8a88a311d5c6",
+          "title": "Configurations",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "ac9f6c26-b539-41c2-bf9e-c9daa0d116c2",
+          "title": "Tokens & specs",
+          "status": "no-requirements",
+          "notes": "Token browser lists token values and states without independent behavior instructions."
+        },
+        {
+          "id": "9aef5bf1-a6cf-46ef-9d56-653b7b282496",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "Anatomy is diagram-only; element use and behavior are described in guideline sections."
+        },
+        {
+          "id": "92bc4aef-3684-4c05-876c-af4cced6e200",
+          "title": "Color",
+          "status": "unclear",
+          "notes": "Color-role assignments are shown only in an uninspected diagram; role-to-element mappings cannot be confirmed."
+        },
+        {
+          "id": "a8d436aa-ad77-4270-a5ae-0f7e43e92e44",
+          "title": "States",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "16868fdb-4ed2-4e3f-99ad-24328cbfd2f4",
+          "title": "Measurements",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/sliders/guidelines",
+      "capture": "snapshots/material-guidance/20261025T165902.634813288Z-1790060637/capture.json",
+      "markdownSha256": "ab19bdb6e5ff61ee9d294f73da194cd3b7b693b08d1aa6e4c80f38109f2cd680",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Sliders",
+          "status": "no-requirements",
+          "notes": "Introductory real-time description; interaction behavior is covered in the named sections."
+        },
+        {
+          "id": "c618c8a2-0a38-40c1-804b-da9e57e9f250",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "b3701f5e-128a-4807-bca7-033402b4266a",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "The anatomy diagram names slider elements; their independently actionable behavior is described in child sections."
+        },
+        {
+          "id": "70a70b78-c033-4a0b-85f7-43ed8696d138",
+          "title": "Track",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "d756e630-3f1d-4d99-8478-d32f47bc92c5",
+          "title": "Handle",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "7fa270da-ccb7-47ab-b5de-dd820b23e1b9",
+          "title": "Configurations",
+          "status": "no-requirements",
+          "notes": "Parent heading; value, stop, orientation, inset icon, and size behavior is mapped in children."
+        },
+        {
+          "id": "1138b466-b985-464f-a1f3-f7ec47dcf1a2",
+          "title": "Value",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "57625de3-68a7-4ab4-abdf-589c23d9cc1c",
+          "title": "Stop indicators",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "97c5af0a-6cf6-4e97-9c81-1f0fceaab629",
+          "title": "Orientation",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "399159bf-f28c-4bb6-a4db-e3290469fe52",
+          "title": "Inset icon",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "d8cbd15b-b676-48a5-b779-b7069e9caf7a",
+          "title": "Size",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "360972ae-6af9-45bd-9b2a-dbde5825777e",
+          "title": "Behaviors",
+          "status": "no-requirements",
+          "notes": "Parent heading; drag, track selection, and keyboard selection are mapped in its child sections."
+        },
+        {
+          "id": "b0825f89-5029-43d5-a80c-f0520d0f1186",
+          "title": "Select & drag",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "8066d762-8448-4af5-a33b-db0b1a148cad",
+          "title": "Select jump",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "b68a918e-86a2-4ff8-8eb3-d5cd875fbdf0",
+          "title": "Select & arrow",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/sliders/accessibility",
+      "capture": "snapshots/material-guidance/20261025T165902.634813288Z-1790060637/capture.json",
+      "markdownSha256": "1b6824c271810cbaf635b189b5f50e9c2fc33dc18faf62b6702815190d10c13f",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Sliders",
+          "status": "no-requirements",
+          "notes": "Introductory description only."
+        },
+        {
+          "id": "a24cbac1-eda0-4edd-924a-d2c96b0f3ba8",
+          "title": "Use cases",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "d04ab405-f376-49bf-b6aa-3c12e53c3641",
+          "title": "Interaction & style",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "f614609c-43c9-468c-a517-4d17628201d8",
+          "title": "Focus and navigation",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "87734caf-bc34-4bb7-b063-505cb935be0d",
+          "title": "Color contrast",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "0ca7f318-6f00-4a87-88d5-4695c4dd769c",
+          "title": "Keyboard navigation",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "bd0b6c2a-3b7e-4d52-b4a3-9fea0cdfb570",
+          "title": "Labeling elements",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "slider-expressive-configurations",
+      "statement": "M3 Expressive renames continuous to standard and discrete to the stops configuration. It adds horizontal/vertical orientation, five sizes (XS through XL), and an optional inset icon for standard sliders only. Sizes S through XL are implemented in Android Views, while other platforms expose those sizes as tokens without implemented presets.",
+      "condition": "When selecting slider configurations across M3 and M3 Expressive implementations.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/sliders/overview",
+          "section": "1eade1f8-41d4-43dd-b8f6-c99ea8eec510",
+          "capture": "snapshots/material-guidance/20261025T165902.634813288Z-1790060637/capture.json",
+          "markdownSha256": "4c94a36b8afcd0a9ee05d34f8fa1b4124fbf8947b92f0e32c982ce8118121d7e",
+          "extractorVersion": 2,
+          "summary": "Expressive update lists renamed configurations, new options, and platform implementation boundaries."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "slider-2023-refresh",
+      "statement": "The 2023 visual refresh added centered and range configurations, changed track and handle shapes with selected-state shape changes, added handle-width and track-shape motion, and refreshed color mappings. Centered sliders start at the middle of the range.",
+      "condition": "When interpreting the December 2023 M3 visual refresh.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/sliders/overview",
+          "section": "79de9466-a59c-4236-9099-735e67a38e53",
+          "capture": "snapshots/material-guidance/20261025T165902.634813288Z-1790060637/capture.json",
+          "markdownSha256": "4c94a36b8afcd0a9ee05d34f8fa1b4124fbf8947b92f0e32c982ce8118121d7e",
+          "extractorVersion": 2,
+          "summary": "Previous-update section records the centered/range additions and shape, motion, and color refresh."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "slider-m3-dynamic-color",
+      "statement": "M3 sliders use updated color mappings compatible with dynamic color.",
+      "condition": "When applying M3 colors or migrating sliders from M2.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/sliders/overview",
+          "section": "b6747f2f-c337-4813-af6c-77dd85f7de2c",
+          "capture": "snapshots/material-guidance/20261025T165902.634813288Z-1790060637/capture.json",
+          "markdownSha256": "4c94a36b8afcd0a9ee05d34f8fa1b4124fbf8947b92f0e32c982ce8118121d7e",
+          "extractorVersion": 2,
+          "summary": "M2 comparison identifies updated color mappings and dynamic-color compatibility."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "slider-variant-availability",
+      "statement": "M3 standard is called continuous; M3 Expressive calls it standard. Centered is available only on M3 web and is available in Expressive. Range is available in both. Discrete is available in M3 and becomes the stops configuration in Expressive.",
+      "condition": "When selecting documented slider variants across M3 and M3 Expressive.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/sliders/specs",
+          "section": "0cd05e98-223c-4961-96e6-e1b36a2e44cf",
+          "capture": "snapshots/material-guidance/20261025T165902.634813288Z-1790060637/capture.json",
+          "markdownSha256": "043ece454358a7ce72537d177fe1a4dc6af84be8c0f2d5138e696cf3fbce293c",
+          "extractorVersion": 2,
+          "summary": "Variants table preserves availability and renamed standard/stops variants by design-system version."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "slider-configuration-availability",
+      "statement": "Both versions support horizontal orientation and XS size by default. Vertical orientation, S–XL sizes, and inset icons are Expressive-only; inset icons are available only for standard sliders. M3 exposes discrete stops and value indicators, while Expressive exposes stop indicators and value indicators. S–XL are implemented presets only on Android Views; on other platforms they are available as tokens and require replacing the default size tokens.",
+      "condition": "When selecting configuration options for a platform and design-system version.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/sliders/specs",
+          "section": "ac377e23-2948-43ef-80fd-8a88a311d5c6",
+          "capture": "snapshots/material-guidance/20261025T165902.634813288Z-1790060637/capture.json",
+          "markdownSha256": "043ece454358a7ce72537d177fe1a4dc6af84be8c0f2d5138e696cf3fbce293c",
+          "extractorVersion": 2,
+          "summary": "Configuration table distinguishes M3 and Expressive options and calls out token-only size presets outside Android Views."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "slider-interaction-states",
+      "statement": "Represent enabled, disabled, hovered, focused, and pressed slider states.",
+      "condition": "For slider interaction states in light and dark schemes.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/sliders/specs",
+          "section": "a8d436aa-ad77-4270-a5ae-0f7e43e92e44",
+          "capture": "snapshots/material-guidance/20261025T165902.634813288Z-1790060637/capture.json",
+          "markdownSha256": "043ece454358a7ce72537d177fe1a4dc6af84be8c0f2d5138e696cf3fbce293c",
+          "extractorVersion": 2,
+          "summary": "State list names the five slider states."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "slider-size-measurements",
+      "statement": "Use the documented track heights XS 16dp, S 24dp, M 40dp, L 56dp, XL 96dp; handle heights XS/S 44dp, M 52dp, L 68dp, XL 108dp; track shapes XS/S 8dp, M 12dp, L 16dp, XL 28dp. The XS label container is 44dp high by 48dp wide, the XS handle is 4dp wide, and inset icons are 24dp for M/L and 32dp for XL; inset icons are unavailable in XS/S.",
+      "condition": "When sizing sliders and inset icons at their documented size configurations.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/sliders/specs",
+          "section": "16868fdb-4ed2-4e3f-99ad-24328cbfd2f4",
+          "capture": "snapshots/material-guidance/20261025T165902.634813288Z-1790060637/capture.json",
+          "markdownSha256": "043ece454358a7ce72537d177fe1a4dc6af84be8c0f2d5138e696cf3fbce293c",
+          "extractorVersion": 2,
+          "summary": "Measurements table gives size-specific track, handle, label, and inset-icon dimensions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "slider-purpose-immediate-effect",
+      "statement": "Use sliders to choose a value from the full available range, such as volume, brightness, or image-filter intensity. They may use icons or labels to express a numeric or relative scale. Apply value changes immediately as the handle moves so people can understand the effect.",
+      "condition": "When a person adjusts a setting through a slider.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/sliders/guidelines",
+          "section": "c618c8a2-0a38-40c1-804b-da9e57e9f250",
+          "capture": "snapshots/material-guidance/20261025T165902.634813288Z-1790060637/capture.json",
+          "markdownSha256": "ab19bdb6e5ff61ee9d294f73da194cd3b7b693b08d1aa6e4c80f38109f2cd680",
+          "extractorVersion": 2,
+          "summary": "Usage guidance covers range selection, scale labels, and immediate effect."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "slider-variant-choice",
+      "statement": "Use standard sliders when selecting one value from a range that starts at zero or the sequence beginning. Use centered sliders when the range includes positive and negative values or zero/default is in the middle. Use range sliders to choose minimum and maximum values; avoid vertical range sliders because they add cognitive load.",
+      "condition": "When selecting a slider variant for a value range.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/sliders/guidelines",
+          "section": "c618c8a2-0a38-40c1-804b-da9e57e9f250",
+          "capture": "snapshots/material-guidance/20261025T165902.634813288Z-1790060637/capture.json",
+          "markdownSha256": "ab19bdb6e5ff61ee9d294f73da194cd3b7b693b08d1aa6e4c80f38109f2cd680",
+          "extractorVersion": 2,
+          "summary": "Usage guidance maps standard, centered, and range variants to range semantics and cautions against vertical range sliders."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "slider-track-range-direction",
+      "statement": "Show the full selectable range on the track. For a single handle, the active section runs from the minimum to the handle and the inactive section from the handle to the maximum; for a range slider, active track lies between handles and inactive track outside them. Values increase left-to-right in LTR and reverse in RTL.",
+      "condition": "When rendering the track and value direction.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/sliders/guidelines",
+          "section": "70a70b78-c033-4a0b-85f7-43ed8696d138",
+          "capture": "snapshots/material-guidance/20261025T165902.634813288Z-1790060637/capture.json",
+          "markdownSha256": "ab19bdb6e5ff61ee9d294f73da194cd3b7b693b08d1aa6e4c80f38109f2cd680",
+          "extractorVersion": 2,
+          "summary": "Track guidance defines active/inactive regions and direction by writing direction."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "slider-handle-interaction",
+      "statement": "Move the handle along the track to choose a value; with two handles they choose the minimum and maximum of a range. Change the handle shape to indicate when it is pressed.",
+      "condition": "When a person interacts with a slider handle.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/sliders/guidelines",
+          "section": "d756e630-3f1d-4d99-8478-d32f47bc92c5",
+          "capture": "snapshots/material-guidance/20261025T165902.634813288Z-1790060637/capture.json",
+          "markdownSha256": "ab19bdb6e5ff61ee9d294f73da194cd3b7b693b08d1aa6e4c80f38109f2cd680",
+          "extractorVersion": 2,
+          "summary": "Handle guidance describes value selection, two-handle range semantics, and pressed shape feedback."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "slider-value-indicator",
+      "statement": "Show the value for a handle while it is being interacted with; on a range slider show only one handle's value at a time. If the value is shown elsewhere, the built-in indicator is optional. When a separate text input is provided, keep it synchronized with the slider and place it immediately after the slider in Tab order.",
+      "condition": "When displaying slider values or pairing the slider with text input.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/sliders/guidelines",
+          "section": "1138b466-b985-464f-a1f3-f7ec47dcf1a2",
+          "capture": "snapshots/material-guidance/20261025T165902.634813288Z-1790060637/capture.json",
+          "markdownSha256": "ab19bdb6e5ff61ee9d294f73da194cd3b7b693b08d1aa6e4c80f38109f2cd680",
+          "extractorVersion": 2,
+          "summary": "Value guidance covers interactive display, one-at-a-time range labels, optional duplication, synchronization, and focus order."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "slider-stop-indicators",
+      "statement": "Use stop indicators to show predetermined values and snap the handle to the nearest stop. Avoid so many stops that the control becomes crowded. Provide end stops unless the inactive track already has at least 3:1 contrast with the background; icons or text with adequate contrast may indicate the ends instead of stop indicators.",
+      "condition": "When using discrete slider values or ensuring the track end is visible.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/sliders/guidelines",
+          "section": "57625de3-68a7-4ab4-abdf-589c23d9cc1c",
+          "capture": "snapshots/material-guidance/20261025T165902.634813288Z-1790060637/capture.json",
+          "markdownSha256": "ab19bdb6e5ff61ee9d294f73da194cd3b7b693b08d1aa6e4c80f38109f2cd680",
+          "extractorVersion": 2,
+          "summary": "Stop guidance covers snapping, density, and conditional end-stop alternatives based on contrast."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "slider-orientation",
+      "statement": "Choose horizontal or vertical orientation according to the use case.",
+      "condition": "When orienting a slider.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/sliders/guidelines",
+          "section": "97c5af0a-6cf6-4e97-9c81-1f0fceaab629",
+          "capture": "snapshots/material-guidance/20261025T165902.634813288Z-1790060637/capture.json",
+          "markdownSha256": "ab19bdb6e5ff61ee9d294f73da194cd3b7b693b08d1aa6e4c80f38109f2cd680",
+          "extractorVersion": 2,
+          "summary": "Orientation guidance permits horizontal or vertical orientation based on the use case."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "slider-inset-icon-use",
+      "statement": "Only standard M, L, and XL sliders may include an inset icon; do not use one on XS/S, centered, or range sliders. Choose an icon that illustrates the controlled value, move it to the inactive track if the active track lacks space, and consider changing the icon at zero (for example, volume to mute).",
+      "condition": "When configuring an inset icon.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/sliders/guidelines",
+          "section": "399159bf-f28c-4bb6-a4db-e3290469fe52",
+          "capture": "snapshots/material-guidance/20261025T165902.634813288Z-1790060637/capture.json",
+          "markdownSha256": "ab19bdb6e5ff61ee9d294f73da194cd3b7b693b08d1aa6e4c80f38109f2cd680",
+          "extractorVersion": 2,
+          "summary": "Inset-icon guidance specifies supported variants/sizes, meaning, placement under low values, and zero-state icon option."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "slider-size-choice",
+      "statement": "Use larger slider sizes to increase target size and visual emphasis; keep active and inactive tracks the same size. Reserve XL for hero moments when the slider is the most important element on the page.",
+      "condition": "When choosing slider size and emphasis.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/sliders/guidelines",
+          "section": "d8cbd15b-b676-48a5-b779-b7069e9caf7a",
+          "capture": "snapshots/material-guidance/20261025T165902.634813288Z-1790060637/capture.json",
+          "markdownSha256": "ab19bdb6e5ff61ee9d294f73da194cd3b7b693b08d1aa6e4c80f38109f2cd680",
+          "extractorVersion": 2,
+          "summary": "Size guidance describes sizing purpose, equal track size, and XL use."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "slider-drag-behavior",
+      "statement": "Dragging a standard slider handle selects values smoothly; with stop indicators, the handle snaps to the closest stop while dragged.",
+      "condition": "When selecting values by dragging the handle.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/sliders/guidelines",
+          "section": "b0825f89-5029-43d5-a80c-f0520d0f1186",
+          "capture": "snapshots/material-guidance/20261025T165902.634813288Z-1790060637/capture.json",
+          "markdownSha256": "ab19bdb6e5ff61ee9d294f73da194cd3b7b693b08d1aa6e4c80f38109f2cd680",
+          "extractorVersion": 2,
+          "summary": "Drag behavior distinguishes continuous and stops configurations."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "slider-track-jump",
+      "statement": "Selecting a point on the track moves a standard handle to that location; with stop indicators, it moves to the nearest stop.",
+      "condition": "When selecting a value by tapping or clicking the track away from the handle.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/sliders/guidelines",
+          "section": "8066d762-8448-4af5-a33b-db0b1a148cad",
+          "capture": "snapshots/material-guidance/20261025T165902.634813288Z-1790060637/capture.json",
+          "markdownSha256": "ab19bdb6e5ff61ee9d294f73da194cd3b7b693b08d1aa6e4c80f38109f2cd680",
+          "extractorVersion": 2,
+          "summary": "Select-jump behavior distinguishes continuous and stops configurations."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "slider-key-selection",
+      "statement": "Tab focuses the handle. Arrow keys change the value by one value or one stop; Space plus arrows changes it by a larger interval or stop. In standard configuration the handle moves one value; with stop indicators it moves to the next stop.",
+      "condition": "When adjusting a slider by keyboard.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/sliders/guidelines",
+          "section": "b68a918e-86a2-4ff8-8eb3-d5cd875fbdf0",
+          "capture": "snapshots/material-guidance/20261025T165902.634813288Z-1790060637/capture.json",
+          "markdownSha256": "ab19bdb6e5ff61ee9d294f73da194cd3b7b693b08d1aa6e4c80f38109f2cd680",
+          "extractorVersion": 2,
+          "summary": "Keyboard behavior specifies focus and incremental versus larger-step key actions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "slider-assistive-tasks",
+      "statement": "Assistive-technology users must be able to navigate to a slider, select a range by controlling its handle along the track, and receive feedback appropriate to their input type.",
+      "condition": "For accessible sliders.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/sliders/accessibility",
+          "section": "a24cbac1-eda0-4edd-924a-d2c96b0f3ba8",
+          "capture": "snapshots/material-guidance/20261025T165902.634813288Z-1790060637/capture.json",
+          "markdownSha256": "1b6824c271810cbaf635b189b5f50e9c2fc33dc18faf62b6702815190d10c13f",
+          "extractorVersion": 2,
+          "summary": "Use cases state the tasks and feedback assistive technology must support."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "slider-interaction-feedback",
+      "statement": "On touch tap/drag and cursor click/drag, shrink the handle width and show the value; show a changed cursor on hover.",
+      "condition": "When the slider is interacted with by touch or cursor.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/sliders/accessibility",
+          "section": "d04ab405-f376-49bf-b6aa-3c12e53c3641",
+          "capture": "snapshots/material-guidance/20261025T165902.634813288Z-1790060637/capture.json",
+          "markdownSha256": "1b6824c271810cbaf635b189b5f50e9c2fc33dc18faf62b6702815190d10c13f",
+          "extractorVersion": 2,
+          "summary": "Interaction guidance specifies handle-width and value feedback for touch and cursor."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "slider-focus-handle",
+      "statement": "Place initial focus directly on the handle; allow the value to be changed with arrow keys or other keyboard navigation.",
+      "condition": "When a slider receives initial focus.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/sliders/accessibility",
+          "section": "f614609c-43c9-468c-a517-4d17628201d8",
+          "capture": "snapshots/material-guidance/20261025T165902.634813288Z-1790060637/capture.json",
+          "markdownSha256": "1b6824c271810cbaf635b189b5f50e9c2fc33dc18faf62b6702815190d10c13f",
+          "extractorVersion": 2,
+          "summary": "Focus guidance places initial focus on the primary interactive element and permits keyboard adjustment."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "slider-end-contrast",
+      "statement": "Ensure the end of the inactive track has at least 3:1 contrast against the background using a stop indicator or another contrasting element such as an icon.",
+      "condition": "When the inactive track itself has less than 3:1 background contrast.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/sliders/accessibility",
+          "section": "87734caf-bc34-4bb7-b063-505cb935be0d",
+          "capture": "snapshots/material-guidance/20261025T165902.634813288Z-1790060637/capture.json",
+          "markdownSha256": "1b6824c271810cbaf635b189b5f50e9c2fc33dc18faf62b6702815190d10c13f",
+          "extractorVersion": 2,
+          "summary": "Contrast guidance requires a visible end anchor and allows stop indicators or other elements."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "slider-keyboard-accessibility",
+      "statement": "Tab moves focus to the handle; arrows change the value by one value or stop; Space plus arrows changes it by one interval or stop; Home and End set the first and last values.",
+      "condition": "When keyboard-operating a slider.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/sliders/accessibility",
+          "section": "0ca7f318-6f00-4a87-88d5-4695c4dd769c",
+          "capture": "snapshots/material-guidance/20261025T165902.634813288Z-1790060637/capture.json",
+          "markdownSha256": "1b6824c271810cbaf635b189b5f50e9c2fc33dc18faf62b6702815190d10c13f",
+          "extractorVersion": 2,
+          "summary": "Keyboard table maps Tab, arrows, Space+arrows, Home, and End to slider behavior."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "slider-accessible-label-role",
+      "statement": "Use the adjacent text label as the slider accessibility label and expose the slider role; expose icon buttons outside the slider with the button role.",
+      "condition": "When labeling a slider and adjacent controls for assistive technology.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/sliders/accessibility",
+          "section": "bd0b6c2a-3b7e-4d52-b4a3-9fea0cdfb570",
+          "capture": "snapshots/material-guidance/20261025T165902.634813288Z-1790060637/capture.json",
+          "markdownSha256": "1b6824c271810cbaf635b189b5f50e9c2fc33dc18faf62b6702815190d10c13f",
+          "extractorVersion": 2,
+          "summary": "Labeling guidance specifies adjacent text, slider role, and external icon-button role."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

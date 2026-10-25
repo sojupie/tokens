@@ -1,0 +1,971 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "navigation-drawer",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/navigation-drawer/overview",
+      "capture": "snapshots/material-guidance/20261025T165643.276930579Z-2762290517/capture.json",
+      "markdownSha256": "8da4ab3d320c4cbf4a9e91ee84b7adabff4701af146d3828be98b45cef40b891",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Navigation drawer",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "ac3152fb-a55b-470a-a07b-06a6717a3db6",
+          "title": "Availability & resources",
+          "status": "no-requirements",
+          "notes": "This table reports availability of upstream design kits and framework implementations; it is not an implementation requirement for this project."
+        },
+        {
+          "id": "53d46918-b672-4731-94fe-78fb73f7d0d2",
+          "title": "M3 Expressive update",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "35d4a974-e87b-4bb7-9ec1-4cf963c30b85",
+          "title": "Differences from M2",
+          "status": "no-requirements",
+          "notes": "This section compares historical M2 and M3 presentation. Current variant and behavior requirements are recorded in the relevant M3 specs and guidelines."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/navigation-drawer/specs",
+      "capture": "snapshots/material-guidance/20261025T165643.276930579Z-2762290517/capture.json",
+      "markdownSha256": "68adcc31933b0b0ae2bc3f1022c3e66c4a2626a7b5636a3cfbbca1e88764473f",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Navigation drawer",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "e0cbba9d-8fc1-42b0-8172-ea92aae85fc3",
+          "title": "Tokens & specs",
+          "status": "no-requirements",
+          "notes": "The section exposes token-set selectors and values; it adds no component behavior beyond the curated checks. Keep token values and references in the source token pipeline."
+        },
+        {
+          "id": "c6ebfeb0-608b-46eb-a1df-02c8e5ba1c29",
+          "title": "Color",
+          "status": "unclear",
+          "notes": "Nine roles are listed, including the scrim role, but the uninspected diagram is needed to map each number to drawer elements; divider colors are delegated to divider specs."
+        },
+        {
+          "id": "89e41288-820c-4dc3-ac2e-edc5839e10c7",
+          "title": "States",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "73da5c32-aecf-4c88-849b-77310fbc3b77",
+          "title": "Measurements",
+          "status": "unclear",
+          "notes": "The section contains only an uninspected measurements diagram; exact drawer and sheet dimensions are absent from captured prose."
+        },
+        {
+          "id": "25f67916-87fa-4cbb-b390-175096ae559b",
+          "title": "Standard navigation drawer",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "368147de-9661-4a28-9fc1-ce2f8c9eac40",
+          "title": "Modal navigation drawer",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/navigation-drawer/guidelines",
+      "capture": "snapshots/material-guidance/20261025T165643.276930579Z-2762290517/capture.json",
+      "markdownSha256": "2c0d33564be8ed2edf6745817ed33bcfad9c20b87d39e40e24513d7a7bb66768",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Navigation drawer",
+          "status": "no-requirements",
+          "notes": "This is the page title or brief component summary; actionable requirements are recorded in the linked child sections."
+        },
+        {
+          "id": "761e9679-2e72-4a85-894d-55bc3666b567",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "38800092-0149-4251-ac75-4ce8a144042a",
+          "title": "Standard navigation drawer",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "fa110155-e653-4f17-ace7-645440542506",
+          "title": "Modal navigation drawer",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "86ff751b-e510-4428-bfb2-cc5bf9206bb8",
+          "title": "Anatomy",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "6381123f-4f5e-40a8-9104-85291eba67e4",
+          "title": "Sheet",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "4ef4dd75-740b-462d-a602-ba1f762a4c1a",
+          "title": "Divider (optional)",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "31eeff65-f988-4951-9cbc-223e2ba2d1b6",
+          "title": "Active indicator",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "899163db-d320-495f-9406-1a0b56825e1e",
+          "title": "Label text and icons",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "2d3fa03d-a1f0-4bf6-979e-1f93cc64a9be",
+          "title": "Section label (optional)",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "9f53babe-e59f-4335-b6eb-c0412322f7ac",
+          "title": "Scrim (modal only)",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "81b637af-d1c6-4edd-84fd-487eb9860d76",
+          "title": "Responsive layout",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "4512327d-9173-4f8f-a7e0-30d10f257f42",
+          "title": "Compact breakpoint",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "f01432c1-e709-4865-9394-b78cf7adcbff",
+          "title": "Medium & expanded breakpoints",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "06e77c1d-2bcc-4b01-b417-cb2bbf8b23d2",
+          "title": "Large and extra-large breakpoints",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "202884cf-77da-4a35-9fa0-f45f6cd1d471",
+          "title": "Behavior",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "59825d3d-bb04-4720-b5dc-5c65953a37e5",
+          "title": "Scrolling",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "046936be-3330-492b-94d3-5a8cb41b17e9",
+          "title": "Visibility",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "c807b781-dc58-4fee-beea-5480e274e59d",
+          "title": "Appearing",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/navigation-drawer/accessibility",
+      "capture": "snapshots/material-guidance/20261025T165643.276930579Z-2762290517/capture.json",
+      "markdownSha256": "dc40785bd5e8f5807fb852ad604e6cee6d23b65a99567d239154df1ff0608e3b",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Navigation drawer",
+          "status": "no-requirements",
+          "notes": "This is the page title or brief component summary; actionable requirements are recorded in the linked child sections."
+        },
+        {
+          "id": "4c9187b6-13ad-4125-98f4-1a9c33587e65",
+          "title": "Use cases",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "f3fa24ec-38d1-4c78-910e-edefca0a3db6",
+          "title": "Interaction & style",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "8083508f-8940-4166-8f26-5c71a6089979",
+          "title": "Initial focus",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "860113fb-8410-46bb-9468-76f89fa1bc9e",
+          "title": "Closing",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "c948642f-21a5-4f20-83e8-3c7e035ae394",
+          "title": "Visual indicators",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "b57e43ee-ee92-4067-8105-570e89e1b122",
+          "title": "Keyboard navigation",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "2ee8fff0-d4c5-413f-84ec-b7b15e5c7807",
+          "title": "Labeling elements",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "a-dismissible-standard-drawer-opens-and-closes",
+      "statement": "A dismissible standard drawer opens and closes through its visible menu control; a permanently visible drawer cannot be dismissed.",
+      "condition": "When selecting standard drawer visibility.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-drawer/guidelines",
+          "section": "046936be-3330-492b-94d3-5a8cb41b17e9",
+          "capture": "snapshots/material-guidance/20261025T165643.276930579Z-2762290517/capture.json",
+          "markdownSha256": "2c0d33564be8ed2edf6745817ed33bcfad9c20b87d39e40e24513d7a7bb66768",
+          "extractorVersion": 2,
+          "summary": "Curated from Visibility: A dismissible standard drawer opens and closes through its visible menu control; a permanently visible drawer "
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "allow-a-modal-navigation-drawer-to-close",
+      "statement": "Allow a modal navigation drawer to close when its scrim is selected.",
+      "condition": "When a modal drawer is open.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-drawer/accessibility",
+          "section": "860113fb-8410-46bb-9468-76f89fa1bc9e",
+          "capture": "snapshots/material-guidance/20261025T165643.276930579Z-2762290517/capture.json",
+          "markdownSha256": "dc40785bd5e8f5807fb852ad604e6cee6d23b65a99567d239154df1ff0608e3b",
+          "extractorVersion": 2,
+          "summary": "Curated from Closing: Allow a modal navigation drawer to close when its scrim is selected."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "anchor-a-side-drawer-to-the-start",
+      "statement": "Anchor a side drawer to the start edge: left in LTR and right in RTL.",
+      "condition": "When positioning the drawer.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-drawer/guidelines",
+          "section": "6381123f-4f5e-40a8-9104-85291eba67e4",
+          "capture": "snapshots/material-guidance/20261025T165643.276930579Z-2762290517/capture.json",
+          "markdownSha256": "2c0d33564be8ed2edf6745817ed33bcfad9c20b87d39e40e24513d7a7bb66768",
+          "extractorVersion": 2,
+          "summary": "Curated from Sheet: Anchor a side drawer to the start edge: left in LTR and right in RTL."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "avoid-pairing-a-drawer-with-another-primary",
+      "statement": "Avoid pairing a drawer with another primary navigation component; choose one pattern by breakpoint: bar for compact, rail for medium/expanded, standard drawer for expanded and larger.",
+      "condition": "When selecting primary navigation.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-drawer/guidelines",
+          "section": "761e9679-2e72-4a85-894d-55bc3666b567",
+          "capture": "snapshots/material-guidance/20261025T165643.276930579Z-2762290517/capture.json",
+          "markdownSha256": "2c0d33564be8ed2edf6745817ed33bcfad9c20b87d39e40e24513d7a7bb66768",
+          "extractorVersion": 2,
+          "summary": "Curated from Usage: Avoid pairing a drawer with another primary navigation component; choose one pattern by breakpoint: bar for co"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "differentiate-the-selected-destination-with-a-filled",
+      "statement": "Differentiate the selected destination with a filled icon and active indicator; retain outlined icons for unselected destinations.",
+      "condition": "When showing selected state.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-drawer/accessibility",
+          "section": "c948642f-21a5-4f20-83e8-3c7e035ae394",
+          "capture": "snapshots/material-guidance/20261025T165643.276930579Z-2762290517/capture.json",
+          "markdownSha256": "dc40785bd5e8f5807fb852ad604e6cee6d23b65a99567d239154df1ff0608e3b",
+          "extractorVersion": 2,
+          "summary": "Curated from Visual indicators: Differentiate the selected destination with a filled icon and active indicator; retain outlined icons for unse"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "drawer-layout-transition",
+      "statement": "Change the navigation component with the breakpoint and form factor; animate component swaps, such as transforming a navigation rail into a drawer when changing from portrait to landscape.",
+      "condition": "When the window breakpoint or orientation changes.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-drawer/guidelines",
+          "section": "81b637af-d1c6-4edd-84fd-487eb9860d76",
+          "capture": "snapshots/material-guidance/20261025T165643.276930579Z-2762290517/capture.json",
+          "markdownSha256": "2c0d33564be8ed2edf6745817ed33bcfad9c20b87d39e40e24513d7a7bb66768",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Responsive layout instruction: Change the navigation component with the breakpoint and form factor; animate component swaps, such as transfor"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "for-laptop-and-desktop-web-use-a",
+      "statement": "For laptop and desktop web, use a standard drawer or a rail that transitions to a modal drawer.",
+      "condition": "When adapting large web layouts.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-drawer/guidelines",
+          "section": "06e77c1d-2bcc-4b01-b417-cb2bbf8b23d2",
+          "capture": "snapshots/material-guidance/20261025T165643.276930579Z-2762290517/capture.json",
+          "markdownSha256": "2c0d33564be8ed2edf6745817ed33bcfad9c20b87d39e40e24513d7a7bb66768",
+          "extractorVersion": 2,
+          "summary": "Curated from Large and extra-large breakpoints: For laptop and desktop web, use a standard drawer or a rail that transitions to a modal drawer."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "navigation-drawer-assistive-use-cases",
+      "statement": "People using assistive technology must be able to move between destinations, select one, and receive feedback appropriate to input type.",
+      "condition": "When exposing drawer navigation to assistive technology.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-drawer/accessibility",
+          "section": "4c9187b6-13ad-4125-98f4-1a9c33587e65",
+          "capture": "snapshots/material-guidance/20261025T165643.276930579Z-2762290517/capture.json",
+          "markdownSha256": "dc40785bd5e8f5807fb852ad604e6cee6d23b65a99567d239154df1ff0608e3b",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Use cases instruction: People using assistive technology must be able to move between destinations, select one, and receive feedback "
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "navigation-drawer-baseline-status",
+      "statement": "The baseline navigation drawer remains represented by its token set, but M3 Expressive recommends using an expanded navigation rail.",
+      "condition": "When maintaining baseline drawer tokens or choosing an expressive alternative.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-drawer/specs",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T165643.276930579Z-2762290517/capture.json",
+          "markdownSha256": "68adcc31933b0b0ae2bc3f1022c3e66c4a2626a7b5636a3cfbbca1e88764473f",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Navigation drawer rule: The baseline navigation drawer remains represented by its token set, but M3 Expressive recommends using an exp"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "navigation-drawer-breakpoint-availability",
+      "statement": "Use standard drawers in expanded, large and extra-large breakpoints, and modal drawers in compact and medium breakpoints; M3 Expressive recommends an expanded navigation rail instead.",
+      "condition": "When selecting drawer type by breakpoint or design generation.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-drawer/overview",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T165643.276930579Z-2762290517/capture.json",
+          "markdownSha256": "8da4ab3d320c4cbf4a9e91ee84b7adabff4701af146d3828be98b45cef40b891",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Navigation drawer instruction: Use standard drawers in expanded, large and extra-large breakpoints, and modal drawers in compact and medium b"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "navigation-drawer-expressive-recommendation",
+      "statement": "The navigation drawer is no longer recommended in M3 Expressive; use an expanded navigation rail instead.",
+      "condition": "When adopting M3 Expressive.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-drawer/overview",
+          "section": "53d46918-b672-4731-94fe-78fb73f7d0d2",
+          "capture": "snapshots/material-guidance/20261025T165643.276930579Z-2762290517/capture.json",
+          "markdownSha256": "8da4ab3d320c4cbf4a9e91ee84b7adabff4701af146d3828be98b45cef40b891",
+          "extractorVersion": 2,
+          "summary": "Captured the specific M3 Expressive update rule: The navigation drawer is no longer recommended in M3 Expressive; use an expanded navigation rail instead."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "navigation-drawer-touch-and-cursor-feedback",
+      "statement": "On touch, show the active indicator and ripple and change the selected icon from outlined to filled and darker. On cursor hover, show the hover indicator; on click show the ripple and filled icon, adjusting icon brightness for light or dark theme.",
+      "condition": "When a destination is tapped, hovered or clicked.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-drawer/accessibility",
+          "section": "f3fa24ec-38d1-4c78-910e-edefca0a3db6",
+          "capture": "snapshots/material-guidance/20261025T165643.276930579Z-2762290517/capture.json",
+          "markdownSha256": "dc40785bd5e8f5807fb852ad604e6cee6d23b65a99567d239154df1ff0608e3b",
+          "extractorVersion": 2,
+          "summary": "Curated explicit Interaction & style guidance: On touch, show the active indicator and ripple and change the selected icon from outlined to filled and darker"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "place-the-modal-scrim-directly-behind-the",
+      "statement": "Place the modal scrim directly behind the drawer sheet so it blocks the rest of the app and can be activated to dismiss.",
+      "condition": "When rendering a modal drawer.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-drawer/guidelines",
+          "section": "9f53babe-e59f-4335-b6eb-c0412322f7ac",
+          "capture": "snapshots/material-guidance/20261025T165643.276930579Z-2762290517/capture.json",
+          "markdownSha256": "2c0d33564be8ed2edf6745817ed33bcfad9c20b87d39e40e24513d7a7bb66768",
+          "extractorVersion": 2,
+          "summary": "Curated from Scrim (modal only): Place the modal scrim directly behind the drawer sheet so it blocks the rest of the app and can be activated t"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "put-initial-focus-on-the-first-navigation",
+      "statement": "Put initial focus on the first navigation item.",
+      "condition": "When focus enters the drawer.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-drawer/accessibility",
+          "section": "8083508f-8940-4166-8f26-5c71a6089979",
+          "capture": "snapshots/material-guidance/20261025T165643.276930579Z-2762290517/capture.json",
+          "markdownSha256": "dc40785bd5e8f5807fb852ad604e6cee6d23b65a99567d239154df1ff0608e3b",
+          "extractorVersion": 2,
+          "summary": "Curated from Initial focus: Put initial focus on the first navigation item."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "require-concise-labels-that-do-not-wrap",
+      "statement": "Require concise labels that do not wrap; truncate only when necessary rather than shrinking text. If using icons, put them before labels and use them for every destination or none.",
+      "condition": "When composing drawer destinations.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-drawer/guidelines",
+          "section": "899163db-d320-495f-9406-1a0b56825e1e",
+          "capture": "snapshots/material-guidance/20261025T165643.276930579Z-2762290517/capture.json",
+          "markdownSha256": "2c0d33564be8ed2edf6745817ed33bcfad9c20b87d39e40e24513d7a7bb66768",
+          "extractorVersion": 2,
+          "summary": "Curated from Label text and icons: Require concise labels that do not wrap; truncate only when necessary rather than shrinking text. If using ico"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "scroll-drawer-destinations-independently-while-the-rest",
+      "statement": "Scroll drawer destinations independently while the rest of the screen remains stationary.",
+      "condition": "When drawer contents exceed its height.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-drawer/guidelines",
+          "section": "59825d3d-bb04-4720-b5dc-5c65953a37e5",
+          "capture": "snapshots/material-guidance/20261025T165643.276930579Z-2762290517/capture.json",
+          "markdownSha256": "2c0d33564be8ed2edf6745817ed33bcfad9c20b87d39e40e24513d7a7bb66768",
+          "extractorVersion": 2,
+          "summary": "Curated from Scrolling: Scroll drawer destinations independently while the rest of the screen remains stationary."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tab-focuses-the-first-destination-space-or",
+      "statement": "Tab focuses the first navigation destination; Space or Enter selects it and moves focus into the newly opened section when applicable; arrow keys move among drawer destinations.",
+      "condition": "When operating the drawer by keyboard.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-drawer/accessibility",
+          "section": "b57e43ee-ee92-4067-8105-570e89e1b122",
+          "capture": "snapshots/material-guidance/20261025T165643.276930579Z-2762290517/capture.json",
+          "markdownSha256": "dc40785bd5e8f5807fb852ad604e6cee6d23b65a99567d239154df1ff0608e3b",
+          "extractorVersion": 2,
+          "summary": "Curated from Keyboard navigation: Tab focuses the first destination; Space or Enter selects it and moves focus to the opened section when applic"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-a-modal-drawer-alone-or-with",
+      "statement": "Use a modal drawer alone or with a navigation rail; repeated destinations are acceptable only when the drawer visually separates hierarchy levels. Standard drawer is suitable for single-pane expanded layouts.",
+      "condition": "When choosing medium or expanded layout.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-drawer/guidelines",
+          "section": "f01432c1-e709-4865-9394-b78cf7adcbff",
+          "capture": "snapshots/material-guidance/20261025T165643.276930579Z-2762290517/capture.json",
+          "markdownSha256": "2c0d33564be8ed2edf6745817ed33bcfad9c20b87d39e40e24513d7a7bb66768",
+          "extractorVersion": 2,
+          "summary": "Curated from Medium & expanded breakpoints: Use a modal drawer alone or with a navigation rail; repeated destinations are acceptable only when the drawer "
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-a-modal-drawer-or-replace-it",
+      "statement": "Use a modal drawer or replace it with a navigation bar; on web below 320 CSS pixels, use a navigation bar.",
+      "condition": "When adapting compact web layouts.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-drawer/guidelines",
+          "section": "4512327d-9173-4f8f-a7e0-30d10f257f42",
+          "capture": "snapshots/material-guidance/20261025T165643.276930579Z-2762290517/capture.json",
+          "markdownSha256": "2c0d33564be8ed2edf6745817ed33bcfad9c20b87d39e40e24513d7a7bb66768",
+          "extractorVersion": 2,
+          "summary": "Curated from Compact breakpoint: Use a modal drawer or replace it with a navigation bar; on web below 320 CSS pixels, use a navigation bar."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-a-navigation-drawer-for-five-or",
+      "statement": "Use a navigation drawer for five or more top-level destinations, multiple navigation levels, quick movement among unrelated destinations, or as large-screen primary navigation.",
+      "condition": "When choosing a navigation drawer.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-drawer/guidelines",
+          "section": "761e9679-2e72-4a85-894d-55bc3666b567",
+          "capture": "snapshots/material-guidance/20261025T165643.276930579Z-2762290517/capture.json",
+          "markdownSha256": "2c0d33564be8ed2edf6745817ed33bcfad9c20b87d39e40e24513d7a7bb66768",
+          "extractorVersion": 2,
+          "summary": "Curated from Usage: Use a navigation drawer for five or more top-level destinations, multiple navigation levels, quick movement am"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-a-scrim-to-block-interaction-with",
+      "statement": "Use a scrim to block interaction with underlying content; open the modal drawer from an external control and allow dismissal by destination selection, scrim activation, or swipe toward its anchoring edge.",
+      "condition": "When using a modal drawer.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-drawer/guidelines",
+          "section": "fa110155-e653-4f17-ace7-645440542506",
+          "capture": "snapshots/material-guidance/20261025T165643.276930579Z-2762290517/capture.json",
+          "markdownSha256": "2c0d33564be8ed2edf6745817ed33bcfad9c20b87d39e40e24513d7a7bb66768",
+          "extractorVersion": 2,
+          "summary": "Curated from Modal navigation drawer: Use a scrim to block interaction with underlying content; open the modal drawer from an external control and a"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-full-width-dividers-between-groups-of-destinations",
+      "statement": "Use full-width dividers between groups of destinations, not between individual destinations.",
+      "condition": "When separating drawer groups.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-drawer/guidelines",
+          "section": "4ef4dd75-740b-462d-a602-ba1f762a4c1a",
+          "capture": "snapshots/material-guidance/20261025T165643.276930579Z-2762290517/capture.json",
+          "markdownSha256": "2c0d33564be8ed2edf6745817ed33bcfad9c20b87d39e40e24513d7a7bb66768",
+          "extractorVersion": 2,
+          "summary": "Curated from Divider (optional): Use full-width dividers between groups of destinations, not between individual destinations."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-short-section-labels-to-group-related",
+      "statement": "Use short section labels to group related destinations when useful.",
+      "condition": "When grouping longer destination lists.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-drawer/guidelines",
+          "section": "2d3fa03d-a1f0-4bf6-979e-1f93cc64a9be",
+          "capture": "snapshots/material-guidance/20261025T165643.276930579Z-2762290517/capture.json",
+          "markdownSha256": "2c0d33564be8ed2edf6745817ed33bcfad9c20b87d39e40e24513d7a7bb66768",
+          "extractorVersion": 2,
+          "summary": "Curated from Section label (optional): Use short section labels to group related destinations when useful."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-standard-drawers-on-expanded-large-and",
+      "statement": "Use standard drawers on expanded, large and extra-large layouts; keep them permanently visible for frequent switching or dismissible with a visible menu control when content deserves priority. Use modal drawers in compact and medium layouts.",
+      "condition": "When choosing standard versus modal drawer by breakpoint.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-drawer/guidelines",
+          "section": "38800092-0149-4251-ac75-4ce8a144042a",
+          "capture": "snapshots/material-guidance/20261025T165643.276930579Z-2762290517/capture.json",
+          "markdownSha256": "2c0d33564be8ed2edf6745817ed33bcfad9c20b87d39e40e24513d7a7bb66768",
+          "extractorVersion": 2,
+          "summary": "Curated from Standard navigation drawer: Use standard drawers on expanded, large and extra-large layouts; keep them permanently visible for frequent sw"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-the-destination-name-as-the-accessible",
+      "statement": "Use the destination name as the accessible label, adding detail when visible text is ambiguous. When text is correctly linked, assistive technology reads the UI text followed by the role; Android Views cannot set a more descriptive label and does not announce the role.",
+      "condition": "When naming destinations for assistive technology.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-drawer/accessibility",
+          "section": "2ee8fff0-d4c5-413f-84ec-b7b15e5c7807",
+          "capture": "snapshots/material-guidance/20261025T165643.276930579Z-2762290517/capture.json",
+          "markdownSha256": "dc40785bd5e8f5807fb852ad604e6cee6d23b65a99567d239154df1ff0608e3b",
+          "extractorVersion": 2,
+          "summary": "Curated from Labeling elements: Use the destination name as the accessible label unless it is ambiguous, then add clarifying detail; Android V"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "navigation-drawer-supported-item-states",
+      "statement": "Navigation drawer items support enabled, hovered, focused and pressed states.",
+      "condition": "For navigation drawer items.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-drawer/specs",
+          "section": "89e41288-820c-4dc3-ac2e-edc5839e10c7",
+          "capture": "snapshots/material-guidance/20261025T165643.276930579Z-2762290517/capture.json",
+          "markdownSha256": "68adcc31933b0b0ae2bc3f1022c3e66c4a2626a7b5636a3cfbbca1e88764473f",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit States list; visual state styling remains in an uninspected image."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "navigation-drawer-list-composition",
+      "statement": "Treat a navigation drawer as a list within a side sheet; use headers, subheads and dividers to organize longer destination lists, with a section label optional.",
+      "condition": "When a drawer contains a long set of destinations.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-drawer/guidelines",
+          "section": "86ff751b-e510-4428-bfb2-cc5bf9206bb8",
+          "capture": "snapshots/material-guidance/20261025T165643.276930579Z-2762290517/capture.json",
+          "markdownSha256": "2c0d33564be8ed2edf6745817ed33bcfad9c20b87d39e40e24513d7a7bb66768",
+          "extractorVersion": 2,
+          "summary": "Curated explicit Anatomy prose and element list."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

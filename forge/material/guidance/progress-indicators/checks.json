@@ -1,0 +1,723 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "progress-indicators",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/progress-indicators/overview",
+      "capture": "snapshots/material-guidance/20261025T165737.814031208Z-538356006/capture.json",
+      "markdownSha256": "806db7f5fb7ee2d29eb5de23c0746d0532acd95e6b4d81a6044b71b38175b816",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Progress indicators",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "e3cc202e-795b-4c55-a866-f1e8e90b7886",
+          "title": "Availability & resources",
+          "status": "no-requirements",
+          "notes": "This table reports availability of upstream design kits and framework implementations; it is not an implementation requirement for this project."
+        },
+        {
+          "id": "3235e516-f2e6-47f2-807d-adfe1ce6c0a2",
+          "title": "M3 Expressive update",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "85730554-8544-433d-a240-36b4a6525699",
+          "title": "Previous updates",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "795f4b34-3ff0-40a7-af0d-38098cec50fb",
+          "title": "Differences from M2",
+          "status": "no-requirements",
+          "notes": "This section compares historical M2 and M3 presentation. Current variant and behavior requirements are recorded in the relevant M3 specs and guidelines."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/progress-indicators/specs",
+      "capture": "snapshots/material-guidance/20261025T165737.814031208Z-538356006/capture.json",
+      "markdownSha256": "7f8b5e7269fca6e508b8f9b59c537bb85aa4c05ea2aaf4792098d100505e9217",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Progress indicators",
+          "status": "no-requirements",
+          "notes": "This is the page title or brief component summary; actionable requirements are recorded in the linked child sections."
+        },
+        {
+          "id": "39aea591-e849-4468-817f-5f7adfc29f84",
+          "title": "Variants",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "1bc7869b-6c28-495e-930a-7e84ce812597",
+          "title": "Configurations",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "6d66dea7-242d-4916-a2c4-6b409f6eda6c",
+          "title": "Tokens & specs",
+          "status": "no-requirements",
+          "notes": "The section exposes token-set selectors and values; it adds no component behavior beyond the curated checks. Keep token values and references in the source token pipeline."
+        },
+        {
+          "id": "df802220-a9ce-41cf-af6d-6179f9ce57ce",
+          "title": "Anatomy",
+          "status": "unclear",
+          "notes": "The anatomy diagram names active indicator, track and stop indicator; the source relationships and when the stop marker appears are captured by use-the-4dp-stop-indicator-for-linear and retain-the-linear-stop-indicator-whenever-the. The illustration has not been inspected."
+        },
+        {
+          "id": "ba41f67e-bb1b-44f6-9d39-6a845849be6c",
+          "title": "Color",
+          "status": "unclear",
+          "notes": "The alt text describes active/stop as primary and track as secondary-container, but the role assignment is conveyed only by an uninspected diagram; no role-to-element mapping is inferred."
+        },
+        {
+          "id": "a884eecf-a083-4c09-8dd9-68a6fa6cb29d",
+          "title": "Measurements",
+          "status": "unclear",
+          "notes": "The height/amplitude/wavelength definitions, 4dp edge inset and sample-only status of thicker variants are captured by wavy-progress-indicator-measurement-definitions and linear-indicator-edge-inset. Exact linear/circular sizes appear only in uninspected diagrams."
+        },
+        {
+          "id": "c6f484b0-2bc6-4d37-bd75-f859a35a3594",
+          "title": "Baseline tokens",
+          "status": "no-requirements",
+          "notes": "The section exposes token-set selectors and values; it adds no component behavior beyond the curated checks. Keep token values and references in the source token pipeline."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/progress-indicators/guidelines",
+      "capture": "snapshots/material-guidance/20261025T165737.814031208Z-538356006/capture.json",
+      "markdownSha256": "8881b48892a791bd7460b581c3e23e2989f67aa80a0a32dd835b2c02a59cbf74",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Progress indicators",
+          "status": "no-requirements",
+          "notes": "This is the page title or brief component summary; actionable requirements are recorded in the linked child sections."
+        },
+        {
+          "id": "601c4be1-61a6-4984-8385-7e051c0e318d",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "f4cc8d62-23b8-47e5-8ffa-5684ef4f1975",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "The guidelines anatomy list names active indicator, track and stop indicator; stop-marker behavior and contrast conditions are recorded by use-the-4dp-stop-indicator-for-linear and retain-the-linear-stop-indicator-whenever-the."
+        },
+        {
+          "id": "28b13c8b-6aa5-4ad6-b7cf-1c13a13b3063",
+          "title": "Active indicator",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "9dff2796-1d94-45d1-aaec-071c16add24b",
+          "title": "Stop indicator",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "7f63f79a-effd-49e4-b208-939be11bf0c2",
+          "title": "Placement",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "9c5dc532-2c2e-454d-ab53-de3097840706",
+          "title": "Progress indicators in buttons",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "0043ad47-63e5-416b-b807-d6d2212fabe4",
+          "title": "Responsive layout",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "f3ab815e-8038-42e8-8dad-67aec9a10e07",
+          "title": "Right-to-left languages",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "5dab959b-c933-4496-8a15-cb22296029ed",
+          "title": "Large screens",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/progress-indicators/accessibility",
+      "capture": "snapshots/material-guidance/20261025T165737.814031208Z-538356006/capture.json",
+      "markdownSha256": "e014a0d98f1ed55cc4f3127dda40e7536e3316e279c4d77d1af4905374d35e4e",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Progress indicators",
+          "status": "no-requirements",
+          "notes": "This is the page title or brief component summary; actionable requirements are recorded in the linked child sections."
+        },
+        {
+          "id": "4f0c3b38-9d61-4c27-99c0-47631a80aedd",
+          "title": "Use cases",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "a8aa593a-1982-430e-ad34-c8766f05a278",
+          "title": "Interaction & style",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "dbe2eaa6-17a8-449b-84d9-45c9fee63058",
+          "title": "Labeling elements",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "choose-flat-or-wavy-shape-to-suit",
+      "statement": "Choose flat or wavy shape to suit the product tone; account for the wavy shape increasing component height and becoming less visible at very small sizes.",
+      "condition": "When choosing indicator shape.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/progress-indicators/guidelines",
+          "section": "28b13c8b-6aa5-4ad6-b7cf-1c13a13b3063",
+          "capture": "snapshots/material-guidance/20261025T165737.814031208Z-538356006/capture.json",
+          "markdownSha256": "8881b48892a791bd7460b581c3e23e2989f67aa80a0a32dd835b2c02a59cbf74",
+          "extractorVersion": 2,
+          "summary": "Curated from Active indicator: Choose flat or wavy shape to suit the product tone; account for the wavy shape increasing component height and"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "choose-no-indicator-for-waits-under-200ms",
+      "statement": "Choose no indicator for waits under 200ms, a loading indicator for 200ms–5s, and a progress indicator for waits over 5s; for very long work, consider letting people leave while it completes.",
+      "condition": "When selecting process feedback by expected wait time.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/progress-indicators/guidelines",
+          "section": "601c4be1-61a6-4984-8385-7e051c0e318d",
+          "capture": "snapshots/material-guidance/20261025T165737.814031208Z-538356006/capture.json",
+          "markdownSha256": "8881b48892a791bd7460b581c3e23e2989f67aa80a0a32dd835b2c02a59cbf74",
+          "extractorVersion": 2,
+          "summary": "Curated from Usage: Choose no indicator for waits under 200ms, a loading indicator for 200ms–5s, and a progress indicator for wait"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "expose-a-progressbar-role-and-an-accessible",
+      "statement": "Expose a progressbar role and an accessible label identifying the process and affected content, such as loading an article or refreshing a page.",
+      "condition": "When exposing progress to assistive technology.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/progress-indicators/accessibility",
+          "section": "dbe2eaa6-17a8-449b-84d9-45c9fee63058",
+          "capture": "snapshots/material-guidance/20261025T165737.814031208Z-538356006/capture.json",
+          "markdownSha256": "e014a0d98f1ed55cc4f3127dda40e7536e3316e279c4d77d1af4905374d35e4e",
+          "extractorVersion": 2,
+          "summary": "Curated from Labeling elements: Expose a progressbar role and an accessible label identifying the process and affected content, such as loadin"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "for-a-button-action-a-circular-indicator",
+      "statement": "For a button action, a circular indicator may show activity; use a flat shape in very small buttons, match indicator color to icon or label text, remove the track, and avoid applying indicators to every button in a list.",
+      "condition": "When showing button-level progress.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/progress-indicators/guidelines",
+          "section": "9c5dc532-2c2e-454d-ab53-de3097840706",
+          "capture": "snapshots/material-guidance/20261025T165737.814031208Z-538356006/capture.json",
+          "markdownSha256": "8881b48892a791bd7460b581c3e23e2989f67aa80a0a32dd835b2c02a59cbf74",
+          "extractorVersion": 2,
+          "summary": "Curated from Progress indicators in buttons: For a button action, a circular indicator may show activity; use a flat shape in very small buttons, match ind"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "keep-circular-indicators-between-24dp-and-240dp",
+      "statement": "Keep circular indicators between 24dp and 240dp and reserve the largest sizes for large or extra-large windows. Linear indicators should span their container width, not be used in elements under 40dp, and have at least 4dp end padding.",
+      "condition": "When sizing indicators responsively.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/progress-indicators/guidelines",
+          "section": "5dab959b-c933-4496-8a15-cb22296029ed",
+          "capture": "snapshots/material-guidance/20261025T165737.814031208Z-538356006/capture.json",
+          "markdownSha256": "8881b48892a791bd7460b581c3e23e2989f67aa80a0a32dd835b2c02a59cbf74",
+          "extractorVersion": 2,
+          "summary": "Curated from Large screens: Keep circular indicators between 24dp and 240dp and reserve the largest sizes for large or extra-large windows"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "keep-the-same-linear-or-circular-variant",
+      "statement": "Keep the same linear or circular variant for the same process throughout the product; use linear at a container edge and circular centered in an element.",
+      "condition": "When choosing and reusing indicator variants.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/progress-indicators/guidelines",
+          "section": "601c4be1-61a6-4984-8385-7e051c0e318d",
+          "capture": "snapshots/material-guidance/20261025T165737.814031208Z-538356006/capture.json",
+          "markdownSha256": "8881b48892a791bd7460b581c3e23e2989f67aa80a0a32dd835b2c02a59cbf74",
+          "extractorVersion": 2,
+          "summary": "Curated from Usage: Keep the same linear or circular variant for the same process throughout the product; use linear at a containe"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "linear-indicator-edge-inset",
+      "statement": "Inset a linear progress indicator 4dp from the screen edge.",
+      "condition": "When a linear indicator is inset from the screen edge.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/progress-indicators/specs",
+          "section": "a884eecf-a083-4c09-8dd9-68a6fa6cb29d",
+          "capture": "snapshots/material-guidance/20261025T165737.814031208Z-538356006/capture.json",
+          "markdownSha256": "7f8b5e7269fca6e508b8f9b59c537bb85aa4c05ea2aaf4792098d100505e9217",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Measurements prose or table: Inset a linear progress indicator 4dp from the screen edge."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "maintain-at-least-3-1-contrast-for-the",
+      "statement": "Maintain at least 3:1 contrast for the active indicator; when integrated in another component, match its icon or label color and remove the track.",
+      "condition": "When selecting indicator colors.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/progress-indicators/accessibility",
+          "section": "a8aa593a-1982-430e-ad34-c8766f05a278",
+          "capture": "snapshots/material-guidance/20261025T165737.814031208Z-538356006/capture.json",
+          "markdownSha256": "e014a0d98f1ed55cc4f3127dda40e7536e3316e279c4d77d1af4905374d35e4e",
+          "extractorVersion": 2,
+          "summary": "Curated from Interaction & style: Maintain at least 3:1 contrast for the active indicator; when integrated in another component, match its icon "
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "mirror-linear-progress-indicators-for-rtl-circular",
+      "statement": "Mirror linear progress indicators for RTL; circular indicators do not need mirroring.",
+      "condition": "When rendering progress in RTL.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/progress-indicators/guidelines",
+          "section": "f3ab815e-8038-42e8-8dad-67aec9a10e07",
+          "capture": "snapshots/material-guidance/20261025T165737.814031208Z-538356006/capture.json",
+          "markdownSha256": "8881b48892a791bd7460b581c3e23e2989f67aa80a0a32dd835b2c02a59cbf74",
+          "extractorVersion": 2,
+          "summary": "Curated from Right-to-left languages: Mirror linear progress indicators for RTL; circular indicators do not need mirroring."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "place-linear-indicators-along-the-loading-container",
+      "statement": "Place linear indicators along the loading container edge (or its changing edge) and circular indicators centered on the loading container or page. Use one page-level indicator for page-wide loading.",
+      "condition": "When placing progress feedback.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/progress-indicators/guidelines",
+          "section": "7f63f79a-effd-49e4-b208-939be11bf0c2",
+          "capture": "snapshots/material-guidance/20261025T165737.814031208Z-538356006/capture.json",
+          "markdownSha256": "8881b48892a791bd7460b581c3e23e2989f67aa80a0a32dd835b2c02a59cbf74",
+          "extractorVersion": 2,
+          "summary": "Curated from Placement: Place linear indicators along the loading container edge (or its changing edge) and circular indicators center"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "progress-indicator-assistive-use-cases",
+      "statement": "People using assistive technology must be able to reach the progress indicator and understand the progress it communicates.",
+      "condition": "When exposing progress feedback.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/progress-indicators/accessibility",
+          "section": "4f0c3b38-9d61-4c27-99c0-47631a80aedd",
+          "capture": "snapshots/material-guidance/20261025T165737.814031208Z-538356006/capture.json",
+          "markdownSha256": "e014a0d98f1ed55cc4f3127dda40e7536e3316e279c4d77d1af4905374d35e4e",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Use cases instruction: People using assistive technology must be able to reach the progress indicator and understand the progress it "
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "progress-indicator-configuration-availability",
+      "statement": "Determinate and indeterminate behavior, fixed 4dp track thickness, and flat shape are available in M3 and M3 Expressive; configurable thickness and wavy shape are M3 Expressive additions.",
+      "condition": "When choosing progress-indicator configurations by design generation.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/progress-indicators/specs",
+          "section": "1bc7869b-6c28-495e-930a-7e84ce812597",
+          "capture": "snapshots/material-guidance/20261025T165737.814031208Z-538356006/capture.json",
+          "markdownSha256": "7f8b5e7269fca6e508b8f9b59c537bb85aa4c05ea2aaf4792098d100505e9217",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Configurations rule: Determinate and indeterminate behavior, fixed 4dp track thickness, and flat shape are available in M3 and M3 E"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "progress-indicator-variant-availability",
+      "statement": "Linear and circular progress indicator variants are available in both M3 and M3 Expressive.",
+      "condition": "When exposing progress-indicator variant availability.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/progress-indicators/specs",
+          "section": "39aea591-e849-4468-817f-5f7adfc29f84",
+          "capture": "snapshots/material-guidance/20261025T165737.814031208Z-538356006/capture.json",
+          "markdownSha256": "7f8b5e7269fca6e508b8f9b59c537bb85aa4c05ea2aaf4792098d100505e9217",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Variants rule: Linear and circular progress indicator variants are available in both M3 and M3 Expressive."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "retain-the-linear-stop-indicator-whenever-the",
+      "statement": "Retain the linear stop indicator whenever the track has less than 3:1 contrast with its container or surrounding surface.",
+      "condition": "When rendering a linear determinate indicator.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/progress-indicators/accessibility",
+          "section": "a8aa593a-1982-430e-ad34-c8766f05a278",
+          "capture": "snapshots/material-guidance/20261025T165737.814031208Z-538356006/capture.json",
+          "markdownSha256": "e014a0d98f1ed55cc4f3127dda40e7536e3316e279c4d77d1af4905374d35e4e",
+          "extractorVersion": 2,
+          "summary": "Curated from Interaction & style: Retain the linear stop indicator whenever the track has less than 3:1 contrast with its container or surroundi"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "same-process-progress-indicator-consistency",
+      "statement": "Use the same progress-indicator configuration for all instances of the same process.",
+      "condition": "When the same process appears in multiple places.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/progress-indicators/overview",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T165737.814031208Z-538356006/capture.json",
+          "markdownSha256": "806db7f5fb7ee2d29eb5de23c0746d0532acd95e6b4d81a6044b71b38175b816",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Progress indicators instruction: Use the same progress-indicator configuration for all instances of the same process."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "show-the-active-indicator-as-soon-as",
+      "statement": "Show the active indicator as soon as progress begins; at very low percentages it should appear as a dot.",
+      "condition": "When progress has just begun.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/progress-indicators/guidelines",
+          "section": "28b13c8b-6aa5-4ad6-b7cf-1c13a13b3063",
+          "capture": "snapshots/material-guidance/20261025T165737.814031208Z-538356006/capture.json",
+          "markdownSha256": "8881b48892a791bd7460b581c3e23e2989f67aa80a0a32dd835b2c02a59cbf74",
+          "extractorVersion": 2,
+          "summary": "Curated from Active indicator: Show the active indicator as soon as progress begins; at very low percentages it should appear as a dot."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-determinate-progress-only-when-progress-and",
+      "statement": "Use determinate progress only when progress and wait time are known, and represent measured progress accurately; otherwise use indeterminate and switch to determinate when information becomes available.",
+      "condition": "When progress information is known or changes.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/progress-indicators/guidelines",
+          "section": "601c4be1-61a6-4984-8385-7e051c0e318d",
+          "capture": "snapshots/material-guidance/20261025T165737.814031208Z-538356006/capture.json",
+          "markdownSha256": "8881b48892a791bd7460b581c3e23e2989f67aa80a0a32dd835b2c02a59cbf74",
+          "extractorVersion": 2,
+          "summary": "Curated from Usage: Use determinate progress only when progress and wait time are known, and represent measured progress accuratel"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-one-indicator-for-a-group-of",
+      "statement": "Use one indicator for a group of loading items rather than one per activity, unless items are activated independently.",
+      "condition": "When multiple items are loading.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/progress-indicators/guidelines",
+          "section": "601c4be1-61a6-4984-8385-7e051c0e318d",
+          "capture": "snapshots/material-guidance/20261025T165737.814031208Z-538356006/capture.json",
+          "markdownSha256": "8881b48892a791bd7460b581c3e23e2989f67aa80a0a32dd835b2c02a59cbf74",
+          "extractorVersion": 2,
+          "summary": "Curated from Usage: Use one indicator for a group of loading items rather than one per activity, unless items are activated indepe"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-the-4dp-stop-indicator-for-linear",
+      "statement": "Use the 4dp stop indicator for linear determinate progress; it is not used for indeterminate or circular indicators. It is required when the track contrast is below 3:1 against its container or surrounding surface.",
+      "condition": "When rendering a linear determinate indicator.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/progress-indicators/guidelines",
+          "section": "9dff2796-1d94-45d1-aaec-071c16add24b",
+          "capture": "snapshots/material-guidance/20261025T165737.814031208Z-538356006/capture.json",
+          "markdownSha256": "8881b48892a791bd7460b581c3e23e2989f67aa80a0a32dd835b2c02a59cbf74",
+          "extractorVersion": 2,
+          "summary": "Curated from Stop indicator: Use the 4dp stop indicator for linear determinate progress; it is not used for indeterminate or circular indic"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "wavy-progress-indicator-measurement-definitions",
+      "statement": "For wavy indicators, height is the overall container height, amplitude runs from the center of the resting position to the center of a peak, and wavelength is the distance between adjacent peaks. Thicker variants are sample measurements to adjust for the use case, not fixed defaults.",
+      "condition": "When using a wavy indicator or selecting a thicker variant.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/progress-indicators/specs",
+          "section": "a884eecf-a083-4c09-8dd9-68a6fa6cb29d",
+          "capture": "snapshots/material-guidance/20261025T165737.814031208Z-538356006/capture.json",
+          "markdownSha256": "7f8b5e7269fca6e508b8f9b59c537bb85aa4c05ea2aaf4792098d100505e9217",
+          "extractorVersion": 2,
+          "summary": "Curated explicit measurement definitions and the source caveat on thicker variants."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

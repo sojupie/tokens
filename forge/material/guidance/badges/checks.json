@@ -1,0 +1,447 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "badges",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/badges/overview",
+      "capture": "snapshots/material-guidance/20261025T165141.039791708Z-705375080/capture.json",
+      "markdownSha256": "f5bae87109eec28fb9ac0adb06829805d9a96e4c7e676f7d0720d5f7ed1c694c",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Badges",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "beee7300-ca46-4f19-985e-ab3d7f270596",
+          "title": "Availability & resources",
+          "status": "no-requirements",
+          "notes": "Resource availability, token/color reference, descriptive state configurations, historical context, or an anatomy inventory; no additional behavioral instruction is stated here."
+        },
+        {
+          "id": "d0a52025-e144-468a-8352-16158799f162",
+          "title": "Differences from M2",
+          "status": "no-requirements",
+          "notes": "Resource availability, token/color reference, descriptive state configurations, historical context, or an anatomy inventory; no additional behavioral instruction is stated here."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/badges/specs",
+      "capture": "snapshots/material-guidance/20261025T165141.039791708Z-705375080/capture.json",
+      "markdownSha256": "6ab65dddd0a127ca81a8350c0691ad797d05ff0029dc307f7a16641dda54ac60",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Badges",
+          "status": "no-requirements",
+          "notes": "Repeated component description or parent heading; actionable guidance is captured in the specific child sections."
+        },
+        {
+          "id": "d9896e2c-2211-445e-998e-762b98435fba",
+          "title": "Tokens & specs",
+          "status": "no-requirements",
+          "notes": "Resource availability, token/color reference, descriptive state configurations, historical context, or an anatomy inventory; no additional behavioral instruction is stated here."
+        },
+        {
+          "id": "8e3b2603-307c-4b73-900b-9066c462c445",
+          "title": "Color",
+          "status": "no-requirements",
+          "notes": "Resource availability, token/color reference, descriptive state configurations, historical context, or an anatomy inventory; no additional behavioral instruction is stated here."
+        },
+        {
+          "id": "06b2c62c-34a6-4da4-9649-f206b04e8901",
+          "title": "Measurements",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "12b5a92a-0a6d-476a-920f-9e28b4d6d130",
+          "title": "Configuration",
+          "status": "no-requirements",
+          "notes": "Resource availability, token/color reference, descriptive state configurations, historical context, or an anatomy inventory; no additional behavioral instruction is stated here."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/badges/guidelines",
+      "capture": "snapshots/material-guidance/20261025T165141.039791708Z-705375080/capture.json",
+      "markdownSha256": "aaf247f1059eb4d916894ef1c264fecdfe1087afeea16318ce347ecfaf1ed205",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Badges",
+          "status": "no-requirements",
+          "notes": "Repeated component description or parent heading; actionable guidance is captured in the specific child sections."
+        },
+        {
+          "id": "fba3a5ac-2cf4-40f2-9f97-e528a3a437ca",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "946cac01-7a28-4a01-8188-6d781c945229",
+          "title": "With other components",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "07608fcc-43f7-47b3-b5cb-ee617753b877",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "Resource availability, token/color reference, descriptive state configurations, historical context, or an anatomy inventory; no additional behavioral instruction is stated here."
+        },
+        {
+          "id": "9415074f-2359-4fde-be02-839a3987d251",
+          "title": "Container",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "6389634a-99ca-4004-8c6f-1d3d3a742238",
+          "title": "Label text",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "92c9d4f0-e787-48ad-a9ad-d1830d4bffc1",
+          "title": "Placement",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/badges/accessibility",
+      "capture": "snapshots/material-guidance/20261025T165141.039791708Z-705375080/capture.json",
+      "markdownSha256": "b2b2361761e1fe679c25d5bc90ba2ba7c0d92103439bc656e44e7986c18eda69",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Badges",
+          "status": "no-requirements",
+          "notes": "Repeated component description or parent heading; actionable guidance is captured in the specific child sections."
+        },
+        {
+          "id": "203e394e-02f6-4666-bc7a-b8c173e09f05",
+          "title": "Use cases",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "8510693a-ad02-464d-b1e9-7ce4421f4822",
+          "title": "Interaction & style",
+          "status": "no-requirements",
+          "notes": "Repeated component description or parent heading; actionable guidance is captured in the specific child sections."
+        },
+        {
+          "id": "6a338f05-789f-4387-b546-c8714e69faa1",
+          "title": "Visual indicators",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "99426e3a-bc75-4176-833a-383290f7e3a4",
+          "title": "Labeling elements",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "page-variants",
+      "statement": "Use a small badge for an unread notification and a large badge for a count or status label.",
+      "condition": "When indicating status on an icon or navigation destination.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/badges/overview",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T165141.039791708Z-705375080/capture.json",
+          "markdownSha256": "f5bae87109eec28fb9ac0adb06829805d9a96e4c7e676f7d0720d5f7ed1c694c",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Badges guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "anchor-in-bounds",
+      "statement": "Anchor badges inside the icon bounding box at the ending edge; mirror placement for right-to-left layouts and do not place badges arbitrarily over the icon.",
+      "condition": "When positioning badges.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/badges/guidelines",
+          "section": "9415074f-2359-4fde-be02-839a3987d251",
+          "capture": "snapshots/material-guidance/20261025T165141.039791708Z-705375080/capture.json",
+          "markdownSha256": "aaf247f1059eb4d916894ef1c264fecdfe1087afeea16318ce347ecfaf1ed205",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Container guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "default-color-contrast",
+      "statement": "Keep the default badge color mapping; if custom colors are necessary, maintain at least 3:1 contrast between badge, label, and nearby content.",
+      "condition": "When styling badges.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/badges/guidelines",
+          "section": "9415074f-2359-4fde-be02-839a3987d251",
+          "capture": "snapshots/material-guidance/20261025T165141.039791708Z-705375080/capture.json",
+          "markdownSha256": "aaf247f1059eb4d916894ef1c264fecdfe1087afeea16318ce347ecfaf1ed205",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Container guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "badge-four-character-limit",
+      "statement": "Limit large badge labels to four characters, including a plus sign, and truncate counts as needed so labels do not clip or collide.",
+      "condition": "For large badges.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/badges/guidelines",
+          "section": "6389634a-99ca-4004-8c6f-1d3d3a742238",
+          "capture": "snapshots/material-guidance/20261025T165141.039791708Z-705375080/capture.json",
+          "markdownSha256": "aaf247f1059eb4d916894ef1c264fecdfe1087afeea16318ce347ecfaf1ed205",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Label text guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "constrained-space-small-badge",
+      "statement": "Use a small badge in constrained spaces such as app bars; use a large badge for counts when it will not collide with adjacent content.",
+      "condition": "When choosing badge size.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/badges/guidelines",
+          "section": "92c9d4f0-e787-48ad-a9ad-d1830d4bffc1",
+          "capture": "snapshots/material-guidance/20261025T165141.039791708Z-705375080/capture.json",
+          "markdownSha256": "aaf247f1059eb4d916894ef1c264fecdfe1087afeea16318ce347ecfaf1ed205",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Placement guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "hide-selected-destination-badge",
+      "statement": "Hide an unread-notification badge after its navigation destination is selected.",
+      "condition": "When a badge marks unread notifications in navigation.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/badges/guidelines",
+          "section": "946cac01-7a28-4a01-8188-6d781c945229",
+          "capture": "snapshots/material-guidance/20261025T165141.039791708Z-705375080/capture.json",
+          "markdownSha256": "aaf247f1059eb4d916894ef1c264fecdfe1087afeea16318ce347ecfaf1ed205",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured With other components guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "badge-announcement",
+      "statement": "Expose a numerical badge so its number follows the destination label; announce a non-counting badge as “New notification.”",
+      "condition": "For screen-reader output.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/badges/accessibility",
+          "section": "99426e3a-bc75-4176-833a-383290f7e3a4",
+          "capture": "snapshots/material-guidance/20261025T165141.039791708Z-705375080/capture.json",
+          "markdownSha256": "b2b2361761e1fe679c25d5bc90ba2ba7c0d92103439bc656e44e7986c18eda69",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Labeling elements guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "badge-contrast",
+      "statement": "Use default badge colors and maintain at least 3:1 contrast.",
+      "condition": "For badge colors and labels.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/badges/accessibility",
+          "section": "6a338f05-789f-4387-b546-c8714e69faa1",
+          "capture": "snapshots/material-guidance/20261025T165141.039791708Z-705375080/capture.json",
+          "markdownSha256": "b2b2361761e1fe679c25d5bc90ba2ba7c0d92103439bc656e44e7986c18eda69",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Visual indicators guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "badge-measurements",
+      "statement": "Use the specified small badge 6dp size and 3dp corners; use 16dp height for large badges, 16×34dp for maximum-character badges, 4dp label padding, and the prescribed 6×6dp (small) or 14×12dp (large) offset from the icon corner.",
+      "condition": "When implementing the documented Material badge dimensions.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/badges/specs",
+          "section": "06b2c62c-34a6-4da4-9649-f206b04e8901",
+          "capture": "snapshots/material-guidance/20261025T165141.039791708Z-705375080/capture.json",
+          "markdownSha256": "6ab65dddd0a127ca81a8350c0691ad797d05ff0029dc307f7a16641dda54ac60",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Measurements instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "badge-variant-content",
+      "statement": "Use a small circle without text for an unread notification; use a large badge with a count or status label for quantifiable information.",
+      "condition": "When selecting a badge variant.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/badges/guidelines",
+          "section": "fba3a5ac-2cf4-40f2-9f97-e528a3a437ca",
+          "capture": "snapshots/material-guidance/20261025T165141.039791708Z-705375080/capture.json",
+          "markdownSha256": "aaf247f1059eb4d916894ef1c264fecdfe1087afeea16318ce347ecfaf1ed205",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Usage instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "badge-assistive-outcome",
+      "statement": "Ensure assistive technology can understand the badge information and let users reach the corresponding navigation destination to address it.",
+      "condition": "For badges attached to navigation destinations.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/badges/accessibility",
+          "section": "203e394e-02f6-4666-bc7a-b8c173e09f05",
+          "capture": "snapshots/material-guidance/20261025T165141.039791708Z-705375080/capture.json",
+          "markdownSha256": "b2b2361761e1fe679c25d5bc90ba2ba7c0d92103439bc656e44e7986c18eda69",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Use cases instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

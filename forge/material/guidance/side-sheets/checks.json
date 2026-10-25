@@ -1,0 +1,689 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "side-sheets",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/side-sheets/overview",
+      "capture": "snapshots/material-guidance/20261025T165823.961774593Z-3328888855/capture.json",
+      "markdownSha256": "ef5f6aa340912bca9a0792a89294ffa981051b452bf86c91635b36601d99d546",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Side sheets",
+          "status": "no-requirements",
+          "notes": "Optional content/actions that preserve access to primary content are covered by `side-sheet-variant-use` in guidelines."
+        },
+        {
+          "id": "32f078ba-e45e-40be-a66b-f04814fabf7a",
+          "title": "Availability & resources",
+          "status": "no-requirements",
+          "notes": "Resource links and upstream platform availability only."
+        },
+        {
+          "id": "2fa2c8fc-3bb5-4f3f-843d-3e2aed0c3d22",
+          "title": "Differences from M2",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/side-sheets/specs",
+      "capture": "snapshots/material-guidance/20261025T165823.961774593Z-3328888855/capture.json",
+      "markdownSha256": "2fd80d716f6962769bebbe61187f335d05e77700853205e8344622f00d13b8c9",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Side sheets",
+          "status": "no-requirements",
+          "notes": "Repeated introductory definition; implementation instructions are in named sections."
+        },
+        {
+          "id": "cbe9c2ec-bb5a-4866-9769-066ea0cbf4af",
+          "title": "Tokens & specs",
+          "status": "no-requirements",
+          "notes": "Token browser is a token/state reference without independent behavior instructions."
+        },
+        {
+          "id": "2c01280e-b4e8-45dd-a47e-fe59d91a382d",
+          "title": "Standard side sheet",
+          "status": "no-requirements",
+          "notes": "Anatomy diagram repeats elements detailed in the guidelines; no additional instruction is stated here."
+        },
+        {
+          "id": "b39a35dc-d553-4f24-bebf-ba3a218cf934",
+          "title": "Standard side sheet color",
+          "status": "unclear",
+          "notes": "Color-role assignments are shown only in an uninspected diagram; the role-to-element mapping cannot be confirmed."
+        },
+        {
+          "id": "5a3c7699-63d1-4b23-a347-fff47653fcd3",
+          "title": "Standard side sheet measurements",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "ad41b7ea-3e3a-41e9-93d7-e7040b28ea26",
+          "title": "Modal side sheet",
+          "status": "no-requirements",
+          "notes": "Anatomy diagram repeats elements detailed in the guidelines; no additional instruction is stated here."
+        },
+        {
+          "id": "9fa82a98-78ae-40de-8a74-ce683009ae41",
+          "title": "Modal side sheet color",
+          "status": "unclear",
+          "notes": "Color-role assignments are shown only in an uninspected diagram; the role-to-element mapping cannot be confirmed."
+        },
+        {
+          "id": "370633e9-d856-4be7-8793-494552c11a4f",
+          "title": "Modal side sheet measurements",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/side-sheets/guidelines",
+      "capture": "snapshots/material-guidance/20261025T165823.961774593Z-3328888855/capture.json",
+      "markdownSha256": "e83c7681ff19653748d5d4ab8c391cbfcb453ee90fca29f34e022c1dd717e288",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Side sheets",
+          "status": "no-requirements",
+          "notes": "Introductory definition; specific placement and behavior guidance follows."
+        },
+        {
+          "id": "a17b14ea-e78f-4f0f-af5a-791a4f689fd6",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "4d992de0-362a-41b3-9537-9da4dec148af",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "Parent heading introduces variant diagrams; element behavior is described in the child sections."
+        },
+        {
+          "id": "9c2f8fdf-c71c-4cf1-abc5-d8753a3932d1",
+          "title": "Container",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "251b21ac-9810-44b1-b300-bcc15bfac9d0",
+          "title": "Back icon button (optional)",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "91bade10-a125-44e3-87e2-9124af239157",
+          "title": "Close icon button (optional)",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "98f181de-efb2-48b8-8c64-38fc9035bca0",
+          "title": "Action buttons (optional)",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "e93965c6-1247-4009-81e7-83b2790c1e20",
+          "title": "Divider (optional)",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "15c5f57a-75f2-48ef-a1a5-e576e0776e79",
+          "title": "Content (optional)",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "f42be562-d21f-4e07-80dd-5db1bfd4a7a3",
+          "title": "Adaptive design",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "e19fb2bb-9229-4131-b66b-431977e88e96",
+          "title": "RTL language support",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "294968c0-235f-4b67-b27a-48f6f4b84cdc",
+          "title": "Behavior",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "c72aa3ea-9b57-4b0d-8194-d6251d1343d5",
+          "title": "Predictive back",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/side-sheets/accessibility",
+      "capture": "snapshots/material-guidance/20261025T165823.961774593Z-3328888855/capture.json",
+      "markdownSha256": "f04dfeb0d2bd0556ad598eff5956b5550cb75455352cf8e24ab28d5d187bb037",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Side sheets",
+          "status": "no-requirements",
+          "notes": "Introductory definition only."
+        },
+        {
+          "id": "e096f254-f7ea-4e9c-a9f9-107929cb5b9a",
+          "title": "Use cases",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "b9deb24c-627b-4742-beef-178cc54043ca",
+          "title": "Interaction & style",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "f86655b9-da5d-4085-846d-d5ba2ba2203b",
+          "title": "Initial focus",
+          "status": "unclear",
+          "notes": "The focus-order sequence is conveyed only in an uninspected diagram; Markdown lists a possible order but does not preserve enough detail to confirm the tab sequence."
+        },
+        {
+          "id": "9c7eb11c-2932-41a3-824b-cc83de1bdb6f",
+          "title": "Keyboard navigation",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "bbd711bc-4823-4cee-a744-6844479264c0",
+          "title": "Labeling",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "side-sheet-rtl-and-modal-shape",
+      "statement": "Support a left-side sheet with reversed elements for RTL languages. M3 modal side sheets use a 16dp corner radius and updated color mappings compatible with dynamic color.",
+      "condition": "When applying M3 side-sheet styling and RTL placement.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/side-sheets/overview",
+          "section": "2fa2c8fc-3bb5-4f3f-843d-3e2aed0c3d22",
+          "capture": "snapshots/material-guidance/20261025T165823.961774593Z-3328888855/capture.json",
+          "markdownSha256": "ef5f6aa340912bca9a0792a89294ffa981051b452bf86c91635b36601d99d546",
+          "extractorVersion": 2,
+          "summary": "M2 comparison names RTL support and modal-sheet radius and color changes."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "standard-side-sheet-measurements",
+      "statement": "Use 24dp start/end padding, 12dp between top elements, 72dp bottom actions height with 16dp top and 24dp bottom padding, left-aligned bottom actions, 400dp maximum width, and 16dp margins when detached.",
+      "condition": "When sizing and laying out a standard side sheet.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/side-sheets/specs",
+          "section": "5a3c7699-63d1-4b23-a347-fff47653fcd3",
+          "capture": "snapshots/material-guidance/20261025T165823.961774593Z-3328888855/capture.json",
+          "markdownSha256": "2fd80d716f6962769bebbe61187f335d05e77700853205e8344622f00d13b8c9",
+          "extractorVersion": 2,
+          "summary": "Standard measurements table gives padding, actions, max width, and detached margins."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "modal-side-sheet-measurements",
+      "statement": "Use 24dp start/end padding, 16dp start padding when a back icon is present, 12dp between top elements, 72dp bottom actions height with 16dp top and 24dp bottom padding, left-aligned actions, 400dp maximum width, and 16dp detached margins.",
+      "condition": "When sizing and laying out a modal side sheet.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/side-sheets/specs",
+          "section": "370633e9-d856-4be7-8793-494552c11a4f",
+          "capture": "snapshots/material-guidance/20261025T165823.961774593Z-3328888855/capture.json",
+          "markdownSha256": "2fd80d716f6962769bebbe61187f335d05e77700853205e8344622f00d13b8c9",
+          "extractorVersion": 2,
+          "summary": "Modal measurements table gives padding, icon-specific padding, actions, max width, and detached margins."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "side-sheet-variant-use",
+      "statement": "Use side sheets to provide optional content and actions without interrupting access to primary content. Use standard sheets mainly at medium and expanded breakpoints for supplementary content and contextual actions while primary content remains interactive; use modal sheets preferably at compact breakpoints, where they must be dismissed before interacting with underlying content. Side sheets have fixed width, typically span screen height, and should sit at a screen edge, usually on the right, with at most a 16dp inset.",
+      "condition": "When choosing a side-sheet variant and placement for a window size.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/side-sheets/guidelines",
+          "section": "a17b14ea-e78f-4f0f-af5a-791a4f689fd6",
+          "capture": "snapshots/material-guidance/20261025T165823.961774593Z-3328888855/capture.json",
+          "markdownSha256": "e83c7681ff19653748d5d4ab8c391cbfcb453ee90fca29f34e022c1dd717e288",
+          "extractorVersion": 2,
+          "summary": "Usage guidance distinguishes standard and modal use by breakpoint, interaction model, and placement."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "side-sheet-required-container",
+      "statement": "The container is the only required element of a side sheet; its size is determined by the elements it holds.",
+      "condition": "When constructing either side-sheet variant.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/side-sheets/guidelines",
+          "section": "9c2f8fdf-c71c-4cf1-abc5-d8753a3932d1",
+          "capture": "snapshots/material-guidance/20261025T165823.961774593Z-3328888855/capture.json",
+          "markdownSha256": "e83c7681ff19653748d5d4ab8c391cbfcb453ee90fca29f34e022c1dd717e288",
+          "extractorVersion": 2,
+          "summary": "Container guidance names the only required element and how its size is determined."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "side-sheet-back-navigation",
+      "statement": "A back icon button may let people leave the side sheet or move to another experience; provide an affordance for returning to primary content because that content remains visible beside or behind the sheet.",
+      "condition": "When a side sheet supports navigation or needs an explicit return path.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/side-sheets/guidelines",
+          "section": "251b21ac-9810-44b1-b300-bcc15bfac9d0",
+          "capture": "snapshots/material-guidance/20261025T165823.961774593Z-3328888855/capture.json",
+          "markdownSha256": "e83c7681ff19653748d5d4ab8c391cbfcb453ee90fca29f34e022c1dd717e288",
+          "extractorVersion": 2,
+          "summary": "Back-button guidance describes optional navigation and the need to return to visible primary content."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "side-sheet-close-affordance",
+      "statement": "Provide a close affordance; a close icon button is highly recommended because it gives a consistent dismissal method, improves accessibility, and makes focused sheets easier to close.",
+      "condition": "For a side sheet that can be dismissed.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/side-sheets/guidelines",
+          "section": "91bade10-a125-44e3-87e2-9124af239157",
+          "capture": "snapshots/material-guidance/20261025T165823.961774593Z-3328888855/capture.json",
+          "markdownSha256": "e83c7681ff19653748d5d4ab8c391cbfcb453ee90fca29f34e022c1dd717e288",
+          "extractorVersion": 2,
+          "summary": "Close-button guidance strongly recommends an explicit close affordance and states its benefits."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "side-sheet-action-buttons",
+      "statement": "Use action buttons for actions available from the sheet, such as Save, Edit, or Download; use elevation, fill, and tone to draw attention to specific actions.",
+      "condition": "When a side sheet presents actions.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/side-sheets/guidelines",
+          "section": "98f181de-efb2-48b8-8c64-38fc9035bca0",
+          "capture": "snapshots/material-guidance/20261025T165823.961774593Z-3328888855/capture.json",
+          "markdownSha256": "e83c7681ff19653748d5d4ab8c391cbfcb453ee90fca29f34e022c1dd717e288",
+          "extractorVersion": 2,
+          "summary": "Action-button guidance gives use and emphasis treatments."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "side-sheet-divider-use",
+      "statement": "Use a divider to separate distinct content regions, including actions from content or user-generated content from system-generated content.",
+      "condition": "When a side sheet contains content that benefits from a visual separation.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/side-sheets/guidelines",
+          "section": "e93965c6-1247-4009-81e7-83b2790c1e20",
+          "capture": "snapshots/material-guidance/20261025T165823.961774593Z-3328888855/capture.json",
+          "markdownSha256": "e83c7681ff19653748d5d4ab8c391cbfcb453ee90fca29f34e022c1dd717e288",
+          "extractorVersion": 2,
+          "summary": "Divider guidance identifies two separations for which dividers should be used."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "side-sheet-content-flexibility",
+      "statement": "Side sheets may contain varied content and layouts, including action lists, supplemental content, and tabular layouts. A modal sheet may transition to a standard sheet on a larger screen.",
+      "condition": "When selecting content or adapting a modal side sheet to a larger screen.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/side-sheets/guidelines",
+          "section": "15c5f57a-75f2-48ef-a1a5-e576e0776e79",
+          "capture": "snapshots/material-guidance/20261025T165823.961774593Z-3328888855/capture.json",
+          "markdownSha256": "e83c7681ff19653748d5d4ab8c391cbfcb453ee90fca29f34e022c1dd717e288",
+          "extractorVersion": 2,
+          "summary": "Content guidance permits varied layouts and describes modal-to-standard adaptation."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "side-sheet-adaptive-width",
+      "statement": "Resize the default side-sheet width as layout needs require. When a standard side sheet opens, shrink the body area to accommodate it while maintaining a margin on the body's trailing edge.",
+      "condition": "When a standard side sheet opens or its layout adapts.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/side-sheets/guidelines",
+          "section": "f42be562-d21f-4e07-80dd-5db1bfd4a7a3",
+          "capture": "snapshots/material-guidance/20261025T165823.961774593Z-3328888855/capture.json",
+          "markdownSha256": "e83c7681ff19653748d5d4ab8c391cbfcb453ee90fca29f34e022c1dd717e288",
+          "extractorVersion": 2,
+          "summary": "Adaptive guidance describes width flexibility and body-area adjustment."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "side-sheet-rtl-placement",
+      "statement": "For right-to-left languages, place side sheets on the left edge of the window and reverse all sheet elements.",
+      "condition": "When the interface uses a right-to-left language.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/side-sheets/guidelines",
+          "section": "e19fb2bb-9229-4131-b66b-431977e88e96",
+          "capture": "snapshots/material-guidance/20261025T165823.961774593Z-3328888855/capture.json",
+          "markdownSha256": "e83c7681ff19653748d5d4ab8c391cbfcb453ee90fca29f34e022c1dd717e288",
+          "extractorVersion": 2,
+          "summary": "RTL guidance specifies left-edge placement and reversal of sheet elements."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "side-sheet-scroll",
+      "statement": "Allow a side sheet to scroll vertically independent of the rest of the UI so its scroll position and the page's position can persist independently; do not allow or suggest horizontal scrolling.",
+      "condition": "When side-sheet content exceeds the available height or is scrollable.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/side-sheets/guidelines",
+          "section": "294968c0-235f-4b67-b27a-48f6f4b84cdc",
+          "capture": "snapshots/material-guidance/20261025T165823.961774593Z-3328888855/capture.json",
+          "markdownSha256": "e83c7681ff19653748d5d4ab8c391cbfcb453ee90fca29f34e022c1dd717e288",
+          "extractorVersion": 2,
+          "summary": "Behavior guidance permits independent vertical scrolling and prohibits horizontal scrolling."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "side-sheet-predictive-back",
+      "statement": "On Android predictive back, detach the sheet from the top and bottom screen edges, preview the previous screen, and scale the sheet and its content in the gesture direction.",
+      "condition": "When implementing Android predictive back for side sheets.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/side-sheets/guidelines",
+          "section": "c72aa3ea-9b57-4b0d-8194-d6251d1343d5",
+          "capture": "snapshots/material-guidance/20261025T165823.961774593Z-3328888855/capture.json",
+          "markdownSha256": "e83c7681ff19653748d5d4ab8c391cbfcb453ee90fca29f34e022c1dd717e288",
+          "extractorVersion": 2,
+          "summary": "Predictive-back guidance lists detachment, previous-screen preview, and gesture-direction scaling."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "side-sheet-accessible-dismissal",
+      "statement": "People must be able to dismiss a side sheet using assistive technology.",
+      "condition": "For any dismissible side sheet.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/side-sheets/accessibility",
+          "section": "e096f254-f7ea-4e9c-a9f9-107929cb5b9a",
+          "capture": "snapshots/material-guidance/20261025T165823.961774593Z-3328888855/capture.json",
+          "markdownSha256": "f04dfeb0d2bd0556ad598eff5956b5550cb75455352cf8e24ab28d5d187bb037",
+          "extractorVersion": 2,
+          "summary": "Use cases require dismissal through assistive technology."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "side-sheet-close-required",
+      "statement": "Always provide a close affordance, such as a close icon button, within a side sheet.",
+      "condition": "For every side sheet, regardless of variant.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/side-sheets/accessibility",
+          "section": "b9deb24c-627b-4742-beef-178cc54043ca",
+          "capture": "snapshots/material-guidance/20261025T165823.961774593Z-3328888855/capture.json",
+          "markdownSha256": "f04dfeb0d2bd0556ad598eff5956b5550cb75455352cf8e24ab28d5d187bb037",
+          "extractorVersion": 2,
+          "summary": "Accessibility guidance strengthens the visual guideline to a required close affordance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "side-sheet-keyboard-icons",
+      "statement": "Tab should move focus to non-disabled icon buttons; Space or Enter should activate a focused non-disabled icon button.",
+      "condition": "When keyboard or switch-control users navigate side-sheet icon buttons.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/side-sheets/accessibility",
+          "section": "9c7eb11c-2932-41a3-824b-cc83de1bdb6f",
+          "capture": "snapshots/material-guidance/20261025T165823.961774593Z-3328888855/capture.json",
+          "markdownSha256": "f04dfeb0d2bd0556ad598eff5956b5550cb75455352cf8e24ab28d5d187bb037",
+          "extractorVersion": 2,
+          "summary": "Keyboard table maps Tab and activation keys to non-disabled icon buttons."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "side-sheet-dialog-role",
+      "statement": "Expose the side sheet with the Dialog accessibility role.",
+      "condition": "When presenting a side sheet to assistive technology.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/side-sheets/accessibility",
+          "section": "bbd711bc-4823-4cee-a744-6844479264c0",
+          "capture": "snapshots/material-guidance/20261025T165823.961774593Z-3328888855/capture.json",
+          "markdownSha256": "f04dfeb0d2bd0556ad598eff5956b5550cb75455352cf8e24ab28d5d187bb037",
+          "extractorVersion": 2,
+          "summary": "Labeling guidance assigns the Dialog role."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

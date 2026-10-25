@@ -1,0 +1,1275 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "search",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/search/overview",
+      "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+      "markdownSha256": "340b7a1e097fcf6d79facfd7144cd5af386aaca27c9a147e4c71ed7519a9d8b1",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Search",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "629d6f55-e782-4736-a0d9-2b26c5971e4c",
+          "title": "Availability & resources",
+          "status": "no-requirements",
+          "notes": "Resource links and upstream platform availability only; they describe library availability, not a design requirement."
+        },
+        {
+          "id": "ff819d7a-bd1f-4593-9b2b-0dd10e8a9a20",
+          "title": "M3 Expressive update",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "d5ad0d94-c918-4152-9e60-4937c5761dd7",
+          "title": "Differences from M2 to M3 baseline",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/search/specs",
+      "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+      "markdownSha256": "39e1192c68a7ff27404d873162f6bf9d452d25122bfef63205901e7666ac329c",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Search",
+          "status": "no-requirements",
+          "notes": "Repeated introductory description; component instructions are in the named sections."
+        },
+        {
+          "id": "84a90f79-7d52-4ad7-b178-637eda9aa5cb",
+          "title": "Variants",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "03a3b60c-cff9-439a-ba2c-16abf1fc5a29",
+          "title": "Configurations",
+          "status": "no-requirements",
+          "notes": "Parent heading; actionable style and layout configurations are mapped in its child sections."
+        },
+        {
+          "id": "254e7e77-fe2a-4dd4-b308-1dc50f22b0f4",
+          "title": "Style",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "fc12e839-f356-4f48-9bd5-0ed210565bfe",
+          "title": "Layout",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "9da92ca7-46bc-4fad-af88-9881e75acdd8",
+          "title": "Tokens & specs",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "d719e49f-8d72-4941-94dd-63ead0d8dc27",
+          "title": "Anatomy",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "e18559c8-d0ec-46e7-a88a-6e56b496a54d",
+          "title": "Examples",
+          "status": "no-requirements",
+          "notes": "Examples illustrate optional trailing element combinations; their choices are covered by guidelines and no further requirement is stated."
+        },
+        {
+          "id": "a9bb73e8-a0e9-48b8-8e2a-7b3f4f4fb988",
+          "title": "Color",
+          "status": "no-requirements",
+          "notes": "Color roles are conveyed only through light/dark diagrams and token references; exact role mapping is not fully available as text."
+        },
+        {
+          "id": "bf58254a-121f-4fa1-8624-e779bf91c44d",
+          "title": "Full-screen layout",
+          "status": "unclear",
+          "notes": "Color-role assignments are embedded in an uninspected image; the text does not expose the diagram's role-to-element mapping."
+        },
+        {
+          "id": "59ec8d45-7ca4-4400-91f8-f869bd7eb8c0",
+          "title": "Docked layout",
+          "status": "unclear",
+          "notes": "Color-role assignments are embedded in an uninspected image; the text does not expose the diagram's role-to-element mapping."
+        },
+        {
+          "id": "65c58b10-4569-43d6-9c11-64a5b02f3099",
+          "title": "States",
+          "status": "no-requirements",
+          "notes": "The section introduces visual interaction states; actionable behavior and accessibility instructions are in the guidelines and accessibility pages."
+        },
+        {
+          "id": "a8332cfb-6467-48c0-97ca-605533038a59",
+          "title": "Search bar",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "de9b2a80-4451-4baf-824a-43981fdc314f",
+          "title": "Search suggestions & results",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "d5081a2b-e852-455d-85d6-df3fbf7b2352",
+          "title": "Measurements",
+          "status": "unclear",
+          "notes": "The section contains measurement diagrams that were not visually inspected; Markdown omits numerous dimensions and cannot establish complete measurement coverage."
+        },
+        {
+          "id": "6910a69a-1c33-42d1-83c5-3da9982e59e3",
+          "title": "Search bar",
+          "status": "unclear",
+          "notes": "The search-bar measurement diagrams are uninspected; Markdown includes some tabular dimensions but not enough to map all illustrated measurements."
+        },
+        {
+          "id": "f6b37841-cd39-442d-8212-ab809c912a74",
+          "title": "Focused search",
+          "status": "no-requirements",
+          "notes": "Parent heading; contained and divided style measurements are described in child sections, where image-only dimensions remain unclear."
+        },
+        {
+          "id": "32db3194-055b-4b67-93c9-bfd4aaf2c7e9",
+          "title": "Contained style",
+          "status": "unclear",
+          "notes": "Full-screen and docked measurement diagrams are uninspected, so their dimensions and padding cannot be fully captured."
+        },
+        {
+          "id": "b3e0cf4a-86be-45e9-bc3a-58053ccbebf8",
+          "title": "Divided style",
+          "status": "unclear",
+          "notes": "Full-screen and docked measurement diagrams are uninspected, so their dimensions and padding cannot be fully captured."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/search/guidelines",
+      "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+      "markdownSha256": "e16fa5e238fd04ff0a44d00020295afd13fe0a2a3c0a727aee4c9abbd2d212c9",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Search",
+          "status": "no-requirements",
+          "notes": "Introductory description repeats search behavior covered in detailed sections."
+        },
+        {
+          "id": "abf7360c-679e-42c9-85a0-769d3961c99e",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "941d0bf7-2337-4cc7-8a5a-ac3f63c1de62",
+          "title": "Different ways to search",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "a9b2df31-8561-4326-82cd-41ed6532b765",
+          "title": "Focused search",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "e51722e4-148a-4b2f-8cd6-8801faeaada9",
+          "title": "Search suggestions & results",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "61e9b319-90a5-4df1-9591-32be516e6087",
+          "title": "Gaps",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "f9dfbcfc-1014-49cc-91ec-ebcd1b3ed09a",
+          "title": "Placement",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "4f6c921c-795f-4e06-9b12-27ae7d502adb",
+          "title": "Focused search layouts",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "210c74c0-4ae9-489d-9bc1-75b987370add",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "The anatomy is shown only in an image and is otherwise covered by the textual anatomy specification."
+        },
+        {
+          "id": "5e292b76-5622-4463-984c-873f4f13b115",
+          "title": "Search bar container",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "c89cf3a1-2b0c-40f9-9ae0-f32ecd193abc",
+          "title": "Container color",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "a8637100-0568-428f-9da1-2dbc704eee80",
+          "title": "Icons & icon buttons",
+          "status": "no-requirements",
+          "notes": "Parent heading; leading and trailing icon requirements are mapped in its child sections."
+        },
+        {
+          "id": "a8637100-0568-428f-9da1-2dbc704eee80--leading-icons",
+          "title": "Leading icons",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "17f5bbe9-268a-4e42-9ee9-08eaba6de3e4",
+          "title": "Trailing icons",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "33cf6ef7-4c8f-4fd1-94b1-b1329d016700",
+          "title": "Text",
+          "status": "no-requirements",
+          "notes": "Parent heading; hinted and entered text behavior are mapped in child sections."
+        },
+        {
+          "id": "33cf6ef7-4c8f-4fd1-94b1-b1329d016700--hinted-search-text",
+          "title": "Hinted search text",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "33cf6ef7-4c8f-4fd1-94b1-b1329d016700--input-text",
+          "title": "Input text",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "eb45ccc4-d1b5-4ea1-bee5-ea1c3d1c5436",
+          "title": "Adaptive design",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "68824788-60a7-4ee8-bab3-a155f7e6ba04",
+          "title": "Focused search",
+          "status": "no-requirements",
+          "notes": "This heading introduces the focused-search subsection; layout behavior is captured in the child section and detailed layout guidance above."
+        },
+        {
+          "id": "26fd4d27-3332-45af-a4aa-dafac5bb589e",
+          "title": "Behavior",
+          "status": "no-requirements",
+          "notes": "Parent heading; focused state, scrolling, results, and predictive-back behavior are mapped in child sections."
+        },
+        {
+          "id": "2d0b9864-9f50-4063-a877-5c5262875a93",
+          "title": "Focused search",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "04df7a54-cce5-40c8-ac4e-c7dffa2b351e",
+          "title": "Scroll",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "22f14d1a-b4fc-4d0e-bc71-cd8691bc98da",
+          "title": "Search results",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "b51db7e7-354b-4f31-bd6d-20df25b4b474",
+          "title": "Predictive back",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/search/accessibility",
+      "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+      "markdownSha256": "eb83ac8ace3980256a43826fdd4958e6f4a41120265446cf58c1f12c4eef5d0c",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Search",
+          "status": "no-requirements",
+          "notes": "Introductory description repeats component behavior covered in accessibility sections."
+        },
+        {
+          "id": "62c73f83-31bb-484f-b22e-c34bcf182662",
+          "title": "Use cases",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "e27b9049-3dbf-466f-8879-970735683d30",
+          "title": "Interaction & style",
+          "status": "no-requirements",
+          "notes": "Parent heading; autosuggest announcement is mapped in its child section."
+        },
+        {
+          "id": "de213f1e-7213-41cf-a558-18b49230551b",
+          "title": "Autosuggest",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "d244fecd-813e-4d94-bbda-b9777feecd0d",
+          "title": "Initial focus",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "b31ae7b1-30e3-4ca2-aadf-9c6c8d54d153",
+          "title": "Keyboard navigation",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "09d905e7-ee50-4dda-9852-292fb2c95f76",
+          "title": "Labeling elements",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "search-expressive-contained-style",
+      "statement": "Use the contained search style as the recommended style; it has a persistent filled container. The divided style is baseline and lacks the latest visual style, motion, and trailing-icon flexibility.",
+      "condition": "When selecting or implementing an M3 Expressive search style.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/search/overview",
+          "section": "ff819d7a-bd1f-4593-9b2b-0dd10e8a9a20",
+          "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+          "markdownSha256": "340b7a1e097fcf6d79facfd7144cd5af386aaca27c9a147e4c71ed7519a9d8b1",
+          "extractorVersion": 2,
+          "summary": "Expressive update recommends contained styling and describes divided style as baseline."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-expressive-focus-motion",
+      "statement": "In M3 Expressive, the search bar grows wider when focused.",
+      "condition": "When using M3 Expressive search.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/search/overview",
+          "section": "ff819d7a-bd1f-4593-9b2b-0dd10e8a9a20",
+          "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+          "markdownSha256": "340b7a1e097fcf6d79facfd7144cd5af386aaca27c9a147e4c71ed7519a9d8b1",
+          "extractorVersion": 2,
+          "summary": "Expressive update specifies search-bar width growth on focus."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-m3-baseline-visuals",
+      "statement": "M3 search bars use rounded shapes and tonal surface, with lower elevation and no default shadow; use the M3 color mappings, which support dynamic color.",
+      "condition": "When applying M3 baseline search styling or documenting its difference from M2.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/search/overview",
+          "section": "d5ad0d94-c918-4152-9e60-4937c5761dd7",
+          "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+          "markdownSha256": "340b7a1e097fcf6d79facfd7144cd5af386aaca27c9a147e4c71ed7519a9d8b1",
+          "extractorVersion": 2,
+          "summary": "M2 comparison describes M3 color, elevation, shape, and tonal-surface changes."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-variant-availability",
+      "statement": "The Search variant is available in both M3 and M3 Expressive.",
+      "condition": "When selecting the documented search variant for either design system version.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/search/specs",
+          "section": "84a90f79-7d52-4ad7-b178-637eda9aa5cb",
+          "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+          "markdownSha256": "39e1192c68a7ff27404d873162f6bf9d452d25122bfef63205901e7666ac329c",
+          "extractorVersion": 2,
+          "summary": "Variants table marks Search available in M3 and M3 Expressive."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-style-options",
+      "statement": "Choose contained or divided search styling. Contained uses a filled container to distinguish the bar from suggestions or results; divided uses a divider and is the baseline style without the latest expressive visuals, motion, or flexibility.",
+      "condition": "When choosing the visual style of a search experience.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/search/specs",
+          "section": "254e7e77-fe2a-4dd4-b308-1dc50f22b0f4",
+          "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+          "markdownSha256": "39e1192c68a7ff27404d873162f6bf9d452d25122bfef63205901e7666ac329c",
+          "extractorVersion": 2,
+          "summary": "Style section defines contained and divided configurations and their distinction."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-layout-options",
+      "statement": "Use either docked or full-screen layout for the suggestions or results list beneath the search bar.",
+      "condition": "When choosing a focused-search results layout.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/search/specs",
+          "section": "fc12e839-f356-4f48-9bd5-0ed210565bfe",
+          "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+          "markdownSha256": "39e1192c68a7ff27404d873162f6bf9d452d25122bfef63205901e7666ac329c",
+          "extractorVersion": 2,
+          "summary": "Layout section identifies docked and full-screen configurations."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-anatomy",
+      "statement": "Provide a search bar and a suggestions/results container; the container is empty by default and uses the list component for content. In divided style, separate the bar and results with a divider.",
+      "condition": "When structuring the search component.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/search/specs",
+          "section": "d719e49f-8d72-4941-94dd-63ead0d8dc27",
+          "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+          "markdownSha256": "39e1192c68a7ff27404d873162f6bf9d452d25122bfef63205901e7666ac329c",
+          "extractorVersion": 2,
+          "summary": "Anatomy prose specifies the bar, empty list container, list component, and divided-style divider."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-bar-states",
+      "statement": "Represent the search bar's enabled, hovered, focused, and pressed (ripple) states.",
+      "condition": "For the search bar interaction states shown in the component specification.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/search/specs",
+          "section": "a8332cfb-6467-48c0-97ca-605533038a59",
+          "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+          "markdownSha256": "39e1192c68a7ff27404d873162f6bf9d452d25122bfef63205901e7666ac329c",
+          "extractorVersion": 2,
+          "summary": "Search bar state list names enabled, hovered, focused, and pressed states."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-result-states",
+      "statement": "Represent enabled, hovered, focused, and pressed (ripple) states for suggestion and result items.",
+      "condition": "For interactive search suggestion and result items.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/search/specs",
+          "section": "de9b2a80-4451-4baf-824a-43981fdc314f",
+          "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+          "markdownSha256": "39e1192c68a7ff27404d873162f6bf9d452d25122bfef63205901e7666ac329c",
+          "extractorVersion": 2,
+          "summary": "Suggestions and results state list names enabled, hovered, focused, and pressed states."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-use-large-collections",
+      "statement": "Use search for products with many items to manage, such as files or messages.",
+      "condition": "When deciding whether a product or view needs search.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/search/guidelines",
+          "section": "abf7360c-679e-42c9-85a0-769d3961c99e",
+          "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+          "markdownSha256": "e16fa5e238fd04ff0a44d00020295afd13fe0a2a3c0a727aee4c9abbd2d212c9",
+          "extractorVersion": 2,
+          "summary": "Usage recommends search for products with many items to manage."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-entry-point-choice",
+      "statement": "Choose the entry point by the product need: use a search bar for content in a specific view, a persistent search app bar integrated into the app bar for primary global search, and a search icon button when search is secondary or not the main focus.",
+      "condition": "When choosing where search is exposed in a product.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/search/guidelines",
+          "section": "941d0bf7-2337-4cc7-8a5a-ac3f63c1de62",
+          "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+          "markdownSha256": "e16fa5e238fd04ff0a44d00020295afd13fe0a2a3c0a727aee4c9abbd2d212c9",
+          "extractorVersion": 2,
+          "summary": "Guidelines map search bar, search app bar, and icon button to view-scoped, global, and secondary search."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-focused-content-states",
+      "statement": "On focus, suggestions may appear before text entry; suggestions or results may update while typing or after a search is executed. Individual focused elements keep their own interaction states.",
+      "condition": "When a search entry point opens focused search.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/search/guidelines",
+          "section": "a9b2df31-8561-4326-82cd-41ed6532b765",
+          "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+          "markdownSha256": "e16fa5e238fd04ff0a44d00020295afd13fe0a2a3c0a727aee4c9abbd2d212c9",
+          "extractorVersion": 2,
+          "summary": "Focused-search section describes suggestion/result timing and independent interaction states."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-results-context",
+      "statement": "Use the list component for suggestions and results; consider adding related leading icons, category labels, avatars or other high-priority items, and filter chips to provide variety and context.",
+      "condition": "When presenting search suggestions or results.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/search/guidelines",
+          "section": "e51722e4-148a-4b2f-8cd6-8801faeaada9",
+          "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+          "markdownSha256": "e16fa5e238fd04ff0a44d00020295afd13fe0a2a3c0a727aee4c9abbd2d212c9",
+          "extractorVersion": 2,
+          "summary": "Guidance describes list-based suggestions/results and optional contextual content."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-result-group-gaps",
+      "statement": "Use gaps to separate suggestion or result items into distinct groups.",
+      "condition": "When the results list contains distinct groups.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/search/guidelines",
+          "section": "61e9b319-90a5-4df1-9591-32be516e6087",
+          "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+          "markdownSha256": "e16fa5e238fd04ff0a44d00020295afd13fe0a2a3c0a727aee4c9abbd2d212c9",
+          "extractorVersion": 2,
+          "summary": "Gaps guidance recommends gaps to separate grouped list items."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-bar-placement",
+      "statement": "Place the search bar where it remains prominent and accessible, typically at the top of the screen; usually keep it at the top of the content and near the content it searches.",
+      "condition": "When placing a search bar in a screen or view.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/search/guidelines",
+          "section": "f9dfbcfc-1014-49cc-91ec-ebcd1b3ed09a",
+          "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+          "markdownSha256": "e16fa5e238fd04ff0a44d00020295afd13fe0a2a3c0a727aee4c9abbd2d212c9",
+          "extractorVersion": 2,
+          "summary": "Placement guidance recommends prominent top-of-content placement near searchable content."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-responsive-layout",
+      "statement": "Use docked focused-search results for medium and expanded windows and full-screen results as the default for compact breakpoints; switch between them as window size changes.",
+      "condition": "When adapting focused search across window sizes.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/search/guidelines",
+          "section": "4f6c921c-795f-4e06-9b12-27ae7d502adb",
+          "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+          "markdownSha256": "e16fa5e238fd04ff0a44d00020295afd13fe0a2a3c0a727aee4c9abbd2d212c9",
+          "extractorVersion": 2,
+          "summary": "Focused layout guidance maps docked and full-screen layouts to breakpoints."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-container-shape-margins",
+      "statement": "In contained style, keep the search bar container shape the same when unfocused and focused. Set its margins to 24dp unfocused and 12dp focused. In divided baseline style, separate the bar and results with a divider.",
+      "condition": "When laying out the search-bar container in either style.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/search/guidelines",
+          "section": "5e292b76-5622-4463-984c-873f4f13b115",
+          "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+          "markdownSha256": "e16fa5e238fd04ff0a44d00020295afd13fe0a2a3c0a727aee4c9abbd2d212c9",
+          "extractorVersion": 2,
+          "summary": "Container guidance specifies persistent shape, state-dependent margins, and the divided-style divider."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-container-contrast",
+      "statement": "Use surface container high for the search bar when the background is white or a tonal surface. Avoid placing it on a surface container background; use surface-container roles more than one step apart to preserve contrast.",
+      "condition": "When choosing the search-bar container color against its screen background.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/search/guidelines",
+          "section": "c89cf3a1-2b0c-40f9-9ae0-f32ecd193abc",
+          "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+          "markdownSha256": "e16fa5e238fd04ff0a44d00020295afd13fe0a2a3c0a727aee4c9abbd2d212c9",
+          "extractorVersion": 2,
+          "summary": "Container color guidance specifies backgrounds and warns against adjacent low-contrast surface roles."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-leading-icon-choice",
+      "statement": "Include either a navigational icon button, such as menu or back, or a non-functional search icon on the leading side.",
+      "condition": "When a search bar has a leading element.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/search/guidelines",
+          "section": "a8637100-0568-428f-9da1-2dbc704eee80--leading-icons",
+          "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+          "markdownSha256": "e16fa5e238fd04ff0a44d00020295afd13fe0a2a3c0a727aee4c9abbd2d212c9",
+          "extractorVersion": 2,
+          "summary": "Leading icon guidance gives the two acceptable leading-element choices."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-trailing-icon-count",
+      "statement": "Provide one or two trailing icons or icon buttons for additional search modes, a separate high-level action, overflow, or a decorative search icon. If an avatar is also present, include at most one other trailing icon button. Focused search may show an optional clear icon to remove input text.",
+      "condition": "When configuring trailing elements on a search bar.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/search/guidelines",
+          "section": "17f5bbe9-268a-4e42-9ee9-08eaba6de3e4",
+          "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+          "markdownSha256": "e16fa5e238fd04ff0a44d00020295afd13fe0a2a3c0a727aee4c9abbd2d212c9",
+          "extractorVersion": 2,
+          "summary": "Trailing icon guidance specifies action examples, count, avatar exception, and optional clear action."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-hint-describe-query",
+      "statement": "Provide short hinted text describing what people can search, such as 'Search replies' or 'Search your messages'.",
+      "condition": "When a search bar has no entered query.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/search/guidelines",
+          "section": "33cf6ef7-4c8f-4fd1-94b1-b1329d016700--hinted-search-text",
+          "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+          "markdownSha256": "e16fa5e238fd04ff0a44d00020295afd13fe0a2a3c0a727aee4c9abbd2d212c9",
+          "extractorVersion": 2,
+          "summary": "Hinted-text guidance recommends a short description of searchable content."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-query-replaces-hint",
+      "statement": "Replace hinted text with the entered query when a person starts typing.",
+      "condition": "When the search field receives query text.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/search/guidelines",
+          "section": "33cf6ef7-4c8f-4fd1-94b1-b1329d016700--input-text",
+          "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+          "markdownSha256": "e16fa5e238fd04ff0a44d00020295afd13fe0a2a3c0a727aee4c9abbd2d212c9",
+          "extractorVersion": 2,
+          "summary": "Input-text guidance specifies that typed query replaces the hint."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-bar-adaptive-width",
+      "statement": "Keep the search bar close to searchable content and within its pane; scale its width with the layout while anchoring internal elements to the parent's left and right edges.",
+      "condition": "When the surrounding layout changes size.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/search/guidelines",
+          "section": "eb45ccc4-d1b5-4ea1-bee5-ea1c3d1c5436",
+          "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+          "markdownSha256": "e16fa5e238fd04ff0a44d00020295afd13fe0a2a3c0a727aee4c9abbd2d212c9",
+          "extractorVersion": 2,
+          "summary": "Adaptive-design guidance specifies pane containment, proximity, scaling, and edge anchoring."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-focus-dismiss",
+      "statement": "When focused search opens, it may show historical suggestions, suggestions or results while typing, or wait until a query is submitted. Selecting the back icon releases focus, dismisses the list, and restores the original search-bar state.",
+      "condition": "When focused search is opened or dismissed with the back icon.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/search/guidelines",
+          "section": "2d0b9864-9f50-4063-a877-5c5262875a93",
+          "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+          "markdownSha256": "e16fa5e238fd04ff0a44d00020295afd13fe0a2a3c0a727aee4c9abbd2d212c9",
+          "extractorVersion": 2,
+          "summary": "Behavior guidance lists supported suggestion timing and back-icon dismissal behavior."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-bar-scroll-policy",
+      "statement": "A search bar may scroll away with content and reappear when the person scrolls up, or remain fixed at the top.",
+      "condition": "When choosing search-bar scrolling behavior for a screen.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/search/guidelines",
+          "section": "04df7a54-cce5-40c8-ac4e-c7dffa2b351e",
+          "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+          "markdownSha256": "e16fa5e238fd04ff0a44d00020295afd13fe0a2a3c0a727aee4c9abbd2d212c9",
+          "extractorVersion": 2,
+          "summary": "Scroll guidance describes scrolling-away/reappearing and fixed alternatives."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-submit-and-results",
+      "statement": "Allow a search to execute by typing a query and pressing Enter or by selecting a suggestion/result. Show results in a list below the bar that scrolls beneath it. After a query is submitted, keep the input text visible but unfocused, and show a clear status indicator such as a search icon or Results label.",
+      "condition": "When executing a search and displaying queried results.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/search/guidelines",
+          "section": "22f14d1a-b4fc-4d0e-bc71-cd8691bc98da",
+          "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+          "markdownSha256": "e16fa5e238fd04ff0a44d00020295afd13fe0a2a3c0a727aee4c9abbd2d212c9",
+          "extractorVersion": 2,
+          "summary": "Search-results guidance specifies execution paths, list placement, query persistence, focus, and a status indicator."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-android-predictive-back",
+      "statement": "On Android, predictive back should detach search from the screen edge to signal that full-screen search will minimize and reveal a preview of the previous screen in the gesture direction.",
+      "condition": "When implementing predictive back for Android search.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/search/guidelines",
+          "section": "b51db7e7-354b-4f31-bd6d-20df25b4b474",
+          "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+          "markdownSha256": "e16fa5e238fd04ff0a44d00020295afd13fe0a2a3c0a727aee4c9abbd2d212c9",
+          "extractorVersion": 2,
+          "summary": "Predictive-back guidance describes edge detachment and previous-screen preview."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-accessible-task-coverage",
+      "statement": "With assistive technology, people must be able to focus the search bar, read its hint or persistent label, enter text and complete a search, interact with suggestions/results, and clear the input.",
+      "condition": "For accessible search experiences.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/search/accessibility",
+          "section": "62c73f83-31bb-484f-b22e-c34bcf182662",
+          "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+          "markdownSha256": "eb83ac8ace3980256a43826fdd4958e6f4a41120265446cf58c1f12c4eef5d0c",
+          "extractorVersion": 2,
+          "summary": "Use cases list the tasks assistive technology users must be able to perform."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-announce-suggestions",
+      "statement": "When suggestions or results appear, announce the change to screen-reader users so they know list items are available for selection.",
+      "condition": "When search suggestions or results become available.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/search/accessibility",
+          "section": "de213f1e-7213-41cf-a558-18b49230551b",
+          "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+          "markdownSha256": "eb83ac8ace3980256a43826fdd4958e6f4a41120265446cf58c1f12c4eef5d0c",
+          "extractorVersion": 2,
+          "summary": "Autosuggest accessibility guidance requires screen-reader announcement of new results."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-initial-focus",
+      "statement": "Place initial focus on the first interactive element, commonly a leading icon button or the text field when there is no leading icon.",
+      "condition": "When search receives initial focus.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/search/accessibility",
+          "section": "d244fecd-813e-4d94-bbda-b9777feecd0d",
+          "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+          "markdownSha256": "eb83ac8ace3980256a43826fdd4958e6f4a41120265446cf58c1f12c4eef5d0c",
+          "extractorVersion": 2,
+          "summary": "Initial-focus guidance describes focus placement and the no-leading-icon case."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-keyboard-navigation",
+      "statement": "Support Tab and Shift+Tab to move between interactive elements, Space or Enter to activate the search field for input, and arrow keys to move between result items.",
+      "condition": "When navigating search by keyboard.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/search/accessibility",
+          "section": "b31ae7b1-30e3-4ca2-aadf-9c6c8d54d153",
+          "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+          "markdownSha256": "eb83ac8ace3980256a43826fdd4958e6f4a41120265446cf58c1f12c4eef5d0c",
+          "extractorVersion": 2,
+          "summary": "Keyboard table maps keys to search navigation, activation, and result movement."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-accessible-labels-roles",
+      "statement": "Use the hinted search text as the search bar's accessibility label. Expose the input as a Text field on Android and a Search field on iOS, and label leading/trailing icon buttons according to icon-button accessibility guidance.",
+      "condition": "When exposing search controls to assistive technology.",
+      "basis": "explicit",
+      "notes": "Captured icon-buttons/accessibility guidance says an icon-button label describes the action it performs, such as Add to favorites or Send message.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/search/accessibility",
+          "section": "09d905e7-ee50-4dda-9852-292fb2c95f76",
+          "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+          "markdownSha256": "eb83ac8ace3980256a43826fdd4958e6f4a41120265446cf58c1f12c4eef5d0c",
+          "extractorVersion": 2,
+          "summary": "Labeling guidance specifies search label, platform-specific input role, and icon-button labels."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-results-list-semantics",
+      "statement": "Build suggestions and results with the list component so screen readers announce them as a list; follow list accessibility guidance for their labels.",
+      "condition": "When exposing search suggestions or results to assistive technology.",
+      "basis": "explicit",
+      "notes": "The captured lists/accessibility guidance says item labels typically combine label and supporting text; selectable list roles and states vary by platform and selection model. Apply the list guidance appropriate to the rendered result list.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/search/accessibility",
+          "section": "09d905e7-ee50-4dda-9852-292fb2c95f76",
+          "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+          "markdownSha256": "eb83ac8ace3980256a43826fdd4958e6f4a41120265446cf58c1f12c4eef5d0c",
+          "extractorVersion": 2,
+          "summary": "Labeling guidance specifies list semantics and defers item labels to list accessibility guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-product-entry-point",
+      "statement": "Use search to navigate products through queries; use a search app bar as an emphasized global entry point.",
+      "condition": "When choosing a search entry point for product navigation.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/search/overview",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+          "markdownSha256": "340b7a1e097fcf6d79facfd7144cd5af386aaca27c9a147e4c71ed7519a9d8b1",
+          "extractorVersion": 2,
+          "summary": "Overview bullet recommends query-based navigation and a global search app bar."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-token-set-selection",
+      "statement": "Select the search bar token set for the unfocused bar; use the search view token set for all other search interactions, including styles and layouts.",
+      "condition": "When selecting token sets for search design or implementation.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/search/specs",
+          "section": "9da92ca7-46bc-4fad-af88-9881e75acdd8",
+          "capture": "snapshots/material-guidance/20261025T165819.292637704Z-1821353731/capture.json",
+          "markdownSha256": "39e1192c68a7ff27404d873162f6bf9d452d25122bfef63205901e7666ac329c",
+          "extractorVersion": 2,
+          "summary": "Token section distinguishes unfocused search-bar tokens from all other search-view tokens."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

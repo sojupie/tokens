@@ -1,0 +1,961 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "bottom-sheets",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/bottom-sheets/overview",
+      "capture": "snapshots/material-guidance/20261025T165141.119197974Z-1803087123/capture.json",
+      "markdownSha256": "4a3bfe51b5a9df6a1509d5118d3f15a7de31548d30213ddbfc4fcf34028cdff2",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Bottom sheets",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "a479146f-e12a-4609-bb8f-12d83835fbc9",
+          "title": "Availability & resources",
+          "status": "no-requirements",
+          "notes": "Resource or token controls, descriptive anatomy/content options, or a repeated parent heading; behavioral guidance is mapped in the specific child sections."
+        },
+        {
+          "id": "0ccc1064-69de-49c2-8342-67dc8424306b",
+          "title": "Differences from M2",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/bottom-sheets/specs",
+      "capture": "snapshots/material-guidance/20261025T165141.119197974Z-1803087123/capture.json",
+      "markdownSha256": "5a9f16b9685e7cca453c52d3bf8afd0b071c5195b0fc74e81151196b11a09cdf",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Bottom sheets",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "8aed7e22-cf70-4e63-8085-90c9453b65a8",
+          "title": "Tokens and specs",
+          "status": "no-requirements",
+          "notes": "Resource or token controls, descriptive anatomy/content options, or a repeated parent heading; behavioral guidance is mapped in the specific child sections."
+        },
+        {
+          "id": "a0e2ae49-90ac-4ea0-a1ff-e7ecfbacaaee",
+          "title": "Color",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "3b256f38-c4fd-44e5-ba46-c5858b626ec7",
+          "title": "Measurements",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/bottom-sheets/guidelines",
+      "capture": "snapshots/material-guidance/20261025T165141.119197974Z-1803087123/capture.json",
+      "markdownSha256": "2a4786b63a928d246f335e2ef8e00ed725111b2baa3c496e6ae1e6969cc0ccc1",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Bottom sheets",
+          "status": "no-requirements",
+          "notes": "Resource or token controls, descriptive anatomy/content options, or a repeated parent heading; behavioral guidance is mapped in the specific child sections."
+        },
+        {
+          "id": "77b6828a-b292-4845-ab9c-031fdcfae0da",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "0dd76c6d-7f76-4ff4-b325-0abf28b00029",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "Resource or token controls, descriptive anatomy/content options, or a repeated parent heading; behavioral guidance is mapped in the specific child sections."
+        },
+        {
+          "id": "da34ffd7-c6bf-41aa-9533-5ccce9767070",
+          "title": "Container",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "04d08275-0a9c-44f1-b2e1-01d0e81a5eb7",
+          "title": "List items (optional)",
+          "status": "no-requirements",
+          "notes": "Resource or token controls, descriptive anatomy/content options, or a repeated parent heading; behavioral guidance is mapped in the specific child sections."
+        },
+        {
+          "id": "0fe19260-d2b4-4058-8f2d-aac7fa14f4c8",
+          "title": "Dividers (optional)",
+          "status": "no-requirements",
+          "notes": "Resource or token controls, descriptive anatomy/content options, or a repeated parent heading; behavioral guidance is mapped in the specific child sections."
+        },
+        {
+          "id": "4a54d201-53f9-49ef-8366-8448b3ead09a",
+          "title": "Media (optional)",
+          "status": "no-requirements",
+          "notes": "Resource or token controls, descriptive anatomy/content options, or a repeated parent heading; behavioral guidance is mapped in the specific child sections."
+        },
+        {
+          "id": "aa1caae4-2d86-4c8c-af09-548a6f666b8a",
+          "title": "Standard bottom sheets",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "1cb775b6-6d2b-4d50-96ad-1862727e986b",
+          "title": "Modal bottom sheets",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "80392478-d528-4295-a912-34677b28c0b5",
+          "title": "Visibility",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "3a8100a2-6801-41aa-af59-a1c520f18888",
+          "title": "Responsive layout",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "de215fc4-4b3c-470f-ab32-65159cf8f3ed",
+          "title": "Compact breakpoint",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "6b04cb93-0448-48ed-91a7-8de6896f8b9e",
+          "title": "Medium and expanded breakpoints",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "47fd3df1-ef51-4590-8e23-430fdcda0cb0",
+          "title": "Behavior",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "f8de1035-3fe7-40cf-8d43-cc5e3ec59cc1",
+          "title": "Custom positioning",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "5735d838-883d-4ced-833a-34c5ee814f12",
+          "title": "Scrolling",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "3d7735e2-73ea-4f3e-bd42-e70161fc1085",
+          "title": "Back",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/bottom-sheets/accessibility",
+      "capture": "snapshots/material-guidance/20261025T165141.119197974Z-1803087123/capture.json",
+      "markdownSha256": "f9d0a03415062790d3983b74020de03ae3d6dba3208914c0bc2e987e050eafe7",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Bottom sheets",
+          "status": "no-requirements",
+          "notes": "Resource or token controls, descriptive anatomy/content options, or a repeated parent heading; behavioral guidance is mapped in the specific child sections."
+        },
+        {
+          "id": "df84219d-44ef-49ed-ac4a-66eeef14c12a",
+          "title": "Use cases",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "ffc3a3b2-6b30-4aa7-ba2a-08c5381eab94",
+          "title": "Interaction & style",
+          "status": "no-requirements",
+          "notes": "Resource or token controls, descriptive anatomy/content options, or a repeated parent heading; behavioral guidance is mapped in the specific child sections."
+        },
+        {
+          "id": "c489be7c-9c37-46e5-9639-e9180a8a5bfb",
+          "title": "Touch target area",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "d5f6502b-7e28-4837-963a-004ab4d8f3c4",
+          "title": "Initial focus",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "559f4bb8-07ee-4164-97d8-99a98e11452b",
+          "title": "Dragging",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "a775d702-c618-425e-82f9-09b52869ec57",
+          "title": "Keyboard navigation",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "f0a8d001-8f37-4e7b-88ee-05fb5836264d",
+          "title": "Labeling",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "secondary-content",
+      "statement": "Use bottom sheets for supplementary content, not the app’s primary content, at compact and medium breakpoints.",
+      "condition": "When presenting supplemental mobile/tablet content.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/bottom-sheets/overview",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T165141.119197974Z-1803087123/capture.json",
+          "markdownSha256": "4a3bfe51b5a9df6a1509d5118d3f15a7de31548d30213ddbfc4fcf34028cdff2",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Bottom sheets guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "modal-scrim",
+      "statement": "Place a scrim behind modal bottom sheets; standard bottom sheets have no scrim.",
+      "condition": "When choosing a bottom-sheet variant.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/bottom-sheets/specs",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T165141.119197974Z-1803087123/capture.json",
+          "markdownSha256": "5a9f16b9685e7cca453c52d3bf8afd0b071c5195b0fc74e81151196b11a09cdf",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Bottom sheets guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "standard-coexist",
+      "statement": "Use standard sheets for complementary content that must remain visible and interactive alongside the main screen; at full-screen height provide an app-bar collapse control.",
+      "condition": "For standard bottom sheets.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/bottom-sheets/guidelines",
+          "section": "aa1caae4-2d86-4c8c-af09-548a6f666b8a",
+          "capture": "snapshots/material-guidance/20261025T165141.119197974Z-1803087123/capture.json",
+          "markdownSha256": "2a4786b63a928d246f335e2ef8e00ed725111b2baa3c496e6ae1e6969cc0ccc1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Standard bottom sheets guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "modal-use-and-platform",
+      "statement": "Use modal sheets for blocking choices such as long action lists with descriptions or icons; modal bottom sheets are for mobile apps.",
+      "condition": "For modal bottom sheets.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/bottom-sheets/guidelines",
+          "section": "1cb775b6-6d2b-4d50-96ad-1862727e986b",
+          "capture": "snapshots/material-guidance/20261025T165141.119197974Z-1803087123/capture.json",
+          "markdownSha256": "2a4786b63a928d246f335e2ef8e00ed725111b2baa3c496e6ae1e6969cc0ccc1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Modal bottom sheets guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "modal-initial-height",
+      "statement": "Cap the initial modal sheet height at 50% of the screen; allow taller content to expand to full screen and scroll internally.",
+      "condition": "For modal sheets whose content exceeds the initial view.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/bottom-sheets/guidelines",
+          "section": "80392478-d528-4295-a912-34677b28c0b5",
+          "capture": "snapshots/material-guidance/20261025T165141.119197974Z-1803087123/capture.json",
+          "markdownSha256": "2a4786b63a928d246f335e2ef8e00ed725111b2baa3c496e6ae1e6969cc0ccc1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Visibility guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "modal-dismiss-options",
+      "statement": "Allow modal sheets to close from a selected action, scrim tap, downward swipe, or available app-bar close control; show a close affordance for full-screen modal sheets.",
+      "condition": "For modal bottom sheets.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/bottom-sheets/guidelines",
+          "section": "80392478-d528-4295-a912-34677b28c0b5",
+          "capture": "snapshots/material-guidance/20261025T165141.119197974Z-1803087123/capture.json",
+          "markdownSha256": "2a4786b63a928d246f335e2ef8e00ed725111b2baa3c496e6ae1e6969cc0ccc1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Visibility guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "large-screen-width",
+      "statement": "On compact screens, span the screen width; on larger screens apply a default max width, allow override when needed, and consider a side sheet on expanded desktop layouts.",
+      "condition": "When adapting bottom sheets across breakpoints.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/bottom-sheets/guidelines",
+          "section": "3a8100a2-6801-41aa-af59-a1c520f18888",
+          "capture": "snapshots/material-guidance/20261025T165141.119197974Z-1803087123/capture.json",
+          "markdownSha256": "2a4786b63a928d246f335e2ef8e00ed725111b2baa3c496e6ae1e6969cc0ccc1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Responsive layout guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "single-pointer-resize",
+      "statement": "Allow sheets to cycle preset heights and close without dragging; provide a single-pointer alternative if multiple heights exist without a drag handle.",
+      "condition": "When a sheet offers preset heights.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/bottom-sheets/guidelines",
+          "section": "f8de1035-3fe7-40cf-8d43-cc5e3ec59cc1",
+          "capture": "snapshots/material-guidance/20261025T165141.119197974Z-1803087123/capture.json",
+          "markdownSha256": "2a4786b63a928d246f335e2ef8e00ed725111b2baa3c496e6ae1e6969cc0ccc1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Custom positioning guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "drag-handle-alternative",
+      "statement": "Provide a non-dragging single-pointer way to change sheet height; selecting the drag handle cycles through available heights, or provide a button if no usable handle exists.",
+      "condition": "When sheet resizing is available.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/bottom-sheets/accessibility",
+          "section": "559f4bb8-07ee-4164-97d8-99a98e11452b",
+          "capture": "snapshots/material-guidance/20261025T165141.119197974Z-1803087123/capture.json",
+          "markdownSha256": "f9d0a03415062790d3983b74020de03ae3d6dba3208914c0bc2e987e050eafe7",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Dragging guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "drag-handle-focus",
+      "statement": "Make a visible drag handle keyboard/switch focusable and operable.",
+      "condition": "When a drag handle is present.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/bottom-sheets/accessibility",
+          "section": "d5f6502b-7e28-4837-963a-004ab4d8f3c4",
+          "capture": "snapshots/material-guidance/20261025T165141.119197974Z-1803087123/capture.json",
+          "markdownSha256": "f9d0a03415062790d3983b74020de03ae3d6dba3208914c0bc2e987e050eafe7",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Initial focus guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "drag-handle-label",
+      "statement": "Label only the drag handle and expose it with the button role.",
+      "condition": "When a drag handle is present.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/bottom-sheets/accessibility",
+          "section": "f0a8d001-8f37-4e7b-88ee-05fb5836264d",
+          "capture": "snapshots/material-guidance/20261025T165141.119197974Z-1803087123/capture.json",
+          "markdownSha256": "f9d0a03415062790d3983b74020de03ae3d6dba3208914c0bc2e987e050eafe7",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Labeling guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "sheet-shape-max-width-handle",
+      "statement": "Use a 28dp top corner radius, a maximum width of 640dp, and an optional drag handle with an accessible 48dp hit target.",
+      "condition": "For M3 bottom sheets.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/bottom-sheets/overview",
+          "section": "0ccc1064-69de-49c2-8342-67dc8424306b",
+          "capture": "snapshots/material-guidance/20261025T165141.119197974Z-1803087123/capture.json",
+          "markdownSha256": "4a3bfe51b5a9df6a1509d5118d3f15a7de31548d30213ddbfc4fcf34028cdff2",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Differences from M2 instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "sheet-color-roles-platform-scrim",
+      "statement": "Use surface-container-low for the sheet, on-surface-variant for the drag handle, and the scrim role for modal sheets; Android handles scrim color and opacity through system UI.",
+      "condition": "For bottom-sheet color roles; Android scrim behavior is platform-managed.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/bottom-sheets/specs",
+          "section": "a0e2ae49-90ac-4ea0-a1ff-e7ecfbacaaee",
+          "capture": "snapshots/material-guidance/20261025T165141.119197974Z-1803087123/capture.json",
+          "markdownSha256": "5a9f16b9685e7cca453c52d3bf8afd0b071c5195b0fc74e81151196b11a09cdf",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Color instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "sheet-measurements",
+      "statement": "Use a 72dp top margin and centered drag handle with 22dp top/bottom padding; when window width exceeds 640dp, use 56dp top and side margins and cap sheet width at 640dp.",
+      "condition": "For the documented bottom-sheet layout.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/bottom-sheets/specs",
+          "section": "3b256f38-c4fd-44e5-ba46-c5858b626ec7",
+          "capture": "snapshots/material-guidance/20261025T165141.119197974Z-1803087123/capture.json",
+          "markdownSha256": "5a9f16b9685e7cca453c52d3bf8afd0b071c5195b0fc74e81151196b11a09cdf",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Measurements instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "sheet-supplementary-layouts",
+      "statement": "Use sheets for supplementary mobile content and actions; their flexible content may include lists, actions, supplemental text, thumbnails, images, or video.",
+      "condition": "When selecting bottom-sheet content.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/bottom-sheets/guidelines",
+          "section": "77b6828a-b292-4845-ab9c-031fdcfae0da",
+          "capture": "snapshots/material-guidance/20261025T165141.119197974Z-1803087123/capture.json",
+          "markdownSha256": "2a4786b63a928d246f335e2ef8e00ed725111b2baa3c496e6ae1e6969cc0ccc1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Usage instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "sheet-container-content-sizing",
+      "statement": "The container is the only required sheet element; size it to the content it contains, while treating handle and modal scrim as optional/variant-specific.",
+      "condition": "For bottom-sheet anatomy.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/bottom-sheets/guidelines",
+          "section": "da34ffd7-c6bf-41aa-9533-5ccce9767070",
+          "capture": "snapshots/material-guidance/20261025T165141.119197974Z-1803087123/capture.json",
+          "markdownSha256": "2a4786b63a928d246f335e2ef8e00ed725111b2baa3c496e6ae1e6969cc0ccc1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Container instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "standard-long-content",
+      "statement": "A standard sheet may continue below the screen with supplementary content; provide preset positions from a preview to full-screen when useful.",
+      "condition": "For standard bottom sheets with extensive content.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/bottom-sheets/guidelines",
+          "section": "aa1caae4-2d86-4c8c-af09-548a6f666b8a",
+          "capture": "snapshots/material-guidance/20261025T165141.119197974Z-1803087123/capture.json",
+          "markdownSha256": "2a4786b63a928d246f335e2ef8e00ed725111b2baa3c496e6ae1e6969cc0ccc1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Standard bottom sheets instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "modal-blocking-choice",
+      "statement": "A modal sheet blocks all other app functionality and stays until confirmed, dismissed, or a required action is taken; use it as a mobile alternative to a menu or simple dialog for long choices or choices needing descriptions/icons.",
+      "condition": "For modal bottom sheets.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/bottom-sheets/guidelines",
+          "section": "1cb775b6-6d2b-4d50-96ad-1862727e986b",
+          "capture": "snapshots/material-guidance/20261025T165141.119197974Z-1803087123/capture.json",
+          "markdownSha256": "2a4786b63a928d246f335e2ef8e00ed725111b2baa3c496e6ae1e6969cc0ccc1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Modal bottom sheets instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "sheet-large-breakpoint-choice",
+      "statement": "On medium and expanded layouts, use a default maximum width to avoid awkward spacing; override only when needed, and consider a non-transient floating sheet for complex flows.",
+      "condition": "At medium and expanded breakpoints.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/bottom-sheets/guidelines",
+          "section": "3a8100a2-6801-41aa-af59-a1c520f18888",
+          "capture": "snapshots/material-guidance/20261025T165141.119197974Z-1803087123/capture.json",
+          "markdownSha256": "2a4786b63a928d246f335e2ef8e00ed725111b2baa3c496e6ae1e6969cc0ccc1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Responsive layout instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "sheet-compact-edge-to-edge",
+      "statement": "At compact breakpoints, extend the bottom sheet across the screen width and elevate it above primary content.",
+      "condition": "At compact breakpoints.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/bottom-sheets/guidelines",
+          "section": "de215fc4-4b3c-470f-ab32-65159cf8f3ed",
+          "capture": "snapshots/material-guidance/20261025T165141.119197974Z-1803087123/capture.json",
+          "markdownSha256": "2a4786b63a928d246f335e2ef8e00ed725111b2baa3c496e6ae1e6969cc0ccc1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Compact breakpoint instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "sheet-expanded-side-sheet",
+      "statement": "On expanded desktop layouts, a side sheet may present the same content more suitably than a bottom sheet.",
+      "condition": "At expanded desktop breakpoints.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/bottom-sheets/guidelines",
+          "section": "6b04cb93-0448-48ed-91a7-8de6896f8b9e",
+          "capture": "snapshots/material-guidance/20261025T165141.119197974Z-1803087123/capture.json",
+          "markdownSha256": "2a4786b63a928d246f335e2ef8e00ed725111b2baa3c496e6ae1e6969cc0ccc1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Medium and expanded breakpoints instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "sheet-expand-collapse",
+      "statement": "Allow a sheet to present collapsed or fully raised states; the system or user may control the transition to provide a predictable footprint.",
+      "condition": "When a sheet offers expansion.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/bottom-sheets/guidelines",
+          "section": "47fd3df1-ef51-4590-8e23-430fdcda0cb0",
+          "capture": "snapshots/material-guidance/20261025T165141.119197974Z-1803087123/capture.json",
+          "markdownSha256": "2a4786b63a928d246f335e2ef8e00ed725111b2baa3c496e6ae1e6969cc0ccc1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Behavior instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "sheet-content-scroll",
+      "statement": "Allow sheet content to scroll independently when it exceeds the initially visible height; horizontal scrolling may also be independent of the rest of the screen.",
+      "condition": "When sheet content exceeds its initial view.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/bottom-sheets/guidelines",
+          "section": "5735d838-883d-4ced-833a-34c5ee814f12",
+          "capture": "snapshots/material-guidance/20261025T165141.119197974Z-1803087123/capture.json",
+          "markdownSha256": "2a4786b63a928d246f335e2ef8e00ed725111b2baa3c496e6ae1e6969cc0ccc1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Scrolling instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "android-predictive-back",
+      "statement": "On Android predictive back, detach the sheet from both screen edges and preview the previous screen; releasing or flinging commits the gesture and cancelling keeps the sheet open.",
+      "condition": "On Android when predictive back is supported.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/bottom-sheets/guidelines",
+          "section": "3d7735e2-73ea-4f3e-bd42-e70161fc1085",
+          "capture": "snapshots/material-guidance/20261025T165141.119197974Z-1803087123/capture.json",
+          "markdownSha256": "2a4786b63a928d246f335e2ef8e00ed725111b2baa3c496e6ae1e6969cc0ccc1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Back instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "sheet-resize-accessibility",
+      "statement": "Provide a way to resize a bottom sheet without relying on touch gestures.",
+      "condition": "When users can resize the sheet.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/bottom-sheets/accessibility",
+          "section": "df84219d-44ef-49ed-ac4a-66eeef14c12a",
+          "capture": "snapshots/material-guidance/20261025T165141.119197974Z-1803087123/capture.json",
+          "markdownSha256": "f9d0a03415062790d3983b74020de03ae3d6dba3208914c0bc2e987e050eafe7",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Use cases instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "sheet-resize-touch-target",
+      "statement": "When user-initiated resizing is available and the handle is present, reserve the top 48dp of the sheet as the resize interaction area.",
+      "condition": "For a sheet with an interactive drag handle.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/bottom-sheets/accessibility",
+          "section": "c489be7c-9c37-46e5-9639-e9180a8a5bfb",
+          "capture": "snapshots/material-guidance/20261025T165141.119197974Z-1803087123/capture.json",
+          "markdownSha256": "f9d0a03415062790d3983b74020de03ae3d6dba3208914c0bc2e987e050eafe7",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Touch target area instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "sheet-handle-focusable",
+      "statement": "Allow the optional drag handle to receive keyboard/switch focus and operate it with non-touch input.",
+      "condition": "When a drag handle is present.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/bottom-sheets/accessibility",
+          "section": "d5f6502b-7e28-4837-963a-004ab4d8f3c4",
+          "capture": "snapshots/material-guidance/20261025T165141.119197974Z-1803087123/capture.json",
+          "markdownSha256": "f9d0a03415062790d3983b74020de03ae3d6dba3208914c0bc2e987e050eafe7",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Initial focus instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "sheet-handle-keyboard-actions",
+      "statement": "Tab focuses the drag handle; Space or Enter toggles between the available sheet heights.",
+      "condition": "When resizing is available through a drag handle.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/bottom-sheets/accessibility",
+          "section": "a775d702-c618-425e-82f9-09b52869ec57",
+          "capture": "snapshots/material-guidance/20261025T165141.119197974Z-1803087123/capture.json",
+          "markdownSha256": "f9d0a03415062790d3983b74020de03ae3d6dba3208914c0bc2e987e050eafe7",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Keyboard navigation instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

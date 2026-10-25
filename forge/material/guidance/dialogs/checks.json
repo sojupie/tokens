@@ -1,0 +1,1641 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "dialogs",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/dialogs/overview",
+      "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+      "markdownSha256": "7e8121ebe87345bc88cadbb66f533fc1ae5efaa28c58c2622cf1d74fae1cd8c5",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Dialogs",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "9274ca46-3d12-4ad8-9f78-16c1cce99ccd",
+          "title": "Availability & resources",
+          "status": "no-requirements",
+          "notes": "Resource links, historical M2 comparison, token/state controls, or visual anatomy inventory only; no additional independently actionable prose appears in this section."
+        },
+        {
+          "id": "e808351b-e6f1-4272-927d-ae954a7d8512",
+          "title": "Differences from M2",
+          "status": "no-requirements",
+          "notes": "Resource links, historical M2 comparison, token/state controls, or visual anatomy inventory only; no additional independently actionable prose appears in this section."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/dialogs/specs",
+      "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+      "markdownSha256": "247c29440024d55035fe578a06531061ede0d91bd2ed8a9d1dbe599ce2c26895",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Dialogs",
+          "status": "no-requirements",
+          "notes": "Repeated page title and introductory component description; no distinct instruction appears in this page-level heading."
+        },
+        {
+          "id": "23e479cf-c5a6-4a8b-87b3-1202d51855ac",
+          "title": "Tokens & specs",
+          "status": "no-requirements",
+          "notes": "Resource links, historical M2 comparison, token/state controls, or visual anatomy inventory only; no additional independently actionable prose appears in this section."
+        },
+        {
+          "id": "be06e8f7-9d7f-4a7e-a3af-033a14ff8dc2",
+          "title": "Basic dialogs",
+          "status": "no-requirements",
+          "notes": "A labeled anatomy diagram inventories the container, optional icon/headline/divider, supporting text, action labels and scrim; it adds no independent behavior or layout instruction."
+        },
+        {
+          "id": "94686e58-f54d-4630-a1ff-91bbe19f2b5f",
+          "title": "Basic dialog color",
+          "status": "unclear",
+          "notes": "The captured prose requires token-backed color values and the role names are listed, but the image-only mapping from each role to specific dialog elements has not been inspected."
+        },
+        {
+          "id": "9a8c226b-19fa-4d6b-894e-e7d5ca9203e8",
+          "title": "Basic dialog measurements",
+          "status": "mapped",
+          "notes": "All numeric attributes and relationships are readable in the captured measurement table and represented by the linked checks."
+        },
+        {
+          "id": "bbf1acde-f8d2-4ae1-9d51-343e96c4ac20",
+          "title": "Full-screen dialogs",
+          "status": "no-requirements",
+          "notes": "The section is a labeled anatomy diagram; its element inventory is descriptive and adds no independent behavior requirement."
+        },
+        {
+          "id": "3892c8ae-feec-493d-b4fb-10d40aa2f334",
+          "title": "Full-screen dialog color",
+          "status": "unclear",
+          "notes": "The captured prose requires token-backed color values and the role names are listed, but the image-only mapping from each role to specific dialog elements has not been inspected."
+        },
+        {
+          "id": "2b93ced7-9b0d-4a59-9bc4-8ff59dcd24c1",
+          "title": "Full-screen dialog measurements",
+          "status": "mapped",
+          "notes": "All numeric attributes and relationships are readable in the captured measurement table and represented by the linked checks."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/dialogs/guidelines",
+      "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+      "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Dialogs",
+          "status": "no-requirements",
+          "notes": "Repeated page title and introductory component description; no distinct instruction appears in this page-level heading."
+        },
+        {
+          "id": "89a9e18e-b7d6-4a8b-9640-07c28a49f8c0",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "822de58f-0391-483c-a9eb-8ee52c072a78",
+          "title": "Similar components",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "1e33c6d0-c56d-4c6f-a424-a742f452968d",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "Resource links, historical M2 comparison, token/state controls, or visual anatomy inventory only; no additional independently actionable prose appears in this section."
+        },
+        {
+          "id": "1e33c6d0-c56d-4c6f-a424-a742f452968d--basic-dialog",
+          "title": "Basic dialog",
+          "status": "no-requirements",
+          "notes": "A numbered anatomy list describes the basic dialog elements but adds no independently testable instruction."
+        },
+        {
+          "id": "6932d2ef-df7c-4b53-8635-da2b5e82f7c2",
+          "title": "Full-screen dialog",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "4fe52c7a-64e8-4e80-bb6e-40f428f17b6c",
+          "title": "Container and scrim",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "0cff8b6b-d4f3-4442-8194-31212f5d1a12",
+          "title": "Headline (optional)",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "befd7f4d-1029-4957-b1b5-da13fc0bbf3c",
+          "title": "Buttons",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "97ac3858-3932-4084-ae8e-73e42b7cb752",
+          "title": "Basic dialog",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "007536b9-76b1-474a-a152-2f340caaff6f",
+          "title": "Full-screen dialog",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "d2555705-e421-45ad-b165-0b2ee1ea0ea4",
+          "title": "Saving selections",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "b0239355-0d77-4ae9-9c2c-048a93bbdb1e",
+          "title": "Confirmation",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "8b4b105b-9e1b-4331-a8a2-5bcfd05c8f83",
+          "title": "Dismissing",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "4751e908-c6f9-44a3-90c1-73f5e653b067",
+          "title": "Error messages",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "be604ae1-67c0-4e25-997a-c0ff18e08b68",
+          "title": "Dialog windows",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "be604ae1-67c0-4e25-997a-c0ff18e08b68--navigation",
+          "title": "Navigation",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "9d723c7a-03d1-4e7c-95af-a20ed4b66533",
+          "title": "Adaptive design",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "7c93dd99-9d86-45d6-bc9d-ba7fb60da55f",
+          "title": "Medium breakpoint",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "6e105e80-5cac-472b-809a-5ab51f251ea5",
+          "title": "Expanded breakpoint",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "61d980ab-3ac7-4526-b769-7582bec38578",
+          "title": "Behavior",
+          "status": "no-requirements",
+          "notes": "This is an empty parent heading; the actionable content is in its captured child sections."
+        },
+        {
+          "id": "7e98ae4b-9b0f-4fc0-93c8-e811efffb952",
+          "title": "Appearing",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "6e96886d-b4b2-4bcf-a7c5-2b4c746e5b66",
+          "title": "Position",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "de17dbd2-7ecf-459e-af95-0f7132a55e40",
+          "title": "Scrolling",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/dialogs/accessibility",
+      "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+      "markdownSha256": "8bbcebd4fed48a79dcc65236bb082e44202def3d14e5be7a16d1baab2be49bc9",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Dialogs",
+          "status": "no-requirements",
+          "notes": "Repeated page title and introductory component description; no distinct instruction appears in this page-level heading."
+        },
+        {
+          "id": "10b2c693-99ca-4b4d-8cda-5ffeeada82c5",
+          "title": "Use cases",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "94d439f2-b91d-4fd4-a7d4-9b65c474a949",
+          "title": "Interaction & style",
+          "status": "no-requirements",
+          "notes": "This is an empty parent heading; the actionable content is in its captured child sections."
+        },
+        {
+          "id": "cf8359bd-9531-4a66-acee-2a01896804a1",
+          "title": "Use sparingly",
+          "status": "no-requirements",
+          "notes": "This repeats the requirement represented by check dialog-sparing from the Usage section; no additional condition is introduced."
+        },
+        {
+          "id": "02c8d041-dcbf-476e-8259-46a9eebd6af3",
+          "title": "200% text size",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "d015893b-00cb-4697-83bf-4907078551d8",
+          "title": "Elements within dialogs",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "1107f8c9-b9b2-4f94-af0e-9ea6032c6c2d",
+          "title": "Initial focus",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "77f7ff34-ea07-4036-a45a-fc94428f43f6",
+          "title": "Keyboard navigation",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "92e220ca-509e-46fe-897a-8f07aadc239b",
+          "title": "Labeling elements",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "single-task-critical",
+      "statement": "Use a dialog for a critical prompt that requires a decision or acknowledgement, and dedicate it to one task.",
+      "condition": "When a blocking prompt is necessary.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/overview",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "7e8121ebe87345bc88cadbb66f533fc1ae5efaa28c58c2622cf1d74fae1cd8c5",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Dialogs guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-sparing",
+      "statement": "Use dialogs sparingly for blocking, critical information; use a non-blocking alternative such as a snackbar for low- or medium-priority information.",
+      "condition": "When choosing a message surface.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "89a9e18e-b7d6-4a8b-9640-07c28a49f8c0",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Usage guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-specific-headline",
+      "statement": "State the dialog purpose with a brief, clear headline or question; avoid apologies, alarm, and ambiguous questions.",
+      "condition": "When a dialog has a headline.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "0cff8b6b-d4f3-4442-8194-31212f5d1a12",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Headline (optional) guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-action-order-count",
+      "statement": "Use no more than two dialog actions: a single action must acknowledge, and two actions must consist of one confirmation and one dismissal.",
+      "condition": "For dialog actions.",
+      "basis": "explicit",
+      "notes": "Corrected to isolate action count and roles; ordering and enabled-state rules are represented separately.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "befd7f4d-1029-4957-b1b5-da13fc0bbf3c",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Buttons guidance."
+        },
+        {
+          "change": "corrected",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "befd7f4d-1029-4957-b1b5-da13fc0bbf3c",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Separated the count and required action roles from ordering and enabled-state behavior."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 2,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fullscreen-breakpoint-use",
+      "statement": "Use full-screen dialogs for multi-step tasks or forms on compact breakpoints; use basic dialogs on medium and expanded breakpoints.",
+      "condition": "When adapting dialog variants.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "6932d2ef-df7c-4b53-8635-da2b5e82f7c2",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Full-screen dialog guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "specific-confirmation",
+      "statement": "Use a specific confirmation label such as Create or Send, keep it enabled, and show another basic dialog only when confirmation fails.",
+      "condition": "For full-screen dialog confirmation.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "b0239355-0d77-4ae9-9c2c-048a93bbdb1e",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Confirmation guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "discard-confirmation",
+      "statement": "When dismissing a full-screen dialog with unsaved changes, show a basic dialog asking whether to discard them.",
+      "condition": "For full-screen dialogs with unsaved changes.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "8b4b105b-9e1b-4331-a8a2-5bcfd05c8f83",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Dismissing guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-field-errors-inline",
+      "statement": "Show field errors inline and explain their cause and correction; show all field errors together, while general save/submit failures may use a basic dialog.",
+      "condition": "When dialog submission has errors.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "4751e908-c6f9-44a3-90c1-73f5e653b067",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Error messages guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fullscreen-close-only",
+      "statement": "Use the close icon as the only app-bar navigation option in a full-screen dialog.",
+      "condition": "For full-screen dialogs.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "be604ae1-67c0-4e25-997a-c0ff18e08b68--navigation",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Navigation guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-scroll-pinned-actions",
+      "statement": "Avoid scrolling dialog content where possible; when scrolling is needed, pin the title above and actions below the content.",
+      "condition": "For scrollable dialogs.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "de17dbd2-7ecf-459e-af95-0f7132a55e40",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Scrolling guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-focus-trap",
+      "statement": "On opening, move focus to the first interactive element and keep keyboard navigation within the dialog until it closes.",
+      "condition": "For keyboard users.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/accessibility",
+          "section": "1107f8c9-b9b2-4f94-af0e-9ea6032c6c2d",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "8bbcebd4fed48a79dcc65236bb082e44202def3d14e5be7a16d1baab2be49bc9",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Initial focus guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-role-label",
+      "statement": "Use the dialog title as its accessibility label; on the web, expose a basic dialog with the alert-dialog role.",
+      "condition": "For dialog semantics.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/accessibility",
+          "section": "92e220ca-509e-46fe-897a-8f07aadc239b",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "8bbcebd4fed48a79dcc65236bb082e44202def3d14e5be7a16d1baab2be49bc9",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Labeling elements guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-keep-background-blocked",
+      "statement": "Keep app functionality unavailable while a modal dialog is open; it remains until the user confirms, dismisses it, or completes the required action.",
+      "condition": "For the dialog variant or interaction described by the source.",
+      "basis": "explicit",
+      "notes": "This is the modal blocking and persistence behavior stated in Usage.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "89a9e18e-b7d6-4a8b-9640-07c28a49f8c0",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "This is the modal blocking and persistence behavior stated in Usage."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-use-snackbar-for-low-priority",
+      "statement": "Use a snackbar rather than a dialog for low- or medium-priority information; snackbar messages may disappear automatically and may omit an action button.",
+      "condition": "For the dialog variant or interaction described by the source.",
+      "basis": "explicit",
+      "notes": "Preserves the source comparison table: snackbar is low importance/action optional, while dialog is high importance/action required.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "822de58f-0391-483c-a9eb-8ee52c072a78",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Preserves the source comparison table: snackbar is low importance/action optional, while dialog is high importance/action required."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-purpose-headline-actions",
+      "statement": "Communicate the dialog purpose through its headline and its buttons or other actionable items.",
+      "condition": "For the dialog variant or interaction described by the source.",
+      "basis": "explicit",
+      "notes": "Separate purpose communication from headline wording and length.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "0cff8b6b-d4f3-4442-8194-31212f5d1a12",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Separate purpose communication from headline wording and length."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-headline-length",
+      "statement": "Keep dialog headlines succinct; they may wrap to a second line or be truncated. For full-screen dialogs, place long or variable-length headlines in content rather than the app bar.",
+      "condition": "For the dialog variant or interaction described by the source.",
+      "basis": "explicit",
+      "notes": "Preserves short headline, wrapping/truncation, and full-screen app-bar exception.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "0cff8b6b-d4f3-4442-8194-31212f5d1a12",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Preserves short headline, wrapping/truncation, and full-screen app-bar exception."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-actions-trailing-and-rtl",
+      "statement": "Align dialog actions to the trailing edge, with the confirmation action closest to that edge; reverse the arrangement for RTL so confirmation is at the left edge.",
+      "condition": "For the dialog variant or interaction described by the source.",
+      "basis": "explicit",
+      "notes": "Separates action placement from action count and enabled state.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "befd7f4d-1029-4957-b1b5-da13fc0bbf3c",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Separates action placement from action count and enabled state."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-action-roles",
+      "statement": "Place the dismissive action to the left of the confirming action in LTR; do not put dismissal to the right of confirmation.",
+      "condition": "For the dialog variant or interaction described by the source.",
+      "basis": "explicit",
+      "notes": "The independent action-ordering rule from the captured button guidance.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "befd7f4d-1029-4957-b1b5-da13fc0bbf3c",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Captures the two-action role and ordering instruction."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-action-label-layout",
+      "statement": "Use text buttons side by side by default; stack them when their labels are long, placing confirmation above dismissal.",
+      "condition": "For the dialog variant or interaction described by the source.",
+      "basis": "explicit",
+      "notes": "Retains the action layout guidance from the captured section tail.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "befd7f4d-1029-4957-b1b5-da13fc0bbf3c",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Retains the action layout guidance from the captured section tail."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-no-third-learn-more-action",
+      "statement": "Do not add a third “Learn more” dialog action; provide the information inline or before opening the dialog.",
+      "condition": "For the dialog variant or interaction described by the source.",
+      "basis": "explicit",
+      "notes": "Captures the source guidance to avoid extra action and place information elsewhere.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "befd7f4d-1029-4957-b1b5-da13fc0bbf3c",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Captures the source guidance to avoid extra action and place information elsewhere."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "basic-dialog-use-cases",
+      "statement": "Use a basic dialog for urgent alerts, quick selection, and confirmation; it may contain lists, date pickers, or time pickers.",
+      "condition": "For the dialog variant or interaction described by the source.",
+      "basis": "explicit",
+      "notes": "Preserves supported basic-dialog use cases and contained controls.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "97ac3858-3932-4084-ae8e-73e42b7cb752",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Preserves supported basic-dialog use cases and contained controls."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "basic-dialog-requires-action",
+      "statement": "Require an action before a basic dialog closes; for date or time selection, let the user make a choice and then confirm it.",
+      "condition": "For the dialog variant or interaction described by the source.",
+      "basis": "explicit",
+      "notes": "The source says basic dialogs require action and examples confirm selection with OK.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "97ac3858-3932-4084-ae8e-73e42b7cb752",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "The source says basic dialogs require action and examples confirm selection with OK."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fullscreen-dialog-container-transform",
+      "statement": "Use a container-transform transition to transform a FAB into a full-screen dialog.",
+      "condition": "For the dialog variant or interaction described by the source.",
+      "basis": "explicit",
+      "notes": "Captures the transition pattern named by the source.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "007536b9-76b1-474a-a152-2f340caaff6f",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Captures the transition pattern named by the source."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fullscreen-dialog-nested-dialogs",
+      "statement": "Allow other dialogs to appear over a full-screen dialog; it is the only dialog variant that can have dialogs above it.",
+      "condition": "For the dialog variant or interaction described by the source.",
+      "basis": "explicit",
+      "notes": "Captures exclusive layering permission for the full-screen variant.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "007536b9-76b1-474a-a152-2f340caaff6f",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Captures exclusive layering permission for the full-screen variant."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fullscreen-dialog-save-and-dismiss",
+      "statement": "In a full-screen dialog, use Save to commit a selection; use the close icon or a dismissive action such as Cancel or Back to close it.",
+      "condition": "For the dialog variant or interaction described by the source.",
+      "basis": "explicit",
+      "notes": "Preserves save versus dismiss action roles.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "d2555705-e421-45ad-b165-0b2ee1ea0ea4",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Preserves save versus dismiss action roles."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fullscreen-dialog-purpose-criteria",
+      "statement": "A full-screen dialog may be used for a multi-step task, keyboard-input components, unsaved changes, or components that open additional dialogs.",
+      "condition": "For the dialog variant or interaction described by the source.",
+      "basis": "explicit",
+      "notes": "Retains the source’s alternative qualifying task criteria.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "007536b9-76b1-474a-a152-2f340caaff6f",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Retains the source’s alternative qualifying task criteria."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-dismiss-not-confirm-action",
+      "statement": "Do not use the confirming action to dismiss a full-screen dialog.",
+      "condition": "For the dialog variant or interaction described by the source.",
+      "basis": "explicit",
+      "notes": "Independent prohibition from the unsaved-change confirmation rule.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "8b4b105b-9e1b-4331-a8a2-5bcfd05c8f83",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Independent prohibition from the unsaved-change confirmation rule."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fullscreen-confirmation-failure-only",
+      "statement": "Show an additional basic dialog only when the full-screen dialog confirmation action fails; do not show one merely because confirmation was selected.",
+      "condition": "For the dialog variant or interaction described by the source.",
+      "basis": "explicit",
+      "notes": "Retains the failure condition and prevents redundant confirmation prompt.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "b0239355-0d77-4ae9-9c2c-048a93bbdb1e",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Retains the failure condition and prevents redundant confirmation prompt."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-field-errors-show-all",
+      "statement": "Show all field errors at once so users can correct them before retrying.",
+      "condition": "For the dialog variant or interaction described by the source.",
+      "basis": "explicit",
+      "notes": "Independent from error location and copy.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "4751e908-c6f9-44a3-90c1-73f5e653b067",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Independent from error location and copy."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-field-error-components",
+      "statement": "For fields without built-in error messaging, such as checkboxes or radio buttons, add the error message next to the field.",
+      "condition": "For the dialog variant or interaction described by the source.",
+      "basis": "explicit",
+      "notes": "Preserves the stated exceptions for controls lacking built-in error messages.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "4751e908-c6f9-44a3-90c1-73f5e653b067",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Preserves the stated exceptions for controls lacking built-in error messages."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fullscreen-dialog-perceived-elevation",
+      "statement": "When launching a full-screen dialog, reset the app’s perceived elevation so simple menus or dialogs can appear above it; these overlays cover the screen rather than appearing as floating modal windows.",
+      "condition": "For the dialog variant or interaction described by the source.",
+      "basis": "explicit",
+      "notes": "Preserves overlay behavior described in the Dialog windows section.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "be604ae1-67c0-4e25-997a-c0ff18e08b68",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Preserves overlay behavior described in the Dialog windows section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-adapt-variant-by-breakpoint",
+      "statement": "Allow the dialog variant to change with the breakpoint, such as changing a full-screen dialog to a basic dialog on a larger screen.",
+      "condition": "For the dialog variant or interaction described by the source.",
+      "basis": "explicit",
+      "notes": "Captures responsive variant substitution.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "9d723c7a-03d1-4e7c-95af-a20ed4b66533",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Captures responsive variant substitution."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "medium-dialog-position",
+      "statement": "Center a basic dialog by default at medium breakpoints; its position may be overridden for ergonomics.",
+      "condition": "For the dialog variant or interaction described by the source.",
+      "basis": "explicit",
+      "notes": "Preserves default and optional positioning.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "7c93dd99-9d86-45d6-bc9d-ba7fb60da55f",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Preserves default and optional positioning."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "expanded-dialog-custom-margin",
+      "statement": "On expanded screens, a basic dialog may be custom-positioned anywhere while maintaining a 56dp margin from screen edges.",
+      "condition": "For the dialog variant or interaction described by the source.",
+      "basis": "explicit",
+      "notes": "Carries through the exact 56dp edge margin.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "6e105e80-5cac-472b-809a-5ab51f251ea5",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Carries through the exact 56dp edge margin."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-enter-exit-transition",
+      "statement": "Use an enter-and-exit transition pattern when a dialog appears and disappears.",
+      "condition": "For the dialog variant or interaction described by the source.",
+      "basis": "explicit",
+      "notes": "Captures the transition pattern instruction.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "7e98ae4b-9b0f-4fc0-93c8-e811efffb952",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Captures the transition pattern instruction."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-focus-and-visibility",
+      "statement": "Keep a dialog in focus until dismissed or acted on; do not obscure it or show it partially on screen, except for full-screen dialogs.",
+      "condition": "For the dialog variant or interaction described by the source.",
+      "basis": "explicit",
+      "notes": "Preserves the focus retention and visibility exception.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "6e96886d-b4b2-4bcf-a7c5-2b4c746e5b66",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Preserves the focus retention and visibility exception."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-independent-scroll",
+      "statement": "Keep dialog scrolling independent from content outside the dialog, such as the background.",
+      "condition": "For the dialog variant or interaction described by the source.",
+      "basis": "explicit",
+      "notes": "Separate scroll coupling rule from pinned title/actions.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "de17dbd2-7ecf-459e-af95-0f7132a55e40",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Separate scroll coupling rule from pinned title/actions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-accessible-open-close-submit-scroll",
+      "statement": "Ensure assistive-technology users can open and close a dialog, submit its interactive inputs, and scroll all content that overflows the container.",
+      "condition": "For the dialog variant or interaction described by the source.",
+      "basis": "explicit",
+      "notes": "Captures each stated assistive outcome for dialog use.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/accessibility",
+          "section": "10b2c693-99ca-4b4d-8cda-5ffeeada82c5",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "8bbcebd4fed48a79dcc65236bb082e44202def3d14e5be7a16d1baab2be49bc9",
+          "extractorVersion": 2,
+          "summary": "Captures each stated assistive outcome for dialog use."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-200-percent-headline",
+      "statement": "On Android, keep a headline short enough to fit within four lines at 200% text size; if it is truncated, provide a single-tap way to access the full content.",
+      "condition": "For the dialog variant or interaction described by the source.",
+      "basis": "explicit",
+      "notes": "Preserves platform scope, exact line threshold, and truncation alternative.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/accessibility",
+          "section": "02c8d041-dcbf-476e-8259-46a9eebd6af3",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "8bbcebd4fed48a79dcc65236bb082e44202def3d14e5be7a16d1baab2be49bc9",
+          "extractorVersion": 2,
+          "summary": "Preserves platform scope, exact line threshold, and truncation alternative."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-contained-element-accessibility",
+      "statement": "Apply the relevant accessibility guidance for every element contained in a dialog, including text fields, typography, and buttons.",
+      "condition": "For the dialog variant or interaction described by the source.",
+      "basis": "explicit",
+      "notes": "The source explicitly delegates contained elements to their own guidance.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/accessibility",
+          "section": "d015893b-00cb-4697-83bf-4907078551d8",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "8bbcebd4fed48a79dcc65236bb082e44202def3d14e5be7a16d1baab2be49bc9",
+          "extractorVersion": 2,
+          "summary": "The source explicitly delegates contained elements to their own guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-keyboard-cycle",
+      "statement": "Keep Tab and Shift+Tab focus traversal inside the dialog, cycling from the last to first and first to last interactive elements respectively.",
+      "condition": "For the dialog variant or interaction described by the source.",
+      "basis": "explicit",
+      "notes": "Preserves keyboard table cycle relationships and direction.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/accessibility",
+          "section": "77f7ff34-ea07-4036-a45a-fc94428f43f6",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "8bbcebd4fed48a79dcc65236bb082e44202def3d14e5be7a16d1baab2be49bc9",
+          "extractorVersion": 2,
+          "summary": "Preserves keyboard table cycle relationships and direction."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-keyboard-activate-dismiss",
+      "statement": "Let Space or Enter trigger or commit the focused element; Escape closes the dialog.",
+      "condition": "For the dialog variant or interaction described by the source.",
+      "basis": "explicit",
+      "notes": "Captures keyboard actions from the table.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/accessibility",
+          "section": "77f7ff34-ea07-4036-a45a-fc94428f43f6",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "8bbcebd4fed48a79dcc65236bb082e44202def3d14e5be7a16d1baab2be49bc9",
+          "extractorVersion": 2,
+          "summary": "Captures keyboard actions from the table."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-child-control-labels",
+      "statement": "Label controls inside the dialog according to their own component accessibility guidance.",
+      "condition": "For the dialog variant or interaction described by the source.",
+      "basis": "explicit",
+      "notes": "Distinct from the dialog-level label/role.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/accessibility",
+          "section": "92e220ca-509e-46fe-897a-8f07aadc239b",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "8bbcebd4fed48a79dcc65236bb082e44202def3d14e5be7a16d1baab2be49bc9",
+          "extractorVersion": 2,
+          "summary": "Distinct from the dialog-level label/role."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-basic-measurements",
+      "statement": "Use a dynamic-height basic dialog with 28dp corners and width from 280dp to 560dp; use 24dp outer padding, a 1dp divider, and a 24dp optional icon.",
+      "condition": "For the dialog variant or interaction described by the source.",
+      "basis": "explicit",
+      "notes": "Values are taken from the captured measurement table, not inferred from the image.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/specs",
+          "section": "9a8c226b-19fa-4d6b-894e-e7d5ca9203e8",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "247c29440024d55035fe578a06531061ede0d91bd2ed8a9d1dbe599ce2c26895",
+          "extractorVersion": 2,
+          "summary": "Values are taken from the captured measurement table, not inferred from the image."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-basic-measurement-alignment",
+      "statement": "Center-align basic dialog content with an icon and start-align it without an icon; keep 16dp between title and body and icon and title, 24dp between body and actions, and 8dp between buttons.",
+      "condition": "For the dialog variant or interaction described by the source.",
+      "basis": "explicit",
+      "notes": "Preserves conditional alignment and the separate spacing relationships in the table.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/specs",
+          "section": "9a8c226b-19fa-4d6b-894e-e7d5ca9203e8",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "247c29440024d55035fe578a06531061ede0d91bd2ed8a9d1dbe599ce2c26895",
+          "extractorVersion": 2,
+          "summary": "Preserves conditional alignment and the separate spacing relationships in the table."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-fullscreen-measurements",
+      "statement": "Use a dynamic-height full-screen dialog with 0dp corner radius and a maximum width of 560dp; use a 56dp header and bottom action bar, 24dp top/side padding, and a 24dp close icon.",
+      "condition": "For the dialog variant or interaction described by the source.",
+      "basis": "explicit",
+      "notes": "Values are sourced from the captured full-screen measurement table.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/specs",
+          "section": "2b93ced7-9b0d-4a59-9bc4-8ff59dcd24c1",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "247c29440024d55035fe578a06531061ede0d91bd2ed8a9d1dbe599ce2c26895",
+          "extractorVersion": 2,
+          "summary": "Values are sourced from the captured full-screen measurement table."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-fullscreen-measurement-spacing",
+      "statement": "Start-align the full-screen headline; use 8dp between elements and a 1dp optional divider.",
+      "condition": "For the dialog variant or interaction described by the source.",
+      "basis": "explicit",
+      "notes": "Captures the text alignment and spacing values.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/specs",
+          "section": "2b93ced7-9b0d-4a59-9bc4-8ff59dcd24c1",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "247c29440024d55035fe578a06531061ede0d91bd2ed8a9d1dbe599ce2c26895",
+          "extractorVersion": 2,
+          "summary": "Captures the text alignment and spacing values."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-scrim-background",
+      "statement": "Place a temporary scrim over the surface behind the dialog to make background content less prominent and focus attention on the dialog.",
+      "condition": "While a dialog is displayed above app content.",
+      "basis": "explicit",
+      "notes": "The source assigns the scrim the purpose of reducing the prominence of underlying surfaces.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "4fe52c7a-64e8-4e80-bb6e-40f428f17b6c",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Captured the scrim purpose of reducing the prominence of background content."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-action-enabled-state",
+      "statement": "Keep the full-screen dialog confirmation action enabled.",
+      "condition": "When showing a confirmation action in a full-screen dialog.",
+      "basis": "explicit",
+      "notes": "Specific full-screen confirmation rule; basic dialog action enablement is addressed by the existing separate action rule.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "b0239355-0d77-4ae9-9c2c-048a93bbdb1e",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Captured the requirement not to disable a full-screen dialog confirmation action."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-confirm-disable-until-choice",
+      "statement": "Disable a confirming action until a required choice is made, but never disable a dismissive action.",
+      "condition": "When dialog confirmation depends on a required choice.",
+      "basis": "explicit",
+      "notes": "The captured button guidance distinguishes the enabled state of confirming and dismissive actions.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/guidelines",
+          "section": "befd7f4d-1029-4957-b1b5-da13fc0bbf3c",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "4facf8cc0028aedbe35d8e5bb59e37a7a98b12b7d265eb60adcc4a518511450e",
+          "extractorVersion": 2,
+          "summary": "Captured distinct enabled-state requirements for confirming and dismissive actions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-color-token-values",
+      "statement": "Implement dialog color values through design tokens; design values should correspond to tokens, and implementation values should reference token values.",
+      "condition": "When assigning dialog color roles.",
+      "basis": "explicit",
+      "notes": "The two specs color sections repeat this token requirement; role-to-element diagrams are image-only and remain unresolved.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/dialogs/specs",
+          "section": "94686e58-f54d-4630-a1ff-91bbe19f2b5f",
+          "capture": "snapshots/material-guidance/20261025T165401.696164141Z-37337817/capture.json",
+          "markdownSha256": "247c29440024d55035fe578a06531061ede0d91bd2ed8a9d1dbe599ce2c26895",
+          "extractorVersion": 2,
+          "summary": "Captured the explicit design-token requirement from the basic dialog color section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

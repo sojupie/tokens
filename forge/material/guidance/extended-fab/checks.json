@@ -1,0 +1,1111 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "extended-fab",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/extended-fab/overview",
+      "capture": "snapshots/material-guidance/20261025T165450.274617666Z-2791738781/capture.json",
+      "markdownSha256": "66d4119cfcec311f691156e7d2e209dac4164943656aec82031eeb0e5cef07f6",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Extended FABs",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "4777bbaa-d755-45c8-9572-727f875cb608",
+          "title": "Availability & resources",
+          "status": "no-requirements",
+          "notes": "This table reports availability of upstream design kits and framework implementations; it is not an implementation requirement for this project."
+        },
+        {
+          "id": "0578efb2-7ccf-4b3c-9393-6004678e34f5",
+          "title": "M3 Expressive update",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "6bb8adc8-7343-45ca-aebd-b2336ab5c7a5",
+          "title": "Differences from M2",
+          "status": "no-requirements",
+          "notes": "This section compares historical M2 and M3 presentation. Current variant and behavior requirements are recorded in the relevant M3 specs and guidelines."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/extended-fab/specs",
+      "capture": "snapshots/material-guidance/20261025T165450.274617666Z-2791738781/capture.json",
+      "markdownSha256": "50916e6bd74aebd4f6dc7e70ebdbf6cc5d860efbcfb96228fe33a0a64504f20b",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Extended FABs",
+          "status": "no-requirements",
+          "notes": "This is the page title or brief component summary; actionable requirements are recorded in the linked child sections."
+        },
+        {
+          "id": "1461f662-fb04-4a6e-92a5-0c0c27a0d48f",
+          "title": "Variants",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "985c3aeb-da3c-4efd-99f7-df2774691109",
+          "title": "Baseline variants",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "cab3e00c-65ad-4744-ab00-37a2d6223363",
+          "title": "Tokens & specs",
+          "status": "no-requirements",
+          "notes": "The Specs token selector organizes implementation tokens by size and color; its control and values belong to the token data pipeline. Component color pairings and size recommendations are captured in extended-fab-color-role-pairings and extended-fab-variant-availability."
+        },
+        {
+          "id": "b19d586a-0659-4e82-aef0-d5fb997f0505",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "The section names the container, label text and icon but provides no independent behavior or relationship rule; optional-icon and label requirements are captured by an-icon-is-optional-but-when-present and use-a-clear-short-label-of-at."
+        },
+        {
+          "id": "d55c7d75-622f-49ee-9816-aa27a04d99f8",
+          "title": "Color",
+          "status": "no-requirements",
+          "notes": "This paragraph only explains that implementation colors come from design tokens; supported role pairings are captured by extended-fab-color-role-pairings."
+        },
+        {
+          "id": "9a0edd58-8b95-4d75-bfa5-eb1e288fa389",
+          "title": "Color styles",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "473af1bd-e946-47c4-bfab-919c58268472",
+          "title": "Baseline color styles",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "85df5092-7db3-4b16-9bfa-46d76caa815e",
+          "title": "States",
+          "status": "unclear",
+          "notes": "The non-default state-layer/icon color rule is captured by extended-fab-nondefault-state-layer-matches-icon. The state diagram’s visual treatments, including the hovered elevation callout, have not been inspected."
+        },
+        {
+          "id": "17471317-9cd9-450c-8fa8-708cfb29c73e",
+          "title": "Measurements",
+          "status": "unclear",
+          "notes": "The 16dp extended-FAB screen margin is captured by extended-fab-margins. Small/medium/large padding, container sizes and icon geometry are present only in an uninspected diagram."
+        },
+        {
+          "id": "01e114e6-8c3d-4d39-9376-65aa5c10e01b",
+          "title": "Baseline extended FAB",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "0f9e96d1-fd01-4782-813f-38366ae5977c",
+          "title": "Baseline configurations",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "aa64dd00-4391-4435-8a5d-7ef0d8063c93",
+          "title": "Baseline tokens",
+          "status": "no-requirements",
+          "notes": "This token selector groups baseline common, surface and branded sets. The continued use of current non-surface styles and the no-longer-recommended surface style are captured by baseline-extended-fab-color-choice and surface-extended-fab-not-recommended; raw token values remain in the token pipeline."
+        },
+        {
+          "id": "f2f8c780-3127-41f4-8a20-084fc0b01411",
+          "title": "Baseline colors",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "e1f7866d-2cbf-4098-ad38-8c51c1261b76",
+          "title": "Additional color mappings",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "c74ddfa4-4732-4cbf-b74f-39ac3182737f",
+          "title": "Baseline states",
+          "status": "unclear",
+          "notes": "The state names are readable, and the non-default state-layer/icon color rule is captured by extended-fab-nondefault-state-layer-matches-icon. The state illustrations and baseline state appearance were not inspected."
+        },
+        {
+          "id": "a8f41301-7733-461a-8f22-5def141fdcca",
+          "title": "Baseline measurements",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/extended-fab/guidelines",
+      "capture": "snapshots/material-guidance/20261025T165450.274617666Z-2791738781/capture.json",
+      "markdownSha256": "b523274831678240f9ab46621c1cfae819c45ae6f9d9ff573c314142992dfa2d",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Extended FABs",
+          "status": "no-requirements",
+          "notes": "This is the page title or brief component summary; actionable requirements are recorded in the linked child sections."
+        },
+        {
+          "id": "c33cceea-4076-4df8-b83c-edf5e644f64d",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "2e171bf9-3784-4b8e-bd0f-66c05247515e",
+          "title": "Additional emphasis",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "d3eb1324-201e-41a0-a362-f29e4f077341",
+          "title": "Choosing a size",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "1dc1f503-edff-4e3f-b2a6-c76cee1b8369",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "The element labels and optional-icon instruction are recorded by an-icon-is-optional-but-when-present and keep-the-container-and-label-text-other; the diagram adds no independently assessable instruction."
+        },
+        {
+          "id": "4ee8efec-abca-4b0e-9caa-84c663d11385",
+          "title": "Container",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "c6b4be16-96eb-4610-a22d-af2e61f2265d",
+          "title": "Icon (optional)",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "668a9764-511d-4670-9d79-496ff6fdf39d",
+          "title": "Label text",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "32913020-1a8d-46c3-953d-bbbfb0e16022",
+          "title": "Placement",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "3340a118-4a2b-4094-b5d4-5185eab5625a",
+          "title": "Responsive layout",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "4945b12a-c5b9-40db-8801-0e4e3575ad01",
+          "title": "Right-to-left languages",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "9898e8ce-2edb-48fc-999b-acec54ed034d",
+          "title": "Breakpoints",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "a0c6a99f-3bf7-41ee-a2e5-1b9b1e84f7b6",
+          "title": "Behavior",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "52047faf-9635-4907-8d93-8e1d07b02949",
+          "title": "Appearing",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "e3ff7965-59ba-4532-b9d3-985a17723e05",
+          "title": "Expanding",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "e2d063e5-f5f8-46ce-8e63-63888b1d3007",
+          "title": "Transforming",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "d973f8f1-06a6-4b45-9658-e2c66b4b0ee5",
+          "title": "Scrolling",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/extended-fab/accessibility",
+      "capture": "snapshots/material-guidance/20261025T165450.274617666Z-2791738781/capture.json",
+      "markdownSha256": "e0e142dd849d19cbfe3e31745d929ae5d1bf84ec45770b87886900f1ccc82cfa",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Extended FABs",
+          "status": "no-requirements",
+          "notes": "This is the page title or brief component summary; actionable requirements are recorded in the linked child sections."
+        },
+        {
+          "id": "f41fff24-fd89-4bc7-aa79-15fe02faf158",
+          "title": "Use cases",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "109003ac-7325-493a-aa68-dd28fd102f69",
+          "title": "Interaction & style",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "d54b8fc7-6254-4a89-80a7-7463938e8f96",
+          "title": "Initial focus",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "5088b29d-bbb2-4bda-a2c1-72974a13edcd",
+          "title": "Keyboard navigation",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "50c37163-1d01-4bb7-b642-0d1db90740b0",
+          "title": "Labeling elements",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "an-icon-is-optional-but-when-present",
+      "statement": "An icon is optional, but when present it should intuitively represent the action; do not show an icon without label text.",
+      "condition": "When including an icon in an extended FAB.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/extended-fab/guidelines",
+          "section": "c6b4be16-96eb-4610-a22d-af2e61f2265d",
+          "capture": "snapshots/material-guidance/20261025T165450.274617666Z-2791738781/capture.json",
+          "markdownSha256": "b523274831678240f9ab46621c1cfae819c45ae6f9d9ff573c314142992dfa2d",
+          "extractorVersion": 2,
+          "summary": "Curated from Icon (optional): An icon is optional, but when present it should intuitively represent the action; do not show an icon without "
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "at-compact-and-medium-breakpoints-place-the",
+      "statement": "At compact and medium breakpoints, place the extended FAB at the bottom, centered or at the trailing edge; at expanded and larger breakpoints, place it at the bottom-right in either text direction or within the navigation rail.",
+      "condition": "When placing the extended FAB responsively.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/extended-fab/guidelines",
+          "section": "9898e8ce-2edb-48fc-999b-acec54ed034d",
+          "capture": "snapshots/material-guidance/20261025T165450.274617666Z-2791738781/capture.json",
+          "markdownSha256": "b523274831678240f9ab46621c1cfae819c45ae6f9d9ff573c314142992dfa2d",
+          "extractorVersion": 2,
+          "summary": "Curated from Breakpoints: At compact and medium breakpoints, place the extended FAB at the bottom, centered or at the trailing edge; at "
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "avoid-showing-a-floating-toolbar-at-the",
+      "statement": "Avoid showing a floating toolbar at the same time as an extended FAB.",
+      "condition": "When the screen has a floating toolbar.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/extended-fab/guidelines",
+          "section": "32913020-1a8d-46c3-953d-bbbfb0e16022",
+          "capture": "snapshots/material-guidance/20261025T165450.274617666Z-2791738781/capture.json",
+          "markdownSha256": "b523274831678240f9ab46621c1cfae819c45ae6f9d9ff573c314142992dfa2d",
+          "extractorVersion": 2,
+          "summary": "Curated from Placement: Avoid showing a floating toolbar at the same time as an extended FAB."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "baseline-extended-fab-color-choice",
+      "statement": "Baseline extended FABs may use other container/icon color combinations with the same legibility and functionality as the default; choose among them by visual preference.",
+      "condition": "When maintaining baseline extended FAB color styles.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/extended-fab/specs",
+          "section": "e1f7866d-2cbf-4098-ad38-8c51c1261b76",
+          "capture": "snapshots/material-guidance/20261025T165450.274617666Z-2791738781/capture.json",
+          "markdownSha256": "50916e6bd74aebd4f6dc7e70ebdbf6cc5d860efbcfb96228fe33a0a64504f20b",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Additional color mappings instruction: Baseline extended FABs may use other container/icon color combinations with the same legibility and functional"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "baseline-extended-fab-measurements",
+      "statement": "Baseline extended FABs use a 56dp container height, 80dp minimum dynamic width, 16dp corner radius and padding, and a 24dp icon.",
+      "condition": "When retaining the legacy baseline extended FAB.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/extended-fab/specs",
+          "section": "a8f41301-7733-461a-8f22-5def141fdcca",
+          "capture": "snapshots/material-guidance/20261025T165450.274617666Z-2791738781/capture.json",
+          "markdownSha256": "50916e6bd74aebd4f6dc7e70ebdbf6cc5d860efbcfb96228fe33a0a64504f20b",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Baseline measurements prose or table: Baseline extended FABs use a 56dp container height, 80dp minimum dynamic width, 16dp corner radius a"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "choose-small-medium-or-large-according-to",
+      "statement": "Choose small, medium, or large according to the required emphasis; large can suit a compact window with one prominent action, while medium or large suit larger breakpoints.",
+      "condition": "When selecting an M3 Expressive extended FAB size.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/extended-fab/guidelines",
+          "section": "d3eb1324-201e-41a0-a362-f29e4f077341",
+          "capture": "snapshots/material-guidance/20261025T165450.274617666Z-2791738781/capture.json",
+          "markdownSha256": "b523274831678240f9ab46621c1cfae819c45ae6f9d9ff573c314142992dfa2d",
+          "extractorVersion": 2,
+          "summary": "Curated from Choosing a size: Choose small, medium, or large according to the required emphasis; large can suit a compact window with one pr"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "do-not-add-a-tooltip-solely-to",
+      "statement": "Do not add a tooltip solely to repeat an extended FAB’s already visible label.",
+      "condition": "When an extended FAB has a visible text label.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/extended-fab/accessibility",
+          "section": "d54b8fc7-6254-4a89-80a7-7463938e8f96",
+          "capture": "snapshots/material-guidance/20261025T165450.274617666Z-2791738781/capture.json",
+          "markdownSha256": "e0e142dd849d19cbfe3e31745d929ae5d1bf84ec45770b87886900f1ccc82cfa",
+          "extractorVersion": 2,
+          "summary": "Curated from Initial focus: Do not add a tooltip solely to repeat an extended FAB’s already visible label."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "expressive-size-and-replacement",
+      "statement": "M3 Expressive adds small, medium and large extended FAB sizes with updated larger type; replace the baseline extended FAB with the small variant, and do not use the legacy surface extended FAB.",
+      "condition": "When adopting M3 Expressive.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/extended-fab/overview",
+          "section": "0578efb2-7ccf-4b3c-9393-6004678e34f5",
+          "capture": "snapshots/material-guidance/20261025T165450.274617666Z-2791738781/capture.json",
+          "markdownSha256": "66d4119cfcec311f691156e7d2e209dac4164943656aec82031eeb0e5cef07f6",
+          "extractorVersion": 2,
+          "summary": "Captured the specific M3 Expressive update rule: M3 Expressive adds small, medium and large extended FAB sizes with updated larger type; replace the baseline e"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "extended-fab-assistive-navigation-and-activation",
+      "statement": "People using assistive technology must be able to navigate to and activate the extended FAB.",
+      "condition": "When exposing the extended FAB to assistive technology.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/extended-fab/accessibility",
+          "section": "f41fff24-fd89-4bc7-aa79-15fe02faf158",
+          "capture": "snapshots/material-guidance/20261025T165450.274617666Z-2791738781/capture.json",
+          "markdownSha256": "e0e142dd849d19cbfe3e31745d929ae5d1bf84ec45770b87886900f1ccc82cfa",
+          "extractorVersion": 2,
+          "summary": "Curated explicit Use cases guidance: People using assistive technology must be able to navigate to and activate the extended FAB."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "extended-fab-assistive-placement",
+      "statement": "For screen-reader reachability, consider the upper-left region or expanded navigation rail on large web screens; in smaller windows the lower-right corner is best. Keep the FAB reachable and do not obstruct other actions.",
+      "condition": "When placing the extended FAB for assistive-technology users.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/extended-fab/accessibility",
+          "section": "109003ac-7325-493a-aa68-dd28fd102f69",
+          "capture": "snapshots/material-guidance/20261025T165450.274617666Z-2791738781/capture.json",
+          "markdownSha256": "e0e142dd849d19cbfe3e31745d929ae5d1bf84ec45770b87886900f1ccc82cfa",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Interaction & style rule: For screen-reader reachability, consider the upper-left region or expanded navigation rail on large web screen"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "extended-fab-assistive-use-case",
+      "statement": "People using assistive technology must be able to reach and activate the extended FAB.",
+      "condition": "When exposing the extended FAB to assistive technology.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/extended-fab/accessibility",
+          "section": "f41fff24-fd89-4bc7-aa79-15fe02faf158",
+          "capture": "snapshots/material-guidance/20261025T165450.274617666Z-2791738781/capture.json",
+          "markdownSha256": "e0e142dd849d19cbfe3e31745d929ae5d1bf84ec45770b87886900f1ccc82cfa",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Use cases instruction: People using assistive technology must be able to reach and activate the extended FAB."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "extended-fab-color-role-pairings",
+      "statement": "Supported current color pairings are primary-container/on-primary-container (default), secondary-container/on-secondary-container, tertiary-container/on-tertiary-container, primary/on-primary, secondary/on-secondary and tertiary/on-tertiary. These pairings provide equivalent contrast/functionality, so selection is visual.",
+      "condition": "When choosing an M3 Expressive extended FAB color mapping.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/extended-fab/specs",
+          "section": "9a0edd58-8b95-4d75-bfa5-eb1e288fa389",
+          "capture": "snapshots/material-guidance/20261025T165450.274617666Z-2791738781/capture.json",
+          "markdownSha256": "50916e6bd74aebd4f6dc7e70ebdbf6cc5d860efbcfb96228fe33a0a64504f20b",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Color styles rule: Supported current color pairings are primary-container/on-primary-container (default), secondary-container/on-"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "extended-fab-container-transform",
+      "statement": "An extended FAB may expand into a surface or full-screen shape using a container-transform transition.",
+      "condition": "When activating an extended FAB that opens expanded content.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/extended-fab/guidelines",
+          "section": "e3ff7965-59ba-4532-b9d3-985a17723e05",
+          "capture": "snapshots/material-guidance/20261025T165450.274617666Z-2791738781/capture.json",
+          "markdownSha256": "b523274831678240f9ab46621c1cfae819c45ae6f9d9ff573c314142992dfa2d",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Expanding rule: An extended FAB may expand into a surface or full-screen shape using a container-transform transition."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "extended-fab-margins",
+      "statement": "Keep 16dp margins around extended FABs.",
+      "condition": "When placing an M3 Expressive extended FAB.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/extended-fab/specs",
+          "section": "17471317-9cd9-450c-8fa8-708cfb29c73e",
+          "capture": "snapshots/material-guidance/20261025T165450.274617666Z-2791738781/capture.json",
+          "markdownSha256": "50916e6bd74aebd4f6dc7e70ebdbf6cc5d860efbcfb96228fe33a0a64504f20b",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Measurements prose or table: Keep 16dp margins around extended FABs."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "extended-fab-scroll-collapse",
+      "statement": "An extended FAB may transform into a FAB while scrolling to take up less space.",
+      "condition": "When implementing optional scroll transformation.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/extended-fab/guidelines",
+          "section": "e2d063e5-f5f8-46ce-8e63-63888b1d3007",
+          "capture": "snapshots/material-guidance/20261025T165450.274617666Z-2791738781/capture.json",
+          "markdownSha256": "b523274831678240f9ab46621c1cfae819c45ae6f9d9ff573c314142992dfa2d",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Transforming rule: An extended FAB may transform into a FAB while scrolling to take up less space."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "extended-fab-variant-availability",
+      "statement": "Small, medium and large extended FABs are available in M3 Expressive; the baseline extended FAB is available in M3 but is not recommended in M3 Expressive, which recommends small.",
+      "condition": "When selecting extended FAB variants by design generation.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/extended-fab/specs",
+          "section": "985c3aeb-da3c-4efd-99f7-df2774691109",
+          "capture": "snapshots/material-guidance/20261025T165450.274617666Z-2791738781/capture.json",
+          "markdownSha256": "50916e6bd74aebd4f6dc7e70ebdbf6cc5d860efbcfb96228fe33a0a64504f20b",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Baseline variants rule: Small, medium and large extended FABs are available in M3 Expressive; the baseline extended FAB is available i"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "give-the-icon-and-text-label-one",
+      "statement": "Give the icon and text label one distinct purpose, and make the accessible label include the first word of the visible label.",
+      "condition": "When naming an extended FAB for assistive technology.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/extended-fab/accessibility",
+          "section": "50c37163-1d01-4bb7-b642-0d1db90740b0",
+          "capture": "snapshots/material-guidance/20261025T165450.274617666Z-2791738781/capture.json",
+          "markdownSha256": "e0e142dd849d19cbfe3e31745d929ae5d1bf84ec45770b87886900f1ccc82cfa",
+          "extractorVersion": 2,
+          "summary": "Curated from Labeling elements: Give the icon and text label one distinct purpose, and make the accessible label include the first word of the"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "include-the-extended-fab-early-in-the",
+      "statement": "Include the extended FAB early in the assistive-technology focus order; expose its visible label and icon as one focusable element.",
+      "condition": "When navigating the screen with assistive technology.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/extended-fab/accessibility",
+          "section": "d54b8fc7-6254-4a89-80a7-7463938e8f96",
+          "capture": "snapshots/material-guidance/20261025T165450.274617666Z-2791738781/capture.json",
+          "markdownSha256": "e0e142dd849d19cbfe3e31745d929ae5d1bf84ec45770b87886900f1ccc82cfa",
+          "extractorVersion": 2,
+          "summary": "Curated from Initial focus: Include the extended FAB early in the assistive-technology focus order; expose its visible label and icon as o"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "let-the-container-hug-its-contents-and",
+      "statement": "Let the container hug its contents and grow or shrink with the label.",
+      "condition": "When sizing an extended FAB.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/extended-fab/guidelines",
+          "section": "4ee8efec-abca-4b0e-9caa-84c663d11385",
+          "capture": "snapshots/material-guidance/20261025T165450.274617666Z-2791738781/capture.json",
+          "markdownSha256": "b523274831678240f9ab46621c1cfae819c45ae6f9d9ff573c314142992dfa2d",
+          "extractorVersion": 2,
+          "summary": "Curated from Container: Let the container hug its contents and grow or shrink with the label."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "mirror-the-icon-and-label-order-for",
+      "statement": "Mirror the icon and label order for RTL: icon left of label in LTR and right of label in RTL.",
+      "condition": "When rendering the extended FAB in RTL.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/extended-fab/guidelines",
+          "section": "4945b12a-c5b9-40db-8801-0e4e3575ad01",
+          "capture": "snapshots/material-guidance/20261025T165450.274617666Z-2791738781/capture.json",
+          "markdownSha256": "b523274831678240f9ab46621c1cfae819c45ae6f9d9ff573c314142992dfa2d",
+          "extractorVersion": 2,
+          "summary": "Curated from Right-to-left languages: Mirror the icon and label order for RTL: icon left of label in LTR and right of label in RTL."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "on-downward-scroll-the-extended-fab-may",
+      "statement": "On downward scroll, the extended FAB may collapse to a FAB; on upward scroll it may expand again, moving the icon left and fading in the label.",
+      "condition": "When using the optional scroll transformation.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/extended-fab/guidelines",
+          "section": "d973f8f1-06a6-4b45-9658-e2c66b4b0ee5",
+          "capture": "snapshots/material-guidance/20261025T165450.274617666Z-2791738781/capture.json",
+          "markdownSha256": "b523274831678240f9ab46621c1cfae819c45ae6f9d9ff573c314142992dfa2d",
+          "extractorVersion": 2,
+          "summary": "Curated from Scrolling: On downward scroll, the extended FAB may collapse to a FAB; on upward scroll it may expand again, moving the i"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "place-the-extended-fab-above-the-ui",
+      "statement": "Place the extended FAB above the UI; do not overlay toolbars, place it in the upper half of a mobile screen, or put it inside a card or other container.",
+      "condition": "When positioning an extended FAB.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/extended-fab/guidelines",
+          "section": "32913020-1a8d-46c3-953d-bbbfb0e16022",
+          "capture": "snapshots/material-guidance/20261025T165450.274617666Z-2791738781/capture.json",
+          "markdownSha256": "b523274831678240f9ab46621c1cfae819c45ae6f9d9ff573c314142992dfa2d",
+          "extractorVersion": 2,
+          "summary": "Curated from Placement: Place the extended FAB above the UI; do not overlay toolbars, place it in the upper half of a mobile screen, o"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "prefer-the-extended-fab-when-an-icon",
+      "statement": "Prefer the extended FAB when an icon alone would be ambiguous, and keep the icon’s meaning aligned with its label.",
+      "condition": "When the primary action needs both icon and label context.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/extended-fab/guidelines",
+          "section": "2e171bf9-3784-4b8e-bd0f-66c05247515e",
+          "capture": "snapshots/material-guidance/20261025T165450.274617666Z-2791738781/capture.json",
+          "markdownSha256": "b523274831678240f9ab46621c1cfae819c45ae6f9d9ff573c314142992dfa2d",
+          "extractorVersion": 2,
+          "summary": "Curated from Additional emphasis: Prefer the extended FAB when an icon alone would be ambiguous, and keep the icon’s meaning aligned with its la"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "surface-extended-fab-not-recommended",
+      "statement": "Surface color remains available for baseline extended FABs but is no longer recommended.",
+      "condition": "When maintaining baseline extended FAB styling.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/extended-fab/specs",
+          "section": "473af1bd-e946-47c4-bfab-919c58268472",
+          "capture": "snapshots/material-guidance/20261025T165450.274617666Z-2791738781/capture.json",
+          "markdownSha256": "50916e6bd74aebd4f6dc7e70ebdbf6cc5d860efbcfb96228fe33a0a64504f20b",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Baseline color styles rule: Surface color remains available for baseline extended FABs but is no longer recommended."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tab-focuses-the-extended-fab-space-or",
+      "statement": "Tab focuses the extended FAB; Space or Enter activates it.",
+      "condition": "When operating the extended FAB with a keyboard.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/extended-fab/accessibility",
+          "section": "5088b29d-bbb2-4bda-a2c1-72974a13edcd",
+          "capture": "snapshots/material-guidance/20261025T165450.274617666Z-2791738781/capture.json",
+          "markdownSha256": "e0e142dd849d19cbfe3e31745d929ae5d1bf84ec45770b87886900f1ccc82cfa",
+          "extractorVersion": 2,
+          "summary": "Curated from Keyboard navigation: Tab focuses the extended FAB; Space or Enter activates it."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-a-clear-short-label-of-at",
+      "statement": "Use a clear, short label of at most 1–2 words; avoid wrapping or truncation and account for localization expanding the label.",
+      "condition": "When writing or laying out an extended FAB label.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/extended-fab/guidelines",
+          "section": "668a9764-511d-4670-9d79-496ff6fdf39d",
+          "capture": "snapshots/material-guidance/20261025T165450.274617666Z-2791738781/capture.json",
+          "markdownSha256": "b523274831678240f9ab46621c1cfae819c45ae6f9d9ff573c314142992dfa2d",
+          "extractorVersion": 2,
+          "summary": "Curated from Label text: Use a clear, short label of at most 1–2 words; avoid wrapping or truncation and account for localization expan"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-an-extended-fab-for-persistent-access",
+      "statement": "Use an extended FAB for persistent access to a primary action on a long scrolling screen.",
+      "condition": "When a screen has long scrolling content and needs persistent access to its primary action.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/extended-fab/guidelines",
+          "section": "c33cceea-4076-4df8-b83c-edf5e644f64d",
+          "capture": "snapshots/material-guidance/20261025T165450.274617666Z-2791738781/capture.json",
+          "markdownSha256": "b523274831678240f9ab46621c1cfae819c45ae6f9d9ff573c314142992dfa2d",
+          "extractorVersion": 2,
+          "summary": "Curated from Usage: Use an extended FAB for persistent access to a primary action on a long scrolling screen."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-no-more-than-one-extended-fab",
+      "statement": "Use no more than one extended FAB on a screen; use a button when presenting one option among a set of actions.",
+      "condition": "When emphasizing a primary action or presenting a group of actions.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/extended-fab/guidelines",
+          "section": "2e171bf9-3784-4b8e-bd0f-66c05247515e",
+          "capture": "snapshots/material-guidance/20261025T165450.274617666Z-2791738781/capture.json",
+          "markdownSha256": "b523274831678240f9ab46621c1cfae819c45ae6f9d9ff573c314142992dfa2d",
+          "extractorVersion": 2,
+          "summary": "Curated from Additional emphasis: Use no more than one extended FAB on a screen; use a button when presenting one option among a set of actions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-the-extended-fab-for-the-screen-s",
+      "statement": "Use the extended FAB for the screen’s primary action when label text is needed to make the action understandable.",
+      "condition": "When choosing between a FAB and extended FAB.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/extended-fab/overview",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T165450.274617666Z-2791738781/capture.json",
+          "markdownSha256": "66d4119cfcec311f691156e7d2e209dac4164943656aec82031eeb0e5cef07f6",
+          "extractorVersion": 2,
+          "summary": "Curated from page: Use the extended FAB for the screen’s primary action when label text is needed to make the action understandab"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "when-space-is-limited-the-extended-fab",
+      "statement": "When space is limited, the extended FAB may transform into a standard FAB; a collapsed navigation rail uses a FAB, while an expanded rail can use an extended FAB.",
+      "condition": "When adapting the primary action to available space or rail state.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/extended-fab/guidelines",
+          "section": "3340a118-4a2b-4094-b5d4-5185eab5625a",
+          "capture": "snapshots/material-guidance/20261025T165450.274617666Z-2791738781/capture.json",
+          "markdownSha256": "b523274831678240f9ab46621c1cfae819c45ae6f9d9ff573c314142992dfa2d",
+          "extractorVersion": 2,
+          "summary": "Curated from Responsive layout: When space is limited, the extended FAB may transform into a standard FAB; a collapsed navigation rail uses a "
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "extended-fab-nondefault-state-layer-matches-icon",
+      "statement": "For a non-default extended-FAB color mapping, use the same color role for the state layer and icon; for the primary mapping, use md.sys.color.primary.",
+      "condition": "When an extended FAB uses a non-default color mapping.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/extended-fab/specs",
+          "section": "85df5092-7db3-4b16-9bfa-46d76caa815e",
+          "capture": "snapshots/material-guidance/20261025T165450.274617666Z-2791738781/capture.json",
+          "markdownSha256": "50916e6bd74aebd4f6dc7e70ebdbf6cc5d860efbcfb96228fe33a0a64504f20b",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit States color-role instruction."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

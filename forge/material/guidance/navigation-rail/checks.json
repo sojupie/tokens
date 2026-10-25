@@ -5,7 +5,7 @@
   "sources": [
     {
       "url": "https://m3.material.io/components/navigation-rail/overview",
-      "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+      "capture": "snapshots/material-guidance/20261025T165722.866858859Z-2401510182/capture.json",
       "markdownSha256": "8fd06b6ded2a154f8a8fb9d271fa5fbc3dfa9b6543b0cfb5b71b4afd8fc63ad7",
       "extractorVersion": 2,
       "sections": [
@@ -37,8 +37,8 @@
     },
     {
       "url": "https://m3.material.io/components/navigation-rail/specs",
-      "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
-      "markdownSha256": "096befaa862ddf1aae2748f6f5a528f65eaf26f9897e15e3ffe4a6197633f62c",
+      "capture": "snapshots/material-guidance/20261025T165722.866858859Z-2401510182/capture.json",
+      "markdownSha256": "880966656374f01045b9762ac7a2557297a1c704e81134026201b64bc2037547",
       "extractorVersion": 2,
       "sections": [
         {
@@ -57,7 +57,7 @@
           "id": "c8c4ae5c-369b-451e-9f92-b77c5913b056",
           "title": "Baseline variants",
           "status": "no-requirements",
-          "notes": "The baseline replacement recommendation and availability table are recorded under Variants and M3 Expressive update; this subsection repeats the recommendation."
+          "notes": "The baseline replacement recommendation is captured by baseline-rail-recommendation; generation-specific availability is captured by baseline-and-expressive-availability. This subsection repeats those checks."
         },
         {
           "id": "272d0b54-d47f-42bc-80af-35ff411ff1b7",
@@ -141,7 +141,7 @@
     },
     {
       "url": "https://m3.material.io/components/navigation-rail/guidelines",
-      "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+      "capture": "snapshots/material-guidance/20261025T165722.866858859Z-2401510182/capture.json",
       "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
       "extractorVersion": 2,
       "sections": [
@@ -275,7 +275,7 @@
     },
     {
       "url": "https://m3.material.io/components/navigation-rail/accessibility",
-      "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+      "capture": "snapshots/material-guidance/20261025T165722.866858859Z-2401510182/capture.json",
       "markdownSha256": "97be8aa1b310099941b19a4b6cbe083fc76d37f7f5ad83d89cf9eb2062db6713",
       "extractorVersion": 2,
       "sections": [

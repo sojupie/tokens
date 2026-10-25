@@ -1,0 +1,1239 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "carousel",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/carousel/overview",
+      "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+      "markdownSha256": "ec1de87528a8ca9cb04ac84a176a600fbc8e58af30f36e95dc8a856250f59832",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Carousel",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "51b7e13e-5c7c-473e-bca9-97424f533c39",
+          "title": "Availability & resources",
+          "status": "no-requirements",
+          "notes": "Resource/token controls, descriptive state or anatomy inventory, research summary, or parent heading; actionable requirements are captured in specific child sections."
+        },
+        {
+          "id": "4c37a23b-7c46-4728-94ae-63190c9327e1",
+          "title": "Updates",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "5b336f5c-9c80-4ac1-bf62-143aba7fd13a",
+          "title": "Differences from M2",
+          "status": "no-requirements",
+          "notes": "No independent actionable requirement beyond the checks linked to its detailed child section."
+        },
+        {
+          "id": "e30f30e1-fcaf-404c-ad2e-39cac69c202b",
+          "title": "Research",
+          "status": "no-requirements",
+          "notes": "Resource/token controls, descriptive state or anatomy inventory, research summary, or parent heading; actionable requirements are captured in specific child sections."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/carousel/specs",
+      "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+      "markdownSha256": "7259d8a111f90537c8958233728578a398f87892343f9cf90eea5fdeac5c2c5a",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Carousel",
+          "status": "no-requirements",
+          "notes": "Repeated title or general introductory summary; specific layout and width rules are mapped in the relevant overview and child sections."
+        },
+        {
+          "id": "04c52c64-e156-4931-b977-2e2f6e630706",
+          "title": "Tokens & specs",
+          "status": "no-requirements",
+          "notes": "Resource/token controls, descriptive state or anatomy inventory, research summary, or parent heading; actionable requirements are captured in specific child sections."
+        },
+        {
+          "id": "3f3d493c-b735-43e8-b49d-e0af33590442",
+          "title": "Color",
+          "status": "no-requirements",
+          "notes": "Resource/token controls, descriptive state or anatomy inventory, research summary, or parent heading; actionable requirements are captured in specific child sections."
+        },
+        {
+          "id": "df3b0155-1542-42eb-a6f4-f497837a2e8f",
+          "title": "States",
+          "status": "no-requirements",
+          "notes": "Resource/token controls, descriptive state or anatomy inventory, research summary, or parent heading; actionable requirements are captured in specific child sections."
+        },
+        {
+          "id": "a49c11fa-479f-433b-b534-7abead5f5892",
+          "title": "Carousel item dynamic widths",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "3c9dc903-2f88-4b27-84e3-213c50674632",
+          "title": "Multi-browse",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "bbcb4bcc-33d1-4701-8c2a-77a93d239aae",
+          "title": "Measurements",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "477de3a1-c9df-4742-baf3-bcd5eeb3764c",
+          "title": "Uncontained",
+          "status": "no-requirements",
+          "notes": "No independent actionable requirement beyond the checks linked to its detailed child section."
+        },
+        {
+          "id": "48c7d3d6-3f41-4b4c-8364-3fc7915def55",
+          "title": "Measurements",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "45bcc791-af94-4ff6-bf15-6f6e4780568c",
+          "title": "Uncontained mutli-aspect ratio",
+          "status": "no-requirements",
+          "notes": "No independent actionable requirement beyond the checks linked to its detailed child section."
+        },
+        {
+          "id": "fd49e47f-16b3-499d-a526-c5cd4dc6595d",
+          "title": "Measurements",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "66eb8746-70f0-4bad-b940-8e1028268d65",
+          "title": "Hero",
+          "status": "no-requirements",
+          "notes": "No independent actionable requirement beyond the checks linked to its detailed child section."
+        },
+        {
+          "id": "acf30fbe-5f07-494c-a9e4-28ca204d8e2a",
+          "title": "Measurements",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "a8cf229e-48ae-4161-9936-d1e47d295cd8",
+          "title": "Center-aligned hero",
+          "status": "no-requirements",
+          "notes": "No independent actionable requirement beyond the checks linked to its detailed child section."
+        },
+        {
+          "id": "2a9a2deb-896e-42bd-93a7-e15f3ed91ddd",
+          "title": "Measurements",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "ca6424b2-8ccf-4cfc-96d6-9b0b74e813d5",
+          "title": "Full-screen",
+          "status": "no-requirements",
+          "notes": "No independent actionable requirement beyond the checks linked to its detailed child section."
+        },
+        {
+          "id": "88f3116e-8248-45a9-a38c-304cc5658a91",
+          "title": "Measurements",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/carousel/guidelines",
+      "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+      "markdownSha256": "9568ecdd6d3f4e4d69cd3e1ea6435a93d4ee60c4e30cc7de6fc77a1f730bb66a",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Carousel",
+          "status": "no-requirements",
+          "notes": "Repeated title or general introductory summary; specific layout and width rules are mapped in the relevant overview and child sections."
+        },
+        {
+          "id": "669a5fac-de25-483a-a4ac-d9f05b604462",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "13b90133-e09f-41e1-b707-53f4ab2f54ef",
+          "title": "Accessibility requirements on scrolling pages",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "d95cefa4-53df-45e2-bbb2-3aeeecbe9639",
+          "title": "Multi-browse",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "96c5c157-fe5b-4ee3-a9b4-72bf8efab7e9",
+          "title": "Uncontained",
+          "status": "mapped",
+          "notes": "Fixed-size uncontained behavior, default/snap scrolling, and content above/below the items without cropping are represented by scroll-mode-by-layout and uncontained-outside-content."
+        },
+        {
+          "id": "dfd4376f-a049-4c45-beba-2d90434705f5",
+          "title": "Uncontained multi-aspect ratio",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "5991f961-79aa-4955-b86e-3e15432108e6",
+          "title": "Hero",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "a9f8dcde-e5c5-464f-b488-d9ded9ae4a4a",
+          "title": "Center-aligned hero",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "ae0f1566-a956-4c4b-b153-d50ee20c32e7",
+          "title": "Full-screen",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "792bd03f-3f95-4e1b-8fb7-c2303c76156e",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "Resource/token controls, descriptive state or anatomy inventory, research summary, or parent heading; actionable requirements are captured in specific child sections."
+        },
+        {
+          "id": "a9c1fad5-3055-49e7-a5a0-789952dcee64",
+          "title": "Container",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "63371f56-2724-453e-958c-e656a8e9b7c3",
+          "title": "Carousel items",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "0fe67b34-2aa6-4cc3-b08a-e5346fd931a4",
+          "title": "Item text (optional)",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "29414e9b-76ab-4d3b-8655-4e01c80564f7",
+          "title": "Adaptive design",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "1fcb00ba-e578-4dd0-b5d3-819f59f585f3",
+          "title": "Behavior",
+          "status": "no-requirements",
+          "notes": "Resource/token controls, descriptive state or anatomy inventory, research summary, or parent heading; actionable requirements are captured in specific child sections."
+        },
+        {
+          "id": "d43942fd-6a87-41ee-bd6f-9755498ce577",
+          "title": "Scrolling",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/carousel/accessibility",
+      "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+      "markdownSha256": "198d68ec4b280ade6ce469ca472b3810c238eb2f89bc39e608dca601467faef3",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Carousel",
+          "status": "no-requirements",
+          "notes": "Repeated title or general introductory summary; specific layout and width rules are mapped in the relevant overview and child sections."
+        },
+        {
+          "id": "046d7265-a375-4079-b699-5029a0c4d69d",
+          "title": "Use cases",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "c7604765-52c6-4a7e-afe0-7ebaa59e30ce",
+          "title": "Requirements on scrolling pages",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "161ca1c8-6d22-4cce-bf13-2d47b0477f98",
+          "title": "Interaction & style",
+          "status": "no-requirements",
+          "notes": "No independent actionable requirement beyond the checks linked to its detailed child section."
+        },
+        {
+          "id": "81ef3eae-d3cc-42f0-9d83-31f0f1a45241",
+          "title": "Touch",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "78a6e5ce-5b16-460b-b4aa-34f72b3fd627",
+          "title": "Cursor",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "ce3dbf59-37f7-4c6f-8f31-ed37acd7c7fd",
+          "title": "Initial focus",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "fb87792d-96fb-45de-8cbd-8fee5d460b64",
+          "title": "Keyboard navigation",
+          "status": "mapped",
+          "notes": "The keyboard-table item navigation and activation rows are represented by carousel-keyboard-move-items and carousel-keyboard-activate-item; initial focus and exit navigation are represented by carousel-focus-order."
+        },
+        {
+          "id": "8e13d514-dc72-4932-9ed4-20f76a0b31b7",
+          "title": "Labeling elements",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "c6e0540a-72a9-4251-afc5-408e40aaafa3",
+          "title": "Reduced motion",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "page-layouts",
+      "statement": "Choose among multi-browse, uncontained, hero, and full-screen layouts; items may be start- or center-aligned and adapt while scrolling.",
+      "condition": "When selecting a carousel layout; the newer uncontained multi-aspect-ratio variant is also available.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/overview",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "ec1de87528a8ca9cb04ac84a176a600fbc8e58af30f36e95dc8a856250f59832",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Carousel guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "scroll-mode-by-layout",
+      "statement": "Use default free scrolling for uncontained layouts; use snap-scrolling for multi-browse, hero, and full-screen layouts.",
+      "condition": "When selecting carousel scrolling.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/guidelines",
+          "section": "669a5fac-de25-483a-a4ac-d9f05b604462",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "9568ecdd6d3f4e4d69cd3e1ea6435a93d4ee60c4e30cc7de6fc77a1f730bb66a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Usage guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "visible-recognizable-items",
+      "statement": "Keep items fully visible except in uncontained layouts and large enough for their imagery/text to remain recognizable.",
+      "condition": "When sizing carousel items.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/guidelines",
+          "section": "669a5fac-de25-483a-a4ac-d9f05b604462",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "9568ecdd6d3f4e4d69cd3e1ea6435a93d4ee60c4e30cc7de6fc77a1f730bb66a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Usage guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "show-all-alternative",
+      "statement": "On vertically scrolling pages, provide a way to access every item without horizontal scrolling; a Show all destination is recommended, except for full-screen carousels.",
+      "condition": "For carousels on vertically scrolling pages.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/guidelines",
+          "section": "13b90133-e09f-41e1-b707-53f4ab2f54ef",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "9568ecdd6d3f4e4d69cd3e1ea6435a93d4ee60c4e30cc7de6fc77a1f730bb66a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Accessibility requirements on scrolling pages guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "multibrowse-content",
+      "statement": "Use multi-browse for many simple visual items; avoid it for complex imagery or text-heavy items, and at compact breakpoints show at most three text-bearing items.",
+      "condition": "For multi-browse layouts.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/guidelines",
+          "section": "d95cefa4-53df-45e2-bbb2-3aeeecbe9639",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "9568ecdd6d3f4e4d69cd3e1ea6435a93d4ee60c4e30cc7de6fc77a1f730bb66a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Multi-browse guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "aspect-ratio-purpose",
+      "statement": "Use the uncontained multi-aspect-ratio layout only when items have different widths.",
+      "condition": "For this layout.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/guidelines",
+          "section": "dfd4376f-a049-4c45-beba-2d90434705f5",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "9568ecdd6d3f4e4d69cd3e1ea6435a93d4ee60c4e30cc7de6fc77a1f730bb66a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Uncontained multi-aspect ratio guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "hero-snap",
+      "statement": "Use snap-scrolling for hero layouts so people move through one primary item at a time.",
+      "condition": "For hero layouts.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/guidelines",
+          "section": "5991f961-79aa-4955-b86e-3e15432108e6",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "9568ecdd6d3f4e4d69cd3e1ea6435a93d4ee60c4e30cc7de6fc77a1f730bb66a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Hero guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fullscreen-orientation",
+      "statement": "Use full-screen carousels for immersive, visually rich content; use portrait orientation only at compact and medium breakpoints and always snap to the container edges.",
+      "condition": "For full-screen layouts.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/guidelines",
+          "section": "ae0f1566-a956-4c4b-b153-d50ee20c32e7",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "9568ecdd6d3f4e4d69cd3e1ea6435a93d4ee60c4e30cc7de6fc77a1f730bb66a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Full-screen guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "carousel-focus-order",
+      "statement": "Place initial focus on the first item, allow Tab or arrow keys to move through items, and let up/down arrows leave the carousel for following page content.",
+      "condition": "For keyboard interaction.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/accessibility",
+          "section": "ce3dbf59-37f7-4c6f-8f31-ed37acd7c7fd",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "198d68ec4b280ade6ce469ca472b3810c238eb2f89bc39e608dca601467faef3",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Initial focus guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "carousel-reduced-motion",
+      "statement": "When reduced motion is enabled, remove parallax and item expansion, keep items the same size, and prevent edge clipping.",
+      "condition": "When the user requests reduced motion.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/accessibility",
+          "section": "c6e0540a-72a9-4251-afc5-408e40aaafa3",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "198d68ec4b280ade6ce469ca472b3810c238eb2f89bc39e608dca601467faef3",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Reduced motion guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "carousel-labels",
+      "statement": "Expose the carousel as a labeled container and announce the current item and total item count.",
+      "condition": "For screen-reader output.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/accessibility",
+          "section": "8e13d514-dc72-4932-9ed4-20f76a0b31b7",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "198d68ec4b280ade6ce469ca472b3810c238eb2f89bc39e608dca601467faef3",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Labeling elements guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "uncontained-multi-aspect-availability",
+      "statement": "The uncontained multi-aspect-ratio carousel was added in November 2025; uncontained, full-screen, centered, hero, and multi-browse layouts were added in 2023.",
+      "condition": "When identifying available Material carousel layouts.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/overview",
+          "section": "4c37a23b-7c46-4728-94ae-63190c9327e1",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "ec1de87528a8ca9cb04ac84a176a600fbc8e58af30f36e95dc8a856250f59832",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Updates instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "carousel-dynamic-width-rules",
+      "statement": "Let all item widths adapt to the container; large items may have a custom maximum width and small items must stay between 40dp and 56dp.",
+      "condition": "For dynamic carousel items.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/specs",
+          "section": "a49c11fa-479f-433b-b534-7abead5f5892",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "7259d8a111f90537c8958233728578a398f87892343f9cf90eea5fdeac5c2c5a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Carousel item dynamic widths instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "multibrowse-item-composition",
+      "statement": "Show at least one large, medium, and small item in a multi-browse carousel.",
+      "condition": "For multi-browse layout.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/specs",
+          "section": "3c9dc903-2f88-4b27-84e3-213c50674632",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "7259d8a111f90537c8958233728578a398f87892343f9cf90eea5fdeac5c2c5a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Multi-browse instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "multibrowse-side-padding",
+      "statement": "Provide padding on both sides of a multi-browse carousel container.",
+      "condition": "For multi-browse layout.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/specs",
+          "section": "bbcb4bcc-33d1-4701-8c2a-77a93d239aae",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "7259d8a111f90537c8958233728578a398f87892343f9cf90eea5fdeac5c2c5a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Measurements instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "uncontained-edge-bleed",
+      "statement": "Allow uncontained items to bleed across the container padding as they scroll.",
+      "condition": "For uncontained layout.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/specs",
+          "section": "48c7d3d6-3f41-4b4c-8364-3fc7915def55",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "7259d8a111f90537c8958233728578a398f87892343f9cf90eea5fdeac5c2c5a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Measurements instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "multi-aspect-leading-gap",
+      "statement": "Use leading padding only and 8dp between items in an uncontained multi-aspect-ratio carousel.",
+      "condition": "For the uncontained multi-aspect-ratio layout.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/specs",
+          "section": "fd49e47f-16b3-499d-a526-c5cd4dc6595d",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "7259d8a111f90537c8958233728578a398f87892343f9cf90eea5fdeac5c2c5a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Measurements instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "hero-side-padding",
+      "statement": "Provide padding on both sides of the hero carousel container.",
+      "condition": "For hero layout.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/specs",
+          "section": "acf30fbe-5f07-494c-a9e4-28ca204d8e2a",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "7259d8a111f90537c8958233728578a398f87892343f9cf90eea5fdeac5c2c5a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Measurements instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "center-hero-side-padding",
+      "statement": "Provide padding on both sides of a center-aligned hero carousel.",
+      "condition": "For center-aligned hero layout.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/specs",
+          "section": "2a9a2deb-896e-42bd-93a7-e15f3ed91ddd",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "7259d8a111f90537c8958233728578a398f87892343f9cf90eea5fdeac5c2c5a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Measurements instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fullscreen-edge-to-edge",
+      "statement": "Fill the window edge-to-edge in the full-screen layout.",
+      "condition": "For full-screen layout.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/specs",
+          "section": "88f3116e-8248-45a9-a38c-304cc5658a91",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "7259d8a111f90537c8958233728578a398f87892343f9cf90eea5fdeac5c2c5a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Measurements instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "center-hero-preview-items",
+      "statement": "Place a previewed small item at the leading edge so the large hero item is centered, with a second small preview also visible.",
+      "condition": "For center-aligned hero layouts.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/guidelines",
+          "section": "a9f8dcde-e5c5-464f-b488-d9ded9ae4a4a",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "9568ecdd6d3f4e4d69cd3e1ea6435a93d4ee60c4e30cc7de6fc77a1f730bb66a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Center-aligned hero instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "carousel-container-visibility",
+      "statement": "Let the visible item count vary with layout and breakpoint; the container is rectangular and can stretch to available space.",
+      "condition": "When sizing the carousel container.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/guidelines",
+          "section": "a9c1fad5-3055-49e7-a5a0-789952dcee64",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "9568ecdd6d3f4e4d69cd3e1ea6435a93d4ee60c4e30cc7de6fc77a1f730bb66a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Container instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "carousel-item-available-widths",
+      "statement": "Use large, medium, or small dynamic item widths; keep large items recognizable and consider a narrower large-item maximum only for simple imagery at compact breakpoints.",
+      "condition": "When sizing carousel items.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/guidelines",
+          "section": "63371f56-2724-453e-958c-e656a8e9b7c3",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "9568ecdd6d3f4e4d69cd3e1ea6435a93d4ee60c4e30cc7de6fc77a1f730bb66a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Carousel items instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "carousel-text-length",
+      "statement": "Keep optional carousel text brief; at compact breakpoints avoid more than two lines unless the background is simple, and adapt text so it remains understandable at each item size.",
+      "condition": "When carousel items contain text.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/guidelines",
+          "section": "0fe67b34-2aa6-4cc3-b08a-e5346fd931a4",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "9568ecdd6d3f4e4d69cd3e1ea6435a93d4ee60c4e30cc7de6fc77a1f730bb66a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Item text (optional) instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "carousel-heavy-content-layout",
+      "statement": "For text-heavy items, use the uncontained layout or a series of cards instead of a visual-first carousel.",
+      "condition": "When items need substantial text.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/guidelines",
+          "section": "0fe67b34-2aa6-4cc3-b08a-e5346fd931a4",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "9568ecdd6d3f4e4d69cd3e1ea6435a93d4ee60c4e30cc7de6fc77a1f730bb66a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Item text (optional) instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "carousel-compact-visible-count",
+      "statement": "At compact breakpoints, show up to three items at once; larger breakpoints can show and scale more items, while full-screen always shows one.",
+      "condition": "Across breakpoints.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/guidelines",
+          "section": "29414e9b-76ab-4d3b-8655-4e01c80564f7",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "9568ecdd6d3f4e4d69cd3e1ea6435a93d4ee60c4e30cc7de6fc77a1f730bb66a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Adaptive design instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "carousel-parallax-motion",
+      "statement": "Carousel items move with a parallax effect while scrolling.",
+      "condition": "When motion is enabled.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/guidelines",
+          "section": "d43942fd-6a87-41ee-bd6f-9755498ce577",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "9568ecdd6d3f4e4d69cd3e1ea6435a93d4ee60c4e30cc7de6fc77a1f730bb66a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Scrolling instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "carousel-all-items-controls",
+      "statement": "For carousels without headers, provide a Show all button with 4dp padding; for carousels with headers, a 48dp arrow may sit next to the leading-aligned header and open a page that also shows the header.",
+      "condition": "For carousels on vertically scrolling pages, except full-screen carousels.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/accessibility",
+          "section": "c7604765-52c6-4a7e-afe0-7ebaa59e30ce",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "198d68ec4b280ade6ce469ca472b3810c238eb2f89bc39e608dca601467faef3",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Requirements on scrolling pages instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "carousel-alternative-controls-placement",
+      "statement": "Prefer the standard Show all solution; if an alternative is required, place it in nearby navigation or near the carousel, keep controls outside the carousel and place them above or below it.",
+      "condition": "When a product needs an alternative to the recommended all-items control.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/accessibility",
+          "section": "c7604765-52c6-4a7e-afe0-7ebaa59e30ce",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "198d68ec4b280ade6ce469ca472b3810c238eb2f89bc39e608dca601467faef3",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Requirements on scrolling pages instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "carousel-assistive-actions",
+      "statement": "Allow assistive technology users to navigate to the carousel, move between items, activate an item, and skip past the items.",
+      "condition": "For carousel accessibility.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/accessibility",
+          "section": "046d7265-a375-4079-b699-5029a0c4d69d",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "198d68ec4b280ade6ce469ca472b3810c238eb2f89bc39e608dca601467faef3",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Use cases instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "carousel-touch-feedback",
+      "statement": "Tapping a carousel item slightly changes its shape and displays a touch ripple.",
+      "condition": "When a carousel item is tapped.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/accessibility",
+          "section": "81ef3eae-d3cc-42f0-9d83-31f0f1a45241",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "198d68ec4b280ade6ce469ca472b3810c238eb2f89bc39e608dca601467faef3",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Touch instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "carousel-pointer-feedback",
+      "statement": "Show hover feedback and a click ripple for carousel items.",
+      "condition": "For pointer interaction.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/accessibility",
+          "section": "78a6e5ce-5b16-460b-b4aa-34f72b3fd627",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "198d68ec4b280ade6ce469ca472b3810c238eb2f89bc39e608dca601467faef3",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Cursor instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "uncontained-outside-content",
+      "statement": "Because uncontained carousel items keep one size, additional text or UI may be placed above or below the items without being masked or cropped.",
+      "condition": "For an uncontained carousel layout.",
+      "basis": "explicit",
+      "notes": "The source ties the layout’s fixed item size to showing additional surrounding content without masking or cropping it.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/guidelines",
+          "section": "96c5c157-fe5b-4ee3-a9b4-72bf8efab7e9",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "9568ecdd6d3f4e4d69cd3e1ea6435a93d4ee60c4e30cc7de6fc77a1f730bb66a",
+          "extractorVersion": 2,
+          "summary": "The source ties the layout’s fixed item size to showing additional surrounding content without masking or cropping it."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "carousel-keyboard-move-items",
+      "statement": "Tab or the arrow keys move focus to the previous or next carousel item.",
+      "condition": "When navigating carousel items by keyboard.",
+      "basis": "explicit",
+      "notes": "Preserves the carousel item focus movement stated in the keyboard table.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/accessibility",
+          "section": "fb87792d-96fb-45de-8cbd-8fee5d460b64",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "198d68ec4b280ade6ce469ca472b3810c238eb2f89bc39e608dca601467faef3",
+          "extractorVersion": 2,
+          "summary": "Preserves the carousel item focus movement stated in the keyboard table."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "carousel-keyboard-activate-item",
+      "statement": "Space or Enter activates the focused carousel item.",
+      "condition": "When a carousel item has keyboard focus.",
+      "basis": "explicit",
+      "notes": "Preserves the activation keys and outcome from the keyboard table.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/carousel/accessibility",
+          "section": "fb87792d-96fb-45de-8cbd-8fee5d460b64",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "198d68ec4b280ade6ce469ca472b3810c238eb2f89bc39e608dca601467faef3",
+          "extractorVersion": 2,
+          "summary": "Preserves the activation keys and outcome from the keyboard table."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

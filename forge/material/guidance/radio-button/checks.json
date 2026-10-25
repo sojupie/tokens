@@ -1,0 +1,595 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "radio-button",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/radio-button/overview",
+      "capture": "snapshots/material-guidance/20261025T165746.138572127Z-1556027108/capture.json",
+      "markdownSha256": "2eb7f6997593b35fe374c1d9e662e2a757e0364e91c1fe28216bbbe999030dff",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Radio button",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "9e14cf48-5b06-446c-b47e-1e5bd9ee422b",
+          "title": "Resources & availability",
+          "status": "no-requirements",
+          "notes": "This table reports availability of upstream design kits and framework implementations; it is not an implementation requirement for this project."
+        },
+        {
+          "id": "30bcb71b-f087-4f01-87ac-7bb71ead33f7",
+          "title": "What’s new",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/radio-button/specs",
+      "capture": "snapshots/material-guidance/20261025T165746.138572127Z-1556027108/capture.json",
+      "markdownSha256": "296b01da613e4fc05f665959a8359a608d56c41cb307540c47660e87d084737f",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Radio button",
+          "status": "no-requirements",
+          "notes": "This is the page title or brief component summary; actionable requirements are recorded in the linked child sections."
+        },
+        {
+          "id": "3eef19a6-cdcb-4ecf-b1af-2b8095d485ac",
+          "title": "Tokens & specs",
+          "status": "no-requirements",
+          "notes": "The section exposes token-set selectors and values; it adds no component behavior beyond the curated checks. Keep token values and references in the source token pipeline."
+        },
+        {
+          "id": "67c5a883-8351-4bce-b154-43f4b370903a",
+          "title": "Color",
+          "status": "unclear",
+          "notes": "Primary and on-surface-variant roles are enumerated, but selected/unselected assignments depend on an uninspected color diagram; no pairing is inferred."
+        },
+        {
+          "id": "1a814cbb-9b3d-4b3f-969b-f1965a8665cd",
+          "title": "Adjacent text label color",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "2881c9e5-8943-42b5-a899-e81aed1e7823",
+          "title": "States",
+          "status": "unclear",
+          "notes": "Enabled, hover, focus, pressed and disabled states are enumerated only in the uninspected illustration; their state-layer appearance is unresolved."
+        },
+        {
+          "id": "ced4ceed-d3bf-4792-8d00-002ac1edc88f",
+          "title": "Measurements",
+          "status": "unclear",
+          "notes": "The explicit 20dp icon, 40dp state layer and 48dp target table is captured by radio-button-measurements. The remaining layout geometry appears only in an uninspected diagram."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/radio-button/guidelines",
+      "capture": "snapshots/material-guidance/20261025T165746.138572127Z-1556027108/capture.json",
+      "markdownSha256": "061c6314d1ff0a7757de054cf2e245b12a54c9bfe09c7ae14262c8b7b5a37b3d",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Radio button",
+          "status": "no-requirements",
+          "notes": "This is the page title or brief component summary; actionable requirements are recorded in the linked child sections."
+        },
+        {
+          "id": "29c12e5a-b295-47b6-9a69-ea4c735d7a0e",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "9608c9af-21a7-40f8-b8b3-e14a6e9d6397",
+          "title": "Alternate selection controls",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "4c0190e7-49da-43bf-b08b-828f71300425",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "The anatomy diagram only labels selected/unselected icons and adjacent text; adjacent labeling and group/option semantics are captured by give-every-radio-button-its-own-adjacent and label-the-group-using-its-category-title."
+        },
+        {
+          "id": "eba97636-1dd9-4e81-a1a6-20b8123d1b83",
+          "title": "Adjacent label text",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "6d07ace6-692f-4b3f-b62f-bba7adc50bc1",
+          "title": "Placement",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "6b121e8d-0667-4b13-8409-a849d976e5f5",
+          "title": "Behavior",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/radio-button/accessibility",
+      "capture": "snapshots/material-guidance/20261025T165746.138572127Z-1556027108/capture.json",
+      "markdownSha256": "eb8796a5bb45c65a4dd31b7c5e959c6c34c143aae748f252e9f77f99f33a130c",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Radio button",
+          "status": "no-requirements",
+          "notes": "This is the page title or brief component summary; actionable requirements are recorded in the linked child sections."
+        },
+        {
+          "id": "4ea04a76-1d53-4c1b-882c-ffa051aeece9",
+          "title": "Use cases",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "a9ae16aa-00a3-4c02-9e25-4f1efb5d1095",
+          "title": "Interaction & style",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "89bcae8f-c445-41c7-9290-a12fcb5bb3bf",
+          "title": "Avoid applying density by default",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "4b6773dc-833d-4f4b-a0cc-fb5d55f49789",
+          "title": "Initial focus",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "e1275edb-bb25-4c7a-8c79-f9922bc72f7a",
+          "title": "Keyboard navigation",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "786b2b90-c001-4eeb-98d7-a320dc31b235",
+          "title": "Labeling elements",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "allow-only-one-selected-option-in-the",
+      "statement": "Allow only one selected option in the group; use checkboxes when multiple selections are allowed.",
+      "condition": "When configuring a selection group.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/radio-button/guidelines",
+          "section": "29c12e5a-b295-47b6-9a69-ea4c735d7a0e",
+          "capture": "snapshots/material-guidance/20261025T165746.138572127Z-1556027108/capture.json",
+          "markdownSha256": "061c6314d1ff0a7757de054cf2e245b12a54c9bfe09c7ae14262c8b7b5a37b3d",
+          "extractorVersion": 2,
+          "summary": "Curated from Usage: Allow only one selected option in the group; use checkboxes when multiple selections are allowed."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "arrow-keys-move-focus-and-selection-and",
+      "statement": "Arrow keys move focus and selection and wrap between first and last options; Space selects the focused option and does nothing if it is already selected.",
+      "condition": "When operating a radio group by keyboard.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/radio-button/accessibility",
+          "section": "e1275edb-bb25-4c7a-8c79-f9922bc72f7a",
+          "capture": "snapshots/material-guidance/20261025T165746.138572127Z-1556027108/capture.json",
+          "markdownSha256": "eb8796a5bb45c65a4dd31b7c5e959c6c34c143aae748f252e9f77f99f33a130c",
+          "extractorVersion": 2,
+          "summary": "Curated from Keyboard navigation: Arrow keys move focus and selection and wrap between first and last options; Space selects the focused option "
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "clicking-or-tapping-either-the-radio-icon",
+      "statement": "Clicking or tapping either the radio icon or its label selects it; apply selection immediately unless the containing dialog or page requires saving.",
+      "condition": "When a radio option is selected.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/radio-button/guidelines",
+          "section": "6b121e8d-0667-4b13-8409-a849d976e5f5",
+          "capture": "snapshots/material-guidance/20261025T165746.138572127Z-1556027108/capture.json",
+          "markdownSha256": "061c6314d1ff0a7757de054cf2e245b12a54c9bfe09c7ae14262c8b7b5a37b3d",
+          "extractorVersion": 2,
+          "summary": "Curated from Behavior: Clicking or tapping either the radio icon or its label selects it; apply selection immediately unless the cont"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "do-not-apply-density-by-default-because",
+      "statement": "Do not apply density by default because targets can fall below 48×48 CSS pixels; if offering denser layouts, keep controls that change density at least 48×48 CSS pixels.",
+      "condition": "When offering a denser layout or theme.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/radio-button/accessibility",
+          "section": "89bcae8f-c445-41c7-9290-a12fcb5bb3bf",
+          "capture": "snapshots/material-guidance/20261025T165746.138572127Z-1556027108/capture.json",
+          "markdownSha256": "eb8796a5bb45c65a4dd31b7c5e959c6c34c143aae748f252e9f77f99f33a130c",
+          "extractorVersion": 2,
+          "summary": "Curated from Avoid applying density by default: Do not apply density by default because targets can fall below 48×48 CSS pixels; if offering denser layouts, k"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "do-not-nest-radio-buttons-or-use",
+      "statement": "Do not nest radio buttons or use them for multiple selection.",
+      "condition": "When structuring selection controls.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/radio-button/guidelines",
+          "section": "29c12e5a-b295-47b6-9a69-ea4c735d7a0e",
+          "capture": "snapshots/material-guidance/20261025T165746.138572127Z-1556027108/capture.json",
+          "markdownSha256": "061c6314d1ff0a7757de054cf2e245b12a54c9bfe09c7ae14262c8b7b5a37b3d",
+          "extractorVersion": 2,
+          "summary": "Curated from Usage: Do not nest radio buttons or use them for multiple selection."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "give-every-radio-button-its-own-adjacent",
+      "statement": "Give every radio button its own adjacent label describing the option.",
+      "condition": "For every radio option.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/radio-button/guidelines",
+          "section": "eba97636-1dd9-4e81-a1a6-20b8123d1b83",
+          "capture": "snapshots/material-guidance/20261025T165746.138572127Z-1556027108/capture.json",
+          "markdownSha256": "061c6314d1ff0a7757de054cf2e245b12a54c9bfe09c7ae14262c8b7b5a37b3d",
+          "extractorVersion": 2,
+          "summary": "Curated from Adjacent label text: Give every radio button its own adjacent label describing the option."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "label-the-group-using-its-category-title",
+      "statement": "Name the radio group from its category title and expose the Radio group role; name each option from its adjacent text label. When UI text is linked, assistive technology reads the text followed by the component role.",
+      "condition": "When exposing a radio group to assistive technology.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/radio-button/accessibility",
+          "section": "786b2b90-c001-4eeb-98d7-a320dc31b235",
+          "capture": "snapshots/material-guidance/20261025T165746.138572127Z-1556027108/capture.json",
+          "markdownSha256": "eb8796a5bb45c65a4dd31b7c5e959c6c34c143aae748f252e9f77f99f33a130c",
+          "extractorVersion": 2,
+          "summary": "Curated from Labeling elements: Label the group using its category title and expose the group role; name each radio option using its adjacent "
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "prefer-a-vertically-stacked-list-and-preselect",
+      "statement": "Prefer a vertically stacked list and preselect one option; avoid horizontal radio lists.",
+      "condition": "When laying out a radio group.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/radio-button/guidelines",
+          "section": "6d07ace6-692f-4b3f-b62f-bba7adc50bc1",
+          "capture": "snapshots/material-guidance/20261025T165746.138572127Z-1556027108/capture.json",
+          "markdownSha256": "061c6314d1ff0a7757de054cf2e245b12a54c9bfe09c7ae14262c8b7b5a37b3d",
+          "extractorVersion": 2,
+          "summary": "Curated from Placement: Prefer a vertically stacked list and preselect one option; avoid horizontal radio lists."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "radio-button-alternative-selection-tradeoff",
+      "statement": "Use radio buttons for five or fewer choices; consider a dropdown when screen space is constrained, while accounting for the extra clicks and cognitive effort.",
+      "condition": "When choosing between radio buttons and a dropdown.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/radio-button/guidelines",
+          "section": "9608c9af-21a7-40f8-b8b3-e14a6e9d6397",
+          "capture": "snapshots/material-guidance/20261025T165746.138572127Z-1556027108/capture.json",
+          "markdownSha256": "061c6314d1ff0a7757de054cf2e245b12a54c9bfe09c7ae14262c8b7b5a37b3d",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Alternate selection controls rule: Use radio buttons for five or fewer choices; consider a dropdown when screen space is constrained, while accou"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "radio-button-measurements",
+      "statement": "Use a 20dp radio icon, 40dp state layer and 48dp target.",
+      "condition": "When sizing a radio button.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/radio-button/specs",
+          "section": "ced4ceed-d3bf-4792-8d00-002ac1edc88f",
+          "capture": "snapshots/material-guidance/20261025T165746.138572127Z-1556027108/capture.json",
+          "markdownSha256": "296b01da613e4fc05f665959a8359a608d56c41cb307540c47660e87d084737f",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Measurements prose or table: Use a 20dp radio icon, 40dp state layer and 48dp target."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "radio-group-assistive-use-cases",
+      "statement": "People using assistive technology must be able to navigate to and select a radio option and receive feedback appropriate to their input.",
+      "condition": "When exposing radio groups to assistive technology.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/radio-button/accessibility",
+          "section": "4ea04a76-1d53-4c1b-882c-ffa051aeece9",
+          "capture": "snapshots/material-guidance/20261025T165746.138572127Z-1556027108/capture.json",
+          "markdownSha256": "eb8796a5bb45c65a4dd31b7c5e959c6c34c143aae748f252e9f77f99f33a130c",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Use cases instruction: People using assistive technology must be able to navigate to and select a radio option and receive feedback a"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "selecting-one-radio-deselects-the-others-once",
+      "statement": "Selecting one radio deselects the others. Once selected, a group cannot be deselected; provide a No option/Not applicable option or a separate clear-selection action if opting out is needed.",
+      "condition": "When a radio group allows an initial selection.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/radio-button/accessibility",
+          "section": "a9ae16aa-00a3-4c02-9e25-4f1efb5d1095",
+          "capture": "snapshots/material-guidance/20261025T165746.138572127Z-1556027108/capture.json",
+          "markdownSha256": "eb8796a5bb45c65a4dd31b7c5e959c6c34c143aae748f252e9f77f99f33a130c",
+          "extractorVersion": 2,
+          "summary": "Curated from Interaction & style: Selecting one radio deselects the others. Once selected, a group cannot be deselected; provide a No option/Not"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tab-enters-on-the-selected-option-or",
+      "statement": "Tab enters the radio group on the selected option, or the first option if none is selected; Shift+Tab enters on the selected option, or the last option if none is selected. Arrow keys move focus and selection, wrapping between first and last options.",
+      "condition": "When focus enters a radio group.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/radio-button/accessibility",
+          "section": "4b6773dc-833d-4f4b-a0cc-fb5d55f49789",
+          "capture": "snapshots/material-guidance/20261025T165746.138572127Z-1556027108/capture.json",
+          "markdownSha256": "eb8796a5bb45c65a4dd31b7c5e959c6c34c143aae748f252e9f77f99f33a130c",
+          "extractorVersion": 2,
+          "summary": "Curated from Initial focus: Tab enters on the selected option, or first option if none is selected; Shift+Tab enters on the selected optio"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-on-surface-for-adjacent-label-text-and",
+      "statement": "Use on-surface for adjacent label text and keep that text color unchanged between selected and unselected states.",
+      "condition": "When styling labels for radio buttons.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/radio-button/specs",
+          "section": "1a814cbb-9b3d-4b3f-969b-f1965a8665cd",
+          "capture": "snapshots/material-guidance/20261025T165746.138572127Z-1556027108/capture.json",
+          "markdownSha256": "296b01da613e4fc05f665959a8359a608d56c41cb307540c47660e87d084737f",
+          "extractorVersion": 2,
+          "summary": "Curated from Adjacent text label color: Use on-surface for adjacent label text and keep that text color unchanged between selected and unselected stat"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-radio-buttons-for-five-or-fewer",
+      "statement": "Use radio buttons for five or fewer options; consider a dropdown when space is constrained, accounting for its extra interaction and cognitive effort.",
+      "condition": "When choosing a control for the number of choices or available space.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/radio-button/guidelines",
+          "section": "29c12e5a-b295-47b6-9a69-ea4c735d7a0e",
+          "capture": "snapshots/material-guidance/20261025T165746.138572127Z-1556027108/capture.json",
+          "markdownSha256": "061c6314d1ff0a7757de054cf2e245b12a54c9bfe09c7ae14262c8b7b5a37b3d",
+          "extractorVersion": 2,
+          "summary": "Curated from Usage: Use radio buttons for five or fewer options; consider a dropdown when space is constrained, accounting for its"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-radio-buttons-when-a-person-must",
+      "statement": "Use radio buttons when a person must choose one option from a set; do not substitute switches for single selection.",
+      "condition": "When selecting one item from a list.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/radio-button/overview",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T165746.138572127Z-1556027108/capture.json",
+          "markdownSha256": "2eb7f6997593b35fe374c1d9e662e2a757e0364e91c1fe28216bbbe999030dff",
+          "extractorVersion": 2,
+          "summary": "Curated from page: Use radio buttons when a person must choose one option from a set; do not substitute switches for single selec"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

@@ -1,0 +1,1007 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "navigation-bar",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/navigation-bar/overview",
+      "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+      "markdownSha256": "3ae187fa666481dbb6aac392e456c543a54ae7ae708c9fe2b03f15758d60eb03",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Navigation bar",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "bb5d52c6-9b2f-4594-82a7-a97b8868dfa5",
+          "title": "Availability & resources",
+          "status": "no-requirements",
+          "notes": "This table reports availability of upstream design kits and framework implementations; it is not an implementation requirement for this project."
+        },
+        {
+          "id": "0cac4248-cbbf-4bfb-a869-0f2bc33f2026",
+          "title": "M3 Expressive update",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "5eebed09-2454-4630-ab41-3515acccbba9",
+          "title": "Differences from M2",
+          "status": "no-requirements",
+          "notes": "This section compares historical M2 and M3 presentation. Current variant and behavior requirements are recorded in the relevant M3 specs and guidelines."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/navigation-bar/specs",
+      "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+      "markdownSha256": "7f467cb18faa8ba58ea51f3e15ae450db379c5a63dc40982fff8091985fd6968",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Navigation bar",
+          "status": "no-requirements",
+          "notes": "This is the page title or brief component summary; actionable requirements are recorded in the linked child sections."
+        },
+        {
+          "id": "2e9061a4-6dfb-41f0-b2d7-07e3b06b484f",
+          "title": "Variants",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "682fdee9-1182-4e47-a63d-47525b19032b",
+          "title": "Baseline variants",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "b60be6ea-20f2-484b-a9ab-164dc6f3cafb",
+          "title": "Configurations",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "220baae6-114a-45ee-a4b3-fcdff95601ca",
+          "title": "Tokens & specs",
+          "status": "no-requirements",
+          "notes": "This selector switches between navigation-bar and navigation-item token sets; it changes token inspection, not component behavior. Layout and available item orientations are captured by navigation-bar-item-orientation-availability and navigation-bar-item-width-distribution."
+        },
+        {
+          "id": "c17e70e1-e73b-4705-8244-b9f0c542d6c7",
+          "title": "Anatomy",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "8a723c56-bcbd-485e-88af-271f755fcfcb",
+          "title": "Color",
+          "status": "unclear",
+          "notes": "Six roles are listed, but the numbered diagram is required to map roles to bar elements; badge role assignments are explicitly delegated to badge specs."
+        },
+        {
+          "id": "157e10ed-aa85-40b8-af40-65d924fce10d",
+          "title": "States",
+          "status": "unclear",
+          "notes": "Enabled, hovered, focused and pressed states and their state-layer percentages appear in an uninspected illustration; on-touch and cursor feedback is captured by navigation-bar-touch-and-cursor-feedback."
+        },
+        {
+          "id": "e57abd9a-9a80-4b83-95dc-8dfa96084c02",
+          "title": "Measurements",
+          "status": "unclear",
+          "notes": "The full-width bar and dynamic/equal versus fixed item-width behavior are captured by navigation-bar-item-width-distribution. Compact/medium numerical margins and padding appear only in uninspected diagrams."
+        },
+        {
+          "id": "46dc2521-acf0-44e3-bbc0-78dc225b9749",
+          "title": "Baseline navigation bar",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "3425f33a-0b11-492a-ae5a-40d63f939384",
+          "title": "Tokens & specs",
+          "status": "no-requirements",
+          "notes": "The section exposes token-set selectors and values; it adds no component behavior beyond the curated checks. Keep token values and references in the source token pipeline."
+        },
+        {
+          "id": "1d62ff86-f860-4400-a681-5a856cdbca54",
+          "title": "Color",
+          "status": "unclear",
+          "notes": "Six baseline roles are listed, but their mapping to bar elements depends on an uninspected diagram; badge role assignments are delegated to badge specs."
+        },
+        {
+          "id": "465dd07e-5315-4c9f-8d37-aba92887a693",
+          "title": "States",
+          "status": "unclear",
+          "notes": "Baseline enabled, hovered, focused and pressed states are listed in the captured text. Additional visual treatment details in the uninspected illustration remain unresolved."
+        },
+        {
+          "id": "6f329e0c-c278-4ac8-9b02-1afcb2790ac3",
+          "title": "Measurements",
+          "status": "unclear",
+          "notes": "The baseline measurement section contains only uninspected diagrams; exact baseline padding, bar height and touch-target geometry cannot be confirmed from the captured text."
+        },
+        {
+          "id": "be5e3c0e-66cb-4ed2-adfc-3cbc55029309",
+          "title": "Configurations",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/navigation-bar/guidelines",
+      "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+      "markdownSha256": "1b4f36bfc868cc1ede7e6f4176c8be5409099fe0bb99583cca967b82c1c62987",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Navigation bar",
+          "status": "no-requirements",
+          "notes": "This is the page title or brief component summary; actionable requirements are recorded in the linked child sections."
+        },
+        {
+          "id": "9c390dc9-db39-47d7-8ea2-97241e73888c",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "895b5b49-a166-4d30-90be-c71a4c970f04",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "The diagram only repeats the element list captured by navigation-bar-anatomy-and-optional-badges and navigation-bar-badge-placement; it adds no distinct anatomy instruction."
+        },
+        {
+          "id": "77e9289e-95e1-42cb-864d-0e95611cefa3",
+          "title": "Container",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "4835f77b-1378-4cf2-90e6-938dbc64d81d",
+          "title": "Navigation items",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "ae6b6619-426b-46d7-8b1f-09cf2aedf152",
+          "title": "Icons",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "935d4e62-b4e8-4d5e-8b87-6a39ec479c85",
+          "title": "Active indicator",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "720ad34e-fc0f-4413-8613-10dd2d530e58",
+          "title": "Label text",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "ce655353-9061-4799-8a82-52e23aafc65e",
+          "title": "Badges (optional)",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "d43aa344-d94f-4f13-860f-392a4f11ca69",
+          "title": "Placement",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "bfa65899-098c-43d5-9639-1e7f2461ca06",
+          "title": "Adaptive design",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "8d92c9b7-5648-4784-94f7-ef2c15da106f",
+          "title": "Resizing",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "76819d14-8cba-4fd8-96dd-1ef5dca268d4",
+          "title": "Presentation",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "bd6c5e81-4699-4652-9e3a-b03aa97b8b4b",
+          "title": "Behavior",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "bff3232e-2a98-4571-ae6a-f4bb4ad413d6",
+          "title": "Navigation",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "b89108dd-3bdf-4787-acf1-f45a2e7cbc20",
+          "title": "Scrolling",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "3633c63e-98b3-4927-98d5-7df73530ca35",
+          "title": "Selection",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/navigation-bar/accessibility",
+      "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+      "markdownSha256": "5cc5bd771ec783d91d67f55d9f0ecc24f655436c77f4a4b5fc149cfcd61bb472",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Navigation bar",
+          "status": "no-requirements",
+          "notes": "This is the page title or brief component summary; actionable requirements are recorded in the linked child sections."
+        },
+        {
+          "id": "7ef6776b-8c89-49c8-b2f0-24b6d5b410dc",
+          "title": "Use cases",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "077a722d-e7f8-43ed-9b9a-00841bed0461",
+          "title": "Interaction & style",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "550f19aa-0f31-4ab4-9224-4bb9958f06bc",
+          "title": "Text scaling and truncation",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "61a31647-9e8a-4712-a4a0-ec66f1dbb4e8",
+          "title": "Initial focus",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "0cc4260c-01be-4f3a-a885-fcef43f8acd3",
+          "title": "Visual indicators",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "7a17c5ac-2899-4df9-a4f0-bff324925f5e",
+          "title": "Keyboard navigation",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "2daa662b-857e-4a2c-920e-6760945110bb",
+          "title": "Labeling elements",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "adapt-or-replace-the-navigation-bar-at",
+      "statement": "Adapt or replace the navigation bar at larger breakpoints with an appropriate rail or drawer.",
+      "condition": "When moving beyond compact layout.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-bar/guidelines",
+          "section": "8d92c9b7-5648-4784-94f7-ef2c15da106f",
+          "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+          "markdownSha256": "1b4f36bfc868cc1ede7e6f4176c8be5409099fe0bb99583cca967b82c1c62987",
+          "extractorVersion": 2,
+          "summary": "Curated from Resizing: Adapt or replace the navigation bar at larger breakpoints with an appropriate rail or drawer."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "allow-the-bar-to-grow-vertically-while",
+      "statement": "Allow the bar to grow vertically while retaining default padding; labels may wrap, must remain fully visible through 2× text size, and may truncate only beyond 2×.",
+      "condition": "When device text scaling increases.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-bar/accessibility",
+          "section": "550f19aa-0f31-4ab4-9224-4bb9958f06bc",
+          "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+          "markdownSha256": "5cc5bd771ec783d91d67f55d9f0ecc24f655436c77f4a4b5fc149cfcd61bb472",
+          "extractorVersion": 2,
+          "summary": "Curated from Text scaling and truncation: Allow the bar to grow vertically while retaining default padding; labels may wrap, must remain fully visible t"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "baseline-navigation-bar-replacement",
+      "statement": "The baseline navigation bar is no longer recommended; replace it with the shorter flexible navigation bar, which supports horizontal items in medium windows.",
+      "condition": "When maintaining baseline navigation or adopting M3 Expressive.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-bar/specs",
+          "section": "682fdee9-1182-4e47-a63d-47525b19032b",
+          "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+          "markdownSha256": "7f467cb18faa8ba58ea51f3e15ae450db379c5a63dc40982fff8091985fd6968",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Baseline variants instruction: The baseline navigation bar is no longer recommended; replace it with the shorter flexible navigation bar, whi"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "differentiate-selected-items-with-a-filled-icon",
+      "statement": "Differentiate selected items with a filled icon and bold label; use outlined icons and medium labels when unselected. If no filled icon exists, use a heavier icon.",
+      "condition": "When showing selection state.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-bar/accessibility",
+          "section": "0cc4260c-01be-4f3a-a885-fcef43f8acd3",
+          "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+          "markdownSha256": "5cc5bd771ec783d91d67f55d9f0ecc24f655436c77f4a4b5fc149cfcd61bb472",
+          "extractorVersion": 2,
+          "summary": "Curated from Visual indicators: Differentiate selected items with a filled icon and bold label; use outlined icons and medium labels when unse"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "flexible-navigation-bar-recommendation",
+      "statement": "M3 Expressive adds the flexible navigation bar and recommends it over the available baseline navigation bar.",
+      "condition": "When selecting M3 Expressive navigation variants.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-bar/specs",
+          "section": "2e9061a4-6dfb-41f0-b2d7-07e3b06b484f",
+          "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+          "markdownSha256": "7f467cb18faa8ba58ea51f3e15ae450db379c5a63dc40982fff8091985fd6968",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Variants rule: M3 Expressive adds the flexible navigation bar and recommends it over the available baseline navigation bar."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "horizontal-navigation-item-spacing",
+      "statement": "At medium breakpoints, use horizontal items; keep their width and centering consistent, retaining the same padding at each breakpoint.",
+      "condition": "When presenting horizontal navigation items.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-bar/guidelines",
+          "section": "76819d14-8cba-4fd8-96dd-1ef5dca268d4",
+          "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+          "markdownSha256": "1b4f36bfc868cc1ede7e6f4176c8be5409099fe0bb99583cca967b82c1c62987",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Presentation rule: At medium breakpoints, use horizontal items; keep their width and centering consistent, retaining the same pad"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "keep-destination-ordering-and-selection-behavior-consistent",
+      "statement": "Keep destination ordering and selection behavior consistent.",
+      "condition": "When configuring navigation items.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-bar/guidelines",
+          "section": "4835f77b-1378-4cf2-90e6-938dbc64d81d",
+          "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+          "markdownSha256": "1b4f36bfc868cc1ede7e6f4176c8be5409099fe0bb99583cca967b82c1c62987",
+          "extractorVersion": 2,
+          "summary": "Curated from Navigation items: Keep destination ordering and selection behavior consistent."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "name-destinations-from-their-visible-text-adding",
+      "statement": "Use the visible destination text as the accessible label; add detail when it is ambiguous. On Android Views, a more descriptive label cannot be set and the navigation role is not announced.",
+      "condition": "When naming destinations for assistive technology.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-bar/accessibility",
+          "section": "2daa662b-857e-4a2c-920e-6760945110bb",
+          "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+          "markdownSha256": "5cc5bd771ec783d91d67f55d9f0ecc24f655436c77f4a4b5fc149cfcd61bb472",
+          "extractorVersion": 2,
+          "summary": "Curated from Labeling elements: Name destinations from their visible text, adding detail when that text is ambiguous; note Android Views canno"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "navigation-bar-assistive-use-cases",
+      "statement": "People using assistive technology must be able to move between destinations, select a destination and receive feedback appropriate to the input type.",
+      "condition": "When exposing navigation-bar destinations to assistive technology.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-bar/accessibility",
+          "section": "7ef6776b-8c89-49c8-b2f0-24b6d5b410dc",
+          "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+          "markdownSha256": "5cc5bd771ec783d91d67f55d9f0ecc24f655436c77f4a4b5fc149cfcd61bb472",
+          "extractorVersion": 2,
+          "summary": "Curated explicit Use cases instruction: People using assistive technology must be able to move between destinations, select a destination and receive "
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "navigation-bar-badge-placement",
+      "statement": "Place optional badges at the upper-right corner of destination icons; small badges indicate an update and large badges show an update count.",
+      "condition": "When adding destination badges.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-bar/guidelines",
+          "section": "ce655353-9061-4799-8a82-52e23aafc65e",
+          "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+          "markdownSha256": "1b4f36bfc868cc1ede7e6f4176c8be5409099fe0bb99583cca967b82c1c62987",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Badges (optional) rule: Place optional badges at the upper-right corner of destination icons; small badges indicate an update and larg"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "navigation-bar-container-placement",
+      "statement": "Place the navigation-bar container at the bottom, spanning the full window; center navigation items within it and use a color fill to separate it from content.",
+      "condition": "When laying out the navigation bar.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-bar/guidelines",
+          "section": "77e9289e-95e1-42cb-864d-0e95611cefa3",
+          "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+          "markdownSha256": "1b4f36bfc868cc1ede7e6f4176c8be5409099fe0bb99583cca967b82c1c62987",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Container rule: Place the navigation-bar container at the bottom, spanning the full window; center navigation items within it "
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "navigation-bar-item-orientation-availability",
+      "statement": "Use vertical items in compact windows; use horizontal items in medium windows. Vertical is available in M3 and M3 Expressive; horizontal is available only in M3 Expressive.",
+      "condition": "When choosing navigation item orientation by breakpoint and design generation.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-bar/specs",
+          "section": "b60be6ea-20f2-484b-a9ab-164dc6f3cafb",
+          "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+          "markdownSha256": "7f467cb18faa8ba58ea51f3e15ae450db379c5a63dc40982fff8091985fd6968",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Configurations rule: Use vertical items in compact windows; use horizontal items in medium windows. Vertical is available in M3 and"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "navigation-bar-scroll-visibility",
+      "statement": "The navigation bar may hide on downward scroll and reappear on upward scroll, but must not hide while a screen reader is active.",
+      "condition": "When allowing the bar to respond to scrolling.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-bar/guidelines",
+          "section": "b89108dd-3bdf-4787-acf1-f45a2e7cbc20",
+          "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+          "markdownSha256": "1b4f36bfc868cc1ede7e6f4176c8be5409099fe0bb99583cca967b82c1c62987",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Scrolling rule: The navigation bar may hide on downward scroll and reappear on upward scroll, but must not hide while a screen"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "navigation-bar-touch-and-cursor-feedback",
+      "statement": "On touch, show the active indicator and ripple and switch the selected icon from outlined to filled with a color change. On cursor hover, show a reduced active indicator; clicking gives a ripple and filled icon/color feedback.",
+      "condition": "When a destination is tapped, hovered or clicked.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-bar/accessibility",
+          "section": "077a722d-e7f8-43ed-9b9a-00841bed0461",
+          "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+          "markdownSha256": "5cc5bd771ec783d91d67f55d9f0ecc24f655436c77f4a4b5fc149cfcd61bb472",
+          "extractorVersion": 2,
+          "summary": "Curated explicit Interaction & style guidance: On touch, show the active indicator and ripple and switch the selected icon from outlined to filled with a col"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "navigation-state-and-reselection",
+      "statement": "On destination change, choose either preserve per-destination state or reset it based on product needs; selecting the already active destination resets scroll to the top. Do not use swipe between destinations.",
+      "condition": "When handling destination selection and re-selection.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-bar/guidelines",
+          "section": "bff3232e-2a98-4571-ae6a-f4bb4ad413d6",
+          "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+          "markdownSha256": "1b4f36bfc868cc1ede7e6f4176c8be5409099fe0bb99583cca967b82c1c62987",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Navigation rule: On destination change, choose either preserve per-destination state or reset it based on product needs; select"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "on-selection-show-the-active-indicator-and",
+      "statement": "On selection, show the active indicator and use the specified top-level page transition; the icon becomes filled and the indicator expands from the icon center.",
+      "condition": "When a destination is selected.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-bar/guidelines",
+          "section": "3633c63e-98b3-4927-98d5-7df73530ca35",
+          "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+          "markdownSha256": "1b4f36bfc868cc1ede7e6f4176c8be5409099fe0bb99583cca967b82c1c62987",
+          "extractorVersion": 2,
+          "summary": "Curated from Selection: On selection, show the active indicator and use the specified top-level page transition; the icon becomes fill"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "place-initial-focus-on-the-first-navigation",
+      "statement": "Place initial focus on the first navigation item.",
+      "condition": "When keyboard focus enters the bar.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-bar/accessibility",
+          "section": "61a31647-9e8a-4712-a4a0-ec66f1dbb4e8",
+          "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+          "markdownSha256": "5cc5bd771ec783d91d67f55d9f0ecc24f655436c77f4a4b5fc149cfcd61bb472",
+          "extractorVersion": 2,
+          "summary": "Curated from Initial focus: Place initial focus on the first navigation item."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "place-the-navigation-bar-at-the-bottom",
+      "statement": "Place the navigation bar at the bottom of compact layouts.",
+      "condition": "When positioning the bar.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-bar/guidelines",
+          "section": "d43aa344-d94f-4f13-860f-392a4f11ca69",
+          "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+          "markdownSha256": "1b4f36bfc868cc1ede7e6f4176c8be5409099fe0bb99583cca967b82c1c62987",
+          "extractorVersion": 2,
+          "summary": "Curated from Placement: Place the navigation bar at the bottom of compact layouts."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "show-a-distinct-active-indicator-for-the",
+      "statement": "Show a distinct active indicator for the selected destination.",
+      "condition": "When presenting selected navigation state.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-bar/guidelines",
+          "section": "935d4e62-b4e8-4d5e-8b87-6a39ec479c85",
+          "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+          "markdownSha256": "1b4f36bfc868cc1ede7e6f4176c8be5409099fe0bb99583cca967b82c1c62987",
+          "extractorVersion": 2,
+          "summary": "Curated from Active indicator: Show a distinct active indicator for the selected destination."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tab-moves-among-navigation-items-space-or",
+      "statement": "Tab moves focus among navigation items; Space or Enter selects the focused item.",
+      "condition": "When operating the bar by keyboard.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-bar/accessibility",
+          "section": "7a17c5ac-2899-4df9-a4f0-bff324925f5e",
+          "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+          "markdownSha256": "5cc5bd771ec783d91d67f55d9f0ecc24f655436c77f4a4b5fc149cfcd61bb472",
+          "extractorVersion": 2,
+          "summary": "Curated from Keyboard navigation: Tab moves among navigation items; Space or Enter selects the focused item."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-a-navigation-bar-for-a-small",
+      "statement": "Use a navigation bar for a small set of primary destinations; do not combine it with another primary navigation component on the same screen.",
+      "condition": "When selecting primary navigation.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-bar/guidelines",
+          "section": "9c390dc9-db39-47d7-8ea2-97241e73888c",
+          "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+          "markdownSha256": "1b4f36bfc868cc1ede7e6f4176c8be5409099fe0bb99583cca967b82c1c62987",
+          "extractorVersion": 2,
+          "summary": "Curated from Usage: Use a navigation bar for a small set of primary destinations; do not combine it with another primary navigatio"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-a-navigation-bar-to-move-among",
+      "statement": "Use a navigation bar to move among primary destinations on smaller devices.",
+      "condition": "When choosing primary navigation for compact windows.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-bar/overview",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+          "markdownSha256": "3ae187fa666481dbb6aac392e456c543a54ae7ae708c9fe2b03f15758d60eb03",
+          "extractorVersion": 2,
+          "summary": "Curated from Navigation bar: Use a navigation bar to move among primary destinations on smaller devices."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-clear-destination-labels-and-preserve-visibility",
+      "statement": "Use clear destination labels and preserve visibility as text size increases.",
+      "condition": "When labeling destinations.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-bar/guidelines",
+          "section": "720ad34e-fc0f-4413-8613-10dd2d530e58",
+          "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+          "markdownSha256": "1b4f36bfc868cc1ede7e6f4176c8be5409099fe0bb99583cca967b82c1c62987",
+          "extractorVersion": 2,
+          "summary": "Curated from Label text: Use clear destination labels and preserve visibility as text size increases."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-recognizable-icons-consistently-across-all-destinations",
+      "statement": "Use recognizable icons consistently across all destinations, or omit icons consistently.",
+      "condition": "When using destination icons.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-bar/guidelines",
+          "section": "ae6b6619-426b-46d7-8b1f-09cf2aedf152",
+          "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+          "markdownSha256": "1b4f36bfc868cc1ede7e6f4176c8be5409099fe0bb99583cca967b82c1c62987",
+          "extractorVersion": 2,
+          "summary": "Curated from Icons: Use recognizable icons consistently across all destinations, or omit icons consistently."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-the-expressive-navigation-bar-as-the",
+      "statement": "Use the expressive navigation bar as the recommended variant for new designs; preserve the distinction from baseline availability and styling.",
+      "condition": "When selecting M3 Expressive navigation.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-bar/overview",
+          "section": "0cac4248-cbbf-4bfb-a869-0f2bc33f2026",
+          "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+          "markdownSha256": "3ae187fa666481dbb6aac392e456c543a54ae7ae708c9fe2b03f15758d60eb03",
+          "extractorVersion": 2,
+          "summary": "Curated from M3 Expressive update: Use the expressive navigation bar as the recommended variant for new designs; preserve the distinction from ba"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "navigation-bar-anatomy-and-optional-badges",
+      "statement": "A navigation bar contains a container, icon, label text and active indicator; small and large badges are optional, and a large badge includes a label.",
+      "condition": "For navigation-bar item composition.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-bar/specs",
+          "section": "c17e70e1-e73b-4705-8244-b9f0c542d6c7",
+          "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+          "markdownSha256": "7f467cb18faa8ba58ea51f3e15ae450db379c5a63dc40982fff8091985fd6968",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Anatomy item list."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "navigation-bar-item-width-distribution",
+      "statement": "The navigation bar spans the full window width. Vertical items divide available container width dynamically and equally; horizontal items keep fixed widths, with extra space added at the bar ends.",
+      "condition": "When laying out navigation items across orientations and breakpoints.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-bar/specs",
+          "section": "e57abd9a-9a80-4b83-95dc-8dfa96084c02",
+          "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+          "markdownSha256": "7f467cb18faa8ba58ea51f3e15ae450db379c5a63dc40982fff8091985fd6968",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Measurements layout rules; numeric image dimensions remain unresolved."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

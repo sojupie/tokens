@@ -1,0 +1,701 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "tooltips",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/tooltips/overview",
+      "capture": "snapshots/material-guidance/20261025T170049.028123329Z-1117351123/capture.json",
+      "markdownSha256": "fb4c5122bfa3c70691dbda911551448ee49c2895a1ce7f77e2079ca61582dc29",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Tooltips",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "b627384f-b53a-445b-a5d3-aed7ad16dc8f",
+          "title": "Availability & resources",
+          "status": "no-requirements",
+          "notes": "Upstream library availability only."
+        },
+        {
+          "id": "8df04d27-3d4f-4789-a009-09c8352ab8e8",
+          "title": "Differences from M2",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/tooltips/specs",
+      "capture": "snapshots/material-guidance/20261025T170049.028123329Z-1117351123/capture.json",
+      "markdownSha256": "da2cdf9173d7d0a4ea4cf718b7e79aeca68987708982ffccbf8d17795a097ba4",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Tooltips",
+          "status": "no-requirements",
+          "notes": "Repeated introductory description only."
+        },
+        {
+          "id": "c07b16fe-be21-490b-815b-20c16246ee8f",
+          "title": "Tokens & specs",
+          "status": "no-requirements",
+          "notes": "Token browser reference only."
+        },
+        {
+          "id": "3a7310f9-b4f1-45ac-bda6-1878802cd02c",
+          "title": "Plain tooltip",
+          "status": "no-requirements",
+          "notes": "Anatomy diagram names container and supporting text; usage rules are in guidelines."
+        },
+        {
+          "id": "c596aa44-2c9b-400c-be3c-772d3a8d9b28",
+          "title": "Plain tooltip colors",
+          "status": "unclear",
+          "notes": "Color-role mapping is numbered against an uninspected diagram and cannot be assigned to elements."
+        },
+        {
+          "id": "3a24c380-aa9e-4dd0-b49f-2559b7ca9dd9",
+          "title": "Plain tooltip measurements",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "cbda3efe-2f4c-4565-9853-88af60f51e8c",
+          "title": "Rich tooltip",
+          "status": "no-requirements",
+          "notes": "Anatomy diagram lists the subhead, container, supporting text, and text button; usage is captured in guidelines."
+        },
+        {
+          "id": "67ad41db-018e-4935-9b93-86ece890909c",
+          "title": "Rich tooltip colors",
+          "status": "unclear",
+          "notes": "Color-role mapping is numbered against an uninspected diagram and cannot be assigned to elements."
+        },
+        {
+          "id": "37478875-bb69-4d64-b06e-17f5eaf12291",
+          "title": "Rich tooltip measurements",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "0149a4f0-d0b1-4a88-b8b4-197efbd5d091",
+          "title": "Rich tooltip configurations",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/tooltips/guidelines",
+      "capture": "snapshots/material-guidance/20261025T170049.028123329Z-1117351123/capture.json",
+      "markdownSha256": "b8cf137fea326344d961b2d0d092c59748eca39a06048465dad26a1db8117e39",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Tooltips",
+          "status": "no-requirements",
+          "notes": "Introductory description only."
+        },
+        {
+          "id": "58bfadc9-b084-400a-88df-31aeeaf117d7",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "6926f11c-d5f1-4d78-81e1-b9cc42c6b0e1",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "Parent heading; plain/rich anatomy is listed in variant sections below."
+        },
+        {
+          "id": "80e7a1d8-b955-45f5-a29c-119929c64d0d",
+          "title": "Plain tooltip",
+          "status": "no-requirements",
+          "notes": "Anatomy illustration only; supporting-text requirements appear in child section."
+        },
+        {
+          "id": "2d7993d5-d32a-4181-a205-24123cc69622",
+          "title": "Supporting text",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "59c084fa-e33e-429f-9444-6e288343ff9c",
+          "title": "Rich tooltip",
+          "status": "no-requirements",
+          "notes": "Anatomy diagram lists rich-tooltip content elements, which are detailed below."
+        },
+        {
+          "id": "bde111d7-add0-4043-a573-5eb3443bb3da",
+          "title": "Subhead (optional)",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "51e53a1e-3da4-4097-b0b8-6b191dbca675",
+          "title": "Text buttons (optional)",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "2e9525cb-8222-48f4-a401-2612e6b31228",
+          "title": "Placement",
+          "status": "no-requirements",
+          "notes": "Parent heading; plain and rich tooltip placement rules are separate below."
+        },
+        {
+          "id": "57286ec2-db8e-4699-aa43-0ca11cab0bb5",
+          "title": "Plain tooltips",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "18dbc2e8-142c-47fc-aa42-b48f60e70440",
+          "title": "Rich tooltips",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "00e87770-86d0-436d-b50b-436ff3cefe75",
+          "title": "Behavior",
+          "status": "no-requirements",
+          "notes": "Parent heading; transient and persistent triggering/lifetime rules are in child sections."
+        },
+        {
+          "id": "b0386365-fe47-4e46-b4e0-e8f62ae55395",
+          "title": "Transient by default",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "2e51a05c-c989-432e-9496-0d93a507f726",
+          "title": "Persistent rich tooltips",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/tooltips/accessibility",
+      "capture": "snapshots/material-guidance/20261025T170049.028123329Z-1117351123/capture.json",
+      "markdownSha256": "9716170233acb5428f9f874239d7c2ecf7428fedead5a5a6d408c3e8717c24ea",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Tooltips",
+          "status": "no-requirements",
+          "notes": "Introductory description only."
+        },
+        {
+          "id": "bfcf792f-0886-4804-9453-cd71153f8c4b",
+          "title": "Use cases",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "18f3c935-38a5-4db3-8a26-cf7e7f669480",
+          "title": "Interaction & style",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "732fc2a0-2035-4a67-85cb-72fbfc04a0e0",
+          "title": "Focus order",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "a840ddab-4223-4906-88bc-f3d15298fb79",
+          "title": "Keyboard navigation",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "6613d18a-f9a4-447a-9b0e-8596fff2c902",
+          "title": "Labeling elements",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "tooltip-overview-variants",
+      "statement": "Use plain tooltips to briefly label an element or action, especially icon-only controls. Use rich tooltips for more details; they may include a title, links, or buttons.",
+      "condition": "When selecting a tooltip variant and content.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tooltips/overview",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T170049.028123329Z-1117351123/capture.json",
+          "markdownSha256": "fb4c5122bfa3c70691dbda911551448ee49c2895a1ce7f77e2079ca61582dc29",
+          "extractorVersion": 2,
+          "summary": "Overview defines plain/rich purposes and optional rich content."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tooltip-m3-colors-shape",
+      "statement": "M3 rich tooltips have more rounded corners than M2 and use updated color mappings compatible with dynamic color.",
+      "condition": "When applying M3 rich-tooltip styling or migrating from M2.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tooltips/overview",
+          "section": "8df04d27-3d4f-4789-a009-09c8352ab8e8",
+          "capture": "snapshots/material-guidance/20261025T170049.028123329Z-1117351123/capture.json",
+          "markdownSha256": "fb4c5122bfa3c70691dbda911551448ee49c2895a1ce7f77e2079ca61582dc29",
+          "extractorVersion": 2,
+          "summary": "M2 comparison identifies rich-tooltip shape and color changes."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "plain-tooltip-measurements",
+      "statement": "Use a 24dp container height and 8dp padding.",
+      "condition": "When sizing a plain tooltip.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tooltips/specs",
+          "section": "3a24c380-aa9e-4dd0-b49f-2559b7ca9dd9",
+          "capture": "snapshots/material-guidance/20261025T170049.028123329Z-1117351123/capture.json",
+          "markdownSha256": "da2cdf9173d7d0a4ea4cf718b7e79aeca68987708982ffccbf8d17795a097ba4",
+          "extractorVersion": 2,
+          "summary": "Plain tooltip measurement table specifies height and padding."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "rich-tooltip-measurements",
+      "statement": "Use 12dp top padding, 8dp bottom padding, and 16dp left/right padding.",
+      "condition": "When sizing a rich tooltip.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tooltips/specs",
+          "section": "37478875-bb69-4d64-b06e-17f5eaf12291",
+          "capture": "snapshots/material-guidance/20261025T170049.028123329Z-1117351123/capture.json",
+          "markdownSha256": "da2cdf9173d7d0a4ea4cf718b7e79aeca68987708982ffccbf8d17795a097ba4",
+          "extractorVersion": 2,
+          "summary": "Rich tooltip measurement table specifies padding on each side."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "rich-tooltip-configurations",
+      "statement": "A rich tooltip may contain a headline, body, and up to two buttons; the headline and button count are configurable.",
+      "condition": "When configuring rich tooltip content.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tooltips/specs",
+          "section": "0149a4f0-d0b1-4a88-b8b4-197efbd5d091",
+          "capture": "snapshots/material-guidance/20261025T170049.028123329Z-1117351123/capture.json",
+          "markdownSha256": "da2cdf9173d7d0a4ea4cf718b7e79aeca68987708982ffccbf8d17795a097ba4",
+          "extractorVersion": 2,
+          "summary": "Configuration section defines content parts and the maximum button count."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tooltip-variant-use",
+      "statement": "Use a plain tooltip to briefly label an unlabeled element such as an icon-only button or field; avoid repeating an existing visible label. Use a rich tooltip to add context, definitions, explanations, or actions, but keep critical information out of tooltips because it is easy to miss; use an interruptive dialog for critical information.",
+      "condition": "When selecting tooltip type and content.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tooltips/guidelines",
+          "section": "58bfadc9-b084-400a-88df-31aeeaf117d7",
+          "capture": "snapshots/material-guidance/20261025T170049.028123329Z-1117351123/capture.json",
+          "markdownSha256": "b8cf137fea326344d961b2d0d092c59748eca39a06048465dad26a1db8117e39",
+          "extractorVersion": 2,
+          "summary": "Usage guidance distinguishes label/help uses from detailed and critical information."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "plain-tooltip-text",
+      "statement": "Briefly describe the UI element; avoid wrapping across multiple lines or combining many pieces of information.",
+      "condition": "When writing plain-tooltip text.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tooltips/guidelines",
+          "section": "2d7993d5-d32a-4181-a205-24123cc69622",
+          "capture": "snapshots/material-guidance/20261025T170049.028123329Z-1117351123/capture.json",
+          "markdownSha256": "b8cf137fea326344d961b2d0d092c59748eca39a06048465dad26a1db8117e39",
+          "extractorVersion": 2,
+          "summary": "Supporting-text guidance sets concise, single-line content expectations."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "rich-tooltip-subhead",
+      "statement": "Keep an optional rich-tooltip subhead brief, ideally one line, and use it to summarize the message. Include a subhead when the rich tooltip appears automatically, such as on page load.",
+      "condition": "When adding a subhead to a rich tooltip.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tooltips/guidelines",
+          "section": "bde111d7-add0-4043-a573-5eb3443bb3da",
+          "capture": "snapshots/material-guidance/20261025T170049.028123329Z-1117351123/capture.json",
+          "markdownSha256": "b8cf137fea326344d961b2d0d092c59748eca39a06048465dad26a1db8117e39",
+          "extractorVersion": 2,
+          "summary": "Subhead guidance defines length, purpose, and automatic-display recommendation."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "rich-tooltip-buttons",
+      "statement": "A rich tooltip may have up to two text buttons; keep them short and relevant to the supporting text, and avoid stacking them when possible.",
+      "condition": "When a rich tooltip includes actions.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tooltips/guidelines",
+          "section": "51e53a1e-3da4-4097-b0b8-6b191dbca675",
+          "capture": "snapshots/material-guidance/20261025T170049.028123329Z-1117351123/capture.json",
+          "markdownSha256": "b8cf137fea326344d961b2d0d092c59748eca39a06048465dad26a1db8117e39",
+          "extractorVersion": 2,
+          "summary": "Button guidance sets count, relevance, brevity, and layout."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "plain-tooltip-placement",
+      "statement": "Place a plain tooltip above its parent by default, 4dp away when the parent has a visible boundary and 8dp away when it has none. In an app bar, place it below the element at the same distance.",
+      "condition": "When positioning a plain tooltip.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tooltips/guidelines",
+          "section": "57286ec2-db8e-4699-aa43-0ca11cab0bb5",
+          "capture": "snapshots/material-guidance/20261025T170049.028123329Z-1117351123/capture.json",
+          "markdownSha256": "b8cf137fea326344d961b2d0d092c59748eca39a06048465dad26a1db8117e39",
+          "extractorVersion": 2,
+          "summary": "Plain placement guidance specifies default side and boundary-dependent distance, including app-bar exception."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "rich-tooltip-placement",
+      "statement": "Place rich tooltips at the parent's bottom-right by default and adjust their position in 8dp increments to stay onscreen. Do not cover the parent. On desktop they may be centered below the parent and remain visible while the pointer moves within the target region.",
+      "condition": "When positioning a rich tooltip.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tooltips/guidelines",
+          "section": "18dbc2e8-142c-47fc-aa42-b48f60e70440",
+          "capture": "snapshots/material-guidance/20261025T170049.028123329Z-1117351123/capture.json",
+          "markdownSha256": "b8cf137fea326344d961b2d0d092c59748eca39a06048465dad26a1db8117e39",
+          "extractorVersion": 2,
+          "summary": "Rich placement guidance specifies default and adaptive positioning and desktop behavior."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tooltip-transient-behavior",
+      "statement": "On desktop, hover the parent to show a tooltip; on mobile, tap and hold. Persistent rich tooltips require a click or tap. Both variants disappear 1.5 seconds after leaving the target region, and opening a new tooltip closes any other one.",
+      "condition": "When showing transient tooltips or opening a new tooltip.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tooltips/guidelines",
+          "section": "b0386365-fe47-4e46-b4e0-e8f62ae55395",
+          "capture": "snapshots/material-guidance/20261025T170049.028123329Z-1117351123/capture.json",
+          "markdownSha256": "b8cf137fea326344d961b2d0d092c59748eca39a06048465dad26a1db8117e39",
+          "extractorVersion": 2,
+          "summary": "Transient guidance specifies input triggers, dismissal delay, and one-at-a-time display."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tooltip-persistent-rich",
+      "statement": "Show persistent rich tooltips after a parent click or on page load to explain a new feature; keep them visible after the pointer leaves and dismiss only when another UI element is used. Do not trigger them on hover and avoid using them on icon buttons.",
+      "condition": "When using a persistent rich tooltip.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tooltips/guidelines",
+          "section": "2e51a05c-c989-432e-9496-0d93a507f726",
+          "capture": "snapshots/material-guidance/20261025T170049.028123329Z-1117351123/capture.json",
+          "markdownSha256": "b8cf137fea326344d961b2d0d092c59748eca39a06048465dad26a1db8117e39",
+          "extractorVersion": 2,
+          "summary": "Persistent guidance specifies triggers, dismissal, hover behavior, and icon-button caution."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tooltip-accessible-tasks",
+      "statement": "Assistive-technology users must be able to receive tooltip messages and activate tooltips with keyboard or switch input.",
+      "condition": "For accessible tooltips.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tooltips/accessibility",
+          "section": "bfcf792f-0886-4804-9453-cd71153f8c4b",
+          "capture": "snapshots/material-guidance/20261025T170049.028123329Z-1117351123/capture.json",
+          "markdownSha256": "9716170233acb5428f9f874239d7c2ecf7428fedead5a5a6d408c3e8717c24ea",
+          "extractorVersion": 2,
+          "summary": "Use cases list message and activation tasks."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tooltip-accessible-lifetime",
+      "statement": "Keep plain and rich tooltips without required actions visible long enough to read without disrupting the existing task. Tooltips may appear on hover or focus but must not hide crucial information; rich tooltips may also appear when an element is selected.",
+      "condition": "When showing tooltips to assistive-technology users.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tooltips/accessibility",
+          "section": "18f3c935-38a5-4db3-8a26-cf7e7f669480",
+          "capture": "snapshots/material-guidance/20261025T170049.028123329Z-1117351123/capture.json",
+          "markdownSha256": "9716170233acb5428f9f874239d7c2ecf7428fedead5a5a6d408c3e8717c24ea",
+          "extractorVersion": 2,
+          "summary": "Interaction guidance covers reading time, nondisruption, hover/focus and selected triggers, and critical information."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tooltip-focus-order",
+      "statement": "Within a rich tooltip, move focus from top to bottom between interactive elements. Do not trap keyboard or screen-reader focus; allow users to continue linearly through the page.",
+      "condition": "When a rich tooltip contains interactive elements.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tooltips/accessibility",
+          "section": "732fc2a0-2035-4a67-85cb-72fbfc04a0e0",
+          "capture": "snapshots/material-guidance/20261025T170049.028123329Z-1117351123/capture.json",
+          "markdownSha256": "9716170233acb5428f9f874239d7c2ecf7428fedead5a5a6d408c3e8717c24ea",
+          "extractorVersion": 2,
+          "summary": "Focus-order guidance specifies sequence and prohibits focus trapping."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tooltip-keyboard",
+      "statement": "Tab focuses an available button; Space or Enter activates the focused element.",
+      "condition": "When keyboard-operating a tooltip.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tooltips/accessibility",
+          "section": "a840ddab-4223-4906-88bc-f3d15298fb79",
+          "capture": "snapshots/material-guidance/20261025T170049.028123329Z-1117351123/capture.json",
+          "markdownSha256": "9716170233acb5428f9f874239d7c2ecf7428fedead5a5a6d408c3e8717c24ea",
+          "extractorVersion": 2,
+          "summary": "Keyboard table maps focus and activation keys."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tooltip-accessible-role",
+      "statement": "Expose the tooltip container with the Tooltip role or equivalent and label each child according to its own accessibility guidance.",
+      "condition": "When exposing tooltip content to assistive technology.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tooltips/accessibility",
+          "section": "6613d18a-f9a4-447a-9b0e-8596fff2c902",
+          "capture": "snapshots/material-guidance/20261025T170049.028123329Z-1117351123/capture.json",
+          "markdownSha256": "9716170233acb5428f9f874239d7c2ecf7428fedead5a5a6d408c3e8717c24ea",
+          "extractorVersion": 2,
+          "summary": "Labeling guidance specifies tooltip role and child-component labeling."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

@@ -1,0 +1,1091 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "time-pickers",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/time-pickers/overview",
+      "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
+      "markdownSha256": "9d83d18796620471c91790e3932339737e9e81c67ce81caf3e8874252ecc5935",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Time pickers",
+          "status": "no-requirements",
+          "notes": "Introductory definition; variant behavior is detailed below."
+        },
+        {
+          "id": "f162d76b-487c-4061-9d80-edcbdff5db07",
+          "title": "Availability & resources",
+          "status": "no-requirements",
+          "notes": "Upstream implementation availability only."
+        },
+        {
+          "id": "cbf493d5-20ed-4f1d-ae52-dad644df0e98",
+          "title": "Differences from M2",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/time-pickers/specs",
+      "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
+      "markdownSha256": "e34e27af7a4fbc775c2449e3ba8b2b5e0cd704248638f7a087a84637f3fe74b9",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Time pickers",
+          "status": "no-requirements",
+          "notes": "Repeated introductory description only."
+        },
+        {
+          "id": "2ccd9809-9246-4667-85fa-7747f4ac7349",
+          "title": "Tokens & specs",
+          "status": "no-requirements",
+          "notes": "Token browser reference only."
+        },
+        {
+          "id": "30b2b7a9-ba53-4aec-9621-89250884c28e",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "Parent heading introduces diagrams; no additional behavior instruction."
+        },
+        {
+          "id": "656721f2-de86-4311-807d-f295bddfb72f",
+          "title": "Time picker dial",
+          "status": "no-requirements",
+          "notes": "Anatomy diagram lists dial elements; their behavior is described in guidelines."
+        },
+        {
+          "id": "f07ad824-7e63-4d86-b5ca-090f1a6a3ded",
+          "title": "Time picker input",
+          "status": "no-requirements",
+          "notes": "Anatomy illustration labels input-picker elements; behavior appears in guidelines."
+        },
+        {
+          "id": "fb05e617-91cc-4332-a39f-d4d4d05b66da",
+          "title": "Color",
+          "status": "no-requirements",
+          "notes": "Parent heading groups variant color diagrams; mappings are addressed separately below."
+        },
+        {
+          "id": "3245f48a-b605-4a4b-8708-a1659b38673d",
+          "title": "Time picker dial color",
+          "status": "unclear",
+          "notes": "Color-role lists are numbered against an uninspected diagram; element-to-role mapping is unavailable in text."
+        },
+        {
+          "id": "f0473511-effd-47fd-b643-41c03ca4cd37",
+          "title": "Time picker input color",
+          "status": "unclear",
+          "notes": "Color-role lists are numbered against an uninspected diagram; element-to-role mapping is unavailable in text."
+        },
+        {
+          "id": "b497b301-bd6c-4f4e-9f39-3a5528128122",
+          "title": "States",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "d4eea7a5-ae79-492f-89c6-aa1931d1acc8",
+          "title": "Measurements",
+          "status": "no-requirements",
+          "notes": "Parent heading groups the dial and input measurement tables below."
+        },
+        {
+          "id": "6473269a-9ae7-4f36-b0f2-b54d03cacc13",
+          "title": "Time picker dial - vertical",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "4614fcf8-674a-49a9-b417-7cde9459e0ee",
+          "title": "Time picker dial - horizontal",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "1596472a-5c46-4692-b628-e4c0741f0b02",
+          "title": "Time picker input",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "ba58bd17-fe03-4b6b-9bfd-5262b58c33aa",
+          "title": "Configurations",
+          "status": "no-requirements",
+          "notes": "Parent heading groups orientation and time-format options mapped in child sections."
+        },
+        {
+          "id": "52bfec07-bfaf-4291-b655-6917c62e3cff",
+          "title": "Vertical orientation and horizontal orientation",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "533817dd-8590-4d07-af4d-3b61de924c5f",
+          "title": "24-hour time picker dial",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "137e2f88-881b-4dba-b826-c30574d82b50",
+          "title": "12-hour and 24-hour time picker inputs",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/time-pickers/guidelines",
+      "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
+      "markdownSha256": "778a77a4e90e98d475c7812eeafdb83ee4d86d032575f100bdc60381f6f2e168",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Time pickers",
+          "status": "no-requirements",
+          "notes": "Introductory description only."
+        },
+        {
+          "id": "17b822dc-3613-490c-b45a-4b13da14949f",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "9d639b70-cd08-4033-8634-59acab30502b",
+          "title": "Time input picker",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "44ef4d2d-70ab-4c4b-b031-0e7fa0b02186",
+          "title": "24-hour time selection",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "d08ce88e-aa29-4b9e-a655-3f693ccf72ee",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "Anatomy diagrams list variant elements; behavior is described in child sections."
+        },
+        {
+          "id": "0f5fded3-47f1-46bc-bdb1-ff4afe35a043",
+          "title": "Container",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "14894e49-3cb0-49f0-80ad-932cdb00bb1c",
+          "title": "Input selector",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "ae285c54-a994-42cc-88f7-5bacea49e71b",
+          "title": "Dial selector",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "382b2b06-1e7f-47ae-a1bd-e840fc483b1b",
+          "title": "Text & icon buttons",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "4bbafc88-78ac-45d1-b73d-717068b26cff",
+          "title": "Landscape orientation",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "944642a7-a290-4b6f-9ffe-d398ae7ad019",
+          "title": "Placement",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "6c1e26c7-679a-4c78-941a-ef2cd0b32ec4",
+          "title": "Adaptive design",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "c6ba2072-be9a-4890-a050-47fbcfb5b386",
+          "title": "Density",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "26911913-c421-4e83-a244-c73a264fbe66",
+          "title": "Behavior",
+          "status": "no-requirements",
+          "notes": "Parent heading; selection, dismissal, mode-switching, and scrolling behavior are in child sections."
+        },
+        {
+          "id": "c3937362-9f1f-4166-82d2-2589cfb99b6a",
+          "title": "Appearing & disappearing",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "0dbe0aa4-4659-44e9-8d6c-e1ea739917a6",
+          "title": "Toggle between dial & input",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "cf734653-7f11-4ceb-bf4c-88190b8abe18",
+          "title": "Scrolling",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/time-pickers/accessibility",
+      "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
+      "markdownSha256": "ec1ca19a96444f09624024ec9be9145e74f0eadc354181b5dd33055026a4358e",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Time pickers",
+          "status": "no-requirements",
+          "notes": "Introductory description only."
+        },
+        {
+          "id": "ae17466e-2011-4b8f-8f17-01fe8acd7c93",
+          "title": "Use cases",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "f254905e-e23a-4a2a-a120-dab68f07f6c3",
+          "title": "Interaction & style",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "11910b76-0544-4265-96d4-dd120873bc2b",
+          "title": "Targets",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "ee9e6d22-bae1-4e0d-bdc4-53498d42a827",
+          "title": "Keyboard navigation",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "aa616098-3b1a-49a9-a6f0-ab195d58285b",
+          "title": "Labeling elements",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "d796d8e4-c2e4-4a99-8b38-a8bab3e0561a",
+          "title": "Dial selector",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "8f7982a4-3cc5-4bad-9db1-3d405f90eaa5",
+          "title": "Input selector",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "time-picker-m3-colors",
+      "statement": "M3 time pickers use updated color mappings compatible with dynamic color.",
+      "condition": "When applying M3 time-picker colors or migrating from M2.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/time-pickers/overview",
+          "section": "cbf493d5-20ed-4f1d-ae52-dad644df0e98",
+          "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
+          "markdownSha256": "9d83d18796620471c91790e3932339737e9e81c67ce81caf3e8874252ecc5935",
+          "extractorVersion": 2,
+          "summary": "M2 comparison identifies new M3 color mappings and dynamic-color compatibility."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-states",
+      "statement": "Represent enabled, hovered, focused, and pressed states.",
+      "condition": "For time-picker interactive elements.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/time-pickers/specs",
+          "section": "b497b301-bd6c-4f4e-9f39-3a5528128122",
+          "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
+          "markdownSha256": "e34e27af7a4fbc775c2449e3ba8b2b5e0cd704248638f7a087a84637f3fe74b9",
+          "extractorVersion": 2,
+          "summary": "State diagram caption enumerates four interactive states."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-dial-vertical-measurements",
+      "statement": "For vertical dial layout, use dynamic container dimensions with left-aligned headline and 24dp padding on all sides; time selector width 96dp (114dp for 24-hour vertical layout) by 80dp high; vertical period selector 52×80dp; horizontal period selector 216×38dp; dial 256dp, selector handle 48dp, center 8dp, and track 2dp wide.",
+      "condition": "When sizing a vertical dial time picker and its controls.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/time-pickers/specs",
+          "section": "6473269a-9ae7-4f36-b0f2-b54d03cacc13",
+          "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
+          "markdownSha256": "e34e27af7a4fbc775c2449e3ba8b2b5e0cd704248638f7a087a84637f3fe74b9",
+          "extractorVersion": 2,
+          "summary": "Vertical dial measurement table specifies container padding and component dimensions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-dial-horizontal-measurements",
+      "statement": "For horizontal dial layout, use dynamic container dimensions with left-aligned headline and 24dp padding on all sides; time selector width 96dp (114dp for 24-hour vertical layout) by 80dp high; vertical period selector 52×80dp; horizontal period selector 216×38dp; dial 256dp, selector handle 48dp, center 8dp, and track 2dp wide.",
+      "condition": "When sizing a horizontal dial time picker and its controls.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/time-pickers/specs",
+          "section": "4614fcf8-674a-49a9-b417-7cde9459e0ee",
+          "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
+          "markdownSha256": "e34e27af7a4fbc775c2449e3ba8b2b5e0cd704248638f7a087a84637f3fe74b9",
+          "extractorVersion": 2,
+          "summary": "Horizontal dial measurement table specifies container padding and component dimensions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-input-measurements",
+      "statement": "Use dynamic container dimensions with a left-aligned headline and 24dp padding on all sides; time input container 96×72dp and period selector 52×72dp.",
+      "condition": "When sizing an input time picker.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/time-pickers/specs",
+          "section": "1596472a-5c46-4692-b628-e4c0741f0b02",
+          "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
+          "markdownSha256": "e34e27af7a4fbc775c2449e3ba8b2b5e0cd704248638f7a087a84637f3fe74b9",
+          "extractorVersion": 2,
+          "summary": "Input measurement table specifies container padding and field/period dimensions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-orientation-config",
+      "statement": "Support vertical and horizontal dial layouts; vertical is the default on mobile.",
+      "condition": "When adapting a dial picker to device layout.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/time-pickers/specs",
+          "section": "52bfec07-bfaf-4291-b655-6917c62e3cff",
+          "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
+          "markdownSha256": "e34e27af7a4fbc775c2449e3ba8b2b5e0cd704248638f7a087a84637f3fe74b9",
+          "extractorVersion": 2,
+          "summary": "Orientation configuration identifies both layouts and the mobile default."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-24-hour-dial",
+      "statement": "Provide vertical and horizontal layouts for a 24-hour dial.",
+      "condition": "When displaying a 24-hour dial time picker.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/time-pickers/specs",
+          "section": "533817dd-8590-4d07-af4d-3b61de924c5f",
+          "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
+          "markdownSha256": "e34e27af7a4fbc775c2449e3ba8b2b5e0cd704248638f7a087a84637f3fe74b9",
+          "extractorVersion": 2,
+          "summary": "Configuration illustration shows 24-hour dials in both orientations."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-input-formats",
+      "statement": "Support both 12-hour and 24-hour time input configurations.",
+      "condition": "When the input picker is used.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/time-pickers/specs",
+          "section": "137e2f88-881b-4dba-b826-c30574d82b50",
+          "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
+          "markdownSha256": "e34e27af7a4fbc775c2449e3ba8b2b5e0cd704248638f7a087a84637f3fe74b9",
+          "extractorVersion": 2,
+          "summary": "Configuration illustration compares 12-hour and 24-hour input forms."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-use",
+      "statement": "Use a modal time picker in a dialog to select hours, minutes, or periods. Use it for a specific time such as an alarm or meeting, not granular values such as stopwatch milliseconds. Keep selection easy by hand on mobile.",
+      "condition": "When selecting a time-entry control and interaction model.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/time-pickers/guidelines",
+          "section": "17b822dc-3613-490c-b45a-4b13da14949f",
+          "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
+          "markdownSha256": "778a77a4e90e98d475c7812eeafdb83ee4d86d032575f100bdc60381f6f2e168",
+          "extractorVersion": 2,
+          "summary": "Usage guidance defines modal context, values, examples, granularity boundary, and mobile hand use."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-input-availability",
+      "statement": "Make numeric keyboard input available from any other mobile time-picker interface through the keyboard icon.",
+      "condition": "When a mobile picker offers the dial interface.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/time-pickers/guidelines",
+          "section": "9d639b70-cd08-4033-8634-59acab30502b",
+          "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
+          "markdownSha256": "778a77a4e90e98d475c7812eeafdb83ee4d86d032575f100bdc60381f6f2e168",
+          "extractorVersion": 2,
+          "summary": "Input-picker guidance requires a keyboard-accessible alternate input route."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-24-hour-mode",
+      "statement": "A 24-hour dial may be enabled outside the picker, typically through system settings. Show hours 0–11 on the outer ring and 12–23 on the inner ring.",
+      "condition": "When the application or system uses 24-hour time.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/time-pickers/guidelines",
+          "section": "44ef4d2d-70ab-4c4b-b031-0e7fa0b02186",
+          "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
+          "markdownSha256": "778a77a4e90e98d475c7812eeafdb83ee4d86d032575f100bdc60381f6f2e168",
+          "extractorVersion": 2,
+          "summary": "24-hour guidance describes configuration ownership and ring arrangement."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-modal-scrim",
+      "statement": "Place the container above other screen elements and use a temporary scrim to de-emphasize surfaces behind it.",
+      "condition": "When displaying a time-picker dialog.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/time-pickers/guidelines",
+          "section": "0f5fded3-47f1-46bc-bdb1-ff4afe35a043",
+          "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
+          "markdownSha256": "778a77a4e90e98d475c7812eeafdb83ee4d86d032575f100bdc60381f6f2e168",
+          "extractorVersion": 2,
+          "summary": "Container guidance specifies foreground layering and scrim."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-input-fields",
+      "statement": "Give each hour and minute a separate input with a highlight for the selected field, a larger shape/size/font, and a label below. Show AM/PM after minutes for 12-hour time and omit it for 24-hour time.",
+      "condition": "When using the input selector.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/time-pickers/guidelines",
+          "section": "14894e49-3cb0-49f0-80ad-932cdb00bb1c",
+          "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
+          "markdownSha256": "778a77a4e90e98d475c7812eeafdb83ee4d86d032575f100bdc60381f6f2e168",
+          "extractorVersion": 2,
+          "summary": "Input-selector guidance specifies field separation, selection styling, labels, and conditional period selector."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-dial-arrangement",
+      "statement": "Use a round watch-face dial; allow selecting hours/minutes by tapping a number or dragging the selector track. Put all numbers on the outer ring for 12-hour time; for 24-hour time put even numbers inside and odd numbers outside.",
+      "condition": "When using the dial selector.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/time-pickers/guidelines",
+          "section": "ae285c54-a994-42cc-88f7-5bacea49e71b",
+          "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
+          "markdownSha256": "778a77a4e90e98d475c7812eeafdb83ee4d86d032575f100bdc60381f6f2e168",
+          "extractorVersion": 2,
+          "summary": "Dial guidance specifies shape, interaction, and hour arrangement by format."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-buttons",
+      "statement": "Use a keyboard icon to switch to the input selector and a clock icon to switch to the dial selector. Use Cancel to dismiss and OK to save the selected time.",
+      "condition": "When providing selector-switching or dialog actions.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/time-pickers/guidelines",
+          "section": "382b2b06-1e7f-47ae-a1bd-e840fc483b1b",
+          "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
+          "markdownSha256": "778a77a4e90e98d475c7812eeafdb83ee4d86d032575f100bdc60381f6f2e168",
+          "extractorVersion": 2,
+          "summary": "Button guidance assigns selector-toggle icons and Cancel/OK outcomes."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-landscape",
+      "statement": "In mobile landscape orientation, place stacked input and selection options side by side.",
+      "condition": "When a mobile time picker is in landscape orientation.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/time-pickers/guidelines",
+          "section": "4bbafc88-78ac-45d1-b73d-717068b26cff",
+          "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
+          "markdownSha256": "778a77a4e90e98d475c7812eeafdb83ee4d86d032575f100bdc60381f6f2e168",
+          "extractorVersion": 2,
+          "summary": "Landscape guidance specifies side-by-side placement."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-placement",
+      "statement": "Keep the modal picker fully visible and unobscured; change its orientation or variant rather than allowing it to crop at a screen edge.",
+      "condition": "When viewport constraints threaten to obscure or crop the picker.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/time-pickers/guidelines",
+          "section": "944642a7-a290-4b6f-9ffe-d398ae7ad019",
+          "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
+          "markdownSha256": "778a77a4e90e98d475c7812eeafdb83ee4d86d032575f100bdc60381f6f2e168",
+          "extractorVersion": 2,
+          "summary": "Placement guidance requires an unobscured modal and responsive variant/orientation change."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-adaptive",
+      "statement": "Switch orientation or variant to fit device orientation and viewport constraints. Use landscape on larger breakpoints or limited-height viewports to avoid dial scrolling; fall back to input if landscape still cannot fit without scrolling.",
+      "condition": "When adapting to a large breakpoint or constrained viewport height.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/time-pickers/guidelines",
+          "section": "6c1e26c7-679a-4c78-941a-ef2cd0b32ec4",
+          "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
+          "markdownSha256": "778a77a4e90e98d475c7812eeafdb83ee4d86d032575f100bdc60381f6f2e168",
+          "extractorVersion": 2,
+          "summary": "Adaptive guidance defines orientation change and input fallback."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-density",
+      "statement": "Do not apply density to a dial picker in a constrained viewport; use the input picker instead.",
+      "condition": "When a dial does not fit the available viewport.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/time-pickers/guidelines",
+          "section": "c6ba2072-be9a-4890-a050-47fbcfb5b386",
+          "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
+          "markdownSha256": "778a77a4e90e98d475c7812eeafdb83ee4d86d032575f100bdc60381f6f2e168",
+          "extractorVersion": 2,
+          "summary": "Density guidance redirects constrained layouts to input mode."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-dismissal",
+      "statement": "Use dialog enter/exit transitions. Keep focus in the picker until the user confirms with OK, dismisses with Cancel, or interacts outside the dialog, which also dismisses it.",
+      "condition": "When a time-picker dialog appears or closes.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/time-pickers/guidelines",
+          "section": "c3937362-9f1f-4166-82d2-2589cfb99b6a",
+          "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
+          "markdownSha256": "778a77a4e90e98d475c7812eeafdb83ee4d86d032575f100bdc60381f6f2e168",
+          "extractorVersion": 2,
+          "summary": "Dialog behavior specifies transition, focus retention, and confirmation/dismissal routes."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-toggle-mode",
+      "statement": "On mobile, tapping the keyboard icon switches from the dial to the input picker.",
+      "condition": "When a user selects the keyboard icon.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/time-pickers/guidelines",
+          "section": "0dbe0aa4-4659-44e9-8d6c-e1ea739917a6",
+          "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
+          "markdownSha256": "778a77a4e90e98d475c7812eeafdb83ee4d86d032575f100bdc60381f6f2e168",
+          "extractorVersion": 2,
+          "summary": "Mode-toggle guidance specifies keyboard-icon behavior."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-no-scroll",
+      "statement": "Avoid scrolling the time picker; change orientation or variant to fit. The picker does not scroll with content behind the modal.",
+      "condition": "When viewport constraints affect the picker or page scrolls.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/time-pickers/guidelines",
+          "section": "cf734653-7f11-4ceb-bf4c-88190b8abe18",
+          "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
+          "markdownSha256": "778a77a4e90e98d475c7812eeafdb83ee4d86d032575f100bdc60381f6f2e168",
+          "extractorVersion": 2,
+          "summary": "Scrolling guidance specifies adaptation instead of picker scrolling and modal independence."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-assistive-tasks",
+      "statement": "Assistive-technology users must be able to select or enter hour/minute values, choose supported 12/24-hour formats and AM/PM where applicable, and enter values manually.",
+      "condition": "For accessible time pickers.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/time-pickers/accessibility",
+          "section": "ae17466e-2011-4b8f-8f17-01fe8acd7c93",
+          "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
+          "markdownSha256": "ec1ca19a96444f09624024ec9be9145e74f0eadc354181b5dd33055026a4358e",
+          "extractorVersion": 2,
+          "summary": "Use cases enumerate time selection, format choice, and manual entry tasks."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-manual-input",
+      "statement": "Provide manual text input as an alternative to the dial. If the screen is too small for a dial, consider showing only the input selector; Android Views currently always shows the dial. Make input accessible from the dial via the keyboard icon. Dial targets must be 48×48dp.",
+      "condition": "When presenting an accessible time selector across platforms and constrained screens.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/time-pickers/accessibility",
+          "section": "f254905e-e23a-4a2a-a120-dab68f07f6c3",
+          "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
+          "markdownSha256": "ec1ca19a96444f09624024ec9be9145e74f0eadc354181b5dd33055026a4358e",
+          "extractorVersion": 2,
+          "summary": "Accessibility guidance requires manual entry, specifies constrained-screen option and Android Views limit, and target size."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-dial-targets",
+      "statement": "Make dial selector targets 48×48dp.",
+      "condition": "For each selectable dial target.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/time-pickers/accessibility",
+          "section": "11910b76-0544-4265-96d4-dd120873bc2b",
+          "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
+          "markdownSha256": "ec1ca19a96444f09624024ec9be9145e74f0eadc354181b5dd33055026a4358e",
+          "extractorVersion": 2,
+          "summary": "Targets section specifies the minimum dial target dimensions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-keyboard",
+      "statement": "Tab focuses a non-disabled time slot; Space or Enter activates it.",
+      "condition": "When keyboard-operating a time picker.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/time-pickers/accessibility",
+          "section": "ee9e6d22-bae1-4e0d-bdc4-53498d42a827",
+          "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
+          "markdownSha256": "ec1ca19a96444f09624024ec9be9145e74f0eadc354181b5dd33055026a4358e",
+          "extractorVersion": 2,
+          "summary": "Keyboard table maps Tab and activation keys."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-accessible-labels-roles",
+      "statement": "When the input text is correctly linked, screen readers read the component role first and then the UI text. The dial selector announces a selected value and the total, such as “Hour 7 of 12”.",
+      "condition": "When exposing dial and input picker controls to assistive technology by platform.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/time-pickers/accessibility",
+          "section": "aa616098-3b1a-49a9-a6f0-ab195d58285b",
+          "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
+          "markdownSha256": "ec1ca19a96444f09624024ec9be9145e74f0eadc354181b5dd33055026a4358e",
+          "extractorVersion": 2,
+          "summary": "Labeling introduction describes linked input reading order and the dial value announcement."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-input-accessibility-labels",
+      "statement": "For input selector controls, label the clock button Toggle dial picker and expose it, Cancel, and OK as buttons; label hour and minute fields Hour and Minute with text-input roles.",
+      "condition": "When exposing the input selector to assistive technology.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/time-pickers/accessibility",
+          "section": "aa616098-3b1a-49a9-a6f0-ab195d58285b",
+          "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
+          "markdownSha256": "ec1ca19a96444f09624024ec9be9145e74f0eadc354181b5dd33055026a4358e",
+          "extractorVersion": 2,
+          "summary": "Input-selector accessibility table specifies labels and roles."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-dial-roles",
+      "statement": "In dial mode, label hour and minute inputs Hour and Minute with text-input roles; label AM/PM options AM or PM and expose them as radio buttons in a list on Wiz/Jetpack Compose and checkboxes in a list on Android Views. Label the keyboard toggle Toggle input picker, Cancel as Cancel, and confirmation as OK; expose them as buttons. Announce dial selection as “{Value} Hours or minutes of {Total}” and expose it as a Button on Wiz/Jetpack Compose; Android Views role is unspecified.",
+      "condition": "When exposing a dial picker and its selector controls to assistive technology.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/time-pickers/accessibility",
+          "section": "d796d8e4-c2e4-4a99-8b38-a8bab3e0561a",
+          "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
+          "markdownSha256": "ec1ca19a96444f09624024ec9be9145e74f0eadc354181b5dd33055026a4358e",
+          "extractorVersion": 2,
+          "summary": "Dial selector table maps labels and roles, preserving platform-specific AM/PM and dial roles."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-input-roles",
+      "statement": "In input mode, label hour and minute text inputs Hour and Minute; label the clock toggle Toggle dial picker, Cancel as Cancel, and confirmation as OK. Expose the clock, Cancel, and OK controls as buttons.",
+      "condition": "When exposing the input picker controls to assistive technology.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/time-pickers/accessibility",
+          "section": "8f7982a4-3cc5-4bad-9db1-3d405f90eaa5",
+          "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
+          "markdownSha256": "ec1ca19a96444f09624024ec9be9145e74f0eadc354181b5dd33055026a4358e",
+          "extractorVersion": 2,
+          "summary": "Input selector table maps field and button labels and roles."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

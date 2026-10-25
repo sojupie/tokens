@@ -1,0 +1,771 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "snackbar",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/snackbar/overview",
+      "capture": "snapshots/material-guidance/20261025T165908.369029067Z-1875590414/capture.json",
+      "markdownSha256": "b9594cf4693110b19ba334dc824ce7c9c7c22152f4fc55d4d0d214f764e4f272",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Snackbar",
+          "status": "no-requirements",
+          "notes": "Introductory description; detailed behavior appears in the component guidelines."
+        },
+        {
+          "id": "e435386e-bee8-468a-a7fd-abb938ab0ca8",
+          "title": "Availability & resources",
+          "status": "no-requirements",
+          "notes": "Resource links and platform availability only."
+        },
+        {
+          "id": "06bb1821-cd7e-464c-8ca1-ca0228929bc7",
+          "title": "Differences from M2",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/snackbar/specs",
+      "capture": "snapshots/material-guidance/20261025T165908.369029067Z-1875590414/capture.json",
+      "markdownSha256": "28f5cfa28d12898bd23f683c19707ea6554c5961ff19c18548e20fef2b4b2cfa",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Snackbar",
+          "status": "no-requirements",
+          "notes": "Repeated introductory description and anatomy illustration; implementation requirements appear in other sections."
+        },
+        {
+          "id": "db66d2f9-885d-404d-be87-6c601bde0df4",
+          "title": "Tokens and specs",
+          "status": "no-requirements",
+          "notes": "Token browser presents token/state reference only."
+        },
+        {
+          "id": "3c1ed6ed-2314-408b-aa75-634de186ec0a",
+          "title": "Color",
+          "status": "unclear",
+          "notes": "Color-role assignments are visible only in an uninspected diagram; the role-to-element mapping cannot be confirmed."
+        },
+        {
+          "id": "c7b5d52a-24e7-45ca-8db6-7ce7d80a1cea",
+          "title": "Measurements",
+          "status": "unclear",
+          "notes": "Snackbar size and padding are conveyed only by an uninspected measurement diagram."
+        },
+        {
+          "id": "ef444c08-d655-4637-844c-180b73c95295",
+          "title": "Configurations",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/snackbar/guidelines",
+      "capture": "snapshots/material-guidance/20261025T165908.369029067Z-1875590414/capture.json",
+      "markdownSha256": "2e4cca0bf6a08a452e575dbeb33face247dc457288ea236fb1de5b09164eb851",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Snackbar",
+          "status": "no-requirements",
+          "notes": "Introductory description only."
+        },
+        {
+          "id": "4259e22d-2e3e-4efa-8f56-4d49eea22ddf",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "01fc5d40-1516-4e78-a954-13c06771b8ee",
+          "title": "Similar components",
+          "status": "no-requirements",
+          "notes": "The minimally interruptive, no-required-action description is represented by `snackbar-use-frequency-and-actions` in Usage."
+        },
+        {
+          "id": "e90db9ca-e080-470f-b6c6-91afabc4ee26",
+          "title": "Accessibility requirements for web",
+          "status": "no-requirements",
+          "notes": "Parent heading; the two required alternatives are captured in child sections."
+        },
+        {
+          "id": "e90db9ca-e080-470f-b6c6-91afabc4ee26--1-add-inline-feedback",
+          "title": "1. Add inline feedback",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "e90db9ca-e080-470f-b6c6-91afabc4ee26--2-make-the-snackbar-actionable",
+          "title": "2. Make the snackbar actionable",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "fea592b7-eba4-4d65-88fe-34b64e884041",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "Diagram labels optional anatomy elements; their use is detailed in the child sections."
+        },
+        {
+          "id": "0ce711aa-151b-43fd-87f7-c49c7ca8ae12",
+          "title": "Text label",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "96e705d7-2c13-43d1-a2bf-5fa89e287649",
+          "title": "Container",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "ff603b1b-7efc-4930-bb6f-584a6455819c",
+          "title": "Action",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "fdd21616-a476-4299-84f2-7e963919eded",
+          "title": "Placement",
+          "status": "no-requirements",
+          "notes": "Parent heading; bottom placement and responsive rules are mapped in the child sections."
+        },
+        {
+          "id": "3adb9127-aadb-40e8-898a-5c9218985736",
+          "title": "At the bottom of a UI",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "97b7bb87-fd16-4068-9882-c0f2d517a58c",
+          "title": "Responsive layout",
+          "status": "no-requirements",
+          "notes": "Parent heading; compact and medium/expanded behavior is mapped in child sections."
+        },
+        {
+          "id": "57e8cc18-31d6-4bab-ae1f-129635dec8a3",
+          "title": "Compact breakpoint",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "418d202e-db21-429f-b72d-f34fd8723c35",
+          "title": "Medium & expanded breakpoints",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "12145fa5-ada2-4c3b-b2ae-9cdf8ee54ca1",
+          "title": "Behavior",
+          "status": "no-requirements",
+          "notes": "Parent heading; appearance and consecutive-display rules are mapped in child sections."
+        },
+        {
+          "id": "4847ca62-bc91-4259-8402-c2247e39361e",
+          "title": "Appearing and disappearing",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "84cd5bb6-354f-4fd0-bdd9-daf9684ba4bf",
+          "title": "Consecutive snackbars",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/snackbar/accessibility",
+      "capture": "snapshots/material-guidance/20261025T165908.369029067Z-1875590414/capture.json",
+      "markdownSha256": "8c5397ddeb5017989842acbedbb36b374ecbd5f07a0b58a08c4299f0b3edd8b5",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Snackbar",
+          "status": "no-requirements",
+          "notes": "Introductory description only."
+        },
+        {
+          "id": "cb59e07c-a63a-4230-b5f6-6ebd0e0004d9",
+          "title": "Use cases",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "be58081b-a688-411f-83a7-f77e4873bd7d",
+          "title": "Interaction & style",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "127f5547-7068-4d5d-a6bd-ff97096d1139",
+          "title": "Accessibility requirements on web",
+          "status": "no-requirements",
+          "notes": "Parent heading; alternatives are mapped in its child sections."
+        },
+        {
+          "id": "127f5547-7068-4d5d-a6bd-ff97096d1139--1-add-inline-feedback",
+          "title": "1. Add inline feedback",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "127f5547-7068-4d5d-a6bd-ff97096d1139--2-make-the-snackbar-actionable",
+          "title": "2. Make the snackbar actionable",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "5adb7a10-b94a-47b0-94df-72daf42bf884",
+          "title": "Focus",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "91962520-8655-4921-9108-c0c31440f858",
+          "title": "Keyboard navigation",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "e8fa8ef9-62a8-4511-aa67-4bd0c2ed9c98",
+          "title": "Labeling elements",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "snackbar-dismissal-modes",
+      "statement": "Snackbars may either disappear temporarily on their own (dismissive) or remain until the user takes action (non-dismissive); M3 also uses updated color mappings compatible with dynamic color.",
+      "condition": "When selecting a snackbar dismissal mode or applying M3 colors.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/snackbar/overview",
+          "section": "06bb1821-cd7e-464c-8ca1-ca0228929bc7",
+          "capture": "snapshots/material-guidance/20261025T165908.369029067Z-1875590414/capture.json",
+          "markdownSha256": "b9594cf4693110b19ba334dc824ce7c9c7c22152f4fc55d4d0d214f764e4f272",
+          "extractorVersion": 2,
+          "summary": "M2 comparison describes the two dismissal modes and dynamic-color mapping change."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "snackbar-use-frequency-and-actions",
+      "statement": "Use snackbars for low-priority process updates that do not require action; people should remain able to browse the page. Show only one snackbar at a time and allow at most one action; dismiss/cancel actions are optional. Use a dialog for high-priority messages that require immediate action or block app use.",
+      "condition": "When choosing a component and action model for a message.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/snackbar/guidelines",
+          "section": "4259e22d-2e3e-4efa-8f56-4d49eea22ddf",
+          "capture": "snapshots/material-guidance/20261025T165908.369029067Z-1875590414/capture.json",
+          "markdownSha256": "2e4cca0bf6a08a452e575dbeb33face247dc457288ea236fb1de5b09164eb851",
+          "extractorVersion": 2,
+          "summary": "Usage guidance specifies snackbar priority, non-interruption, one-at-a-time display, and action limit relative to dialogs."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "snackbar-web-inline-feedback",
+      "statement": "On web, when a snackbar dismisses automatically, also communicate its information inline or near the action that triggered it.",
+      "condition": "For auto-dismissing snackbars on web.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/snackbar/guidelines",
+          "section": "e90db9ca-e080-470f-b6c6-91afabc4ee26--1-add-inline-feedback",
+          "capture": "snapshots/material-guidance/20261025T165908.369029067Z-1875590414/capture.json",
+          "markdownSha256": "2e4cca0bf6a08a452e575dbeb33face247dc457288ea236fb1de5b09164eb851",
+          "extractorVersion": 2,
+          "summary": "Web accessibility guidance requires a second inline or nearby message channel."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "snackbar-web-actionable",
+      "statement": "On web, alternatively add an action and keep the snackbar visible until the user acts on or dismisses it.",
+      "condition": "For auto-dismissing snackbar information on web when inline feedback is not used.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/snackbar/guidelines",
+          "section": "e90db9ca-e080-470f-b6c6-91afabc4ee26--2-make-the-snackbar-actionable",
+          "capture": "snapshots/material-guidance/20261025T165908.369029067Z-1875590414/capture.json",
+          "markdownSha256": "2e4cca0bf6a08a452e575dbeb33face247dc457288ea236fb1de5b09164eb851",
+          "extractorVersion": 2,
+          "summary": "Web guidance offers an actionable snackbar that persists until acted upon."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "snackbar-text-label",
+      "statement": "Relate the text label directly to the process performed. Keep it short and clear, one line when possible, and at most two lines at compact breakpoints. Avoid icons, stylized text, and inline links; use a different component for icon- or link-heavy messages, or provide a button for the action.",
+      "condition": "When writing snackbar message content.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/snackbar/guidelines",
+          "section": "0ce711aa-151b-43fd-87f7-c49c7ca8ae12",
+          "capture": "snapshots/material-guidance/20261025T165908.369029067Z-1875590414/capture.json",
+          "markdownSha256": "2e4cca0bf6a08a452e575dbeb33face247dc457288ea236fb1de5b09164eb851",
+          "extractorVersion": 2,
+          "summary": "Text-label guidance defines message relevance and length and cautions against icons, stylized text, and links."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "snackbar-container-treatment",
+      "statement": "Use a completely opaque rectangular gray container by default so the text remains legible; slight transparency is allowed only while text stays clearly legible. Avoid significantly changing the container shape. Keep the text label and action text visually distinct, and do not use filled or elevated action buttons.",
+      "condition": "When styling the snackbar container and action.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/snackbar/guidelines",
+          "section": "96e705d7-2c13-43d1-a2bf-5fa89e287649",
+          "capture": "snapshots/material-guidance/20261025T165908.369029067Z-1875590414/capture.json",
+          "markdownSha256": "2e4cca0bf6a08a452e575dbeb33face247dc457288ea236fb1de5b09164eb851",
+          "extractorVersion": 2,
+          "summary": "Container guidance covers opacity, shape, text legibility, label/action contrast, and button emphasis."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "snackbar-action",
+      "statement": "A snackbar may contain one text-button action, but it must not be the only way to access a core use case. Use colored action text to distinguish it from the message; a long action may occupy a third line. An Undo action can let users amend a choice; a Dismiss action is usually unnecessary because snackbars disappear by default.",
+      "condition": "When a snackbar includes an action.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/snackbar/guidelines",
+          "section": "ff603b1b-7efc-4930-bb6f-584a6455819c",
+          "capture": "snapshots/material-guidance/20261025T165908.369029067Z-1875590414/capture.json",
+          "markdownSha256": "2e4cca0bf6a08a452e575dbeb33face247dc457288ea236fb1de5b09164eb851",
+          "extractorVersion": 2,
+          "summary": "Action guidance describes count, distinction, line allowance, undo use, and optional dismissal."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "snackbar-placement",
+      "statement": "Place snackbars at the bottom in front of main content; they may move upward to avoid a FAB or docked toolbar. Do not cover navigation, frequently used touch targets, focused/actionable elements, or FABs; place them above FABs. Full-width snackbars are appropriate only when persistent navigation is absent. A snackbar may push a FAB upward when shown.",
+      "condition": "When placing a snackbar over page content and other controls.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/snackbar/guidelines",
+          "section": "3adb9127-aadb-40e8-898a-5c9218985736",
+          "capture": "snapshots/material-guidance/20261025T165908.369029067Z-1875590414/capture.json",
+          "markdownSha256": "2e4cca0bf6a08a452e575dbeb33face247dc457288ea236fb1de5b09164eb851",
+          "extractorVersion": 2,
+          "summary": "Placement guidance covers bottom layering, collision avoidance, focus visibility, full-width constraint, and FAB relation."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "snackbar-compact-layout",
+      "statement": "At compact breakpoints, expand snackbar height from 48dp to 64dp for one or two lines while keeping fixed distances from the screen's leading, trailing, and bottom edges.",
+      "condition": "At compact window breakpoints.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/snackbar/guidelines",
+          "section": "57e8cc18-31d6-4bab-ae1f-129635dec8a3",
+          "capture": "snapshots/material-guidance/20261025T165908.369029067Z-1875590414/capture.json",
+          "markdownSha256": "2e4cca0bf6a08a452e575dbeb33face247dc457288ea236fb1de5b09164eb851",
+          "extractorVersion": 2,
+          "summary": "Compact layout guidance specifies height range and fixed edge spacing."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "snackbar-large-layout",
+      "statement": "At medium and expanded breakpoints, scale the snackbar horizontally for longer messages and aim for a 40–60 character line length, ideally one line with an optional button. Use flexible trailing-edge spacing. Left or center alignment is allowed if placement stays consistent; do not place it flush to a layout edge or show consecutive snackbars side by side.",
+      "condition": "At medium and expanded window breakpoints.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/snackbar/guidelines",
+          "section": "418d202e-db21-429f-b72d-f34fd8723c35",
+          "capture": "snapshots/material-guidance/20261025T165908.369029067Z-1875590414/capture.json",
+          "markdownSha256": "2e4cca0bf6a08a452e575dbeb33face247dc457288ea236fb1de5b09164eb851",
+          "extractorVersion": 2,
+          "summary": "Large-layout guidance covers width, line length, optional action, alignment, and edge/adjacency limits."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "snackbar-dismissal-behavior",
+      "statement": "Show snackbars without blocking page interaction. Snackbars without actions may dismiss after 4–10 seconds depending on platform; avoid auto-dismiss on web unless inline feedback is also present. Keep snackbars with actions visible until the user acts or dismisses them.",
+      "condition": "When choosing snackbar lifetime and interaction behavior.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/snackbar/guidelines",
+          "section": "4847ca62-bc91-4259-8402-c2247e39361e",
+          "capture": "snapshots/material-guidance/20261025T165908.369029067Z-1875590414/capture.json",
+          "markdownSha256": "2e4cca0bf6a08a452e575dbeb33face247dc457288ea236fb1de5b09164eb851",
+          "extractorVersion": 2,
+          "summary": "Behavior section specifies non-blocking display and conditional lifetime by action and platform."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "snackbar-sequential-display",
+      "statement": "Display consecutive snackbars one at a time, never stacked. An updated message may replace an outdated snackbar immediately. Do not animate other components, such as a FAB, along with snackbar animations.",
+      "condition": "When multiple snackbar messages occur in sequence.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/snackbar/guidelines",
+          "section": "84cd5bb6-354f-4fd0-bdd9-daf9684ba4bf",
+          "capture": "snapshots/material-guidance/20261025T165908.369029067Z-1875590414/capture.json",
+          "markdownSha256": "2e4cca0bf6a08a452e575dbeb33face247dc457288ea236fb1de5b09164eb851",
+          "extractorVersion": 2,
+          "summary": "Consecutive guidance requires sequential display and limits coordinated animations."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "snackbar-accessible-tasks",
+      "statement": "Assistive-technology users must be alerted without disruption, be able to move focus to actionable snackbars, and take their actions.",
+      "condition": "For accessible snackbars.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/snackbar/accessibility",
+          "section": "cb59e07c-a63a-4230-b5f6-6ebd0e0004d9",
+          "capture": "snapshots/material-guidance/20261025T165908.369029067Z-1875590414/capture.json",
+          "markdownSha256": "8c5397ddeb5017989842acbedbb36b374ecbd5f07a0b58a08c4299f0b3edd8b5",
+          "extractorVersion": 2,
+          "summary": "Use cases list alerting, focus access, and action tasks."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "snackbar-accessible-lifetime",
+      "statement": "Do not auto-dismiss snackbars that have actions. Actionless snackbars may dismiss after a sufficient platform-specific duration; 4–10 seconds is a common acceptable range. Use the default color mapping so the snackbar stands out without color conflicts.",
+      "condition": "When selecting snackbar lifetime and color, especially for assistive-technology users.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/snackbar/accessibility",
+          "section": "be58081b-a688-411f-83a7-f77e4873bd7d",
+          "capture": "snapshots/material-guidance/20261025T165908.369029067Z-1875590414/capture.json",
+          "markdownSha256": "8c5397ddeb5017989842acbedbb36b374ecbd5f07a0b58a08c4299f0b3edd8b5",
+          "extractorVersion": 2,
+          "summary": "Interaction guidance covers action-dependent persistence, duration range, and default color mapping."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "snackbar-web-accessibility-inline",
+      "statement": "On web, communicate an auto-dismissing snackbar's information inline or near the triggering action as well.",
+      "condition": "For auto-dismissing snackbars on web.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/snackbar/accessibility",
+          "section": "127f5547-7068-4d5d-a6bd-ff97096d1139--1-add-inline-feedback",
+          "capture": "snapshots/material-guidance/20261025T165908.369029067Z-1875590414/capture.json",
+          "markdownSha256": "8c5397ddeb5017989842acbedbb36b374ecbd5f07a0b58a08c4299f0b3edd8b5",
+          "extractorVersion": 2,
+          "summary": "Accessibility page repeats the inline-feedback requirement for web."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "snackbar-web-accessibility-actionable",
+      "statement": "On web, alternatively make the snackbar actionable and keep it visible until the user acts; actionable snackbars must not auto-dismiss.",
+      "condition": "For snackbar information on web when an inline message is not used.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/snackbar/accessibility",
+          "section": "127f5547-7068-4d5d-a6bd-ff97096d1139--2-make-the-snackbar-actionable",
+          "capture": "snapshots/material-guidance/20261025T165908.369029067Z-1875590414/capture.json",
+          "markdownSha256": "8c5397ddeb5017989842acbedbb36b374ecbd5f07a0b58a08c4299f0b3edd8b5",
+          "extractorVersion": 2,
+          "summary": "Accessibility page repeats the persistent-action alternative for web."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "snackbar-focus-management",
+      "statement": "Announce a snackbar when it appears without moving focus or trapping it. Provide a documented web shortcut to focus actionable snackbars. On exit, return focus ideally to the trigger or next logical element; on Android Compose it may move to the nearest visible element or first actionable item.",
+      "condition": "When managing focus as snackbars appear, are focused, or disappear.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/snackbar/accessibility",
+          "section": "5adb7a10-b94a-47b0-94df-72daf42bf884",
+          "capture": "snapshots/material-guidance/20261025T165908.369029067Z-1875590414/capture.json",
+          "markdownSha256": "8c5397ddeb5017989842acbedbb36b374ecbd5f07a0b58a08c4299f0b3edd8b5",
+          "extractorVersion": 2,
+          "summary": "Focus guidance describes announcement, no focus movement/trap, shortcut, and platform exit behavior."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "snackbar-keyboard-navigation",
+      "statement": "Tab moves focus between interactive snackbar elements; Esc dismisses a snackbar while it is focused.",
+      "condition": "When keyboard-operating a snackbar.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/snackbar/accessibility",
+          "section": "91962520-8655-4921-9108-c0c31440f858",
+          "capture": "snapshots/material-guidance/20261025T165908.369029067Z-1875590414/capture.json",
+          "markdownSha256": "8c5397ddeb5017989842acbedbb36b374ecbd5f07a0b58a08c4299f0b3edd8b5",
+          "extractorVersion": 2,
+          "summary": "Keyboard table maps Tab and Esc behavior."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "snackbar-announcement",
+      "statement": "Announce snackbars once when they appear without taking focus. Use a polite live region on Android and web; iOS 17 and later announce politely by default. If a snackbar appears at app launch, announce it after the page title without focusing it.",
+      "condition": "When announcing a snackbar to screen readers.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/snackbar/accessibility",
+          "section": "e8fa8ef9-62a8-4511-aa67-4bd0c2ed9c98",
+          "capture": "snapshots/material-guidance/20261025T165908.369029067Z-1875590414/capture.json",
+          "markdownSha256": "8c5397ddeb5017989842acbedbb36b374ecbd5f07a0b58a08c4299f0b3edd8b5",
+          "extractorVersion": 2,
+          "summary": "Labeling guidance specifies announcement timing, polite platform behavior, and launch ordering."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "snackbar-line-action-configurations",
+      "statement": "Support single-line, single-line with action, two-line, two-line with action, and two-line with a longer action configurations.",
+      "condition": "When arranging snackbar message and action content.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/snackbar/specs",
+          "section": "ef444c08-d655-4637-844c-180b73c95295",
+          "capture": "snapshots/material-guidance/20261025T165908.369029067Z-1875590414/capture.json",
+          "markdownSha256": "28f5cfa28d12898bd23f683c19707ea6554c5961ff19c18548e20fef2b4b2cfa",
+          "extractorVersion": 2,
+          "summary": "Configuration diagram labels five line-count and action combinations."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

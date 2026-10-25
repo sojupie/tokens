@@ -1,0 +1,365 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "divider",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/divider/overview",
+      "capture": "snapshots/material-guidance/20261025T165441.081465808Z-4260626190/capture.json",
+      "markdownSha256": "47a3117d2f772a2860f9f770b3e82f823be42488b4f311923160f90bc55de076",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Divider",
+          "status": "mapped",
+          "notes": "Actionable requirements in this section are represented by the linked checks."
+        },
+        {
+          "id": "760317d6-4ae0-43a4-a382-9d559d737ed7",
+          "title": "Availability & resources",
+          "status": "no-requirements",
+          "notes": "This section only lists design and implementation resource links."
+        },
+        {
+          "id": "a7783158-c068-4f06-816d-c90922d404ed",
+          "title": "Differences from M2",
+          "status": "no-requirements",
+          "notes": "The historical M2 comparison identifies vertical dividers as an added configuration; availability and applicable large-screen use are represented by vertical-large-layout."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/divider/specs",
+      "capture": "snapshots/material-guidance/20261025T165441.081465808Z-4260626190/capture.json",
+      "markdownSha256": "4ec3955371c010778aab1018c378349c982139456588fd52eb6dc66a1276a8d9",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Divider",
+          "status": "no-requirements",
+          "notes": "Repeated page title and component description; no distinct instruction appears in this page-level introduction."
+        },
+        {
+          "id": "3ac2a512-7e92-4d92-b729-a1e83536c2c2",
+          "title": "Tokens and specs",
+          "status": "no-requirements",
+          "notes": "The token and state browser is a resource control; concrete color and measurement guidance is represented in its specific sections."
+        },
+        {
+          "id": "9a178b67-1fdd-4ab5-8170-b4909f7988d5",
+          "title": "Color",
+          "status": "mapped",
+          "notes": "Token-backed color implementation and the Outline variant role are represented by divider-token-color."
+        },
+        {
+          "id": "50081bbe-cfb2-44d5-bc23-3938ad46f27d",
+          "title": "Measurements",
+          "status": "mapped",
+          "notes": "Actionable requirements in this section are represented by the linked checks."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/divider/guidelines",
+      "capture": "snapshots/material-guidance/20261025T165441.081465808Z-4260626190/capture.json",
+      "markdownSha256": "121672a1878eae6a83b3c9bc0528f09f2fdcc2fc39f2a56ba29202a3ad583274",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Divider",
+          "status": "no-requirements",
+          "notes": "Repeated page title and component description; no distinct instruction appears in this page-level introduction."
+        },
+        {
+          "id": "65e7c694-6a4e-4af4-b9c6-3d4407270c69",
+          "title": "Usage",
+          "status": "no-requirements",
+          "notes": "This usage overview introduces grouping, hierarchy, parent-child relationships and full-width/inset options; the independently actionable rules are represented by divider-use, divider-hierarchy, full-width-use and inset-use."
+        },
+        {
+          "id": "b56e93b4-b56d-4e12-bd9f-68ce55132cc4",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "The section describes the divider as a simple line and contains no additional behavior or layout instruction."
+        },
+        {
+          "id": "5fd0d7a1-5998-4d34-9651-08a9fd6aca91",
+          "title": "Full-width dividers",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "26de9847-bb70-40f1-bc4d-ffa3947638bd",
+          "title": "Inset dividers",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "682c53af-a91b-4cfd-9bd1-0f2ec10f6461",
+          "title": "Using dividers both ways on the same screen",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "d5fa4d10-cf64-456f-9624-dc75403bc575",
+          "title": "Vertical divider",
+          "status": "mapped",
+          "notes": "Actionable requirements in this section are represented by the linked checks."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/divider/accessibility",
+      "capture": "snapshots/material-guidance/20261025T165441.081465808Z-4260626190/capture.json",
+      "markdownSha256": "f8130b448866d5469d8fcfb6fe06fc4958c992845a5dc08a047fa82f101550c8",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Divider",
+          "status": "mapped",
+          "notes": "Actionable requirements in this section are represented by the linked checks."
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "divider-use",
+      "statement": "Use a divider to group related content only when open space cannot provide the grouping; keep it visible but not bold and do not separate every individual item.",
+      "condition": "When considering a divider.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/divider/overview",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T165441.081465808Z-4260626190/capture.json",
+          "markdownSha256": "47a3117d2f772a2860f9f770b3e82f823be42488b4f311923160f90bc55de076",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Divider guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "full-width-use",
+      "statement": "Use full-width dividers for larger or unrelated content sections, including boundaries between interactive and non-interactive areas; use them sparingly.",
+      "condition": "When separating larger content areas.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/divider/guidelines",
+          "section": "5fd0d7a1-5998-4d34-9651-08a9fd6aca91",
+          "capture": "snapshots/material-guidance/20261025T165441.081465808Z-4260626190/capture.json",
+          "markdownSha256": "121672a1878eae6a83b3c9bc0528f09f2fdcc2fc39f2a56ba29202a3ad583274",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Full-width dividers guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "inset-use",
+      "statement": "Use inset dividers for related items within a section, aligning them with anchoring icons or avatars and keeping the inset equal on both sides by default.",
+      "condition": "When separating related list items.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/divider/guidelines",
+          "section": "26de9847-bb70-40f1-bc4d-ffa3947638bd",
+          "capture": "snapshots/material-guidance/20261025T165441.081465808Z-4260626190/capture.json",
+          "markdownSha256": "121672a1878eae6a83b3c9bc0528f09f2fdcc2fc39f2a56ba29202a3ad583274",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Inset dividers guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "divider-hierarchy",
+      "statement": "When combining full-width and inset dividers, use full-width lines for different content types and inset lines for nested items; repeated-format items may use spacing alone.",
+      "condition": "When both divider types appear on one screen.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/divider/guidelines",
+          "section": "682c53af-a91b-4cfd-9bd1-0f2ec10f6461",
+          "capture": "snapshots/material-guidance/20261025T165441.081465808Z-4260626190/capture.json",
+          "markdownSha256": "121672a1878eae6a83b3c9bc0528f09f2fdcc2fc39f2a56ba29202a3ad583274",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Using dividers both ways on the same screen guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "vertical-large-layout",
+      "statement": "Use vertical dividers to arrange content on larger screens, such as separating text from video or imagery.",
+      "condition": "When laying out content on a large screen.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/divider/guidelines",
+          "section": "d5fa4d10-cf64-456f-9624-dc75403bc575",
+          "capture": "snapshots/material-guidance/20261025T165441.081465808Z-4260626190/capture.json",
+          "markdownSha256": "121672a1878eae6a83b3c9bc0528f09f2fdcc2fc39f2a56ba29202a3ad583274",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Vertical divider guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "divider-token-color",
+      "statement": "Use the Outline variant color role for dividers and implement color values through design tokens.",
+      "condition": "When rendering a Material divider in the configuration described by the source.",
+      "basis": "explicit",
+      "notes": "The captured color section names the Outline variant role and states that design and implementation color values are token-backed.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/divider/specs",
+          "section": "9a178b67-1fdd-4ab5-8170-b4909f7988d5",
+          "capture": "snapshots/material-guidance/20261025T165441.081465808Z-4260626190/capture.json",
+          "markdownSha256": "4ec3955371c010778aab1018c378349c982139456588fd52eb6dc66a1276a8d9",
+          "extractorVersion": 2,
+          "summary": "The captured color section names the Outline variant role and states that design and implementation color values are token-backed."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "divider-width-insets-measurements",
+      "statement": "Use a full-width divider at 100% width; inset dividers use 16dp left and 0dp right margins, while middle-inset dividers use 16dp on both sides.",
+      "condition": "When rendering a Material divider in the configuration described by the source.",
+      "basis": "explicit",
+      "notes": "Preserves the distinct table rows for full-width, inset, and middle-inset widths.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/divider/specs",
+          "section": "50081bbe-cfb2-44d5-bc23-3938ad46f27d",
+          "capture": "snapshots/material-guidance/20261025T165441.081465808Z-4260626190/capture.json",
+          "markdownSha256": "4ec3955371c010778aab1018c378349c982139456588fd52eb6dc66a1276a8d9",
+          "extractorVersion": 2,
+          "summary": "Preserves the distinct table rows for full-width, inset, and middle-inset widths."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "divider-supporting-text-and-margins",
+      "statement": "Use 4dp between a divider and supporting text; where specified, use 8dp right and bottom margins.",
+      "condition": "When rendering a Material divider in the configuration described by the source.",
+      "basis": "explicit",
+      "notes": "Carries through supporting-text spacing and both table margin values.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/divider/specs",
+          "section": "50081bbe-cfb2-44d5-bc23-3938ad46f27d",
+          "capture": "snapshots/material-guidance/20261025T165441.081465808Z-4260626190/capture.json",
+          "markdownSha256": "4ec3955371c010778aab1018c378349c982139456588fd52eb6dc66a1276a8d9",
+          "extractorVersion": 2,
+          "summary": "Carries through supporting-text spacing and both table margin values."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "divider-decorative-contrast",
+      "statement": "Treat dividers as decorative elements; they have no minimum contrast requirement.",
+      "condition": "When rendering a Material divider in the configuration described by the source.",
+      "basis": "explicit",
+      "notes": "The accessibility page states this directly.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/divider/accessibility",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T165441.081465808Z-4260626190/capture.json",
+          "markdownSha256": "f8130b448866d5469d8fcfb6fe06fc4958c992845a5dc08a047fa82f101550c8",
+          "extractorVersion": 2,
+          "summary": "The accessibility page states this directly."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

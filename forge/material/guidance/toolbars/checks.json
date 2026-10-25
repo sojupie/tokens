@@ -1,0 +1,935 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "toolbars",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/toolbars/overview",
+      "capture": "snapshots/material-guidance/20261025T170032.716854436Z-1970773994/capture.json",
+      "markdownSha256": "6b99ba5b495627f68c43d3528357488e171e87ca9774f8834c8c662c736cdd0b",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Toolbars",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "b9c22e26-820f-425a-8018-86160f99128b",
+          "title": "Availability & resources",
+          "status": "no-requirements",
+          "notes": "Implementation resource availability only."
+        },
+        {
+          "id": "24034b14-732c-46ba-b3cd-3ef473fa275f",
+          "title": "M3 Expressive update",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "7f205ba0-aeed-424a-8c09-adc3005e4831",
+          "title": "Differences from M2",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/toolbars/specs",
+      "capture": "snapshots/material-guidance/20261025T170032.716854436Z-1970773994/capture.json",
+      "markdownSha256": "636521d6ef555fb86c34adf4cb0bbbc42e0c6ca90e0ed61887487fb8518b5966",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Toolbars",
+          "status": "no-requirements",
+          "notes": "Repeated component definition only."
+        },
+        {
+          "id": "3cb438d6-20e1-4e37-ae62-2c614d9ed87d",
+          "title": "Variants",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "7f9cddde-00fd-48e3-8762-b2ea486d5346",
+          "title": "Baseline variant",
+          "status": "no-requirements",
+          "notes": "Repeat of the baseline bottom app bar replacement recommendation in `toolbar-variant-availability`."
+        },
+        {
+          "id": "f4633091-7490-44e0-8eb8-b2990a81f032",
+          "title": "Configurations",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "e4287fdf-2c38-4346-8fc8-6bc11b743002",
+          "title": "Tokens & specs",
+          "status": "no-requirements",
+          "notes": "Baseline token browser reference only."
+        },
+        {
+          "id": "1809db90-af72-4c62-86d4-08141d396613",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "Diagram names container and placed components; their requirements are detailed in Flexibility & slots."
+        },
+        {
+          "id": "d546e12f-90d6-4faf-ad8a-157df95376cb",
+          "title": "Flexibility & slots",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "dbc8c8a1-bbc8-4cc6-88f8-ca5e5de14cda",
+          "title": "Color",
+          "status": "no-requirements",
+          "notes": "Parent section groups standard and vibrant color references detailed below."
+        },
+        {
+          "id": "6abf0477-bb94-498d-a684-23e79c72c019",
+          "title": "Standard",
+          "status": "unclear",
+          "notes": "Color-role assignments are tied to an uninspected diagram; the caption does not fully establish each element-to-role mapping."
+        },
+        {
+          "id": "8d2cf5b7-8d96-43ab-8b0a-09e63f6f01ff",
+          "title": "Vibrant",
+          "status": "unclear",
+          "notes": "Color-role assignments are tied to an uninspected diagram; the caption does not fully establish each element-to-role mapping."
+        },
+        {
+          "id": "0059ddbb-299b-46ea-926c-6bf208e60176",
+          "title": "Measurements",
+          "status": "no-requirements",
+          "notes": "Parent heading groups docked, floating, and bottom-app-bar measurements below."
+        },
+        {
+          "id": "3b65ef51-2778-4165-88ac-3ace7498f8c1",
+          "title": "Docked toolbar",
+          "status": "unclear",
+          "notes": "The section includes uninspected docked-toolbar measurement diagrams for margins and padding; only the general defaults and some configurable values are available in text."
+        },
+        {
+          "id": "b1643393-c1dc-4826-be6e-0540a15c1d5a",
+          "title": "Floating toolbar",
+          "status": "unclear",
+          "notes": "Floating-toolbar margins and padding are shown only in uninspected diagrams; exact measurement requirements cannot be extracted."
+        },
+        {
+          "id": "ad142675-3e3b-43b8-ba53-12c1f0b7138d",
+          "title": "Bottom app bar (baseline)",
+          "status": "no-requirements",
+          "notes": "Anatomy diagram only; baseline variant recommendation is covered above."
+        },
+        {
+          "id": "91a11c74-0ce3-4665-bb6f-15d30d28c66d",
+          "title": "Tokens & specs",
+          "status": "no-requirements",
+          "notes": "Bottom app bar token browser reference only."
+        },
+        {
+          "id": "06931ebd-c790-49ee-a2bc-53dc05e6f46a",
+          "title": "Color",
+          "status": "unclear",
+          "notes": "Bottom-app-bar color mapping appears only in an uninspected diagram."
+        },
+        {
+          "id": "1abc7a90-f07c-41b4-851e-36831c1fb578",
+          "title": "Measurements",
+          "status": "unclear",
+          "notes": "Bottom-app-bar padding and dimensions appear only in an uninspected measurement diagram."
+        },
+        {
+          "id": "29faa92c-c80f-4b27-a866-74356f1290bf",
+          "title": "Common layouts",
+          "status": "no-requirements",
+          "notes": "Examples illustrate optional FAB and no-FAB layouts without additional constraints."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/toolbars/guidelines",
+      "capture": "snapshots/material-guidance/20261025T170032.716854436Z-1970773994/capture.json",
+      "markdownSha256": "a41241aeb72da1be72409231b6e76b986501f06434b431ef9e1c89ff75bd9703",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Toolbars",
+          "status": "no-requirements",
+          "notes": "Introductory description only."
+        },
+        {
+          "id": "5f590199-0577-4714-9d22-799cf7b17fcb",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "f1b65fab-bd26-4363-83c3-daf26e4e80cd",
+          "title": "Toolbars & navigation bars",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "d6b7bcb1-295d-41e6-a051-37f12e1c96ab",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "Diagram-only parent heading; container, slots, and position rules are captured in child sections."
+        },
+        {
+          "id": "cb9d136d-4eed-46ee-ac2e-82dcc68000c0",
+          "title": "Container",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "6e4888e3-c958-4ca4-80ef-670ace4deb87",
+          "title": "Elevation",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "3aa381a0-b85a-43b2-ac5d-0a4e37efa679",
+          "title": "Flexibility & slots",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "0bf58b9e-f29c-48f8-b93e-853e4bddf7aa",
+          "title": "Floating toolbar with FAB",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "7347a32f-d6ed-4e9b-b180-702bc0aaecb3",
+          "title": "Position & orientation",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "ef70887a-d9c1-4153-a4b6-167a7177ba41",
+          "title": "Adaptive design",
+          "status": "no-requirements",
+          "notes": "Parent heading; docked and floating resizing, presentation, and RTL are mapped below."
+        },
+        {
+          "id": "faa8105c-6bf2-49b0-bf4a-183f10617237",
+          "title": "Resizing",
+          "status": "no-requirements",
+          "notes": "Parent heading; variant-specific resizing behavior is in child sections."
+        },
+        {
+          "id": "ba73b937-969d-4729-b505-fe00e0d48192",
+          "title": "Docked",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "527749ea-7a97-44bf-8042-3491bb6b5fb7",
+          "title": "Floating",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "5457f862-98f1-479f-a791-8ecb4ba58ee6",
+          "title": "Presentation",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "4e6e8184-631a-4770-a869-ca0418a3bf99",
+          "title": "Right-to-left languages",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "7d64a4f2-0515-4f7d-b83f-40adf090ac1a",
+          "title": "Behavior",
+          "status": "no-requirements",
+          "notes": "Parent heading; scroll behavior is captured in the child section."
+        },
+        {
+          "id": "4d2dff5b-56c6-4ba2-9742-d1275d3b46cb",
+          "title": "Scrolling",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/toolbars/accessibility",
+      "capture": "snapshots/material-guidance/20261025T170032.716854436Z-1970773994/capture.json",
+      "markdownSha256": "d701d87d38e4297624826725b9839241a9c427f072f18703ec55c2621c47e10e",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Toolbars",
+          "status": "no-requirements",
+          "notes": "Introductory description only."
+        },
+        {
+          "id": "2a8a51ec-8795-46ed-8dd9-87083af17059",
+          "title": "Use cases",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "b03ebe57-4cae-4b0e-9ea0-93be3a0fbe46",
+          "title": "Interaction & style",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "7d1f56cb-c43c-4d1f-9bfe-696bc77321ac",
+          "title": "Initial focus",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "f905e200-eca3-418c-8e38-7054cbb8fe0b",
+          "title": "Keyboard navigation",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "3b6eda3b-99a9-463d-96af-0919193b1c19",
+          "title": "Labeling elements",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "toolbar-overview-purpose",
+      "statement": "Use toolbars to display frequently used actions relevant to the current page; they may contain varied controls and can pair with a FAB to emphasize an action. Do not show a toolbar and navigation bar at the same time.",
+      "condition": "When choosing or configuring a toolbar.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/toolbars/overview",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T170032.716854436Z-1970773994/capture.json",
+          "markdownSha256": "6b99ba5b495627f68c43d3528357488e171e87ca9774f8834c8c662c736cdd0b",
+          "extractorVersion": 2,
+          "summary": "Overview states toolbar purpose, control flexibility, FAB pairing, and navigation-bar exclusion."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "toolbar-expressive-variants",
+      "statement": "Replace the still-supported but no-longer-recommended bottom app bar with the shorter, more flexible docked toolbar. Use a floating toolbar for more actions and flexible placement; it may be horizontal or vertical, use standard or vibrant color, contain many controls, and pair with a FAB. Use vibrant styling for emphasis.",
+      "condition": "When selecting M3 Expressive toolbar variants.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/toolbars/overview",
+          "section": "24034b14-732c-46ba-b3cd-3ef473fa275f",
+          "capture": "snapshots/material-guidance/20261025T170032.716854436Z-1970773994/capture.json",
+          "markdownSha256": "6b99ba5b495627f68c43d3528357488e171e87ca9774f8834c8c662c736cdd0b",
+          "extractorVersion": 2,
+          "summary": "Expressive update describes variant recommendation, flexibility, color styles, orientation, and FAB pairing."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "toolbar-m3-baseline-changes",
+      "statement": "M3 bottom app bars use updated dynamic color mappings, have a taller container, no shadow, and contain the FAB within the bar rather than leaving it outside.",
+      "condition": "When implementing baseline M3 bottom app-bar behavior or comparing with M2.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/toolbars/overview",
+          "section": "7f205ba0-aeed-424a-8c09-adc3005e4831",
+          "capture": "snapshots/material-guidance/20261025T170032.716854436Z-1970773994/capture.json",
+          "markdownSha256": "6b99ba5b495627f68c43d3528357488e171e87ca9774f8834c8c662c736cdd0b",
+          "extractorVersion": 2,
+          "summary": "M2 comparison enumerates color, elevation, height, and FAB containment changes."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "toolbar-variant-availability",
+      "statement": "M3 Expressive provides docked and floating toolbars. The baseline bottom app bar is available in M3 but remains supported and is not recommended in Expressive; use the docked toolbar instead. On Jetpack Compose, the floating toolbar is a separate component from the docked toolbar and bottom app bar.",
+      "condition": "When selecting toolbar variants by version and platform.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/toolbars/specs",
+          "section": "3cb438d6-20e1-4e37-ae62-2c614d9ed87d",
+          "capture": "snapshots/material-guidance/20261025T170032.716854436Z-1970773994/capture.json",
+          "markdownSha256": "636521d6ef555fb86c34adf4cb0bbbc42e0c6ca90e0ed61887487fb8518b5966",
+          "extractorVersion": 2,
+          "summary": "Variant table and note distinguish availability, recommendation, and Compose component boundaries."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "toolbar-configurations-availability",
+      "statement": "M3 Expressive supports standard (default) and vibrant colors, horizontal (default) and vertical floating layouts, and a floating toolbar with FAB. M3 provides standard color and FAB only as a bottom app bar. Jetpack Compose fully supports floating toolbar with FAB; on other platforms, add the toolbar and FAB separately.",
+      "condition": "When selecting toolbar color/layout and FAB configurations for a platform.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/toolbars/specs",
+          "section": "f4633091-7490-44e0-8eb8-b2990a81f032",
+          "capture": "snapshots/material-guidance/20261025T170032.716854436Z-1970773994/capture.json",
+          "markdownSha256": "636521d6ef555fb86c34adf4cb0bbbc42e0c6ca90e0ed61887487fb8518b5966",
+          "extractorVersion": 2,
+          "summary": "Configuration table preserves version availability and the platform-specific FAB implementation boundary."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "toolbar-configurable-slots",
+      "statement": "Treat a toolbar as a container with configurable slots; slots may contain different elements, commonly icon buttons, buttons, and text fields.",
+      "condition": "When arranging toolbar controls.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/toolbars/specs",
+          "section": "d546e12f-90d6-4faf-ad8a-157df95376cb",
+          "capture": "snapshots/material-guidance/20261025T170032.716854436Z-1970773994/capture.json",
+          "markdownSha256": "636521d6ef555fb86c34adf4cb0bbbc42e0c6ca90e0ed61887487fb8518b5966",
+          "extractorVersion": 2,
+          "summary": "Slots guidance describes the container model and common slot contents."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "docked-toolbar-spec-measurements",
+      "statement": "By default, toolbars are 64dp high, center-aligned, use equal padding between items, and have at least 16dp outside padding. Docked-toolbar alignment and padding may be configured for the layout.",
+      "condition": "When sizing or aligning a docked toolbar.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/toolbars/specs",
+          "section": "3b65ef51-2778-4165-88ac-3ace7498f8c1",
+          "capture": "snapshots/material-guidance/20261025T170032.716854436Z-1970773994/capture.json",
+          "markdownSha256": "636521d6ef555fb86c34adf4cb0bbbc42e0c6ca90e0ed61887487fb8518b5966",
+          "extractorVersion": 2,
+          "summary": "Measurements introduction gives toolbar defaults and docked diagrams show configurable alignment/padding; exact image-only values remain unavailable."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "toolbar-variant-usage",
+      "statement": "Use a toolbar for actions related to the current page. Use a docked toolbar across the window for global actions that persist across pages and a floating toolbar above body content for contextual page actions. When actions do not fit, add a menu. Standard colors keep emphasis on content; vibrant colors emphasize controls or can signal a temporary mode such as editing. Consider alternative color roles for app-specific emphasis.",
+      "condition": "When choosing toolbar variant and color emphasis.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/toolbars/guidelines",
+          "section": "5f590199-0577-4714-9d22-799cf7b17fcb",
+          "capture": "snapshots/material-guidance/20261025T170032.716854436Z-1970773994/capture.json",
+          "markdownSha256": "a41241aeb72da1be72409231b6e76b986501f06434b431ef9e1c89ff75bd9703",
+          "extractorVersion": 2,
+          "summary": "Usage maps docked/floating variants to global/contextual actions and defines color emphasis and overflow."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "toolbar-navigation-context",
+      "statement": "Do not show toolbar and navigation bar together. Show navigation bars on primary pages and toolbars with actions on subsequent pages; floating toolbars may provide local navigation between related subsequent pages, but avoid redundant or confusing navigation combinations.",
+      "condition": "When a product uses both bottom navigation and toolbar navigation.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/toolbars/guidelines",
+          "section": "f1b65fab-bd26-4363-83c3-daf26e4e80cd",
+          "capture": "snapshots/material-guidance/20261025T170032.716854436Z-1970773994/capture.json",
+          "markdownSha256": "a41241aeb72da1be72409231b6e76b986501f06434b431ef9e1c89ff75bd9703",
+          "extractorVersion": 2,
+          "summary": "Guidance separates navigation bar and toolbar by page hierarchy and cautions against duplicate navigation."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "toolbar-container-layout",
+      "statement": "A docked toolbar spans the window width and uses straight corners. Keep at least 16dp padding on each outer edge; 32dp between items is the default but may change. Give each element at least a 48×48dp target and avoid overwhelming people with too many controls. Keep a floating toolbar fully onscreen; move excess actions to an overflow menu.",
+      "condition": "When sizing or arranging docked or floating toolbar controls.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/toolbars/guidelines",
+          "section": "cb9d136d-4eed-46ee-ac2e-82dcc68000c0",
+          "capture": "snapshots/material-guidance/20261025T170032.716854436Z-1970773994/capture.json",
+          "markdownSha256": "a41241aeb72da1be72409231b6e76b986501f06434b431ef9e1c89ff75bd9703",
+          "extractorVersion": 2,
+          "summary": "Container guidance covers shape, width, padding, target size, control count, and floating overflow."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "floating-toolbar-elevation",
+      "statement": "Floating toolbars have elevation by default; it may be removed when the background beneath them is visually distinct.",
+      "condition": "When a floating toolbar sits on a visually distinct background.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/toolbars/guidelines",
+          "section": "6e4888e3-c958-4ca4-80ef-670ace4deb87",
+          "capture": "snapshots/material-guidance/20261025T170032.716854436Z-1970773994/capture.json",
+          "markdownSha256": "a41241aeb72da1be72409231b6e76b986501f06434b431ef9e1c89ff75bd9703",
+          "extractorVersion": 2,
+          "summary": "Elevation guidance defines default and conditional removal."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "toolbar-slot-hierarchy",
+      "statement": "Slots may contain buttons, icon buttons, images, text fields, or custom components. Use icon buttons for an even hierarchy; emphasize no more than one action, using button style/color, size, or a FAB. Avoid mixing many control designs and avoid square icon buttons in floating toolbars; square buttons are allowed in docked toolbars.",
+      "condition": "When composing and emphasizing toolbar actions.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/toolbars/guidelines",
+          "section": "3aa381a0-b85a-43b2-ac5d-0a4e37efa679",
+          "capture": "snapshots/material-guidance/20261025T170032.716854436Z-1970773994/capture.json",
+          "markdownSha256": "a41241aeb72da1be72409231b6e76b986501f06434b431ef9e1c89ff75bd9703",
+          "extractorVersion": 2,
+          "summary": "Slots guidance lists element types and rules for hierarchy, emphasis, consistency, and square buttons."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "toolbar-fab-pairing",
+      "statement": "A FAB may sit next to a floating toolbar to present one high-priority action alongside a unified set of toolbar actions.",
+      "condition": "When one primary action should accompany a floating toolbar.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/toolbars/guidelines",
+          "section": "0bf58b9e-f29c-48f8-b93e-853e4bddf7aa",
+          "capture": "snapshots/material-guidance/20261025T170032.716854436Z-1970773994/capture.json",
+          "markdownSha256": "a41241aeb72da1be72409231b6e76b986501f06434b431ef9e1c89ff75bd9703",
+          "extractorVersion": 2,
+          "summary": "FAB guidance describes pairing and action hierarchy."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "toolbar-position",
+      "statement": "Place docked toolbars only at the bottom and do not use them alongside another bottom-aligned element such as a navigation bar. Floating toolbars may be horizontal or vertical; keep horizontal ones at least 16dp from the window edge and vertical ones at least 24dp away. At larger breakpoints, vertical toolbars may sit on either side opposite a navigation rail; use narrow/default icon buttons and center the rail when both appear. Avoid vertical floating toolbars in compact layouts unless the screen is simple or has few controls.",
+      "condition": "When positioning toolbar variants across layouts.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/toolbars/guidelines",
+          "section": "7347a32f-d6ed-4e9b-b180-702bc0aaecb3",
+          "capture": "snapshots/material-guidance/20261025T170032.716854436Z-1970773994/capture.json",
+          "markdownSha256": "a41241aeb72da1be72409231b6e76b986501f06434b431ef9e1c89ff75bd9703",
+          "extractorVersion": 2,
+          "summary": "Position guidance specifies bottom placement, orientations, edge margins, navigation-rail relation, button width, and compact caution."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "toolbar-docked-responsive",
+      "statement": "A docked toolbar spans 100% of the screen. Space items evenly in compact windows. At medium and larger breakpoints, center items or center a key action while moving other items to the edges. On web and large screens it may be rounded and subdivided with dividers; reduce height and use XS controls only when vertical space is limited.",
+      "condition": "When adapting docked toolbars across breakpoints.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/toolbars/guidelines",
+          "section": "ba73b937-969d-4729-b505-fe00e0d48192",
+          "capture": "snapshots/material-guidance/20261025T170032.716854436Z-1970773994/capture.json",
+          "markdownSha256": "a41241aeb72da1be72409231b6e76b986501f06434b431ef9e1c89ff75bd9703",
+          "extractorVersion": 2,
+          "summary": "Docked resizing guidance covers width, compact spacing, large-screen arrangements, and conditional dense layout."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "toolbar-floating-responsive",
+      "statement": "Size a floating toolbar only as large as its contents while preserving a 16dp margin; cap its width if needed. Put overflow actions in a trailing-slot menu and reveal more actions at larger breakpoints. Avoid vertical floating toolbars in compact windows except for simple screens or few controls.",
+      "condition": "When adapting floating toolbars to available space.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/toolbars/guidelines",
+          "section": "527749ea-7a97-44bf-8042-3491bb6b5fb7",
+          "capture": "snapshots/material-guidance/20261025T170032.716854436Z-1970773994/capture.json",
+          "markdownSha256": "a41241aeb72da1be72409231b6e76b986501f06434b431ef9e1c89ff75bd9703",
+          "extractorVersion": 2,
+          "summary": "Floating resizing guidance covers content-sized width, margin, overflow, reveal behavior, and compact caution."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "toolbar-presentation",
+      "statement": "At larger breakpoints, multiple floating toolbars may be placed on opposite edges to group distinct actions, with styling used to clarify hierarchy. Do not use multiple toolbars in compact windows; use one toolbar. Trailing actions may collapse to overflow at smaller breakpoints and reappear at larger sizes.",
+      "condition": "When presenting multiple toolbars or adapting action count.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/toolbars/guidelines",
+          "section": "5457f862-98f1-479f-a791-8ecb4ba58ee6",
+          "capture": "snapshots/material-guidance/20261025T170032.716854436Z-1970773994/capture.json",
+          "markdownSha256": "a41241aeb72da1be72409231b6e76b986501f06434b431ef9e1c89ff75bd9703",
+          "extractorVersion": 2,
+          "summary": "Presentation guidance distinguishes large-screen grouping from compact limits and adaptive overflow."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "toolbar-rtl",
+      "statement": "In RTL, mirror individual elements such as icons and text direction; when action order matters, reverse the action order so trailing actions stay at the trailing edge.",
+      "condition": "When localizing toolbar layouts to RTL.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/toolbars/guidelines",
+          "section": "4e6e8184-631a-4770-a869-ca0418a3bf99",
+          "capture": "snapshots/material-guidance/20261025T170032.716854436Z-1970773994/capture.json",
+          "markdownSha256": "a41241aeb72da1be72409231b6e76b986501f06434b431ef9e1c89ff75bd9703",
+          "extractorVersion": 2,
+          "summary": "RTL guidance specifies element mirroring and conditional action-order reversal."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "toolbar-scroll-behavior",
+      "statement": "Docked toolbars may remain fixed or animate offscreen. Floating toolbars may remain, animate offscreen, or collapse into one high-emphasis action on scroll; Jetpack Compose supports collapsing to a FAB or key action. Do not collapse actions while also transitioning the toolbar offscreen.",
+      "condition": "When toolbar behavior responds to page scrolling.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/toolbars/guidelines",
+          "section": "4d2dff5b-56c6-4ba2-9742-d1275d3b46cb",
+          "capture": "snapshots/material-guidance/20261025T170032.716854436Z-1970773994/capture.json",
+          "markdownSha256": "a41241aeb72da1be72409231b6e76b986501f06434b431ef9e1c89ff75bd9703",
+          "extractorVersion": 2,
+          "summary": "Scrolling guidance lists variant options, Compose capability, and incompatible simultaneous transitions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "toolbar-accessible-tasks",
+      "statement": "Assistive-technology users must be able to navigate to and activate toolbar actions, select menu destinations, activate a back button, and retain access to controls while content scrolls or collapses.",
+      "condition": "For accessible toolbars.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/toolbars/accessibility",
+          "section": "2a8a51ec-8795-46ed-8dd9-87083af17059",
+          "capture": "snapshots/material-guidance/20261025T170032.716854436Z-1970773994/capture.json",
+          "markdownSha256": "d701d87d38e4297624826725b9839241a9c427f072f18703ec55c2621c47e10e",
+          "extractorVersion": 2,
+          "summary": "Use cases list action, destination, back, and persistence tasks."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "toolbar-interaction",
+      "statement": "Toolbars have no interactions by default; placed controls provide interaction. Tapping icon buttons gives ripple feedback; hover shows an interactive cue and clicking gives ripple feedback.",
+      "condition": "When controls inside a toolbar are touched or used with a cursor.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/toolbars/accessibility",
+          "section": "b03ebe57-4cae-4b0e-9ea0-93be3a0fbe46",
+          "capture": "snapshots/material-guidance/20261025T170032.716854436Z-1970773994/capture.json",
+          "markdownSha256": "d701d87d38e4297624826725b9839241a9c427f072f18703ec55c2621c47e10e",
+          "extractorVersion": 2,
+          "summary": "Interaction guidance assigns behavior to child elements and describes touch/cursor feedback."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "toolbar-initial-focus",
+      "statement": "Place initial focus on the first interactive element and allow Tab to move through the remaining actions.",
+      "condition": "When a toolbar receives keyboard focus.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/toolbars/accessibility",
+          "section": "7d1f56cb-c43c-4d1f-9bfe-696bc77321ac",
+          "capture": "snapshots/material-guidance/20261025T170032.716854436Z-1970773994/capture.json",
+          "markdownSha256": "d701d87d38e4297624826725b9839241a9c427f072f18703ec55c2621c47e10e",
+          "extractorVersion": 2,
+          "summary": "Initial-focus guidance specifies first control and subsequent Tab navigation."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "toolbar-keyboard",
+      "statement": "Tab or arrow keys move between interactive elements; Space or Enter activates the focused element.",
+      "condition": "When keyboard-operating a toolbar.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/toolbars/accessibility",
+          "section": "f905e200-eca3-418c-8e38-7054cbb8fe0b",
+          "capture": "snapshots/material-guidance/20261025T170032.716854436Z-1970773994/capture.json",
+          "markdownSha256": "d701d87d38e4297624826725b9839241a9c427f072f18703ec55c2621c47e10e",
+          "extractorVersion": 2,
+          "summary": "Keyboard table maps navigation and activation keys."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "toolbar-role-labels",
+      "statement": "Expose the toolbar container with the toolbar role on web; on mobile it may be a generic container. Give each action the accessibility treatment required by its own component guidance.",
+      "condition": "When exposing a toolbar and its controls to assistive technology.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/toolbars/accessibility",
+          "section": "3b6eda3b-99a9-463d-96af-0919193b1c19",
+          "capture": "snapshots/material-guidance/20261025T170032.716854436Z-1970773994/capture.json",
+          "markdownSha256": "d701d87d38e4297624826725b9839241a9c427f072f18703ec55c2621c47e10e",
+          "extractorVersion": 2,
+          "summary": "Labeling guidance defines the web role, mobile option, and child-control delegation."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

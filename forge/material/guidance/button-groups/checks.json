@@ -1,0 +1,1115 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "button-groups",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/button-groups/overview",
+      "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+      "markdownSha256": "50bb64b765b7bf0973b0ac5365b6453da8d5f768042b1960f72253f8ee65dbbb",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Button groups",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by its checks."
+        },
+        {
+          "id": "8698e3d8-3bbc-4f4e-9899-262a31c1a18a",
+          "title": "Availability & resources",
+          "status": "no-requirements",
+          "notes": "Resource/token controls or a descriptive parent/inventory heading; actionable behavior and layout requirements are mapped in the specific child sections."
+        },
+        {
+          "id": "b4ffd2ac-ba7e-4358-88f1-ee90e35caa88",
+          "title": "M3 Expressive update",
+          "status": "no-requirements",
+          "notes": "This section contains no additional independent actionable requirement beyond the checks linked to its detailed sibling sections."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/button-groups/specs",
+      "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+      "markdownSha256": "2117f7f63746890ad4ed1ebfeb832c9941443f941f202042a61827ed017add5a",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Button groups",
+          "status": "no-requirements",
+          "notes": "Repeated component title or image summary; detailed variant and behavior instructions are mapped in the specific sections."
+        },
+        {
+          "id": "3b51d175-cc02-4701-b3f8-c9ffa229123a",
+          "title": "Variants",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by its checks."
+        },
+        {
+          "id": "0d2cf762-275c-4693-9484-fe011501439e",
+          "title": "Configurations",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by its checks."
+        },
+        {
+          "id": "783e4f82-b5f7-4389-9a2c-cdad5f44ef64",
+          "title": "Tokens & specs",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by its checks."
+        },
+        {
+          "id": "e30cf685-1743-461f-aff7-a2a85d19c2c3",
+          "title": "Anatomy",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by its checks."
+        },
+        {
+          "id": "7a7104db-ed51-4adc-bb4d-b192e7d5480c",
+          "title": "Common layouts",
+          "status": "no-requirements",
+          "notes": "Resource/token controls or a descriptive parent/inventory heading; actionable behavior and layout requirements are mapped in the specific child sections."
+        },
+        {
+          "id": "3c5c063a-4e37-4a05-8c5e-65767bb6ec93",
+          "title": "Color",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by its checks."
+        },
+        {
+          "id": "812823d0-9d26-4b46-b4f0-80521c60f767",
+          "title": "Selection & activation",
+          "status": "mapped",
+          "notes": "Standard-group selection width/shape and adjacent widths are represented by standard-selection-motion; the additional selected-button padding response is represented by standard-selection-activation-padding. Connected-group isolation is represented by connected-selection-isolated."
+        },
+        {
+          "id": "d31fb6b2-0edd-481d-8823-4e1e65d60571",
+          "title": "States",
+          "status": "no-requirements",
+          "notes": "Resource/token controls or a descriptive parent/inventory heading; actionable behavior and layout requirements are mapped in the specific child sections."
+        },
+        {
+          "id": "d9b65594-94cb-49ae-a223-a6322a4a238d",
+          "title": "Standard button group",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by its checks."
+        },
+        {
+          "id": "3bb699cf-0129-4330-815d-920ccb9db070",
+          "title": "Connected button group",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by its checks."
+        },
+        {
+          "id": "f41a7d35-b9c2-4340-b3bb-47b34acaaf45",
+          "title": "Measurements",
+          "status": "no-requirements",
+          "notes": "Resource/token controls or a descriptive parent/inventory heading; actionable behavior and layout requirements are mapped in the specific child sections."
+        },
+        {
+          "id": "4a1dbbf3-f565-4772-8e62-69a1d296b58e",
+          "title": "Standard button group",
+          "status": "no-requirements",
+          "notes": "This section contains no additional independent actionable requirement beyond the checks linked to its detailed sibling sections."
+        },
+        {
+          "id": "3da3add1-fdc4-477c-af59-deb2602972b0",
+          "title": "Connected button group",
+          "status": "no-requirements",
+          "notes": "This section contains no additional independent actionable requirement beyond the checks linked to its detailed sibling sections."
+        },
+        {
+          "id": "f8cc3055-fa73-4367-ad5c-b82a89371d89",
+          "title": "Minimum widths",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by its checks."
+        },
+        {
+          "id": "f69eff48-7cbe-4108-bb24-ca5c12f2996c",
+          "title": "Density",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by its checks."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/button-groups/guidelines",
+      "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+      "markdownSha256": "487d03a0ec34a9b6ff517049a9888965ec08c1fdb33aa2e3ffa6aea65819d7ba",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Button groups",
+          "status": "no-requirements",
+          "notes": "Repeated component title or image summary; detailed variant and behavior instructions are mapped in the specific sections."
+        },
+        {
+          "id": "8229c0c1-a42a-4db6-bd59-33f71a81daf0",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by its checks."
+        },
+        {
+          "id": "39761573-ad68-4bf1-9f25-4d301a9dceae",
+          "title": "Color",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by its checks."
+        },
+        {
+          "id": "8fcef838-b0f2-4663-9df5-a8c140822fa6",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "Resource/token controls or a descriptive parent/inventory heading; actionable behavior and layout requirements are mapped in the specific child sections."
+        },
+        {
+          "id": "3b008ac7-0b42-499d-aae6-363ef3ac9b3c",
+          "title": "Container",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by its checks."
+        },
+        {
+          "id": "c672e53f-a700-4cd2-87f8-1006a85f3418",
+          "title": "Adaptive design",
+          "status": "no-requirements",
+          "notes": "Resource/token controls or a descriptive parent/inventory heading; actionable behavior and layout requirements are mapped in the specific child sections."
+        },
+        {
+          "id": "2ed6dced-0471-4a22-a9c3-6a0f7433d390",
+          "title": "Resizing",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by its checks."
+        },
+        {
+          "id": "4c00f0b2-1957-4551-af44-0741e28d15f6",
+          "title": "Presentation",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by its checks."
+        },
+        {
+          "id": "2651f821-e19b-4c55-92bc-5398aac51301",
+          "title": "Behavior",
+          "status": "no-requirements",
+          "notes": "Resource/token controls or a descriptive parent/inventory heading; actionable behavior and layout requirements are mapped in the specific child sections."
+        },
+        {
+          "id": "e715ce25-5042-41bd-86c8-5a3e9682e54a",
+          "title": "Pressed",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by its checks."
+        },
+        {
+          "id": "d89bb3f7-5a28-4276-bb5d-a397b0481400",
+          "title": "Selected",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by its checks."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/button-groups/accessibility",
+      "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+      "markdownSha256": "6d007a0c680734547c037f4d17a390397b4c394570ea15ddee3835422cab5490",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Button groups",
+          "status": "no-requirements",
+          "notes": "Repeated component title or image summary; detailed variant and behavior instructions are mapped in the specific sections."
+        },
+        {
+          "id": "1d21a1f1-8d6c-4d8f-90b1-08862914ead7",
+          "title": "Use cases",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by its checks."
+        },
+        {
+          "id": "da23410d-7a41-43c2-8bd9-baedc5f150fc",
+          "title": "Interaction & style",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by its checks."
+        },
+        {
+          "id": "503d4075-8240-4e68-96cb-4489bab82c87",
+          "title": "Initial focus",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by its checks."
+        },
+        {
+          "id": "ac313e64-e51e-4cb2-8023-3eaa1db95019",
+          "title": "Keyboard navigation",
+          "status": "no-requirements",
+          "notes": "This table repeats the Tab, arrow-key, and Space/Enter behavior represented by group-focus-order; it adds no distinct keyboard action."
+        },
+        {
+          "id": "7c0dc956-6faf-46e1-86ec-cd39f4e8fa13",
+          "title": "Labeling elements",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by its checks."
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "variant-purpose",
+      "statement": "Use standard groups for coordinated shape/width interaction; use connected groups for related selectable options, and replace baseline segmented buttons with connected groups in M3 Expressive.",
+      "condition": "When choosing a group variant.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/button-groups/overview",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+          "markdownSha256": "50bb64b765b7bf0973b0ac5365b6453da8d5f768042b1960f72253f8ee65dbbb",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Button groups guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "button-group-availability",
+      "statement": "Standard groups are available in M3 Expressive only; connected groups are available in baseline M3 as segmented buttons and in M3 Expressive as connected groups.",
+      "condition": "When selecting an upstream variant.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/button-groups/specs",
+          "section": "3b51d175-cc02-4701-b3f8-c9ffa229123a",
+          "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+          "markdownSha256": "2117f7f63746890ad4ed1ebfeb832c9941443f941f202042a61827ed017add5a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Variants guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "standard-size-shape",
+      "statement": "Keep standard-group buttons the same size and shape by default; reserve mixed sizes for hero moments and shape differences for selection, meaning, or contrast.",
+      "condition": "For standard button groups.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/button-groups/guidelines",
+          "section": "8229c0c1-a42a-4db6-bd59-33f71a81daf0",
+          "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+          "markdownSha256": "487d03a0ec34a9b6ff517049a9888965ec08c1fdb33aa2e3ffa6aea65819d7ba",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Usage guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "connected-selection",
+      "statement": "Use connected groups for related single- or multi-select toggle options; avoid them when no button can be selected, and do not mix color styles within a connected group.",
+      "condition": "For connected button groups.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/button-groups/guidelines",
+          "section": "8229c0c1-a42a-4db6-bd59-33f71a81daf0",
+          "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+          "markdownSha256": "487d03a0ec34a9b6ff517049a9888965ec08c1fdb33aa2e3ffa6aea65819d7ba",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Usage guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "container-layout",
+      "statement": "Let standard groups hug their buttons with inner spacing; let connected groups span their surface, with a maximum width considered on large windows.",
+      "condition": "When laying out the group container.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/button-groups/guidelines",
+          "section": "3b008ac7-0b42-499d-aae6-363ef3ac9b3c",
+          "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+          "markdownSha256": "487d03a0ec34a9b6ff517049a9888965ec08c1fdb33aa2e3ffa6aea65819d7ba",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Container guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "no-wrap",
+      "statement": "Keep a button group on one line across layouts; adjust size, width, or padding by breakpoint and preserve primary-action hierarchy.",
+      "condition": "When adapting button groups.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/button-groups/guidelines",
+          "section": "2ed6dced-0471-4a22-a9c3-6a0f7433d390",
+          "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+          "markdownSha256": "487d03a0ec34a9b6ff517049a9888965ec08c1fdb33aa2e3ffa6aea65819d7ba",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Resizing guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "overflow-trailing",
+      "statement": "At smaller breakpoints, trailing group buttons may collapse into an overflow menu placed at the group’s trailing end; buttons outside the group do not participate.",
+      "condition": "When responsive overflow is used.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/button-groups/guidelines",
+          "section": "4c00f0b2-1957-4551-af44-0741e28d15f6",
+          "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+          "markdownSha256": "487d03a0ec34a9b6ff517049a9888965ec08c1fdb33aa2e3ffa6aea65819d7ba",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Presentation guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "group-target-size",
+      "statement": "Keep every button target at least 48×48dp; preserve the additional inner padding used by XS and S groups.",
+      "condition": "For all button groups.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/button-groups/accessibility",
+          "section": "da23410d-7a41-43c2-8bd9-baedc5f150fc",
+          "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+          "markdownSha256": "6d007a0c680734547c037f4d17a390397b4c394570ea15ddee3835422cab5490",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Interaction & style guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "group-focus-order",
+      "statement": "Do not focus the container; Tab enters on the first button, arrow keys move among items, and Space or Enter activates the focused button.",
+      "condition": "For keyboard interaction.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/button-groups/accessibility",
+          "section": "503d4075-8240-4e68-96cb-4489bab82c87",
+          "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+          "markdownSha256": "6d007a0c680734547c037f4d17a390397b4c394570ea15ddee3835422cab5490",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Initial focus guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "group-button-sizes",
+      "statement": "Button groups support button sizes XS, S, M, L, and XL.",
+      "condition": "When selecting button size.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/button-groups/overview",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+          "markdownSha256": "50bb64b765b7bf0973b0ac5365b6453da8d5f768042b1960f72253f8ee65dbbb",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Button groups instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "group-selection-modes",
+      "statement": "Support single-select, multi-select, and selection-required group patterns.",
+      "condition": "When a group represents selectable options.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/button-groups/overview",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+          "markdownSha256": "50bb64b765b7bf0973b0ac5365b6453da8d5f768042b1960f72253f8ee65dbbb",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Button groups instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "group-size-shape-availability",
+      "statement": "XS through XL sizes and round or square default shapes are available in M3 Expressive; baseline M3 exposes selection patterns through segmented buttons but does not list these group sizes or shapes.",
+      "condition": "When selecting upstream group configurations.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/button-groups/specs",
+          "section": "0d2cf762-275c-4693-9484-fe011501439e",
+          "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+          "markdownSha256": "2117f7f63746890ad4ed1ebfeb832c9941443f941f202042a61827ed017add5a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Configurations instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "group-selection-availability",
+      "statement": "Single-select, multi-select, and selection-required modes are supported in M3 Expressive; baseline M3 exposes these through segmented buttons.",
+      "condition": "When selecting group selection behavior.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/button-groups/specs",
+          "section": "0d2cf762-275c-4693-9484-fe011501439e",
+          "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+          "markdownSha256": "2117f7f63746890ad4ed1ebfeb832c9941443f941f202042a61827ed017add5a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Configurations instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "xsmall-group-token-values",
+      "statement": "The extra-small standard group has a 32dp container height and 18dp spacing between buttons.",
+      "condition": "For the standard extra-small group.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/button-groups/specs",
+          "section": "783e4f82-b5f7-4389-9a2c-cdad5f44ef64",
+          "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+          "markdownSha256": "2117f7f63746890ad4ed1ebfeb832c9941443f941f202042a61827ed017add5a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Tokens & specs instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "invisible-empty-group-container",
+      "statement": "Treat the group as an invisible container that provides spacing and shape interaction; it contains no buttons by default.",
+      "condition": "When building a button group.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/button-groups/specs",
+          "section": "e30cf685-1743-461f-aff7-a2a85d19c2c3",
+          "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+          "markdownSha256": "2117f7f63746890ad4ed1ebfeb832c9941443f941f202042a61827ed017add5a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Anatomy instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "group-compatible-button-styles",
+      "statement": "Button groups have no color of their own; use filled, tonal, outlined, or elevated button styles, and avoid standard icon buttons or text buttons without container treatment.",
+      "condition": "When styling buttons inside a group.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/button-groups/specs",
+          "section": "3c5c063a-4e37-4a05-8c5e-65767bb6ec93",
+          "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+          "markdownSha256": "2117f7f63746890ad4ed1ebfeb832c9941443f941f202042a61827ed017add5a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Color instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "standard-pressed-neighbor-motion",
+      "statement": "When a standard-group button is pressed, change its width and shape along with adjacent buttons; a selected toggle button also changes between round and square and uses the corresponding button color.",
+      "condition": "For standard button groups.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/button-groups/specs",
+          "section": "d9b65594-94cb-49ae-a223-a6322a4a238d",
+          "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+          "markdownSha256": "2117f7f63746890ad4ed1ebfeb832c9941443f941f202042a61827ed017add5a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Standard button group instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "connected-selection-isolated",
+      "statement": "When a connected-group button is selected, change only its shape; do not change adjacent buttons.",
+      "condition": "For connected button groups.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/button-groups/specs",
+          "section": "3bb699cf-0129-4330-815d-920ccb9db070",
+          "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+          "markdownSha256": "2117f7f63746890ad4ed1ebfeb832c9941443f941f202042a61827ed017add5a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Connected button group instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "standard-inner-spacing",
+      "statement": "Use inner spacing of 18dp for XS, 12dp for S, and 8dp for M, L, and XL standard groups.",
+      "condition": "For standard button groups.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/button-groups/specs",
+          "section": "d9b65594-94cb-49ae-a223-a6322a4a238d",
+          "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+          "markdownSha256": "2117f7f63746890ad4ed1ebfeb832c9941443f941f202042a61827ed017add5a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Standard button group instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "connected-padding-shape-radii",
+      "statement": "Use 2dp inner padding for connected groups at every size. Round groups have fully round outer corners and square inner corners of 4dp (XS), 8dp (S/M), 16dp (L), and 20dp (XL); square-group outer corners use those same size-specific values.",
+      "condition": "For connected button groups.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/button-groups/specs",
+          "section": "3bb699cf-0129-4330-815d-920ccb9db070",
+          "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+          "markdownSha256": "2117f7f63746890ad4ed1ebfeb832c9941443f941f202042a61827ed017add5a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Connected button group instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "connected-small-minimum-target",
+      "statement": "Keep XS and S connected groups at least 48dp wide and provide 48×48dp target areas.",
+      "condition": "For XS and S connected groups.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/button-groups/specs",
+          "section": "f8cc3055-fa73-4367-ad5c-b82a89371d89",
+          "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+          "markdownSha256": "2117f7f63746890ad4ed1ebfeb832c9941443f941f202042a61827ed017add5a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Minimum widths instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "group-density-height",
+      "statement": "Let group height adapt to the density setting applied to the buttons inside.",
+      "condition": "When density is applied.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/button-groups/specs",
+          "section": "f69eff48-7cbe-4108-bb24-ca5c12f2996c",
+          "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+          "markdownSha256": "2117f7f63746890ad4ed1ebfeb832c9941443f941f202042a61827ed017add5a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Density instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "standard-selection-motion",
+      "statement": "In a standard group, selection changes the selected button’s shape and width, changes a selected toggle button’s color, and temporarily adjusts adjacent-button width.",
+      "condition": "When a standard-group button is selected.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/button-groups/guidelines",
+          "section": "8229c0c1-a42a-4db6-bd59-33f71a81daf0",
+          "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+          "markdownSha256": "487d03a0ec34a9b6ff517049a9888965ec08c1fdb33aa2e3ffa6aea65819d7ba",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Usage instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "connected-content-selectable",
+      "statement": "Use connected groups for related selectable actions, view switching, or sorting; require toggle selection and do not use a connected group if no button can be selected.",
+      "condition": "When choosing a connected group.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/button-groups/guidelines",
+          "section": "8229c0c1-a42a-4db6-bd59-33f71a81daf0",
+          "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+          "markdownSha256": "487d03a0ec34a9b6ff517049a9888965ec08c1fdb33aa2e3ffa6aea65819d7ba",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Usage instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "connected-group-color-consistency",
+      "statement": "Keep color styles consistent across buttons in a connected group so selection and emphasis remain clear.",
+      "condition": "For connected button groups.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/button-groups/guidelines",
+          "section": "39761573-ad68-4bf1-9f25-4d301a9dceae",
+          "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+          "markdownSha256": "487d03a0ec34a9b6ff517049a9888965ec08c1fdb33aa2e3ffa6aea65819d7ba",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Color instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "connected-width-and-max",
+      "statement": "Let connected groups span the page or surface and grow their buttons; consider a maximum width in larger windows.",
+      "condition": "For connected button groups.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/button-groups/guidelines",
+          "section": "3b008ac7-0b42-499d-aae6-363ef3ac9b3c",
+          "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+          "markdownSha256": "487d03a0ec34a9b6ff517049a9888965ec08c1fdb33aa2e3ffa6aea65819d7ba",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Container instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "group-fixed-flexible-sizing",
+      "statement": "For fixed resizing, define width, size, or padding at each breakpoint; for flexible resizing, let button/group widths change until flexible buttons reach their maximum width.",
+      "condition": "When configuring responsive group sizing.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/button-groups/guidelines",
+          "section": "2ed6dced-0471-4a22-a9c3-6a0f7433d390",
+          "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+          "markdownSha256": "487d03a0ec34a9b6ff517049a9888965ec08c1fdb33aa2e3ffa6aea65819d7ba",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Resizing instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "group-breakpoint-size-icon-limits",
+      "statement": "Consider narrower, smaller buttons on compact windows and wider, larger buttons on large windows; preserve action hierarchy at every breakpoint and do not stretch icon buttons past wide.",
+      "condition": "When adapting groups to breakpoints.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/button-groups/guidelines",
+          "section": "2ed6dced-0471-4a22-a9c3-6a0f7433d390",
+          "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+          "markdownSha256": "487d03a0ec34a9b6ff517049a9888965ec08c1fdb33aa2e3ffa6aea65819d7ba",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Resizing instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "group-pressed-state",
+      "statement": "On press, change the pressed button’s width and shape; adjacent widths also change in a standard group, while only the pressed button’s shape changes in a connected group.",
+      "condition": "When a group button is pressed.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/button-groups/guidelines",
+          "section": "e715ce25-5042-41bd-86c8-5a3e9682e54a",
+          "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+          "markdownSha256": "487d03a0ec34a9b6ff517049a9888965ec08c1fdb33aa2e3ffa6aea65819d7ba",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Pressed instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "group-selected-shape",
+      "statement": "Change a selected button’s shape from round to square or square to round.",
+      "condition": "When a button is selected.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/button-groups/guidelines",
+          "section": "d89bb3f7-5a28-4276-bb5d-a397b0481400",
+          "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+          "markdownSha256": "487d03a0ec34a9b6ff517049a9888965ec08c1fdb33aa2e3ffa6aea65819d7ba",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Selected instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "group-assistive-selection",
+      "statement": "Let assistive technology users navigate to and interact with every button and identify selected buttons.",
+      "condition": "For selectable button groups.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/button-groups/accessibility",
+          "section": "1d21a1f1-8d6c-4d8f-90b1-08862914ead7",
+          "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+          "markdownSha256": "6d007a0c680734547c037f4d17a390397b4c394570ea15ddee3835422cab5490",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Use cases instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "group-button-labels",
+      "statement": "The container does not need a label; label each button using the applicable button or icon-button accessibility guidance.",
+      "condition": "For screen-reader output.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/button-groups/accessibility",
+          "section": "7c0dc956-6faf-46e1-86ec-cd39f4e8fa13",
+          "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+          "markdownSha256": "6d007a0c680734547c037f4d17a390397b4c394570ea15ddee3835422cab5490",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Labeling elements instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "standard-selection-activation-padding",
+      "statement": "When a standard-group button is selected or activated, change its padding along with its width and shape; this interaction adjusts the width of directly adjacent buttons.",
+      "condition": "For selection or activation in a standard button group.",
+      "basis": "explicit",
+      "notes": "The specs explicitly add selected-button padding changes alongside width/shape changes; standard-selection-motion covers the selected shape and adjacent-width response, and connected-selection-isolated covers connected-group behavior.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/button-groups/specs",
+          "section": "812823d0-9d26-4b46-b4f0-80521c60f767",
+          "capture": "snapshots/material-guidance/20261025T165216.260077278Z-3066537961/capture.json",
+          "markdownSha256": "2117f7f63746890ad4ed1ebfeb832c9941443f941f202042a61827ed017add5a",
+          "extractorVersion": 2,
+          "summary": "The specs explicitly add selected-button padding changes alongside width/shape changes; standard-selection-motion covers the selected shape and adjacent-width response, and connected-selection-isolated covers connected-group behavior."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

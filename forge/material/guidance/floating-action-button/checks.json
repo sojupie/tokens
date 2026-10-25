@@ -1,0 +1,945 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "floating-action-button",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/floating-action-button/overview",
+      "capture": "snapshots/material-guidance/20261025T165513.349217544Z-2658561101/capture.json",
+      "markdownSha256": "b5de11f27c5af8f532416befaa1872c569347ad0b13915c052ba826915699baf",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Floating action buttons (FABs)",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "6e6a5aa5-817b-4dd8-b8e8-7b850d5f6d46",
+          "title": "Availability & resources",
+          "status": "no-requirements",
+          "notes": "This table reports availability of upstream design kits and framework implementations; it is not an implementation requirement for this project."
+        },
+        {
+          "id": "65cffd0e-77d4-4108-b6ef-d155ad67485e",
+          "title": "M3 Expressive update",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "60605eb5-12f7-4c0d-a796-cb47f9f11b0e",
+          "title": "Differences from M2",
+          "status": "no-requirements",
+          "notes": "This section compares historical M2 and M3 presentation. Current variant and behavior requirements are recorded in the relevant M3 specs and guidelines."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/floating-action-button/specs",
+      "capture": "snapshots/material-guidance/20261025T165513.349217544Z-2658561101/capture.json",
+      "markdownSha256": "4b4de09ce2c4f3bfe99cef36ab53fa8b295509beda23df8ef38e4da33a7bd1b8",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Floating action buttons (FABs)",
+          "status": "no-requirements",
+          "notes": "This is the page title or brief component summary; actionable requirements are recorded in the linked child sections."
+        },
+        {
+          "id": "147f282a-f4c7-47fb-8856-8c8c6be92ca5",
+          "title": "Variants",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "ea6fec2c-66e6-4bef-b996-a1c432bf1f55",
+          "title": "Baseline variants",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "1e1aac81-87f3-4871-b1e9-6ab758da24e7",
+          "title": "Configurations",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "2e239e75-9356-494d-a53e-f352d5a81a07",
+          "title": "Tokens & specs",
+          "status": "no-requirements",
+          "notes": "The Specs table selector exposes FAB token sets by size and color; component role pairings and variant guidance are captured by the color-role and size-generation checks. Token values remain in the token pipeline."
+        },
+        {
+          "id": "f8016ed0-2a16-4a3e-9adb-5dd7d4e8b72d",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "The diagram labels container and icon only; container visibility/contrast and action naming are captured by keep-the-fab-container-visible-rather-than and fab-accessible-action-label."
+        },
+        {
+          "id": "65afa765-7f4c-4110-8e3d-269626aa29de",
+          "title": "Color",
+          "status": "no-requirements",
+          "notes": "This paragraph only describes design-token implementation; color role pairings are mapped in fab color checks and the separate Baseline color styles section."
+        },
+        {
+          "id": "67e71ec7-b520-405a-aa06-2decfa0b92a3",
+          "title": "Color styles",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "aef48692-f01b-4e07-b9b8-843d6aa7a31a",
+          "title": "Baseline color styles",
+          "status": "unclear",
+          "notes": "The source text maps the surface-style recommendation in fab-surface-color-style-no-longer-recommended. The numbered color-role mapping is image-only and has not been inspected, so selected/unselected role assignments remain unresolved."
+        },
+        {
+          "id": "dfcce27b-16cb-4002-a0c6-453f9e27806b",
+          "title": "States",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "7712fa7f-cd29-4852-86a9-fa2f4a01f6bc",
+          "title": "Measurements",
+          "status": "unclear",
+          "notes": "The section contains only uninspected measurement imagery; exact size and placement values are not present in captured prose."
+        },
+        {
+          "id": "e5677e43-376c-449c-8e0d-bf26c852fc46",
+          "title": "FAB",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "9b01cb13-7a33-41c9-ab18-56443472d7e9",
+          "title": "Medium FAB",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "0a064a5d-8373-4150-9665-40acd0f14b0a",
+          "title": "Large FAB",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "cd336045-e97d-4a6d-ac23-f778fa695e3c",
+          "title": "Baseline tokens & specs",
+          "status": "no-requirements",
+          "notes": "The baseline token selector omits current large/regular styles and surfaces only the legacy small/surface sets; their availability and recommendation status are captured by fab-size-generation-availability and fab-surface-color-style-no-longer-recommended. Token values remain in the token pipeline."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/floating-action-button/guidelines",
+      "capture": "snapshots/material-guidance/20261025T165513.349217544Z-2658561101/capture.json",
+      "markdownSha256": "1b2f3f21e445ad9c66d39c9a1935cdbcb66bc9e3debc44c60b87ccedcd64af32",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Floating action buttons (FABs)",
+          "status": "no-requirements",
+          "notes": "This is the page title or brief component summary; actionable requirements are recorded in the linked child sections."
+        },
+        {
+          "id": "466304dd-9cd1-4166-875a-fd9ed472ab06",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "b7f19f6f-def3-4072-8dc6-58b4b67c24cd",
+          "title": "Actions",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "9a56f806-8840-4910-8f53-3cb2a6c81c86",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "The anatomy diagram labels container and icon; the actionable container contrast and visibility rule is captured by keep-the-fab-container-visible-rather-than."
+        },
+        {
+          "id": "4340fec0-f90e-4353-8aa9-677396f0931d",
+          "title": "Container",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "91ea3c36-2718-4298-ae82-8701a2dfbbec",
+          "title": "Icon",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "34a9762a-b855-465d-9263-650b81a05f42",
+          "title": "Adaptive design",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "3ad4a846-ac87-4884-b9b0-97efceea2e41",
+          "title": "Behaviors",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "27d4c818-c414-469f-b812-aca40c5a1703",
+          "title": "Appearing",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "77b4963f-c799-48ce-80b7-8334c72ddf1c",
+          "title": "Expanding",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "32969228-3365-43c6-8a4a-4ad772820303",
+          "title": "Scrolling",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "4dd3a071-5250-4b4b-97b8-78c7ca9e808f",
+          "title": "Moving across tabs",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/floating-action-button/accessibility",
+      "capture": "snapshots/material-guidance/20261025T165513.349217544Z-2658561101/capture.json",
+      "markdownSha256": "87f0c787079b75b7ef39906ae113c2a9d92e1333567042657d6aa5a0d2d390cb",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Floating action buttons (FABs)",
+          "status": "no-requirements",
+          "notes": "This is the page title or brief component summary; actionable requirements are recorded in the linked child sections."
+        },
+        {
+          "id": "7b3cb4e1-b84c-43e7-add5-11e78999a9bc",
+          "title": "Use cases",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "bb9f2370-4020-4c9b-9d71-64ca5150ff10",
+          "title": "Interaction & style",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "bf6e330f-9c1a-486f-9867-8e5e0c6aac47",
+          "title": "Focus",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "4577489f-7d4a-4300-a4cd-4862922c9338",
+          "title": "Layout & position",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "e8dd083f-b871-4ccc-ba48-18da9876eb1d",
+          "title": "Keyboard navigation",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "aca50187-fb89-4d01-abcf-2bc3514c73ea",
+          "title": "Labeling elements",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "do-not-show-a-disabled-fab-omit",
+      "statement": "Do not show a disabled FAB; omit it when its represented action is unavailable. Maintain at least 3:1 contrast between icon and container.",
+      "condition": "When an action is unavailable or selecting FAB colors.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/floating-action-button/accessibility",
+          "section": "bb9f2370-4020-4c9b-9d71-64ca5150ff10",
+          "capture": "snapshots/material-guidance/20261025T165513.349217544Z-2658561101/capture.json",
+          "markdownSha256": "87f0c787079b75b7ef39906ae113c2a9d92e1333567042657d6aa5a0d2d390cb",
+          "extractorVersion": 2,
+          "summary": "Curated from Interaction & style: Do not show a disabled FAB; omit it when its represented action is unavailable. Maintain at least 3:1 contrast"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fab-accessible-action-label",
+      "statement": "Give a FAB an accessibility label describing its action, such as composing a new message.",
+      "condition": "When naming a FAB for assistive technology.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/floating-action-button/accessibility",
+          "section": "aca50187-fb89-4d01-abcf-2bc3514c73ea",
+          "capture": "snapshots/material-guidance/20261025T165513.349217544Z-2658561101/capture.json",
+          "markdownSha256": "87f0c787079b75b7ef39906ae113c2a9d92e1333567042657d6aa5a0d2d390cb",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Labeling elements instruction: Give a FAB an accessibility label describing its action, such as composing a new message."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fab-assistive-technology-actions",
+      "statement": "People using assistive technology must be able to navigate to and activate the FAB; extended FAB actions must also be expandable and minimizable.",
+      "condition": "When exposing FAB actions to assistive technology.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/floating-action-button/accessibility",
+          "section": "7b3cb4e1-b84c-43e7-add5-11e78999a9bc",
+          "capture": "snapshots/material-guidance/20261025T165513.349217544Z-2658561101/capture.json",
+          "markdownSha256": "87f0c787079b75b7ef39906ae113c2a9d92e1333567042657d6aa5a0d2d390cb",
+          "extractorVersion": 2,
+          "summary": "Curated explicit Use cases guidance: People using assistive technology must be able to navigate to and activate the FAB; extended FAB actions must "
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fab-assistive-use-cases",
+      "statement": "People using assistive technology must be able to navigate to and activate the FAB; any extended FAB action must also be expandable and minimizable.",
+      "condition": "When exposing FAB actions to assistive technology.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/floating-action-button/accessibility",
+          "section": "7b3cb4e1-b84c-43e7-add5-11e78999a9bc",
+          "capture": "snapshots/material-guidance/20261025T165513.349217544Z-2658561101/capture.json",
+          "markdownSha256": "87f0c787079b75b7ef39906ae113c2a9d92e1333567042657d6aa5a0d2d390cb",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Use cases instruction: People using assistive technology must be able to navigate to and activate the FAB; any extended FAB action mu"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fab-container-transform",
+      "statement": "A FAB may transform into an expanded surface or full-screen shape, or transition into a FAB menu.",
+      "condition": "When the FAB opens expanded content or related actions.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/floating-action-button/guidelines",
+          "section": "77b4963f-c799-48ce-80b7-8334c72ddf1c",
+          "capture": "snapshots/material-guidance/20261025T165513.349217544Z-2658561101/capture.json",
+          "markdownSha256": "1b2f3f21e445ad9c66d39c9a1935cdbcb66bc9e3debc44c60b87ccedcd64af32",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Expanding rule: A FAB may transform into an expanded surface or full-screen shape, or transition into a FAB menu."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fab-screen-transition-and-reappearance",
+      "statement": "Animate the FAB expanding outward from a central point. Across screen transitions, hide and re-show it; show it again only when relevant to the new screen and in the same position when possible.",
+      "condition": "When the FAB appears or the screen changes.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/floating-action-button/guidelines",
+          "section": "27d4c818-c414-469f-b812-aca40c5a1703",
+          "capture": "snapshots/material-guidance/20261025T165513.349217544Z-2658561101/capture.json",
+          "markdownSha256": "1b2f3f21e445ad9c66d39c9a1935cdbcb66bc9e3debc44c60b87ccedcd64af32",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Appearing rule: Animate the FAB expanding outward from a central point. Across screen transitions, hide and re-show it; show i"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fab-scroll-persistence-and-collapse",
+      "statement": "Keep a standard FAB in place while content scrolls; an extended FAB may collapse to a FAB during scrolling and expand again at the bottom of the view.",
+      "condition": "When content scrolls behind a FAB.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/floating-action-button/guidelines",
+          "section": "32969228-3365-43c6-8a4a-4ad772820303",
+          "capture": "snapshots/material-guidance/20261025T165513.349217544Z-2658561101/capture.json",
+          "markdownSha256": "1b2f3f21e445ad9c66d39c9a1935cdbcb66bc9e3debc44c60b87ccedcd64af32",
+          "extractorVersion": 2,
+          "summary": "Curated explicit Scrolling guidance: Keep a standard FAB in place while content scrolls; an extended FAB may collapse to a FAB during scrolling and"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fab-scroll-persistence-and-extended-collapse",
+      "statement": "Keep a FAB in place while its background scrolls. An extended FAB may collapse while scrolling and expand again at the bottom of the view.",
+      "condition": "When content scrolls behind a FAB.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/floating-action-button/guidelines",
+          "section": "32969228-3365-43c6-8a4a-4ad772820303",
+          "capture": "snapshots/material-guidance/20261025T165513.349217544Z-2658561101/capture.json",
+          "markdownSha256": "1b2f3f21e445ad9c66d39c9a1935cdbcb66bc9e3debc44c60b87ccedcd64af32",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Scrolling instruction: Keep a FAB in place while its background scrolls. An extended FAB may collapse while scrolling and expand agai"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fab-size-generation-availability",
+      "statement": "M3 supports regular and large FABs; M3 Expressive adds medium. Small remains available in M3 but is not recommended in M3 Expressive, which recommends a larger size.",
+      "condition": "When selecting FAB size and design generation.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/floating-action-button/specs",
+          "section": "ea6fec2c-66e6-4bef-b996-a1c432bf1f55",
+          "capture": "snapshots/material-guidance/20261025T165513.349217544Z-2658561101/capture.json",
+          "markdownSha256": "4b4de09ce2c4f3bfe99cef36ab53fa8b295509beda23df8ef38e4da33a7bd1b8",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Baseline variants rule: M3 supports regular and large FABs; M3 Expressive adds medium. Small remains available in M3 but is not recomm"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fab-tab-transition",
+      "statement": "When switching tabs, briefly hide the FAB and show it again after new content settles; do not animate it with body content or leave it visible through the tab change.",
+      "condition": "When the user switches destination tabs.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/floating-action-button/guidelines",
+          "section": "4dd3a071-5250-4b4b-97b8-78c7ca9e808f",
+          "capture": "snapshots/material-guidance/20261025T165513.349217544Z-2658561101/capture.json",
+          "markdownSha256": "1b2f3f21e445ad9c66d39c9a1935cdbcb66bc9e3debc44c60b87ccedcd64af32",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Moving across tabs rule: When switching tabs, briefly hide the FAB and show it again after new content settles; do not animate it with "
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "for-a-non-default-color-mapping-set-the",
+      "statement": "For a non-default color mapping, set the state-layer color to the same color role as the icon.",
+      "condition": "When applying a non-default FAB color mapping.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/floating-action-button/specs",
+          "section": "dfcce27b-16cb-4002-a0c6-453f9e27806b",
+          "capture": "snapshots/material-guidance/20261025T165513.349217544Z-2658561101/capture.json",
+          "markdownSha256": "4b4de09ce2c4f3bfe99cef36ab53fa8b295509beda23df8ef38e4da33a7bd1b8",
+          "extractorVersion": 2,
+          "summary": "Curated from States: For a non-default color mapping, set the state-layer color to the same color role as the icon."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "in-m3-expressive-use-primary-secondary-tertiary-container-roles",
+      "statement": "In M3 Expressive, use primary/secondary/tertiary container roles for the renamed former tonal styles; primary, secondary and tertiary tone styles are additionally available.",
+      "condition": "When selecting FAB color styles across M3 and M3 Expressive.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/floating-action-button/specs",
+          "section": "1e1aac81-87f3-4871-b1e9-6ab758da24e7",
+          "capture": "snapshots/material-guidance/20261025T165513.349217544Z-2658561101/capture.json",
+          "markdownSha256": "4b4de09ce2c4f3bfe99cef36ab53fa8b295509beda23df8ef38e4da33a7bd1b8",
+          "extractorVersion": 2,
+          "summary": "Curated from Configurations: In M3 Expressive, use primary/secondary/tertiary container roles for the renamed former tonal styles; primary,"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "keep-the-fab-container-visible-rather-than",
+      "statement": "Keep the FAB container visible rather than covered by badges or other elements, and provide sufficient contrast against its surface.",
+      "condition": "When rendering the FAB container.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/floating-action-button/guidelines",
+          "section": "4340fec0-f90e-4353-8aa9-677396f0931d",
+          "capture": "snapshots/material-guidance/20261025T165513.349217544Z-2658561101/capture.json",
+          "markdownSha256": "1b2f3f21e445ad9c66d39c9a1935cdbcb66bc9e3debc44c60b87ccedcd64af32",
+          "extractorVersion": 2,
+          "summary": "Curated from Container: Keep the FAB container visible rather than covered by badges or other elements, and provide sufficient contras"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "keep-the-fab-s-focus-indicator-visible-when",
+      "statement": "Keep the FAB’s focus indicator visible when it overlaps actionable content; partial overlap is acceptable, complete obstruction is not.",
+      "condition": "When positioning the FAB over web content.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/floating-action-button/accessibility",
+          "section": "4577489f-7d4a-4300-a4cd-4862922c9338",
+          "capture": "snapshots/material-guidance/20261025T165513.349217544Z-2658561101/capture.json",
+          "markdownSha256": "87f0c787079b75b7ef39906ae113c2a9d92e1333567042657d6aa5a0d2d390cb",
+          "extractorVersion": 2,
+          "summary": "Curated from Layout & position: Keep the FAB’s focus indicator visible when it overlaps actionable content; partial overlap is acceptable, com"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "keep-the-fab-stationary-while-content-scrolls",
+      "statement": "Keep the FAB stationary while content scrolls; when switching tabs, briefly hide and re-show it after new content settles rather than animating with body content.",
+      "condition": "When scrolling or changing tabs.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/floating-action-button/guidelines",
+          "section": "3ad4a846-ac87-4884-b9b0-97efceea2e41",
+          "capture": "snapshots/material-guidance/20261025T165513.349217544Z-2658561101/capture.json",
+          "markdownSha256": "1b2f3f21e445ad9c66d39c9a1935cdbcb66bc9e3debc44c60b87ccedcd64af32",
+          "extractorVersion": 2,
+          "summary": "Curated from Behaviors: Keep the FAB stationary while content scrolls; when switching tabs, briefly hide and re-show it after new cont"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "on-compact-and-medium-windows-the-lower-right",
+      "statement": "On compact and medium windows, the lower-right position is typical; on expanded windows, consider the upper-left region or navigation rail. Use medium for mobile and large for tablets and large screens.",
+      "condition": "When adapting placement and size to breakpoint.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/floating-action-button/guidelines",
+          "section": "34a9762a-b855-465d-9263-650b81a05f42",
+          "capture": "snapshots/material-guidance/20261025T165513.349217544Z-2658561101/capture.json",
+          "markdownSha256": "1b2f3f21e445ad9c66d39c9a1935cdbcb66bc9e3debc44c60b87ccedcd64af32",
+          "extractorVersion": 2,
+          "summary": "Curated from Adaptive design: On compact and medium windows, the lower-right position is typical; on expanded windows, consider the upper-le"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "prefer-medium-fab-for-most-use-the",
+      "statement": "Prefer medium FAB for most use; the small FAB remains available but is no longer recommended.",
+      "condition": "When selecting an M3 Expressive FAB size.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/floating-action-button/overview",
+          "section": "65cffd0e-77d4-4108-b6ef-d155ad67485e",
+          "capture": "snapshots/material-guidance/20261025T165513.349217544Z-2658561101/capture.json",
+          "markdownSha256": "b5de11f27c5af8f532416befaa1872c569347ad0b13915c052ba826915699baf",
+          "extractorVersion": 2,
+          "summary": "Curated from M3 Expressive update: Prefer medium FAB for most use; the small FAB remains available but is no longer recommended."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "prioritize-the-fab-in-focus-order-and",
+      "statement": "Prioritize the FAB in focus order and consider a tooltip on focus for web.",
+      "condition": "When navigating with assistive technology or web keyboard focus.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/floating-action-button/accessibility",
+          "section": "bf6e330f-9c1a-486f-9867-8e5e0c6aac47",
+          "capture": "snapshots/material-guidance/20261025T165513.349217544Z-2658561101/capture.json",
+          "markdownSha256": "87f0c787079b75b7ef39906ae113c2a9d92e1333567042657d6aa5a0d2d390cb",
+          "extractorVersion": 2,
+          "summary": "Curated from Focus: Prioritize the FAB in focus order and consider a tooltip on focus for web."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "select-among-the-supported-color-on-color-pairings-by",
+      "statement": "Select among the supported color/on-color pairings by visual preference; they provide the same legibility and functionality.",
+      "condition": "When choosing a supported FAB color mapping.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/floating-action-button/specs",
+          "section": "67e71ec7-b520-405a-aa06-2decfa0b92a3",
+          "capture": "snapshots/material-guidance/20261025T165513.349217544Z-2658561101/capture.json",
+          "markdownSha256": "4b4de09ce2c4f3bfe99cef36ab53fa8b295509beda23df8ef38e4da33a7bd1b8",
+          "extractorVersion": 2,
+          "summary": "Curated from Color styles: Select among the supported color/on-color pairings by visual preference; they provide the same legibility and "
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tab-moves-focus-to-the-fab-space",
+      "statement": "Tab moves focus to the FAB; Space or Enter activates it.",
+      "condition": "When operating the FAB with a keyboard.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/floating-action-button/accessibility",
+          "section": "e8dd083f-b871-4ccc-ba48-18da9876eb1d",
+          "capture": "snapshots/material-guidance/20261025T165513.349217544Z-2658561101/capture.json",
+          "markdownSha256": "87f0c787079b75b7ef39906ae113c2a9d92e1333567042657d6aa5a0d2d390cb",
+          "extractorVersion": 2,
+          "summary": "Curated from Keyboard navigation: Tab moves focus to the FAB; Space or Enter activates it."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-a-clear-filled-icon-on-web",
+      "statement": "Use a clear filled icon; on web, show a tooltip with an accompanying text label on hover.",
+      "condition": "When choosing and exposing a FAB icon.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/floating-action-button/guidelines",
+          "section": "91ea3c36-2718-4298-ae82-8701a2dfbbec",
+          "capture": "snapshots/material-guidance/20261025T165513.349217544Z-2658561101/capture.json",
+          "markdownSha256": "1b2f3f21e445ad9c66d39c9a1935cdbcb66bc9e3debc44c60b87ccedcd64af32",
+          "extractorVersion": 2,
+          "summary": "Curated from Icon: Use a clear filled icon; on web, show a tooltip with an accompanying text label on hover."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-at-most-one-fab-per-screen",
+      "statement": "Use at most one FAB per screen; it may align left, center, or right and sit above or within navigation.",
+      "condition": "When placing a FAB.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/floating-action-button/guidelines",
+          "section": "466304dd-9cd1-4166-875a-fd9ed472ab06",
+          "capture": "snapshots/material-guidance/20261025T165513.349217544Z-2658561101/capture.json",
+          "markdownSha256": "1b2f3f21e445ad9c66d39c9a1935cdbcb66bc9e3debc44c60b87ccedcd64af32",
+          "extractorVersion": 2,
+          "summary": "Curated from Usage: Use at most one FAB per screen; it may align left, center, or right and sit above or within navigation."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-fabs-for-constructive-primary-actions-such",
+      "statement": "Use FABs for constructive primary actions such as create, favorite, share, or starting a process; avoid minor, destructive, unclear, overflow, or toolbar-control actions.",
+      "condition": "When deciding whether an action belongs in a FAB.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/floating-action-button/guidelines",
+          "section": "b7f19f6f-def3-4072-8dc6-58b4b67c24cd",
+          "capture": "snapshots/material-guidance/20261025T165513.349217544Z-2658561101/capture.json",
+          "markdownSha256": "1b2f3f21e445ad9c66d39c9a1935cdbcb66bc9e3debc44c60b87ccedcd64af32",
+          "extractorVersion": 2,
+          "summary": "Curated from Actions: Use FABs for constructive primary actions such as create, favorite, share, or starting a process; avoid minor,"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-medium-fab-for-most-situations-the",
+      "statement": "Use medium FAB for most situations, the small FAB only where compactness is needed despite its no-longer-recommended status, and large FAB when the primary action needs stronger prominence.",
+      "condition": "When selecting FAB size by emphasis and breakpoint.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/floating-action-button/guidelines",
+          "section": "466304dd-9cd1-4166-875a-fd9ed472ab06",
+          "capture": "snapshots/material-guidance/20261025T165513.349217544Z-2658561101/capture.json",
+          "markdownSha256": "1b2f3f21e445ad9c66d39c9a1935cdbcb66bc9e3debc44c60b87ccedcd64af32",
+          "extractorVersion": 2,
+          "summary": "Curated from Usage: Use medium FAB for most situations, the small FAB only where compactness is needed despite its no-longer-recom"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-one-fab-for-the-screen-s-most",
+      "statement": "Use one FAB for the screen’s most common or important constructive action, and give it a clear, understandable icon.",
+      "condition": "When a screen needs a prominent primary action.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/floating-action-button/overview",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T165513.349217544Z-2658561101/capture.json",
+          "markdownSha256": "b5de11f27c5af8f532416befaa1872c569347ad0b13915c052ba826915699baf",
+          "extractorVersion": 2,
+          "summary": "Curated from page: Use one FAB for the screen’s most common or important constructive action, and give it a clear, understandable"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fab-surface-color-style-no-longer-recommended",
+      "statement": "Surface FAB color styles remain available in baseline but are no longer recommended.",
+      "condition": "When choosing a baseline FAB color style.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/floating-action-button/specs",
+          "section": "aef48692-f01b-4e07-b9b8-843d6aa7a31a",
+          "capture": "snapshots/material-guidance/20261025T165513.349217544Z-2658561101/capture.json",
+          "markdownSha256": "4b4de09ce2c4f3bfe99cef36ab53fa8b295509beda23df8ef38e4da33a7bd1b8",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Baseline color styles recommendation."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

@@ -1,0 +1,1611 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "app-bars",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/app-bars/overview",
+      "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+      "markdownSha256": "3a148cf81fa3cf07b06551a173896fd80dbf3c615d48b98a747a2e0fe091ac72",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "App bars",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "fb94052f-0d1f-41ef-82cf-c7c66c67f8c6",
+          "title": "Availability & resources",
+          "status": "no-requirements",
+          "notes": "Resource listings, token controls, or descriptive parent headings; actionable configuration details are curated in child sections."
+        },
+        {
+          "id": "0d652c97-f778-4d07-819b-58386137aa32",
+          "title": "M3 Expressive update",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "6414ed19-c273-4f32-94d5-5ef782303023",
+          "title": "Differences from M2",
+          "status": "no-requirements",
+          "notes": "This heading is descriptive or repeats guidance captured by a more specific check; it contains no additional independent instruction."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/app-bars/specs",
+      "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+      "markdownSha256": "d6274610e06d2a7e6b26e35f25013367edbd3618dd41edc550d8922aeb8a49e3",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "App bars",
+          "status": "no-requirements",
+          "notes": "This heading is descriptive or repeats guidance captured by a more specific check; it contains no additional independent instruction."
+        },
+        {
+          "id": "51ac0fae-61c2-4abc-b8f9-1167bf54e875",
+          "title": "Variants",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "0f5a83c6-0828-4178-ac77-f0fb244fad0e",
+          "title": "Baseline variants",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "85bcbf43-c90c-4df9-bddf-fbccd4648a54",
+          "title": "Configurations",
+          "status": "no-requirements",
+          "notes": "Resource listings, token controls, or descriptive parent headings; actionable configuration details are curated in child sections."
+        },
+        {
+          "id": "06f2ae3c-4b7c-40c3-be51-ad27ca2a2997",
+          "title": "Text alignment",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "fa57317d-b377-4382-8122-459efb39be6e",
+          "title": "Tokens & specs",
+          "status": "no-requirements",
+          "notes": "Resource listings, token controls, or descriptive parent headings; actionable configuration details are curated in child sections."
+        },
+        {
+          "id": "3556b201-27a4-46ad-80c3-d780f0470a59",
+          "title": "Search component tokens & specs",
+          "status": "no-requirements",
+          "notes": "Resource listings, token controls, or descriptive parent headings; actionable configuration details are curated in child sections."
+        },
+        {
+          "id": "6d16b148-66e8-42f2-89d6-577cf8cf4034",
+          "title": "Anatomy",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "606c6564-ce7d-489d-8852-af2b3b478bc6",
+          "title": "Search",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "8d3763d7-88d5-4d94-9532-a980e19df4db",
+          "title": "Image",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "90d1e764-47e7-4e5d-9668-c00bc9599236",
+          "title": "Filled trailing icon button",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "b9e90c5f-8511-4f8c-9a57-6cabe90559bf",
+          "title": "Subtitle",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "764ef36d-80dc-47f3-9b19-727947b91bd6",
+          "title": "Color",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "9975d8e5-f69e-48bd-865e-af3c8eeba1d3",
+          "title": "Scroll states",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "8a5b3245-66ad-4b51-9ae3-79696dad76c8",
+          "title": "Measurements",
+          "status": "unclear",
+          "notes": "Exact dimensions appear only in image diagrams that have not been inspected; values and relationships remain unclear."
+        },
+        {
+          "id": "14978a2b-e102-46df-8103-c0365076be82",
+          "title": "Search app bar",
+          "status": "no-requirements",
+          "notes": "This heading is descriptive or repeats guidance captured by a more specific check; it contains no additional independent instruction."
+        },
+        {
+          "id": "fac99130-8bb8-498c-8cb8-16ea056cc3e1",
+          "title": "Small app bar",
+          "status": "no-requirements",
+          "notes": "This heading is descriptive or repeats guidance captured by a more specific check; it contains no additional independent instruction."
+        },
+        {
+          "id": "dfaebb5c-7f5e-4a5a-85d2-638dce7a29f8",
+          "title": "Medium flexible app bar",
+          "status": "no-requirements",
+          "notes": "This heading is descriptive or repeats guidance captured by a more specific check; it contains no additional independent instruction."
+        },
+        {
+          "id": "6340a9ee-bb5e-4ba6-8e8b-af5a75a6cedf",
+          "title": "Large flexible app bar",
+          "status": "no-requirements",
+          "notes": "This heading is descriptive or repeats guidance captured by a more specific check; it contains no additional independent instruction."
+        },
+        {
+          "id": "faec9baf-140f-41dc-8b88-2792e90d9d5d",
+          "title": "Baseline app bars",
+          "status": "no-requirements",
+          "notes": "The expressive replacement rule is represented by expressive-variant-choice and baseline-replacement-details; this section’s element inventory adds no separate behavior requirement."
+        },
+        {
+          "id": "4b4786f6-5b8d-4f91-a67f-ec77423e7a13",
+          "title": "Tokens & specs",
+          "status": "no-requirements",
+          "notes": "Resource listings, token controls, or descriptive parent headings; actionable configuration details are curated in child sections."
+        },
+        {
+          "id": "59b98776-e9d5-4028-a465-88f6fb035353",
+          "title": "Color",
+          "status": "no-requirements",
+          "notes": "Token-backed color implementation is represented by appbar-color-token-backed, and the on-scroll surface-container rule by scroll-surface-container; the section’s role diagram adds no further prose instruction."
+        },
+        {
+          "id": "7d74fbfd-2e18-4975-a541-84d34738f422",
+          "title": "Measurements",
+          "status": "unclear",
+          "notes": "Exact dimensions appear only in image diagrams that have not been inspected; values and relationships remain unclear."
+        },
+        {
+          "id": "ced31c90-9a40-4021-bb3b-342b3c2892e9",
+          "title": "Medium app bar",
+          "status": "no-requirements",
+          "notes": "This heading is descriptive or repeats guidance captured by a more specific check; it contains no additional independent instruction."
+        },
+        {
+          "id": "3d3257c2-734a-4cbb-9d7d-6401f5e6df89",
+          "title": "Large app bar",
+          "status": "no-requirements",
+          "notes": "This heading is descriptive or repeats guidance captured by a more specific check; it contains no additional independent instruction."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/app-bars/guidelines",
+      "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+      "markdownSha256": "5d5be4d4557e5b682856a5fef0a9f63d967b459759790b1d10691573ee455da0",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "App bars",
+          "status": "no-requirements",
+          "notes": "This heading is descriptive or repeats guidance captured by a more specific check; it contains no additional independent instruction."
+        },
+        {
+          "id": "45bf6c5e-2a52-4425-92dd-79dd43eaadb2",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "344a2572-6811-42fb-8434-b4343cd997d6",
+          "title": "Baseline app bars",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "ed1f4c54-fc2d-4544-b1ed-ac667181dabe",
+          "title": "Search app bar",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "b34afa84-b212-4576-966a-e1e1c7a07084",
+          "title": "Buttons in search app bar",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "9b4b65d4-b70f-45c6-a83d-7a5f5a0194dd",
+          "title": "Large screens",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "196c8888-b9d0-44a6-a025-f79586ab6aa4",
+          "title": "Alternate color options",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "6423b736-55a9-42ba-85f1-b842329f1d54",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "Resource listings, token controls, or descriptive parent headings; actionable configuration details are curated in child sections."
+        },
+        {
+          "id": "ff25b95a-0c10-49a6-a7a5-355e029c390b",
+          "title": "Container",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "ea25bb7b-e30a-4084-bf05-f1dfadd0d845",
+          "title": "Adding logos",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "78ed9fd9-5664-40e0-ac51-69cb5de4952c",
+          "title": "Leading button",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "42b3110b-2f47-4640-8fd5-4506156e29f8",
+          "title": "Headline",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "5a17dde5-7496-4006-b3dd-9f0c2e1c0106",
+          "title": "Subtitle",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "224e8ca0-4177-45f4-9f4f-eef1fbb0e4b2",
+          "title": "Trailing icon buttons",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "68917063-5b90-4575-892e-ae84e7010cd5",
+          "title": "Adaptive design",
+          "status": "no-requirements",
+          "notes": "This heading is descriptive or repeats guidance captured by a more specific check; it contains no additional independent instruction."
+        },
+        {
+          "id": "19f01646-6430-429a-bf0b-f96e422fd086",
+          "title": "Resizing",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "1d17ef57-a557-4fbe-9995-91f9e344ffae",
+          "title": "Presentation",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "9410573d-05c7-473e-8810-5deea97b9b64",
+          "title": "Behavior",
+          "status": "no-requirements",
+          "notes": "This heading is descriptive or repeats guidance captured by a more specific check; it contains no additional independent instruction."
+        },
+        {
+          "id": "4eab4f50-4a3e-4189-bce2-a46514cde1da",
+          "title": "Scrolling",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/app-bars/accessibility",
+      "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+      "markdownSha256": "606338e37207afecf4dbffd369e18fe13fbbb9fd48047032940916814aae501d",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "App bars",
+          "status": "no-requirements",
+          "notes": "This heading is descriptive or repeats guidance captured by a more specific check; it contains no additional independent instruction."
+        },
+        {
+          "id": "49cc9a58-03b0-417b-b350-377d2c990901",
+          "title": "Use cases",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "f956f3af-2ebd-41bb-af21-68284be3ea20",
+          "title": "Interaction & style",
+          "status": "no-requirements",
+          "notes": "This heading is descriptive or repeats guidance captured by a more specific check; it contains no additional independent instruction."
+        },
+        {
+          "id": "d5f83453-d780-4fe0-bdf6-997af74ba1d6",
+          "title": "Touch",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "73975f61-3bef-4d6b-9606-b935e6fc3e97",
+          "title": "Cursor",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "f3f5467c-ca14-47c8-9647-dbd60584190d",
+          "title": "Keyboard or switch",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "edb9996f-9180-4b1d-8174-cfcad3297b20",
+          "title": "Initial focus",
+          "status": "mapped",
+          "notes": "Actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "93056ba1-1142-463a-b45e-4421dd78614d",
+          "title": "Color",
+          "status": "no-requirements",
+          "notes": "This section repeats the search role, surface-bright alternative and 3:1 contrast requirement represented by search-container-contrast."
+        },
+        {
+          "id": "6886712c-c231-4200-971e-3698429a4d43",
+          "title": "Keyboard navigation",
+          "status": "no-requirements",
+          "notes": "The Tab and Space/Enter table duplicates the same actions represented by focus-order; no additional key action is listed."
+        },
+        {
+          "id": "f48401a7-396c-4503-b97d-2fd7c137ac41",
+          "title": "Labeling elements",
+          "status": "mapped",
+          "notes": "Title text and contextual labeling are represented by title-label; the source examples’ Title and Button roles are represented by appbar-title-role-announcement."
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "page-essentials",
+      "statement": "Provide page context, navigation, and one or two essential actions in the app bar.",
+      "condition": "For a page-level app bar.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/overview",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "3a148cf81fa3cf07b06551a173896fd80dbf3c615d48b98a747a2e0fe091ac72",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured App bars guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "expressive-variant-choice",
+      "statement": "Prefer medium flexible and large flexible app bars over baseline medium and large variants in M3 Expressive; baseline medium and large are no longer recommended.",
+      "condition": "In M3 Expressive.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/overview",
+          "section": "0d652c97-f778-4d07-819b-58386137aa32",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "3a148cf81fa3cf07b06551a173896fd80dbf3c615d48b98a747a2e0fe091ac72",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured M3 Expressive update guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "expressive-availability",
+      "statement": "Use the search app bar and flexible medium/large variants only for M3 Expressive; the search bar and flexible variants are unavailable in baseline M3.",
+      "condition": "When selecting an upstream variant; M3 means baseline.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/specs",
+          "section": "51ac0fae-61c2-4abc-b8f9-1167bf54e875",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "d6274610e06d2a7e6b26e35f25013367edbd3618dd41edc550d8922aeb8a49e3",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Variants guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "centered-title-availability",
+      "statement": "Use leading-edge title alignment by default; centered alignment is an M3 Expressive option and is unavailable in baseline M3.",
+      "condition": "When configuring title alignment.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/specs",
+          "section": "06f2ae3c-4b7c-40c3-be51-ad27ca2a2997",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "d6274610e06d2a7e6b26e35f25013367edbd3618dd41edc550d8922aeb8a49e3",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Text alignment guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "limit-customization",
+      "statement": "App bars may include an image or logo, subtitle, and a single filled icon button; avoid changing heading or subtitle size or adding too many actions.",
+      "condition": "When customizing app bar contents.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/specs",
+          "section": "6d16b148-66e8-42f2-89d6-577cf8cf4034",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "d6274610e06d2a7e6b26e35f25013367edbd3618dd41edc550d8922aeb8a49e3",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Anatomy guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-opens-search-view",
+      "statement": "Selecting the search app bar opens the search view; trailing actions may sit inside or outside the search field.",
+      "condition": "For search app bars.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/specs",
+          "section": "606c6564-ce7d-489d-8852-af2b3b478bc6",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "d6274610e06d2a7e6b26e35f25013367edbd3618dd41edc550d8922aeb8a49e3",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Search guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "contextual-essential-actions",
+      "statement": "Keep app bar content contextual to the current page and limit it to one action, or two when necessary; move larger action sets to a toolbar.",
+      "condition": "When a page has multiple actions.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/guidelines",
+          "section": "45bf6c5e-2a52-4425-92dd-79dd43eaadb2",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "5d5be4d4557e5b682856a5fef0a9f63d967b459759790b1d10691573ee455da0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Usage guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "single-emphasis-action",
+      "statement": "Use at most one filled or tonal button in an app bar to emphasize its primary action.",
+      "condition": "When emphasizing an app bar action.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/guidelines",
+          "section": "45bf6c5e-2a52-4425-92dd-79dd43eaadb2",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "5d5be4d4557e5b682856a5fef0a9f63d967b459759790b1d10691573ee455da0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Usage guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "small-on-scroll",
+      "statement": "Use a small app bar for dense layouts or after a flexible app bar collapses on scroll.",
+      "condition": "When choosing among app bar variants.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/guidelines",
+          "section": "344a2572-6811-42fb-8434-b4343cd997d6",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "5d5be4d4557e5b682856a5fef0a9f63d967b459759790b1d10691573ee455da0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Baseline app bars guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "centered-content-width",
+      "statement": "On large screens, constrain app bar content to a maximum width and center it.",
+      "condition": "At large breakpoints.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/guidelines",
+          "section": "9b4b65d4-b70f-45c6-a83d-7a5f5a0194dd",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "5d5be4d4557e5b682856a5fef0a9f63d967b459759790b1d10691573ee455da0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Large screens guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "scroll-fill",
+      "statement": "On scroll, change the app bar container to a surface-container fill to separate it from content; do not use a drop shadow for this state.",
+      "condition": "When content scrolls beneath an M3 app bar.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/guidelines",
+          "section": "4eab4f50-4a3e-4189-bce2-a46514cde1da",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "5d5be4d4557e5b682856a5fef0a9f63d967b459759790b1d10691573ee455da0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Scrolling guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "focus-order",
+      "statement": "Place initial keyboard focus on the leading button, then let Tab move through interactive elements; Space or Enter activates the focused action.",
+      "condition": "When the app bar receives keyboard focus.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/accessibility",
+          "section": "edb9996f-9180-4b1d-8174-cfcad3297b20",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "606338e37207afecf4dbffd369e18fe13fbbb9fd48047032940916814aae501d",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Initial focus guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "title-label",
+      "statement": "Make the title accessibility label match its visible text, adding context only when needed; label icon buttons by their action.",
+      "condition": "For screen-reader output.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/accessibility",
+          "section": "f48401a7-396c-4503-b97d-2fd7c137ac41",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "606338e37207afecf4dbffd369e18fe13fbbb9fd48047032940916814aae501d",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Labeling elements guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "expressive-flexible-capabilities",
+      "statement": "In M3 Expressive, flexible medium and large variants have reduced height, larger titles, subtitles, text wrapping, and more flexible image and filled-button content; small app bars also gain subtitles and centered text.",
+      "condition": "In M3 Expressive.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/overview",
+          "section": "0d652c97-f778-4d07-819b-58386137aa32",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "3a148cf81fa3cf07b06551a173896fd80dbf3c615d48b98a747a2e0fe091ac72",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured M3 Expressive update instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "baseline-replacement-details",
+      "statement": "In M3 Expressive, replace baseline medium and large app bars with their flexible variants, which are shorter, support multiline headlines, and accommodate a wider range of elements.",
+      "condition": "When using baseline M3 app bars in M3 Expressive.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/specs",
+          "section": "0f5a83c6-0828-4178-ac77-f0fb244fad0e",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "d6274610e06d2a7e6b26e35f25013367edbd3618dd41edc550d8922aeb8a49e3",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Baseline variants instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "small-image-replaces-title",
+      "statement": "An image may replace the label text in a small app bar.",
+      "condition": "When a small app bar uses an image.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/specs",
+          "section": "8d3763d7-88d5-4d94-9532-a980e19df4db",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "d6274610e06d2a7e6b26e35f25013367edbd3618dd41edc550d8922aeb8a49e3",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Image instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "single-filled-trailing-button",
+      "statement": "Replace trailing icon buttons with at most one filled icon button, using primary or tonal styling and default or wide size.",
+      "condition": "When emphasizing a trailing app bar action.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/specs",
+          "section": "90d1e764-47e7-4e5d-9668-c00bc9599236",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "d6274610e06d2a7e6b26e35f25013367edbd3618dd41edc550d8922aeb8a49e3",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Filled trailing icon button instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "flexible-subtitle-height",
+      "statement": "Flexible medium and large app bars size their container to the headline and subtitle content, increasing height when a subtitle is present.",
+      "condition": "When a subtitle is displayed.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/specs",
+          "section": "b9e90c5f-8511-4f8c-9a57-6cabe90559bf",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "d6274610e06d2a7e6b26e35f25013367edbd3618dd41edc550d8922aeb8a49e3",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Subtitle instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "scroll-surface-container",
+      "statement": "On scroll, use the surface-container role for the app bar container; app bar colors use shared roles across variants.",
+      "condition": "For M3 app bars.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/specs",
+          "section": "764ef36d-80dc-47f3-9b19-727947b91bd6",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "d6274610e06d2a7e6b26e35f25013367edbd3618dd41edc550d8922aeb8a49e3",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Color instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-bar-scroll-color",
+      "statement": "The search field may change color in its scrolled state.",
+      "condition": "For a search app bar that changes state on scroll.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/specs",
+          "section": "9975d8e5-f69e-48bd-865e-af3c8eeba1d3",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "d6274610e06d2a7e6b26e35f25013367edbd3618dd41edc550d8922aeb8a49e3",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Scroll states instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-variant-home",
+      "statement": "Use the search app bar on a home page when search is central to the product, as an emphasized entry point to the search view.",
+      "condition": "When search is a key product task.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/guidelines",
+          "section": "ed1f4c54-fc2d-4544-b1ed-ac667181dabe",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "5d5be4d4557e5b682856a5fef0a9f63d967b459759790b1d10691573ee455da0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Search app bar instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-prompt-word",
+      "statement": "Include the word “Search” in the search prompt; name a specific area or product when helpful and use the product’s capitalization style.",
+      "condition": "For search app bar prompts.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/guidelines",
+          "section": "ed1f4c54-fc2d-4544-b1ed-ac667181dabe",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "5d5be4d4557e5b682856a5fef0a9f63d967b459759790b1d10691573ee455da0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Search app bar instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "mobile-search-actions",
+      "statement": "On mobile, allow up to two trailing icons in addition to an avatar; order actions from most used at the leading side to least used at the trailing side.",
+      "condition": "For a mobile search app bar.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/guidelines",
+          "section": "b34afa84-b212-4576-966a-e1e1c7a07084",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "5d5be4d4557e5b682856a5fef0a9f63d967b459759790b1d10691573ee455da0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Buttons in search app bar instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-logo-actions",
+      "statement": "A leading logo may be decorative or return to home/refresh, but must not open an expanded navigation rail.",
+      "condition": "When using a leading logo.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/guidelines",
+          "section": "b34afa84-b212-4576-966a-e1e1c7a07084",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "5d5be4d4557e5b682856a5fef0a9f63d967b459759790b1d10691573ee455da0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Buttons in search app bar instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-trailing-limit",
+      "statement": "Do not exceed two trailing icon buttons plus an avatar; move additional actions to a toolbar.",
+      "condition": "For a mobile search app bar.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/guidelines",
+          "section": "b34afa84-b212-4576-966a-e1e1c7a07084",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "5d5be4d4557e5b682856a5fef0a9f63d967b459759790b1d10691573ee455da0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Buttons in search app bar instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "large-search-actions",
+      "statement": "Allow up to four trailing icons in a search app bar on larger screens.",
+      "condition": "At larger breakpoints.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/guidelines",
+          "section": "9b4b65d4-b70f-45c6-a83d-7a5f5a0194dd",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "5d5be4d4557e5b682856a5fef0a9f63d967b459759790b1d10691573ee455da0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Large screens instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-container-contrast",
+      "statement": "Use surface container by default, or surface bright when the surrounding background is darker; maintain at least 3:1 contrast between search text and its container.",
+      "condition": "When styling a search field in an app bar.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/guidelines",
+          "section": "196c8888-b9d0-44a6-a025-f79586ab6aa4",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "5d5be4d4557e5b682856a5fef0a9f63d967b459759790b1d10691573ee455da0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Alternate color options instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "app-bar-container-geometry",
+      "statement": "Keep the container’s default position and straight corners, use its default height, and span the full window width.",
+      "condition": "For app bar containers.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/guidelines",
+          "section": "ff25b95a-0c10-49a6-a7a5-355e029c390b",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "5d5be4d4557e5b682856a5fef0a9f63d967b459759790b1d10691573ee455da0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Container instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "logo-quality-relevance",
+      "statement": "Use a high-quality, relevant logo that does not disrupt app bar functionality; in a small app bar it can replace all text, and in other variants it can sit above the text.",
+      "condition": "When adding a logo.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/guidelines",
+          "section": "ea25bb7b-e30a-4084-bf05-f1dfadd0d845",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "5d5be4d4557e5b682856a5fef0a9f63d967b459759790b1d10691573ee455da0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Adding logos instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "leading-navigation-purpose",
+      "statement": "Use the leading button for product navigation, typically a menu opening the expanded navigation rail or a Back action returning to the previous screen.",
+      "condition": "For a leading app bar button.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/guidelines",
+          "section": "78ed9fd9-5664-40e0-ac51-69cb5de4952c",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "5d5be4d4557e5b682856a5fef0a9f63d967b459759790b1d10691573ee455da0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Leading button instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "headline-length-and-wrap",
+      "statement": "Keep headlines brief enough to fit; flexible medium and large variants may wrap to at most two lines, while small app bar headlines must not wrap or truncate.",
+      "condition": "For app bar headlines.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/guidelines",
+          "section": "42b3110b-2f47-4640-8fd5-4506156e29f8",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "5d5be4d4557e5b682856a5fef0a9f63d967b459759790b1d10691573ee455da0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Headline instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "subtitle-alignment",
+      "statement": "Align a subtitle to the same leading or center alignment as its headline.",
+      "condition": "When an app bar includes a subtitle.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/guidelines",
+          "section": "5a17dde5-7496-4006-b3dd-9f0c2e1c0106",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "5d5be4d4557e5b682856a5fef0a9f63d967b459759790b1d10691573ee455da0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Subtitle instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "trailing-action-count-order",
+      "statement": "Place at most two icon buttons after the headline, with the most-used action nearer the leading edge; for a filled or tonal icon style, use only one button.",
+      "condition": "For trailing app bar actions.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/guidelines",
+          "section": "224e8ca0-4177-45f4-9f4f-eef1fbb0e4b2",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "5d5be4d4557e5b682856a5fef0a9f63d967b459759790b1d10691573ee455da0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Trailing icon buttons instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "toolbar-for-more-actions",
+      "statement": "Do not use trailing icon buttons to open a menu of more actions; move larger action sets to a toolbar.",
+      "condition": "When more actions are needed.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/guidelines",
+          "section": "224e8ca0-4177-45f4-9f4f-eef1fbb0e4b2",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "5d5be4d4557e5b682856a5fef0a9f63d967b459759790b1d10691573ee455da0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Trailing icon buttons instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "trailing-icon-emphasis",
+      "statement": "Prefer filled icons for visible actions; outlined icons are appropriate when needed, especially for unselected toggle buttons.",
+      "condition": "When selecting trailing icon appearance.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/guidelines",
+          "section": "224e8ca0-4177-45f4-9f4f-eef1fbb0e4b2",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "5d5be4d4557e5b682856a5fef0a9f63d967b459759790b1d10691573ee455da0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Trailing icon buttons instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "appbar-full-window-width",
+      "statement": "Keep the app bar container at 100% of the window width.",
+      "condition": "At all window sizes.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/guidelines",
+          "section": "19f01646-6430-429a-bf0b-f96e422fd086",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "5d5be4d4557e5b682856a5fef0a9f63d967b459759790b1d10691573ee455da0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Resizing instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "appbar-overflow-responsive",
+      "statement": "At smaller breakpoints, trailing actions may collapse into an overflow menu and reappear at larger sizes.",
+      "condition": "When space is constrained.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/guidelines",
+          "section": "19f01646-6430-429a-bf0b-f96e422fd086",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "5d5be4d4557e5b682856a5fef0a9f63d967b459759790b1d10691573ee455da0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Resizing instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "search-field-adaptive-width",
+      "statement": "Let the search field fill the space between leading and trailing elements up to 312dp, then grow only to half of that available space.",
+      "condition": "For a search app bar.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/guidelines",
+          "section": "19f01646-6430-429a-bf0b-f96e422fd086",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "5d5be4d4557e5b682856a5fef0a9f63d967b459759790b1d10691573ee455da0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Resizing instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "appbar-rtl-mirroring",
+      "statement": "Mirror leading/trailing app bar layout for right-to-left languages.",
+      "condition": "For RTL locales.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/guidelines",
+          "section": "1d17ef57-a557-4fbe-9995-91f9e344ffae",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "5d5be4d4557e5b682856a5fef0a9f63d967b459759790b1d10691573ee455da0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Presentation instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "transparent-scroll-option",
+      "statement": "An app bar may remain fixed or hide/reappear with scrolling; a transparent scrolled container is also allowed when its icon buttons receive container fills, and narrow icon buttons may save space for actions such as Back.",
+      "condition": "When choosing a scrolled app bar treatment.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/guidelines",
+          "section": "4eab4f50-4a3e-4189-bce2-a46514cde1da",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "5d5be4d4557e5b682856a5fef0a9f63d967b459759790b1d10691573ee455da0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Scrolling instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "flexible-collapse-to-small",
+      "statement": "On scroll, flexible medium and large app bars may collapse to small and should remain small until the page returns to the top; do not transform them into a search app bar.",
+      "condition": "When using the flexible scroll transformation.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/guidelines",
+          "section": "4eab4f50-4a3e-4189-bce2-a46514cde1da",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "5d5be4d4557e5b682856a5fef0a9f63d967b459759790b1d10691573ee455da0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Scrolling instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "appbar-accessibility-outcomes",
+      "statement": "Expose the current page, app bar actions and destinations, and continued access to app bar actions while page content scrolls.",
+      "condition": "For assistive technology.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/accessibility",
+          "section": "49cc9a58-03b0-417b-b350-377d2c990901",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "606338e37207afecf4dbffd369e18fe13fbbb9fd48047032940916814aae501d",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Use cases instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "appbar-touch-ripple",
+      "statement": "Show a touch ripple when an app bar icon button is tapped.",
+      "condition": "For touch interaction.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/accessibility",
+          "section": "d5f83453-d780-4fe0-bdf6-997af74ba1d6",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "606338e37207afecf4dbffd369e18fe13fbbb9fd48047032940916814aae501d",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Touch instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "appbar-pointer-feedback",
+      "statement": "Show a hover cue and ripple when an app bar interactive element is hovered or clicked.",
+      "condition": "For pointer interaction.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/accessibility",
+          "section": "73975f61-3bef-4d6b-9606-b935e6fc3e97",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "606338e37207afecf4dbffd369e18fe13fbbb9fd48047032940916814aae501d",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Cursor instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "appbar-focus-indicator",
+      "statement": "Show a focus indicator for interactive app bar elements, then perform their action when selected.",
+      "condition": "For keyboard or switch interaction.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/accessibility",
+          "section": "f3f5467c-ca14-47c8-9647-dbd60584190d",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "606338e37207afecf4dbffd369e18fe13fbbb9fd48047032940916814aae501d",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Keyboard or switch instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "appbar-color-token-backed",
+      "statement": "Use design-token-backed color values for app bars.",
+      "condition": "When implementing app bar color roles.",
+      "basis": "explicit",
+      "notes": "The specs explain that designers select token-corresponding colors and implementations reference token values.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/specs",
+          "section": "764ef36d-80dc-47f3-9b19-727947b91bd6",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "d6274610e06d2a7e6b26e35f25013367edbd3618dd41edc550d8922aeb8a49e3",
+          "extractorVersion": 2,
+          "summary": "The specs explain that designers select token-corresponding colors and implementations reference token values."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "appbar-title-role-announcement",
+      "statement": "Expose the app bar title with the Title role; label icon buttons by the action they take and expose them as Button controls.",
+      "condition": "For app bars announced by screen readers.",
+      "basis": "explicit",
+      "notes": "The source says screen readers announce UI text followed by its role; its examples identify Title and Button roles.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/app-bars/accessibility",
+          "section": "f48401a7-396c-4503-b97d-2fd7c137ac41",
+          "capture": "snapshots/material-guidance/20261025T165140.971233937Z-1253453535/capture.json",
+          "markdownSha256": "606338e37207afecf4dbffd369e18fe13fbbb9fd48047032940916814aae501d",
+          "extractorVersion": 2,
+          "summary": "The source says screen readers announce UI text followed by its role; its examples identify Title and Button roles."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

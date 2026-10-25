@@ -1,0 +1,1071 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "text-fields",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/text-fields/overview",
+      "capture": "snapshots/material-guidance/20261025T165950.438436046Z-1975238135/capture.json",
+      "markdownSha256": "62be912cc567de48fe39ecaeaf93ef33943543f78aba6d9f2c394424d27a2fe9",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Text fields",
+          "status": "no-requirements",
+          "notes": "Introductory overview; container shape and label requirements are covered by text-field-container-shape and text-field-label; validated-field error guidance is covered by text-field-error-message."
+        },
+        {
+          "id": "8068ccb5-0cef-4cfb-85d8-fe1e33c363dd",
+          "title": "Availability & resources",
+          "status": "no-requirements",
+          "notes": "Platform implementation availability only."
+        },
+        {
+          "id": "e0ad92c3-25cb-4afb-9d95-9680fb3d5fe5",
+          "title": "Differences from M2",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/text-fields/specs",
+      "capture": "snapshots/material-guidance/20261025T165950.438436046Z-1975238135/capture.json",
+      "markdownSha256": "e802e5c7f6d5f63a28f2630eda1317f46a05fee0539c69bbab1304b9e13ca921",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Text fields",
+          "status": "no-requirements",
+          "notes": "Repeated component description only."
+        },
+        {
+          "id": "88df6a4f-73b9-4b2d-8c19-353ad6cf6c74",
+          "title": "Tokens & specs",
+          "status": "no-requirements",
+          "notes": "Token browser reference only."
+        },
+        {
+          "id": "6d654d1d-262e-4697-858c-9a75e8e7c81d",
+          "title": "Filled text field",
+          "status": "no-requirements",
+          "notes": "Anatomy illustration lists optional and state-dependent elements; usage details are in guidelines."
+        },
+        {
+          "id": "6c3985d7-37d9-4aaa-b03e-7fa616bb009c",
+          "title": "Filled text field color",
+          "status": "unclear",
+          "notes": "Color roles are embedded in an uninspected diagram; role-to-element mapping cannot be confirmed."
+        },
+        {
+          "id": "dbc210fc-c916-4d28-8541-f3ecdb954a62",
+          "title": "Filled text field states",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "a3fc535d-b5c5-405d-9293-4671340d7411",
+          "title": "Filled text field error states",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "8c032848-e442-46df-b25d-28f1315f234b",
+          "title": "Filled text field measurements",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "7022e83a-2ca6-4e3d-b3d8-788180258fd3",
+          "title": "Filled text field configurations",
+          "status": "no-requirements",
+          "notes": "Illustration lists supported optional content and multiline configuration; content behavior is specified in guidelines."
+        },
+        {
+          "id": "68b00bd6-ab40-4b4f-93d9-ed1fbbc5d06e",
+          "title": "Outlined text field",
+          "status": "no-requirements",
+          "notes": "Anatomy illustration lists optional and state-dependent elements; usage details are in guidelines."
+        },
+        {
+          "id": "09bbf086-55ac-47d0-ad4c-d4a4f53b0f96",
+          "title": "Outlined text field color",
+          "status": "unclear",
+          "notes": "Color roles are embedded in an uninspected diagram; role-to-element mapping cannot be confirmed."
+        },
+        {
+          "id": "28125724-06e2-48bc-ab9f-da8428190a14",
+          "title": "Outlined text field states",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "cf537769-a896-47b0-b56b-8da09e0e00c2",
+          "title": "Outlined text field error states",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "3a56b7a8-3a45-4d27-b95a-644fe38864e1",
+          "title": "Outlined text field measurements",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "ac785109-eb13-48bb-b621-e5aad80444d7",
+          "title": "Outlined text field configurations",
+          "status": "no-requirements",
+          "notes": "Illustration lists supported optional content and multiline configuration; content behavior is specified in guidelines."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/text-fields/guidelines",
+      "capture": "snapshots/material-guidance/20261025T165950.438436046Z-1975238135/capture.json",
+      "markdownSha256": "938cdd23fab56e899075680275c04443c64bf4e72b9c442fafe1eb7ca204d985",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Text fields",
+          "status": "no-requirements",
+          "notes": "Introductory description only."
+        },
+        {
+          "id": "c9cc8472-c2c4-4801-8aea-924b2064940c",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "1206edf3-4472-4c05-90e7-8efe7e409ea2",
+          "title": "Outlined text fields",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "83956188-4d8f-4c11-9389-aaba30b10214",
+          "title": "Choosing text fields",
+          "status": "no-requirements",
+          "notes": "Parent heading; selection criteria and mixed-variant constraints appear in child sections."
+        },
+        {
+          "id": "41739469-aef7-4cb0-b0b4-45aea6141c84",
+          "title": "Choosing text fields",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "7719e269-eeea-4be8-8c03-510e0b52ba75",
+          "title": "Using both text field variants on the same screen",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "6be8deda-2eed-4765-9e32-98c2563d6c1c",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "Parent heading; behavior of anatomy elements is described in its child sections."
+        },
+        {
+          "id": "258c28a6-f70e-4441-8c3d-30d0ad007a11",
+          "title": "Filled text field",
+          "status": "no-requirements",
+          "notes": "Anatomy illustration only; its elements and behavior are specified by the focused child sections."
+        },
+        {
+          "id": "d3b11e27-316f-4faf-9a1a-0ffd243a0ea8",
+          "title": "Outlined text field",
+          "status": "no-requirements",
+          "notes": "Anatomy illustration only; its elements and behavior are specified by the focused child sections."
+        },
+        {
+          "id": "2c4fc9be-b266-4975-bdef-968ead47736e",
+          "title": "Containers",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "d65e62c9-97a4-437c-a099-23acea26e68a",
+          "title": "Label text",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "a2c6b301-66b1-412f-991a-bf9b7ad0a012",
+          "title": "Adjacent label",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "6c36a812-273d-4f5d-9102-2f00386c9145",
+          "title": "Required text indicator",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "caf14aa9-26ce-48cc-9076-3a383a9ad679",
+          "title": "Input text",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "b1b1614b-6780-4ffe-bd9a-d3f4002940b2",
+          "title": "Prefix text",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "bf5a00a9-9882-447b-a5fb-4e1e05ac77fa",
+          "title": "Suffix text",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "6aeaf1ef-d864-455d-9758-d0a0a6c0269e",
+          "title": "Supporting text & character counter",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "9ad90554-a793-4506-9075-6812fd7b381a",
+          "title": "Error text",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "9d39c75d-9a82-41b0-a25f-6b57d83ed89c",
+          "title": "Error icon",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "5c8a5f07-b1a5-455f-bf76-7ff0d724f6b0",
+          "title": "Icons & images",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "f572b53d-1a15-4ede-881a-80adbbdc24a5",
+          "title": "Read-only fields",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "e02794db-ef97-4d04-a9bc-3226e28d37b0",
+          "title": "Adaptive design",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "9524b560-c6e3-4287-a47d-77e13469be36",
+          "title": "Density",
+          "status": "no-requirements",
+          "notes": "Parent heading; default and reversible density constraints are mapped in the child section."
+        },
+        {
+          "id": "3a7ddda6-8c13-4168-8a39-c8af6c4fd6f8",
+          "title": "Avoid applying density by default",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/text-fields/accessibility",
+      "capture": "snapshots/material-guidance/20261025T165950.438436046Z-1975238135/capture.json",
+      "markdownSha256": "ac9c49149cc59a6e6a01718743e95dc0ab5723fb410f08c4915028d705d665b4",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Text fields",
+          "status": "no-requirements",
+          "notes": "Introductory description only."
+        },
+        {
+          "id": "af499149-18f0-4d6f-88ae-79293260efd1",
+          "title": "Use cases",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "bed72f5e-f232-40c9-b215-2fdc2fefdf45",
+          "title": "Interaction & style",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "9d3e14a2-64f1-4236-bed0-edacd06b490e",
+          "title": "Keyboard navigation",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "101b7337-c788-41c8-8027-7884da77bc89",
+          "title": "Labeling elements",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "text-field-m3-colors",
+      "statement": "M3 text fields use new color mappings compatible with dynamic color.",
+      "condition": "When applying M3 text-field colors or migrating from M2.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/text-fields/overview",
+          "section": "e0ad92c3-25cb-4afb-9d95-9680fb3d5fe5",
+          "capture": "snapshots/material-guidance/20261025T165950.438436046Z-1975238135/capture.json",
+          "markdownSha256": "62be912cc567de48fe39ecaeaf93ef33943543f78aba6d9f2c394424d27a2fe9",
+          "extractorVersion": 2,
+          "summary": "M2 comparison identifies the M3 color mapping change."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "filled-text-field-states",
+      "statement": "Represent enabled, focused, hovered, and disabled states for both empty and populated filled fields.",
+      "condition": "For filled text fields in empty and populated states.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/text-fields/specs",
+          "section": "dbc210fc-c916-4d28-8541-f3ecdb954a62",
+          "capture": "snapshots/material-guidance/20261025T165950.438436046Z-1975238135/capture.json",
+          "markdownSha256": "e802e5c7f6d5f63a28f2630eda1317f46a05fee0539c69bbab1304b9e13ca921",
+          "extractorVersion": 2,
+          "summary": "State diagram enumerates four interaction states for empty and populated filled fields."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "filled-text-field-error-states",
+      "statement": "Represent enabled, focused, and hovered error states for both empty and populated filled fields. Keep the error message below the field as supporting text until corrected.",
+      "condition": "For filled text fields with invalid input.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/text-fields/specs",
+          "section": "a3fc535d-b5c5-405d-9293-4671340d7411",
+          "capture": "snapshots/material-guidance/20261025T165950.438436046Z-1975238135/capture.json",
+          "markdownSha256": "e802e5c7f6d5f63a28f2630eda1317f46a05fee0539c69bbab1304b9e13ca921",
+          "extractorVersion": 2,
+          "summary": "Error-state section lists states and specifies error-message placement and duration."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "filled-text-field-measurements",
+      "statement": "Use 56dp container and target heights, 8dp top/bottom padding, vertically centered empty label and icons, 16dp side padding without icons or 12dp with icons, 16dp icon/text gap, 4dp supporting-text/counter top padding, and 16dp gap between supporting text and counter.",
+      "condition": "When sizing and laying out filled text fields.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/text-fields/specs",
+          "section": "8c032848-e442-46df-b25d-28f1315f234b",
+          "capture": "snapshots/material-guidance/20261025T165950.438436046Z-1975238135/capture.json",
+          "markdownSha256": "e802e5c7f6d5f63a28f2630eda1317f46a05fee0539c69bbab1304b9e13ca921",
+          "extractorVersion": 2,
+          "summary": "Measurements table specifies filled-field dimensions and spacing."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "outlined-text-field-states",
+      "statement": "Represent enabled, focused, hovered, and disabled states for both empty and populated outlined fields.",
+      "condition": "For outlined text fields in empty and populated states.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/text-fields/specs",
+          "section": "28125724-06e2-48bc-ab9f-da8428190a14",
+          "capture": "snapshots/material-guidance/20261025T165950.438436046Z-1975238135/capture.json",
+          "markdownSha256": "e802e5c7f6d5f63a28f2630eda1317f46a05fee0539c69bbab1304b9e13ca921",
+          "extractorVersion": 2,
+          "summary": "State diagram enumerates four interaction states for empty and populated outlined fields."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "outlined-text-field-error-states",
+      "statement": "Represent enabled, focused, and hovered error states for both empty and populated outlined fields. Keep the error message below the field as supporting text until corrected.",
+      "condition": "For outlined text fields with invalid input.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/text-fields/specs",
+          "section": "cf537769-a896-47b0-b56b-8da09e0e00c2",
+          "capture": "snapshots/material-guidance/20261025T165950.438436046Z-1975238135/capture.json",
+          "markdownSha256": "e802e5c7f6d5f63a28f2630eda1317f46a05fee0539c69bbab1304b9e13ca921",
+          "extractorVersion": 2,
+          "summary": "Error-state section lists states and specifies error-message placement and duration."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "outlined-text-field-measurements",
+      "statement": "Use a 56dp container and target height; 16dp side padding without icons or 12dp with icons, 16dp icon/text spacing, vertically centered icons and label, 4dp supporting-text/counter top padding, and 16dp gap between supporting text and counter. With populated label text use 4dp left/right padding.",
+      "condition": "When sizing and laying out outlined text fields.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/text-fields/specs",
+          "section": "3a56b7a8-3a45-4d27-b95a-644fe38864e1",
+          "capture": "snapshots/material-guidance/20261025T165950.438436046Z-1975238135/capture.json",
+          "markdownSha256": "e802e5c7f6d5f63a28f2630eda1317f46a05fee0539c69bbab1304b9e13ca921",
+          "extractorVersion": 2,
+          "summary": "Measurements table specifies outlined-field dimensions and spacing."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "text-field-purpose",
+      "statement": "Use a text field when a person needs to enter text, such as contact or payment information. Filled and outlined variants have the same functionality and both use a container to signal interactivity.",
+      "condition": "When choosing a control for text entry.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/text-fields/guidelines",
+          "section": "c9cc8472-c2c4-4801-8aea-924b2064940c",
+          "capture": "snapshots/material-guidance/20261025T165950.438436046Z-1975238135/capture.json",
+          "markdownSha256": "938cdd23fab56e899075680275c04443c64bf4e72b9c442fafe1eb7ca204d985",
+          "extractorVersion": 2,
+          "summary": "Usage defines purpose and shared variant function."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "outlined-field-emphasis",
+      "statement": "Outlined fields have less visual emphasis than filled fields and can simplify forms containing many fields.",
+      "condition": "When selecting a lower-emphasis style for a dense form.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/text-fields/guidelines",
+          "section": "1206edf3-4472-4c05-90e7-8efe7e409ea2",
+          "capture": "snapshots/material-guidance/20261025T165950.438436046Z-1975238135/capture.json",
+          "markdownSha256": "938cdd23fab56e899075680275c04443c64bf4e72b9c442fafe1eb7ca204d985",
+          "extractorVersion": 2,
+          "summary": "Guidance describes outlined fields' relative emphasis and form use."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "text-field-variant-choice",
+      "statement": "Choose filled or outlined style based on the app's visual style and goals and the need to remain distinct from other components and surrounding content.",
+      "condition": "When choosing a text-field variant.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/text-fields/guidelines",
+          "section": "41739469-aef7-4cb0-b0b4-45aea6141c84",
+          "capture": "snapshots/material-guidance/20261025T165950.438436046Z-1975238135/capture.json",
+          "markdownSha256": "938cdd23fab56e899075680275c04443c64bf4e72b9c442fafe1eb7ca204d985",
+          "extractorVersion": 2,
+          "summary": "Variant choice guidance gives visual-style, UI-goal, and distinction criteria."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "text-field-region-consistency",
+      "statement": "If both variants appear in one UI, use them consistently in separate regions; do not intermingle them in the same region or form.",
+      "condition": "When a screen uses filled and outlined fields together.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/text-fields/guidelines",
+          "section": "7719e269-eeea-4be8-8c03-510e0b52ba75",
+          "capture": "snapshots/material-guidance/20261025T165950.438436046Z-1975238135/capture.json",
+          "markdownSha256": "938cdd23fab56e899075680275c04443c64bf4e72b9c442fafe1eb7ca204d985",
+          "extractorVersion": 2,
+          "summary": "Mixed-variant guidance restricts the variants to separate regions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "text-field-container-shape",
+      "statement": "Use a fill and stroke around the whole container or just its bottom edge; vary stroke color or thickness to show active state. Outlined containers have rounded corners; filled containers have rounded top and square bottom corners.",
+      "condition": "When styling filled or outlined text-field containers.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/text-fields/guidelines",
+          "section": "2c4fc9be-b266-4975-bdef-968ead47736e",
+          "capture": "snapshots/material-guidance/20261025T165950.438436046Z-1975238135/capture.json",
+          "markdownSha256": "938cdd23fab56e899075680275c04443c64bf4e72b9c442fafe1eb7ca204d985",
+          "extractorVersion": 2,
+          "summary": "Container guidance specifies fill/stroke, active cue, and variant corner shapes."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "text-field-label",
+      "statement": "Every field must have a short, clear, fully visible label describing requested information. Align it with input text, keep it on one line without truncation, and keep it visible; when focused, move it from the middle to the top of the container.",
+      "condition": "When labeling an editable text field.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/text-fields/guidelines",
+          "section": "d65e62c9-97a4-437c-a099-23acea26e68a",
+          "capture": "snapshots/material-guidance/20261025T165950.438436046Z-1975238135/capture.json",
+          "markdownSha256": "938cdd23fab56e899075680275c04443c64bf4e72b9c442fafe1eb7ca204d985",
+          "extractorVersion": 2,
+          "summary": "Label guidance specifies presence, alignment, visibility, brevity, and focused movement."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "text-field-adjacent-label",
+      "statement": "A field may omit its internal label when a separate adjacent label identifies its purpose; align that label to the container's leading edge.",
+      "condition": "When a text field uses an external label.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/text-fields/guidelines",
+          "section": "a2c6b301-66b1-412f-991a-bf9b7ad0a012",
+          "capture": "snapshots/material-guidance/20261025T165950.438436046Z-1975238135/capture.json",
+          "markdownSha256": "938cdd23fab56e899075680275c04443c64bf4e72b9c442fafe1eb7ca204d985",
+          "extractorVersion": 2,
+          "summary": "Adjacent-label guidance defines the valid exception and alignment."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "text-field-required-mark",
+      "statement": "Mark required fields with an asterisk next to the field label and explain that asterisks mean required using supporting text or one note at the form start. Mark all required fields and use the required-text color for the asterisk when applicable.",
+      "condition": "When a form contains required fields.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/text-fields/guidelines",
+          "section": "6c36a812-273d-4f5d-9102-2f00386c9145",
+          "capture": "snapshots/material-guidance/20261025T165950.438436046Z-1975238135/capture.json",
+          "markdownSha256": "938cdd23fab56e899075680275c04443c64bf4e72b9c442fafe1eb7ca204d985",
+          "extractorVersion": 2,
+          "summary": "Required-field guidance specifies marker, explanation options, completeness, and color consistency."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "text-field-input-modes",
+      "statement": "Use single-line fields for one line of input; overflow scrolls horizontally and they are unsuitable for long responses. Multi-line fields grow and wrap as text is entered. Text areas are fixed-height, wrap, and scroll vertically; use them instead of multiline fields on web and size them to fit mobile screens.",
+      "condition": "When selecting or configuring an input field for expected response length and platform.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/text-fields/guidelines",
+          "section": "caf14aa9-26ce-48cc-9076-3a383a9ad679",
+          "capture": "snapshots/material-guidance/20261025T165950.438436046Z-1975238135/capture.json",
+          "markdownSha256": "938cdd23fab56e899075680275c04443c64bf4e72b9c442fafe1eb7ca204d985",
+          "extractorVersion": 2,
+          "summary": "Input guidance distinguishes single-line, growing multiline, and fixed-height text-area behavior and platform use."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "text-field-prefix",
+      "statement": "Use prefix text for a symbol that precedes the entered value, such as a currency symbol.",
+      "condition": "When an input value needs a contextual prefix.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/text-fields/guidelines",
+          "section": "b1b1614b-6780-4ffe-bd9a-d3f4002940b2",
+          "capture": "snapshots/material-guidance/20261025T165950.438436046Z-1975238135/capture.json",
+          "markdownSha256": "938cdd23fab56e899075680275c04443c64bf4e72b9c442fafe1eb7ca204d985",
+          "extractorVersion": 2,
+          "summary": "Prefix section gives currency as a prefix example."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "text-field-suffix",
+      "statement": "Use suffix text for a unit, limit, or domain that follows the entered value, such as a measurement unit, maximum, or email domain.",
+      "condition": "When an input value needs a contextual suffix.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/text-fields/guidelines",
+          "section": "bf5a00a9-9882-447b-a5fb-4e1e05ac77fa",
+          "capture": "snapshots/material-guidance/20261025T165950.438436046Z-1975238135/capture.json",
+          "markdownSha256": "938cdd23fab56e899075680275c04443c64bf4e72b9c442fafe1eb7ca204d985",
+          "extractorVersion": 2,
+          "summary": "Suffix section gives unit, limit, and domain examples."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "text-field-supporting-counter",
+      "statement": "Use supporting text to explain field use; keep it to one line when possible, but allow wrapping or persistent/on-focus-only display. If there is a character or word limit, show the used/total counter.",
+      "condition": "When providing field guidance or enforcing a length limit.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/text-fields/guidelines",
+          "section": "6aeaf1ef-d864-455d-9758-d0a0a6c0269e",
+          "capture": "snapshots/material-guidance/20261025T165950.438436046Z-1975238135/capture.json",
+          "markdownSha256": "938cdd23fab56e899075680275c04443c64bf4e72b9c442fafe1eb7ca204d985",
+          "extractorVersion": 2,
+          "summary": "Supporting text and counter guidance specifies purpose, length/display, and limit feedback."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "text-field-error-message",
+      "statement": "For validated fields, replace supporting text with error text to avoid layout shifts. If one error is possible, explain how to avoid it; if several are possible, explain the most likely one. Long errors may wrap when needed, with enough spacing to prevent layout content from being pushed unpredictably.",
+      "condition": "When displaying a validation error.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/text-fields/guidelines",
+          "section": "9ad90554-a793-4506-9075-6812fd7b381a",
+          "capture": "snapshots/material-guidance/20261025T165950.438436046Z-1975238135/capture.json",
+          "markdownSha256": "938cdd23fab56e899075680275c04443c64bf4e72b9c442fafe1eb7ca204d985",
+          "extractorVersion": 2,
+          "summary": "Error guidance specifies replacement, message choice, and long-message spacing."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "text-field-error-icon",
+      "statement": "Strongly consider an error icon in error state to provide a second sensory indication, including for people with visual impairments.",
+      "condition": "When indicating a text-field error.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/text-fields/guidelines",
+          "section": "9d39c75d-9a82-41b0-a25f-6b57d83ed89c",
+          "capture": "snapshots/material-guidance/20261025T165950.438436046Z-1975238135/capture.json",
+          "markdownSha256": "938cdd23fab56e899075680275c04443c64bf4e72b9c442fafe1eb7ca204d985",
+          "extractorVersion": 2,
+          "summary": "Error-icon guidance strongly recommends a second visual indicator."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "text-field-icons-images",
+      "statement": "Icons are optional and may identify input type, expose a nested action such as clear or date-picker access, indicate valid/error input, voice input, or dropdown selection. Clear icons appear only when input exists. Leading/trailing icons mirror in RTL. Images inside fields should be 24dp high. Choose meaningful imagery for the required input.",
+      "condition": "When adding icons or images inside a text field.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/text-fields/guidelines",
+          "section": "5c8a5f07-b1a5-455f-bf76-7ff0d724f6b0",
+          "capture": "snapshots/material-guidance/20261025T165950.438436046Z-1975238135/capture.json",
+          "markdownSha256": "938cdd23fab56e899075680275c04443c64bf4e72b9c442fafe1eb7ca204d985",
+          "extractorVersion": 2,
+          "summary": "Icon/image guidance lists functions, clear-icon condition, RTL behavior, and image height."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "text-field-read-only",
+      "statement": "Style read-only fields like regular text fields while clearly identifying them as read-only.",
+      "condition": "When presenting prefilled, non-editable text.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/text-fields/guidelines",
+          "section": "f572b53d-1a15-4ede-881a-80adbbdc24a5",
+          "capture": "snapshots/material-guidance/20261025T165950.438436046Z-1975238135/capture.json",
+          "markdownSha256": "938cdd23fab56e899075680275c04443c64bf4e72b9c442fafe1eb7ca204d985",
+          "extractorVersion": 2,
+          "summary": "Read-only guidance specifies regular styling and clear status."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "text-field-adaptive-size",
+      "statement": "Use flexible dimensions and set minimum/maximum margins, padding, and container size as layouts grow. Compact fields may span the display width; medium/expanded fields should use flexible margins or containers and must not span the full large screen. Avoid fixed margins/typography in fluid layouts that create excessively long fields.",
+      "condition": "When text fields adapt to larger windows or breakpoints.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/text-fields/guidelines",
+          "section": "e02794db-ef97-4d04-a9bc-3226e28d37b0",
+          "capture": "snapshots/material-guidance/20261025T165950.438436046Z-1975238135/capture.json",
+          "markdownSha256": "938cdd23fab56e899075680275c04443c64bf4e72b9c442fafe1eb7ca204d985",
+          "extractorVersion": 2,
+          "summary": "Adaptive guidance maps compact and larger layouts to width and margin constraints."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "text-field-density-target",
+      "statement": "Do not apply density by default if it lowers targets below 48×48 CSS pixels. If offering density control, keep the controls at least 48×48 CSS pixels so the setting can be reversed.",
+      "condition": "When offering compact text fields or a density option.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/text-fields/guidelines",
+          "section": "3a7ddda6-8c13-4168-8a39-c8af6c4fd6f8",
+          "capture": "snapshots/material-guidance/20261025T165950.438436046Z-1975238135/capture.json",
+          "markdownSha256": "938cdd23fab56e899075680275c04443c64bf4e72b9c442fafe1eb7ca204d985",
+          "extractorVersion": 2,
+          "summary": "Density guidance sets default behavior and reversible control targets."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "text-field-accessible-tasks",
+      "statement": "Assistive-technology users must be able to navigate to and activate a field, enter information, understand supporting/error text, and navigate to and select interactive icons.",
+      "condition": "For accessible text fields.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/text-fields/accessibility",
+          "section": "af499149-18f0-4d6f-88ae-79293260efd1",
+          "capture": "snapshots/material-guidance/20261025T165950.438436046Z-1975238135/capture.json",
+          "markdownSha256": "ac9c49149cc59a6e6a01718743e95dc0ab5723fb410f08c4915028d705d665b4",
+          "extractorVersion": 2,
+          "summary": "Use cases list field and icon tasks."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "text-field-contrast",
+      "statement": "Use fill/stroke changes in both variants to distinguish interaction states. In contexts where needed, ensure an outlined container has at least 3:1 contrast with its background.",
+      "condition": "When a field's visual state or outline contrast needs to be perceived.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/text-fields/accessibility",
+          "section": "bed72f5e-f232-40c9-b215-2fdc2fefdf45",
+          "capture": "snapshots/material-guidance/20261025T165950.438436046Z-1975238135/capture.json",
+          "markdownSha256": "ac9c49149cc59a6e6a01718743e95dc0ab5723fb410f08c4915028d705d665b4",
+          "extractorVersion": 2,
+          "summary": "Accessibility guidance describes state cues and the conditional 3:1 outline contrast target."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "text-field-keyboard",
+      "statement": "Tab moves focus to a non-disabled text field.",
+      "condition": "When keyboard-navigating a form.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/text-fields/accessibility",
+          "section": "9d3e14a2-64f1-4236-bed0-edacd06b490e",
+          "capture": "snapshots/material-guidance/20261025T165950.438436046Z-1975238135/capture.json",
+          "markdownSha256": "ac9c49149cc59a6e6a01718743e95dc0ab5723fb410f08c4915028d705d665b4",
+          "extractorVersion": 2,
+          "summary": "Keyboard table specifies Tab behavior."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "text-field-accessible-labeling",
+      "statement": "Use the field label as the accessibility label and expose the textbox role. Label interactive trailing icons by their function and role; label non-actionable error icons as Error. Give prefix/suffix labels unique IDs and meaningful spoken values. For errors, expose an alert role and include supporting text before error text when both are present. Identify counters with a character-count label and use supporting text as its accessibility label. Include a required-field asterisk in the accessibility label.",
+      "condition": "When exposing text fields, adornments, supporting text, counters, and errors to assistive technology.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/text-fields/accessibility",
+          "section": "101b7337-c788-41c8-8027-7884da77bc89",
+          "capture": "snapshots/material-guidance/20261025T165950.438436046Z-1975238135/capture.json",
+          "markdownSha256": "ac9c49149cc59a6e6a01718743e95dc0ab5723fb410f08c4915028d705d665b4",
+          "extractorVersion": 2,
+          "summary": "Labeling guidance specifies field and adornment labels, roles, IDs, errors, counter, supporting text, and required marker."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

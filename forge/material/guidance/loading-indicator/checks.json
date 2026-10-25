@@ -1,0 +1,723 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "loading-indicator",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/loading-indicator/overview",
+      "capture": "snapshots/material-guidance/20261025T165601.138198331Z-817274925/capture.json",
+      "markdownSha256": "c72c8f93158babadcf063282c1b23919de77c5e3b8c71f12a1989f35128ae298",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Loading indicator",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "8833b644-abad-48d1-b9ef-a2b023ced35b",
+          "title": "Availability & resources",
+          "status": "no-requirements",
+          "notes": "This table reports availability of upstream design kits and framework implementations; it is not an implementation requirement for this project."
+        },
+        {
+          "id": "ec97d10e-5da9-4359-850e-e98af92db394",
+          "title": "M3 Expressive update",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/loading-indicator/specs",
+      "capture": "snapshots/material-guidance/20261025T165601.138198331Z-817274925/capture.json",
+      "markdownSha256": "471c058e00bee0808ef3681ecc99d9d24efbdc19f097d8e076cc4d73eb878efc",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Loading indicator",
+          "status": "no-requirements",
+          "notes": "This is the page title or brief component summary; actionable requirements are recorded in the linked child sections."
+        },
+        {
+          "id": "45a0f1ed-dac4-4667-b474-c96894553a68",
+          "title": "Variants",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "7f1e90c0-2b7c-4309-9601-ec3ee99af879",
+          "title": "Configurations",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "d812399f-ba7c-4775-926a-0a969d1194fa",
+          "title": "Tokens & specs",
+          "status": "no-requirements",
+          "notes": "The section exposes token-set selectors and values; it adds no component behavior beyond the curated checks. Keep token values and references in the source token pipeline."
+        },
+        {
+          "id": "5b729870-c65b-4468-b0db-c0b5b658bf0d",
+          "title": "Anatomy",
+          "status": "unclear",
+          "notes": "The diagram identifies active indicator and container (optional in the guidelines), but the container relationship is visual-only and the image has not been inspected; size and containment rules are captured separately by loading-indicator-default-measurements and use-a-container-when-the-indicator-overlays."
+        },
+        {
+          "id": "583fb58b-dd27-46bc-a8a5-d9efaa1d919c",
+          "title": "Color",
+          "status": "no-requirements",
+          "notes": "The captured Color subsection is empty; the default and contained color-role instructions are recorded by loading-indicator-default-color-role and loading-indicator-contained-color-roles."
+        },
+        {
+          "id": "eaac60dc-8678-4ab1-b675-d1dae3e4b622",
+          "title": "Default",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "131d2f81-7d8e-46a9-94f0-5a021ed9d6bc",
+          "title": "Contained",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "fe4d76e3-1006-4184-9e43-b8e28b20572d",
+          "title": "Measurements",
+          "status": "unclear",
+          "notes": "The 48dp outer size and 38dp shape container are captured by loading-indicator-default-measurements. The diagram’s remaining alignment and shape geometry are uninspected."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/loading-indicator/guidelines",
+      "capture": "snapshots/material-guidance/20261025T165601.138198331Z-817274925/capture.json",
+      "markdownSha256": "c68d965968d1a83cd04fba4b4568f6fb0e6ff2fccbb18f00b9506d209e0e56a1",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Loading indicator",
+          "status": "no-requirements",
+          "notes": "This is the page title or brief component summary; actionable requirements are recorded in the linked child sections."
+        },
+        {
+          "id": "377378aa-1cd3-43b0-9162-12c6e47e559e",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "a6bb9df2-568a-41d4-a4e9-08ac8f844a7d",
+          "title": "Anatomy",
+          "status": "unclear",
+          "notes": "The guidelines diagram labels active indicator and an optional container, but the visual-only relation has not been inspected; container usage and its color role are captured by use-a-container-when-the-indicator-overlays."
+        },
+        {
+          "id": "d8a820ad-c859-4e3e-b12f-fe8e6d246c95",
+          "title": "Active indicator",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "ab02740b-e0ea-4c9c-9a57-6a61d8a4d037",
+          "title": "Container (optional)",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "f67283d3-04da-4f24-a651-c6530219de8f",
+          "title": "Placement",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "c359e905-4449-417e-ba6e-708bbc9b5981",
+          "title": "Responsive layout",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "aaf93f1e-2834-4e63-aa85-cd042f4a3fe3",
+          "title": "Larger windows",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "52f01be3-840e-4c3d-a46c-6eaf8f214245",
+          "title": "Behavior",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "7b5283d5-a353-4045-83a8-793efbed8b52",
+          "title": "Pull-to-refresh",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "0d57aba6-56ac-42bf-80d2-0d77b66893d4",
+          "title": "Threshold requirements",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/loading-indicator/accessibility",
+      "capture": "snapshots/material-guidance/20261025T165601.138198331Z-817274925/capture.json",
+      "markdownSha256": "3890d280f215cc5eb46a6192e7c9f80c7341ba0f6005223a5395ab7463d7ccdf",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Loading indicator",
+          "status": "no-requirements",
+          "notes": "This is the page title or brief component summary; actionable requirements are recorded in the linked child sections."
+        },
+        {
+          "id": "aa327ba8-f71a-44bb-a318-32990dd05fc3",
+          "title": "Use cases",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "91356d89-a3c0-4c88-8af9-dbf582b2bb0d",
+          "title": "Interaction & style",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "ea6606cf-2ccf-4388-ad2e-38f64d846673",
+          "title": "Labeling elements",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "a-loading-indicator-may-appear-inside-a",
+      "statement": "A loading indicator may appear inside a button while its action is in progress.",
+      "condition": "When a button action takes a few seconds.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/loading-indicator/guidelines",
+          "section": "f67283d3-04da-4f24-a651-c6530219de8f",
+          "capture": "snapshots/material-guidance/20261025T165601.138198331Z-817274925/capture.json",
+          "markdownSha256": "c68d965968d1a83cd04fba4b4568f6fb0e6ff2fccbb18f00b9506d209e0e56a1",
+          "extractorVersion": 2,
+          "summary": "Curated from Placement: A loading indicator may appear inside a button while its action is in progress."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "center-the-indicator-on-the-loading-page",
+      "statement": "Center the indicator on the loading page or container; for appended items place it in the empty space where content will appear without covering existing content.",
+      "condition": "When positioning loading feedback.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/loading-indicator/guidelines",
+          "section": "f67283d3-04da-4f24-a651-c6530219de8f",
+          "capture": "snapshots/material-guidance/20261025T165601.138198331Z-817274925/capture.json",
+          "markdownSha256": "c68d965968d1a83cd04fba4b4568f6fb0e6ff2fccbb18f00b9506d209e0e56a1",
+          "extractorVersion": 2,
+          "summary": "Curated from Placement: Center the indicator on the loading page or container; for appended items place it in the empty space where co"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "do-not-transition-a-loading-indicator-into",
+      "statement": "Do not transition a loading indicator into a determinate progress indicator; when progress changes from unknown to known, transition between indeterminate and determinate progress indicators instead.",
+      "condition": "When progress becomes measurable.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/loading-indicator/guidelines",
+          "section": "377378aa-1cd3-43b0-9162-12c6e47e559e",
+          "capture": "snapshots/material-guidance/20261025T165601.138198331Z-817274925/capture.json",
+          "markdownSha256": "c68d965968d1a83cd04fba4b4568f6fb0e6ff2fccbb18f00b9506d209e0e56a1",
+          "extractorVersion": 2,
+          "summary": "Curated from Usage: Do not transition a loading indicator into a determinate progress indicator; when progress changes from unknow"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "expose-a-progressbar-role-and-an-accessible",
+      "statement": "Expose a progressbar role and an accessible label that explains the operation and affected content.",
+      "condition": "When exposing a loading indicator to assistive technology.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/loading-indicator/accessibility",
+          "section": "ea6606cf-2ccf-4388-ad2e-38f64d846673",
+          "capture": "snapshots/material-guidance/20261025T165601.138198331Z-817274925/capture.json",
+          "markdownSha256": "3890d280f215cc5eb46a6192e7c9f80c7341ba0f6005223a5395ab7463d7ccdf",
+          "extractorVersion": 2,
+          "summary": "Curated from Labeling elements: Expose a progressbar role and an accessible label that explains the operation and affected content."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "keep-the-indicator-between-24dp-and-240dp",
+      "statement": "Keep the indicator between 24dp and 240dp, preserve the container-to-active-indicator ratio, and scale it with larger panes without exceeding 240dp.",
+      "condition": "When sizing by placement and breakpoint.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/loading-indicator/guidelines",
+          "section": "c359e905-4449-417e-ba6e-708bbc9b5981",
+          "capture": "snapshots/material-guidance/20261025T165601.138198331Z-817274925/capture.json",
+          "markdownSha256": "c68d965968d1a83cd04fba4b4568f6fb0e6ff2fccbb18f00b9506d209e0e56a1",
+          "extractorVersion": 2,
+          "summary": "Curated from Responsive layout: Keep the indicator between 24dp and 240dp, preserve the container-to-active-indicator ratio, and scale it with"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "loading-indicator-assistive-use-cases",
+      "statement": "People using assistive technology must be able to reach the indicator, understand the progress, and initiate refresh without relying on a gesture.",
+      "condition": "When exposing loading feedback and refresh.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/loading-indicator/accessibility",
+          "section": "aa327ba8-f71a-44bb-a318-32990dd05fc3",
+          "capture": "snapshots/material-guidance/20261025T165601.138198331Z-817274925/capture.json",
+          "markdownSha256": "3890d280f215cc5eb46a6192e7c9f80c7341ba0f6005223a5395ab7463d7ccdf",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Use cases instruction: People using assistive technology must be able to reach the indicator, understand the progress, and initiate r"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "loading-indicator-contained-color-roles",
+      "statement": "For the contained style, use on-primary-container for the active indicator and primary-container for its container.",
+      "condition": "When styling a contained loading indicator.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/loading-indicator/specs",
+          "section": "131d2f81-7d8e-46a9-94f0-5a021ed9d6bc",
+          "capture": "snapshots/material-guidance/20261025T165601.138198331Z-817274925/capture.json",
+          "markdownSha256": "471c058e00bee0808ef3681ecc99d9d24efbdc19f097d8e076cc4d73eb878efc",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Contained rule: For the contained style, use on-primary-container for the active indicator and primary-container for its conta"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "loading-indicator-containment-variants",
+      "statement": "Default and contained loading indicators are M3 Expressive configurations.",
+      "condition": "When exposing loading indicator configuration availability.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/loading-indicator/specs",
+          "section": "7f1e90c0-2b7c-4309-9601-ec3ee99af879",
+          "capture": "snapshots/material-guidance/20261025T165601.138198331Z-817274925/capture.json",
+          "markdownSha256": "471c058e00bee0808ef3681ecc99d9d24efbdc19f097d8e076cc4d73eb878efc",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Configurations rule: Default and contained loading indicators are M3 Expressive configurations."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "loading-indicator-default-color-role",
+      "statement": "Use primary for the active indicator in the default, uncontained style.",
+      "condition": "When styling an uncontained loading indicator.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/loading-indicator/specs",
+          "section": "eaac60dc-8678-4ab1-b675-d1dae3e4b622",
+          "capture": "snapshots/material-guidance/20261025T165601.138198331Z-817274925/capture.json",
+          "markdownSha256": "471c058e00bee0808ef3681ecc99d9d24efbdc19f097d8e076cc4d73eb878efc",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Default rule: Use primary for the active indicator in the default, uncontained style."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "loading-indicator-default-measurements",
+      "statement": "The default loading indicator size is 48dp and its shape container is 38dp.",
+      "condition": "When using the default loading indicator size.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/loading-indicator/specs",
+          "section": "fe4d76e3-1006-4184-9e43-b8e28b20572d",
+          "capture": "snapshots/material-guidance/20261025T165601.138198331Z-817274925/capture.json",
+          "markdownSha256": "471c058e00bee0808ef3681ecc99d9d24efbdc19f097d8e076cc4d73eb878efc",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Measurements prose or table: The default loading indicator size is 48dp and its shape container is 38dp."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "loading-indicator-large-window-scaling",
+      "statement": "Scale the default 48dp indicator upward on larger windows so it remains proportional to surrounding empty space, without exceeding 240dp.",
+      "condition": "When a loading indicator appears in a larger pane or window.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/loading-indicator/guidelines",
+          "section": "aaf93f1e-2834-4e63-aa85-cd042f4a3fe3",
+          "capture": "snapshots/material-guidance/20261025T165601.138198331Z-817274925/capture.json",
+          "markdownSha256": "c68d965968d1a83cd04fba4b4568f6fb0e6ff2fccbb18f00b9506d209e0e56a1",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Larger windows instruction: Scale the default 48dp indicator upward on larger windows so it remains proportional to surrounding empty spac"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "loading-indicators-are-intended-for-processes-under",
+      "statement": "Loading indicators are intended for processes under five seconds, can be contained or uncontained, and are used for pull-to-refresh.",
+      "condition": "When choosing the expressive loading indicator.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/loading-indicator/overview",
+          "section": "ec97d10e-5da9-4359-850e-e98af92db394",
+          "capture": "snapshots/material-guidance/20261025T165601.138198331Z-817274925/capture.json",
+          "markdownSha256": "c72c8f93158babadcf063282c1b23919de77c5e3b8c71f12a1989f35128ae298",
+          "extractorVersion": 2,
+          "summary": "Curated from M3 Expressive update: Loading indicators are intended for processes under five seconds, can be contained or uncontained, and are use"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "maintain-at-least-3-1-contrast-between-the",
+      "statement": "Maintain at least 3:1 contrast between the active indicator and its background or containing component.",
+      "condition": "When selecting indicator colors.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/loading-indicator/accessibility",
+          "section": "91356d89-a3c0-4c88-8af9-dbf582b2bb0d",
+          "capture": "snapshots/material-guidance/20261025T165601.138198331Z-817274925/capture.json",
+          "markdownSha256": "3890d280f215cc5eb46a6192e7c9f80c7341ba0f6005223a5395ab7463d7ccdf",
+          "extractorVersion": 2,
+          "summary": "Curated from Interaction & style: Maintain at least 3:1 contrast between the active indicator and its background or containing component."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "provide-a-single-pointer-refresh-action-in-addition",
+      "statement": "Provide a single-pointer refresh action in addition to swipe; the gesture alone is insufficient for accessible refresh.",
+      "condition": "When pull-to-refresh is available.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/loading-indicator/accessibility",
+          "section": "91356d89-a3c0-4c88-8af9-dbf582b2bb0d",
+          "capture": "snapshots/material-guidance/20261025T165601.138198331Z-817274925/capture.json",
+          "markdownSha256": "3890d280f215cc5eb46a6192e7c9f80c7341ba0f6005223a5395ab7463d7ccdf",
+          "extractorVersion": 2,
+          "summary": "Curated from Interaction & style: Provide a single-pointer refresh action in addition to swipe; the gesture alone is insufficient for accessible"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "pull-to-refresh-support-is-specific-to-jetpack-compose",
+      "statement": "Pull-to-refresh support is specific to Jetpack Compose; use it for dynamic content likely to have new results after refresh.",
+      "condition": "When implementing pull-to-refresh.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/loading-indicator/guidelines",
+          "section": "7b5283d5-a353-4045-83a8-793efbed8b52",
+          "capture": "snapshots/material-guidance/20261025T165601.138198331Z-817274925/capture.json",
+          "markdownSha256": "c68d965968d1a83cd04fba4b4568f6fb0e6ff2fccbb18f00b9506d209e0e56a1",
+          "extractorVersion": 2,
+          "summary": "Curated from Pull-to-refresh: Pull-to-refresh support is specific to Jetpack Compose; use it for dynamic content likely to have new results "
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "pull-to-refresh-threshold-and-lifecycle",
+      "statement": "Require the pull gesture to cross a threshold before refresh begins; reversing past it cancels refresh. Keep the indicator visible until refresh and new content finish or the user leaves.",
+      "condition": "When handling pull-to-refresh.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/loading-indicator/guidelines",
+          "section": "0d57aba6-56ac-42bf-80d2-0d77b66893d4",
+          "capture": "snapshots/material-guidance/20261025T165601.138198331Z-817274925/capture.json",
+          "markdownSha256": "c68d965968d1a83cd04fba4b4568f6fb0e6ff2fccbb18f00b9506d209e0e56a1",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Threshold requirements rule: Require the pull gesture to cross a threshold before refresh begins; reversing past it cancels refresh. Keep t"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "start-refresh-only-after-the-gesture-passes",
+      "statement": "Start refresh only after the gesture passes its threshold; reversing beyond the threshold cancels it. Keep the indicator visible until refresh and new content complete or the user leaves.",
+      "condition": "When handling pull-to-refresh state.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/loading-indicator/guidelines",
+          "section": "0d57aba6-56ac-42bf-80d2-0d77b66893d4",
+          "capture": "snapshots/material-guidance/20261025T165601.138198331Z-817274925/capture.json",
+          "markdownSha256": "c68d965968d1a83cd04fba4b4568f6fb0e6ff2fccbb18f00b9506d209e0e56a1",
+          "extractorVersion": 2,
+          "summary": "Curated from Threshold requirements: Start refresh only after the gesture passes its threshold; reversing beyond the threshold cancels it. Keep the"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-a-container-when-the-indicator-overlays",
+      "statement": "Use a container when the indicator overlays other content, and with pull-to-refresh; omit it directly on a surface. When present, use on-primary-container for the active shape instead of primary.",
+      "condition": "When choosing contained or uncontained presentation.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/loading-indicator/guidelines",
+          "section": "ab02740b-e0ea-4c9c-9a57-6a61d8a4d037",
+          "capture": "snapshots/material-guidance/20261025T165601.138198331Z-817274925/capture.json",
+          "markdownSha256": "c68d965968d1a83cd04fba4b4568f6fb0e6ff2fccbb18f00b9506d209e0e56a1",
+          "extractorVersion": 2,
+          "summary": "Curated from Container (optional): Use a container when the indicator overlays other content, and with pull-to-refresh; omit it directly on a sur"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-a-loading-indicator-for-an-indeterminate",
+      "statement": "Use a loading indicator for an indeterminate wait of 200ms to 5s; show content below 200ms and use a progress indicator above 5s.",
+      "condition": "When selecting feedback by expected duration.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/loading-indicator/guidelines",
+          "section": "377378aa-1cd3-43b0-9162-12c6e47e559e",
+          "capture": "snapshots/material-guidance/20261025T165601.138198331Z-817274925/capture.json",
+          "markdownSha256": "c68d965968d1a83cd04fba4b4568f6fb0e6ff2fccbb18f00b9506d209e0e56a1",
+          "extractorVersion": 2,
+          "summary": "Curated from Usage: Use a loading indicator for an indeterminate wait of 200ms to 5s; show content below 200ms and use a progress "
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-loading-indicators-only-for-ongoing-short",
+      "statement": "Use loading indicators only for ongoing, short, indeterminate processes; they are not decoration and are not for processes that later become determinate.",
+      "condition": "When showing a short wait state.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/loading-indicator/overview",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T165601.138198331Z-817274925/capture.json",
+          "markdownSha256": "c72c8f93158babadcf063282c1b23919de77c5e3b8c71f12a1989f35128ae298",
+          "extractorVersion": 2,
+          "summary": "Curated from Loading indicator: Use loading indicators only for ongoing, short, indeterminate processes; they are not decoration and are not f"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

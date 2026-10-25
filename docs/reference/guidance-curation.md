@@ -63,6 +63,17 @@ Read tables with their headers and row relationships intact. A lost table layout
 or an image description is insufficient evidence for an availability mapping or
 numeric measurement. Mark the relevant section unclear until inspected.
 
+For keyboard and accessibility-label tables, compare every row with the checks.
+Retain each key/action mapping, label/role mapping and platform condition. A broad
+instruction such as “support keyboard navigation” does not cover a shortcut table.
+When another check already covers a row, identify that check in the section notes.
+
+Before calling a table empty, inspect its Markdown rows and captured HTML. Missing
+rows in an extraction are a capture problem, not evidence that the source has no
+requirements. Mark the section unclear and recapture if the saved evidence is
+insufficient. Use a specific reason for each excluded section rather than a list
+of possible reasons copied across unrelated sections.
+
 ## Source history
 
 `sourceHistory` is append-only. Its array position is the one-based source revision

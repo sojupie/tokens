@@ -1,0 +1,2079 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "lists",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/lists/overview",
+      "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+      "markdownSha256": "1f996d7020bbd138653001348c1214148e94ba1516d639039b5e4bbbf0791da8",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Lists",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "5a8fccb0-d8a8-4675-870f-c71a930e9ed6",
+          "title": "Availability & resources",
+          "status": "no-requirements",
+          "notes": "This table reports availability of upstream design kits and framework implementations; it is not an implementation requirement for this project."
+        },
+        {
+          "id": "1e5d1d7c-faca-4b77-80bb-dfdcb36fbeaf",
+          "title": "M3 Expressive update",
+          "status": "no-requirements",
+          "notes": "The new expressive-list recommendation, baseline availability, and feature distinctions are captured by expressive-list-variant-recommendation and expressive-list-segmented-shape; the update adds no separate implementation rule."
+        },
+        {
+          "id": "0d2dff28-83e1-4c09-94b6-d750db2b9911",
+          "title": "Differences from M2 to M3 baseline",
+          "status": "no-requirements",
+          "notes": "This section compares historical M2 and M3 presentation. Current variant and behavior requirements are recorded in the relevant M3 specs and guidelines."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/lists/specs",
+      "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+      "markdownSha256": "728bad8a2521df80ed5df51a31f70a67312dabbf7ec26a2e3e9c1be2b67e1ea4",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Lists",
+          "status": "no-requirements",
+          "notes": "This is the page title or brief component summary; actionable requirements are recorded in the linked child sections."
+        },
+        {
+          "id": "9b21cb71-07e4-4a8c-9f08-7d4c23997a34",
+          "title": "Variants",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "ebf87f58-d5bf-4cb5-a856-d2bb104eec4d",
+          "title": "Expressive lists",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "bdb78358-44e0-4315-be32-3190a27a6963",
+          "title": "Baseline lists",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "131ee791-5acf-45ec-a7a8-3d7ffe9f7731",
+          "title": "Configurations",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "fd09af4c-8e8a-45dd-bdde-71aa5ad6eccb",
+          "title": "Styles",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "30e59f40-329e-4892-a2c5-c63fee32a440",
+          "title": "List selection",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "5b4e7e40-f62b-4724-9d22-201672104ed5",
+          "title": "List interactions",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "f2afa345-6c7d-4681-b011-54d3f1a01338",
+          "title": "Tokens & specs",
+          "status": "no-requirements",
+          "notes": "The selector exposes common tokens combining baseline values with expressive shapes/sizes, plus expand-interaction tokens; list variant and expand/collapse behavior are captured by expressive-list-variant-recommendation and for-expandable-lists-make-the-expansion-control. Token values remain in the token pipeline."
+        },
+        {
+          "id": "490d7aa8-87ce-41a5-9e52-c1d04f6ac8b1",
+          "title": "Anatomy",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "b0426459-87b0-43d0-af39-d29282ac6e08",
+          "title": "Flexibility & slots",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "b0426459-87b0-43d0-af39-d29282ac6e08--slot-accessibility",
+          "title": "Slot accessibility",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "451db58d-9146-4fe4-a920-db1dd5b4286f",
+          "title": "Selection lists",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "1de5026c-503e-469f-bd09-bac37d0e49e6",
+          "title": "Color",
+          "status": "unclear",
+          "notes": "The source enumerates color roles, but their association with individual list-item parts depends on the uninspected color diagram; no role-to-element mapping is inferred."
+        },
+        {
+          "id": "a71d3da0-24fc-4f50-ba7b-72a4fc6bbca9",
+          "title": "States",
+          "status": "no-requirements",
+          "notes": "This parent section defines interaction states and links to focus guidance; actual default and selected expressive state sets are captured by list-default-interaction-states and list-selected-interaction-states."
+        },
+        {
+          "id": "46ecb853-e305-4843-b1d0-b324506f7379",
+          "title": "Default list items",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "ae7ffd6a-3faa-41fc-b4ae-47fe3d408191",
+          "title": "Selected list items",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "1824b94d-7d17-4a29-889f-d277037a1313",
+          "title": "Measurements",
+          "status": "unclear",
+          "notes": "Dynamic icon-button height that fills its list item is captured by list-icon-button-fills-item-height. The alignment grid, item padding and exact size callouts are only in an uninspected diagram."
+        },
+        {
+          "id": "6e157edf-0603-4d4d-bcd4-75b5b7e3d152",
+          "title": "Shape morphing",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "94cf7f4d-fe29-4fab-9aae-a99e9b754329",
+          "title": "List (baseline)",
+          "status": "no-requirements",
+          "notes": "The variant availability, recommendation and web implementation relationship are recorded by checks expressive-list-variant-recommendation, baseline-list-capability-limits, expressive-list-segmented-shape; this subsection repeats those rules."
+        },
+        {
+          "id": "3f4009ca-e3f2-4c8b-9076-f4dea4da620a",
+          "title": "Tokens & specs",
+          "status": "no-requirements",
+          "notes": "The section exposes token-set selectors and values; it adds no component behavior beyond the curated checks. Keep token values and references in the source token pipeline."
+        },
+        {
+          "id": "571ea513-84a1-4e41-8761-33b4797ca119",
+          "title": "Color",
+          "status": "unclear",
+          "notes": "The source enumerates baseline color roles, but their association with individual item parts depends on the uninspected color diagram; no role-to-element mapping is inferred."
+        },
+        {
+          "id": "fecb8ca2-6836-40c1-b280-2d45995d4a24",
+          "title": "States",
+          "status": "unclear",
+          "notes": "The baseline state names appear in the captured illustration listing, but state-layer appearance and any visual distinctions require inspecting the image; the expressive state sets are separately captured by list-default-interaction-states and list-selected-interaction-states."
+        },
+        {
+          "id": "eeeb78e0-265d-4e81-96ba-c2340c348a90",
+          "title": "Layout",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "eeeb78e0-265d-4e81-96ba-c2340c348a90--one-line-lists",
+          "title": "One-line lists",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "129ef830-d120-45fe-94b4-a6b4346a87b4",
+          "title": "Two-line lists",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "583e3432-0dc0-4a18-bfb4-a0924f67891b",
+          "title": "Three-line lists",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "e00879ab-2633-473f-8317-30c96b14645d",
+          "title": "Configurations",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "1ccc96d5-2f90-4e13-a906-c477934b6f9c",
+          "title": "Leading avatar",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "ebd8812e-8149-4447-9236-4ed1ec7075c1",
+          "title": "Leading image or thumbnail",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "ca27e4af-0bda-442e-9b32-f16df92ec72f",
+          "title": "Leading video",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "9783a7a8-b8d2-4c09-ac90-e1a15b25e680",
+          "title": "Leading icon",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "7c9c82da-dbf6-419c-ac26-58626c85544f",
+          "title": "Text-only",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "199a71c6-4975-4978-a1ae-09fa23e2bd20",
+          "title": "Leading checkbox",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "3b66aa37-afac-495e-8b68-70dfff5b13f4",
+          "title": "Leading radio button",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "97c20dde-13ce-4c87-83e9-e944db5e4b16",
+          "title": "Trailing switch",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/lists/guidelines",
+      "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+      "markdownSha256": "3bc8d104f0ff93b5812490b7a18fa95c7f08749bf42f30a53225b269ef5fc319",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Lists",
+          "status": "no-requirements",
+          "notes": "This is the page title or brief component summary; actionable requirements are recorded in the linked child sections."
+        },
+        {
+          "id": "f902aacd-5a8d-4a0e-b7c5-8f5aa6fb5b5c",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "30e9b982-6d57-4163-8514-83761650db9f",
+          "title": "Anatomy",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "e8c36a5c-1c45-4c41-bb70-455935110cbe",
+          "title": "Container",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "78f45322-819b-4dd1-9025-83447e8c4a63",
+          "title": "Label & supporting text",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "4a70041f-f475-4154-8be4-b94a8cce3fcb",
+          "title": "Icons",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "e292ba7d-5d37-41d4-9013-95fd00f86366",
+          "title": "Leading media",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "5fda040b-0123-406a-aeb0-03e70b938d87",
+          "title": "Avatars",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "d9ed28e7-468d-4ce2-923c-14e2ef071f36",
+          "title": "Primary & secondary actions",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "b71ce4c2-4e65-4377-a0ee-6a8d19854656",
+          "title": "Trailing text",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "b40fa0fa-91da-4dd0-baa4-fe4010a7b53c",
+          "title": "Selection controls",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "9e96fd72-5bf3-49df-9baf-e025dcca344d",
+          "title": "Gaps & dividers",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "561cc637-aa43-4055-be1e-0716faeef7af",
+          "title": "Adaptive design",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "0790dbac-b55b-4fcb-a3b4-c67145411c0f",
+          "title": "Line length",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "22789909-84f2-45cb-84c3-219a672929a8",
+          "title": "Adapt list elements & layout",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "f17f8055-f8af-4353-8fe6-8bd9927a866c",
+          "title": "Swap components",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "ba08a173-b88a-41e9-824f-ffd69bb5df60",
+          "title": "Compact breakpoints",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "32649017-f865-4e96-b2e9-f8fecbfff220",
+          "title": "Medium & expanded breakpoints",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "b5697cef-6e9f-4699-ae10-c3f49649593e",
+          "title": "Behavior",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "f6fe9c4e-7498-420a-b820-d12a2b59fc99",
+          "title": "List selection modes",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "e456b5f3-1ca5-48a5-87ec-0bdb7d630294",
+          "title": "Single-select",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "1b2cbe7b-7acf-46da-81b9-0181d40eba1f",
+          "title": "Multi-select",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "3e45f939-457a-44a8-8551-a2354c521d26",
+          "title": "Single-action",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "db85439b-0e67-43b0-a2dc-61395738af64",
+          "title": "Multi-action",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "15d86b83-2bac-4015-84e0-5621c1de4015",
+          "title": "Non-interactive",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "7079b279-2079-4837-b67d-aec230f7bf5b",
+          "title": "List interactions",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "90a236ee-b587-4361-8911-34006f25a6f1",
+          "title": "Expand & collapse",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "01204f7d-ce32-4739-aece-e95db24858c9",
+          "title": "Swipe",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/lists/accessibility",
+      "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+      "markdownSha256": "39e74fd25b5c9884d9502361f903492e6b9903cb05ce3e252ded3a8cdcd84d3a",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Lists",
+          "status": "no-requirements",
+          "notes": "This is the page title or brief component summary; actionable requirements are recorded in the linked child sections."
+        },
+        {
+          "id": "538f23f7-689c-4516-bfc8-5f6933a43f5e",
+          "title": "Use cases",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "fb0cfdee-081e-492b-a9dc-7025826b97ff",
+          "title": "Indicate selection with more than color",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "a6f937f5-3e1f-4db4-ba35-ac6dd9fef140",
+          "title": "Interaction & style",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "acc8777d-79fb-4f61-8f52-2bd0c08098f7",
+          "title": "Touch",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "1a70715d-c84d-4ae7-8053-a4881b3e8653",
+          "title": "Cursor",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "9b784b63-0872-42ab-9035-2735b2359aff",
+          "title": "Keyboard & switch",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "32f5115c-b15e-4af6-8c1a-4807bee2bf7a",
+          "title": "Swipe",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "f7e067e1-722f-40c5-a95a-63929869bf3e",
+          "title": "Focus",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "3aa18ed3-e865-4012-9036-4072ccab1eca",
+          "title": "Single-action lists",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "b69b89a9-7ca0-4249-b25b-2d0c85a41dc0",
+          "title": "Multi-action lists",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "c768c609-fb85-4ba2-a2ac-6834e8191573",
+          "title": "Keyboard navigation",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "31d7a5f8-2eac-47b5-889f-8a684c4e842f",
+          "title": "Labeling elements",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "09e32b7d-78a1-45c1-be12-4c6646cfe1d1",
+          "title": "Platform-specific labels",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "0d0aeed9-c5e2-4ded-bada-912600104dc3",
+          "title": "Single-select lists",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "ae93b729-c334-4d4e-af24-3475d4f1b3c4",
+          "title": "Multi-select lists",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "adapt-list-elements-and-layout-to-available",
+      "statement": "Adapt list elements and layout to available width rather than allowing long lines to reduce readability.",
+      "condition": "When list width changes.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/guidelines",
+          "section": "0790dbac-b55b-4fcb-a3b4-c67145411c0f",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "3bc8d104f0ff93b5812490b7a18fa95c7f08749bf42f30a53225b269ef5fc319",
+          "extractorVersion": 2,
+          "summary": "Curated from Line length: Adapt list elements and layout to available width rather than allowing long lines to reduce readability."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "baseline-list-capability-limits",
+      "statement": "Baseline lists remain available but lack expressive styling, highlighted selection treatment and customizable slots; on web, expressive lists are built on the baseline list implementation.",
+      "condition": "When choosing or maintaining the baseline list variant.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/specs",
+          "section": "bdb78358-44e0-4315-be32-3190a27a6963",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "728bad8a2521df80ed5df51a31f70a67312dabbf7ec26a2e3e9c1be2b67e1ea4",
+          "extractorVersion": 2,
+          "summary": "Curated explicit Baseline lists instruction: Baseline lists remain available but lack expressive styling, highlighted selection treatment and customizable "
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "choose-a-single-selection-mode-for-a",
+      "statement": "Choose a single selection mode for a list and keep interaction behavior consistent.",
+      "condition": "When configuring list selection.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/guidelines",
+          "section": "f6fe9c4e-7498-420a-b820-d12a2b59fc99",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "3bc8d104f0ff93b5812490b7a18fa95c7f08749bf42f30a53225b269ef5fc319",
+          "extractorVersion": 2,
+          "summary": "Curated from List selection modes: Choose a single selection mode for a list and keep interaction behavior consistent."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "communicate-selected-state-with-more-than-color",
+      "statement": "Communicate selected state with more than color alone.",
+      "condition": "When indicating list-item selection.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/accessibility",
+          "section": "fb0cfdee-081e-492b-a9dc-7025826b97ff",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "39e74fd25b5c9884d9502361f903492e6b9903cb05ce3e252ded3a8cdcd84d3a",
+          "extractorVersion": 2,
+          "summary": "Curated from Indicate selection with more than color: Communicate selected state with more than color alone."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "compact-list-navigation",
+      "statement": "In compact windows, extend lists edge-to-edge; selecting an item should open its detail page.",
+      "condition": "When presenting a list on a compact screen.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/guidelines",
+          "section": "ba08a173-b88a-41e9-824f-ffd69bb5df60",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "3bc8d104f0ff93b5812490b7a18fa95c7f08749bf42f30a53225b269ef5fc319",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Compact breakpoints rule: In compact windows, extend lists edge-to-edge; selecting an item should open its detail page."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "expressive-list-segmented-shape",
+      "statement": "Expressive lists use a segmented style with rounded corners.",
+      "condition": "When implementing the M3 Expressive list variant.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/specs",
+          "section": "ebf87f58-d5bf-4cb5-a856-d2bb104eec4d",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "728bad8a2521df80ed5df51a31f70a67312dabbf7ec26a2e3e9c1be2b67e1ea4",
+          "extractorVersion": 2,
+          "summary": "Curated explicit Expressive lists instruction: Expressive lists use a segmented style with rounded corners."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "expressive-list-variant-recommendation",
+      "statement": "Use expressive lists for new designs when flexible styling, highlighted selection states and customizable slots are needed; baseline lists remain available but do not include these features.",
+      "condition": "When selecting baseline or expressive lists by platform.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/specs",
+          "section": "9b21cb71-07e4-4a8c-9f08-7d4c23997a34",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "728bad8a2521df80ed5df51a31f70a67312dabbf7ec26a2e3e9c1be2b67e1ea4",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Variants rule: Use expressive lists for new designs when flexible styling, highlighted selection and customizable slots are n"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "for-expandable-lists-make-the-expansion-control",
+      "statement": "For expandable lists, make the expansion control and resulting content state clear.",
+      "condition": "When a list can expand or collapse.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/guidelines",
+          "section": "90a236ee-b587-4361-8911-34006f25a6f1",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "3bc8d104f0ff93b5812490b7a18fa95c7f08749bf42f30a53225b269ef5fc319",
+          "extractorVersion": 2,
+          "summary": "Curated from Expand & collapse: For expandable lists, make the expansion control and resulting content state clear."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "for-expressive-selected-list-items-use-4dp",
+      "statement": "For expressive selected list items, use 4dp inner and 16dp outer unselected corners; selected items use 16dp corners throughout.",
+      "condition": "When implementing expressive selection shape changes.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/specs",
+          "section": "6e157edf-0603-4d4d-bcd4-75b5b7e3d152",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "728bad8a2521df80ed5df51a31f70a67312dabbf7ec26a2e3e9c1be2b67e1ea4",
+          "extractorVersion": 2,
+          "summary": "Curated from Shape morphing: For expressive selected list items, use 4dp inner and 16dp outer unselected corners; selected items use 16dp c"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "give-the-list-and-interactive-items-accessible",
+      "statement": "Give the list and interactive items accessible names and roles that communicate item content and action.",
+      "condition": "When exposing lists to assistive technology.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/accessibility",
+          "section": "31d7a5f8-2eac-47b5-889f-8a684c4e842f",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "39e74fd25b5c9884d9502361f903492e6b9903cb05ce3e252ded3a8cdcd84d3a",
+          "extractorVersion": 2,
+          "summary": "Curated from Labeling elements: Give the list and interactive items accessible names and roles that communicate item content and action."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "keep-the-container-and-label-text-other",
+      "statement": "Keep the container and label text; other list elements are optional.",
+      "condition": "When composing a list item.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/specs",
+          "section": "490d7aa8-87ce-41a5-9e52-c1d04f6ac8b1",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "728bad8a2521df80ed5df51a31f70a67312dabbf7ec26a2e3e9c1be2b67e1ea4",
+          "extractorVersion": 2,
+          "summary": "Curated from Anatomy: Keep the container and label text; other list elements are optional."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "keep-the-content-slot-widest-and-centered",
+      "statement": "Keep the content slot widest and centered between narrower leading and trailing slots; avoid long content lines. Leading/trailing slots may contain listed visual, selection or action controls.",
+      "condition": "When assigning content to custom slots.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/specs",
+          "section": "b0426459-87b0-43d0-af39-d29282ac6e08",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "728bad8a2521df80ed5df51a31f70a67312dabbf7ec26a2e3e9c1be2b67e1ea4",
+          "extractorVersion": 2,
+          "summary": "Curated from Flexibility & slots: Keep the content slot widest and centered between narrower leading and trailing slots; avoid long content line"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "keep-the-item-s-primary-action-distinct-from",
+      "statement": "Keep the item’s primary action distinct from any secondary actions.",
+      "condition": "When a list item has multiple actions.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/guidelines",
+          "section": "d9ed28e7-468d-4ce2-923c-14e2ef071f36",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "3bc8d104f0ff93b5812490b7a18fa95c7f08749bf42f30a53225b269ef5fc319",
+          "extractorVersion": 2,
+          "summary": "Curated from Primary & secondary actions: Keep the item’s primary action distinct from any secondary actions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "list-adaptive-content-density",
+      "statement": "Across breakpoints, adapt list margins, spacing, density, size and content placement; larger screens can reveal more supporting text or imagery.",
+      "condition": "When the list spans different window sizes.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/guidelines",
+          "section": "22789909-84f2-45cb-84c3-219a672929a8",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "3bc8d104f0ff93b5812490b7a18fa95c7f08749bf42f30a53225b269ef5fc319",
+          "extractorVersion": 2,
+          "summary": "Curated explicit Adapt list elements & layout guidance: Across breakpoints, adapt list margins, spacing, density, size and content placement; larger screens can revea"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "list-assistive-use-cases",
+      "statement": "People using assistive technology must be able to navigate to and select a list item.",
+      "condition": "When list items are accessible and selectable.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/accessibility",
+          "section": "538f23f7-689c-4516-bfc8-5f6933a43f5e",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "39e74fd25b5c9884d9502361f903492e6b9903cb05ce3e252ded3a8cdcd84d3a",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Use cases instruction: People using assistive technology must be able to navigate to and select a list item."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "list-avatar-versus-content-image-shape",
+      "statement": "Use an expressive circular avatar for a person or entity; use square or rectangular images for products, videos or other content.",
+      "condition": "When choosing a list image shape.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/guidelines",
+          "section": "5fda040b-0123-406a-aeb0-03e70b938d87",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "3bc8d104f0ff93b5812490b7a18fa95c7f08749bf42f30a53225b269ef5fc319",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Avatars instruction: Use an expressive circular avatar for a person or entity; use square or rectangular images for products, video"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "list-default-interaction-states",
+      "statement": "Default expressive list items support enabled, disabled, hovered, focused, pressed and dragged states.",
+      "condition": "When implementing default expressive list items.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/specs",
+          "section": "46ecb853-e305-4843-b1d0-b324506f7379",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "728bad8a2521df80ed5df51a31f70a67312dabbf7ec26a2e3e9c1be2b67e1ea4",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Default list items rule: Default expressive list items support enabled, disabled, hovered, focused, pressed and dragged states."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "list-detail-layout-on-large-windows",
+      "statement": "At medium or expanded breakpoints, show list and primary/secondary detail content together when useful; lists may become carousels or reveal more item content as they expand.",
+      "condition": "When adapting a list to medium or expanded layouts.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/guidelines",
+          "section": "32649017-f865-4e96-b2e9-f8fecbfff220",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "3bc8d104f0ff93b5812490b7a18fa95c7f08749bf42f30a53225b269ef5fc319",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Medium & expanded breakpoints rule: At medium or expanded breakpoints, show list and primary/secondary detail content together when useful; lists "
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "list-group-spacing",
+      "statement": "Use spacing and dividers to group related list items without reducing scannability.",
+      "condition": "When separating list groups.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/guidelines",
+          "section": "9e96fd72-5bf3-49df-9baf-e025dcca344d",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "3bc8d104f0ff93b5812490b7a18fa95c7f08749bf42f30a53225b269ef5fc319",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Gaps & dividers rule: Use spacing and dividers to group related list items without reducing scannability."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "list-icon-consistency",
+      "statement": "Use recognizable icons and keep icon usage consistent across items in the same list.",
+      "condition": "When including icons in list items.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/guidelines",
+          "section": "4a70041f-f475-4154-8be4-b94a8cce3fcb",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "3bc8d104f0ff93b5812490b7a18fa95c7f08749bf42f30a53225b269ef5fc319",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Icons rule: Use recognizable icons and keep icon usage consistent across items in the same list."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "list-item-height-and-image-color",
+      "statement": "Set list-item height from its tallest element; when an item includes an image, consider a content-based container color scheme for enabled or interactive states.",
+      "condition": "When sizing an item with mixed-height content or imagery.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/guidelines",
+          "section": "e8c36a5c-1c45-4c41-bb70-455935110cbe",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "3bc8d104f0ff93b5812490b7a18fa95c7f08749bf42f30a53225b269ef5fc319",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Container rule: Set list-item height from its tallest element; when an item includes an image, consider a content-based contai"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "list-item-primary-action-area",
+      "statement": "In multi-action items, reserve most leading and content space for the primary action; place supplementary actions at the trailing edge.",
+      "condition": "When an item has multiple actions.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/guidelines",
+          "section": "d9ed28e7-468d-4ce2-923c-14e2ef071f36",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "3bc8d104f0ff93b5812490b7a18fa95c7f08749bf42f30a53225b269ef5fc319",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Primary & secondary actions rule: In multi-action items, reserve most leading and content space for the primary action; place supplementary acti"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "list-keyboard-and-switch-access",
+      "statement": "Make list actions operable with keyboard and switch access, preserving predictable focus and item roles.",
+      "condition": "When list items are interactive.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/accessibility",
+          "section": "9b784b63-0872-42ab-9035-2735b2359aff",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "39e74fd25b5c9884d9502361f903492e6b9903cb05ce3e252ded3a8cdcd84d3a",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Keyboard & switch rule: Make list actions operable with keyboard and switch access, preserving predictable focus and item roles."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "list-label-and-supporting-text-limits",
+      "statement": "Keep label text brief; limit supporting text to one to three lines and truncate it according to screen size.",
+      "condition": "When writing list item text.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/guidelines",
+          "section": "78f45322-819b-4dd1-9025-83447e8c4a63",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "3bc8d104f0ff93b5812490b7a18fa95c7f08749bf42f30a53225b269ef5fc319",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Label & supporting text rule: Keep label text brief; limit supporting text to one to three lines and truncate it according to screen size."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "list-leading-media-and-video-placement",
+      "statement": "Place avatars, images and video thumbnails at the leading edge, not the center, to preserve scanning; leading video may open a player or play within the list.",
+      "condition": "When adding media to a list item.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/guidelines",
+          "section": "e292ba7d-5d37-41d4-9013-95fd00f86366",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "3bc8d104f0ff93b5812490b7a18fa95c7f08749bf42f30a53225b269ef5fc319",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Leading media instruction: Place avatars, images and video thumbnails at the leading edge, not the center, to preserve scanning; leading "
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "list-readable-line-length",
+      "statement": "In fluid layouts, adjust margins, typography or columns to avoid overly long lines; aim for 40–60 characters and allow up to 120 on large screens, increasing line height near 120 characters.",
+      "condition": "When list text reflows across window sizes.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/guidelines",
+          "section": "0790dbac-b55b-4fcb-a3b4-c67145411c0f",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "3bc8d104f0ff93b5812490b7a18fa95c7f08749bf42f30a53225b269ef5fc319",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Line length rule: In fluid layouts, adjust margins, typography or columns to avoid overly long lines; aim for 40–60 characters a"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "list-responsive-content-density",
+      "statement": "Reduce information shown at compact breakpoints; at expanded sizes, a compact list may become two columns and expose more item details.",
+      "condition": "When adapting a text-heavy list across breakpoints.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/guidelines",
+          "section": "0790dbac-b55b-4fcb-a3b4-c67145411c0f",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "3bc8d104f0ff93b5812490b7a18fa95c7f08749bf42f30a53225b269ef5fc319",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Line length rule: Reduce information shown at compact breakpoints; at expanded sizes, a compact list may become two columns and "
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "list-selected-interaction-states",
+      "statement": "Selected expressive list items support enabled, disabled, hovered, focused, pressed and dragged states.",
+      "condition": "When implementing selected expressive list items.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/specs",
+          "section": "ae7ffd6a-3faa-41fc-b4ae-47fe3d408191",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "728bad8a2521df80ed5df51a31f70a67312dabbf7ec26a2e3e9c1be2b67e1ea4",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Selected list items rule: Selected expressive list items support enabled, disabled, hovered, focused, pressed and dragged states."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "list-selection-control-placement",
+      "statement": "Place selection controls at the leading or trailing end: use checkboxes for multiple selection, switches for settings, and radio buttons for single selection.",
+      "condition": "When adding selection controls to a list item.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/guidelines",
+          "section": "b40fa0fa-91da-4dd0-baa4-fe4010a7b53c",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "3bc8d104f0ff93b5812490b7a18fa95c7f08749bf42f30a53225b269ef5fc319",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Selection controls rule: Place selection controls at the leading or trailing end: use checkboxes for multiple selection, switches for s"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "list-selection-modes-are-exclusive",
+      "statement": "A list can have one selection mode at a time; a list cannot combine single-action, multi-action, single-select or multi-select modes.",
+      "condition": "When configuring list selection or action behavior.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/specs",
+          "section": "30e59f40-329e-4892-a2c5-c63fee32a440",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "728bad8a2521df80ed5df51a31f70a67312dabbf7ec26a2e3e9c1be2b67e1ea4",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit List selection rule: A list can have one selection mode at a time; a list cannot combine single-action, multi-action, single-select"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "list-slot-accessibility-and-targets",
+      "statement": "Custom slots are not accessible by default; preserve list interaction structure, standard padding and targets of at least 48×48dp, and avoid interactive content that makes screen-reader navigation difficult.",
+      "condition": "When implementing custom list slots.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/specs",
+          "section": "b0426459-87b0-43d0-af39-d29282ac6e08--slot-accessibility",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "728bad8a2521df80ed5df51a31f70a67312dabbf7ec26a2e3e9c1be2b67e1ea4",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Slot accessibility rule: Custom slots are not accessible by default; preserve list interaction structure, standard padding and targets "
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "list-slot-order-and-width",
+      "statement": "Keep leading and trailing slots narrower than the middle content slot; the content slot must be the widest and may contain default text and simple add-ons. Avoid long text lines.",
+      "condition": "When assigning content to custom list slots.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/specs",
+          "section": "b0426459-87b0-43d0-af39-d29282ac6e08",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "728bad8a2521df80ed5df51a31f70a67312dabbf7ec26a2e3e9c1be2b67e1ea4",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Flexibility & slots rule: Keep leading and trailing slots narrower than the middle content slot; the content slot must be the widest and"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "list-style-behavior-neutrality",
+      "statement": "Standard and segmented list styles are visual choices and do not change list behavior.",
+      "condition": "When selecting the list’s visual style.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/specs",
+          "section": "fd09af4c-8e8a-45dd-bdde-71aa5ad6eccb",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "728bad8a2521df80ed5df51a31f70a67312dabbf7ec26a2e3e9c1be2b67e1ea4",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Styles rule: Standard and segmented list styles are visual choices and do not change list behavior."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "list-swipe-accessibility-alternative",
+      "statement": "Do not make swipe the only way to reveal or operate an item action; provide an accessible way to reach the action.",
+      "condition": "When using swipe-to-reveal interactions.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/accessibility",
+          "section": "32f5115c-b15e-4af6-8c1a-4807bee2bf7a",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "39e74fd25b5c9884d9502361f903492e6b9903cb05ce3e252ded3a8cdcd84d3a",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Swipe rule: Do not make swipe the only way to reveal or operate an item action; provide an accessible way to reach the act"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "list-swipe-platform-support",
+      "statement": "Expand/collapse and swipe-to-reveal are documented list interactions, but swipe-to-reveal is supported only on Android Views; do not make swipe the only way to reach a revealed action.",
+      "condition": "When selecting list interactions for a platform.",
+      "basis": "explicit",
+      "notes": "The specs enumerate expand/collapse and swipe-to-reveal and limit swipe-to-reveal support to Android Views. The separate check list-swipe-accessibility-alternative preserves the requirement to provide another accessible way to reach the action.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/specs",
+          "section": "5b4e7e40-f62b-4724-9d22-201672104ed5",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "728bad8a2521df80ed5df51a31f70a67312dabbf7ec26a2e3e9c1be2b67e1ea4",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit List interactions rule: Expand/collapse and swipe-to-reveal are listed interactions; swipe-to-reveal is available only on Android View"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "list-to-card-or-carousel-adaptation",
+      "statement": "At larger breakpoints, consider replacing a compact list with a similarly purposed card or carousel component to use the available space.",
+      "condition": "When adapting a list for a larger breakpoint.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/guidelines",
+          "section": "f17f8055-f8af-4353-8fe6-8bd9927a866c",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "3bc8d104f0ff93b5812490b7a18fa95c7f08749bf42f30a53225b269ef5fc319",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Swap components rule: At larger breakpoints, consider replacing a compact list with a similarly purposed card or carousel component "
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "list-touch-interaction-feedback",
+      "statement": "Ensure touch interaction provides the selection or action feedback specified for the item.",
+      "condition": "When interacting with list items by touch.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/accessibility",
+          "section": "acc8777d-79fb-4f61-8f52-2bd0c08098f7",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "39e74fd25b5c9884d9502361f903492e6b9903cb05ce3e252ded3a8cdcd84d3a",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Touch rule: Ensure touch interaction provides the selection or action feedback specified for the item."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "list-trailing-text-purpose",
+      "statement": "Use trailing text for supplemental item metadata such as price, count or date.",
+      "condition": "When including trailing text.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/guidelines",
+          "section": "b71ce4c2-4e65-4377-a0ee-6a8d19854656",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "3bc8d104f0ff93b5812490b7a18fa95c7f08749bf42f30a53225b269ef5fc319",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Trailing text instruction: Use trailing text for supplemental item metadata such as price, count or date."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "make-interactive-list-items-and-controls-keyboard",
+      "statement": "For list keyboard navigation, Tab moves focus to the first or last list item or outside the list; Down/Right moves to the next item and wraps to the top; Up/Left moves to the previous item and wraps to the bottom; Space/Enter selects an item that is not already selected.",
+      "condition": "When list items are interactive.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/accessibility",
+          "section": "c768c609-fb85-4ba2-a2ac-6834e8191573",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "39e74fd25b5c9884d9502361f903492e6b9903cb05ce3e252ded3a8cdcd84d3a",
+          "extractorVersion": 2,
+          "summary": "Curated from Keyboard navigation: Make interactive list items and controls keyboard reachable and operable."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "multi-action-list-accessibility",
+      "statement": "For a multi-action item, keep each action independently reachable and named while preserving a clear primary action.",
+      "condition": "When exposing multiple actions in a list item.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/accessibility",
+          "section": "b69b89a9-7ca0-4249-b25b-2d0c85a41dc0",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "39e74fd25b5c9884d9502361f903492e6b9903cb05ce3e252ded3a8cdcd84d3a",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Multi-action lists rule: For a multi-action item, keep each action independently reachable and named while preserving a clear primary a"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "multi-action-list-keyboard-actions",
+      "statement": "For multi-action list items, Tab focuses the first element; Down/Right moves to the next focusable action, or the next item’s first action; Up/Left moves to the previous action, and from an item’s first action moves to the previous item’s last action; Space/Enter activates the focused action.",
+      "condition": "When a list item has multiple actions.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/accessibility",
+          "section": "b69b89a9-7ca0-4249-b25b-2d0c85a41dc0",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "39e74fd25b5c9884d9502361f903492e6b9903cb05ce3e252ded3a8cdcd84d3a",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Multi-action lists instruction: Allow keyboard users to reach and activate the list item’s primary and nested secondary actions independently."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "multi-action-list-primary-and-secondary-areas",
+      "statement": "In a multi-action item, give the primary action most of the leading and content area; place supplementary actions such as bookmark or menu at the trailing edge.",
+      "condition": "When a list item supports multiple actions.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/guidelines",
+          "section": "db85439b-0e67-43b0-a2dc-61395738af64",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "3bc8d104f0ff93b5812490b7a18fa95c7f08749bf42f30a53225b269ef5fc319",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Multi-action rule: In a multi-action item, give the primary action most of the leading and content area; place supplementary acti"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "multi-select-list-accessibility-semantics",
+      "statement": "For multi-select lists, Web exposes the container as a List box and each item as an Option, with selected/not-selected state; label the container with the selection type and each item with visible text. Android Views exposes each item as a Checkbox with checked/not-checked state and labels nested controls by their own guidance. Jetpack Compose exposes the whole item as a Checkbox with checked/not-checked state.",
+      "condition": "When exposing a multi-select list across supported platforms.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/accessibility",
+          "section": "ae93b729-c334-4d4e-af24-3475d4f1b3c4",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "39e74fd25b5c9884d9502361f903492e6b9903cb05ce3e252ded3a8cdcd84d3a",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Multi-select lists instruction: For web, label the list container with the selection type and expose it as a List box; label each item with vi"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "multi-select-list-control-limits",
+      "statement": "A multi-select list may use checkboxes or switches, but items must not have nested secondary actions and must not use radio buttons.",
+      "condition": "When configuring multiple selection in a list.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/guidelines",
+          "section": "1b2cbe7b-7acf-46da-81b9-0181d40eba1f",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "3bc8d104f0ff93b5812490b7a18fa95c7f08749bf42f30a53225b269ef5fc319",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Multi-select rule: A multi-select list may use checkboxes or switches, but items must not have nested secondary actions and must "
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "non-interactive-list-is-not-selectable",
+      "statement": "Use a non-interactive list to organize scannable information; its items do not perform actions and cannot be selected. For a non-selectable list, expose the label text without an interactive role.",
+      "condition": "When a list presents information only.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/guidelines",
+          "section": "15d86b83-2bac-4015-84e0-5621c1de4015",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "3bc8d104f0ff93b5812490b7a18fa95c7f08749bf42f30a53225b269ef5fc319",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Non-interactive rule: Use a non-interactive list to organize scannable information; its items do not perform actions and cannot be s"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "single-action-list-accessibility",
+      "statement": "Expose a single-action item as one actionable target; do not add nested targets that split its action.",
+      "condition": "When exposing a single-action item to assistive technology.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/accessibility",
+          "section": "3aa18ed3-e865-4012-9036-4072ccab1eca",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "39e74fd25b5c9884d9502361f903492e6b9903cb05ce3e252ded3a8cdcd84d3a",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Single-action lists rule: Expose a single-action item as one actionable target; do not add nested targets that split its action."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "single-action-list-interaction-limits",
+      "statement": "In a single-action list, the whole item performs one action and cannot contain nested secondary actions or retain a toggled selection state.",
+      "condition": "When each list item performs one action, such as navigation.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/guidelines",
+          "section": "3e45f939-457a-44a8-8551-a2354c521d26",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "3bc8d104f0ff93b5812490b7a18fa95c7f08749bf42f30a53225b269ef5fc319",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Single-action rule: In a single-action list, the whole item performs one action and cannot contain nested secondary actions or ret"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "single-action-list-keyboard-focus-and-activation",
+      "statement": "When focus enters a single-action list, focus the selected item if one exists or otherwise the first item; allow arrow-key movement and Space or Enter activation.",
+      "condition": "When a single-action list receives keyboard focus.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/accessibility",
+          "section": "3aa18ed3-e865-4012-9036-4072ccab1eca",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "39e74fd25b5c9884d9502361f903492e6b9903cb05ce3e252ded3a8cdcd84d3a",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Single-action lists instruction: When focus enters a single-action list, focus the selected item if one exists or otherwise the first item; all"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "single-select-list-accessibility-semantics",
+      "statement": "For single-select lists, Web exposes the container as a List box and each item as an Option, with selected/not-selected state; label the container with the selection type and each item with visible text. Android Views exposes each item as a Radio button with checked/not-checked state. Jetpack Compose exposes the whole item as a Radio button with checked/not-checked state.",
+      "condition": "When exposing a single-select list across supported platforms.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/accessibility",
+          "section": "0d0aeed9-c5e2-4ded-bada-912600104dc3",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "39e74fd25b5c9884d9502361f903492e6b9903cb05ce3e252ded3a8cdcd84d3a",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Single-select lists instruction: For web, label the list container with the selection type and expose it as a List box; label each item with vi"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "single-select-list-interaction-limits",
+      "statement": "A single-select list may use radio buttons, but items must not have multi-actions or nested secondary actions and must not use checkboxes.",
+      "condition": "When configuring single selection in a list.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/guidelines",
+          "section": "e456b5f3-1ca5-48a5-87ec-0bdb7d630294",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "3bc8d104f0ff93b5812490b7a18fa95c7f08749bf42f30a53225b269ef5fc319",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Single-select rule: A single-select list may use radio buttons, but items must not have multi-actions or nested secondary actions "
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "swipe-to-reveal-is-platform-specific-use-it-only-where",
+      "statement": "Swipe-to-reveal is platform-specific; use it only where supported and keep revealed actions discoverable.",
+      "condition": "When using swipe-to-reveal.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/guidelines",
+          "section": "01204f7d-ce32-4739-aece-e95db24858c9",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "3bc8d104f0ff93b5812490b7a18fa95c7f08749bf42f30a53225b269ef5fc319",
+          "extractorVersion": 2,
+          "summary": "Curated from Swipe: Swipe-to-reveal is platform-specific; use it only where supported and keep revealed actions discoverable."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-custom-slots-only-when-the-implementation",
+      "statement": "Use custom slots only when the implementation can maintain list accessibility and behavior; slot content must follow list interaction patterns, standard padding and a minimum 48×48dp target.",
+      "condition": "When using custom list slots.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/specs",
+          "section": "b0426459-87b0-43d0-af39-d29282ac6e08",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "728bad8a2521df80ed5df51a31f70a67312dabbf7ec26a2e3e9c1be2b67e1ea4",
+          "extractorVersion": 2,
+          "summary": "Curated from Flexibility & slots: Use custom slots only when the implementation can maintain list accessibility and behavior; slot content must "
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-gaps-or-dividers-to-create-meaningful",
+      "statement": "Use gaps or dividers to create meaningful groups; do not treat each item as an isolated group.",
+      "condition": "When visually separating list items.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/guidelines",
+          "section": "9e96fd72-5bf3-49df-9baf-e025dcca344d",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "3bc8d104f0ff93b5812490b7a18fa95c7f08749bf42f30a53225b269ef5fc319",
+          "extractorVersion": 2,
+          "summary": "Curated from Gaps & dividers: Use gaps or dividers to create meaningful groups; do not treat each item as an isolated group."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-lists-to-help-people-find-and",
+      "statement": "Use lists to help people find and act on a specific item; order items logically, keep them short and scannable, keep icons/text/actions consistent, and choose standard or segmented styling.",
+      "condition": "When presenting a set of related items.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/overview",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "1f996d7020bbd138653001348c1214148e94ba1516d639039b5e4bbbf0791da8",
+          "extractorVersion": 2,
+          "summary": "Curated from Lists: Use lists to help people find and act on a specific item; order items logically, keep them short and scannable"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-lists-to-help-people-find-and-usage",
+      "statement": "Use lists to help people find and act on a specific item; keep items short, logically ordered, scannable and consistently formatted.",
+      "condition": "When designing a list.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/guidelines",
+          "section": "f902aacd-5a8d-4a0e-b7c5-8f5aa6fb5b5c",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "3bc8d104f0ff93b5812490b7a18fa95c7f08749bf42f30a53225b269ef5fc319",
+          "extractorVersion": 2,
+          "summary": "Curated from Usage: Use lists to help people find and act on a specific item; keep items short, logically ordered, scannable and c"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-only-one-selection-interaction-in-each",
+      "statement": "Use only one selection interaction in each list item.",
+      "condition": "When adding selection controls to a list item.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/specs",
+          "section": "451db58d-9146-4fe4-a920-db1dd5b4286f",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "728bad8a2521df80ed5df51a31f70a67312dabbf7ec26a2e3e9c1be2b67e1ea4",
+          "extractorVersion": 2,
+          "summary": "Curated from Selection lists: Use only one selection interaction in each list item."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-only-one-selection-mode-per-list",
+      "statement": "Use only one selection mode per list; single-action, multi-action, single-select and multi-select are distinct configurations.",
+      "condition": "When configuring list interactions.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/specs",
+          "section": "30e59f40-329e-4892-a2c5-c63fee32a440",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "728bad8a2521df80ed5df51a31f70a67312dabbf7ec26a2e3e9c1be2b67e1ea4",
+          "extractorVersion": 2,
+          "summary": "Curated from List selection: Use only one selection mode per list; single-action, multi-action, single-select and multi-select are distinct"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "baseline-list-availability-by-generation",
+      "statement": "Baseline lists remain available in M3 but are not recommended in M3 Expressive; expressive lists are available in M3 Expressive and are built on baseline lists on web.",
+      "condition": "When selecting a list implementation across Material generations and platforms.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/specs",
+          "section": "bdb78358-44e0-4315-be32-3190a27a6963",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "728bad8a2521df80ed5df51a31f70a67312dabbf7ec26a2e3e9c1be2b67e1ea4",
+          "extractorVersion": 2,
+          "summary": "Curated the Baseline lists prose and generation/platform availability table."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "list-anatomy-required-and-optional-elements",
+      "statement": "Keep the list container and label text; supporting text, trailing text/icon/selection control, and leading avatar, icon or media are optional.",
+      "condition": "When composing a list item.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/lists/guidelines",
+          "section": "30e9b982-6d57-4163-8514-83761650db9f",
+          "capture": "snapshots/material-guidance/20261025T165540.964885163Z-2725188629/capture.json",
+          "markdownSha256": "3bc8d104f0ff93b5812490b7a18fa95c7f08749bf42f30a53225b269ef5fc319",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Anatomy required/optional element list."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

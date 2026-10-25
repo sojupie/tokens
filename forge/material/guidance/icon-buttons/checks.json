@@ -1,0 +1,965 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "icon-buttons",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/icon-buttons/overview",
+      "capture": "snapshots/material-guidance/20261025T165533.620083998Z-33501756/capture.json",
+      "markdownSha256": "72076869099396cf662bd34b0840b7c73d1e5f67e4c4e1f6528d96152d90fa26",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Icon buttons",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "78f2444d-85db-43e2-9525-925fcbed2a69",
+          "title": "Availability & resources",
+          "status": "no-requirements",
+          "notes": "This table reports availability of upstream design kits and framework implementations; it is not an implementation requirement for this project."
+        },
+        {
+          "id": "2b896f19-5143-4e9a-aff7-2ff3f733fdec",
+          "title": "M3 Expressive update",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "2b6c1c27-5653-4f34-ae37-5da3f42182d3",
+          "title": "Differences from M2",
+          "status": "no-requirements",
+          "notes": "This section compares historical M2 and M3 presentation. Current variant and behavior requirements are recorded in the relevant M3 specs and guidelines."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/icon-buttons/specs",
+      "capture": "snapshots/material-guidance/20261025T165533.620083998Z-33501756/capture.json",
+      "markdownSha256": "68cb1a0538b0d497a42d99b379c1b37da935e5e386ae090226aa84286e762dbb",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Icon buttons",
+          "status": "no-requirements",
+          "notes": "This is the page title or brief component summary; actionable requirements are recorded in the linked child sections."
+        },
+        {
+          "id": "c2a5b845-c705-4bf3-83ad-6c99f25cb408",
+          "title": "Variants",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "d4169fb5-4cf8-40b6-9ec3-4044f09cca1f",
+          "title": "Configurations",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "03082274-5ab2-4126-8798-49aecdbf016d",
+          "title": "Tokens & specs",
+          "status": "no-requirements",
+          "notes": "The section exposes token-set selectors and values; it adds no component behavior beyond the curated checks. Keep token values and references in the source token pipeline."
+        },
+        {
+          "id": "0c8b2120-4cc4-49f9-8725-672f18abff03",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "The diagram only labels icon and container; visual-separation behavior is captured by icon-button-container-separation and the container role is represented in the color-role checks."
+        },
+        {
+          "id": "c2395d0f-1811-45bc-ad2b-28a614f0fef4",
+          "title": "Color",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "85a97a97-cf43-44b5-8500-220198e3539e",
+          "title": "States",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "5d552590-df19-498f-9a8a-8ab143c11624",
+          "title": "Filled button states",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "5d552590-df19-498f-9a8a-8ab143c11624--default",
+          "title": "Default",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "4d28fee3-1c52-4579-8767-b071ecaad4b0",
+          "title": "Toggle",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "5a786bd0-f847-40e6-8fd0-de6a1246248b",
+          "title": "Tonal button states",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "5a786bd0-f847-40e6-8fd0-de6a1246248b--default",
+          "title": "Default",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "d0a8d15a-f5dd-4f26-9620-3aa84efea70a",
+          "title": "Toggle",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "3f596594-a4f2-48e8-b48e-e6af54603883",
+          "title": "Outlined button states",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "3f596594-a4f2-48e8-b48e-e6af54603883--default",
+          "title": "Default",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "8e58218c-8949-4769-8e17-6e1708a7daa2",
+          "title": "Toggle",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "93c44155-79b2-4075-b020-ea0180551333",
+          "title": "Standard icon button states",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "d5ca6065-1b87-4df9-a544-f8cb956134c6",
+          "title": "Default",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "baf0bf37-a951-425c-ad89-93307fec9acf",
+          "title": "Toggle",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "1740e547-6b5b-4b1d-96a7-84c45e7c3097",
+          "title": "Shape morph",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "78d6565f-d4d2-445b-9502-0ae0bea26693",
+          "title": "Pressed state",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "01c06c21-52cd-4b84-a80c-49ee55b61d6f",
+          "title": "When selected",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "c2d79537-2f48-4fa3-8241-27a5a46a6ecb",
+          "title": "Measurements",
+          "status": "unclear",
+          "notes": "The textual XS–XL icon sizes and corner-radius values are captured by choose-among-xs-32dp-s-40dp-m and icon-button-corner-radii. The diagram also shows default/narrow/wide container widths and relationships that are not readable from the captured text, so the full measurement set remains unresolved."
+        },
+        {
+          "id": "75b8a4aa-88e1-4de2-8158-4f674bfffa61",
+          "title": "Target sizes",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "b3df1f02-d313-44e9-9542-37f7e0e24dc7",
+          "title": "Button corner radius",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "756898d3-b2bc-4bee-b499-34c4606af353",
+          "title": "Baseline tokens",
+          "status": "no-requirements",
+          "notes": "This baseline token selector marks filled, tonal and outlined token sets deprecated; other token sets remain available in the module. This is upstream token-set lifecycle, not a new component behavior requirement, and token values remain in the token pipeline."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/icon-buttons/guidelines",
+      "capture": "snapshots/material-guidance/20261025T165533.620083998Z-33501756/capture.json",
+      "markdownSha256": "fa56efb95411030efd230587c361ee79ca7747e917511c1d6ff178ecfd2a9c40",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Icon buttons",
+          "status": "no-requirements",
+          "notes": "This is the page title or brief component summary; actionable requirements are recorded in the linked child sections."
+        },
+        {
+          "id": "458a5d9e-b63e-44e7-8095-108af03a7233",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "de4fe602-3bb4-4f55-ac12-8657551eaf9f",
+          "title": "Color",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "f0a73db0-781a-491a-901c-36df03c759b5",
+          "title": "Size & width",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "1f6f6121-e403-4d82-aa6a-5ab276f4bc4c",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "The anatomy diagram only labels icon and container; source-specific visual separation is covered by icon-button-container-separation and accessible naming/activation by icon-button-assistive-use-cases."
+        },
+        {
+          "id": "fc319c80-cdca-457a-bf78-eabb00016ef3",
+          "title": "Icon",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "41ab76ac-c461-4f62-9532-a0075ceed78d",
+          "title": "Icon accessibility requirements",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "33fb9772-a504-4988-8e25-872c0818ddcb",
+          "title": "Container",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "ad104570-3fae-4773-95f5-4c82885b2beb",
+          "title": "Placement",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "b5376fb6-4500-40ab-824a-e63702d963a7",
+          "title": "Behavior",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "47fcd0ba-4390-4d5f-8fe3-905c5795c47f",
+          "title": "Hover",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "a8c84348-4765-4d1d-b366-feda421cd82d",
+          "title": "Selection",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/icon-buttons/accessibility",
+      "capture": "snapshots/material-guidance/20261025T165533.620083998Z-33501756/capture.json",
+      "markdownSha256": "a5a4f32e7461ea2ce2c259506862584078e8b6c1571403f5e720bb6cf5dedd24",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Icon buttons",
+          "status": "no-requirements",
+          "notes": "This is the page title or brief component summary; actionable requirements are recorded in the linked child sections."
+        },
+        {
+          "id": "d96aea1d-70f6-4f66-8d59-c002a782c57d",
+          "title": "Use cases",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "20d164cd-c111-470f-824f-3be6ba242625",
+          "title": "Interaction & style",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "449f6cb3-2515-41b8-99ea-39b6e348c475",
+          "title": "Keyboard navigation",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "a5b945ae-d453-424b-ae70-e008a5ebfdd1",
+          "title": "Labeling elements",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "a1b53ff0-0705-4514-a938-ed2ef31b3213",
+          "title": "Layout & density",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "3b452053-f73a-4f4b-bc69-42ac53b99363",
+          "title": "Avoid applying density by default",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "cab255ae-30d8-41fd-aa6f-e45048f1a5d7",
+          "title": "Hover",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "choose-among-xs-32dp-s-40dp-m",
+      "statement": "Choose among XS 32dp, S 40dp, M 56dp, L 96dp and XL 136dp, and default/narrow/wide widths to establish hierarchy; use equal sizes for equally important actions.",
+      "condition": "When sizing a group of icon buttons.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/icon-buttons/guidelines",
+          "section": "f0a73db0-781a-491a-901c-36df03c759b5",
+          "capture": "snapshots/material-guidance/20261025T165533.620083998Z-33501756/capture.json",
+          "markdownSha256": "fa56efb95411030efd230587c361ee79ca7747e917511c1d6ff178ecfd2a9c40",
+          "extractorVersion": 2,
+          "summary": "Curated from Size & width: Choose among XS 32dp, S 40dp, M 56dp, L 96dp and XL 136dp, and default/narrow/wide widths to establish hierarc"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "do-not-apply-density-by-default-because",
+      "statement": "Do not apply density by default because it reduces targets below 48×48 CSS pixels; if users can choose higher density, keep controls for changing density at least 48×48 CSS pixels.",
+      "condition": "When offering a denser layout or theme.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/icon-buttons/accessibility",
+          "section": "3b452053-f73a-4f4b-bc69-42ac53b99363",
+          "capture": "snapshots/material-guidance/20261025T165533.620083998Z-33501756/capture.json",
+          "markdownSha256": "a5a4f32e7461ea2ce2c259506862584078e8b6c1571403f5e720bb6cf5dedd24",
+          "extractorVersion": 2,
+          "summary": "Curated from Avoid applying density by default: Do not apply density by default because it reduces targets below 48×48 CSS pixels; if users can choose higher "
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "expressive-icon-button-interaction",
+      "statement": "M3 Expressive icon buttons add varied shapes and sizes and change shape when selected; buttons in a button group interact with one another when pressed.",
+      "condition": "When adopting M3 Expressive icon buttons or grouping them.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/icon-buttons/overview",
+          "section": "2b896f19-5143-4e9a-aff7-2ff3f733fdec",
+          "capture": "snapshots/material-guidance/20261025T165533.620083998Z-33501756/capture.json",
+          "markdownSha256": "72076869099396cf662bd34b0840b7c73d1e5f67e4c4e1f6528d96152d90fa26",
+          "extractorVersion": 2,
+          "summary": "Curated explicit M3 Expressive update guidance: M3 Expressive icon buttons add varied shapes and sizes and change shape when selected; buttons in a button gro"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "give-each-icon-button-a-target-at",
+      "statement": "Give each icon button a target at least 48dp, including buttons nested in other components.",
+      "condition": "When sizing icon-button targets.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/icon-buttons/accessibility",
+          "section": "a1b53ff0-0705-4514-a938-ed2ef31b3213",
+          "capture": "snapshots/material-guidance/20261025T165533.620083998Z-33501756/capture.json",
+          "markdownSha256": "a5a4f32e7461ea2ce2c259506862584078e8b6c1571403f5e720bb6cf5dedd24",
+          "extractorVersion": 2,
+          "summary": "Curated from Layout & density: Give each icon button a target at least 48dp, including buttons nested in other components."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "icon-button-assistive-use-cases",
+      "statement": "People using assistive technology must be able to understand the icon, navigate to and activate the button, and receive a tooltip when one is needed to explain its purpose.",
+      "condition": "When exposing icon buttons to assistive technology.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/icon-buttons/accessibility",
+          "section": "d96aea1d-70f6-4f66-8d59-c002a782c57d",
+          "capture": "snapshots/material-guidance/20261025T165533.620083998Z-33501756/capture.json",
+          "markdownSha256": "a5a4f32e7461ea2ce2c259506862584078e8b6c1571403f5e720bb6cf5dedd24",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Use cases instruction: People using assistive technology must be able to understand the icon, navigate to and activate the button, an"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "icon-button-color-role-matrix",
+      "statement": "For default filled buttons use primary/on-primary; selected filled toggles also use primary/on-primary and unselected toggles use surface-container/on-surface-variant. Tonal defaults use secondary-container/on-secondary-container; selected toggles use secondary/on-secondary and unselected toggles use secondary-container/on-secondary-container. Outlined defaults and unselected toggles use outline-variant/on-surface-variant and selected toggles use inverse-surface/inverse-on-surface. Standard defaults and unselected toggles use on-surface-variant; selected toggles use primary.",
+      "condition": "When styling default or toggle icon buttons across the four color styles.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/icon-buttons/specs",
+          "section": "c2395d0f-1811-45bc-ad2b-28a614f0fef4",
+          "capture": "snapshots/material-guidance/20261025T165533.620083998Z-33501756/capture.json",
+          "markdownSha256": "68cb1a0538b0d497a42d99b379c1b37da935e5e386ae090226aa84286e762dbb",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Color rule: For default filled buttons use primary/on-primary; selected filled toggles also use primary/on-primary and uns"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "icon-button-container-separation",
+      "statement": "Use a container when an icon button needs more contrast or visual hierarchy against its background or other elements.",
+      "condition": "When an icon button needs visual separation.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/icon-buttons/guidelines",
+          "section": "33fb9772-a504-4988-8e25-872c0818ddcb",
+          "capture": "snapshots/material-guidance/20261025T165533.620083998Z-33501756/capture.json",
+          "markdownSha256": "fa56efb95411030efd230587c361ee79ca7747e917511c1d6ff178ecfd2a9c40",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Container instruction: Use a container when an icon button needs more contrast or visual hierarchy against its background or other el"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "icon-button-corner-radii",
+      "statement": "Round icon buttons use a full corner radius at every size; square and pressed radii are XS/S 12dp/8dp, M 16dp/12dp, L/XL 28dp/16dp.",
+      "condition": "When implementing shape morphing across icon-button sizes.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/icon-buttons/specs",
+          "section": "c2d79537-2f48-4fa3-8241-27a5a46a6ecb",
+          "capture": "snapshots/material-guidance/20261025T165533.620083998Z-33501756/capture.json",
+          "markdownSha256": "68cb1a0538b0d497a42d99b379c1b37da935e5e386ae090226aa84286e762dbb",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Measurements prose or table: Round icon buttons use a full corner radius at every size; square and pressed radii are XS/S 12dp/8d"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "icon-button-pressed-shape-morph",
+      "statement": "While pressed, round and square icon buttons may morph toward a more square shape; both starting shapes use the same pressed corner radius for a given size.",
+      "condition": "When applying pressed-state shape morphing.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/icon-buttons/specs",
+          "section": "78d6565f-d4d2-445b-9502-0ae0bea26693",
+          "capture": "snapshots/material-guidance/20261025T165533.620083998Z-33501756/capture.json",
+          "markdownSha256": "68cb1a0538b0d497a42d99b379c1b37da935e5e386ae090226aa84286e762dbb",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Pressed state rule: While pressed, round and square icon buttons may morph toward a more square shape; both starting shapes use th"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "icon-button-state-layer-values",
+      "statement": "For filled, tonal, outlined and standard icon buttons, disabled state layers are 10%, hover is 8%, and focus and pressed layers are 10%.",
+      "condition": "When implementing icon-button interaction states.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/icon-buttons/specs",
+          "section": "85a97a97-cf43-44b5-8500-220198e3539e",
+          "capture": "snapshots/material-guidance/20261025T165533.620083998Z-33501756/capture.json",
+          "markdownSha256": "68cb1a0538b0d497a42d99b379c1b37da935e5e386ae090226aa84286e762dbb",
+          "extractorVersion": 2,
+          "summary": "Captured the specific States rule: For filled, tonal, outlined and standard icon buttons, disabled state layers are 10%, hover is 8%, and focus a"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "icon-button-system-icon-meaning",
+      "statement": "Use a system icon with a clear meaning.",
+      "condition": "When choosing an icon for an icon button.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/icon-buttons/overview",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T165533.620083998Z-33501756/capture.json",
+          "markdownSha256": "72076869099396cf662bd34b0840b7c73d1e5f67e4c4e1f6528d96152d90fa26",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Icon buttons instruction: Use a system icon with a clear meaning."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "if-a-selected-toggle-icon-has-no",
+      "statement": "If a selected toggle icon has no filled version, increase its weight to semibold, then bold if needed, so selection differs through more than color. This rule does not apply to default buttons.",
+      "condition": "When selected toggle icons lack a filled variant.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/icon-buttons/guidelines",
+          "section": "41ab76ac-c461-4f62-9532-a0075ceed78d",
+          "capture": "snapshots/material-guidance/20261025T165533.620083998Z-33501756/capture.json",
+          "markdownSha256": "fa56efb95411030efd230587c361ee79ca7747e917511c1d6ff178ecfd2a9c40",
+          "extractorVersion": 2,
+          "summary": "Curated from Icon accessibility requirements: If a selected toggle icon has no filled version, increase its weight to semibold, then bold if needed, so sele"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "maintain-at-least-3-1-contrast-between-the",
+      "statement": "Maintain at least 3:1 contrast between the icon and its surface or background.",
+      "condition": "For icon-button icon contrast.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/icon-buttons/accessibility",
+          "section": "20d164cd-c111-470f-824f-3be6ba242625",
+          "capture": "snapshots/material-guidance/20261025T165533.620083998Z-33501756/capture.json",
+          "markdownSha256": "a5a4f32e7461ea2ce2c259506862584078e8b6c1571403f5e720bb6cf5dedd24",
+          "extractorVersion": 2,
+          "summary": "Curated from Interaction & style: Maintain at least 3:1 contrast between the icon and its surface or background."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "name-the-action-performed-such-as-add",
+      "statement": "Name the action performed, such as Add to favorites or Send message.",
+      "condition": "When providing an accessible label.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/icon-buttons/accessibility",
+          "section": "a5b945ae-d453-424b-ae70-e008a5ebfdd1",
+          "capture": "snapshots/material-guidance/20261025T165533.620083998Z-33501756/capture.json",
+          "markdownSha256": "a5a4f32e7461ea2ce2c259506862584078e8b6c1571403f5e720bb6cf5dedd24",
+          "extractorVersion": 2,
+          "summary": "Curated from Labeling elements: Name the action performed, such as Add to favorites or Send message."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "on-hover-show-a-clear-concise-tooltip",
+      "statement": "On hover, show a clear, concise tooltip describing the action rather than naming the icon.",
+      "condition": "When an icon button is hovered.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/icon-buttons/guidelines",
+          "section": "47fcd0ba-4390-4d5f-8fe3-905c5795c47f",
+          "capture": "snapshots/material-guidance/20261025T165533.620083998Z-33501756/capture.json",
+          "markdownSha256": "fa56efb95411030efd230587c361ee79ca7747e917511c1d6ff178ecfd2a9c40",
+          "extractorVersion": 2,
+          "summary": "Curated from Hover: On hover, show a clear, concise tooltip describing the action rather than naming the icon."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "on-web-show-a-tooltip-with-the",
+      "statement": "On web, show a tooltip with the accessibility label.",
+      "condition": "When a web icon button is hovered.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/icon-buttons/accessibility",
+          "section": "cab255ae-30d8-41fd-aa6f-e45048f1a5d7",
+          "capture": "snapshots/material-guidance/20261025T165533.620083998Z-33501756/capture.json",
+          "markdownSha256": "a5a4f32e7461ea2ce2c259506862584078e8b6c1571403f5e720bb6cf5dedd24",
+          "extractorVersion": 2,
+          "summary": "Curated from Hover: On web, show a tooltip with the accessibility label."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "small-icon-button-target-size",
+      "statement": "Extra-small and small icon buttons must have targets of at least 48×48dp.",
+      "condition": "When sizing extra-small or small icon buttons.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/icon-buttons/specs",
+          "section": "75b8a4aa-88e1-4de2-8158-4f674bfffa61",
+          "capture": "snapshots/material-guidance/20261025T165533.620083998Z-33501756/capture.json",
+          "markdownSha256": "68cb1a0538b0d497a42d99b379c1b37da935e5e386ae090226aa84286e762dbb",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Target sizes instruction: Extra-small and small icon buttons must have targets of at least 48×48dp."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tab-focuses-a-non-disabled-icon-button-space",
+      "statement": "Tab focuses a non-disabled icon button; Space or Enter activates it.",
+      "condition": "When operating icon buttons with a keyboard.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/icon-buttons/accessibility",
+          "section": "449f6cb3-2515-41b8-99ea-39b6e348c475",
+          "capture": "snapshots/material-guidance/20261025T165533.620083998Z-33501756/capture.json",
+          "markdownSha256": "a5a4f32e7461ea2ce2c259506862584078e8b6c1571403f5e720bb6cf5dedd24",
+          "extractorVersion": 2,
+          "summary": "Curated from Keyboard navigation: Tab focuses a non-disabled icon button; Space or Enter activates it."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "toggle-icon-button-selected-shape",
+      "statement": "By default, selecting a round toggle icon button changes its resting shape to square; when its unselected resting shape is square, the selected shape should be round.",
+      "condition": "When a toggle icon button changes selection.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/icon-buttons/specs",
+          "section": "01c06c21-52cd-4b84-a80c-49ee55b61d6f",
+          "capture": "snapshots/material-guidance/20261025T165533.620083998Z-33501756/capture.json",
+          "markdownSha256": "68cb1a0538b0d497a42d99b379c1b37da935e5e386ae090226aa84286e762dbb",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit When selected rule: By default, selecting a round toggle icon button changes its resting shape to square; when its unselected rest"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-an-unambiguous-icon-default-buttons-use",
+      "statement": "Use an unambiguous icon; default buttons use filled icons, while toggle buttons use outlined icons when unselected and filled icons when selected.",
+      "condition": "When selecting icon styles.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/icon-buttons/guidelines",
+          "section": "fc319c80-cdca-457a-bf78-eabb00016ef3",
+          "capture": "snapshots/material-guidance/20261025T165533.620083998Z-33501756/capture.json",
+          "markdownSha256": "fa56efb95411030efd230587c361ee79ca7747e917511c1d6ff178ecfd2a9c40",
+          "extractorVersion": 2,
+          "summary": "Curated from Icon: Use an unambiguous icon; default buttons use filled icons, while toggle buttons use outlined icons when unsele"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-default-icon-buttons-for-actions-that",
+      "statement": "Use default icon buttons for actions that open another element and toggle icon buttons only for binary selected/unselected actions.",
+      "condition": "When selecting icon-button behavior.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/icon-buttons/guidelines",
+          "section": "458a5d9e-b63e-44e7-8095-108af03a7233",
+          "capture": "snapshots/material-guidance/20261025T165533.620083998Z-33501756/capture.json",
+          "markdownSha256": "fa56efb95411030efd230587c361ee79ca7747e917511c1d6ff178ecfd2a9c40",
+          "extractorVersion": 2,
+          "summary": "Curated from Usage: Use default icon buttons for actions that open another element and toggle icon buttons only for binary selecte"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-only-a-few-icon-buttons-at",
+      "statement": "Use only a few icon buttons at once for common, easily understood actions; group popular actions in toolbars or button groups in dense layouts.",
+      "condition": "When placing icon buttons.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/icon-buttons/guidelines",
+          "section": "ad104570-3fae-4773-95f5-4c82885b2beb",
+          "capture": "snapshots/material-guidance/20261025T165533.620083998Z-33501756/capture.json",
+          "markdownSha256": "fa56efb95411030efd230587c361ee79ca7747e917511c1d6ff178ecfd2a9c40",
+          "extractorVersion": 2,
+          "summary": "Curated from Placement: Use only a few icon buttons at once for common, easily understood actions; group popular actions in toolbars o"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-the-four-styles-in-emphasis-order",
+      "statement": "Use the four styles in emphasis order: filled highest, tonal middle, outlined medium, standard lowest; use a container style when separation from the background is needed and avoid overusing filled buttons.",
+      "condition": "When choosing an icon-button color style.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/icon-buttons/guidelines",
+          "section": "de4fe602-3bb4-4f55-ac12-8657551eaf9f",
+          "capture": "snapshots/material-guidance/20261025T165533.620083998Z-33501756/capture.json",
+          "markdownSha256": "fa56efb95411030efd230587c361ee79ca7747e917511c1d6ff178ecfd2a9c40",
+          "extractorVersion": 2,
+          "summary": "Curated from Color: Use the four styles in emphasis order: filled highest, tonal middle, outlined medium, standard lowest; use a c"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-toggles-only-for-actions-with-a",
+      "statement": "Use toggles only for actions with a persistent selected state; do not use them for one-shot actions such as opening an overflow menu.",
+      "condition": "When choosing toggle behavior.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/icon-buttons/guidelines",
+          "section": "a8c84348-4765-4d1d-b366-feda421cd82d",
+          "capture": "snapshots/material-guidance/20261025T165533.620083998Z-33501756/capture.json",
+          "markdownSha256": "fa56efb95411030efd230587c361ee79ca7747e917511c1d6ff178ecfd2a9c40",
+          "extractorVersion": 2,
+          "summary": "Curated from Selection: Use toggles only for actions with a persistent selected state; do not use them for one-shot actions such as op"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

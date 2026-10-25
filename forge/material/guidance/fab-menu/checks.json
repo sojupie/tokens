@@ -1,0 +1,1033 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "fab-menu",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/fab-menu/overview",
+      "capture": "snapshots/material-guidance/20261025T165452.692627385Z-578149306/capture.json",
+      "markdownSha256": "cba9d20b28abed146e9c37d4013fa50f0b5a1cb1417f3b785dd73e315182cb13",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "FAB menu",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "e65763be-0402-4fc1-9428-8658f7c90d94",
+          "title": "Availability & resources",
+          "status": "no-requirements",
+          "notes": "This table reports availability of upstream design kits and framework implementations; it is not an implementation requirement for this project."
+        },
+        {
+          "id": "7791c80a-1023-4e4b-b447-2bf713b8b7fb",
+          "title": "M3 Expressive update",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "d748f6e1-f98e-4a74-b74a-42ab648f732d",
+          "title": "Differences from M2",
+          "status": "no-requirements",
+          "notes": "This section compares historical M2 and M3 presentation. Current variant and behavior requirements are recorded in the relevant M3 specs and guidelines."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/fab-menu/specs",
+      "capture": "snapshots/material-guidance/20261025T165452.692627385Z-578149306/capture.json",
+      "markdownSha256": "110632854d33f45caa1652de8f4bc3969ce446ce76067cbc02867b52a2acf4bc",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "FAB menu",
+          "status": "no-requirements",
+          "notes": "This is the page title or brief component summary; actionable requirements are recorded in the linked child sections."
+        },
+        {
+          "id": "b2e2753b-43d3-4f22-985b-25f7621e8a27",
+          "title": "Variants",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "84f518f6-0e46-46e4-913c-0a325cdbd8ba",
+          "title": "Configurations",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "55f63a4f-4ebb-480d-95a5-ce3375eb4dfb",
+          "title": "Tokens & specs",
+          "status": "no-requirements",
+          "notes": "The selector switches among the common and six element/color token sets; the available primary/secondary/tertiary sets and compatible FAB colors are captured by fab-menu-color-set-availability and pair-primary-menu-colors-with-primary-or."
+        },
+        {
+          "id": "5157ad4b-a212-498f-9ec6-7aa50e15953c",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "The diagram names the close button and menu item; item count is governed by include-2-6-closely-related-actions-under-one and label requirements by keep-a-text-label-on-every-menu."
+        },
+        {
+          "id": "5eceb838-bc49-441f-a41c-616c9d3eb9a7",
+          "title": "Color",
+          "status": "unclear",
+          "notes": "The source enumerates twelve color roles but the mapping of roles to close button and menu item depends on the uninspected color diagram; element-specific pairings remain unresolved."
+        },
+        {
+          "id": "4833d144-d0df-45c7-9f50-10f80cec5de7",
+          "title": "States",
+          "status": "no-requirements",
+          "notes": "This section contains only the generic definition of interaction states; close-button and menu-item state requirements are recorded in fab-menu-close-button-states and fab-menu-item-states."
+        },
+        {
+          "id": "dfeade67-36cc-437a-9e32-0037a3408597",
+          "title": "Close button",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "ae19acf1-1d67-4709-9b1d-8f62f9b313ec",
+          "title": "Menu item",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "acac73fa-1c1b-490b-b069-a60746f19955",
+          "title": "Measurements",
+          "status": "unclear",
+          "notes": "The explicit 56dp close-button size, compact 16dp margins, top-trailing anchor and larger-FAB clearance rule are captured by fab-menu-close-button-and-web-gap, fab-menu-compact-anchor-and-margins and fab-menu-larger-anchor-clearance. Image-only size callouts, including the medium-FAB 40dp bottom margin, remain uninspected."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/fab-menu/guidelines",
+      "capture": "snapshots/material-guidance/20261025T165452.692627385Z-578149306/capture.json",
+      "markdownSha256": "d60f3e89155bfbee5759748ffc630fb1cad173fef5db67f1d63e28f2b2af4d8b",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "FAB menu",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "190bd3dd-af61-443d-bb50-7a8beab4837e",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "3c574dff-324a-494f-8ace-615690f26734",
+          "title": "Color sets",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "eee40b5b-ce91-458e-9005-19db241f074c",
+          "title": "Anatomy",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "0a239b49-83bd-48c5-b29b-c6009212d505",
+          "title": "Adaptive layout",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "8f410672-7043-4981-be6c-e8744bd3ac32",
+          "title": "Behavior",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "e73af55b-5533-49b3-bbc2-67b9c96067b0",
+          "title": "Appearing",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "67b8898e-cb76-4d08-9710-9a2f0c198562",
+          "title": "Scrolling",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "23cb0e3a-10f2-4fed-8cfb-f071a85989f7",
+          "title": "Expanding",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/fab-menu/accessibility",
+      "capture": "snapshots/material-guidance/20261025T165452.692627385Z-578149306/capture.json",
+      "markdownSha256": "9137302b552b1b776b572e47d9937e938f968f0e681caadf75f7f8555f51dd4f",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "FAB menu",
+          "status": "no-requirements",
+          "notes": "This is the page title or brief component summary; actionable requirements are recorded in the linked child sections."
+        },
+        {
+          "id": "c129cd10-faac-4727-a2c0-eddeb0507f62",
+          "title": "Use cases",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "d5545330-e571-48e4-b773-0ff4c8bdeb90",
+          "title": "Interaction & style",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "e4735e19-8f70-47e1-b6fa-3ca1b82daab2",
+          "title": "Initial focus",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "3612ec94-db6f-4348-8de8-8c8cf30809ef",
+          "title": "Keyboard navigation",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "4e8d1fe6-50b2-481f-a090-2573a062c3a8",
+          "title": "Labeling elements",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "1df2a0c5-f12b-41cc-81ab-469871e43f2a",
+          "title": "Android",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "689a82eb-dc96-4ed3-ba6f-183e72767594",
+          "title": "Web",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "align-the-fab-and-menu-to-the",
+      "statement": "Align the FAB and menu to the window’s trailing edge; mirror the alignment and element layout for RTL.",
+      "condition": "When placing the FAB menu in LTR or RTL layouts.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/fab-menu/guidelines",
+          "section": "190bd3dd-af61-443d-bb50-7a8beab4837e",
+          "capture": "snapshots/material-guidance/20261025T165452.692627385Z-578149306/capture.json",
+          "markdownSha256": "d60f3e89155bfbee5759748ffc630fb1cad173fef5db67f1d63e28f2b2af4d8b",
+          "extractorVersion": 2,
+          "summary": "Curated from Usage: Align the FAB and menu to the window’s trailing edge; mirror the alignment and element layout for RTL."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "anchor-the-menu-to-the-same-corner",
+      "statement": "Anchor the menu to the same corner or edge across window sizes; increase FAB and menu edge margins from 16dp to 24dp in large and extra-large windows.",
+      "condition": "When adapting the menu to window size.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/fab-menu/guidelines",
+          "section": "0a239b49-83bd-48c5-b29b-c6009212d505",
+          "capture": "snapshots/material-guidance/20261025T165452.692627385Z-578149306/capture.json",
+          "markdownSha256": "d60f3e89155bfbee5759748ffc630fb1cad173fef5db67f1d63e28f2b2af4d8b",
+          "extractorVersion": 2,
+          "summary": "Curated from Adaptive layout: Anchor the menu to the same corner or edge across window sizes; increase FAB and menu edge margins from 16dp t"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "do-not-use-a-fab-menu-alongside",
+      "statement": "Do not use a FAB menu alongside a floating toolbar or navigation rail.",
+      "condition": "When those components are present.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/fab-menu/guidelines",
+          "section": "190bd3dd-af61-443d-bb50-7a8beab4837e",
+          "capture": "snapshots/material-guidance/20261025T165452.692627385Z-578149306/capture.json",
+          "markdownSha256": "d60f3e89155bfbee5759748ffc630fb1cad173fef5db67f1d63e28f2b2af4d8b",
+          "extractorVersion": 2,
+          "summary": "Curated from Usage: Do not use a FAB menu alongside a floating toolbar or navigation rail."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "expose-keyboard-focus-and-activation-for-the",
+      "statement": "Tab moves focus to the next interactive element; Space or Enter activates the focused close button or menu item.",
+      "condition": "When operating the FAB menu with a keyboard.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/fab-menu/accessibility",
+          "section": "3612ec94-db6f-4348-8de8-8c8cf30809ef",
+          "capture": "snapshots/material-guidance/20261025T165452.692627385Z-578149306/capture.json",
+          "markdownSha256": "9137302b552b1b776b572e47d9937e938f968f0e681caadf75f7f8555f51dd4f",
+          "extractorVersion": 2,
+          "summary": "Curated from Keyboard navigation: Expose keyboard focus and activation for the close button and each menu item; preserve logical movement into a"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fab-menu-android-accessibility-semantics",
+      "statement": "On Android, expose the close control as a button labeled “Toggle menu” with expanded/collapsed state; label each menu item to match its visible UI text and expose it as a button.",
+      "condition": "When implementing FAB menu semantics on Android.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/fab-menu/accessibility",
+          "section": "1df2a0c5-f12b-41cc-81ab-469871e43f2a",
+          "capture": "snapshots/material-guidance/20261025T165452.692627385Z-578149306/capture.json",
+          "markdownSha256": "9137302b552b1b776b572e47d9937e938f968f0e681caadf75f7f8555f51dd4f",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Android rule: On Android, expose the close control as a button labeled “Toggle menu” with expanded/collapsed state; label ea"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fab-menu-assistive-navigation-and-focus",
+      "statement": "People using assistive technology must be able to navigate and interact with the menu and maintain correct focus while navigating it.",
+      "condition": "When exposing the FAB menu to assistive technology.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/fab-menu/accessibility",
+          "section": "c129cd10-faac-4727-a2c0-eddeb0507f62",
+          "capture": "snapshots/material-guidance/20261025T165452.692627385Z-578149306/capture.json",
+          "markdownSha256": "9137302b552b1b776b572e47d9937e938f968f0e681caadf75f7f8555f51dd4f",
+          "extractorVersion": 2,
+          "summary": "Curated explicit Use cases guidance: People using assistive technology must be able to navigate and interact with the menu and maintain correct foc"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fab-menu-assistive-use-cases",
+      "statement": "People using assistive technology must be able to navigate and interact with the FAB menu and maintain correct focus while doing so.",
+      "condition": "When exposing the menu to assistive technology.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/fab-menu/accessibility",
+          "section": "c129cd10-faac-4727-a2c0-eddeb0507f62",
+          "capture": "snapshots/material-guidance/20261025T165452.692627385Z-578149306/capture.json",
+          "markdownSha256": "9137302b552b1b776b572e47d9937e938f968f0e681caadf75f7f8555f51dd4f",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Use cases instruction: People using assistive technology must be able to navigate and interact with the FAB menu and maintain correct"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fab-menu-close-button-and-web-gap",
+      "statement": "Keep the close button at 56dp; a 4dp gap between a web FAB and its menu is recommended.",
+      "condition": "When sizing the menu close button or web menu offset.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/fab-menu/specs",
+          "section": "acac73fa-1c1b-490b-b069-a60746f19955",
+          "capture": "snapshots/material-guidance/20261025T165452.692627385Z-578149306/capture.json",
+          "markdownSha256": "110632854d33f45caa1652de8f4bc3969ce446ce76067cbc02867b52a2acf4bc",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Measurements prose or table: Keep the close button at 56dp; a 4dp gap between a web FAB and its menu is recommended."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fab-menu-close-button-state-support",
+      "statement": "Support enabled, hovered, focused and pressed states for the FAB menu close button.",
+      "condition": "When implementing close-button interaction states.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/fab-menu/specs",
+          "section": "dfeade67-36cc-437a-9e32-0037a3408597",
+          "capture": "snapshots/material-guidance/20261025T165452.692627385Z-578149306/capture.json",
+          "markdownSha256": "110632854d33f45caa1652de8f4bc3969ce446ce76067cbc02867b52a2acf4bc",
+          "extractorVersion": 2,
+          "summary": "Curated explicit Close button guidance: Support enabled, hovered, focused and pressed states for the FAB menu close button."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fab-menu-close-button-states",
+      "statement": "Support enabled, hovered, focused and pressed states for the menu close button.",
+      "condition": "When implementing close-button interaction states.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/fab-menu/specs",
+          "section": "dfeade67-36cc-437a-9e32-0037a3408597",
+          "capture": "snapshots/material-guidance/20261025T165452.692627385Z-578149306/capture.json",
+          "markdownSha256": "110632854d33f45caa1652de8f4bc3969ce446ce76067cbc02867b52a2acf4bc",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Close button instruction: Support enabled, hovered, focused and pressed states for the menu close button."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fab-menu-color-set-availability",
+      "statement": "Primary, secondary and tertiary FAB menu color sets are available in M3 Expressive.",
+      "condition": "When exposing FAB menu color configurations.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/fab-menu/specs",
+          "section": "84f518f6-0e46-46e4-913c-0a325cdbd8ba",
+          "capture": "snapshots/material-guidance/20261025T165452.692627385Z-578149306/capture.json",
+          "markdownSha256": "110632854d33f45caa1652de8f4bc3969ce446ce76067cbc02867b52a2acf4bc",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Configurations rule: Primary, secondary and tertiary FAB menu color sets are available in M3 Expressive."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fab-menu-compact-anchor-and-margins",
+      "statement": "Keep 16dp edge margins for the FAB and menu on compact layouts; align the menu close button with the FAB’s top trailing corner.",
+      "condition": "When placing a FAB menu on compact layouts.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/fab-menu/specs",
+          "section": "acac73fa-1c1b-490b-b069-a60746f19955",
+          "capture": "snapshots/material-guidance/20261025T165452.692627385Z-578149306/capture.json",
+          "markdownSha256": "110632854d33f45caa1652de8f4bc3969ce446ce76067cbc02867b52a2acf4bc",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Measurements prose or table: Keep 16dp edge margins for the FAB and menu on compact layouts; align the menu close button with the"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fab-menu-expressive-availability",
+      "statement": "The single FAB menu variant is available only in M3 Expressive.",
+      "condition": "When exposing variant availability.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/fab-menu/specs",
+          "section": "b2e2753b-43d3-4f22-985b-25f7621e8a27",
+          "capture": "snapshots/material-guidance/20261025T165452.692627385Z-578149306/capture.json",
+          "markdownSha256": "110632854d33f45caa1652de8f4bc3969ce446ce76067cbc02867b52a2acf4bc",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Variants rule: The single FAB menu variant is available only in M3 Expressive."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fab-menu-focus-order",
+      "statement": "When the FAB opens the menu, the replacement close button retains initial focus; subsequent focus proceeds from the top menu item downward.",
+      "condition": "When opening the FAB menu with assistive technology or keyboard.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/fab-menu/accessibility",
+          "section": "e4735e19-8f70-47e1-b6fa-3ca1b82daab2",
+          "capture": "snapshots/material-guidance/20261025T165452.692627385Z-578149306/capture.json",
+          "markdownSha256": "9137302b552b1b776b572e47d9937e938f968f0e681caadf75f7f8555f51dd4f",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Initial focus rule: When the FAB opens the menu, the replacement close button retains initial focus; subsequent focus proceeds fro"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fab-menu-item-container-transform",
+      "statement": "A FAB menu item may expand into a surface or full-screen shape using a container-transform transition.",
+      "condition": "When a menu item expands after selection.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/fab-menu/guidelines",
+          "section": "23cb0e3a-10f2-4fed-8cfb-f071a85989f7",
+          "capture": "snapshots/material-guidance/20261025T165452.692627385Z-578149306/capture.json",
+          "markdownSha256": "d60f3e89155bfbee5759748ffc630fb1cad173fef5db67f1d63e28f2b2af4d8b",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Expanding instruction: A FAB menu item may expand into a surface or full-screen shape using a container-transform transition."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fab-menu-prominent-related-actions",
+      "statement": "Use a FAB menu to show multiple related actions in a prominent, expressive style.",
+      "condition": "When the primary FAB needs to reveal related actions.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/fab-menu/guidelines",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T165452.692627385Z-578149306/capture.json",
+          "markdownSha256": "d60f3e89155bfbee5759748ffc630fb1cad173fef5db67f1d63e28f2b2af4d8b",
+          "extractorVersion": 2,
+          "summary": "Curated explicit FAB menu instruction: Use a FAB menu to show multiple related actions in a prominent, expressive style."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fab-menu-web-accessibility-composition",
+      "statement": "On web, treat the FAB menu as a FAB combined with a menu, follow both components’ accessibility guidance, and label the FAB with the menu it opens.",
+      "condition": "When implementing a FAB menu on web.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/fab-menu/accessibility",
+          "section": "689a82eb-dc96-4ed3-ba6f-183e72767594",
+          "capture": "snapshots/material-guidance/20261025T165452.692627385Z-578149306/capture.json",
+          "markdownSha256": "9137302b552b1b776b572e47d9937e938f968f0e681caadf75f7f8555f51dd4f",
+          "extractorVersion": 2,
+          "summary": "Captured the specific Web rule: On web, treat the FAB menu as a FAB combined with a menu, follow both components’ accessibility guidance, and "
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "give-the-close-button-and-each-menu",
+      "statement": "Give the close button and each menu item an accessible name that communicates its action.",
+      "condition": "When exposing FAB menu controls to assistive technology.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/fab-menu/accessibility",
+          "section": "4e8d1fe6-50b2-481f-a090-2573a062c3a8",
+          "capture": "snapshots/material-guidance/20261025T165452.692627385Z-578149306/capture.json",
+          "markdownSha256": "9137302b552b1b776b572e47d9937e938f968f0e681caadf75f7f8555f51dd4f",
+          "extractorVersion": 2,
+          "summary": "Curated from Labeling elements: Give the close button and each menu item an accessible name that communicates its action."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "include-2-6-closely-related-actions-under-one",
+      "statement": "Include 2–6 closely related actions under one concept; do not use a single-item menu or group unrelated actions.",
+      "condition": "When choosing menu items.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/fab-menu/guidelines",
+          "section": "190bd3dd-af61-443d-bb50-7a8beab4837e",
+          "capture": "snapshots/material-guidance/20261025T165452.692627385Z-578149306/capture.json",
+          "markdownSha256": "d60f3e89155bfbee5759748ffc630fb1cad173fef5db67f1d63e28f2b2af4d8b",
+          "extractorVersion": 2,
+          "summary": "Curated from Usage: Include 2–6 closely related actions under one concept; do not use a single-item menu or group unrelated action"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "keep-a-text-label-on-every-menu",
+      "statement": "Keep a text label on every menu item; retain icons unless necessary because they distinguish items.",
+      "condition": "When configuring menu item content.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/fab-menu/guidelines",
+          "section": "eee40b5b-ce91-458e-9005-19db241f074c",
+          "capture": "snapshots/material-guidance/20261025T165452.692627385Z-578149306/capture.json",
+          "markdownSha256": "d60f3e89155bfbee5759748ffc630fb1cad173fef5db67f1d63e28f2b2af4d8b",
+          "extractorVersion": 2,
+          "summary": "Curated from Anatomy: Keep a text label on every menu item; retain icons unless necessary because they distinguish items."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "let-each-rounded-menu-item-hug-its",
+      "statement": "Let each rounded menu item hug its contents, keep internal padding consistent, and do not truncate labels, set fixed widths, or alter the menu shapes.",
+      "condition": "When sizing and styling menu items.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/fab-menu/guidelines",
+          "section": "eee40b5b-ce91-458e-9005-19db241f074c",
+          "capture": "snapshots/material-guidance/20261025T165452.692627385Z-578149306/capture.json",
+          "markdownSha256": "d60f3e89155bfbee5759748ffc630fb1cad173fef5db67f1d63e28f2b2af4d8b",
+          "extractorVersion": 2,
+          "summary": "Curated from Anatomy: Let each rounded menu item hug its contents, keep internal padding consistent, and do not truncate labels, set"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "on-web-do-not-let-the-menu",
+      "statement": "On web, do not let the menu completely obscure an actionable element’s focus indicator; partial overlap is acceptable while the indicator remains visible.",
+      "condition": "When the menu overlays keyboard-focusable content on web.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/fab-menu/guidelines",
+          "section": "e73af55b-5533-49b3-bbc2-67b9c96067b0",
+          "capture": "snapshots/material-guidance/20261025T165452.692627385Z-578149306/capture.json",
+          "markdownSha256": "d60f3e89155bfbee5759748ffc630fb1cad173fef5db67f1d63e28f2b2af4d8b",
+          "extractorVersion": 2,
+          "summary": "Curated from Appearing: On web, do not let the menu completely obscure an actionable element’s focus indicator; partial overlap is acc"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "on-web-use-the-menu-component-to",
+      "statement": "On web, use the menu component to match desktop menu behavior; pair the FAB menu with a FAB size suitable for the window class.",
+      "condition": "When implementing the FAB menu on web or larger windows.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/fab-menu/guidelines",
+          "section": "0a239b49-83bd-48c5-b29b-c6009212d505",
+          "capture": "snapshots/material-guidance/20261025T165452.692627385Z-578149306/capture.json",
+          "markdownSha256": "d60f3e89155bfbee5759748ffc630fb1cad173fef5db67f1d63e28f2b2af4d8b",
+          "extractorVersion": 2,
+          "summary": "Curated from Adaptive layout: On web, use the menu component to match desktop menu behavior; pair the FAB menu with a FAB size suitable for "
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "open-a-fab-menu-from-a-fab",
+      "statement": "Open a FAB menu from a FAB and keep the menu in the same place as its opener.",
+      "condition": "When opening the FAB menu.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/fab-menu/guidelines",
+          "section": "190bd3dd-af61-443d-bb50-7a8beab4837e",
+          "capture": "snapshots/material-guidance/20261025T165452.692627385Z-578149306/capture.json",
+          "markdownSha256": "d60f3e89155bfbee5759748ffc630fb1cad173fef5db67f1d63e28f2b2af4d8b",
+          "extractorVersion": 2,
+          "summary": "Curated from Usage: Open a FAB menu from a FAB and keep the menu in the same place as its opener."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "pair-primary-menu-colors-with-primary-or",
+      "statement": "Pair primary menu colors with primary or primary-container FABs, secondary with secondary or secondary-container, and tertiary with tertiary or tertiary-container.",
+      "condition": "When choosing a FAB menu color set.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/fab-menu/guidelines",
+          "section": "3c574dff-324a-494f-8ace-615690f26734",
+          "capture": "snapshots/material-guidance/20261025T165452.692627385Z-578149306/capture.json",
+          "markdownSha256": "d60f3e89155bfbee5759748ffc630fb1cad173fef5db67f1d63e28f2b2af4d8b",
+          "extractorVersion": 2,
+          "summary": "Curated from Color sets: Pair primary menu colors with primary or primary-container FABs, secondary with secondary or secondary-contain"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "provide-at-least-48dp-minimum-target-size",
+      "statement": "Provide at least 48dp minimum target size for each FAB menu element.",
+      "condition": "For each interactive menu element.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/fab-menu/accessibility",
+          "section": "d5545330-e571-48e4-b773-0ff4c8bdeb90",
+          "capture": "snapshots/material-guidance/20261025T165452.692627385Z-578149306/capture.json",
+          "markdownSha256": "9137302b552b1b776b572e47d9937e938f968f0e681caadf75f7f8555f51dd4f",
+          "extractorVersion": 2,
+          "summary": "Curated from Interaction & style: Provide at least 48dp minimum target size for each FAB menu element."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "transform-the-fab-into-the-menu-close",
+      "statement": "Transform the FAB into the menu close button and originate the menu transition from a trailing FAB corner, preferably the top corner.",
+      "condition": "When animating the menu open.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/fab-menu/guidelines",
+          "section": "e73af55b-5533-49b3-bbc2-67b9c96067b0",
+          "capture": "snapshots/material-guidance/20261025T165452.692627385Z-578149306/capture.json",
+          "markdownSha256": "d60f3e89155bfbee5759748ffc630fb1cad173fef5db67f1d63e28f2b2af4d8b",
+          "extractorVersion": 2,
+          "summary": "Curated from Appearing: Transform the FAB into the menu close button and originate the menu transition from a trailing FAB corner, pre"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-a-fab-menu-to-open-2-6",
+      "statement": "Use a FAB menu to open 2–6 related actions from a standard FAB; do not open it from an extended FAB.",
+      "condition": "When a primary FAB needs to reveal related actions.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/fab-menu/overview",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T165452.692627385Z-578149306/capture.json",
+          "markdownSha256": "cba9d20b28abed146e9c37d4013fa50f0b5a1cb1417f3b785dd73e315182cb13",
+          "extractorVersion": 2,
+          "summary": "Curated from page: Use a FAB menu to open 2–6 related actions from a standard FAB; do not open it from an extended FAB."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-the-fab-menu-in-place-of",
+      "statement": "Use the FAB menu in place of speed dials or stacked small FABs.",
+      "condition": "When replacing a speed dial or stacked small FAB pattern.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/fab-menu/overview",
+          "section": "7791c80a-1023-4e4b-b447-2bf713b8b7fb",
+          "capture": "snapshots/material-guidance/20261025T165452.692627385Z-578149306/capture.json",
+          "markdownSha256": "cba9d20b28abed146e9c37d4013fa50f0b5a1cb1417f3b785dd73e315182cb13",
+          "extractorVersion": 2,
+          "summary": "Curated from M3 Expressive update: Use the FAB menu in place of speed dials or stacked small FABs."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "when-the-window-is-too-short-for",
+      "statement": "When the window is too short for all items, allow the items to scroll behind the close button.",
+      "condition": "When available window height cannot contain all items.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/fab-menu/guidelines",
+          "section": "67b8898e-cb76-4d08-9710-9a2f0c198562",
+          "capture": "snapshots/material-guidance/20261025T165452.692627385Z-578149306/capture.json",
+          "markdownSha256": "d60f3e89155bfbee5759748ffc630fb1cad173fef5db67f1d63e28f2b2af4d8b",
+          "extractorVersion": 2,
+          "summary": "Curated from Scrolling: When the window is too short for all items, allow the items to scroll behind the close button."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fab-menu-larger-anchor-clearance",
+      "statement": "For larger FAB sizes, place the FAB menu slightly higher and increase the margin beneath it.",
+      "condition": "When the menu opens from a larger FAB.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/fab-menu/specs",
+          "section": "acac73fa-1c1b-490b-b069-a60746f19955",
+          "capture": "snapshots/material-guidance/20261025T165452.692627385Z-578149306/capture.json",
+          "markdownSha256": "110632854d33f45caa1652de8f4bc3969ce446ce76067cbc02867b52a2acf4bc",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit FAB menu size-dependent placement instruction."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

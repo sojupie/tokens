@@ -1,0 +1,1743 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "buttons",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/buttons/overview",
+      "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+      "markdownSha256": "bf431bc5cfc6c5721a70493e53c721d33bf812092cb2e40838d32bbfa5066a8f",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Buttons",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "906d3cd9-0818-4c62-afc9-d2dd7da05211",
+          "title": "Availability & resources",
+          "status": "no-requirements",
+          "notes": "Resource/token controls, or a descriptive parent/inventory heading; substantive variant, state, style, and layout guidance is covered in its specific sections."
+        },
+        {
+          "id": "f8ba981c-a363-4ccd-a332-ee1b0e124e5c",
+          "title": "M3 Expressive update",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "388f6096-c34d-4a22-8b1f-11ad69963f7c",
+          "title": "Differences from M2",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/buttons/specs",
+      "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+      "markdownSha256": "de51692b6f21c9eabba318763c5a926326efaa9ea859ea1ff6ab5beb20d08ae0",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Buttons",
+          "status": "no-requirements",
+          "notes": "Resource/token controls, or a descriptive parent/inventory heading; substantive variant, state, style, and layout guidance is covered in its specific sections."
+        },
+        {
+          "id": "0eea2a85-b4d7-4c74-b08e-98410b9412c7",
+          "title": "Variants",
+          "status": "no-requirements",
+          "notes": "This heading contains no additional independent instruction beyond the checks linked to its detailed child sections."
+        },
+        {
+          "id": "084a3c43-1869-475b-8560-02f37a6c90e8",
+          "title": "Configurations",
+          "status": "no-requirements",
+          "notes": "Resource/token controls, or a descriptive parent/inventory heading; substantive variant, state, style, and layout guidance is covered in its specific sections."
+        },
+        {
+          "id": "08e8cb37-ac4e-49b8-82af-c77421c834ee",
+          "title": "Tokens & specs",
+          "status": "no-requirements",
+          "notes": "Resource/token controls, or a descriptive parent/inventory heading; substantive variant, state, style, and layout guidance is covered in its specific sections."
+        },
+        {
+          "id": "06159dbd-2d79-43fb-8687-adc14a89b3e9",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "Resource/token controls, or a descriptive parent/inventory heading; substantive variant, state, style, and layout guidance is covered in its specific sections."
+        },
+        {
+          "id": "6860d02d-8ede-4a5e-a43c-5c1c82f44a28",
+          "title": "Color",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "dceaea97-6e3d-4952-96d9-e1d95ded7941",
+          "title": "States",
+          "status": "no-requirements",
+          "notes": "Resource/token controls, or a descriptive parent/inventory heading; substantive variant, state, style, and layout guidance is covered in its specific sections."
+        },
+        {
+          "id": "81e12069-106c-47b5-b148-1cd6077fa3d5",
+          "title": "Elevated button states",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "7e8a5775-630a-4587-9e70-f1f4f0d7e213",
+          "title": "Default",
+          "status": "no-requirements",
+          "notes": "This heading contains no additional independent instruction beyond the checks linked to its detailed child sections."
+        },
+        {
+          "id": "8e0bda0d-36f3-4bf8-8dbc-1e570a81e263",
+          "title": "Toggle",
+          "status": "no-requirements",
+          "notes": "This heading contains no additional independent instruction beyond the checks linked to its detailed child sections."
+        },
+        {
+          "id": "7b9ba06e-d393-491b-830e-ae3fe0816d4b",
+          "title": "Filled button states",
+          "status": "no-requirements",
+          "notes": "This heading contains no additional independent instruction beyond the checks linked to its detailed child sections."
+        },
+        {
+          "id": "182df894-5550-43ae-a125-6d904c9030b7",
+          "title": "Default",
+          "status": "no-requirements",
+          "notes": "This heading contains no additional independent instruction beyond the checks linked to its detailed child sections."
+        },
+        {
+          "id": "c6d6fa67-68c2-482b-81a7-bc7fe13e67b7",
+          "title": "Toggle",
+          "status": "no-requirements",
+          "notes": "This heading contains no additional independent instruction beyond the checks linked to its detailed child sections."
+        },
+        {
+          "id": "31a04913-d070-49c5-9c36-41d551f20096",
+          "title": "Tonal button states",
+          "status": "no-requirements",
+          "notes": "This heading contains no additional independent instruction beyond the checks linked to its detailed child sections."
+        },
+        {
+          "id": "31a921de-8905-4f5e-85fd-67985ca482e6",
+          "title": "Default",
+          "status": "no-requirements",
+          "notes": "This heading contains no additional independent instruction beyond the checks linked to its detailed child sections."
+        },
+        {
+          "id": "648a5508-3b7e-4674-9ab5-3c19b4380884",
+          "title": "Toggle",
+          "status": "no-requirements",
+          "notes": "This heading contains no additional independent instruction beyond the checks linked to its detailed child sections."
+        },
+        {
+          "id": "6757c97e-0ae6-4802-a2d5-9e3b134a7231",
+          "title": "Outlined button states",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "30305116-a265-4f22-b330-e4be551a7b97",
+          "title": "Default",
+          "status": "no-requirements",
+          "notes": "This heading contains no additional independent instruction beyond the checks linked to its detailed child sections."
+        },
+        {
+          "id": "afd792e8-f3dc-4a0b-8cdf-b88bd37a3c40",
+          "title": "Toggle",
+          "status": "no-requirements",
+          "notes": "This heading contains no additional independent instruction beyond the checks linked to its detailed child sections."
+        },
+        {
+          "id": "9c12a1a1-9a74-499c-8139-5cff551afe4f",
+          "title": "Text button style states",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "e9ec15a7-7a8d-41f9-81d1-541c2dc33643",
+          "title": "Shape morph",
+          "status": "no-requirements",
+          "notes": "This heading contains no additional independent instruction beyond the checks linked to its detailed child sections."
+        },
+        {
+          "id": "cb36ae03-5539-497d-9777-06547a7d3f17",
+          "title": "Pressed state",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "e80f212b-28c8-41c6-915e-939ed06fe9ee",
+          "title": "When selected",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "a69008b5-4efe-43ec-9d23-cbece83b08e6",
+          "title": "Measurements",
+          "status": "unclear",
+          "notes": "Exact size or corner measurements are present only in image diagrams that have not been inspected; numeric values remain unresolved."
+        },
+        {
+          "id": "7d63205e-9401-449b-9a2b-3408f4de3b0d",
+          "title": "Target areas",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "b1f39738-6f3a-409b-8f08-4cab6d78d756",
+          "title": "Corner sizes",
+          "status": "unclear",
+          "notes": "Exact size or corner measurements are present only in image diagrams that have not been inspected; numeric values remain unresolved."
+        },
+        {
+          "id": "c305d304-a6c0-466a-a48c-8d0718a29ae2",
+          "title": "Baseline tokens",
+          "status": "no-requirements",
+          "notes": "Resource/token controls, or a descriptive parent/inventory heading; substantive variant, state, style, and layout guidance is covered in its specific sections."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/buttons/guidelines",
+      "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+      "markdownSha256": "c5e11cb9ed2671dd1cfa6322e85a6536a1b8feeb86fb614b2b21368168c33891",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Buttons",
+          "status": "no-requirements",
+          "notes": "Resource/token controls, or a descriptive parent/inventory heading; substantive variant, state, style, and layout guidance is covered in its specific sections."
+        },
+        {
+          "id": "90e813a4-748b-4146-b32c-960d20c714f9",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "19838c5b-fae0-4c30-aee1-33babfcaa2e9",
+          "title": "Toggle buttons",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "653b660b-e9d8-48ad-9f53-67fb3d76e09e",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "Resource/token controls, or a descriptive parent/inventory heading; substantive variant, state, style, and layout guidance is covered in its specific sections."
+        },
+        {
+          "id": "28a1ae9b-9576-44a8-8d2e-8231a0218d20",
+          "title": "Label text",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "1edebefa-7d0f-42cf-beda-15fb71996c0e",
+          "title": "Container",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "89ba49e3-31b5-47ae-9665-3e7f33452d0f",
+          "title": "Icon (optional)",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "4e89da4d-a8fa-4e20-bb8d-b8a93eff3e3e",
+          "title": "Color styles",
+          "status": "no-requirements",
+          "notes": "Resource/token controls, or a descriptive parent/inventory heading; substantive variant, state, style, and layout guidance is covered in its specific sections."
+        },
+        {
+          "id": "49227b4f-27c9-4288-92f1-9e4c204944ce",
+          "title": "Elevated style",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "9ecffdb3-ef29-47e7-8d5d-f78b404fcafe",
+          "title": "Filled style",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "07a1577b-aaf5-4824-a698-03526421058b",
+          "title": "Tonal style",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "3742b09f-c224-43e0-a83e-541bd29d0f05",
+          "title": "Outlined style",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "c9bcbc0b-ee05-45ad-8e80-e814ae919fbb",
+          "title": "Text style",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "f413cc7b-ddfa-420d-98b8-5d582f250686",
+          "title": "Adaptive design",
+          "status": "no-requirements",
+          "notes": "Resource/token controls, or a descriptive parent/inventory heading; substantive variant, state, style, and layout guidance is covered in its specific sections."
+        },
+        {
+          "id": "b3821007-d4da-4a88-b772-a36ca5b98585",
+          "title": "Resizing",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "55b4bead-fe05-4ba3-b41f-70c2c37562e5",
+          "title": "Presentation",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/buttons/accessibility",
+      "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+      "markdownSha256": "9ab3a4573753347c5623c56619b977c85c5da04826362b128eff5d36b0cf335a",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Buttons",
+          "status": "no-requirements",
+          "notes": "Resource/token controls, or a descriptive parent/inventory heading; substantive variant, state, style, and layout guidance is covered in its specific sections."
+        },
+        {
+          "id": "cd56063f-369f-4af3-8ac5-e0c5db6dca95",
+          "title": "Use cases",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "b11e67b9-79a3-4084-9bfa-39bd5084670c",
+          "title": "Interaction & style",
+          "status": "no-requirements",
+          "notes": "This heading contains no additional independent instruction beyond the checks linked to its detailed child sections."
+        },
+        {
+          "id": "6f9555e3-e887-4f98-90fc-1bf76159f9a3",
+          "title": "Color contrast",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "179aecad-138e-435c-b1dc-105d3ccc3e04",
+          "title": "200% text size",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "9fc9f769-ee82-4790-9847-148f656c0c00",
+          "title": "Rapid clicks",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "214db7bc-b8fc-4f82-95a2-799f9a15507b",
+          "title": "Keyboard navigation",
+          "status": "mapped",
+          "notes": "Tab focus and Space/Enter activation are represented by button-keyboard-tab-and-activate."
+        },
+        {
+          "id": "9a713bc7-4de9-4e18-ab0b-1ab2ce3561b7",
+          "title": "Labeling elements",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "concise-sentence-case",
+      "statement": "Write button labels in sentence case, capitalizing the first word and proper nouns.",
+      "condition": "When configuring buttons.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/overview",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "bf431bc5cfc6c5721a70493e53c721d33bf812092cb2e40838d32bbfa5066a8f",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Buttons guidance."
+        },
+        {
+          "change": "corrected",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/overview",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "bf431bc5cfc6c5721a70493e53c721d33bf812092cb2e40838d32bbfa5066a8f",
+          "extractorVersion": 2,
+          "summary": "Split the original combined record into independently assessable size, color style, and shape requirements; this check now records label casing only."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 2,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "small-padding-recommendation",
+      "statement": "For small buttons, use 16dp padding as the recommended value; 24dp padding is no longer recommended.",
+      "condition": "In M3 Expressive.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/overview",
+          "section": "f8ba981c-a363-4ccd-a332-ee1b0e124e5c",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "bf431bc5cfc6c5721a70493e53c721d33bf812092cb2e40838d32bbfa5066a8f",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured M3 Expressive update guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "button-priority",
+      "statement": "Reserve filled buttons for the important final action, usually one per page; use lower-emphasis styles for supporting actions and avoid cluttering a screen with buttons.",
+      "condition": "When choosing button emphasis.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/guidelines",
+          "section": "90e813a4-748b-4146-b32c-960d20c714f9",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "c5e11cb9ed2671dd1cfa6322e85a6536a1b8feeb86fb614b2b21368168c33891",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Usage guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "toggle-binary",
+      "statement": "Use toggle buttons for binary selections; use an outlined icon when unselected and filled when selected, increasing icon weight if no filled version exists.",
+      "condition": "For toggle buttons.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/guidelines",
+          "section": "19838c5b-fae0-4c30-aee1-33babfcaa2e9",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "c5e11cb9ed2671dd1cfa6322e85a6536a1b8feeb86fb614b2b21368168c33891",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Toggle buttons guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "label-brief-single-line",
+      "statement": "Keep button labels brief, ideally one to three words, in sentence case; do not wrap or truncate them.",
+      "condition": "For button labels.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/guidelines",
+          "section": "28a1ae9b-9576-44a8-8d2e-8231a0218d20",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "c5e11cb9ed2671dd1cfa6322e85a6536a1b8feeb86fb614b2b21368168c33891",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Label text guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "leading-icon-direction",
+      "statement": "Place the icon before the label in left-to-right text and after the label in right-to-left text.",
+      "condition": "When a button has an icon.",
+      "basis": "explicit",
+      "notes": "Corrected to isolate directional placement; icon meaning, stacking, and count are represented by separate checks.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/guidelines",
+          "section": "89ba49e3-31b5-47ae-9665-3e7f33452d0f",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "c5e11cb9ed2671dd1cfa6322e85a6536a1b8feeb86fb614b2b21368168c33891",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Icon (optional) guidance."
+        },
+        {
+          "change": "corrected",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/guidelines",
+          "section": "89ba49e3-31b5-47ae-9665-3e7f33452d0f",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "c5e11cb9ed2671dd1cfa6322e85a6536a1b8feeb86fb614b2b21368168c33891",
+          "extractorVersion": 2,
+          "summary": "Separated direction-dependent icon placement from meaning, stacking, and icon-count guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 2,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "single-primary-filled",
+      "statement": "Use a filled button sparingly for an important action that completes a flow.",
+      "condition": "For filled buttons.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/guidelines",
+          "section": "9ecffdb3-ef29-47e7-8d5d-f78b404fcafe",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "c5e11cb9ed2671dd1cfa6322e85a6536a1b8feeb86fb614b2b21368168c33891",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Filled style guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "text-low-priority",
+      "statement": "Use text buttons for low-priority actions on simple backgrounds; do not underline them, and keep their label distinguishable from surrounding text.",
+      "condition": "For text buttons.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/guidelines",
+          "section": "c9bcbc0b-ee05-45ad-8e80-e814ae919fbb",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "c5e11cb9ed2671dd1cfa6322e85a6536a1b8feeb86fb614b2b21368168c33891",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Text style guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "dialog-button-trailing",
+      "statement": "Align dialog text buttons to the trailing edge, which is right in LTR and left in RTL.",
+      "condition": "When text buttons appear in dialogs.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/guidelines",
+          "section": "c9bcbc0b-ee05-45ad-8e80-e814ae919fbb",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "c5e11cb9ed2671dd1cfa6322e85a6536a1b8feeb86fb614b2b21368168c33891",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Text style guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "button-contrast",
+      "statement": "Maintain at least 3:1 contrast against the background, measured on the container for elevated, filled, and tonal styles and on label text for outlined and text styles.",
+      "condition": "For enabled buttons.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/accessibility",
+          "section": "6f9555e3-e887-4f98-90fc-1bf76159f9a3",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "9ab3a4573753347c5623c56619b977c85c5da04826362b128eff5d36b0cf335a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Color contrast guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "button-label-scaling",
+      "statement": "On Android, keep labels concise enough to fit within two lines at 200% text size; if truncation remains, expose the full content through a single-tap alternative.",
+      "condition": "When supporting 200% text size on Android.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/accessibility",
+          "section": "179aecad-138e-435c-b1dc-105d3ccc3e04",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "9ab3a4573753347c5623c56619b977c85c5da04826362b128eff5d36b0cf335a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured 200% text size guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "button-accessibility-label",
+      "statement": "Make the accessibility label match the visible button label, adding context only when needed.",
+      "condition": "For screen-reader output.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/accessibility",
+          "section": "9a713bc7-4de9-4e18-ab0b-1ab2ce3561b7",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "9ab3a4573753347c5623c56619b977c85c5da04826362b128eff5d36b0cf335a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Labeling elements guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "button-size-options",
+      "statement": "Button sizes are extra small, small, medium, large, and extra large.",
+      "condition": "When selecting button size.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/overview",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "bf431bc5cfc6c5721a70493e53c721d33bf812092cb2e40838d32bbfa5066a8f",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Buttons instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "button-color-style-options",
+      "statement": "Button color styles are elevated, filled, tonal, outlined, and text.",
+      "condition": "When selecting a button color style.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/overview",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "bf431bc5cfc6c5721a70493e53c721d33bf812092cb2e40838d32bbfa5066a8f",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Buttons instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "button-shape-options",
+      "statement": "Buttons may use round or square shapes.",
+      "condition": "When selecting button shape.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/overview",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "bf431bc5cfc6c5721a70493e53c721d33bf812092cb2e40838d32bbfa5066a8f",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Buttons instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "button-small-padding-guidance",
+      "statement": "For small buttons, use 16dp padding as the recommended value; 24dp is no longer recommended.",
+      "condition": "In M3 Expressive.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/overview",
+          "section": "f8ba981c-a363-4ccd-a332-ee1b0e124e5c",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "bf431bc5cfc6c5721a70493e53c721d33bf812092cb2e40838d32bbfa5066a8f",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured M3 Expressive update instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "button-m3-default-shape-height",
+      "statement": "M3 default buttons are 40dp high with fully rounded corners; M2 buttons were 36dp high with slightly rounded corners.",
+      "condition": "When applying the documented M3 default dimensions.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/overview",
+          "section": "388f6096-c34d-4a22-8b1f-11ad69963f7c",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "bf431bc5cfc6c5721a70493e53c721d33bf812092cb2e40838d32bbfa5066a8f",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Differences from M2 instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "button-icon-size",
+      "statement": "Use 20dp for standard leading and trailing icons.",
+      "condition": "For M3 buttons with icons.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/overview",
+          "section": "388f6096-c34d-4a22-8b1f-11ad69963f7c",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "bf431bc5cfc6c5721a70493e53c721d33bf812092cb2e40838d32bbfa5066a8f",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Differences from M2 instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "neutral-text-style-not-recommended",
+      "statement": "Do not use the neutral text-button color style as the recommended M3 style.",
+      "condition": "When choosing text-button colors.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/overview",
+          "section": "388f6096-c34d-4a22-8b1f-11ad69963f7c",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "bf431bc5cfc6c5721a70493e53c721d33bf812092cb2e40838d32bbfa5066a8f",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Differences from M2 instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "button-toggle-color-style",
+      "statement": "Use elevated, filled, tonal, outlined, or text styles for default buttons; toggle buttons use corresponding selected/unselected color mappings but do not use the text style.",
+      "condition": "When styling default or toggle buttons.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/specs",
+          "section": "6860d02d-8ede-4a5e-a43c-5c1c82f44a28",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "de51692b6f21c9eabba318763c5a926326efaa9ea859ea1ff6ab5beb20d08ae0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Color instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "button-custom-color-contrast",
+      "statement": "When using color roles beyond the built-in mappings, maintain at least 3:1 contrast between the button container and its text.",
+      "condition": "For custom button color roles.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/specs",
+          "section": "6860d02d-8ede-4a5e-a43c-5c1c82f44a28",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "de51692b6f21c9eabba318763c5a926326efaa9ea859ea1ff6ab5beb20d08ae0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Color instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "elevated-button-rest-disabled-elevation",
+      "statement": "Elevated buttons use elevation 1 by default and elevation 0 when disabled.",
+      "condition": "For elevated buttons.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/specs",
+          "section": "81e12069-106c-47b5-b148-1cd6077fa3d5",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "de51692b6f21c9eabba318763c5a926326efaa9ea859ea1ff6ab5beb20d08ae0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Elevated button states instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "outlined-button-rest-container",
+      "statement": "Outlined button containers are invisible at rest; state layers and opacity still communicate disabled, hover, focus, and pressed states.",
+      "condition": "For outlined buttons.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/specs",
+          "section": "6757c97e-0ae6-4802-a2d5-9e3b134a7231",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "de51692b6f21c9eabba318763c5a926326efaa9ea859ea1ff6ab5beb20d08ae0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Outlined button states instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "text-button-rest-container",
+      "statement": "Text button containers are invisible at rest and show state layers on interaction; text buttons do not have a toggle variant.",
+      "condition": "For text buttons.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/specs",
+          "section": "9c12a1a1-9a74-499c-8139-5cff551afe4f",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "de51692b6f21c9eabba318763c5a926326efaa9ea859ea1ff6ab5beb20d08ae0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Text button style states instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "pressed-shape-shared",
+      "statement": "Pressed buttons may become more square; round and square buttons share the same pressed shape, with the radius depending on size.",
+      "condition": "When a button enters the pressed state.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/specs",
+          "section": "cb36ae03-5539-497d-9777-06547a7d3f17",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "de51692b6f21c9eabba318763c5a926326efaa9ea859ea1ff6ab5beb20d08ae0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Pressed state instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "toggle-selected-shape-inversion",
+      "statement": "A selected toggle button changes from round to square, or from square to round, relative to its unselected shape.",
+      "condition": "For selected toggle buttons.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/specs",
+          "section": "e80f212b-28c8-41c6-915e-939ed06fe9ee",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "de51692b6f21c9eabba318763c5a926326efaa9ea859ea1ff6ab5beb20d08ae0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured When selected instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "small-icon-button-target",
+      "statement": "Keep extra-small and small icon-button targets at least 48×48dp.",
+      "condition": "For extra-small or small icon buttons.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/specs",
+          "section": "7d63205e-9401-449b-9a2b-3408f4de3b0d",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "de51692b6f21c9eabba318763c5a926326efaa9ea859ea1ff6ab5beb20d08ae0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Target areas instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "buttons-discrete-not-overused",
+      "statement": "Use buttons for discrete actions and avoid placing so many on a screen that they disrupt hierarchy; move lower-priority actions to overflow or use links, chips, or icon buttons.",
+      "condition": "When a screen has many possible actions.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/guidelines",
+          "section": "90e813a4-748b-4146-b32c-960d20c714f9",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "c5e11cb9ed2671dd1cfa6322e85a6536a1b8feeb86fb614b2b21368168c33891",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Usage instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "button-width-fits-label",
+      "statement": "Let a button width fit its label; responsive stretching is allowed, but never make the container narrower than the label text.",
+      "condition": "When sizing a button container.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/guidelines",
+          "section": "90e813a4-748b-4146-b32c-960d20c714f9",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "c5e11cb9ed2671dd1cfa6322e85a6536a1b8feeb86fb614b2b21368168c33891",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Usage instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "button-group-primary-emphasis",
+      "statement": "Within a related button group, emphasize the primary action more than secondary actions using size, color, or shape.",
+      "condition": "When a group contains primary and secondary actions.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/guidelines",
+          "section": "90e813a4-748b-4146-b32c-960d20c714f9",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "c5e11cb9ed2671dd1cfa6322e85a6536a1b8feeb86fb614b2b21368168c33891",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Usage instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "toggle-binary-selection",
+      "statement": "Use toggle buttons for binary choices such as Save or Favorite.",
+      "condition": "For binary selection actions.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/guidelines",
+          "section": "19838c5b-fae0-4c30-aee1-33babfcaa2e9",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "c5e11cb9ed2671dd1cfa6322e85a6536a1b8feeb86fb614b2b21368168c33891",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Toggle buttons instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "toggle-icon-selected-state",
+      "statement": "Use an outlined icon while unselected and a filled icon while selected; if no filled version exists, increase the icon weight.",
+      "condition": "For toggle buttons with icons.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/guidelines",
+          "section": "19838c5b-fae0-4c30-aee1-33babfcaa2e9",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "c5e11cb9ed2671dd1cfa6322e85a6536a1b8feeb86fb614b2b21368168c33891",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Toggle buttons instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "toggle-label-length-stability",
+      "statement": "Keep selected and unselected labels similar in character count to avoid disruptive layout changes.",
+      "condition": "When the toggle label changes with state.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/guidelines",
+          "section": "19838c5b-fae0-4c30-aee1-33babfcaa2e9",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "c5e11cb9ed2671dd1cfa6322e85a6536a1b8feeb86fb614b2b21368168c33891",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Toggle buttons instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "outlined-text-style-distinction",
+      "statement": "Use caution with outlined and text buttons next to visually similar text or chips; consider filled or tonal styling when needed for distinction.",
+      "condition": "When outlined or text buttons appear near similar elements.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/guidelines",
+          "section": "28a1ae9b-9576-44a8-8d2e-8231a0218d20",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "c5e11cb9ed2671dd1cfa6322e85a6536a1b8feeb86fb614b2b21368168c33891",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Label text instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "button-container-width-dynamic",
+      "statement": "Let button container width follow the label and optional icon; avoid a fixed width narrower than the content.",
+      "condition": "When sizing button containers.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/guidelines",
+          "section": "1edebefa-7d0f-42cf-beda-15fb71996c0e",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "c5e11cb9ed2671dd1cfa6322e85a6536a1b8feeb86fb614b2b21368168c33891",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Container instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "text-button-container-interaction-only",
+      "statement": "For text style buttons, show a container only for hover, focus, or pressed states.",
+      "condition": "For text buttons.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/guidelines",
+          "section": "1edebefa-7d0f-42cf-beda-15fb71996c0e",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "c5e11cb9ed2671dd1cfa6322e85a6536a1b8feeb86fb614b2b21368168c33891",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Container instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "elevated-separation-sparing",
+      "statement": "Use the elevated style only when a button needs separation from a visually prominent background; avoid unnecessary shadows and prefer filled for high emphasis.",
+      "condition": "When selecting elevated style.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/guidelines",
+          "section": "49227b4f-27c9-4288-92f1-9e4c204944ce",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "c5e11cb9ed2671dd1cfa6322e85a6536a1b8feeb86fb614b2b21368168c33891",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Elevated style instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "filled-primary-final-action",
+      "statement": "Use filled style for an important final action and sparingly, ideally for one action per page; tertiary colors are also allowed in some cases.",
+      "condition": "When selecting filled style.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/guidelines",
+          "section": "9ecffdb3-ef29-47e7-8d5d-f78b404fcafe",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "c5e11cb9ed2671dd1cfa6322e85a6536a1b8feeb86fb614b2b21368168c33891",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Filled style instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tonal-secondary-emphasis",
+      "statement": "Use tonal style for a lower-priority action that needs more emphasis than outlined, such as Next; it uses the secondary color mapping.",
+      "condition": "When selecting tonal style.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/guidelines",
+          "section": "07a1577b-aaf5-4824-a698-03526421058b",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "c5e11cb9ed2671dd1cfa6322e85a6536a1b8feeb86fb614b2b21368168c33891",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Tonal style instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "outlined-medium-emphasis",
+      "statement": "Use outlined style for important medium-emphasis supporting actions, often paired with a filled primary action.",
+      "condition": "When selecting outlined style.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/guidelines",
+          "section": "3742b09f-c224-43e0-a83e-541bd29d0f05",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "c5e11cb9ed2671dd1cfa6322e85a6536a1b8feeb86fb614b2b21368168c33891",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Outlined style instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "outlined-simple-background",
+      "statement": "Place outlined buttons on simple backgrounds; on images, use a contrasting fill or choose filled style.",
+      "condition": "When the background is visually prominent.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/guidelines",
+          "section": "3742b09f-c224-43e0-a83e-541bd29d0f05",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "c5e11cb9ed2671dd1cfa6322e85a6536a1b8feeb86fb614b2b21368168c33891",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Outlined style instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "text-style-lowest-priority",
+      "statement": "Use text style for the lowest-priority actions on simple backgrounds, without underlining; use linked body text for hyperlinks.",
+      "condition": "When selecting text style.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/guidelines",
+          "section": "c9bcbc0b-ee05-45ad-8e80-e814ae919fbb",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "c5e11cb9ed2671dd1cfa6322e85a6536a1b8feeb86fb614b2b21368168c33891",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Text style instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "text-label-contrast-and-dialog-alignment",
+      "statement": "Keep text-button labels distinguishable from surrounding text and align dialog text buttons to the trailing edge (right in LTR, left in RTL).",
+      "condition": "For text buttons, including those in dialogs.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/guidelines",
+          "section": "c9bcbc0b-ee05-45ad-8e80-e814ae919fbb",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "c5e11cb9ed2671dd1cfa6322e85a6536a1b8feeb86fb614b2b21368168c33891",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Text style instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "button-content-centered",
+      "statement": "Keep the icon and label grouped and centered as button width changes.",
+      "condition": "When the button resizes.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/guidelines",
+          "section": "b3821007-d4da-4a88-b772-a36ca5b98585",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "c5e11cb9ed2671dd1cfa6322e85a6536a1b8feeb86fb614b2b21368168c33891",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Resizing instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "button-large-window-width",
+      "statement": "Constrain button width or position it beside other elements on large windows to avoid long, flat buttons with little content.",
+      "condition": "At large breakpoints.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/guidelines",
+          "section": "b3821007-d4da-4a88-b772-a36ca5b98585",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "c5e11cb9ed2671dd1cfa6322e85a6536a1b8feeb86fb614b2b21368168c33891",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Resizing instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "button-order-across-breakpoints",
+      "statement": "Keep items, including buttons, in the same order across small and large layouts for screen-reader and keyboard consistency.",
+      "condition": "When the parent layout adapts.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/guidelines",
+          "section": "55b4bead-fe05-4ba3-b41f-70c2c37562e5",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "c5e11cb9ed2671dd1cfa6322e85a6536a1b8feeb86fb614b2b21368168c33891",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Presentation instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "button-assistive-outcome",
+      "statement": "Allow assistive technology users to navigate to and activate buttons that perform actions.",
+      "condition": "For all buttons.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/accessibility",
+          "section": "cd56063f-369f-4af3-8ac5-e0c5db6dca95",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "9ab3a4573753347c5623c56619b977c85c5da04826362b128eff5d36b0cf335a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Use cases instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "button-rapid-click-motion",
+      "statement": "On the web, use the modified motion curve when rapid successive clicks or taps are expected to avoid overlapping animation resonance.",
+      "condition": "For web buttons with expected rapid activation.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/accessibility",
+          "section": "9fc9f769-ee82-4790-9847-148f656c0c00",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "9ab3a4573753347c5623c56619b977c85c5da04826362b128eff5d36b0cf335a",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Rapid clicks instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "button-icon-meaning",
+      "statement": "Use an icon that clearly communicates the button action.",
+      "condition": "When a button includes an icon.",
+      "basis": "explicit",
+      "notes": "The source requires a clearly meaningful icon.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/guidelines",
+          "section": "89ba49e3-31b5-47ae-9665-3e7f33452d0f",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "c5e11cb9ed2671dd1cfa6322e85a6536a1b8feeb86fb614b2b21368168c33891",
+          "extractorVersion": 2,
+          "summary": "The source requires a clearly meaningful icon."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "button-icon-inline-with-label",
+      "statement": "Do not place an icon vertically above and centered with the button label; keep icon and text together in a horizontal button arrangement.",
+      "condition": "When a button includes both an icon and a text label.",
+      "basis": "explicit",
+      "notes": "The captured example rejects an icon stacked vertically above the label.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/guidelines",
+          "section": "89ba49e3-31b5-47ae-9665-3e7f33452d0f",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "c5e11cb9ed2671dd1cfa6322e85a6536a1b8feeb86fb614b2b21368168c33891",
+          "extractorVersion": 2,
+          "summary": "The captured example rejects an icon stacked vertically above the label."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "button-single-icon",
+      "statement": "Do not use two icons in the same button.",
+      "condition": "When a button includes icon content.",
+      "basis": "explicit",
+      "notes": "The captured guidance explicitly prohibits two icons in one button.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/guidelines",
+          "section": "89ba49e3-31b5-47ae-9665-3e7f33452d0f",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "c5e11cb9ed2671dd1cfa6322e85a6536a1b8feeb86fb614b2b21368168c33891",
+          "extractorVersion": 2,
+          "summary": "The captured guidance explicitly prohibits two icons in one button."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "button-keyboard-tab-and-activate",
+      "statement": "Tab moves focus to a button; Space or Enter activates it.",
+      "condition": "For keyboard operation of a button.",
+      "basis": "explicit",
+      "notes": "Preserves both rows of the keyboard table as explicit button actions.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/buttons/accessibility",
+          "section": "214db7bc-b8fc-4f82-95a2-799f9a15507b",
+          "capture": "snapshots/material-guidance/20261025T165223.075795921Z-2382937843/capture.json",
+          "markdownSha256": "9ab3a4573753347c5623c56619b977c85c5da04826362b128eff5d36b0cf335a",
+          "extractorVersion": 2,
+          "summary": "Preserves both rows of the keyboard table as explicit button actions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

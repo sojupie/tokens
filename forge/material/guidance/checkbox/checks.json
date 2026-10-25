@@ -1,0 +1,589 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "checkbox",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/checkbox/overview",
+      "capture": "snapshots/material-guidance/20261025T165327.749310180Z-1990993870/capture.json",
+      "markdownSha256": "70afe80276caa2cd591ca795b84ef1f60d8cd46a3a7a40eef8ef97fcad33ca01",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Checkbox",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "a6e3c196-eaba-4b9b-9816-4683017c0966",
+          "title": "Availability & resources",
+          "status": "no-requirements",
+          "notes": "Resource/token reference, descriptive anatomy/state inventory, or parent heading; actionable control behavior is mapped in the relevant checks."
+        },
+        {
+          "id": "47cf0451-bf2e-4d87-ad1d-01dc53d02344",
+          "title": "Differences from M2",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/checkbox/specs",
+      "capture": "snapshots/material-guidance/20261025T165327.749310180Z-1990993870/capture.json",
+      "markdownSha256": "f7b4964d18a7f13a41cfa7297dc4068f77b882c9379fb1df3803f414a8ccc4d0",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Checkbox",
+          "status": "no-requirements",
+          "notes": "Resource/token reference, descriptive anatomy/state inventory, or parent heading; actionable control behavior is mapped in the relevant checks."
+        },
+        {
+          "id": "63e206d1-2cd2-4eb1-8468-e4a75ad4bf8f",
+          "title": "Tokens & specs",
+          "status": "no-requirements",
+          "notes": "Resource/token reference, descriptive anatomy/state inventory, or parent heading; actionable control behavior is mapped in the relevant checks."
+        },
+        {
+          "id": "70acf4c2-8b66-40e1-8d41-8165e32b1fec",
+          "title": "Checkbox",
+          "status": "no-requirements",
+          "notes": "Resource/token reference, descriptive anatomy/state inventory, or parent heading; actionable control behavior is mapped in the relevant checks."
+        },
+        {
+          "id": "f417b468-fb9b-44ea-9907-6e15c4016cc7",
+          "title": "Color",
+          "status": "no-requirements",
+          "notes": "Resource/token reference, descriptive anatomy/state inventory, or parent heading; actionable control behavior is mapped in the relevant checks."
+        },
+        {
+          "id": "5d746841-f46c-4840-8d82-be01e7bfafef",
+          "title": "Adjacent text label color",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "d541424a-22a5-4637-94cf-daf4bd1b046c",
+          "title": "States",
+          "status": "no-requirements",
+          "notes": "Resource/token reference, descriptive anatomy/state inventory, or parent heading; actionable control behavior is mapped in the relevant checks."
+        },
+        {
+          "id": "f28c538d-61c3-450c-9ba6-e300b71bf38d",
+          "title": "Measurements",
+          "status": "unclear",
+          "notes": "Exact checkbox dimensions appear only in an image diagram that has not been inspected; values remain unresolved."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/checkbox/guidelines",
+      "capture": "snapshots/material-guidance/20261025T165327.749310180Z-1990993870/capture.json",
+      "markdownSha256": "a936e1eef8d6f1e31f32b62b5ac17876d8edac0b4c8ec665c11a6515e04ca7d1",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Checkbox",
+          "status": "no-requirements",
+          "notes": "Resource/token reference, descriptive anatomy/state inventory, or parent heading; actionable control behavior is mapped in the relevant checks."
+        },
+        {
+          "id": "2a0f1b99-bc6c-4c06-bab6-519f17054d2f",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "38f2c19e-1b04-4dad-8d0e-961a3faddb80",
+          "title": "Alternate selection controls",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "c04665de-5bf3-4706-87ae-68ad7e2b7fda",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "Resource/token reference, descriptive anatomy/state inventory, or parent heading; actionable control behavior is mapped in the relevant checks."
+        },
+        {
+          "id": "e9506353-b1be-4ae2-8bbb-9ebb6ccc750e",
+          "title": "Responsive layout",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "700024ba-29e7-4cee-8327-18d11163d7af",
+          "title": "Behavior",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/checkbox/accessibility",
+      "capture": "snapshots/material-guidance/20261025T165327.749310180Z-1990993870/capture.json",
+      "markdownSha256": "15c812c47103e95c00d984523b2539eb8c4e3dbab632f20504104d4e96f1a074",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Checkbox",
+          "status": "no-requirements",
+          "notes": "Resource/token reference, descriptive anatomy/state inventory, or parent heading; actionable control behavior is mapped in the relevant checks."
+        },
+        {
+          "id": "0d67c489-7715-4b5b-87d8-54df9f75f954",
+          "title": "Use cases",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "6a2f55e5-2fa0-4204-b6d1-62362dda89c7",
+          "title": "Interaction & style",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "2363e0eb-1d7d-42dc-8c6c-09f7d1653a67",
+          "title": "Avoid applying density by default",
+          "status": "mapped",
+          "notes": "The density-setting choice and easy reversal are represented by checkbox-density-user-control; the default-density and 48×48 CSS-pixel target rules are represented by checkbox-density."
+        },
+        {
+          "id": "ccea8027-7978-4d60-b137-dd0e113636ab",
+          "title": "Keyboard navigation",
+          "status": "unclear",
+          "notes": "The keyboard table under checkbox accessibility describes chip/chip-group focus, chip activation, input-chip deletion and chip arrow navigation rather than checkbox controls. This appears misattributed or misplaced, and the capture does not establish whether checkbox keyboard guidance is missing; no chip actions are mapped as checkbox behavior."
+        },
+        {
+          "id": "32031a1d-4850-4506-bd95-4ca731bef4fd",
+          "title": "Labeling elements",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "choice-use",
+      "statement": "Use checkboxes for multiple related selections, sub-selections, or desktop on/off choices; use radio buttons for one choice and switches for standalone or verbose settings.",
+      "condition": "When choosing a selection control.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/checkbox/overview",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T165327.749310180Z-1990993870/capture.json",
+          "markdownSha256": "70afe80276caa2cd591ca795b84ef1f60d8cd46a3a7a40eef8ef97fcad33ca01",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Checkbox guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "checkbox-label-color",
+      "statement": "Use on-surface color for the adjacent text label and keep it the same whether the checkbox is selected or not.",
+      "condition": "When styling the checkbox label.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/checkbox/specs",
+          "section": "5d746841-f46c-4840-8d82-be01e7bfafef",
+          "capture": "snapshots/material-guidance/20261025T165327.749310180Z-1990993870/capture.json",
+          "markdownSha256": "f7b4964d18a7f13a41cfa7297dc4068f77b882c9379fb1df3803f414a8ccc4d0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Adjacent text label color guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "parent-child-indeterminate",
+      "statement": "For a parent checkbox, selecting it checks all children, clearing it clears all children, and partial child selection makes the parent indeterminate; selecting an indeterminate parent checks all children.",
+      "condition": "When checkboxes have a parent-child relationship.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/checkbox/guidelines",
+          "section": "700024ba-29e7-4cee-8327-18d11163d7af",
+          "capture": "snapshots/material-guidance/20261025T165327.749310180Z-1990993870/capture.json",
+          "markdownSha256": "a936e1eef8d6f1e31f32b62b5ac17876d8edac0b4c8ec665c11a6515e04ca7d1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Behavior guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "immediate-toggle",
+      "statement": "When a checkbox turns an item on or off, execute the action immediately.",
+      "condition": "When a checkbox controls an on/off action.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/checkbox/guidelines",
+          "section": "700024ba-29e7-4cee-8327-18d11163d7af",
+          "capture": "snapshots/material-guidance/20261025T165327.749310180Z-1990993870/capture.json",
+          "markdownSha256": "a936e1eef8d6f1e31f32b62b5ac17876d8edac0b4c8ec665c11a6515e04ca7d1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Behavior guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "label-click-target",
+      "statement": "Allow either the checkbox or its linked text label to select the option.",
+      "condition": "For checkbox interaction.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/checkbox/accessibility",
+          "section": "6a2f55e5-2fa0-4204-b6d1-62362dda89c7",
+          "capture": "snapshots/material-guidance/20261025T165327.749310180Z-1990993870/capture.json",
+          "markdownSha256": "15c812c47103e95c00d984523b2539eb8c4e3dbab632f20504104d4e96f1a074",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Interaction & style guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "checkbox-density",
+      "statement": "Do not apply density by default; if dense settings are offered, keep all controls used to change density at least 48×48 CSS pixels.",
+      "condition": "For checkbox layouts.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/checkbox/accessibility",
+          "section": "6a2f55e5-2fa0-4204-b6d1-62362dda89c7",
+          "capture": "snapshots/material-guidance/20261025T165327.749310180Z-1990993870/capture.json",
+          "markdownSha256": "15c812c47103e95c00d984523b2539eb8c4e3dbab632f20504104d4e96f1a074",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Interaction & style guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "checkbox-label",
+      "statement": "Use the adjacent UI text as the checkbox accessibility label when it is correctly associated.",
+      "condition": "For individual checkboxes.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/checkbox/accessibility",
+          "section": "32031a1d-4850-4506-bd95-4ca731bef4fd",
+          "capture": "snapshots/material-guidance/20261025T165327.749310180Z-1990993870/capture.json",
+          "markdownSha256": "15c812c47103e95c00d984523b2539eb8c4e3dbab632f20504104d4e96f1a074",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Labeling elements guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "selected-visual-prominence",
+      "statement": "Make selected items more prominent than unselected items.",
+      "condition": "When checkboxes show selectable items.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/checkbox/overview",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T165327.749310180Z-1990993870/capture.json",
+          "markdownSha256": "70afe80276caa2cd591ca795b84ef1f60d8cd46a3a7a40eef8ef97fcad33ca01",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Checkbox instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "indeterminate-and-error-states",
+      "statement": "Support indeterminate states and error states for unselected, selected, and indeterminate checkbox states.",
+      "condition": "For the documented M3 state set.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/checkbox/overview",
+          "section": "47cf0451-bf2e-4d87-ad1d-01dc53d02344",
+          "capture": "snapshots/material-guidance/20261025T165327.749310180Z-1990993870/capture.json",
+          "markdownSha256": "70afe80276caa2cd591ca795b84ef1f60d8cd46a3a7a40eef8ef97fcad33ca01",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Differences from M2 instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "checkbox-usage-context",
+      "statement": "Use checkboxes to select related options, show sub-selections, group similar options, or turn an item on/off in desktop contexts.",
+      "condition": "When choosing a selection control.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/checkbox/guidelines",
+          "section": "2a0f1b99-bc6c-4c06-bab6-519f17054d2f",
+          "capture": "snapshots/material-guidance/20261025T165327.749310180Z-1990993870/capture.json",
+          "markdownSha256": "a936e1eef8d6f1e31f32b62b5ac17876d8edac0b4c8ec665c11a6515e04ca7d1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Usage instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "checkbox-radio-switch-distinction",
+      "statement": "Use checkboxes for multiple related list choices, radio buttons for one choice, and switches for standalone or verbose settings.",
+      "condition": "When selecting among checkbox, radio, and switch controls.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/checkbox/guidelines",
+          "section": "38f2c19e-1b04-4dad-8d0e-961a3faddb80",
+          "capture": "snapshots/material-guidance/20261025T165327.749310180Z-1990993870/capture.json",
+          "markdownSha256": "a936e1eef8d6f1e31f32b62b5ac17876d8edac0b4c8ec665c11a6515e04ca7d1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Alternate selection controls instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "checkbox-expanded-grouping",
+      "statement": "At expanded breakpoints, a contained region such as a side sheet may group related checkboxes and their actions.",
+      "condition": "At expanded breakpoints.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/checkbox/guidelines",
+          "section": "e9506353-b1be-4ae2-8bbb-9ebb6ccc750e",
+          "capture": "snapshots/material-guidance/20261025T165327.749310180Z-1990993870/capture.json",
+          "markdownSha256": "a936e1eef8d6f1e31f32b62b5ac17876d8edac0b4c8ec665c11a6515e04ca7d1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Responsive layout instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "checkbox-multiple-select",
+      "statement": "Allow multiple checkboxes in a list to be selected independently.",
+      "condition": "For a checkbox list.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/checkbox/guidelines",
+          "section": "700024ba-29e7-4cee-8327-18d11163d7af",
+          "capture": "snapshots/material-guidance/20261025T165327.749310180Z-1990993870/capture.json",
+          "markdownSha256": "a936e1eef8d6f1e31f32b62b5ac17876d8edac0b4c8ec665c11a6515e04ca7d1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Behavior instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "checkbox-assistive-outcomes",
+      "statement": "Let assistive technology users navigate to a checkbox, toggle it, and receive feedback appropriate to the input type.",
+      "condition": "For checkbox controls.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/checkbox/accessibility",
+          "section": "0d67c489-7715-4b5b-87d8-54df9f75f954",
+          "capture": "snapshots/material-guidance/20261025T165327.749310180Z-1990993870/capture.json",
+          "markdownSha256": "15c812c47103e95c00d984523b2539eb8c4e3dbab632f20504104d4e96f1a074",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Use cases instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "checkbox-independent-selection",
+      "statement": "Allow each checkbox to be selected or cleared regardless of the selection state of other checkboxes in the group.",
+      "condition": "For checkboxes in a group.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/checkbox/accessibility",
+          "section": "6a2f55e5-2fa0-4204-b6d1-62362dda89c7",
+          "capture": "snapshots/material-guidance/20261025T165327.749310180Z-1990993870/capture.json",
+          "markdownSha256": "15c812c47103e95c00d984523b2539eb8c4e3dbab632f20504104d4e96f1a074",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Interaction & style instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "checkbox-density-user-control",
+      "statement": "If density customization is offered, let users choose a higher-density setting, such as a denser layout or theme, and make it easy to revert.",
+      "condition": "When an interface offers density settings for checkbox layouts.",
+      "basis": "explicit",
+      "notes": "The accessibility section recommends a user-controlled density choice and an easy path to revert it; the separate checkbox-density check covers default density and 48×48 CSS-pixel target sizes.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/checkbox/accessibility",
+          "section": "2363e0eb-1d7d-42dc-8c6c-09f7d1653a67",
+          "capture": "snapshots/material-guidance/20261025T165327.749310180Z-1990993870/capture.json",
+          "markdownSha256": "15c812c47103e95c00d984523b2539eb8c4e3dbab632f20504104d4e96f1a074",
+          "extractorVersion": 2,
+          "summary": "The accessibility section recommends a user-controlled density choice and an easy path to revert it; the separate checkbox-density check covers default density and 48×48 CSS-pixel target sizes."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

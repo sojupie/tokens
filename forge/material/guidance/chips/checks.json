@@ -1,0 +1,1593 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "chips",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/chips/overview",
+      "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+      "markdownSha256": "6e20e307e32dc58ebf98e513bbf81e81ede252ed3331da01a13018b8cecf47a8",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Chips",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "5e30d365-636f-4638-97f4-4fd25222b843",
+          "title": "Availability & resources",
+          "status": "no-requirements",
+          "notes": "No additional independent requirement is stated beyond the checks mapped in the specific child sections."
+        },
+        {
+          "id": "cf4cc1e7-1259-441b-83db-dad800e23cab",
+          "title": "Updates",
+          "status": "no-requirements",
+          "notes": "No additional independent requirement is stated beyond the checks mapped in the specific child sections."
+        },
+        {
+          "id": "efcb23ed-8e3f-49af-9a0f-17d7887ba7ac",
+          "title": "Differences from M2",
+          "status": "no-requirements",
+          "notes": "No additional independent requirement is stated beyond the checks mapped in the specific child sections."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/chips/specs",
+      "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+      "markdownSha256": "94b5bccd3ad76886b36620ba5ef6e2564b7adbc9248eea25b6df91049395c198",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Chips",
+          "status": "no-requirements",
+          "notes": "Token/color or variant/state reference data without an independent behavioral instruction; variant behavior is curated from the guideline and accessibility sections."
+        },
+        {
+          "id": "0712b915-5d5b-4c1e-a023-ab28519003ad",
+          "title": "Tokens & specs",
+          "status": "no-requirements",
+          "notes": "Token/color or variant/state reference data without an independent behavioral instruction; variant behavior is curated from the guideline and accessibility sections."
+        },
+        {
+          "id": "a144389c-9478-4fe4-9bd8-ca9f7dd830eb",
+          "title": "Assist chip",
+          "status": "no-requirements",
+          "notes": "Token/color or variant/state reference data without an independent behavioral instruction; variant behavior is curated from the guideline and accessibility sections."
+        },
+        {
+          "id": "3d802cfb-5e29-4dfc-889a-e6d3e99e4aa1",
+          "title": "Assist chip color",
+          "status": "no-requirements",
+          "notes": "Token/color or variant/state reference data without an independent behavioral instruction; variant behavior is curated from the guideline and accessibility sections."
+        },
+        {
+          "id": "2a845552-8503-4bfe-8b61-8eaab1842bb4",
+          "title": "Assist chip states",
+          "status": "no-requirements",
+          "notes": "Token/color or variant/state reference data without an independent behavioral instruction; variant behavior is curated from the guideline and accessibility sections."
+        },
+        {
+          "id": "9faeb601-c522-4a5a-a263-f1b1ac7504d6",
+          "title": "Assist chip measurements",
+          "status": "unclear",
+          "notes": "Exact chip dimensions appear only in image diagrams that have not been inspected; values remain unresolved."
+        },
+        {
+          "id": "e900592f-75a4-4298-853c-bedd8f462f83",
+          "title": "Filter chip",
+          "status": "no-requirements",
+          "notes": "Token/color or variant/state reference data without an independent behavioral instruction; variant behavior is curated from the guideline and accessibility sections."
+        },
+        {
+          "id": "e4b4a2f5-fdfe-478b-afe8-2c6187564fa7",
+          "title": "Filter chip color",
+          "status": "no-requirements",
+          "notes": "Token/color or variant/state reference data without an independent behavioral instruction; variant behavior is curated from the guideline and accessibility sections."
+        },
+        {
+          "id": "4fafac3b-6d84-468b-9e1e-c949bebe306e",
+          "title": "Filter chip states",
+          "status": "no-requirements",
+          "notes": "Token/color or variant/state reference data without an independent behavioral instruction; variant behavior is curated from the guideline and accessibility sections."
+        },
+        {
+          "id": "97696cf5-a6e3-40fa-ba56-641b4bcaad50",
+          "title": "Filter chip measurements",
+          "status": "unclear",
+          "notes": "Exact chip dimensions appear only in image diagrams that have not been inspected; values remain unresolved."
+        },
+        {
+          "id": "facb7c02-74c4-4b81-bd52-6ad10ce351eb",
+          "title": "Input chip",
+          "status": "no-requirements",
+          "notes": "Token/color or variant/state reference data without an independent behavioral instruction; variant behavior is curated from the guideline and accessibility sections."
+        },
+        {
+          "id": "b411b902-6981-4b79-ba15-310ad6fb4234",
+          "title": "Input chip color",
+          "status": "no-requirements",
+          "notes": "Token/color or variant/state reference data without an independent behavioral instruction; variant behavior is curated from the guideline and accessibility sections."
+        },
+        {
+          "id": "4d4c1079-e4e7-4e03-9a17-9a8f09c06e85",
+          "title": "Input chip states",
+          "status": "no-requirements",
+          "notes": "Token/color or variant/state reference data without an independent behavioral instruction; variant behavior is curated from the guideline and accessibility sections."
+        },
+        {
+          "id": "a1c754fe-5538-4c94-92ed-8d5fc7c8a491",
+          "title": "Input chip measurements",
+          "status": "unclear",
+          "notes": "Exact chip dimensions appear only in image diagrams that have not been inspected; values remain unresolved."
+        },
+        {
+          "id": "67a358c0-c370-4bf1-b410-7f8dd3f1a60c",
+          "title": "Suggestion chip",
+          "status": "no-requirements",
+          "notes": "Token/color or variant/state reference data without an independent behavioral instruction; variant behavior is curated from the guideline and accessibility sections."
+        },
+        {
+          "id": "4f90d355-f1b0-447b-afeb-54f1ae5ad009",
+          "title": "Suggestion chip color",
+          "status": "no-requirements",
+          "notes": "Token/color or variant/state reference data without an independent behavioral instruction; variant behavior is curated from the guideline and accessibility sections."
+        },
+        {
+          "id": "6d132500-e4b5-4656-a8e0-3bdb4e3aacd2",
+          "title": "Suggestion chip states",
+          "status": "no-requirements",
+          "notes": "Token/color or variant/state reference data without an independent behavioral instruction; variant behavior is curated from the guideline and accessibility sections."
+        },
+        {
+          "id": "107ca644-a0a3-4435-a386-a90e9188990a",
+          "title": "Suggestion chip measurements",
+          "status": "unclear",
+          "notes": "Exact chip dimensions appear only in image diagrams that have not been inspected; values remain unresolved."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/chips/guidelines",
+      "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+      "markdownSha256": "779be87f782713de632264874acd626b3e996c6c566721b4ef5341ff55672cf2",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Chips",
+          "status": "no-requirements",
+          "notes": "Repeated title, descriptive anatomy, or parent heading; actionable details are mapped in the specific child sections."
+        },
+        {
+          "id": "ab3aa6ae-ab4c-42bd-a6a1-41858c6a6244",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "fed264a2-025e-4464-9e57-48c668abcec7",
+          "title": "Chips aren’t buttons",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "295a6e5e-a1c1-42db-a3f2-fca3f103838a",
+          "title": "Variants",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "ba2e35f7-7771-42fb-afad-e774229295e3",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "Repeated title, descriptive anatomy, or parent heading; actionable details are mapped in the specific child sections."
+        },
+        {
+          "id": "a6907332-a39d-4cc7-9f94-65cc1e424ac1",
+          "title": "Container",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "1716ba42-2b8f-40af-9505-e25fc35665fd",
+          "title": "Label text",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "4b43bd12-f08e-434c-8ce7-3c9bef7acda7",
+          "title": "Leading icon or image (optional)",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "103fb323-eda2-4885-9c8a-aaa5f37ba8dd",
+          "title": "Trailing icon (optional, input and filter chips only)",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "5dd1928c-1476-4029-bdc5-fde66fc0dcb1",
+          "title": "Assist chips",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "8d453d50-8d8e-43aa-9ae3-87ed134d2e64",
+          "title": "Filter chips",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "4d2d5ef5-3fcd-46e9-99f2-067747b2393f",
+          "title": "Input chips",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "537ae990-3407-4004-b9bb-6577c97da482",
+          "title": "Placement",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "ba7578d7-7061-4cbf-ba70-705cc43e064a",
+          "title": "Icons & images",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "36d7bb16-a9bf-4cf6-a73d-8e05510d66a7",
+          "title": "Suggestion chips",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "ce5b21e5-27cf-4144-a222-34cfc3415fcf",
+          "title": "Placement",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/chips/accessibility",
+      "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+      "markdownSha256": "86916f18ce2c84c351bb160fcd91bff61656c006d442e792d67a7add11e7a91b",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Chips",
+          "status": "no-requirements",
+          "notes": "Repeated title, descriptive anatomy, or parent heading; actionable details are mapped in the specific child sections."
+        },
+        {
+          "id": "c5cc4397-4781-4211-a878-b4125ab845dc",
+          "title": "Use cases",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "dd20c9e1-6d1d-4319-95ec-5291fe91e2c2",
+          "title": "Interaction & style",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "824f8be6-cc5a-4e7d-953f-1b6231eb19a8",
+          "title": "Horizontal overflow",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "83c35f63-de2d-494c-bb11-52465303ae87",
+          "title": "Avoid applying density by default",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "ac07be63-3071-41fe-aef3-ccce6bdaf7a4",
+          "title": "Keyboard navigation",
+          "status": "mapped",
+          "notes": "Tab focus, arrow navigation, activation/selection, and input-chip removal are represented by chip-keyboard-tab-entry, chip-keyboard-arrow-navigation, chip-keyboard-activate, and chip-keyboard-delete-input."
+        },
+        {
+          "id": "fbf902bf-4a4a-456e-ae48-f5e8f6cd1786",
+          "title": "Labeling elements",
+          "status": "mapped",
+          "notes": "The table’s image handling, content labels, separate remove label and Web/Android Views/Jetpack Compose role differences are represented by chip-hide-decorative-image, basic-chip-platform-roles, selectable-chip-platform-roles, chip-remove-only-action-label, and chip-select-and-remove-platform-roles; chip-label-and-action-labels captures the prose rule."
+        },
+        {
+          "id": "5796aea3-b279-4e0e-8018-1b01a6bdfdbf",
+          "title": "Multi-select",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "cb98bcee-b10e-420f-9dcc-3bf807215811",
+          "title": "Drop-down list",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "ac48adbb-8adc-4398-83d7-3a758e4e01c0",
+          "title": "Input chip remove action",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "24803f58-d678-456b-a4bf-b56115deba46",
+          "title": "Showing chip interactivity",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "contextual-options",
+      "statement": "Use chips for contextual options that help with the current task; group multiple chips together rather than displaying a single chip alone.",
+      "condition": "When presenting chips.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/overview",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "6e20e307e32dc58ebf98e513bbf81e81ede252ed3331da01a13018b8cecf47a8",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Chips guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "chips-vs-buttons",
+      "statement": "Use chips for contextual supplemental choices, not major actions that finish or advance a task; use buttons for those persistent progression actions.",
+      "condition": "When choosing between chips and buttons.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/guidelines",
+          "section": "fed264a2-025e-4464-9e57-48c668abcec7",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "779be87f782713de632264874acd626b3e996c6c566721b4ef5341ff55672cf2",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Chips aren’t buttons guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "chip-variant-purpose",
+      "statement": "Choose assist for contextual actions, filter for filtering results, suggestion for product-generated content, and input for user-entered content.",
+      "condition": "When selecting a chip variant.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/guidelines",
+          "section": "295a6e5e-a1c1-42db-a3f2-fca3f103838a",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "779be87f782713de632264874acd626b3e996c6c566721b4ef5341ff55672cf2",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Variants guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "chip-elevation",
+      "statement": "Use an outline on ordinary backgrounds; elevation may separate chips from images or dynamic backgrounds, but do not use elevation to show a pressed state.",
+      "condition": "When styling chip containers.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/guidelines",
+          "section": "a6907332-a39d-4cc7-9f94-65cc1e424ac1",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "779be87f782713de632264874acd626b3e996c6c566721b4ef5341ff55672cf2",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Container guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "chip-label-length",
+      "statement": "Keep chip labels to 20 characters or fewer.",
+      "condition": "For chip labels.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/guidelines",
+          "section": "1716ba42-2b8f-40af-9505-e25fc35665fd",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "779be87f782713de632264874acd626b3e996c6c566721b4ef5341ff55672cf2",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Label text guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "chip-remove-target",
+      "statement": "Provide a trailing remove icon on input chips because it is required to remove the chip.",
+      "condition": "When chips have trailing actions.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/guidelines",
+          "section": "103fb323-eda2-4885-9c8a-aaa5f37ba8dd",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "779be87f782713de632264874acd626b3e996c6c566721b4ef5341ff55672cf2",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Trailing icon (optional, input and filter chips only) guidance."
+        },
+        {
+          "change": "corrected",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/guidelines",
+          "section": "103fb323-eda2-4885-9c8a-aaa5f37ba8dd",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "779be87f782713de632264874acd626b3e996c6c566721b4ef5341ff55672cf2",
+          "extractorVersion": 2,
+          "summary": "Split the original combined record into separate input-chip, filter-chip, and secondary-target requirements; this check now covers the required input-chip removal affordance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 2,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "assist-verb-context",
+      "statement": "Write assist chips like buttons with a short leading verb, update labels as state changes, and show them after primary content.",
+      "condition": "For assist chips.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/guidelines",
+          "section": "5dd1928c-1476-4029-bdc5-fde66fc0dcb1",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "779be87f782713de632264874acd626b3e996c6c566721b4ef5341ff55672cf2",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Assist chips guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "filter-label-selection",
+      "statement": "Label filter chips with categories to include, not negative phrases; a set may be single- or multi-select, but do not mix the two behaviors on a page.",
+      "condition": "For filter chips.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/guidelines",
+          "section": "8d453d50-8d8e-43aa-9ae3-87ed134d2e64",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "779be87f782713de632264874acd626b3e996c6c566721b4ef5341ff55672cf2",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Filter chips guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "chip-interactive-cue",
+      "statement": "Provide a secondary cue that chips are interactive, such as a group prompt, interactive page context, a 3:1 outline, or an interactive label/leading icon.",
+      "condition": "For chip groups.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/accessibility",
+          "section": "24803f58-d678-456b-a4bf-b56115deba46",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "86916f18ce2c84c351bb160fcd91bff61656c006d442e792d67a7add11e7a91b",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Showing chip interactivity guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "input-chip-focus-semantics",
+      "statement": "Show the remove icon when a chip can be removed, except on mobile when removal is its only action; each chip is focusable, with separate focus targets when selection and removal are separate actions.",
+      "condition": "For removable input chips.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/accessibility",
+          "section": "ac48adbb-8adc-4398-83d7-3a758e4e01c0",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "86916f18ce2c84c351bb160fcd91bff61656c006d442e792d67a7add11e7a91b",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Input chip remove action guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "chips-current-task",
+      "statement": "Use chips to help people complete their current task more easily.",
+      "condition": "When choosing whether to use chips.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/guidelines",
+          "section": "ab3aa6ae-ab4c-42bd-a6a1-41858c6a6244",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "779be87f782713de632264874acd626b3e996c6c566721b4ef5341ff55672cf2",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Usage instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "chip-set-not-single",
+      "statement": "Present chips together as an interactive set; do not display a single chip alone.",
+      "condition": "When using chips.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/guidelines",
+          "section": "fed264a2-025e-4464-9e57-48c668abcec7",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "779be87f782713de632264874acd626b3e996c6c566721b4ef5341ff55672cf2",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Chips aren’t buttons instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "chip-action-count",
+      "statement": "Use chips for contextual supplemental options and buttons for actions that progress or finish a task; keep a button arrangement to no more than three buttons.",
+      "condition": "When selecting between chips and buttons.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/guidelines",
+          "section": "fed264a2-025e-4464-9e57-48c668abcec7",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "779be87f782713de632264874acd626b3e996c6c566721b4ef5341ff55672cf2",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Chips aren’t buttons instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "chip-corner-outline-elevation",
+      "statement": "Use an 8dp corner radius and an outline on ordinary backgrounds; elevation may separate chips from images or dynamic backgrounds, but do not use elevation for pressed feedback.",
+      "condition": "When styling chip containers.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/guidelines",
+          "section": "a6907332-a39d-4cc7-9f94-65cc1e424ac1",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "779be87f782713de632264874acd626b3e996c6c566721b4ef5341ff55672cf2",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Container instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "chip-label-typography",
+      "statement": "Use the same typography style as buttons and keep labels brief, omitting conventional grammar when needed to fit the short label.",
+      "condition": "For chip labels.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/guidelines",
+          "section": "1716ba42-2b8f-40af-9505-e25fc35665fd",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "779be87f782713de632264874acd626b3e996c6c566721b4ef5341ff55672cf2",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Label text instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "chip-leading-icon-colors",
+      "statement": "Use a system icon to identify a chip category; unselected icon color may use primary by default or on-surface-variant for less emphasis.",
+      "condition": "When a chip has a leading icon.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/guidelines",
+          "section": "4b43bd12-f08e-434c-8ce7-3c9bef7acda7",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "779be87f782713de632264874acd626b3e996c6c566721b4ef5341ff55672cf2",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Leading icon or image (optional) instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "chip-leading-image-size",
+      "statement": "Make a leading circular image larger than a leading icon or logo so it can show more detail; keep icons legible at small sizes.",
+      "condition": "When a chip has a leading image or icon.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/guidelines",
+          "section": "4b43bd12-f08e-434c-8ce7-3c9bef7acda7",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "779be87f782713de632264874acd626b3e996c6c566721b4ef5341ff55672cf2",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Leading icon or image (optional) instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "filter-chip-trailing-action",
+      "statement": "A filter chip may use a trailing icon to remove the filter or open a menu.",
+      "condition": "For filter chips.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/guidelines",
+          "section": "103fb323-eda2-4885-9c8a-aaa5f37ba8dd",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "779be87f782713de632264874acd626b3e996c6c566721b4ef5341ff55672cf2",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Trailing icon (optional, input and filter chips only) instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "chip-secondary-action-target",
+      "statement": "Keep a trailing secondary action at least 48×48dp without interfering with the chip’s primary action; use at least 88dp chip width or 42dp label width as needed.",
+      "condition": "When a chip has a separate trailing action.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/guidelines",
+          "section": "103fb323-eda2-4885-9c8a-aaa5f37ba8dd",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "779be87f782713de632264874acd626b3e996c6c566721b4ef5341ff55672cf2",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Trailing icon (optional, input and filter chips only) instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "assist-chip-action-feedback",
+      "statement": "Assist chips may open a modal, full-screen content, or inline results; provide progress or confirmation feedback when the action needs it.",
+      "condition": "When an assist-chip action changes or takes time.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/guidelines",
+          "section": "5dd1928c-1476-4029-bdc5-fde66fc0dcb1",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "779be87f782713de632264874acd626b3e996c6c566721b4ef5341ff55672cf2",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Assist chips instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "filter-chip-toggle-marker",
+      "statement": "Selecting a filter chip adds a leading checkmark; filter chips may be single-select or multi-select, but all chip sets on a page must use the same selection mode.",
+      "condition": "For filter-chip sets.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/guidelines",
+          "section": "8d453d50-8d8e-43aa-9ae3-87ed134d2e64",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "779be87f782713de632264874acd626b3e996c6c566721b4ef5341ff55672cf2",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Filter chips instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "filter-chip-trailing-breakpoint",
+      "statement": "At medium and expanded breakpoints, a filter-chip trailing action may remove a filter or open its menu; at compact sizes, make the whole chip open the menu if the trailing target is too small.",
+      "condition": "For filter chips with trailing actions.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/guidelines",
+          "section": "8d453d50-8d8e-43aa-9ae3-87ed134d2e64",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "779be87f782713de632264874acd626b3e996c6c566721b4ef5341ff55672cf2",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Filter chips instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "filter-chip-multiple-options",
+      "statement": "Do not present only one filter-chip option; for more than two wrapped rows, consider horizontal scrolling, and use a side sheet to organize many filters.",
+      "condition": "When presenting filter options.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/guidelines",
+          "section": "8d453d50-8d8e-43aa-9ae3-87ed134d2e64",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "779be87f782713de632264874acd626b3e996c6c566721b4ef5341ff55672cf2",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Filter chips instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "input-chip-edit-backspace",
+      "statement": "Allow input chips to return to editable text when editing; pressing Backspace with the cursor before a chip selects it, and pressing Backspace again deletes it.",
+      "condition": "When input chips can be edited or removed from a text field.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/guidelines",
+          "section": "4d2d5ef5-3fcd-46e9-99f2-067747b2393f",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "779be87f782713de632264874acd626b3e996c6c566721b4ef5341ff55672cf2",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Input chips instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "input-chip-move-expand",
+      "statement": "Allow input chips to be reordered or moved between fields; they may expand through a container-transform transition to reveal more options or information.",
+      "condition": "When input chips support reordering, moving, or expansion.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/guidelines",
+          "section": "4d2d5ef5-3fcd-46e9-99f2-067747b2393f",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "779be87f782713de632264874acd626b3e996c6c566721b4ef5341ff55672cf2",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Input chips instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "input-chip-placement-options",
+      "statement": "Place input chips inline with a text-field cursor, in a stacked list, or in a horizontally scrollable list; they may wrap when all chips need to remain visible.",
+      "condition": "For input-chip placement.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/guidelines",
+          "section": "537ae990-3407-4004-b9bb-6577c97da482",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "779be87f782713de632264874acd626b3e996c6c566721b4ef5341ff55672cf2",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Placement instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "input-chip-trailing-rtl",
+      "statement": "Align the input-chip trailing icon to the container’s ending edge (right in LTR and left in RTL); overflowed text-field chips should behave like regular text, showing the beginning unfocused and moving the cursor to the end when focused.",
+      "condition": "For input chips in text fields.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/guidelines",
+          "section": "ba7578d7-7061-4cbf-ba70-705cc43e064a",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "779be87f782713de632264874acd626b3e996c6c566721b4ef5341ff55672cf2",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Icons & images instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "suggestion-chip-label",
+      "statement": "Write suggestion-chip labels as context-appropriate nouns or short phrases and keep them to 20 characters or fewer when possible.",
+      "condition": "For suggestion chips.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/guidelines",
+          "section": "36d7bb16-a9bf-4cf6-a73d-8e05510d66a7",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "779be87f782713de632264874acd626b3e996c6c566721b4ef5341ff55672cf2",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Suggestion chips instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "chip-set-layout-target",
+      "statement": "Arrange multiple chips inline as a row, wrap overflowing chips to a new row or horizontally scroll a one-row field, maintain 8dp between chips, and provide 48dp minimum targets regardless of density.",
+      "condition": "For chip sets.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/guidelines",
+          "section": "ce5b21e5-27cf-4144-a222-34cfc3415fcf",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "779be87f782713de632264874acd626b3e996c6c566721b4ef5341ff55672cf2",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Placement instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "chip-wrapped-labels",
+      "statement": "Keep chip labels concise; wrapped layouts may truncate labels when they exceed the available width.",
+      "condition": "When chip sets wrap or the viewport is narrow.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/guidelines",
+          "section": "ce5b21e5-27cf-4144-a222-34cfc3415fcf",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "779be87f782713de632264874acd626b3e996c6c566721b4ef5341ff55672cf2",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Placement instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "chip-assistive-actions",
+      "statement": "Allow assistive technology users to perform actions on chips, navigate to them, and activate them.",
+      "condition": "For all chip variants.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/accessibility",
+          "section": "c5cc4397-4781-4211-a878-b4125ab845dc",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "86916f18ce2c84c351bb160fcd91bff61656c006d442e792d67a7add11e7a91b",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Use cases instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "chip-contrast-role-semantics",
+      "statement": "Maintain at least 3:1 contrast between the chip label and background; expose action chips with button semantics through the platform accessibility API.",
+      "condition": "For actionable chips.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/accessibility",
+          "section": "dd20c9e1-6d1d-4319-95ec-5291fe91e2c2",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "86916f18ce2c84c351bb160fcd91bff61656c006d442e792d67a7add11e7a91b",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Interaction & style instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "chip-overflow-reflow",
+      "statement": "When a row has too many chips, offer a Show all filter chip that expands the list and shifts following content down.",
+      "condition": "When chip rows overflow and reflow is appropriate.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/accessibility",
+          "section": "824f8be6-cc5a-4e7d-953f-1b6231eb19a8",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "86916f18ce2c84c351bb160fcd91bff61656c006d442e792d67a7add11e7a91b",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Horizontal overflow instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "chip-overflow-menu",
+      "statement": "Alternatively, offer a leading button to show all chip options in a menu without moving following content; do not use this menu method for chips with a second action such as removal.",
+      "condition": "When chip rows overflow and content position should remain fixed.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/accessibility",
+          "section": "824f8be6-cc5a-4e7d-953f-1b6231eb19a8",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "86916f18ce2c84c351bb160fcd91bff61656c006d442e792d67a7add11e7a91b",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Horizontal overflow instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "chip-density-targets",
+      "statement": "Do not apply density by default; when a higher-density option is available, keep its controls at least 48×48 CSS pixels so density can be reversed accessibly.",
+      "condition": "For chip layouts with density options.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/accessibility",
+          "section": "83c35f63-de2d-494c-bb11-52465303ae87",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "86916f18ce2c84c351bb160fcd91bff61656c006d442e792d67a7add11e7a91b",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Avoid applying density by default instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "chip-label-and-action-labels",
+      "statement": "Use the chip’s visible label as its accessibility label and label additional actions such as removal separately.",
+      "condition": "For screen-reader output.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/accessibility",
+          "section": "fbf902bf-4a4a-456e-ae48-f5e8f6cd1786",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "86916f18ce2c84c351bb160fcd91bff61656c006d442e792d67a7add11e7a91b",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Labeling elements instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "chip-multiselect-keyboard",
+      "statement": "In multi-select sets, Space or Enter selects or deselects the focused chip; allow only one chip to hold focus at a time.",
+      "condition": "For multi-select chip sets.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/accessibility",
+          "section": "5796aea3-b279-4e0e-8018-1b01a6bdfdbf",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "86916f18ce2c84c351bb160fcd91bff61656c006d442e792d67a7add11e7a91b",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Multi-select instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "chip-dropdown-accessible-label",
+      "statement": "Match each dropdown list item’s accessibility label to its text; mark a redundant icon decorative when the text already conveys its meaning.",
+      "condition": "For chip dropdown lists.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/accessibility",
+          "section": "cb98bcee-b10e-420f-9dcc-3bf807215811",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "86916f18ce2c84c351bb160fcd91bff61656c006d442e792d67a7add11e7a91b",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Drop-down list instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "input-chip-remove-keyboard-focus",
+      "statement": "On mobile, when removal is the only chip action, removal may use selection plus Delete without a remove icon; make each chip focusable, combining focus for a remove-only chip and separating focus for chip content and removal when it has a second action.",
+      "condition": "For removable input chips.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/accessibility",
+          "section": "ac48adbb-8adc-4398-83d7-3a758e4e01c0",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "86916f18ce2c84c351bb160fcd91bff61656c006d442e792d67a7add11e7a91b",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Input chip remove action instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "chip-keyboard-tab-entry",
+      "statement": "Tab moves focus to an enabled chip or chip group.",
+      "condition": "When navigating a chip set by keyboard.",
+      "basis": "explicit",
+      "notes": "Preserves the Tab row in the captured chip keyboard table.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/accessibility",
+          "section": "ac07be63-3071-41fe-aef3-ccce6bdaf7a4",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "86916f18ce2c84c351bb160fcd91bff61656c006d442e792d67a7add11e7a91b",
+          "extractorVersion": 2,
+          "summary": "Preserves the Tab row in the captured chip keyboard table."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "chip-keyboard-arrow-navigation",
+      "statement": "Arrow keys move focus between chips.",
+      "condition": "When navigating a chip set by keyboard.",
+      "basis": "explicit",
+      "notes": "Preserves the arrow-key row in the captured chip keyboard table.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/accessibility",
+          "section": "ac07be63-3071-41fe-aef3-ccce6bdaf7a4",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "86916f18ce2c84c351bb160fcd91bff61656c006d442e792d67a7add11e7a91b",
+          "extractorVersion": 2,
+          "summary": "Preserves the arrow-key row in the captured chip keyboard table."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "chip-keyboard-activate",
+      "statement": "Space or Enter activates, selects, or deselects the focused chip.",
+      "condition": "When a chip has keyboard focus.",
+      "basis": "explicit",
+      "notes": "Preserves the activation and selection outcomes in the captured table.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/accessibility",
+          "section": "ac07be63-3071-41fe-aef3-ccce6bdaf7a4",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "86916f18ce2c84c351bb160fcd91bff61656c006d442e792d67a7add11e7a91b",
+          "extractorVersion": 2,
+          "summary": "Preserves the activation and selection outcomes in the captured table."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "chip-keyboard-delete-input",
+      "statement": "Backspace or Delete removes the currently focused input chip.",
+      "condition": "When an input chip has keyboard focus and is removable.",
+      "basis": "explicit",
+      "notes": "Preserves both removal keys and the focused input-chip condition from the table.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/accessibility",
+          "section": "ac07be63-3071-41fe-aef3-ccce6bdaf7a4",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "86916f18ce2c84c351bb160fcd91bff61656c006d442e792d67a7add11e7a91b",
+          "extractorVersion": 2,
+          "summary": "Preserves both removal keys and the focused input-chip condition from the table."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "chip-hide-decorative-image",
+      "statement": "Hide an image or icon within a chip from accessibility announcements.",
+      "condition": "When an image/icon is decorative within the chip.",
+      "basis": "explicit",
+      "notes": "The chip accessibility table assigns “Hide image” to images/icons within a chip.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/accessibility",
+          "section": "fbf902bf-4a4a-456e-ae48-f5e8f6cd1786",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "86916f18ce2c84c351bb160fcd91bff61656c006d442e792d67a7add11e7a91b",
+          "extractorVersion": 2,
+          "summary": "The chip accessibility table assigns “Hide image” to images/icons within a chip."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "basic-chip-platform-roles",
+      "statement": "Label a basic one-action chip as “{chip content}”; expose it as a gridcell on Web and a button in Android Views and Jetpack Compose.",
+      "condition": "For a basic chip with one action.",
+      "basis": "explicit",
+      "notes": "Preserves the basic-chip table row and its Web, Android Views, and Jetpack Compose role mapping.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/accessibility",
+          "section": "fbf902bf-4a4a-456e-ae48-f5e8f6cd1786",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "86916f18ce2c84c351bb160fcd91bff61656c006d442e792d67a7add11e7a91b",
+          "extractorVersion": 2,
+          "summary": "Preserves the basic-chip table row and its Web, Android Views, and Jetpack Compose role mapping."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "selectable-chip-platform-roles",
+      "statement": "Label a selectable chip as “{chip content}”; expose it as a gridcell on Web, a radio button in Android Views, and a checkbox in Jetpack Compose.",
+      "condition": "For a selectable chip.",
+      "basis": "explicit",
+      "notes": "Preserves the selectable-chip table row, including platform-specific role differences.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/accessibility",
+          "section": "fbf902bf-4a4a-456e-ae48-f5e8f6cd1786",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "86916f18ce2c84c351bb160fcd91bff61656c006d442e792d67a7add11e7a91b",
+          "extractorVersion": 2,
+          "summary": "Preserves the selectable-chip table row, including platform-specific role differences."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "chip-remove-only-action-label",
+      "statement": "Label a remove-only chip action “Remove {chip content}”; the table assigns no separate role for this row.",
+      "condition": "For a chip whose only action is removal.",
+      "basis": "explicit",
+      "notes": "Preserves the remove-only label and the role cells marked with dashes.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/accessibility",
+          "section": "fbf902bf-4a4a-456e-ae48-f5e8f6cd1786",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "86916f18ce2c84c351bb160fcd91bff61656c006d442e792d67a7add11e7a91b",
+          "extractorVersion": 2,
+          "summary": "Preserves the remove-only label and the role cells marked with dashes."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "chip-select-and-remove-platform-roles",
+      "statement": "For a chip with selection and removal actions, announce “{chip content}” followed by “Remove {chip content}”; expose the actions as button or checkbox roles in Web, Android Views, and Jetpack Compose.",
+      "condition": "For a chip that supports both selection and removal.",
+      "basis": "explicit",
+      "notes": "Preserves the separate content/action labels and the button-or-checkbox role options across all three platform columns.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/chips/accessibility",
+          "section": "fbf902bf-4a4a-456e-ae48-f5e8f6cd1786",
+          "capture": "snapshots/material-guidance/20261025T165330.671481872Z-1549084769/capture.json",
+          "markdownSha256": "86916f18ce2c84c351bb160fcd91bff61656c006d442e792d67a7add11e7a91b",
+          "extractorVersion": 2,
+          "summary": "Preserves the separate content/action labels and the button-or-checkbox role options across all three platform columns."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

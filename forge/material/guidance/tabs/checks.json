@@ -1,0 +1,945 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "tabs",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/tabs/overview",
+      "capture": "snapshots/material-guidance/20261025T165949.028889369Z-1197277053/capture.json",
+      "markdownSha256": "1d1d4f565768744c99a195c2469557b8788c71c689413c758373ce039587cf82",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Tabs",
+          "status": "no-requirements",
+          "notes": "Introductory hierarchy/placement summary; detailed hierarchy guidance is covered by tabs-usage-hierarchy."
+        },
+        {
+          "id": "0e5b3d7b-fafa-43a5-97ae-f79e425872ca",
+          "title": "Availability & resources",
+          "status": "no-requirements",
+          "notes": "Platform/library availability only."
+        },
+        {
+          "id": "43882e72-eea7-4b22-9c12-d99d32e5b625",
+          "title": "Differences from M2",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/tabs/specs",
+      "capture": "snapshots/material-guidance/20261025T165949.028889369Z-1197277053/capture.json",
+      "markdownSha256": "96330483f15cb347bbfb786aca18ceb3477fa615bb38d772cdc6a7c4e1fe3a7b",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Tabs",
+          "status": "no-requirements",
+          "notes": "Repeated component description only."
+        },
+        {
+          "id": "e204e7a9-9326-46b0-bd31-08232c849a05",
+          "title": "Tokens and specs",
+          "status": "no-requirements",
+          "notes": "Token browser reference only."
+        },
+        {
+          "id": "8602158e-a13b-432e-8133-b9cb34d61678",
+          "title": "Primary tabs",
+          "status": "no-requirements",
+          "notes": "Anatomy diagram lists elements; usage is described in guidelines."
+        },
+        {
+          "id": "39c8f300-669e-40c8-8daf-4a84187d5753",
+          "title": "Primary tabs color",
+          "status": "unclear",
+          "notes": "Color-role mapping is shown only in an uninspected diagram."
+        },
+        {
+          "id": "29c9deac-e504-40da-b735-2dd0907179d5",
+          "title": "Primary tabs states",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "5bcb7839-3c78-4906-b130-13e59c7d41ac",
+          "title": "Secondary tabs",
+          "status": "no-requirements",
+          "notes": "Anatomy diagram lists elements; usage is described in guidelines."
+        },
+        {
+          "id": "75758bbd-2c74-4e6f-bba9-a422f5b618fe",
+          "title": "Secondary tabs color",
+          "status": "unclear",
+          "notes": "Color-role mapping is shown only in an uninspected diagram."
+        },
+        {
+          "id": "8d5287be-f5a9-491e-9174-33b97d80ac16",
+          "title": "Secondary tabs states",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "b4704a0c-9ba9-469c-b373-74566ae978db",
+          "title": "Measurements",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/tabs/guidelines",
+      "capture": "snapshots/material-guidance/20261025T165949.028889369Z-1197277053/capture.json",
+      "markdownSha256": "8fab0f14488d9f45d8037f67a12064d5cdaee6debc4fb6da4ffa94c97bf86c79",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Tabs",
+          "status": "no-requirements",
+          "notes": "Introductory description only."
+        },
+        {
+          "id": "d9cf36ce-ad23-4c8f-94ed-ce9fbc4c1db2",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "1a9b1e4c-8e6e-422e-aabb-c7093d9a9bdf",
+          "title": "Related content",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "9b89bb22-e4b2-4de2-9844-14ebf7524760",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "Parent heading introduces the tab parts; their behavior is described below."
+        },
+        {
+          "id": "c4803e40-710d-47ab-9f88-874a88f0dd8e",
+          "title": "Container",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "c3f26bfa-d4b2-4156-8e93-6a6dfdc81f56",
+          "title": "Icon (optional)",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "e8be085b-7b39-4dbe-b8ec-cfa15c8d809a",
+          "title": "Label",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "0dee0da0-31d3-4efc-837e-87c35e599907",
+          "title": "Badges (optional)",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "6278baae-77d8-408e-8929-f9ce9e52a97e",
+          "title": "Active indicator",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "df994b1f-b7be-420c-8461-8680d1b90b19",
+          "title": "Choosing the tab variant",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "63f8129f-d4a3-4360-a090-73a08b700666",
+          "title": "Placement",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "987a1736-1cb8-44b9-bbc9-0ae4c218f13d",
+          "title": "Responsive layout",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "e2ead405-fbcf-4209-9747-bc59c5bf810f",
+          "title": "Behavior",
+          "status": "no-requirements",
+          "notes": "Parent heading; state, fixed, scrollable, and content-scrolling behaviors are captured in children."
+        },
+        {
+          "id": "3940eac4-5dcc-4c0e-a99d-faa81512b356",
+          "title": "States",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "6697d804-096a-4f84-b561-d5831a5e8f38",
+          "title": "Fixed tabs",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "85efb4b6-9026-4dd5-bc99-553acc23d1cc",
+          "title": "Tap a tab",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "a10c71e1-a038-4ff7-8e2f-1ece2a34e15c",
+          "title": "Swipe within the content area",
+          "status": "mapped",
+          "notes": "The different-direction alternative is covered by tabs-different-gesture-directions; avoid-gesture-conflict guidance is also captured by tabs-fixed-interaction."
+        },
+        {
+          "id": "b0e3794c-059f-41e2-87a6-fe2498fc7fe8",
+          "title": "Scrollable tabs",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "bcd3709b-14f1-4ac9-b7f7-4bc786e2a8eb",
+          "title": "Scrolling content",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/tabs/accessibility",
+      "capture": "snapshots/material-guidance/20261025T165949.028889369Z-1197277053/capture.json",
+      "markdownSha256": "a52e1641cce48bbce3246e5d1188af584a5f278b7da2a57972e032d4eb6201f7",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Tabs",
+          "status": "no-requirements",
+          "notes": "Introductory description only."
+        },
+        {
+          "id": "c519daa6-8bbe-41c8-977d-77e12c97dffa",
+          "title": "Use cases",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "13ed756b-fb35-4bb3-ac8c-1157e49031d8",
+          "title": "Interaction & style",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "97bd405b-6d5e-47d5-b11d-4f4a115b3f9b",
+          "title": "Avoid applying density by default",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "6b65f52d-f4eb-4d5f-bfe8-01b1540afde6",
+          "title": "Initial focus",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "a1ebaebd-1bb4-4401-9962-8b30a563e49e",
+          "title": "Keyboard navigation",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "bc704c75-5876-476e-b636-53b6eadef773",
+          "title": "Labeling elements",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "tabs-m3-colors-alignment",
+      "statement": "M3 tabs use updated color mappings compatible with dynamic color and vertically center icons and labels within the container.",
+      "condition": "When implementing M3 tab styling or migrating from M2.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tabs/overview",
+          "section": "43882e72-eea7-4b22-9c12-d99d32e5b625",
+          "capture": "snapshots/material-guidance/20261025T165949.028889369Z-1197277053/capture.json",
+          "markdownSha256": "1d1d4f565768744c99a195c2469557b8788c71c689413c758373ce039587cf82",
+          "extractorVersion": 2,
+          "summary": "M2 comparison identifies color and icon/label alignment changes."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "primary-tab-states",
+      "statement": "Represent active and inactive destinations in enabled, hovered, focused, and pressed states.",
+      "condition": "For primary tabs.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tabs/specs",
+          "section": "29c9deac-e504-40da-b735-2dd0907179d5",
+          "capture": "snapshots/material-guidance/20261025T165949.028889369Z-1197277053/capture.json",
+          "markdownSha256": "96330483f15cb347bbfb786aca18ceb3477fa615bb38d772cdc6a7c4e1fe3a7b",
+          "extractorVersion": 2,
+          "summary": "Primary-state diagram labels four interaction states for active and inactive destinations."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "secondary-tab-states",
+      "statement": "Represent active and inactive destinations in enabled, hovered, focused, and pressed states.",
+      "condition": "For secondary tabs.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tabs/specs",
+          "section": "8d5287be-f5a9-491e-9174-33b97d80ac16",
+          "capture": "snapshots/material-guidance/20261025T165949.028889369Z-1197277053/capture.json",
+          "markdownSha256": "96330483f15cb347bbfb786aca18ceb3477fa615bb38d772cdc6a7c4e1fe3a7b",
+          "extractorVersion": 2,
+          "summary": "Secondary-state diagram labels four interaction states for active and inactive destinations."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tab-measurements",
+      "statement": "Divide tabs into equal sections and center labels and icons vertically; include the divider inside the container height. Use 48dp height for label-only tabs and 64dp with icon and label; icons 24dp, divider 1dp, primary indicator 3dp, secondary indicator 2dp. The indicator has shape 3,3,0,0 and minimum length 24dp; inline icon/text gap is 8dp, text/badge gap 4dp, and a badge overlaps a stacked icon by 6dp. Primary indicators are inset 2dp on each side and fully rounded.",
+      "condition": "When sizing and laying out primary or secondary tabs.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tabs/specs",
+          "section": "b4704a0c-9ba9-469c-b373-74566ae978db",
+          "capture": "snapshots/material-guidance/20261025T165949.028889369Z-1197277053/capture.json",
+          "markdownSha256": "96330483f15cb347bbfb786aca18ceb3477fa615bb38d772cdc6a7c4e1fe3a7b",
+          "extractorVersion": 2,
+          "summary": "Measurements table and accompanying text specify equal sections, alignment, dimensions, gaps, and indicator geometry."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tabs-usage-hierarchy",
+      "statement": "Use tabs to organize related content at the same hierarchy level. Primary tabs sit below an app bar and identify main destinations; secondary tabs further divide related content within a content area. Use tabs to control the UI region below them.",
+      "condition": "When organizing content and destinations with tabs.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tabs/guidelines",
+          "section": "d9cf36ce-ad23-4c8f-94ed-ce9fbc4c1db2",
+          "capture": "snapshots/material-guidance/20261025T165949.028889369Z-1197277053/capture.json",
+          "markdownSha256": "8fab0f14488d9f45d8037f67a12064d5cdaee6debc4fb6da4ffa94c97bf86c79",
+          "extractorVersion": 2,
+          "summary": "Usage guidance defines tab purpose, hierarchy, and primary/secondary roles."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tabs-related-not-sequential",
+      "statement": "Use tabs for related content groups, not sequential content that must be read in order; express sequential content hierarchy with typography and whitespace instead.",
+      "condition": "When deciding whether a sequence belongs in tabs.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tabs/guidelines",
+          "section": "1a9b1e4c-8e6e-422e-aabb-c7093d9a9bdf",
+          "capture": "snapshots/material-guidance/20261025T165949.028889369Z-1197277053/capture.json",
+          "markdownSha256": "8fab0f14488d9f45d8037f67a12064d5cdaee6debc4fb6da4ffa94c97bf86c79",
+          "extractorVersion": 2,
+          "summary": "Related-content guidance distinguishes categories from sequential content."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tabs-container-layout",
+      "statement": "A tab container may be fixed or scrollable but should span the full window width and divide into equal sections, one per tab. Its bottom divider separates tabs from content, which may scroll underneath.",
+      "condition": "When laying out the tab container.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tabs/guidelines",
+          "section": "c4803e40-710d-47ab-9f88-874a88f0dd8e",
+          "capture": "snapshots/material-guidance/20261025T165949.028889369Z-1197277053/capture.json",
+          "markdownSha256": "8fab0f14488d9f45d8037f67a12064d5cdaee6debc4fb6da4ffa94c97bf86c79",
+          "extractorVersion": 2,
+          "summary": "Container guidance specifies width, equal division, divider, and content scrolling."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tabs-icon-use",
+      "statement": "Use simple, recognizable icons that communicate tab content. Use caution with icon-only tabs because icons may not clearly express complex content; keep label type consistent across tabs and do not mix icon-plus-text with text-only tabs.",
+      "condition": "When including icons in tab labels.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tabs/guidelines",
+          "section": "c3f26bfa-d4b2-4156-8e93-6a6dfdc81f56",
+          "capture": "snapshots/material-guidance/20261025T165949.028889369Z-1197277053/capture.json",
+          "markdownSha256": "8fab0f14488d9f45d8037f67a12064d5cdaee6debc4fb6da4ffa94c97bf86c79",
+          "extractorVersion": 2,
+          "summary": "Icon guidance addresses meaning, icon-only ambiguity, and consistent label type."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tabs-labels-scroll",
+      "statement": "Use short, succinct labels that clearly describe tab content and relate to the title above. Keep tabs in one row; labels may use a second line or truncation when needed, but avoid truncation unless required. For scrollable tabs, offset the first visible tab 52dp from the leading edge, size each tab by its text, and keep padding consistent.",
+      "condition": "When labeling fixed or scrollable tabs.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tabs/guidelines",
+          "section": "e8be085b-7b39-4dbe-b8ec-cfa15c8d809a",
+          "capture": "snapshots/material-guidance/20261025T165949.028889369Z-1197277053/capture.json",
+          "markdownSha256": "8fab0f14488d9f45d8037f67a12064d5cdaee6debc4fb6da4ffa94c97bf86c79",
+          "extractorVersion": 2,
+          "summary": "Label guidance covers concise copy, row structure, truncation, scroll offset, sizing, and padding."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tabs-badge",
+      "statement": "Use badges on primary or secondary tabs for related notifications or updates; limit content to four characters including '+'. Update or remove a badge after its tab content is viewed.",
+      "condition": "When adding a badge to a tab.",
+      "basis": "explicit",
+      "notes": "The captured badges/overview guidance also limits badge content to four characters including + and recommends the default color mapping; tab-specific guidance requires the value update or disappear after viewing.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tabs/guidelines",
+          "section": "0dee0da0-31d3-4efc-837e-87c35e599907",
+          "capture": "snapshots/material-guidance/20261025T165949.028889369Z-1197277053/capture.json",
+          "markdownSha256": "8fab0f14488d9f45d8037f67a12064d5cdaee6debc4fb6da4ffa94c97bf86c79",
+          "extractorVersion": 2,
+          "summary": "Badge guidance specifies purpose, length, and post-view update/removal."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tabs-active-indicator",
+      "statement": "Distinguish the active tab from inactive tabs with an underline and a color change to its text and icon.",
+      "condition": "When showing the selected tab.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tabs/guidelines",
+          "section": "6278baae-77d8-408e-8929-f9ce9e52a97e",
+          "capture": "snapshots/material-guidance/20261025T165949.028889369Z-1197277053/capture.json",
+          "markdownSha256": "8fab0f14488d9f45d8037f67a12064d5cdaee6debc4fb6da4ffa94c97bf86c79",
+          "extractorVersion": 2,
+          "summary": "Active-indicator guidance specifies underline and color cues."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tabs-variant-choice",
+      "statement": "Use primary tabs when a screen needs one tab set; add secondary tabs when it needs another hierarchy level, using their simpler indicator style. Tabs may join app bars or appear within a UI region or nested component such as a card or sheet.",
+      "condition": "When selecting primary/secondary variants or placing them within components.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tabs/guidelines",
+          "section": "df994b1f-b7be-420c-8461-8680d1b90b19",
+          "capture": "snapshots/material-guidance/20261025T165949.028889369Z-1197277053/capture.json",
+          "markdownSha256": "8fab0f14488d9f45d8037f67a12064d5cdaee6debc4fb6da4ffa94c97bf86c79",
+          "extractorVersion": 2,
+          "summary": "Variant guidance maps primary/secondary use and placement options."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tabs-placement",
+      "statement": "Display tabs in one row, with each tab connected to its represented content; place secondary tabs below primary tabs.",
+      "condition": "When placing tabs in a screen.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tabs/guidelines",
+          "section": "63f8129f-d4a3-4360-a090-73a08b700666",
+          "capture": "snapshots/material-guidance/20261025T165949.028889369Z-1197277053/capture.json",
+          "markdownSha256": "8fab0f14488d9f45d8037f67a12064d5cdaee6debc4fb6da4ffa94c97bf86c79",
+          "extractorVersion": 2,
+          "summary": "Placement guidance specifies row, content association, and secondary-tab order."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tabs-responsive-count",
+      "statement": "For fixed tabs, size each tab to the width of the widest tab and use fluid margins to align the group to the center or leading edge of the body region. Avoid more than four fixed tabs because five or more become cramped; use scrollable tabs when the set does not fit.",
+      "condition": "When choosing fixed versus scrollable tabs for the available width.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tabs/guidelines",
+          "section": "987a1736-1cb8-44b9-bbc9-0ae4c218f13d",
+          "capture": "snapshots/material-guidance/20261025T165949.028889369Z-1197277053/capture.json",
+          "markdownSha256": "8fab0f14488d9f45d8037f67a12064d5cdaee6debc4fb6da4ffa94c97bf86c79",
+          "extractorVersion": 2,
+          "summary": "Responsive guidance specifies fixed width and margin behavior, four-tab limit, and overflow option."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tabs-interaction-states",
+      "statement": "Tabs inherit enabled states by default; active and inactive tabs may also have hover, focus, and pressed states.",
+      "condition": "When implementing tab interaction states.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tabs/guidelines",
+          "section": "3940eac4-5dcc-4c0e-a99d-faa81512b356",
+          "capture": "snapshots/material-guidance/20261025T165949.028889369Z-1197277053/capture.json",
+          "markdownSha256": "8fab0f14488d9f45d8037f67a12064d5cdaee6debc4fb6da4ffa94c97bf86c79",
+          "extractorVersion": 2,
+          "summary": "States section describes default and optional interaction states."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tabs-fixed-interaction",
+      "statement": "Fixed tabs show all destinations simultaneously. Users may select a tab directly or swipe left/right within the content area to switch tabs; avoid competing swipeable content in that area because gestures may be ambiguous.",
+      "condition": "When using fixed tabs and horizontal swipe navigation.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tabs/guidelines",
+          "section": "6697d804-096a-4f84-b561-d5831a5e8f38",
+          "capture": "snapshots/material-guidance/20261025T165949.028889369Z-1197277053/capture.json",
+          "markdownSha256": "8fab0f14488d9f45d8037f67a12064d5cdaee6debc4fb6da4ffa94c97bf86c79",
+          "extractorVersion": 2,
+          "summary": "Fixed-tab behavior describes direct selection, content swipe, and gesture conflict caution."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tabs-tap-navigation",
+      "statement": "Tapping a tab navigates to its destination.",
+      "condition": "When a user taps a tab.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tabs/guidelines",
+          "section": "85efb4b6-9026-4dd5-bc99-553acc23d1cc",
+          "capture": "snapshots/material-guidance/20261025T165949.028889369Z-1197277053/capture.json",
+          "markdownSha256": "8fab0f14488d9f45d8037f67a12064d5cdaee6debc4fb6da4ffa94c97bf86c79",
+          "extractorVersion": 2,
+          "summary": "Tap subsection states direct tab selection behavior."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tabs-scrollable-behavior",
+      "statement": "Use scrollable tabs when the set does not fit on screen; they support more and longer labels and are best suited to browsing on touch interfaces. Keep padding consistent with long labels.",
+      "condition": "When tabs exceed the available screen width.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tabs/guidelines",
+          "section": "b0e3794c-059f-41e2-87a6-fe2498fc7fe8",
+          "capture": "snapshots/material-guidance/20261025T165949.028889369Z-1197277053/capture.json",
+          "markdownSha256": "8fab0f14488d9f45d8037f67a12064d5cdaee6debc4fb6da4ffa94c97bf86c79",
+          "extractorVersion": 2,
+          "summary": "Scrollable-tab guidance describes overflow, longer labels, touch browsing, and consistent padding."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tabs-content-scroll",
+      "statement": "Tabs may stay fixed at the top or scroll offscreen and return when the user scrolls upward. Do not let tabs scroll behind an app bar; tabs attached to another component should move as a unit.",
+      "condition": "When tab placement interacts with vertical page scrolling.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tabs/guidelines",
+          "section": "bcd3709b-14f1-4ac9-b7f7-4bc786e2a8eb",
+          "capture": "snapshots/material-guidance/20261025T165949.028889369Z-1197277053/capture.json",
+          "markdownSha256": "8fab0f14488d9f45d8037f67a12064d5cdaee6debc4fb6da4ffa94c97bf86c79",
+          "extractorVersion": 2,
+          "summary": "Scrolling guidance defines tab persistence and movement with app bars/attached components."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tabs-accessible-tasks",
+      "statement": "Assistive-technology users must be able to navigate to destinations or invoke actions, select off-screen tabs, and retain access to primary actions when content is scrolled.",
+      "condition": "For accessible tabs.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tabs/accessibility",
+          "section": "c519daa6-8bbe-41c8-977d-77e12c97dffa",
+          "capture": "snapshots/material-guidance/20261025T165949.028889369Z-1197277053/capture.json",
+          "markdownSha256": "a52e1641cce48bbce3246e5d1188af584a5f278b7da2a57972e032d4eb6201f7",
+          "extractorVersion": 2,
+          "summary": "Use cases list destination/action navigation, off-screen tab selection, and persistent primary-action access."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tabs-key-interaction",
+      "statement": "On touch, show a ripple and move the active indicator when engaged; on cursor hover show hover state and on click show ripple and indicator movement. For scrollable tabs, allow left/right swipe and arrow/Tab navigation, do not loop infinitely, and allow selection by tap or Space/Enter. Space/Enter on an active tab invokes its destination; arrow/Tab moves through tab/menu items and Tab can exit the active state.",
+      "condition": "When touch, cursor, or keyboard/switch users interact with tabs.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tabs/accessibility",
+          "section": "13ed756b-fb35-4bb3-ac8c-1157e49031d8",
+          "capture": "snapshots/material-guidance/20261025T165949.028889369Z-1197277053/capture.json",
+          "markdownSha256": "a52e1641cce48bbce3246e5d1188af584a5f278b7da2a57972e032d4eb6201f7",
+          "extractorVersion": 2,
+          "summary": "Interaction guidance covers feedback, scrollable-tab navigation and selection, no infinite loop, and key outcomes."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tabs-density-target",
+      "statement": "Do not apply density by default if it reduces targets below 48×48 CSS pixels; if offering density control, keep its targets at least 48×48 CSS pixels so it can be reverted.",
+      "condition": "When offering dense tab layouts or a density setting.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tabs/accessibility",
+          "section": "97bd405b-6d5e-47d5-b11d-4f4a115b3f9b",
+          "capture": "snapshots/material-guidance/20261025T165949.028889369Z-1197277053/capture.json",
+          "markdownSha256": "a52e1641cce48bbce3246e5d1188af584a5f278b7da2a57972e032d4eb6201f7",
+          "extractorVersion": 2,
+          "summary": "Density guidance sets default and revert-control target requirements."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tabs-initial-focus",
+      "statement": "With arrow/Tab navigation in a tab menu, show the active indicator on the first interactive element; allow Tab to continue through additional interactive elements. Do not use Space/Enter to navigate tabs; reserve those keys for actions.",
+      "condition": "When a keyboard user enters a tab menu.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tabs/accessibility",
+          "section": "6b65f52d-f4eb-4d5f-bfe8-01b1540afde6",
+          "capture": "snapshots/material-guidance/20261025T165949.028889369Z-1197277053/capture.json",
+          "markdownSha256": "a52e1641cce48bbce3246e5d1188af584a5f278b7da2a57972e032d4eb6201f7",
+          "extractorVersion": 2,
+          "summary": "Initial-focus guidance describes first-element feedback and separates navigation from activation keys."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tabs-keyboard",
+      "statement": "Arrow keys move focus to the next available navigation destination or through menu items; Space or Enter activates the focused destination.",
+      "condition": "When keyboard-operating tabs.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tabs/accessibility",
+          "section": "a1ebaebd-1bb4-4401-9962-8b30a563e49e",
+          "capture": "snapshots/material-guidance/20261025T165949.028889369Z-1197277053/capture.json",
+          "markdownSha256": "a52e1641cce48bbce3246e5d1188af584a5f278b7da2a57972e032d4eb6201f7",
+          "extractorVersion": 2,
+          "summary": "Keyboard table maps arrow navigation and activation keys."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tabs-accessible-labels",
+      "statement": "When visible tab text is absent or ambiguous, provide a more descriptive accessibility label that communicates the tab's function.",
+      "condition": "When tab labels do not clearly identify the represented content or action.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tabs/accessibility",
+          "section": "bc704c75-5876-476e-b636-53b6eadef773",
+          "capture": "snapshots/material-guidance/20261025T165949.028889369Z-1197277053/capture.json",
+          "markdownSha256": "a52e1641cce48bbce3246e5d1188af584a5f278b7da2a57972e032d4eb6201f7",
+          "extractorVersion": 2,
+          "summary": "Labeling guidance requires clearer accessible wording for ambiguous or icon-only tabs."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "tabs-different-gesture-directions",
+      "statement": "When tabs and other swipeable content must coexist in the same content area, use different gesture directions to distinguish tab navigation from the nested content interaction.",
+      "condition": "When using tabs alongside swipeable content within the tabs’ content area.",
+      "basis": "explicit",
+      "notes": "The guidelines give different gesture directions as the “Do” alternative to avoiding swipeable items in the tab content area. This applies only when both interactions must coexist.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/tabs/guidelines",
+          "section": "a10c71e1-a038-4ff7-8e2f-1ece2a34e15c",
+          "capture": "snapshots/material-guidance/20261025T165949.028889369Z-1197277053/capture.json",
+          "markdownSha256": "8fab0f14488d9f45d8037f67a12064d5cdaee6debc4fb6da4ffa94c97bf86c79",
+          "extractorVersion": 2,
+          "summary": "Guidelines recommend different gesture directions when tabs coexist with swipeable content."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

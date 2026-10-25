@@ -1,0 +1,1481 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "menus",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/menus/overview",
+      "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+      "markdownSha256": "80dc0a719780ff3c6f8d4199ccbf4de1671a315345f32ac4a22b901311a92479",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Menus",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "e1d7cd49-4b54-4232-bdb9-b9ac8c75d280",
+          "title": "Availability & resources",
+          "status": "no-requirements",
+          "notes": "This table reports availability of upstream design kits and framework implementations; it is not an implementation requirement for this project."
+        },
+        {
+          "id": "2ee85906-a8a6-4ad4-8938-f66e036e3a6e",
+          "title": "M3 Expressive update",
+          "status": "no-requirements",
+          "notes": "This update repeats the new-design recommendation and baseline availability recorded by vertical-menu-variant-features and vertical-menu-layout-availability. The Android-only gap capability is recorded by menu-gap-and-divider-rules."
+        },
+        {
+          "id": "85acd9d6-3ad3-4723-883b-14b43d9e73ee",
+          "title": "Differences from M2",
+          "status": "no-requirements",
+          "notes": "This section compares historical M2 and M3 presentation. Current variant and behavior requirements are recorded in the relevant M3 specs and guidelines."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/menus/specs",
+      "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+      "markdownSha256": "5f4233284938a408e6f8904ebad7e7d450e04395740d6ea639ceb59a7181dbc0",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Menus",
+          "status": "no-requirements",
+          "notes": "This is the page title or brief component summary; actionable requirements are recorded in the linked child sections."
+        },
+        {
+          "id": "9493950b-a4e5-43a6-bad9-09f16e75310c",
+          "title": "Variants",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "2c9367d3-e7b4-404a-942e-b8c90cef1b20",
+          "title": "Vertical menus",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "8a8d697a-cd74-44c2-b502-f7ce0704d44e",
+          "title": "Baseline variant",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "dd6473af-48b3-4bce-96a2-c941f1854f93",
+          "title": "Configurations",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "e913d2e6-a0f3-4c97-b43b-066546c1ac12",
+          "title": "Vertical menus layout",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "c52e7987-3cf6-4c52-98f1-72fc006d0584",
+          "title": "Tokens & specs",
+          "status": "no-requirements",
+          "notes": "The section exposes token-set selectors and values; it adds no component behavior beyond the curated checks. Keep token values and references in the source token pipeline."
+        },
+        {
+          "id": "6b6ba95f-740c-44ec-a6f4-8437e122ce42",
+          "title": "Anatomy",
+          "status": "unclear",
+          "notes": "This section is an anatomy diagram with item labels but no prose specifying spatial relationships; optional slots and grouping behavior are covered by menu-slot-interaction-limits and group-related-actions-with-gaps-or-dividers. The visual arrangement has not been inspected."
+        },
+        {
+          "id": "2303fcc7-eaef-4eec-91e5-5c3d7c744fa5",
+          "title": "Vertical menus",
+          "status": "unclear",
+          "notes": "The prose specifies focus-driven corner morphing and is covered by submenu-focus-and-shape-morph. The enabled, disabled, hovered, focused, pressed and active state illustrations are not visually inspected, so their appearance remains unresolved."
+        },
+        {
+          "id": "1e4161c2-ade2-4e40-9d71-5ab4dbdfd06a",
+          "title": "Color",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "c4f98bd5-71e9-4362-a81b-1d7cdd2c5a2e",
+          "title": "Standard colors",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "2ecc9cfb-9113-4fc0-a7ce-1769a8ab1ccf",
+          "title": "Vibrant colors",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "73e5feb2-e8c8-4308-aeeb-00a5baee1d41",
+          "title": "States",
+          "status": "unclear",
+          "notes": "The explicit focus-driven shape change is captured by submenu-focus-and-shape-morph. The six enabled, disabled, hovered, focused, pressed and active states are shown only in an uninspected illustration, so their visual treatments remain unresolved."
+        },
+        {
+          "id": "884ba5cb-ecf8-411a-b94f-e17c3cd941bd",
+          "title": "Measurements",
+          "status": "unclear",
+          "notes": "This expressive-menu measurement section provides only an uninspected diagram; exact padding, item sizes and dimension relationships are unavailable in the captured text."
+        },
+        {
+          "id": "a80df2f9-8610-4ce0-b3a3-b9ee749d5c98",
+          "title": "Menu (baseline)",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "360ccad3-f95f-4c5a-bc3a-0e1a6cacb70b",
+          "title": "Baseline tokens & specs",
+          "status": "no-requirements",
+          "notes": "The section exposes token-set selectors and values; it adds no component behavior beyond the curated checks. Keep token values and references in the source token pipeline."
+        },
+        {
+          "id": "b5f9e217-28c1-4ca6-9f02-5648f69c73d1",
+          "title": "Anatomy",
+          "status": "unclear",
+          "notes": "This diagram labels the baseline menu’s list item, leading/trailing icons, container, trailing text and divider. Exact element-to-number mapping and visual relationships remain uninspected; baseline dimensions are separately captured in baseline-menu-measurements."
+        },
+        {
+          "id": "d607da76-f0e9-4d6f-8d2b-4123ee63bb13",
+          "title": "Color",
+          "status": "unclear",
+          "notes": "Nine baseline color roles are listed, but their assignment to menu parts depends on the uninspected diagram; do not infer numbered role-to-element pairings."
+        },
+        {
+          "id": "4465fe0c-1e19-4dca-8b94-b648846a39c9",
+          "title": "States",
+          "status": "no-requirements",
+          "notes": "This baseline state subsection contains no independent prose or listed state rules; the current vertical-menu state behavior is in submenu-focus-and-shape-morph and the state images for the expressive variant remain explicitly unresolved in the other States section."
+        },
+        {
+          "id": "ec9a8ba5-695f-4a68-8cdc-cb5ece20f523",
+          "title": "Default menu items",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "7f6bb52c-4e06-4aae-9645-bbacf1b7ab2d",
+          "title": "Selected menu items",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "12a6fa56-c3f4-4e11-9b4f-08b2d5bd6772",
+          "title": "Measurements",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "0f35ebaa-2897-41c1-965b-73b6b1196e7c",
+          "title": "Configurations",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/menus/guidelines",
+      "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+      "markdownSha256": "907d7a2c96e77ae93a1377feeb806656f4efb85dc1d8f56a3ca40c83f1b2e95d",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Menus",
+          "status": "no-requirements",
+          "notes": "This is the page title or brief component summary; actionable requirements are recorded in the linked child sections."
+        },
+        {
+          "id": "fae25177-4a31-47eb-8daf-dc208e6e42f5",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "5d01bb76-c053-4c9b-a60c-92cd402d6f84",
+          "title": "Color options",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "f4e72cc4-0bde-4960-adaf-0f3f929965d8",
+          "title": "Opening menus",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "d6d35833-3c4a-459d-8c64-9977b0901e1a",
+          "title": "Menu groups",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "628b4c5e-66a5-4926-b963-38635b3a07f9",
+          "title": "Context menus",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "4d2ca9a5-906c-43fe-95e2-c02871619f19",
+          "title": "Anatomy",
+          "status": "unclear",
+          "notes": "The diagram lists menu-item anatomy and optional elements, but the visual relationships have not been inspected. Slot interaction and accessibility constraints are captured by use-custom-menu-slots-only-when-their and menu-slot-interaction-limits."
+        },
+        {
+          "id": "a54bec3d-25a0-46b8-b942-481ae47e0a03",
+          "title": "Menu items",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "d75ac70c-9122-4b4c-bd60-b856bc66c9bc",
+          "title": "Gaps & dividers (optional)",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "8a1684bb-99a5-4a73-91a0-068d0b406127",
+          "title": "Flexibility & slots",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "3c0f0cf4-2699-49d8-9f5c-36527c2e17c7",
+          "title": "Placement",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "5b3a92ec-a694-4ea7-87ad-0fbf87344cab",
+          "title": "Submenus",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "e588ae16-7a76-4bf9-8532-8d931a13ca35",
+          "title": "Adaptive design",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "aef05be3-bcac-432f-bdec-001f5dd0c12e",
+          "title": "Compact breakpoints",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "76a58e94-fcce-415a-a444-6f4b9207d005",
+          "title": "Other breakpoints",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "1c90f06a-268c-45e4-854a-ad846ed913d0",
+          "title": "Behavior",
+          "status": "no-requirements",
+          "notes": "The section is descriptive or repeats guidance captured by the component checks; it adds no independently assessable instruction."
+        },
+        {
+          "id": "3974c117-c285-4211-b60e-2122e162df62",
+          "title": "Appearing",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "57d783cb-198a-429f-b7da-e3b3aec98ee4",
+          "title": "Filtering",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "f42850b1-b331-4376-aedf-98a52fe51bdf",
+          "title": "Scrolling",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "2617b13b-d87e-4802-92ca-53d9ae574673",
+          "title": "Selecting",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "041f5eac-4070-467c-910f-3589b001828c",
+          "title": "Single- and multi-select menus",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "7cc1d01b-a454-48c7-8306-e60347ffd17f",
+          "title": "Focus",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "b5862ba3-4f08-4b85-932b-6b805c7a2666",
+          "title": "Density",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/menus/accessibility",
+      "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+      "markdownSha256": "88820670851b7325f8eae58307a8cb156bd8ee286a5d4b54bc847e95718d20d9",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Menus",
+          "status": "no-requirements",
+          "notes": "This is the page title or brief component summary; actionable requirements are recorded in the linked child sections."
+        },
+        {
+          "id": "4417785a-985b-45de-8c12-ecaa200c7184",
+          "title": "Use cases",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "149778c9-eb42-4a56-8a0b-9932181ac2cd",
+          "title": "Interaction & style",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "d028d2b4-d39d-4f3d-80f2-4608697937d1",
+          "title": "Flexibility & slots",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "8b4c6c67-5112-4849-b160-a3a913efec79",
+          "title": "Focus",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "151f1774-4d6e-4e58-9fc7-d8a5990e3030",
+          "title": "Keyboard navigation",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "b496a9ab-e091-4eac-93c6-0fb93b478121",
+          "title": "Interactability",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "e9cd430b-6117-47b1-9afa-0eb691db7273",
+          "title": "Labeling elements",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "adapt-menu-placement-and-layout-to-available",
+      "statement": "Adapt menu placement and layout to available window size while keeping the trigger relationship clear.",
+      "condition": "When window dimensions change.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/guidelines",
+          "section": "e588ae16-7a76-4bf9-8532-8d931a13ca35",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "907d7a2c96e77ae93a1377feeb806656f4efb85dc1d8f56a3ca40c83f1b2e95d",
+          "extractorVersion": 2,
+          "summary": "Curated from Adaptive design: Adapt menu placement and layout to available window size while keeping the trigger relationship clear."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "associate-context-menu-actions-with-the-specific-selected",
+      "statement": "Associate context-menu actions with the specific selected object or text.",
+      "condition": "When showing a context menu.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/guidelines",
+          "section": "628b4c5e-66a5-4926-b963-38635b3a07f9",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "907d7a2c96e77ae93a1377feeb806656f4efb85dc1d8f56a3ca40c83f1b2e95d",
+          "extractorVersion": 2,
+          "summary": "Curated from Context menus: Associate context-menu actions with the specific selected object or text."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "baseline-menu-measurements",
+      "statement": "For the baseline menu, keep width between 112dp and 280dp, 4dp corner radius, 48dp item height, 12dp horizontal and internal item spacing, 8dp divider vertical padding, 1dp divider height, and 24dp leading/trailing icons. Align labels vertically centered and horizontally to start.",
+      "condition": "When retaining the available baseline menu variant.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/specs",
+          "section": "12a6fa56-c3f4-4e11-9b4f-08b2d5bd6772",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "5f4233284938a408e6f8904ebad7e7d450e04395740d6ea639ceb59a7181dbc0",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Measurements prose or table: For the baseline menu, keep width between 112dp and 280dp, 4dp corner radius, 48dp item height, 12dp"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "compact-menu-bottom-sheet-option",
+      "statement": "On compact screens, consider replacing a menu with a bottom sheet when longer labels or more items need space.",
+      "condition": "When the menu must display additional items or long labels on a small screen.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/guidelines",
+          "section": "aef05be3-bcac-432f-bdec-001f5dd0c12e",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "907d7a2c96e77ae93a1377feeb806656f4efb85dc1d8f56a3ca40c83f1b2e95d",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Compact breakpoints rule: On compact screens, consider replacing a menu with a bottom sheet when longer labels or more items need space."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "conditionally-unavailable-menu-items",
+      "statement": "Keep a menu item visible but disabled when it can be used only under specific conditions.",
+      "condition": "When a menu action is temporarily unavailable.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/guidelines",
+          "section": "a54bec3d-25a0-46b8-b942-481ae47e0a03",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "907d7a2c96e77ae93a1377feeb806656f4efb85dc1d8f56a3ca40c83f1b2e95d",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Menu items rule: Keep a menu item visible but disabled when it can be used only under specific conditions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "do-not-apply-density-changes-by-default",
+      "statement": "Do not apply density changes by default if they compromise menu targets or legibility.",
+      "condition": "When offering dense menu layouts.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/guidelines",
+          "section": "b5862ba3-4f08-4b85-932b-6b805c7a2666",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "907d7a2c96e77ae93a1377feeb806656f4efb85dc1d8f56a3ca40c83f1b2e95d",
+          "extractorVersion": 2,
+          "summary": "Curated from Density: Do not apply density changes by default if they compromise menu targets or legibility."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "expose-menu-items-with-names-and-roles",
+      "statement": "Match each menu item accessibility label to its visible text. On web, expose the role as Menu item; Android Views and Jetpack Compose use a generic actionable-element role.",
+      "condition": "When exposing menus to assistive technology.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/accessibility",
+          "section": "e9cd430b-6117-47b1-9afa-0eb691db7273",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "88820670851b7325f8eae58307a8cb156bd8ee286a5d4b54bc847e95718d20d9",
+          "extractorVersion": 2,
+          "summary": "Curated from Labeling elements: Expose menu items with names and roles that describe their actions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "group-related-actions-with-gaps-or-dividers",
+      "statement": "Group related actions with gaps or dividers where they improve scanning; preserve meaningful group boundaries.",
+      "condition": "When grouping menu items.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/guidelines",
+          "section": "d6d35833-3c4a-459d-8c64-9977b0901e1a",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "907d7a2c96e77ae93a1377feeb806656f4efb85dc1d8f56a3ca40c83f1b2e95d",
+          "extractorVersion": 2,
+          "summary": "Curated from Menu groups: Group related actions with gaps or dividers where they improve scanning; preserve meaningful group boundaries."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "keep-focus-visible-and-provide-a-predictable",
+      "statement": "Keep focus visible and provide a predictable focus path among menu items and submenus.",
+      "condition": "When navigating menus by keyboard.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/guidelines",
+          "section": "7cc1d01b-a454-48c7-8306-e60347ffd17f",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "907d7a2c96e77ae93a1377feeb806656f4efb85dc1d8f56a3ca40c83f1b2e95d",
+          "extractorVersion": 2,
+          "summary": "Curated from Focus: Keep focus visible and provide a predictable focus path among menu items and submenus."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "keep-menu-item-labels-concise-and-make",
+      "statement": "Keep menu item labels concise and make each item’s action clear.",
+      "condition": "When writing menu item content.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/guidelines",
+          "section": "a54bec3d-25a0-46b8-b942-481ae47e0a03",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "907d7a2c96e77ae93a1377feeb806656f4efb85dc1d8f56a3ca40c83f1b2e95d",
+          "extractorVersion": 2,
+          "summary": "Curated from Menu items: Keep menu item labels concise and make each item’s action clear."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "keep-menus-anchored-to-their-trigger-and",
+      "statement": "Keep menus anchored to their trigger and positioned within the available viewport.",
+      "condition": "When positioning a menu.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/guidelines",
+          "section": "3c0f0cf4-2699-49d8-9f5c-36527c2e17c7",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "907d7a2c96e77ae93a1377feeb806656f4efb85dc1d8f56a3ca40c83f1b2e95d",
+          "extractorVersion": 2,
+          "summary": "Curated from Placement: Keep menus anchored to their trigger and positioned within the available viewport."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "menu-assistive-use-cases",
+      "statement": "People using assistive technology must be able to navigate to, open and close a menu, move between its items and select an item.",
+      "condition": "When exposing menus to assistive technology.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/accessibility",
+          "section": "4417785a-985b-45de-8c12-ecaa200c7184",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "88820670851b7325f8eae58307a8cb156bd8ee286a5d4b54bc847e95718d20d9",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Use cases instruction: People using assistive technology must be able to navigate to, open and close a menu, move between its items a"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "menu-color-role-pairings",
+      "statement": "Standard menus use surface-based colors for lower emphasis; vibrant menus use tertiary-based colors for higher emphasis and should be used sparingly.",
+      "condition": "When choosing expressive menu color treatment.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/specs",
+          "section": "1e4161c2-ade2-4e40-9d71-5ab4dbdfd06a",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "5f4233284938a408e6f8904ebad7e7d450e04395740d6ea639ceb59a7181dbc0",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Color rule: Standard menus use surface-based colors for lower emphasis; vibrant menus use tertiary-based colors for higher"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "menu-context-at-medium-and-large-sizes",
+      "statement": "On medium and expanded windows, keep menus in the context of their related content; larger screens can accommodate more visible items and submenus for complex choices.",
+      "condition": "When adapting menus to medium or larger windows.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/guidelines",
+          "section": "76a58e94-fcce-415a-a444-6f4b9207d005",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "907d7a2c96e77ae93a1377feeb806656f4efb85dc1d8f56a3ca40c83f1b2e95d",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Other breakpoints rule: On medium and expanded windows, show menus in context with their content; larger screens can show more items a"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "menu-divider-contexts",
+      "statement": "Use dividers for scrollable menus, dropdowns from text fields where grouped treatment is unsuitable, and between menu items on web.",
+      "condition": "When a menu needs item separation.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/guidelines",
+          "section": "d75ac70c-9122-4b4c-bd60-b856bc66c9bc",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "907d7a2c96e77ae93a1377feeb806656f4efb85dc1d8f56a3ca40c83f1b2e95d",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Gaps & dividers (optional) rule: Use dividers for scrollable menus, dropdowns from text fields where grouped treatment is unsuitable, and betwe"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "menu-filter-results",
+      "statement": "When a menu contains a filter text field, update the options as the person types and ease items into their new positions.",
+      "condition": "When filtering a long menu.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/guidelines",
+          "section": "57d783cb-198a-429f-b7da-e3b3aec98ee4",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "907d7a2c96e77ae93a1377feeb806656f4efb85dc1d8f56a3ca40c83f1b2e95d",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Filtering rule: When a menu contains a filter text field, update the options as the person types and ease items into their new"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "menu-gap-and-divider-rules",
+      "statement": "Limit expressive gaps to one or two per menu and do not change their size; use gaps to group menu items, but do not use gaps in scrollable menus. Gaps are unavailable on web.",
+      "condition": "When configuring an expressive vertical menu.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/guidelines",
+          "section": "d75ac70c-9122-4b4c-bd60-b856bc66c9bc",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "907d7a2c96e77ae93a1377feeb806656f4efb85dc1d8f56a3ca40c83f1b2e95d",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Gaps & dividers (optional) rule: Limit expressive gaps to one or two per menu and do not change their size; use gaps to group menu items, but d"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "menu-initial-focus-and-dismissal",
+      "statement": "On open, focus the first menu item. Allow exit by selecting an option, pressing Escape, tapping outside, or using system Back; focus placement after close depends on the app.",
+      "condition": "When a menu opens or closes.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/accessibility",
+          "section": "8b4c6c67-5112-4849-b160-a3a913efec79",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "88820670851b7325f8eae58307a8cb156bd8ee286a5d4b54bc847e95718d20d9",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Focus rule: On open, focus the first menu item. Allow exit by selecting an option, pressing Escape, tapping outside, or us"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "menu-open-motion-and-trigger-state",
+      "statement": "Use an enter/exit transition that relates the menu to its trigger; show the trigger’s pressed state while open and a touch ripple when an item is selected. Dense desktop menus may open instantly.",
+      "condition": "When animating a menu, including dense desktop interfaces.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/guidelines",
+          "section": "3974c117-c285-4211-b60e-2122e162df62",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "907d7a2c96e77ae93a1377feeb806656f4efb85dc1d8f56a3ca40c83f1b2e95d",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Appearing rule: Use an enter/exit transition that relates the menu to its trigger; show the trigger’s pressed state while open"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "menu-selection-mode-behavior",
+      "statement": "A single-select menu has at most one selected item and selecting another clears the previous one; a multi-select menu can retain several selections and stays open until dismissed.",
+      "condition": "When implementing menu selection.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/guidelines",
+          "section": "041f5eac-4070-467c-910f-3589b001828c",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "907d7a2c96e77ae93a1377feeb806656f4efb85dc1d8f56a3ca40c83f1b2e95d",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Single- and multi-select menus rule: A single-select menu has at most one selected item and selecting another clears the previous one; a multi-sele"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "menu-selection-multiple-visual-cues",
+      "statement": "Show menu selection with shape and color changes; maintain 3:1 contrast between selected and unselected items and consider an additional cue such as a checkmark.",
+      "condition": "When indicating selected menu items.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/accessibility",
+          "section": "149778c9-eb42-4a56-8a0b-9932181ac2cd",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "88820670851b7325f8eae58307a8cb156bd8ee286a5d4b54bc847e95718d20d9",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Interaction & style instruction: Show menu selection with shape and color changes; maintain 3:1 contrast between selected and unselected items "
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "menu-slot-interaction-limits",
+      "statement": "Do not add buttons, switches or other direct actions to a menu item; nested elements should perform only one action. Preserve menu padding and accessibility, and keep targets at least 48×48dp.",
+      "condition": "When adding custom content to menu items.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/accessibility",
+          "section": "d028d2b4-d39d-4f3d-80f2-4608697937d1",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "88820670851b7325f8eae58307a8cb156bd8ee286a5d4b54bc847e95718d20d9",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Flexibility & slots rule: Custom menu slots must preserve menu interaction and accessibility, keep standard item padding and targets at "
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "menu-trigger-and-open-direction",
+      "statement": "Open a menu after its trigger is selected or the specified action occurs; if it opens near the top edge, expand downward to avoid cropping.",
+      "condition": "When opening a menu near a window edge.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/guidelines",
+          "section": "3974c117-c285-4211-b60e-2122e162df62",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "907d7a2c96e77ae93a1377feeb806656f4efb85dc1d8f56a3ca40c83f1b2e95d",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Appearing rule: Open a menu after its trigger is selected or the specified action occurs; if it opens near the top edge, expan"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "menu-trigger-retains-appearance",
+      "statement": "Opening a menu adds a pressed state to the triggering button or icon button without otherwise changing its appearance, including when a keyboard shortcut opens the menu.",
+      "condition": "When opening a menu from a button or icon button.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/guidelines",
+          "section": "2617b13b-d87e-4802-92ca-53d9ae574673",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "907d7a2c96e77ae93a1377feeb806656f4efb85dc1d8f56a3ca40c83f1b2e95d",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Selecting rule: Opening a menu adds a pressed state to the triggering button or icon button without otherwise changing its app"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "open-a-menu-in-front-of-permanent",
+      "statement": "Open a menu in front of permanent UI in response to selecting a control or performing a specific trigger such as right-click or press-and-hold.",
+      "condition": "When opening a menu.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/guidelines",
+          "section": "f4e72cc4-0bde-4960-adaf-0f3f929965d8",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "907d7a2c96e77ae93a1377feeb806656f4efb85dc1d8f56a3ca40c83f1b2e95d",
+          "extractorVersion": 2,
+          "summary": "Curated from Opening menus: Open a menu in front of permanent UI in response to selecting a control or performing a specific trigger such "
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "open-submenus-next-to-the-parent-menu",
+      "statement": "Open submenus next to the parent menu item without overlapping that item.",
+      "condition": "When opening a submenu.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/guidelines",
+          "section": "5b3a92ec-a694-4ea7-87ad-0fbf87344cab",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "907d7a2c96e77ae93a1377feeb806656f4efb85dc1d8f56a3ca40c83f1b2e95d",
+          "extractorVersion": 2,
+          "summary": "Curated from Submenus: Open submenus next to the parent menu item without overlapping that item."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "provide-at-least-48dp-targets-for-interactive",
+      "statement": "Provide at least 48×48dp targets for menu items and interactive controls.",
+      "condition": "When sizing menu targets.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/accessibility",
+          "section": "b496a9ab-e091-4eac-93c6-0fb93b478121",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "88820670851b7325f8eae58307a8cb156bd8ee286a5d4b54bc847e95718d20d9",
+          "extractorVersion": 2,
+          "summary": "Curated from Interactability: Provide at least 48dp targets for interactive menu items and controls."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "standard-menus-have-lower-emphasis-vibrant-tertiary-based",
+      "statement": "Standard menus have lower emphasis; vibrant tertiary-based menus have higher emphasis and should be used sparingly.",
+      "condition": "When choosing a menu color style.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/guidelines",
+          "section": "5d01bb76-c053-4c9b-a60c-92cd402d6f84",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "907d7a2c96e77ae93a1377feeb806656f4efb85dc1d8f56a3ca40c83f1b2e95d",
+          "extractorVersion": 2,
+          "summary": "Curated from Color options: Standard menus have lower emphasis; vibrant tertiary-based menus have higher emphasis and should be used spari"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "submenu-focus-and-shape-morph",
+      "statement": "With multiple submenus, focus follows the hovered or focused submenu; the focused submenu corners become more rounded while unfocused submenu corners become less rounded.",
+      "condition": "When moving focus between submenus.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/guidelines",
+          "section": "7cc1d01b-a454-48c7-8306-e60347ffd17f",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "907d7a2c96e77ae93a1377feeb806656f4efb85dc1d8f56a3ca40c83f1b2e95d",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Focus rule: With multiple submenus, focus follows the hovered or focused submenu; the focused submenu corners become more "
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "submenu-large-screen-and-platform-availability",
+      "statement": "Prefer submenus on large screens; they are unavailable in Jetpack Compose.",
+      "condition": "When choosing submenu behavior and platform support.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/guidelines",
+          "section": "5b3a92ec-a694-4ea7-87ad-0fbf87344cab",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "907d7a2c96e77ae93a1377feeb806656f4efb85dc1d8f56a3ca40c83f1b2e95d",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Submenus rule: Prefer submenus on large screens; they are unavailable in Jetpack Compose."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "support-keyboard-focus-activation-submenu-movement-and",
+      "statement": "For menus, Tab focuses the menu; Space/Enter opens a closed menu or submenu and selects an item in an open menu; Up/Down opens a closed menu or moves to the next item when open; Left/Right opens or closes submenus; typing a letter moves focus to the next item beginning with it; Escape closes the menu.",
+      "condition": "When operating menus by keyboard.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/accessibility",
+          "section": "151f1774-4d6e-4e58-9fc7-d8a5990e3030",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "88820670851b7325f8eae58307a8cb156bd8ee286a5d4b54bc847e95718d20d9",
+          "extractorVersion": 2,
+          "summary": "Curated from Keyboard navigation: Support keyboard focus, activation, submenu movement and Escape dismissal with predictable focus return."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-a-menu-for-temporary-actions-and",
+      "statement": "Use a menu for temporary actions and prefer it over radio buttons or chips when the menu uses less space.",
+      "condition": "When presenting a temporary set of choices.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/guidelines",
+          "section": "fae25177-4a31-47eb-8daf-dc208e6e42f5",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "907d7a2c96e77ae93a1377feeb806656f4efb85dc1d8f56a3ca40c83f1b2e95d",
+          "extractorVersion": 2,
+          "summary": "Curated from Usage: Use a menu for temporary actions and prefer it over radio buttons or chips when the menu uses less space."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-custom-menu-slots-only-when-their",
+      "statement": "Use custom slots only when they preserve menu accessibility and interaction patterns, retain standard item padding, and provide targets of at least 48×48dp.",
+      "condition": "When customizing menu item slots.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/guidelines",
+          "section": "8a1684bb-99a5-4a73-91a0-068d0b406127",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "907d7a2c96e77ae93a1377feeb806656f4efb85dc1d8f56a3ca40c83f1b2e95d",
+          "extractorVersion": 2,
+          "summary": "Curated from Flexibility & slots: Use custom menu slots only when their content preserves menu structure, accessibility and interaction behavior"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-gaps-or-dividers-only-to-separate",
+      "statement": "Use gaps or dividers only to separate related groups; do not use them to imply unrelated hierarchy.",
+      "condition": "When adding optional gaps or dividers.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/guidelines",
+          "section": "d75ac70c-9122-4b4c-bd60-b856bc66c9bc",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "907d7a2c96e77ae93a1377feeb806656f4efb85dc1d8f56a3ca40c83f1b2e95d",
+          "extractorVersion": 2,
+          "summary": "Curated from Gaps & dividers (optional): Use gaps or dividers only to separate related groups; do not use them to imply unrelated hierarchy."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "use-menus-for-temporary-actions-or-choices",
+      "statement": "Use menus for temporary actions or choices; use a toolbar for actions that must remain on screen. Context menus apply to a specific element and commonly open by secondary click.",
+      "condition": "When choosing a menu pattern.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/overview",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "80dc0a719780ff3c6f8d4199ccbf4de1671a315345f32ac4a22b901311a92479",
+          "extractorVersion": 2,
+          "summary": "Curated from Menus: Use menus for temporary actions or choices; use a toolbar for actions that must remain on screen. Context menu"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "vertical-menu-layout-availability",
+      "statement": "Standard color and standard layout are available in M3 and M3 Expressive; vibrant color and grouped layout are available only in M3 Expressive.",
+      "condition": "When exposing vertical-menu configuration options.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/specs",
+          "section": "e913d2e6-a0f3-4c97-b43b-066546c1ac12",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "5f4233284938a408e6f8904ebad7e7d450e04395740d6ea639ceb59a7181dbc0",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Vertical menus layout rule: Standard color and standard layout are available in M3 and M3 Expressive; vibrant color and grouped layout are"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "vertical-menu-variant-features",
+      "statement": "M3 Expressive vertical menus introduce rounded shapes, standard and vibrant color styles, more selection states and refined submenu motion; use them for a more expressive menu presentation.",
+      "condition": "When selecting the M3 Expressive vertical menu variant.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/specs",
+          "section": "2c9367d3-e7b4-404a-942e-b8c90cef1b20",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "5f4233284938a408e6f8904ebad7e7d450e04395740d6ea639ceb59a7181dbc0",
+          "extractorVersion": 2,
+          "summary": "Curated explicit Vertical menus instruction: Use vertical menus when rounded corners, standard or vibrant color, additional selection states and submenu mo"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "vertical-menus-expressive-recommendation",
+      "statement": "M3 Expressive introduces vertical menus, which are recommended for new designs; baseline menus remain available in both M3 and M3 Expressive.",
+      "condition": "When selecting a menu variant.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/specs",
+          "section": "8a8d697a-cd74-44c2-b502-f7ce0704d44e",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "5f4233284938a408e6f8904ebad7e7d450e04395740d6ea639ceb59a7181dbc0",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Baseline variant rule: M3 Expressive introduces vertical menus, which are recommended for new designs; baseline menus remain availabl"
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "web-menu-density",
+      "statement": "On web only, density levels change item spacing; increasing density reduces top and bottom padding.",
+      "condition": "When offering menu density settings on web.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/guidelines",
+          "section": "b5862ba3-4f08-4b85-932b-6b805c7a2666",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "907d7a2c96e77ae93a1377feeb806656f4efb85dc1d8f56a3ca40c83f1b2e95d",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Density rule: On web only, density levels change item spacing; increasing density reduces top and bottom padding."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "when-a-menu-scrolls-show-a-persistent",
+      "statement": "When a menu scrolls, show a persistent scrollbar and do not use gaps; gaps in scrollable menus are explicitly unsupported.",
+      "condition": "When a menu’s contents exceed available height.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/guidelines",
+          "section": "f42850b1-b331-4376-aedf-98a52fe51bdf",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "907d7a2c96e77ae93a1377feeb806656f4efb85dc1d8f56a3ca40c83f1b2e95d",
+          "extractorVersion": 2,
+          "summary": "Curated from Scrolling: When a menu scrolls, show a persistent scrollbar and do not use gaps; gaps in scrollable menus are explicitly "
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "disabled-menu-item-focus-and-decoration-focus",
+      "statement": "Disabled menu items may receive focus but cannot be selected; dividers and gaps cannot receive focus.",
+      "condition": "For menu focus navigation.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/accessibility",
+          "section": "b496a9ab-e091-4eac-93c6-0fb93b478121",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "88820670851b7325f8eae58307a8cb156bd8ee286a5d4b54bc847e95718d20d9",
+          "extractorVersion": 2,
+          "summary": "Curated the Interactability rules for disabled items, dividers and gaps."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "menu-text-icons-have-decorative-accessibility-labels",
+      "statement": "When a menu item has both text and an icon, mark the icon’s accessibility label decorative to avoid duplicate screen-reader output.",
+      "condition": "For menu items with text and an icon.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/menus/accessibility",
+          "section": "e9cd430b-6117-47b1-9afa-0eb691db7273",
+          "capture": "snapshots/material-guidance/20261025T165623.143794417Z-721964750/capture.json",
+          "markdownSha256": "88820670851b7325f8eae58307a8cb156bd8ee286a5d4b54bc847e95718d20d9",
+          "extractorVersion": 2,
+          "summary": "Curated the explicit Labeling elements instruction for decorative icons."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

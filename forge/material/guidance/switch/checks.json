@@ -1,0 +1,607 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "switch",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/switch/overview",
+      "capture": "snapshots/material-guidance/20261025T165949.064734587Z-2086115799/capture.json",
+      "markdownSha256": "abec98e9177928f5a416482f30caf05e716a45e3222bf5b49787ffb900a5f011",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Switch",
+          "status": "no-requirements",
+          "notes": "Introductory definition; the usage requirements are covered by switch-use."
+        },
+        {
+          "id": "77317048-3f4a-4008-b5e5-8c44f2468954",
+          "title": "Availability & resources",
+          "status": "no-requirements",
+          "notes": "Implementation availability only."
+        },
+        {
+          "id": "636a1c1b-e077-4f0b-abd6-6758394c5986",
+          "title": "Differences from M2",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/switch/specs",
+      "capture": "snapshots/material-guidance/20261025T165949.064734587Z-2086115799/capture.json",
+      "markdownSha256": "f34ddcd5f7a568de0d6d25e44f397ae8120bb374557ce6acabe1e0dfff0d8d48",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Switch",
+          "status": "no-requirements",
+          "notes": "Repeated component definition and anatomy illustration only."
+        },
+        {
+          "id": "3708644e-b4d7-4237-bb0a-7afeeae4a9b0",
+          "title": "Tokens & specs",
+          "status": "no-requirements",
+          "notes": "Token browser reference only."
+        },
+        {
+          "id": "02d9b15f-584b-4354-86e4-3b025eb0da32",
+          "title": "Color",
+          "status": "unclear",
+          "notes": "Main switch color-role assignments appear only in an uninspected diagram; mappings cannot be confirmed."
+        },
+        {
+          "id": "b77ecd6d-482a-4c9c-a4aa-2c0388e3af1d",
+          "title": "Adjacent text label color",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "cc3c4e28-fca6-4d15-82d9-abf8c5375ba6",
+          "title": "States",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "a4d74dd1-731a-40b3-9516-6dacd407e3f7",
+          "title": "Measurements",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "cec32bde-7569-4af3-96bf-ccbc7f4cbba3",
+          "title": "Configurations",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/switch/guidelines",
+      "capture": "snapshots/material-guidance/20261025T165949.064734587Z-2086115799/capture.json",
+      "markdownSha256": "543eb16aa64fec4edfa3e090dda09801e61d27fd8f21c0e4f3aa85076cfaa2eb",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Switch",
+          "status": "no-requirements",
+          "notes": "Introductory description only."
+        },
+        {
+          "id": "4f51b236-583e-4caa-9ae6-c8079325ef6b",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "6add393e-e4e8-41b6-862b-5ebffb894f72",
+          "title": "Alternate selection controls",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "9f55e13e-1327-4edf-9b81-6fa97db45bdd",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "Parent heading; optional icon and label requirements are in child sections."
+        },
+        {
+          "id": "7e33ceea-6cdf-4542-8d50-4b75ca23d887",
+          "title": "Icon (optional)",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "d1b34a07-7faf-4f64-a150-a2489b4add42",
+          "title": "Label text",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "98a62cd9-d215-4fa0-a79d-72c1a29dcd73",
+          "title": "Placement",
+          "status": "no-requirements",
+          "notes": "Stacked settings layouts are described as common placement, not as a required arrangement."
+        },
+        {
+          "id": "002b2a0f-feb0-49a2-bdd4-a3029f9c83d8",
+          "title": "Behavior",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/switch/accessibility",
+      "capture": "snapshots/material-guidance/20261025T165949.064734587Z-2086115799/capture.json",
+      "markdownSha256": "9353dd339bff686aabc6b6172c564fff9fb20f350a6ba1dd0bd87c3e54142edc",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Switch",
+          "status": "no-requirements",
+          "notes": "Introductory description only."
+        },
+        {
+          "id": "df3ad2df-fe73-4b74-99cb-ad853a60f73f",
+          "title": "Use cases",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "c0e9fae1-48df-428b-b028-4f7be071ada3",
+          "title": "Interaction & style",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "f86a407f-386d-4d04-a080-975f52183c73",
+          "title": "Avoid applying density by default",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "987bf6da-ba07-4151-8843-9884f6a5e73e",
+          "title": "Initial focus",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "a729a1d7-d533-4f02-b090-d11d571d4cb1",
+          "title": "Keyboard navigation",
+          "status": "mapped",
+          "notes": ""
+        },
+        {
+          "id": "30faed8d-5ebe-42cc-87b7-16caba39f0be",
+          "title": "Labeling elements",
+          "status": "mapped",
+          "notes": ""
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "switch-m3-changes",
+      "statement": "M3 switches use updated color mappings that meet non-text contrast requirements and support dynamic color, have a taller and wider track, and may include an icon in the handle; the updated presentation improves accessibility.",
+      "condition": "When implementing M3 switches or migrating from M2.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/switch/overview",
+          "section": "636a1c1b-e077-4f0b-abd6-6758394c5986",
+          "capture": "snapshots/material-guidance/20261025T165949.064734587Z-2086115799/capture.json",
+          "markdownSha256": "abec98e9177928f5a416482f30caf05e716a45e3222bf5b49787ffb900a5f011",
+          "extractorVersion": 2,
+          "summary": "M2 comparison lists switch track, color, accessibility, and optional handle-icon changes."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "switch-label-colors",
+      "statement": "Use on-surface for the adjacent text label in all interaction states; supporting text may use on-surface-variant.",
+      "condition": "When styling text next to a switch.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/switch/specs",
+          "section": "b77ecd6d-482a-4c9c-a4aa-2c0388e3af1d",
+          "capture": "snapshots/material-guidance/20261025T165949.064734587Z-2086115799/capture.json",
+          "markdownSha256": "f34ddcd5f7a568de0d6d25e44f397ae8120bb374557ce6acabe1e0dfff0d8d48",
+          "extractorVersion": 2,
+          "summary": "Adjacent-label section specifies label and optional supporting-text color roles."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "switch-states",
+      "statement": "Represent enabled, hovered, focused, pressed, and disabled states.",
+      "condition": "For switch interaction states.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/switch/specs",
+          "section": "cc3c4e28-fca6-4d15-82d9-abf8c5375ba6",
+          "capture": "snapshots/material-guidance/20261025T165949.064734587Z-2086115799/capture.json",
+          "markdownSha256": "f34ddcd5f7a568de0d6d25e44f397ae8120bb374557ce6acabe1e0dfff0d8d48",
+          "extractorVersion": 2,
+          "summary": "State diagram caption lists five switch states."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "switch-measurements",
+      "statement": "Use a 52×32dp track with 2dp outline and full corners; 16dp unselected handle, 24dp selected or icon-bearing handle, and 28dp pressed handle; 40dp state layer and 48dp target. Selected and unselected icons are 16dp.",
+      "condition": "When sizing switches and their interaction target.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/switch/specs",
+          "section": "a4d74dd1-731a-40b3-9516-6dacd407e3f7",
+          "capture": "snapshots/material-guidance/20261025T165949.064734587Z-2086115799/capture.json",
+          "markdownSha256": "f34ddcd5f7a568de0d6d25e44f397ae8120bb374557ce6acabe1e0dfff0d8d48",
+          "extractorVersion": 2,
+          "summary": "Measurements table specifies track, handle, state-layer, target, and icon dimensions by state."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "switch-use",
+      "statement": "Use switches for standalone settings or options that immediately toggle one binary value on/off or true/false. The effect should take place immediately without saving. Use them for independently controlled list items, not mutually exclusive opposing options or actions requiring a separate save.",
+      "condition": "When choosing a switch for a setting or list.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/switch/guidelines",
+          "section": "4f51b236-583e-4caa-9ae6-c8079325ef6b",
+          "capture": "snapshots/material-guidance/20261025T165949.064734587Z-2086115799/capture.json",
+          "markdownSha256": "543eb16aa64fec4edfa3e090dda09801e61d27fd8f21c0e4f3aa85076cfaa2eb",
+          "extractorVersion": 2,
+          "summary": "Usage guidance defines binary immediate settings and distinguishes switch from opposing choices and save-based selection."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "switch-versus-selection-controls",
+      "statement": "Use checkboxes for multiple related list selections, radio buttons for one selection from a list, and switches for standalone or verbose settings. Use a connected button group for opposing options and a button for a call to action.",
+      "condition": "When choosing among switch, checkbox, radio button, and button-group controls.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/switch/guidelines",
+          "section": "6add393e-e4e8-41b6-862b-5ebffb894f72",
+          "capture": "snapshots/material-guidance/20261025T165949.064734587Z-2086115799/capture.json",
+          "markdownSha256": "543eb16aa64fec4edfa3e090dda09801e61d27fd8f21c0e4f3aa85076cfaa2eb",
+          "extractorVersion": 2,
+          "summary": "Alternate-control guidance maps selection cardinality and action type to components."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "switch-icon-meaning",
+      "statement": "A handle icon is optional and should clearly and unambiguously communicate the on/off selection. Avoid ambiguous or non-binary icons.",
+      "condition": "When adding an icon to a switch handle.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/switch/guidelines",
+          "section": "7e33ceea-6cdf-4542-8d50-4b75ca23d887",
+          "capture": "snapshots/material-guidance/20261025T165949.064734587Z-2086115799/capture.json",
+          "markdownSha256": "543eb16aa64fec4edfa3e090dda09801e61d27fd8f21c0e4f3aa85076cfaa2eb",
+          "extractorVersion": 2,
+          "summary": "Icon guidance specifies selection meaning and warns against ambiguous imagery."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "switch-label-text",
+      "statement": "Always pair a switch with inline text describing what it controls when on; keep the label short and direct. Do not put text inside the switch because it becomes too small to be accessible; use a suitable icon instead.",
+      "condition": "When labeling a switch.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/switch/guidelines",
+          "section": "d1b34a07-7faf-4f64-a150-a2489b4add42",
+          "capture": "snapshots/material-guidance/20261025T165949.064734587Z-2086115799/capture.json",
+          "markdownSha256": "543eb16aa64fec4edfa3e090dda09801e61d27fd8f21c0e4f3aa85076cfaa2eb",
+          "extractorVersion": 2,
+          "summary": "Label guidance requires an external inline label and prohibits small text inside the control."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "switch-toggle-behavior",
+      "statement": "On interaction, slide the handle to the other end of the track and apply the corresponding action immediately; change handle size to indicate the on state and interaction.",
+      "condition": "When a switch changes state.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/switch/guidelines",
+          "section": "002b2a0f-feb0-49a2-bdd4-a3029f9c83d8",
+          "capture": "snapshots/material-guidance/20261025T165949.064734587Z-2086115799/capture.json",
+          "markdownSha256": "543eb16aa64fec4edfa3e090dda09801e61d27fd8f21c0e4f3aa85076cfaa2eb",
+          "extractorVersion": 2,
+          "summary": "Behavior guidance describes sliding, immediate action, and handle-size feedback."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "switch-assistive-tasks",
+      "statement": "Assistive-technology users must be able to navigate to and toggle the switch with keyboard or switch input and receive feedback appropriate to the input type.",
+      "condition": "For accessible switches.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/switch/accessibility",
+          "section": "df3ad2df-fe73-4b74-99cb-ad853a60f73f",
+          "capture": "snapshots/material-guidance/20261025T165949.064734587Z-2086115799/capture.json",
+          "markdownSha256": "9353dd339bff686aabc6b6172c564fff9fb20f350a6ba1dd0bd87c3e54142edc",
+          "extractorVersion": 2,
+          "summary": "Use cases list navigation, toggling, and input-appropriate feedback."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "switch-interaction-feedback",
+      "statement": "On touch tap/drag and cursor click, grow the handle; on hover in either state, grow the hover area and change the cursor to show interactivity.",
+      "condition": "When a switch is interacted with by touch or cursor.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/switch/accessibility",
+          "section": "c0e9fae1-48df-428b-b028-4f7be071ada3",
+          "capture": "snapshots/material-guidance/20261025T165949.064734587Z-2086115799/capture.json",
+          "markdownSha256": "9353dd339bff686aabc6b6172c564fff9fb20f350a6ba1dd0bd87c3e54142edc",
+          "extractorVersion": 2,
+          "summary": "Interaction guidance specifies handle and hover-area growth and cursor feedback."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "switch-density-target",
+      "statement": "Do not apply density by default because it can reduce targets below 48×48 CSS pixels. If offering density control, keep its own targets at least 48×48 CSS pixels so people can change it back.",
+      "condition": "When offering compact switch layouts or density settings.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/switch/accessibility",
+          "section": "f86a407f-386d-4d04-a080-975f52183c73",
+          "capture": "snapshots/material-guidance/20261025T165949.064734587Z-2086115799/capture.json",
+          "markdownSha256": "9353dd339bff686aabc6b6172c564fff9fb20f350a6ba1dd0bd87c3e54142edc",
+          "extractorVersion": 2,
+          "summary": "Density guidance sets default behavior and minimum target size for reversal controls."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "switch-initial-focus",
+      "statement": "Place initial focus directly on the switch handle.",
+      "condition": "When a switch receives initial focus.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/switch/accessibility",
+          "section": "987bf6da-ba07-4151-8843-9884f6a5e73e",
+          "capture": "snapshots/material-guidance/20261025T165949.064734587Z-2086115799/capture.json",
+          "markdownSha256": "9353dd339bff686aabc6b6172c564fff9fb20f350a6ba1dd0bd87c3e54142edc",
+          "extractorVersion": 2,
+          "summary": "Initial-focus section identifies the handle as the primary interactive element."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "switch-keyboard",
+      "statement": "Tab focuses the switch handle; Space or Enter toggles it on or off.",
+      "condition": "When keyboard-operating a switch.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/switch/accessibility",
+          "section": "a729a1d7-d533-4f02-b090-d11d571d4cb1",
+          "capture": "snapshots/material-guidance/20261025T165949.064734587Z-2086115799/capture.json",
+          "markdownSha256": "9353dd339bff686aabc6b6172c564fff9fb20f350a6ba1dd0bd87c3e54142edc",
+          "extractorVersion": 2,
+          "summary": "Keyboard table maps Tab and activation keys."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "switch-accessible-label",
+      "statement": "Use adjacent label text as the switch accessibility label when it clearly describes the function; make it more descriptive when the visible wording is ambiguous. The screen reader announces the UI text followed by the switch role.",
+      "condition": "When exposing a switch to assistive technology.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/switch/accessibility",
+          "section": "30faed8d-5ebe-42cc-87b7-16caba39f0be",
+          "capture": "snapshots/material-guidance/20261025T165949.064734587Z-2086115799/capture.json",
+          "markdownSha256": "9353dd339bff686aabc6b6172c564fff9fb20f350a6ba1dd0bd87c3e54142edc",
+          "extractorVersion": 2,
+          "summary": "Labeling guidance specifies adjacent text and expanded accessibility wording when needed."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "switch-icon-configurations",
+      "statement": "Support switches without icons, with an icon in the selected state only, and with icons in both selected and unselected states.",
+      "condition": "When choosing switch-handle icon configuration.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/switch/specs",
+          "section": "cec32bde-7569-4af3-96bf-ccbc7f4cbba3",
+          "capture": "snapshots/material-guidance/20261025T165949.064734587Z-2086115799/capture.json",
+          "markdownSha256": "f34ddcd5f7a568de0d6d25e44f397ae8120bb374557ce6acabe1e0dfff0d8d48",
+          "extractorVersion": 2,
+          "summary": "Configuration section lists no icons, selected-only icon, and icons in both states."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

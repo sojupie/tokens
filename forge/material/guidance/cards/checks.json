@@ -1,0 +1,1327 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "cards",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/cards/overview",
+      "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+      "markdownSha256": "9c7f8c1053ddade07d7b7092ce5ff8aa5974ab99d36e86aca19ed22c6cc9cdb6",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Cards",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "6d8b6af5-4872-4874-8372-f8ae209c89ce",
+          "title": "Availability & resources",
+          "status": "no-requirements",
+          "notes": "Resource/token or state/variant reference material with no additional actionable instruction; layout and interaction requirements are mapped in the relevant guideline checks."
+        },
+        {
+          "id": "b98cc73e-2a5c-49ed-b778-41194ae0cbfb",
+          "title": "Differences from M2",
+          "status": "no-requirements",
+          "notes": "No additional independent actionable requirement is stated here beyond the checks linked to this or its specific child sections."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/cards/specs",
+      "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+      "markdownSha256": "9c404ddfef3113edc56e0fbf0e6de4b072d9f65fd86dd89af59e775b54c96e81",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Cards",
+          "status": "no-requirements",
+          "notes": "Repeated title, parent heading, or descriptive inventory; actionable child-section requirements are represented by the linked checks."
+        },
+        {
+          "id": "74da22eb-d778-4821-9ef4-e165402a77f7",
+          "title": "Tokens & specs",
+          "status": "no-requirements",
+          "notes": "Resource/token or state/variant reference material with no additional actionable instruction; layout and interaction requirements are mapped in the relevant guideline checks."
+        },
+        {
+          "id": "a012d40d-7a5c-4b07-8740-491dec79d58b",
+          "title": "Elevated card",
+          "status": "no-requirements",
+          "notes": "Resource/token or state/variant reference material with no additional actionable instruction; layout and interaction requirements are mapped in the relevant guideline checks."
+        },
+        {
+          "id": "e5e74f2e-9243-4324-bf03-09ecd0d3823a",
+          "title": "Elevated card color",
+          "status": "no-requirements",
+          "notes": "Resource/token or state/variant reference material with no additional actionable instruction; layout and interaction requirements are mapped in the relevant guideline checks."
+        },
+        {
+          "id": "6d8a051c-4024-49b0-90b5-85391626c93c",
+          "title": "Elevated card states",
+          "status": "no-requirements",
+          "notes": "Resource/token or state/variant reference material with no additional actionable instruction; layout and interaction requirements are mapped in the relevant guideline checks."
+        },
+        {
+          "id": "0f55bf62-edf2-4619-b00d-b9ed462f2c5a",
+          "title": "Filled card",
+          "status": "no-requirements",
+          "notes": "Resource/token or state/variant reference material with no additional actionable instruction; layout and interaction requirements are mapped in the relevant guideline checks."
+        },
+        {
+          "id": "84e263a9-8f73-43aa-8f43-96bf0db8f6a0",
+          "title": "Filled card color",
+          "status": "no-requirements",
+          "notes": "Resource/token or state/variant reference material with no additional actionable instruction; layout and interaction requirements are mapped in the relevant guideline checks."
+        },
+        {
+          "id": "5cdfc5b6-8304-44ed-9c27-d9af6b898d48",
+          "title": "Filled card states",
+          "status": "no-requirements",
+          "notes": "Resource/token or state/variant reference material with no additional actionable instruction; layout and interaction requirements are mapped in the relevant guideline checks."
+        },
+        {
+          "id": "9ad208b3-3d37-475c-a0eb-68cf845718f8",
+          "title": "Outlined card",
+          "status": "no-requirements",
+          "notes": "Resource/token or state/variant reference material with no additional actionable instruction; layout and interaction requirements are mapped in the relevant guideline checks."
+        },
+        {
+          "id": "9776d7d8-c583-4824-bb77-39cef535548d",
+          "title": "Outlined card color",
+          "status": "no-requirements",
+          "notes": "Resource/token or state/variant reference material with no additional actionable instruction; layout and interaction requirements are mapped in the relevant guideline checks."
+        },
+        {
+          "id": "f5a5ca66-d8dc-4f2e-92c6-d5d9d360f2a8",
+          "title": "Outlined card states",
+          "status": "no-requirements",
+          "notes": "Resource/token or state/variant reference material with no additional actionable instruction; layout and interaction requirements are mapped in the relevant guideline checks."
+        },
+        {
+          "id": "038b4a49-3a7f-4fce-be8c-89c1155b4c82",
+          "title": "Measurements",
+          "status": "unclear",
+          "notes": "Exact card dimensions are shown only in an image diagram that has not been inspected; values remain unresolved."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/cards/guidelines",
+      "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+      "markdownSha256": "6f1a7d81e97a11a59d8f7e83fc963e3e4f27af3d95182aab319da208c72c01f6",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Cards",
+          "status": "no-requirements",
+          "notes": "Repeated title, parent heading, or descriptive inventory; actionable child-section requirements are represented by the linked checks."
+        },
+        {
+          "id": "ac616f9b-5f00-4ec2-a8c8-0bd80774d4e1",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "dbcb6275-bbaf-4e06-a867-f4aa632c1141",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "Repeated title, parent heading, or descriptive inventory; actionable child-section requirements are represented by the linked checks."
+        },
+        {
+          "id": "9589ae24-8f78-425b-aece-e5413ff7d084",
+          "title": "Container",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "1a70a07f-8b3f-4f7c-8bc0-e89a58b8f528",
+          "title": "Content blocks",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "8a1d2b9e-2cbe-408b-ba60-c32e8c612e3e",
+          "title": "Dividers",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "47da429c-437e-45c4-bb6e-582434861fd5",
+          "title": "Media",
+          "status": "no-requirements",
+          "notes": "Repeated title, parent heading, or descriptive inventory; actionable child-section requirements are represented by the linked checks."
+        },
+        {
+          "id": "001f3b36-abe2-42dd-90cd-958a465377fb",
+          "title": "Text",
+          "status": "no-requirements",
+          "notes": "Repeated title, parent heading, or descriptive inventory; actionable child-section requirements are represented by the linked checks."
+        },
+        {
+          "id": "9865ef0b-3675-42a7-8955-21129987c37d",
+          "title": "Layering text, icons, and images",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "9e7f5cdb-a98a-46d6-b5bd-2eb67b24c552",
+          "title": "Actions",
+          "status": "no-requirements",
+          "notes": "Repeated title, parent heading, or descriptive inventory; actionable child-section requirements are represented by the linked checks."
+        },
+        {
+          "id": "9e7f5cdb-a98a-46d6-b5bd-2eb67b24c552--primary-action-area",
+          "title": "Primary action area",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "580b3156-4928-45cc-953e-dec3b65a6323",
+          "title": "Cards in a collection",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "11de4928-f624-45e2-bd91-2a6a5931820d",
+          "title": "Filtering and sorting",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "696b3d01-209c-43fd-8eed-4403e02e7164",
+          "title": "Grid",
+          "status": "no-requirements",
+          "notes": "Repeated title, parent heading, or descriptive inventory; actionable child-section requirements are represented by the linked checks."
+        },
+        {
+          "id": "5608bee0-e976-43c3-843d-382ace2dd980",
+          "title": "Vertical list",
+          "status": "no-requirements",
+          "notes": "Repeated title, parent heading, or descriptive inventory; actionable child-section requirements are represented by the linked checks."
+        },
+        {
+          "id": "a0bd392c-8b3b-4b8a-9502-fbb813ad129a",
+          "title": "Carousel",
+          "status": "no-requirements",
+          "notes": "Repeated title, parent heading, or descriptive inventory; actionable child-section requirements are represented by the linked checks."
+        },
+        {
+          "id": "99e8d17d-5bde-4bb9-8784-0ca403325b10",
+          "title": "Adaptive design",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "f6a5cb7b-b301-425a-a04f-229acc3bb22a",
+          "title": "Ergonomics",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "1cf14d2a-267c-4fba-bf4b-82c97307436d",
+          "title": "Visual presentation",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "549e5db1-6113-4b7d-9cbc-c2ee8acbc4d4",
+          "title": "Column-based layouts",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "9695030a-f811-4eae-835c-d85c51eff42a",
+          "title": "Small screens",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "7cf38053-19d2-4480-8ba9-57a2cc716784",
+          "title": "Behavior",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "bf5047a9-e858-435b-812c-7bcb0ea59e72",
+          "title": "Expanding",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "63dde236-443b-42d4-aba4-50e445c6fe1e",
+          "title": "Navigation",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "44fe87b2-607b-4f6c-a6a0-ea5d5d53f963",
+          "title": "Gestures",
+          "status": "no-requirements",
+          "notes": "Repeated title, parent heading, or descriptive inventory; actionable child-section requirements are represented by the linked checks."
+        },
+        {
+          "id": "2809a722-f32f-4379-adeb-278eb9ab43c8",
+          "title": "Swipe",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "eac426eb-e46e-4bc5-b1ca-b0c320f29199",
+          "title": "Pick up & move",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "9fddf2e3-3f18-42e4-b785-f26cf3caf4e8",
+          "title": "Scrolling",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "ed3e38df-67c2-4eb3-a78d-43fcd38d1823",
+          "title": "Scrolling on desktop",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/cards/accessibility",
+      "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+      "markdownSha256": "6b69cf2757c1ccac8f997c4f237eb680526968d4ed8feff8fdbad3165ea8d6d9",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Cards",
+          "status": "no-requirements",
+          "notes": "Repeated title, parent heading, or descriptive inventory; actionable child-section requirements are represented by the linked checks."
+        },
+        {
+          "id": "0e4390a4-06ed-4a1d-bb8a-4812559e418c",
+          "title": "Use cases",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "ce764d54-6b59-42db-807f-b3cb370eecdb",
+          "title": "Interaction & style",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "80cf8ab2-586d-4c0f-af50-580ffbcbdf0a",
+          "title": "Touch",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "26b009bd-1ae2-4409-add7-6059827091ee",
+          "title": "Dragging and dismissing",
+          "status": "mapped",
+          "notes": "Single-pointer alternative, concrete reorder/delete menu option and conditional overlay behavior are represented by draggable-card-alternative, card-menu-reorder-delete-alternative, and card-drag-menu-overlay."
+        },
+        {
+          "id": "77f3c9d4-e5e4-4c82-82b4-162a8015d1ab",
+          "title": "Cursor",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "0a347e5e-663a-48ac-840a-c23ade64d775",
+          "title": "Keyboard",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "e29b1799-d235-4d49-8c35-941624876812",
+          "title": "Focus",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "f8d3d4b8-222b-49d2-b044-2d0126216cdb",
+          "title": "Keyboard navigation",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "04bf5e71-89ba-4485-8c0c-7f2c09de7bc2",
+          "title": "Labeling elements",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "single-subject",
+      "statement": "Use a card to group related content and actions about one subject; let its dimensions follow its contents.",
+      "condition": "When presenting content in a card.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/overview",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "9c7f8c1053ddade07d7b7092ce5ff8aa5974ab99d36e86aca19ed22c6cc9cdb6",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Cards guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "card-interactivity",
+      "statement": "Make a card directly actionable only when its main destination/action is clear; otherwise keep the card as a container and make its individual links or buttons actionable.",
+      "condition": "When deciding card interactivity.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/guidelines",
+          "section": "ac616f9b-5f00-4ec2-a8c8-0bd80774d4e1",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6f1a7d81e97a11a59d8f7e83fc963e3e4f27af3d95182aab319da208c72c01f6",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Usage guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "card-action-limits",
+      "statement": "Avoid making multiple independent actions on one card compete with the card’s primary action.",
+      "condition": "When a card contains more than one action.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/guidelines",
+          "section": "ac616f9b-5f00-4ec2-a8c8-0bd80774d4e1",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6f1a7d81e97a11a59d8f7e83fc963e3e4f27af3d95182aab319da208c72c01f6",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Usage guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "card-variant-separation",
+      "statement": "Use elevation only when separation from the background is needed; use filled or outlined variants to establish other card treatments.",
+      "condition": "When choosing card styling.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/guidelines",
+          "section": "9589ae24-8f78-425b-aece-e5413ff7d084",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6f1a7d81e97a11a59d8f7e83fc963e3e4f27af3d95182aab319da208c72c01f6",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Container guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "card-order-stable",
+      "statement": "Keep content and actions in the same semantic order as card layouts adapt to larger screens.",
+      "condition": "Across responsive card layouts.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/guidelines",
+          "section": "99e8d17d-5bde-4bb9-8784-0ca403325b10",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6f1a7d81e97a11a59d8f7e83fc963e3e4f27af3d95182aab319da208c72c01f6",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Adaptive design guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "draggable-card-alternative",
+      "statement": "Provide a single-pointer alternative for dragging or swiping a card, such as choosing the same action from a menu.",
+      "condition": "When cards can be dragged or dismissed.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/guidelines",
+          "section": "7cf38053-19d2-4480-8ba9-57a2cc716784",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6f1a7d81e97a11a59d8f7e83fc963e3e4f27af3d95182aab319da208c72c01f6",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Behavior guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "card-focusability",
+      "statement": "Make directly actionable cards tab stops; for non-actionable cards, do not focus the container but make each actionable child a tab stop.",
+      "condition": "For keyboard navigation.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/accessibility",
+          "section": "e29b1799-d235-4d49-8c35-941624876812",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6b69cf2757c1ccac8f997c4f237eb680526968d4ed8feff8fdbad3165ea8d6d9",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Focus guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "card-semantics",
+      "statement": "Give actionable cards a button or link role according to their behavior; non-actionable cards need no role, and hide purely decorative images from screen readers.",
+      "condition": "For accessibility semantics.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/accessibility",
+          "section": "04bf5e71-89ba-4485-8c0c-7f2c09de7bc2",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6b69cf2757c1ccac8f997c4f237eb680526968d4ed8feff8fdbad3165ea8d6d9",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Labeling elements guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "card-use-and-variants",
+      "statement": "Use a card for scannable, related content and actions on one topic; choose elevated, filled, or outlined by visual style because all three support the same legibility and functionality.",
+      "condition": "When deciding whether and how to use a card.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/guidelines",
+          "section": "ac616f9b-5f00-4ec2-a8c8-0bd80774d4e1",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6f1a7d81e97a11a59d8f7e83fc963e3e4f27af3d95182aab319da208c72c01f6",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Usage instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "card-layout-avoid-overuse",
+      "statement": "Use grids, vertical lists, or carousels for card collections, but prefer open spacing, headlines, or dividers when those create a simpler hierarchy than cards.",
+      "condition": "When organizing related information.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/guidelines",
+          "section": "ac616f9b-5f00-4ec2-a8c8-0bd80774d4e1",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6f1a7d81e97a11a59d8f7e83fc963e3e4f27af3d95182aab319da208c72c01f6",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Usage instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "card-required-container",
+      "statement": "The container is the only required card element; size it to its contents and express elevation through the container.",
+      "condition": "For any card.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/guidelines",
+          "section": "9589ae24-8f78-425b-aece-e5413ff7d084",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6f1a7d81e97a11a59d8f7e83fc963e3e4f27af3d95182aab319da208c72c01f6",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Container instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "card-content-hierarchy",
+      "statement": "Group card content into blocks and use visual emphasis to communicate each element’s importance.",
+      "condition": "When arranging card content.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/guidelines",
+          "section": "1a70a07f-8b3f-4f7c-8bc0-e89a58b8f528",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6f1a7d81e97a11a59d8f7e83fc963e3e4f27af3d95182aab319da208c72c01f6",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Content blocks instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "card-divider-purpose",
+      "statement": "Use full-width dividers for content that expands and inset dividers for related content within a card.",
+      "condition": "When a card uses dividers.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/guidelines",
+          "section": "8a1d2b9e-2cbe-408b-ba60-c32e8c612e3e",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6f1a7d81e97a11a59d8f7e83fc963e3e4f27af3d95182aab319da208c72c01f6",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Dividers instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "card-overlay-contrast",
+      "statement": "Avoid placing text or icons over images; if necessary, ensure accessible contrast and add a translucent scrim or bounding shape beneath the foreground content.",
+      "condition": "When text or icons overlay a card image.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/guidelines",
+          "section": "9865ef0b-3675-42a7-8955-21129987c37d",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6f1a7d81e97a11a59d8f7e83fc963e3e4f27af3d95182aab319da208c72c01f6",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Layering text, icons, and images instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "card-primary-action-area",
+      "statement": "A card may act as one large touch target that opens expanded detail; other card content may include buttons, icon buttons, selection controls, linked text, and an overflow menu.",
+      "condition": "When defining a card’s actions.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/guidelines",
+          "section": "9e7f5cdb-a98a-46d6-b5bd-2eb67b24c552--primary-action-area",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6f1a7d81e97a11a59d8f7e83fc963e3e4f27af3d95182aab319da208c72c01f6",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Primary action area instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "card-overflow-menu-position",
+      "statement": "Place a card overflow menu in the upper-right or lower-right corner.",
+      "condition": "When a card has an overflow menu.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/guidelines",
+          "section": "9e7f5cdb-a98a-46d6-b5bd-2eb67b24c552--primary-action-area",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6f1a7d81e97a11a59d8f7e83fc963e3e4f27af3d95182aab319da208c72c01f6",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Primary action area instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "card-collection-coplanar",
+      "statement": "Cards in a collection share the same resting elevation by default; elevation changes when a card is picked up or dragged.",
+      "condition": "For cards displayed in a collection.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/guidelines",
+          "section": "580b3156-4928-45cc-953e-dec3b65a6323",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6f1a7d81e97a11a59d8f7e83fc963e3e4f27af3d95182aab319da208c72c01f6",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Cards in a collection instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "card-collection-filtering",
+      "statement": "Apply collection filters to every card and place filter or sort controls outside the card collection.",
+      "condition": "When a card collection can be filtered or sorted.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/guidelines",
+          "section": "11de4928-f624-45e2-bd91-2a6a5931820d",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6f1a7d81e97a11a59d8f7e83fc963e3e4f27af3d95182aab319da208c72c01f6",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Filtering and sorting instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "card-large-screen-ergonomics",
+      "statement": "Adapt card orientation and content space to large-screen ergonomics, such as changing a compact horizontal card into a larger vertical card with more room for images and text.",
+      "condition": "At larger breakpoints.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/guidelines",
+          "section": "f6a5cb7b-b301-425a-a04f-229acc3bb22a",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6f1a7d81e97a11a59d8f7e83fc963e3e4f27af3d95182aab319da208c72c01f6",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Ergonomics instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "card-content-region-spacing",
+      "statement": "Use spacing to adjust content-focused cards so they fill the screen region suited to the device breakpoint.",
+      "condition": "When adapting card presentation.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/guidelines",
+          "section": "1cf14d2a-267c-4fba-bf4b-82c97307436d",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6f1a7d81e97a11a59d8f7e83fc963e3e4f27af3d95182aab319da208c72c01f6",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Visual presentation instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "card-columns-large-screen",
+      "statement": "On compact mobile layouts, cards may fill screen width; on expanded screens use multiple columns and organize related cards in rows or carousels rather than stretching UI across the screen.",
+      "condition": "When choosing card layouts across breakpoints.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/guidelines",
+          "section": "549e5db1-6113-4b7d-9cbc-c2ee8acbc4d4",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6f1a7d81e97a11a59d8f7e83fc963e3e4f27af3d95182aab319da208c72c01f6",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Column-based layouts instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "card-small-screen-list-option",
+      "statement": "At compact breakpoints, consider replacing cards with compact lists while retaining controls, actions, and other component-specific elements.",
+      "condition": "On small screens.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/guidelines",
+          "section": "9695030a-f811-4eae-835c-d85c51eff42a",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6f1a7d81e97a11a59d8f7e83fc963e3e4f27af3d95182aab319da208c72c01f6",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Small screens instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "card-expand-for-details",
+      "statement": "Use container-transform expansion only for expressive hero moments; reveal additional information by expanding the card rather than scrolling within it.",
+      "condition": "When card content requires more space.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/guidelines",
+          "section": "bf5047a9-e858-435b-812c-7bcb0ea59e72",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6f1a7d81e97a11a59d8f7e83fc963e3e4f27af3d95182aab319da208c72c01f6",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Expanding instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "card-navigation-transition",
+      "statement": "Cards may use a forward/backward transition to navigate between consecutive levels of screen hierarchy.",
+      "condition": "When a card navigates to a related detail screen.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/guidelines",
+          "section": "63dde236-443b-42d4-aba4-50e445c6fe1e",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6f1a7d81e97a11a59d8f7e83fc963e3e4f27af3d95182aab319da208c72c01f6",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Navigation instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "card-swipe-single-action",
+      "statement": "A swipe may act on one card at a time anywhere on that card, but assign only one swipe action and do not include swipeable content such as an image carousel or pagination.",
+      "condition": "When swipe gestures are supported on cards.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/guidelines",
+          "section": "2809a722-f32f-4379-adeb-278eb9ab43c8",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6f1a7d81e97a11a59d8f7e83fc963e3e4f27af3d95182aab319da208c72c01f6",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Swipe instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "card-reorder-elevation-layer",
+      "statement": "When a card is picked up to reorder it, raise its elevation and display it above all elements except app bars and navigation; do not push other elements aside.",
+      "condition": "When reordering cards.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/guidelines",
+          "section": "eac426eb-e46e-4bc5-b1ca-b0c320f29199",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6f1a7d81e97a11a59d8f7e83fc963e3e4f27af3d95182aab319da208c72c01f6",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Pick up & move instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "card-mobile-expand-scroll",
+      "statement": "On mobile, do not scroll content inside a card; truncate content beyond the maximum height and reveal it by expanding the card, which may then scroll within the screen.",
+      "condition": "On mobile when card content exceeds its maximum height.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/guidelines",
+          "section": "9fddf2e3-3f18-42e4-b785-f26cf3caf4e8",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6f1a7d81e97a11a59d8f7e83fc963e3e4f27af3d95182aab319da208c72c01f6",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Scrolling instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "card-desktop-inner-scroll",
+      "statement": "On desktop, card content may expand and scroll within the card.",
+      "condition": "On desktop when card content exceeds its initial height.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/guidelines",
+          "section": "ed3e38df-67c2-4eb3-a78d-43fcd38d1823",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6f1a7d81e97a11a59d8f7e83fc963e3e4f27af3d95182aab319da208c72c01f6",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Scrolling on desktop instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "card-assistive-outcome",
+      "statement": "Allow assistive technology users to reach both a card and its contents, and provide input-appropriate feedback.",
+      "condition": "For cards and their interactive contents.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/accessibility",
+          "section": "0e4390a4-06ed-4a1d-bb8a-4812559e418c",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6b69cf2757c1ccac8f997c4f237eb680526968d4ed8feff8fdbad3165ea8d6d9",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Use cases instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "card-no-nested-action",
+      "statement": "Make a card either a directly actionable surface with no buttons or links inside, or a non-actionable container for those actions; do not stack actions on an actionable surface.",
+      "condition": "When a card includes interactive elements.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/accessibility",
+          "section": "ce764d54-6b59-42db-807f-b3cb370eecdb",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6b69cf2757c1ccac8f997c4f237eb680526968d4ed8feff8fdbad3165ea8d6d9",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Interaction & style instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "card-touch-feedback",
+      "statement": "Show a touch ripple across a directly actionable card; non-actionable cards do not ripple.",
+      "condition": "When a card is tapped.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/accessibility",
+          "section": "80cf8ab2-586d-4c0f-af50-580ffbcbdf0a",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6b69cf2757c1ccac8f997c4f237eb680526968d4ed8feff8fdbad3165ea8d6d9",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Touch instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "card-pointer-feedback",
+      "statement": "Show a hover cue and click ripple on directly actionable cards; non-actionable cards have no hover state.",
+      "condition": "For pointer interaction.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/accessibility",
+          "section": "77f3c9d4-e5e4-4c82-82b4-162a8015d1ab",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6b69cf2757c1ccac8f997c4f237eb680526968d4ed8feff8fdbad3165ea8d6d9",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Cursor instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "card-keyboard-feedback",
+      "statement": "Show a focus indicator on actionable elements; Space or Enter activates a focused card or element, and menu items support arrow navigation, Space/Enter selection, and Tab exit.",
+      "condition": "For keyboard interaction.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/accessibility",
+          "section": "0a347e5e-663a-48ac-840a-c23ade64d775",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6b69cf2757c1ccac8f997c4f237eb680526968d4ed8feff8fdbad3165ea8d6d9",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Keyboard instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "card-tab-stop-order",
+      "statement": "Directly actionable cards are tab stops; non-actionable card containers are not, but every actionable child is a tab stop before focus moves to the next card.",
+      "condition": "For keyboard navigation.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/accessibility",
+          "section": "e29b1799-d235-4d49-8c35-941624876812",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6b69cf2757c1ccac8f997c4f237eb680526968d4ed8feff8fdbad3165ea8d6d9",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Focus instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "card-keyboard-actions",
+      "statement": "Tab moves to the next actionable element, or to the next card when cards themselves are actionable; Space or Enter confirms the focused action.",
+      "condition": "For card collections.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/accessibility",
+          "section": "f8d3d4b8-222b-49d2-b044-2d0126216cdb",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6b69cf2757c1ccac8f997c4f237eb680526968d4ed8feff8fdbad3165ea8d6d9",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Keyboard navigation instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "card-menu-reorder-delete-alternative",
+      "statement": "Let a user tap or press and hold a draggable card to open a menu that can change its position in the list; the menu may also offer card deletion.",
+      "condition": "When a card supports dragging or swiping.",
+      "basis": "explicit",
+      "notes": "The source gives tapping or press-and-hold as a concrete single-pointer route to reorder and notes deletion as an optional menu action.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/accessibility",
+          "section": "26b009bd-1ae2-4409-add7-6059827091ee",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6b69cf2757c1ccac8f997c4f237eb680526968d4ed8feff8fdbad3165ea8d6d9",
+          "extractorVersion": 2,
+          "summary": "The source gives tapping or press-and-hold as a concrete single-pointer route to reorder and notes deletion as an optional menu action."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "card-drag-menu-overlay",
+      "statement": "Avoid placing the action menu over a card in its draggable state; if it must overlay the card, ensure the menu interaction can be completed and does not cover the card.",
+      "condition": "When exposing single-pointer actions for a draggable card.",
+      "basis": "explicit",
+      "notes": "Preserves the recommendation against overlay placement and its conditional usability exception.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/cards/accessibility",
+          "section": "26b009bd-1ae2-4409-add7-6059827091ee",
+          "capture": "snapshots/material-guidance/20261025T165233.562688188Z-1559396906/capture.json",
+          "markdownSha256": "6b69cf2757c1ccac8f997c4f237eb680526968d4ed8feff8fdbad3165ea8d6d9",
+          "extractorVersion": 2,
+          "summary": "Preserves the recommendation against overlay placement and its conditional usability exception."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

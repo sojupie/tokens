@@ -1,0 +1,1475 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "date-pickers",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/date-pickers/overview",
+      "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+      "markdownSha256": "2c6be9610f0604df3831b9a121ccbf32e1f70e4520820a5268af83b6f4b75c4c",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Date pickers",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "ffaf3f25-2194-4936-a281-1d6aebf345f1",
+          "title": "Availability & resources",
+          "status": "no-requirements",
+          "notes": "Resource/token or color mapping, configuration/state inventory, anatomy heading, or empty keyboard table; actionable selection and accessibility guidance is curated in the guideline and accessibility checks."
+        },
+        {
+          "id": "0e162323-24e9-4fef-9dd7-9e86dfc1f9bd",
+          "title": "Differences from M2",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/date-pickers/specs",
+      "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+      "markdownSha256": "f6f302f0ac2d2efcb054bdf502796c248d0c8f634dafa846ceb35d0765af518b",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Date pickers",
+          "status": "no-requirements",
+          "notes": "Repeated component heading or descriptive anatomy inventory; actionable variant behavior is captured in the corresponding specific sections."
+        },
+        {
+          "id": "56f7c493-e012-4528-8c21-c952607ebed4",
+          "title": "Tokens & specs",
+          "status": "no-requirements",
+          "notes": "Resource/token or color mapping, configuration/state inventory, anatomy heading, or empty keyboard table; actionable selection and accessibility guidance is curated in the guideline and accessibility checks."
+        },
+        {
+          "id": "c068df23-6801-4071-a485-a2fc1d0a337f",
+          "title": "Docked date picker",
+          "status": "no-requirements",
+          "notes": "Repeated component heading or descriptive anatomy inventory; actionable variant behavior is captured in the corresponding specific sections."
+        },
+        {
+          "id": "e85d93da-1a4f-4750-b1bd-03e6c62d2bca",
+          "title": "Docked date picker color",
+          "status": "no-requirements",
+          "notes": "Resource/token or color mapping, configuration/state inventory, anatomy heading, or empty keyboard table; actionable selection and accessibility guidance is curated in the guideline and accessibility checks."
+        },
+        {
+          "id": "c16c142b-4706-47f3-9400-3cde654b9aa8",
+          "title": "Docked date picker measurements",
+          "status": "unclear",
+          "notes": "Exact picker dimensions appear only in image diagrams that have not been inspected; values remain unresolved."
+        },
+        {
+          "id": "29045033-4fcc-4eff-aa2b-916e2b27328c",
+          "title": "Docked date picker configurations",
+          "status": "no-requirements",
+          "notes": "Resource/token or color mapping, configuration/state inventory, anatomy heading, or empty keyboard table; actionable selection and accessibility guidance is curated in the guideline and accessibility checks."
+        },
+        {
+          "id": "d58626b9-ed69-4963-a75c-18d00cae5a06",
+          "title": "Modal date picker",
+          "status": "no-requirements",
+          "notes": "Repeated component heading or descriptive anatomy inventory; actionable variant behavior is captured in the corresponding specific sections."
+        },
+        {
+          "id": "6541f6ff-916a-4106-b07f-4292def863dc",
+          "title": "Modal date picker color",
+          "status": "no-requirements",
+          "notes": "Resource/token or color mapping, configuration/state inventory, anatomy heading, or empty keyboard table; actionable selection and accessibility guidance is curated in the guideline and accessibility checks."
+        },
+        {
+          "id": "af19bedb-c455-48c9-8a59-f1cb462fb31d",
+          "title": "Modal date picker measurements",
+          "status": "unclear",
+          "notes": "Exact picker dimensions appear only in image diagrams that have not been inspected; values remain unresolved."
+        },
+        {
+          "id": "d3189372-1b73-49d2-977e-e766f43a2774",
+          "title": "Modal date picker configurations",
+          "status": "no-requirements",
+          "notes": "Resource/token or color mapping, configuration/state inventory, anatomy heading, or empty keyboard table; actionable selection and accessibility guidance is curated in the guideline and accessibility checks."
+        },
+        {
+          "id": "ccd8cb55-4c20-4832-9db2-7c14c49b6e8f",
+          "title": "Modal date input",
+          "status": "no-requirements",
+          "notes": "Repeated component heading or descriptive anatomy inventory; actionable variant behavior is captured in the corresponding specific sections."
+        },
+        {
+          "id": "77492377-5e35-4d9a-9123-37ec7a4657a8",
+          "title": "Modal date input color",
+          "status": "no-requirements",
+          "notes": "Resource/token or color mapping, configuration/state inventory, anatomy heading, or empty keyboard table; actionable selection and accessibility guidance is curated in the guideline and accessibility checks."
+        },
+        {
+          "id": "f9cd14e3-4a12-4dea-bad1-af5b01431a5c",
+          "title": "Modal date input measurements",
+          "status": "unclear",
+          "notes": "Exact picker dimensions appear only in image diagrams that have not been inspected; values remain unresolved."
+        },
+        {
+          "id": "258ddd2e-bc79-485c-9cff-84655e93cceb",
+          "title": "Modal date input configurations",
+          "status": "no-requirements",
+          "notes": "Resource/token or color mapping, configuration/state inventory, anatomy heading, or empty keyboard table; actionable selection and accessibility guidance is curated in the guideline and accessibility checks."
+        },
+        {
+          "id": "3863cdff-6788-4c8f-8f67-2a7c703c4b8a",
+          "title": "Element states",
+          "status": "no-requirements",
+          "notes": "Resource/token or color mapping, configuration/state inventory, anatomy heading, or empty keyboard table; actionable selection and accessibility guidance is curated in the guideline and accessibility checks."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/date-pickers/guidelines",
+      "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+      "markdownSha256": "0792e87dbe72b4ad689094d3e5a85f956b1939a58c9731fdae580b13f5d0c930",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Date pickers",
+          "status": "no-requirements",
+          "notes": "Repeated component heading or descriptive anatomy inventory; actionable variant behavior is captured in the corresponding specific sections."
+        },
+        {
+          "id": "bdb0ccd6-7e65-416e-8943-8896b8eca2ca",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "8899f108-6a06-44df-b228-0cee1ccf67ca",
+          "title": "Anatomy",
+          "status": "no-requirements",
+          "notes": "Resource/token or color mapping, configuration/state inventory, anatomy heading, or empty keyboard table; actionable selection and accessibility guidance is curated in the guideline and accessibility checks."
+        },
+        {
+          "id": "fd5d4abd-4e92-48cf-babd-087dc0043c36",
+          "title": "Docked date picker",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "9009afde-5441-4ca3-9109-977bab0fc227",
+          "title": "Modal date picker",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "7eadbd2d-a9e5-4fbe-802a-424ac6cf0953",
+          "title": "Modal date input",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "b775f70c-151a-4a5e-a6e6-26d22263d726",
+          "title": "Full-screen date picker",
+          "status": "no-requirements",
+          "notes": "Resource/token or color mapping, configuration/state inventory, anatomy heading, or empty keyboard table; actionable selection and accessibility guidance is curated in the guideline and accessibility checks."
+        },
+        {
+          "id": "523a5a5a-6e35-4fdf-86e5-18d1a23887c4",
+          "title": "Docked date picker",
+          "status": "no-requirements",
+          "notes": "Repeated component heading or descriptive anatomy inventory; actionable variant behavior is captured in the corresponding specific sections."
+        },
+        {
+          "id": "7608fac1-77cc-4093-a1ac-e5b1d2b0df83",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "bf435e27-4e8c-4883-a4ed-bfa159c07c36",
+          "title": "Behavior",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "e577b5a9-26ad-498a-90ea-3019b764efa6",
+          "title": "Month selection",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "8a23e0ee-ec5c-42ba-8337-9ad2e00c97d3",
+          "title": "Year selection",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "c5c0471f-aa8a-4205-ab4b-1ab8cb893c5c",
+          "title": "Modal date picker",
+          "status": "no-requirements",
+          "notes": "Repeated component heading or descriptive anatomy inventory; actionable variant behavior is captured in the corresponding specific sections."
+        },
+        {
+          "id": "6bf2e1f1-f8c9-4c34-b487-f0cbd53565f8",
+          "title": "Behavior",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "b4c77e58-e85e-40da-8a6b-7d921832a7ad",
+          "title": "Date range selection",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "07d8ef51-1085-4838-b20f-2a0aa62dabe0",
+          "title": "Modal date input",
+          "status": "no-requirements",
+          "notes": "Repeated component heading or descriptive anatomy inventory; actionable variant behavior is captured in the corresponding specific sections."
+        },
+        {
+          "id": "76fda9a2-9563-4054-92fd-513db508cd33",
+          "title": "Usage",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "4fb4b005-bc44-47b3-89f9-4b6071de3e4e",
+          "title": "Behavior",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "b2dc9ae7-2856-45f5-a766-0536d09d2f1f",
+          "title": "Compact breakpoint",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "9b0b0af8-fd98-4df8-847e-030842a3fcac",
+          "title": "Medium and expanded breakpoints",
+          "status": "no-requirements",
+          "notes": "No independent actionable requirement beyond the checks mapped in the detailed child section."
+        },
+        {
+          "id": "dd597e1e-28e0-4f42-ac75-d6c73dc64365",
+          "title": "Selection",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "0a388652-5a77-43b7-9e38-6eb06892aec9",
+          "title": "Appearing and disappearing",
+          "status": "unclear",
+          "notes": "The section says interacting outside dismisses the picker but then says a “time picker” retains focus; the intended focus-retention behavior needs source clarification. Confirm/cancel, close/Save, and docked position are covered by date-picker-dismissal."
+        },
+        {
+          "id": "e1722546-d8eb-4e09-a631-cd67f11994a9",
+          "title": "Responsive layout",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/date-pickers/accessibility",
+      "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+      "markdownSha256": "1f48570e572e817a55b2e680bcec23647f8c5d68959368d957e5ead36b7b346d",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Date pickers",
+          "status": "no-requirements",
+          "notes": "Repeated component heading or descriptive anatomy inventory; actionable variant behavior is captured in the corresponding specific sections."
+        },
+        {
+          "id": "2304b04a-3986-4afd-b3c3-d94a7b04719d",
+          "title": "Use cases",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "33c29a44-204f-482e-a82a-d19a1b90fa58",
+          "title": "Interaction & style",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "7fa4994b-9e49-4dd9-889b-366886d83d9a",
+          "title": "Date entry methods",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "23fe69da-dec9-4f48-b300-788e920d2091",
+          "title": "Accessible date input",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "5f015ede-4e77-4cfc-843b-0a0cd025bf4b",
+          "title": "Optional Clear button",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "df87ff77-0505-461f-86b0-c7339dd23113",
+          "title": "Affordance for keyboard shortcuts",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "86b2a985-367c-4ffc-a2c3-0f2da873a70a",
+          "title": "Truncated labels & tooltips",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "2f3e0c27-b914-44e7-9d56-ec38ca1fda68",
+          "title": "Color contrast between dates",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        },
+        {
+          "id": "60167fc6-d760-436f-8978-ed1014eedc6e",
+          "title": "Keyboard navigation",
+          "status": "unclear",
+          "notes": "The populated keyboard table’s specific actions are mapped by date-keyboard-enter-save, date-keyboard-page-month, date-keyboard-home-end, date-keyboard-shift-page-year, date-keyboard-shift-m-month-list, and date-keyboard-shift-y-year-list. The first Enter/Return row repeats the key name as its action and does not define behavior, so that row remains unresolved. The month/year rows also do not state the direction for each individual Page key."
+        },
+        {
+          "id": "34be85b9-4fe7-4940-8018-5edc6421a783",
+          "title": "Labeling elements",
+          "status": "mapped",
+          "notes": "The field label/helper requirements are represented by date-input-label-help and date-format-helper-text; the control labels, button roles, weekday column-header label and month-grid label are represented by date-calendar-navigation-control-labels, date-weekday-column-header-label and date-month-grid-label."
+        },
+        {
+          "id": "0a993e94-c073-459f-9eaf-da28a628c926",
+          "title": "Screen reader verbalizations",
+          "status": "mapped",
+          "notes": "All actionable instructions in this section are represented by the linked checks."
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "variant-context",
+      "statement": "Use docked, modal, or modal-input date pickers according to context; clearly distinguish today and selected dates.",
+      "condition": "When people need a date or date range.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/overview",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "2c6be9610f0604df3831b9a121ccbf32e1f70e4520820a5268af83b6f4b75c4c",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Date pickers guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "date-picker-breakpoint",
+      "statement": "Use modal pickers in compact layouts and docked pickers with a text field/dropdown in medium or expanded layouts.",
+      "condition": "When adapting date picker presentation.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/guidelines",
+          "section": "bdb0ccd6-7e65-416e-8943-8896b8eca2ca",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "0792e87dbe72b4ad689094d3e5a85f956b1939a58c9731fdae580b13f5d0c930",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Usage guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "docked-date-entry",
+      "statement": "Provide a date input field and a dropdown calendar so users can choose either text entry or the picker.",
+      "condition": "For docked date pickers.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/guidelines",
+          "section": "fd5d4abd-4e92-48cf-babd-087dc0043c36",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "0792e87dbe72b4ad689094d3e5a85f956b1939a58c9731fdae580b13f5d0c930",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Docked date picker guidance."
+        },
+        {
+          "change": "corrected",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/guidelines",
+          "section": "fd5d4abd-4e92-48cf-babd-087dc0043c36",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "0792e87dbe72b4ad689094d3e5a85f956b1939a58c9731fdae580b13f5d0c930",
+          "extractorVersion": 2,
+          "summary": "Separated the input-method requirement from the independently assessable month/year navigation requirement."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 2,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "avoid-distant-date-modal",
+      "statement": "Do not use a modal calendar picker for dates in the distant past or future, such as birth dates; use modal input or a docked picker.",
+      "condition": "When selecting a date picker for distant dates.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/guidelines",
+          "section": "9009afde-5441-4ca3-9109-977bab0fc227",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "0792e87dbe72b4ad689094d3e5a85f956b1939a58c9731fdae580b13f5d0c930",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Modal date picker guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "date-range-selection",
+      "statement": "For a modal date range, let users select a start date and an end date on the calendar.",
+      "condition": "For modal date-range pickers.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/guidelines",
+          "section": "b4c77e58-e85e-40da-8a6b-7d921832a7ad",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "0792e87dbe72b4ad689094d3e5a85f956b1939a58c9731fdae580b13f5d0c930",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Date range selection guidance."
+        },
+        {
+          "change": "corrected",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/guidelines",
+          "section": "b4c77e58-e85e-40da-8a6b-7d921832a7ad",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "0792e87dbe72b4ad689094d3e5a85f956b1939a58c9731fdae580b13f5d0c930",
+          "extractorVersion": 2,
+          "summary": "Separated range endpoint selection from the independently assessable month navigation behavior."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 2,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "manual-entry-picker",
+      "statement": "Use modal date input when a calendar is unnecessary; allow switching between modal calendar and input using the edit or calendar icon.",
+      "condition": "For modal date input.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/guidelines",
+          "section": "7eadbd2d-a9e5-4fbe-802a-424ac6cf0953",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "0792e87dbe72b4ad689094d3e5a85f956b1939a58c9731fdae580b13f5d0c930",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Modal date input guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "compact-fullscreen-picker",
+      "statement": "At compact breakpoints, use the recommended full-screen modal picker to improve readability and touch target size.",
+      "condition": "At compact breakpoints.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/guidelines",
+          "section": "b2dc9ae7-2856-45f5-a766-0536d09d2f1f",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "0792e87dbe72b4ad689094d3e5a85f956b1939a58c9731fdae580b13f5d0c930",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Compact breakpoint guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fixed-date-picker-sizing",
+      "statement": "Do not scale docked or modal date picker dimensions responsively across breakpoints.",
+      "condition": "When adapting date pickers.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/guidelines",
+          "section": "e1722546-d8eb-4e09-a631-cd67f11994a9",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "0792e87dbe72b4ad689094d3e5a85f956b1939a58c9731fdae580b13f5d0c930",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Responsive layout guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "date-input-formatting",
+      "statement": "Format a manually entered date only after Enter or when focus leaves the field; do not insert masking characters while the user types.",
+      "condition": "For manual date entry.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/accessibility",
+          "section": "23fe69da-dec9-4f48-b300-788e920d2091",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "1f48570e572e817a55b2e680bcec23647f8c5d68959368d957e5ead36b7b346d",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Accessible date input guidance."
+        },
+        {
+          "change": "corrected",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/accessibility",
+          "section": "23fe69da-dec9-4f48-b300-788e920d2091",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "1f48570e572e817a55b2e680bcec23647f8c5d68959368d957e5ead36b7b346d",
+          "extractorVersion": 2,
+          "summary": "Separated deferred formatting from the independently assessable accepted input formats."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 2,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "clear-button-tab-stops",
+      "statement": "Remove the Clear button when it is not needed to reduce keyboard tab stops.",
+      "condition": "When the Clear action is optional.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/accessibility",
+          "section": "5f015ede-4e77-4cfc-843b-0a0cd025bf4b",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "1f48570e572e817a55b2e680bcec23647f8c5d68959368d957e5ead36b7b346d",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Optional Clear button guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "date-contrast",
+      "statement": "Maintain at least 4.5:1 contrast between date link text and its background.",
+      "condition": "For dates in the picker.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/accessibility",
+          "section": "2f3e0c27-b914-44e7-9d56-ec38ca1fda68",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "1f48570e572e817a55b2e680bcec23647f8c5d68959368d957e5ead36b7b346d",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Color contrast between dates guidance."
+        },
+        {
+          "change": "corrected",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/accessibility",
+          "section": "2f3e0c27-b914-44e7-9d56-ec38ca1fda68",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "1f48570e572e817a55b2e680bcec23647f8c5d68959368d957e5ead36b7b346d",
+          "extractorVersion": 2,
+          "summary": "Clarified that the contrast ratio applies to date link text against its background."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 2,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "date-input-label-help",
+      "statement": "Label the date field by its purpose and make that label match the placeholder while the field is empty.",
+      "condition": "For date input fields.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/accessibility",
+          "section": "34be85b9-4fe7-4940-8018-5edc6421a783",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "1f48570e572e817a55b2e680bcec23647f8c5d68959368d957e5ead36b7b346d",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Labeling elements guidance."
+        },
+        {
+          "change": "corrected",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/accessibility",
+          "section": "34be85b9-4fe7-4940-8018-5edc6421a783",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "1f48570e572e817a55b2e680bcec23647f8c5d68959368d957e5ead36b7b346d",
+          "extractorVersion": 2,
+          "summary": "Separated the field-label requirement from the separately assessable date-format helper text."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 2,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "date-picker-m3-variant-names",
+      "statement": "Use the context-based M3 names docked date picker, modal date picker, and modal date input; modal variants communicate that the user must take an action.",
+      "condition": "When identifying date-picker variants.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/overview",
+          "section": "0e162323-24e9-4fef-9dd7-9e86dfc1f9bd",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "2c6be9610f0604df3831b9a121ccbf32e1f70e4520820a5268af83b6f4b75c4c",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Differences from M2 instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "date-picker-embedding-context",
+      "statement": "Embed a modal date picker in a dialog at compact breakpoints and a docked picker in a text-field dropdown at medium or expanded breakpoints.",
+      "condition": "When embedding date pickers.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/guidelines",
+          "section": "bdb0ccd6-7e65-416e-8943-8896b8eca2ca",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "0792e87dbe72b4ad689094d3e5a85f956b1939a58c9731fdae580b13f5d0c930",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Usage instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "docked-date-picker-distant-dates",
+      "statement": "Use a docked picker for near or distant past/future dates because it supports multiple date-entry methods.",
+      "condition": "When selecting dates across a wide time range.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/guidelines",
+          "section": "7608fac1-77cc-4093-a1ac-e5b1d2b0df83",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "0792e87dbe72b4ad689094d3e5a85f956b1939a58c9731fdae580b13f5d0c930",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Docked date picker instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "docked-date-picker-immediate-methods",
+      "statement": "Make keyboard entry and calendar navigation available as soon as a docked picker is accessed.",
+      "condition": "For docked date pickers.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/guidelines",
+          "section": "bf435e27-4e8c-4883-a4ed-bfa159c07c36",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "0792e87dbe72b4ad689094d3e5a85f956b1939a58c9731fdae580b13f5d0c930",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Behavior instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "docked-month-navigation",
+      "statement": "Let users move between months with previous/next arrows or a month dropdown.",
+      "condition": "For docked date pickers.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/guidelines",
+          "section": "e577b5a9-26ad-498a-90ea-3019b764efa6",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "0792e87dbe72b4ad689094d3e5a85f956b1939a58c9731fdae580b13f5d0c930",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Month selection instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "docked-year-navigation",
+      "statement": "Let users move between years with previous/next arrows or a year dropdown.",
+      "condition": "For docked date pickers.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/guidelines",
+          "section": "8a23e0ee-ec5c-42ba-8337-9ad2e00c97d3",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "0792e87dbe72b4ad689094d3e5a85f956b1939a58c9731fdae580b13f5d0c930",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Year selection instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "modal-calendar-navigation",
+      "statement": "Navigate between modal-picker months with horizontal swipes, between years with vertical scrolling, and open the year picker by selecting the year.",
+      "condition": "For modal date pickers.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/guidelines",
+          "section": "6bf2e1f1-f8c9-4c34-b487-f0cbd53565f8",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "0792e87dbe72b4ad689094d3e5a85f956b1939a58c9731fdae580b13f5d0c930",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Behavior instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "modal-range-month-navigation",
+      "statement": "Navigate between months in a modal range picker by vertical scrolling.",
+      "condition": "For modal date-range selection.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/guidelines",
+          "section": "b4c77e58-e85e-40da-8a6b-7d921832a7ad",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "0792e87dbe72b4ad689094d3e5a85f956b1939a58c9731fdae580b13f5d0c930",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Date range selection instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "modal-date-input-purpose",
+      "statement": "Use modal date input for manually entering one date or a date range; it may be the default when a calendar is unnecessary, and a hinted text field is another option.",
+      "condition": "When dates do not require calendar selection.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/guidelines",
+          "section": "76fda9a2-9563-4054-92fd-513db508cd33",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "0792e87dbe72b4ad689094d3e5a85f956b1939a58c9731fdae580b13f5d0c930",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Usage instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "modal-date-input-toggle",
+      "statement": "Allow switching between a modal calendar and date input using the edit or calendar icon.",
+      "condition": "For modal date pickers that support manual entry.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/guidelines",
+          "section": "4fb4b005-bc44-47b3-89f9-4b6071de3e4e",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "0792e87dbe72b4ad689094d3e5a85f956b1939a58c9731fdae580b13f5d0c930",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Behavior instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "date-range-visual-distinction",
+      "statement": "Use color to distinguish the selected date from today; for a range, mark start and end dates and connect the intervening dates with a subtle highlight.",
+      "condition": "When displaying selected dates or a range.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/guidelines",
+          "section": "dd597e1e-28e0-4f42-ac75-d6c73dc64365",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "0792e87dbe72b4ad689094d3e5a85f956b1939a58c9731fdae580b13f5d0c930",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Selection instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "date-picker-dismissal",
+      "statement": "Let users confirm with OK or dismiss with Cancel; modal pickers may also dismiss on outside interaction, while a compact full-screen picker provides a close icon and Save. A docked picker appears below its input.",
+      "condition": "When opening or closing date pickers.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/guidelines",
+          "section": "0a388652-5a77-43b7-9e38-6eb06892aec9",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "0792e87dbe72b4ad689094d3e5a85f956b1939a58c9731fdae580b13f5d0c930",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Appearing and disappearing instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "date-picker-manual-entry-accessible",
+      "statement": "Allow manual text entry without requiring the picker; the docked field accepts input, and modal pickers expose date input through an edit icon.",
+      "condition": "For assistive technology users.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/accessibility",
+          "section": "2304b04a-3986-4afd-b3c3-d94a7b04719d",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "1f48570e572e817a55b2e680bcec23647f8c5d68959368d957e5ead36b7b346d",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Use cases instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "date-picker-target-size",
+      "statement": "Keep all interactive targets at least 48×48dp and avoid density that reduces target size.",
+      "condition": "For date-picker controls.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/accessibility",
+          "section": "33c29a44-204f-482e-a82a-d19a1b90fa58",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "1f48570e572e817a55b2e680bcec23647f8c5d68959368d957e5ead36b7b346d",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Interaction & style instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "date-input-independent-stops",
+      "statement": "Offer direct text entry and picker entry as separate inputs and tab stops; use the calendar icon as the exclusive entry point to the date picker.",
+      "condition": "For keyboard and screen-reader users.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/accessibility",
+          "section": "7fa4994b-9e49-4dd9-889b-366886d83d9a",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "1f48570e572e817a55b2e680bcec23647f8c5d68959368d957e5ead36b7b346d",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Date entry methods instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "date-input-format-acceptance",
+      "statement": "Accept common date formats using dashes, spaces, slashes, or dots, including a leading zero for single-digit month/day values.",
+      "condition": "For manually entered dates.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/accessibility",
+          "section": "23fe69da-dec9-4f48-b300-788e920d2091",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "1f48570e572e817a55b2e680bcec23647f8c5d68959368d957e5ead36b7b346d",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Accessible date input instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "date-shortcut-tooltip",
+      "statement": "Show the shortcut key in the tooltip and include it in the hint description announced by screen readers.",
+      "condition": "For date-picker controls with keyboard shortcuts.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/accessibility",
+          "section": "df87ff77-0505-461f-86b0-c7339dd23113",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "1f48570e572e817a55b2e680bcec23647f8c5d68959368d957e5ead36b7b346d",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Affordance for keyboard shortcuts instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "weekday-hover-tooltip",
+      "statement": "Use tooltips to expose full truncated labels on hover or keyboard focus; weekday labels are not keyboard-focusable, so their tooltip is available on pointer hover only.",
+      "condition": "For truncated date-picker labels.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/accessibility",
+          "section": "86b2a985-367c-4ffc-a2c3-0f2da873a70a",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "1f48570e572e817a55b2e680bcec23647f8c5d68959368d957e5ead36b7b346d",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Truncated labels & tooltips instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "date-format-helper-text",
+      "statement": "Use helper text below the date field to specify and describe its input format; the default MM/DD/YYYY may be customized.",
+      "condition": "For date input fields.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/accessibility",
+          "section": "34be85b9-4fe7-4940-8018-5edc6421a783",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "1f48570e572e817a55b2e680bcec23647f8c5d68959368d957e5ead36b7b346d",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Labeling elements instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "date-full-screenreader-value",
+      "statement": "Expose a complete date label including weekday, month, day, and year instead of announcing only the day number.",
+      "condition": "For screen-reader output of dates.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/accessibility",
+          "section": "0a993e94-c073-459f-9eaf-da28a628c926",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "1f48570e572e817a55b2e680bcec23647f8c5d68959368d957e5ead36b7b346d",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured Screen reader verbalizations instructions."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "date-keyboard-enter-save",
+      "statement": "Pressing Enter/Return closes the calendar and saves the selected date.",
+      "condition": "When a date is selected in the calendar. ",
+      "basis": "explicit",
+      "notes": "Captured the explicit Enter/Return action row that closes and saves the selected date.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/accessibility",
+          "section": "60167fc6-d760-436f-8978-ed1014eedc6e",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "1f48570e572e817a55b2e680bcec23647f8c5d68959368d957e5ead36b7b346d",
+          "extractorVersion": 2,
+          "summary": "Captured the explicit Enter/Return action row that closes and saves the selected date."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "date-keyboard-page-month",
+      "statement": "Page Up and Page Down move to the same date in the next or previous month.",
+      "condition": "When navigating dates with the calendar focused.",
+      "basis": "explicit",
+      "notes": "The captured table says next/previous month for Page up/down without assigning each direction to an individual key. Preserve that wording rather than infer a per-key direction.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/accessibility",
+          "section": "60167fc6-d760-436f-8978-ed1014eedc6e",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "1f48570e572e817a55b2e680bcec23647f8c5d68959368d957e5ead36b7b346d",
+          "extractorVersion": 2,
+          "summary": "Preserves the previous/next month relationship in the keyboard table."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "date-keyboard-home-end",
+      "statement": "Home and End move to the first day of the month.",
+      "condition": "When navigating within the calendar.",
+      "basis": "explicit",
+      "notes": "The captured table assigns both Home and End to the first day of the month; this wording preserves the source even though the pairing may be unusual.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/accessibility",
+          "section": "60167fc6-d760-436f-8978-ed1014eedc6e",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "1f48570e572e817a55b2e680bcec23647f8c5d68959368d957e5ead36b7b346d",
+          "extractorVersion": 2,
+          "summary": "The captured table assigns both Home and End to the first day of the month; this wording preserves the source even though the pairing may be unusual."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "date-keyboard-shift-page-year",
+      "statement": "Shift+Page Up and Shift+Page Down move to the same date in the next or previous year.",
+      "condition": "When navigating dates with the calendar focused.",
+      "basis": "explicit",
+      "notes": "The captured table says next/previous year for Shift + Page up/down without assigning each direction to an individual key. Preserve that wording rather than infer a per-key direction.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/accessibility",
+          "section": "60167fc6-d760-436f-8978-ed1014eedc6e",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "1f48570e572e817a55b2e680bcec23647f8c5d68959368d957e5ead36b7b346d",
+          "extractorVersion": 2,
+          "summary": "Preserves the same-date and previous/next year relationship in the keyboard table."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "date-keyboard-shift-m-month-list",
+      "statement": "Shift+M moves to the month-list dropdown.",
+      "condition": "When navigating date-picker controls by keyboard.",
+      "basis": "explicit",
+      "notes": "Captured the shortcut destination exactly as the keyboard table states.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/accessibility",
+          "section": "60167fc6-d760-436f-8978-ed1014eedc6e",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "1f48570e572e817a55b2e680bcec23647f8c5d68959368d957e5ead36b7b346d",
+          "extractorVersion": 2,
+          "summary": "Captured the shortcut destination exactly as the keyboard table states."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "date-keyboard-shift-y-year-list",
+      "statement": "Shift+Y moves to the year-list dropdown.",
+      "condition": "When navigating date-picker controls by keyboard.",
+      "basis": "explicit",
+      "notes": "Captured the shortcut destination exactly as the keyboard table states.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/accessibility",
+          "section": "60167fc6-d760-436f-8978-ed1014eedc6e",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "1f48570e572e817a55b2e680bcec23647f8c5d68959368d957e5ead36b7b346d",
+          "extractorVersion": 2,
+          "summary": "Captured the shortcut destination exactly as the keyboard table states."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "date-calendar-navigation-control-labels",
+      "statement": "Give previous/next month and year controls and the month/year dropdown controls the accessibility label “{label}” and the Button role.",
+      "condition": "For calendar navigation and month/year dropdown controls.",
+      "basis": "explicit",
+      "notes": "Preserves table element, accessibility-label and role relationships for both sets of navigation controls.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/accessibility",
+          "section": "34be85b9-4fe7-4940-8018-5edc6421a783",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "1f48570e572e817a55b2e680bcec23647f8c5d68959368d957e5ead36b7b346d",
+          "extractorVersion": 2,
+          "summary": "Preserves table element, accessibility-label and role relationships for both sets of navigation controls."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "date-weekday-column-header-label",
+      "statement": "Expose days of the week with the accessibility label “Column header”.",
+      "condition": "For the calendar weekday headings.",
+      "basis": "explicit",
+      "notes": "Preserves the table label assigned to the days-of-week element; no role is listed in the source row.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/accessibility",
+          "section": "34be85b9-4fe7-4940-8018-5edc6421a783",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "1f48570e572e817a55b2e680bcec23647f8c5d68959368d957e5ead36b7b346d",
+          "extractorVersion": 2,
+          "summary": "Preserves the table label assigned to the days-of-week element; no role is listed in the source row."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "date-month-grid-label",
+      "statement": "Expose the month grid with the accessibility label “Grid”.",
+      "condition": "For the calendar month grid.",
+      "basis": "explicit",
+      "notes": "Preserves the table accessibility label for the month grid; no role is listed in the source row.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/date-pickers/accessibility",
+          "section": "34be85b9-4fe7-4940-8018-5edc6421a783",
+          "capture": "snapshots/material-guidance/20261025T165345.565058477Z-199753872/capture.json",
+          "markdownSha256": "1f48570e572e817a55b2e680bcec23647f8c5d68959368d957e5ead36b7b346d",
+          "extractorVersion": 2,
+          "summary": "Preserves the table accessibility label for the month grid; no role is listed in the source row."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}
