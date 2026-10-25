@@ -7,7 +7,7 @@ import (
 func (c componentCase) ProgressAttributes() templ.Attributes {
 	attrs := c.Attributes()
 	attrs["role"] = "progressbar"
-	attrs["aria-label"] = "Loading"
+	attrs["aria-label"] = "Loading preview content"
 	if c.Control == "determinate" {
 		attrs["aria-valuemin"] = "0"
 		attrs["aria-valuemax"] = "100"
