@@ -149,13 +149,6 @@
 .md-app-bar[data-variant="bottom"] .md-icon-button {
   margin-inline: var(--md-sys-measurement-space50);
 }
-.md-app-bar[data-variant="bottom"] .md-icon-button::after {
-  content: "";
-  position: absolute;
-  inset: calc(-1 * var(--md-sys-measurement-space50));
-  min-inline-size: var(--md-sys-measurement-space600);
-  min-block-size: var(--md-sys-measurement-space600);
-}
 .md-appbar-demo[data-interactive="true"]:has(.md-appbar-content) {
   max-block-size: 20rem;
   overflow: auto;

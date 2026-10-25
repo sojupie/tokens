@@ -51,6 +51,14 @@
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
+.md-icon-button::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  translate: -50% -50%;
+  inline-size: max(100%, var(--md-sys-measurement-space600));
+  block-size: max(100%, var(--md-sys-measurement-space600));
+}
 .md-icon-button[data-shape="square"] {
   --_button-rest-shape: var(--_icon-square-shape);
 }
