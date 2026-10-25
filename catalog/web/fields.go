@@ -29,7 +29,7 @@ func (c componentCase) FieldInput() templ.Attributes {
 	}
 	a := templ.Attributes{"id": c.ID() + "-input", "type": "text", "value": value, "placeholder": "Input text", "aria-describedby": c.ID() + "-help", "aria-invalid": fmt.Sprint(c.Invalid), "disabled": c.State == "disabled", "autocomplete": "off"}
 	if c.Shape == "affixes" {
-		a["aria-describedby"] = c.ID() + "-units " + c.ID() + "-help"
+		a["aria-describedby"] = c.ID() + "-prefix " + c.ID() + "-suffix " + c.ID() + "-help"
 	}
 	if c.Family != "field" {
 		a["placeholder"] = " "

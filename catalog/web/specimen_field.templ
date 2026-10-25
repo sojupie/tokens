@@ -13,12 +13,11 @@ templ specimenField(c componentCase) {
 </span>
 		}
 		if c.Shape=="affixes" {
-			<span data-slot="prefix" aria-hidden="true">$</span>
+			<span data-slot="prefix" id={ c.ID() + "-prefix" }><span aria-hidden="true">$</span><span class="tokens-visually-hidden">US dollars</span></span>
 		}
 		<input { c.FieldInput()... }/>
 		if c.Shape=="affixes" {
-			<span data-slot="suffix" aria-hidden="true">/kg</span>
-			<span class="tokens-visually-hidden" id={ c.ID() + "-units" }>US dollars per kilogram</span>
+			<span data-slot="suffix" id={ c.ID() + "-suffix" }><span aria-hidden="true">/kg</span><span class="tokens-visually-hidden">per kilogram</span></span>
 		}
 		if c.Family!="field" {
 			<button type="button" class="md-field-toggle" data-field-toggle tabindex="-1" aria-label="Show options" aria-controls={ c.ID() + "-options" } disabled?={ c.State=="disabled" }><span data-slot="trailing-icon">@materialSymbol("expand_more")

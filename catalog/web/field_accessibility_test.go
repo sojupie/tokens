@@ -13,7 +13,7 @@ func TestFieldAffixesAndErrorsAreDescribed(t *testing.T) {
 	if err := specimenField(c).Render(context.Background(), &out); err != nil {
 		t.Fatal(err)
 	}
-	for _, want := range []string{`aria-describedby="` + c.ID() + `-units ` + c.ID() + `-help"`, `id="` + c.ID() + `-units"`, `US dollars per kilogram`, `role="alert"`, `Enter a valid value.`, `Price per kilogram`} {
+	for _, want := range []string{`aria-describedby="` + c.ID() + `-prefix ` + c.ID() + `-suffix ` + c.ID() + `-help"`, `id="` + c.ID() + `-prefix"`, `id="` + c.ID() + `-suffix"`, `US dollars`, `per kilogram`, `role="alert"`, `Enter a valid value.`, `Price per kilogram`} {
 		if !strings.Contains(out.String(), want) {
 			t.Errorf("missing %s", want)
 		}
