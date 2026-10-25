@@ -16,7 +16,7 @@ templ specimenCarousel(c componentCase) {
 						<li class="md-carousel-slot">
 							<button { c.CarouselItem(index)... }>
 								<span class="md-carousel-art" aria-hidden="true">
-									<svg viewBox="0 0 240 192" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="240" height="192" fill="var(--md-sys-color-tertiary-container)"></rect><circle cx={ fmt.Sprint(60 + index*20) } cy="58" r="35" fill="var(--md-sys-color-primary-container)"></circle><path d="M0 192V142L76 62 142 142 190 95 240 145V192Z" fill="var(--md-sys-color-secondary)"></path><path d="M0 192V155L85 112 160 174 240 115V192Z" fill="var(--md-sys-color-tertiary)"></path></svg>
+									@carouselArtwork(index)
 								</span>
 								<span class="md-carousel-number" aria-hidden="true">{ fmt.Sprint(index+1) }</span>
 							</button>
@@ -25,6 +25,19 @@ templ specimenCarousel(c componentCase) {
 				</ol>
 			</div>
 		</div>
+		if c.Variant!="full-screen" {
+   <details class="md-carousel-all">
+    <summary class="md-button md-text-button" data-size="small">Show all</summary>
+    <ol>
+     for index := range 6 {
+      <li>
+       @carouselArtwork(index)
+       <span>{ fmt.Sprintf("Item %d",index+1) }</span>
+      </li>
+     }
+    </ol>
+   </details>
+  }
 		<div class="md-carousel-controls">
 			<button type="button" class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" data-carousel-step="-1" aria-label="Previous item">@materialSymbol("chevron_left")
 </button>
@@ -33,4 +46,8 @@ templ specimenCarousel(c componentCase) {
 </button>
 		</div>
 	</section>
+}
+
+templ carouselArtwork(index int) {
+<svg viewBox="0 0 240 192" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label={ fmt.Sprintf("Landscape %d",index+1) }><rect width="240" height="192" fill="var(--md-sys-color-tertiary-container)"></rect><circle cx={ fmt.Sprint(60 + index*20) } cy="58" r="35" fill="var(--md-sys-color-primary-container)"></circle><path d="M0 192V142L76 62 142 142 190 95 240 145V192Z" fill="var(--md-sys-color-secondary)"></path><path d="M0 192V155L85 112 160 174 240 115V192Z" fill="var(--md-sys-color-tertiary)"></path></svg>
 }

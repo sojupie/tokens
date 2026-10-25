@@ -224,3 +224,24 @@
 .md-carousel-art path:last-child {
   fill: var(--md-sys-color-tertiary);
 }
+
+.md-carousel-all > summary.md-button {
+  --_button-leading: var(--md-sys-measurement-space50);
+  --_button-trailing: var(--md-sys-measurement-space50);
+}
+.md-carousel-all > ol {
+  display: grid;
+  gap: var(--md-sys-measurement-space200);
+  margin: var(--md-sys-measurement-space200) 0;
+  padding: 0;
+  list-style: none;
+}
+.md-carousel-all li {
+  display: grid;
+  gap: var(--md-sys-measurement-space100);
+}
+.md-carousel-all svg {
+  inline-size: 100%;
+  max-inline-size: 20rem;
+  border-radius: var(--md-comp-carousel-item-container-shape);
+}
