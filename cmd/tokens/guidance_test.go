@@ -81,4 +81,38 @@ func TestGuidanceValidationCLI(t *testing.T) {
 	if err = runGuidance([]string{"validate"}); err == nil || !strings.Contains(err.Error(), "guidance file was deleted") {
 		t.Fatalf("deleted component file: %v", err)
 	}
+	// Move a complete record, commit retirement, then prove archive loss fails.
+	write(fixture)
+	json.Unmarshal(fixture, &doc)
+	check = doc["checks"].([]any)[0].(map[string]any)
+	event := map[string]any{}
+	for k, v := range check["sourceHistory"].([]any)[0].(map[string]any) {
+		event[k] = v
+	}
+	event["change"] = "removed"
+	event["summary"] = "Upstream removed the requirement."
+	check["sourceHistory"] = append(check["sourceHistory"].([]any), event)
+	archive := map[string]any{"schemaVersion": 1, "designSystem": "material", "component": "example", "checks": []any{check}}
+	archived, _ := json.Marshal(archive)
+	archivePath := filepath.Join(filepath.Dir(path), "retired-checks.json")
+	os.WriteFile(archivePath, archived, 0644)
+	doc["checks"] = []any{}
+	doc["sources"].([]any)[0].(map[string]any)["sections"].([]any)[0].(map[string]any)["status"] = "pending"
+	data, _ = json.Marshal(doc)
+	write(data)
+	if err = runGuidance([]string{"validate"}); err != nil {
+		t.Fatalf("retired: %v", err)
+	}
+	git("add", path, archivePath)
+	git("-c", "user.name=Test", "-c", "user.email=test@example.com", "commit", "--quiet", "--no-gpg-sign", "-m", "Retire check")
+	os.Remove(archivePath)
+	if err = runGuidance([]string{"validate"}); err == nil || !strings.Contains(err.Error(), "was deleted") {
+		t.Fatalf("lost archive: %v", err)
+	}
+	os.WriteFile(archivePath, archived, 0644)
+	os.Remove(path)
+	if err = runGuidance([]string{"validate"}); err == nil || !strings.Contains(err.Error(), "archive requires") {
+		t.Fatalf("orphan archive: %v", err)
+	}
+
 }

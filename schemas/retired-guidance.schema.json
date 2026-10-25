@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/sojupie/tokens/schemas/retired-guidance.schema.json",
+  "title": "Retired component guidance",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "designSystem",
+    "component",
+    "checks"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "designSystem": {
+      "$ref": "component-guidance.schema.json#/$defs/id"
+    },
+    "component": {
+      "$ref": "component-guidance.schema.json#/$defs/id"
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "$ref": "component-guidance.schema.json#/$defs/check"
+      }
+    }
+  }
+}

@@ -153,7 +153,11 @@ func TestComponentGuidanceFiles(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			summary, err := ValidateChecks(data, nil)
+			retired, readErr := os.ReadFile(filepath.Join(filepath.Dir(path), "retired-checks.json"))
+			if readErr != nil && !os.IsNotExist(readErr) {
+				t.Fatal(readErr)
+			}
+			summary, err := ValidateCheckFiles(data, retired, nil, nil)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -162,5 +166,63 @@ func TestComponentGuidanceFiles(t *testing.T) {
 				t.Fatalf("canonical path: got %s, want %s", path, expected)
 			}
 		})
+	}
+}
+
+func TestRetirementArchive(t *testing.T) {
+	before, doc := curationFixture(t)
+	check := firstCheck(doc)
+	addSourceEvent(check, "removed")
+	archive := map[string]any{"schemaVersion": 1, "designSystem": doc["designSystem"], "component": doc["component"], "checks": []any{check}}
+	doc["checks"] = []any{}
+	doc["sources"].([]any)[0].(map[string]any)["sections"].([]any)[0].(map[string]any)["status"] = "pending"
+	marshal := func(v any) []byte {
+		b, err := json.Marshal(v)
+		if err != nil {
+			t.Fatal(err)
+		}
+		return b
+	}
+	active, retired := marshal(doc), marshal(archive)
+	if summary, err := ValidateCheckFiles(active, retired, before, nil); err != nil || summary.Checks != 0 || summary.Removed != 1 {
+		t.Fatalf("retirement: %+v %v", summary, err)
+	}
+	for _, tc := range []struct {
+		name   string
+		change func()
+		want   string
+	}{
+		{"lost archive", func() { retired = nil }, "was deleted"},
+		{"duplicate ID", func() { doc["checks"] = []any{check}; active = marshal(doc) }, "retired checks belong"},
+		{"wrong identity", func() { archive["component"] = "other"; retired = marshal(archive) }, "identity"},
+		{"modified assessment", func() { check["implementation"].(map[string]any)["notes"] = "Rewritten"; retired = marshal(archive) }, "preserve implementation"},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			tc.change()
+			if _, err := ValidateCheckFiles(active, retired, before, nil); err == nil || !strings.Contains(err.Error(), tc.want) {
+				t.Fatalf("got %v, want %s", err, tc.want)
+			}
+			archive["component"] = doc["component"]
+			check["implementation"].(map[string]any)["notes"] = ""
+			doc["checks"] = []any{}
+			active = marshal(doc)
+			retired = marshal(archive)
+		})
+	}
+	// Restore the same ID, keeping every earlier source event and fix.
+	addSourceEvent(check, "restored")
+	check["implementation"].(map[string]any)["sourceRevision"] = 3
+	doc["checks"] = []any{check}
+	restored := marshal(doc)
+	if _, err := ValidateCheckFiles(restored, nil, active, retired); err != nil {
+		t.Fatalf("restoration: %v", err)
+	}
+	if _, err := ValidateCheckFiles(active, nil, active, retired); err == nil {
+		t.Fatal("accepted deleted archived check")
+	}
+	// Active records cannot live in the archive.
+	archive["checks"] = []any{check}
+	if _, err := ValidateCheckFiles(active, marshal(archive), nil, nil); err == nil {
+		t.Fatal("accepted active archived check")
 	}
 }

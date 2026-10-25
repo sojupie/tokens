@@ -21,7 +21,11 @@ type CheckSummary struct {
 }
 
 func parseChecks(data []byte) (map[string]any, error) {
-	schemaData, err := schemas.Files.ReadFile("component-guidance.schema.json")
+	return parseGuidance(data, "component-guidance.schema.json")
+}
+
+func parseGuidance(data []byte, name string) (map[string]any, error) {
+	schemaData, err := schemas.Files.ReadFile(name)
 	if err != nil {
 		return nil, err
 	}
@@ -35,10 +39,24 @@ func parseChecks(data []byte) (map[string]any, error) {
 	compiler := jsonschema.NewCompiler()
 	compiler.AssertFormat()
 	const location = "https://github.com/sojupie/tokens/schemas/component-guidance.schema.json"
-	if err = compiler.AddResource(location, schemaDoc); err != nil {
+	if name != "component-guidance.schema.json" {
+		base, readErr := schemas.Files.ReadFile("component-guidance.schema.json")
+		if readErr != nil {
+			return nil, readErr
+		}
+		var baseDoc any
+		if err = json.Unmarshal(base, &baseDoc); err != nil {
+			return nil, err
+		}
+		if err = compiler.AddResource(location, baseDoc); err != nil {
+			return nil, err
+		}
+	}
+	const prefix = "https://github.com/sojupie/tokens/schemas/"
+	if err = compiler.AddResource(prefix+name, schemaDoc); err != nil {
 		return nil, err
 	}
-	schema, err := compiler.Compile(location)
+	schema, err := compiler.Compile(prefix + name)
 	if err != nil {
 		return nil, err
 	}
@@ -107,7 +125,7 @@ func ValidateChecks(data, previous []byte) (CheckSummary, error) {
 		}
 		last := history[len(history)-1].(map[string]any)
 		key := last["url"].(string) + "#" + last["section"].(string)
-		if !urls[last["url"].(string)] {
+		if !removed && !urls[last["url"].(string)] {
 			return fail("latest source URL is absent from sources")
 		}
 		if !removed {
@@ -201,5 +219,86 @@ func ValidateChecks(data, previous []byte) (CheckSummary, error) {
 		summary.Commits = append(summary.Commits, commit)
 	}
 	sort.Strings(summary.Commits)
+	return summary, nil
+}
+
+// ValidateCheckFiles treats the active file and optional retirement archive as one
+// ID namespace. Only active checks participate in current section coverage.
+func ValidateCheckFiles(active, retired, previousActive, previousRetired []byte) (CheckSummary, error) {
+	combine := func(active, retired []byte, placement bool) ([]byte, error) {
+		doc, err := parseChecks(active)
+		if err != nil {
+			return nil, err
+		}
+		for _, entry := range doc["checks"].([]any) {
+			check := entry.(map[string]any)
+			history := check["sourceHistory"].([]any)
+			change := history[len(history)-1].(map[string]any)["change"]
+			if placement && (change == "removed" || change == "withdrawn") {
+				return nil, fmt.Errorf("check %s: retired checks belong in retired-checks.json", check["id"])
+			}
+		}
+		if len(retired) > 0 {
+			archive, err := parseGuidance(retired, "retired-guidance.schema.json")
+			if err != nil {
+				return nil, fmt.Errorf("retired-checks.json: %w", err)
+			}
+			if archive["component"] != doc["component"] || archive["designSystem"] != doc["designSystem"] {
+				return nil, fmt.Errorf("archive component identity must match active file")
+			}
+			for _, entry := range archive["checks"].([]any) {
+				check := entry.(map[string]any)
+				history := check["sourceHistory"].([]any)
+				change := history[len(history)-1].(map[string]any)["change"]
+				if change != "removed" && change != "withdrawn" {
+					return nil, fmt.Errorf("check %s: archive requires a removed or withdrawn event", check["id"])
+				}
+			}
+			doc["checks"] = append(doc["checks"].([]any), archive["checks"].([]any)...)
+		}
+		return json.Marshal(doc)
+	}
+	data, err := combine(active, retired, true)
+	if err != nil {
+		return CheckSummary{}, err
+	}
+	var previous []byte
+	if len(previousActive) > 0 {
+		previous, err = combine(previousActive, previousRetired, false)
+		if err != nil {
+			return CheckSummary{}, fmt.Errorf("previous guidance: %w", err)
+		}
+	}
+	summary, err := ValidateChecks(data, previous)
+	if err != nil {
+		return summary, err
+	}
+	// Retirement moves the complete record. Subsequent archive edits are forbidden;
+	// restore a check before changing its instruction or implementation assessment.
+	if len(retired) > 0 && len(previous) > 0 {
+		archive, _ := parseGuidance(retired, "retired-guidance.schema.json")
+		old, _ := parseChecks(previous)
+		prior := map[string]map[string]any{}
+		for _, entry := range old["checks"].([]any) {
+			c := entry.(map[string]any)
+			prior[c["id"].(string)] = c
+		}
+		for _, entry := range archive["checks"].([]any) {
+			c := entry.(map[string]any)
+			p := prior[c["id"].(string)]
+			if p == nil {
+				continue
+			}
+			for field, value := range p {
+				if field == "sourceHistory" {
+					continue
+				}
+				if !reflect.DeepEqual(value, c[field]) {
+					return summary, fmt.Errorf("check %s: retirement must preserve %s", c["id"], field)
+				}
+			}
+		}
+	}
+	summary.Checks -= summary.Removed + summary.Withdrawn
 	return summary, nil
 }

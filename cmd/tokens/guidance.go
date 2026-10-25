@@ -75,6 +75,16 @@ func validateGuidance(args []string) error {
 		}
 	}
 	if *file == "" {
+		archives, err := filepath.Glob("forge/*/guidance/*/retired-checks.json")
+		if err != nil {
+			return err
+		}
+		for _, archive := range archives {
+			active := filepath.Join(filepath.Dir(archive), "checks.json")
+			if _, err := os.Stat(active); err != nil {
+				return fmt.Errorf("archive requires its active checks.json file: %s", archive)
+			}
+		}
 		tracked, err := exec.Command("git", "ls-tree", "-r", "--name-only", *against, "--", "forge").Output()
 		if err != nil {
 			return err
@@ -116,7 +126,19 @@ func validateGuidance(args []string) error {
 				return err
 			}
 		}
-		summary, err := guidance.ValidateChecks(data, previous)
+		archivePath := filepath.ToSlash(filepath.Join(filepath.Dir(path), "retired-checks.json"))
+		retired, err := os.ReadFile(archivePath)
+		if err != nil && !errors.Is(err, os.ErrNotExist) {
+			return err
+		}
+		var previousRetired []byte
+		if exec.Command("git", "cat-file", "-e", *against+":"+archivePath).Run() == nil {
+			previousRetired, err = exec.Command("git", "show", *against+":"+archivePath).Output()
+			if err != nil {
+				return err
+			}
+		}
+		summary, err := guidance.ValidateCheckFiles(data, retired, previous, previousRetired)
 		if err != nil {
 			return fmt.Errorf("%s: %w", path, err)
 		}
@@ -129,7 +151,7 @@ func validateGuidance(args []string) error {
 				return fmt.Errorf("%s: implementation commit does not exist locally: %s", path, commit)
 			}
 		}
-		fmt.Printf("%s: valid format and history; %d checks, %d removed, %d withdrawn, %d pending/unclear sections\n", path, summary.Checks, summary.Removed, summary.Withdrawn, summary.PendingSections)
+		fmt.Printf("%s: valid format and history; %d active checks, %d removed, %d withdrawn, %d pending/unclear sections\n", path, summary.Checks, summary.Removed, summary.Withdrawn, summary.PendingSections)
 	}
 	fmt.Println("Validation does not execute evidence or establish component conformance.")
 	return nil

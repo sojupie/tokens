@@ -1,19 +1,20 @@
 # Curating component guidance
 
-Maintain one current file per component:
+Maintain one active file per component. Create the archive on the first retirement:
 
 ```text
 forge/<design-system>/guidance/<component>/checks.json
+forge/<design-system>/guidance/<component>/retired-checks.json  # optional
 ```
 
-Commit this file. Keep captured documentation in the versioned snapshot directory,
+Commit these files. Keep captured documentation in the versioned snapshot directory,
 which stays outside Git. Use Git history for earlier file versions; do not create
 separate dated check files or copy the current file into reports.
 
-The format is defined by `schemas/component-guidance.schema.json`. The canonical
-navigation-rail file contains the captured section inventory and one unassessed
-example check. Its sections remain pending. The exploratory audit is not an
-accepted assessment under this contract.
+The format is defined by `schemas/component-guidance.schema.json`.
+The archive uses `schemas/retired-guidance.schema.json`. It contains the component
+identity and complete retired checks; source receipts remain in each check’s
+history. It does not duplicate the current source inventory.
 
 ## From capture to checks
 
@@ -90,8 +91,15 @@ event, updated statement/condition and an assessment against the new revision.
 A relocated instruction keeps its check ID. Refresh section references and record
 the provenance change explicitly.
 
-A removed check is no longer an active obligation. Retain its prior assessment and
-fix commits for context; removal is not an implementation fix.
+After confirming a removal, append `removed` and move the complete check to
+`retired-checks.json`. Use `withdrawn` for an erroneous or duplicate check, with
+an explanation. Preserve its statement, assessment, fix commits and earlier
+source events. Commit both file changes together. An ID occurs in exactly one
+file. Do not create an empty archive before it is needed.
+
+To restore a check, move it back to `checks.json`, append `restored`, and reassess
+or reset the implementation at that revision. Keep its original ID. Retired
+records remain unchanged until restored. Removal is not an implementation fix.
 
 ## Implementation assessment
 
@@ -143,8 +151,9 @@ go run ./cmd/tokens guidance validate --against origin/main
 Use `--file forge/material/guidance/navigation-rail/checks.json` for one component.
 The command checks the schema, canonical path, unique IDs, source/section links,
 lifecycle order, assessment revisions, required evidence and locally available
-commit IDs. Against the selected Git revision, it rejects deleted component files or checks, rewritten
-source/fix history and changed statements without a history event.
+commit IDs. Against the selected Git revision, it rejects deleted component files,
+checks missing from both files, rewritten source/fix history and changed
+statements without a history event.
 
 The normal Go test suite also validates the schema and internal references of
 every canonical component file. Git-history and commit-existence checks run through
