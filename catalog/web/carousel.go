@@ -1,8 +1,10 @@
 package web
 
 import (
+	"context"
 	"fmt"
 	"github.com/a-h/templ"
+	"net/http"
 )
 
 func (c componentCase) CarouselItem(index int) templ.Attributes {
@@ -14,4 +16,12 @@ func (c componentCase) CarouselItem(index int) templ.Attributes {
 		}
 	}
 	return attrs
+}
+
+func (server *Server) handleCarouselItems(response http.ResponseWriter, request *http.Request) {
+	info := pageMetadata{Title: "Carousel items", NoIndex: true}
+	request = request.WithContext(context.WithValue(request.Context(), pageMetadataKey{}, info))
+	if err := server.renderHTML(response, request, carouselItemsPage()); err != nil {
+		http.Error(response, err.Error(), http.StatusInternalServerError)
+	}
 }

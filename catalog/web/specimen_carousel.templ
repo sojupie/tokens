@@ -26,17 +26,9 @@ templ specimenCarousel(c componentCase) {
 			</div>
 		</div>
 		if c.Variant!="full-screen" {
-   <details class="md-carousel-all">
-    <summary class="md-button md-text-button" data-size="small">Show all</summary>
-    <ol>
-     for index := range 6 {
-      <li>
-       @carouselArtwork(index)
-       <span>{ fmt.Sprintf("Item %d",index+1) }</span>
-      </li>
-     }
-    </ol>
-   </details>
+   <div class="md-carousel-all-action">
+    <a class="md-button md-text-button" data-size="small" href="/components/carousel/items">Show all</a>
+   </div>
   }
 		<div class="md-carousel-controls">
 			<button type="button" class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" data-carousel-step="-1" aria-label="Previous item">@materialSymbol("chevron_left")
@@ -50,4 +42,22 @@ templ specimenCarousel(c componentCase) {
 
 templ carouselArtwork(index int) {
 <svg viewBox="0 0 240 192" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label={ fmt.Sprintf("Landscape %d",index+1) }><rect width="240" height="192" fill="var(--md-sys-color-tertiary-container)"></rect><circle cx={ fmt.Sprint(60 + index*20) } cy="58" r="35" fill="var(--md-sys-color-primary-container)"></circle><path d="M0 192V142L76 62 142 142 190 95 240 145V192Z" fill="var(--md-sys-color-secondary)"></path><path d="M0 192V155L85 112 160 174 240 115V192Z" fill="var(--md-sys-color-tertiary)"></path></svg>
+}
+
+
+templ carouselItemsPage() {
+ @layout("Carousel items") {
+  <main class="tokens-page">
+   <a href="/components/carousel#component-preview">Back to carousel</a>
+   <h1>Carousel items</h1>
+   <ol class="md-carousel-all-items">
+    for index := range 6 {
+     <li>
+      @carouselArtwork(index)
+      <span>{ fmt.Sprintf("Item %d",index+1) }</span>
+     </li>
+    }
+   </ol>
+  </main>
+ }
 }
