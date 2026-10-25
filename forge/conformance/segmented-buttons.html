@@ -21,10 +21,13 @@ button.onclick=async()=>{
    assert(changes===1&&inputEvents===1,`${variant}: selection emits one native input/change pair`);
    assert(d.activeElement===home,`${variant}: activation retains input focus`);
    assert(enter(home,true)&&home.checked&&changes===1,`${variant}: repeated Enter is consumed without reactivation`);
+   assert(home.closest('.md-segmented-buttons').getAttribute('role')===(variant==='single'?'radiogroup':'group'),`${variant}: selection container exposes the correct role`);
    if(variant==='single'){
     assert(inputs.filter(input=>input.checked).length===1,'Single-select activation preserves radio exclusivity');
     enter(home);assert(home.checked&&changes===1,'Enter on selected radio preserves its native selection');
    }else{
+    const before=inputs.map(input=>input.checked);home.focus();home.dispatchEvent(new w.KeyboardEvent('keydown',{key:'ArrowRight',bubbles:true,cancelable:true}));
+    assert(d.activeElement===inputs[1]&&inputs.every((input,index)=>input.checked===before[index]),'Multi-select arrow moves focus without changing selection');
     enter(home);assert(!home.checked&&changes===2&&inputEvents===2,'Multi-select Enter deselects with one native event pair');
     for(const input of inputs)if(!input.checked)enter(input);
     assert(inputs.every(input=>input.checked),'Multi-select Enter can select every segment');

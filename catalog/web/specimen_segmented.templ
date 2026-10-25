@@ -1,7 +1,7 @@
 package web
 
 templ specimenSegmented(c componentCase) {
-	<div { c.Attributes()... } role="group" aria-label="View selection">
+	<div { c.Attributes()... } role={ c.SegmentRole() } aria-label="View selection">
 		for i,label := range []string{"Home","Files","Saved"} {
 			<label { c.SegmentAttributes(i)... }>
 				<input { c.SegmentInput(i,label)... }/>

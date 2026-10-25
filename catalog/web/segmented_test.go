@@ -1,7 +1,10 @@
 package web
 
 import (
+	"bytes"
+	"context"
 	"net/url"
+	"strings"
 	"testing"
 )
 
@@ -26,5 +29,17 @@ func TestSegmentedDensityConfiguration(t *testing.T) {
 	}
 	if err := configureSegmentedPreview(&componentPreview{}, url.Values{"preview.density": {"-4"}}); err == nil {
 		t.Fatal("unsupported density must be rejected")
+	}
+}
+
+func TestSegmentedSelectionRoles(t *testing.T) {
+	for variant, role := range map[string]string{"single": "radiogroup", "multiple": "group"} {
+		var out bytes.Buffer
+		if err := specimenSegmented(componentCase{Family: "segmented", Variant: variant, Control: "label", State: "interactive"}).Render(context.Background(), &out); err != nil {
+			t.Fatal(err)
+		}
+		if !strings.Contains(out.String(), `role="`+role+`"`) {
+			t.Fatal(variant, "missing", role)
+		}
 	}
 }

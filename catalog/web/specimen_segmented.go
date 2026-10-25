@@ -22,3 +22,10 @@ func (c componentCase) SegmentInput(index int, label string) templ.Attributes {
 	}
 	return templ.Attributes{"type": kind, "name": c.ID(), "checked": c.ItemSelected(index), "disabled": c.State == "disabled", "aria-label": label}
 }
+
+func (c componentCase) SegmentRole() string {
+	if c.Variant == "multiple" {
+		return "group"
+	}
+	return "radiogroup"
+}
