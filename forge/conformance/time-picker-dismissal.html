@@ -9,6 +9,7 @@ const root=d.querySelector('#component-preview .md-time-demo'),panel=root.queryS
 const finish=async()=>{await Promise.all(panel.getAnimations().map(a=>a.finished.catch(()=>{})));await new Promise(w.requestAnimationFrame)};
 const pointer=(type,outside,id=1)=>{const r=panel.getBoundingClientRect();panel.dispatchEvent(new w.PointerEvent(type,{bubbles:true,button:0,isPrimary:true,pointerId:id,clientX:outside?r.left-10:r.left+10,clientY:r.top+10}));};
 opener.click();await finish();assert(panel.open,'Dialog opens');
+const mode=panel.querySelector('[data-time-mode]');assert(mode.getAttribute('aria-label')==='Toggle input picker','Clock mode names its input toggle');mode.click();assert(mode.getAttribute('aria-label')==='Toggle dial picker','Input mode names its dial toggle');assert(panel.querySelector('[data-time-input="hour"]').getAttribute('aria-label')==='Hour'&&panel.querySelector('[data-time-input="minute"]').getAttribute('aria-label')==='Minute','Input names match Hour and Minute labels');mode.click();
 pointer('pointerdown',false);pointer('pointerup',true);await finish();assert(panel.open,'Dragging out from the panel does not dismiss');
 pointer('pointerdown',true);pointer('pointerup',false);await finish();assert(panel.open,'Dragging into the panel does not dismiss');
 pointer('pointerdown',true);pointer('pointercancel',true);pointer('pointerup',true);await finish();assert(panel.open,'Cancelled pointer cannot dismiss');

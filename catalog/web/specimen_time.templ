@@ -38,7 +38,7 @@ templ specimenTime(c componentCase) {
 				</div>
 			</div>
 			<p class="md-time-error md-typescale-body-small" id={ c.ID() + "-error" } data-time-error role="alert"></p>
-			<footer class="md-time-actions"><button class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" type="button" data-time-mode aria-label="Use keyboard input">@materialSymbol("keyboard")
+			<footer class="md-time-actions"><button class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" type="button" data-time-mode aria-label={ c.TimeModeLabel() }>@materialSymbol("keyboard")
 @materialSymbol("schedule")
 </button><span></span><button class="md-button md-text-button" type="button" data-time-cancel>Cancel</button><button class="md-button md-text-button" type="button" data-time-save>OK</button></footer>
 		</dialog>

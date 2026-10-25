@@ -27,3 +27,12 @@ func TestTimePickerProfiles(t *testing.T) {
 		}
 	}
 }
+
+func TestTimeInputNamesMatchTheirVisibleLabels(t *testing.T) {
+	c := componentCase{Family: "time", Variant: "input"}
+	for part, label := range map[string]string{"hour": "Hour", "minute": "Minute"} {
+		if c.TimeInput(part)["aria-label"] != label {
+			t.Errorf("%s input must be named %s", part, label)
+		}
+	}
+}

@@ -219,7 +219,20 @@ func specimenTime(c componentCase) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "\" data-time-error role=\"alert\"></p><footer class=\"md-time-actions\"><button class=\"md-icon-button md-standard-icon-button\" data-size=\"small\" data-shape=\"round\" type=\"button\" data-time-mode aria-label=\"Use keyboard input\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "\" data-time-error role=\"alert\"></p><footer class=\"md-time-actions\"><button class=\"md-icon-button md-standard-icon-button\" data-size=\"small\" data-shape=\"round\" type=\"button\" data-time-mode aria-label=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var8 string
+		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(c.TimeModeLabel())
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/specimen_time.templ`, Line: 41, Col: 186}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -231,7 +244,7 @@ func specimenTime(c componentCase) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "</button><span></span><button class=\"md-button md-text-button\" type=\"button\" data-time-cancel>Cancel</button><button class=\"md-button md-text-button\" type=\"button\" data-time-save>OK</button></footer></dialog> <output class=\"md-typescale-body-small\" data-time-output aria-live=\"polite\"></output></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "</button><span></span><button class=\"md-button md-text-button\" type=\"button\" data-time-cancel>Cancel</button><button class=\"md-button md-text-button\" type=\"button\" data-time-save>OK</button></footer></dialog> <output class=\"md-typescale-body-small\" data-time-output aria-live=\"polite\"></output></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

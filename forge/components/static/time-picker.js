@@ -33,7 +33,7 @@
  function render(state,syncInputs=true){
   const {panel,dial}=state;panel.dataset.active=state.active;
   panel.querySelector('[data-time-title]').textContent=panel.dataset.mode==='input'?'Enter time':'Select time';
-  panel.querySelector('[data-time-mode]').setAttribute('aria-label',panel.dataset.mode==='input'?'Use clock':'Use keyboard input');
+  panel.querySelector('[data-time-mode]').setAttribute('aria-label',panel.dataset.mode==='input'?'Toggle dial picker':'Toggle input picker');
   for(const part of ['hour','minute']){
    const value=part==='hour'?hourDisplay(state):state.minute,button=panel.querySelector(`[data-time-value="${part}"]`);
    button.textContent=pad(value);pressed(button,state.active===part);

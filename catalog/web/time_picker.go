@@ -34,7 +34,7 @@ func (c componentCase) TimeValue(part string) templ.Attributes {
 	return a
 }
 func (c componentCase) TimeInput(part string) templ.Attributes {
-	a := templ.Attributes{"class": "md-time-field", "type": "text", "inputmode": "numeric", "maxlength": "2", "autocomplete": "off", "data-time-input": part, "value": "10", "id": c.ID() + "-" + part, "aria-label": map[string]string{"hour": "Hours", "minute": "Minutes"}[part], "aria-describedby": c.ID() + "-error"}
+	a := templ.Attributes{"class": "md-time-field", "type": "text", "inputmode": "numeric", "maxlength": "2", "autocomplete": "off", "data-time-input": part, "value": "10", "id": c.ID() + "-" + part, "aria-label": map[string]string{"hour": "Hour", "minute": "Minute"}[part], "aria-describedby": c.ID() + "-error"}
 	if c.Control == "field" && c.State != "interactive" && part == c.TimeActive() {
 		a["data-component-state"] = c.State
 	}
@@ -97,4 +97,11 @@ func (c componentCase) TimeTicks() []timeTick {
 }
 func (t timeTick) Style() string {
 	return fmt.Sprintf("--_time-label-x:%g%%;--_time-label-y:%g%%;", t.X, t.Y)
+}
+
+func (c componentCase) TimeModeLabel() string {
+	if c.Variant == "input" {
+		return "Toggle dial picker"
+	}
+	return "Toggle input picker"
 }
