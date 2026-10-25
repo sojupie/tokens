@@ -5,326 +5,326 @@
   "sources": [
     {
       "url": "https://m3.material.io/components/navigation-rail/overview",
-      "capture": "snapshots/material-guidance/20261025T000802.833742676Z-1206544418/capture.json",
+      "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
       "markdownSha256": "8fd06b6ded2a154f8a8fb9d271fa5fbc3dfa9b6543b0cfb5b71b4afd8fc63ad7",
-      "extractorVersion": 1,
+      "extractorVersion": 2,
       "sections": [
         {
           "id": "page",
           "title": "Navigation rail",
-          "status": "pending",
+          "status": "mapped",
           "notes": ""
         },
         {
           "id": "d529f73e-2107-485d-8013-523f2d1aa9be",
           "title": "Availability & resources",
-          "status": "pending",
-          "notes": ""
+          "status": "no-requirements",
+          "notes": "Upstream resource status: Figma, Flutter, Compose, Compose Expressive, Android Views and Android Views Expressive available; Web and Web Expressive unavailable. These describe Google’s resources, not this project’s coverage."
         },
         {
           "id": "8a87fc8b-1e69-4e45-a48c-68cdddee57a4",
           "title": "M3 Expressive update",
-          "status": "pending",
+          "status": "mapped",
           "notes": ""
         },
         {
           "id": "6aaeb85e-5336-465a-8bd8-53c0e6b03aa6",
           "title": "Differences from M2",
-          "status": "pending",
-          "notes": ""
+          "status": "no-requirements",
+          "notes": "Historical comparison. Current active-indicator, color and Android back instructions are captured from specs and guidelines."
         }
       ]
     },
     {
       "url": "https://m3.material.io/components/navigation-rail/specs",
-      "capture": "snapshots/material-guidance/20261025T000802.833742676Z-1206544418/capture.json",
-      "markdownSha256": "dffdbd6d27c6f2e7ad8d5ca70dea195532e1b60e87a8ec9f63b24b729ad97ce2",
-      "extractorVersion": 1,
+      "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+      "markdownSha256": "096befaa862ddf1aae2748f6f5a528f65eaf26f9897e15e3ffe4a6197633f62c",
+      "extractorVersion": 2,
       "sections": [
         {
           "id": "page",
           "title": "Navigation rail",
-          "status": "pending",
-          "notes": ""
+          "status": "no-requirements",
+          "notes": "Section heading or descriptive introduction; actionable instructions are mapped in its child sections."
         },
         {
           "id": "25d13d57-3467-4d70-bdbd-fb96b43fc9f7",
           "title": "Variants",
-          "status": "pending",
+          "status": "mapped",
           "notes": ""
         },
         {
           "id": "c8c4ae5c-369b-451e-9f92-b77c5913b056",
           "title": "Baseline variants",
-          "status": "pending",
-          "notes": ""
+          "status": "no-requirements",
+          "notes": "The baseline replacement recommendation and availability table are recorded under Variants and M3 Expressive update; this subsection repeats the recommendation."
         },
         {
           "id": "272d0b54-d47f-42bc-80af-35ff411ff1b7",
           "title": "Configurations",
-          "status": "pending",
+          "status": "mapped",
           "notes": ""
         },
         {
           "id": "ac8ac985-9d8f-46ee-bf23-1b60c4dc85d9",
           "title": "Tokens & specs",
-          "status": "pending",
-          "notes": ""
+          "status": "no-requirements",
+          "notes": "Interactive token-table controls; token values, contexts and references are captured by the separate token pipeline. No additional prose requirement is present."
         },
         {
           "id": "55668944-02e9-45b5-9810-ad2813ffd246",
           "title": "Anatomy",
-          "status": "pending",
+          "status": "mapped",
           "notes": ""
         },
         {
           "id": "8ae2e911-9ca0-4333-ba34-0b86171f1a10",
           "title": "Color",
-          "status": "pending",
+          "status": "mapped",
           "notes": ""
         },
         {
           "id": "8452f20c-f3e2-4e53-8dc1-a52e6d841eab",
           "title": "States",
-          "status": "pending",
+          "status": "mapped",
           "notes": ""
         },
         {
           "id": "5d3c368a-111d-4476-aa38-212838676b6f",
           "title": "Measurements",
-          "status": "pending",
-          "notes": ""
+          "status": "unclear",
+          "notes": "Width, icon, expanded-indicator, section-header and icon-label measurements were transcribed from the diagram. The collapsed 4dp and 6dp callouts have ambiguous target boundaries; leave these unmapped until their geometry is confirmed."
         },
         {
           "id": "3b4dc0bd-36f6-4da8-80f0-748fee3b9a4b",
           "title": "Common layouts",
-          "status": "pending",
-          "notes": ""
+          "status": "no-requirements",
+          "notes": "Illustrates combinations of already documented optional menu and FAB elements with three destinations; adds no independent requirement."
         },
         {
           "id": "0e5ce386-7f99-4e83-9c50-f284924ee710",
           "title": "Baseline navigation rail",
-          "status": "pending",
-          "notes": ""
+          "status": "no-requirements",
+          "notes": "Introduces historical baseline anatomy. Optional menu and badges repeat the current anatomy; the baseline remains available for comparison, not the recommended Expressive configuration."
         },
         {
           "id": "d4d97764-20ec-496f-a6f3-0d423940ec5a",
           "title": "Tokens & specs",
-          "status": "pending",
-          "notes": ""
+          "status": "no-requirements",
+          "notes": "Interactive token-table controls; token values, contexts and references are captured by the separate token pipeline. No additional prose requirement is present."
         },
         {
           "id": "d23991f1-0c3b-4e22-a7a8-71b50ac0eec2",
           "title": "Color",
-          "status": "pending",
+          "status": "mapped",
           "notes": ""
         },
         {
           "id": "9cae5bfb-1d84-4b74-a049-6793688e422d",
           "title": "States",
-          "status": "pending",
+          "status": "mapped",
           "notes": ""
         },
         {
           "id": "786c9861-2d9e-47e0-9cb7-7e6b397ed452",
           "title": "Measurements",
-          "status": "pending",
+          "status": "mapped",
           "notes": ""
         },
         {
           "id": "f0ac4694-df75-4b97-8f67-7bb8fb3f5a45",
           "title": "Configurations",
-          "status": "pending",
-          "notes": ""
+          "status": "no-requirements",
+          "notes": "Historical examples of menu, FAB and label arrangements; no additional normative instruction beyond the element options already recorded."
         }
       ]
     },
     {
       "url": "https://m3.material.io/components/navigation-rail/guidelines",
-      "capture": "snapshots/material-guidance/20261025T000802.833742676Z-1206544418/capture.json",
+      "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
       "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
-      "extractorVersion": 1,
+      "extractorVersion": 2,
       "sections": [
         {
           "id": "page",
           "title": "Navigation rail",
-          "status": "pending",
+          "status": "mapped",
           "notes": ""
         },
         {
           "id": "d9d85ba1-db8f-491a-a555-c1f5221c69f8",
           "title": "Usage",
-          "status": "pending",
-          "notes": ""
+          "status": "no-requirements",
+          "notes": "Section heading or descriptive introduction; actionable instructions are mapped in its child sections."
         },
         {
           "id": "2ce36141-cffb-4dec-9920-85ebb9ec61f5",
           "title": "Collapsed",
-          "status": "pending",
-          "notes": ""
+          "status": "unclear",
+          "notes": "Instructions are recorded, but the medium-window navigation-bar recommendation conflicts with Resizing. No single medium-width recommendation is inferred."
         },
         {
           "id": "2679d9cc-f07c-406f-897e-b343343754f7",
           "title": "Expanded",
-          "status": "pending",
+          "status": "mapped",
           "notes": ""
         },
         {
           "id": "b51e4558-351f-4368-af8d-bbf1f63f68b4",
           "title": "Anatomy",
-          "status": "pending",
-          "notes": ""
+          "status": "no-requirements",
+          "notes": "Section heading or descriptive introduction; actionable instructions are mapped in its child sections."
         },
         {
           "id": "2a0733ed-6753-4358-9b05-203a9c1277d7",
           "title": "Container",
-          "status": "pending",
+          "status": "mapped",
           "notes": ""
         },
         {
           "id": "310aa883-0496-4cdb-aaae-4e38ade9d76a",
           "title": "Menu (optional)",
-          "status": "pending",
+          "status": "mapped",
           "notes": ""
         },
         {
           "id": "3bdde9e4-7698-4dfb-9ffb-36285bca6329",
           "title": "Floating action button (FAB) (optional)",
-          "status": "pending",
+          "status": "mapped",
           "notes": ""
         },
         {
           "id": "8ed5c071-9ded-427f-9055-704e6ed9ffa7",
           "title": "Active indicator",
-          "status": "pending",
+          "status": "mapped",
           "notes": ""
         },
         {
           "id": "39b8de9a-0d7d-421b-ba8b-def057484a00",
           "title": "Icons",
-          "status": "pending",
+          "status": "mapped",
           "notes": ""
         },
         {
           "id": "b59dc6d4-54fd-4e94-8243-838505acbaf4",
           "title": "Label text",
-          "status": "pending",
+          "status": "mapped",
           "notes": ""
         },
         {
           "id": "9d866fc5-e27b-4b3d-aaca-7b8df55bb6cb",
           "title": "Badges",
-          "status": "pending",
+          "status": "mapped",
           "notes": ""
         },
         {
           "id": "368a70ed-784f-47ab-95f5-4a2f403ddae7",
           "title": "Divider (optional)",
-          "status": "pending",
+          "status": "mapped",
           "notes": ""
         },
         {
           "id": "5802f97a-4b57-4d32-8e06-5e02a3e78ac2",
           "title": "Placement",
-          "status": "pending",
+          "status": "mapped",
           "notes": ""
         },
         {
           "id": "833be642-c952-4c72-bbdb-9d4c3f722df5",
           "title": "Adaptive design",
-          "status": "pending",
-          "notes": ""
+          "status": "no-requirements",
+          "notes": "Section heading or descriptive introduction; actionable instructions are mapped in its child sections."
         },
         {
           "id": "250762ac-446f-4652-9d30-f1e8f437570c",
           "title": "Resizing",
-          "status": "pending",
-          "notes": ""
+          "status": "unclear",
+          "notes": "Compact and expanded recommendations are recorded. The medium-window recommendation conflicts with Collapsed; retain the unresolved choice."
         },
         {
           "id": "c4ee17d8-8744-49da-aa55-8d5ab9c51af9",
           "title": "Presentation",
-          "status": "pending",
+          "status": "mapped",
           "notes": ""
         },
         {
           "id": "a8ca0fbf-4923-41de-83a2-3ecc9cb81021",
           "title": "Behavior",
-          "status": "pending",
-          "notes": ""
+          "status": "no-requirements",
+          "notes": "Section heading or descriptive introduction; actionable instructions are mapped in its child sections."
         },
         {
           "id": "833fb41a-f313-4d27-869c-a1df51b82b65",
           "title": "Scrolling",
-          "status": "pending",
+          "status": "mapped",
           "notes": ""
         },
         {
           "id": "8948a184-9a01-47d9-900d-e7f277a807d0",
           "title": "Selection",
-          "status": "pending",
-          "notes": ""
+          "status": "unclear",
+          "notes": "Indicator expansion and the named transition pattern are recorded. Detailed motion requirements depend on the linked transition-pattern guidance, not captured in this run."
         },
         {
           "id": "8adc88cf-830b-49b7-9d16-90b38e79786f",
           "title": "Back",
-          "status": "pending",
+          "status": "mapped",
           "notes": ""
         }
       ]
     },
     {
       "url": "https://m3.material.io/components/navigation-rail/accessibility",
-      "capture": "snapshots/material-guidance/20261025T000802.833742676Z-1206544418/capture.json",
+      "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
       "markdownSha256": "97be8aa1b310099941b19a4b6cbe083fc76d37f7f5ad83d89cf9eb2062db6713",
-      "extractorVersion": 1,
+      "extractorVersion": 2,
       "sections": [
         {
           "id": "page",
           "title": "Navigation rail",
-          "status": "pending",
-          "notes": ""
+          "status": "no-requirements",
+          "notes": "Section heading or descriptive introduction; actionable instructions are mapped in its child sections."
         },
         {
           "id": "5a80f844-0997-43d3-88ad-29dd8757ea5d",
           "title": "Use cases",
-          "status": "pending",
+          "status": "mapped",
           "notes": ""
         },
         {
           "id": "0e7aba92-b082-47cb-a547-982996e6d186",
           "title": "Interaction & style",
-          "status": "pending",
+          "status": "mapped",
           "notes": ""
         },
         {
           "id": "88aff451-dd18-4b08-9939-3bbf43564593",
           "title": "Text scaling and truncation",
-          "status": "pending",
+          "status": "mapped",
           "notes": ""
         },
         {
           "id": "daf53388-d7f7-4c38-9d2a-3f64abab9b13",
           "title": "Initial focus",
-          "status": "pending",
+          "status": "mapped",
           "notes": ""
         },
         {
           "id": "1409bd2d-4d1a-4ca8-91c4-13cbbe90bb58",
           "title": "Visual indicators",
-          "status": "pending",
+          "status": "mapped",
           "notes": ""
         },
         {
           "id": "cceea166-591b-4429-bfdc-10cd98559e26",
           "title": "Keyboard navigation",
-          "status": "pending",
+          "status": "mapped",
           "notes": ""
         },
         {
           "id": "5c621a2e-eeb9-40a9-aea1-bafc1f3426d0",
           "title": "Labeling elements",
-          "status": "pending",
+          "status": "mapped",
           "notes": ""
         }
       ]
@@ -333,10 +333,10 @@
   "checks": [
     {
       "id": "leading-edge-placement",
-      "statement": "Place the navigation rail vertically along the leading edge of the window.",
+      "statement": "The navigation rail should be placed vertically along the leading edge of the window.",
       "condition": "When integrating a navigation rail: left for LTR content, right for RTL content.",
       "basis": "explicit",
-      "notes": "Initial example of the curation contract; implementation has not been assessed under this format.",
+      "notes": "",
       "sourceHistory": [
         {
           "change": "added",
@@ -347,6 +347,1914 @@
           "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
           "extractorVersion": 1,
           "summary": "Record the captured Container instruction without importing the exploratory audit assessments."
+        },
+        {
+          "change": "corrected",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "2a0733ed-6753-4358-9b05-203a9c1277d7",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Preserve the source’s should recommendation rather than an unconditional imperative; confirm provenance against extractor version 2."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 2,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "consistent-placement",
+      "statement": "Always put the rail in the same place across screens of an app.",
+      "condition": "When the app uses a navigation rail.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/overview",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "8fd06b6ded2a154f8a8fb9d271fa5fbc3dfa9b6543b0cfb5b71b4afd8fc63ad7",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "rail-destination-count",
+      "statement": "The rail should contain 3–7 destinations, with an optional FAB.",
+      "condition": "When configuring primary rail destinations.",
+      "basis": "explicit",
+      "notes": "The guidelines apply the count specifically to the collapsed rail; expanded rails may reveal secondary destinations.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/overview",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "8fd06b6ded2a154f8a8fb9d271fa5fbc3dfa9b6543b0cfb5b71b4afd8fc63ad7",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "expressive-rail-variants",
+      "statement": "M3 Expressive introduces collapsed and expanded navigation rails.",
+      "condition": "When exposing design-generation availability for navigation rail variants.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/overview",
+          "section": "8a87fc8b-1e69-4e45-a48c-68cdddee57a4",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "8fd06b6ded2a154f8a8fb9d271fa5fbc3dfa9b6543b0cfb5b71b4afd8fc63ad7",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "baseline-rail-recommendation",
+      "statement": "The baseline navigation rail is no longer recommended; use the collapsed rail instead.",
+      "condition": "When choosing a rail configuration under M3 Expressive.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/overview",
+          "section": "8a87fc8b-1e69-4e45-a48c-68cdddee57a4",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "8fd06b6ded2a154f8a8fb9d271fa5fbc3dfa9b6543b0cfb5b71b4afd8fc63ad7",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "expanded-replaces-drawer",
+      "statement": "The expanded navigation rail replaces the navigation drawer.",
+      "condition": "When choosing the corresponding M3 Expressive navigation component.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/overview",
+          "section": "8a87fc8b-1e69-4e45-a48c-68cdddee57a4",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "8fd06b6ded2a154f8a8fb9d271fa5fbc3dfa9b6543b0cfb5b71b4afd8fc63ad7",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "baseline-and-expressive-availability",
+      "statement": "Collapsed and expanded rails are available in M3 Expressive; the baseline rail is available in M3 and not recommended in M3 Expressive.",
+      "condition": "When presenting variant availability and recommendation metadata.",
+      "basis": "explicit",
+      "notes": "Read the complete variant table with the M3 and M3 Expressive column headers; -- denotes no listed availability.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/specs",
+          "section": "25d13d57-3467-4d70-bdbd-fb96b43fc9f7",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "096befaa862ddf1aae2748f6f5a528f65eaf26f9897e15e3ffe4a6197633f62c",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "expanded-layout-configurations",
+      "statement": "The expanded rail supports standard (default) and modal layouts; M3 provides their predecessors as navigation drawers.",
+      "condition": "When exposing expanded layout configurations and generation availability.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/specs",
+          "section": "272d0b54-d47f-42bc-80af-35ff411ff1b7",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "096befaa862ddf1aae2748f6f5a528f65eaf26f9897e15e3ffe4a6197633f62c",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "hide-when-collapsed-availability",
+      "statement": "Hide when collapsed is an M3 Expressive expanded-rail behavior.",
+      "condition": "When exposing expanded behavior configurations.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/specs",
+          "section": "272d0b54-d47f-42bc-80af-35ff411ff1b7",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "096befaa862ddf1aae2748f6f5a528f65eaf26f9897e15e3ffe4a6197633f62c",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "expressive-item-anatomy",
+      "statement": "A collapsed or expanded rail destination contains an icon, active indicator and label; menu, FAB or extended FAB and badges are optional.",
+      "condition": "When composing an M3 Expressive rail.",
+      "basis": "explicit",
+      "notes": "Element list and diagram identify anatomy; detailed indicator and badge behavior is captured separately.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/specs",
+          "section": "55668944-02e9-45b5-9810-ad2813ffd246",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "096befaa862ddf1aae2748f6f5a528f65eaf26f9897e15e3ffe4a6197633f62c",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section and visually inspected diagram."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "expressive-color-roles",
+      "statement": "Use surface-container for the optional container, on-secondary-container for the active icon, secondary-container for the active indicator, secondary for the vertical active label, on-secondary-container for the horizontal active label, on-surface-variant for inactive icons and labels, error for badges and on-error for badge text.",
+      "condition": "When mapping collapsed and expanded rail colors in light and dark schemes.",
+      "basis": "explicit",
+      "notes": "Read the numbered diagram together with its nine color-role entries. FAB colors belong to the FAB component.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/specs",
+          "section": "8ae2e911-9ca0-4333-ba34-0b86171f1a10",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "096befaa862ddf1aae2748f6f5a528f65eaf26f9897e15e3ffe4a6197633f62c",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section and visually inspected diagram."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "full-width-target",
+      "statement": "The navigation item target area always spans the full rail width even when the visible item container hugs its content.",
+      "condition": "For collapsed and expanded rail destinations.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/specs",
+          "section": "8452f20c-f3e2-4e53-8dc1-a52e6d841eab",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "096befaa862ddf1aae2748f6f5a528f65eaf26f9897e15e3ffe4a6197633f62c",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "expressive-interaction-states",
+      "statement": "Represent enabled, hovered, focused and pressed states for navigation destinations.",
+      "condition": "When rendering collapsed and expanded rail items.",
+      "basis": "explicit",
+      "notes": "State diagrams show overlays for hovered, focused and pressed items; selection remains visible independently.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/specs",
+          "section": "8452f20c-f3e2-4e53-8dc1-a52e6d841eab",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "096befaa862ddf1aae2748f6f5a528f65eaf26f9897e15e3ffe4a6197633f62c",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section and visually inspected diagram."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "expressive-rail-widths",
+      "statement": "Use a 96dp collapsed rail and a 220–360dp expanded rail.",
+      "condition": "At the default text scale for M3 Expressive rails.",
+      "basis": "explicit",
+      "notes": "Visually read the width callouts in the captured section’s measurement diagram; dp is a design measurement, mapped to CSS px by the web implementation.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/specs",
+          "section": "5d3c368a-111d-4476-aa38-212838676b6f",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "096befaa862ddf1aae2748f6f5a528f65eaf26f9897e15e3ffe4a6197633f62c",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section and visually inspected diagram."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "expressive-icon-size",
+      "statement": "Use 24dp destination icons.",
+      "condition": "At the default text scale for collapsed and expanded rails.",
+      "basis": "explicit",
+      "notes": "Visually read both 24 callouts in the measurement diagram.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/specs",
+          "section": "5d3c368a-111d-4476-aa38-212838676b6f",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "096befaa862ddf1aae2748f6f5a528f65eaf26f9897e15e3ffe4a6197633f62c",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section and visually inspected diagram."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "expanded-indicator-measurements",
+      "statement": "Use a 56dp expanded active indicator height, a 36dp rail-edge-to-indicator inset and a 16dp indicator-edge-to-icon inset.",
+      "condition": "For the horizontal expanded destination layout at default text scale.",
+      "basis": "explicit",
+      "notes": "Visually read the expanded measurement diagram; these insets refer to the leading edge shown in the LTR illustration.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/specs",
+          "section": "5d3c368a-111d-4476-aa38-212838676b6f",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "096befaa862ddf1aae2748f6f5a528f65eaf26f9897e15e3ffe4a6197633f62c",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section and visually inspected diagram."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "expanded-section-header-spacing",
+      "statement": "Use 12dp above and 8dp below an expanded section header.",
+      "condition": "When a section header groups expanded navigation destinations.",
+      "basis": "explicit",
+      "notes": "Visually read the two section-header callouts in the measurement diagram.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/specs",
+          "section": "5d3c368a-111d-4476-aa38-212838676b6f",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "096befaa862ddf1aae2748f6f5a528f65eaf26f9897e15e3ffe4a6197633f62c",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section and visually inspected diagram."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "collapsed-icon-label-gap",
+      "statement": "Use an 8dp gap between the destination icon and label.",
+      "condition": "For the collapsed vertical destination layout at default text scale.",
+      "basis": "explicit",
+      "notes": "Visually read the 8 callout between icon and label in the measurement diagram.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/specs",
+          "section": "5d3c368a-111d-4476-aa38-212838676b6f",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "096befaa862ddf1aae2748f6f5a528f65eaf26f9897e15e3ffe4a6197633f62c",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section and visually inspected diagram."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "baseline-color-roles",
+      "statement": "Use on-secondary-container for the active icon, secondary-container for its indicator, on-surface for the active label, on-surface-variant for inactive icons and labels, error for badges and on-error for badge text.",
+      "condition": "When mapping baseline navigation rail colors.",
+      "basis": "explicit",
+      "notes": "Read the baseline numbered color diagram with its eight role entries.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/specs",
+          "section": "d23991f1-0c3b-4e22-a7a8-71b50ac0eec2",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "096befaa862ddf1aae2748f6f5a528f65eaf26f9897e15e3ffe4a6197633f62c",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section and visually inspected diagram."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "baseline-interaction-states",
+      "statement": "Represent enabled, hovered, focused and pressed states for both active and inactive destinations.",
+      "condition": "When rendering the baseline rail.",
+      "basis": "explicit",
+      "notes": "Visually inspected the eight-state diagram.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/specs",
+          "section": "9cae5bfb-1d84-4b74-a049-6793688e422d",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "096befaa862ddf1aae2748f6f5a528f65eaf26f9897e15e3ffe4a6197633f62c",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section and visually inspected diagram."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "baseline-size-measurements",
+      "statement": "Use an 80dp baseline rail, 24dp icons, a 56×32dp active indicator and 56dp destination height.",
+      "condition": "At the baseline rail’s default text scale.",
+      "basis": "explicit",
+      "notes": "Visually read the size-measurement diagram, not the Expressive diagram.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/specs",
+          "section": "786c9861-2d9e-47e0-9cb7-7e6b397ed452",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "096befaa862ddf1aae2748f6f5a528f65eaf26f9897e15e3ffe4a6197633f62c",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section and visually inspected diagram."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "baseline-spacing-measurements",
+      "statement": "Use 12dp horizontal indicator margins, 4dp between icon and label, and 12dp between destination areas.",
+      "condition": "At the baseline rail’s default text scale.",
+      "basis": "explicit",
+      "notes": "Visually read the separate baseline padding-and-margin diagram.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/specs",
+          "section": "786c9861-2d9e-47e0-9cb7-7e6b397ed452",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "096befaa862ddf1aae2748f6f5a528f65eaf26f9897e15e3ffe4a6197633f62c",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section and visually inspected diagram."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "menu-expansion",
+      "statement": "The menu button transitions between collapsed and expanded rails.",
+      "condition": "When a menu button is included.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "page",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "collapsed-remains-visible",
+      "statement": "The collapsed navigation rail should not be hidden.",
+      "condition": "When the collapsed rail is the selected navigation pattern.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "2ce36141-cffb-4dec-9920-85ebb9ec61f5",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "compact-navigation-bar",
+      "statement": "Compact windows should use a navigation bar instead of a standard rail.",
+      "condition": "When choosing persistent navigation for compact windows.",
+      "basis": "explicit",
+      "notes": "Expanded modal rails can still open from menu buttons on mobile; do not treat this as a ban on modal expansion.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "2ce36141-cffb-4dec-9920-85ebb9ec61f5",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "exclusive-primary-navigation",
+      "statement": "A navigation rail should be the only visible primary navigation element.",
+      "condition": "When using a rail; tabs may provide a separate navigation level.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "2ce36141-cffb-4dec-9920-85ebb9ec61f5",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "medium-navigation-choice",
+      "statement": "Consider a navigation bar in medium windows with few destinations.",
+      "condition": "When choosing navigation for a medium window.",
+      "basis": "explicit",
+      "notes": "This conflicts with Resizing’s “Only use navigation rails for medium breakpoints and larger. Don’t use a navigation bar.” Preserve both instructions until resolved.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "2ce36141-cffb-4dec-9920-85ebb9ec61f5",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "expanded-menu-opener",
+      "statement": "An expanded navigation rail should open from a menu icon.",
+      "condition": "When opening standard or modal expanded navigation.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "2679d9cc-f07c-406f-897e-b343343754f7",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "expanded-secondary-destinations",
+      "statement": "An expanded rail may reveal secondary destinations that are not visible when collapsed.",
+      "condition": "When additional destinations are needed.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "2679d9cc-f07c-406f-897e-b343343754f7",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "expanded-layout-placement",
+      "statement": "Place the standard expanded rail beside body content and the modal expanded rail over body content.",
+      "condition": "When choosing expanded rail modality.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "2679d9cc-f07c-406f-897e-b343343754f7",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "modal-layout-use",
+      "statement": "Use a modal expanded rail for information-dense layouts with limited space or products with many navigation items.",
+      "condition": "When choosing standard versus modal expanded navigation.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "2679d9cc-f07c-406f-897e-b343343754f7",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "immersive-hidden-rail",
+      "statement": "The expanded rail may be hidden in immersive experiences and appear when the menu icon is selected.",
+      "condition": "When using hide-when-collapsed expanded behavior; the menu icon must remain accessible.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "2679d9cc-f07c-406f-897e-b343343754f7",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "transparent-container-contrast",
+      "statement": "When the container fill is turned off, all rail items must retain at least 3:1 color contrast.",
+      "condition": "When rendering the rail directly on the surrounding surface.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "2a0733ed-6753-4358-9b05-203a9c1277d7",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "vertical-orientation",
+      "statement": "The navigation rail should run vertically along the side of a layout; use a navigation bar for horizontal navigation.",
+      "condition": "When placing a rail in a page layout.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "2a0733ed-6753-4358-9b05-203a9c1277d7",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "destination-group-alignment",
+      "statement": "Rail destinations may be top- or center-aligned as a group; use center alignment on tablets.",
+      "condition": "When positioning the destination group for reachability.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "2a0733ed-6753-4358-9b05-203a9c1277d7",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "menu-fab-top-alignment",
+      "statement": "The menu icon and FAB should always be top-aligned.",
+      "condition": "When either optional control is present.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "2a0733ed-6753-4358-9b05-203a9c1277d7",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "expanded-menu-icon",
+      "statement": "The menu icon should change to indicate that the expanded rail can be collapsed.",
+      "condition": "When the rail is expanded.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "310aa883-0496-4cdb-aaae-4e38ade9d76a",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "nested-fab-elevation",
+      "statement": "A FAB nested in the navigation rail should have resting elevation level 0.",
+      "condition": "When an optional FAB is present.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "3bdde9e4-7698-4dfb-9ffb-36285bca6329",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fab-precedes-destinations",
+      "statement": "Avoid placing the FAB below navigation destinations.",
+      "condition": "When an optional FAB is present.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "3bdde9e4-7698-4dfb-9ffb-36285bca6329",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "logo-not-menu",
+      "statement": "Do not use a logo as the menu button for expanding the rail, and avoid logos that resemble actions or destinations.",
+      "condition": "When displaying branding at the top of the rail.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "3bdde9e4-7698-4dfb-9ffb-36285bca6329",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "single-active-destination",
+      "statement": "Use an active indicator only for the current open page, on no more than one destination at a time.",
+      "condition": "When displaying navigation selection.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "8ed5c071-9ded-427f-9055-704e6ed9ffa7",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "expanded-indicator-width",
+      "statement": "The expanded active indicator hugs the label and icon; it may be overridden to fill the container to resemble the baseline navigation drawer.",
+      "condition": "When sizing the visible expanded active indicator; the target remains full width.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "8ed5c071-9ded-427f-9055-704e6ed9ffa7",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "destination-icon-meaning",
+      "statement": "Navigation items must use icons that symbolize their destination’s content.",
+      "condition": "When choosing destination icons.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "39b8de9a-0d7d-421b-ba8b-def057484a00",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "selected-icon-appearance",
+      "statement": "A selected icon becomes filled and changes color, with an active indicator behind it.",
+      "condition": "When selecting a navigation destination.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "39b8de9a-0d7d-421b-ba8b-def057484a00",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "destination-labels",
+      "statement": "All navigation items require a short, meaningful one-word label describing the destination.",
+      "condition": "When authoring destination labels.",
+      "basis": "explicit",
+      "notes": "The same section permits line breaks or hyphenation when longer labels are unavoidable; retain that exception.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "b59dc6d4-54fd-4e94-8243-838505acbaf4",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "long-label-wrapping",
+      "statement": "Avoid wrapping long labels where possible; if necessary, break between words or hyphenate longer words.",
+      "condition": "When a destination label cannot fit on one line.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "b59dc6d4-54fd-4e94-8243-838505acbaf4",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "label-size-and-truncation",
+      "statement": "Do not shrink label text or replace it with an ellipsis to fit more characters.",
+      "condition": "At default text size; accessibility guidance separately allows truncation beyond 2× scaling.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "b59dc6d4-54fd-4e94-8243-838505acbaf4",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "badge-placement",
+      "statement": "Place a collapsed rail’s badge at the icon’s upper right; an expanded rail’s badge should sit next to the label.",
+      "condition": "When showing count or status badges.",
+      "basis": "interpretation",
+      "notes": "The prose says compact nav rails; interpret this as collapsed rail layout, not the compact window class.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "9d866fc5-e27b-4b3d-aaca-7b8df55bb6cb",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "content-edge-divider",
+      "statement": "An optional divider should be vertical and sit on the rail edge adjacent to app content.",
+      "condition": "When separating rail and body content with a divider.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "368a70ed-784f-47ab-95f5-4a2f403ddae7",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "outside-content-panes",
+      "statement": "The rail should sit outside body-content panes along the leading edge of the window.",
+      "condition": "When integrating navigation into an adaptive layout.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "5802f97a-4b57-4d32-8e06-5e02a3e78ac2",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "hidden-rail-opener",
+      "statement": "Body content may fill space vacated by a hidden rail as long as the menu icon remains accessible.",
+      "condition": "When hiding an expanded rail.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "5802f97a-4b57-4d32-8e06-5e02a3e78ac2",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "responsive-navigation-pattern",
+      "statement": "Use a navigation bar for compact layouts and a navigation rail for expanded to extra-large layouts; never show the bar and rail simultaneously.",
+      "condition": "When adapting navigation across window sizes.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "250762ac-446f-4652-9d30-f1e8f437570c",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "medium-rail-recommendation",
+      "statement": "Use a navigation rail at medium breakpoints and larger rather than a navigation bar.",
+      "condition": "When following the Resizing section’s medium-window recommendation.",
+      "basis": "explicit",
+      "notes": "Conflicts with Collapsed’s suggestion to consider a navigation bar for medium windows with few destinations; not resolved by this curation.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "250762ac-446f-4652-9d30-f1e8f437570c",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "many-destinations-modal",
+      "statement": "Consider a modal expanded rail when there are more than five destinations.",
+      "condition": "When choosing adaptive navigation for many destinations.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "250762ac-446f-4652-9d30-f1e8f437570c",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "expanded-content-adjustment",
+      "statement": "Page contents should adjust to fit when a standard rail expands.",
+      "condition": "When the rail expands beside content.",
+      "basis": "interpretation",
+      "notes": "The prose says page contents should adjust on expansion; scope is interpreted as standard because the Expanded section defines modal as overlapping content.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "c4ee17d8-8744-49da-aa55-8d5ab9c51af9",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fab-expansion",
+      "statement": "The FAB should transition into an extended FAB as the rail expands.",
+      "condition": "When an optional FAB is present during expansion.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "c4ee17d8-8744-49da-aa55-8d5ab9c51af9",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "secondary-destinations-standard",
+      "statement": "Use a standard expanded rail for secondary destinations or actions with lower priority than primary navigation.",
+      "condition": "When space permits an expanded rail beside content.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "c4ee17d8-8744-49da-aa55-8d5ab9c51af9",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "fixed-vertical-destinations",
+      "statement": "Rail destinations should remain fixed and visible while page content scrolls vertically.",
+      "condition": "When the body scrolls vertically.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "833fb41a-f313-4d27-869c-a1df51b82b65",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "horizontal-scroll-separation",
+      "statement": "A rail may stay fixed or scroll off-screen during horizontal scrolling; use a divider or rail elevation to distinguish content scrolling underneath.",
+      "condition": "When the layout scrolls horizontally beneath a visible rail.",
+      "basis": "explicit",
+      "notes": "The section describes level 1 as an elevation option; it does not require both divider and elevation.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "833fb41a-f313-4d27-869c-a1df51b82b65",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "selection-transition",
+      "statement": "Selecting a destination uses a top-level page transition and expands the active indicator from the icon’s center.",
+      "condition": "When a navigation destination is activated.",
+      "basis": "explicit",
+      "notes": "The linked transition-pattern page has not been captured in this run; detailed page-transition timing remains outside this check.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "8948a184-9a01-47d9-900d-e7f277a807d0",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "android-predictive-back",
+      "statement": "Predictive back applies only to the modal expanded rail and reveals the previous screen in a preview.",
+      "condition": "On Android with predictive back.",
+      "basis": "explicit",
+      "notes": "This platform-specific rule is not automatically a web requirement; applicability must be assessed separately.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/guidelines",
+          "section": "8adc88cf-830b-49b7-9d16-90b38e79786f",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "45f93e11f541bb1df65d80ff6eb41b2cc266ebe748c839a44ed9aa7acdcc60c1",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "assistive-navigation",
+      "statement": "People using assistive technology should be able to navigate destinations, select a destination and receive feedback appropriate to their input.",
+      "condition": "When interacting with the rail through assistive technology.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/accessibility",
+          "section": "5a80f844-0997-43d3-88ad-29dd8757ea5d",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "97be8aa1b310099941b19a4b6cbe083fc76d37f7f5ad83d89cf9eb2062db6713",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "selection-feedback",
+      "statement": "On selection, show the active indicator with a ripple, switch the icon from outlined to filled, and change icon and text color.",
+      "condition": "When tapping a navigation item.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/accessibility",
+          "section": "0e7aba92-b082-47cb-a547-982996e6d186",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "97be8aa1b310099941b19a4b6cbe083fc76d37f7f5ad83d89cf9eb2062db6713",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "hover-feedback",
+      "statement": "Show a hover state to signal that a destination is interactive.",
+      "condition": "When hovering a destination with a cursor.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/accessibility",
+          "section": "0e7aba92-b082-47cb-a547-982996e6d186",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "97be8aa1b310099941b19a4b6cbe083fc76d37f7f5ad83d89cf9eb2062db6713",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "destination-color-contrast",
+      "statement": "Active and inactive icon colors need sufficient contrast against the container; do not use low-contrast colors or more than two destination colors.",
+      "condition": "When choosing rail destination colors.",
+      "basis": "explicit",
+      "notes": "The section recommends the default scheme. The explicit 3:1 threshold for transparent containers is recorded separately; do not invent a new numeric threshold here.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/accessibility",
+          "section": "0e7aba92-b082-47cb-a547-982996e6d186",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "97be8aa1b310099941b19a4b6cbe083fc76d37f7f5ad83d89cf9eb2062db6713",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "unfilled-icon-fallback",
+      "statement": "Use semibold icon weight for an active destination when its icon has no filled style.",
+      "condition": "When the icon family lacks a filled variant.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/accessibility",
+          "section": "0e7aba92-b082-47cb-a547-982996e6d186",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "97be8aa1b310099941b19a4b6cbe083fc76d37f7f5ad83d89cf9eb2062db6713",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "scaled-item-height",
+      "statement": "Navigation items should grow vertically for larger text while retaining default padding; scaled labels may wrap.",
+      "condition": "When a device increases text size.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/accessibility",
+          "section": "88aff451-dd18-4b08-9939-3bbf43564593",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "97be8aa1b310099941b19a4b6cbe083fc76d37f7f5ad83d89cf9eb2062db6713",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "double-size-label-visibility",
+      "statement": "Keep the full destination label visible up to 2× text size; beyond that size it may truncate.",
+      "condition": "When testing device text scaling.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/accessibility",
+          "section": "88aff451-dd18-4b08-9939-3bbf43564593",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "97be8aa1b310099941b19a4b6cbe083fc76d37f7f5ad83d89cf9eb2062db6713",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "initial-focus-order",
+      "statement": "Initial focus lands on the first interactive item: the menu, FAB or first destination.",
+      "condition": "When keyboard focus enters the rail; this does not require stealing focus on page load.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/accessibility",
+          "section": "daf53388-d7f7-4c38-9d2a-3f64abab9b13",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "97be8aa1b310099941b19a4b6cbe083fc76d37f7f5ad83d89cf9eb2062db6713",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "menu-fab-tab-entry",
+      "statement": "Tab moves from the FAB or menu into the navigation items.",
+      "condition": "When keyboard focus is on a leading rail control.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/accessibility",
+          "section": "daf53388-d7f7-4c38-9d2a-3f64abab9b13",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "97be8aa1b310099941b19a4b6cbe083fc76d37f7f5ad83d89cf9eb2062db6713",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "selected-versus-inactive-icons",
+      "statement": "Use a filled selected icon and outlined inactive icons rather than the same unfilled style for both.",
+      "condition": "When the icon family has filled and outlined styles.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/accessibility",
+          "section": "1409bd2d-4d1a-4ca8-91c4-13cbbe90bb58",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "97be8aa1b310099941b19a4b6cbe083fc76d37f7f5ad83d89cf9eb2062db6713",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "keyboard-destination-traversal",
+      "statement": "Tab and arrow keys navigate interactive elements.",
+      "condition": "When using keyboard navigation within the rail.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/accessibility",
+          "section": "cceea166-591b-4429-bfdc-10cd98559e26",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "97be8aa1b310099941b19a4b6cbe083fc76d37f7f5ad83d89cf9eb2062db6713",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "keyboard-activation",
+      "statement": "Space and Enter select the focused interactive element.",
+      "condition": "When activating a rail destination with the keyboard.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/accessibility",
+          "section": "cceea166-591b-4429-bfdc-10cd98559e26",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "97be8aa1b310099941b19a4b6cbe083fc76d37f7f5ad83d89cf9eb2062db6713",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "accessible-destination-name",
+      "statement": "The accessible name typically matches the visible label; use a more descriptive accessible name when the visible label is ambiguous.",
+      "condition": "When naming navigation destinations for assistive technology.",
+      "basis": "explicit",
+      "notes": "For example, Recent can be named Recent images. The section notes that Android Views lacks this customization and does not announce the role; do not apply that platform limitation to web.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-25",
+          "url": "https://m3.material.io/components/navigation-rail/accessibility",
+          "section": "5c621a2e-eeb9-40a9-aea1-bafc1f3426d0",
+          "capture": "snapshots/material-guidance/20261025T163045.778601954Z-443646624/capture.json",
+          "markdownSha256": "97be8aa1b310099941b19a4b6cbe083fc76d37f7f5ad83d89cf9eb2062db6713",
+          "extractorVersion": 2,
+          "summary": "Curated from the captured section."
         }
       ],
       "implementation": {
