@@ -1,0 +1,73 @@
+package ui
+
+type Option struct {
+	Value string
+	Label string
+}
+
+// Button keeps the shared button anatomy in one place. Attributes select the
+// generated variant, size and state; content supplies its label and icon.
+templ Button(attrs templ.Attributes) {
+	<button type="button" { attrs... }>{ children... }
+</button>
+}
+
+templ DrawerToggle(target string, label string) {
+	@Button(templ.Attributes{"class": "md-icon-button md-standard-icon-button", "data-size": "small", "data-shape": "round", "data-width": "default", "data-navigation-open": "", "aria-label": label, "aria-haspopup": "dialog", "aria-controls": target}) {
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="24" height="24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"></path></svg>
+	}
+}
+
+templ Drawer(id string, modal bool, label string) {
+	if modal {
+		<dialog id={ id } class="md-navigation md-navigation-drawer" data-variant="modal" data-navigation-modal data-navigation-group aria-label={ label }><h3>{ label }</h3>{ children... }
+</dialog>
+	} else {
+		<nav id={ id } class="md-navigation md-navigation-drawer" data-variant="standard" data-navigation-group aria-label={ label }>{ children... }
+</nav>
+	}
+}
+
+templ DrawerItem(attrs templ.Attributes, label string) {
+	<button type="button" class="md-nav-item" data-navigation-item title={ label } { attrs... }><span class="md-nav-indicator"><span class="md-nav-label">{ label }</span></span></button>
+}
+
+templ NumberField(id string, label string, value string, min string, max string) {
+	<div class="field-row">
+		<div class="md-outlined-text-field">
+			<fieldset class="md-field-outline" aria-hidden="true"><legend>{ label }</legend></fieldset>
+			<fieldset class="md-field-outline md-field-focus-outline" aria-hidden="true"><legend>{ label }</legend></fieldset>
+			<label for={ id } data-slot="label">{ label }</label><input id={ id } type="number" value={ value } min={ min } max={ max } step="1" placeholder=" "/>
+		</div>
+	</div>
+}
+
+templ SelectOption(id string, value string, label string, selected bool) {
+	<li role="presentation"><div class="md-menu-item" id={ id } role="option" aria-selected={ selected } data-field-option={ label } data-field-value={ value }><span data-option-label>{ label }</span><span data-slot="trailing-icon" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"></path></svg></span></div></li>
+}
+
+templ Select(id string, label string, options []Option) {
+	<div class="tokens-preview-filter" data-field-example data-populated="true">
+		<button type="button" class="md-filter-chip" id={ "filter-" + id } role="combobox" aria-label={ label } aria-expanded="false" aria-haspopup="listbox" aria-controls={ id + "-options" } aria-autocomplete="none" data-field-combo data-field-select><span class="filter-label">{ label+":" }</span><span data-field-display></span><span data-slot="trailing-icon" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z"></path></svg></span></button>
+		<input type="hidden" data-field-value/>
+		<select id={ id } aria-label={ label } hidden>
+			for _, option := range options {
+				<option value={ option.Value }>{ option.Label }</option>
+			}
+		</select>
+		<div class="md-field-menu md-menu tokens-catalog-menu" data-variant="standard" data-orientation="vertical" id={ id + "-options" } role="listbox" aria-label={ label } popover="auto">
+			<section>
+				<ul role="presentation">
+					for _, option := range options {
+						@SelectOption(id+"-option-"+option.Value, option.Value, option.Label, false)
+					}
+				</ul>
+			</section>
+			<p class="md-field-empty" role="option" aria-disabled="true" hidden>No matches</p>
+		</div>
+	</div>
+}
+
+templ Slider(id string, label string) {
+	<div class="md-slider" data-size="small" data-variant="continuous" data-control="standard" data-orientation="horizontal" role="group" aria-label={ label }><div class="md-slider-rail" aria-hidden="true"><span class="md-slider-inactive md-slider-before"></span><span class="md-slider-active"></span><span class="md-slider-inactive md-slider-after"></span><span class="md-slider-stop md-slider-stop-start"></span><span class="md-slider-stop md-slider-stop-end"></span></div><div class="md-slider-input" data-handle="end"><input id={ id } type="range" min="0" max="100" value="0" step="1" aria-label={ label }/><span class="md-slider-thumb" aria-hidden="true"><span class="md-slider-state-layer"></span><span class="md-slider-nub"></span><span class="md-slider-value">0</span></span></div></div>
+}

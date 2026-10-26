@@ -1,6 +1,10 @@
 package web
 
+import "github.com/sojupie/tokens/forge/components/ui"
+
 templ specimenButton(c componentCase) {
-	<button { c.Attributes()... }>@materialSymbol("check")
-<span>Button</span></button>
+	@ui.Button(c.Attributes()) {
+		@materialSymbol("check")
+		<span>Button</span>
+	}
 }
