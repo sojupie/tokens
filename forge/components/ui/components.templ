@@ -8,8 +8,9 @@ type Option struct {
 // Button keeps the shared button anatomy in one place. Attributes select the
 // generated variant, size and state; content supplies its label and icon.
 templ Button(attrs templ.Attributes) {
-	<button type="button" { attrs... }>{ children... }
-</button>
+	<button type="button" { attrs... }>
+		{ children... }
+	</button>
 }
 
 templ DrawerToggle(target string, label string) {
@@ -20,11 +21,13 @@ templ DrawerToggle(target string, label string) {
 
 templ Drawer(id string, modal bool, label string) {
 	if modal {
-		<dialog id={ id } class="md-navigation md-navigation-drawer" data-variant="modal" data-navigation-modal data-navigation-group aria-label={ label }><h3>{ label }</h3>{ children... }
-</dialog>
+		<dialog id={ id } class="md-navigation md-navigation-drawer" data-variant="modal" data-navigation-modal data-navigation-group aria-label={ label }>
+			<h3>{ label }</h3>{ children... }
+		</dialog>
 	} else {
-		<nav id={ id } class="md-navigation md-navigation-drawer" data-variant="standard" data-navigation-group aria-label={ label }>{ children... }
-</nav>
+		<nav id={ id } class="md-navigation md-navigation-drawer" data-variant="standard" data-navigation-group aria-label={ label }>
+			{ children... }
+		</nav>
 	}
 }
 
@@ -70,4 +73,8 @@ templ Select(id string, label string, options []Option) {
 
 templ Slider(id string, label string) {
 	<div class="md-slider" data-size="small" data-variant="continuous" data-control="standard" data-orientation="horizontal" role="group" aria-label={ label }><div class="md-slider-rail" aria-hidden="true"><span class="md-slider-inactive md-slider-before"></span><span class="md-slider-active"></span><span class="md-slider-inactive md-slider-after"></span><span class="md-slider-stop md-slider-stop-start"></span><span class="md-slider-stop md-slider-stop-end"></span></div><div class="md-slider-input" data-handle="end"><input id={ id } type="range" min="0" max="100" value="0" step="1" aria-label={ label }/><span class="md-slider-thumb" aria-hidden="true"><span class="md-slider-state-layer"></span><span class="md-slider-nub"></span><span class="md-slider-value">0</span></span></div></div>
+}
+
+templ Checkbox(id string, label string) {
+	<span class="checkbox-label"><label class="md-checkbox" data-component-state="interactive"><input type="checkbox" id={ id } aria-label={ label }/><span class="md-checkbox-box" aria-hidden="true"><svg class="md-checkbox-check" viewBox="0 0 18 18" fill="none"><path d="m4 9 3 3 7-7" stroke="currentColor" stroke-width="2"></path></svg><svg class="md-checkbox-dash" viewBox="0 0 18 18" fill="none"><path d="M4 9h10" stroke="currentColor" stroke-width="2"></path></svg></span></label><label for={ id }>{ label }</label></span>
 }
