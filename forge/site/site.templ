@@ -1,0 +1,64 @@
+package site
+
+templ Header(config Config) {
+	<header class="tokens-site-header" id="tokens-site-header" hx-preserve>
+		<nav class="tokens-primary-nav" aria-label="Primary">
+			<a class="tokens-brand md-typescale-headline-medium" href={ templ.SafeURL(config.Catalog + "/") }><img class="tokens-brand-logo" src={ templ.SafeURL(config.Logo) } alt="" width="40" height="40"/>Token Catalog</a>
+			<button class="md-icon-button md-standard-icon-button tokens-nav-toggle" type="button" id="tokens-nav-toggle" popovertarget="tokens-site-menu" aria-label="Navigation" aria-expanded="false" aria-controls="tokens-site-menu" data-size="small" data-shape="round" data-width="default" hidden>
+				<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="currentColor"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+			</button>
+			<div id="tokens-site-menu" class="tokens-navigation-content" data-variant="standard" data-orientation="vertical">
+				<div class="tokens-nav-links">
+					@navLink(config, "/components", "Components")
+					@navLink(config, "/styles", "Styles")
+					@navLink(config, "/changes", "Changes")
+					@navLink(config, "/tools", "Tools")
+					if config.Agents {
+						@navLink(config, "/for-agents", "For agents")
+					}
+				</div>
+				{ children... }
+			</div>
+		</nav>
+	</header>
+}
+
+templ Footer(config Config) {
+	<footer class="tokens-site-footer" data-component-assets>
+		<div class="tokens-footer-content">
+			<div>
+				<p class="md-typescale-title-medium">Token Catalog</p>
+				<p class="md-typescale-body-medium">Browse Material Design 3 tokens and track their changes.</p>
+				<p class="md-typescale-body-medium">Independent project. Not affiliated with Google.</p>
+				{ children... }
+			</div>
+			<div>
+				<p class="md-typescale-title-medium">For humans</p>
+				<a class="tokens-link md-typescale-body-medium" href="https://github.com/sojupie/tokens">GitHub</a>
+				<a class="tokens-link md-typescale-body-medium" href={ templ.SafeURL(config.Catalog + "/components") }>Browse components</a>
+				<a class="tokens-link md-typescale-body-medium" href={ templ.SafeURL(config.Catalog + "/for-agents") }>Give this to your agent</a>
+			</div>
+			if config.Agents {
+				<div>
+					<p class="md-typescale-title-medium">For agents</p>
+					<a class="tokens-link md-typescale-body-medium" href={ templ.SafeURL(config.Catalog + "/llms-full.txt") }>API and data reference</a>
+				</div>
+			}
+			<div hx-boost="false">
+				<p class="md-typescale-title-medium">Tools</p>
+				for _, tool := range config.Tools {
+					<a class="tokens-link md-typescale-body-medium" href={ templ.SafeURL(tool.URL) }>{ tool.Name }</a>
+				}
+			</div>
+			<div>
+				<p class="md-typescale-title-medium">About</p>
+				<p class="md-typescale-body-medium">Made by Olle Marmenlind</p>
+				<a class="tokens-link md-typescale-body-medium" href="https://marmenlind.com">marmenlind.com</a>
+			</div>
+		</div>
+	</footer>
+}
+
+templ navLink(config Config, path string, label string) {
+	<a class="md-button md-text-button tokens-nav-link" data-size="small" data-shape="round" href={ templ.SafeURL(config.Catalog + path) } aria-current={ config.current(path) }>{ label }</a>
+}

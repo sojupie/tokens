@@ -14,9 +14,10 @@ import (
 
 	"github.com/a-h/templ"
 	"github.com/sojupie/tokens/forge/components"
+	"github.com/sojupie/tokens/forge/site"
 )
 
-//go:embed static/app.css static/token-table.css static/token-table.js static/theme.js static/site-ui.js static/artwork.js static/artwork-canvas.js static/component-demos.js static/asset-loader.js static/webmcp.js static/prefetch.js static/agent-handoff.js static/htmx.min.js static/fonts static/logo.png static/logo-250x250.png static/logo-250x250.webp
+//go:embed static/app.css static/token-table.css static/token-table.js static/theme.js static/site-ui.js static/artwork.js static/artwork-canvas.js static/component-demos.js static/asset-loader.js static/webmcp.js static/prefetch.js static/agent-handoff.js static/htmx.min.js static/fonts static/logo.png static/logo-250x250.png
 var embeddedStatic embed.FS
 
 //go:embed static/theme-init.js
@@ -45,6 +46,8 @@ func (files staticAssets) Open(name string) (fs.File, error) {
 		return components.Files.Open("static/" + name)
 	}
 	switch name {
+	case "site.css", "site.js", "logo-250x250.webp":
+		return site.Files.Open(name)
 	case "motion.js":
 		return components.Files.Open("static/motion.cjs")
 	case "buttons.css", "buttons.js", "components.css", "components.js", "progress.js", "loading.js", "loading-shapes.json", "sheets.js", "lists.js", "carousel.js", "search.js", "date-picker.js", "time-picker.js", "fields.js", "dialogs.js", "menus.js":

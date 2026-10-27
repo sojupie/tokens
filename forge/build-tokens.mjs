@@ -266,8 +266,8 @@ async function main() {
       "md-ref-palette-neutral0",
       "md-sys-color-on-primary",
     ]);
-    for (const file of ["app.css", "token-table.css"]) {
-      const css = await readFile(path.join("catalog/web/static", file), "utf8");
+    for (const file of ["catalog/web/static/app.css", "catalog/web/static/token-table.css", "forge/site/site.css"]) {
+      const css = await readFile(file, "utf8");
       for (const match of css.matchAll(/var\(\s*--((?:md|catalog)-[a-z0-9-]+)\s*[,)]/g))
         required.add(match[1]);
     }
@@ -391,6 +391,8 @@ async function main() {
     });
     const sharedSources = await Promise.all(
       [
+        "forge/site/site.css",
+        "forge/site/site.templ",
         "catalog/web/static/app.css",
         "catalog/web/static/token-table.css",
         ...(await readdir("catalog/web"))

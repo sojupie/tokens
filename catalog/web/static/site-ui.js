@@ -2,13 +2,7 @@
   // Safari can retain :focus-visible after touch-driven programmatic focus.
   document.addEventListener('pointerdown',()=>document.documentElement.setAttribute('data-pointer-focus',''),true);
   document.addEventListener('keydown',event=>{if(!event.metaKey&&!event.altKey&&!event.ctrlKey)document.documentElement.removeAttribute('data-pointer-focus');},true);
-  const initialized=new WeakSet(),openers=new WeakMap(),compact=matchMedia('(max-width: 960px)');
-  function position(menu,toggle){const r=toggle.getBoundingClientRect();menu.style.top=(r.bottom+8)+'px';menu.style.maxHeight=`calc(100dvh - ${r.bottom+24}px)`;}
-  function layout(){
-    const menu=document.getElementById('tokens-site-menu'),toggle=document.getElementById('tokens-nav-toggle');if(!menu||!toggle)return;
-    if(menu.matches(':popover-open'))menu.hidePopover();toggle.hidden=!compact.matches;menu.classList.toggle('md-menu',compact.matches);
-    if(compact.matches){menu.setAttribute('popover','auto');position(menu,toggle);}else{menu.removeAttribute('popover');menu.style.top='';menu.style.maxHeight='';}
-  }
+  const initialized=new WeakSet(),openers=new WeakMap();
   // HTML specimens avoid Safari foreignObject compositing and clipping bugs.
   const thumbnailSizes=new ResizeObserver(entries=>{for(const {target,contentRect} of entries)target.style.setProperty("--_thumbnail-scale",String(contentRect.width/360));});
   const thumbnails=new WeakSet();
@@ -71,10 +65,6 @@
   function initialize(){
     navigationLinks();
     for(const thumbnail of document.querySelectorAll(".tokens-component-thumbnail"))if(!thumbnails.has(thumbnail)){thumbnails.add(thumbnail);thumbnailSizes.observe(thumbnail);}
-    const menu=document.getElementById('tokens-site-menu'),toggle=document.getElementById('tokens-nav-toggle');
-    if(menu&&toggle&&!initialized.has(menu)){
-      initialized.add(menu);menu.addEventListener('toggle',()=>{const open=menu.matches(':popover-open');toggle.setAttribute('aria-expanded',String(open));if(open){position(menu,toggle);menu.querySelector('a')?.focus({preventScroll:true});}});layout();
-    }
     const panel=document.getElementById('tokens-site-download');if(!panel||initialized.has(panel))return;
     initialized.add(panel);panel.addEventListener('change',()=>update(panel));panel.addEventListener('close',()=>{const opener=openers.get(panel);if(opener?.isConnected)opener.focus({preventScroll:true});});update(panel);
   }
@@ -83,8 +73,6 @@
     const trigger=event.target.closest?.('[data-export-open]');if(trigger){openers.set(panel,trigger);panel.showModal();panel.querySelector('[role="combobox"],button')?.focus({preventScroll:true});return;}
     if(event.target.closest?.('[data-export-cancel]'))panel.close();
   });
-  compact.addEventListener('change',layout);
-  window.addEventListener('resize',()=>{const menu=document.getElementById('tokens-site-menu'),toggle=document.getElementById('tokens-nav-toggle');if(compact.matches&&menu&&toggle)position(menu,toggle);});
   document.addEventListener('htmx:afterSwap',initialize);document.addEventListener('htmx:historyRestore',initialize);
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initialize);else initialize();
 })();

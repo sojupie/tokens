@@ -31,7 +31,7 @@ func (server *Server) toolDestinations() []toolDestination {
 	}
 	return []toolDestination{
 		{"Video motion analysis", "Track movement in a recording, compare videos, and measure motion against reference curves.", external(server.motionURL)},
-		{"Carousel motion lab", "Compare carousel scrolling and settling behavior, inspect motion, and record interactions.", external(server.motionLabURL)},
+		{"Carousel motion lab", "Help fix jerky carousel settling on iOS. Compare implementations and record tests on your device.", external(server.motionLabURL)},
 	}
 }
 func (server *Server) handleTools(w http.ResponseWriter, r *http.Request) {

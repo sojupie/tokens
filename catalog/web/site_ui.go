@@ -1,10 +1,5 @@
 package web
 
-import (
-	"context"
-	"strings"
-)
-
 type catalogChoice struct{ Value, Label string }
 
 func previewChoices(control previewControl) []catalogChoice {
@@ -27,11 +22,4 @@ func exportFormatChoices() []catalogChoice {
 }
 func exportContextChoices() []catalogChoice {
 	return []catalogChoice{{"light-default", "Light · Default contrast"}, {"light-medium", "Light · Medium contrast"}, {"light-high", "Light · High contrast"}, {"dark-default", "Dark · Default contrast"}, {"dark-medium", "Dark · Medium contrast"}, {"dark-high", "Dark · High contrast"}}
-}
-func siteCurrent(ctx context.Context, path string) string {
-	current := metadata(ctx).Path
-	if current == path || strings.HasPrefix(current, path+"/") {
-		return "page"
-	}
-	return "false"
 }

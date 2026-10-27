@@ -2,10 +2,6 @@ package web
 
 import "fmt"
 
-templ siteNavLink(path string, label string) {
- <a class="md-button md-text-button tokens-nav-link" data-size="small" data-shape="round" href={templ.SafeURL(path)} aria-current={siteCurrent(ctx,path)}>{label}</a>
-}
-
 // Shared select anatomy; the hidden value keeps labels separate from URL values.
 templ catalogSelect(id string, name string, label string, selected string, choices []catalogChoice) {
  <div class="md-outlined-select tokens-catalog-select" data-field-example data-populated="true">

@@ -49,6 +49,8 @@ func run(args []string) error {
 		return runUsage(args[1:])
 	case "forge":
 		return runForge(args[1:])
+	case "site-shell":
+		return runSiteShell(args[1:])
 	case "serve":
 		return runServe(args[1:])
 	case "snapshot":
@@ -70,6 +72,7 @@ const topHelp = `Usage:
   tokens export [--published directory] [--context Name=Value] [--output directory]
   tokens update [run|status|inspect|approve|retry|notify] [flags]
   tokens serve [flags]
+  tokens site-shell --out directory [--catalog URL]
   tokens usage [--since 7d] [--send | --weekly] [flags]
   tokens forge inspect [--assets directory] [--output file]
   tokens snapshot create [flags]
