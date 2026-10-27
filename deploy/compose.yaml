@@ -39,7 +39,7 @@ services:
     networks: [web]
 
   cloudflared:
-    image: cloudflare/cloudflared:2026.10.0
+    image: cloudflare/cloudflared:2026.10.4
     command: tunnel --no-autoupdate run
     restart: unless-stopped
     read_only: true
