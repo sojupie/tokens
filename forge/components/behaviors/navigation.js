@@ -3,7 +3,11 @@
   function drawerDismissed(dx, dy, width, rtl) {
     return Math.abs(dx) >= width / 4 && Math.abs(dx) > Math.abs(dy) && (rtl ? dx > 0 : dx < 0);
   }
-  if (typeof module !== "undefined") Object.assign(module.exports, { drawerDismissed });
+  function drawerForTrigger(trigger, doc) {
+    const target = trigger.getAttribute("aria-controls");
+    return target ? doc.getElementById(target) : trigger.closest("[data-navigation-demo]")?.querySelector("dialog");
+  }
+  if (typeof module !== "undefined") Object.assign(module.exports, { drawerDismissed, drawerForTrigger });
   if (typeof document === "undefined") return;
   const { navigationIndex } = globalThis.MaterialComponents;
   function selectNavigation(button) {
@@ -458,14 +462,22 @@
       )
         modal.close();
     }
-    const button = event.target.closest("button");
+    const button = event.target.closest("button, a[data-navigation-item]");
     if (!button) return;
     if (button.hasAttribute("data-navigation-item")) selectNavigation(button);
-    if (button.hasAttribute("data-navigation-open"))
-      button
-        .closest("[data-navigation-demo]")
-        .querySelector("dialog")
-        .showModal();
+    if (button.hasAttribute("data-navigation-open")) {
+      const drawer = drawerForTrigger(button, document);
+      if (drawer?.matches("dialog[data-navigation-modal]")) {
+        button.setAttribute("aria-expanded", "true");
+        drawer.addEventListener("close", () => {
+          button.setAttribute("aria-expanded", "false");
+          if (button.isConnected) button.focus({preventScroll:true});
+        }, {once:true});
+        drawer.showModal();
+      }
+    }
+    if (button.hasAttribute("data-navigation-close"))
+      button.closest("dialog[data-navigation-modal]")?.close();
     if (button.hasAttribute("data-navigation-expand")) {
       const frame = button.closest(".md-rail-frame");
       if (frame && frame.dataset.interactive === "true")

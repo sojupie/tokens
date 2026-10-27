@@ -104,3 +104,15 @@ func TestReusableWorkspaceComponents(t *testing.T) {
 		}
 	}
 }
+
+func TestDrawerLinkPreservesNativeURLAndCurrentState(t *testing.T) {
+	var out bytes.Buffer
+	if err := DrawerLink("/md3/tools", templ.Attributes{"aria-current": "page"}, "Tools & tests").Render(context.Background(), &out); err != nil {
+		t.Fatal(err)
+	}
+	for _, required := range []string{`<a class="md-nav-item"`, `href="/md3/tools"`, `aria-current="page"`, `Tools &amp; tests`} {
+		if !strings.Contains(out.String(), required) {
+			t.Fatalf("missing %s in %s", required, out.String())
+		}
+	}
+}

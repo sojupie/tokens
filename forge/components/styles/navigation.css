@@ -305,3 +305,8 @@
   min-block-size: var(--_nav-item-indicator-height, var(--_nav-indicator-height));
   block-size: auto;
 }
+
+.md-navigation-header { display:flex; align-items:center; flex:none; }
+.md-navigation-header > h3 { flex:1; min-inline-size:0; }
+.md-navigation-drawer a.md-nav-item { text-decoration:none; }
+:root:has(dialog[data-navigation-modal][open]) { overflow:hidden; }
