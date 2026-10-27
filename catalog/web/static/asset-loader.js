@@ -10,7 +10,7 @@
     ["runtime/button-groups.js", ".md-button-group"],
     ["runtime/segmented-buttons.js", ".md-segmented-button"],
     ["runtime/switches.js", ".md-switch"],
-    ["runtime/navigation.js", "[data-navigation-group]"],
+    // Site navigation loads with the core layout, before optional controls.
     ["runtime/sliders.js", ".md-slider"],
     ["runtime/toolbars.js", ".md-toolbar"],
     ["runtime/app-bars.js", "[data-appbar-demo]"],

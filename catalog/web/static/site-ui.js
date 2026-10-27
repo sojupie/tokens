@@ -36,9 +36,9 @@
     const assets=doc=>Array.from(doc.head.querySelectorAll('script[src]:not([data-component-script]),link[rel="stylesheet"]'),node=>[node.getAttribute('src')||node.getAttribute('href'),node.getAttribute('data-sources')||'',node.getAttribute('data-shapes-version')||''].join('\n')).join('\n');
     // A deployed asset change needs the new head and behavior as well as new content.
     if(assets(incoming)!==assets(document)){location.assign(url);return false;}
-    const menu=document.getElementById('tokens-site-menu');if(menu?.matches(':popover-open'))menu.hidePopover();
-    document.querySelectorAll('.tokens-nav-link').forEach(link=>{
-      const current=Array.from(incoming.querySelectorAll('.tokens-nav-link')).find(next=>next.getAttribute('href')===link.getAttribute('href'))?.getAttribute('aria-current');
+    const menu=document.getElementById('tokens-site-menu');if(menu?.open)menu.close();
+    document.querySelectorAll('#tokens-site-menu [data-navigation-item]').forEach(link=>{
+      const current=Array.from(incoming.querySelectorAll('#tokens-site-menu [data-navigation-item]')).find(next=>next.getAttribute('href')===link.getAttribute('href'))?.getAttribute('aria-current');
       if(current)link.setAttribute('aria-current',current);else link.removeAttribute('aria-current');
     });
     for(const selector of ['meta[name="description"]','meta[name="robots"]','link[rel="canonical"]','link[rel="alternate"]']){

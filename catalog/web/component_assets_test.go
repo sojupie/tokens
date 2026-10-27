@@ -200,7 +200,7 @@ func TestContentPagesIncludeCardAssets(t *testing.T) {
 		{"component changes", changesPage(state, "buttons", "/components/buttons/changes", changeFilters{}, "", changes, 1, 1, false, false)},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
-			server := &Server{themeBundles: map[string][]byte{"shared": []byte("shared"), "card": []byte("card"), "dialog": []byte("dialog")}}
+			server := &Server{themeBundles: map[string][]byte{"shared": []byte("shared"), "card": []byte("card"), "dialog": []byte("dialog"), "navigation": []byte("navigation")}}
 			response := httptest.NewRecorder()
 			if err := server.renderHTML(response, httptest.NewRequest("GET", "/", nil), tc.page); err != nil {
 				t.Fatal(err)

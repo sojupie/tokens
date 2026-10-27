@@ -62,7 +62,7 @@ the pinned templ version:
 go run github.com/a-h/templ/cmd/templ@v0.3.960 generate -path .
 ```
 
-Commit both the template and generated Go file. The shared site header, navigation menu and footer live in `forge/site/`; the catalog and video tool render those Go templates directly. `tokens site-shell --out DIRECTORY` exports the same markup and assets for the static carousel lab. Site CSS and JavaScript are maintained
+Commit both the template and generated Go file. The shared site header, navigation menu and footer live in `forge/site/`; the catalog and video tool render those Go templates directly. `tokens site-shell --out DIRECTORY` exports the same markup and assets for the static carousel lab. Hosts also load the shared `navigation` CSS module and its `runtime/utils.js` and `runtime/navigation.js` scripts. The site drawer uses native links; its opener, dismissal, focus return and swipe handling belong to the shared component runtime. Site CSS and JavaScript are maintained
 in `catalog/web/static/`. Shared component CSS sources live in
 `forge/components/styles/`; behavior sources live in `forge/components/behaviors/`.
 Run `npm run build:components` to assemble them into the existing served files in

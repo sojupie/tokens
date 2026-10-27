@@ -19,6 +19,7 @@ templ layout(title string) {
 			<script src={ staticURL("motion.js") } defer></script>
 			<script src={ staticURL("buttons.js") } defer></script>
 			<script src={ staticURL("runtime/utils.js") } defer></script>
+<script src={staticURL("runtime/navigation.js")} defer></script>
 			<script src={ staticURL("fields.js") } defer></script>
 			<script src={ staticURL("site-ui.js") } defer></script>
 <script src={ staticURL("site.js") } defer></script>
@@ -50,7 +51,9 @@ templ layout(title string) {
 			}
 		</head>
 		<body class="tokens-body" hx-boost="true">
-			@site.Header(siteConfig(ctx)) {
+			@componentAssetScope() {
+ @useComponentAssets("navigation")
+ @site.Header(siteConfig(ctx)) {
 						<div class="tokens-theme-controls" role="group" aria-label="Site appearance">
 							<button class="md-icon-button md-standard-icon-button" type="button" data-app-theme aria-label="Dark mode" aria-pressed="false" title="Dark mode" disabled>
 								<span data-theme-icon="light">
@@ -72,6 +75,7 @@ templ layout(title string) {
 								</button>
 							</div>
 						</div>
+ }
  }
 			<main class="tokens-main" data-component-assets>
 				@componentAssetScope() {
