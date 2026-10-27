@@ -41,14 +41,18 @@ func forAgentsPage(prompt string, mcpURL string) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<header class=\"tokens-section\"><h1 class=\"md-typescale-headline-medium\">Give this to your agent</h1><p class=\"md-typescale-body-large\">Use Material Design 3 token data in your coding agent. No account or API key is required.</p></header><div class=\"tokens-handoff-grid\"><section class=\"md-card md-elevated-card tokens-card-content\" aria-labelledby=\"skill-heading\"><h2 class=\"md-typescale-title-medium\" id=\"skill-heading\">Install the skill</h2><p>For clients that support Agent Skills. Choose your agent in the installer.</p><pre id=\"agent-skill\" class=\"md-card md-outlined-card tokens-code-block\" tabindex=\"0\" aria-labelledby=\"skill-heading\"><code>npx skills add sojupie/tokens --skill token-catalog</code></pre><button class=\"md-button md-filled-button\" type=\"button\" data-copy-target=\"agent-skill\" hidden>Copy install command</button><p class=\"tokens-copy-status\" data-copy-status aria-live=\"polite\"></p><a class=\"tokens-link\" href=\"https://github.com/sojupie/tokens/blob/main/skills/token-catalog/SKILL.md\">Read the skill</a></section><section class=\"md-card md-filled-card tokens-card-content tokens-secondary-option\" aria-labelledby=\"prompt-heading\"><h2 class=\"md-typescale-title-medium\" id=\"prompt-heading\">Copy a prompt</h2><pre id=\"agent-prompt\" class=\"md-card md-outlined-card tokens-code-block\" tabindex=\"0\" aria-labelledby=\"prompt-heading\"><code>")
+			templ_7745c5c3_Err = useComponentAssets("card").Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, " <header class=\"tokens-section\"><h1 class=\"md-typescale-headline-medium\">Give this to your agent</h1><p class=\"md-typescale-body-large\">Use Material Design 3 token data in your coding agent. No account or API key is required.</p></header><div class=\"tokens-handoff-grid\"><section class=\"md-card md-elevated-card tokens-card-content\" aria-labelledby=\"skill-heading\"><h2 class=\"md-typescale-title-medium\" id=\"skill-heading\">Install the skill</h2><p>For clients that support Agent Skills. Choose your agent in the installer.</p><pre id=\"agent-skill\" class=\"md-card md-outlined-card tokens-code-block\" tabindex=\"0\" aria-labelledby=\"skill-heading\"><code>npx skills add sojupie/tokens --skill token-catalog</code></pre><button class=\"md-button md-filled-button\" type=\"button\" data-copy-target=\"agent-skill\" hidden>Copy install command</button><p class=\"tokens-copy-status\" data-copy-status aria-live=\"polite\"></p><a class=\"tokens-link\" href=\"https://github.com/sojupie/tokens/blob/main/skills/token-catalog/SKILL.md\">Read the skill</a></section><section class=\"md-card md-filled-card tokens-card-content tokens-secondary-option\" aria-labelledby=\"prompt-heading\"><h2 class=\"md-typescale-title-medium\" id=\"prompt-heading\">Copy a prompt</h2><pre id=\"agent-prompt\" class=\"md-card md-outlined-card tokens-code-block\" tabindex=\"0\" aria-labelledby=\"prompt-heading\"><code>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(prompt)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/agents.templ`, Line: 20, Col: 138}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/agents.templ`, Line: 21, Col: 138}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -61,7 +65,7 @@ func forAgentsPage(prompt string, mcpURL string) templ.Component {
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(mcpURL)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/agents.templ`, Line: 27, Col: 132}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/agents.templ`, Line: 28, Col: 132}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -74,7 +78,7 @@ func forAgentsPage(prompt string, mcpURL string) templ.Component {
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(staticURL("agent-handoff.js"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/agents.templ`, Line: 39, Col: 45}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/agents.templ`, Line: 40, Col: 45}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {

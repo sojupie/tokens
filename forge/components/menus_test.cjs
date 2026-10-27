@@ -6,7 +6,7 @@ const test=require('node:test'),assert=require('node:assert/strict'),{readFileSy
 test('menu navigation wraps within its orientation and mirrors horizontal keys',()=>{assert.equal(menuIndex(2,3,'ArrowDown',false,false),0);assert.equal(menuIndex(0,3,'ArrowUp',false,false),2);assert.equal(menuIndex(0,3,'ArrowLeft',true,true),1);assert.equal(menuIndex(1,3,'ArrowRight',true,true),0);assert.equal(menuIndex(1,3,'Home',true,false),0);assert.equal(menuIndex(0,3,'End',false,false),2);assert.equal(menuIndex(0,3,'ArrowRight',false,false),null);});
 test('pressing a submenu trigger cancels its delayed hover opener',()=>{
  const events={},timers=new Set();let sequence=0;
- const root={dataset:{},closest:()=>demo,matches:()=>false,hasAttribute:()=>true},demo={querySelectorAll:()=>[root]};
+ const root={dataset:{},closest:()=>demo,matches:()=>false,hasAttribute:key=>key==='popover'},demo={querySelectorAll:()=>[root]};
  const submenu={hasAttribute:()=>true,matches:()=>false},trigger={dataset:{menuSubmenu:'child'},contains:()=>false,closest:()=>root,hasAttribute:()=>true};
  const document={readyState:'loading',addEventListener:(name,fn)=>events[name]=fn,querySelectorAll:()=>[],getElementById:()=>submenu};
  runMotionScript(readFileSync(`${__dirname}/static/menus.js`,'utf8'),{document,addEventListener(){},setTimeout(fn,ms){assert.equal(ms,200);timers.add(++sequence);return sequence;},clearTimeout(id){timers.delete(id);}});
@@ -24,7 +24,7 @@ test('each selectable menu item updates its state and check icon',()=>{
   const item={dataset:{},getAttribute:name=>attributes[name],setAttribute:(name,value)=>attributes[name]=value,
    closest:selector=>selector==='[data-menu-example]'?demo:null,
    querySelector:selector=>selector==='[data-menu-checked-icon]'?checked:unchecked};
-  const event={target:{closest:selector=>selector==='[data-menu-submenu],[data-menu-open]'?null:item}};
+  const event={target:{closest:selector=>selector==='[data-menu-back]'||selector==='[data-menu-submenu],[data-menu-open]'?null:item}};
   events.click(event);
   assert.equal(attributes['aria-checked'],'true');assert.equal(item.dataset.selected,'true');assert.equal(checked.hidden,false);assert.equal(unchecked.hidden,true);assert.equal(output.textContent,label+' selected');
   events.click(event);assert.equal(attributes['aria-checked'],'false');assert.equal(checked.hidden,true);assert.equal(unchecked.hidden,false);
@@ -42,7 +42,7 @@ test('single selection replaces the previous item and multi selection stays open
  });
  const document={readyState:'loading',addEventListener:(name,fn)=>events[name]=fn,querySelectorAll:()=>[]};
  runMotionScript(readFileSync(`${__dirname}/static/menus.js`,'utf8'),{document,addEventListener(){}});
- const click=index=>events.click({target:{closest:selector=>selector==='[data-menu-submenu],[data-menu-open]'?null:nodes[index]}});
+ const click=index=>events.click({target:{closest:selector=>selector==='[data-menu-back]'||selector==='[data-menu-submenu],[data-menu-open]'?null:nodes[index]}});
  click(2);assert.deepEqual(nodes.map(n=>n.getAttribute('aria-checked')),['false','false','true']);click(1);assert.deepEqual(nodes.map(n=>n.getAttribute('aria-checked')),['false','true','false']);
  menu.dataset.menuSelection='multiple';for(const node of nodes)node.setAttribute('role','menuitemcheckbox');
  // Output remains available, but querying a popover for dismissal is forbidden.
@@ -77,5 +77,26 @@ test('clicking an open menu trigger closes after native light-dismiss',()=>{
  const menu={matches:()=>shown,hasAttribute:()=>true,closest:()=>demo,hidePopover(){shown=false;},showPopover(){throw Error('native dismissal must not reopen the menu');}};
  const document={readyState:'loading',addEventListener:(name,fn)=>events[name]=fn,getElementById:()=>menu,querySelectorAll:()=>[]};
  runMotionScript(readFileSync(`${__dirname}/static/menus.js`,'utf8'),{document,addEventListener(){},clearTimeout(){}});
- const event={target:{closest:()=>trigger},detail:1};events.pointerdown(event);shown=false;events.click(event);assert.equal(shown,false);assert.equal(focused,true);
+ const event={target:{closest:selector=>selector==='[data-menu-back]'?null:trigger},detail:1};events.pointerdown(event);shown=false;events.click(event);assert.equal(shown,false);assert.equal(focused,true);
+});
+
+test('submenus use the parent surface edge, flip, or replace when neither side fits',()=>{
+ const {submenuPosition}=out.exports;
+ assert.deepEqual({...submenuPosition({left:100,right:420},{width:200},1000,8)}, {left:420,replace:false});
+ assert.deepEqual({...submenuPosition({left:650,right:970},{width:200},1000,8)}, {left:450,replace:false});
+ assert.deepEqual({...submenuPosition({left:24,right:369},{width:200},393,8)}, {left:24,replace:true});
+ assert.deepEqual({...submenuPosition({left:400,right:720},{width:200},1000,8,true)}, {left:200,replace:false});
+});
+
+test('replacement submenus require activation instead of opening beneath a stationary pointer',()=>{
+ for(const replaced of [false,true]) {
+  const events={};let scheduled=0;
+  const demo={querySelectorAll:()=>[]};
+  const menu={closest:()=>demo,querySelectorAll:()=>[],hasAttribute:key=>replaced&&key==='data-menu-replace'};
+  const item={dataset:{menuSubmenu:'child'},closest:()=>menu,contains:()=>false,hasAttribute:key=>key==='data-menu-submenu'};
+  const document={readyState:'loading',addEventListener:(name,fn)=>events[name]=fn,getElementById:()=>({hasAttribute:()=>true})};
+  runMotionScript(readFileSync(`${__dirname}/static/menus.js`,'utf8'),{document,addEventListener(){},setTimeout(){scheduled++;return 1;}});
+  events.pointerover({target:{closest:()=>item},pointerType:'mouse',buttons:0});
+  assert.equal(scheduled,replaced?0:1);
+ }
 });

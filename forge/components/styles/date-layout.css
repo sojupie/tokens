@@ -102,3 +102,16 @@
     var(--md-sys-measurement-space600)
   );
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .md-date-menu-button > svg {
+    transition: none;
+  }
+}
+
+/* Year selection remains available through its menu when the arrow pairs do not fit. */
+@container (max-width: 336px) {
+  .md-date-docked-navigation :is([data-date-step="-12"], [data-date-step="12"]) {
+    display: none;
+  }
+}

@@ -26,15 +26,16 @@ test('tall-row alignment follows rendered height and observes swapped rows',()=>
 test('reorder handle targets its row and updates bottom-sheet boundary actions',()=>{
  const events={},attrs={},up={dataset:{listMove:'up'}},down={dataset:{listMove:'down'}};
  let selected=false,focused=false;
- const sheet={setAttribute:(name,value)=>attrs[name]=value,querySelector:()=>({focus:()=>focused=true})};
+ let onClose,closeListeners=0;const control={disabled:false,setAttribute:(key,value)=>attrs[key]=value,removeAttribute:key=>delete attrs[key]};
+ const sheet={dataset:{},addEventListener:(name,fn)=>{onClose=fn;closeListeners++;},setAttribute:(name,value)=>attrs[name]=value,querySelector:()=>({focus:()=>focused=true})};
  const demo={querySelector:()=>sheet,querySelectorAll:()=>[up,down]};
  const list={dataset:{control:'reorder'},closest:()=>demo,querySelectorAll:()=>[row]};
- const row={dataset:{listLabel:'First item'},querySelector:s=>s==='.md-list-row > .md-list-item'?{disabled:false}:null,closest:()=>list,hasAttribute:name=>name==='data-list-action-target'&&selected,toggleAttribute:(name,on)=>selected=on};
+ const row={dataset:{listLabel:'First item'},querySelector:s=>s==='.md-list-row > .md-list-item'?control:null,closest:()=>list,removeAttribute:()=>selected=false,hasAttribute:name=>name==='data-list-action-target'&&selected,toggleAttribute:(name,on)=>selected=on};
  const button={disabled:false,closest:s=>s==='[data-list-row]'?row:button,hasAttribute:s=>s==='data-list-grip'};
  const document={readyState:'loading',addEventListener:(name,fn)=>events[name]=fn};
  runInNewContext(readFileSync(`${__dirname}/static/lists.js`,'utf8'),{document,window:{addEventListener(){}},matchMedia:()=>({matches:false,addEventListener(){}}),ResizeObserver:class{}});
  events.click({target:button,detail:1});
- assert.equal(selected,true);assert.equal(attrs['aria-label'],'Reorder First item');assert.equal(up.disabled,true);assert.equal(down.disabled,true);assert.equal(focused,true);
+ assert.equal(selected,true);assert.equal(attrs['aria-label'],'Reorder First item');assert.equal(up.disabled,true);assert.equal(down.disabled,true);assert.equal(focused,true);assert.equal(attrs['data-dragged'],'true');onClose();assert.equal(selected,false);assert.equal(attrs['data-dragged'],undefined);events.click({target:button,detail:1});assert.equal(closeListeners,1);
 });
 
 test('ordinary list arrows wrap, include horizontal keys and skip unavailable items',()=>{

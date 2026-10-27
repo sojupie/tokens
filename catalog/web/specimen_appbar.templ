@@ -3,6 +3,7 @@ package web
 import "fmt"
 
 templ specimenAppbar(c componentCase) {
+	@useComponentAssets("appbar")
 	if c.Control=="search" && c.State=="interactive" {
   <div class="md-appbar-demo md-search-demo" data-interactive="true">
    <div class="md-search-scene md-appbar-search-scene">
@@ -67,6 +68,7 @@ templ appbarSurface(c componentCase) {
 </button>
 				}
 				if c.Control=="fab" {
+					@useComponentAssets("fab")
 					<button class="md-button md-fab" data-variant="secondary-container" data-size="default" type="button" aria-label="Create">@materialSymbol("add")
 </button>
 				}

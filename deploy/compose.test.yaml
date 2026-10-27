@@ -9,6 +9,7 @@ services:
       TOKENS_PUBLIC_ORIGIN: https://tokencatalog.dev/md3
     volumes: !override
       - test-state:/var/lib/tokens:ro
+      - test-usage:/var/lib/tokens-usage
   updater:
     image: tokens-updater-check:local
     build:
@@ -18,3 +19,4 @@ services:
     env_file: !reset []
 volumes:
   test-state:
+  test-usage:

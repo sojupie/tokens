@@ -44,7 +44,6 @@ TOKEN_CATALOG_THEME_DB="$PWD/published-review/tokens.sqlite" go test ./catalog/w
 ```
 
 Without these environment variables, optional captured-data checks skip.
-The [handover](handover-components-and-exports.md) records validation boundaries.
 
 Tests use local fixtures. Keep normal checks offline. Live captures and DNS or
 Cloudflare checks are separate operational checks.
@@ -83,12 +82,24 @@ explain how to find manual declarations and change a token value.
 
 ## Asset delivery checks
 
-`forge/css-output.mjs` factors the site theme and compacts generated CSS.
-`forge/component-bundles.mjs` selects shared controls and optional component
-families. Add child families there when a specimen composes other components.
-`catalog/web/component_assets.go` selects the stylesheet for each page.
+`forge/components/modules.json` assigns each structural CSS source and generated
+binding family to one module. `forge/component-bundles.mjs` builds those modules
+without inspecting selectors. The build rejects missing and duplicate owners.
+
+Renderers request their module with `@useComponentAssets("list")`. Put the request
+beside the markup that needs it, including nested controls and conditional
+content. For example, the reorder dialog requests `sheet`; a switch row requests
+`switch` through `listSelectionControl`. Thumbnails that author their own anatomy
+request assets in their rendering branch too. Do not add route or child-family
+maps. `@componentAssetScope()` collects requests from its children and inserts
+versioned CSS and theme links before their markup. Use a scope inside each HTMX
+replacement boundary. Mark each scope container with `data-component-assets`. The layout scopes its
+main content and footer; the playground has a
+separate scope inside `#component-preview`, so changing a control can add or
+remove modules. The generated module manifest supplies link order.
+
 `catalog/web/static/asset-loader.js` selects optional behavior from the rendered
-markup. Keep these mappings aligned when adding a component.
+markup. Add a matching selector there when introducing a behavior module.
 
 The layout loads shared CSS and core controls. Page-specific stylesheets live
 inside the replaced page content, so HTMX removes them when leaving a playground.
@@ -115,17 +126,40 @@ These figures describe this local browser run, not a cross-browser performance g
 
 `forge/theme-subsets.mjs` now derives theme inputs from shared CSS, template
 references, family bundles and literal JavaScript reads. It follows CSS aliases
-in all appearances; Style Dictionary resolves DTCG aliases before this step.
+in all appearances. Captured DTCG aliases remain CSS references when their
+resolved values agree after the site conversions. Public context exports retain
+their existing output.
 Dynamic spring property names have explicit dependency roots in `pageThemes`.
 Add a root there if behavior introduces another dynamically constructed token
 name. Unknown Material or Catalog references fail the build.
 
-The shared theme stays in the head. A playground's remaining inputs are scoped
-to `#component-preview`; its theme link follows the page stylesheet through HTMX
-navigation. Catalog overview pages use the optional `all` theme globally because
-their thumbnails sit outside the playground. Existing manifests without theme
-bundles keep the complete theme. `/theme.css` and public token downloads remain
-complete.
+The shared theme stays in the head. Remaining module inputs are scoped to
+`[data-component-assets]` regions and standalone `#component-preview` fixtures. Their links follow
+the rendered content through HTMX navigation. Galleries collect the modules their
+thumbnails render. Publications without theme bundles keep the complete theme.
+`/theme.css` and public token downloads remain complete.
+
+Open `/theme-aliases.html` to compare resolved variables with a saved
+`baseline-theme.tmp` across all six appearances.
+
+Open `/component-modules.html` on the conformance server to compare modules with
+the complete stylesheet across all six appearances. It discovers public pages
+from the sitemap, including agent instructions, change logs and individual token
+sets. It also tests each playground control option from default and interactive
+views. Computed styles include state-layer pseudo-elements. Removing card CSS
+and card tokens independently must produce differences as a check of the test
+itself. Add `?path=/md3/components/search` to rerun one component and its options.
+Add `&width=320` or `&width=390` to check a phone-width frame. Inline date
+pickers also fail the check if their panel or content overflows horizontally.
+This compares delivery with the full output; it does not establish that
+the full output implements every Material rule correctly.
+
+The conformance proxy defaults to Catalog at `http://127.0.0.1:8081/md3`.
+Pass `--catalog` to use another base URL.
+
+`/list-reorder.html` checks the
+placement and layout effect of the reorder indicator. Run the Go render tests
+with `go test ./catalog/web`.
 
 For a theme comparison, copy the complete generated `theme.css` to
 `forge/conformance/baseline-theme.tmp`. Open `/theme-equivalence.html` to compare
@@ -353,6 +387,3 @@ The [motion contract and browser checks](reference/components.md#motion-schemes-
 describe assignments, interruption handling, reduced motion and popup fallbacks.
 Run `go run ./forge/conformance` alongside Catalog and open
 `http://127.0.0.1:8082/motion.html` to repeat the checks.
-
-For repeatable input recipes, source-video frames and quantitative comparisons,
-see [motion inspection](reference/motion-inspection.md).

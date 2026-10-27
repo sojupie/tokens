@@ -472,9 +472,26 @@ touch target. The group reserves that height so targets do not overlap nearby ro
 ## Sliders
 
 Sliders support five captured sizes, horizontal and vertical layouts, continuous
-and stepped values, and single or range selection. Value label selects the
-published `label` or `value-indicator` typography and colors. Only one dimension
-varies across a preview grid.
+and stepped values, and single or range selection. The preview configures value
+visibility, end stops, initial values, discrete steps, and optional volume or
+brightness inset icons. Inset icons apply only to standard single sliders in
+M/L/XL sizes. Only one dimension varies across a preview grid.
+
+The [M3 measurements section](https://m3.material.io/components/sliders/specs#16868fdb-4ed2-4e3f-99ad-24328cbfd2f4)
+provides the reference geometry. Existing captured measurements take precedence;
+slider measurements are not overridden to match the diagrams. Source tokens
+supply track heights of 16/24/40/56/96px and outer corner radii of 8/8/12/16/28px
+for XS/S/M/L/XL, 4px resting handles, 24px inset icons in M/L and 32px in XL,
+and 6px handle-to-track gaps.
+
+Four captured dimensions differ from the diagrams: the medium handle is 44px
+rather than 52dp, the label is 28px high rather than 44dp, the label-to-handle
+gap is 12px rather than 4dp, and the stop inset is 4px rather than 6dp. Those
+source values remain in force. Shared slider CSS complements missing tokens
+with the documented 48px label width and 16px horizontal padding. Vertical label
+padding is derived from the existing height and line-height tokens so text fits.
+The published `label` and `value-indicator` token groups describe the same
+anatomy and are not offered as separate preview variants.
 
 Native range inputs handle pointer, touch, arrow keys, Home, End, and disabled
 behavior. Range inputs keep their full native min/max for positioning and expose
@@ -1098,8 +1115,14 @@ keyboard focus update active and inactive container shapes. The expanded trigger
 retains its captured active state layer while the submenu is open.
 
 Renderer layout limits the demonstration's main menu to 20rem. Submenus have a
-12rem minimum width, an 8px gap and viewport-aware placement. Static submenu
-comparisons stack below their triggers on narrow screens. Container shape changes
+12rem minimum width and align with the parent's outer edge, flipping sides when
+needed. If neither side fits, the child replaces the visible parent surface and
+provides a Back item. Back and Escape restore focus to the parent item. Disabled
+actions remain focusable with `aria-disabled` and cannot be activated.
+
+Material recommends considering bottom sheets on compact screens. This renderer
+uses Back navigation when adjacent menus cannot fit.
+Static submenu comparisons stack below their triggers on narrow screens. Container shape changes
 use the fast spatial spring. These layout and motion choices
 appear in `css-usage.json`.
 
@@ -1249,9 +1272,6 @@ validation work.
 
 Source guidance: [Material date picker guidelines](https://m3.material.io/components/date-pickers/guidelines)
 and [specifications](https://m3.material.io/components/date-pickers/specs).
-
-The [component and export handover](../handover-components-and-exports.md)
-describes the current portability boundary, library proposals and download state.
 
 ## Motion schemes and lifecycle
 

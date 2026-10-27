@@ -15,6 +15,8 @@ import (
 )
 
 type Server struct {
+	motionURL      string
+	motionLabURL   string
 	thumbnailMu    sync.Mutex
 	thumbnails     map[string]componentCase
 	previewMu      sync.Mutex
@@ -69,12 +71,13 @@ type changesResponse struct {
 
 func New(state publish.PublishedState, downloadsDir string) *Server {
 	css, err := publicationTheme(state)
-	return &Server{state: state, downloadsDir: downloadsDir, themeCSS: css, themeError: err}
+	return &Server{motionURL: "/tools/motion/", motionLabURL: "/tools/motion-lab/", state: state, downloadsDir: downloadsDir, themeCSS: css, themeError: err}
 }
 
 func (server *Server) Handler() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /for-agents", server.handleForAgents)
+	mux.HandleFunc("GET /tools", server.handleTools)
 	mux.HandleFunc("GET /sitemap.xml", server.handleSitemap)
 	mux.HandleFunc("GET /sitemap.css", handleSitemapCSS)
 	mux.HandleFunc("GET /robots.txt", server.handleRobots)
@@ -108,7 +111,7 @@ func (server *Server) Handler() http.Handler {
 	cachedMux := cacheResponses(mux)
 	handler := http.HandlerFunc(func(response http.ResponseWriter, request *http.Request) {
 		// Keep page URLs canonical without dropping filters or the collection mount.
-		if (request.Method == http.MethodGet || request.Method == http.MethodHead) && request.URL.Path != "/" && !strings.HasSuffix(request.URL.Path, "/sets/") && strings.HasSuffix(request.URL.Path, "/") && (strings.HasPrefix(request.URL.Path, "/components/") || strings.HasPrefix(request.URL.Path, "/styles/") || request.URL.Path == "/changes/" || request.URL.Path == "/for-agents/") {
+		if (request.Method == http.MethodGet || request.Method == http.MethodHead) && request.URL.Path != "/" && !strings.HasSuffix(request.URL.Path, "/sets/") && strings.HasSuffix(request.URL.Path, "/") && (strings.HasPrefix(request.URL.Path, "/components/") || strings.HasPrefix(request.URL.Path, "/styles/") || request.URL.Path == "/changes/" || request.URL.Path == "/for-agents/" || request.URL.Path == "/tools/") {
 			target := strings.TrimRight(request.URL.Path, "/")
 			if request.URL.RawQuery != "" {
 				target += "?" + request.URL.RawQuery

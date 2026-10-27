@@ -1,5 +1,4 @@
 /* Native inputs handle selection. Mark geometry and handle travel are renderer anatomy. */
-.md-checkbox,
 .md-switch {
   position: relative;
   isolation: isolate;
@@ -10,16 +9,7 @@
   vertical-align: middle;
   cursor: pointer;
 }
-.md-checkbox {
-  --_checkbox-container: transparent;
-  --_checkbox-container-opacity: 1;
-  --_checkbox-icon-opacity: 1;
-  --_checkbox-state-color: transparent;
-  --_checkbox-state-opacity: 0;
-  width: var(--_checkbox-state-size);
-  height: var(--_checkbox-state-size);
-}
-:is(.md-checkbox, .md-switch) > input {
+.md-switch > input {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -28,63 +18,6 @@
   margin: 0;
   cursor: inherit;
   z-index: 2;
-}
-.md-checkbox::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: var(--_checkbox-state-shape);
-  z-index: -1;
-  background: var(--_button-background-state-color);
-  opacity: var(--_button-background-state-opacity);
-  pointer-events: none;
-}
-.md-checkbox > .md-checkbox-box {
-  display: grid;
-  place-items: center;
-  box-sizing: border-box;
-  width: var(--_checkbox-width);
-  height: var(--_checkbox-height);
-  border-radius: var(--_checkbox-shape);
-  border: var(--_checkbox-outline-width) solid
-    color-mix(
-      in srgb,
-      var(--_checkbox-outline, transparent)
-        calc(var(--_checkbox-container-opacity) * 100%),
-      transparent
-    );
-  background: color-mix(
-    in srgb,
-    var(--_checkbox-container) calc(var(--_checkbox-container-opacity) * 100%),
-    transparent
-  );
-}
-.md-checkbox > .md-checkbox-box > svg {
-  display: none;
-  width: var(--_checkbox-icon-size);
-  height: var(--_checkbox-icon-size);
-  color: color-mix(
-    in srgb,
-    var(--_checkbox-icon) calc(var(--_checkbox-icon-opacity) * 100%),
-    transparent
-  );
-}
-.md-checkbox:has(> input:checked) > .md-checkbox-box > .md-checkbox-check {
-  display: block;
-}
-.md-checkbox:has(> input:indeterminate)
-  > .md-checkbox-box
-  > .md-checkbox-check {
-  display: none;
-}
-.md-checkbox:has(> input:indeterminate) > .md-checkbox-box > .md-checkbox-dash {
-  display: block;
-}
-.md-checkbox:has(> input:focus-visible),
-.md-checkbox[data-component-state="focused"] {
-  outline: var(--_checkbox-focus-width) solid var(--_checkbox-focus-color);
-  outline-offset: var(--_checkbox-focus-offset);
-  border-radius: var(--md-sys-shape-corner-full);
 }
 .md-switch {
   --_switch-track-opacity: 1;
@@ -187,7 +120,7 @@
   outline-offset: var(--_switch-focus-offset);
   border-radius: var(--md-sys-shape-corner-full);
 }
-:is(.md-checkbox, .md-switch):has(> input:disabled) {
+.md-switch:has(> input:disabled) {
   cursor: default;
 }
 @media (prefers-reduced-motion: reduce) {
@@ -196,18 +129,46 @@
   }
 }
 @media (forced-colors: active) {
-  :is(.md-checkbox, .md-switch) > input {
+  .md-switch > input {
     appearance: auto;
     opacity: 1;
     position: static;
     width: var(--md-sys-measurement-space300);
     height: var(--md-sys-measurement-space300);
   }
-  .md-checkbox::before,
-  .md-checkbox-box,
   .md-switch-track,
   .md-switch-handle {
     display: none !important;
+  }
+}
+.md-switch {
+  --_switch-background-state-color: transparent;
+  --_switch-background-state-opacity: 0;
+  --_button-background-state-color: var(--_switch-background-state-color);
+  --_button-background-state-opacity: var(--_switch-background-state-opacity);
+  --_button-pressed-state-color: var(--_switch-pressed-state-color);
+  --_button-pressed-state-opacity: var(--_switch-pressed-state-opacity);
+  --_button-rest-shape: var(--_switch-state-shape);
+  --_button-pressed-shape: var(--_switch-state-shape);
+}
+.md-switch-handle > .md-button-ripple {
+  inset: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: var(--_switch-state-size);
+  height: var(--_switch-state-size);
+  border-radius: var(--_switch-state-shape);
+}
+:root:not([data-feedback-ready]) .md-switch-handle::before,
+:root .md-switch[data-component-state="pressed"] > .md-switch-handle::before {
+  background: var(--_switch-state-color);
+  opacity: var(--_switch-state-opacity);
+}
+@media (prefers-reduced-motion: reduce), (forced-colors: active) {
+  .md-switch-handle::before {
+    background: var(--_switch-state-color);
+    opacity: var(--_switch-state-opacity);
   }
 }
 

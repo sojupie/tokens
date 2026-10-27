@@ -1,6 +1,7 @@
 package web
 
 templ specimenSplit(c componentCase) {
+	@useComponentAssets("split")
 	<div class="md-split-demo">
 		<div { c.Attributes()... }>
 			<button { c.SplitAction(false)... }>

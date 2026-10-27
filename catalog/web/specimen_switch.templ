@@ -1,7 +1,12 @@
 package web
 
 templ specimenSwitch(c componentCase) {
-	@selectionExample(c.ID(), "Allow notifications") {
+	@switchChoice(c, "Allow notifications")
+}
+
+templ switchChoice(c componentCase, label string) {
+	@useComponentAssets("switch")
+	@selectionExample(c.ID(), label) {
 	<label { c.Attributes()... }><input type="checkbox" role="switch" id={ c.ID() + "-input" } aria-labelledby={ c.ID() + "-label" } checked?={ c.Selected } disabled?={ c.State=="disabled" }/><span class="md-switch-track" aria-hidden="true"></span><span class="md-switch-handle" aria-hidden="true"><svg class="md-switch-on" viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2"></path></svg><svg class="md-switch-off" viewBox="0 0 24 24" fill="none"><path d="m7 7 10 10M7 17 17 7" stroke="currentColor" stroke-width="2"></path></svg></span></label>
 	}
 }

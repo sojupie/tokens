@@ -99,6 +99,7 @@
     );
     const fractions = values.map((value) => (value - min) / span);
     const decorate = (element, fraction, size = 0) => {
+      if (!element) return;
       element.dataset.active = String(fraction >= start && fraction <= end);
       element.style.visibility = fractions.some(
         (v, i) =>
@@ -119,6 +120,13 @@
       );
     for (const icon of slider.querySelectorAll(".md-slider-icon")) {
       const distance = (iconPadding + iconSize / 2) / (axis || 1);
+      if (icon.hasAttribute("data-slider-inset")) {
+        const fitsActive = end * axis >= iconPadding + iconSize + widths[0] / 2 + leading;
+        icon.classList.toggle("md-slider-leading", fitsActive);
+        icon.classList.toggle("md-slider-trailing", !fitsActive);
+        // The inset icon supplies the endpoint meaning; avoid drawing a dot beneath it.
+        slider.dataset.insetPosition = fitsActive ? "start" : "end";
+      }
       decorate(
         icon,
         icon.classList.contains("md-slider-leading") ? distance : 1 - distance,

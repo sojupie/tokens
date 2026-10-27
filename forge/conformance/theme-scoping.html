@@ -69,8 +69,8 @@
           full.textContent = baseline;
           d.head.append(full);
           const select = (mode) => {
-            full.disabled = mode === "scoped";
-            current.forEach((link) => (link.disabled = mode === "full"));
+            full.sheet.disabled = mode === "scoped";
+            current.forEach((link) => (link.sheet.disabled = mode === "full"));
           };
           const freeze = d.createElement("style");
           freeze.textContent =

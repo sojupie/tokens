@@ -48,27 +48,46 @@ test("theme deltas restore defaults when switching in any direction", () => {
   }
 });
 
-test("page bundles preserve source order, conditional rules and shared controls", () => {
-  const css =
-    '.md-icon-button{--x:1}.md-date-panel{--x:2}@media(a){.md-date-panel{--x:3}.md-slider{--x:4}}.md-date-panel{--x:5}@property --_time-angle{syntax:"<angle>";inherits:true;initial-value:0deg}';
-  const bundles = componentBundles(css);
-  assert(!bundles.get("common").includes(".md-date-panel"));
-  assert(bundles.get("date").includes("@media"));
-  assert(!bundles.get("date").includes(".md-slider"));
-  assert(!bundles.get("date").includes("@property"));
-  assert(bundles.get("time").includes("@property"));
-  const values = [];
-  postcss
-    .parse(bundles.get("date"))
-    .walkDecls("--x", (n) => values.push(n.value));
-  assert.deepEqual(values, ["2", "3", "5"]);
-});
-
-test("cross-family reduced-motion overrides follow each family's transitions", () => {
-  const bundles = componentBundles('.md-date-menu-button>svg{transition:transform 1s}.md-search-leading-slot>*{transition:transform 1s}@media(prefers-reduced-motion:reduce){.md-date-menu-button>svg,.md-search-leading-slot>*{transition:none}}');
-  for (const name of ['date','search']) {
-    const css = bundles.get(name);
-    assert(css.indexOf('transition:none') > css.indexOf('transition:transform'));
+test("modules own source files and binding families rather than selectors", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const modules = JSON.parse(
+    await readFile(
+      new URL("./components/modules.json", import.meta.url),
+      "utf8",
+    ),
+  );
+  const bindings = new Map(
+    Object.values(modules)
+      .flatMap((module) => module.bindings)
+      .map((family) => [family, `.binding-${family}{--owned:1}`]),
+  );
+  const bundles = await componentBundles({
+    bindings,
+    motionCSS: ".motion{--x:1}",
+    elevation: ".elevation{--x:2}",
+    allCSS: "legacy",
+  });
+  assert.equal(bundles.get("all"), "legacy");
+  assert.match(bundles.get("list"), /\.md-list/);
+  assert.match(bundles.get("sheet"), /\.md-bottom-sheet/);
+  assert(!bundles.get("list").includes(".md-bottom-sheet"));
+  assert(!bundles.get("common").includes(".binding-list{"));
+  assert.match(bundles.get("list"), /\.binding-list\{/);
+  assert.match(bundles.get("time"), /@property/);
+  for (const [id, selector] of [["checkbox", ".md-checkbox"], ["switch", ".md-switch"], ["messages", ".md-snackbar"], ["segmented", ".md-segmented-button"]]) {
+    const root=postcss.parse(bundles.get(id));
+    assert(root.nodes.some(rule=>rule.type==="rule"&&rule.selectors.includes(selector)&&rule.nodes.some(decl=>decl.prop==="display")),`${id} must own its layout`);
   }
-  assert(!bundles.get('common').includes('transition:none'));
+  assert(!bundles.get("switch").includes(".md-checkbox"));
+  assert(!bundles.get("badge").includes(".md-snackbar"));
+  assert(bundles.get("common").includes(".md-menu-shortcut"));
+  for (const [id, module] of Object.entries(modules)) {
+    for (const family of module.bindings)
+      assert(bundles.get(id).includes(`.binding-${family}{`));
+  }
+  bindings.set("unknown", "");
+  await assert.rejects(
+    componentBundles({ bindings, motionCSS: "", elevation: "", allCSS: "" }),
+    /Unowned generated binding/,
+  );
 });

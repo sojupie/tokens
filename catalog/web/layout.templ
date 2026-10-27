@@ -58,6 +58,7 @@ templ layout(title string) {
 							@siteNavLink("/components", "Components")
 							@siteNavLink("/styles", "Styles")
 							@siteNavLink("/changes", "Changes")
+ @siteNavLink("/tools", "Tools")
 							if metadata(ctx).AgentDiscovery {
 								@siteNavLink("/for-agents", "For agents")
 							}
@@ -86,41 +87,45 @@ templ layout(title string) {
 					</div>
 				</nav>
 			</header>
-			<main class="tokens-main">
-				if theme := pageThemeURL(ctx); theme != "" {
-					<link rel="stylesheet" href={ theme } data-component-stylesheet data-page-theme/>
+			<main class="tokens-main" data-component-assets>
+				@componentAssetScope() {
+					{ children... }
 				}
-				if stylesheet := componentStylesheet(ctx); stylesheet != "" {
-					<link rel="stylesheet" href={ staticURL(stylesheet) } data-component-stylesheet/>
-				}
-				{ children... }
 			</main>
-			<footer class="tokens-site-footer">
-				<div class="tokens-footer-content">
-					<div>
-						<p class="md-typescale-title-medium">Token Catalog</p>
-						<p class="md-typescale-body-medium">Browse Material Design 3 tokens and track their changes.</p>
-						<p class="md-typescale-body-medium">Independent project. Not affiliated with Google.</p>
-						@siteDownloadMenu()
-					</div>
-					<div>
-						<p class="md-typescale-title-medium">For humans</p>
-						<a class="tokens-link md-typescale-body-medium" href="https://github.com/sojupie/tokens">GitHub</a>
-						<a class="tokens-link md-typescale-body-medium" href="/components">Browse components</a>
-						<a class="tokens-link md-typescale-body-medium" href="/for-agents">Give this to your agent</a>
-					</div>
-					if metadata(ctx).AgentDiscovery {
+			<footer class="tokens-site-footer" data-component-assets>
+				@componentAssetScope() {
+					<div class="tokens-footer-content">
 						<div>
-							<p class="md-typescale-title-medium">For agents</p>
-							<a class="tokens-link md-typescale-body-medium" href="/llms-full.txt">API and data reference</a>
+							<p class="md-typescale-title-medium">Token Catalog</p>
+							<p class="md-typescale-body-medium">Browse Material Design 3 tokens and track their changes.</p>
+							<p class="md-typescale-body-medium">Independent project. Not affiliated with Google.</p>
+							@siteDownloadMenu()
 						</div>
-					}
-					<div>
-						<p class="md-typescale-title-medium">About</p>
-						<p class="md-typescale-body-medium">Made by Olle Marmenlind</p>
-						<a class="tokens-link md-typescale-body-medium" href="https://marmenlind.com">marmenlind.com</a>
+						<div>
+							<p class="md-typescale-title-medium">For humans</p>
+							<a class="tokens-link md-typescale-body-medium" href="https://github.com/sojupie/tokens">GitHub</a>
+							<a class="tokens-link md-typescale-body-medium" href="/components">Browse components</a>
+							<a class="tokens-link md-typescale-body-medium" href="/for-agents">Give this to your agent</a>
+						</div>
+						if metadata(ctx).AgentDiscovery {
+							<div>
+								<p class="md-typescale-title-medium">For agents</p>
+								<a class="tokens-link md-typescale-body-medium" href="/llms-full.txt">API and data reference</a>
+							</div>
+						}
+                        <div hx-boost="false">
+                            <p class="md-typescale-title-medium">Tools</p>
+                            for _, tool := range metadata(ctx).Tools {
+                                <a class="tokens-link md-typescale-body-medium" href={templ.SafeURL(tool.URL)}>{tool.Name}</a>
+                            }
+                        </div>
+						<div>
+							<p class="md-typescale-title-medium">About</p>
+							<p class="md-typescale-body-medium">Made by Olle Marmenlind</p>
+							<a class="tokens-link md-typescale-body-medium" href="https://marmenlind.com">marmenlind.com</a>
+						</div>
 					</div>
-				</div>
+				}
 			</footer>
 		</body>
 	</html>

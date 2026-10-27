@@ -21,8 +21,8 @@ func TestMenuAnatomyAndTargets(t *testing.T) {
 	c.Selected = true
 	c.State = "disabled"
 	a := c.MenuItem(0)
-	if a["aria-label"] != "Favorite" || a["aria-checked"] != "true" || a["disabled"] != true {
-		t.Fatal("icon-only menu needs a label, selection and native disabled state")
+	if a["aria-label"] != "Favorite" || a["aria-checked"] != "true" || a["aria-disabled"] != "true" || a["disabled"] != nil {
+		t.Fatal("icon-only menu needs a label, selection and a focusable disabled state")
 	}
 }
 

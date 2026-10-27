@@ -1,0 +1,158 @@
+{
+  "common": {
+    "styles": [
+      "styles/icon-buttons.css",
+      "styles/feedback.css",
+      "styles/chips.css",
+      "styles/dialog-tokens.css",
+      "styles/text-fields.css",
+      "styles/menu-items.css",
+      "styles/dividers.css",
+      "styles/feedback-accessibility.css",
+      "styles/chip-selection.css",
+      "styles/feedback-transitions.css",
+      "styles/chip-actions.css",
+      "styles/field-popups.css",
+      "styles/menus.css",
+      "styles/select-caret.css",
+      "styles/horizontal-menu-sizing.css",
+      "styles/popup-motion.css"
+    ],
+    "bindings": [
+      "icon",
+      "chip",
+      "field",
+      "field-menu",
+      "menu",
+      "menu-item",
+      "menu-icon",
+      "divider"
+    ]
+  },
+  "card": {
+    "styles": ["styles/cards.css"],
+    "bindings": ["card"]
+  },
+  "radio": {
+    "styles": ["styles/radios.css"],
+    "bindings": ["radio"]
+  },
+  "switch": {
+    "styles": ["styles/switches.css"],
+    "bindings": ["switch"]
+  },
+  "checkbox": {
+    "styles": ["styles/checkboxes.css"],
+    "bindings": ["checkbox"]
+  },
+  "fab": {
+    "styles": ["styles/fabs.css"],
+    "bindings": ["fab"]
+  },
+  "badge": {
+    "styles": ["styles/badges.css"],
+    "bindings": ["badge"]
+  },
+  "messages": {
+    "styles": ["styles/snackbars-tooltips.css"],
+    "bindings": ["snackbar", "tooltip", "support-action", "support-icon"]
+  },
+  "navigation": {
+    "styles": ["styles/navigation.css", "styles/navigation-rail.css"],
+    "bindings": ["nav", "nav-item"]
+  },
+  "tabs": {
+    "styles": ["styles/tabs.css"],
+    "bindings": ["tab"]
+  },
+  "segmented": {
+    "styles": ["styles/segmented-buttons.css"],
+    "bindings": ["segment"]
+  },
+  "slider": {
+    "styles": ["styles/sliders.css"],
+    "bindings": ["slider", "slider-control"]
+  },
+  "progress": {
+    "styles": ["styles/progress.css"],
+    "bindings": ["progress"]
+  },
+  "loading": {
+    "styles": ["styles/loading.css"],
+    "bindings": ["loading"]
+  },
+  "appbar": {
+    "styles": ["styles/app-bars.css"],
+    "bindings": ["appbar"]
+  },
+  "toolbar": {
+    "styles": ["styles/toolbars.css"],
+    "bindings": ["toolbar", "toolbar-item", "toolbar-wrapper", "toolbar-fab"]
+  },
+  "sheet": {
+    "styles": ["styles/sheets.css"],
+    "bindings": ["sheet", "sheet-action"]
+  },
+  "split": {
+    "styles": ["styles/split-buttons.css"],
+    "bindings": ["split", "split-item"]
+  },
+  "button-group": {
+    "styles": ["styles/button-groups.css"],
+    "bindings": ["group"]
+  },
+  "fab-menu": {
+    "styles": ["styles/fab-menus.css"],
+    "bindings": ["fab-menu", "fab-menu-item", "fab-menu-close"]
+  },
+  "list": {
+    "styles": ["styles/lists.css", "styles/list-expansion.css"],
+    "bindings": ["list", "list-item", "list-reveal"]
+  },
+  "carousel": {
+    "styles": ["styles/carousels.css"],
+    "bindings": ["carousel-item"]
+  },
+  "search": {
+    "styles": ["styles/search.css", "styles/search-motion.css"],
+    "bindings": ["search", "search-view"]
+  },
+  "date": {
+    "styles": ["styles/date-pickers.css", "styles/date-layout.css"],
+    "bindings": [
+      "date",
+      "date-day",
+      "date-month",
+      "date-menu",
+      "date-weekday",
+      "date-year"
+    ]
+  },
+  "time": {
+    "styles": ["styles/time-pickers.css"],
+    "bindings": [
+      "time",
+      "time-period",
+      "time-field",
+      "time-separator",
+      "time-support",
+      "time-dial",
+      "time-value"
+    ]
+  },
+  "dialog": {
+    "styles": [
+      "styles/dialogs.css",
+      "styles/dialog-layout.css",
+      "styles/dialog-visibility.css"
+    ],
+    "bindings": [
+      "dialog",
+      "dialog-action",
+      "full",
+      "full-bar",
+      "full-action",
+      "full-header"
+    ]
+  }
+}

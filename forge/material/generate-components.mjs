@@ -6,7 +6,7 @@ const contract = JSON.parse(
 );
 const extension = "dev.tokencatalog.material";
 const selection =
-  ':where(:checked,[aria-pressed="true"],[aria-selected="true"],[aria-current="page"],[data-selected="true"],:has(> input:checked))';
+  ':where(:checked,[aria-pressed="true"],[aria-selected="true"],[aria-current="page"],[data-selected="true"],:has(> input:checked, > input:indeterminate))';
 const enabled =
   ':not(:disabled):not([aria-disabled="true"]):not(:has(> input:disabled, > select:disabled))';
 const stateNames = {
@@ -789,6 +789,7 @@ export function generateComponents(document, values) {
   const mapped = [],
     excluded = [],
     rules = [],
+    moduleRules = new Map(),
     requiredNames = new Set();
   for (const [set, suffixes] of Object.entries(contract)) {
     for (const suffix of suffixes)
@@ -877,6 +878,7 @@ export function generateComponents(document, values) {
         Number(/:first-child|:last-child/.test(b.selector)),
   );
   for (const b of records) {
+    const firstRule = rules.length;
     const sliderState = {
       hovered: ':where([data-slider-hover],:has([data-slider-hover]),[data-component-state="hovered"]):not(:has(input:disabled))',
       focused: ':where(:has(input:focus-visible),[data-component-state="focused"]):not(:has(input:disabled))',
@@ -942,6 +944,9 @@ export function generateComponents(document, values) {
       rules.push(`${selectors} { --_${b.family}-${b.family==="appbar"?b.property.replace(/font$/,"tracking"):"tracking"}: var(--${tracking}); }`);
       requiredNames.add(tracking);
     }
+    const owned = moduleRules.get(b.family) ?? [];
+    owned.push(...rules.slice(firstRule));
+    moduleRules.set(b.family, owned);
     mapped.push({ token: b.token, selector: selectors, property });
     requiredNames.add(b.variable);
   }
@@ -1111,6 +1116,7 @@ export function generateComponents(document, values) {
       "/* Generated from the reviewed Material component contract. */\n" +
       groupBindings(rules.join("\n")) +
       "\n",
+    modules: new Map([...moduleRules].map(([family, rules]) => [family, groupBindings(rules.join("\n"))])),
     coverage: { mapped, excluded, configurations },
     requiredNames,
   };

@@ -33,3 +33,30 @@ test('Native keys remain native without Space and after release or blur',()=>{
  h.key(' ');h.key('','focusout',{target:{closest:()=>null}});assert.equal(h.key('ArrowRight'),false);
  assert.equal(h.input.valueAsNumber,40);
 });
+
+test('A single inset icon moves to the inactive end when the active track is too short',()=>{
+ const classes=new Set(['md-slider-leading']);
+ const icon={dataset:{},style:{},hasAttribute:name=>name==='data-slider-inset',classList:{
+  contains:name=>classes.has(name),toggle(name,on){if(on)classes.add(name);else classes.delete(name);}
+ }};
+ const bubble={textContent:''};
+ const control={querySelector:()=>bubble};
+ const input={min:'0',max:'100',valueAsNumber:40,parentElement:control,setAttribute(){}};
+ const stop=()=>({dataset:{},style:{}});
+ const startStop=stop(),endStop=stop();
+ const slider={dataset:{},style:{setProperty(){}},setAttribute(){},getBoundingClientRect:()=>({width:400,height:52}),
+  querySelectorAll(selector){return selector==='input[type="range"]'?[input]:selector==='.md-slider-icon'?[icon]:[];},
+  querySelector:selector=>selector==='.md-slider-stop-start'?startStop:endStop};
+ let resize;
+ runInNewContext(readFileSync(`${__dirname}/behaviors/sliders.js`,'utf8'),{
+  document:{addEventListener(){},querySelectorAll:()=>[slider]},window:{addEventListener(){}},
+  MaterialComponents:{sliderValues:values=>values},
+  ResizeObserver:class{constructor(fn){resize=()=>fn([{target:slider}]);}observe(){}},
+  getComputedStyle:()=>({getPropertyValue:name=>({'--_slider-state-size':'44','--_slider-control-width':'4','--_slider-leading':'6','--_slider-trailing':'6','--_slider-icon-size':'24','--_slider-icon-padding':'8'}[name])})
+ });
+ assert.equal(slider.dataset.insetPosition,'start');assert.equal(icon.dataset.active,'true');
+ input.valueAsNumber=0;resize();
+ assert.equal(slider.dataset.insetPosition,'end');assert.equal(icon.dataset.active,'false');assert.equal(icon.style.visibility,'visible');
+ input.valueAsNumber=100;resize();
+ assert.equal(slider.dataset.insetPosition,'start');assert.equal(icon.style.visibility,'visible');
+});

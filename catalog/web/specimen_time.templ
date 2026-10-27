@@ -1,6 +1,7 @@
 package web
 
 templ specimenTime(c componentCase) {
+	@useComponentAssets("time")
 	<div { c.Attributes()... }>
 		if c.State=="interactive" {
 			<button type="button" class="md-button md-outlined-button" data-time-open aria-controls={ c.ID() + "-time" } aria-haspopup="dialog" aria-expanded="false">Choose time</button>

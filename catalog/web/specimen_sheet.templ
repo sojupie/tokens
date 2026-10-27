@@ -3,6 +3,7 @@ package web
 import "fmt"
 
 templ specimenBottomSheet(c componentCase) {
+	@useComponentAssets("sheet")
 	<div class="md-sheet-demo" data-interactive={ fmt.Sprint(c.State == "interactive") } data-kind={ c.Family }>
 		if c.State=="interactive" {
 			<button { c.SheetOpener()... }>Open sheet</button>
@@ -28,6 +29,7 @@ templ specimenBottomSheet(c componentCase) {
 }
 
 templ sheetContents(c componentCase) {
+	@useComponentAssets("sheet")
 	if c.Family=="bottom-sheet" {
 		<button { c.SheetHandle()... }><span class="md-sheet-handle-mark"></span></button>
 	}

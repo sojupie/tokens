@@ -7,8 +7,7 @@
   --_search-spatial-easing: var(--_motion-slow-spatial-easing);
 }
 @media (prefers-reduced-motion: reduce) {
-  .md-search-leading-slot > *,
-  .md-date-menu-button > svg {
+  .md-search-leading-slot > * {
     transition: none;
   }
 }

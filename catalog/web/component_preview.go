@@ -404,6 +404,14 @@ func selectComponentPreview(cases []componentCase, query url.Values) (*component
 		value := query.Get("preview." + key)
 		if value == "" {
 			value = defaults[key]
+			if key == "size" {
+				for _, preferred := range []string{"medium", "default"} {
+					if containsPreview(values, preferred) {
+						value = preferred
+						break
+					}
+				}
+			}
 			if !containsPreview(values, value) {
 				value = values[0]
 			}
@@ -445,6 +453,11 @@ func selectComponentPreview(cases []componentCase, query url.Values) (*component
 	}
 	if len(result.Cases) > 0 && result.Cases[0].Family == "menu" {
 		if err := configureMenuPreview(result, query); err != nil {
+			return nil, err
+		}
+	}
+	if len(result.Cases) > 0 && result.Cases[0].Family == "slider" {
+		if err := configureSliderPreview(result, query); err != nil {
 			return nil, err
 		}
 	}

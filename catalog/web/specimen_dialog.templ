@@ -3,6 +3,7 @@ package web
 import "fmt"
 
 templ specimenDialog(c componentCase) {
+	@useComponentAssets("dialog")
 	<div class="md-dialog-demo">
 		if c.State=="interactive" {
 			<button type="button" class="md-button md-outlined-button" data-dialog-open aria-controls={ c.ID() + "-panel" } aria-haspopup="dialog" aria-expanded="false">Open dialog</button>

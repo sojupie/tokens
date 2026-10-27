@@ -46,6 +46,7 @@ templ specimenNavBar(c componentCase) {
 }
 
 templ navigationContents(c componentCase) {
+	@useComponentAssets("navigation")
 	if c.Family=="nav-rail" && (c.RailMenu()||c.RailFAB()) {
 		<header>
 			if c.RailMenu() {
@@ -54,6 +55,7 @@ templ navigationContents(c componentCase) {
 </span></button>
 			}
 			if c.RailFAB() {
+				@useComponentAssets("fab")
 				<button { c.NavigationFAB()... }>@materialSymbol("edit")
 <span>Create</span></button>
 			}
@@ -79,11 +81,13 @@ templ navigationContents(c componentCase) {
 }
 
 templ navigationItemContents(c componentCase, i int, label string, icon string) {
+	@useComponentAssets("navigation")
 	<span class="md-nav-indicator">
 		<span class="md-nav-icon">
 			@materialSymbol(icon + "_outline")
 			@materialSymbol(icon + "_filled")
 		if c.Family=="nav-rail" && i==1 && c.NavBadge!=""&&c.NavBadge!="none" && c.NavigationItem(i)["aria-current"]!="page" {
+			@useComponentAssets("badge")
 			<span class={ "md-badge md-nav-badge" } data-variant={ c.NavBadge } aria-label={ c.NavigationBadgeLabel() } aria-hidden="true">
 				if c.NavBadge=="labeled" {
 					3

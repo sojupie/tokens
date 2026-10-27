@@ -1,6 +1,8 @@
 package web
 
 import (
+	"bytes"
+	"context"
 	"net/http/httptest"
 	"os"
 	"path/filepath"
@@ -160,5 +162,49 @@ func TestComponentGalleryRendersNativeStates(t *testing.T) {
 		if response.Code != 404 {
 			t.Fatalf("removed route %s returned %d", path, response.Code)
 		}
+	}
+}
+
+func TestSelectionThumbnailsHaveOneLabelPerOption(t *testing.T) {
+	for _, tc := range []struct {
+		family, defaultLabel string
+		labels               []string
+	}{
+		{"checkbox", "Receive updates", []string{"Design tokens", "Components", "All collections"}},
+		{"switch", "Allow notifications", []string{"Notifications", "Offline access"}},
+	} {
+		var out bytes.Buffer
+		if err := componentThumbnail(componentCase{Family: tc.family, State: "enabled"}).Render(context.Background(), &out); err != nil {
+			t.Fatal(err)
+		}
+		markup := out.String()
+		if strings.Contains(markup, tc.defaultLabel) {
+			t.Fatal("thumbnail must not include the standalone specimen's default label")
+		}
+		for _, label := range tc.labels {
+			if strings.Count(markup, label) != 1 {
+				t.Fatalf("expected one visible label for %s", label)
+			}
+		}
+	}
+}
+
+func TestCheckboxThumbnailUsesSelectedTokensForMixedState(t *testing.T) {
+	var output bytes.Buffer
+	if err := componentThumbnail(componentCase{Family: "checkbox", State: "enabled"}).Render(context.Background(), &output); err != nil {
+		t.Fatal(err)
+	}
+	mixed := 0
+	for _, input := range strings.Split(output.String(), "<input")[1:] {
+		tag := strings.SplitN(input, ">", 2)[0]
+		if strings.Contains(tag, `data-indeterminate="true"`) {
+			mixed++
+			if !strings.Contains(tag, " checked") {
+				t.Fatal("mixed thumbnail uses unselected checkbox tokens")
+			}
+		}
+	}
+	if mixed != 1 {
+		t.Fatalf("got %d mixed checkboxes, want 1", mixed)
 	}
 }

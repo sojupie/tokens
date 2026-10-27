@@ -17,6 +17,7 @@ templ specimenSnackbar(c componentCase) {
 }
 
 templ snackbarContents(c componentCase) {
+	@useComponentAssets("messages")
 	<span class="md-feedback-text">
 		if c.Variant=="two-lines" {
 			<span>Message sent.</span>

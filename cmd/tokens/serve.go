@@ -32,6 +32,16 @@ func runServe(args []string) error {
 	listenAddress := "127.0.0.1:8080"
 	publicOrigin := os.Getenv("TOKENS_PUBLIC_ORIGIN")
 	usageDir := os.Getenv("TOKENS_USAGE_DIR")
+	motionURL := os.Getenv("TOKENS_MOTION_URL")
+	if motionURL == "" {
+		motionURL = "/tools/motion/"
+	}
+	motionLabURL := os.Getenv("TOKENS_MOTION_LAB_URL")
+	if motionLabURL == "" {
+		motionLabURL = "/tools/motion-lab/"
+	}
+	flags.StringVar(&motionURL, "motion-url", motionURL, "URL for the video motion analysis tool")
+	flags.StringVar(&motionLabURL, "motion-lab-url", motionLabURL, "URL for the carousel motion lab")
 	flags.StringVar(&usageDir, "usage-dir", usageDir, "directory for retained usage totals; empty disables usage logging")
 	flags.StringVar(&assetsDir, "assets", assetsDir, "required generated asset directory outside the publication; empty uses publication/assets when present")
 	flags.StringVar(&publishedDir, "published", publishedDir, "publication directory")
@@ -65,6 +75,9 @@ func runServe(args []string) error {
 		return fmt.Errorf("load generated token assets: %w", err)
 	}
 	if err := publicationServer.SetPublicOrigin(publicOrigin); err != nil {
+		return err
+	}
+	if err := publicationServer.SetToolURLs(motionURL, motionLabURL); err != nil {
 		return err
 	}
 	if usageDir != "" {

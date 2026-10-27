@@ -106,3 +106,11 @@ test(
     assert.throws(() => generateButtons(newSet, values), /Unmapped button set/);
   },
 );
+
+test("disabled text buttons retain a transparent container", {skip: !process.env.TOKEN_ASSETS_DIR}, async () => {
+  const document = JSON.parse(await readFile(process.env.TOKEN_ASSETS_DIR + "/dtcg/light-default/tokens.tokens.json", "utf8"));
+  const overrides = JSON.parse(await readFile("forge/material/overrides.json", "utf8"));
+  const {values} = await compile(document, ":root", {appTheme:true, overrides});
+  assert.equal(Number(values["md-comp-button-text-disabled-container-opacity"]), 0);
+  assert.ok(Number(values["md-comp-button-text-disabled-label-text-opacity"]) > 0);
+});

@@ -1,6 +1,7 @@
 package web
 
 templ specimenBadge(c componentCase) {
+	@useComponentAssets("badge")
 	<span { c.Attributes()... } role="img" aria-label={ c.BadgeLabel() }>
 		if c.Variant=="labeled" {
 			{ "99+" }

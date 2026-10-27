@@ -150,10 +150,15 @@ function harness(reduced = false, initialCheckboxes = []) {
         ? module.exports.corners(button.style.borderRadius,120,40)[index]+"px"
         : button.hasAttribute("data-pressed")?"8px":"20px"
     ])),
+    paddingInlineStart: "24px",
+    paddingInlineEnd: "24px",
     getPropertyValue: (name) =>
       button.noSpring && name.includes("spring")
         ? ""
         : ({
+            "--_group-width-growth": "15%",
+            "--_group-width-damping": "0.9",
+            "--_group-width-stiffness": "1400",
             "--_button-rest-shape":
               button.getAttribute("aria-pressed") === "true"
                 ? "12px"
@@ -638,4 +643,55 @@ test("click releases feedback when focus changed the control class", async () =>
  fade.complete();await Promise.resolve();await Promise.resolve();
  assert.equal(button.hasAttribute("data-rippling"),false);
  assert.equal(button.querySelector(".md-button-ripple"),null);
+});
+
+
+function widthGroupFixture(reduced=false) {
+ const h=harness(reduced),group=new h.Element('DIV');group.dataset={control:'standard'};
+ const buttons=Array.from({length:3},()=>h.button());
+ group.querySelectorAll=()=>buttons;
+ for(const button of buttons){
+  group.append(button);button.style.width='';button.naturalWidth=100;
+  button.closest=selector=>selector==='.md-button-group'?group:selector==='.md-button-ripple'?null:button;
+  button.getBoundingClientRect=()=>({left:0,top:0,width:parseFloat(button.style.width)||button.naturalWidth,height:40});
+ }
+ const widths=()=>buttons.map(button=>button.style.width);
+ const finish=async()=>{for(const animation of [...h.animations])if(!animation.cancelled)animation.complete();await new Promise(setImmediate);};
+ return {...h,group,buttons,widths,finish};
+}
+
+test('button group retargets changed label width before release animations finish',async()=>{
+ const h=widthGroupFixture(),button=h.buttons[1];
+ h.emit('pointerdown',button);h.emit('pointerup',button);h.emit('click',button,{detail:1});
+ // Release is still running when the application's click handler changes Play to Pause.
+ const old=h.animations.filter(a=>!a.cancelled);
+ button.naturalWidth=140;
+ h.mutate([{type:'childList',target:button,addedNodes:[],removedNodes:[]}]);
+ assert.deepEqual(h.widths(),['100px','140px','100px']);
+ assert.ok(old.some(a=>a.cancelled));
+ await h.finish();
+ assert.deepEqual(h.widths(),['','','']);
+ assert.equal(button.getBoundingClientRect().width,140);
+ assert.equal(h.group.hasAttribute('data-width-animating'),false);
+});
+
+test('button group preserves held growth when content changes and ignores ripple nodes',async()=>{
+ const h=widthGroupFixture(),button=h.buttons[1];h.emit('pointerdown',button);
+ button.naturalWidth=140;
+ const text={nodeType:3,parentElement:button};
+ h.mutate([{type:'characterData',target:text}]);
+ assert.deepEqual(h.widths(),['89.5px','161px','89.5px']);
+ const count=h.animations.length,ripple=new h.Element();ripple.className='md-button-ripple';
+ h.mutate([{type:'childList',target:button,addedNodes:[ripple],removedNodes:[]}]);
+ assert.equal(h.animations.length,count);
+ h.emit('pointercancel',button);await h.finish();
+ assert.deepEqual(h.widths(),['','','']);
+});
+
+test('reduced motion restores the changed natural width immediately',()=>{
+ const h=widthGroupFixture(true),button=h.buttons[1];h.emit('pointerdown',button);
+ button.naturalWidth=140;h.mutate([{type:'childList',target:button}]);
+ h.emit('pointercancel',button);
+ assert.deepEqual(h.widths(),['','','']);
+ assert.equal(button.getBoundingClientRect().width,140);
 });

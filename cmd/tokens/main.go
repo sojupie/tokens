@@ -35,8 +35,6 @@ func run(args []string) error {
 	case "help", "-h", "--help":
 		printTopHelp()
 		return nil
-	case "motion":
-		return runMotion(args[1:])
 	case "guidance":
 		return runGuidance(args[1:])
 	case "crawl":
@@ -65,12 +63,6 @@ func run(args []string) error {
 
 const topHelp = `Usage:
   tokens crawl [flags]
-  tokens motion capture --recipe FILE [--chrome-path FILE] [--video]
-  tokens motion import --input VIDEO --source SECTION_URL
-  tokens motion track --capture DIR --band x,y,width,height
-  tokens motion analyze --input TRACE --track NAME --start MS --end MS --from VALUE --to VALUE
-  tokens motion compare --capture DIR --reference DIR
-  tokens motion encode --capture DIR
   tokens guidance [--component SLUG] [--url URL] [--list] [flags]
   tokens guidance baseline [--design-system material] [flags]
   tokens guidance validate [--file PATH] [--against REF]

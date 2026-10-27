@@ -82,7 +82,7 @@ func TestHTMLPagesRenderComponentsAndStyles(t *testing.T) {
 			if !strings.Contains(body, `src="`+staticURL("logo-250x250.webp")+`"`) {
 				t.Fatal("header must use the smaller WebP logo")
 			}
-			for _, value := range []string{`<footer class="tokens-site-footer">`, `href="https://marmenlind.com"`, "Made by Olle Marmenlind", "Browse Material Design 3 tokens and track their changes."} {
+			for _, value := range []string{`<footer class="tokens-site-footer"`, `href="https://marmenlind.com"`, "Made by Olle Marmenlind", "Browse Material Design 3 tokens and track their changes."} {
 				if !strings.Contains(recorder.Body.String(), value) {
 					t.Fatalf("page footer does not contain %q", value)
 				}

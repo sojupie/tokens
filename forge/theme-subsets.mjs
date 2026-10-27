@@ -2,7 +2,7 @@ import postcss from "postcss";
 import { compactCSS } from "./css-output.mjs";
 
 // Follow CSS references in every appearance, including nested fallback values.
-// DTCG aliases have already been resolved by Style Dictionary at this stage.
+// Captured aliases remain CSS references and are followed transitively.
 export function themeSubset(
   theme,
   sources,
@@ -68,7 +68,7 @@ export function pageThemes(theme, bundles, sharedSources, runtimeSources) {
     themes.set(
       name,
       themeSubset(theme, [css], {
-        scope: name === "all" ? "" : "#component-preview",
+        scope: ":is([data-component-assets], #component-preview)",
         exclude: shared.names,
       }),
     );

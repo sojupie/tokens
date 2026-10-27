@@ -10,6 +10,7 @@ templ componentThumbnail(c componentCase) {
    <div class="tokens-thumbnail-content"><h3>Field notes</h3>@thumbnailDocument()</div>
   </div>
  case "badge":
+  @useComponentAssets("badge")
   <div class="tokens-thumbnail-badges">
    for i,label := range []string{"Inbox","Activity"} {
     <div><span class="tokens-thumbnail-badged-icon">@materialSymbol([]string{"folder","star"}[i])
@@ -22,6 +23,7 @@ templ componentThumbnail(c componentCase) {
    }
   </div>
  case "bottom-sheet":
+  @useComponentAssets("sheet")
   <div class="tokens-thumbnail-phone tokens-thumbnail-bottom">
    <div class="tokens-thumbnail-content"><h3>Weekend plans</h3>@thumbnailDocument()</div>
    <section { c.SheetAttributes()... }>
@@ -30,18 +32,20 @@ templ componentThumbnail(c componentCase) {
    </section>
   </div>
  case "button-group":
-  @componentSpecimen(c)
+  <div class="tokens-thumbnail-button-group">@componentSpecimen(c)</div>
  case "button":
   <div class="tokens-thumbnail-buttons">
    <button { c.Attributes()... }>@materialSymbol("add")<span>New note</span></button>
    <div><button { c.thumbnailVariant("elevated").Attributes()... }>@materialSymbol("edit")<span>Edit</span></button><button { c.thumbnailVariant("tonal").Attributes()... }>More</button></div>
   </div>
  case "card":
+  @useComponentAssets("card")
   <article class="md-card md-elevated-card tokens-thumbnail-card">
    @thumbnailLandscape()
    <div><h3>Along the coast</h3><p>A route for the weekend</p><button class="md-button md-filled-button" data-size="small" data-shape="round" type="button">View route</button></div>
   </article>
  case "carousel":
+  @useComponentAssets("carousel")
   <div class="tokens-thumbnail-carousel"><section { c.Attributes()... }><div class="md-carousel-viewport"><ol class="md-carousel-track">
    for i,label := range []string{"Coast","Forest","Hills"} {
     <li class="md-carousel-slot"><button { c.CarouselItem(i)... }><span class="md-carousel-art">@thumbnailLandscape()</span><span class="tokens-thumbnail-carousel-label">{ label }</span></button></li>
@@ -50,7 +54,7 @@ templ componentThumbnail(c componentCase) {
  case "checkbox":
   <div class="tokens-thumbnail-options tokens-thumbnail-paper">
    for i,label := range []string{"Design tokens","Components","All collections"} {
-    <div>@componentSpecimen(c.thumbnailSelected(i==0).thumbnailVariant([]string{"selected","unselected","indeterminate"}[i]))<span>{ label }</span></div>
+    <div>@checkboxChoice(c.thumbnailSelected(i!=1).thumbnailVariant([]string{"selected","unselected","indeterminate"}[i]),label)</div>
    }
   </div>
  case "chip":
@@ -62,6 +66,7 @@ templ componentThumbnail(c componentCase) {
  case "date":
   <div class="tokens-thumbnail-calendar">@componentSpecimen(c)</div>
  case "dialog":
+  @useComponentAssets("dialog")
   <div class="tokens-thumbnail-window tokens-thumbnail-dialog-context">
    <div class="tokens-thumbnail-content"><h3>Field notes</h3>@thumbnailDocument()</div>
    <div class="tokens-thumbnail-scrim"></div>
@@ -82,6 +87,7 @@ templ componentThumbnail(c componentCase) {
    <div>@materialSymbol("folder")<span>Archive</span><span>8</span></div>
   </div>
  case "extended-fab":
+  @useComponentAssets("fab")
   <button { c.Attributes()... }>@materialSymbol("add")<span>New note</span></button>
  case "fab-menu":
   <div class="tokens-thumbnail-phone tokens-thumbnail-bottom"><div class="tokens-thumbnail-content"><h3>Your workspace</h3>@thumbnailDocument()</div><div class="tokens-thumbnail-fab-menu">@componentSpecimen(c)</div></div>
@@ -94,6 +100,7 @@ templ componentThumbnail(c componentCase) {
    <button { c.thumbnailVariant("filled").Attributes()... }>@materialSymbol("open_in_new")</button>
   </div>
  case "list":
+  @useComponentAssets("list")
   <div class="tokens-thumbnail-list"><ul { c.Attributes()... }>
    for i,label := range []string{"Weekend plans","Reading list","Studio notes"} {
     <li><button { c.ListItem(i)... }><span class="md-list-leading md-list-icon">@materialSymbol("folder")</span><span class="md-list-body"><span class="md-list-label">{ label }</span><span class="md-list-supporting">{ []string{"Updated today","8 saved articles","Shared with Alex"}[i] }</span></span><span class="md-list-tail">@materialSymbol("chevron_right")</span></button></li>
@@ -116,21 +123,24 @@ templ componentThumbnail(c componentCase) {
  case "radio":
   <div class="tokens-thumbnail-options tokens-thumbnail-paper">
    for i,label := range []string{"Only me","People with the link","Everyone"} {
-    <div>@radioChoice(c,i,false)<span>{ label }</span></div>
+    <div>@radioChoice(c,i,label)</div>
    }
   </div>
  case "search":
+  @useComponentAssets("search")
   <div class="tokens-thumbnail-phone tokens-thumbnail-top"><div class="tokens-thumbnail-content">
    <div { c.SearchBar()... }><span class="md-search-leading-slot"><span class="md-search-leading">@materialSymbol("search")</span></span><input class="md-search-input" aria-label="Search" value="Weekend" readonly/></div>
    <div class="tokens-thumbnail-search-results"><div>@materialSymbol("search")<span>Weekend walks</span></div><div>@materialSymbol("search")<span>Weekend reading</span></div></div>
   </div></div>
  case "segmented":
+  @useComponentAssets("segmented")
   <div class="tokens-thumbnail-paper tokens-thumbnail-view"><h3>Calendar</h3><div { c.Attributes()... } role="group">
    for i,label := range []string{"Day","Week","Month"} {
     <label { c.SegmentAttributes(i)... }><input { c.SegmentInput(i,label)... }/><span class="md-segment-face"><span class="md-segment-check">@materialSymbol("check")</span><span>{ label }</span></span></label>
    }
   </div>@thumbnailDocument()</div>
  case "side-sheet":
+  @useComponentAssets("sheet")
   <div class="tokens-thumbnail-desktop tokens-thumbnail-side-sheet"><div class="tokens-thumbnail-content"><h3>Notes</h3>@thumbnailDocument()</div>
    <section { c.SheetAttributes()... }><div class="md-sheet-content"><header class="md-sheet-header"><h3 class="md-sheet-title">Note details</h3></header><div class="md-sheet-body"><p>Weekend plans</p><p>Updated today</p></div><footer class="md-sheet-footer"><button class="md-button md-text-button" data-size="small" type="button">Done</button></footer></div></section>
   </div>
@@ -141,7 +151,7 @@ templ componentThumbnail(c componentCase) {
  case "split":
   @componentSpecimen(c)
  case "switch":
-  <div class="tokens-thumbnail-options tokens-thumbnail-switches"><div><span>Notifications</span>@componentSpecimen(c.thumbnailSelected(true))</div><div><span>Offline access</span>@componentSpecimen(c.thumbnailSelected(false))</div></div>
+  <div class="tokens-thumbnail-options tokens-thumbnail-switches"><div>@switchChoice(c.thumbnailSelected(true), "Notifications")</div><div>@switchChoice(c.thumbnailSelected(false), "Offline access")</div></div>
  case "tabs":
   <div class="tokens-thumbnail-phone tokens-thumbnail-top">@componentSpecimen(c)<div class="tokens-thumbnail-content">@thumbnailDocument()</div></div>
  case "field":
@@ -149,6 +159,8 @@ templ componentThumbnail(c componentCase) {
  case "time":
   <div class="tokens-thumbnail-clock">@componentSpecimen(c)</div>
  case "toolbar":
+  @useComponentAssets("toolbar")
+  @useComponentAssets("fab")
   <div class="tokens-thumbnail-phone tokens-thumbnail-bottom tokens-thumbnail-toolbar-phone">
    <div class="tokens-thumbnail-toolbar"><div class="md-toolbar-demo" data-orientation="horizontal">
     <div { c.Attributes()... } role="toolbar" aria-label="Note actions">
@@ -163,6 +175,7 @@ templ componentThumbnail(c componentCase) {
    <span class="tokens-thumbnail-home-indicator"></span>
   </div>
  case "tooltip":
+  @useComponentAssets("messages")
   <div class="tokens-thumbnail-tooltip tokens-thumbnail-plain-tooltip">
    <div class="md-tooltip" data-variant="plain"><p>Copy link</p></div>
    <button { (componentCase{Family:"icon",Variant:"filled",Size:"medium",Shape:"round",Width:"default",State:"enabled"}).Attributes()... }>@materialSymbol("content_copy")</button>

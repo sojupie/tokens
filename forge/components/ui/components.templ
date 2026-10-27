@@ -46,19 +46,19 @@ templ NumberField(id string, label string, value string, min string, max string)
 }
 
 templ SelectOption(id string, value string, label string, selected bool) {
-	<li role="presentation"><div class="md-menu-item" id={ id } role="option" aria-selected={ selected } data-field-option={ label } data-field-value={ value }><span data-option-label>{ label }</span><span data-slot="trailing-icon" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"></path></svg></span></div></li>
+	<li role="presentation"><div class="md-menu-item" id={ id } role="option" aria-selected={ selected } data-field-option={ label } data-field-value={ value }><span data-option-label>{ label }</span><span data-slot="trailing-icon" aria-hidden="true"><svg viewBox="0 -960 960 960" fill="currentColor" focusable="false"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"></path></svg></span></div></li>
 }
 
 templ Select(id string, label string, options []Option) {
-	<div class="tokens-preview-filter" data-field-example data-populated="true">
-		<button type="button" class="md-filter-chip" id={ "filter-" + id } role="combobox" aria-label={ label } aria-expanded="false" aria-haspopup="listbox" aria-controls={ id + "-options" } aria-autocomplete="none" data-field-combo data-field-select><span class="filter-label">{ label+":" }</span><span data-field-display></span><span data-slot="trailing-icon" aria-hidden="true"><svg viewBox="0 -960 960 960" focusable="false"><path d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z"></path></svg></span></button>
+	<div class="md-chip-select" data-field-example data-populated="true">
+		<button type="button" class="md-filter-chip" id={ "filter-" + id } role="combobox" aria-label={ label } aria-expanded="false" aria-haspopup="listbox" aria-controls={ id + "-options" } aria-autocomplete="none" data-field-combo data-field-select><span class="filter-label">{ label+":" }</span><span data-field-display></span><span class="md-chip-icon" data-slot="trailing-icon" aria-hidden="true"><svg viewBox="0 -960 960 960" fill="currentColor" focusable="false"><path d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z"></path></svg></span></button>
 		<input type="hidden" data-field-value/>
 		<select id={ id } aria-label={ label } hidden>
 			for _, option := range options {
 				<option value={ option.Value }>{ option.Label }</option>
 			}
 		</select>
-		<div class="md-field-menu md-menu tokens-catalog-menu" data-variant="standard" data-orientation="vertical" id={ id + "-options" } role="listbox" aria-label={ label } popover="auto">
+		<div class="md-field-menu md-menu" data-variant="standard" data-orientation="vertical" id={ id + "-options" } role="listbox" aria-label={ label } popover="auto">
 			<section>
 				<ul role="presentation">
 					for _, option := range options {
@@ -76,5 +76,77 @@ templ Slider(id string, label string) {
 }
 
 templ Checkbox(id string, label string) {
-	<span class="checkbox-label"><label class="md-checkbox" data-component-state="interactive"><input type="checkbox" id={ id } aria-label={ label }/><span class="md-checkbox-box" aria-hidden="true"><svg class="md-checkbox-check" viewBox="0 0 18 18" fill="none"><path d="m4 9 3 3 7-7" stroke="currentColor" stroke-width="2"></path></svg><svg class="md-checkbox-dash" viewBox="0 0 18 18" fill="none"><path d="M4 9h10" stroke="currentColor" stroke-width="2"></path></svg></span></label><label for={ id }>{ label }</label></span>
+	<span class="md-checkbox-choice"><label class="md-checkbox" data-component-state="interactive"><input type="checkbox" id={ id } aria-label={ label }/><span class="md-checkbox-box" aria-hidden="true"><svg class="md-checkbox-check" viewBox="0 0 18 18" fill="none"><path d="m4 9 3 3 7-7" stroke="currentColor" stroke-width="2"></path></svg><svg class="md-checkbox-dash" viewBox="0 0 18 18" fill="none"><path d="M4 9h10" stroke="currentColor" stroke-width="2"></path></svg></span></label><label for={ id }>{ label }</label></span>
+}
+
+func menuItemAttributes(attrs templ.Attributes) templ.Attributes {
+	defaults := templ.Attributes{"type": "button", "class": "md-menu-item", "role": "menuitem", "tabindex": "-1"}
+	for key, value := range attrs {
+		defaults[key] = value
+	}
+	return defaults
+}
+
+// MenuItem owns the label and icon slots used by the shared menu styles.
+// Attributes supply command, submenu, selection and disabled semantics.
+templ MenuItem(attrs templ.Attributes, label string, leading templ.Component, trailing templ.Component) {
+	<button { menuItemAttributes(attrs)... }>
+		if leading != nil {
+			<span data-slot="leading-icon" aria-hidden="true">
+				@leading
+			</span>
+		}
+		<span class="md-menu-item-text"><span>{ label }</span></span>
+		if trailing != nil {
+			<span data-slot="trailing-icon" aria-hidden="true">
+				@trailing
+			</span>
+		}
+	</button>
+}
+
+// These wrappers preserve the Catalog component anatomy; callers supply content.
+templ ButtonGroup(class string, attrs templ.Attributes) {
+	<div class={ "md-button-group", class } role="group" { attrs... }>
+		{ children... }
+	</div>
+}
+
+templ Toolbar(attrs templ.Attributes) {
+	<div class="md-toolbar" role="toolbar" { attrs... }>
+		{ children... }
+	</div>
+}
+
+templ ListItem(attrs templ.Attributes, label string) {
+	<button type="button" class="md-list-item" { attrs... }><span class="md-list-body"><span class="md-list-label">{ label }</span></span></button>
+}
+
+templ Dialog(id string, titleID string, title string, class string, actions templ.Component) {
+	<dialog id={ id } class={ class } data-variant="basic" data-dialog-surface aria-labelledby={ titleID }>
+		<header class="md-basic-header"><h2 id={ titleID }>{ title }</h2></header>
+		<div class="md-dialog-content" data-dialog-content tabindex="0">
+			{ children... }
+		</div>
+		<footer class="md-basic-actions">
+			@actions
+		</footer>
+	</dialog>
+}
+
+templ Snackbar(id string, close templ.Component) {
+	<div id={ id } class="md-snackbar" data-variant="two-lines" popover="manual" role="status" aria-live="polite">
+		<span class="md-feedback-text"></span>
+		<button type="button" class="md-icon-button md-snackbar-close" aria-label="Dismiss notification" data-snackbar-close>
+			@close
+		</button>
+	</div>
+}
+
+// Menu is the shared anchored surface; MenuItem supplies its rows.
+templ Menu(id string, label string, main bool) {
+	<div id={ id } class="md-menu" data-variant="standard" data-orientation="vertical" popover="auto" data-menu-panel data-menu-main?={ main } role="menu" aria-label={ label }>
+		<section><ul role="presentation">{ children... }
+</ul></section>
+	</div>
 }

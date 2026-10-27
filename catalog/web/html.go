@@ -245,18 +245,26 @@ func (server *Server) renderHTML(response http.ResponseWriter, request *http.Req
 	}
 	info := metadata(ctx)
 	info.Path = request.URL.Path
+	info.Tools = server.toolDestinations()
 	info.GeneratedDownloads = server.tokenAssetsDir != ""
 	ctx = context.WithValue(ctx, pageMetadataKey{}, info)
 	if metadata(ctx).NoIndex {
 		response.Header().Set("X-Robots-Tag", "noindex, follow")
 	}
-	ctx = context.WithValue(ctx, pageThemeKey{}, server.pageThemes(ctx))
+	ctx = context.WithValue(ctx, pageThemeKey{}, server.pageThemes())
 	ctx = context.WithValue(ctx, themeVersionKey{}, assetVersion([]byte(server.themeCSS)))
+	assets := &componentAssets{modules: map[string]bool{}, server: server}
+	ctx = context.WithValue(ctx, componentAssetsKey{}, assets)
 	var rendered bytes.Buffer
 	if err := component.Render(ctx, &rendered); err != nil {
 		return err
 	}
-	body, err := prefixHTML(rendered.Bytes(), server.basePath)
+	links, err := server.componentAssetLinks(assets)
+	if err != nil {
+		return err
+	}
+	content := append(links, rendered.Bytes()...)
+	body, err := prefixHTML(content, server.basePath)
 	if err != nil {
 		return err
 	}

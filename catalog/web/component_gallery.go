@@ -9,6 +9,12 @@ import (
 type componentCase struct {
 	// instanceID scopes nested controls without changing their token configuration.
 	instanceID      string
+	SliderIcon      string `json:"sliderIcon,omitempty"`
+	SliderStops     string `json:"sliderStops,omitempty"`
+	SliderDisplay   string `json:"sliderDisplay,omitempty"`
+	SliderStart     string `json:"sliderStart,omitempty"`
+	SliderEnd       string `json:"sliderEnd,omitempty"`
+	SliderStep      string `json:"sliderStep,omitempty"`
 	MenuMode        string `json:"menuMode,omitempty"`
 	SegmentDensity  string `json:"segmentDensity,omitempty"`
 	SearchContent   string `json:"searchContent,omitempty"`

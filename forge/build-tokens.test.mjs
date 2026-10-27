@@ -1,6 +1,11 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { readFile, mkdtemp, rm, stat } from "node:fs/promises";
+import { spawnSync } from "node:child_process";
+import { tmpdir } from "node:os";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { componentAssets } from "./components/build-assets.mjs";
 import { compile, flatten, inheritReferencePalette } from "./build-tokens.mjs";
 
 const meta = (kind, value) => ({
@@ -230,4 +235,31 @@ test("appearance themes inherit captured palette tones without replacing their v
   inheritReferencePalette(appearance, base);
   assert.deepEqual(appearance, {"md-ref-palette-secondary30":"#123456", "md-ref-palette-secondary90":"#e8def8"});
   assert.equal(base["md-ref-palette-secondary30"], "#4a4458");
+});
+
+ test("site aliases preserve captured references without inferring equal literals",async()=>{
+ const document={base:{$type:"dimension",$value:{value:16,unit:"px"}},alias:{$type:"dimension",$value:"{base}"},literal:{$type:"dimension",$value:{value:16,unit:"px"}},next:{$type:"dimension",$value:"{alias}"}};
+ const result=await compile(document);
+ assert.deepEqual(result.aliases,{alias:"base",next:"alias"});
+ assert.equal(result.values.alias,"16px");
+ assert.match(result.css,/--alias: 16px/);
+ });
+
+
+test("production check mode never rewrites component assets", async () => {
+  const root = fileURLToPath(new URL("../", import.meta.url));
+  const temporary = await mkdtemp(path.join(tmpdir(), "tokens-check-bindings-"));
+  const outputs = [...(await componentAssets()).keys()].map(file => path.join(root, "forge/components", file));
+  const before = await Promise.all(outputs.map(async file => (await stat(file, {bigint:true})).mtimeNs));
+  try {
+    // A missing publication stops the CLI immediately after its component check.
+    // Normal build mode would rewrite every generated source before this failure.
+    const result = spawnSync(process.execPath, ["forge/build-tokens.mjs", "--published", path.join(temporary, "missing-publication"), "--check-bindings"], {cwd:root, encoding:"utf8"});
+    assert.equal(result.status, 1, result.stderr);
+    assert.match(result.stderr, /ENOENT/);
+    const after = await Promise.all(outputs.map(async file => (await stat(file, {bigint:true})).mtimeNs));
+    assert.deepEqual(after, before, "check mode modified checked-in component assets");
+  } finally {
+    await rm(temporary, {recursive:true, force:true});
+  }
 });

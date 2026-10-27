@@ -1,4 +1,7 @@
 (() => {
+  // Safari can retain :focus-visible after touch-driven programmatic focus.
+  document.addEventListener('pointerdown',()=>document.documentElement.setAttribute('data-pointer-focus',''),true);
+  document.addEventListener('keydown',event=>{if(!event.metaKey&&!event.altKey&&!event.ctrlKey)document.documentElement.removeAttribute('data-pointer-focus');},true);
   const initialized=new WeakSet(),openers=new WeakMap(),compact=matchMedia('(max-width: 960px)');
   function position(menu,toggle){const r=toggle.getBoundingClientRect();menu.style.top=(r.bottom+8)+'px';menu.style.maxHeight=`calc(100dvh - ${r.bottom+24}px)`;}
   function layout(){
@@ -54,6 +57,17 @@
     if(event.detail.requestConfig?.boosted&&event.detail.xhr.status===200&&!updateDocument(event.detail.xhr.responseText,event.detail.xhr.responseURL))event.detail.shouldSwap=false;
   });
   document.addEventListener('htmx:historyCacheMissLoad',event=>updateDocument(event.detail.response,event.detail.path));
+  // Explicit gallery links and browser history both return to the saved offset.
+  const galleryKey=()=>/\/(components|styles)\/?$/.test(location.pathname)?location.pathname+location.search:null;
+  function saveGallery(){const key=galleryKey();if(key&&document.getElementById('subject-list'))try{sessionStorage.setItem('tokens-scroll:'+key,String(window.scrollY));}catch{}}
+  function restoreGallery(){const key=galleryKey();if(!key)return;let saved;try{saved=sessionStorage.getItem('tokens-scroll:'+key);}catch{return;}if(saved===null)return;
+    Promise.resolve(globalThis.TokenAssets?.ready).then(()=>requestAnimationFrame(()=>window.scrollTo({top:Number(saved),left:0,behavior:'instant'})));
+  }
+  document.addEventListener('htmx:beforeRequest',event=>{if(event.detail.requestConfig?.boosted)saveGallery();});
+  document.addEventListener('htmx:afterSettle',event=>{if(event.detail.requestConfig?.boosted)restoreGallery();});
+  document.addEventListener('htmx:historyRestore',restoreGallery);
+  window.addEventListener('pagehide',saveGallery);
+  window.addEventListener('pageshow',restoreGallery);
   function initialize(){
     navigationLinks();
     for(const thumbnail of document.querySelectorAll(".tokens-component-thumbnail"))if(!thumbnails.has(thumbnail)){thumbnails.add(thumbnail);thumbnailSizes.observe(thumbnail);}

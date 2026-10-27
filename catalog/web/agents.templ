@@ -2,6 +2,7 @@ package web
 
 templ forAgentsPage(prompt string, mcpURL string) {
 	@layout("Give this to your agent") {
+		@useComponentAssets("card")
 		<header class="tokens-section">
 			<h1 class="md-typescale-headline-medium">Give this to your agent</h1>
 			<p class="md-typescale-body-large">Use Material Design 3 token data in your coding agent. No account or API key is required.</p>

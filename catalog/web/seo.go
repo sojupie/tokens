@@ -10,6 +10,7 @@ import (
 )
 
 type pageMetadata struct {
+	Tools              []toolDestination
 	GeneratedDownloads bool
 	Path               string
 	Title              string
@@ -76,6 +77,9 @@ func (server *Server) basicMetadata(path string, query url.Values) pageMetadata 
 	case "/for-agents":
 		info.Title = "Use Material Design 3 Tokens with a Coding Agent"
 		info.Description = "Connect a coding agent to Token Catalog. Copy setup instructions, install the skill or use MCP to find Material Design 3 tokens, contexts and observed changes."
+	case "/tools":
+		info.Title = "Tools for Motion Analysis and Interaction Testing"
+		info.Description = "Analyze motion in video recordings, compare reference curves, and inspect carousel interaction behavior with Token Catalog tools."
 	case "/components":
 		info.Title = "Material Design 3 Components and Component Tokens"
 		info.Description = "Explore tokens for Material Design 3 components, including buttons, navigation and input. Compare context-specific values, named references and observed changes."

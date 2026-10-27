@@ -3,6 +3,7 @@ package web
 import "fmt"
 
 templ specimenDate(c componentCase) {
+	@useComponentAssets("date")
 	<div { c.Attributes()... }>
 		if c.State=="interactive" {
 			<div class="md-date-fields" data-date-anchor>
@@ -106,6 +107,7 @@ templ dateEntryField(c componentCase, part string) {
 }
 
 templ dateCalendar(c componentCase, month int) {
+	@useComponentAssets("date")
 	<section class="md-date-month-calendar" data-calendar-month={ fmt.Sprintf("2026-%02d", month) }>
 		if c.DateRange && c.Variant!="docked" {
 			<h4>{ dateMonths[month-1]+" 2026" }</h4>

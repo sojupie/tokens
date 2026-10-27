@@ -92,8 +92,9 @@
     if(button.hasAttribute('data-list-reveal-toggle')){reveal(row,row.dataset.revealed!=='true');return;}
     if(button.hasAttribute('data-list-reveal-action')){reveal(row,false);primary(row).focus();announce(list,row.dataset.listLabel+' marked done.');return;}
     if(button.hasAttribute('data-list-grip')){
-      for(const item of rows(list))item.toggleAttribute('data-list-action-target',item===row);
+      for(const item of rows(list)){item.toggleAttribute('data-list-action-target',item===row);if(item===row)primary(item).setAttribute('data-dragged','true');else primary(item).removeAttribute('data-dragged');}
       const sheet=list.closest('.md-list-demo').querySelector('[data-list-reorder-sheet]');sheet.setAttribute('aria-label','Reorder '+row.dataset.listLabel);
+      if(!sheet.dataset.listTargetCleanup){sheet.dataset.listTargetCleanup='true';sheet.addEventListener('close',()=>{for(const item of rows(list)){item.removeAttribute('data-list-action-target');primary(item).removeAttribute('data-dragged');}});}
       updateMoveActions(list);sheet.querySelector('[data-list-move]:not(:disabled)')?.focus({preventScroll:true});return;
     }
     if(button.hasAttribute('data-list-move')){

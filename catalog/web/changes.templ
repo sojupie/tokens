@@ -43,6 +43,7 @@ All changes</a>
 				<div class="tokens-observation-records">
 					for _, group := range changeGroups(batch.Changes, state.Subjects) {
 						if subject == "" {
+							@useComponentAssets("card")
 							<article class="md-card md-outlined-card tokens-change-summary">
 								<h3 class="md-typescale-title-medium">
 									if group.URL != "" {
@@ -114,6 +115,7 @@ templ changeFilterForm(filters changeFilters, baseURL string) {
 
 templ changeRecordList(changes []labeledChange) {
 	for _, change := range changes {
+		@useComponentAssets("card")
 		<details class="md-card md-outlined-card tokens-change-card tokens-change-disclosure">
 			<summary class="tokens-change-heading">
 				@materialSymbol("chevron_right")

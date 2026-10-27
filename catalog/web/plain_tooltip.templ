@@ -1,6 +1,7 @@
 package web
 
 templ plainTooltip(label string, id string) {
+	@useComponentAssets("messages")
 	<div class="md-tooltip-demo">
 		{ children... }
 		<div class="md-tooltip" data-variant="plain" role="tooltip" id={ id }><p>{ label }</p></div>

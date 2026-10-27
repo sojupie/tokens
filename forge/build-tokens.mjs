@@ -185,7 +185,16 @@ export async function compile(
     )
       throw new Error(`Invalid CSS value for ${name}`);
   }
-  return { css: cssVariables(values, selector, names), values };
+  const aliases = {};
+  for (const [name, token] of Object.entries(tokens)) {
+    const reference = typeof token.$value === "string" && /^\{([^{}]+)\}$/.exec(token.$value);
+    if (!reference) continue;
+    const target = reference[1].replaceAll(".", "-");
+    // Preserve a captured alias only when app-specific conversions agree.
+    if (target in values && String(values[name]) === String(values[target]))
+      aliases[name] = target;
+  }
+  return { css: cssVariables(values, selector, names), values, aliases };
 }
 
 // Reference palette tones are shared across appearances. Context exports only
@@ -215,7 +224,7 @@ async function main() {
   });
   if (!args.published)
     throw new Error("Usage: npm run build:tokens -- --published <directory> [--assets <directory>] [--check-bindings]");
-  await buildComponentAssets();
+  await buildComponentAssets({ check: args["check-bindings"] });
   const executable = args["tokens-binary"] ?? "go";
   const prefix = args["tokens-binary"] ? [] : ["run", "./cmd/tokens"];
   const published = await realpath(args.published);
@@ -291,6 +300,7 @@ async function main() {
       required.add(match[1]);
     const totals = [];
     const bindingValues = new Map();
+    let componentModules, moduleMotionCSS;
     for (const variant of index) {
       const document = JSON.parse(
         await readFile(path.join(output, "dtcg", variant.file), "utf8"),
@@ -345,6 +355,8 @@ async function main() {
         throw new Error("Component bindings differ across appearances");
       componentCSS = generated;
       componentCoverage = components.coverage;
+      componentModules = components.modules;
+      moduleMotionCSS = motionCSS;
       for (const binding of [
         ...buttons.coverage.mapped,
         ...components.coverage.mapped,
@@ -365,7 +377,7 @@ async function main() {
         path.join(output, "dtcg", variant.name, "tokens.css"),
         downloadable.css,
       );
-      themeVariants.push({ selector, theme: variant.theme, values: compiled.values });
+      themeVariants.push({ selector, theme: variant.theme, values: compiled.values, aliases: compiled.aliases });
       totals.push({ context: variant.name, cssVariables: required.size });
     }
     if (
@@ -374,7 +386,9 @@ async function main() {
         .digest("hex") !== databaseSha256
     )
       throw new Error("Publication changed during the build");
-    const bundles = componentBundles(componentCSS);
+    const bundles = await componentBundles({
+      bindings: componentModules, motionCSS: moduleMotionCSS, elevation, allCSS: componentCSS,
+    });
     const sharedSources = await Promise.all(
       [
         "catalog/web/static/app.css",
@@ -406,6 +420,16 @@ async function main() {
         /["'`]--((?:md|catalog)-[\w-]+)["'`]/g,
       ))
         required.add(match[1]);
+    for (const variant of themeVariants) {
+      variant.values = { ...variant.values };
+      for (const [name, target] of Object.entries(variant.aliases))
+        variant.values[name] = `var(--${target})`;
+    }
+    // Set iteration also visits newly discovered targets, following alias chains.
+    for (const name of required)
+      for (const variant of themeVariants)
+        for (const match of String(variant.values[name]).matchAll(/var\(--([\w-]+)/g))
+          required.add(match[1]);
     for (const entry of totals) entry.cssVariables = required.size;
     themeCSS = themeVariantsCSS(themeVariants, required);
     const themes = pageThemes(themeCSS, bundles, sharedSources, runtimeSources),
@@ -495,6 +519,17 @@ async function main() {
     if (!args["check-bindings"]) {
       await writeFile("forge/components/static/buttons.css", buttonCSS);
       await writeFile("forge/components/static/components.css", componentCSS);
+    }
+    const moduleManifest = JSON.stringify([...bundles.keys()].filter(name => name !== "all")) + "\n";
+    const manifestFile = "forge/components/static/bundles/modules.json";
+    if (args["check-bindings"]) {
+      if (await readFile(manifestFile, "utf8") !== moduleManifest)
+        throw new Error("Stale component module manifest");
+    } else await writeFile(manifestFile, moduleManifest);
+    for (const file of await readdir("forge/components/static/bundles")) {
+      if (!file.endsWith(".css") || bundles.has(file.slice(0, -4))) continue;
+      if (args["check-bindings"]) throw new Error(`Obsolete component bundle: ${file}`);
+      await rm(path.join("forge/components/static/bundles", file));
     }
     for (const [name, css] of bundles) {
       const file = `forge/components/static/bundles/${name}.css`;

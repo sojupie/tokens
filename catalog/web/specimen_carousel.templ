@@ -3,6 +3,7 @@ package web
 import "fmt"
 
 templ specimenCarousel(c componentCase) {
+	@useComponentAssets("carousel")
 	<section { c.Attributes()... } aria-label="Example carousel" aria-roledescription="carousel">
 		<div class="md-carousel-viewport" tabindex="0" aria-label="Carousel items">
 			<div class="md-carousel-scroll-track">
@@ -47,6 +48,7 @@ templ carouselArtwork(index int) {
 
 templ carouselItemsPage() {
  @layout("Carousel items") {
+  @useComponentAssets("carousel")
   <main class="tokens-page">
    <a href="/components/carousel#component-preview">Back to carousel</a>
    <h1>Carousel items</h1>

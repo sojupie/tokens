@@ -46,6 +46,15 @@
       });
     }
   }
+  // Applications can publish status without fabricating a hidden open button.
+  function showSnackbar(bar, opener = document.activeElement) {
+    initialize();
+    openers.set(bar, opener);
+    bar.showPopover();
+    position(bar);
+    timers.get(bar).start(0);
+  }
+  globalThis.MaterialSnackbars = Object.freeze({ show: showSnackbar });
   initialize();
   window.addEventListener("resize", reposition);
   window.addEventListener("scroll", reposition, true);
@@ -63,9 +72,7 @@
     if (!demo) return;
     const bar = demo.querySelector(".md-snackbar");
     if (button.hasAttribute("data-snackbar-open")) {
-      openers.set(bar, button);
-      bar.showPopover();
-      position(bar);
+      showSnackbar(bar, button);
       const inline = demo.querySelector("[data-snackbar-inline]");
       if (inline) inline.textContent = bar.querySelector(".md-feedback-text").textContent.trim();
       // Web notifications must remain available either in the actionable bar

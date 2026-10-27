@@ -31,6 +31,10 @@ func specimenAppbar(c componentCase) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
+		templ_7745c5c3_Err = useComponentAssets("appbar").Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
 		if c.Control == "search" && c.State == "interactive" {
 			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"md-appbar-demo md-search-demo\" data-interactive=\"true\"><div class=\"md-search-scene md-appbar-search-scene\"><section class=\"md-search-page\" data-appbar-demo data-interactive=\"true\">")
 			if templ_7745c5c3_Err != nil {
@@ -52,7 +56,7 @@ func specimenAppbar(c componentCase) templ.Component {
 				var templ_7745c5c3_Var2 string
 				templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("Preview content %d", i+1))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/specimen_appbar.templ`, Line: 15, Col: 49}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/specimen_appbar.templ`, Line: 16, Col: 49}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 				if templ_7745c5c3_Err != nil {
@@ -87,7 +91,7 @@ func specimenAppbar(c componentCase) templ.Component {
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprint(c.State == "interactive"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/specimen_appbar.templ`, Line: 25, Col: 101}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/specimen_appbar.templ`, Line: 26, Col: 101}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -114,7 +118,7 @@ func specimenAppbar(c componentCase) templ.Component {
 					var templ_7745c5c3_Var4 string
 					templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("Preview content %d", i+1))
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/specimen_appbar.templ`, Line: 30, Col: 80}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/specimen_appbar.templ`, Line: 31, Col: 80}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 					if templ_7745c5c3_Err != nil {
@@ -198,7 +202,7 @@ func appbarSurface(c componentCase) templ.Component {
 					var templ_7745c5c3_Var6 string
 					templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(c.AppbarSearch().ID() + "-view")
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/specimen_appbar.templ`, Line: 46, Col: 191}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/specimen_appbar.templ`, Line: 47, Col: 191}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 					if templ_7745c5c3_Err != nil {
@@ -295,7 +299,11 @@ func appbarSurface(c componentCase) templ.Component {
 			}
 		}
 		if c.Control == "fab" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "<button class=\"md-button md-fab\" data-variant=\"secondary-container\" data-size=\"default\" type=\"button\" aria-label=\"Create\">")
+			templ_7745c5c3_Err = useComponentAssets("fab").Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, " <button class=\"md-button md-fab\" data-variant=\"secondary-container\" data-size=\"default\" type=\"button\" aria-label=\"Create\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

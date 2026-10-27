@@ -1,0 +1,20 @@
+package web
+
+templ toolsPage() {
+ @layout("Tools") {
+  @useComponentAssets("card")
+  <section class="tokens-section" aria-labelledby="tools-heading">
+   <h1 class="md-typescale-headline-large" id="tools-heading">Tools</h1>
+   <p class="md-typescale-body-large">Inspect interaction behavior and measure motion.</p>
+   <div class="tokens-audience-grid">
+    for _, tool := range metadata(ctx).Tools {
+     <article class="md-card md-outlined-card tokens-card-content">
+      <h2 class="md-typescale-title-large">{tool.Name}</h2>
+      <p class="md-typescale-body-medium">{tool.Description}</p>
+      <a class="md-button md-outlined-button" href={templ.SafeURL(tool.URL)} hx-boost="false">{"Open " + tool.Name}</a>
+     </article>
+    }
+   </div>
+  </section>
+ }
+}

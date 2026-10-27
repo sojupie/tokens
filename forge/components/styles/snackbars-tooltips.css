@@ -1,3 +1,29 @@
+.md-snackbar {
+  --_elevation-level: var(--_snackbar-elevation);
+  --_shadow-color: var(--_snackbar-shadow);
+  display: flex;
+  align-items: center;
+  gap: var(--md-sys-measurement-space100);
+  min-height: var(--_snackbar-height);
+  width: max-content;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  border: 0;
+  border-radius: var(--_snackbar-shape);
+  background: var(--_snackbar-container);
+  padding-inline: var(--md-sys-measurement-space200)
+    var(--md-sys-measurement-space100);
+}
+.md-snackbar > .md-feedback-text {
+  white-space: nowrap;
+  color: var(--_snackbar-supporting-text-color);
+  font-family: var(--_snackbar-supporting-text-font-family);
+  font-size: var(--_snackbar-supporting-text-font-size);
+  font-weight: var(--_snackbar-supporting-text-font-weight);
+  line-height: var(--_snackbar-supporting-text-line-height);
+  letter-spacing: var(--_snackbar-supporting-text-tracking);
+}
 .md-button.md-feedback-action {
   --_button-label: var(--_support-action-label);
   --_button-font: var(--_support-action-font-weight)

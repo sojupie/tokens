@@ -1,16 +1,4 @@
 /* Rail layout and app scaffolding are renderer rules, not captured measurements. */
-.md-menu-shortcut {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.15em;
-  white-space: nowrap;
-}
-.md-menu-shortcut > svg {
-  inline-size: 1em;
-  block-size: 1em;
-  flex: none;
-  color: inherit;
-}
 .md-nav-icon {
   position: relative;
   display: block;

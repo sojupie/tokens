@@ -1,9 +1,25 @@
 package web
 
 import (
+	"bytes"
+	"context"
 	"strings"
 	"testing"
 )
+
+func TestRadioChoiceUsesItsVisibleLabel(t *testing.T) {
+	var body bytes.Buffer
+	if err := radioChoice(componentCase{Family: "radio", State: "disabled"}, 0, "Only me").Render(context.Background(), &body); err != nil {
+		t.Fatal(err)
+	}
+	markup := body.String()
+	if !strings.Contains(markup, `disabled`) || !strings.Contains(markup, `<span class="md-radio-label">Only me</span></label>`) {
+		t.Fatal("disabled radio must keep its visible text inside the shared choice label")
+	}
+	if strings.Contains(markup, `aria-label=`) {
+		t.Fatal("an unrelated accessible name must not override the visible option label")
+	}
+}
 
 func TestRadioGroupUsesNativeSelection(t *testing.T) {
 	c := componentCase{Family: "radio", State: "interactive", Selected: true}

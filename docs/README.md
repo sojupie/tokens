@@ -7,8 +7,6 @@
 
 - [Local setup and checks](development.md)
 - [Architecture](architecture.md)
-- [Forge component library proposal (draft)](component-library-proposal.md)
-- [Component and export handover](handover-components-and-exports.md)
 - [Source](../source/README.md), [Catalog](../catalog/README.md), and [Forge](../forge/README.md)
 - [Agent skill source](../skills/README.md)
 - [Contributing](../CONTRIBUTING.md)
@@ -35,5 +33,5 @@
 
 ## History
 
-[Historical notes](history/README.md) preserve earlier plans and implementation
-history. Current instructions live in the guides above.
+[Historical notes](history/README.md) record completed implementations and
+migrations. Current instructions live in the guides above.

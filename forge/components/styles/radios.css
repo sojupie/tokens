@@ -113,6 +113,12 @@
   max-inline-size: 100%;
   cursor: pointer;
 }
+.md-radio-choice:has(input:disabled) {
+  cursor: default;
+}
+.md-radio-choice:has(input:disabled) > .md-radio-label {
+  color: color-mix(in srgb, var(--md-sys-color-on-surface) calc(var(--md-sys-state-disabled-state-layer-opacity) * 100%), transparent);
+}
 @media (prefers-reduced-motion: reduce) {
   .md-radio-icon::after {
     transition: none;
@@ -133,5 +139,14 @@
   .md-radio-icon,
   .md-radio::before {
     display: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .md-radio {
+    color: ButtonText;
+  }
+  .md-radio-choice:has(input:disabled) > .md-radio-label {
+    color: GrayText;
   }
 }

@@ -1,6 +1,7 @@
 package web
 
 templ specimenProgress(c componentCase) {
+	@useComponentAssets("progress")
 	<div class="md-progress-demo">
 		<div { c.ProgressAttributes()... }>
 			<svg aria-hidden="true"><path class="md-progress-track"></path><path class="md-progress-active"></path><path class="md-progress-active md-progress-second"></path><rect class="md-progress-stop"></rect></svg>

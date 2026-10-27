@@ -1,3 +1,20 @@
+.md-segmented-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--_button-background-state-color);
+  opacity: var(--_button-background-state-opacity);
+  pointer-events: none;
+  transition:
+    opacity 15ms linear,
+    background-color 15ms linear;
+}
+.md-segmented-button[data-component-state="pressed"] {
+  --_button-background-state-color: var(--_button-state-color);
+  --_button-background-state-opacity: var(--_button-state-opacity);
+}
 /* Supplementary measurements: equal label-sized segments and 48dp touch targets. */
 .md-segmented-buttons {
   --_segment-density: 0;
@@ -146,18 +163,13 @@
   z-index: 1;
 }
 @media (prefers-reduced-motion: reduce) {
-  .md-tab::before,
   .md-segmented-button::before {
     transition: none;
   }
 }
 @media (forced-colors: active) {
-  .md-tab::before,
   .md-segmented-button::before {
     display: none;
-  }
-  .md-tab[aria-selected="true"] {
-    border-bottom-color: Highlight;
   }
   .md-segmented-button:has(> input:checked) {
     outline: 1px solid Highlight;

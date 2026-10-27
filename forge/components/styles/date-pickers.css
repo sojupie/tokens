@@ -1,4 +1,9 @@
 .md-date-demo {
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  inline-size: 100%;
   min-inline-size: 0;
   max-inline-size: 100%;
 }
@@ -238,7 +243,7 @@
 .md-date-week,
 .md-date-row {
   display: grid;
-  grid-template-columns: repeat(7, minmax(var(--_date-day-width), 1fr));
+  grid-template-columns: repeat(7, minmax(0, 1fr));
 }
 .md-date-weekday {
   display: grid;
@@ -281,8 +286,9 @@
   --_button-state-opacity: var(--_date-day-state-opacity);
   --_button-pressed-state-color: var(--_date-day-pressed-state-color);
   --_button-pressed-state-opacity: var(--_date-day-pressed-state-opacity);
-  inline-size: var(--_date-day-width);
-  block-size: var(--_date-day-height);
+  inline-size: min(var(--_date-day-width), 100%);
+  block-size: auto;
+  aspect-ratio: 1;
   outline: var(--_date-day-outline-width) solid var(--_date-day-outline);
   outline-offset: calc(-1 * var(--_date-day-outline-width));
   font-family: var(--_date-day-font-family);

@@ -1,0 +1,44 @@
+<!doctype html><meta charset="utf-8"><title>List reorder checks</title>
+<link rel="stylesheet" href="http://127.0.0.1:8081/themes/shared.css">
+<link rel="stylesheet" href="http://127.0.0.1:8081/themes/list.css">
+<link rel="stylesheet" href="http://127.0.0.1:8081/static/buttons.css">
+<link rel="stylesheet" href="http://127.0.0.1:8081/static/bundles/common.css">
+<link rel="stylesheet" href="http://127.0.0.1:8081/static/bundles/list.css">
+<style>body{padding:32px;font:16px sans-serif;background:var(--md-sys-color-surface)}.md-list-demo{margin:32px 0}output{display:block;white-space:pre-line}</style>
+<body id="component-preview"><h1>List reorder checks</h1>
+<label>Layout <select id="layout"><option>standard</option><option>segmented</option></select></label> <button id="run">Run reorder checks</button><button id="drop">Drop item</button>
+<div class="md-list-demo" data-interactive="true">
+<ul class="md-list" data-control="reorder" data-family="list" data-variant="standard" data-size="one-line" data-shape="expressive" data-width="icon" data-divider="inset"></ul>
+<output aria-live="polite"></output>
+</div><output id="results"></output>
+<script>
+const list=document.querySelector('.md-list');
+for(const label of ['First item','Second item','Third item']){
+ const row=document.createElement('li');row.dataset.listRow='';row.dataset.listLabel=label;
+ row.innerHTML=`<div class="md-list-row"><button class="md-list-item"><span class="md-list-body"><span class="md-list-label">${label}</span></span></button><button class="md-icon-button md-list-grip" data-list-grip aria-pressed="false" aria-label="Move ${label}">=</button></div>`;list.append(row);
+}
+</script>
+<script src="http://127.0.0.1:8081/static/motion.js"></script>
+<script src="http://127.0.0.1:8081/static/lists.js"></script>
+<script>
+let handle;
+document.querySelector('#layout').onchange=event=>{drop();list.dataset.variant=event.target.value;};
+function drop(){handle?.dispatchEvent(new PointerEvent('pointerup',{bubbles:true,pointerId:1}));}
+document.querySelector('#drop').onclick=drop;
+document.querySelector('#run').onclick=()=>{
+ drop();const row=list.firstElementChild;handle=row.querySelector('[data-list-grip]');
+ // Synthetic pointer events do not create a browser pointer-capture session.
+ handle.setPointerCapture=()=>{};handle.hasPointerCapture=()=>false;
+ const rect=row.getBoundingClientRect(),height=list.getBoundingClientRect().height;
+ const send=(type,y)=>handle.dispatchEvent(new PointerEvent(type,{bubbles:true,pointerId:1,isPrimary:true,button:0,clientX:rect.left+20,clientY:y}));
+ send('pointerdown',rect.top+20);send('pointermove',rect.bottom+40);
+ const marker=list.querySelector('.md-list-drop-zone'),checks={
+  'List tokens set the visible row height':rect.height>=48,
+  'Indicator is absolutely positioned':getComputedStyle(marker).position==='absolute',
+  'Indicator matches the destination row':Math.abs(marker.getBoundingClientRect().top-(list.getBoundingClientRect().top+row.offsetTop))<1,
+  'Indicator does not add a list row':Math.abs(list.getBoundingClientRect().height-height)<1,
+  'Item changed position':[...list.querySelectorAll('[data-list-row]')].indexOf(row)===1
+ };
+ document.querySelector('#results').textContent=Object.entries(checks).map(([label,pass])=>`${pass?'PASS':'FAIL'}: ${label}`).join('\n');
+};
+</script>

@@ -198,3 +198,33 @@ func TestPreviewDefaultsToVariantsAndUnknownProgress(t *testing.T) {
 		t.Fatalf("single variant must fall back to states: %#v, %v", page, err)
 	}
 }
+
+func TestPreviewDefaultsToMediumOrDefaultSize(t *testing.T) {
+	for _, tc := range []struct {
+		name   string
+		family string
+		sizes  []string
+		query  url.Values
+		want   string
+	}{
+		{"medium", "button", []string{"small", "medium", "large"}, nil, "medium"},
+		{"default", "carousel", []string{"small", "default", "large"}, nil, "default"},
+		{"slider", "slider", []string{"xsmall", "small", "medium", "large"}, nil, "medium"},
+		{"explicit", "button", []string{"small", "medium", "large"}, url.Values{"preview.size": {"small"}}, "small"},
+		{"fallback", "button", []string{"small", "large"}, nil, "small"},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			var cases []componentCase
+			for _, size := range tc.sizes {
+				cases = append(cases, componentCase{Family: tc.family, Size: size, State: "enabled"})
+			}
+			page, err := selectComponentPreview(cases, tc.query)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if len(page.Cases) != 1 || page.Cases[0].Size != tc.want {
+				t.Fatalf("got %#v, want size %s", page.Cases, tc.want)
+			}
+		})
+	}
+}

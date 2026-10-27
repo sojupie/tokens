@@ -50,6 +50,7 @@ templ specimenMenu(c componentCase) {
 								<div { c.MenuPanel(true)... }>
 									<section>
 										<ul role="presentation">
+											<li role="presentation"><button class="md-menu-item" type="button" role="menuitem" data-menu-back tabindex="-1"><span data-slot="leading-icon" aria-hidden="true">@materialSymbol("arrow_back")</span><span>Back</span></button></li>
 											for _,label:=range []string{"Add to favorites","Manage favorites"} {
 												<li role="presentation"><button type="button" class="md-menu-item" role="menuitem" tabindex="-1" data-menu-action>{ label }</button></li>
 											}

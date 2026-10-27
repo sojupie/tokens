@@ -1,0 +1,227 @@
+<!doctype html><meta charset="utf-8" /><title>Component module checks</title>
+<style>
+  body {
+    font: 16px system-ui;
+    margin: 24px;
+  }
+  iframe {
+    width: 100%;
+    height: 600px;
+  }
+  pre {
+    white-space: pre-wrap;
+  }
+</style>
+<h1>Component module checks</h1>
+<p>
+  Compare rendered modules with the complete stylesheet in every appearance,
+  including public pages, token sets, nested controls and gallery thumbnails.
+  Pages come from the sitemap; playground options come from their rendered controls.
+</p>
+<button id="run">Compare styles</button>
+<pre id="result">Ready</pre>
+<div id="frame"></div>
+<script type="module">
+  const result = document.querySelector("#result"),
+    button = document.querySelector("#run"),
+    container = document.querySelector("#frame");
+  button.onclick = async () => {
+    button.disabled = true;
+    let checks = 0,
+      pages = 0,
+      totalDifferences = 0;
+    const negativeControls = [];
+    const differences = [],
+      seen = new Set();
+    try {
+      const read = async (route) => {
+        const response = await fetch(route);
+        if (!response.ok) throw Error(route + ": " + response.status);
+        return response.text();
+      };
+      const xml = new DOMParser().parseFromString(await read("/sitemap.xml"), "application/xml");
+      const filter = new URLSearchParams(location.search).get("path");
+      const cases = [...xml.querySelectorAll("loc")].map(node => {
+        const url = new URL(node.textContent);
+        return url.pathname + url.search;
+      }).filter(route => !filter || route === filter || route.startsWith(filter + "/"));
+      if (!cases.length) throw Error("Sitemap contains no pages");
+      const queued = new Set(cases);
+      const full = await read("/static/components.css");
+      const theme = await read("/theme.css");
+      // Each rendered control contributes its options. Only vary one option
+      // from a default or interactive page, avoiding an invented Cartesian product.
+      const discover = (route, document) => {
+        const url = new URL(route, location.href);
+        if (url.pathname.includes("/sets/")) return;
+        const comparison = url.searchParams.get("preview.compare");
+        if (url.search && (comparison !== "interactive" || [...url.searchParams].length !== 1)) return;
+        for (const input of document.querySelectorAll('#component-preview input[name^="preview."]')) {
+          const menu = document.getElementById(input.parentElement.querySelector("[aria-controls]").getAttribute("aria-controls"));
+          if (!menu) continue;
+          for (const option of menu.querySelectorAll("[data-field-value]")) {
+            const candidate = new URL(url);
+            candidate.searchParams.set(input.name, option.dataset.fieldValue);
+            const path = candidate.pathname + candidate.search;
+            if (!queued.has(path)) { queued.add(path); cases.push(path); }
+          }
+        }
+      };
+      const properties = [
+        "display",
+        "position",
+        "width",
+        "height",
+        "color",
+        "backgroundColor",
+        "borderTopColor",
+        "borderTopWidth",
+        "borderTopLeftRadius",
+        "borderTopRightRadius",
+        "borderBottomRightRadius",
+        "borderBottomLeftRadius",
+        "paddingTop",
+        "paddingRight",
+        "paddingBottom",
+        "paddingLeft",
+        "fontFamily",
+        "fontWeight",
+        "fontSize",
+        "lineHeight",
+        "gap",
+        "alignItems",
+        "justifyContent",
+        "outlineColor",
+        "outlineWidth",
+        "transitionProperty",
+        "transitionDuration",
+        "boxShadow", "overflowX", "overflowY", "opacity", "transform",
+        "minWidth", "maxWidth", "minHeight", "maxHeight", "content",
+        "borderBottomWidth", "borderLeftWidth", "borderRightWidth",
+        "outlineOffset", "visibility", "fill", "stroke",
+
+      ];
+      for (const route of cases) {
+        result.textContent = `Running ${route}\n${pages}/${cases.length} pages, ${checks} checks, ${totalDifferences} differences`;
+        container.replaceChildren();
+        const frame = document.createElement("iframe");
+        const width = Number(new URLSearchParams(location.search).get("width"));
+        if (width > 0) frame.style.width = width + "px";
+        container.append(frame);
+        const html = await read(route);
+        const loaded = new Promise((resolve) => (frame.onload = resolve));
+        frame.srcdoc = html.replace(
+          "<head>",
+          "<head><style>*,::before,::after{animation:none!important;transition:none!important;caret-color:transparent!important}</style>",
+        );
+        await loaded;
+        const d = frame.contentDocument,
+          w = frame.contentWindow;
+        let timeout;
+        try {
+          if (!w.TokenAssets) throw Error(route + ": asset loader missing");
+          await Promise.race([
+            Promise.all([w.TokenAssets.ready, d.fonts.ready]),
+            new Promise((_, reject) => {
+              timeout = setTimeout(() => reject(Error(route + ": assets did not finish loading")), 15000);
+            }),
+          ]);
+        } finally {
+          clearTimeout(timeout);
+        }
+        if (d.querySelector("[data-assets-error]")) throw Error(route + ": component behavior failed to load");
+        discover(route, d);
+        for (const panel of d.querySelectorAll('.md-date-panel[data-date-inline]')) {
+          const bounds = panel.getBoundingClientRect(), parent = panel.parentElement.getBoundingClientRect();
+          if (bounds.right > parent.right + 1 || bounds.left < parent.left - 1 || panel.scrollWidth > panel.clientWidth + 1)
+            throw Error(route + ": calendar overflows its available width at " + w.innerWidth + "px");
+        }
+        const elements = [...d.querySelectorAll("body [class]")].filter(
+          element => [...element.classList].some(name => name.startsWith("md-")),
+        );
+        const sheets = [
+          ...d.querySelectorAll(
+            'link[href*="/bundles/"],link[href*="/themes/"],link[href*="/theme.css"]',
+          ),
+        ];
+        const style = d.createElement("style");
+        style.textContent = full + "\n" + theme;
+        const fields = [
+          ...properties.map(property => ({property, pseudo: null})),
+          ...["::before", "::after"].flatMap(pseudo =>
+            ["content", "display", "position", "inset", "color", "backgroundColor",
+             "opacity", "borderRadius", "boxShadow", "outlineWidth"].map(property => ({property, pseudo}))),
+        ];
+        const snapshot = () => elements.map(el => {
+          const styles = new Map([null, "::before", "::after"].map(pseudo => [pseudo, w.getComputedStyle(el, pseudo)]));
+          return fields.map(({property, pseudo}) => styles.get(pseudo)[property]);
+        });
+        for (const appearance of ["light", "dark"])
+          for (const contrast of ["default", "medium", "high"]) {
+            d.documentElement.dataset.theme = appearance;
+            d.documentElement.dataset.contrast = contrast;
+            const actual = snapshot();
+            sheets.forEach((link) => (link.disabled = true));
+            d.head.append(style);
+            const expected = snapshot();
+            for (let i = 0; i < elements.length; i++)
+              for (let p = 0; p < fields.length; p++) {
+                checks++;
+                if (actual[i][p] !== expected[i][p]) {
+                  totalDifferences++;
+                  const key =
+                    elements[i].className +
+                    "|" + p +
+                    "|" +
+                    fields[p].property +
+                    "|" +
+                    expected[i][p] +
+                    "|" +
+                    actual[i][p];
+                  if (!seen.has(key) && differences.length < 100) {
+                    seen.add(key);
+                    differences.push({
+                      route,
+                      appearance,
+                      contrast,
+                      element: elements[i].className,
+                      property: fields[p].property,
+                      pseudo: fields[p].pseudo,
+                      full: expected[i][p],
+                      module: actual[i][p],
+                    });
+                  }
+                }
+              }
+            style.remove();
+            sheets.forEach((link) => (link.disabled = false));
+          }
+        // Prove this check catches the omission that prompted it. Test the
+        // structural CSS and theme independently, restoring each before moving on.
+        if (route.endsWith("/for-agents")) {
+          const normal = snapshot();
+          for (const path of ["/bundles/card.css", "/themes/card.css"]) {
+            const link = sheets.find(node => node.getAttribute("href").includes(path));
+            if (!link) throw Error(route + ": missing card asset " + path);
+            link.disabled = true;
+            const missing = snapshot();
+            link.disabled = false;
+            const detected = normal.some((values, i) => values.some((value, p) => value !== missing[i][p]));
+            negativeControls.push({asset: path, detected});
+            if (!detected) throw Error("Check failed to detect missing " + path);
+          }
+        }
+        pages++;
+      }
+      result.textContent = JSON.stringify(
+        { pages, checks, totalDifferences, negativeControls, differences },
+        null,
+        2,
+      );
+    } catch (error) {
+      result.textContent = error.stack;
+    } finally {
+      button.disabled = false;
+    }
+  };
+</script>

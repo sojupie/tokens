@@ -1,27 +1,32 @@
 package web
 
 templ componentPreviewView(page componentPreview) {
-	<section class="tokens-section" id="component-preview" aria-labelledby="preview-heading">
-		<h2 class="md-typescale-title-medium" id="preview-heading">Preview</h2>
-		<form hx-boost="false" method="get" action={ page.Action } hx-get={ page.Action } hx-target="#component-preview" hx-select="#component-preview" hx-swap="outerHTML" hx-replace-url="true" hx-trigger="change" hx-sync="this:replace" class="tokens-gallery-filters">
-			for _, hidden := range page.Hidden {
-				<input type="hidden" name={ hidden.Name } value={ hidden.Value }/>
+	<section class="tokens-section" id="component-preview" data-component-assets aria-labelledby="preview-heading">
+		@componentAssetScope() {
+			<h2 class="md-typescale-title-medium" id="preview-heading">Preview</h2>
+			<form hx-boost="false" method="get" action={ page.Action } hx-get={ page.Action } hx-target="#component-preview" hx-select="#component-preview" hx-swap="outerHTML" hx-replace-url="true" hx-trigger="change" hx-sync="this:replace" class="tokens-gallery-filters">
+				for _, hidden := range page.Hidden {
+					<input type="hidden" name={ hidden.Name } value={ hidden.Value }/>
+				}
+				for _, control := range page.Controls {
+					@previewSelect(control)
+				}
+				<noscript><button class="md-button md-outlined-button" type="submit">Apply</button></noscript>
+			</form>
+            if len(page.Cases) > 0 && page.Cases[0].Family == "slider" {
+                <p class="md-typescale-body-small">Inset icons apply to standard single sliders in medium, large, and extra-large sizes. “On interaction” shows the value when a handle is hovered, focused, or pressed.</p>
+            }
+			<div class="tokens-preview-grid">
+				for _, c := range page.Cases {
+					<figure class="tokens-component-example">
+						<figcaption class="md-typescale-body-small">{ page.Caption(c) }</figcaption>
+						@componentSpecimen(c)
+					</figure>
+				}
+			</div>
+			if len(page.Cases) == 0 {
+				<p>This combination has no implemented preview.</p>
 			}
-			for _, control := range page.Controls {
-				@previewSelect(control)
-			}
-			<noscript><button class="md-button md-outlined-button" type="submit">Apply</button></noscript>
-		</form>
-		<div class="tokens-preview-grid">
-			for _, c := range page.Cases {
-				<figure class="tokens-component-example">
-					<figcaption class="md-typescale-body-small">{ page.Caption(c) }</figcaption>
-					@componentSpecimen(c)
-				</figure>
-			}
-		</div>
-		if len(page.Cases) == 0 {
-			<p>This combination has no implemented preview.</p>
 		}
 	</section>
 }

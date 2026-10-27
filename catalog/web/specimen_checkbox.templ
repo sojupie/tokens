@@ -3,7 +3,12 @@ package web
 import "fmt"
 
 templ specimenCheckbox(c componentCase) {
-	@selectionExample(c.ID(), "Receive updates") {
+	@checkboxChoice(c, "Receive updates")
+}
+
+templ checkboxChoice(c componentCase, label string) {
+	@useComponentAssets("checkbox")
+	@selectionExample(c.ID(), label) {
 	<label { c.Attributes()... }><input type="checkbox" id={ c.ID() + "-input" } aria-labelledby={ c.ID() + "-label" } aria-invalid={ fmt.Sprint(c.Invalid) } checked?={ c.Selected } disabled?={ c.State=="disabled" } data-indeterminate={ fmt.Sprint(c.Variant == "indeterminate") }/><span class="md-checkbox-box" aria-hidden="true"><svg class="md-checkbox-check" viewBox="0 0 18 18" fill="none"><path d="m4 9 3 3 7-7" stroke="currentColor" stroke-width="2"></path></svg><svg class="md-checkbox-dash" viewBox="0 0 18 18" fill="none"><path d="M4 9h10" stroke="currentColor" stroke-width="2"></path></svg></span></label>
 	}
 }

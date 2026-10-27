@@ -588,3 +588,31 @@ test('Canvas artwork uses the DOM spring samples and keeps all tiles in bounds',
   assert.equal(ease(300,300,'cubic-bezier(.2,0,0,1)'),1);
   let prior=0;for(let t=0;t<=300;t++){const value=ease(t,300,'cubic-bezier(.2,0,0,1)');assert.ok(value>=prior&&value<=1);prior=value;}
 });
+
+test('pointer focus returns to visible keyboard focus on keyboard input',()=>{
+ const events={},attributes=new Set();
+ runScript('site-ui.js',{
+  document:{readyState:'loading',documentElement:{setAttribute:name=>attributes.add(name),removeAttribute:name=>attributes.delete(name)},addEventListener:(name,fn)=>events[name]=fn},
+  window:{addEventListener(){}},matchMedia:()=>({matches:false,addEventListener(){}})
+ });
+ events.pointerdown();assert(attributes.has('data-pointer-focus'));
+ events.keydown({key:'Tab'});assert(!attributes.has('data-pointer-focus'));
+ events.pointerdown();events.keydown({key:'c',metaKey:true});assert(attributes.has('data-pointer-focus'));
+ events.keydown({key:'ArrowDown'});assert(!attributes.has('data-pointer-focus'));
+});
+
+test('returning to a gallery restores its saved offset instantly without restoring on filters',async()=>{
+ const events={},windows={},storage=new Map(),scrolls=[];
+ const location={pathname:'/md3/components',search:''},window={scrollY:780,addEventListener:(name,fn)=>windows[name]=fn,scrollTo:options=>scrolls.push(options)};
+ runScript('site-ui.js',{
+  document:{readyState:'loading',addEventListener:(name,fn)=>events[name]=fn,getElementById:()=>({})},window,location,
+  sessionStorage:{setItem:(key,value)=>storage.set(key,value),getItem:key=>storage.get(key)??null},
+  matchMedia:()=>({matches:false,addEventListener(){}}),requestAnimationFrame:fn=>fn(),Promise
+ });
+ events['htmx:beforeRequest']({detail:{requestConfig:{boosted:true}}});
+ assert.equal(storage.get('tokens-scroll:/md3/components'),'780');
+ location.pathname='/md3/components/cards';windows.pagehide();
+ location.pathname='/md3/components';events['htmx:afterSettle']({detail:{requestConfig:{boosted:true}}});await Promise.resolve();
+ assert.equal(scrolls.length,1);assert.equal(scrolls[0].top,780);assert.equal(scrolls[0].behavior,'instant');
+ events['htmx:afterSettle']({detail:{requestConfig:{boosted:false}}});await Promise.resolve();assert.equal(scrolls.length,1);
+});

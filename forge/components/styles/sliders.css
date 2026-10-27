@@ -376,7 +376,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--md-sys-measurement-space50) var(--md-sys-measurement-space100);
+  /* Specs / Measurements supplies the missing 48dp label width and 16dp inline padding.
+     Existing height, typography, and handle-gap tokens take precedence over the diagrams. */
+  box-sizing: border-box;
+  width: 48px;
+  min-width: 48px;
+  height: var(--_slider-label-height);
+  padding: max(0px, calc((var(--_slider-label-height) - var(--_slider-value-text-line-height)) / 2)) var(--md-sys-measurement-space200);
+  white-space: nowrap;
   border-radius: var(--md-sys-shape-corner-extra-small);
   background: var(--_slider-value-container);
   color: var(--_slider-value-text-color);
@@ -397,9 +404,7 @@
 .md-slider[data-shape="label"] .md-slider-value {
   --_elevation-level: var(--_slider-label-elevation);
   --_shadow-color: transparent;
-  min-width: var(--_slider-label-height);
-  min-height: var(--_slider-label-height);
-  box-sizing: border-box;
+  padding-block: max(0px, calc((var(--_slider-label-height) - var(--_slider-label-text-line-height)) / 2));
   border-radius: var(--md-sys-shape-corner-full);
   background: var(--_slider-label-container);
   color: var(--_slider-label-text-color);
@@ -621,4 +626,23 @@
   bottom: calc(
     50% + var(--_slider-control-width) / 2 + var(--_slider-value-gap)
   );
+}
+
+/* Value visibility is independent of the published bubble appearance. */
+.md-slider[data-value-display="always"]:not(:has(input:disabled)) .md-slider-input[data-handle="start"] .md-slider-value,
+.md-slider[data-value-display="always"][data-control="single"]:not(:has(input:disabled)) .md-slider-value {
+  opacity: 1;
+  scale: 1;
+}
+.md-slider[data-value-display="always"][data-control="range"]:has(.md-slider-input[data-handle="end"]:is(:focus-within,[data-slider-hover],[data-pressed])) .md-slider-input[data-handle="start"] .md-slider-value {
+  opacity: 0;
+  scale: .8;
+}
+.md-slider[data-value-display="hidden"] .md-slider-value {
+  display: none;
+}
+.md-slider[data-end-stops="hidden"] .md-slider-stop,
+.md-slider[data-inset-position="start"] .md-slider-stop-start,
+.md-slider[data-inset-position="end"] .md-slider-stop-end {
+  display: none;
 }

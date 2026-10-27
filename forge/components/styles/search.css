@@ -337,7 +337,6 @@
       ) /
       2
   );
-  box-shadow: none;
   transition:
     padding var(--_motion-fast-spatial-duration)
       var(--_motion-fast-spatial-easing),

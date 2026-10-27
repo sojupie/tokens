@@ -23,8 +23,9 @@ JSON and agent interfaces when changing their shared data. Regenerate templ
 output after editing templates and include it in the same change.
 
 Write documentation in plain language. Use established domain terms, explain
-concrete behavior, and keep commands in the guide that owns them. Historical
-plans belong under `docs/history/` with their date and status.
+concrete behavior, and keep commands in the guide that owns them. Document the
+implemented behavior; keep plans, proposals, roadmaps and temporary handovers
+out of tracked documentation.
 
 ## Licenses
 

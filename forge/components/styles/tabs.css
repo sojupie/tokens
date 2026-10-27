@@ -86,8 +86,7 @@
   padding-inline: var(--md-sys-measurement-space200);
   gap: var(--md-sys-measurement-space100);
 }
-.md-tab::before,
-.md-segmented-button::before {
+.md-tab::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -105,8 +104,20 @@
   outline-offset: var(--_tab-focus-offset);
   z-index: 1;
 }
-.md-tab[data-component-state="pressed"],
-.md-segmented-button[data-component-state="pressed"] {
+.md-tab[data-component-state="pressed"] {
   --_button-background-state-color: var(--_button-state-color);
   --_button-background-state-opacity: var(--_button-state-opacity);
+}
+@media (prefers-reduced-motion: reduce) {
+  .md-tab::before {
+    transition: none;
+  }
+}
+@media (forced-colors: active) {
+  .md-tab::before {
+    display: none;
+  }
+  .md-tab[aria-selected="true"] {
+    border-bottom-color: Highlight;
+  }
 }

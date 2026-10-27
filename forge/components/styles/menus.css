@@ -186,11 +186,24 @@
   inline-size: calc(280px + 12rem + var(--md-sys-measurement-space100));
 }
 
-.md-menu[data-menu-scrollable] {
-  --_menu-gap: 0px;
-  overflow-y: scroll;
-  scrollbar-gutter: stable;
+.md-menu-shortcut {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15em;
+  white-space: nowrap;
 }
+.md-menu-shortcut > svg {
+  inline-size: 1em;
+  block-size: 1em;
+  flex: none;
+  color: inherit;
+}
+
+/* A compact submenu occupies its parent's surface and provides a return item. */
+.md-menu[data-menu-covered] { visibility:hidden; }
+.md-menu[data-menu-replace]:not([data-menu-covered]):popover-open { visibility:visible; }
+.md-menu [data-menu-back] { display:none; }
+.md-menu[data-menu-replace] [data-menu-back] { display:flex; }
 
 .md-menu[data-menu-scrollable] {
   --_menu-gap: 0px;

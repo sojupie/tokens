@@ -54,6 +54,17 @@
 .md-card.md-interactive-card[aria-disabled="true"] {
   cursor: default;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .md-card {
+    transition: none;
+  }
+}
+@media (forced-colors: active) {
+  .md-card {
+    border: 1px solid ButtonText;
+  }
+}
 .md-icon-button {
   --_icon-container: transparent;
   --_icon-container-opacity: 1;
@@ -496,6 +507,12 @@
   max-inline-size: 100%;
   cursor: pointer;
 }
+.md-radio-choice:has(input:disabled) {
+  cursor: default;
+}
+.md-radio-choice:has(input:disabled) > .md-radio-label {
+  color: color-mix(in srgb, var(--md-sys-color-on-surface) calc(var(--md-sys-state-disabled-state-layer-opacity) * 100%), transparent);
+}
 @media (prefers-reduced-motion: reduce) {
   .md-radio-icon::after {
     transition: none;
@@ -516,6 +533,15 @@
   .md-radio-icon,
   .md-radio::before {
     display: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .md-radio {
+    color: ButtonText;
+  }
+  .md-radio-choice:has(input:disabled) > .md-radio-label {
+    color: GrayText;
   }
 }
 :is(
@@ -1028,7 +1054,6 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .md-icon-button,
-  .md-card,
   :is(.md-filter-chip, .md-assist-chip, .md-suggestion-chip, .md-input-chip),
   .md-menu-item {
     transition: none;
@@ -1036,7 +1061,6 @@
 }
 @media (forced-colors: active) {
   .md-icon-button,
-  .md-card,
   :is(.md-filter-chip, .md-assist-chip, .md-suggestion-chip, .md-input-chip),
   .md-menu-item,
   :is(
@@ -1048,9 +1072,6 @@
     .md-filled-autocomplete
   ) {
     border: 1px solid ButtonText;
-  }
-  .md-radio {
-    color: ButtonText;
   }
 }
 .md-filter-chip:has(> input:not(:checked)) > .md-chip-face > svg {
@@ -1094,7 +1115,6 @@
   }
 }
 /* Native inputs handle selection. Mark geometry and handle travel are renderer anatomy. */
-.md-checkbox,
 .md-switch {
   position: relative;
   isolation: isolate;
@@ -1105,16 +1125,7 @@
   vertical-align: middle;
   cursor: pointer;
 }
-.md-checkbox {
-  --_checkbox-container: transparent;
-  --_checkbox-container-opacity: 1;
-  --_checkbox-icon-opacity: 1;
-  --_checkbox-state-color: transparent;
-  --_checkbox-state-opacity: 0;
-  width: var(--_checkbox-state-size);
-  height: var(--_checkbox-state-size);
-}
-:is(.md-checkbox, .md-switch) > input {
+.md-switch > input {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -1123,63 +1134,6 @@
   margin: 0;
   cursor: inherit;
   z-index: 2;
-}
-.md-checkbox::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: var(--_checkbox-state-shape);
-  z-index: -1;
-  background: var(--_button-background-state-color);
-  opacity: var(--_button-background-state-opacity);
-  pointer-events: none;
-}
-.md-checkbox > .md-checkbox-box {
-  display: grid;
-  place-items: center;
-  box-sizing: border-box;
-  width: var(--_checkbox-width);
-  height: var(--_checkbox-height);
-  border-radius: var(--_checkbox-shape);
-  border: var(--_checkbox-outline-width) solid
-    color-mix(
-      in srgb,
-      var(--_checkbox-outline, transparent)
-        calc(var(--_checkbox-container-opacity) * 100%),
-      transparent
-    );
-  background: color-mix(
-    in srgb,
-    var(--_checkbox-container) calc(var(--_checkbox-container-opacity) * 100%),
-    transparent
-  );
-}
-.md-checkbox > .md-checkbox-box > svg {
-  display: none;
-  width: var(--_checkbox-icon-size);
-  height: var(--_checkbox-icon-size);
-  color: color-mix(
-    in srgb,
-    var(--_checkbox-icon) calc(var(--_checkbox-icon-opacity) * 100%),
-    transparent
-  );
-}
-.md-checkbox:has(> input:checked) > .md-checkbox-box > .md-checkbox-check {
-  display: block;
-}
-.md-checkbox:has(> input:indeterminate)
-  > .md-checkbox-box
-  > .md-checkbox-check {
-  display: none;
-}
-.md-checkbox:has(> input:indeterminate) > .md-checkbox-box > .md-checkbox-dash {
-  display: block;
-}
-.md-checkbox:has(> input:focus-visible),
-.md-checkbox[data-component-state="focused"] {
-  outline: var(--_checkbox-focus-width) solid var(--_checkbox-focus-color);
-  outline-offset: var(--_checkbox-focus-offset);
-  border-radius: var(--md-sys-shape-corner-full);
 }
 .md-switch {
   --_switch-track-opacity: 1;
@@ -1282,7 +1236,7 @@
   outline-offset: var(--_switch-focus-offset);
   border-radius: var(--md-sys-shape-corner-full);
 }
-:is(.md-checkbox, .md-switch):has(> input:disabled) {
+.md-switch:has(> input:disabled) {
   cursor: default;
 }
 @media (prefers-reduced-motion: reduce) {
@@ -1291,18 +1245,46 @@
   }
 }
 @media (forced-colors: active) {
-  :is(.md-checkbox, .md-switch) > input {
+  .md-switch > input {
     appearance: auto;
     opacity: 1;
     position: static;
     width: var(--md-sys-measurement-space300);
     height: var(--md-sys-measurement-space300);
   }
-  .md-checkbox::before,
-  .md-checkbox-box,
   .md-switch-track,
   .md-switch-handle {
     display: none !important;
+  }
+}
+.md-switch {
+  --_switch-background-state-color: transparent;
+  --_switch-background-state-opacity: 0;
+  --_button-background-state-color: var(--_switch-background-state-color);
+  --_button-background-state-opacity: var(--_switch-background-state-opacity);
+  --_button-pressed-state-color: var(--_switch-pressed-state-color);
+  --_button-pressed-state-opacity: var(--_switch-pressed-state-opacity);
+  --_button-rest-shape: var(--_switch-state-shape);
+  --_button-pressed-shape: var(--_switch-state-shape);
+}
+.md-switch-handle > .md-button-ripple {
+  inset: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: var(--_switch-state-size);
+  height: var(--_switch-state-size);
+  border-radius: var(--_switch-state-shape);
+}
+:root:not([data-feedback-ready]) .md-switch-handle::before,
+:root .md-switch[data-component-state="pressed"] > .md-switch-handle::before {
+  background: var(--_switch-state-color);
+  opacity: var(--_switch-state-opacity);
+}
+@media (prefers-reduced-motion: reduce), (forced-colors: active) {
+  .md-switch-handle::before {
+    background: var(--_switch-state-color);
+    opacity: var(--_switch-state-opacity);
   }
 }
 
@@ -1318,6 +1300,120 @@
 @media (prefers-reduced-motion: reduce) {
   .md-switch-handle::before { transition: none; }
 }
+/* Native inputs handle selection. Mark geometry and handle travel are renderer anatomy. */
+.md-checkbox {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  vertical-align: middle;
+  cursor: pointer;
+}
+.md-checkbox {
+  --_checkbox-container: transparent;
+  --_checkbox-container-opacity: 1;
+  --_checkbox-icon-opacity: 1;
+  --_checkbox-state-color: transparent;
+  --_checkbox-state-opacity: 0;
+  width: var(--_checkbox-state-size);
+  height: var(--_checkbox-state-size);
+}
+.md-checkbox > input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  margin: 0;
+  cursor: inherit;
+  z-index: 2;
+}
+.md-checkbox::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--_checkbox-state-shape);
+  z-index: -1;
+  background: var(--_button-background-state-color);
+  opacity: var(--_button-background-state-opacity);
+  pointer-events: none;
+}
+.md-checkbox > .md-checkbox-box {
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  width: var(--_checkbox-width);
+  height: var(--_checkbox-height);
+  border-radius: var(--_checkbox-shape);
+  border: var(--_checkbox-outline-width) solid
+    color-mix(
+      in srgb,
+      var(--_checkbox-outline, transparent)
+        calc(var(--_checkbox-container-opacity) * 100%),
+      transparent
+    );
+  background: color-mix(
+    in srgb,
+    var(--_checkbox-container) calc(var(--_checkbox-container-opacity) * 100%),
+    transparent
+  );
+}
+.md-checkbox > .md-checkbox-box > svg {
+  display: none;
+  width: var(--_checkbox-icon-size);
+  height: var(--_checkbox-icon-size);
+  color: color-mix(
+    in srgb,
+    var(--_checkbox-icon) calc(var(--_checkbox-icon-opacity) * 100%),
+    transparent
+  );
+}
+.md-checkbox:has(> input:checked) > .md-checkbox-box > .md-checkbox-check {
+  display: block;
+}
+.md-checkbox:has(> input:indeterminate)
+  > .md-checkbox-box
+  > .md-checkbox-check {
+  display: none;
+}
+.md-checkbox:has(> input:indeterminate) > .md-checkbox-box > .md-checkbox-dash {
+  display: block;
+}
+.md-checkbox:has(> input:focus-visible),
+.md-checkbox[data-component-state="focused"] {
+  outline: var(--_checkbox-focus-width) solid var(--_checkbox-focus-color);
+  outline-offset: var(--_checkbox-focus-offset);
+  border-radius: var(--md-sys-shape-corner-full);
+}
+.md-checkbox:has(> input:disabled) {
+  cursor: default;
+}
+.md-checkbox-choice {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--md-sys-measurement-space100);
+}
+.md-checkbox-choice:has(input:disabled) > label:not(.md-checkbox) {
+  color: color-mix(in srgb, var(--md-sys-color-on-surface) calc(var(--md-sys-state-disabled-state-layer-opacity) * 100%), transparent);
+}
+@media (forced-colors: active) {
+  .md-checkbox-choice:has(input:disabled) > label:not(.md-checkbox) {
+    color: GrayText;
+  }
+  .md-checkbox > input {
+    appearance: auto;
+    opacity: 1;
+    position: static;
+    width: var(--md-sys-measurement-space300);
+    height: var(--md-sys-measurement-space300);
+  }
+  .md-checkbox::before,
+  .md-checkbox-box {
+    display: none !important;
+  }
+}
 .md-checkbox {
   --_checkbox-background-state-color: transparent;
   --_checkbox-background-state-opacity: 0;
@@ -1328,46 +1424,18 @@
   --_button-rest-shape: var(--_checkbox-state-shape);
   --_button-pressed-shape: var(--_checkbox-state-shape);
 }
-.md-switch {
-  --_switch-background-state-color: transparent;
-  --_switch-background-state-opacity: 0;
-  --_button-background-state-color: var(--_switch-background-state-color);
-  --_button-background-state-opacity: var(--_switch-background-state-opacity);
-  --_button-pressed-state-color: var(--_switch-pressed-state-color);
-  --_button-pressed-state-opacity: var(--_switch-pressed-state-opacity);
-  --_button-rest-shape: var(--_switch-state-shape);
-  --_button-pressed-shape: var(--_switch-state-shape);
-}
 .md-checkbox > .md-button-ripple {
   border-radius: var(--_checkbox-state-shape);
-}
-.md-switch-handle > .md-button-ripple {
-  inset: auto;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: var(--_switch-state-size);
-  height: var(--_switch-state-size);
-  border-radius: var(--_switch-state-shape);
 }
 :root:not([data-feedback-ready]) .md-checkbox::before,
 :root .md-checkbox[data-component-state="pressed"]::before {
   background: var(--_checkbox-state-color);
   opacity: var(--_checkbox-state-opacity);
 }
-:root:not([data-feedback-ready]) .md-switch-handle::before,
-:root .md-switch[data-component-state="pressed"] > .md-switch-handle::before {
-  background: var(--_switch-state-color);
-  opacity: var(--_switch-state-opacity);
-}
 @media (prefers-reduced-motion: reduce), (forced-colors: active) {
   .md-checkbox::before {
     background: var(--_checkbox-state-color);
     opacity: var(--_checkbox-state-opacity);
-  }
-  .md-switch-handle::before {
-    background: var(--_switch-state-color);
-    opacity: var(--_switch-state-opacity);
   }
 }
 /* FABs reuse button input, state-layer and ripple behavior. */
@@ -2024,8 +2092,7 @@
   padding-inline: var(--md-sys-measurement-space200);
   gap: var(--md-sys-measurement-space100);
 }
-.md-tab::before,
-.md-segmented-button::before {
+.md-tab::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -2043,7 +2110,36 @@
   outline-offset: var(--_tab-focus-offset);
   z-index: 1;
 }
-.md-tab[data-component-state="pressed"],
+.md-tab[data-component-state="pressed"] {
+  --_button-background-state-color: var(--_button-state-color);
+  --_button-background-state-opacity: var(--_button-state-opacity);
+}
+@media (prefers-reduced-motion: reduce) {
+  .md-tab::before {
+    transition: none;
+  }
+}
+@media (forced-colors: active) {
+  .md-tab::before {
+    display: none;
+  }
+  .md-tab[aria-selected="true"] {
+    border-bottom-color: Highlight;
+  }
+}
+.md-segmented-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--_button-background-state-color);
+  opacity: var(--_button-background-state-opacity);
+  pointer-events: none;
+  transition:
+    opacity 15ms linear,
+    background-color 15ms linear;
+}
 .md-segmented-button[data-component-state="pressed"] {
   --_button-background-state-color: var(--_button-state-color);
   --_button-background-state-opacity: var(--_button-state-opacity);
@@ -2196,18 +2292,13 @@
   z-index: 1;
 }
 @media (prefers-reduced-motion: reduce) {
-  .md-tab::before,
   .md-segmented-button::before {
     transition: none;
   }
 }
 @media (forced-colors: active) {
-  .md-tab::before,
   .md-segmented-button::before {
     display: none;
-  }
-  .md-tab[aria-selected="true"] {
-    border-bottom-color: Highlight;
   }
   .md-segmented-button:has(> input:checked) {
     outline: 1px solid Highlight;
@@ -2591,7 +2682,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--md-sys-measurement-space50) var(--md-sys-measurement-space100);
+  /* Specs / Measurements supplies the missing 48dp label width and 16dp inline padding.
+     Existing height, typography, and handle-gap tokens take precedence over the diagrams. */
+  box-sizing: border-box;
+  width: 48px;
+  min-width: 48px;
+  height: var(--_slider-label-height);
+  padding: max(0px, calc((var(--_slider-label-height) - var(--_slider-value-text-line-height)) / 2)) var(--md-sys-measurement-space200);
+  white-space: nowrap;
   border-radius: var(--md-sys-shape-corner-extra-small);
   background: var(--_slider-value-container);
   color: var(--_slider-value-text-color);
@@ -2612,9 +2710,7 @@
 .md-slider[data-shape="label"] .md-slider-value {
   --_elevation-level: var(--_slider-label-elevation);
   --_shadow-color: transparent;
-  min-width: var(--_slider-label-height);
-  min-height: var(--_slider-label-height);
-  box-sizing: border-box;
+  padding-block: max(0px, calc((var(--_slider-label-height) - var(--_slider-label-text-line-height)) / 2));
   border-radius: var(--md-sys-shape-corner-full);
   background: var(--_slider-label-container);
   color: var(--_slider-label-text-color);
@@ -2836,6 +2932,25 @@
   bottom: calc(
     50% + var(--_slider-control-width) / 2 + var(--_slider-value-gap)
   );
+}
+
+/* Value visibility is independent of the published bubble appearance. */
+.md-slider[data-value-display="always"]:not(:has(input:disabled)) .md-slider-input[data-handle="start"] .md-slider-value,
+.md-slider[data-value-display="always"][data-control="single"]:not(:has(input:disabled)) .md-slider-value {
+  opacity: 1;
+  scale: 1;
+}
+.md-slider[data-value-display="always"][data-control="range"]:has(.md-slider-input[data-handle="end"]:is(:focus-within,[data-slider-hover],[data-pressed])) .md-slider-input[data-handle="start"] .md-slider-value {
+  opacity: 0;
+  scale: .8;
+}
+.md-slider[data-value-display="hidden"] .md-slider-value {
+  display: none;
+}
+.md-slider[data-end-stops="hidden"] .md-slider-stop,
+.md-slider[data-inset-position="start"] .md-slider-stop-start,
+.md-slider[data-inset-position="end"] .md-slider-stop-end {
+  display: none;
 }
 /* Progress geometry comes from component bindings. The linear length is demo layout. */
 .md-progress-demo {
@@ -3239,6 +3354,7 @@ button.md-appbar-search {
 .md-toolbar .md-toolbar-item::after {
   content: "";
   position: absolute;
+  translate: none;
   inset: calc(-1 * var(--md-sys-measurement-space50));
   min-inline-size: var(--md-sys-measurement-space600);
   min-block-size: var(--md-sys-measurement-space600);
@@ -4149,7 +4265,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-full-height] {
   min-inline-size: 0;
 }
 .md-list[data-variant="standard"]:not([data-divider="none"])
-  > li:not(:last-child)::after {
+  > li:not(:last-child):not(:has(+ .md-list-drop-zone))::after {
   content: "";
   display: block;
   border-block-start: var(--_list-divider-width) solid var(--_list-divider);
@@ -4158,7 +4274,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-full-height] {
 }
 /* Full-width is a documented divider layout; inset dimensions remain source tokens. */
 .md-list[data-variant="standard"][data-divider="full-width"]
-  > li:not(:last-child)::after {
+  > li:not(:last-child):not(:has(+ .md-list-drop-zone))::after {
   margin-inline: 0;
 }
 /* Alignment is a documented layout rule, not a replacement for captured padding. */
@@ -4458,7 +4574,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-full-height] {
 .md-list [data-list-dragging] {
   z-index: 2;
 }
-.md-list-drop-zone {
+.md-list > .md-list-drop-zone {
   position: absolute;
   inset: 0;
   background: var(--_list-drop-color);
@@ -5155,7 +5271,6 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-full-height] {
       ) /
       2
   );
-  box-shadow: none;
   transition:
     padding var(--_motion-fast-spatial-duration)
       var(--_motion-fast-spatial-easing),
@@ -5486,6 +5601,11 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-full-height] {
   }
 }
 .md-date-demo {
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  inline-size: 100%;
   min-inline-size: 0;
   max-inline-size: 100%;
 }
@@ -5725,7 +5845,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-full-height] {
 .md-date-week,
 .md-date-row {
   display: grid;
-  grid-template-columns: repeat(7, minmax(var(--_date-day-width), 1fr));
+  grid-template-columns: repeat(7, minmax(0, 1fr));
 }
 .md-date-weekday {
   display: grid;
@@ -5768,8 +5888,9 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-full-height] {
   --_button-state-opacity: var(--_date-day-state-opacity);
   --_button-pressed-state-color: var(--_date-day-pressed-state-color);
   --_button-pressed-state-opacity: var(--_date-day-pressed-state-opacity);
-  inline-size: var(--_date-day-width);
-  block-size: var(--_date-day-height);
+  inline-size: min(var(--_date-day-width), 100%);
+  block-size: auto;
+  aspect-ratio: 1;
   outline: var(--_date-day-outline-width) solid var(--_date-day-outline);
   outline-offset: calc(-1 * var(--_date-day-outline-width));
   font-family: var(--_date-day-font-family);
@@ -7169,6 +7290,31 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-full-height] {
     transition: none;
   }
 }
+
+/* Menu-backed field options share menu geometry, tokens and icon slots. */
+.md-field-menu.md-menu[popover] {
+ left: var(--_field-popup-left);
+ top: var(--_field-popup-top);
+ inline-size: var(--_field-popup-width);
+ min-inline-size: 0;
+ max-block-size: min(var(--_field-popup-height, 100dvh), 24rem, 60dvh);
+ padding: 0;
+ border-radius: var(--_menu-shape);
+ background: var(--_menu-container);
+ --_elevation-level: var(--_menu-elevation);
+ --_shadow-color: var(--_menu-shadow);
+}
+.md-field-menu.md-menu [role="option"] { cursor: pointer; }
+.md-field-menu.md-menu [role="option"]:not([aria-selected="true"]) [data-slot="trailing-icon"] { visibility: hidden; }
+.md-chip-select {
+ position: relative;
+ max-inline-size: 100%;
+ min-inline-size: 0;
+}
+.md-chip-select > [data-field-value] { display: none; }
+.md-chip-select [data-field-display] { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.md-chip-select > .md-filter-chip { max-inline-size: 100%; }
+.md-chip-select .md-filter-chip > span:first-child { flex: none; }
 /* Dialog viewport sizes and content spacing are renderer layout rules. */
 .md-dialog-demo {
   --_dialog-enter-duration: var(--_motion-fast-effects-duration);
@@ -7604,11 +7750,24 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-full-height] {
   inline-size: calc(280px + 12rem + var(--md-sys-measurement-space100));
 }
 
-.md-menu[data-menu-scrollable] {
-  --_menu-gap: 0px;
-  overflow-y: scroll;
-  scrollbar-gutter: stable;
+.md-menu-shortcut {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15em;
+  white-space: nowrap;
 }
+.md-menu-shortcut > svg {
+  inline-size: 1em;
+  block-size: 1em;
+  flex: none;
+  color: inherit;
+}
+
+/* A compact submenu occupies its parent's surface and provides a return item. */
+.md-menu[data-menu-covered] { visibility:hidden; }
+.md-menu[data-menu-replace]:not([data-menu-covered]):popover-open { visibility:visible; }
+.md-menu [data-menu-back] { display:none; }
+.md-menu[data-menu-replace] [data-menu-back] { display:flex; }
 
 .md-menu[data-menu-scrollable] {
   --_menu-gap: 0px;
@@ -7719,6 +7878,19 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-full-height] {
     var(--md-sys-measurement-space600)
   );
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .md-date-menu-button > svg {
+    transition: none;
+  }
+}
+
+/* Year selection remains available through its menu when the arrow pairs do not fit. */
+@container (max-width: 336px) {
+  .md-date-docked-navigation :is([data-date-step="-12"], [data-date-step="12"]) {
+    display: none;
+  }
+}
 /* Basic-dialog content shares the documented 24px outer inset. */
 .md-dialog[data-dialog-preview] .md-dialog-content {
   margin-inline: calc(-1 * var(--md-sys-measurement-space100));
@@ -7814,18 +7986,6 @@ html:has(.md-dialog-demo > dialog:modal) {
   background: transparent;
 }
 /* Rail layout and app scaffolding are renderer rules, not captured measurements. */
-.md-menu-shortcut {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.15em;
-  white-space: nowrap;
-}
-.md-menu-shortcut > svg {
-  inline-size: 1em;
-  block-size: 1em;
-  flex: none;
-  color: inherit;
-}
 .md-nav-icon {
   position: relative;
   display: block;
@@ -8215,8 +8375,7 @@ html:has(.md-dialog-demo > dialog:modal) {
   --_search-spatial-easing: var(--_motion-slow-spatial-easing);
 }
 @media (prefers-reduced-motion: reduce) {
-  .md-search-leading-slot > *,
-  .md-date-menu-button > svg {
+  .md-search-leading-slot > * {
     transition: none;
   }
 }

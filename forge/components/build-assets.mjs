@@ -5,8 +5,8 @@ import path from "node:path";
 
 const root = new URL("./", import.meta.url);
 
-// Preserve the existing public assets and cascade order while maintaining sources
-// by responsibility. This is concatenation, not the proposed component compiler.
+// Concatenate the maintained sources in manifest order, preserving public asset paths
+// and the CSS cascade.
 export async function componentAssets() {
   const outputs = new Map();
   for (const [manifest, output, kind] of [

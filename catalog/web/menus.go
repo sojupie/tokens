@@ -45,7 +45,7 @@ func (c componentCase) MenuItem(index int) templ.Attributes {
 		a["type"] = "button"
 		a["data-menu-action"] = ""
 		if c.State == "disabled" {
-			a["disabled"] = true
+			a["aria-disabled"] = "true"
 		}
 		a["tabindex"] = "0"
 		if c.Shape == "cascade" {

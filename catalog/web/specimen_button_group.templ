@@ -1,6 +1,7 @@
 package web
 
 templ specimenButtonGroup(c componentCase) {
+	@useComponentAssets("button-group")
 	<div class="md-button-group-demo">
 		<div { c.Attributes()... }>
 			for index := range 3 {

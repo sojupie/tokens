@@ -280,6 +280,22 @@ to publish DNS-AID records, enable DNSSEC, and check bot, caching and content-si
 settings. The application serves catalogs, Markdown and a public MCP endpoint;
 Cloudflare DNS and account settings require separate configuration.
 
+## Tools links
+
+The Tools page and footer link to the separately deployed video analysis app
+and carousel motion lab. Set their URLs in `/etc/tokens/server.env`:
+
+```dotenv
+TOKENS_MOTION_URL=/tools/motion/
+TOKENS_MOTION_LAB_URL=/tools/motion-lab/
+```
+
+These are the defaults. Absolute HTTPS URLs also work during a host migration.
+Root-relative paths use the catalog hostname, outside its `/md3` collection
+path. Configure the corresponding Cloudflare Tunnel path routes before making
+the links public. The catalog does not host or proxy the tool applications.
+Restart the server after changing the URLs.
+
 ## Check a problem
 
 ```sh

@@ -3,6 +3,7 @@ package web
 import "fmt"
 
 templ specimenToolbar(c componentCase) {
+	@useComponentAssets("toolbar")
 	<div class="md-toolbar-scene">
 		<p class="md-typescale-body-medium md-toolbar-page">Document content</p>
 		<div class="md-toolbar-demo" data-menu-example data-orientation={ c.Orientation }>
@@ -31,6 +32,7 @@ templ specimenToolbar(c componentCase) {
 				}
 			</div>
 			if c.Variant=="floating" && c.Size!="none" {
+				@useComponentAssets("fab")
 				<button { c.BarFAB()... }>@materialSymbol("add")
 </button>
 			}

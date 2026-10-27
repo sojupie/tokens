@@ -75,6 +75,3 @@ for supported variants, checks, and exclusions.
 Another design system can use the DTCG-to-CSS build. Its components need explicit
 mappings for anatomy, states, and behavior. The Material generator must reject
 unknown token properties rather than silently choosing a fallback.
-
-Earlier Token Forge plans are preserved in
-[the historical notes](../docs/history/token-forge/README.md).

@@ -46,7 +46,11 @@ func overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView,
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<section class=\"tokens-landing-hero\" aria-labelledby=\"landing-heading\"><div class=\"tokens-landing-copy\"><p class=\"md-typescale-label-large\">Token Catalog</p><h1 class=\"md-typescale-display-small\" id=\"landing-heading\">Material Design 3 tokens and change history</h1><p class=\"md-typescale-body-large\">Browse Material Design 3 components and styles. Compare values, follow references, and download the tokens for your project.</p><div class=\"tokens-landing-actions\"><a class=\"md-button md-filled-button\" href=\"/components\">Browse components</a> <a class=\"md-button md-tonal-button\" href=\"/styles\">Explore styles</a></div></div>")
+			templ_7745c5c3_Err = useComponentAssets("card").Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, " <section class=\"tokens-landing-hero\" aria-labelledby=\"landing-heading\"><div class=\"tokens-landing-copy\"><p class=\"md-typescale-label-large\">Token Catalog</p><h1 class=\"md-typescale-display-small\" id=\"landing-heading\">Material Design 3 tokens and change history</h1><p class=\"md-typescale-body-large\">Browse Material Design 3 components and styles. Compare values, follow references, and download the tokens for your project.</p><div class=\"tokens-landing-actions\"><a class=\"md-button md-filled-button\" href=\"/components\">Browse components</a> <a class=\"md-button md-tonal-button\" href=\"/styles\">Explore styles</a></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -87,7 +91,7 @@ func overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView,
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(snapshot.ID)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/overview.templ`, Line: 49, Col: 101}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/overview.templ`, Line: 50, Col: 101}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -100,7 +104,7 @@ func overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView,
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(snapshot.CreatedAt)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/overview.templ`, Line: 49, Col: 144}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/overview.templ`, Line: 50, Col: 144}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -149,7 +153,7 @@ func landingArtwork(renderer string) templ.Component {
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(renderer)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/overview.templ`, Line: 56, Col: 56}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/overview.templ`, Line: 57, Col: 56}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {

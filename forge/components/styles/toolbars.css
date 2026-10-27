@@ -92,6 +92,7 @@
 .md-toolbar .md-toolbar-item::after {
   content: "";
   position: absolute;
+  translate: none;
   inset: calc(-1 * var(--md-sys-measurement-space50));
   min-inline-size: var(--md-sys-measurement-space600);
   min-block-size: var(--md-sys-measurement-space600);

@@ -1,6 +1,7 @@
 package web
 
 templ specimenTooltip(c componentCase) {
+	@useComponentAssets("messages")
 	if c.State=="interactive" {
 		<div class="md-tooltip-demo">
 			if c.Variant=="plain" {
@@ -20,6 +21,7 @@ templ specimenTooltip(c componentCase) {
 }
 
 templ tooltipContents(c componentCase) {
+	@useComponentAssets("messages")
 	if c.Variant=="rich" {
 		<h3>Details</h3>
 	}

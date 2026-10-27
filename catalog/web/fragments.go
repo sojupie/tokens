@@ -33,6 +33,9 @@ func tokenBrowserView(subject publish.SubjectView, browser tokenBrowser) templ.C
 			return err
 		}
 		if len(browser.Filters) > 0 {
+			if err := useComponentAssets("dialog").Render(ctx, writer); err != nil {
+				return err
+			}
 			if err := write(`<button class="md-filter-chip tokens-context-button" type="button" data-action="context" aria-haspopup="dialog" aria-expanded="false" popovertarget="tokens-context-picker">` + `<span class="tokens-context-label" title="` + html.EscapeString(tableContextLabel(browser.Filters)) + `">` + html.EscapeString(tableContextLabel(browser.Filters)) + `</span>` + `<span data-slot="trailing-icon" aria-hidden="true">` + tableIcon("dropdown") + `</span></button></div><div id="tokens-context-picker" class="md-dialog md-elevation tokens-context-dialog" popover="auto" role="dialog" aria-labelledby="tokens-context-title"><h2 id="tokens-context-title">See more values</h2><p>Compare token values by selecting another context</p><div class="tokens-context-fields">`); err != nil {
 				return err
 			}

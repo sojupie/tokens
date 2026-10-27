@@ -51,6 +51,14 @@ test('docked toolbar spacing respects both source limits and available button wi
  assert.equal(toolbarGap(100,[40],4,32),0);
 });
 
+test('toolbar touch targets do not inherit the icon target centering translation', () => {
+ const css = readFileSync(`${__dirname}/static/components-base.css`, 'utf8');
+ const target = css.match(/\.md-toolbar \.md-toolbar-item::after\s*\{([^}]+)\}/)?.[1];
+ assert.ok(target, 'shared toolbar target rule is present');
+ assert.match(target, /translate:\s*none\s*;/, 'inset expansion must cancel the inherited half-target translation');
+ assert.match(target, /inset:\s*calc\(-1 \* var\(--md-sys-measurement-space50\)\)/);
+});
+
 test('cards define their own surface foreground instead of inheriting a parent color', () => {
   const css = readFileSync(`${__dirname}/static/components-base.css`, 'utf8');
   const card = css.match(/^\.md-card\s*\{([^}]+)\}/m)?.[1];

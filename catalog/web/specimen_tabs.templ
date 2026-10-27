@@ -3,6 +3,7 @@ package web
 import "fmt"
 
 templ specimenTabs(c componentCase) {
+	@useComponentAssets("tabs")
 	<div { c.Attributes()... }>
 		<div class="md-tabs" role="tablist" aria-label="Library views" data-variant={ c.Variant } data-control={ c.Control }>
 			for i,label := range []string{"Home","Files","Saved"} {

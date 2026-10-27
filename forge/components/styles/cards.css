@@ -53,3 +53,14 @@
 .md-card.md-interactive-card[aria-disabled="true"] {
   cursor: default;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .md-card {
+    transition: none;
+  }
+}
+@media (forced-colors: active) {
+  .md-card {
+    border: 1px solid ButtonText;
+  }
+}

@@ -1,8 +1,10 @@
 package web
 
 templ specimenFabMenu(c componentCase) {
+	@useComponentAssets("fab-menu")
 	<div { c.Attributes()... }>
 		if c.State=="interactive" {
+			@useComponentAssets("fab")
 			<button { c.FABMenuOpener()... }>@materialSymbol("add")
 </button>
 		}

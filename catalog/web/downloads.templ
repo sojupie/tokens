@@ -5,6 +5,7 @@ templ siteDownloadButton() {
 }
 
 templ siteDownloadMenu() {
+	@useComponentAssets("dialog")
 	<div class="tokens-export">
 		@siteDownloadButton()
 		<dialog hx-boost="false" class="md-dialog tokens-export-dialog" data-dialog-surface id="tokens-site-download" aria-labelledby="tokens-site-download-title" aria-describedby="tokens-export-scope">

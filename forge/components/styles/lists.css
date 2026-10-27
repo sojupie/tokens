@@ -27,7 +27,7 @@
   min-inline-size: 0;
 }
 .md-list[data-variant="standard"]:not([data-divider="none"])
-  > li:not(:last-child)::after {
+  > li:not(:last-child):not(:has(+ .md-list-drop-zone))::after {
   content: "";
   display: block;
   border-block-start: var(--_list-divider-width) solid var(--_list-divider);
@@ -36,7 +36,7 @@
 }
 /* Full-width is a documented divider layout; inset dimensions remain source tokens. */
 .md-list[data-variant="standard"][data-divider="full-width"]
-  > li:not(:last-child)::after {
+  > li:not(:last-child):not(:has(+ .md-list-drop-zone))::after {
   margin-inline: 0;
 }
 /* Alignment is a documented layout rule, not a replacement for captured padding. */
@@ -336,7 +336,7 @@
 .md-list [data-list-dragging] {
   z-index: 2;
 }
-.md-list-drop-zone {
+.md-list > .md-list-drop-zone {
   position: absolute;
   inset: 0;
   background: var(--_list-drop-color);

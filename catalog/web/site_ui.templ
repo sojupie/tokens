@@ -31,12 +31,12 @@ templ catalogOptions(id string,label string,selected string,choices []catalogCho
 }
 
 templ filterPill(id string, name string, label string, selected string, choices []catalogChoice, showLabel bool) {
- <div class="tokens-preview-filter" data-field-example data-populated="true">
+ <div class="tokens-preview-filter md-chip-select" data-field-example data-populated="true">
   <button type="button" class="md-filter-chip" id={id} role="combobox" aria-label={label} aria-expanded="false" aria-haspopup="listbox" aria-controls={id+"-options"} aria-autocomplete="none" value={choiceLabel(choices,selected)} data-field-combo data-field-select>
    if showLabel {
     <span>{label+":"}</span>
    }
-   <span data-field-display>{choiceLabel(choices,selected)}</span><span data-slot="trailing-icon" aria-hidden="true">@materialSymbol("expand_more")</span>
+   <span data-field-display>{choiceLabel(choices,selected)}</span><span class="md-chip-icon" data-slot="trailing-icon" aria-hidden="true">@materialSymbol("expand_more")</span>
   </button>
   <input type="hidden" name={name} value={selected} data-field-value/>
   @catalogOptions(id,label,selected,choices)

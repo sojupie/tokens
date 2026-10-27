@@ -3,6 +3,7 @@ package web
 import "fmt"
 
 templ specimenList(c componentCase) {
+	@useComponentAssets("list")
 	<div class={ "md-list-demo", templ.KV("md-sheet-demo",c.Control=="reorder") } data-interactive="true">
 		<ul { c.ListContainerAttributes()... }>
 			for index := range 3 {
@@ -40,6 +41,7 @@ templ specimenList(c componentCase) {
 			}
 		</ul>
 		if c.Control=="reorder" {
+			@useComponentAssets("sheet")
 			<dialog class="md-sheet md-bottom-sheet md-list-reorder-sheet" data-control="standard" data-variant="expanded" data-list-reorder-sheet id={ c.ID() + "-reorder" } aria-label="Reorder item" tabindex="-1">
 				<div class="md-sheet-content">
 					<div class="md-sheet-body">
@@ -63,6 +65,7 @@ templ listContents(c componentCase, index int) {
 }
 
 templ listItemContents(c componentCase, index int, content listItemContent) {
+	@useComponentAssets("list")
 	if c.Width!="none" {
 		<span class={ "md-list-leading md-list-" + c.Width } aria-hidden?={ c.Width!="checkbox"&&c.Width!="radio" }>
 			switch c.Width {
@@ -109,6 +112,7 @@ templ listItemContents(c componentCase, index int, content listItemContent) {
 
 // Reuse the checkbox, radio and switch renderers without nesting an input in a button.
 templ listSelectionControl(c componentCase, index int) {
+	@useComponentAssets(c.ListNativeKind())
 	<label { c.ListControlAttributes(index)... }>
 		<input { c.ListControlInput(index)... }/>
 		switch c.ListNativeKind() {

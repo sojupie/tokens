@@ -1,106 +1,63 @@
-import postcss from "postcss";
+import { readFile } from "node:fs/promises";
 import { compactCSS } from "./css-output.mjs";
 
-// Native HTML compositions require their child families as well as their shell.
-export const bundleGroups = {
-  common: [],
-  navigation: ["navigation"],
-  chips: ["chip"],
-  radio: ["radio"],
-  checkbox: ["checkbox"],
-  switch: ["switch"],
-  tabs: ["tab"],
-  segmented: ["segment"],
-  sliders: ["slider"],
-  progress: ["progress", "slider"],
-  loading: ["loading", "progress", "slider"],
-  appbar: ["appbar"],
-  toolbar: ["toolbar"],
-  sheets: ["sheet", "list"],
-  split: ["split"],
-  "button-group": ["button-group"],
-  "fab-menu": ["fab-menu"],
-  lists: ["list"],
-  carousel: ["carousel"],
-  search: ["search", "navigation", "list", "checkbox"],
-  date: ["date", "list"],
-  time: ["time"],
-  dialog: ["checkbox", "radio"],
-  snackbar: ["snackbar"],
-  tooltip: ["tooltip"],
-};
-
-function classGroup(name) {
-  for (const [pattern, group] of [
-    [/^md-(?:navigation|nav-|rail-)/, "navigation"],
-    // Catalog filter pills use the native filter-chip anatomy on every page.
-    [/^md-(?:filter-chip|chip)/, "common"],
-    [/^md-(?:assist|suggestion|input)-chip/, "chip"],
-    [/^md-fab-menu/, "fab-menu"],
-    [/^md-button-group|^md-group-/, "button-group"],
-    [/^md-(?:bottom-sheet|side-sheet|sheet)/, "sheet"],
-    [/^md-segment/, "segment"],
-    [/^md-tab/, "tab"],
-    [/^md-app-bar/, "appbar"],
-    ...[
-      "radio",
-      "checkbox",
-      "switch",
-      "slider",
-      "progress",
-      "loading",
-      "toolbar",
-      "split",
-      "list",
-      "carousel",
-      "search",
-      "date",
-      "time",
-      "snackbar",
-      "tooltip",
-    ].map((group) => [new RegExp("^md-" + group), group]),
-  ])
-    if (pattern.test(name)) return group;
-  return "common";
-}
-
-export function componentBundles(css) {
-  const parsed = postcss.parse(css);
-  function filter(container, allowed, common) {
-    const result = container.clone({ nodes: [] });
-    for (const node of container.nodes ?? []) {
-      if (node.type === "rule") {
-        const groups = new Set(
-          [...node.selector.matchAll(/\.([a-zA-Z_][\w-]*)/g)].map((m) =>
-            classGroup(m[1]),
-          ),
-        );
-        // Keep selector lists intact. Optional families can share a rule, but
-        // it must remain in each family's source position (not move ahead of
-        // later rules, especially reduced-motion overrides).
-        const shared = !groups.size || groups.has("common");
-        if (shared ? common : [...groups].some(group => allowed.has(group)))
-          result.append(node.clone());
-      } else if (node.type === "atrule" && node.name === "property") {
-        if (node.params.startsWith("--_time-") ? allowed.has("time") : common)
-          result.append(node.clone());
-      } else if (node.nodes) {
-        const child = filter(node, allowed, common);
-        if (child.nodes.length) result.append(child);
-      } else if (common) result.append(node.clone());
-    }
-    return result;
-  }
-  // Shared primitives precede family styling. Each sheet retains its own rule
-  // order; computed-style conformance checks cover interactions across sheets.
-  const groups = {
-    ...bundleGroups,
-    all: [...new Set(Object.values(bundleGroups).flat())],
-  };
-  return new Map(
-    Object.entries(groups).map(([name, groups]) => [
-      name,
-      compactCSS(filter(parsed, new Set(groups), name === "common").toString()),
-    ]),
+// Ownership is declared alongside component sources. No selectors are classified.
+export async function componentBundles({
+  bindings,
+  motionCSS,
+  elevation,
+  allCSS,
+}) {
+  const root = new URL("./components/", import.meta.url);
+  const modules = JSON.parse(
+    await readFile(new URL("modules.json", root), "utf8"),
   );
+  const sources = JSON.parse(
+    await readFile(new URL("style-sources.json", root), "utf8"),
+  );
+  const files = new Map(),
+    owners = new Map(),
+    result = new Map();
+  for (const [id, module] of Object.entries(modules)) {
+    for (const file of module.styles) {
+      if (files.has(file)) throw Error(`Duplicate source owner: ${file}`);
+      files.set(file, id);
+    }
+    for (const family of module.bindings) {
+      if (owners.has(family)) throw Error(`Duplicate binding owner: ${family}`);
+      owners.set(family, id);
+    }
+  }
+  for (const file of sources)
+    if (!files.has(file)) throw Error(`Unowned component source: ${file}`);
+  for (const file of files.keys())
+    if (!sources.includes(file))
+      throw Error(`Unknown component source: ${file}`);
+  for (const family of bindings.keys())
+    if (!owners.has(family))
+      throw Error(`Unowned generated binding: ${family}`);
+  for (const [id, module] of Object.entries(modules)) {
+    const anatomy = await Promise.all(
+      sources
+        .filter((file) => files.get(file) === id)
+        .map((file) => readFile(new URL(file, root), "utf8")),
+    );
+    const generated = module.bindings.map((family) => {
+      if (!bindings.has(family))
+        throw Error(`Missing binding family: ${family}`);
+      return bindings.get(family);
+    });
+    result.set(
+      id,
+      compactCSS(
+        (id === "common" ? motionCSS + elevation : "") +
+          anatomy.join("\n") +
+          "\n" +
+          generated.join("\n"),
+      ),
+    );
+  }
+  // Retain the complete public artifact for existing consumers and comparisons.
+  result.set("all", allCSS);
+  return result;
 }

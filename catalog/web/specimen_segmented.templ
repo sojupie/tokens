@@ -1,6 +1,7 @@
 package web
 
 templ specimenSegmented(c componentCase) {
+	@useComponentAssets("segmented")
 	<div { c.Attributes()... } role={ c.SegmentRole() } aria-label="View selection">
 		for i,label := range []string{"Home","Files","Saved"} {
 			<label { c.SegmentAttributes(i)... }>

@@ -48,5 +48,11 @@ node_modules/
 # Immutable local implementation assessment snapshots.
 /snapshots/implementation-baselines/
 
-# Local motion inspection recordings and measurements.
-/snapshots/motion/
+# Local plans, proposals, roadmaps, and handover notes are not release documentation.
+/docs/plans/
+/docs/history/plans/
+/docs/history/token-forge/
+/docs/*proposal*.md
+/docs/*handover*.md
+/docs/**/roadmap*.md
+/docs/**/worklist*.md

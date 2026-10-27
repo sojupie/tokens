@@ -1,6 +1,8 @@
 package web
 
 templ specimenLoading(c componentCase) {
+	@useComponentAssets("loading")
+	@useComponentAssets("progress")
 	<div class="md-progress-demo" data-loading-adaptive?={ c.State=="interactive" }>
 		<div { c.ProgressAttributes()... }>
 			<svg viewBox="0 0 1 1" aria-hidden="true"><g transform={ loadingRotation(c.Control) }><path d={ loadingInitialPath(c.Control) }></path></g></svg>

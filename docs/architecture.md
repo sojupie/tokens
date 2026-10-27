@@ -68,28 +68,25 @@ order. `components-base.css` and `components.js` retain their existing served
 paths but are generated assembly outputs. Edit maintained sources, then regenerate;
 direct edits to those outputs, token-bound CSS, or `*_templ.go` files are overwritten.
 
-The CSS build emits shared component primitives and optional family bundles.
-Catalog chooses a stylesheet from the page route and keeps it with the body
-content during HTMX navigation. The browser loader selects behavior from the
-rendered component anatomy, loads each module once, and signals when styles and
-behavior are ready. A deployment fingerprint covers the versioned module map;
-ordinary page changes retain the document and shared header.
+The CSS build uses `forge/components/modules.json` to assign structural source
+files and generated binding families to modules. Templates register modules as
+they render, including nested components. Catalog collects the requests and
+inserts versioned stylesheet and theme links within each replaceable region.
+Those links follow the content through both page and playground HTMX updates. The browser loader selects behavior
+from rendered anatomy and loads each script once.
 
-The generated site theme declares common values once and appearance differences
-under the six theme/contrast selectors. This reduces CSS without changing the
-complete context exports offered for download. `forge/theme-subsets.mjs` traces
-CSS variable dependencies across all six appearances. Shared site and control
-inputs live on the root; each playground loads its remaining family inputs under
-`#component-preview`. Overview pages load the full optional set for their mixed
-thumbnails. Page themes follow the same body lifetime as component stylesheets.
+The site theme preserves captured aliases where the site conversions produce the
+same values. Common declarations appear once; the six appearance selectors hold
+only changed definitions. Public context exports retain their existing output.
+`forge/theme-subsets.mjs` follows CSS references through all six appearances.
+Shared site and control inputs live on the document root. Optional module inputs
+are scoped to `[data-component-assets]` regions, or `#component-preview` in standalone fixtures.
+Galleries collect assets from their rendered thumbnails.
 The server verifies their publication manifest checksums and retains the bytes at
 startup. Older asset manifests keep the complete theme as a fallback.
 
-These are still the current native HTML/CSS/JavaScript components used by Catalog,
-not a published Web Components library. The
-[component library proposal](component-library-proposal.md) describes a later
-migration. The current release work separates existing responsibilities without
-changing component APIs or introducing that compiler.
+Catalog uses native HTML/CSS/JavaScript components and shared Go templ controls.
+Forge does not publish a Web Components package.
 
 ## Design decisions
 

@@ -1,38 +1,101 @@
 package web
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
+	"fmt"
+	"html"
+	"io"
+	"io/fs"
 	"strings"
 	"sync"
+
+	"github.com/a-h/templ"
 )
 
-// Shared site controls use common.css. Optional page bundles keep their original
-// rule order and live in the body so HTMX replaces them with the page contents.
-func componentStylesheet(ctx context.Context) string {
-	path := metadata(ctx).Path
-	if path == "/" || path == "/components" {
-		return "bundles/all.css"
+// Each replaceable region collects the modules its descendants render. Links
+// travel with that region during HTMX swaps, including playground-only updates.
+type componentAssetsKey struct{}
+type componentAssets struct {
+	modules map[string]bool
+	server  *Server
+}
+
+func useComponentAssets(name string) templ.Component {
+	return templ.ComponentFunc(func(ctx context.Context, _ io.Writer) error {
+		assets, ok := ctx.Value(componentAssetsKey{}).(*componentAssets)
+		if !ok {
+			return nil
+		} // Standalone template renders do not deliver a page.
+		if !componentModuleNames()[name] {
+			return fmt.Errorf("unknown component module: %s", name)
+		}
+		assets.modules[name] = true
+		return nil
+	})
+}
+
+func componentAssetScope() templ.Component {
+	return templ.ComponentFunc(func(ctx context.Context, writer io.Writer) error {
+		children := templ.GetChildren(ctx)
+		parent, ok := ctx.Value(componentAssetsKey{}).(*componentAssets)
+		if !ok {
+			return children.Render(templ.ClearChildren(ctx), writer)
+		}
+		assets := &componentAssets{modules: map[string]bool{}, server: parent.server}
+		ctx = context.WithValue(templ.ClearChildren(ctx), componentAssetsKey{}, assets)
+		var content bytes.Buffer
+		if err := children.Render(ctx, &content); err != nil {
+			return err
+		}
+		links, err := assets.server.componentAssetLinks(assets)
+		if err != nil {
+			return err
+		}
+		if _, err = writer.Write(links); err != nil {
+			return err
+		}
+		_, err = content.WriteTo(writer)
+		return err
+	})
+}
+
+var componentModuleOrder = sync.OnceValue(func() []string {
+	data, err := fs.ReadFile(webStaticFiles, "bundles/modules.json")
+	if err != nil {
+		panic(err)
 	}
-	if !strings.HasPrefix(path, "/components/") || strings.HasSuffix(path, "/changes") {
-		return ""
+	var names []string
+	if err := json.Unmarshal(data, &names); err != nil {
+		panic(err)
 	}
-	slug := strings.Split(strings.TrimPrefix(path, "/components/"), "/")[0]
-	family := componentFamily(slug)
-	bundle := map[string]string{
-		"nav-bar": "navigation", "nav-rail": "navigation", "nav-drawer": "navigation",
-		"chip": "chips", "radio": "radio", "checkbox": "checkbox", "switch": "switch",
-		"tabs": "tabs", "segmented": "segmented", "slider": "sliders", "progress": "progress",
-		"loading": "loading", "appbar": "appbar", "toolbar": "toolbar",
-		"bottom-sheet": "sheets", "side-sheet": "sheets", "split": "split",
-		"button-group": "button-group", "fab-menu": "fab-menu", "list": "lists",
-		"carousel": "carousel", "search": "search", "date": "date", "time": "time",
-		"dialog": "dialog", "snackbar": "snackbar", "tooltip": "tooltip",
-	}[family]
-	if bundle == "" {
-		return ""
+	return names
+})
+var componentModuleNames = sync.OnceValue(func() map[string]bool {
+	names := map[string]bool{}
+	for _, name := range componentModuleOrder() {
+		names[name] = true
 	}
-	return "bundles/" + bundle + ".css"
+	return names
+})
+
+func (server *Server) componentAssetLinks(assets *componentAssets) ([]byte, error) {
+	var links strings.Builder
+	for _, name := range componentModuleOrder() {
+		if name == "common" || !assets.modules[name] {
+			continue
+		}
+		if len(server.themeBundles) > 0 {
+			theme, ok := server.themeBundles[name]
+			if !ok {
+				return nil, fmt.Errorf("missing component theme: %s; rebuild token assets", name)
+			}
+			fmt.Fprintf(&links, `<link rel="stylesheet" href="/themes/%s.css?v=%s" data-component-stylesheet data-page-theme>`, name, assetVersion(theme))
+		}
+		fmt.Fprintf(&links, `<link rel="stylesheet" href="%s" data-component-stylesheet>`, html.EscapeString(staticURL("bundles/"+name+".css")))
+	}
+	return []byte(links.String()), nil
 }
 
 var componentScriptSources = sync.OnceValue(func() string {
@@ -53,33 +116,13 @@ var componentScriptSources = sync.OnceValue(func() string {
 	return string(data)
 })
 
-// Page themes share the component stylesheet's lifetime. Gallery thumbnails need
-// all optional tokens; playgrounds inherit only their own family's tokens.
+// Shared tokens stay on the document root; rendered modules add scoped tokens.
 type pageThemeKey struct{}
-type pageThemesContext struct{ Shared, Page string }
+type pageThemesContext struct{ Shared string }
 
-func (server *Server) pageThemes(ctx context.Context) pageThemesContext {
-	if len(server.themeBundles) == 0 {
-		return pageThemesContext{}
+func (server *Server) pageThemes() pageThemesContext {
+	if data, ok := server.themeBundles["shared"]; ok {
+		return pageThemesContext{Shared: "/themes/shared.css?v=" + assetVersion(data)}
 	}
-	result := pageThemesContext{Shared: "/themes/shared.css?v=" + assetVersion(server.themeBundles["shared"])}
-	stylesheet := componentStylesheet(ctx)
-	if stylesheet == "" {
-		return result
-	}
-	name := strings.TrimSuffix(strings.TrimPrefix(stylesheet, "bundles/"), ".css")
-	data, ok := server.themeBundles[name]
-	if !ok {
-		name = "all"
-		data = server.themeBundles[name]
-	}
-	result.Page = "/themes/" + name + ".css?v=" + assetVersion(data)
-	return result
-}
-
-func pageThemeURL(ctx context.Context) string {
-	if themes, ok := ctx.Value(pageThemeKey{}).(pageThemesContext); ok {
-		return themes.Page
-	}
-	return ""
+	return pageThemesContext{}
 }

@@ -14,5 +14,6 @@
   "md.comp.menus.menu-item.trailing-space": {
     "value": 12,
     "unit": "px"
-  }
+  },
+  "md.comp.button.text.disabled.container.opacity": 0
 }

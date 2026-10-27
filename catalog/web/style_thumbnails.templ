@@ -7,6 +7,8 @@ templ styleThumbnail(subject publish.SubjectView) {
  <div class="tokens-component-thumbnail-scene" inert aria-hidden="true" data-style-thumbnail={ subject.Key.Slug }>
     switch subject.Key.Slug {
     case "elevation":
+     @useComponentAssets("card")
+     @useComponentAssets("fab")
      <div class="tokens-style-elevation">
       <div class="md-card md-filled-card"><span>Surface</span></div>
       <div class="md-card md-elevated-card"><span>Raised</span></div>

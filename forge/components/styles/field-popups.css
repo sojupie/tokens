@@ -511,3 +511,28 @@
     transition: none;
   }
 }
+
+/* Menu-backed field options share menu geometry, tokens and icon slots. */
+.md-field-menu.md-menu[popover] {
+ left: var(--_field-popup-left);
+ top: var(--_field-popup-top);
+ inline-size: var(--_field-popup-width);
+ min-inline-size: 0;
+ max-block-size: min(var(--_field-popup-height, 100dvh), 24rem, 60dvh);
+ padding: 0;
+ border-radius: var(--_menu-shape);
+ background: var(--_menu-container);
+ --_elevation-level: var(--_menu-elevation);
+ --_shadow-color: var(--_menu-shadow);
+}
+.md-field-menu.md-menu [role="option"] { cursor: pointer; }
+.md-field-menu.md-menu [role="option"]:not([aria-selected="true"]) [data-slot="trailing-icon"] { visibility: hidden; }
+.md-chip-select {
+ position: relative;
+ max-inline-size: 100%;
+ min-inline-size: 0;
+}
+.md-chip-select > [data-field-value] { display: none; }
+.md-chip-select [data-field-display] { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.md-chip-select > .md-filter-chip { max-inline-size: 100%; }
+.md-chip-select .md-filter-chip > span:first-child { flex: none; }

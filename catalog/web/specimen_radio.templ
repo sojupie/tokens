@@ -3,23 +3,29 @@ package web
 import "fmt"
 
 templ specimenRadio(c componentCase) {
+	@useComponentAssets("radio")
 	if c.State=="interactive" {
 		<fieldset class="md-radio-group" role="radiogroup">
 			<legend>Options</legend>
 			for index:=range 3 {
-				@radioChoice(c, index, true)
+				@radioChoice(c, index, fmt.Sprintf("Option %d",index+1))
 			}
 		</fieldset>
 	} else {
-		@radioChoice(c, 0, false)
+		@radioChoice(c, 0, "Option 1")
 	}
 }
 
-templ radioChoice(c componentCase, index int, showLabel bool) {
+templ radioChoice(c componentCase, index int, label string) {
+	@useComponentAssets("radio")
+	{{ input := c.RadioInput(index) }}
+	if label!="" {
+		{{ delete(input, "aria-label") }}
+	}
 	<label class="md-radio-choice">
-		<span { c.RadioControl(index)... }><input { c.RadioInput(index)... }/><span class="md-radio-icon" aria-hidden="true"></span></span>
-		if showLabel {
-			<span>{ fmt.Sprintf("Option %d",index+1) }</span>
+		<span { c.RadioControl(index)... }><input { input... }/><span class="md-radio-icon" aria-hidden="true"></span></span>
+		if label!="" {
+			<span class="md-radio-label">{ label }</span>
 		}
 	</label>
 }

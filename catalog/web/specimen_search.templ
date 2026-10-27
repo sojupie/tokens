@@ -3,8 +3,11 @@ package web
 import "fmt"
 
 templ specimenSearch(c componentCase) {
+	@useComponentAssets("search")
 	<div { c.Attributes()... }>
 		if c.Variant=="adaptive" {
+			@useComponentAssets("card")
+			@useComponentAssets("fab")
 			<label class="md-search-composition-size">Composition width <input type="range" min="320" max="1200" value="1200" step="1" data-search-composition-width/><output data-search-composition-width-label>Fit to available space</output></label>
 			<div class="md-search-workspace">
 				<div class="md-search-app">
@@ -43,6 +46,8 @@ templ searchActions(c componentCase) {
 }
 
 templ searchScene(c componentCase) {
+	@useComponentAssets("list")
+	@useComponentAssets("search")
 	<div class="md-search-scene">
 		<section class="md-search-page">
 			if c.Variant=="adaptive" {
@@ -76,6 +81,8 @@ templ searchScene(c componentCase) {
 }
 
 templ searchCompositionNavigation(c componentCase) {
+	@useComponentAssets("navigation")
+	@useComponentAssets("fab")
 	<nav { c.SearchMailNavigation()... } aria-label="Example mail navigation">
 		<header>
 			<button { c.SearchCompose()... }>
@@ -97,6 +104,8 @@ templ searchScrim() {
 }
 
 templ searchView(c componentCase) {
+	@useComponentAssets("search")
+	@useComponentAssets("list")
 	<div { c.SearchPanel()... }>
 		<div { c.SearchBar()... }>
 			<span class="md-search-leading-slot">
