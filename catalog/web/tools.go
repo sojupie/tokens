@@ -8,7 +8,7 @@ import (
 )
 
 type toolDestination struct {
-	Name, Description, URL string
+	Name, Description, URL, Image, ImageAlt string
 }
 
 // SetToolURLs configures the separately deployed tools before serving requests.
@@ -30,8 +30,8 @@ func (server *Server) toolDestinations() []toolDestination {
 		return target
 	}
 	return []toolDestination{
-		{"Video motion analysis", "Track movement in a recording, compare videos, and measure motion against reference curves.", external(server.motionURL)},
-		{"Carousel motion lab", "Help fix jerky carousel settling on iOS. Compare implementations and record tests on your device.", external(server.motionLabURL)},
+		{"Video motion analysis", "Track movement in a recording, compare videos, and measure motion against reference curves.", external(server.motionURL), "tool-motion.png", "Video preview, tracking timeline and measured displacement curve in the motion analysis workspace."},
+		{"Carousel motion lab", "Help fix jerky carousel settling on iOS. Compare implementations and record tests on your device.", external(server.motionLabURL), "tool-carousel-lab.png", "Carousel implementations and interaction recording controls in the carousel playground."},
 	}
 }
 func (server *Server) handleTools(w http.ResponseWriter, r *http.Request) {

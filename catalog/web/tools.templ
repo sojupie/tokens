@@ -9,6 +9,7 @@ templ toolsPage() {
    <div class="tokens-audience-grid">
     for _, tool := range metadata(ctx).Tools {
      <article class="md-card md-outlined-card tokens-card-content">
+      <img class="tokens-tool-image" src={staticURL(tool.Image)} alt={tool.ImageAlt} width="1224" height="816" decoding="async"/>
       <h2 class="md-typescale-title-large">{tool.Name}</h2>
       <p class="md-typescale-body-medium">{tool.Description}</p>
       <a class="md-button md-outlined-button" href={templ.SafeURL(tool.URL)} hx-boost="false">{"Open " + tool.Name}</a>

@@ -48,6 +48,7 @@ button:not(:disabled), [role=button]:not([aria-disabled=true]) { cursor:pointer;
 .tokens-audience-grid, .tokens-handoff-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr)); gap:var(--md-sys-measurement-space100); }
 /* Layout belongs to the page; appearance belongs to the Material variant. */
 .tokens-card-content { display:flex; min-width:0; flex-direction:column; align-items:flex-start; gap:var(--md-sys-measurement-space150); }
+.tokens-tool-image { display:block; inline-size:100%; block-size:auto; border-radius:var(--md-sys-shape-corner-medium); }
 .tokens-code-block { width:100%; margin:0; white-space:pre-wrap; overflow-wrap:anywhere; padding:var(--md-sys-measurement-space150); font:inherit; line-height:var(--md-sys-typescale-body-medium-line-height); }
 .tokens-copy-status { min-height:var(--md-sys-typescale-body-medium-line-height); color:var(--md-sys-color-on-surface-variant); }
 
