@@ -110,21 +110,31 @@ jobs:
           case "$OPERATION" in
             deploy)
               [[ "$(git branch --show-current)" == main ]]
-              if [[ -n "$(git status --porcelain)" ]]; then
-                echo 'The deployment checkout has local changes. Resolve them first.' >&2
-                git status --short
-                git diff --stat
-                exit 1
-              fi
               case "$(git remote get-url origin)" in
                 https://github.com/sojupie/tokens.git|git@github.com:sojupie/tokens.git) ;;
                 *) echo 'Unexpected origin in /opt/tokens.' >&2; exit 1 ;;
               esac
-              timed 'Fetch source' git fetch origin main
+              timed 'Fetch source' git fetch https://github.com/sojupie/tokens.git main:refs/remotes/origin/main
               git merge-base --is-ancestor "$GITHUB_SHA" origin/main
               if ! git merge-base --is-ancestor HEAD "$GITHUB_SHA"; then
                 echo 'This deployment would go backwards or overwrite local commits.' >&2
                 exit 1
+              fi
+              checkout_status=$(git status --porcelain)
+              if [[ -n "$checkout_status" ]]; then
+                # Preserve the old host's version-only pin before adopting the
+                # maintained tunnel configuration. All other edits still block.
+                normalize_pin() { sed -E 's@(image: cloudflare/cloudflared:)[0-9]{4}\.[0-9]+\.[0-9]+$@\1VERSION@'; }
+                if [[ "$checkout_status" == ' M deploy/compose.yaml' ]] &&
+                    cmp -s <(git show HEAD:deploy/compose.yaml | normalize_pin) <(normalize_pin < deploy/compose.yaml); then
+                  git stash push -m "Pre-deployment cloudflared pin $(date -u +%Y%m%dT%H%M%SZ)" -- deploy/compose.yaml
+                  echo 'Preserved the previous cloudflared pin in the deployment checkout stash.'
+                else
+                  echo 'The deployment checkout has local changes. Resolve them first.' >&2
+                  git status --short
+                  git diff --stat
+                  exit 1
+                fi
               fi
               git merge --ff-only "$GITHUB_SHA"
               motion_revision=$(git ls-remote https://github.com/sojupie/material-motion-lab.git refs/heads/main | cut -f1)
