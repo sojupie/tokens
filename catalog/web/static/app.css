@@ -308,6 +308,7 @@ button:not(:disabled), [role=button]:not([aria-disabled=true]) { cursor:pointer;
 .tokens-landing-copy { display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:var(--md-sys-measurement-space300);padding:var(--md-sys-measurement-space500) var(--md-sys-measurement-space400);border-radius:var(--md-sys-shape-corner-extra-large);background:var(--md-sys-color-surface-container-low);color:var(--md-sys-color-on-surface); }
 .tokens-landing-hero h1 { max-inline-size:22ch;margin:0;text-wrap:balance; }
 .tokens-landing-copy > p { margin:0;max-inline-size:45ch; }
+.tokens-landing-brand { display:flex;align-items:center;gap:var(--md-sys-measurement-space150); }
 .tokens-landing-copy > :first-child { color:var(--md-sys-color-primary); }
 .tokens-landing-actions { display:flex;flex-wrap:wrap;align-items:center;gap:var(--md-sys-measurement-space100);margin-block-start:var(--md-sys-measurement-space100); }
 .tokens-landing-art { position:relative;overflow:hidden;isolation:isolate;min-inline-size:0;min-block-size:28rem;border-radius:var(--md-sys-shape-corner-extra-large);background:var(--md-sys-color-surface); }

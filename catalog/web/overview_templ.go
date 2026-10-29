@@ -10,6 +10,7 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import (
 	"fmt"
+	"github.com/sojupie/tokens/forge/site"
 	"github.com/sojupie/tokens/source/publish"
 )
 
@@ -50,7 +51,15 @@ func overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView,
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, " <section class=\"tokens-landing-hero\" aria-labelledby=\"landing-heading\"><div class=\"tokens-landing-copy\"><p class=\"md-typescale-label-large\">Token Catalog</p><h1 class=\"md-typescale-display-small\" id=\"landing-heading\">Material Design 3 tokens and change history</h1><p class=\"md-typescale-body-large\">Browse Material Design 3 components and styles. Compare values, follow references, and download the tokens for your project.</p><div class=\"tokens-landing-actions\"><a class=\"md-button md-filled-button\" href=\"/components\">Browse components</a> <a class=\"md-button md-tonal-button\" href=\"/styles\">Explore styles</a></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, " <section class=\"tokens-landing-hero\" aria-labelledby=\"landing-heading\"><div class=\"tokens-landing-copy\"><p class=\"tokens-landing-brand md-typescale-label-large\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = site.Logo().Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "Token Catalog</p><h1 class=\"md-typescale-display-small\" id=\"landing-heading\">Material Design 3 tokens and change history</h1><p class=\"md-typescale-body-large\">Browse Material Design 3 components and styles. Compare values, follow references, and download the tokens for your project.</p><div class=\"tokens-landing-actions\"><a class=\"md-button md-filled-button\" href=\"/components\">Browse components</a> <a class=\"md-button md-tonal-button\" href=\"/styles\">Explore styles</a></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -58,7 +67,7 @@ func overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView,
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</section><div class=\"tokens-landing-samples\"><section class=\"tokens-section\" aria-labelledby=\"components-heading\"><div class=\"tokens-landing-section-heading\"><h2 class=\"md-typescale-title-large\" id=\"components-heading\">Components</h2><a class=\"tokens-link\" href=\"/components\">View all components</a></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</section><div class=\"tokens-landing-samples\"><section class=\"tokens-section\" aria-labelledby=\"components-heading\"><div class=\"tokens-landing-section-heading\"><h2 class=\"md-typescale-title-large\" id=\"components-heading\">Components</h2><a class=\"tokens-link\" href=\"/components\">View all components</a></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -66,7 +75,7 @@ func overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView,
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</section><section class=\"tokens-section\" aria-labelledby=\"styles-heading\"><div class=\"tokens-landing-section-heading\"><h2 class=\"md-typescale-title-large\" id=\"styles-heading\">Styles</h2><a class=\"tokens-link\" href=\"/styles\">View all styles</a></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</section><section class=\"tokens-section\" aria-labelledby=\"styles-heading\"><div class=\"tokens-landing-section-heading\"><h2 class=\"md-typescale-title-large\" id=\"styles-heading\">Styles</h2><a class=\"tokens-link\" href=\"/styles\">View all styles</a></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -74,43 +83,43 @@ func overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView,
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</section></div><section class=\"tokens-section tokens-landing-workflows\" aria-labelledby=\"workflows-heading\"><h2 class=\"md-typescale-title-large\" id=\"workflows-heading\">Work with tokens</h2><div class=\"tokens-audience-grid\"><section class=\"md-card md-outlined-card tokens-card-content\" aria-labelledby=\"history-heading\"><h3 class=\"md-typescale-title-medium\" id=\"history-heading\">Follow token changes</h3><p>See what changed between captured snapshots, with previous values and source references.</p><a class=\"md-button md-text-button\" href=\"/changes\">View change history</a></section>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</section></div><section class=\"tokens-section tokens-landing-workflows\" aria-labelledby=\"workflows-heading\"><h2 class=\"md-typescale-title-large\" id=\"workflows-heading\">Work with tokens</h2><div class=\"tokens-audience-grid\"><section class=\"md-card md-outlined-card tokens-card-content\" aria-labelledby=\"history-heading\"><h3 class=\"md-typescale-title-medium\" id=\"history-heading\">Follow token changes</h3><p>See what changed between captured snapshots, with previous values and source references.</p><a class=\"md-button md-text-button\" href=\"/changes\">View change history</a></section>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			if metadata(ctx).AgentDiscovery {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<section class=\"md-card md-outlined-card tokens-card-content\" aria-labelledby=\"agent-heading\"><h3 class=\"md-typescale-title-medium\" id=\"agent-heading\">Use with your agent</h3><p>Give your coding agent access to the same token data through a prompt, skill, or MCP.</p><a class=\"md-button md-text-button\" href=\"/for-agents\">Give this to your agent</a></section>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<section class=\"md-card md-outlined-card tokens-card-content\" aria-labelledby=\"agent-heading\"><h3 class=\"md-typescale-title-medium\" id=\"agent-heading\">Use with your agent</h3><p>Give your coding agent access to the same token data through a prompt, skill, or MCP.</p><a class=\"md-button md-text-button\" href=\"/for-agents\">Give this to your agent</a></section>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</div></section><p class=\"tokens-metadata\" data-nosnippet>Current snapshot: <code class=\"tokens-code\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</div></section><p class=\"tokens-metadata\" data-nosnippet>Current snapshot: <code class=\"tokens-code\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(snapshot.ID)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `overview.templ`, Line: 50, Col: 101}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/overview.templ`, Line: 51, Col: 101}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</code> · Detected: ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</code> · Detected: ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(snapshot.CreatedAt)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `overview.templ`, Line: 50, Col: 144}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/overview.templ`, Line: 51, Col: 144}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</p>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</p>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -146,25 +155,25 @@ func landingArtwork(renderer string) templ.Component {
 			templ_7745c5c3_Var5 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<div class=\"tokens-landing-art\"><div class=\"tokens-art-mosaic\" data-artwork=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<div class=\"tokens-landing-art\"><div class=\"tokens-art-mosaic\" data-artwork=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(renderer)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `overview.templ`, Line: 57, Col: 56}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/overview.templ`, Line: 58, Col: 56}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\" aria-hidden=\"true\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "\" aria-hidden=\"true\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if renderer == "canvas" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<canvas class=\"tokens-art-canvas\"></canvas>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "<canvas class=\"tokens-art-canvas\"></canvas>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -175,20 +184,20 @@ func landingArtwork(renderer string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "<div class=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "<div class=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var8 string
 			templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(templ.CSSClasses(templ_7745c5c3_Var7).String())
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `overview.templ`, Line: 1, Col: 0}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/overview.templ`, Line: 1, Col: 0}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -198,30 +207,30 @@ func landingArtwork(renderer string) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "<div class=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "<div class=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var10 string
 				templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(templ.CSSClasses(templ_7745c5c3_Var9).String())
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `overview.templ`, Line: 1, Col: 0}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/overview.templ`, Line: 1, Col: 0}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "\"><div class=\"tokens-art-surface\"><div class=\"tokens-art-sections\"></div></div></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "\"><div class=\"tokens-art-surface\"><div class=\"tokens-art-sections\"></div></div></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "</div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</div><label class=\"md-icon-button md-tonal-icon-button tokens-art-pause\" title=\"Pause or resume artwork\"><input class=\"tokens-visually-hidden\" type=\"checkbox\" aria-label=\"Pause artwork animation\"> <span class=\"tokens-art-toggle-face\"><svg class=\"tokens-art-pause-icon\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M6 5H10V19H6ZM14 5H18V19H14Z\"></path></svg> <svg class=\"tokens-art-play-icon\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M8 5V19L19 12Z\"></path></svg></span></label></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "</div><label class=\"md-icon-button md-tonal-icon-button tokens-art-pause\" title=\"Pause or resume artwork\"><input class=\"tokens-visually-hidden\" type=\"checkbox\" aria-label=\"Pause artwork animation\"> <span class=\"tokens-art-toggle-face\"><svg class=\"tokens-art-pause-icon\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M6 5H10V19H6ZM14 5H18V19H14Z\"></path></svg> <svg class=\"tokens-art-play-icon\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M8 5V19L19 12Z\"></path></svg></span></label></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

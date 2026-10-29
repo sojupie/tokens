@@ -2,6 +2,10 @@ package site
 
 import "github.com/sojupie/tokens/forge/components/ui"
 
+templ Logo() {
+	@templ.Raw(brandLogo)
+}
+
 templ Header(config Config) {
 	<header class="tokens-site-header" id="tokens-site-header" hx-preserve data-component-assets data-drawer-breakpoint={ config.drawerBreakpoint() }>
 		<div class="tokens-primary-nav">
