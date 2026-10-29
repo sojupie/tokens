@@ -451,6 +451,11 @@ func selectComponentPreview(cases []componentCase, query url.Values) (*component
 			result.Cases = append(result.Cases, c)
 		}
 	}
+	if len(result.Cases) > 0 && result.Cases[0].Family == "carousel" {
+		if err := configureCarouselPreview(result, query); err != nil {
+			return nil, err
+		}
+	}
 	if len(result.Cases) > 0 && result.Cases[0].Family == "menu" {
 		if err := configureMenuPreview(result, query); err != nil {
 			return nil, err

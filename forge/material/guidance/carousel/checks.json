@@ -443,27 +443,17 @@
         }
       ],
       "implementation": {
-        "status": "verified",
+        "status": "not-applicable",
         "sourceRevision": 1,
         "assessedBaseline": "205611a1976adfe25ad0137e60b4c8483b024fc3",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_carousel.templ; catalog/web/carousel.go; forge/components/styles/carousels.css",
-            "result": "Show all uses the shared small text-button class unchanged inside a wrapper with 4px padding. Its link opens /components/carousel/items, an SSR vertical page using the same six artworks. No duplicate list is rendered in the carousel preview. Full-screen previews omit the link."
-          },
-          {
-            "kind": "test",
-            "location": "catalog/web/carousel_items_test.go",
-            "result": "Go tests verify the link, absence of inline duplicate content and six SSR illustrations on the separate page."
-          },
-          {
-            "kind": "browser",
-            "location": "forge/conformance/carousel-all.html",
-            "result": "Chromium: eight assertions pass for external clearance, standard button padding/height, separate destination, vertical content, horizontal containment and full-screen exclusion. Actual navigation was also checked on the catalog page."
+            "location": "catalog/web/specimen_carousel.templ; catalog/web/carousel.go; forge/components/styles/carousels.css; catalog/web/carousel_items_test.go",
+            "result": "Preview configuration selects the lower standard text button or the leading header and 48dp arrow button. Both use type=button without a destination; the separate all-items page and route have been removed."
           }
         ],
-        "notes": "The previous verification was invalid: it asserted an internal 4px button inset and accepted a custom inline disclosure. That implementation is replaced, and the test now compares the control against an ordinary text button."
+        "notes": "The Catalog specimen offers None, Show all below, and Header with arrow configurations. Buttons are intentionally non-navigating demonstrations; the product-level all-items destination is outside this specimen. Full-screen carousels omit these actions. The lower button retains 4dp clearance; the header arrow control measures 48dp."
       },
       "fixes": [
         {
@@ -1266,27 +1256,17 @@
         }
       ],
       "implementation": {
-        "status": "verified",
+        "status": "unclear",
         "sourceRevision": 2,
         "assessedBaseline": "205611a1976adfe25ad0137e60b4c8483b024fc3",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_carousel.templ; catalog/web/carousel.go; forge/components/styles/carousels.css",
-            "result": "Show all uses the shared small text-button class unchanged inside a wrapper with 4px padding. Its link opens /components/carousel/items, an SSR vertical page using the same six artworks. No duplicate list is rendered in the carousel preview. Full-screen previews omit the link."
-          },
-          {
-            "kind": "test",
-            "location": "catalog/web/carousel_items_test.go",
-            "result": "Go tests verify the link, absence of inline duplicate content and six SSR illustrations on the separate page."
-          },
-          {
-            "kind": "browser",
-            "location": "forge/conformance/carousel-all.html",
-            "result": "Chromium: eight assertions pass for external clearance, standard button padding/height, separate destination, vertical content, horizontal containment and full-screen exclusion. Actual navigation was also checked on the catalog page."
+            "location": "catalog/web/specimen_carousel.templ; catalog/web/carousel.go; forge/components/styles/carousels.css; catalog/web/carousel_items_test.go",
+            "result": "Preview configuration selects the lower standard text button or the leading header and 48dp arrow button. Both use type=button without a destination; the separate all-items page and route have been removed."
           }
         ],
-        "notes": "The previous verification was invalid: it asserted an internal 4px button inset and accepted a custom inline disclosure. That implementation is replaced, and the test now compares the control against an ordinary text button."
+        "notes": "The Catalog specimen offers None, Show all below, and Header with arrow configurations. Buttons are intentionally non-navigating demonstrations; the product-level all-items destination is outside this specimen. Full-screen carousels omit these actions. The lower button retains 4dp clearance; the header arrow control measures 48dp."
       },
       "fixes": [
         {

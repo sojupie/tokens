@@ -1,10 +1,9 @@
 package web
 
 import (
-	"context"
 	"fmt"
 	"github.com/a-h/templ"
-	"net/http"
+	"net/url"
 )
 
 func (c componentCase) CarouselItem(index int) templ.Attributes {
@@ -18,10 +17,18 @@ func (c componentCase) CarouselItem(index int) templ.Attributes {
 	return attrs
 }
 
-func (server *Server) handleCarouselItems(response http.ResponseWriter, request *http.Request) {
-	info := pageMetadata{Title: "Carousel items", NoIndex: true}
-	request = request.WithContext(context.WithValue(request.Context(), pageMetadataKey{}, info))
-	if err := server.renderHTML(response, request, carouselItemsPage()); err != nil {
-		http.Error(response, err.Error(), http.StatusInternalServerError)
+func configureCarouselPreview(page *componentPreview, query url.Values) error {
+	action := query.Get("preview.action")
+	if action == "" {
+		action = "show-all"
 	}
+	options := []string{"none", "show-all", "header-arrow"}
+	if !containsPreview(options, action) {
+		return fmt.Errorf("%w: carousel action %s", errPreviewInput, action)
+	}
+	page.Controls = append(page.Controls, previewControl{Name: "action", Label: "All items action", Selected: action, Options: options, Labels: map[string]string{"none": "None", "show-all": "Show all below", "header-arrow": "Header with arrow"}})
+	for i := range page.Cases {
+		page.Cases[i].CarouselAction = action
+	}
+	return nil
 }

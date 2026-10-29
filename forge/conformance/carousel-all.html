@@ -1,9 +1,22 @@
-<!doctype html><meta charset="utf-8"><title>Carousel access checks</title>
+<!doctype html><meta charset="utf-8"><title>Carousel action checks</title>
 <style>body{font:16px system-ui;margin:24px}iframe{width:390px;height:700px}pre{white-space:pre-wrap}</style>
-<h1>Carousel access checks</h1><button id="run">Run carousel access checks</button><pre id="result">Ready</pre><div id="samples"></div>
+<h1>Carousel action checks</h1><button id="run">Run carousel action checks</button><pre id="result">Ready</pre><div id="samples"></div>
 <script type="module">
-const run=document.querySelector('#run'),out=document.querySelector('#result'),samples=document.querySelector('#samples');run.onclick=async()=>{run.disabled=true;const checks=[],assert=(ok,message)=>{if(!ok)throw Error(message);checks.push(message)};
-try{for(const variant of ['hero','full-screen']){samples.replaceChildren();const f=document.createElement('iframe');samples.append(f);await new Promise(resolve=>{f.onload=resolve;f.src=`/md3/components/carousel?preview.compare=interactive&preview.variant=${variant}`});const w=f.contentWindow,d=f.contentDocument;await w.TokenAssets.ready;const root=d.querySelector('#component-preview .md-carousel'),action=root.querySelector('.md-carousel-all-action');if(variant==='full-screen'){assert(!action,'Full-screen carousel omits the all-items alternative');continue}assert(!root.querySelector('.md-carousel-all-items,details'),'Carousel does not duplicate items inline');const link=action.querySelector('a.md-button.md-text-button');assert(!!link&&link.getAttribute('href')==='/md3/components/carousel/items','Show all navigates to the all-items page');const a=w.getComputedStyle(action);assert([a.paddingTop,a.paddingRight,a.paddingBottom,a.paddingLeft].every(v=>parseFloat(v)===4),'The 4px clearance surrounds the button');const reference=d.createElement('button');reference.className='md-button md-text-button';reference.dataset.size='small';reference.textContent='Show all';root.append(reference);const actual=w.getComputedStyle(link),standard=w.getComputedStyle(reference);assert(actual.paddingInlineStart===standard.paddingInlineStart&&actual.paddingInlineEnd===standard.paddingInlineEnd&&actual.height===standard.height,'Show all uses standard text-button padding and height');reference.remove();await new Promise(resolve=>{f.onload=resolve;f.src=link.href});await f.contentWindow.TokenAssets.ready;const items=[...f.contentDocument.querySelectorAll('.md-carousel-all-items > li')];assert(items.length===6&&items.every(el=>el.querySelector('svg[role=img]')),'Dedicated page renders all six illustrations');assert(items.every((el,i)=>!i||el.getBoundingClientRect().top>=items[i-1].getBoundingClientRect().bottom),'All-items page lays out items vertically');assert(f.contentDocument.documentElement.scrollWidth<=f.contentDocument.documentElement.clientWidth,'All-items page has no horizontal overflow');}
-
-out.textContent=JSON.stringify({passed:checks.length,checks},null,2)}catch(error){out.textContent=JSON.stringify({passed:checks.length,checks,error:error.stack},null,2)}finally{run.disabled=false}};
+const run=document.querySelector('#run'),out=document.querySelector('#result'),samples=document.querySelector('#samples');
+run.onclick=async()=>{run.disabled=true;const checks=[],assert=(ok,message)=>{if(!ok)throw Error(message);checks.push(message)};
+try{
+ for(const variant of ['hero','full-screen'])for(const action of ['none','show-all','header-arrow']){
+  samples.replaceChildren();const f=document.createElement('iframe');samples.append(f);
+  await new Promise(resolve=>{f.onload=resolve;f.src=`/md3/components/carousel?preview.compare=interactive&preview.variant=${variant}&preview.action=${action}`});
+  const w=f.contentWindow,d=f.contentDocument;await w.TokenAssets.ready;
+  const root=d.querySelector('#component-preview .md-carousel'),bottom=root.querySelector('.md-carousel-all-action'),header=root.querySelector('.md-carousel-header');
+  assert(!!bottom===(variant!=='full-screen'&&action==='show-all'),`${variant}/${action}: lower action configuration`);
+  assert(!!header===(variant!=='full-screen'&&action==='header-arrow'),`${variant}/${action}: header configuration`);
+  if(bottom){const style=w.getComputedStyle(bottom);assert([style.paddingTop,style.paddingRight,style.paddingBottom,style.paddingLeft].every(v=>parseFloat(v)===4),'Show all retains 4px clearance');}
+  if(header){const box=header.querySelector('button').getBoundingClientRect();assert(Math.abs(box.width-48)<.1&&Math.abs(box.height-48)<.1,'Header arrow control is 48px square');}
+  const button=bottom?.querySelector('button')||header?.querySelector('button');
+  if(button){const before=f.contentWindow.location.href;button.click();assert(f.contentWindow.location.href===before,'Demo action does not navigate');}
+ }
+ out.textContent=JSON.stringify({passed:checks.length,checks},null,2);
+}catch(error){out.textContent=JSON.stringify({passed:checks.length,checks,error:error.stack},null,2)}finally{run.disabled=false}};
 </script>

@@ -228,19 +228,15 @@
 .md-carousel-all-action {
   padding: var(--md-sys-measurement-space50);
 }
-.md-carousel-all-items {
-  display: grid;
-  gap: var(--md-sys-measurement-space200);
-  margin: var(--md-sys-measurement-space200) 0;
-  padding: 0;
-  list-style: none;
+.md-carousel-header {
+  display:flex;
+  align-items:center;
+  gap:var(--md-sys-measurement-space100);
 }
-.md-carousel-all-items > li {
-  display: grid;
-  gap: var(--md-sys-measurement-space100);
+.md-carousel-header > h3 { margin:0; }
+/* The carousel accessibility specification calls for a 48dp arrow control. */
+.md-carousel-header > .md-icon-button {
+  --_icon-height:var(--md-sys-measurement-space600);
+  inline-size:var(--md-sys-measurement-space600);
 }
-.md-carousel-all-items svg {
-  inline-size: 100%;
-  max-inline-size: 20rem;
-  border-radius: var(--md-comp-carousel-item-container-shape);
-}
+[dir="rtl"] .md-carousel-header > .md-icon-button svg { transform:scaleX(-1); }

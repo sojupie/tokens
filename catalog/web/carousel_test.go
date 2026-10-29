@@ -3,6 +3,9 @@ package web
 import "testing"
 
 func TestCarouselItemStates(t *testing.T) {
+	if materialSymbolSVG("arrow_forward") == "" {
+		t.Fatal("header action arrow must be available")
+	}
 	if materialSymbolSVG("chevron_left") == "" {
 		t.Fatal("previous-item icon must be available")
 	}

@@ -8,6 +8,7 @@ import (
 // componentCase configures Catalog specimens; it is not a public component API.
 type componentCase struct {
 	// instanceID scopes nested controls without changing their token configuration.
+	CarouselAction  string `json:"carouselAction,omitempty"`
 	instanceID      string
 	SliderIcon      string `json:"sliderIcon,omitempty"`
 	SliderStops     string `json:"sliderStops,omitempty"`
