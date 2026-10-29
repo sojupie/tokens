@@ -230,6 +230,11 @@ this value in `/etc/tokens/server.env` before restarting the website. Changing
 it on GitHub takes effect on the next deploy. It also remains available when
 systemd starts the website later. Restart and crawl use the saved value.
 
+A push to `main` also starts deployment when its final commit message starts
+with `Deploy production:`. Ordinary pushes skip the management job. This supports
+an explicit release commit through Git without an API credential; the same
+production environment and ancestry checks apply.
+
 Deploy does not crawl. It refuses local edits, local commits or a move to an
 older commit. Tunnel and email settings stay in `/etc/tokens`.
 

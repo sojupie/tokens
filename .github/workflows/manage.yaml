@@ -1,7 +1,9 @@
 name: Manage Token Catalog
-run-name: Token Catalog · ${{ inputs.operation }} ${{ inputs.run_id }}
+run-name: Token Catalog · ${{ inputs.operation || 'deploy' }} ${{ inputs.run_id }}
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
     inputs:
       operation:
@@ -34,8 +36,8 @@ concurrency:
 
 jobs:
   manage:
-    name: ${{ inputs.operation }}
-    if: github.ref == 'refs/heads/main'
+    name: ${{ inputs.operation || 'deploy' }}
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'workflow_dispatch' || startsWith(github.event.head_commit.message, 'Deploy production:'))
     runs-on: [self-hosted, linux, x64, tokens-prod]
     environment: production
     timeout-minutes: 90
@@ -44,7 +46,7 @@ jobs:
         shell: bash
         working-directory: /opt/tokens
     env:
-      OPERATION: ${{ inputs.operation }}
+      OPERATION: ${{ inputs.operation || 'deploy' }}
       RUN_ID: ${{ inputs.run_id }}
       TOKENS_PUBLIC_ORIGIN: ${{ vars.TOKENS_PUBLIC_ORIGIN }}
     steps:
@@ -70,7 +72,7 @@ jobs:
 
       - name: Pause scheduled updates
         id: pause
-        if: contains(fromJSON('["deploy","restart","crawl","approve","retry"]'), inputs.operation)
+        if: contains(fromJSON('["deploy","restart","crawl","approve","retry"]'), env.OPERATION)
         run: |
           set -euo pipefail
           if /usr/bin/systemctl is-active --quiet tokens-update.timer; then
@@ -183,7 +185,7 @@ jobs:
           fi
 
       - name: Limit build cache after deployment
-        if: always() && inputs.operation == 'deploy' && steps.pause.outcome == 'success'
+        if: always() && env.OPERATION == 'deploy' && steps.pause.outcome == 'success'
         run: sudo -n /usr/bin/docker builder prune --all --force --keep-storage 20GB
 
       - name: Show failure details
