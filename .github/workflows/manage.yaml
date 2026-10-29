@@ -112,6 +112,8 @@ jobs:
               [[ "$(git branch --show-current)" == main ]]
               if [[ -n "$(git status --porcelain)" ]]; then
                 echo 'The deployment checkout has local changes. Resolve them first.' >&2
+                git status --short
+                git diff --stat
                 exit 1
               fi
               case "$(git remote get-url origin)" in
