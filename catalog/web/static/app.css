@@ -342,6 +342,7 @@ button:not(:disabled), [role=button]:not([aria-disabled=true]) { cursor:pointer;
 .tokens-landing-workflows { margin-block-start:var(--md-sys-measurement-space400);gap:var(--md-sys-measurement-space200); }
 .tokens-landing-samples { display:grid;gap:var(--md-sys-measurement-space500); }
 .tokens-landing-samples .tokens-card-grid { grid-template-columns:repeat(4,minmax(0,1fr)); }
+.tokens-landing-view-all { align-self:flex-end; }
 .tokens-landing-section-heading { display:flex;align-items:baseline;justify-content:space-between;gap:var(--md-sys-measurement-space200);margin-block-end:var(--md-sys-measurement-space100); }
 @media(max-width:48rem) { .tokens-landing-samples .tokens-card-grid { grid-template-columns:1fr; }.tokens-landing-hero { grid-template-columns:1fr; }.tokens-landing-copy { padding:var(--md-sys-measurement-space400) var(--md-sys-measurement-space300); }.tokens-landing-art { min-block-size:0;block-size:18rem; } }
 @media(max-width:26rem) { .tokens-landing-samples .tokens-card-grid { grid-template-columns:1fr; } }

@@ -21,12 +21,14 @@ templ overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView
 		</section>
 		<div class="tokens-landing-samples">
 			<section class="tokens-section" aria-labelledby="components-heading">
-				<div class="tokens-landing-section-heading"><h2 class="md-typescale-title-large" id="components-heading">Components</h2><a class="tokens-link" href="/components">View all components</a></div>
+				<div class="tokens-landing-section-heading"><h2 class="md-typescale-title-large" id="components-heading">Components</h2></div>
 				@subjectCardGrid(subjects, thumbnails, false)
+				<a class="tokens-link tokens-landing-view-all" href="/components">View all components</a>
 			</section>
 			<section class="tokens-section" aria-labelledby="styles-heading">
-				<div class="tokens-landing-section-heading"><h2 class="md-typescale-title-large" id="styles-heading">Styles</h2><a class="tokens-link" href="/styles">View all styles</a></div>
+				<div class="tokens-landing-section-heading"><h2 class="md-typescale-title-large" id="styles-heading">Styles</h2></div>
 				@subjectCardGrid(subjects, thumbnails, true)
+				<a class="tokens-link tokens-landing-view-all" href="/styles">View all styles</a>
 			</section>
 		</div>
 		<section class="tokens-section tokens-landing-workflows" aria-labelledby="workflows-heading">

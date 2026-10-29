@@ -58,7 +58,7 @@ func overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView,
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</section><div class=\"tokens-landing-samples\"><section class=\"tokens-section\" aria-labelledby=\"components-heading\"><div class=\"tokens-landing-section-heading\"><h2 class=\"md-typescale-title-large\" id=\"components-heading\">Components</h2><a class=\"tokens-link\" href=\"/components\">View all components</a></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</section><div class=\"tokens-landing-samples\"><section class=\"tokens-section\" aria-labelledby=\"components-heading\"><div class=\"tokens-landing-section-heading\"><h2 class=\"md-typescale-title-large\" id=\"components-heading\">Components</h2></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -66,7 +66,7 @@ func overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView,
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</section><section class=\"tokens-section\" aria-labelledby=\"styles-heading\"><div class=\"tokens-landing-section-heading\"><h2 class=\"md-typescale-title-large\" id=\"styles-heading\">Styles</h2><a class=\"tokens-link\" href=\"/styles\">View all styles</a></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<a class=\"tokens-link tokens-landing-view-all\" href=\"/components\">View all components</a></section><section class=\"tokens-section\" aria-labelledby=\"styles-heading\"><div class=\"tokens-landing-section-heading\"><h2 class=\"md-typescale-title-large\" id=\"styles-heading\">Styles</h2></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -74,7 +74,7 @@ func overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView,
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</section></div><section class=\"tokens-section tokens-landing-workflows\" aria-labelledby=\"workflows-heading\"><h2 class=\"md-typescale-title-large\" id=\"workflows-heading\">Work with tokens</h2><div class=\"tokens-audience-grid\"><section class=\"md-card md-outlined-card tokens-card-content\" aria-labelledby=\"history-heading\"><h3 class=\"md-typescale-title-medium\" id=\"history-heading\">Follow token changes</h3><p>See what changed between captured snapshots, with previous values and source references.</p><a class=\"md-button md-text-button\" href=\"/changes\">View change history</a></section>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<a class=\"tokens-link tokens-landing-view-all\" href=\"/styles\">View all styles</a></section></div><section class=\"tokens-section tokens-landing-workflows\" aria-labelledby=\"workflows-heading\"><h2 class=\"md-typescale-title-large\" id=\"workflows-heading\">Work with tokens</h2><div class=\"tokens-audience-grid\"><section class=\"md-card md-outlined-card tokens-card-content\" aria-labelledby=\"history-heading\"><h3 class=\"md-typescale-title-medium\" id=\"history-heading\">Follow token changes</h3><p>See what changed between captured snapshots, with previous values and source references.</p><a class=\"md-button md-text-button\" href=\"/changes\">View change history</a></section>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -91,7 +91,7 @@ func overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView,
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(snapshot.ID)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/overview.templ`, Line: 49, Col: 101}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/overview.templ`, Line: 51, Col: 101}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -104,7 +104,7 @@ func overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView,
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(snapshot.CreatedAt)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/overview.templ`, Line: 49, Col: 144}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/overview.templ`, Line: 51, Col: 144}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -153,7 +153,7 @@ func landingArtwork(renderer string) templ.Component {
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(renderer)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/overview.templ`, Line: 56, Col: 56}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/overview.templ`, Line: 58, Col: 56}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
