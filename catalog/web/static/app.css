@@ -268,9 +268,10 @@ button:not(:disabled), [role=button]:not([aria-disabled=true]) { cursor:pointer;
 .tokens-style-motion > svg { inline-size:260px;block-size:130px;overflow:visible;fill:var(--md-sys-color-on-secondary-container); }
 .tokens-style-motion path { fill:none;stroke:var(--md-sys-color-on-secondary-container);stroke-width:3; }
 .tokens-style-motion .tokens-style-motion-grid { stroke:var(--md-sys-color-on-secondary-container);stroke-width:1; }
-.tokens-style-motion circle { offset-path:path("M10 120C20 120 30 10 250 10"); offset-distance:60%; offset-rotate:0deg; transition:offset-distance var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized); }
-.tokens-component-tile:hover .tokens-style-motion circle { offset-distance:85%; }
-@media(prefers-reduced-motion:reduce) { .tokens-style-motion circle { transition:none; } }
+/* This illustration demonstrates motion; other thumbnail state changes stay frozen. */
+.tokens-style-motion circle { offset-path:path("M10 120C20 120 30 10 250 10"); offset-distance:60%; offset-rotate:0deg; transition:offset-distance var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized) !important; }
+.tokens-component-tile:is(:hover,:focus-within) .tokens-style-motion circle { offset-distance:85%; }
+@media(prefers-reduced-motion:reduce) { .tokens-style-motion circle { transition:none !important; } }
 .tokens-style-spacing { display:grid;gap:var(--md-sys-measurement-space200); }
 .tokens-style-spacing > div { display:flex;align-items:center;gap:var(--md-sys-measurement-space200); }
 .tokens-style-spacing > div > span { inline-size:24px; }

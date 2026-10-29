@@ -75,3 +75,53 @@ test('unavailable event targets do not consume keys or move focus', () => {
   const nav = navigation({ items: [{ disabled: true }] });
   assert.deepEqual(nav.key(0, 'Home'), { index: 0, prevented: false });
 });
+
+function drawerMotion({rtl=false,reduced=false}={}) {
+  const pending=[];
+  const globals={module:{exports:{}},matchMedia:()=>({matches:reduced}),
+    getComputedStyle:()=>({direction:rtl?'rtl':'ltr',transform:'matrix(1, 0, 0, 1, -80, 0)'}),
+    MaterialMotion:{timing:()=>({duration:400,easing:'linear'})},
+  };
+  runInNewContext(readFileSync(`${__dirname}/behaviors/navigation.js`,'utf8'),globals);
+  const drawer={open:false,dataset:{},listeners:[],closes:0,
+    addEventListener(type,fn){if(type==='close')this.listeners.push(fn);},
+    showModal(){this.open=true;},
+    close(){this.open=false;this.closes++;this.listeners.splice(0).forEach(fn=>fn());},
+    animate(frames,timing){
+      let finish,reject;
+      const finished=new Promise((resolve,no)=>{finish=resolve;reject=no;});
+      // Native animations only expose a rejected finished promise to a consumer.
+      finished.catch(()=>{});
+      const animation={frames,timing,finished,cancel(){reject(Error('cancelled'));}};
+      pending.push({animation,finish});return animation;
+    },
+  };
+  return {drawer,pending,...globals.module.exports};
+}
+test('modal drawer slides from the logical start edge and stays open until exit completes',async()=>{
+  for(const rtl of [false,true]) {
+    const {drawer,pending,openDrawer,closeDrawer}=drawerMotion({rtl});
+    openDrawer(drawer);
+    assert.equal(pending[0].animation.frames[0].transform,rtl?'translateX(100%)':'translateX(-100%)');
+    const exit=closeDrawer(drawer);
+    assert.equal(drawer.open,true);
+    assert.equal(drawer.dataset.drawerClosing,'');
+    assert.equal(pending[1].animation.frames[0].transform,'matrix(1, 0, 0, 1, -80, 0)');
+    await closeDrawer(drawer);
+    assert.equal(pending.length,2,'repeated dismiss does not restart exit');
+    pending[1].finish();await exit;
+    assert.equal(drawer.open,false);
+    assert.equal(Object.hasOwn(drawer.dataset,'drawerClosing'),false);
+  }
+});
+test('reopening cancels a pending drawer exit; reduced motion closes immediately',async()=>{
+  const {drawer,pending,openDrawer,closeDrawer}=drawerMotion();
+  openDrawer(drawer);const exit=closeDrawer(drawer);openDrawer(drawer);
+  await exit;
+  assert.equal(drawer.open,true);
+  assert.equal(drawer.closes,0);
+  const reduced=drawerMotion({reduced:true});
+  reduced.openDrawer(reduced.drawer);await reduced.closeDrawer(reduced.drawer);
+  assert.equal(reduced.drawer.open,false);
+  assert.equal(reduced.pending.length,0);
+});

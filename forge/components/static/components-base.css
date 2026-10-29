@@ -1934,6 +1934,8 @@
   display: none;
 }
 .md-navigation[data-navigation-modal]::backdrop {
+  opacity: 1;
+  transition: opacity var(--_motion-default-effects-duration) var(--_motion-default-effects-easing);
   background: color-mix(
     in srgb,
     var(--_nav-scrim, var(--md-ref-palette-neutral0))
@@ -1941,7 +1943,12 @@
     transparent
   );
 }
+.md-navigation[data-drawer-closing]::backdrop { opacity:0; }
+@starting-style {
+  .md-navigation[data-navigation-modal]::backdrop { opacity:0; }
+}
 @media (prefers-reduced-motion: reduce) {
+  .md-navigation[data-navigation-modal]::backdrop { transition:none; }
   .md-nav-indicator::before {
     transition: none;
   }

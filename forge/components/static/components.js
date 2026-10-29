@@ -336,6 +336,41 @@
   });
 })();
 (() => {
+  const drawerAnimations = new WeakMap();
+  function resetDrawerMotion(drawer) {
+    drawerAnimations.get(drawer)?.animation?.cancel();
+    drawerAnimations.delete(drawer);
+    delete drawer.dataset.drawerClosing;
+  }
+  function drawerOffscreen(drawer) {
+    return getComputedStyle(drawer).direction === "rtl" ? "translateX(100%)" : "translateX(-100%)";
+  }
+  function openDrawer(drawer) {
+    const from = drawer.open ? getComputedStyle(drawer).transform : drawerOffscreen(drawer);
+    resetDrawerMotion(drawer);
+    if (!drawer.open) {
+      drawer.addEventListener("close", () => resetDrawerMotion(drawer), {once:true});
+      drawer.showModal();
+    }
+    if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const animation = drawer.animate([{transform:from},{transform:"none"}], MaterialMotion.timing(drawer,"default-spatial"));
+      drawerAnimations.set(drawer, {animation,closing:false});
+    }
+  }
+  async function closeDrawer(drawer) {
+    if (!drawer?.open || drawerAnimations.get(drawer)?.closing) return;
+    const from = getComputedStyle(drawer).transform;
+    resetDrawerMotion(drawer);
+    if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      drawer.dataset.drawerClosing = "";
+      const animation = drawer.animate([{transform:from},{transform:drawerOffscreen(drawer)}], {...MaterialMotion.timing(drawer,"default-spatial"),fill:"both"});
+      drawerAnimations.set(drawer, {animation,closing:true});
+      try { await animation.finished; } catch { return; }
+      if (drawerAnimations.get(drawer)?.animation !== animation) return;
+    }
+    drawer.close();
+    resetDrawerMotion(drawer);
+  }
   // A quarter-width horizontal swipe dismisses toward the logical start edge.
   function drawerDismissed(dx, dy, width, rtl) {
     return Math.abs(dx) >= width / 4 && Math.abs(dx) > Math.abs(dy) && (rtl ? dx > 0 : dx < 0);
@@ -344,7 +379,7 @@
     const target = trigger.getAttribute("aria-controls");
     return target ? doc.getElementById(target) : trigger.closest("[data-navigation-demo]")?.querySelector("dialog");
   }
-  if (typeof module !== "undefined") Object.assign(module.exports, { drawerDismissed, drawerForTrigger });
+  if (typeof module !== "undefined") Object.assign(module.exports, { drawerDismissed, drawerForTrigger, openDrawer, closeDrawer });
   if (typeof document === "undefined") return;
   const { navigationIndex } = globalThis.MaterialComponents;
   function selectNavigation(button) {
@@ -365,7 +400,7 @@
     );
     const frame = group.closest(".md-rail-frame");
     if (frame?.dataset.modalOpen === "true") setRailExpanded(frame, false);
-    group.closest("dialog[data-navigation-modal]:modal")?.close();
+    void closeDrawer(group.closest("dialog[data-navigation-modal]:modal"));
   }
   document.addEventListener("keydown", (event) => {
     const button = event.target.closest?.("[data-navigation-item]");
@@ -783,9 +818,14 @@
     if (!drawerSwipe || drawerSwipe.id !== event.pointerId) return;
     const {drawer, x, y, width, rtl} = drawerSwipe;
     drawerSwipe = null;
-    if (drawer.open && drawerDismissed(event.clientX - x, event.clientY - y, width, rtl)) drawer.close();
+    if (drawer.open && drawerDismissed(event.clientX - x, event.clientY - y, width, rtl)) void closeDrawer(drawer);
   });
   document.addEventListener("pointercancel", () => { drawerSwipe = null; });
+  document.addEventListener("cancel", (event) => {
+    if (!event.target.matches?.("dialog[data-navigation-modal]")) return;
+    event.preventDefault();
+    void closeDrawer(event.target);
+  }, true);
   document.addEventListener("click", (event) => {
     if (!(event.target instanceof Element)) return;
     const modal = event.target.closest("[data-navigation-modal]");
@@ -797,7 +837,7 @@
         event.clientY < rect.top ||
         event.clientY > rect.bottom
       )
-        modal.close();
+        void closeDrawer(modal);
     }
     const button = event.target.closest("button, a[data-navigation-item]");
     if (!button) return;
@@ -810,11 +850,11 @@
           button.setAttribute("aria-expanded", "false");
           if (!drawer.open && button.isConnected && button.getClientRects().length) button.focus({preventScroll:true});
         }, {once:true});
-        drawer.showModal();
+        openDrawer(drawer);
       }
     }
     if (button.hasAttribute("data-navigation-close"))
-      button.closest("dialog[data-navigation-modal]")?.close();
+      void closeDrawer(button.closest("dialog[data-navigation-modal]"));
     if (button.hasAttribute("data-navigation-expand")) {
       const frame = button.closest(".md-rail-frame");
       if (frame && frame.dataset.interactive === "true")
