@@ -35,6 +35,7 @@ templ Header(config Config) {
 				{ children... }
 			</div>
 		}
+		@templ.Raw("<script>" + initialLayout + "</script>")
 	</header>
 }
 

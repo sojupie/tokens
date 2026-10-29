@@ -691,3 +691,21 @@ test('thumbnail reveal waits for component styles and a measured frame',()=>{
  assert.equal(attributes.has('data-preview-error'),true);
  assert.equal(attributes.has('data-preview-ready'),false);
 });
+
+test('shared header establishes desktop docking before deferred scripts run', () => {
+  const script = readFileSync(join(__dirname, '../../forge/site/site-init.js'), 'utf8');
+  for (const [breakpoint, width, docked] of [[1100,1099,false],[1100,1100,true],[1440,1200,false],[1440,1440,true]]) {
+    const drawer = {dataset:{variant:'modal'},setAttribute(name,value){this[name]=value;}};
+    const header = {dataset:{drawerBreakpoint:String(breakpoint)},querySelector:()=>drawer};
+    const root = {dataset:{}};
+    runInNewContext(script, {
+      document:{currentScript:{parentElement:header},documentElement:root},
+      matchMedia:query=>({matches:width>=Number(query.match(/\d+/)[0])}),
+    });
+    assert.equal(header.dataset.docked,String(docked));
+    assert.equal(root.dataset.siteDrawer,docked?'expanded':'modal');
+    assert.equal(drawer.dataset.variant,docked?'standard':'modal');
+    assert.equal(Object.hasOwn(drawer,'open'),docked);
+    assert.equal(drawer.role,docked?'navigation':undefined);
+  }
+});

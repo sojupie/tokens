@@ -12,6 +12,9 @@ var Files embed.FS
 //go:embed logo.svg
 var brandLogo string
 
+//go:embed site-init.js
+var initialLayout string
+
 type Destination struct{ Name, URL string }
 type Config struct {
 	Catalog, Active, ActiveTool string
