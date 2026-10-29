@@ -124,7 +124,7 @@ jobs:
               if [[ -n "$checkout_status" ]]; then
                 # Preserve the old host's version-only pin before adopting the
                 # maintained tunnel configuration. All other edits still block.
-                normalize_pin() { sed -E 's@(image: cloudflare/cloudflared:)[0-9]{4}\.[0-9]+\.[0-9]+$@\1VERSION@'; }
+                normalize_pin() { sed -E 's@(image: cloudflare/cloudflared:)(latest|[0-9]{4}\.[0-9]+\.[0-9]+)$@\1VERSION@'; }
                 if [[ "$checkout_status" == ' M deploy/compose.yaml' ]] &&
                     cmp -s <(git show HEAD:deploy/compose.yaml | normalize_pin) <(normalize_pin < deploy/compose.yaml); then
                   git stash push -m "Pre-deployment cloudflared pin $(date -u +%Y%m%dT%H%M%SZ)" -- deploy/compose.yaml
