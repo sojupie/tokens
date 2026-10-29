@@ -9,7 +9,7 @@ references and settings are available in readable pages and structured responses
 that can be inspected, crawled and fetched with ordinary HTTP clients. Source
 links connect the data to the original design guidance.
 
-[![Browse the Material Design 3 component catalog](docs/images/catalog.png)](https://tokencatalog.dev/md3/components)
+[![Token Catalog landing page with Material Design 3 components and styles](docs/images/landing-page.png)](https://tokencatalog.dev/md3/)
 
 ## Browse and download
 
