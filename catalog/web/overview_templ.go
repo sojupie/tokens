@@ -51,7 +51,7 @@ func overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView,
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, " <section class=\"tokens-landing-hero\" aria-labelledby=\"landing-heading\"><div class=\"tokens-landing-copy\"><p class=\"tokens-landing-brand md-typescale-label-large\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, " <section class=\"tokens-landing-hero\" aria-labelledby=\"landing-heading\"><div class=\"tokens-landing-copy\"><p class=\"tokens-landing-brand md-typescale-title-large\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
