@@ -9,7 +9,7 @@ references and settings are available in readable pages and structured responses
 that can be inspected, crawled and fetched with ordinary HTTP clients. Source
 links connect the data to the original design guidance.
 
-![Token Catalog showing the Material Design 3 component catalog](docs/images/catalog.png)
+[![Browse the Material Design 3 component catalog](docs/images/catalog.png)](https://tokencatalog.dev/md3/components)
 
 ## Browse and download
 
@@ -42,6 +42,26 @@ component styling and browser behavior have separate source files; see the
 [component authoring map](docs/architecture.md#component-authoring) to follow a
 component from its example to its token bindings. These components ship with the site and are shared with the motion tools through
 the Forge package in this repository. There is no standalone package release.
+
+## Motion tools
+
+The [tools page](https://tokencatalog.dev/md3/tools) includes two browser apps:
+
+- [Material Motion Lab](https://tokencatalog.dev/tools/motion/) measures UI
+  movement in recordings. Track an object or edge, compare two videos, or compare
+  measurements with Material Design 3 motion curves. A bundled example lets you
+  explore an analysis before importing a video.
+- [Carousel playground](https://tokencatalog.dev/tools/motion-lab/) helps
+  investigate uneven carousel motion after dragging on iOS. Try different
+  implementations on your device and record how they settle.
+
+Material Motion Lab processes videos on your device and saves projects in your
+browser. Download a `.motion` project file to keep a portable copy, including its
+videos and measurements. Videos and projects are not uploaded to the server.
+
+The tools share the catalog's navigation, themes and Forge components. Their
+source lives in [Material Motion Lab](https://github.com/sojupie/material-motion-lab)
+and [Carousel playground](https://github.com/sojupie/carousel-motion-lab).
 
 ## Use with your agent
 
