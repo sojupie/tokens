@@ -27,6 +27,25 @@ func TestDrawerContracts(t *testing.T) {
 		t.Fatal(out.String())
 	}
 }
+
+func TestProcessingIndicatorsRenderSharedAnatomy(t *testing.T) {
+	var out bytes.Buffer
+	if err := ProgressIndicator(templ.Attributes{"data-variant": "linear", "data-control": "determinate", "aria-valuenow": "25"}).Render(context.Background(), &out); err != nil {
+		t.Fatal(err)
+	}
+	for _, required := range []string{`role="progressbar"`, `aria-valuenow="25"`, `md-progress-track`, `md-progress-active`, `md-progress-stop`, `<svg width="48" height="4"`} {
+		if !strings.Contains(out.String(), required) {
+			t.Fatal(required)
+		}
+	}
+	out.Reset()
+	if err := LoadingIndicator(templ.Attributes{"aria-label": "Loading video engine"}).Render(context.Background(), &out); err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(out.String(), `<svg width="38" height="38"`) || !strings.Contains(out.String(), `data-control="indeterminate"`) || !strings.Contains(out.String(), initialLoadingPath) || strings.Contains(out.String(), `aria-valuenow`) {
+		t.Fatal(out.String())
+	}
+}
 func TestFieldNamesAndButtonState(t *testing.T) {
 	var out bytes.Buffer
 	if e := Select("position", "Position", []Option{{"x", "Horizontal"}}).Render(context.Background(), &out); e != nil {
@@ -113,6 +132,18 @@ func TestDrawerLinkPreservesNativeURLAndCurrentState(t *testing.T) {
 	for _, required := range []string{`<a class="md-nav-item"`, `href="/md3/tools"`, `aria-current="page"`, `Tools &amp; tests`} {
 		if !strings.Contains(out.String(), required) {
 			t.Fatalf("missing %s in %s", required, out.String())
+		}
+	}
+}
+
+func TestSelectRendersInitialSelectionBeforeRuntimeLoads(t *testing.T) {
+	var out bytes.Buffer
+	if err := Select("speed", "Speed", []Option{{"0.5", "Half"}, {"1", "Normal"}}, "1").Render(context.Background(), &out); err != nil {
+		t.Fatal(err)
+	}
+	for _, required := range []string{`data-field-display>Normal`, `data-field-value value="1"`, `value="1" selected`, `aria-selected="true"`} {
+		if !strings.Contains(out.String(), required) {
+			t.Fatal(required, out.String())
 		}
 	}
 }

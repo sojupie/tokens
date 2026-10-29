@@ -55,6 +55,7 @@
     return Promise.all(
       [...document.querySelectorAll("link[data-component-stylesheet]")].map(
         (link) => {
+          if (link.dataset.stylesheetError !== undefined) return Promise.reject(new Error("Could not load component styles"));
           if (link.sheet) return Promise.resolve();
           return new Promise((resolve, reject) => {
             link.addEventListener("load", resolve, { once: true });
@@ -78,7 +79,13 @@
       preview.setAttribute("aria-busy", "true");
     }
     const task = (async () => {
-      await stylesReady();
+      try {
+        await stylesReady();
+        document.dispatchEvent(new CustomEvent("tokens:styles-ready"));
+      } catch (error) {
+        document.dispatchEvent(new CustomEvent("tokens:styles-error"));
+        throw error;
+      }
       for (const [name, selector] of rules) {
         const needed = [...document.querySelectorAll(selector)].some(
           (node) =>

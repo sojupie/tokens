@@ -3,23 +3,33 @@ package site
 import "github.com/sojupie/tokens/forge/components/ui"
 
 templ Header(config Config) {
-	<header class="tokens-site-header" id="tokens-site-header" hx-preserve data-component-assets>
+	<header class="tokens-site-header" id="tokens-site-header" hx-preserve data-component-assets data-drawer-breakpoint={ config.drawerBreakpoint() }>
 		<div class="tokens-primary-nav">
 			@ui.DrawerToggle("tokens-site-menu", "Open navigation")
-			<a class="tokens-brand md-typescale-title-large" href={ templ.SafeURL(config.Catalog + "/") }><img class="tokens-brand-logo" src={ templ.SafeURL(config.Logo) } alt="" width="40" height="40"/>Token Catalog</a>
+			<a class="tokens-brand md-typescale-title-large" href={ templ.SafeURL(config.Catalog + "/") }>
+				@templ.Raw(brandLogo)
+				Token Catalog
+			</a>
 		</div>
-		@ui.Drawer("tokens-site-menu", true, "Token Catalog") {
+		@ui.Drawer("tokens-site-menu", true, "Token Catalog", drawerBrand(config)) {
 			<nav class="md-nav-items" aria-label="Primary">
 				@navLink(config, "/components", "Components")
 				@navLink(config, "/styles", "Styles")
 				@navLink(config, "/changes", "Changes")
-				@navLink(config, "/tools", "Tools")
 				if config.Agents {
 					@navLink(config, "/for-agents", "For agents")
 				}
+				<hr/>
+				@navLink(config, "/tools", "Tools")
+				<div class="tokens-tool-destinations" role="group" aria-label="Tools destinations">
+					for _, tool := range config.Tools {
+						@ui.DrawerLink(tool.URL, templ.Attributes{"hx-boost": "false", "aria-current": toolCurrent(config, tool)}, tool.Name)
+					}
+				</div>
 			</nav>
-			<div class="tokens-drawer-appearance">{ children... }
-</div>
+			<div class="tokens-drawer-appearance">
+				{ children... }
+			</div>
 		}
 	</header>
 }
@@ -27,39 +37,28 @@ templ Header(config Config) {
 templ Footer(config Config) {
 	<footer class="tokens-site-footer" data-component-assets>
 		<div class="tokens-footer-content">
-			<div>
-				<p class="md-typescale-title-medium">Token Catalog</p>
-				<p class="md-typescale-body-medium">Browse Material Design 3 tokens and track their changes.</p>
-				<p class="md-typescale-body-medium">Independent project. Not affiliated with Google.</p>
-				{ children... }
+			<div class="tokens-footer-credit">
+				<a class="tokens-link" href="https://marmenlind.com">Made by Olle Marmenlind</a>
+				<p>Independent project. Not affiliated with Google.</p>
 			</div>
-			<div>
-				<p class="md-typescale-title-medium">For humans</p>
-				<a class="tokens-link md-typescale-body-medium" href="https://github.com/sojupie/tokens">GitHub</a>
-				<a class="tokens-link md-typescale-body-medium" href={ templ.SafeURL(config.Catalog + "/components") }>Browse components</a>
-				<a class="tokens-link md-typescale-body-medium" href={ templ.SafeURL(config.Catalog + "/for-agents") }>Give this to your agent</a>
-			</div>
-			if config.Agents {
-				<div>
-					<p class="md-typescale-title-medium">For agents</p>
-					<a class="tokens-link md-typescale-body-medium" href={ templ.SafeURL(config.Catalog + "/llms-full.txt") }>API and data reference</a>
-				</div>
-			}
-			<div hx-boost="false">
-				<p class="md-typescale-title-medium">Tools</p>
-				for _, tool := range config.Tools {
-					<a class="tokens-link md-typescale-body-medium" href={ templ.SafeURL(tool.URL) }>{ tool.Name }</a>
+			<nav class="tokens-footer-links" aria-label="Project links">
+				<a class="tokens-link" href="https://github.com/sojupie/tokens">GitHub</a>
+				if config.Agents {
+					<a class="tokens-link" href={ templ.SafeURL(config.Catalog + "/llms-full.txt") }>API reference</a>
 				}
-			</div>
-			<div>
-				<p class="md-typescale-title-medium">About</p>
-				<p class="md-typescale-body-medium">Made by Olle Marmenlind</p>
-				<a class="tokens-link md-typescale-body-medium" href="https://marmenlind.com">marmenlind.com</a>
-			</div>
+				{ children... }
+			</nav>
 		</div>
 	</footer>
 }
 
 templ navLink(config Config, path string, label string) {
 	@ui.DrawerLink(config.Catalog+path, templ.Attributes{"aria-current": config.current(path)}, label)
+}
+
+templ drawerBrand(config Config) {
+	<a class="tokens-brand tokens-drawer-brand" href={ templ.SafeURL(config.Catalog + "/") }>
+				@templ.Raw(brandLogo)
+				Token Catalog
+			</a>
 }

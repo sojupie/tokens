@@ -95,7 +95,8 @@ jobs:
       - name: Run management command
         run: |
           set -euo pipefail
-          compose() { sudo -n /usr/bin/docker compose -f deploy/compose.yaml "$@"; }
+          compose_env=()
+          compose() { sudo -n /usr/bin/docker compose "${compose_env[@]}" -f deploy/compose.yaml "$@"; }
           update() { sudo -n /usr/bin/sh /opt/tokens/deploy/update.sh "$@"; }
           timed() {
             local label="$1" started=$SECONDS result
@@ -124,6 +125,14 @@ jobs:
                 exit 1
               fi
               git merge --ff-only "$GITHUB_SHA"
+              motion_revision=$(git ls-remote https://github.com/sojupie/material-motion-lab.git refs/heads/main | cut -f1)
+              playground_revision=$(git ls-remote https://github.com/sojupie/carousel-motion-lab.git refs/heads/main | cut -f1)
+              [[ "$motion_revision" =~ ^[0-9a-f]{40}$ && "$playground_revision" =~ ^[0-9a-f]{40}$ ]]
+              tool_sources_file=$(mktemp)
+              trap 'rm -f "$tool_sources_file"' EXIT
+              printf 'TOKENS_MOTION_SOURCE=https://github.com/sojupie/material-motion-lab.git#%s\nTOKENS_PLAYGROUND_SOURCE=https://github.com/sojupie/carousel-motion-lab.git#%s\n' "$motion_revision" "$playground_revision" > "$tool_sources_file"
+              compose_env=(--env-file "$tool_sources_file")
+              printf 'Tool sources: Material Motion Lab `%s`; Carousel playground `%s`\n' "$motion_revision" "$playground_revision" >> "$GITHUB_STEP_SUMMARY"
               timed 'Install deployment configuration' sudo -n /usr/bin/sh /opt/tokens/deploy/install.sh
               timed 'Build images' compose --progress plain --profile update build --pull
               timed 'Build publication assets' update build-assets

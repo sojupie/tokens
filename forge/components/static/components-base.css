@@ -1913,6 +1913,9 @@
   letter-spacing: var(--_nav-item-large-badge-label-tracking);
 }
 .md-navigation-drawer hr {
+  align-self: stretch;
+  flex: none;
+  margin-inline: 0;
   border: 0;
   border-top: var(--md-comp-divider-thickness) solid var(--_nav-divider);
   margin-block: var(--md-sys-measurement-space100);
@@ -2008,7 +2011,7 @@
 .md-navigation-header { display:flex; align-items:center; flex:none; }
 .md-navigation-header > h3 { flex:1; min-inline-size:0; }
 .md-navigation-drawer a.md-nav-item { text-decoration:none; }
-:root:has(dialog[data-navigation-modal][open]) { overflow:hidden; }
+:root:has(dialog[data-navigation-modal]:modal) { overflow:hidden; }
 /* Tab indicator width follows its content in primary tabs and its entire cell
    in secondary tabs. Padding and icon/label gaps use system spacing. */
 .md-tabs {
@@ -3460,6 +3463,15 @@ button.md-appbar-search {
   --_fab-state-color: var(--_toolbar-fab-icon);
   --_fab-state-opacity: var(--md-sys-state-pressed-state-layer-opacity);
 }
+
+/* Compact horizontal toolbars keep each small control's 48dp target. */
+.md-toolbar[data-density="compact"][data-orientation="horizontal"] {
+  --_toolbar-height: var(--md-sys-measurement-space600);
+  padding-block: 0;
+}
+.md-toolbar[data-elevation="none"] {
+  --_elevation-level: var(--md-sys-elevation-level0);
+}
 /* Sheet sizes and gesture defaults absent from the capture are renderer rules. */
 .md-sheet-demo {
   --_sheet-peek-height: 56px;
@@ -4058,6 +4070,13 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-full-height] {
 .md-button-group[data-control="connected"] > .md-button {
   flex: 1;
 }
+
+/* Standard groups may mix labeled and icon-only commands. */
+.md-button-group[data-control="standard"] > .md-icon-button {
+ --_icon-height:var(--_group-height);
+ min-inline-size:0;
+ box-sizing:border-box;
+}
 .md-fab-menu {
   position: relative;
   display: flex;
@@ -4266,8 +4285,27 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-full-height] {
   overflow: visible;
 }
 .md-list > li {
+  --_list-edge-top: var(--md-comp-list-list-item-container-shape);
+  --_list-edge-bottom: var(--md-comp-list-list-item-container-shape);
   position: relative;
+  flex: none;
   min-inline-size: 0;
+}
+/* Edge rows share the container's visible corners, including their inset focus
+   indicator. Clipping a square item to the list cuts the indicator apart. */
+.md-list[data-variant="standard"]:not([data-shape="expressive"]) > li:first-child {
+  --_list-edge-top: var(--_list-shape);
+}
+.md-list[data-variant="standard"]:not([data-shape="expressive"]) > li:last-child {
+  --_list-edge-bottom: var(--_list-shape);
+}
+.md-list[data-variant="standard"]:not([data-shape="expressive"]) > li > .md-list-item,
+.md-list[data-variant="standard"]:not([data-shape="expressive"]) > li > .md-list-row > .md-list-item {
+  --_list-item-shape:
+    var(--_list-edge-top, var(--md-comp-list-list-item-container-shape))
+    var(--_list-edge-top, var(--md-comp-list-list-item-container-shape))
+    var(--_list-edge-bottom, var(--md-comp-list-list-item-container-shape))
+    var(--_list-edge-bottom, var(--md-comp-list-list-item-container-shape));
 }
 .md-list[data-variant="standard"]:not([data-divider="none"])
   > li:not(:last-child):not(:has(+ .md-list-drop-zone))::after {
@@ -4546,6 +4584,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-full-height] {
   display: none;
 }
 .md-list[data-control="reorder"] .md-list-row > .md-list-item,
+.md-list[data-control="actions"] .md-list-row > .md-list-item,
 .md-list[data-control="reveal"] .md-list-row > .md-list-item {
   padding-inline-end: calc(
     var(--_list-item-trailing) +
@@ -4560,6 +4599,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-full-height] {
   padding: var(--md-sys-measurement-space100) 0;
 }
 .md-list-grip,
+.md-list-action,
 .md-list-reveal-toggle {
   position: absolute;
   inset-inline-end: var(--md-comp-list-list-item-trailing-space);

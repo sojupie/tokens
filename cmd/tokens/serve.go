@@ -29,6 +29,7 @@ func runServe(args []string) error {
 	}
 	publishedDir := "published"
 	assetsDir := ""
+	toolsDir := os.Getenv("TOKENS_TOOLS_DIR")
 	listenAddress := "127.0.0.1:8080"
 	publicOrigin := os.Getenv("TOKENS_PUBLIC_ORIGIN")
 	usageDir := os.Getenv("TOKENS_USAGE_DIR")
@@ -40,6 +41,7 @@ func runServe(args []string) error {
 	if motionLabURL == "" {
 		motionLabURL = "/tools/motion-lab/"
 	}
+	flags.StringVar(&toolsDir, "tools", toolsDir, "directory containing built motion/ and motion-lab/ static tools; empty disables local tool hosting")
 	flags.StringVar(&motionURL, "motion-url", motionURL, "URL for the video motion analysis tool")
 	flags.StringVar(&motionLabURL, "motion-lab-url", motionLabURL, "URL for the carousel motion lab")
 	flags.StringVar(&usageDir, "usage-dir", usageDir, "directory for retained usage totals; empty disables usage logging")
@@ -88,9 +90,16 @@ func runServe(args []string) error {
 		defer store.Close()
 		publicationServer.SetUsage(store)
 	}
+	handler := publicationServer.Handler()
+	if toolsDir != "" {
+		handler, err = web.MountTools(handler, toolsDir)
+		if err != nil {
+			return err
+		}
+	}
 	server := &http.Server{
 		Addr:              listenAddress,
-		Handler:           publicationServer.Handler(),
+		Handler:           handler,
 		ReadHeaderTimeout: 5 * time.Second,
 	}
 	fmt.Printf("Serving publication %s on http://%s\n", state.PublicationID, listenAddress)

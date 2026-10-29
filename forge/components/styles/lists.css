@@ -23,8 +23,27 @@
   overflow: visible;
 }
 .md-list > li {
+  --_list-edge-top: var(--md-comp-list-list-item-container-shape);
+  --_list-edge-bottom: var(--md-comp-list-list-item-container-shape);
   position: relative;
+  flex: none;
   min-inline-size: 0;
+}
+/* Edge rows share the container's visible corners, including their inset focus
+   indicator. Clipping a square item to the list cuts the indicator apart. */
+.md-list[data-variant="standard"]:not([data-shape="expressive"]) > li:first-child {
+  --_list-edge-top: var(--_list-shape);
+}
+.md-list[data-variant="standard"]:not([data-shape="expressive"]) > li:last-child {
+  --_list-edge-bottom: var(--_list-shape);
+}
+.md-list[data-variant="standard"]:not([data-shape="expressive"]) > li > .md-list-item,
+.md-list[data-variant="standard"]:not([data-shape="expressive"]) > li > .md-list-row > .md-list-item {
+  --_list-item-shape:
+    var(--_list-edge-top, var(--md-comp-list-list-item-container-shape))
+    var(--_list-edge-top, var(--md-comp-list-list-item-container-shape))
+    var(--_list-edge-bottom, var(--md-comp-list-list-item-container-shape))
+    var(--_list-edge-bottom, var(--md-comp-list-list-item-container-shape));
 }
 .md-list[data-variant="standard"]:not([data-divider="none"])
   > li:not(:last-child):not(:has(+ .md-list-drop-zone))::after {
@@ -303,6 +322,7 @@
   display: none;
 }
 .md-list[data-control="reorder"] .md-list-row > .md-list-item,
+.md-list[data-control="actions"] .md-list-row > .md-list-item,
 .md-list[data-control="reveal"] .md-list-row > .md-list-item {
   padding-inline-end: calc(
     var(--_list-item-trailing) +
@@ -317,6 +337,7 @@
   padding: var(--md-sys-measurement-space100) 0;
 }
 .md-list-grip,
+.md-list-action,
 .md-list-reveal-toggle {
   position: absolute;
   inset-inline-end: var(--md-comp-list-list-item-trailing-space);

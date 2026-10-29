@@ -1,3 +1,4 @@
+function dispatchClick(events,event){events.captureClick(event);events.click(event);}
 function runMotionScript(code, globals) {
   runInNewContext(readFileSync(require.resolve('./static/motion.cjs'), 'utf8'), globals);
   return runInNewContext(code, globals);
@@ -8,7 +9,7 @@ test('pressing a submenu trigger cancels its delayed hover opener',()=>{
  const events={},timers=new Set();let sequence=0;
  const root={dataset:{},closest:()=>demo,matches:()=>false,hasAttribute:key=>key==='popover'},demo={querySelectorAll:()=>[root]};
  const submenu={hasAttribute:()=>true,matches:()=>false},trigger={dataset:{menuSubmenu:'child'},contains:()=>false,closest:()=>root,hasAttribute:()=>true};
- const document={readyState:'loading',addEventListener:(name,fn)=>events[name]=fn,querySelectorAll:()=>[],getElementById:()=>submenu};
+ const document={readyState:'loading',addEventListener:(name,fn,capture)=>events[name==='click'&&capture?'captureClick':name]=fn,querySelectorAll:()=>[],getElementById:()=>submenu};
  runMotionScript(readFileSync(`${__dirname}/static/menus.js`,'utf8'),{document,addEventListener(){},setTimeout(fn,ms){assert.equal(ms,200);timers.add(++sequence);return sequence;},clearTimeout(id){timers.delete(id);}});
  const event={target:{closest:()=>trigger},pointerType:'mouse',buttons:0,relatedTarget:null};
  events.pointerover(event);assert.equal(timers.size,1);events.pointerdown(event);assert.equal(timers.size,0);
@@ -17,7 +18,7 @@ test('pressing a submenu trigger cancels its delayed hover opener',()=>{
 test('each selectable menu item updates its state and check icon',()=>{
  const events={},output={textContent:''};
  const demo={querySelector:selector=>selector==='[data-menu-output]'?output:null};
- const document={readyState:'loading',addEventListener:(name,fn)=>events[name]=fn,querySelectorAll:()=>[]};
+ const document={readyState:'loading',addEventListener:(name,fn,capture)=>events[name==='click'&&capture?'captureClick':name]=fn,querySelectorAll:()=>[]};
  runMotionScript(readFileSync(`${__dirname}/static/menus.js`,'utf8'),{document,addEventListener(){}});
  for(const label of ['Favorite','Download','Edit']){
   const attributes={'role':'menuitemcheckbox','aria-label':label,'aria-checked':'false'},checked={hidden:true},unchecked={hidden:false};
@@ -25,9 +26,9 @@ test('each selectable menu item updates its state and check icon',()=>{
    closest:selector=>selector==='[data-menu-example]'?demo:null,
    querySelector:selector=>selector==='[data-menu-checked-icon]'?checked:unchecked};
   const event={target:{closest:selector=>selector==='[data-menu-back]'||selector==='[data-menu-submenu],[data-menu-open]'?null:item}};
-  events.click(event);
+  dispatchClick(events,event);
   assert.equal(attributes['aria-checked'],'true');assert.equal(item.dataset.selected,'true');assert.equal(checked.hidden,false);assert.equal(unchecked.hidden,true);assert.equal(output.textContent,label+' selected');
-  events.click(event);assert.equal(attributes['aria-checked'],'false');assert.equal(checked.hidden,true);assert.equal(unchecked.hidden,false);
+  dispatchClick(events,event);assert.equal(attributes['aria-checked'],'false');assert.equal(checked.hidden,true);assert.equal(unchecked.hidden,false);
  }
 });
 test('single selection replaces the previous item and multi selection stays open',()=>{
@@ -40,9 +41,9 @@ test('single selection replaces the previous item and multi selection stays open
    closest:selector=>selector==='[data-menu-panel]'?menu:selector==='[data-menu-example]'?demo:null,
    querySelector:selector=>selector==='[data-menu-checked-icon]'?check:null,check};
  });
- const document={readyState:'loading',addEventListener:(name,fn)=>events[name]=fn,querySelectorAll:()=>[]};
+ const document={readyState:'loading',addEventListener:(name,fn,capture)=>events[name==='click'&&capture?'captureClick':name]=fn,querySelectorAll:()=>[]};
  runMotionScript(readFileSync(`${__dirname}/static/menus.js`,'utf8'),{document,addEventListener(){}});
- const click=index=>events.click({target:{closest:selector=>selector==='[data-menu-back]'||selector==='[data-menu-submenu],[data-menu-open]'?null:nodes[index]}});
+ const click=index=>dispatchClick(events,{target:{closest:selector=>selector==='[data-menu-back]'||selector==='[data-menu-submenu],[data-menu-open]'?null:nodes[index]}});
  click(2);assert.deepEqual(nodes.map(n=>n.getAttribute('aria-checked')),['false','false','true']);click(1);assert.deepEqual(nodes.map(n=>n.getAttribute('aria-checked')),['false','true','false']);
  menu.dataset.menuSelection='multiple';for(const node of nodes)node.setAttribute('role','menuitemcheckbox');
  // Output remains available, but querying a popover for dismissal is forbidden.
@@ -58,7 +59,7 @@ test('Firefox exit is painted synchronously without re-entering the popover life
  const style=Object.assign(['display','opacity','--_menu-container','--md-sys-color-primary'],{opacity:'1',getPropertyValue:name=>name==='--_motion-fast-effects-duration'?'150ms':name==='--_motion-fast-spatial-duration'?'350ms':name.endsWith('-easing')?'linear(0, 1)':name==='--_menu-container'?'rgb(1, 2, 3)':name==='display'?'block':'1'});
  const parent={append(){appended=true;}};
  const menu={scrollTop:80,scrollLeft:0,matches:selector=>selector!=='.md-fab-menu-panel',hasAttribute:()=>false,closest:()=>modal?parent:null,cloneNode:()=>{copies++;return copy;}};
- const document={readyState:'loading',addEventListener:(name,fn)=>events[name]=fn,querySelectorAll:()=>[],body:modal?{append(){throw Error('modal copy must remain inside the dialog');}}:parent};
+ const document={readyState:'loading',addEventListener:(name,fn,capture)=>events[name==='click'&&capture?'captureClick':name]=fn,querySelectorAll:()=>[],body:modal?{append(){throw Error('modal copy must remain inside the dialog');}}:parent};
  runMotionScript(readFileSync(`${__dirname}/static/menus.js`,'utf8'),{document,addEventListener(){},CSS:{supports:()=>false},matchMedia:()=>({matches:false}),getComputedStyle:()=>style,setTimeout(fn,ms){timers.set(++sequence,{fn,ms});return sequence;},clearTimeout:id=>timers.delete(id)});
  events.beforetoggle({newState:'closed',target:menu});
  assert.equal(appended,true,'copy must be present before the original disappears');assert.equal(unpopovered,true);assert.equal(copies,1);
@@ -75,9 +76,9 @@ test('clicking an open menu trigger closes after native light-dismiss',()=>{
  const trigger={dataset:{menuOpen:'main'},setAttribute(){},closest:()=>null,focus(){focused=true;}};
  const demo={querySelector:()=>trigger};
  const menu={matches:()=>shown,hasAttribute:()=>true,closest:()=>demo,hidePopover(){shown=false;},showPopover(){throw Error('native dismissal must not reopen the menu');}};
- const document={readyState:'loading',addEventListener:(name,fn)=>events[name]=fn,getElementById:()=>menu,querySelectorAll:()=>[]};
+ const document={readyState:'loading',addEventListener:(name,fn,capture)=>events[name==='click'&&capture?'captureClick':name]=fn,getElementById:()=>menu,querySelectorAll:()=>[]};
  runMotionScript(readFileSync(`${__dirname}/static/menus.js`,'utf8'),{document,addEventListener(){},clearTimeout(){}});
- const event={target:{closest:selector=>selector==='[data-menu-back]'?null:trigger},detail:1};events.pointerdown(event);shown=false;events.click(event);assert.equal(shown,false);assert.equal(focused,true);
+ const event={target:{closest:selector=>selector==='[data-menu-back]'?null:trigger},detail:1};events.pointerdown(event);shown=false;dispatchClick(events,event);assert.equal(shown,false);assert.equal(focused,true);
 });
 
 test('submenus use the parent surface edge, flip, or replace when neither side fits',()=>{
@@ -94,9 +95,27 @@ test('replacement submenus require activation instead of opening beneath a stati
   const demo={querySelectorAll:()=>[]};
   const menu={closest:()=>demo,querySelectorAll:()=>[],hasAttribute:key=>replaced&&key==='data-menu-replace'};
   const item={dataset:{menuSubmenu:'child'},closest:()=>menu,contains:()=>false,hasAttribute:key=>key==='data-menu-submenu'};
-  const document={readyState:'loading',addEventListener:(name,fn)=>events[name]=fn,getElementById:()=>({hasAttribute:()=>true})};
+  const document={readyState:'loading',addEventListener:(name,fn,capture)=>events[name==='click'&&capture?'captureClick':name]=fn,getElementById:()=>({hasAttribute:()=>true})};
   runMotionScript(readFileSync(`${__dirname}/static/menus.js`,'utf8'),{document,addEventListener(){},setTimeout(){scheduled++;return 1;}});
   events.pointerover({target:{closest:()=>item},pointerType:'mouse',buttons:0});
   assert.equal(scheduled,replaced?0:1);
+ }
+});
+
+test('a command that disables itself on activation still closes its menu',()=>{
+ for(const initiallyDisabled of [false,true]) {
+  const events={},output={textContent:''};let shown=true;
+  const demo={querySelector:selector=>selector==='[data-menu-output]'?output:selector==='[data-menu-main]:popover-open'?menu:null};
+  const menu={dataset:{},hasAttribute:()=>true,closest:()=>demo,matches:()=>shown,hidePopover(){shown=false;}};
+  const item={disabled:initiallyDisabled,getAttribute:name=>name==='aria-label'?'New project':name==='role'?'menuitem':null,
+    closest:selector=>selector==='[data-menu-example]'?demo:menu};
+  const document={readyState:'loading',querySelectorAll:()=>[],addEventListener:(name,fn,capture)=>events[name==='click'&&capture?'captureClick':name]=fn};
+  runMotionScript(readFileSync(`${__dirname}/static/menus.js`,'utf8'),{document,addEventListener(){}});
+  const event={target:{closest:selector=>selector==='[data-menu-back]'||selector==='[data-menu-submenu],[data-menu-open]'?null:item}};
+  events.captureClick(event);
+  item.disabled=true; // Application target handler starts work and disables commands.
+  events.click(event);
+  assert.equal(shown,initiallyDisabled);
+  assert.equal(output.textContent,initiallyDisabled?'':'New project activated');
  }
 });

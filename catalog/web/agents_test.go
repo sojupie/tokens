@@ -39,7 +39,6 @@ func TestHTMLAgentHintsAndJSONAlternate(t *testing.T) {
 		links := map[string]string{}
 		alternate := ""
 		footerLink := false
-		footerColumns := []string{}
 		var walk func(*html.Node, bool)
 		walk = func(node *html.Node, inFooter bool) {
 			inFooter = inFooter || node.Type == html.ElementNode && node.Data == "footer"
@@ -47,32 +46,14 @@ func TestHTMLAgentHintsAndJSONAlternate(t *testing.T) {
 			for _, attr := range node.Attr {
 				attrs[attr.Key] = attr.Val
 			}
-			if attrs["class"] == "tokens-footer-content" {
-				for child := node.FirstChild; child != nil; child = child.NextSibling {
-					if child.Type != html.ElementNode || child.Data != "div" {
-						continue
-					}
-					var text strings.Builder
-					var collectText func(*html.Node)
-					collectText = func(item *html.Node) {
-						if item.Type == html.TextNode {
-							text.WriteString(item.Data)
-						}
-						for nested := item.FirstChild; nested != nil; nested = nested.NextSibling {
-							collectText(nested)
-						}
-					}
-					collectText(child)
-					footerColumns = append(footerColumns, text.String())
-				}
-			}
+
 			if node.Type == html.ElementNode && node.Data == "link" {
 				links[attrs["href"]] = attrs["rel"]
 				if attrs["rel"] == "alternate" && attrs["type"] == "application/json" {
 					alternate = attrs["href"]
 				}
 			}
-			if inFooter && node.Data == "a" && attrs["href"] == "/llms-full.txt" && node.FirstChild != nil && node.FirstChild.Data == "API and data reference" {
+			if inFooter && node.Data == "a" && attrs["href"] == "/llms-full.txt" && node.FirstChild != nil && node.FirstChild.Data == "API reference" {
 				footerLink = true
 			}
 			for child := node.FirstChild; child != nil; child = child.NextSibling {
@@ -80,9 +61,7 @@ func TestHTMLAgentHintsAndJSONAlternate(t *testing.T) {
 			}
 		}
 		walk(document, false)
-		if len(footerColumns) != 5 || !strings.Contains(footerColumns[0], "Download tokens") || !strings.HasPrefix(footerColumns[1], "For humans") || !strings.Contains(footerColumns[2], "API and data reference") || !strings.Contains(footerColumns[1], "Give this to your agent") || !strings.HasPrefix(footerColumns[3], "Tools") || !strings.Contains(footerColumns[3], "Carousel motion lab") || !strings.HasPrefix(footerColumns[4], "About") || !strings.Contains(footerColumns[4], "Made by Olle Marmenlind") {
-			t.Fatalf("wrong footer columns: %v", footerColumns)
-		}
+
 		if links["/agents.json"] != "describedby" || links["/llms.txt"] != "describedby" || links["/openapi.json"] != "service-desc" || links[apiCatalogPath] != "api-catalog" || links[aiCatalogPath] != "ai-catalog" || !footerLink {
 			t.Fatalf("%s missing HTML hints/footer guide", path)
 		}

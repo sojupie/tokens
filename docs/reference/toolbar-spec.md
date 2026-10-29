@@ -1,6 +1,8 @@
 # Toolbar specification
 
-Reviewed 2026-10-20 against the current local publication and the official Material pages. This document combines captured tokens, supplied measurement figures, upstream guidance, and implementation findings. It is sufficient to implement and verify the component without the conversation.
+This reference describes the toolbar renderer and its source measurements. The token
+inventory and browser results below were recorded on 2026-10-20 against the named
+publication. They do not establish verification of later changes.
 
 ## Sources and precedence
 
@@ -97,29 +99,9 @@ The web container uses `role="toolbar"`, a meaningful accessible name, and orien
 
 Initial focus goes to the first enabled interactive control. Tab or the appropriate arrows navigate controls; Space/Enter activate them. Supply touch/click ripples and hover feedback. Disabled controls must not activate. A single Tab stop with arrows within the group is the current renderer convention; Tab traversal is also described by the official page, so verify the chosen behavior rather than treating either as a token property. Menus need keyboard access and focus return. RTL reverses directional arrow traversal.
 
-## Implementation review before changes
+## Renderer behavior
 
-| Finding | Existing behavior | Required response |
-| --- | --- | --- |
-| Variant model | `docked`, `floating`, `floating-fab` | Expose two variants, with FAB as a configuration |
-| Docked colors | Only standard combinations generated | Support vibrant if the combined token context can express it; preserve docked default color token |
-| Docked placement/width | A standalone 28rem bar | Model available pane width and bottom docking |
-| Docked gap | JS clamps equal gaps to 4–32 | Preserve for default; document separate flexible-group layouts |
-| Floating overflow | Wrapper scrolls horizontally; toolbar refuses to shrink | Replace overflow with a trailing menu; keep full composition visible |
-| Floating target size | Small icon primitives paint at 40dp without toolbar-specific target allocation | Allocate 48dp slots, retain child visuals |
-| Floating margins | Wrapper padding 16 plus axis margin 16/24 | Avoid adding the same margin twice; use horizontal 16 / vertical 24 around the composition |
-| Cross-axis inset | Floating horizontal uses no block padding; vertical uses no inline padding | Allocate 8dp around 48dp targets within 64dp |
-| FAB | Separate primitive and captured sizes present | Retain; verify gap and alignment, including vertical layout |
-| Action behavior | Edit toggles; More does not open a menu | Make More/overflow operate an actual menu |
-| Slots | Fixed three-action demo with icon/label modes | Demonstrate the supported composition honestly; do not imply arbitrary slots are invalid |
-| Keyboard | Roving Tab stop and oriented arrows | Verify initial focus, skips, activation, overflow and focus return |
-| Source conflicts | Role examples, flexible spacers, web shape exception, safe-area diagram | Keep the distinctions above; no source-value replacement |
-
-This review distinguishes required corrections from optional application demonstrations. Scroll policies, multiple toolbars, text fields, custom slots, alternative child styles, and web-only docked shape changes are documented capabilities; they need not all become new preview filters.
-
-## Current renderer and remaining choices
-
-The renderer now exposes Docked and Floating, with a separate None/Small/Medium FAB choice. Old `floating-fab` URLs remain supported. Variant comparisons use horizontal toolbars without a FAB so both variants appear; FAB-size comparisons use Floating. Hidden incompatible controls cannot imply unsupported combinations.
+The renderer exposes Docked and Floating, with a separate None/Small/Medium FAB choice. Old `floating-fab` URLs remain supported. Variant comparisons use horizontal toolbars without a FAB so both variants appear; FAB-size comparisons use Floating. Hidden incompatible controls cannot imply unsupported combinations.
 
 Previews place the actual primitives within a bounded page. Docked bars fill its bottom edge. Floating bars use their intrinsic content size, 16dp horizontal or 24dp vertical clearance, and an additional real bottom safe-area inset. Child visuals keep their captured size while hit regions occupy at least 48dp. Trailing actions move to the shared menu when the pane cannot fit them, for both variants. The menu delegates to the original action and returns focus; widening restores controls. Vibrant docked color composes the generic vibrant color token with docked geometry; the dedicated docked default color applies to Standard. No token value changes.
 
@@ -250,6 +232,6 @@ Exercise both variants, each supported color, both floating orientations, FAB ab
 
 Keep the baseline bottom-app-bar check separate. Preserve captured token values, aliases, and contexts. Record any remaining implementation limit here rather than implying it was verified.
 
-### Verification boundary
+### Recorded verification boundary (2026-10-20)
 
 The rendered matrix covers all 300 generated Web combinations in the default theme. Additional live checks cover compact panes, overflow selection and focus return, restoration after resizing, vertical geometry, a dark-theme sample, baseline 80dp/72dp contexts, and start-page reuse. RTL arrow logic has a unit check; an RTL page and a device with a nonzero safe-area inset were not rendered in this review. Their logical CSS and safe-area formula remain explicit above. The legacy baseline height conflict is intentionally unresolved.

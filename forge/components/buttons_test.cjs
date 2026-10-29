@@ -695,3 +695,12 @@ test('reduced motion restores the changed natural width immediately',()=>{
  assert.deepEqual(h.widths(),['','','']);
  assert.equal(button.getBoundingClientRect().width,140);
 });
+
+
+test('standard group width animation includes icon-only commands',async()=>{
+ const h=widthGroupFixture();
+ h.group.querySelectorAll=selector=>selector.includes('.md-icon-button')?h.buttons:[h.buttons[1]];
+ h.emit('pointerdown',h.buttons[0]);
+ assert.ok(h.buttons.every(button=>button.style.width!==''),'all group children participate');
+ h.emit('pointerup',h.buttons[0]);await h.finish();
+});

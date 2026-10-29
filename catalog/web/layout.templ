@@ -12,6 +12,7 @@ templ layout(title string) {
 			@initialThemeScript()
 			<script src={ staticURL("theme.js") } defer></script>
 			<link rel="stylesheet" href={ themeURL(ctx) }/>
+			<link rel="stylesheet" href={ staticURL("site.css") }/>
 			<link rel="stylesheet" href={ staticURL("app.css") }/>
 			<link rel="stylesheet" href={ staticURL("token-table.css") }/>
 			<link rel="stylesheet" href={ staticURL("buttons.css") }/>
@@ -29,7 +30,7 @@ templ layout(title string) {
 			<script src={ staticURL("webmcp.js") } defer></script>
 			<script src={ staticURL("prefetch.js") } defer></script>
 			<script src={ staticURL("asset-loader.js") } data-sources={ componentScriptSources() } data-shapes-version={ loadingGeometry.version } defer></script>
-			<link rel="icon" type="image/webp" sizes="250x250" href={ staticURL("logo-250x250.webp") }/>
+			<link rel="icon" type="image/svg+xml" href={ staticURL("logo.svg") }/>
 			<link rel="apple-touch-icon" href={ staticURL("logo-250x250.png") }/>
 			<title>{ pageTitle(ctx, title) } | Token Catalog</title>
 			<meta name="description" content={ metadata(ctx).Description }/>

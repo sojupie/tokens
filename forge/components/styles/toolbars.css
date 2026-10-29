@@ -193,3 +193,12 @@
   --_fab-state-color: var(--_toolbar-fab-icon);
   --_fab-state-opacity: var(--md-sys-state-pressed-state-layer-opacity);
 }
+
+/* Compact horizontal toolbars keep each small control's 48dp target. */
+.md-toolbar[data-density="compact"][data-orientation="horizontal"] {
+  --_toolbar-height: var(--md-sys-measurement-space600);
+  padding-block: 0;
+}
+.md-toolbar[data-elevation="none"] {
+  --_elevation-level: var(--md-sys-elevation-level0);
+}

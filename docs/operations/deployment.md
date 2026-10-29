@@ -173,6 +173,33 @@ The Docker build keeps Go's module and compiled-package caches between builds.
 Chromium is installed in a layer that application changes do not invalidate.
 The first build after changing the Dockerfile or base images can still be slow.
 
+## Browser tools
+
+The server image includes Material Motion Lab at `/tools/motion/` and Carousel
+playground at `/tools/motion-lab/`, outside the catalog's `/md3` mount. The existing
+Cloudflare Tunnel serves all three destinations through `tokens:8080`. No additional
+tunnel, container or processing service is needed.
+
+Docker builds Material Motion Lab from `sojupie/material-motion-lab` and Carousel
+playground from `sojupie/carousel-motion-lab`. Both use the catalog checkout's shared
+navigation and component code. The tools compile to static files during the image
+build. Production accepts GET and HEAD only on their paths; videos, projects and
+processing stay in the visitor's browser. Health checks require both tool entry
+pages as well as the catalog.
+
+The GitHub deploy command resolves each tool's `main` branch to a commit before
+building and records those commits in the run summary. Merge tool changes before
+running the catalog deploy. A restart reuses the installed image and its bundled
+tools; it does not fetch new tool code. To reproduce a manual build, provide a
+Compose environment file containing `TOKENS_MOTION_SOURCE` and
+`TOKENS_PLAYGROUND_SOURCE`, each set to its HTTPS Git repository URL followed by
+`#` and the full commit SHA, and pass it with `docker compose --env-file FILE`.
+Local source directories can be used instead when checking an unreleased build.
+
+The `TOKENS_MOTION_URL` and `TOKENS_MOTION_LAB_URL` settings control navigation
+links. Their defaults match the bundled paths. `TOKENS_TOOLS_DIR` points to the
+built files inside the image; it does not contain visitor data.
+
 ## Manage from GitHub Actions
 
 Open **Actions → Manage Token Catalog → Run workflow**, select `main`, and choose a
@@ -182,7 +209,7 @@ command:
 | --- | --- |
 | `status` | Show containers, the next scheduled update and saved run reports. |
 | `logs` | Show recent website, tunnel and update logs. |
-| `deploy` | Update `/opt/tokens` to the selected main commit, build application/update/asset images, build publication assets and update changed containers. |
+| `deploy` | Update `/opt/tokens` to the selected main commit, build catalog and bundled tool images, build publication assets and update changed containers. |
 | `restart` | Restart the website and tunnel without rebuilding or crawling. |
 | `crawl` | Start the existing update service, including alerts and restart after publication. |
 | `inspect` | Show a saved run report. Requires a run ID. |
@@ -282,8 +309,8 @@ Cloudflare DNS and account settings require separate configuration.
 
 ## Tools links
 
-The Tools page and footer link to the separately deployed video analysis app
-and carousel motion lab. Set their URLs in `/etc/tokens/server.env`:
+The Tools page and shared navigation link to Material Motion Lab and Carousel
+playground. Both applications are deployed separately from the catalog. Set their URLs in `/etc/tokens/server.env`:
 
 ```dotenv
 TOKENS_MOTION_URL=/tools/motion/
@@ -295,6 +322,11 @@ Root-relative paths use the catalog hostname, outside its `/md3` collection
 path. Configure the corresponding Cloudflare Tunnel path routes before making
 the links public. The catalog does not host or proxy the tool applications.
 Restart the server after changing the URLs.
+
+`configure-public-origin` replaces `server.env` with the public-origin setting.
+Apply custom tool URLs after running it. The catalog deployment does not provide
+visitor isolation or browser-side video processing for Material Motion Lab; its Go
+server processes videos and stores projects on the host.
 
 ## Check a problem
 

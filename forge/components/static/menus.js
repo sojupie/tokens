@@ -12,7 +12,7 @@
  }
  if(typeof module!=='undefined')module.exports={menuIndex,submenuPosition};
  if(typeof document==='undefined')return;
- const pending=new WeakMap(),initialized=new WeakSet(),pointerOpen=new WeakMap();
+ const pending=new WeakMap(),initialized=new WeakSet(),pointerOpen=new WeakMap(),enabledActions=new WeakSet();
  // The FAB controller schedules its item springs before this listener copies them.
  document.addEventListener('beforetoggle',event=>{
   const menu=event.target;
@@ -49,10 +49,16 @@
  function open(trigger,keyboard,last=false){if(trigger.disabled||trigger.getAttribute?.('aria-disabled')==='true')return;const menu=panel(trigger);if(!menu.hasAttribute('popover'))return;clearTimeout(pending.get(trigger));menu.showPopover();position(menu);trigger.setAttribute('aria-expanded','true');if(keyboard){const list=items(menu);focus(menu,last?list.at(-1):list[0]);}}
  function sync(menu){const trigger=triggerFor(menu);if(!trigger)return;const visible=menu.matches(':popover-open');trigger.setAttribute('aria-expanded',String(visible));if(visible)position(menu);else{menu.removeAttribute('data-menu-activity');const parent=trigger.closest('[data-menu-panel]');if(parent){parent.removeAttribute('data-menu-covered');activity(parent);}}}
  function init(){for(const menu of document.querySelectorAll('[data-menu-example] [data-menu-panel]')){if(initialized.has(menu))continue;initialized.add(menu);const enabled=items(menu);for(const [index,item] of enabled.entries())item.tabIndex=index===0?0:-1;if(menu.hasAttribute('popover')){menu.addEventListener('toggle',()=>sync(menu));sync(menu);}}}
+ // Preserve activation eligibility before an application handler disables its
+ // command while starting asynchronous work.
+ document.addEventListener('click',event=>{
+  const item=event.target.closest?.('[data-menu-example] [data-menu-action]');
+  if(item&&!item.disabled&&item.getAttribute?.('aria-disabled')!=='true')enabledActions.add(event);
+ },true);
  document.addEventListener('click',event=>{
   const back=event.target.closest?.('[data-menu-back]');if(back){close(back.closest('[data-menu-panel]'),true);return;}
   const trigger=event.target.closest?.('[data-menu-submenu],[data-menu-open]');if(trigger){const menu=panel(trigger);if(menu.hasAttribute('popover')){const shown=event.detail>0?(pointerOpen.get(trigger)??menu.matches(':popover-open')):menu.matches(':popover-open');pointerOpen.delete(trigger);if(shown)close(menu,true);else open(trigger,true);}return;}
-  const item=event.target.closest?.('[data-menu-example] [data-menu-action]');if(!item||item.disabled||item.getAttribute('aria-disabled')==='true')return;
+  const item=event.target.closest?.('[data-menu-example] [data-menu-action]');if(!item||!enabledActions.has(event))return;
   const demo=item.closest('[data-menu-example]'),label=item.getAttribute('aria-label')||item.querySelector('.md-menu-item-text > span')?.textContent||item.textContent.trim();
   let message=label+' activated';
   const role=item.getAttribute('role'),menu=item.closest('[data-menu-panel]');

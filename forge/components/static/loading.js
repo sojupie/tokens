@@ -20,7 +20,7 @@
   if(typeof module!=='undefined')module.exports={loadingFrame,loadingPath};
   if(typeof document==='undefined')return;
   const script=document.currentScript,source=new URL('loading-shapes.json',script.src);
-  source.searchParams.set('v',script.dataset.shapesVersion);
+  if(script.dataset.shapesVersion)source.searchParams.set('v',script.dataset.shapesVersion);
   const entries=new Map(),reduced=matchMedia('(prefers-reduced-motion: reduce)');
   let geometry,pending,frame=0;
   function paint(element,entry,time) {

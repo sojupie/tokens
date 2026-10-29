@@ -5,7 +5,7 @@ templ specimenLoading(c componentCase) {
 	@useComponentAssets("progress")
 	<div class="md-progress-demo" data-loading-adaptive?={ c.State=="interactive" }>
 		<div { c.ProgressAttributes()... }>
-			<svg viewBox="0 0 1 1" aria-hidden="true"><g transform={ loadingRotation(c.Control) }><path d={ loadingInitialPath(c.Control) }></path></g></svg>
+			<svg width="38" height="38" viewBox="0 0 1 1" aria-hidden="true"><g transform={ loadingRotation(c.Control) }><path d={ loadingInitialPath(c.Control) }></path></g></svg>
 		</div>
 		if c.State=="interactive" && c.Control=="determinate" {
 			<div class="md-progress-control">@componentSpecimen(c.ProgressControl())

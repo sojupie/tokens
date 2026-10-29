@@ -51,6 +51,7 @@ templ subjectCardGrid(subjects []publish.SubjectView, thumbnails map[string]comp
 }
 
 templ subjectCard(subject publish.SubjectView, thumbnails map[string]componentCase, styles bool) {
+	@deferThumbnailStyles()
 	<li class="tokens-component-tile">
 		<div class="tokens-component-thumbnail">
 			if styles {

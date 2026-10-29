@@ -76,13 +76,13 @@ func TestHTMLPagesRenderComponentsAndStyles(t *testing.T) {
 			body := recorder.Body.String()
 			initial := strings.Index(body, "localStorage.getItem('tokens-theme')")
 			styles := strings.Index(body, `rel="stylesheet"`)
-			if initial < 0 || styles < initial || !strings.Contains(body, `<script src="`+staticURL("theme.js")+`" defer></script>`) {
+			if initial < 0 || styles < initial || !strings.Contains(body, `<link rel="stylesheet" href="`+staticURL("site.css")+`"`) || !strings.Contains(body, `<script src="`+staticURL("theme.js")+`" defer></script>`) {
 				t.Fatal("saved theme must be inline before styles; controls must be deferred")
 			}
-			if !strings.Contains(body, `src="`+staticURL("logo-250x250.webp")+`"`) {
-				t.Fatal("header must use the smaller WebP logo")
+			if !strings.Contains(body, `class="tokens-brand-logo"`) || !strings.Contains(body, `fill="var(--md-sys-color-tertiary,var(--tokens-logo-fallback))"`) {
+				t.Fatal("header must use the inline tertiary SVG logo")
 			}
-			for _, value := range []string{`<footer class="tokens-site-footer"`, `href="https://marmenlind.com"`, "Made by Olle Marmenlind", "Browse Material Design 3 tokens and track their changes."} {
+			for _, value := range []string{`<footer class="tokens-site-footer"`, `href="https://marmenlind.com"`, "Made by Olle Marmenlind", "Independent project. Not affiliated with Google."} {
 				if !strings.Contains(recorder.Body.String(), value) {
 					t.Fatalf("page footer does not contain %q", value)
 				}

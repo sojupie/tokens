@@ -148,7 +148,7 @@
     const group=button.closest('.md-button-group');if(group?.dataset?.control!=='standard')return;
     let state=widthGroups.get(group);
     if(!state){
-      const items=[...group.querySelectorAll(':scope > .md-button')];
+      const items=[...group.querySelectorAll(':scope > .md-button,:scope > .md-icon-button')];
       state={items,base:items.map(item=>item.getBoundingClientRect().width),original:items.map(item=>item.style.width),limits:items.map(item=>{const s=getComputedStyle(item);return Math.min(parseFloat(s.paddingInlineStart),parseFloat(s.paddingInlineEnd));}),animations:[],revision:0};
       widthGroups.set(group,state);
     }
@@ -179,7 +179,7 @@
   const widthGallery=new WeakSet();
   function initializeWidthGroups(){
     for(const group of document.querySelectorAll('.md-button-group[data-control="standard"][data-component-state="pressed"]'))if(!widthGallery.has(group)){
-      widthGallery.add(group);const button=group.querySelectorAll(':scope > .md-button')[1];
+      widthGallery.add(group);const button=group.querySelectorAll(':scope > .md-button,:scope > .md-icon-button')[1];
       widthGroup(button,true);const state=widthGroups.get(group);for(const animation of state?.animations||[])animation.finish();
     }
   }

@@ -19,11 +19,15 @@ templ DrawerToggle(target string, label string) {
 	}
 }
 
-templ Drawer(id string, modal bool, label string) {
+templ Drawer(id string, modal bool, label string, heading ...templ.Component) {
 	if modal {
 		<dialog id={ id } class="md-navigation md-navigation-drawer" data-variant="modal" data-navigation-modal data-navigation-group aria-label={ label }>
 			<div class="md-navigation-header">
+ if len(heading) > 0 {
+ @heading[0]
+ } else {
  <h3>{ label }</h3>
+ }
  @Button(templ.Attributes{"class":"md-icon-button md-standard-icon-button", "data-navigation-close":"", "aria-label":"Close navigation"}) {
  <svg viewBox="0 -960 960 960" width="24" height="24" fill="currentColor" aria-hidden="true"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"></path></svg>
  }
@@ -59,20 +63,21 @@ templ SelectOption(id string, value string, label string, selected bool) {
 	<li role="presentation"><div class="md-menu-item" id={ id } role="option" aria-selected={ selected } data-field-option={ label } data-field-value={ value }><span data-option-label>{ label }</span><span data-slot="trailing-icon" aria-hidden="true"><svg viewBox="0 -960 960 960" fill="currentColor" focusable="false"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"></path></svg></span></div></li>
 }
 
-templ Select(id string, label string, options []Option) {
+templ Select(id string, label string, options []Option, selected ...string) {
+    {{ initial := selectInitial(options, selected) }}
 	<div class="md-chip-select" data-field-example data-populated="true">
-		<button type="button" class="md-filter-chip" id={ "filter-" + id } role="combobox" aria-label={ label } aria-expanded="false" aria-haspopup="listbox" aria-controls={ id + "-options" } aria-autocomplete="none" data-field-combo data-field-select><span class="filter-label">{ label+":" }</span><span data-field-display></span><span class="md-chip-icon" data-slot="trailing-icon" aria-hidden="true"><svg viewBox="0 -960 960 960" fill="currentColor" focusable="false"><path d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z"></path></svg></span></button>
-		<input type="hidden" data-field-value/>
+		<button type="button" class="md-filter-chip" id={ "filter-" + id } role="combobox" aria-label={ label } aria-expanded="false" aria-haspopup="listbox" aria-controls={ id + "-options" } aria-autocomplete="none" data-field-combo data-field-select><span class="filter-label">{ label+":" }</span><span data-field-display>{ initial.Label }</span><span class="md-chip-icon" data-slot="trailing-icon" aria-hidden="true"><svg viewBox="0 -960 960 960" fill="currentColor" focusable="false"><path d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z"></path></svg></span></button>
+		<input type="hidden" data-field-value value={ initial.Value }/>
 		<select id={ id } aria-label={ label } hidden>
 			for _, option := range options {
-				<option value={ option.Value }>{ option.Label }</option>
+				<option value={ option.Value } selected?={ option.Value == initial.Value }>{ option.Label }</option>
 			}
 		</select>
 		<div class="md-field-menu md-menu" data-variant="standard" data-orientation="vertical" id={ id + "-options" } role="listbox" aria-label={ label } popover="auto">
 			<section>
 				<ul role="presentation">
 					for _, option := range options {
-						@SelectOption(id+"-option-"+option.Value, option.Value, option.Label, false)
+						@SelectOption(id+"-option-"+option.Value, option.Value, option.Label, option.Value == initial.Value)
 					}
 				</ul>
 			</section>
@@ -132,6 +137,18 @@ templ ListItem(attrs templ.Attributes, label string) {
 	<button type="button" class="md-list-item" { attrs... }><span class="md-list-body"><span class="md-list-label">{ label }</span></span></button>
 }
 
+templ ProgressIndicator(attrs templ.Attributes) {
+	<div class="md-progress" role="progressbar" { attrs... }>
+		<svg width="48" height="4" aria-hidden="true"><path class="md-progress-track"></path><path class="md-progress-active"></path><path class="md-progress-active md-progress-second"></path><rect class="md-progress-stop"></rect></svg>
+	</div>
+}
+
+templ LoadingIndicator(attrs templ.Attributes) {
+	<div class="md-loading" role="progressbar" data-control="indeterminate" data-variant="uncontained" { attrs... }>
+		<svg width="38" height="38" viewBox="0 0 1 1" aria-hidden="true"><g transform="rotate(90 .5 .5)"><path d={ initialLoadingPath }></path></g></svg>
+	</div>
+}
+
 templ Dialog(id string, titleID string, title string, class string, actions templ.Component) {
 	<dialog id={ id } class={ class } data-variant="basic" data-dialog-surface aria-labelledby={ titleID }>
 		<header class="md-basic-header"><h2 id={ titleID }>{ title }</h2></header>
@@ -159,4 +176,10 @@ templ Menu(id string, label string, main bool) {
 		<section><ul role="presentation">{ children... }
 </ul></section>
 	</div>
+}
+
+func selectInitial(options []Option, selected []string) Option {
+ if len(selected) > 0 { for _, option := range options { if option.Value == selected[0] { return option } } }
+ if len(options) > 0 { return options[0] }
+ return Option{}
 }

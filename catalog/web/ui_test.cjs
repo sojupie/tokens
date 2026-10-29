@@ -616,3 +616,20 @@ test('returning to a gallery restores its saved offset instantly without restori
  assert.equal(scrolls.length,1);assert.equal(scrolls[0].top,780);assert.equal(scrolls[0].behavior,'instant');
  events['htmx:afterSettle']({detail:{requestConfig:{boosted:false}}});await Promise.resolve();assert.equal(scrolls.length,1);
 });
+
+test('thumbnail reveal waits for component styles and a measured frame',()=>{
+ const events={},frames=[],attributes=new Set(),scale=[];
+ const thumbnail={style:{setProperty:(name,value)=>scale.push([name,value])},getBoundingClientRect:()=>({width:270}),setAttribute:name=>attributes.add(name),removeAttribute:name=>attributes.delete(name)};
+ runScript('site-ui.js',{
+  document:{readyState:'loading',addEventListener:(name,fn)=>events[name]=fn,querySelectorAll:()=>[thumbnail]},
+  window:{addEventListener(){}},requestAnimationFrame:fn=>frames.push(fn)
+ });
+ assert.equal(attributes.has('data-preview-ready'),false);
+ events['tokens:styles-ready']();
+ assert.deepEqual(scale,[['--_thumbnail-scale','0.75']]);
+ assert.equal(attributes.has('data-preview-ready'),false);
+ frames.shift()();assert.equal(attributes.has('data-preview-ready'),true);
+ attributes.clear();events['tokens:styles-error']();
+ assert.equal(attributes.has('data-preview-error'),true);
+ assert.equal(attributes.has('data-preview-ready'),false);
+});

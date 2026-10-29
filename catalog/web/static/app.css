@@ -1,4 +1,3 @@
-@import url("site.css");
 /* Self-hosted Roboto from Google Fonts v51; license in static/fonts/OFL.txt.
    The current Web/3P/Static font tokens select this family. */
 @font-face { font-family:Roboto; font-style:normal; font-weight:400 700; font-display:swap; src:url('fonts/roboto-latin-ext.woff2') format('woff2'); unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C4,U+2113,U+2C60-2C7F,U+A720-A7FF; }
@@ -48,7 +47,13 @@ button:not(:disabled), [role=button]:not([aria-disabled=true]) { cursor:pointer;
 .tokens-audience-grid, .tokens-handoff-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr)); gap:var(--md-sys-measurement-space100); }
 /* Layout belongs to the page; appearance belongs to the Material variant. */
 .tokens-card-content { display:flex; min-width:0; flex-direction:column; align-items:flex-start; gap:var(--md-sys-measurement-space150); }
-.tokens-tool-image { display:block; inline-size:100%; block-size:auto; border-radius:var(--md-sys-shape-corner-medium); }
+/* Tool destinations use the same tiles as component and style listings. */
+.tokens-tools { gap:var(--md-sys-measurement-space300); }
+.tokens-tools-heading { display:grid; gap:var(--md-sys-measurement-space150); }
+/* Two feature destinations retain catalog tile anatomy at a larger scale. */
+.tokens-tools .tokens-card-grid { grid-template-columns:repeat(auto-fit,minmax(min(100%,22rem),1fr)); gap:var(--md-sys-measurement-space200); }
+.tokens-tools .tokens-component-tile-link { padding:var(--md-sys-measurement-space300); gap:var(--md-sys-measurement-space150); }
+.tokens-tool-image { display:block; inline-size:100%; block-size:100%; object-fit:contain; }
 .tokens-code-block { width:100%; margin:0; white-space:pre-wrap; overflow-wrap:anywhere; padding:var(--md-sys-measurement-space150); font:inherit; line-height:var(--md-sys-typescale-body-medium-line-height); }
 .tokens-copy-status { min-height:var(--md-sys-typescale-body-medium-line-height); color:var(--md-sys-color-on-surface-variant); }
 
@@ -85,6 +90,17 @@ button:not(:disabled), [role=button]:not([aria-disabled=true]) { cursor:pointer;
 #subject-list { margin-block-start:var(--md-sys-measurement-space300); }
 .tokens-component-thumbnail { position:relative;display:flex; align-items:center; justify-content:center; aspect-ratio:8 / 5; flex:none; overflow:hidden; border-radius:var(--md-sys-shape-corner-none) var(--md-sys-shape-corner-none) var(--md-sys-shape-corner-extra-large) var(--md-sys-shape-corner-extra-large); background:var(--md-sys-color-secondary-container); color:var(--md-sys-color-on-secondary-container); pointer-events:none; }
 .tokens-component-thumbnail > span { color:inherit; }
+/* Keep unfinished specimen geometry indistinct without moving the card or label. */
+@media (scripting: enabled) {
+  .tokens-component-thumbnail:not([data-preview-ready]) .tokens-component-thumbnail-scene { filter:blur(18px); opacity:.65; }
+}
+.tokens-component-thumbnail[data-preview-error] .tokens-component-thumbnail-scene { visibility:hidden; }
+.tokens-component-thumbnail[data-preview-error]::after { content:"Preview unavailable"; font:var(--md-sys-typescale-body-small); }
+.tokens-component-thumbnail-scene { transition:filter 160ms ease-out,opacity 160ms ease-out; }
+@media (prefers-reduced-motion: reduce) {
+  .tokens-component-thumbnail-scene { transition:none; }
+}
+
 /* Thumbnail dimensions and app frames are illustration layout. Component
    dimensions, colors and states continue to use Forge's generated styles. */
 .tokens-component-thumbnail-scene { position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(var(--_thumbnail-scale,1)); display:flex; align-items:center; justify-content:center; width:360px; height:225px; flex:none; pointer-events:none; color:var(--md-sys-color-on-secondary-container); }

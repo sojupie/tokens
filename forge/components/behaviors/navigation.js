@@ -28,7 +28,7 @@
     );
     const frame = group.closest(".md-rail-frame");
     if (frame?.dataset.modalOpen === "true") setRailExpanded(frame, false);
-    group.closest("dialog[data-navigation-modal]")?.close();
+    group.closest("dialog[data-navigation-modal]:modal")?.close();
   }
   document.addEventListener("keydown", (event) => {
     const button = event.target.closest?.("[data-navigation-item]");
@@ -436,7 +436,7 @@
   else initRailFrames();
   let drawerSwipe;
   document.addEventListener("pointerdown", (event) => {
-    const drawer = event.target.closest?.("[data-navigation-modal][open]");
+    const drawer = event.target.closest?.("[data-navigation-modal]:modal");
     if (!drawer || event.pointerType !== "touch" || !event.isPrimary) return;
     const box = drawer.getBoundingClientRect();
     if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) return;
@@ -471,7 +471,7 @@
         button.setAttribute("aria-expanded", "true");
         drawer.addEventListener("close", () => {
           button.setAttribute("aria-expanded", "false");
-          if (button.isConnected) button.focus({preventScroll:true});
+          if (!drawer.open && button.isConnected && button.getClientRects().length) button.focus({preventScroll:true});
         }, {once:true});
         drawer.showModal();
       }

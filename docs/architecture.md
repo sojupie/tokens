@@ -88,6 +88,20 @@ startup. Older asset manifests keep the complete theme as a fallback.
 Catalog uses native HTML/CSS/JavaScript components and shared Go templ controls.
 Forge does not publish a Web Components package.
 
+## Shared site and tools
+
+`forge/site/` owns the shared navigation, appearance controls and utility footer.
+Catalog and Material Motion Lab render its Go templates. `tokens site-shell` exports
+the same HTML and assets for the static Carousel playground. Desktop navigation
+is persistent; narrower layouts use a modal navigation drawer. The footer uses
+the host page background.
+
+The Tools page links to separately deployed applications; Catalog does not serve
+or proxy them. Material Motion Lab uses a Go server with GoCV and FFmpeg and stores
+projects on that host. Carousel playground is a static site with browser-side
+recording and diagnostic exports. Neither tool is part of the token publication
+pipeline.
+
 ## Design decisions
 
 - Capture records pages, payloads and failures separately, so a successful page

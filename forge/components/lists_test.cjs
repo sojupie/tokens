@@ -5,6 +5,28 @@ const {runInNewContext}=require('node:vm');
 const out={exports:{}};
 runInNewContext(readFileSync(`${__dirname}/static/lists.js`,'utf8'),{module:out});
 const {revealSnap,moveIndex}=out.exports;
+test('standard list focus follows both container corners on a sole row',()=>{
+ const css=require('postcss').parse(readFileSync(`${__dirname}/styles/lists.css`,'utf8'));
+ const edges={};let shape;
+ css.walkRules(rule=>{
+  if(rule.selector.endsWith('> li:first-child'))rule.walkDecls('--_list-edge-top',d=>edges.top=d.value);
+  if(rule.selector.endsWith('> li:last-child'))rule.walkDecls('--_list-edge-bottom',d=>edges.bottom=d.value);
+  if(rule.selector.includes('> li > .md-list-row > .md-list-item'))rule.walkDecls('--_list-item-shape',d=>shape=d.value);
+ });
+ assert.deepEqual(edges,{top:'var(--_list-shape)',bottom:'var(--_list-shape)'});
+ assert.equal((shape.match(/--_list-edge-top/g)||[]).length,2);
+ assert.equal((shape.match(/--_list-edge-bottom/g)||[]).length,2);
+});
+test('list trailing actions reserve space without splitting the item surface',()=>{
+ const css=require('postcss').parse(readFileSync(`${__dirname}/styles/lists.css`,'utf8'));
+ let padding=false,position=false,fixedRow=false;
+ css.walkRules(rule=>{
+  if(rule.selector.includes('[data-control="actions"]'))rule.walkDecls('padding-inline-end',()=>padding=true);
+  if(rule.selector.split(',').some(s=>s.trim()==='.md-list-action'))rule.walkDecls('position',d=>position||=d.value==='absolute');
+  if(rule.selector==='.md-list > li')rule.walkDecls('flex',d=>fixedRow=d.value==='none');
+ });
+ assert.ok(padding&&position&&fixedRow);
+});
 test('list reveal uses half the action width and follows writing direction',()=>{
  assert.equal(revealSnap(-35,72),false);assert.equal(revealSnap(-36,72),true);assert.equal(revealSnap(36,72,true),true);assert.equal(revealSnap(-36,72,true),false);
 });

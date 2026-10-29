@@ -21,7 +21,9 @@
 - [DTCG exports and CSS](reference/dtcg.md)
 - [Generated buttons](reference/buttons.md)
 - [Generated components](reference/components.md)
-- [Toolbar source measurements and conflicts](reference/toolbar-spec.md)
+- [Toolbar source measurements and implementation](reference/toolbar-spec.md)
+- [Documentation capture](reference/guidance-capture.md)
+- [Component guidance curation and assessment](reference/guidance-curation.md)
 - [API and agent access](reference/agents.md)
 
 ## Operations

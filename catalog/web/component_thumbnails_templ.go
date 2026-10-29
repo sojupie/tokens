@@ -89,7 +89,7 @@ func componentThumbnail(c componentCase) templ.Component {
 				var templ_7745c5c3_Var2 string
 				templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(label)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/component_thumbnails.templ`, Line: 22, Col: 24}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `component_thumbnails.templ`, Line: 22, Col: 24}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 				if templ_7745c5c3_Err != nil {
@@ -245,7 +245,7 @@ func componentThumbnail(c componentCase) templ.Component {
 				var templ_7745c5c3_Var3 string
 				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(label)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/component_thumbnails.templ`, Line: 51, Col: 177}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `component_thumbnails.templ`, Line: 51, Col: 177}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 				if templ_7745c5c3_Err != nil {
@@ -540,7 +540,7 @@ func componentThumbnail(c componentCase) templ.Component {
 				var templ_7745c5c3_Var4 string
 				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(label)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/component_thumbnails.templ`, Line: 106, Col: 174}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `component_thumbnails.templ`, Line: 106, Col: 174}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 				if templ_7745c5c3_Err != nil {
@@ -553,7 +553,7 @@ func componentThumbnail(c componentCase) templ.Component {
 				var templ_7745c5c3_Var5 string
 				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs([]string{"Updated today", "8 saved articles", "Shared with Alex"}[i])
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/component_thumbnails.templ`, Line: 106, Col: 284}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `component_thumbnails.templ`, Line: 106, Col: 284}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 				if templ_7745c5c3_Err != nil {
@@ -778,7 +778,7 @@ func componentThumbnail(c componentCase) templ.Component {
 				var templ_7745c5c3_Var6 string
 				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(label)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/component_thumbnails.templ`, Line: 139, Col: 185}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `component_thumbnails.templ`, Line: 139, Col: 185}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 				if templ_7745c5c3_Err != nil {

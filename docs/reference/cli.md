@@ -198,3 +198,32 @@ publication. Startup checks its database, theme and embedded component checksums
 Without this flag, local publications can use their optional `assets/` directory.
 See [DTCG exports and CSS](dtcg.md) and
 [deployment](../operations/deployment.md#generated-publication-assets).
+
+## Documentation capture and assessment
+
+`tokens guidance --list` lists component documentation URLs without opening
+Chromium. `tokens guidance --component sliders` captures the selected component's
+overview, specifications, guidelines and accessibility pages. Captures stay in
+`snapshots/material-guidance/` outside Git. See [documentation capture](guidance-capture.md).
+
+`tokens guidance baseline` snapshots the working implementation for assessments.
+`tokens guidance validate` checks canonical guidance files and compares retained
+IDs and append-only history against `HEAD` by default. Use `--against origin/main`
+to compare against the branch base, or `--file PATH` for one component. Validation
+is offline and does not execute the recorded evidence. See [guidance curation](guidance-curation.md).
+
+## Shared site shell
+
+```sh
+./bin/tokens site-shell --out /tmp/catalog-shell --catalog https://tokencatalog.dev/md3
+```
+
+This exports the shared header and footer HTML, site CSS and JavaScript, and logo
+for the static Carousel playground. The exported navigation marks that tool as
+current. Hosts also load the Forge navigation styles and runtime described in
+[development](../development.md#templates-and-assets).
+
+`serve --motion-url URL --motion-lab-url URL` sets the two tool destinations.
+The corresponding environment variables are `TOKENS_MOTION_URL` and
+`TOKENS_MOTION_LAB_URL`. Each accepts an absolute HTTP(S) URL or a root-relative
+path. These settings change links; they do not host the applications.

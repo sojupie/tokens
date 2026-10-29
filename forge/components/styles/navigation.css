@@ -214,6 +214,9 @@
   letter-spacing: var(--_nav-item-large-badge-label-tracking);
 }
 .md-navigation-drawer hr {
+  align-self: stretch;
+  flex: none;
+  margin-inline: 0;
   border: 0;
   border-top: var(--md-comp-divider-thickness) solid var(--_nav-divider);
   margin-block: var(--md-sys-measurement-space100);
@@ -309,4 +312,4 @@
 .md-navigation-header { display:flex; align-items:center; flex:none; }
 .md-navigation-header > h3 { flex:1; min-inline-size:0; }
 .md-navigation-drawer a.md-nav-item { text-decoration:none; }
-:root:has(dialog[data-navigation-modal][open]) { overflow:hidden; }
+:root:has(dialog[data-navigation-modal]:modal) { overflow:hidden; }

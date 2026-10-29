@@ -30,8 +30,8 @@ func (server *Server) toolDestinations() []toolDestination {
 		return target
 	}
 	return []toolDestination{
-		{"Video motion analysis", "Track movement in a recording, compare videos, and measure motion against reference curves.", external(server.motionURL), "tool-motion.png", "Video preview, tracking timeline and measured displacement curve in the motion analysis workspace."},
-		{"Carousel motion lab", "Help fix jerky carousel settling on iOS. Compare implementations and record tests on your device.", external(server.motionLabURL), "tool-carousel-lab.png", "Carousel implementations and interaction recording controls in the carousel playground."},
+		{"Material Motion Lab", "Measure how an interface moves in a recording. Compare its timing and motion with another video or Material Design 3 reference curves.", external(server.motionURL), "tool-motion.svg", "A tracked carousel card in a video, with its measured width change compared against MD3 standard easing."},
+		{"Carousel playground", "Help investigate uneven carousel motion after dragging on iOS. Try different implementations on your device and record how they settle.", external(server.motionLabURL), "tool-carousel-lab.svg", "Full recorded returns to rest for the same carousel baseline: about 304 ms on PC and 739 ms on iOS."},
 	}
 }
 func (server *Server) handleTools(w http.ResponseWriter, r *http.Request) {

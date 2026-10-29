@@ -1,21 +1,25 @@
 package web
 
 templ toolsPage() {
- @layout("Tools") {
-  @useComponentAssets("card")
-  <section class="tokens-section" aria-labelledby="tools-heading">
-   <h1 class="md-typescale-headline-large" id="tools-heading">Tools</h1>
-   <p class="md-typescale-body-large">Inspect interaction behavior and measure motion.</p>
-   <div class="tokens-audience-grid">
-    for _, tool := range metadata(ctx).Tools {
-     <article class="md-card md-outlined-card tokens-card-content">
-      <img class="tokens-tool-image" src={staticURL(tool.Image)} alt={tool.ImageAlt} width="1224" height="816" decoding="async"/>
-      <h2 class="md-typescale-title-large">{tool.Name}</h2>
-      <p class="md-typescale-body-medium">{tool.Description}</p>
-      <a class="md-button md-outlined-button" href={templ.SafeURL(tool.URL)} hx-boost="false">{"Open " + tool.Name}</a>
-     </article>
-    }
-   </div>
-  </section>
- }
+	@layout("Tools") {
+		<section class="tokens-section tokens-tools" aria-labelledby="tools-heading">
+			<div class="tokens-tools-heading">
+				<h1 class="md-typescale-headline-medium" id="tools-heading">Tools</h1>
+				<p class="md-typescale-body-large">Inspect interaction behavior and measure motion.</p>
+			</div>
+			<ul class="tokens-card-grid">
+				for _, tool := range metadata(ctx).Tools {
+					<li class="tokens-component-tile">
+						<div class="tokens-component-thumbnail">
+							<img class="tokens-tool-image" src={ staticURL(tool.Image) } alt={ tool.ImageAlt } width="1200" height="750" decoding="async"/>
+						</div>
+						<a class="tokens-component-tile-link" href={ templ.SafeURL(tool.URL) } hx-boost="false">
+							<span class="md-typescale-title-medium">{ tool.Name }</span>
+							<small class="md-typescale-body-medium">{ tool.Description }</small>
+						</a>
+					</li>
+				}
+			</ul>
+		</section>
+	}
 }

@@ -127,3 +127,10 @@
 .md-button-group[data-control="connected"] > .md-button {
   flex: 1;
 }
+
+/* Standard groups may mix labeled and icon-only commands. */
+.md-button-group[data-control="standard"] > .md-icon-button {
+ --_icon-height:var(--_group-height);
+ min-inline-size:0;
+ box-sizing:border-box;
+}

@@ -40,8 +40,8 @@ site and its examples.
 The gallery and playground use the same Forge assets. Specimen markup,
 component styling and browser behavior have separate source files; see the
 [component authoring map](docs/architecture.md#component-authoring) to follow a
-component from its example to its token bindings. These components are currently
-part of the site; a standalone library is planned separately.
+component from its example to its token bindings. These components ship with the site and are shared with the motion tools through
+the Forge package in this repository. There is no standalone package release.
 
 ## Use with your agent
 

@@ -18,8 +18,9 @@ import (
 // travel with that region during HTMX swaps, including playground-only updates.
 type componentAssetsKey struct{}
 type componentAssets struct {
-	modules map[string]bool
-	server  *Server
+	modules     map[string]bool
+	server      *Server
+	deferStyles bool
 }
 
 func useComponentAssets(name string) templ.Component {
@@ -32,6 +33,17 @@ func useComponentAssets(name string) templ.Component {
 			return fmt.Errorf("unknown component module: %s", name)
 		}
 		assets.modules[name] = true
+		return nil
+	})
+}
+
+// Gallery artwork can stay blurred while its styles arrive. Detail pages retain
+// blocking styles so their interactive controls never paint unfinished.
+func deferThumbnailStyles() templ.Component {
+	return templ.ComponentFunc(func(ctx context.Context, _ io.Writer) error {
+		if assets, ok := ctx.Value(componentAssetsKey{}).(*componentAssets); ok {
+			assets.deferStyles = true
+		}
 		return nil
 	})
 }
@@ -82,6 +94,18 @@ var componentModuleNames = sync.OnceValue(func() map[string]bool {
 
 func (server *Server) componentAssetLinks(assets *componentAssets) ([]byte, error) {
 	var links strings.Builder
+	writeStylesheet := func(url string, pageTheme, blocking bool) {
+		url = html.EscapeString(url)
+		fmt.Fprintf(&links, `<link rel="stylesheet" href="%s" data-component-stylesheet`, url)
+		if pageTheme {
+			links.WriteString(` data-page-theme`)
+		}
+		if blocking {
+			links.WriteString(`>`)
+			return
+		}
+		fmt.Fprintf(&links, ` media="print" onload="this.media='all'" onerror="this.dataset.stylesheetError=''"><noscript><link rel="stylesheet" href="%s"></noscript>`, url)
+	}
 	for _, name := range componentModuleOrder() {
 		if name == "common" || !assets.modules[name] {
 			continue
@@ -91,9 +115,10 @@ func (server *Server) componentAssetLinks(assets *componentAssets) ([]byte, erro
 			if !ok {
 				return nil, fmt.Errorf("missing component theme: %s; rebuild token assets", name)
 			}
-			fmt.Fprintf(&links, `<link rel="stylesheet" href="/themes/%s.css?v=%s" data-component-stylesheet data-page-theme>`, name, assetVersion(theme))
+			writeStylesheet(fmt.Sprintf("/themes/%s.css?v=%s", name, assetVersion(theme)), true, !assets.deferStyles || name == "navigation")
 		}
-		fmt.Fprintf(&links, `<link rel="stylesheet" href="%s" data-component-stylesheet>`, html.EscapeString(staticURL("bundles/"+name+".css")))
+		// Navigation is initial shell layout; optional specimens can arrive later.
+		writeStylesheet(staticURL("bundles/"+name+".css"), false, !assets.deferStyles || name == "navigation")
 	}
 	return []byte(links.String()), nil
 }

@@ -39,3 +39,49 @@ test('source circular shapes resolve to infinity while explicit zero remains zer
  assert.equal(progressNumber('8px'),8);
  assert.equal(progressNumber('',4),4);
 });
+
+test('programmatic progress and mode changes repaint without slider input',()=>{
+ let changed;
+ const node=()=>({attrs:{},style:{},setAttribute(k,v){this.attrs[k]=v}});
+ const track=node(),active=node(),second=node(),stop=node(),svg=node();
+ const attributes={'aria-valuenow':'10'};
+ const element={dataset:{variant:'linear',shape:'flat',control:'determinate'},clientWidth:240,clientHeight:4,isConnected:true,
+  getAttribute:k=>attributes[k],closest:()=>null,
+  querySelector:s=>({svg,'.md-progress-track':track,'.md-progress-stop':stop}[s]),querySelectorAll:()=>[active,second]};
+ const values={'--_progress-thickness':'4px','--_progress-shape':'2px','--_progress-track-shape':'2px','--_progress-gap':'4px'};
+ runInNewContext(readFileSync(`${__dirname}/static/progress.js`,'utf8'),{
+  document:{hidden:false,querySelectorAll:()=>[element],addEventListener(){}},
+  getComputedStyle:()=>({getPropertyValue:k=>values[k]||'0'}),performance:{now:()=>0},
+  matchMedia:()=>({matches:true,addEventListener(){}}),
+  ResizeObserver:class{observe(){}},IntersectionObserver:class{observe(){}},
+  MutationObserver:class{constructor(fn){changed=fn}observe(){}disconnect(){}},
+ });
+ const before=active.attrs.d;
+ attributes['aria-valuenow']='75';changed();assert.notEqual(active.attrs.d,before);
+ const determinate=active.attrs.d;
+ element.dataset.control='indeterminate';changed();assert.notEqual(active.attrs.d,determinate);
+});
+
+test('circular waveform rotates with its active arc instead of sliding through it',()=>{
+ const g={width:52,height:52,thickness:8,circular:true,amplitude:1.6,wavelength:15};
+ const points=p=>[...p.matchAll(/[ML]([\d.-]+),([\d.-]+)/g)].map(m=>[+m[1],+m[2]]);
+ const a=points(progressPath(0,.4,g,.3)),b=points(progressPath(.25,.65,g,.3));
+ assert.equal(a.length,b.length);
+ for(let i=0;i<a.length;i++) {
+  assert.ok(Math.abs(b[i][0]-(52-a[i][1]))<.002);
+  assert.ok(Math.abs(b[i][1]-a[i][0])<.002);
+ }
+ // The track reaches the outer circle rather than shrinking to the wave's mean.
+ const track=points(progressPath(0,1,g,0,false));
+ assert.equal(track[0][1],4);
+});
+
+// AndroidX keyframe easing belongs to the interval after the named frame.
+test('circular sweep and turns follow reference keyframe intervals',()=>{
+ const [start,end]=progressSegments(150,true)[0];
+ assert.ok(Math.abs(start-.2)<.000001);
+ assert.ok(Math.abs((end-start)-(.1+.77*.05))<.000001);
+ const [a,b]=progressSegments(1500,true)[0];
+ assert.ok(Math.abs((b-a)-.485)<.000001);
+ assert.ok(Math.abs((progressSegments(3000,true)[0][1]-progressSegments(3000,true)[0][0])-.87)<.000001);
+});

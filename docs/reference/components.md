@@ -4,6 +4,12 @@ Forge generates the remaining component families used by the catalog from the
 captured Material token sets. Common buttons have their own
 [reference](buttons.md).
 
+The sections below describe implementation contracts and known limits. Commands
+and browser fixtures provide checks to run against the current build; their
+presence is not a claim that every configuration has been verified. Source-guidance
+assessments and their exact revisions live in the canonical component
+[checks files](guidance-curation.md).
+
 | Family | Implemented configurations |
 | --- | --- |
 | Cards | Elevated, filled, and outlined; enabled, hover, focus, press, drag, and disabled states |
@@ -522,14 +528,17 @@ mode adds a range input for determinate progress.
 
 Source tokens supply colors, thickness, circular size, wave amplitude and
 wavelength, track gaps, and linear end stops. The renderer samples SVG paths and
-rounds the circular wave count to make the seam continuous. Thick circular
+rounds the circular wave count to make the seam continuous. The flat circular
+track uses the outer radius. The wave travels relative to the rotating active
+arc, with cap spacing taken out of the track. Thick circular
 previews use the thick size when the wave option is selected.
 
 Animation uses timing adapted from AndroidX Material 3: a 1,750 ms linear cycle
 and a 6,000 ms circular cycle. Wave travel, SVG geometry, and the preview's linear
 length are renderer rules. Motion pauses outside the viewport and in hidden tabs.
 Reduced-motion previews show a stationary segment. Catalog thumbnails remain
-stationary. These animation rules live in `forge/components/static/progress.js`;
+stationary. SVGs have intrinsic dimensions so late styles cannot expand their
+first frame to the browser default SVG size. These animation rules live in `forge/components/static/progress.js`;
 the CSS usage report covers CSS declarations only.
 
 ## Loading indicators
@@ -1200,7 +1209,7 @@ updates. Item shapes, colors and states continue to use the captured tokens.
 Mouse release scrolls smoothly to the nearest stop before restoring native
 snapping. Reduced-motion mode settles immediately.
 
-## Date picker review
+## Date picker input and layout
 
 Interactive examples use outlined date fields with a calendar icon. Typed values
 use `YYYY-MM-DD`, with validation for real dates, the supported 1900–2100 range,

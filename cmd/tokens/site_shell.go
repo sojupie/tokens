@@ -22,13 +22,19 @@ func runSiteShell(args []string) error {
 	}
 	config := site.Default()
 	config.Catalog = strings.TrimRight(*origin, "/")
-	config.Logo = "site-logo.webp"
-	for _, name := range []string{"site.css", "site.js", "logo-250x250.webp"} {
+	config.ActiveTool = config.Tools[1].URL
+	for _, name := range []string{"site.css", "site.js", "logo.svg", "logo-250x250.png", "logo-250x250.webp"} {
 		data, err := site.Files.ReadFile(name)
 		if err != nil {
 			return err
 		}
 		target := name
+		if name == "logo.svg" {
+			target = "site-logo.svg"
+		}
+		if name == "logo-250x250.png" {
+			target = "site-logo.png"
+		}
 		if name == "logo-250x250.webp" {
 			target = "site-logo.webp"
 		}

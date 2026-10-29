@@ -9,7 +9,9 @@ import (
 	"strings"
 )
 
-func acceptsGzip(r *http.Request) bool {
+func acceptsGzip(r *http.Request) bool { return acceptsEncoding(r, "gzip") }
+
+func acceptsEncoding(r *http.Request, encoding string) bool {
 	explicit, wildcard := -1.0, -1.0
 	for _, part := range strings.Split(r.Header.Get("Accept-Encoding"), ",") {
 		name, params, err := mime.ParseMediaType(strings.TrimSpace(part))
@@ -23,7 +25,7 @@ func acceptsGzip(r *http.Request) bool {
 				continue
 			}
 		}
-		if strings.EqualFold(name, "gzip") {
+		if strings.EqualFold(name, encoding) {
 			explicit = max(explicit, q)
 		} else if name == "*" {
 			wildcard = max(wildcard, q)

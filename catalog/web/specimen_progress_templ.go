@@ -41,7 +41,7 @@ func specimenProgress(c componentCase) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "><svg aria-hidden=\"true\"><path class=\"md-progress-track\"></path><path class=\"md-progress-active\"></path><path class=\"md-progress-active md-progress-second\"></path><rect class=\"md-progress-stop\"></rect></svg></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "><svg width=\"48\" height=\"4\" aria-hidden=\"true\"><path class=\"md-progress-track\"></path><path class=\"md-progress-active\"></path><path class=\"md-progress-active md-progress-second\"></path><rect class=\"md-progress-stop\"></rect></svg></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

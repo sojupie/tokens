@@ -6,6 +6,22 @@
   // HTML specimens avoid Safari foreignObject compositing and clipping bugs.
   const thumbnailSizes=new ResizeObserver(entries=>{for(const {target,contentRect} of entries)target.style.setProperty("--_thumbnail-scale",String(contentRect.width/360));});
   const thumbnails=new WeakSet();
+  // Styles and measured scale must both be settled before removing the blur.
+  function settleThumbnails(failed=false){
+    const pending=[...document.querySelectorAll(".tokens-component-thumbnail:not([data-preview-ready])")];
+    for(const thumbnail of pending){
+      thumbnail.style.setProperty("--_thumbnail-scale",String(thumbnail.getBoundingClientRect().width/360));
+      if(failed)thumbnail.setAttribute("data-preview-error","");
+    }
+    if(!failed)requestAnimationFrame(()=>{
+      for(const thumbnail of pending){
+        thumbnail.removeAttribute("data-preview-error");
+        thumbnail.setAttribute("data-preview-ready","");
+      }
+    });
+  }
+  document.addEventListener("tokens:styles-ready",()=>settleThumbnails());
+  document.addEventListener("tokens:styles-error",()=>settleThumbnails(true));
   document.addEventListener("htmx:beforeCleanupElement",event=>{const node=event.detail.elt;if(node.matches?.(".tokens-component-thumbnail"))thumbnailSizes.unobserve(node);for(const thumbnail of node.querySelectorAll(".tokens-component-thumbnail"))thumbnailSizes.unobserve(thumbnail);});
   const descriptions={
     'tokens.tokens.json':['Download DTCG JSON','DTCG 2025.10 values and aliases, with source metadata.'],
@@ -36,7 +52,7 @@
     const assets=doc=>Array.from(doc.head.querySelectorAll('script[src]:not([data-component-script]),link[rel="stylesheet"]'),node=>[node.getAttribute('src')||node.getAttribute('href'),node.getAttribute('data-sources')||'',node.getAttribute('data-shapes-version')||''].join('\n')).join('\n');
     // A deployed asset change needs the new head and behavior as well as new content.
     if(assets(incoming)!==assets(document)){location.assign(url);return false;}
-    const menu=document.getElementById('tokens-site-menu');if(menu?.open)menu.close();
+    const menu=document.getElementById('tokens-site-menu');if(menu?.matches(":modal"))menu.close();
     document.querySelectorAll('#tokens-site-menu [data-navigation-item]').forEach(link=>{
       const current=Array.from(incoming.querySelectorAll('#tokens-site-menu [data-navigation-item]')).find(next=>next.getAttribute('href')===link.getAttribute('href'))?.getAttribute('aria-current');
       if(current)link.setAttribute('aria-current',current);else link.removeAttribute('aria-current');

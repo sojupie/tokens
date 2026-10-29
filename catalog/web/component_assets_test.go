@@ -121,7 +121,7 @@ func TestRenderedAssetLinksKeepSharedThemeAndRejectMissingModules(t *testing.T) 
 	if !strings.HasPrefix(themeURL(ctx), "/themes/shared.css?v=") {
 		t.Fatal("missing shared head")
 	}
-	links, err := server.componentAssetLinks(&componentAssets{modules: map[string]bool{"sheet": true, "list": true}})
+	links, err := server.componentAssetLinks(&componentAssets{modules: map[string]bool{"sheet": true, "list": true}, deferStyles: true})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -130,8 +130,15 @@ func TestRenderedAssetLinksKeepSharedThemeAndRejectMissingModules(t *testing.T) 
 			t.Fatal("missing assets", name, string(links))
 		}
 	}
+	if strings.Count(string(links), `media="print" onload="this.media='all'"`) != 4 || strings.Count(string(links), "<noscript>") != 4 {
+		t.Fatal("component styles must load without blocking and retain a no-script fallback", string(links))
+	}
 	if strings.Contains(string(links), "all.css") {
 		t.Fatal("loaded unrelated modules")
+	}
+	detailLinks, err := server.componentAssetLinks(&componentAssets{modules: map[string]bool{"list": true}})
+	if err != nil || strings.Contains(string(detailLinks), `media="print"`) {
+		t.Fatal("interactive detail styles must retain blocking delivery", err)
 	}
 	if _, err := server.componentAssetLinks(&componentAssets{modules: map[string]bool{"switch": true}}); err == nil {
 		t.Fatal("missing theme accepted")
