@@ -106,7 +106,7 @@
   place-items: center;
   inline-size: var(--_appbar-avatar-size);
   block-size: var(--_appbar-avatar-size);
-  border-radius: var(--_appbar-avatar-shape, var(--md-sys-shape-corner-full));
+  border-radius: min(var(--_appbar-avatar-shape, calc(var(--_appbar-avatar-size) / 2)), calc(var(--_appbar-avatar-size) / 2));
   background: var(--md-sys-color-tertiary-container);
   color: var(--md-sys-color-on-tertiary-container);
   font: var(--md-sys-typescale-label-medium);

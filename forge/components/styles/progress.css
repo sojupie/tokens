@@ -38,5 +38,7 @@
 }
 .md-progress-control {
   display: grid;
+  inline-size: 15rem;
+  max-inline-size: 100%;
   gap: var(--md-sys-measurement-space100);
 }

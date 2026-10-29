@@ -118,7 +118,7 @@
 .md-switch[data-component-state="focused"] {
   outline: var(--_switch-focus-width) solid var(--_switch-focus-color);
   outline-offset: var(--_switch-focus-offset);
-  border-radius: var(--md-sys-shape-corner-full);
+  border-radius: calc(var(--_switch-state-size) / 2);
 }
 .md-switch:has(> input:disabled) {
   cursor: default;

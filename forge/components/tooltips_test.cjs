@@ -19,3 +19,16 @@ test('rich placement fits corners without covering the trigger',()=>{
  assert.equal(place({left:100,right:140,top:40,bottom:80},{width:380,height:200},{width:390,height:220}),null);
 });
 test('hover or keyboard focus inside the target keeps a transient tooltip open',()=>{const h=harness(),d=h.demo();h.send('focusin',d);d.matches=()=>true;h.send('pointerout',d);h.advance(1600);assert.equal(d.visible,true);d.matches=()=>false;h.send('focusout',d);h.advance(1500);assert.equal(d.visible,false)});
+
+test('mouse click focus does not keep a tooltip open after the pointer leaves', () => {
+ const h=harness(),d=h.demo();
+ h.send('pointerover',d);
+ h.send('pointerdown',d);
+ d.matches=()=>true; // The clicked button retains focus after pointer exit.
+ h.send('focusin',d);
+ h.send('pointerout',d);
+ h.advance(1499);
+ assert.equal(d.visible,true);
+ h.advance(1);
+ assert.equal(d.visible,false);
+});

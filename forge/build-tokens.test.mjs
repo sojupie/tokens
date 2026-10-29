@@ -105,6 +105,11 @@ test(
         await readFile(`${root}/dtcg/${variant.file}`, "utf8"),
       );
       const { values, css } = await compile(document);
+      const rendered = await compile(document, ':root', {appTheme: true});
+      for (const [name, value] of Object.entries(rendered.values)) {
+        if (name.startsWith('md-comp-'))
+          assert.ok(!String(value).includes('infinity'), `${variant.name}: unbounded component radius ${name}`);
+      }
       const { tokens } = flatten(document);
       let checked = 0;
       for (const [name, token] of Object.entries(tokens)) {

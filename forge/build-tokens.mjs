@@ -2,6 +2,7 @@ import motion from "./components/static/motion.cjs";
 import { parseArgs } from "node:util";
 import StyleDictionary from "style-dictionary";
 import { siteTheme } from "./material/site-theme.mjs";
+import { circularShapeRadius } from "./material/circular-shapes.mjs";
 import { generateComponents } from "./material/generate-components.mjs";
 import { generateButtons } from "./material/generate-buttons.mjs";
 import { buildComponentAssets } from "./components/build-assets.mjs";
@@ -165,7 +166,7 @@ export async function compile(
   }
   for (const [name, family] of Object.entries(shapes)) {
     if (family === "SHAPE_FAMILY_CIRCULAR")
-      values[name] = "calc(infinity * 1px)";
+      values[name] = appTheme ? circularShapeRadius(name, values) : "calc(infinity * 1px)";
     else {
       const corners = ["topLeft", "topRight", "bottomRight", "bottomLeft"].map(
         (c) => values[`${name}-${c}`],

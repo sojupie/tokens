@@ -189,8 +189,18 @@
           shapeSpring?.duration || 0,
           turnDuration,
         );
-      // Settled scenes have no visual changes; sleep until the next shared beat.
-      if (within >= settled) timer = setTimeout(frame, loop / 4 - within);
+      // Sleep while settled, but start the next scene on its first painted frame.
+      // A late timer/paint must extend the hold, not skip the spring's opening.
+      if (within >= settled) {
+        const nextScene = time + loop / 4 - within;
+        timer = setTimeout(() => {
+          raf = requestAnimationFrame(() => {
+            elapsed = nextScene;
+            started = performance.now();
+            frame();
+          });
+        }, loop / 4 - within);
+      }
       else raf = requestAnimationFrame(frame);
     }
     function measure() {

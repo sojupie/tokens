@@ -83,7 +83,7 @@
 .md-checkbox[data-component-state="focused"] {
   outline: var(--_checkbox-focus-width) solid var(--_checkbox-focus-color);
   outline-offset: var(--_checkbox-focus-offset);
-  border-radius: var(--md-sys-shape-corner-full);
+  border-radius: calc(var(--_checkbox-state-size) / 2);
 }
 .md-checkbox:has(> input:disabled) {
   cursor: default;

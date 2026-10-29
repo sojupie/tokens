@@ -159,7 +159,7 @@
   --_date-menu-label: var(--md-sys-color-on-surface-variant);
   --_date-menu-icon: var(--md-sys-color-on-surface-variant);
   --_date-menu-height: var(--md-comp-icon-button-small-container-height);
-  --_date-menu-shape: var(--md-sys-shape-corner-full);
+  --_date-menu-shape: calc(var(--_date-menu-height) / 2);
   --_date-menu-icon-size: var(--md-comp-search-bar-icon-size);
   --_date-menu-font-family: var(--md-sys-typescale-title-small-font);
   --_date-menu-font-size: var(--md-sys-typescale-title-small-size);

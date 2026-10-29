@@ -166,7 +166,7 @@ dialog.md-side-sheet[data-variant="detached"] {
   margin: 0 auto;
   padding: 0;
   border: 0;
-  border-radius: var(--md-sys-shape-corner-full);
+  border-radius: calc(var(--md-sys-measurement-space600) / 2);
   background: transparent;
   color: var(--md-sys-color-on-surface-variant);
   cursor: ns-resize;
@@ -181,7 +181,7 @@ dialog.md-side-sheet[data-variant="detached"] {
     var(--_sheet-handle) calc(var(--_sheet-handle-opacity) * 100%),
     transparent
   );
-  border-radius: var(--md-sys-shape-corner-full);
+  border-radius: calc(min(var(--_sheet-handle-height), var(--_sheet-handle-width)) / 2);
 }
 .md-sheet-header {
   display: flex;

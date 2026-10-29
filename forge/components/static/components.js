@@ -1662,7 +1662,7 @@
     if (demo && !demo.contains(event.relatedTarget)) leave(demo);
   });
   document.addEventListener("pointerdown", event => {
-    pointerFocus = event.pointerType === 'touch';
+    pointerFocus = true;
     cancelHold();
     const demo = event.target.closest?.('.md-tooltip-demo');
     if (!demo || event.pointerType !== 'touch' || !event.isPrimary) return;

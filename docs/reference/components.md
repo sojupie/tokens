@@ -271,6 +271,11 @@ cancellation, removal, and disabled controls for buttons, icon buttons,
 interactive cards, chips, and menu items. Icon-button pressed shapes use the
 captured size-set spring parameters. Cards, chips, and menu items retain their
 source shape and receive ripple feedback without an invented shape spring.
+Rendered circular shapes use a finite radius derived from the captured container
+dimensions. The app theme resolves these shapes before interpolation; source
+tokens and download exports retain their original circular representation.
+Static gallery thumbnails suppress component transitions during initial rendering
+and history restoration. Interactive component previews retain their transitions.
 Hover and focus keep their own state layer during a press. The press ripple uses
 the full captured pressed opacity independently, following Material Web. Its soft
 edge expands from 20% of the largest dimension toward the center over 450 ms.

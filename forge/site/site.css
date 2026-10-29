@@ -5,7 +5,7 @@
 .tokens-drawer-appearance { padding:var(--md-sys-measurement-space200); border-block-start:var(--md-comp-divider-thickness) solid var(--md-sys-color-outline-variant); }
 .tokens-drawer-appearance:empty { display:none; }
 .tokens-theme-controls { display:flex; align-items:center; justify-content:space-between; gap:var(--md-sys-measurement-space150); }
-.tokens-contrast-buttons { display:flex; gap:var(--md-sys-measurement-space50); padding:var(--md-sys-measurement-space50); border-radius:var(--md-sys-shape-corner-full); background:var(--md-sys-color-secondary-container); }
+.tokens-contrast-buttons { display:flex; gap:var(--md-sys-measurement-space50); padding:var(--md-sys-measurement-space50); border-radius:calc((var(--md-comp-icon-button-small-container-height) + 2 * var(--md-sys-measurement-space50)) / 2); background:var(--md-sys-color-secondary-container); }
 .tokens-contrast-buttons > .md-icon-button[aria-pressed] { --_button-rest-shape:var(--_icon-round-shape); --_button-pressed-shape:var(--_icon-round-shape); --_button-spring-damping:initial; }
 .tokens-site-header,.tokens-site-footer { inline-size:100%; flex-shrink:0; font-family:var(--md-sys-typescale-body-large-font); }
 .tokens-site-header .tokens-brand { color:var(--md-sys-color-on-surface); }

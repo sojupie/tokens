@@ -335,7 +335,7 @@
   position: absolute;
   isolation: isolate;
   inset: 0;
-  border-radius: var(--md-sys-shape-corner-full);
+  border-radius: calc(var(--_slider-state-size) / 2);
 }
 .md-slider-state-layer::before {
   content: "";
@@ -405,7 +405,7 @@
   --_elevation-level: var(--_slider-label-elevation);
   --_shadow-color: transparent;
   padding-block: max(0px, calc((var(--_slider-label-height) - var(--_slider-label-text-line-height)) / 2));
-  border-radius: var(--md-sys-shape-corner-full);
+  border-radius: calc(var(--_slider-label-height) / 2);
   background: var(--_slider-label-container);
   color: var(--_slider-label-text-color);
   font-family: var(--_slider-label-text-font-family);

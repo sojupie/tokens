@@ -589,6 +589,64 @@ test('Canvas artwork uses the DOM spring samples and keeps all tiles in bounds',
   let prior=0;for(let t=0;t<=300;t++){const value=ease(t,300,'cubic-bezier(.2,0,0,1)');assert.ok(value>=prior&&value<=1);prior=value;}
 });
 
+test('Canvas artwork starts each scene at its first painted frame after a late wake-up', () => {
+  let clock = 0, frame, timer;
+  const times = [];
+  const ctx = new Proxy({}, {
+    get: (_, name) => name === 'createLinearGradient'
+      ? () => ({addColorStop() {}}) : () => {},
+  });
+  const canvas = {getContext: () => ctx};
+  const root = {
+    querySelector: () => canvas,
+    querySelectorAll: () => Array.from({length: 9}, () => ({append() {}})),
+    getBoundingClientRect: () => ({width: 480, height: 448}),
+    setAttribute() {}, removeAttribute() {},
+  };
+  const scope = {
+    document: {
+      createElement: () => ({style: {}, remove() {}}),
+      documentElement: {},
+    },
+    window: {devicePixelRatio: 1, addEventListener() {}, removeEventListener() {}},
+    performance: {now: () => clock},
+    getComputedStyle: () => ({color: '#fff', gap: '8px'}),
+    ResizeObserver: class {observe() {} disconnect() {}},
+    MutationObserver: class {observe() {} disconnect() {}},
+    requestAnimationFrame: fn => {frame = fn; return 1;},
+    cancelAnimationFrame: () => {frame = null;},
+    setTimeout: fn => {timer = fn; return 2;},
+    clearTimeout: () => {timer = null;},
+  };
+  runScript('artwork-canvas.js', scope);
+  const track = Array.from({length: 4}, () => [1, 1, 1]);
+  const renderer = scope.TokenArtworkCanvas(root, {
+    tracks: [track, track, track, track],
+    spring: {duration: 900}, shapeSpring: {duration: 500},
+    corners: [8, 16, 28, 48],
+    turnDuration: 300, turnEasing: 'linear', loop: 8000,
+    progress: (_, time) => {times.push(time); return Math.min(1, time / 900);},
+    cornerStates: () => Array.from({length: 4}, () => [28, 28, 28, 28]),
+  });
+  renderer.play();
+  clock = 1000;
+  frame(); // Settled: sleep until the 2000 ms scene boundary.
+  times.length = 0;
+  clock = 2140;
+  timer(); // Simulate a timer delivered 140 ms late.
+  assert.equal(times.length, 0, 'timer must wait for a paint before restarting motion');
+  clock = 2190;
+  frame(); // The paint itself is delayed another 50 ms.
+  assert.equal(times.at(-1), 0, 'first painted frame must not skip into the new scene');
+  clock += 1000 / 60;
+  frame();
+  assert.ok(Math.abs(times.at(-1) - 1000 / 60) < .001, 'next frame advances normally');
+  renderer.pause();
+  assert.equal(frame, null);
+  assert.equal(timer, null);
+  renderer.dispose();
+});
+
 test('pointer focus returns to visible keyboard focus on keyboard input',()=>{
  const events={},attributes=new Set();
  runScript('site-ui.js',{
