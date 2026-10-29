@@ -96,11 +96,13 @@ the same HTML and assets for the static Carousel playground. Desktop navigation
 is persistent; narrower layouts use a modal navigation drawer. The footer uses
 the host page background.
 
-The Tools page links to separately deployed applications; Catalog does not serve
-or proxy them. Material Motion Lab uses a Go server with GoCV and FFmpeg and stores
-projects on that host. Carousel playground is a static site with browser-side
-recording and diagnostic exports. Neither tool is part of the token publication
-pipeline.
+The production server image bundles both tools as static files outside the
+catalog collection mount. Material Motion Lab processes videos in browser workers
+with FFmpeg WebAssembly and OpenCV.js, and stores projects in IndexedDB. Its native
+Go CLI is optional and is not deployed. Carousel playground records interactions
+and exports diagnostics in the browser. The tools build from their own repositories
+against the catalog's shared components; neither needs a token crawl or a project
+store on the server.
 
 ## Design decisions
 

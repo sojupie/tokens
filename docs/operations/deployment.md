@@ -307,26 +307,13 @@ to publish DNS-AID records, enable DNSSEC, and check bot, caching and content-si
 settings. The application serves catalogs, Markdown and a public MCP endpoint;
 Cloudflare DNS and account settings require separate configuration.
 
-## Tools links
+## Tool navigation URLs
 
-The Tools page and shared navigation link to Material Motion Lab and Carousel
-playground. Both applications are deployed separately from the catalog. Set their URLs in `/etc/tokens/server.env`:
-
-```dotenv
-TOKENS_MOTION_URL=/tools/motion/
-TOKENS_MOTION_LAB_URL=/tools/motion-lab/
-```
-
-These are the defaults. Absolute HTTPS URLs also work during a host migration.
-Root-relative paths use the catalog hostname, outside its `/md3` collection
-path. Configure the corresponding Cloudflare Tunnel path routes before making
-the links public. The catalog does not host or proxy the tool applications.
-Restart the server after changing the URLs.
-
-`configure-public-origin` replaces `server.env` with the public-origin setting.
-Apply custom tool URLs after running it. The catalog deployment does not provide
-visitor isolation or browser-side video processing for Material Motion Lab; its Go
-server processes videos and stores projects on the host.
+The bundled paths are the defaults for `TOKENS_MOTION_URL` and
+`TOKENS_MOTION_LAB_URL`. Absolute HTTPS URLs can point to another host during a
+migration. Set overrides in `/etc/tokens/server.env` and restart the server.
+`configure-public-origin` rewrites that file, so apply custom URLs afterwards.
+No additional Cloudflare path routes are required for the bundled tools.
 
 ## Check a problem
 
