@@ -2,7 +2,6 @@ package web
 
 import (
 	"fmt"
-	"github.com/sojupie/tokens/forge/site"
 	"github.com/sojupie/tokens/source/publish"
 )
 
@@ -11,12 +10,11 @@ templ overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView
 		@useComponentAssets("card")
 		<section class="tokens-landing-hero" aria-labelledby="landing-heading">
 			<div class="tokens-landing-copy">
-				<p class="tokens-landing-brand md-typescale-title-large">@site.Logo() Token Catalog</p>
 				<h1 class="md-typescale-display-small" id="landing-heading">Material Design 3 tokens and change history</h1>
-				<p class="md-typescale-body-large">Browse Material Design 3 components and styles. Compare values, follow references, and download the tokens for your project.</p>
+				<p class="md-typescale-title-large">Browse Material Design 3 components and styles. Compare values, follow references, and download the tokens for your project.</p>
 				<div class="tokens-landing-actions">
-					<a class="md-button md-filled-button" href="/components">Browse components</a>
-					<a class="md-button md-tonal-button" href="/styles">Explore styles</a>
+					<a class="md-button md-filled-button" data-size="medium" href="/components">Browse components</a>
+					<a class="md-button md-tonal-button" data-size="medium" href="/styles">Explore styles</a>
 				</div>
 			</div>
 			@landingArtwork(renderer)
