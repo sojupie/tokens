@@ -53,7 +53,7 @@ test('inert catalog illustrations neither fetch shape data nor schedule animatio
  let requests=0,frames=0;
  const media={matches:false,addEventListener(){}};
  runInNewContext(readFileSync(`${__dirname}/static/loading.js`,'utf8'),{
-  URL,document:{currentScript:{src:'http://localhost/md3/static/loading.js',dataset:{shapesVersion:'test'}},querySelectorAll:()=>[{closest:()=>true}],addEventListener(){}},
+  MutationObserver:class{observe(){}},URL,document:{currentScript:{src:'http://localhost/md3/static/loading.js',dataset:{shapesVersion:'test'}},querySelectorAll:()=>[{closest:()=>true}],addEventListener(){}},
   matchMedia:()=>media,IntersectionObserver:class{},fetch:()=>{requests++;},requestAnimationFrame:()=>{frames++;}
  });
  assert.equal(requests,0);assert.equal(frames,0);
@@ -65,7 +65,7 @@ test('reduced motion renders a stationary shape and resumes animation when disab
  const element={dataset:{control:'indeterminate'},isConnected:true,closest:()=>null,
   querySelector:tag=>({setAttribute(name,value){drawn[tag+':'+name]=value;}})};
  runInNewContext(readFileSync(`${__dirname}/static/loading.js`,'utf8'),{
-  URL,performance:{now:()=>0},console,
+  MutationObserver:class{observe(){}},URL,performance:{now:()=>0},console,
   document:{currentScript:{src:'http://localhost/md3/static/loading.js',dataset:{shapesVersion:'test'}},querySelectorAll:()=>[element],addEventListener(){}},
   matchMedia:()=>media,IntersectionObserver:class{constructor(fn){this.fn=fn;}observe(target){this.fn([{target,isIntersecting:true}]);}},
   fetch:async()=>({ok:true,json:async()=>shapes}),requestAnimationFrame:()=>++frames
@@ -73,4 +73,21 @@ test('reduced motion renders a stationary shape and resumes animation when disab
  await new Promise(setImmediate);
  assert.ok(drawn['path:d'].startsWith('M'));assert.equal(drawn['g:transform'],'rotate(90 .5 .5)');assert.equal(frames,0);
  media.matches=false;onPreferenceChange();assert.equal(frames,1);
+});
+
+test('a reused loading disk restarts when switched from idle to busy',async()=>{
+ let frames=0,changed;const drawn={};
+ const element={dataset:{control:'determinate'},isConnected:true,closest:()=>null,getAttribute:()=>null,
+  querySelector:tag=>({setAttribute(name,value){drawn[tag+':'+name]=value;}})};
+ runInNewContext(readFileSync(`${__dirname}/static/loading.js`,'utf8'),{
+  URL,performance:{now:()=>100},console,
+  document:{documentElement:{},currentScript:{src:'http://localhost/loading.js',dataset:{}},querySelectorAll:()=>[element],addEventListener(){}},
+  MutationObserver:class{constructor(fn){changed=fn;}observe(){}},
+  matchMedia:()=>({matches:false,addEventListener(){}}),
+  IntersectionObserver:class{constructor(fn){this.fn=fn;}observe(target){this.fn([{target,isIntersecting:true}]);}},
+  fetch:async()=>({ok:true,json:async()=>shapes}),requestAnimationFrame:()=>++frames
+ });
+ await new Promise(setImmediate);assert.equal(frames,0);
+ element.dataset.control='indeterminate';changed([{target:element}]);
+ assert.equal(frames,1);assert.equal(drawn['g:transform'],'rotate(90 .5 .5)');
 });

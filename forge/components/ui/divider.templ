@@ -1,0 +1,6 @@
+package ui
+
+templ Divider(inset string, attrs templ.Attributes) {
+	@Require("common")
+	<hr { attributes(templ.Attributes{"class":"md-divider","data-inset":fallback(inset,"full")},attrs)... }/>
+}

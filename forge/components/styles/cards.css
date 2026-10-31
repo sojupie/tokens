@@ -64,3 +64,11 @@
     border: 1px solid ButtonText;
   }
 }
+
+/* Optional content slots share the same anatomy in specimens and app scenes. */
+.md-card:has(> .md-card-media) { padding:0; }
+.md-card-media { display:block; inline-size:100%; block-size:auto; aspect-ratio:16/9; object-fit:cover; border-radius:var(--_card-shape); }
+.md-card-content { display:grid; gap:var(--md-sys-measurement-space100); padding:var(--md-sys-measurement-space200); }
+.md-card-headline { margin:0; font-family:var(--md-sys-typescale-title-large-font); font-size:var(--md-sys-typescale-title-large-size); line-height:var(--md-sys-typescale-title-large-line-height); font-weight:var(--md-sys-typescale-title-large-weight); letter-spacing:var(--md-sys-typescale-title-large-tracking); }
+.md-card-supporting-text { margin:0; font-family:var(--md-sys-typescale-body-medium-font); font-size:var(--md-sys-typescale-body-medium-size); line-height:var(--md-sys-typescale-body-medium-line-height); font-weight:var(--md-sys-typescale-body-medium-weight); letter-spacing:var(--md-sys-typescale-body-medium-tracking); }
+.md-card-actions { display:flex; justify-content:flex-end; gap:var(--md-sys-measurement-space100); padding:0 var(--md-sys-measurement-space200) var(--md-sys-measurement-space200); }

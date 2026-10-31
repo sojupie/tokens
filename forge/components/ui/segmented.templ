@@ -1,0 +1,26 @@
+package ui
+
+templ SegmentedButtons(p SegmentedProps) {
+	@Require("segmented")
+	<div { p.Attributes()... }>
+		{ children... }
+	</div>
+}
+
+templ Segment(p SegmentProps) {
+	@Require("segmented")
+	<label { attributes(templ.Attributes{"class":"md-segmented-button"},p.Attrs)... }>
+		<input { p.input()... }/>
+		<span class="md-segment-face">
+			<span class="md-segment-check">
+				@Icon("check")
+			</span>
+			if p.Content!="label"&&p.Icon!="" {
+				<span class="md-segment-icon">
+					@Icon(p.Icon)
+				</span>
+			}
+			<span class={ templ.KV("tokens-visually-hidden", p.Content == "icon") }>{ p.Label }</span>
+		</span>
+	</label>
+}

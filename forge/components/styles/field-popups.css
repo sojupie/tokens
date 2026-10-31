@@ -182,6 +182,7 @@
   max-inline-size: calc(100dvw - 2 * var(--md-sys-measurement-space100));
   overflow: auto;
   overscroll-behavior: contain;
+  touch-action: pan-y;
   padding: var(--md-sys-measurement-space100) 0;
   border: 0;
   border-radius: var(--_field-menu-shape);

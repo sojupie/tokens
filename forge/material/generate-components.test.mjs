@@ -239,7 +239,7 @@ test("feedback components keep badge variants separate and map action/ripple sta
 test('navigation uses current source sets, orientation geometry and selection states', () => {
  const {document,values}=fixture();
  const {coverage,css}=generateComponents(document,values);
- assert.ok(coverage.excluded.some(r=>r.token==='md.comp.navigation-bar.container.height'));
+ assert.ok(coverage.mapped.some(r=>r.token==='md.comp.navigation-bar.container.height' && r.selector.includes('baseline')));
  for (const family of ['nav-bar','nav-rail','nav-drawer']) assert.ok(coverage.configurations.some(c=>c.family===family));
  const row=coverage.mapped.find(r=>r.token==='md.comp.nav-bar.container.height');
  assert.equal(row.selector,'.md-navigation-bar');
@@ -392,7 +392,7 @@ test("carousel maps item states and outline without reviving deprecated tint",()
  const {document,values}=fixture(),{coverage,css}=generateComponents(document,values);
  assert.equal(coverage.mapped.filter(r=>r.token.startsWith('md.comp.carousel-item.')).length,26);
  assert.equal(coverage.excluded.filter(r=>r.token.startsWith('md.comp.carousel-item.')).length,1);
- assert.equal(coverage.configurations.filter(c=>c.family==='carousel').length,120);
+ assert.equal(coverage.configurations.filter(c=>c.family==='carousel').length,180);
  assert.match(css,/--_carousel-item-pressed-state-opacity: var\(--md-comp-carousel-item-pressed-state-layer-opacity\)/);
  assert.match(css,/data-control="outlined".*--_carousel-item-outline-width: var\(--md-comp-carousel-item-with-outline-outline-width\)/);
 });

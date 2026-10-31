@@ -3,31 +3,37 @@
   // Keylines map logical, equally spaced item centers to visible masked centers.
   // Media keeps its full size as the button's visible window changes width.
   function layout(width,preferred,gap,variant,count) {
-    if(variant==='uncontained'||variant==='full-screen'||width<176||count<3) {
+    if(variant.startsWith('uncontained')||variant==='full-screen'||width<3*40+2*gap||count<3) {
       const large=variant==='full-screen'?width:Math.min(preferred,width);
       return {large,gap,width,variant:'uncontained',keylines:[]};
     }
-    const small=56;
+    const small=clamp(width*.12,40,56);
     let large,big=1;
-    if(variant==='hero')large=width-2*(small+gap);
+    if(variant==='center-aligned-hero'){big=clamp(Math.round((width-2*small-gap)/(preferred+gap)),1,count);if(big%2===0)big--;large=(width-2*small-(big+1)*gap)/big;}
+    else if(variant==='hero'){big=clamp(Math.round((width-small-gap)/(preferred+gap)),1,count-1);large=(width-small-big*gap)/big;}
     else {
       let best=Infinity;
       for(let n=1;n<=Math.min(count-2,8);n++) {
         const candidate=(width-1.5*small-(n+1)*gap)/(n+.5);
-        if(candidate<small*2)continue;
+        if(candidate<=small)continue;
         const cost=Math.abs(candidate-preferred);
         if(cost<best){large=candidate;big=n;best=cost;}
       }
       if(!large)return layout(width,preferred,gap,'uncontained',count);
     }
+    if(large<=small)return layout(width,preferred,gap,'uncontained',count);
     const keylines=[];
-    if(variant==='hero') {
-      keylines.push({i:-1,x:small/2,size:small},{i:0,x:width/2,size:large},{i:1,x:width-small/2,size:small});
+    if(variant==='center-aligned-hero') {
+      const half=(big-1)/2;
+      keylines.push({i:-half-1,x:small/2,size:small});
+      for(let i=-half;i<=half;i++)keylines.push({i,x:width/2+i*(large+gap),size:large});
+      keylines.push({i:half+1,x:width-small/2,size:small});
     } else {
       keylines.push({i:-1,x:-small/2-gap,size:small});
       for(let i=0;i<big;i++)keylines.push({i,x:i*(large+gap)+large/2,size:large});
-      const medium=(large+small)/2,left=big*(large+gap);
-      keylines.push({i:big,x:left+medium/2,size:medium},{i:big+1,x:width-small/2,size:small});
+      const left=big*(large+gap);
+      if(variant==='hero')keylines.push({i:big,x:width-small/2,size:small});
+      else {const medium=(large+small)/2;keylines.push({i:big,x:left+medium/2,size:medium},{i:big+1,x:width-small/2,size:small});}
     }
     return {width,large,gap,small,variant,keylines};
   }
@@ -41,10 +47,7 @@
     const {width,large,gap,variant}=plan,step=large+gap,t=index-position;
     if(variant==='uncontained')return{left:t*step,size:large};
     let p=keylineAt(plan.keylines,t,gap);
-    if(variant==='hero') {
-      // Edge items align to the edge; interior focal items are centered.
-      p.x+=(plan.small+gap)*(clamp(position-(count-2),0,1)-clamp(1-position,0,1));
-    } else {
+    if(variant!=='center-aligned-hero') {
       const span=Math.min(plan.keylines.at(-1).i,count-1),mix=clamp((position-(count-1-span))/span,0,1);
       if(mix>0) {
         // Interpolate fixed endpoint layouts. Moving both layouts during the blend
@@ -56,7 +59,11 @@
     }
     return{left:p.x-p.size/2,size:p.size};
   }
-  if(typeof module!=='undefined')module.exports={layout,itemFrame};
+  function scrollTargets(rects,rtl,max) {
+    const edge=rtl?'right':'left',first=rects[0][edge];
+    return rects.map(rect=>clamp(Math.abs(rect[edge]-first),0,max));
+  }
+  if(typeof module!=='undefined')module.exports={layout,itemFrame,scrollTargets};
   if(typeof document==='undefined')return;
   const roots=new WeakMap(),reduced=matchMedia('(prefers-reduced-motion: reduce)');
   const items=root=>[...root.querySelectorAll('.md-carousel-item')];
@@ -77,6 +84,12 @@
     const from=state.motion?.position??offset(state);cancelMotion(state);
     const requested=state.targets[index];
     state.pendingFocus=focus&&!state.buttons[index].disabled?index:undefined;
+    if(state.flow){
+      state.viewport.style.removeProperty('scroll-snap-type');
+      state.viewport.scrollTo({left:(state.rtl?-1:1)*requested,behavior:reduced.matches?'instant':'smooth'});
+      if(reduced.matches||Math.abs(from-requested)<.01)settled(state);
+      return;
+    }
     state.viewport.style.scrollSnapType='none';
     delete state.root.dataset.carouselSettled;
     // Resolve the real snap offset through the browser once, including its scroll
@@ -105,7 +118,7 @@
     if(state.motion||drag?.state===state&&drag.moved)return;
     state.viewport.style.removeProperty('scroll-snap-type');
     paint(state);
-    if(state.pendingFocus!==undefined){const button=state.buttons[state.pendingFocus];state.pendingFocus=undefined;button.focus({preventScroll:true});}
+    if(state.pendingFocus!==undefined){const index=state.pendingFocus,button=state.buttons[index];state.pendingFocus=undefined;state.root.dataset.carouselIndex=String(index);button.focus({preventScroll:true});}
     state.root.dataset.carouselSettled=state.root.dataset.carouselIndex;
     state.root.querySelector('output').textContent=`Item ${Number(state.root.dataset.carouselIndex)+1} of ${state.buttons.length}`;
   }
@@ -114,7 +127,7 @@
     state.lastPainted=scroll;
     const {root,buttons,plan}=state,position=scroll/(plan.large+plan.gap),width=plan.width;
     const max=state.max;
-    buttons.forEach((button,index)=>{
+    if(!state.flow)buttons.forEach((button,index)=>{
       const frame=itemFrame(plan,index,position,buttons.length),left=Math.max(0,frame.left),right=Math.min(width,frame.left+frame.size),size=Math.max(0,right-left);
       // Outside items remain in the native scroll track without extending its bounds.
       button.style.visibility=size<1?'hidden':'visible';
@@ -125,25 +138,38 @@
       const art=state.art[index],shift=(size-plan.large)/2;
       if(art)art.style.transform=`translateX(${state.rtl?-shift:shift}px)`;
     });
-    const index=clamp(Math.round(position),0,buttons.length-1);
+    const index=state.flow?state.targets.reduce((best,target,i)=>Math.abs(target-scroll)<Math.abs(state.targets[best]-scroll)?i:best,0):clamp(Math.round(position),0,buttons.length-1);
     root.dataset.carouselIndex=String(index);
-    root.querySelector('[data-carousel-step="-1"]').disabled=scroll<1;
-    root.querySelector('[data-carousel-step="1"]').disabled=scroll>=max-1;
+    const previous=root.querySelector('[data-carousel-step="-1"]'),next=root.querySelector('[data-carousel-step="1"]');
+    if(previous)previous.disabled=scroll<1;
+    if(next)next.disabled=scroll>=max-1;
   }
   function resize(root) {
     const state=roots.get(root);if(!state)return;cancelMotion(state);
-    const style=getComputedStyle(root),prior=state.plan?offset(state)/(state.plan.large+state.plan.gap):0;
+    const style=getComputedStyle(root),prior=state.plan?offset(state)/(state.plan.large+state.plan.gap):0,priorIndex=Number(root.dataset.carouselIndex)||0;
     state.rtl=style.direction==='rtl';
     const viewportStyle=getComputedStyle(state.viewport),width=state.viewport.clientWidth-parseFloat(viewportStyle.paddingInlineStart)-parseFloat(viewportStyle.paddingInlineEnd);
-    state.plan=layout(width,parseFloat(style.getPropertyValue('--_carousel-preferred')),parseFloat(style.getPropertyValue('--_carousel-gap')),root.dataset.variant,state.buttons.length);
+    const preferred=parseFloat(style.getPropertyValue('--_carousel-preferred')),gap=parseFloat(style.getPropertyValue('--_carousel-gap'));
+    state.plan=layout(width,preferred,gap,root.dataset.variant,state.buttons.length);
+    state.flow=reduced.matches||state.plan.variant==='uncontained';
+    root.dataset.carouselLayout=state.flow?'flow':'masked';
+    if(reduced.matches){
+      const count=root.dataset.variant==='full-screen'?1:Math.max(1,Math.floor((width+gap)/(Math.min(preferred,width)+gap)));
+      state.plan.large=(width-(count-1)*gap)/count;
+    }
     root.style.setProperty('--_carousel-width',width+'px');
     root.style.setProperty('--_carousel-logical',state.plan.large+'px');
-    root.style.setProperty('--_carousel-end',(root.dataset.variant==='uncontained'?0:Math.max(0,state.plan.width-state.plan.large))+'px');
+    root.style.setProperty('--_carousel-end',(state.flow?0:Math.max(0,width-state.plan.large))+'px');
+    if(state.flow)for(let i=0;i<state.buttons.length;i++){
+      const button=state.buttons[i];
+      for(const name of ['width','transform','visibility'])button.style[name]='';
+      if(state.art[i])state.art[i].style.transform='';
+    }
     state.max=state.viewport.scrollWidth-state.viewport.clientWidth;
-    const snaps=[...root.querySelectorAll('.md-carousel-snap')],first=snaps[0].getBoundingClientRect().left;
-    state.targets=snaps.map(snap=>clamp(Math.abs(snap.getBoundingClientRect().left-first),0,state.max));
+    const snaps=[...root.querySelectorAll(state.flow?'.md-carousel-slot':'.md-carousel-snap')];
+    state.targets=scrollTargets(snaps.map(snap=>snap.getBoundingClientRect()),state.rtl,state.max);
     state.lastPainted=undefined;
-    state.viewport.scrollLeft=(state.rtl?-1:1)*prior*(state.plan.large+state.plan.gap);paint(state);
+    state.viewport.scrollLeft=(state.rtl?-1:1)*(state.flow?state.targets[priorIndex]:prior*(state.plan.large+state.plan.gap));paint(state);
   }
   const observer=new ResizeObserver(entries=>entries.forEach(e=>resize(e.target)));
   function init(scope=document) {
@@ -166,8 +192,15 @@
     const button=event.target.closest('.md-carousel-item');if(button&&!button.disabled)root.querySelector('output').textContent=`Item ${Number(button.dataset.carouselIndex)+1} selected`;
   },true);
   document.addEventListener('keydown',event=>{
-    const root=event.target.closest?.('.md-carousel');if(!root||event.target.closest('[data-carousel-step]'))return;const state=roots.get(root);if(!state)return;
+    const root=event.target.closest?.('.md-carousel');if(!root||!event.target.closest('.md-carousel-viewport'))return;const state=roots.get(root);if(!state)return;
     const button=event.target.closest('.md-carousel-item'),index=state.pendingFocus??(button?Number(button.dataset.carouselIndex):Number(root.dataset.carouselIndex));
+    if(event.key==='ArrowUp'||event.key==='ArrowDown'){
+      const forward=event.key==='ArrowDown';
+      const outside=[...document.querySelectorAll('a[href],button,input,select,textarea,[tabindex]')].filter(el=>el.tabIndex>=0&&!el.disabled&&!el.closest('[inert]')&&el.getClientRects().length&&getComputedStyle(el).visibility==='visible'&&!root.contains(el)&&(root.compareDocumentPosition(el)&(forward?Node.DOCUMENT_POSITION_FOLLOWING:Node.DOCUMENT_POSITION_PRECEDING)));
+      const next=forward?outside[0]:outside.at(-1);
+      if(next){event.preventDefault();next.focus();}
+      return;
+    }
     let target;
     if(event.key==='ArrowRight')target=index+(state.rtl?-1:1);
     if(event.key==='ArrowLeft')target=index+(state.rtl?1:-1);
@@ -187,7 +220,7 @@
   document.addEventListener('pointermove',event=>{
     if(!drag||event.pointerId!==drag.id)return;const dx=event.clientX-drag.x;
     if(!drag.moved&&Math.abs(dx)<8)return;
-    if(!drag.moved){drag.moved=true;drag.state.root.dataset.carouselDragging='';drag.state.viewport.setPointerCapture(event.pointerId);drag.button?.dispatchEvent(new Event('material:cancel-feedback',{bubbles:true}));}
+    if(!drag.moved){drag.moved=true;drag.state.root.dataset.carouselDragging='';drag.state.viewport.style.scrollSnapType='none';drag.state.viewport.setPointerCapture(event.pointerId);drag.button?.dispatchEvent(new Event('material:cancel-feedback',{bubbles:true}));}
     const dt=event.timeStamp-drag.lastTime;
     if(dt>0)drag.velocity=(event.clientX-drag.lastX)/dt;
     drag.lastX=event.clientX;drag.lastTime=event.timeStamp;
@@ -200,11 +233,14 @@
     if(state.viewport.hasPointerCapture(id))state.viewport.releasePointerCapture(id);
     if(moved){
       state.suppress=true;
+      if(state.root.dataset.variant.startsWith('uncontained')&&state.root.dataset.scrolling!=='snap'&&!reduced.matches){delete state.root.dataset.carouselDragging;settled(state);return;}
       // Keep snapping off through the smooth settle; restoring it first can snap immediately.
       state.viewport.style.scrollSnapType='none';
       delete state.root.dataset.carouselDragging;
       const momentum=!cancel&&event.timeStamp-lastTime<80?velocity*(state.rtl?1:-1)*120:0;
-      go(state,Math.round((offset(state)+momentum)/(state.plan.large+state.plan.gap)));
+      const position=offset(state)+momentum;
+      const index=state.flow?state.targets.reduce((best,target,i)=>Math.abs(target-position)<Math.abs(state.targets[best]-position)?i:best,0):Math.round(position/(state.plan.large+state.plan.gap));
+      go(state,index);
     }
   }
   document.addEventListener('pointerup',finish);document.addEventListener('pointercancel',e=>finish(e,true));
@@ -214,7 +250,7 @@
     const affected=[...(node.matches?.('.md-carousel')?[node]:[]),...node.querySelectorAll('.md-carousel')];
     for(const root of affected){observer.unobserve(root);const state=roots.get(root);if(state)cancelMotion(state);if(drag?.state===state)drag=null;roots.delete(root);}
   });
-  reduced.addEventListener?.('change',()=>{if(reduced.matches)for(const root of document.querySelectorAll('.md-carousel')){const state=roots.get(root);if(state?.motion){state.motion.clock.finish();}}});
+  reduced.addEventListener?.('change',()=>{for(const root of document.querySelectorAll('.md-carousel'))resize(root);});
   document.addEventListener('htmx:afterSwap',()=>init());
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>init());else init();
   document.addEventListener('tokens:assets-ready',()=>init());

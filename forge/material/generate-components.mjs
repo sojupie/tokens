@@ -381,12 +381,27 @@ function binding(set, suffix) {
       property = property.slice("with-icon-and-label-text.".length);
       selector = selector.replace(" .md-tab", ':where([data-control="icon-label"]) .md-tab');
     }
+    // Container and divider are one surface across both tabs and outer margins.
+    if (!segmented && ["container.color", "divider.color", "divider.height"].includes(property)) selector = selector.replace(" .md-tab", "");
     const extra = {"shape":"shape", "active-indicator.color":"indicator", "active-indicator.height":"indicator-height", "active-indicator.shape":"indicator-shape", "divider.color":"divider", "divider.height":"divider-height"};
     const mapped = extra[property] || roleProperties[property];
     if (!mapped) throw new Error(`Unmapped ${family} token: ${set}.${suffix}`);
     return {family,selector,property:mapped,...parsed};
-  } else if (/^md\.comp\.navigation-(bar|rail)$/.test(set)) {
-    return {excluded:"Older navigation set; the renderer uses the current separate nav-bar and nav-rail sets."};
+  } else if (set === "md.comp.navigation-bar") {
+    parsed = parse(suffix.replace(/(^|\.)active(?=\.)/g,"$1selected").replace(/(^|\.)inactive(?=\.)/g,"$1unselected"));
+    property = parsed.sourceProperty;
+    const root = '.md-navigation-bar:where([data-variant="baseline"])';
+    if (/^(?:large-)?badge\./.test(property)) return {excluded:"Badge anatomy and colors are supplied by the shared badge component."};
+    if (property.endsWith(".type") || property === "container.surface-tint-layer.color") return {excluded:"Individual typography metrics and the captured surface color supply this treatment."};
+    const item = !!(parsed.selected || parsed.state || /^(?:icon|label-text|focus\.indicator)\./.test(property));
+    family = item ? "nav-item" : "nav";
+    selector = root + (item ? " .md-nav-item" : "");
+    const extra = {"active-indicator.color":"indicator","active-indicator.height":"indicator-height","active-indicator.width":"indicator-width","active-indicator.shape":"indicator-shape"};
+    const mapped = extra[property] || roleProperties[property];
+    if (!mapped) throw new Error(`Unmapped baseline navigation token: ${suffix}`);
+    return {family,selector,property:mapped,...parsed};
+  } else if (set === "md.comp.navigation-rail") {
+    return {excluded:"Older rail set; the renderer uses the current separate nav-rail sets."};
   } else if (/^md\.comp\.nav-(bar|rail)(\.|$)/.test(set) || set === "md.comp.navigation-drawer") {
     parsed = parse(suffix.replace(/(^|\.)active(?=\.)/g,"$1selected").replace(/(^|\.)inactive(?=\.)/g,"$1unselected"));
     property = parsed.sourceProperty;
@@ -406,7 +421,7 @@ function binding(set, suffix) {
         if (property === "header-space-minimum") return {family:"nav",selector:root,property:"header-gap",...parsed};
         family = "nav-item";
         const orientation = part.split(".")[1];
-        selector = root + (orientation ? `:where([data-orientation="${orientation}"])` : "") + " .md-nav-item";
+        selector = root + (orientation ? (bar && orientation === "vertical" ? ':where([data-orientation="vertical"],[data-orientation="adaptive"])' : `:where([data-orientation="${orientation}"])`) : "") + " .md-nav-item";
         if (property.startsWith("short.")) { selector = root + ':where([data-size="short"]) .md-nav-item'; property = property.slice(6); }
         if (property === "label-text.font") return {family,selector,property:"font",...parsed};
       } else {
@@ -967,7 +982,7 @@ export function generateComponents(document, values) {
     for(const shape of ['icon','menu','none'])for(const width of ['clear','avatar','none','settings','clear-settings','settings-avatar'])for(const expanded of [false,true])
       for(const state of expanded?['enabled']:['enabled','hovered','focused','pressed'])
         configurations.push({family:'search',variant,control,shape,width,expanded,state});
-  for(const variant of ['multi-browse','uncontained','hero','full-screen'])
+  for(const variant of ['multi-browse','uncontained','uncontained-multi-aspect-ratio','hero','center-aligned-hero','full-screen'])
     for(const control of ['standard','outlined'])for(const size of ['small','medium','large'])
       for(const state of ['enabled','hovered','focused','pressed','disabled'])
         configurations.push({family:'carousel',variant,control,size,state});
@@ -1023,7 +1038,7 @@ export function generateComponents(document, values) {
       for(const shape of ["label","value-indicator"]) for(const orientation of ["horizontal","vertical"])
         for(const state of ["enabled","hovered","focused","pressed","disabled"]) configurations.push({family:"slider",variant,control,size,shape,orientation,state});
   for (const selected of [false,true]) for (const state of ["enabled","hovered","focused","pressed"]) {
-    for (const variant of ["vertical","horizontal"]) configurations.push({family:"nav-bar",variant,selected,state});
+    for (const variant of ["adaptive","vertical","horizontal","baseline"]) configurations.push({family:"nav-bar",variant,selected,state});
     for (const variant of ["standard","modal"]) configurations.push({family:"nav-drawer",variant,selected,state});
     for (const variant of ["collapsed","expanded"])
       for (const orientation of variant === "collapsed" ? ["vertical"] : ["horizontal"])

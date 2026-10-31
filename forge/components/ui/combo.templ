@@ -1,0 +1,65 @@
+package ui
+
+import "fmt"
+
+templ Field(p FieldProps) {
+	<div { p.Attributes()... }>
+		if !p.Filled {
+			@FieldOutline(p.Label)
+		}
+		<label for={ p.ID + "-input" } data-slot="label">{ p.Label }</label>
+		if p.MenuIcons {
+			<span data-slot="leading-icon" aria-hidden="true">
+				@Icon("search")
+			</span>
+		}
+		if p.Prefix!=""||p.Suffix!="" {
+			<span data-slot="prefix" id={ p.ID + "-prefix" }><span aria-hidden="true">{ p.Prefix }</span><span class="tokens-visually-hidden">{ p.PrefixDescription }</span></span>
+		}
+		<input { p.FieldInput()... }/>
+		if p.Prefix!=""||p.Suffix!="" {
+			<span data-slot="suffix" id={ p.ID + "-suffix" }><span aria-hidden="true">{ p.Suffix }</span><span class="tokens-visually-hidden">{ p.SuffixDescription }</span></span>
+		}
+		if p.Kind=="select"||p.Kind=="autocomplete" {
+			<button type="button" class="md-field-toggle" data-field-toggle tabindex="-1" aria-label="Show options" aria-controls={ p.ID + "-options" } disabled?={ p.Disabled }>
+				<span data-slot="trailing-icon">
+					@Icon("expand_more")
+				</span>
+			</button>
+		} else if p.MenuIcons {
+			<span data-slot="trailing-icon" aria-hidden="true">
+				@Icon("info")
+			</span>
+		}
+		<small id={ p.ID + "-help" } data-slot="supporting-text" { p.HelpAttrs... }>
+			if p.Invalid {
+				Enter a valid value.
+			} else {
+				{ p.Supporting }
+			}
+		</small>
+		if p.Kind=="select"||p.Kind=="autocomplete" {
+			<div class="md-field-menu" id={ p.ID + "-options" } role="listbox" aria-label={ p.Label } popover="auto">
+				for index,value := range p.Options {
+					if index==2 {
+						<hr class="md-field-menu-divider" aria-hidden="true"/>
+					}
+					<div class="md-field-option" id={ fmt.Sprintf("%s-option-%d", p.ID, index) } role="option" aria-selected={ fmt.Sprint(p.Value == value.Value) } data-field-option={ value.Label } data-field-value={ value.Value }>
+						if p.Kind=="select" && p.MenuIcons {
+							<span class="md-field-menu-leading" aria-hidden="true">
+								@Icon("star")
+							</span>
+						}
+						<span>{ value.Label }</span>
+						if p.Kind=="select" && p.MenuIcons {
+							<span class="md-field-menu-trailing" aria-hidden="true">
+								@Icon("check")
+							</span>
+						}
+					</div>
+				}
+				<p class="md-field-empty" role="option" aria-disabled="true" hidden>No matches</p>
+			</div>
+		}
+	</div>
+}

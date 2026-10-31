@@ -206,7 +206,7 @@
   --_button-state-color: var(--md-comp-button-elevated-selected-pressed-state-layer-color);
 }
 .md-elevated-button[aria-pressed="true"] { --_button-pressed-state-color: var(--md-comp-button-elevated-selected-pressed-state-layer-color); }
-.md-elevated-button:is(:disabled,[aria-disabled="true"]) {
+.md-elevated-button:is(:disabled,[aria-disabled="true"]):not([aria-busy="true"]) {
   --_button-container: var(--md-comp-button-elevated-disabled-container-color);
   --_elevation-level: var(--md-comp-button-elevated-disabled-container-elevation);
   --_button-container-opacity: var(--md-comp-button-elevated-disabled-container-opacity);
@@ -295,7 +295,7 @@
   --_button-state-color: var(--md-comp-button-filled-selected-pressed-state-layer-color);
 }
 .md-filled-button[aria-pressed="true"] { --_button-pressed-state-color: var(--md-comp-button-filled-selected-pressed-state-layer-color); }
-.md-filled-button:is(:disabled,[aria-disabled="true"]) {
+.md-filled-button:is(:disabled,[aria-disabled="true"]):not([aria-busy="true"]) {
   --_button-container: var(--md-comp-button-filled-disabled-container-color);
   --_elevation-level: var(--md-comp-button-filled-disabled-container-elevation);
   --_button-container-opacity: var(--md-comp-button-filled-disabled-container-opacity);
@@ -384,7 +384,7 @@
   --_button-state-color: var(--md-comp-button-outlined-selected-pressed-state-layer-color);
 }
 .md-outlined-button[aria-pressed="true"] { --_button-pressed-state-color: var(--md-comp-button-outlined-selected-pressed-state-layer-color); }
-.md-outlined-button:is(:disabled,[aria-disabled="true"]) {
+.md-outlined-button:is(:disabled,[aria-disabled="true"]):not([aria-busy="true"]) {
   --_button-container-opacity: var(--md-comp-button-outlined-disabled-container-opacity);
   --_button-icon: var(--md-comp-button-outlined-disabled-icon-color);
   --_button-icon-opacity: var(--md-comp-button-outlined-disabled-icon-opacity);
@@ -392,10 +392,10 @@
   --_button-label-opacity: var(--md-comp-button-outlined-disabled-label-text-opacity);
   --_button-outline: var(--md-comp-button-outlined-disabled-outline-color);
 }
-.md-outlined-button[aria-pressed="false"]:is(:disabled,[aria-disabled="true"]) {
+.md-outlined-button[aria-pressed="false"]:is(:disabled,[aria-disabled="true"]):not([aria-busy="true"]) {
   --_button-outline: var(--md-comp-button-outlined-unselected-disabled-outline-color);
 }
-.md-outlined-button[aria-pressed="true"]:is(:disabled,[aria-disabled="true"]) {
+.md-outlined-button[aria-pressed="true"]:is(:disabled,[aria-disabled="true"]):not([aria-busy="true"]) {
   --_button-container: var(--md-comp-button-outlined-selected-disabled-container-color);
 }
 .md-text-button {
@@ -426,7 +426,7 @@
 }
 .md-text-button { --_button-pressed-state-color: var(--md-comp-button-text-pressed-state-layer-color); }
 .md-text-button { --_button-pressed-state-opacity: var(--md-comp-button-text-pressed-state-layer-opacity); }
-.md-text-button:is(:disabled,[aria-disabled="true"]) {
+.md-text-button:is(:disabled,[aria-disabled="true"]):not([aria-busy="true"]) {
   --_button-container: var(--md-comp-button-text-disabled-container-color);
   --_button-container-opacity: var(--md-comp-button-text-disabled-container-opacity);
   --_button-icon: var(--md-comp-button-text-disabled-icon-color);
@@ -514,7 +514,7 @@
   --_button-state-color: var(--md-comp-button-tonal-selected-pressed-state-layer-color);
 }
 .md-tonal-button[aria-pressed="true"] { --_button-pressed-state-color: var(--md-comp-button-tonal-selected-pressed-state-layer-color); }
-.md-tonal-button:is(:disabled,[aria-disabled="true"]) {
+.md-tonal-button:is(:disabled,[aria-disabled="true"]):not([aria-busy="true"]) {
   --_button-container: var(--md-comp-button-tonal-disabled-container-color);
   --_elevation-level: var(--md-comp-button-tonal-disabled-container-elevation);
   --_button-container-opacity: var(--md-comp-button-tonal-disabled-container-opacity);

@@ -95,6 +95,6 @@
  document.addEventListener('pointerout',event=>{const trigger=event.target.closest?.('[data-menu-submenu]');if(trigger&&!trigger.contains(event.relatedTarget))clearTimeout(pending.get(trigger));});
  const reposition=()=>{for(const menu of document.querySelectorAll('[data-menu-example] [data-menu-panel]:popover-open'))position(menu);};
  addEventListener('resize',reposition);document.addEventListener('scroll',reposition,true);
- document.addEventListener('htmx:beforeCleanupElement',event=>{const root=event.detail?.elt;if(!root)return;for(const trigger of root.querySelectorAll('[data-menu-submenu]'))clearTimeout(pending.get(trigger));for(const menu of root.querySelectorAll('[data-menu-panel]:popover-open'))menu.hidePopover();});
+ document.addEventListener('htmx:beforeCleanupElement',event=>{const root=event.detail?.elt;if(typeof root?.querySelectorAll!=='function')return;for(const trigger of root.querySelectorAll('[data-menu-submenu]'))clearTimeout(pending.get(trigger));for(const menu of root.querySelectorAll('[data-menu-panel]:popover-open'))menu.hidePopover();});
  document.addEventListener('htmx:afterSwap',init);document.addEventListener('htmx:historyRestore',init);if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();

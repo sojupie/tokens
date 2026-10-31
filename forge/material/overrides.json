@@ -15,5 +15,9 @@
     "value": 12,
     "unit": "px"
   },
-  "md.comp.button.text.disabled.container.opacity": 0
+  "md.comp.button.text.disabled.container.opacity": 0,
+  "md.comp.nav-bar.container.elevation": 0,
+  "md.comp.nav-bar.item.vertical.container.between-space": 4,
+  "md.comp.nav-bar.item.horizontal.active-indicator.trailing-space": 20,
+  "md.comp.navigation-bar.container.elevation": 0
 }

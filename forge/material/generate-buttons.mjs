@@ -45,7 +45,7 @@ const states = {
   hovered: `:is(:hover,[data-button-state="hovered"])${enabled}:not(:where([data-touch]))`,
   focused: `:is(:focus-visible,[data-button-state="focused"])${enabled}`,
   pressed: `:is(:active,[data-pressed],[data-button-state="pressed"])${enabled}:not([data-button-cancelled])`,
-  disabled: ':is(:disabled,[aria-disabled="true"])',
+  disabled: ':is(:disabled,[aria-disabled="true"]):not([aria-busy="true"])',
 };
 
 export function buttonBinding(suffix, size = false) {

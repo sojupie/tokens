@@ -1,0 +1,71 @@
+package ui
+
+import "strconv"
+
+templ SheetHost() {
+	@Require("sheet")
+	<div class="md-sheet-host md-sheet-frame" data-interactive="true">
+		{ children... }
+	</div>
+}
+
+templ SheetTrigger(target, label string, p ButtonProps) {
+	{{
+		attrs := p.Attributes()
+		attrs["data-sheet-open"] = ""
+		attrs["aria-controls"] = target + "-panel"
+		attrs["aria-expanded"] = "false"
+		if p.Type == "" {
+			attrs["type"] = "button"
+		}
+	}}
+	@Button(attrs) {
+		{ label }
+	}
+}
+
+// SheetSurface owns the panel, handle and collapsible content. Callers supply content slots.
+templ SheetSurface(p SheetProps) {
+	@Require("sheet")
+	if p.Modal && !p.Inline {
+		<dialog { p.Attributes()... }>
+			@sheetFrame(p) {
+				{ children... }
+			}
+		</dialog>
+	} else {
+		<section role="region" hidden?={ p.Hidden } { p.Attributes()... }>
+			@sheetFrame(p) {
+				{ children... }
+			}
+		</section>
+	}
+}
+
+templ sheetFrame(p SheetProps) {
+	if p.Kind=="" || p.Kind==BottomSheet {
+		<button { attributes(templ.Attributes{"type":"button","class":"md-sheet-handle","data-sheet-handle":"","aria-controls":p.ID+"-content","aria-label":map[bool]string{true:"Expand sheet",false:"Minimize sheet"}[p.Minimized],"aria-expanded":strconv.FormatBool(!p.Minimized)},p.HandleAttrs)... }><span class="md-sheet-handle-mark"></span></button>
+	}
+	<div class="md-sheet-content" id={ p.ID + "-content" } hidden?={ p.Minimized }>
+		{ children... }
+	</div>
+}
+
+templ Sheet(p SheetProps) {
+	@SheetSurface(p) {
+		<header class="md-sheet-header">
+			<h2 class="md-sheet-title" id={ p.ID + "-heading" }>{ p.Title }</h2>
+			@Button(templ.Attributes{"class": "md-icon-button md-standard-icon-button md-sheet-close", "data-size": "small", "data-sheet-close": "", "aria-label": "Close " + p.Title}) {
+				@Icon("close")
+			}
+		</header>
+		<div class="md-sheet-body">
+			{ children... }
+		</div>
+		if p.Actions!=nil {
+			<footer class="md-sheet-footer">
+				@p.Actions
+			</footer>
+		}
+	}
+}

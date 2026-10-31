@@ -1,0 +1,24 @@
+package ui
+
+templ ConnectedButtons(p GroupProps) {
+	@Require("button-group")
+	<div { p.Attributes()... }>
+		{ children... }
+	</div>
+}
+
+templ GroupItem(p GroupItemProps) {
+	@Require("button-group")
+	<button { p.Attributes()... }>
+		if p.Connected {
+			<span class="md-group-check" aria-hidden="true">
+				@Icon("check")
+			</span>
+		}
+		else 
+		if p.Icon!="" {
+			@Icon(p.Icon)
+		}
+		<span>{ p.Label }</span>
+	</button>
+}

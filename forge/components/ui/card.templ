@@ -1,0 +1,57 @@
+package ui
+
+templ Card(p CardProps) {
+	@Require("card")
+	<article { attributes(templ.Attributes{"class":"md-card md-"+fallback(p.Variant,"filled")+"-card"},p.Attrs)... }>
+		@cardContent(p) {
+			{ children... }
+		}
+	</article>
+}
+
+templ CardLink(href string, p CardProps) {
+	@Require("card")
+	<a href={ templ.SafeURL(href) } { attributes(templ.Attributes{"class":"md-card md-"+fallback(p.Variant,"filled")+"-card md-interactive-card"},p.Attrs)... }>
+		@cardContent(p) {
+			{ children... }
+		}
+	</a>
+}
+
+templ CardButton(p CardProps) {
+	@Require("card")
+	<button type="button" { attributes(templ.Attributes{"class":"md-card md-"+fallback(p.Variant,"filled")+"-card md-interactive-card"},p.Attrs)... }>
+		if p.ImageSrc!="" {
+			<img class="md-card-media" src={ templ.SafeURL(p.ImageSrc) } alt={ p.ImageAlt }/>
+		}
+		<span class="md-card-content">
+			if p.Headline!="" {
+				<span class="md-card-headline">{ p.Headline }</span>
+			}
+			if p.Supporting!="" {
+				<span class="md-card-supporting-text">{ p.Supporting }</span>
+			}
+			{ children... }
+		</span>
+	</button>
+}
+
+templ cardContent(p CardProps) {
+	if p.ImageSrc!="" {
+		<img class="md-card-media" src={ templ.SafeURL(p.ImageSrc) } alt={ p.ImageAlt }/>
+	}
+	<div class="md-card-content">
+		if p.Headline!="" {
+			<h2 class="md-card-headline">{ p.Headline }</h2>
+		}
+		if p.Supporting!="" {
+			<p class="md-card-supporting-text">{ p.Supporting }</p>
+		}
+		{ children... }
+	</div>
+	if p.Actions!=nil {
+		<div class="md-card-actions">
+			@p.Actions
+		</div>
+	}
+}

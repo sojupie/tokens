@@ -469,3 +469,8 @@
   background: var(--_list-item-state-color, transparent);
   opacity: var(--_list-item-state-opacity, 0);
 }
+
+/* Unread is host-owned state; the primitive retains its captured type scale. */
+.md-list-item[data-unread] :is(.md-list-label,.md-list-supporting) {
+  font-weight:var(--md-ref-typeface-weight-bold);
+}

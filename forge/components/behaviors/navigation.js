@@ -48,6 +48,7 @@
   function selectNavigation(button) {
     const group = button.closest("[data-navigation-group]");
     if (!group) return;
+    const reselected = button.getAttribute("aria-current") === "page";
     for (const item of group.querySelectorAll("[data-navigation-item]"))
       item.removeAttribute("aria-current");
     button.setAttribute("aria-current", "page");
@@ -58,7 +59,7 @@
     group.dispatchEvent(
       new CustomEvent("md-navigation-select", {
         bubbles: true,
-        detail: { label },
+        detail: { label, reselected },
       }),
     );
     const frame = group.closest(".md-rail-frame");
@@ -98,6 +99,10 @@
       if (item && height)
         item.style.setProperty("--_nav-label-height", height + "px");
   }
+  const barItemSizes = new ResizeObserver(entries => {
+    for (const {target,contentRect} of entries) target.style.setProperty("--nav-label-width", Math.max(0,contentRect.width)+"px");
+  });
+  const barItems = new WeakSet();
   const railLabelSizes = new ResizeObserver((entries) =>
     measureRailLabels(entries.map((entry) => entry.target)),
   );
@@ -427,6 +432,9 @@
           railLabels.add(label);
           railLabelSizes.observe(label);
         }
+    }
+    for (const item of document.querySelectorAll(".md-navigation-bar .md-nav-item")) {
+      if (!barItems.has(item)) {barItems.add(item);barItemSizes.observe(item);}
     }
     for (const label of document.querySelectorAll(".md-navigation-bar .md-nav-label")) {
       if (!railLabels.has(label)) { railLabels.add(label); railLabelSizes.observe(label); }

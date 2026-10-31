@@ -1,0 +1,43 @@
+package ui
+
+templ Carousel(p CarouselProps, count int) {
+	@Require("carousel")
+	<section { p.Attributes()... }>
+		if p.Header!=nil {
+			@p.Header
+		}
+		<div class="md-carousel-viewport" aria-label="Carousel items">
+			<div class="md-carousel-scroll-track">
+				<div class="md-carousel-snaps" aria-hidden="true">
+					for range count {
+						<span class="md-carousel-snap"></span>
+					}
+				</div>
+				<ol class="md-carousel-track">
+					{ children... }
+				</ol>
+			</div>
+		</div>
+		if p.Actions!=nil {
+			@p.Actions
+		}
+		if p.Controls!=nil {
+			@p.Controls
+		}
+	</section>
+}
+
+templ CarouselItem(p CarouselItemProps) {
+	@Require("carousel")
+	<li { p.slot()... }>
+		<button { p.Attributes()... }>
+			if p.ImageSrc!="" {
+				<span class="md-carousel-art" aria-hidden="true"><img src={ templ.SafeURL(p.ImageSrc) } alt={ p.ImageAlt } width="1200" height="800" draggable="false"/></span>
+			}
+			if p.Content!=nil {
+				@p.Content
+			}
+			{ children... }
+		</button>
+	</li>
+}

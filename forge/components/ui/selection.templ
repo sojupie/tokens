@@ -1,0 +1,50 @@
+package ui
+
+// Checkbox is a labeled form field. CheckboxControl is the same control for list or custom label slots.
+templ Checkbox(id string, label string) {
+	@CheckboxField(ChoiceProps{ID: id, Label: label})
+}
+
+templ CheckboxField(p ChoiceProps) {
+	<span class="md-checkbox-choice">
+		@CheckboxControl(p)
+		<label for={ p.ID }>{ p.Label }</label>
+	</span>
+}
+
+templ CheckboxControl(p ChoiceProps) {
+	@Require("checkbox")
+	<label { attributes(templ.Attributes{"class":"md-checkbox"},p.Attrs)... }>
+		<input { p.input("checkbox")... }/>
+		<span class="md-checkbox-box" aria-hidden="true"><svg class="md-checkbox-check" viewBox="0 0 18 18" fill="none"><path d="m4 9 3 3 7-7" stroke="currentColor" stroke-width="2"></path></svg><svg class="md-checkbox-dash" viewBox="0 0 18 18" fill="none"><path d="M4 9h10" stroke="currentColor" stroke-width="2"></path></svg></span>
+	</label>
+}
+
+templ Switch(p ChoiceProps) {
+	<span class="md-switch-choice">
+		@SwitchControl(p)
+		<label for={ p.ID }>{ p.Label }</label>
+	</span>
+}
+
+templ SwitchControl(p ChoiceProps) {
+	@Require("switch")
+	{{
+		input := p.input("checkbox")
+		input["role"] = "switch"
+	}}
+	<label { attributes(templ.Attributes{"class":"md-switch"},p.Attrs)... }><input { input... }/><span class="md-switch-track" aria-hidden="true"></span><span class="md-switch-handle" aria-hidden="true"><svg class="md-switch-on" viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2"></path></svg><svg class="md-switch-off" viewBox="0 0 24 24" fill="none"><path d="m7 7 10 10M7 17 17 7" stroke="currentColor" stroke-width="2"></path></svg></span></label>
+}
+
+templ RadioControl(p ChoiceProps) {
+	@Require("radio")
+	<span { attributes(templ.Attributes{"class":"md-radio"},p.Attrs)... }><input { p.input("radio")... }/><span class="md-radio-icon" aria-hidden="true"></span></span>
+}
+
+templ Radio(p ChoiceProps) {
+	{{ p.visibleLabel = true }}
+	<label class="md-radio-choice">
+		@RadioControl(p)
+		<span class="md-radio-label">{ p.Label }</span>
+	</label>
+}

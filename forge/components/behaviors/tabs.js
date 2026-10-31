@@ -1,61 +1,79 @@
 (() => {
   if (typeof document === "undefined") return;
-  const { navigationIndex } = globalThis.MaterialComponents;
   const tabAnimations = new WeakMap();
+  const tabs = list => [...list.querySelectorAll('[role="tab"]')].filter(tab =>
+    !tab.disabled && !tab.closest('[inert]') && tab.getClientRects().length && getComputedStyle(tab).visibility !== 'hidden');
   function selectTab(tab) {
-    const list = tab.closest('[role="tablist"]'),
-      example = list.closest(".md-tabs-example");
+    const list = tab.closest('[role="tablist"]');
+    const example = list.closest('.md-tabs-example');
     const previous = list.querySelector('[aria-selected="true"]');
     if (previous === tab) return;
-    const from = previous
-      ?.querySelector(".md-tab-active-indicator")
-      .getBoundingClientRect();
+    const from = previous?.querySelector('.md-tab-active-indicator').getBoundingClientRect();
     tabAnimations.get(list)?.cancel();
     for (const item of list.querySelectorAll('[role="tab"]')) {
-      const selected = item === tab;
-      item.setAttribute("aria-selected", String(selected));
-      item.tabIndex = selected ? 0 : -1;
+      item.setAttribute('aria-selected', String(item === tab));
+      item.tabIndex = item === tab ? 0 : -1;
     }
-    for (const panel of example.querySelectorAll('[role="tabpanel"]'))
-      panel.hidden = panel.id !== tab.getAttribute("aria-controls");
-    if (!from || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const indicator = tab.querySelector(".md-tab-active-indicator"),
-      to = indicator.getBoundingClientRect();
+    // Only this tab set's panels: nested tab sets keep their own selection.
+    for (const panel of example?.querySelectorAll('[role="tabpanel"]') || []) {
+      if (panel.closest('.md-tabs-example') === example)
+        panel.hidden = panel.id !== tab.getAttribute('aria-controls');
+    }
+    list.dispatchEvent(new CustomEvent('md-tab-change',{bubbles:true,detail:{id:tab.id,panel:tab.getAttribute('aria-controls')}}));
+    tab.scrollIntoView({block:'nearest', inline:'nearest'});
+    if (!from || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const indicator = tab.querySelector('.md-tab-active-indicator'), to = indicator.getBoundingClientRect();
     if (!to.width) return;
-    const animation = indicator.animate(
-      [
-        {
-          transform: `translateX(${from.left - to.left}px) scaleX(${from.width / to.width})`,
-        },
-        { transform: "none" },
-      ],
-      MaterialMotion.timing(tab),
-    );
-    tabAnimations.set(list, animation);
+    tabAnimations.set(list, indicator.animate([
+      {transform:`translateX(${from.left-to.left}px) scaleX(${from.width/to.width})`},
+      {transform:'none'},
+    ], MaterialMotion.timing(tab)));
   }
-  document.addEventListener("focusin", (event) => {
-    const tab = event.target.closest?.(".md-tab");
-    if (tab) selectTab(tab);
-  });
-  document.addEventListener("keydown", (event) => {
-    const tab = event.target.closest?.(".md-tab");
+  document.addEventListener('focusin', event => {
+    const tab = event.target.closest?.('.md-tab');
     if (!tab) return;
-    const list = tab.closest('[role="tablist"]'),
-      items = [...list.querySelectorAll('[role="tab"]')];
-    const next = navigationIndex(
-      items.indexOf(tab),
-      items.length,
-      event.key,
-      true,
-      getComputedStyle(list).direction === "rtl",
-    );
-    if (next === null) return;
+    for (const item of tab.closest('[role="tablist"]').querySelectorAll('[role="tab"]')) item.tabIndex = item === tab ? 0 : -1;
+    tab.scrollIntoView({block:'nearest',inline:'nearest'});
+  });
+  document.addEventListener('keydown', event => {
+    const tab = event.target.closest?.('.md-tab');
+    if (!tab) return;
+    const list = tab.closest('[role="tablist"]'), items = tabs(list), index = items.indexOf(tab);
+    const forward = getComputedStyle(list).direction === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
+    const backward = forward === 'ArrowLeft' ? 'ArrowRight' : 'ArrowLeft';
+    let next;
+    if (event.key === 'Home') next = 0;
+    else if (event.key === 'End') next = items.length-1;
+    else if (event.key === forward) next = Math.min(items.length-1,index+1);
+    else if (event.key === backward) next = Math.max(0,index-1);
+    else return; // Space/Enter retain native button activation.
+    if (index < 0 || !items.length) return;
     event.preventDefault();
     items[next].focus();
-    selectTab(items[next]);
   });
-  document.addEventListener("click", (event) => {
-    const tab = event.target.closest?.(".md-tab");
-    if (tab) selectTab(tab);
+  document.addEventListener('click', event => {
+    const tab = event.target.closest?.('.md-tab');
+    if (tab && !tab.disabled) selectTab(tab);
+  });
+  let swipe;
+  document.addEventListener('pointerdown', event => {
+    swipe = null;
+    if (event.pointerType !== 'touch' || event.target.closest('button,input,textarea,select,a,[contenteditable]')) return;
+    const panel = event.target.closest('.md-tabs-example > [role="tabpanel"]');
+    if (!panel) return;
+    const list = panel.parentElement.querySelector('[role="tablist"]');
+    if (!list || list.dataset.layout === 'scrollable') return;
+    swipe = {list, x:event.clientX,y:event.clientY,id:event.pointerId};
+  });
+  document.addEventListener('pointercancel', () => { swipe = null; });
+  document.addEventListener('pointerup', event => {
+    const start = swipe; swipe = null;
+    if (!start || start.id !== event.pointerId) return;
+    const dx = event.clientX-start.x, dy = event.clientY-start.y;
+    if (Math.abs(dx)<50 || Math.abs(dx)<Math.abs(dy)*1.5) return;
+    const items = tabs(start.list), index=items.findIndex(t=>t.getAttribute('aria-selected')==='true');
+    const step = (dx<0 ? 1 : -1) * (getComputedStyle(start.list).direction==='rtl' ? -1 : 1);
+    const next = items[index+step];
+    if (next) selectTab(next);
   });
 })();

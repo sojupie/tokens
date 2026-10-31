@@ -1,0 +1,37 @@
+package ui
+
+templ AppBar(p AppBarProps) {
+	@Require("appbar")
+	<header { p.Attributes()... }>
+		<div class="md-appbar-row">
+			if p.Leading!=nil {
+				@p.Leading
+			}
+			if !p.Expanded {
+				if p.Search!=nil {
+					@p.Search
+				} else {
+					@appBarTitle(p)
+				}
+			}
+			<div class="md-appbar-actions">
+				if p.Actions!=nil {
+					@p.Actions
+				}
+				{ children... }
+			</div>
+		</div>
+		if p.Expanded {
+			@appBarTitle(p)
+		}
+	</header>
+}
+
+templ appBarTitle(p AppBarProps) {
+	<div class={ "md-appbar-copy",templ.KV("md-appbar-expanded",p.Expanded) }>
+		<h1 class="md-appbar-title">{ p.Title }</h1>
+		if p.Subtitle!="" {
+			<p class="md-appbar-subtitle">{ p.Subtitle }</p>
+		}
+	</div>
+}

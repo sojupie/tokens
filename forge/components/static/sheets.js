@@ -11,7 +11,7 @@
   if(typeof module!=='undefined')module.exports={sheetTarget,sheetExit};
   if(typeof document==='undefined')return;
   const states=new WeakMap(),reduced=matchMedia('(prefers-reduced-motion: reduce)');
-  function demo(sheet){return sheet.closest('.md-sheet-demo');}
+  function demo(sheet){return sheet.closest('.md-sheet-demo,.md-sheet-host');}
   function numeric(sheet,key){return Number.parseFloat(getComputedStyle(sheet).getPropertyValue('--_sheet-'+key));}
   function entry(sheet){return states.get(sheet);}
   function content(sheet,visible,interactive=visible){const body=sheet.querySelector('.md-sheet-content');body.hidden=!visible;body.inert=!interactive;}
@@ -60,7 +60,7 @@
     const state=entry(sheet);if(!state)return;
     if(['open','opening','resizing'].includes(state.phase)){sheet.querySelector(':is([data-sheet-initial-focus],[data-sheet-handle],.md-sheet-close):not(:disabled)')?.focus({preventScroll:true});return;}
     const interrupted=state.phase==='closing',style=getComputedStyle(sheet),from=interrupted?style.transform:exit(sheet),fromHeight=interrupted?sheet.getBoundingClientRect().height:0;
-    state.animation?.cancel();state.phase='opening';state.opener=opener;state.saved=sheet.querySelector('input')?.value;
+    state.animation?.cancel();state.phase='opening';state.opener=opener;
     const status=demo(sheet).querySelector('[data-sheet-status]');if(status)status.textContent='';
     if(!interrupted)sheet.removeAttribute('data-sheet-full-height');
     sheet.inert=false;sheet.removeAttribute('data-sheet-closing');
@@ -73,23 +73,23 @@
   }
   async function close(sheet,save=false,restoreFocus=true,velocity=0){
     const state=entry(sheet);if(!state||['closed','closing'].includes(state.phase))return;
+    if(!sheet.dispatchEvent(new CustomEvent('md-sheet-beforeclose',{bubbles:true,cancelable:true,detail:{reason:save?'confirm':'dismiss'}})))return;
     const from=getComputedStyle(sheet).transform,height=sheet.getBoundingClientRect().height;
-    const input=sheet.querySelector('input');if(input){if(save)state.saved=input.value;else input.value=state.saved;}
     sheet.style.height=height+'px';state.phase='closing';sheet.inert=true;sheet.setAttribute('data-sheet-closing','');
     if(!await animate(sheet,[{transform:from},{transform:exit(sheet)}],true,velocity))return;
     if(sheet instanceof HTMLDialogElement)sheet.close();else sheet.hidden=true;
-    sheet.inert=false;sheet.style.height='';sheet.removeAttribute('data-sheet-closing');sheet.removeAttribute('data-sheet-full-height');state.phase='closed';
+    sheet.inert=false;sheet.style.height='';sheet.removeAttribute('data-sheet-closing');sheet.removeAttribute('data-sheet-full-height');state.phase='closed';sheet.dispatchEvent(new CustomEvent('md-sheet-closed',{bubbles:true,detail:{reason:save?'confirm':'dismiss'}}));
     const opener=state.opener;opener?.setAttribute('aria-expanded','false');if(restoreFocus)opener?.focus({preventScroll:true});
     const status=demo(sheet).querySelector('[data-sheet-status]');if(status)status.textContent='Sheet closed.';
   }
   function initialize(){
-    for(const sheet of document.querySelectorAll('.md-sheet-demo[data-interactive="true"] .md-sheet'))if(!states.has(sheet)){
-      states.set(sheet,{phase:'closed',animation:null,drag:null,suppressClick:false});
+    for(const sheet of document.querySelectorAll(':is(.md-sheet-demo,.md-sheet-host)[data-interactive="true"] .md-sheet'))if(!states.has(sheet)){
+      states.set(sheet,{phase:sheet instanceof HTMLDialogElement?(sheet.open?'open':'closed'):(sheet.hidden?'closed':'open'),animation:null,drag:null,suppressClick:false});
       if(sheet instanceof HTMLDialogElement)sheet.addEventListener('cancel',event=>{event.preventDefault();close(sheet);});
     }
   }
   document.addEventListener('click',event=>{
-    const button=event.target.closest?.('button'),container=button?.closest('.md-sheet-demo[data-interactive="true"]');if(!container)return;
+    const button=event.target.closest?.('button'),container=button?.closest(':is(.md-sheet-demo,.md-sheet-host)[data-interactive="true"]');if(!container)return;
     const sheet=container.querySelector('.md-sheet'),state=entry(sheet);if(!state)return;
     if(button.hasAttribute('data-sheet-open')){open(sheet,button);return;}
     if(button.hasAttribute('data-sheet-close')){close(sheet,button.hasAttribute('data-sheet-save'));return;}
@@ -99,7 +99,7 @@
     }
   });
   document.addEventListener('keydown',event=>{
-    const sheet=event.target.closest?.('.md-sheet-demo[data-interactive="true"] .md-sheet');if(!sheet)return;
+    const sheet=event.target.closest?.(':is(.md-sheet-demo,.md-sheet-host)[data-interactive="true"] .md-sheet');if(!sheet)return;
     if(event.key==='Escape'&&(!(sheet instanceof HTMLDialogElement)||sheet.dataset.control==='standard')){event.preventDefault();event.stopPropagation();close(sheet);return;}
     if(!event.target.matches('[data-sheet-handle]'))return;
     if(['ArrowUp','Home','ArrowDown','End'].includes(event.key)){event.preventDefault();resize(sheet,['ArrowUp','Home'].includes(event.key)?'expanded':'minimized');}
@@ -107,19 +107,19 @@
   // Dismiss only when both ends of a pointer gesture are on the native backdrop.
   document.addEventListener('pointerdown',event=>{
     for(const openSheet of document.querySelectorAll('dialog.md-sheet[data-control="standard"][open]')){const state=entry(openSheet);if(state&&!openSheet.contains(event.target)&&!state.opener?.contains(event.target))close(openSheet,false,false);}
-    const sheet=event.target.closest?.('.md-sheet-demo[data-interactive="true"] .md-sheet');if(!sheet)return;
+    const sheet=event.target.closest?.(':is(.md-sheet-demo,.md-sheet-host)[data-interactive="true"] .md-sheet');if(!sheet)return;
     const state=entry(sheet);if(!state||event.button!==0||event.isPrimary===false||state.phase==='closing')return;
     if(sheet instanceof HTMLDialogElement&&event.target===sheet){const r=sheet.getBoundingClientRect();state.backdrop=event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom;}
     const handle=event.target.closest('[data-sheet-handle]');if(!handle)return;
     state.suppressClick=false;
-    const rect=sheet.getBoundingClientRect(),bottom=sheet instanceof HTMLDialogElement?window.innerHeight:sheet.closest('.md-sheet-frame').getBoundingClientRect().bottom;
+    const rect=sheet.getBoundingClientRect(),bottom=sheet instanceof HTMLDialogElement?window.innerHeight:(sheet.closest('.md-sheet-frame')||demo(sheet)).getBoundingClientRect().bottom;
     const height=rect.height-Math.max(0,rect.bottom-bottom);
     state.animation?.cancel();state.animation=null;state.phase='open';sheet.style.height=height+'px';
     state.drag={id:event.pointerId,startY:event.clientY,height,origin:sheet.dataset.variant,moved:false,samples:[[event.timeStamp,event.clientY]],current:height,min:bounds(sheet,'minimized'),max:bounds(sheet,'expanded')};
     handle.setPointerCapture(event.pointerId);
   });
   document.addEventListener('pointermove',event=>{
-    const sheet=event.target.closest?.('.md-sheet-demo[data-interactive="true"] .md-sheet'),state=sheet&&entry(sheet),drag=state?.drag;if(!drag||drag.id!==event.pointerId)return;
+    const sheet=event.target.closest?.(':is(.md-sheet-demo,.md-sheet-host)[data-interactive="true"] .md-sheet'),state=sheet&&entry(sheet),drag=state?.drag;if(!drag||drag.id!==event.pointerId)return;
     const delta=event.clientY-drag.startY;
     if(!drag.moved&&Math.abs(delta)<Number.parseFloat(getComputedStyle(sheet).getPropertyValue('--md-sys-measurement-space100')))return;
     if(!drag.moved){drag.moved=true;sheet.dataset.variant='expanded';content(sheet,true,false);}
@@ -128,7 +128,7 @@
     drag.samples.push([event.timeStamp,event.clientY]);drag.samples=drag.samples.filter(([time])=>event.timeStamp-time<=100);
   });
   function release(event,cancelled){
-    const sheet=event.target.closest?.('.md-sheet-demo[data-interactive="true"] .md-sheet'),state=sheet&&entry(sheet);if(!state)return;
+    const sheet=event.target.closest?.(':is(.md-sheet-demo,.md-sheet-host)[data-interactive="true"] .md-sheet'),state=sheet&&entry(sheet);if(!state)return;
     const drag=state.drag;
     if(drag&&drag.id===event.pointerId){
       state.drag=null;const handle=sheet.querySelector('[data-sheet-handle]');if(handle.hasPointerCapture(event.pointerId))handle.releasePointerCapture(event.pointerId);

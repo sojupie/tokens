@@ -1,0 +1,40 @@
+package ui
+
+func menuItemAttributes(attrs templ.Attributes) templ.Attributes {
+	defaults := templ.Attributes{"type": "button", "class": "md-menu-item", "role": "menuitem", "tabindex": "-1"}
+	for key, value := range attrs {
+		defaults[key] = value
+	}
+	return defaults
+}
+
+// MenuItem owns the label and icon slots used by the shared menu styles.
+// Attributes supply command, submenu, selection and disabled semantics.
+templ MenuItem(attrs templ.Attributes, label string, leading templ.Component, trailing templ.Component) {
+	@Require("common")
+	<button { menuItemAttributes(attrs)... }>
+		if leading != nil {
+			<span data-slot="leading-icon" aria-hidden="true">
+				@leading
+			</span>
+		}
+		<span class="md-menu-item-text"><span>{ label }</span></span>
+		if trailing != nil {
+			<span data-slot="trailing-icon" aria-hidden="true">
+				@trailing
+			</span>
+		}
+	</button>
+}
+
+// These wrappers preserve the Catalog component anatomy; callers supply content.
+templ Menu(id string, label string, main bool) {
+	@Require("common")
+	<div id={ id } class="md-menu" data-variant="standard" data-orientation="vertical" popover="auto" data-menu-panel data-menu-main?={ main } role="menu" aria-label={ label }>
+		<section>
+			<ul role="presentation">
+				{ children... }
+			</ul>
+		</section>
+	</div>
+}

@@ -7,7 +7,8 @@
       .closest(".md-split-demo")
       .querySelector(".md-split-trailing");
     const r = trigger.getBoundingClientRect(),
-      box = menu.getBoundingClientRect();
+      // Opening scale is animated; placement needs the full, unscaled box.
+      box = { width: menu.offsetWidth, height: menu.offsetHeight };
     const style = getComputedStyle(trigger),
       gap = Number.parseFloat(
         style.getPropertyValue("--md-sys-measurement-space50"),

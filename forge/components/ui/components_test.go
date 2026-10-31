@@ -147,3 +147,21 @@ func TestSelectRendersInitialSelectionBeforeRuntimeLoads(t *testing.T) {
 		}
 	}
 }
+
+func TestLoadingButtonPreservesLabelAndSharedDisk(t *testing.T) {
+	var out bytes.Buffer
+	if err := LoadingButton(templ.Attributes{"class": "md-button md-filled-button md-loading-button", "disabled": true, "aria-busy": "true", "type": "submit"}, "Download").Render(context.Background(), &out); err != nil {
+		t.Fatal(err)
+	}
+	for _, required := range []string{`md-loading-button-slot`, `data-button-label>Download`, `aria-busy="true"`, `disabled`, `md-button-loading-disk`, `aria-hidden="true"`, initialLoadingPath} {
+		if !strings.Contains(out.String(), required) {
+			t.Fatal(required, out.String())
+		}
+	}
+	if strings.Count(out.String(), `type=`) != 1 || !strings.Contains(out.String(), `type="submit"`) {
+		t.Fatal("submit type must override the primitive default", out.String())
+	}
+	if strings.Contains(out.String(), `role="progressbar"`) {
+		t.Fatal("decorative disk must not add another accessibility announcement")
+	}
+}

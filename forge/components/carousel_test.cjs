@@ -1,7 +1,7 @@
 const test=require('node:test'),assert=require('node:assert/strict');
 const {readFileSync}=require('node:fs'),{runInNewContext}=require('node:vm');
 const out={exports:{}};runInNewContext(readFileSync(`${__dirname}/static/carousel.js`,'utf8'),{module:out});
-const {layout,itemFrame}=out.exports;
+const {layout,itemFrame,scrollTargets}=out.exports;
 test('multi-browse end transition has monotonic edges and widths',()=>{
  for(const width of [280,384,640,900])for(const preferred of [160,240,320]) {
   const plan=layout(width,preferred,8,'multi-browse',6);
@@ -51,7 +51,7 @@ test('mouse release settles smoothly before restoring snapping',()=>{
    scrollTo(options){calls.push({...options,snap:this.style.scrollSnapType});this.scrollLeft=Math.round(options.left);},
   };
   const root={dataset:{variant:'multi-browse'},style:{setProperty(){}},
-   querySelectorAll:selector=>selector==='.md-carousel-snap'?snaps:buttons,
+   querySelectorAll:selector=>['.md-carousel-snap','.md-carousel-slot'].includes(selector)?snaps:buttons,
    querySelector:selector=>selector==='.md-carousel-scroll-track'?{}:selector==='.md-carousel-viewport'?viewport:selector==='output'?output:controls[selector]??={},
   };
   const target={closest:selector=>selector==='.md-carousel'?root:selector==='.md-carousel-viewport'?viewport:null};
@@ -83,11 +83,100 @@ test('mouse release settles smoothly before restoring snapping',()=>{
   assert.equal(calls.length,reduced?1:3);
   assert.equal(calls.at(-1).left,fast?(reduced?157.71875:158):0);
   assert.equal(calls[0].behavior,'instant');
-  assert.equal(calls[0].snap,'none');
+  assert.equal(calls[0].snap,reduced?undefined:'none');
   assert.equal(root.dataset.carouselDragging,undefined);
   viewport.scrollLeft=fast?158:0;
   scrollListeners.scrollend();
   assert.equal(viewport.style.scrollSnapType,undefined);
   assert.equal(root.dataset.carouselSettled,fast?'1':'0');
+ }
+});
+
+test('hero layouts are distinct and dynamic small items stay in the captured 40–56px range',()=>{
+ for(const width of [176,280,384,640,900]) {
+  for(const variant of ['multi-browse','hero','center-aligned-hero']) {
+   const plan=layout(width,240,8,variant,6);
+   if(plan.variant==='uncontained')continue;
+   assert.ok(plan.small>=40&&plan.small<=56);
+   const first=itemFrame(plan,0,0,6);
+   if(variant==='center-aligned-hero')assert.ok(Math.abs(first.left+first.size/2-width/2)<.001);
+   else assert.ok(Math.abs(first.left)<.001);
+   if(variant==='hero')assert.ok(plan.keylines.filter(k=>k.size===plan.small).length===2);
+  }
+ }
+});
+
+function nativeCarousel({variant='uncontained',reduced=false,scrolling='free',showControls=true}={}) {
+ const listeners={},scrollListeners={},output={},moves=[];
+ const widths=variant==='uncontained-multi-aspect-ratio'?[160,90,120,135,160,90]:[160,160,160,160,160,160];
+ let start=0;
+ const slots=widths.map(width=>{const left=start;start+=width+8;return{getBoundingClientRect:()=>({left})};});
+ const buttons=widths.map(()=>({style:{},disabled:false,querySelector:()=>({style:{}}),focus(){}}));
+ const viewport={clientWidth:336,scrollWidth:start-8+16,scrollLeft:0,
+  style:{removeProperty(){delete this.scrollSnapType;}},addEventListener:(name,fn)=>scrollListeners[name]=fn,
+  scrollTo(options){moves.push(options);this.scrollLeft=Math.max(0,Math.min(options.left,this.scrollWidth-this.clientWidth));},
+  setPointerCapture(){},hasPointerCapture:()=>false,
+ };
+ const controls={},root={dataset:{variant,scrolling},style:{setProperty(){}},
+  querySelectorAll:selector=>['.md-carousel-slot','.md-carousel-snap'].includes(selector)?slots:buttons,
+  querySelector:selector=>selector==='.md-carousel-scroll-track'?{}:selector==='.md-carousel-viewport'?viewport:selector==='output'?output:!showControls&&selector.startsWith('[data-carousel-step=')?null:controls[selector]??={},
+ };
+ const target={closest:selector=>selector==='.md-carousel'?root:selector==='.md-carousel-viewport'?viewport:null};
+ const document={readyState:'complete',querySelectorAll:()=>[root],addEventListener:(name,fn)=>listeners[name]=fn};
+ runInNewContext(readFileSync(`${__dirname}/static/carousel.js`,'utf8'),{
+  document,matchMedia:()=>({matches:reduced}),window:{addEventListener(){}},
+  getComputedStyle:()=>({direction:'ltr',paddingInlineStart:'16px',paddingInlineEnd:'0px',getPropertyValue:name=>name==='--_carousel-preferred'?'160px':'8px'}),
+  ResizeObserver:class{observe(){}},
+ });
+ return{root,viewport,buttons,moves,drag(){
+  listeners.pointerdown({target,pointerType:'mouse',button:0,pointerId:1,clientX:200,timeStamp:0});
+  listeners.pointermove({pointerId:1,clientX:140,timeStamp:60,preventDefault(){}});
+  listeners.pointerup({pointerId:1,timeStamp:200});
+ }};
+}
+test('uncontained variants retain native item widths and free-scroll positions on release',()=>{
+ for(const variant of ['uncontained','uncontained-multi-aspect-ratio']) {
+  const c=nativeCarousel({variant});c.drag();
+  assert.equal(c.root.dataset.carouselLayout,'flow');
+  assert.equal(c.viewport.scrollLeft,60);
+  assert.equal(c.moves.length,0,'free release does not seek a snap target');
+  assert.ok(c.buttons.every(b=>b.style.width===''&&b.style.transform===''));
+ }
+});
+test('optional uncontained snapping uses native flow, including unequal item widths',()=>{
+ const c=nativeCarousel({variant:'uncontained-multi-aspect-ratio',scrolling:'snap'});c.drag();
+ assert.equal(c.moves.length,1);
+ assert.equal(c.moves[0].left,0);
+ assert.equal(c.moves[0].behavior,'smooth');
+});
+test('reduced motion uses complete stable items without width masking or parallax',()=>{
+ for(const variant of ['multi-browse','uncontained','uncontained-multi-aspect-ratio','hero','center-aligned-hero','full-screen']) {
+  const c=nativeCarousel({variant,reduced:true});c.drag();
+  assert.equal(c.root.dataset.carouselLayout,'flow');
+  assert.ok(c.buttons.every(b=>b.style.width===''&&b.style.transform===''));
+  assert.equal(c.moves[0].behavior,'instant');
+ }
+});
+
+test('mixed-width snap targets use logical leading edges in both directions',()=>{
+ const ltr=[{left:16,right:336},{left:344,right:434},{left:442,right:622}];
+ const rtl=[{left:664,right:984},{left:566,right:656},{left:378,right:558}];
+ assert.deepEqual(Array.from(scrollTargets(ltr,false,800)),[0,328,426]);
+ assert.deepEqual(Array.from(scrollTargets(rtl,true,800)),[0,328,426]);
+});
+
+test('narrow compact containers retain large, medium and bounded small keylines',()=>{
+ const plan=layout(177,240,8,'multi-browse',6);
+ assert.equal(plan.variant,'multi-browse');
+ const visible=[0,1,2].map(i=>itemFrame(plan,i,0,6));
+ assert.ok(visible[0].size>visible[1].size&&visible[1].size>visible[2].size);
+ assert.equal(visible[2].size,40);
+});
+
+test('carousel scenes can omit previous and next controls',()=>{
+ for(const variant of ['multi-browse','uncontained']) {
+  const c=nativeCarousel({variant,showControls:false});
+  assert.equal(c.root.dataset.carouselReady,'');
+  assert.ok(c.buttons.every(button=>Number.isFinite(parseFloat(button.style.width))||c.root.dataset.carouselLayout==='flow'));
  }
 });

@@ -32,6 +32,7 @@ test(
     const { values } = await compile(document, ":root", { appTheme: true });
     const generated = generateButtons(document, values);
     assert.equal(generated.coverage.mapped.length, 295);
+    assert.ok(generated.css.includes(':is(:disabled,[aria-disabled="true"]):not([aria-busy="true"])'), 'busy buttons retain enabled token colors');
     assert.match(
       generated.css,
       /--_button-pressed-state-opacity: var\(--md-comp-button-tonal-pressed-state-layer-opacity\)/,

@@ -3,7 +3,7 @@ function harness(){
  const listeners={},timers=new Map();let time=0,seq=0;
  const document={readyState:'loading',querySelectorAll:()=>[],addEventListener(t,f){(listeners[t]??=[]).push(f)}};
  runInNewContext(readFileSync(`${__dirname}/behaviors/tooltips.js`,'utf8'),{document,window:{addEventListener(){}},setTimeout(fn,ms){const id=++seq;timers.set(id,{fn,at:time+ms});return id},clearTimeout(id){timers.delete(id)}});
- function demo(){const attributes=new Set(),d={matches:()=>false,querySelector:()=>({}),contains:e=>e?.parent===d,setAttribute:n=>attributes.add(n),removeAttribute:n=>attributes.delete(n),get visible(){return attributes.has('data-tooltip-visible')}};d.target={parent:d,closest:()=>d};return d}
+ function demo(){const attributes=new Set(),d={matches:()=>false,querySelector:selector=>selector.includes("[popover]")?null:{},contains:e=>e?.parent===d,setAttribute:n=>attributes.add(n),removeAttribute:n=>attributes.delete(n),get visible(){return attributes.has('data-tooltip-visible')}};d.target={parent:d,closest:()=>d};return d}
  return{demo,send(type,d,more={}){for(const f of listeners[type]||[])f({target:d.target,relatedTarget:null,pointerId:1,isPrimary:true,pointerType:'mouse',clientX:0,clientY:0,...more})},advance(ms){time+=ms;for(const [id,t]of [...timers])if(t.at<=time){timers.delete(id);t.fn()}}};
 }
 test('plain tooltips retain 1.5s exit grace and cancel dismissal on re-entry',()=>{const h=harness(),d=h.demo();h.send('pointerover',d);assert.equal(d.visible,true);h.send('pointerout',d);h.advance(1499);assert.equal(d.visible,true);h.send('pointerover',d);h.advance(10);assert.equal(d.visible,true);h.send('pointerout',d);h.advance(1500);assert.equal(d.visible,false)});
@@ -27,8 +27,21 @@ test('mouse click focus does not keep a tooltip open after the pointer leaves', 
  d.matches=()=>true; // The clicked button retains focus after pointer exit.
  h.send('focusin',d);
  h.send('pointerout',d);
- h.advance(1499);
- assert.equal(d.visible,true);
- h.advance(1);
- assert.equal(d.visible,false);
+ h.advance(1499);assert.equal(d.visible,true);
+ h.advance(1);assert.equal(d.visible,false);
+});
+
+test('rich tooltip fits a nearly full-width surface at a fractional anchor',()=>{
+ const out={exports:{}};runInNewContext(readFileSync(`${__dirname}/behaviors/tooltips.js`,'utf8'),{module:out});
+ const position=out.exports.tooltipPosition({left:159.53,right:191.53,top:402,bottom:434},{width:374,height:260},{width:390,height:844});
+ assert.ok(position);assert.equal(position.left,8);assert.ok(position.top>=442);assert.ok(position.top+260<=836);
+});
+
+
+test('plain tooltips center above buttons at 4dp, below in app bars, and fit viewport edges',()=>{
+ const out={exports:{}};runInNewContext(readFileSync(`${__dirname}/behaviors/tooltips.js`,'utf8'),{module:out});
+ const place=out.exports.plainTooltipPosition,anchor={left:100,right:140,top:100,bottom:140},box={width:100,height:24},viewport={width:390,height:600};
+ assert.deepEqual({...place(anchor,box,viewport)},{left:70,top:72});
+ assert.deepEqual({...place(anchor,box,viewport,4,true)},{left:70,top:144});
+ assert.deepEqual({...place({left:340,right:380,top:10,bottom:50},box,viewport)},{left:282,top:54});
 });

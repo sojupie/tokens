@@ -666,3 +666,6 @@
     border: 1px solid CanvasText;
   }
 }
+
+/* A standalone bar participates in its host layout; disclosure views remain anchored. */
+.md-search-view[data-layout="inline"] { position:relative; inset:auto; inline-size:100%; block-size:auto; }

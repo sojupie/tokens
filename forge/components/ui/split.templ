@@ -1,0 +1,18 @@
+package ui
+
+templ SplitButton(p SplitButtonProps) {
+	@Require("split")
+	<div { p.Attributes()... }>
+		<button { p.action(false)... }>
+			if p.Content!="label"&&p.Icon!="" {
+				@Icon(p.Icon)
+			}
+			if p.Content!="icon" {
+				<span>{ p.Label }</span>
+			}
+		</button>
+		<button { p.action(true)... }>
+			@Icon("expand_more")
+		</button>
+	</div>
+}

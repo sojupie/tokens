@@ -1,0 +1,13 @@
+package ui
+
+templ ProgressIndicator(attrs templ.Attributes) {
+	@Require("progress")
+	<div { attributes(templ.Attributes{"class":"md-progress","role":"progressbar"},attrs)... }>
+		<svg width="48" height="4" aria-hidden="true"><path class="md-progress-track"></path><path class="md-progress-active"></path><path class="md-progress-active md-progress-second"></path><rect class="md-progress-stop"></rect></svg>
+	</div>
+}
+
+// Progress renders a determinate or indeterminate linear/circular indicator.
+templ Progress(p ProgressProps) {
+	@ProgressIndicator(p.Attributes(false))
+}

@@ -1,8 +1,4 @@
 /* App bar structure. Insets without component tokens use system spacing. */
-.md-appbar-demo {
-  inline-size: 28rem;
-  max-inline-size: 100%;
-}
 .md-app-bar {
   --_elevation-level: var(--_appbar-elevation);
   --_shadow-color: var(--_appbar-shadow, var(--md-sys-color-shadow));
@@ -186,15 +182,16 @@
   -webkit-line-clamp: 2;
   white-space: normal;
 }
+/* The content cap belongs to the playground composition, not the surface. */
 @media (min-width: 1200px) {
-  .md-appbar-row,
-  .md-app-bar:is([data-variant="medium-flexible"], [data-variant="large-flexible"]) .md-appbar-expanded {
+  .md-appbar-demo .md-appbar-row,
+  .md-appbar-demo .md-app-bar:is([data-variant="medium-flexible"], [data-variant="large-flexible"]) .md-appbar-expanded {
     box-sizing: border-box;
     max-inline-size: 75rem;
     inline-size: 100%;
     margin-inline: auto;
   }
-  .md-appbar-expanded {
+  .md-appbar-demo .md-appbar-expanded {
     inset-inline: max(var(--md-sys-measurement-space200), calc((100% - 75rem) / 2));
   }
 }
@@ -224,11 +221,19 @@
   pointer-events: none;
 }
 button.md-appbar-search {
+  padding-block:0;
   --_button-rest-shape: var(--_appbar-search-shape);
   --_button-pressed-shape: var(--_appbar-search-shape);
   border: 0;
   font: var(--_appbar-search-font);
   letter-spacing: var(--_appbar-search-tracking);
   text-align: start;
+  justify-content: flex-start;
   cursor: pointer;
+}
+
+.md-appbar-search > svg {
+  flex: none;
+  inline-size: var(--_appbar-icon-size, var(--md-comp-icon-button-small-icon-size));
+  block-size: var(--_appbar-icon-size, var(--md-comp-icon-button-small-icon-size));
 }

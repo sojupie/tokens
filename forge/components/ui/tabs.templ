@@ -1,0 +1,36 @@
+package ui
+
+templ Tabs(p TabsProps) {
+	@Require("tabs")
+	<div { p.Attributes()... }>
+		<div class="md-tab-items" role="presentation">
+			{ children... }
+		</div>
+	</div>
+}
+
+templ Tab(p TabProps) {
+	@Require("tabs")
+	<button { p.Attributes()... }>
+		<span class="md-tab-content">
+			if p.Content!="label"&&p.Icon!="" {
+				<span class="md-tab-icon">
+					@Icon(p.Icon)
+					if p.Badge!=""&&p.Variant!="secondary" {
+						@Badge(p.Badge, p.BadgeText, nil)
+					}
+				</span>
+			}
+			<span class={ templ.KV("tokens-visually-hidden", p.Content == "icon") }>{ p.Label }</span>
+			if p.Badge!=""&&(p.Content=="label"||p.Variant=="secondary") {
+				@Badge(p.Badge, p.BadgeText, nil)
+			}
+		</span><span class="md-tab-active-indicator" aria-hidden="true"></span>
+	</button>
+}
+
+templ TabPanel(id, tabID string, selected bool) {
+	<section role="tabpanel" tabindex="0" id={ id } aria-labelledby={ tabID } hidden?={ !selected }>
+		{ children... }
+	</section>
+}

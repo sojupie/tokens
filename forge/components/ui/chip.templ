@@ -1,0 +1,50 @@
+package ui
+
+import "fmt"
+
+templ Chip(p ChipProps) {
+	@Require("common")
+	if p.Variant=="assist"||p.Variant=="suggestion" {
+		<button { p.Attributes()... }>
+			@chipLeading(p)
+			<span class="md-chip-label">{ p.Label }</span>
+		</button>
+	} else {
+		<span { p.Attributes()... }>
+			<button class="md-chip-primary" type="button" data-chip-select aria-pressed={ fmt.Sprint(p.Selected) } disabled?={ p.Disabled }>
+				@chipLeading(p)
+				<span class="md-chip-label">{ p.Label }</span>
+			</button>
+			if p.Removable||p.Variant=="input" {
+				<button class="md-chip-remove" type="button" data-chip-remove aria-label={ "Remove " + p.Label } disabled?={ p.Disabled } tabindex="-1">
+					<span class="md-chip-icon" data-slot="trailing-icon">
+						@Icon("close")
+					</span>
+				</button>
+			}
+		</span>
+	}
+}
+
+templ chipLeading(p ChipProps) {
+	if p.Avatar!="" {
+		<span class="md-chip-avatar" aria-hidden="true">{ p.Avatar }</span>
+	}
+	else 
+	if p.Variant=="filter"||p.Variant=="" {
+		<span class="md-chip-icon md-chip-check" data-slot="leading-icon">
+			@Icon("check")
+		</span>
+		if p.Icon!="" {
+			<span class="md-chip-icon md-chip-leading" data-slot="leading-icon">
+				@Icon(p.Icon)
+			</span>
+		}
+	}
+	else 
+	if p.Icon!="" {
+		<span class="md-chip-icon" data-slot="leading-icon">
+			@Icon(p.Icon)
+		</span>
+	}
+}

@@ -1,0 +1,90 @@
+package ui
+
+type Option struct {
+	Value string
+	Label string
+}
+
+templ NumberField(id string, label string, value string, min string, max string) {
+	<div class="field-row">
+		@TextField(TextFieldProps{ID: id, Label: label, Value: value, Type: "number", InputAttrs: templ.Attributes{"min": min, "max": max, "step": "1"}})
+	</div>
+}
+
+templ SelectOption(id string, value string, label string, selected bool) {
+	@Require("common")
+	<li role="presentation"><div class="md-menu-item" id={ id } role="option" aria-selected={ selected } data-field-option={ label } data-field-value={ value }><span data-option-label>{ label }</span><span data-slot="trailing-icon" aria-hidden="true"><svg viewBox="0 -960 960 960" fill="currentColor" focusable="false"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"></path></svg></span></div></li>
+}
+
+templ Select(id string, label string, options []Option, selected ...string) {
+	@Require("common")
+	{{ initial := selectInitial(options, selected) }}
+	<div class="md-chip-select" data-field-example data-populated="true">
+		<button type="button" class="md-filter-chip" id={ "filter-" + id } role="combobox" aria-label={ label } aria-expanded="false" aria-haspopup="listbox" aria-controls={ id + "-options" } aria-autocomplete="none" data-field-combo data-field-select><span class="filter-label">{ label+":" }</span><span data-field-display>{ initial.Label }</span><span class="md-chip-icon" data-slot="trailing-icon" aria-hidden="true"><svg viewBox="0 -960 960 960" fill="currentColor" focusable="false"><path d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z"></path></svg></span></button>
+		<input type="hidden" data-field-value value={ initial.Value }/>
+		<select id={ id } aria-label={ label } hidden>
+			for _, option := range options {
+				<option value={ option.Value } selected?={ option.Value == initial.Value }>{ option.Label }</option>
+			}
+		</select>
+		<div class="md-field-menu md-menu" data-variant="standard" data-orientation="vertical" id={ id + "-options" } role="listbox" aria-label={ label } popover="auto">
+			<section>
+				<ul role="presentation">
+					for _, option := range options {
+						@SelectOption(id+"-option-"+option.Value, option.Value, option.Label, option.Value == initial.Value)
+					}
+				</ul>
+			</section>
+			<p class="md-field-empty" role="option" aria-disabled="true" hidden>No matches</p>
+		</div>
+	</div>
+}
+
+func selectInitial(options []Option, selected []string) Option {
+	if len(selected) > 0 {
+		for _, option := range options {
+			if option.Value == selected[0] {
+				return option
+			}
+		}
+	}
+	if len(options) > 0 {
+		return options[0]
+	}
+	return Option{}
+}
+
+templ FieldOutline(label string) {
+	<fieldset class="md-field-outline" aria-hidden="true"><legend>{ label }</legend></fieldset>
+	<fieldset class="md-field-outline md-field-focus-outline" aria-hidden="true"><legend>{ label }</legend></fieldset>
+}
+
+templ TextField(p TextFieldProps) {
+	@Require("common")
+	{{
+		variant := "outlined"
+		if p.Filled {
+			variant = "filled"
+		}
+	}}
+	<div { attributes(templ.Attributes{"class":"md-"+variant+"-text-field","data-invalid":p.Invalid},p.Attrs)... }>
+		if !p.Filled {
+			@FieldOutline(p.Label)
+		}
+		<label for={ p.ID } data-slot="label">{ p.Label }</label>
+		if p.Leading!=nil {
+			<span data-slot="leading-icon" aria-hidden="true">
+				@p.Leading
+			</span>
+		}
+		<input { p.input()... }/>
+		if p.Trailing!=nil {
+			<span data-slot="trailing-icon">
+				@p.Trailing
+			</span>
+		}
+		if p.Supporting!="" {
+			<small data-slot="supporting-text" id={ p.ID + "-help" }>{ p.Supporting }</small>
+		}
+	</div>
+}

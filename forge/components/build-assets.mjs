@@ -23,6 +23,8 @@ export async function componentAssets() {
       outputs.set(`static/runtime/${path.basename(file)}`, banner + transformSync(sources[index], {loader:'js',minifyWhitespace:true,legalComments:'inline'}).code);
     }
   }
+  const notices = await Promise.all(["LICENSE", "THIRD_PARTY_NOTICES.md"].map(name => readFile(new URL("../../" + name, root), "utf8")));
+  outputs.set("static/NOTICE.txt", notices.join("\n\n"));
   return outputs;
 }
 

@@ -198,63 +198,81 @@
 })();
 (() => {
   if (typeof document === "undefined") return;
-  const { navigationIndex } = globalThis.MaterialComponents;
   const tabAnimations = new WeakMap();
+  const tabs = list => [...list.querySelectorAll('[role="tab"]')].filter(tab =>
+    !tab.disabled && !tab.closest('[inert]') && tab.getClientRects().length && getComputedStyle(tab).visibility !== 'hidden');
   function selectTab(tab) {
-    const list = tab.closest('[role="tablist"]'),
-      example = list.closest(".md-tabs-example");
+    const list = tab.closest('[role="tablist"]');
+    const example = list.closest('.md-tabs-example');
     const previous = list.querySelector('[aria-selected="true"]');
     if (previous === tab) return;
-    const from = previous
-      ?.querySelector(".md-tab-active-indicator")
-      .getBoundingClientRect();
+    const from = previous?.querySelector('.md-tab-active-indicator').getBoundingClientRect();
     tabAnimations.get(list)?.cancel();
     for (const item of list.querySelectorAll('[role="tab"]')) {
-      const selected = item === tab;
-      item.setAttribute("aria-selected", String(selected));
-      item.tabIndex = selected ? 0 : -1;
+      item.setAttribute('aria-selected', String(item === tab));
+      item.tabIndex = item === tab ? 0 : -1;
     }
-    for (const panel of example.querySelectorAll('[role="tabpanel"]'))
-      panel.hidden = panel.id !== tab.getAttribute("aria-controls");
-    if (!from || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const indicator = tab.querySelector(".md-tab-active-indicator"),
-      to = indicator.getBoundingClientRect();
+    // Only this tab set's panels: nested tab sets keep their own selection.
+    for (const panel of example?.querySelectorAll('[role="tabpanel"]') || []) {
+      if (panel.closest('.md-tabs-example') === example)
+        panel.hidden = panel.id !== tab.getAttribute('aria-controls');
+    }
+    list.dispatchEvent(new CustomEvent('md-tab-change',{bubbles:true,detail:{id:tab.id,panel:tab.getAttribute('aria-controls')}}));
+    tab.scrollIntoView({block:'nearest', inline:'nearest'});
+    if (!from || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const indicator = tab.querySelector('.md-tab-active-indicator'), to = indicator.getBoundingClientRect();
     if (!to.width) return;
-    const animation = indicator.animate(
-      [
-        {
-          transform: `translateX(${from.left - to.left}px) scaleX(${from.width / to.width})`,
-        },
-        { transform: "none" },
-      ],
-      MaterialMotion.timing(tab),
-    );
-    tabAnimations.set(list, animation);
+    tabAnimations.set(list, indicator.animate([
+      {transform:`translateX(${from.left-to.left}px) scaleX(${from.width/to.width})`},
+      {transform:'none'},
+    ], MaterialMotion.timing(tab)));
   }
-  document.addEventListener("focusin", (event) => {
-    const tab = event.target.closest?.(".md-tab");
-    if (tab) selectTab(tab);
-  });
-  document.addEventListener("keydown", (event) => {
-    const tab = event.target.closest?.(".md-tab");
+  document.addEventListener('focusin', event => {
+    const tab = event.target.closest?.('.md-tab');
     if (!tab) return;
-    const list = tab.closest('[role="tablist"]'),
-      items = [...list.querySelectorAll('[role="tab"]')];
-    const next = navigationIndex(
-      items.indexOf(tab),
-      items.length,
-      event.key,
-      true,
-      getComputedStyle(list).direction === "rtl",
-    );
-    if (next === null) return;
+    for (const item of tab.closest('[role="tablist"]').querySelectorAll('[role="tab"]')) item.tabIndex = item === tab ? 0 : -1;
+    tab.scrollIntoView({block:'nearest',inline:'nearest'});
+  });
+  document.addEventListener('keydown', event => {
+    const tab = event.target.closest?.('.md-tab');
+    if (!tab) return;
+    const list = tab.closest('[role="tablist"]'), items = tabs(list), index = items.indexOf(tab);
+    const forward = getComputedStyle(list).direction === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
+    const backward = forward === 'ArrowLeft' ? 'ArrowRight' : 'ArrowLeft';
+    let next;
+    if (event.key === 'Home') next = 0;
+    else if (event.key === 'End') next = items.length-1;
+    else if (event.key === forward) next = Math.min(items.length-1,index+1);
+    else if (event.key === backward) next = Math.max(0,index-1);
+    else return; // Space/Enter retain native button activation.
+    if (index < 0 || !items.length) return;
     event.preventDefault();
     items[next].focus();
-    selectTab(items[next]);
   });
-  document.addEventListener("click", (event) => {
-    const tab = event.target.closest?.(".md-tab");
-    if (tab) selectTab(tab);
+  document.addEventListener('click', event => {
+    const tab = event.target.closest?.('.md-tab');
+    if (tab && !tab.disabled) selectTab(tab);
+  });
+  let swipe;
+  document.addEventListener('pointerdown', event => {
+    swipe = null;
+    if (event.pointerType !== 'touch' || event.target.closest('button,input,textarea,select,a,[contenteditable]')) return;
+    const panel = event.target.closest('.md-tabs-example > [role="tabpanel"]');
+    if (!panel) return;
+    const list = panel.parentElement.querySelector('[role="tablist"]');
+    if (!list || list.dataset.layout === 'scrollable') return;
+    swipe = {list, x:event.clientX,y:event.clientY,id:event.pointerId};
+  });
+  document.addEventListener('pointercancel', () => { swipe = null; });
+  document.addEventListener('pointerup', event => {
+    const start = swipe; swipe = null;
+    if (!start || start.id !== event.pointerId) return;
+    const dx = event.clientX-start.x, dy = event.clientY-start.y;
+    if (Math.abs(dx)<50 || Math.abs(dx)<Math.abs(dy)*1.5) return;
+    const items = tabs(start.list), index=items.findIndex(t=>t.getAttribute('aria-selected')==='true');
+    const step = (dx<0 ? 1 : -1) * (getComputedStyle(start.list).direction==='rtl' ? -1 : 1);
+    const next = items[index+step];
+    if (next) selectTab(next);
   });
 })();
 (() => {
@@ -385,6 +403,7 @@
   function selectNavigation(button) {
     const group = button.closest("[data-navigation-group]");
     if (!group) return;
+    const reselected = button.getAttribute("aria-current") === "page";
     for (const item of group.querySelectorAll("[data-navigation-item]"))
       item.removeAttribute("aria-current");
     button.setAttribute("aria-current", "page");
@@ -395,7 +414,7 @@
     group.dispatchEvent(
       new CustomEvent("md-navigation-select", {
         bubbles: true,
-        detail: { label },
+        detail: { label, reselected },
       }),
     );
     const frame = group.closest(".md-rail-frame");
@@ -435,6 +454,10 @@
       if (item && height)
         item.style.setProperty("--_nav-label-height", height + "px");
   }
+  const barItemSizes = new ResizeObserver(entries => {
+    for (const {target,contentRect} of entries) target.style.setProperty("--nav-label-width", Math.max(0,contentRect.width)+"px");
+  });
+  const barItems = new WeakSet();
   const railLabelSizes = new ResizeObserver((entries) =>
     measureRailLabels(entries.map((entry) => entry.target)),
   );
@@ -764,6 +787,9 @@
           railLabels.add(label);
           railLabelSizes.observe(label);
         }
+    }
+    for (const item of document.querySelectorAll(".md-navigation-bar .md-nav-item")) {
+      if (!barItems.has(item)) {barItems.add(item);barItemSizes.observe(item);}
     }
     for (const label of document.querySelectorAll(".md-navigation-bar .md-nav-label")) {
       if (!railLabels.has(label)) { railLabels.add(label); railLabelSizes.observe(label); }
@@ -1501,7 +1527,8 @@
       .closest(".md-split-demo")
       .querySelector(".md-split-trailing");
     const r = trigger.getBoundingClientRect(),
-      box = menu.getBoundingClientRect();
+      // Opening scale is animated; placement needs the full, unscaled box.
+      box = { width: menu.offsetWidth, height: menu.offsetHeight };
     const style = getComputedStyle(trigger),
       gap = Number.parseFloat(
         style.getPropertyValue("--md-sys-measurement-space50"),
@@ -1613,7 +1640,7 @@
     const fit = (value, size, edge) => {
       if (value + size > edge - gap) value -= Math.ceil((value + size - edge + gap) / gap) * gap;
       if (value < gap) value += Math.ceil((gap - value) / gap) * gap;
-      return value;
+      return Math.max(gap, Math.min(value, edge - gap - size));
     };
     const candidates = [[anchor.right, anchor.bottom + gap], [anchor.right, anchor.top - box.height - gap],
       [anchor.left - box.width, anchor.bottom + gap], [anchor.left - box.width, anchor.top - box.height - gap],
@@ -1625,11 +1652,20 @@
     }
     return null;
   }
-  if (typeof module !== "undefined") Object.assign(module.exports, {tooltipPosition});
+  function plainTooltipPosition(anchor, box, viewport, gap = 4, below = false) {
+    const margin = 8;
+    const left = Math.max(margin, Math.min((anchor.left + anchor.right - box.width) / 2, viewport.width - margin - box.width));
+    const aboveTop = anchor.top - gap - box.height, belowTop = anchor.bottom + gap;
+    const candidates = below ? [belowTop, aboveTop] : [aboveTop, belowTop];
+    const top = candidates.find(value => value >= margin && value + box.height <= viewport.height - margin);
+    return top === undefined ? null : {left, top};
+  }
+  if (typeof module !== "undefined") Object.assign(module.exports, {tooltipPosition, plainTooltipPosition});
   if (typeof document === "undefined") return;
   let active, exitTimer, hold, pointerFocus = false;
   function hide() {
     clearTimeout(exitTimer);
+    active?.querySelector('.md-tooltip[popover]:popover-open')?.hidePopover();
     active?.removeAttribute("data-tooltip-visible");
     active = null;
   }
@@ -1640,6 +1676,8 @@
     demo.removeAttribute("data-tooltip-dismissed");
     demo.setAttribute("data-tooltip-visible", "");
     active = demo;
+    const tip = demo.querySelector('.md-tooltip[data-variant="plain"][popover]');
+    if (tip) { tip.showPopover(); positionTooltip(tip); }
   }
   function leave(demo) {
     if (active === demo) {
@@ -1656,18 +1694,22 @@
     if (!tip.matches(":popover-open")) return;
     const trigger = tip.closest(".md-tooltip-demo")?.querySelector("button");
     if (!trigger) return;
+    const plain = tip.dataset.variant === "plain";
     const anchor = trigger.getBoundingClientRect(),
-      gap = Number.parseFloat(getComputedStyle(tip).getPropertyValue("--md-sys-measurement-space100")) || 8,
+      gap = Number.parseFloat(getComputedStyle(tip).getPropertyValue(plain ? "--md-sys-measurement-space50" : "--md-sys-measurement-space100")) || (plain ? 4 : 8),
       viewport = {width: document.documentElement.clientWidth, height: document.documentElement.clientHeight};
     tip.style.maxHeight = "";
     tip.style.overflowY = "";
-    let box = tip.getBoundingClientRect(), position = tooltipPosition(anchor, box, viewport, gap);
+    const place = box => plain
+      ? plainTooltipPosition(anchor, box, viewport, gap, !!trigger.closest('.md-app-bar'))
+      : tooltipPosition(anchor, box, viewport, gap);
+    let box = tip.getBoundingClientRect(), position = place(box);
     if (!position) {
       // Preserve all content in a short window instead of covering the trigger.
       tip.style.maxHeight = Math.max(2 * gap, anchor.top - 2 * gap, viewport.height - anchor.bottom - 2 * gap) + "px";
       tip.style.overflowY = "auto";
       box = tip.getBoundingClientRect();
-      position = tooltipPosition(anchor, box, viewport, gap);
+      position = place(box);
     }
     if (!position) return;
     tip.style.margin = "0";
@@ -1679,7 +1721,7 @@
     for (const demo of document.querySelectorAll('.md-tooltip-demo')) demo.setAttribute('data-tooltip-managed', '');
   }
   document.addEventListener("toggle", event => {
-    if (event.target.matches?.('.md-tooltip[popover]:popover-open')) { hide(); positionTooltip(event.target); }
+    if (event.target.matches?.('.md-tooltip[data-variant="rich"][popover]:popover-open')) { hide(); positionTooltip(event.target); }
   }, true);
   for (const type of ["resize", "scroll"]) window.addEventListener(type, event => {
     if (type === "scroll" && event.target.closest?.(".md-tooltip:popover-open")) return;

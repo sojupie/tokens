@@ -1,32 +1,13 @@
 /* Sheet sizes and gesture defaults absent from the capture are renderer rules. */
-.md-sheet-demo {
+.md-sheet {
   --_sheet-peek-height: 56px;
   --_sheet-expanded-height: min(24rem, 85svh);
-  --_sheet-drag-distance: 56px;
-  --_sheet-drag-velocity: 125;
-  --_sheet-scrim-color: var(--md-ref-palette-neutral0);
-  --_sheet-scrim-opacity: 0.32;
-  inline-size: 28rem;
-  max-inline-size: 100%;
-  display: grid;
-  gap: var(--md-sys-measurement-space200);
-}
-.md-sheet-frame {
-  position: relative;
-  inline-size: 100%;
-  block-size: min(28rem, 70svh);
-  overflow: hidden;
-  background: var(--md-sys-color-surface-container-high);
-}
-.md-sheet-page-label {
-  display: block;
-  padding: var(--md-sys-measurement-space200);
-  color: var(--md-sys-color-on-surface);
-}
-.md-sheet {
   --_elevation-level: var(--_sheet-elevation);
   --_shadow-color: var(--md-sys-color-shadow);
   --_sheet-duration: var(--_motion-default-spatial-duration);
+  /* The capture supplies no sheet scrim; use the captured modal scrim shared by pickers. */
+  --_sheet-scrim-color: var(--md-comp-navigation-drawer-scrim-color);
+  --_sheet-scrim-opacity: var(--md-comp-navigation-drawer-scrim-opacity);
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -99,6 +80,7 @@ dialog.md-sheet:not([open]) {
 }
 dialog.md-sheet {
   position: fixed;
+  max-inline-size:100svw;
   max-block-size: 100svh;
 }
 dialog.md-bottom-sheet {
@@ -319,3 +301,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-full-height] {
     block-size: calc(100svh - 56px);
   }
 }
+
+/* Application hosts allocate space for docked sheets without the playground frame. */
+.md-sheet-host { position:relative; }
+.md-sheet-host > .md-side-sheet[data-control="standard"] { position:relative; flex:0 1 var(--_sheet-width); inset:auto; align-self:stretch; block-size:auto; }

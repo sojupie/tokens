@@ -1,0 +1,54 @@
+package ui
+
+templ PlainTooltip(id, label string) {
+	@Require("messages")
+	<div class="md-tooltip-demo">
+		{ children... }
+		<div class="md-tooltip" data-variant="plain" role="tooltip" id={ id }><p>{ label }</p></div>
+	</div>
+}
+
+templ Tooltip(p TooltipProps) {
+	@Require("messages")
+	if p.Variant=="rich" {
+		<section { attributes(templ.Attributes{"id":p.ID,"class":"md-tooltip","data-variant":"rich","popover":"auto","role":"dialog","aria-label":p.Title},p.Attrs)... }>
+			@TooltipContent(p)
+		</section>
+	} else {
+		<div { attributes(templ.Attributes{"id":p.ID,"class":"md-tooltip","data-variant":"plain","role":"tooltip"},p.Attrs)... }>
+			@TooltipContent(p)
+		</div>
+	}
+}
+
+templ TooltipContent(p TooltipProps) {
+	if p.Title!=""&&p.Variant=="rich" {
+		<h3>{ p.Title }</h3>
+	}
+	<p>{ p.Text }</p>
+	if p.Actions!=nil {
+		@p.Actions
+	}
+}
+
+templ SnackbarMessage(p SnackbarProps) {
+	@Require("messages")
+	<div { p.Attributes()... }>
+		<span class="md-feedback-text">
+			{ p.Text }{ children... }
+		</span>
+		if p.Action!=nil {
+			@p.Action
+		}
+		<button class="md-icon-button md-snackbar-close" type="button" aria-label="Dismiss notification" data-snackbar-close>
+			@Icon("close")
+		</button>
+	</div>
+}
+
+templ FeedbackText() {
+	@Require("messages")
+	<span class="md-feedback-text">
+		{ children... }
+	</span>
+}

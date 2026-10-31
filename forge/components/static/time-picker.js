@@ -15,7 +15,7 @@
  if(typeof module!=='undefined')module.exports={parseFields,nearestAngle,dialValue,wrap};
  if(typeof document==='undefined')return;
  const states=new WeakMap(),reduced=matchMedia('(prefers-reduced-motion: reduce)');
- const stateFor=target=>states.get(target.closest?.('.md-time-demo'));
+ const stateFor=target=>states.get(target.closest?.('.md-time-demo,[data-time-picker]'));
  const hourDisplay=state=>state.is24?state.hour:state.hour%12||12;
  const timeText=state=>pad(state.hour)+':'+pad(state.minute);
  const pressed=(button,value)=>{const text=String(value);if(button.getAttribute('aria-pressed')!==text)button.setAttribute('aria-pressed',text);};
@@ -88,14 +88,14 @@
  async function close(state,save){
   if(save&&!validate(state))return;
   cancelGesture(state);
-  if(save){state.committed={hour:state.hour,minute:state.minute};state.root.querySelector('[data-time-output]').textContent=timeText(state);}else Object.assign(state,state.committed);
+  if(save){state.committed={hour:state.hour,minute:state.minute};const value=timeText(state),output=state.root.querySelector('[data-time-output]'),input=state.root.querySelector('[data-time-value-input]');if(output)output.textContent=value;if(input){input.value=value;input.dispatchEvent(new Event('input',{bubbles:true}));input.dispatchEvent(new Event('change',{bubbles:true}));}}else Object.assign(state,state.committed);
   render(state);if(state.panel.hasAttribute('data-time-inline'))return;
   const from=getComputedStyle(state.panel).opacity;state.closing=true;state.panel.inert=true;const revision=state.revision=(state.revision||0)+1;state.animation?.cancel();
   if(!reduced.matches){const animation=state.panel.animate([{opacity:from},{opacity:0}],timing(state));state.animation=animation;try{await animation.finished;}catch{return;}if(state.revision!==revision)return;animation.cancel();}
   state.panel.close();state.panel.inert=false;state.closing=false;state.opener.setAttribute('aria-expanded','false');state.opener.focus({preventScroll:true});
  }
- function init(){for(const root of document.querySelectorAll('.md-time-demo')){
-  if(states.has(root))continue;const panel=root.querySelector('.md-time-panel'),state={root,panel,opener:root.querySelector('[data-time-open]'),dial:panel.querySelector('[data-time-dial]'),is24:panel.dataset.format==='24h',hour:10,minute:10,active:panel.dataset.active,preferredMode:panel.dataset.mode,preferredOrientation:panel.dataset.orientation};state.committed={hour:10,minute:10};states.set(root,state);render(state);
+ function init(){for(const root of document.querySelectorAll('.md-time-demo,[data-time-picker]')){
+  if(states.has(root))continue;const panel=root.querySelector('.md-time-panel'),state={root,panel,opener:root.querySelector('[data-time-open]'),dial:panel.querySelector('[data-time-dial]'),is24:panel.dataset.format==='24h',hour:Number(panel.dataset.hour??panel.querySelector('[data-time-input="hour"]').value)%24,minute:Number(panel.dataset.minute??panel.querySelector('[data-time-input="minute"]').value)%60,active:panel.dataset.active,preferredMode:panel.dataset.mode,preferredOrientation:panel.dataset.orientation};state.committed={hour:state.hour,minute:state.minute};states.set(root,state);render(state);
   panel.addEventListener('cancel',event=>{event.preventDefault();close(state,false);});
   let backdropPointer;
   const outside=event=>{const r=panel.getBoundingClientRect();return event.target===panel&&(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom);};
@@ -145,11 +145,11 @@
  document.addEventListener('pointermove',event=>{const state=stateFor(event.target);if(state?.gesture?.id===event.pointerId){event.preventDefault();point(state,event);}});
  function finishPointer(event,cancel){const state=stateFor(event.target),gesture=state?.gesture;if(!gesture||gesture.id!==event.pointerId)return;cancelGesture(state);if(cancel){state.hour=gesture.hour;state.minute=gesture.minute;}else if(gesture.part==='hour')state.active='minute';render(state,false);}
  document.addEventListener('pointerup',event=>finishPointer(event,false));document.addEventListener('pointercancel',event=>finishPointer(event,true));document.addEventListener('lostpointercapture',event=>finishPointer(event,true));
- window.addEventListener('resize',()=>{for(const root of document.querySelectorAll('.md-time-demo')){const state=states.get(root);if(state)adapt(state);}});
- window.visualViewport?.addEventListener('resize',()=>{for(const root of document.querySelectorAll('.md-time-demo')){const state=states.get(root);if(state)adapt(state);}});
+ window.addEventListener('resize',()=>{for(const root of document.querySelectorAll('.md-time-demo,[data-time-picker]')){const state=states.get(root);if(state)adapt(state);}});
+ window.visualViewport?.addEventListener('resize',()=>{for(const root of document.querySelectorAll('.md-time-demo,[data-time-picker]')){const state=states.get(root);if(state)adapt(state);}});
  window.addEventListener('blur',()=>{for(const panel of document.querySelectorAll('.md-time-panel')){const state=stateFor(panel);if(state?.gesture){const g=state.gesture;cancelGesture(state);state.hour=g.hour;state.minute=g.minute;render(state,false);}}});
- document.addEventListener('htmx:beforeCleanupElement',event=>{const node=event.detail?.elt;if(!node)return;for(const root of [...(node.matches?.('.md-time-demo')?[node]:[]),...node.querySelectorAll('.md-time-demo')]){const state=states.get(root);if(!state)continue;state.revision++;cancelGesture(state);state.animation?.cancel();if(state.panel.open)state.panel.close();states.delete(root);}});
- reduced.addEventListener('change',()=>{if(!reduced.matches)return;for(const root of document.querySelectorAll('.md-time-demo')){const state=states.get(root);if(!state)continue;state.animation?.finish();state.monthAnimation?.finish();}});
+ document.addEventListener('htmx:beforeCleanupElement',event=>{const node=event.detail?.elt;if(typeof node?.querySelectorAll!=='function')return;for(const root of [...(node.matches?.('.md-time-demo,[data-time-picker]')?[node]:[]),...node.querySelectorAll('.md-time-demo,[data-time-picker]')]){const state=states.get(root);if(!state)continue;state.revision++;cancelGesture(state);state.animation?.cancel();if(state.panel.open)state.panel.close();states.delete(root);}});
+ reduced.addEventListener('change',()=>{if(!reduced.matches)return;for(const root of document.querySelectorAll('.md-time-demo,[data-time-picker]')){const state=states.get(root);if(!state)continue;state.animation?.finish();state.monthAnimation?.finish();}});
  document.addEventListener('htmx:afterSwap',init);if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
   document.addEventListener('tokens:assets-ready',init);
 })();

@@ -18,6 +18,7 @@
  if(typeof module!=='undefined')module.exports={parse,cells,addMonths,selectRange,readEntries,normalizeInput,monthWindow,setMode};
  if(typeof document==='undefined')return;
  const states=new WeakMap(),reduced=matchMedia('(prefers-reduced-motion: reduce)'),months=['January','February','March','April','May','June','July','August','September','October','November','December'],weekdays=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+ const localDate=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
  const stateFor=target=>states.get(target.closest?.('.md-date-demo'));
  const element=(tag,className,text)=>{const e=document.createElement(tag);if(className)e.className=className;if(text!==undefined)e.textContent=text;return e;};
  const monthLabel=month=>{const d=parse(month+'-01');return months[d.getUTCMonth()]+' '+d.getUTCFullYear();};
@@ -51,9 +52,9 @@
  function dayButton(state,iso,month){
   const button=element('button','md-date-day',Number(iso.slice(8))),date=parse(iso),selected=iso===state.start||(state.range&&iso===state.end),inRange=state.range&&state.start&&state.end&&iso>=state.start&&iso<=state.end;
   button.type='button';button.setAttribute('role','gridcell');button.setAttribute('aria-label',new Intl.DateTimeFormat('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric',timeZone:'UTC'}).format(date));button.setAttribute('aria-selected',String(!!(selected||inRange)));button.tabIndex=-1;
-  Object.assign(button.dataset,{date:iso,dateSelected:String(selected),today:String(iso==='2026-10-18'),outsideMonth:String(iso.slice(0,7)!==month),inRange:String(!!inRange)});
-  if(iso==='2026-10-18')button.setAttribute('aria-current','date');
-  const representative={'selected':'2026-10-21','unselected':'2026-10-22','today':'2026-10-18','in-range':'2026-10-23'}[state.panel.dataset.selection];
+  Object.assign(button.dataset,{date:iso,dateSelected:String(selected),today:String(iso===state.today),outsideMonth:String(iso.slice(0,7)!==month),inRange:String(!!inRange)});
+  if(iso===state.today)button.setAttribute('aria-current','date');
+  const representative=state.panel.dataset.selectionDate;
   if(state.root.dataset.control==='day'&&state.panel.dataset.state!=='interactive'&&iso===representative)button.dataset.componentState=state.panel.dataset.state;
   return button;
  }
@@ -171,7 +172,7 @@
  }
 
  function init(){for(const root of document.querySelectorAll('.md-date-demo')){
-  if(states.has(root))continue;const panel=root.querySelector('.md-date-panel'),state={root,panel,opener:root.querySelector('[data-date-open]'),anchor:root.querySelector('[data-date-anchor]'),fields:[...root.querySelectorAll('[data-date-value]')],variant:panel.dataset.variant,inline:panel.hasAttribute('data-date-inline'),range:panel.dataset.range==='true',month:panel.dataset.month,start:'2026-10-21',end:panel.dataset.range==='true'?'2026-10-26':null};state.committed={start:state.start,end:state.end};states.set(root,state);render(state);if(panel.open&&['year','month'].includes(panel.dataset.pane))centerChoice(state);
+  if(states.has(root))continue;const panel=root.querySelector('.md-date-panel'),today=panel.dataset.today||localDate(),state={root,panel,opener:root.querySelector('[data-date-open]'),anchor:root.querySelector('[data-date-anchor]'),fields:[...root.querySelectorAll('[data-date-value]')],variant:panel.dataset.variant,inline:panel.hasAttribute('data-date-inline'),range:panel.dataset.range==='true',month:panel.dataset.month||today.slice(0,7),today,start:normalizeInput(panel.querySelector('[data-date-input="start"]').value),end:panel.dataset.range==='true'?normalizeInput(panel.querySelector('[data-date-input="end"]').value):null};state.committed={start:state.start,end:state.end};states.set(root,state);render(state);if(panel.open&&['year','month'].includes(panel.dataset.pane))centerChoice(state);
   const view=panel.querySelector('[data-date-calendars]');view.addEventListener('scroll',()=>extendMonths(state,view),{passive:true});
   let gesture;
   view.addEventListener('pointerdown',event=>{if(state.range||state.variant==='docked'||event.button!==0)return;gesture={id:event.pointerId,x:event.clientX,y:event.clientY};});
@@ -214,7 +215,7 @@
   const year=event.target.closest?.('[data-date-year]'),month=event.target.closest?.('[data-date-month]');if(year||month){const buttons=[...state.panel.querySelectorAll(year?'[data-date-year]':'[data-date-month]')],index=buttons.indexOf(event.target),columns=year&&state.variant!=='docked'?3:1,delta=event.key==='ArrowDown'?columns:event.key==='ArrowUp'?-columns:event.key==='ArrowLeft'?-1:event.key==='ArrowRight'?1:0;if(delta){event.preventDefault();for(const b of buttons)b.tabIndex=-1;const target=buttons[Math.max(0,Math.min(buttons.length-1,index+delta))];target.tabIndex=0;target.focus();}}
  });
  document.addEventListener('pointerdown',event=>{for(const panel of document.querySelectorAll('.md-date-panel[open]:not([data-date-inline])')){const state=stateFor(panel);if(!state)continue;if(state.variant==='docked'){if(!panel.contains(event.target)&&!state.anchor.contains(event.target)){readEntries(state);close(state,false,false,true);}}else if(event.target===panel){const r=panel.getBoundingClientRect();if(event.clientX<r.left||event.clientY<r.top||event.clientX>r.right||event.clientY>r.bottom)close(state,false);}}});
- document.addEventListener('htmx:beforeCleanupElement',event=>{const node=event.detail?.elt;if(!node)return;for(const root of [...(node.matches?.('.md-date-demo')?[node]:[]),...node.querySelectorAll('.md-date-demo')]){const state=states.get(root);if(!state)continue;state.revision++;state.animation?.cancel();state.monthAnimation?.cancel();if(state.panel.matches(':popover-open'))state.panel.hidePopover();if(state.panel.open)state.panel.close();states.delete(root);}});
+ document.addEventListener('htmx:beforeCleanupElement',event=>{const node=event.detail?.elt;if(typeof node?.querySelectorAll!=='function')return;for(const root of [...(node.matches?.('.md-date-demo')?[node]:[]),...node.querySelectorAll('.md-date-demo')]){const state=states.get(root);if(!state)continue;state.revision++;state.animation?.cancel();state.monthAnimation?.cancel();if(state.panel.matches(':popover-open'))state.panel.hidePopover();if(state.panel.open)state.panel.close();states.delete(root);}});
  window.addEventListener('resize',()=>{for(const panel of document.querySelectorAll('.md-date-panel[open][data-variant="docked"]:not([data-date-inline])')){const state=stateFor(panel);if(state)positionDocked(state);}});
  reduced.addEventListener('change',()=>{if(!reduced.matches)return;for(const root of document.querySelectorAll('.md-date-demo')){const state=states.get(root);if(!state)continue;state.animation?.finish();state.monthAnimation?.finish();}});
  document.addEventListener('htmx:afterSwap',init);if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();

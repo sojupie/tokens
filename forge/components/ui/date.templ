@@ -1,0 +1,167 @@
+package ui
+
+import "fmt"
+import "time"
+
+templ DatePicker(p DatePickerProps) {
+	@Require("date")
+	<div { attributes(templ.Attributes{"class":"md-date-picker md-date-demo","data-date-picker":""},p.Attrs)... }>
+		if !p.Inline {
+			<div class="md-date-fields" data-date-anchor>
+				@DateEntryField(p, "start")
+				if p.Range {
+					@DateEntryField(p, "end")
+				}
+			</div>
+		}
+		@DatePickerPanel(p)
+	</div>
+}
+
+templ DateEntryField(p DatePickerProps, part string) {
+	<div class="md-outlined-text-field">
+		@FieldOutline(p.DateEntryLabel(part))
+		<label for={ p.ID + "-value-" + part } data-slot="label">{ p.DateEntryLabel(part) }</label>
+		<input { p.DateEntry(part)... }/>
+		if part=="start" {
+			<button class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" type="button" data-date-open title="Choose date (Alt+ArrowDown)" aria-keyshortcuts="Alt+ArrowDown" aria-label="Choose date" aria-controls={ p.ID + "-date" } aria-haspopup="dialog" aria-expanded="false">
+				@Icon("calendar_month")
+			</button>
+		}
+		<small data-slot="supporting-text" id={ p.ID + "-value-help-" + part } data-date-value-help={ part } aria-live="polite">YYYY-MM-DD</small>
+	</div>
+}
+
+templ dateCalendar(p DatePickerProps, month time.Time) {
+	@Require("date")
+	<section class="md-date-month-calendar" data-calendar-month={ month.Format("2006-01") }>
+		if p.Range && p.Variant!="docked" {
+			<h4>{ month.Format("January 2006") }</h4>
+		}
+		<div class="md-date-grid" role="grid" aria-colcount="7" aria-rowcount={ fmt.Sprint(len(p.Rows(month)) + 1) } aria-label={ month.Format("January 2006") }>
+			<div class="md-date-week" role="row">
+				for _,day:=range DateWeekdays {
+					<span class="md-date-weekday" role="columnheader" aria-label={ day } title={ day }>{ day[:1] }</span>
+				}
+			</div>
+			for _,row:=range p.Rows(month) {
+				<div class="md-date-row" role="row">
+					for _,day:=range row {
+						<span { p.DateCell(day)... }>
+							if !day.Outside||p.Variant=="docked" {
+								<button { p.DateDay(day)... }>{ day.Label }</button>
+							}
+						</span>
+					}
+				</div>
+			}
+		</div>
+	</section>
+}
+
+// Date picker anatomy; the host owns its opener and surrounding application.
+templ DatePickerPanel(p DatePickerProps) {
+	@Require("date")
+	<dialog { p.DatePanel()... }>
+		if p.Variant=="full-screen" {
+			<div class="md-date-fullscreen-actions">
+				<button class="md-icon-button md-standard-icon-button" type="button" data-date-cancel aria-label="Close date picker">
+					@Icon("close")
+				</button><button class="md-button md-text-button" type="button" data-date-save>Save</button>
+			</div>
+		}
+		<header class="md-date-header">
+			<p data-date-title>Select date</p>
+			<div>
+				<h3 data-date-headline>{ p.DateHeadline() }</h3>
+				<button type="button" class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" data-date-mode aria-label="Enter date">
+					@Icon("edit")
+					@Icon("calendar_month")
+				</button>
+			</div>
+		</header>
+		if p.Variant=="docked" {
+			<div class="md-date-navigation md-date-docked-navigation">
+				<div class="md-date-nav-group">
+					<button type="button" class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" data-date-step="-1" aria-label="Previous month">
+						@Icon("chevron_left")
+					</button>
+					<button { p.DateMenu()... }>
+						<span data-date-month-label>{ p.month().Format("Jan") }</span>@Icon("expand_more")
+					</button>
+					<button type="button" class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" data-date-step="1" aria-label="Next month">
+						@Icon("chevron_right")
+					</button>
+				</div>
+				<div class="md-date-nav-group">
+					<button type="button" class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" data-date-step="-12" aria-label="Previous year">
+						@Icon("chevron_left")
+					</button>
+					<button { p.DateYearMenu()... }>
+						<span data-date-year-label>{ fmt.Sprint(p.month().Year()) }</span>@Icon("expand_more")
+					</button>
+					<button type="button" class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" data-date-step="12" aria-label="Next year">
+						@Icon("chevron_right")
+					</button>
+				</div>
+			</div>
+		} else {
+			<div class="md-date-navigation">
+				<button { p.DateMenu()... }>
+					<span data-date-month-label>{ p.month().Format("January 2006") }</span>@Icon("expand_more")
+				</button>
+				<span>
+					<button type="button" class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" data-date-step="-1" aria-label="Previous month">
+						@Icon("chevron_left")
+					</button>
+					<button type="button" class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" data-date-step="1" aria-label="Next month">
+						@Icon("chevron_right")
+					</button>
+				</span>
+			</div>
+		}
+		<div class="md-date-calendars" data-date-calendars>
+			@dateCalendar(p, p.month())
+			if p.Range {
+				@dateCalendar(p, p.month().AddDate(0, 1, 0))
+			}
+		</div>
+		<div class="md-date-years" role="group" id={ p.ID + "-years" } data-date-years hidden?={ p.Pane!="year" } aria-label="Choose year">
+			if p.Pane=="year" {
+				for year:=range 201 {
+					<button { p.DateYear(1900+year)... }>
+						if p.Variant=="docked" {
+							@Icon("check")
+							<span>{ fmt.Sprint(1900+year) }</span>
+						} else {
+							{ fmt.Sprint(1900+year) }
+						}
+					</button>
+				}
+			}
+		</div>
+		<div class="md-date-months" role="group" id={ p.ID + "-months" } data-date-months hidden?={ p.Pane!="month" } aria-label="Choose month">
+			for month,label:=range DateMonths {
+				<button { p.DateMonth(month+1)... }>
+					@Icon("check")
+					<span>{ label }</span>
+				</button>
+			}
+		</div>
+		<div class="md-date-inputs" data-date-inputs>
+			<div class="md-outlined-text-field">
+				@FieldOutline("Date")
+				<label for={ p.ID + "-start" } data-slot="label">Date</label><input id={ p.ID + "-start" } data-date-input="start" aria-describedby={ p.ID + "-start-format " + p.ID + "-error" } placeholder="Date" value={ dateISO(p.Value) } inputmode="numeric" maxlength="32" autocomplete="off"/><small data-slot="supporting-text" id={ p.ID + "-start-format" }>YYYY-MM-DD</small>
+			</div>
+			if p.Range {
+				<div class="md-outlined-text-field">
+					@FieldOutline("End date")
+					<label for={ p.ID + "-end" } data-slot="label">End date</label><input id={ p.ID + "-end" } data-date-input="end" aria-describedby={ p.ID + "-end-format " + p.ID + "-error" } placeholder="End date" value={ dateISO(p.End) } inputmode="numeric" maxlength="32" autocomplete="off"/><small data-slot="supporting-text" id={ p.ID + "-end-format" }>YYYY-MM-DD</small>
+				</div>
+			}
+			<p id={ p.ID + "-error" } class="md-typescale-body-small" data-date-error role="alert"></p>
+		</div>
+		<footer class="md-date-actions"><button class="md-button md-text-button" type="button" data-date-cancel>Cancel</button><button class="md-button md-text-button" type="button" data-date-save>OK</button></footer>
+		<output class="md-date-status md-typescale-body-small" aria-live="polite"></output>
+	</dialog>
+}

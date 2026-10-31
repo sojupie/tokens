@@ -274,7 +274,8 @@ func Run(assets string) (Report, error) {
 	if err := json.Unmarshal(manifest, &styles); err != nil {
 		return Report{}, err
 	}
-	sources := []string{"forge/components/static/elevation.css", "catalog/web/static/app.css", "catalog/web/static/token-table.css"}
+	sources := []string{"forge/components/static/elevation.css", "forge/site/site.css", "catalog/web/static/app.css", "catalog/web/static/illustrations.css",
+		"catalog/web/static/scene-screens.css", "catalog/web/static/token-table.css"}
 	for _, style := range styles {
 		sources = append(sources, filepath.Join("forge/components", style))
 	}

@@ -76,3 +76,18 @@ test('split menu keeps 4dp separation and aligns an available button edge',()=>{
  const narrow={left:250,right:298,top:100,bottom:140};
  assert.deepEqual({...splitMenuPosition(narrow,{left:100,right:298},menu,{width:300,height:600},false,4,8)},{left:100,top:144});
 });
+
+
+test('split menu placement measures the full box during opening scale animation',()=>{
+ const events={};
+ const trigger={getBoundingClientRect:()=>({left:270,right:318,top:20,bottom:60}),closest:()=>({getBoundingClientRect:()=>({left:100,right:318})}),setAttribute(){}};
+ const demo={querySelector:()=>trigger};
+ const menu={matches:()=>true,closest:()=>demo,offsetWidth:240,offsetHeight:156,style:{},dataset:{},querySelectorAll:()=>[],getBoundingClientRect(){throw Error('animated dimensions must not determine placement');}};
+ runInNewContext(readFileSync(`${__dirname}/behaviors/split-buttons.js`,'utf8'),{
+  MaterialComponents:exported.exports,
+  document:{documentElement:{clientWidth:328},addEventListener:(type,handler)=>events[type]=handler},
+  window:{innerHeight:600,addEventListener(){}},getComputedStyle:()=>({direction:'ltr',getPropertyValue:name=>name.endsWith('space50')?'4':'8'})
+ });
+ events.toggle({target:menu});
+ assert.equal(menu.style.left,'78px');assert.equal(menu.style.top,'64px');
+});

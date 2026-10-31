@@ -5,8 +5,8 @@
   --_carousel-end: 0px;
   --_carousel-height: 192px;
   --_carousel-gap: var(--md-sys-measurement-space100);
-  --_carousel-small: 56px;
-  inline-size: 40rem;
+  --_carousel-aspect-ratio: 1;
+  inline-size: 100%;
   max-inline-size: 100%;
   min-inline-size: 0;
 }
@@ -23,9 +23,8 @@
   scrollbar-width: none;
   overscroll-behavior-inline: contain;
   scroll-snap-type: x mandatory;
-  padding: var(--md-sys-measurement-space100);
-  margin-inline: calc(-1 * var(--md-sys-measurement-space100));
-  scroll-padding-inline: var(--md-sys-measurement-space100);
+  padding: var(--md-sys-measurement-space100) var(--md-sys-measurement-space200);
+  scroll-padding-inline: var(--md-sys-measurement-space200);
   outline: none;
   touch-action: pan-x pan-y;
 }
@@ -229,6 +228,7 @@
   padding: var(--md-sys-measurement-space50);
 }
 .md-carousel-header {
+  padding-inline:var(--md-sys-measurement-space200);
   display:flex;
   align-items:center;
   gap:var(--md-sys-measurement-space100);
@@ -240,3 +240,45 @@
   inline-size:var(--md-sys-measurement-space600);
 }
 [dir="rtl"] .md-carousel-header > .md-icon-button svg { transform:scaleX(-1); }
+
+/* Layout measurements complement item tokens (captured Carousel specs). */
+.md-carousel[data-variant^="uncontained"] .md-carousel-viewport {
+  padding-inline-end:0;
+  scroll-snap-type:none;
+}
+.md-carousel[data-variant="full-screen"] { --_carousel-gap:var(--md-sys-measurement-space200);container-type:inline-size; }
+.md-carousel[data-variant="full-screen"] .md-carousel-viewport { padding:0;scroll-padding-inline:0; }
+/* Snap is an optional uncontained configuration, not its default behavior. */
+.md-carousel[data-variant^="uncontained"][data-scrolling="snap"] .md-carousel-viewport { scroll-snap-type:x mandatory; }
+/* Uncontained layouts and reduced motion use full-size items in native flow. */
+.md-carousel[data-carousel-layout="flow"] .md-carousel-scroll-track { display:block; }
+.md-carousel[data-carousel-layout="flow"] .md-carousel-snaps { display:none; }
+.md-carousel[data-carousel-layout="flow"] .md-carousel-track {
+  display:flex;
+  position:static;
+  inline-size:max-content;
+  block-size:var(--_carousel-height);
+}
+.md-carousel[data-carousel-layout="flow"] .md-carousel-track > .md-carousel-slot {
+  position:relative;
+  inline-size:var(--_carousel-logical);
+  block-size:var(--_carousel-height);
+  scroll-snap-align:start;
+}
+.md-carousel[data-variant="uncontained-multi-aspect-ratio"][data-carousel-layout="flow"] .md-carousel-track > .md-carousel-slot { inline-size:calc(var(--_carousel-height) * var(--_carousel-aspect-ratio,1)); }
+.md-carousel[data-carousel-layout="flow"] .md-carousel-art { inset-inline-start:0;inline-size:100%;translate:none; }
+/* Equal, complete items replace resizing/parallax under reduced motion. */
+@media(prefers-reduced-motion:reduce) {
+  .md-carousel[data-carousel-layout="flow"] .md-carousel-viewport { scroll-snap-type:x mandatory; }
+  .md-carousel[data-variant="uncontained-multi-aspect-ratio"][data-carousel-layout="flow"] .md-carousel-track > .md-carousel-slot { inline-size:var(--_carousel-logical); }
+}
+
+/* Full-screen specimens simulate a window rather than a short item strip. */
+.md-carousel[data-variant="full-screen"] .md-carousel-viewport {
+  --_carousel-height:calc(100cqi * 9 / 16);
+}
+@container (width < 840px) {
+  .md-carousel[data-variant="full-screen"][data-orientation="portrait"] .md-carousel-viewport {
+    --_carousel-height:calc(100cqi * 16 / 9);
+  }
+}

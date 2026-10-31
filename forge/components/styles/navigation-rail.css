@@ -51,7 +51,8 @@
 .md-navigation-surface[hidden] {
   display: none;
 }
-.md-rail-frame .md-navigation-rail {
+.md-navigation-rail {
+  --_rail-rest-width: var(--md-comp-nav-rail-collapsed-container-width);
   display: flex;
   flex-direction: column;
   block-size: 100%;
@@ -242,11 +243,6 @@
 }
 .md-nav-badge {
   flex: none;
-}
-.md-nav-icon > .md-nav-badge {
-  position: absolute;
-  inset-block-start: 0;
-  inset-inline-end: 0;
 }
 .md-rail-frame[data-alignment="center"] .md-nav-items {
   margin-block: auto;

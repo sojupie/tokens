@@ -1,0 +1,8 @@
+package ui
+
+templ IconButton(p IconButtonProps) {
+	@Require("common")
+	<button { p.Attributes()... }>
+		@Icon(p.Icon)
+	</button>
+}

@@ -1,0 +1,11 @@
+package ui
+
+templ FAB(p FABProps) {
+	@Require("fab")
+	<button { p.Attributes()... }>
+		@Icon(p.Icon)
+		if p.Extended {
+			<span>{ p.Label }</span>
+		}
+	</button>
+}

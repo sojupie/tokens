@@ -52,6 +52,7 @@ function harness(reduced = false, initialCheckboxes = []) {
     hasAttribute(k) {
       return this.attrs.has(k);
     }
+    toggleAttribute(k, value) { if (value) this.setAttribute(k, ""); else this.removeAttribute(k); }
     removeAttribute(k) {
       this.attrs.delete(k);
     }
@@ -59,6 +60,7 @@ function harness(reduced = false, initialCheckboxes = []) {
       return this.isButton ? this : (this.parent?.closest() ?? null);
     }
     matches(selector) {
+      if (selector === ".md-loading-button") return !!this.isLoadingButton;
       if (selector === ".md-slider-input") return !!this.isSlider;
       if (selector === '.md-radio,.md-checkbox,.md-switch') return !!this.isSelectionControl;
       if (selector === ".md-filter-chip,.md-assist-chip,.md-suggestion-chip,.md-input-chip,.md-radio,.md-checkbox,.md-switch,.md-segmented-button,.md-slider-input") return !!(this.isChip || this.isSelectionControl);
@@ -144,7 +146,7 @@ function harness(reduced = false, initialCheckboxes = []) {
     },
   };
   const getComputedStyle = (button) => ({
-    opacity: "1",
+    opacity: "1", paddingLeft:"24px", paddingRight:"24px", borderRadius:"20px",
     ...Object.fromEntries(["TopLeft","TopRight","BottomRight","BottomLeft"].map((name,index)=>[
       "border"+name+"Radius",button.style.borderRadius
         ? module.exports.corners(button.style.borderRadius,120,40)[index]+"px"
@@ -156,6 +158,8 @@ function harness(reduced = false, initialCheckboxes = []) {
       button.noSpring && name.includes("spring")
         ? ""
         : ({
+            "--_motion-default-spatial-duration":"350ms",
+            "--_motion-default-spatial-easing":"linear",
             "--_group-width-growth": "15%",
             "--_group-width-damping": "0.9",
             "--_group-width-stiffness": "1400",
@@ -703,4 +707,28 @@ test('standard group width animation includes icon-only commands',async()=>{
  h.emit('pointerdown',h.buttons[0]);
  assert.ok(h.buttons.every(button=>button.style.width!==''),'all group children participate');
  h.emit('pointerup',h.buttons[0]);await h.finish();
+});
+
+test('busy button contracts after the flash delay and restores without enabling activation',async()=>{
+ const h=harness(),button=h.button(),slot=new h.Element(),disk=new h.Element();
+ button.isLoadingButton=true;button.parentElement=slot;button.disabled=true;
+ disk.className='md-button-loading-disk';disk.dataset={control:'determinate'};button.append(disk);
+ const busy=value=>{button.setAttribute('aria-busy',value);h.mutate([{attributeName:'aria-busy',target:button}]);};
+ busy('true');h.advance(199);assert.equal(h.animations.length,0);
+ h.advance(1);assert.equal(button.style.width,'40px');assert.equal(slot.style.width,'120px');
+ assert.equal(disk.dataset.control,'indeterminate');assert.equal(button.disabled,true);
+ busy('false');assert.equal(h.animations[0].cancelled,true);assert.equal(disk.dataset.control,'determinate');
+ assert.equal(button.style.width,'');h.animations.at(-1).complete();await Promise.resolve();assert.equal(slot.style.width,'');
+ busy('true');h.advance(100);busy('false');h.advance(100);
+ assert.equal(disk.dataset.control,'determinate','fast requests cancel the delayed disk');
+});
+
+test('busy button honors reduced motion and skips short-lived loading',()=>{
+ const h=harness(true),button=h.button(),slot=new h.Element(),disk=new h.Element();
+ button.isLoadingButton=true;button.parentElement=slot;disk.className='md-button-loading-disk';disk.dataset={control:'determinate'};button.append(disk);
+ const busy=value=>{button.setAttribute('aria-busy',value);h.mutate([{attributeName:'aria-busy',target:button}]);};
+ busy('true');h.advance(100);busy('false');h.advance(200);
+ assert.equal(h.animations.length,0);assert.equal(button.hasAttribute('data-loading-visible'),false);
+ busy('true');h.advance(200);assert.equal(button.style.width,'40px');assert.equal(h.animations.length,0);
+ busy('false');assert.equal(button.style.width,'');assert.equal(slot.style.width,'');
 });

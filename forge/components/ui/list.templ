@@ -1,0 +1,89 @@
+package ui
+
+import "strconv"
+
+templ List(p ListProps) {
+	@Require("list")
+	if p.Ordered {
+		<ol { p.Attributes()... }>
+			{ children... }
+		</ol>
+	} else {
+		<ul { p.Attributes()... }>
+			{ children... }
+		</ul>
+	}
+}
+
+templ ListLink(href string, p ListItemProps) {
+	@Require("list")
+	<li>
+		<a href={ templ.SafeURL(href) } { p.Attributes()... }>
+			@ListContent(p)
+		</a>
+	</li>
+}
+
+templ ListButton(p ListItemProps) {
+	@Require("list")
+	<li>
+		<button type="button" disabled?={ p.Disabled } { p.Attributes()... }>
+			@ListContent(p)
+		</button>
+	</li>
+}
+
+templ ListRow(p ListItemProps) {
+	@Require("list")
+	<li>
+		<div { p.Attributes()... }>
+			@ListContent(p)
+		</div>
+	</li>
+}
+
+// Compatibility for existing consumers; new callers use ListButton or ListLink.
+templ ListItem(attrs templ.Attributes, label string) {
+	@Require("list")
+	<button type="button" { attributes(templ.Attributes{"class":"md-list-item"},attrs)... }>
+		@ListContent(ListItemProps{Label: label, SingleLine: true})
+	</button>
+}
+
+// ListContent also serves playground rows with selection, reveal or reorder wrappers.
+templ ListContent(p ListItemProps) {
+	@Require("list")
+	if p.LeadingKind!="" && p.LeadingKind!=NoLeading {
+		<span class={ "md-list-leading md-list-" + string(p.LeadingKind) } aria-hidden={ strconv.FormatBool(p.LeadingKind != LeadingCheckbox && p.LeadingKind != LeadingRadio) }>
+			if p.Leading!=nil {
+				@p.Leading
+			} else if p.LeadingKind==LeadingAvatar {
+				<span class="md-list-avatar-label">{ p.Avatar }</span>
+			} else if p.LeadingKind==LeadingImage {
+				<img src={ templ.SafeURL(p.ImageSrc) } alt="" width="100" height="100" loading="lazy" draggable="false"/>
+			}
+			if p.Badge!=nil {
+				@p.Badge
+			}
+		</span>
+	}
+	<span class="md-list-body">
+		if p.Overline!="" {
+			<span class="md-list-overline">{ p.Overline }</span>
+		}
+		<span class="md-list-label">{ p.Label }</span>
+		if !p.SingleLine {
+			<span class="md-list-supporting">{ p.Supporting }</span>
+		}
+	</span>
+	if p.Trailing!=nil || p.Metadata!="" {
+		<span class="md-list-tail">
+			if p.Metadata!="" {
+				<span class="md-list-meta">{ p.Metadata }</span>
+			}
+			if p.Trailing!=nil {
+				@p.Trailing
+			}
+		</span>
+	}
+}
