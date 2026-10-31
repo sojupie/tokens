@@ -1358,11 +1358,11 @@
   document.addEventListener("click", (event) => {
     const button = event.target.closest?.("button"),
       demo = button?.closest("[data-snackbar-demo]");
-    if (!demo) return;
-    const bar = demo.querySelector(".md-snackbar");
+    const bar = button?.closest(".md-snackbar") || demo?.querySelector(".md-snackbar");
+    if (!bar) return;
     if (button.hasAttribute("data-snackbar-open")) {
       showSnackbar(bar, button);
-      const inline = demo.querySelector("[data-snackbar-inline]");
+      const inline = demo?.querySelector("[data-snackbar-inline]");
       if (inline) inline.textContent = bar.querySelector(".md-feedback-text").textContent.trim();
       // Web notifications must remain available either in the actionable bar
       // itself or as inline feedback after a non-actionable bar disappears.
@@ -1395,6 +1395,7 @@
 (() => {
   if (typeof document === "undefined") return;
   const { navigationIndex } = globalThis.MaterialComponents;
+  const labels=new WeakMap();
   function positionFABMenu(panel) {
     if (!panel.matches(":popover-open")) return;
     const trigger = panel
@@ -1432,7 +1433,8 @@
       const opening = panel.matches(":popover-open");
       trigger.classList.toggle("md-fab-menu-close", opening);
       trigger.setAttribute("aria-expanded", String(opening));
-      trigger.setAttribute("aria-label", opening ? "Close menu" : "Create");
+      if(!labels.has(trigger))labels.set(trigger,trigger.getAttribute("aria-label")||"Create");
+      trigger.setAttribute("aria-label",opening?"Close menu":labels.get(trigger));
       if (panel.matches(":popover-open")) {
         positionFABMenu(panel);
         const items = panel.querySelectorAll('[role="menuitem"]');

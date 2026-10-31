@@ -3,6 +3,7 @@ package ui
 import "fmt"
 
 templ Field(p FieldProps) {
+	@Require("common")
 	<div { p.Attributes()... }>
 		if !p.Filled {
 			@FieldOutline(p.Label)

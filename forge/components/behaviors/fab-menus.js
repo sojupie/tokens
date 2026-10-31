@@ -1,6 +1,7 @@
 (() => {
   if (typeof document === "undefined") return;
   const { navigationIndex } = globalThis.MaterialComponents;
+  const labels=new WeakMap();
   function positionFABMenu(panel) {
     if (!panel.matches(":popover-open")) return;
     const trigger = panel
@@ -38,7 +39,8 @@
       const opening = panel.matches(":popover-open");
       trigger.classList.toggle("md-fab-menu-close", opening);
       trigger.setAttribute("aria-expanded", String(opening));
-      trigger.setAttribute("aria-label", opening ? "Close menu" : "Create");
+      if(!labels.has(trigger))labels.set(trigger,trigger.getAttribute("aria-label")||"Create");
+      trigger.setAttribute("aria-label",opening?"Close menu":labels.get(trigger));
       if (panel.matches(":popover-open")) {
         positionFABMenu(panel);
         const items = panel.querySelectorAll('[role="menuitem"]');

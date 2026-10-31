@@ -27,3 +27,5 @@ func (p TabProps) Attributes() templ.Attributes {
 	}
 	return attributes(templ.Attributes{"class": "md-tab", "type": "button", "role": "tab", "id": p.ID, "aria-controls": p.PanelID, "aria-selected": fmt.Sprint(p.Selected), "tabindex": fmt.Sprint(tab), "disabled": p.Disabled}, p.Attrs)
 }
+
+func (p TabProps) content() string { return fallback(p.Content, "label") }

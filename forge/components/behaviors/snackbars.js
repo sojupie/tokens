@@ -69,11 +69,11 @@
   document.addEventListener("click", (event) => {
     const button = event.target.closest?.("button"),
       demo = button?.closest("[data-snackbar-demo]");
-    if (!demo) return;
-    const bar = demo.querySelector(".md-snackbar");
+    const bar = button?.closest(".md-snackbar") || demo?.querySelector(".md-snackbar");
+    if (!bar) return;
     if (button.hasAttribute("data-snackbar-open")) {
       showSnackbar(bar, button);
-      const inline = demo.querySelector("[data-snackbar-inline]");
+      const inline = demo?.querySelector("[data-snackbar-inline]");
       if (inline) inline.textContent = bar.querySelector(".md-feedback-text").textContent.trim();
       // Web notifications must remain available either in the actionable bar
       // itself or as inline feedback after a non-actionable bar disappears.

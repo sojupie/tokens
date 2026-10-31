@@ -5,6 +5,7 @@ import (
 	"context"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/a-h/templ"
 	"golang.org/x/net/html"
@@ -109,5 +110,72 @@ func TestInteractiveCardsKeepNativeSemantics(t *testing.T) {
 	text, _ = renderAPI(t, CardButton(CardProps{Headline: "Select", Attrs: templ.Attributes{"class": "md-card", "aria-pressed": "false"}}))
 	if strings.Contains(text, "<h2") || strings.Contains(text, "<div") || strings.Contains(text, "md-card md-card") {
 		t.Fatal(text)
+	}
+}
+
+func TestAllComponentFamiliesRenderWithoutCatalog(t *testing.T) {
+	date := func(year, month, day int) time.Time {
+		return time.Date(year, time.Month(month), day, 0, 0, 0, 0, time.UTC)
+	}
+	cases := []struct {
+		name, module string
+		component    templ.Component
+	}{
+		{"icon button", "common", IconButton(IconButtonProps{Label: "Favorite", Icon: "star", Variant: "tonal"})},
+		{"chip", "common", Chip(ChipProps{Label: "Landscape", Selected: true, Removable: true})},
+		{"floating action", "fab", FAB(FABProps{Label: "Create", Icon: "add"})},
+		{"extended action", "fab", FAB(FABProps{Label: "Compose", Icon: "edit", Extended: true})},
+		{"split action", "split", SplitButton(SplitButtonProps{ID: "send", Label: "Send", Icon: "send"})},
+		{"button group", "button-group", GroupItem(GroupItemProps{Label: "Pause", Icon: "pause", Connected: true, Selected: true})},
+		{"segmented control", "segmented", Segment(SegmentProps{Name: "view", Value: "week", Label: "Week", Selected: true})},
+		{"tab", "tabs", Tab(TabProps{ID: "tab", PanelID: "panel", Label: "Activity", Content: "label", Selected: true})},
+		{"navigation bar", "navigation", NavigationRegion(NavigationProps{ID: "nav", Label: "Main", Kind: "bar"})},
+		{"navigation rail", "navigation", NavigationRegion(NavigationProps{ID: "rail", Label: "Main", Kind: "rail"})},
+		{"navigation drawer", "navigation", Drawer("drawer", true, "Folders")},
+		{"app bar", "appbar", AppBar(AppBarProps{Title: "Courses", Variant: "medium-flexible"})},
+		{"toolbar", "toolbar", ToolbarSurface(ToolbarProps{Label: "Formatting"})},
+		{"menu", "common", Menu("menu", "Document commands", true)},
+		{"fab menu", "fab-menu", FABMenu(FABMenuProps{ID: "create", Label: "Create"})},
+		{"carousel", "carousel", CarouselItem(CarouselItemProps{Index: 0, Count: 3, Label: "Collection", ImageSrc: "/painting.webp"})},
+		{"search", "search", Search(SearchProps{ID: "search", Label: "Search collection", Disclosure: true})},
+		{"snackbar", "messages", SnackbarMessage(SnackbarProps{ID: "notice", Text: "Archived"})},
+		{"tooltip", "messages", PlainTooltip("tip", "Archive")},
+		{"date picker", "date", DatePicker(DatePickerProps{ID: "date", Name: "visit_date", Value: date(2024, 2, 29), Today: date(2024, 2, 28)})},
+		{"select", "common", Field(FieldProps{TextFieldProps: TextFieldProps{ID: "choice", Label: "Choose", Name: "choice"}, Kind: "select", Options: []Option{{Value: "one", Label: "One"}}})},
+		{"autocomplete", "common", Field(FieldProps{TextFieldProps: TextFieldProps{ID: "find", Label: "Find", Name: "find"}, Kind: "autocomplete", Options: []Option{{Value: "one", Label: "One"}}})},
+		{"divider", "common", Divider("middle", nil)},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			text, assets := renderAPI(t, tc.component)
+			if !assets[tc.module] {
+				t.Fatal("missing module", tc.module, assets)
+			}
+			if strings.Contains(text, "data-component-state") || strings.Contains(text, "data-component-case") {
+				t.Fatal("playground state in component", text)
+			}
+		})
+	}
+}
+func TestDatePickerUsesCivilDatesAcrossYearsAndLeapDays(t *testing.T) {
+	value := time.Date(2024, 2, 29, 0, 0, 0, 0, time.UTC)
+	end := value.AddDate(0, 0, 2)
+	p := DatePickerProps{ID: "booking", Name: "start", EndName: "end", Value: value, End: end, Today: value, Range: true}
+	text, _ := renderAPI(t, DatePicker(p))
+	for _, want := range []string{`name="start"`, `name="end"`, `value="2024-02-29"`, `value="2024-03-02"`, `data-month="2024-02"`, `data-date="2024-02-29"`} {
+		if !strings.Contains(text, want) {
+			t.Fatal(want, text)
+		}
+	}
+	rows := p.Rows(value)
+	if len(rows) != 5 || rows[0][0].ISO != "2024-01-28" || rows[4][6].ISO != "2024-03-02" {
+		t.Fatal(rows)
+	}
+	for _, row := range rows {
+		for _, day := range row {
+			if day.ISO == "2024-02-29" && (!day.Today || !day.Start || !day.Selected) {
+				t.Fatal(day)
+			}
+		}
 	}
 }

@@ -1,12 +1,12 @@
 const {test}=require('node:test'),assert=require('node:assert/strict'),{readFileSync}=require('node:fs'),{runInNewContext}=require('node:vm');
-function harness({action=true,inline=false,obstacles=[]}={}){
+function harness({action=true,inline=false,obstacles=[],host=true}={}){
  const listeners={},starts=[];let focus;
  const opener={getClientRects:()=>[],focus(){focus=this},hasAttribute:a=>a==='data-snackbar-open'},close={hasAttribute:a=>a==='data-snackbar-close'};
  const actionButton={focus(){focus=this}};
  const positions={};
  const bar={style:{removeProperty:n=>delete positions[n],setProperty:(n,v)=>positions[n]=v},matches(){return !!this.open},getBoundingClientRect:()=>({left:400,right:700,top:724,bottom:780,height:56}),dataset:{snackbarDuration:'6000'},addEventListener(){},showPopover(){this.open=true},hidePopover(){this.open=false},contains:e=>e===close,querySelector:s=>s==='[data-snackbar-action]'?(action?actionButton:null):{textContent:'Message sent'}};
  const output=inline?{textContent:''}:null,demo={querySelector:s=>s==='[data-snackbar-inline]'?output:bar};
- for(const b of [opener,close]){b.closest=()=>demo;b.dispatchEvent=()=>{}};
+ for(const b of [opener,close]){b.closest=s=>s==='.md-snackbar'?(b===close?bar:null):s==='[data-snackbar-demo]'&&host?demo:null;b.dispatchEvent=()=>{}};
  const components={snackbarTimer:()=>({start:n=>starts.push(n),stop(){}})};
  const document={querySelector:()=>bar.open&&action?actionButton:null,activeElement:opener,querySelectorAll:s=>s.includes('.md-fab')?obstacles:[bar],addEventListener:(t,f)=>(listeners[t]??=[]).push(f)};
  const runtime={document,window:{addEventListener(){}},getComputedStyle:()=>({visibility:'visible',getPropertyValue:()=> '16px'}),MaterialComponents:Object.freeze(components),CustomEvent:class{}};
@@ -27,3 +27,5 @@ test('snackbar clears overlapping controls and resets placement before each open
 });
 
 test('programmatic status uses shared placement and restores the actual opener',()=>{const h=harness();h.show();assert.equal(h.bar.open,true);assert.equal(h.starts.at(-1),0);h.close();assert.equal(h.focus,h.opener)});
+
+test('programmatic snackbar dismisses without a Catalog demo wrapper',()=>{const h=harness({host:false});h.show();assert.equal(h.bar.open,true);h.close();assert.equal(h.bar.open,false);assert.equal(h.focus,h.opener)});

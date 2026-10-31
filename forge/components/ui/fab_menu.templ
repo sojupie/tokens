@@ -12,9 +12,9 @@ templ FABMenu(p FABMenuProps) {
 			<ul role="menu" aria-label={ p.Label }>
 				{ children... }
 			</ul>
- if p.Close!=nil {
- @p.Close
- }
+			if p.Close!=nil {
+				@p.Close
+			}
 		</div>
 	</div>
 }

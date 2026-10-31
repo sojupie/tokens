@@ -16,3 +16,19 @@ templ SplitButton(p SplitButtonProps) {
 		</button>
 	</div>
 }
+
+templ SplitHost() {
+	@Require("split")
+	<div class="md-split-demo">
+		{ children... }
+	</div>
+}
+
+templ SplitMenu(id, label string) {
+	@Require("split")
+	<nav class="md-menu md-split-menu" data-variant="standard" id={ id + "-menu" } popover="auto" role="menu" aria-label={ label }>
+		<ul>
+			{ children... }
+		</ul>
+	</nav>
+}

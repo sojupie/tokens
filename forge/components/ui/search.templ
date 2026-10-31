@@ -3,6 +3,7 @@ package ui
 import "fmt"
 
 templ Search(p SearchProps) {
+	{{ p.Disclosure = true }}
 	@Require("search")
 	<div { attributes(templ.Attributes{"class":"md-search-demo","data-interactive":"true","data-disclosure":fmt.Sprint(p.Expanded)},p.Attrs)... }>
 		<div class="md-search-scene">
@@ -54,10 +55,22 @@ templ searchActions(p SearchProps) {
 					@Icon("settings_outline")
 				</button>
 			</span>
-			<div class="md-search-options" id={ p.SearchOptionsID() } popover="auto" role="dialog" aria-label="Search options"><label><input type="checkbox" data-search-exact/>Match exact names</label></div>
+			<div class="md-search-options" id={ p.SearchOptionsID() } popover="auto" role="dialog" aria-label="Search options">
+				if p.Options!=nil {
+					@p.Options
+				}
+			</div>
 		}
 		if p.SearchHasAction("avatar") {
-			<button class="md-icon-button md-standard-icon-button md-search-avatar" data-size="small" data-shape="round" type="button" aria-label="Profile"><span aria-hidden="true">A</span></button>
+			<button class="md-icon-button md-standard-icon-button md-search-avatar" data-size="small" data-shape="round" type="button" aria-label="Profile">
+				<span aria-hidden="true">
+					if p.AvatarText!="" {
+						{ p.AvatarText }
+					} else {
+						@Icon("person")
+					}
+				</span>
+			</button>
 		}
 	</div>
 }

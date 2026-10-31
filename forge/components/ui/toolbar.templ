@@ -1,12 +1,12 @@
 package ui
 
 templ Toolbar(attrs templ.Attributes) {
-	@ToolBar(ToolbarProps{Attrs: attrs}) {
+	@ToolbarSurface(ToolbarProps{Attrs: attrs}) {
 		{ children... }
 	}
 }
 
-templ ToolBar(p ToolbarProps) {
+templ ToolbarSurface(p ToolbarProps) {
 	@Require("toolbar")
 	<div { p.Attributes()... }>
 		{ children... }

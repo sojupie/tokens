@@ -13,7 +13,7 @@ templ Tab(p TabProps) {
 	@Require("tabs")
 	<button { p.Attributes()... }>
 		<span class="md-tab-content">
-			if p.Content!="label"&&p.Icon!="" {
+			if p.content()!="label"&&p.Icon!="" {
 				<span class="md-tab-icon">
 					@Icon(p.Icon)
 					if p.Badge!=""&&p.Variant!="secondary" {
@@ -21,8 +21,8 @@ templ Tab(p TabProps) {
 					}
 				</span>
 			}
-			<span class={ templ.KV("tokens-visually-hidden", p.Content == "icon") }>{ p.Label }</span>
-			if p.Badge!=""&&(p.Content=="label"||p.Variant=="secondary") {
+			<span class={ templ.KV("tokens-visually-hidden", p.content() == "icon") }>{ p.Label }</span>
+			if p.Badge!=""&&(p.content()=="label"||p.Variant=="secondary") {
 				@Badge(p.Badge, p.BadgeText, nil)
 			}
 		</span><span class="md-tab-active-indicator" aria-hidden="true"></span>

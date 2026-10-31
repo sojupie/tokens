@@ -7,10 +7,10 @@ import (
 )
 
 type SearchProps struct {
-	ID, Label, Value, Variant, Control, Leading, Actions, Elevation string
-	Expanded, Disclosure                                            bool
-	Page                                                            templ.Component
-	Attrs, BarAttrs, PanelAttrs                                     templ.Attributes
+	ID, Label, Value, Variant, Control, Leading, Actions, Elevation, AvatarText string
+	Expanded, Disclosure                                                        bool
+	Options, Page                                                               templ.Component
+	Attrs, BarAttrs, PanelAttrs                                                 templ.Attributes
 }
 
 func (p SearchProps) SearchHasAction(action string) bool {
