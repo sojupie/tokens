@@ -67,8 +67,12 @@ func legacyTokenSet(subject publish.SubjectView, path string) (tokenSet, bool) {
 	return tokenSet{}, false
 }
 
-func subjectTokenDescription(subject publish.SubjectView) string {
-	return subjectTableDescription(subject, tokenSet{All: true})
+func subjectTokenDescription(subject publish.SubjectView, playground bool) string {
+	text := subjectTokenTitle(subject) + ". "
+	if playground {
+		return text + "Try the interactive playground, compare values by context, follow references and download CSS variables or JSON."
+	}
+	return text + "Compare values by context, follow references and download CSS variables or JSON."
 }
 
 type tokenSetMenuGroup struct {

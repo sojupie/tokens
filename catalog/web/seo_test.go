@@ -34,13 +34,13 @@ func TestSEOMetadataAndCanonicalURLs(t *testing.T) {
 		path, title, canonical string
 		noindex                bool
 	}{
-		{"/", "Material Design 3 Tokens and Change History", "https://tokens.example/", false},
+		{"/", "Material Design 3 Tokens, Playgrounds and Change History", "https://tokens.example/", false},
 		{"/components/snackbar", `Material Design 3 "Snackbar" tokens`, "https://tokens.example/components/snackbar", false},
 		{"/components/snackbar/sets/snackbar/common", `Material Design 3 "Snackbar" tokens: Common`, "https://tokens.example/components/snackbar/sets/snackbar/common", false},
 		{"/components/snackbar?set=snackbar%7Ccommon%7C", `Material Design 3 "Snackbar" tokens: Common`, "https://tokens.example/components/snackbar/sets/snackbar/common", false},
 		{"/components/snackbar?utm_source=example", `Material Design 3 "Snackbar" tokens`, "https://tokens.example/components/snackbar", false},
 		{"/components/snackbar/changes?page=2", `Material Design 3 "Snackbar" token changes: Page 2`, "https://tokens.example/components/snackbar/changes?page=2", false},
-		{"/components?q=snack", "Material Design 3 Components and Component Tokens", "", true},
+		{"/components?q=snack", "Material Design 3 Components, Playgrounds and Component Tokens", "", true},
 		{"/components/snackbar?context.Theme=Dark", `Material Design 3 "Snackbar" tokens`, "", true},
 		{"/changes?snapshot=one", "Material Design 3 Token Change Log", "", true},
 		{"/changes?type=removed", "Material Design 3 Token Change Log", "", true},

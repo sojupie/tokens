@@ -8,6 +8,9 @@ import (
 var fieldOptions = []string{"Option one", "Option two", "Option three"}
 
 func (c componentCase) FieldLabel() string {
+	if c.illustrationLabels[0] != "" {
+		return c.illustrationLabels[0]
+	}
 	if c.Shape == "affixes" {
 		return "Price per kilogram"
 	}
@@ -18,6 +21,12 @@ func (c componentCase) FieldLabel() string {
 		return "Find a value"
 	}
 	return "Label"
+}
+func (c componentCase) FieldSupporting() string {
+	if c.illustrationLabels[1] != "" {
+		return c.illustrationLabels[1]
+	}
+	return "Supporting text"
 }
 func (c componentCase) FieldInput() templ.Attributes {
 	value := ""

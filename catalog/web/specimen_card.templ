@@ -1,7 +1,7 @@
 package web
 
+import "github.com/sojupie/tokens/forge/components/ui"
+
 templ specimenCard(c componentCase) {
-	@useComponentAssets("card")
-	<button type="button" { c.Attributes()... }><span>Card title</span><span>Supporting text</span><span data-slot="icon">@materialSymbol("check")
-</span></button>
+ @ui.CardButton(ui.CardProps{Variant:c.Variant,Headline:"Along the coast",Supporting:"Discover a route along the shoreline, starting at the old harbour.",ImageSrc:staticURL("paintings/"+scenePainting("card","coast")),ImageAlt:"A landscape along the coast",Attrs:c.Attributes()})
 }

@@ -36,8 +36,8 @@ func (server *Server) useGeneratedAssets(publicationDir, directory string, requi
 		return err
 	}
 	var manifest struct {
-		PublicationID, SnapshotID, DatabaseSha256, CssSha256, ButtonsSha256, ComponentsSha256 string
-		ThemeBundles                                                                          map[string]string
+		PublicationID, SnapshotID, DatabaseSha256, CssSha256, ButtonsSha256, ComponentsSha256, CssValuesSha256 string
+		ThemeBundles                                                                                           map[string]string
 	}
 	if err := json.Unmarshal(data, &manifest); err != nil {
 		return err
@@ -107,6 +107,34 @@ func (server *Server) useGeneratedAssets(publicationDir, directory string, requi
 	server.themeBundles = themes
 	server.themeCSS = string(css)
 	server.themeError = nil
+	if data, readErr := os.ReadFile(filepath.Join(directory, "css-values.json")); readErr == nil {
+		if manifest.CssValuesSha256 != "" && assetVersion(data) != manifest.CssValuesSha256 {
+			return fmt.Errorf("CSS value index checksum mismatch")
+		}
+		var index struct {
+			DatabaseSha256 string
+			Values         map[string]string
+		}
+		if err := json.Unmarshal(data, &index); err != nil {
+			return err
+		}
+		if index.DatabaseSha256 != manifest.DatabaseSha256 {
+			return fmt.Errorf("CSS value index belongs to another publication")
+		}
+		server.cssValues = map[string]map[string]string{}
+		for key, value := range index.Values {
+			name, suffix, _ := strings.Cut(key, "-")
+			if suffix != "" {
+				suffix = "-" + suffix
+			}
+			if server.cssValues[name] == nil {
+				server.cssValues[name] = map[string]string{}
+			}
+			server.cssValues[name][suffix] = value
+		}
+	} else if !os.IsNotExist(readErr) || manifest.CssValuesSha256 != "" {
+		return readErr
+	}
 	server.tokenAssetsDir = directory
 	return nil
 }

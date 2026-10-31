@@ -3,6 +3,7 @@ package web
 import (
 	"fmt"
 	"github.com/a-h/templ"
+	"github.com/sojupie/tokens/forge/components/ui"
 	"net/url"
 )
 
@@ -101,4 +102,17 @@ func configureMenuPreview(page *componentPreview, query url.Values) error {
 		page.Cases[i].MenuMode = mode
 	}
 	return nil
+}
+
+func menuExampleProps(c componentCase, index int, label string) ui.MenuEntryProps {
+	p := ui.MenuEntryProps{Attrs: c.MenuItem(index), Label: label, IconOnly: c.Shape == "icon-only", Supporting: menuExampleSupporting(c, index), Leading: menuExampleLeading(c, index)}
+	if !p.IconOnly {
+		if (index == 0 && c.Shape == "cascade") || c.MenuSelectable(index) {
+			p.Trailing = menuExampleTrailing(c, index)
+		} else if c.Orientation != "horizontal" {
+			p.Shortcut = menuExampleShortcut(c, index)
+			p.ShortcutLabel = "Command+" + []string{"K", "D", "E"}[index]
+		}
+	}
+	return p
 }

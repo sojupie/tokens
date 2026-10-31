@@ -90,6 +90,9 @@ func (c componentCase) Attributes() templ.Attributes {
 	if c.Family == "divider" {
 		attrs["data-inset"] = c.DividerInset()
 	}
+	if c.Family == "carousel" {
+		attrs["data-scrolling"] = c.CarouselScroll
+	}
 	if c.Family == "list" {
 		attrs["data-size"] = c.Size
 		attrs["data-selection-mode"] = c.Selection
@@ -122,6 +125,13 @@ func (c componentCase) Attributes() templ.Attributes {
 		attrs["data-orientation"] = c.Orientation
 		if c.Family == "nav-bar" {
 			attrs["data-orientation"] = c.Variant
+			if c.Variant == "baseline" {
+				attrs["data-orientation"] = "vertical"
+			}
+			attrs["data-alignment"] = c.NavBarAlignment
+			if c.NavDirection != "" {
+				attrs["dir"] = c.NavDirection
+			}
 		}
 		if c.Family == "nav-drawer" {
 			attrs["data-orientation"] = "horizontal"

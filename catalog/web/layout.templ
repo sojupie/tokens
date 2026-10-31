@@ -17,12 +17,14 @@ templ layout(title string) {
 			<link rel="stylesheet" href={ staticURL("token-table.css") }/>
 			<link rel="stylesheet" href={ staticURL("buttons.css") }/>
 			<link rel="stylesheet" href={ staticURL("bundles/common.css") }/>
+   @siteNavigationStyles()
 			<script src={ staticURL("motion.js") } defer></script>
 			<script src={ staticURL("buttons.js") } defer></script>
 			<script src={ staticURL("runtime/utils.js") } defer></script>
 <script src={staticURL("runtime/navigation.js")} defer></script>
 			<script src={ staticURL("fields.js") } defer></script>
 			<script src={ staticURL("site-ui.js") } defer></script>
+			<script src={ staticURL("export.js") } defer></script>
 <script src={ staticURL("site.js") } defer></script>
 			<script src={ staticURL("menus.js") } defer></script>
 			<script src={ staticURL("htmx.min.js") } defer></script>
@@ -34,7 +36,19 @@ templ layout(title string) {
 			<link rel="apple-touch-icon" href={ staticURL("logo-250x250.png") }/>
 			<title>{ pageTitle(ctx, title) } | Token Catalog</title>
 			<meta name="description" content={ metadata(ctx).Description }/>
-			if metadata(ctx).AgentDiscovery {
+			if metadata(ctx).ImageURL!="" {
+    <meta property="og:type" content="website"/>
+    <meta property="og:site_name" content="Token Catalog"/>
+    <meta property="og:title" content={pageTitle(ctx,title)+" | Token Catalog"}/>
+    <meta property="og:description" content={metadata(ctx).Description}/>
+    <meta property="og:url" content={metadata(ctx).ImagePageURL}/>
+    <meta property="og:image" content={metadata(ctx).ImageURL}/>
+    <meta property="og:image:width" content="1200"/><meta property="og:image:height" content="630"/>
+    <meta property="og:image:type" content="image/jpeg"/><meta property="og:image:alt" content={metadata(ctx).ImageAlt}/>
+    <meta name="twitter:card" content="summary_large_image"/><meta name="twitter:image" content={metadata(ctx).ImageURL}/>
+    <meta name="twitter:image:alt" content={metadata(ctx).ImageAlt}/>
+   }
+   if metadata(ctx).AgentDiscovery {
 				<link rel="describedby" href="/agents.json" type="application/json"/>
 				<link rel="describedby" href="/llms.txt" type="text/plain"/>
 				<link rel="service-desc" href="/openapi.json" type="application/json"/>
@@ -78,7 +92,8 @@ templ layout(title string) {
 						</div>
  }
  }
-			<main class="tokens-main" data-component-assets>
+			<div class="tokens-layout tokens-layout-site">
+<main class="tokens-main tokens-layout-content" data-component-assets>
 				@componentAssetScope() {
 					{ children... }
 				}
@@ -86,6 +101,7 @@ templ layout(title string) {
 			@site.Footer(siteConfig(ctx)) {
  @componentAssetScope() { @siteDownloadMenu() }
  }
+ </div>
 		</body>
 	</html>
 }

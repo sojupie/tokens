@@ -29,55 +29,26 @@ func tokenBrowserView(subject publish.SubjectView, browser tokenBrowser) templ.C
 		if err := tokenSetPicker(subject, browser).Render(ctx, writer); err != nil {
 			return err
 		}
-		if err := write(`<label class="tokens-token-search">` + tableIcon("search") + `<span class="tokens-visually-hidden">Search tokens</span><input type="search" name="q" value="` + html.EscapeString(browser.Query) + `" placeholder="Search"></label><div class="tokens-token-tools" role="group" aria-label="Table display"><button class="md-icon-button md-standard-icon-button tokens-icon-button" type="button" data-action="previews" aria-label="Hide previews" aria-pressed="true">` + `<span data-icon="on">` + tableIcon("eye") + `</span><span data-icon="off" hidden>` + tokenTableSymbol("visibility_off") + `</span></button><button class="md-icon-button md-standard-icon-button tokens-icon-button" type="button" data-action="view" aria-label="Show grid view" aria-pressed="false">` + `<span data-icon="on">` + tableIcon("grid") + `</span><span data-icon="off" hidden>` + tokenTableSymbol("table_rows") + `</span></button><button class="md-icon-button md-standard-icon-button tokens-icon-button" type="button" data-action="expand" aria-label="Expand all groups" aria-expanded="false">` + `<span data-icon="on">` + tableIcon("expand") + `</span><span data-icon="off" hidden>` + tokenTableSymbol("unfold_less") + `</span></button></div></div><div class="tokens-token-columns"><span>Token</span>`); err != nil {
+		if err := write(`<div class="tokens-token-actions"><label class="tokens-token-search">` + tableIcon("search") + `<span class="tokens-visually-hidden">Search tokens</span><input type="search" name="q" value="` + html.EscapeString(browser.Query) + `" placeholder="Search"></label><div class="tokens-token-tools" role="group" aria-label="Table controls">`); err != nil {
+			return err
+		}
+		if err := tableTools().Render(ctx, writer); err != nil {
+			return err
+		}
+		if err := write(`</div></div></div><div class="tokens-token-columns"><span>Token</span>`); err != nil {
 			return err
 		}
 		if len(browser.Filters) > 0 {
 			if err := useComponentAssets("dialog").Render(ctx, writer); err != nil {
 				return err
 			}
-			if err := write(`<button class="md-filter-chip tokens-context-button" type="button" data-action="context" aria-haspopup="dialog" aria-expanded="false" popovertarget="tokens-context-picker">` + `<span class="tokens-context-label" title="` + html.EscapeString(tableContextLabel(browser.Filters)) + `">` + html.EscapeString(tableContextLabel(browser.Filters)) + `</span>` + `<span data-slot="trailing-icon" aria-hidden="true">` + tableIcon("dropdown") + `</span></button></div><div id="tokens-context-picker" class="md-dialog md-elevation tokens-context-dialog" popover="auto" role="dialog" aria-labelledby="tokens-context-title"><h2 id="tokens-context-title">See more values</h2><p>Compare token values by selecting another context</p><div class="tokens-context-fields">`); err != nil {
+			if err := write(`<button class="md-filter-chip tokens-context-button" type="button" data-action="context" aria-haspopup="dialog" aria-expanded="false" aria-controls="tokens-context-picker">` + `<span class="tokens-context-label" title="` + html.EscapeString(tableContextLabel(browser.Filters)) + `">` + html.EscapeString(tableContextLabel(browser.Filters)) + `</span>` + `<span data-slot="trailing-icon" aria-hidden="true">` + tableIcon("dropdown") + `</span></button></div>`); err != nil {
 				return err
 			}
-			advanced := false
-			for _, filter := range browser.Filters {
-				if !advanced && filter.Name != "Theme" && filter.Name != "Contrast" {
-					if err := write(`<details class="tokens-context-advanced"><summary>More contexts</summary>`); err != nil {
-						return err
-					}
-					advanced = true
-				}
-				if err := write(`<fieldset><legend>` + html.EscapeString(filter.Name) + `</legend><div class="tokens-context-options">`); err != nil {
-					return err
-				}
-				options := filter.Options
-				for _, option := range options {
-					selected := ""
-					if option == filter.Selected {
-						selected = ` checked`
-					}
-					label := option
-					if err := write(`<label class="md-filter-chip tokens-context-choice"><input class="tokens-visually-hidden" type="radio" name="` + html.EscapeString(filter.Key) + `" value="` + html.EscapeString(option) + `"` + selected + `><span class="md-chip-face">` + tokenTableSymbol("check") + html.EscapeString(label) + `</span></label>`); err != nil {
-						return err
-					}
-				}
-				if err := write(`</div></fieldset>`); err != nil {
-					return err
-				}
-				if filter.Name == "Audience" {
-					if err := write(`<details class="tokens-audience-help"><summary>What do 1P and 3P mean?</summary><p>1P means first-party; 3P means third-party. We interpret <strong>1P Baseline</strong> as the configuration for Google&#39;s own products, and <strong>3P</strong> as the configuration for other developers.</p><p>Material supplies these audience labels but does not define them in the captured data. They are not a baseline-versus-Expressive switch.</p></details>`); err != nil {
-						return err
-					}
-				}
-			}
-			if advanced {
-				if err := write(`</details>`); err != nil {
-					return err
-				}
-			}
-			if err := write(`</div><p class="tokens-context-status" role="status" aria-live="polite"></p><footer><button class="md-button md-text-button" type="button" data-action="cancel">Cancel</button><button class="md-button md-text-button" type="submit">Save</button></footer></div>`); err != nil {
+			if err := tableContextDialog(browser.Filters).Render(ctx, writer); err != nil {
 				return err
 			}
+
 		} else if err := write(`<span>Value</span></div>`); err != nil {
 			return err
 		}
@@ -151,6 +122,11 @@ func subjectPageComponent(subject publish.SubjectView, changes []publish.ChangeV
 			}
 			if err := write(`</nav></header>`); err != nil {
 				return err
+			}
+			if image := metadata(ctx).Illustration; image != nil {
+				if err := subjectIllustration(*image).Render(ctx, writer); err != nil {
+					return err
+				}
 			}
 			if browser.Preview != nil {
 				if err := componentPreviewView(*browser.Preview).Render(ctx, writer); err != nil {

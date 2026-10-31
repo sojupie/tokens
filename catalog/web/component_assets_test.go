@@ -7,6 +7,7 @@ import (
 	"reflect"
 
 	"github.com/a-h/templ"
+	"github.com/sojupie/tokens/forge/components/ui"
 	"github.com/sojupie/tokens/source/publish"
 	"io"
 	"io/fs"
@@ -18,14 +19,14 @@ import (
 func collectedModules(t *testing.T, component templ.Component) []string {
 	t.Helper()
 	assets := &componentAssets{modules: map[string]bool{}}
-	ctx := context.WithValue(context.Background(), componentAssetsKey{}, assets)
+	ctx := ui.WithAssets(context.WithValue(context.Background(), componentAssetsKey{}, assets), ui.Assets(assets.modules))
 	var output bytes.Buffer
 	if err := component.Render(ctx, &output); err != nil {
 		t.Fatal(err)
 	}
 	var names []string
 	for _, name := range componentModuleOrder() {
-		if assets.modules[name] {
+		if name!="common" && assets.modules[name] {
 			names = append(names, name)
 		}
 	}
@@ -59,7 +60,7 @@ func TestRenderedComponentsCollectNestedAssets(t *testing.T) {
 
 func TestUnknownComponentModuleFailsRendering(t *testing.T) {
 	assets := &componentAssets{modules: map[string]bool{}}
-	ctx := context.WithValue(context.Background(), componentAssetsKey{}, assets)
+	ctx := ui.WithAssets(context.WithValue(context.Background(), componentAssetsKey{}, assets), ui.Assets(assets.modules))
 	if err := useComponentAssets("missing").Render(ctx, &bytes.Buffer{}); err == nil {
 		t.Fatal("unknown module accepted")
 	}
@@ -188,7 +189,7 @@ func TestPlaygroundAssetsTravelInsideReplacementRegion(t *testing.T) {
 }
 
 func TestFooterRegistersItsDownloadDialog(t *testing.T) {
-	if got := collectedModules(t, siteDownloadMenu()); !reflect.DeepEqual(got, []string{"dialog"}) {
+	if got := collectedModules(t, siteDownloadMenu()); !reflect.DeepEqual(got, []string{"radio", "checkbox", "messages", "loading", "dialog"}) {
 		t.Fatalf("footer dependencies: %v", got)
 	}
 }
@@ -207,7 +208,10 @@ func TestContentPagesIncludeCardAssets(t *testing.T) {
 		{"component changes", changesPage(state, "buttons", "/components/buttons/changes", changeFilters{}, "", changes, 1, 1, false, false)},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
-			server := &Server{themeBundles: map[string][]byte{"shared": []byte("shared"), "card": []byte("card"), "dialog": []byte("dialog"), "navigation": []byte("navigation")}}
+			server := &Server{themeBundles: map[string][]byte{"shared": []byte("shared")}}
+			for _, name := range componentModuleOrder() {
+				server.themeBundles[name] = []byte(name)
+			}
 			response := httptest.NewRecorder()
 			if err := server.renderHTML(response, httptest.NewRequest("GET", "/", nil), tc.page); err != nil {
 				t.Fatal(err)
@@ -222,5 +226,37 @@ func TestContentPagesIncludeCardAssets(t *testing.T) {
 				}
 			}
 		})
+	}
+}
+
+func TestPreservedSiteNavigationStylesLiveInDocumentHead(t *testing.T) {
+	server := New(publish.PublishedState{Subjects: map[publish.SubjectKey]publish.SubjectView{}}, "")
+	server.themeBundles = map[string][]byte{"shared": []byte(":root{}")}
+	for _, name := range componentModuleOrder() {
+		server.themeBundles[name] = []byte(":root{}")
+	}
+	for _, path := range []string{"/components", "/styles"} {
+		response := httptest.NewRecorder()
+		server.Handler().ServeHTTP(response, httptest.NewRequest("GET", path, nil))
+		if response.Code != 200 {
+			t.Fatal(path, response.Code, response.Body.String())
+		}
+		body := response.Body.String()
+		headEnd := strings.Index(body, "</head>")
+		for _, asset := range []string{"/themes/navigation.css?v=", staticURL("bundles/navigation.css")} {
+			at := strings.Index(body, asset)
+			if at < 0 || at > headEnd || strings.Count(body, asset) != 1 {
+				t.Fatalf("navigation asset must occur once in persistent head: %s", asset)
+			}
+			end := strings.Index(body[at:], ">")
+			if strings.Contains(body[at:at+end], `media="print"`) {
+				t.Fatal("shell styles must block first paint")
+			}
+		}
+	}
+	// Independently rendered regions must still declare their own dependencies.
+	links, err := server.componentAssetLinks(&componentAssets{modules: map[string]bool{"navigation": true}})
+	if err != nil || !strings.Contains(string(links), "/themes/navigation.css") {
+		t.Fatal("partial navigation lost its styles", err, string(links))
 	}
 }

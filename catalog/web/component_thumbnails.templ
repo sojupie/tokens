@@ -1,5 +1,7 @@
 package web
 
+import "github.com/sojupie/tokens/forge/components/ui"
+
 // These are catalogue illustrations. Component anatomy and states still come
 // from the shared specimens; the surrounding app content is authored here.
 templ componentThumbnail(c componentCase) {
@@ -13,11 +15,11 @@ templ componentThumbnail(c componentCase) {
   @useComponentAssets("badge")
   <div class="tokens-thumbnail-badges">
    for i,label := range []string{"Inbox","Activity"} {
-    <div><span class="tokens-thumbnail-badged-icon">@materialSymbol([]string{"folder","star"}[i])
+    <div><span class="md-badge-anchor">@materialSymbol([]string{"folder","star"}[i])
      if i==0 {
-<span class="md-badge" data-variant="labeled">8</span>
+@ui.Badge("labeled","8",nil)
 } else {
-<span class="md-badge" data-variant="dot"></span>
+@ui.Badge("small","",nil)
 }
     </span><span>{ label }</span></div>
    }
@@ -42,13 +44,13 @@ templ componentThumbnail(c componentCase) {
   @useComponentAssets("card")
   <article class="md-card md-elevated-card tokens-thumbnail-card">
    @thumbnailLandscape()
-   <div><h3>Along the coast</h3><p>A route for the weekend</p><button class="md-button md-filled-button" data-size="small" data-shape="round" type="button">View route</button></div>
+   <div class="md-card-content"><h3 class="md-card-headline">Along the coast</h3><p class="md-card-supporting-text">A route for the weekend</p></div>
   </article>
  case "carousel":
   @useComponentAssets("carousel")
   <div class="tokens-thumbnail-carousel"><section { c.Attributes()... }><div class="md-carousel-viewport"><ol class="md-carousel-track">
    for i,label := range []string{"Coast","Forest","Hills"} {
-    <li class="md-carousel-slot"><button { c.CarouselItem(i)... }><span class="md-carousel-art">@thumbnailLandscape()</span><span class="tokens-thumbnail-carousel-label">{ label }</span></button></li>
+    <li class="md-carousel-slot"><button { c.CarouselItem(i)... }><span class="md-carousel-art">@carouselArtwork(i)</span><span class="tokens-thumbnail-carousel-label">{ label }</span></button></li>
    }
   </ol></div></section></div>
  case "checkbox":
@@ -113,7 +115,7 @@ templ componentThumbnail(c componentCase) {
  case "nav-bar":
   <div class="tokens-thumbnail-phone tokens-thumbnail-bottom"><div class="tokens-thumbnail-content"><h3>Your library</h3>@thumbnailDocument()</div><div class="tokens-thumbnail-nav-bottom">@componentSpecimen(c)</div></div>
  case "nav-drawer", "nav-rail":
-  <div class="tokens-thumbnail-desktop"><div class="tokens-thumbnail-navigation">@componentSpecimen(c)</div><div class="tokens-thumbnail-content"><h3>Recent notes</h3>@thumbnailDocument()</div></div>
+  <div class="tokens-thumbnail-desktop"><div class="tokens-thumbnail-navigation"><nav { c.Attributes()... } aria-label="Primary navigation">@navigationDestinations(c,c.NavigationLabels()[:3])</nav></div><div class="tokens-thumbnail-content"><h3>Recent notes</h3>@thumbnailDocument()</div></div>
  case "progress":
   <div class="tokens-thumbnail-progress tokens-thumbnail-paper">
    <div><span>Trip photos.zip</span><small>Uploading · 40%</small></div>
@@ -192,5 +194,5 @@ templ thumbnailDocument() {
 }
 
 templ thumbnailLandscape() {
- <svg class="tokens-thumbnail-landscape" viewBox="0 0 240 100" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="240" height="100" fill="var(--md-sys-color-tertiary-container)"/><circle cx="180" cy="28" r="16" fill="var(--md-sys-color-tertiary)"/><path d="M0 100V60L65 25 140 85 200 48 240 68V100Z" fill="var(--md-sys-color-secondary)"/><path d="M0 100V85L90 60 180 95 240 78V100Z" fill="var(--md-sys-color-primary)"/></svg>
+ <img class="tokens-thumbnail-landscape" src={staticURL("paintings/washerwomen-on-the-beach-of-etretat-1970.17.17.webp")} alt="" width="1200" height="800" loading="lazy" draggable="false"/>
 }

@@ -1,13 +1,14 @@
 package web
 
 import "fmt"
+import "github.com/sojupie/tokens/forge/components/ui"
 
 templ specimenToolbar(c componentCase) {
 	@useComponentAssets("toolbar")
 	<div class="md-toolbar-scene">
 		<p class="md-typescale-body-medium md-toolbar-page">Document content</p>
 		<div class="md-toolbar-demo" data-menu-example data-orientation={ c.Orientation }>
-			<div { c.Attributes()... } role="toolbar" aria-label="Editing tools" aria-orientation={ c.Orientation }>
+			@ui.ToolbarSurface(ui.ToolbarProps{Label:"Editing tools",Attrs:c.Attributes(),Orientation:c.Orientation}) {
 				for i := range 3 {
 					<button { c.BarAction(i)... }>
 						if c.Shape!="label" {
@@ -30,7 +31,7 @@ templ specimenToolbar(c componentCase) {
 						}
 					</button>
 				}
-			</div>
+			}
 			if c.Variant=="floating" && c.Size!="none" {
 				@useComponentAssets("fab")
 				<button { c.BarFAB()... }>@materialSymbol("add")

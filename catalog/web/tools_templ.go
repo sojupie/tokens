@@ -41,7 +41,7 @@ func toolsPage() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<section class=\"tokens-section tokens-tools\" aria-labelledby=\"tools-heading\"><div class=\"tokens-tools-heading\"><h1 class=\"md-typescale-headline-medium\" id=\"tools-heading\">Tools</h1><p class=\"md-typescale-body-large\">Inspect interaction behavior and measure motion.</p></div><ul class=\"tokens-card-grid\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<section class=\"tokens-section tokens-tools\" aria-labelledby=\"tools-heading\"><div class=\"tokens-tools-heading\"><h1 class=\"md-typescale-headline-medium\" id=\"tools-heading\">Tools</h1><p class=\"md-typescale-body-large\">Inspect interaction behavior and measure motion.</p></div><ul class=\"tokens-card-grid tokens-layout-grid\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -53,7 +53,7 @@ func toolsPage() templ.Component {
 				var templ_7745c5c3_Var3 string
 				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(staticURL(tool.Image))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `tools.templ`, Line: 14, Col: 65}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/tools.templ`, Line: 14, Col: 65}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 				if templ_7745c5c3_Err != nil {
@@ -66,7 +66,7 @@ func toolsPage() templ.Component {
 				var templ_7745c5c3_Var4 string
 				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(tool.ImageAlt)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `tools.templ`, Line: 14, Col: 87}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/tools.templ`, Line: 14, Col: 87}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 				if templ_7745c5c3_Err != nil {
@@ -79,7 +79,7 @@ func toolsPage() templ.Component {
 				var templ_7745c5c3_Var5 templ.SafeURL
 				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinURLErrs(templ.SafeURL(tool.URL))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `tools.templ`, Line: 16, Col: 74}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/tools.templ`, Line: 16, Col: 74}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 				if templ_7745c5c3_Err != nil {
@@ -92,7 +92,7 @@ func toolsPage() templ.Component {
 				var templ_7745c5c3_Var6 string
 				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(tool.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `tools.templ`, Line: 17, Col: 58}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/tools.templ`, Line: 17, Col: 58}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 				if templ_7745c5c3_Err != nil {
@@ -105,7 +105,7 @@ func toolsPage() templ.Component {
 				var templ_7745c5c3_Var7 string
 				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(tool.Description)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `tools.templ`, Line: 18, Col: 65}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/tools.templ`, Line: 18, Col: 65}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 				if templ_7745c5c3_Err != nil {

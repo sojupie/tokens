@@ -1,21 +1,9 @@
 package web
-
-templ specimenButtonGroup(c componentCase) {
-	@useComponentAssets("button-group")
-	<div class="md-button-group-demo">
-		<div { c.Attributes()... }>
-			for index := range 3 {
-				<button { c.GroupButton(index)... }>
-					if c.Control=="connected" {
-						<span class="md-group-check" aria-hidden="true">@materialSymbol("check")
-</span>
-					} else {
-						@materialSymbol([]string{"arrow_back", "edit", "chevron_right"}[index])
-					}
-					<span>{ c.GroupLabel(index) }</span>
-				</button>
-			}
-		</div>
-		<output class="md-typescale-body-small" aria-live="polite"></output>
-	</div>
+import "github.com/sojupie/tokens/forge/components/ui"
+templ specimenButtonGroup(c componentCase){
+ <div class="md-button-group-demo">@ui.ButtonGroupSurface(ui.GroupProps{Attrs:c.Attributes()}){
+ for i:=range 3 {
+ @ui.GroupItem(ui.GroupItemProps{Label:c.GroupLabel(i),Icon:[]string{"arrow_back","edit","chevron_right"}[i],Index:i,Variant:ui.ButtonVariant(c.Variant),Size:ui.Size(c.Size),Connected:c.Control=="connected",Attrs:c.GroupButton(i)})
+ }
+ }<output class="md-typescale-body-small" aria-live="polite"></output></div>
 }

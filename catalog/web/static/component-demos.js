@@ -27,6 +27,17 @@
       label = event.detail.label,
       output = group.querySelector("output");
     if (output) output.textContent = label + " selected";
+    const barDemo = group.closest("[data-navbar-demo]");
+    if (barDemo) {
+      for (const page of barDemo.querySelectorAll("[data-navbar-page]")) {
+        page.hidden = page.dataset.navbarPage !== label;
+        if (!page.hidden) {
+          if (event.detail.reselected) page.scrollTop=0;
+          else if (!matchMedia("(prefers-reduced-motion: reduce)").matches)
+            page.animate([{opacity:0},{opacity:0,offset:0.2},{opacity:1}],MaterialMotion.timing(group,"default-effects"));
+        }
+      }
+    }
     const frame = group.closest(".md-rail-frame");
     if (!frame) return;
     frame.querySelector("[data-navigation-title]").textContent = label;

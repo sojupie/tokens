@@ -79,7 +79,7 @@ func prefixHTML(body []byte, base string) ([]byte, error) {
 			for i := range token.Attr {
 				attr := &token.Attr[i]
 				switch attr.Key {
-				case "href", "src", "action", "hx-get", "hx-post", "hx-push-url", "hx-replace-url":
+				case "href", "src", "srcset", "action", "hx-get", "hx-post", "hx-push-url", "hx-replace-url":
 					if strings.HasPrefix(attr.Val, "/") && !strings.HasPrefix(attr.Val, "//") {
 						attr.Val = base + attr.Val
 						changed = true

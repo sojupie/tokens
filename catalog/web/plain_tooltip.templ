@@ -1,9 +1,3 @@
 package web
-
-templ plainTooltip(label string, id string) {
-	@useComponentAssets("messages")
-	<div class="md-tooltip-demo">
-		{ children... }
-		<div class="md-tooltip" data-variant="plain" role="tooltip" id={ id }><p>{ label }</p></div>
-	</div>
-}
+import "github.com/sojupie/tokens/forge/components/ui"
+templ plainTooltip(label,id string){ @ui.PlainTooltip(id,label){ {children...} } }

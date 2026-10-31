@@ -57,7 +57,7 @@ func TestCollectionDownloadsAndSharedControls(t *testing.T) {
 		if response.Code != 200 {
 			t.Fatalf("page %s: %d", path, response.Code)
 		}
-		for _, text := range []string{`class="tokens-brand-logo"`, `rel="icon"`, `id="tokens-site-download"`, `data-export-open`, `data-dialog-surface`, `unavailable for this publication`} {
+		for _, text := range []string{`class="tokens-brand-logo"`, `rel="icon"`, `id="tokens-site-download"`, `data-export-open`, `data-dialog-surface`, `CSS and DTCG exports include required token references`} {
 			if !strings.Contains(body, text) {
 				t.Fatalf("%s missing %s", path, text)
 			}

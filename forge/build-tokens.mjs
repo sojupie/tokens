@@ -256,6 +256,7 @@ async function main() {
         "--output",
         path.join(output, "dtcg"),
         "--themes",
+        "--value-catalog",
       ],
       { stdio: "inherit" },
     );
@@ -263,11 +264,18 @@ async function main() {
     const index = JSON.parse(
       await readFile(path.join(output, "dtcg/index.json"), "utf8"),
     );
+    const valueDocument = JSON.parse(await readFile(path.join(output, "dtcg/values.tokens.json"), "utf8"));
+    const valueCSS = await compile(valueDocument);
+    const cssValueIndex = JSON.stringify({databaseSha256, values: Object.fromEntries(Object.entries(valueCSS.values).map(([key,value]) => [key,String(value)]))});
+    const cssValuesSha256 = createHash("sha256").update(cssValueIndex).digest("hex");
+    await writeFile(path.join(output, "css-values.json"), cssValueIndex);
+    await rm(path.join(output, "dtcg/values.tokens.json"));
     const required = new Set([
       "md-ref-palette-neutral0",
       "md-sys-color-on-primary",
     ]);
-    for (const file of ["catalog/web/static/app.css", "catalog/web/static/token-table.css", "forge/site/site.css"]) {
+    // Scene renders use the full theme; normal pages keep their existing subsets.
+    for (const file of ["catalog/web/static/app.css", "catalog/web/static/illustrations.css", "catalog/web/static/scene-screens.css", "catalog/web/static/application-scenes.css", "catalog/web/static/token-table.css", "forge/site/site.css"]) {
       const css = await readFile(file, "utf8");
       for (const match of css.matchAll(/var\(\s*--((?:md|catalog)-[a-z0-9-]+)\s*[,)]/g))
         required.add(match[1]);
@@ -396,6 +404,8 @@ async function main() {
         "forge/site/site.templ",
         "catalog/web/static/app.css",
         "catalog/web/static/token-table.css",
+        "catalog/web/static/scene-screens.css",
+        "catalog/web/static/application-scenes.css",
         ...(await readdir("catalog/web"))
           .filter((file) => file.endsWith(".templ"))
           .map((file) => "catalog/web/" + file),
@@ -486,6 +496,7 @@ async function main() {
           publicationId: identity.publicationId,
           snapshotId: identity.snapshotId,
           databaseSha256,
+          cssValuesSha256,
           componentsSha256: createHash("sha256")
             .update(componentCSS)
             .digest("hex"),

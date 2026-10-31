@@ -73,7 +73,7 @@ unbound('.tokens-token-browser').forEach(browser => {
       dialog.querySelector(`input[name="${CSS.escape(changedField)}"]:checked`)?.focus({preventScroll:true});
       status.textContent = '';
       save.disabled = false;
-      placeContext();
+
     } catch (error) {
       if (!request.signal.aborted) status.textContent = 'Could not check contexts. Change a selection to retry, or cancel.';
     } finally {
@@ -90,46 +90,12 @@ unbound('.tokens-token-browser').forEach(browser => {
   };
 
   const contextButton = browser.querySelector('[data-action="context"]');
-  const placeContext = () => {
-    if (!dialog?.matches(':popover-open')) return;
-    const r = contextButton.getBoundingClientRect(), gap = 8;
-    const width = dialog.offsetWidth, height = dialog.offsetHeight;
-    let left, top;
-    if (r.left - width - gap >= gap) { left = r.left - width - gap; top = r.top; }
-    else if (r.right + gap + width <= innerWidth - gap) { left = r.right + gap; top = r.top; }
-    else {
-      left = r.right - width;
-      const below = r.bottom + gap;
-      top = below + height <= innerHeight - gap ? below : r.top - height - gap;
-    }
-    dialog.style.left = `${Math.max(gap, Math.min(left, innerWidth - width - gap))}px`;
-    dialog.style.top = `${Math.max(gap, Math.min(top, innerHeight - height - gap))}px`;
-  };
   if (dialog) {
-    dialog.addEventListener('beforetoggle', event => {
-      if (event.newState === 'open') {
-        contextFields = dialog.querySelector('.tokens-context-fields').innerHTML;
-        // Position before focusing so opening cannot scroll the document.
-        dialog.style.visibility = 'hidden';
-      } else contextRequest?.abort();
-    });
-    dialog.addEventListener('toggle', () => {
-      contextButton.setAttribute('aria-expanded', String(dialog.matches(':popover-open')));
-      placeContext();
-      dialog.style.visibility = '';
-      if (dialog.matches(':popover-open')) dialog.querySelector('input:checked')?.focus({preventScroll:true});
-      else cancelContext();
-    });
-    dialog.addEventListener('keydown', event => {
-      if (event.key !== 'Escape') return;
-      event.preventDefault();
-      event.stopPropagation();
-      dialog.hidePopover();
+    dialog.addEventListener('close', () => {
+      contextButton.setAttribute('aria-expanded', 'false');
+      cancelContext();
       contextButton.focus({preventScroll:true});
     });
-    dialog.addEventListener('toggle', placeContext, true);
-    addEventListener('resize', placeContext, {signal});
-    addEventListener('scroll', placeContext, {capture: true, signal});
   }
 
   const picker = browser.querySelector('.tokens-token-set');
@@ -184,6 +150,10 @@ unbound('.tokens-token-browser').forEach(browser => {
     expandToggle.setAttribute('aria-expanded', String(expanded));
     expandToggle.setAttribute('aria-label', expanded ? 'Collapse all groups' : 'Expand all groups');
     showIcon(expandToggle, expanded);
+    for (const button of [previewToggle, viewToggle, expandToggle]) {
+      const tooltip = button.closest('.tokens-table-tooltip');
+      if (tooltip) { tooltip.hidden = button.hidden; tooltip.querySelector('[role="tooltip"] p').textContent = button.getAttribute('aria-label'); }
+    }
   };
   browser.addEventListener('toggle', event => {
     if (event.target.classList.contains('tokens-token-folder')) syncControls();
@@ -270,10 +240,13 @@ unbound('.tokens-token-browser').forEach(browser => {
     browser.querySelectorAll('.tokens-reference-popover:popover-open').forEach(popup => popup.hidePopover());
     switch (button.dataset.action) {
       case 'context':
-        // The native popover invoker handles opening, dismissal and focus.
+        contextFields = dialog.querySelector('.tokens-context-fields').innerHTML;
+        dialog.showModal();
+        contextButton.setAttribute('aria-expanded', 'true');
+        dialog.querySelector('input:checked')?.focus({preventScroll:true});
         break;
       case 'cancel':
-        dialog.hidePopover();
+        dialog.close();
         contextButton.focus({preventScroll:true});
         break;
       case 'previews':

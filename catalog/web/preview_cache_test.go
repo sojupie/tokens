@@ -2,6 +2,7 @@ package web
 
 import (
 	"github.com/sojupie/tokens/source/publish"
+	"html"
 	"net/http/httptest"
 	"net/url"
 	"os"
@@ -51,6 +52,18 @@ func TestShowcaseUpdatesReturnOnlyCacheablePreviewHTML(t *testing.T) {
 			t.Fatal(response.Body.String())
 		}
 		body := response.Body.String()
+		if !partial {
+			decoded := html.UnescapeString(body)
+			for _, want := range []string{
+				`<title>Material Design 3 "Switch" tokens and playground | Token Catalog</title>`,
+				`>Material Design 3 "Switch" tokens and playground</h1>`,
+				`content="Material Design 3 "Switch" tokens. Try the interactive playground, compare values by context, follow references and download CSS variables or JSON."`,
+			} {
+				if !strings.Contains(decoded, want) {
+					t.Fatalf("missing metadata or preserved heading: %s", want)
+				}
+			}
+		}
 		if strings.Contains(body, "<!doctype html>") == partial || !strings.Contains(body, `id="component-preview"`) {
 			t.Fatal("wrong document or preview representation")
 		}

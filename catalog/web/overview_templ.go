@@ -50,7 +50,7 @@ func overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView,
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, " <section class=\"tokens-landing-hero\" aria-labelledby=\"landing-heading\"><div class=\"tokens-landing-copy\"><h1 class=\"md-typescale-display-small\" id=\"landing-heading\">Material Design 3 tokens and change history</h1><p class=\"md-typescale-title-large\">Browse Material Design 3 components and styles. Compare values, follow references, and download the tokens for your project.</p><div class=\"tokens-landing-actions\"><a class=\"md-button md-filled-button\" data-size=\"medium\" href=\"/components\">Browse components</a> <a class=\"md-button md-tonal-button\" data-size=\"medium\" href=\"/styles\">Explore styles</a></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, " <section class=\"tokens-landing-hero\" aria-labelledby=\"landing-heading\"><div class=\"tokens-landing-copy\"><h1 class=\"md-typescale-display-small\" id=\"landing-heading\">Material Design 3 tokens, playgrounds and change history</h1><p class=\"md-typescale-title-large\">Browse Material Design 3 components and styles. Try interactive playgrounds, compare values, follow references, and download the tokens as CSS variables or JSON for your project.</p><div class=\"tokens-landing-actions\"><a class=\"md-button md-filled-button\" data-size=\"medium\" href=\"/components\">Browse components</a> <a class=\"md-button md-tonal-button\" data-size=\"medium\" href=\"/styles\">Explore styles</a></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

@@ -167,7 +167,7 @@ func TestTableSharesDecorationButIncludesAllReferenceData(t *testing.T) {
 		}
 	}
 	body := output.String()
-	if strings.Count(body, `<template class="tokens-reference-chrome">`) != 1 || strings.Count(body, materialSymbolPaths["camera"]) != 1 || strings.Count(body, `data-copy-reference`) != 1 {
+	if strings.Count(body, `<template class="tokens-reference-chrome">`) != 1 || strings.Count(body, materialSymbolPath("camera")) != 1 || strings.Count(body, `data-copy-reference`) != 1 {
 		t.Fatal("popover controls and icon paths must be shared, not repeated per reference")
 	}
 	for _, name := range []string{row.SourceName, "md.sys.color.primary", "md.ref.palette.primary40"} {

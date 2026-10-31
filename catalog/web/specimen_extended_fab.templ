@@ -1,7 +1,5 @@
 package web
-
-templ specimenExtendedFab(c componentCase) {
-	@useComponentAssets("fab")
-	<button { c.Attributes()... }>@materialSymbol("add")
-<span>Create</span></button>
+import "github.com/sojupie/tokens/forge/components/ui"
+templ specimenExtendedFab(c componentCase){
+@ui.FAB(ui.FABProps{Label:"Create",Icon:"add",Extended:true,Attrs:c.Attributes()})
 }

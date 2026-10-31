@@ -1,8 +1,54 @@
 (() => {
+  const disclosures = new WeakMap();
+  document.addEventListener('click', async event => {
+    const summary = event.target.closest?.('details.tokens-export-disclosure > summary');
+    if (!summary) return;
+    event.preventDefault();
+    if (!event.target.closest?.('[data-disclosure-toggle]')) return;
+    const detail = summary.parentElement, previous = disclosures.get(detail);
+    const opening = !(previous ? previous.opening : detail.open);
+    summary.querySelector('[data-disclosure-toggle]').setAttribute('aria-expanded', String(opening));
+    const from = detail.getBoundingClientRect().height;
+    previous?.animation.cancel();
+    detail.open = true;
+    detail.style.height = '';
+    const style = getComputedStyle(detail);
+    const closedHeight = summary.getBoundingClientRect().height + parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
+    const to = opening ? detail.getBoundingClientRect().height : closedHeight;
+    const children = [...detail.children].filter(child => child !== summary);
+    for (const child of children) child.inert = !opening;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      detail.open = opening;
+      for (const child of children) child.inert = false;
+      detail.removeAttribute('data-expanding');disclosures.delete(detail);return;
+    }
+    detail.setAttribute('data-expanding', String(opening));
+    const animation = detail.animate([{height:from+'px'}, {height:to+'px'}], {...MaterialMotion.timing(detail,'default-spatial'),fill:'both'});
+    disclosures.set(detail, {animation,opening});
+    try {
+      await animation.finished;
+      if (disclosures.get(detail)?.animation !== animation) return;
+      detail.open = opening;
+      for (const child of children) child.inert = false;
+      animation.cancel();detail.removeAttribute('data-expanding');disclosures.delete(detail);
+    } catch { /* A second activation retargets from the current rendered height. */ }
+  });
+  document.addEventListener('close', event => {
+    for (const detail of event.target.querySelectorAll?.('details.tokens-export-disclosure') || []) {
+      const state = disclosures.get(detail);if (!state) continue;
+      state.animation.cancel();detail.open = state.opening;detail.removeAttribute('data-expanding');
+      for (const child of detail.children) child.inert = false;
+      disclosures.delete(detail);
+    }
+  }, true);
+  document.addEventListener('toggle', event => {
+    const detail = event.target;
+    if (!detail.matches?.('details.tokens-export-disclosure')) return;
+    detail.querySelector('[data-disclosure-toggle]')?.setAttribute('aria-expanded', String(disclosures.get(detail)?.opening ?? detail.open));
+  }, true);
   // Safari can retain :focus-visible after touch-driven programmatic focus.
   document.addEventListener('pointerdown',()=>document.documentElement.setAttribute('data-pointer-focus',''),true);
   document.addEventListener('keydown',event=>{if(!event.metaKey&&!event.altKey&&!event.ctrlKey)document.documentElement.removeAttribute('data-pointer-focus');},true);
-  const initialized=new WeakSet(),openers=new WeakMap();
   // HTML specimens avoid Safari foreignObject compositing and clipping bugs.
   const thumbnailSizes=new ResizeObserver(entries=>{for(const {target,contentRect} of entries)target.style.setProperty("--_thumbnail-scale",String(contentRect.width/360));});
   const thumbnails=new WeakSet();
@@ -22,20 +68,7 @@
   }
   document.addEventListener("tokens:styles-ready",()=>settleThumbnails());
   document.addEventListener("tokens:styles-error",()=>settleThumbnails(true));
-  document.addEventListener("htmx:beforeCleanupElement",event=>{const node=event.detail.elt;if(node.matches?.(".tokens-component-thumbnail"))thumbnailSizes.unobserve(node);for(const thumbnail of node.querySelectorAll(".tokens-component-thumbnail"))thumbnailSizes.unobserve(thumbnail);});
-  const descriptions={
-    'tokens.tokens.json':['Download DTCG JSON','DTCG 2025.10 values and aliases, with source metadata.'],
-    'tokens.css':['Download CSS','CSS custom properties only. Component styles, markup and behavior are not included.'],
-    'report.json':['Download report','Selected context, omitted values and source extensions needed for conversion.']
-  };
-  function update(panel){
-    const link=panel.querySelector('[data-export-link]');if(!link)return;
-    const format=panel.querySelector('input[name="format"]').value,context=panel.querySelector('input[name="context"]').value;
-    // Retain the server's collection mount, including after history restoration.
-    const url=new URL(link.href);url.pathname=url.pathname.replace(/\/dtcg\/[^/]+\/[^/]+$/,`/dtcg/${context}/${format}`);link.href=url.href;
-    link.textContent=descriptions[format][0];panel.querySelector('[data-export-description]').textContent=descriptions[format][1];
-    const report=new URL(url);report.pathname=report.pathname.replace(/[^/]+$/,'report.json');panel.querySelector('[data-export-report]').href=report.href;
-  }
+  document.addEventListener("htmx:beforeCleanupElement",event=>{const node=event.detail?.elt;if(typeof node?.querySelectorAll!=='function')return;if(node.matches?.(".tokens-component-thumbnail"))thumbnailSizes.unobserve(node);for(const thumbnail of node.querySelectorAll(".tokens-component-thumbnail"))thumbnailSizes.unobserve(thumbnail);});
   // Boost document links only. Downloads, API documents and external links stay native.
   function navigationLinks(root=document){
     const base=new URL('../',document.querySelector('script[src*="site-ui.js"]').src).pathname.replace(/\/$/,'');
@@ -57,7 +90,7 @@
       const current=Array.from(incoming.querySelectorAll('#tokens-site-menu [data-navigation-item]')).find(next=>next.getAttribute('href')===link.getAttribute('href'))?.getAttribute('aria-current');
       if(current)link.setAttribute('aria-current',current);else link.removeAttribute('aria-current');
     });
-    for(const selector of ['meta[name="description"]','meta[name="robots"]','link[rel="canonical"]','link[rel="alternate"]']){
+    for(const selector of ['meta[name="description"]','meta[name="robots"]','meta[property^="og:"]','meta[name^="twitter:"]','link[rel="canonical"]','link[rel="alternate"]']){
       document.head.querySelectorAll(selector).forEach(node=>node.remove());
       incoming.head.querySelectorAll(selector).forEach(node=>document.head.append(node.cloneNode(true)));
     }
@@ -81,14 +114,7 @@
   function initialize(){
     navigationLinks();
     for(const thumbnail of document.querySelectorAll(".tokens-component-thumbnail"))if(!thumbnails.has(thumbnail)){thumbnails.add(thumbnail);thumbnailSizes.observe(thumbnail);}
-    const panel=document.getElementById('tokens-site-download');if(!panel||initialized.has(panel))return;
-    initialized.add(panel);panel.addEventListener('change',()=>update(panel));panel.addEventListener('close',()=>{const opener=openers.get(panel);if(opener?.isConnected)opener.focus({preventScroll:true});});update(panel);
   }
-  document.addEventListener('click',event=>{
-    const panel=document.getElementById('tokens-site-download');if(!panel)return;
-    const trigger=event.target.closest?.('[data-export-open]');if(trigger){openers.set(panel,trigger);panel.showModal();panel.querySelector('[role="combobox"],button')?.focus({preventScroll:true});return;}
-    if(event.target.closest?.('[data-export-cancel]'))panel.close();
-  });
   document.addEventListener('htmx:afterSwap',initialize);document.addEventListener('htmx:historyRestore',initialize);
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initialize);else initialize();
 })();

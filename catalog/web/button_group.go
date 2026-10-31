@@ -6,6 +6,9 @@ import (
 )
 
 func (c componentCase) GroupLabel(index int) string {
+	if index < len(c.illustrationLabels) && c.illustrationLabels[index] != "" {
+		return c.illustrationLabels[index]
+	}
 	if c.Control == "connected" {
 		return []string{"First", "Second", "Third"}[index]
 	}

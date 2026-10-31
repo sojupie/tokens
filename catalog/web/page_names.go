@@ -85,7 +85,7 @@ func subjectTableDescription(subject publish.SubjectView, set tokenSet) string {
 	if !set.All {
 		text += " for " + tokenTableQualifier(subject, set)
 	}
-	return text + ". Compare values by context, follow references and download JSON."
+	return text + ". Compare values by context, follow references and download CSS variables or JSON."
 }
 
 func subjectChangesTitle(subject publish.SubjectView) string {

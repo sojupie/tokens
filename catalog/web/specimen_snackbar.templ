@@ -1,33 +1,27 @@
 package web
+import "github.com/sojupie/tokens/forge/components/ui"
 
 templ specimenSnackbar(c componentCase) {
-	if c.State=="interactive" {
-		<div data-snackbar-demo>
+	if c.State=="interactive"  {
+<div data-snackbar-demo>
 			<button class="md-button md-outlined-button" type="button" data-snackbar-open aria-describedby={ c.ID() + "-shortcut" }>Show snackbar</button>
-			<div { c.Attributes()... } popover="manual" role="status" data-snackbar-duration="6000">
-				@snackbarContents(c)
-			</div>
+			@ui.SnackbarMessage(ui.SnackbarProps{Variant:c.Variant,Attrs:c.Attributes(),Duration:6000,Action:snackbarExampleActions(c)}){ @snackbarExampleText(c) }
 			<p class="md-typescale-body-small" id={ c.ID() + "-shortcut" }>Press F6 to focus the snackbar action.</p>
 			<output class="md-typescale-body-small" aria-live="polite"></output>
 		</div>
 	} else {
-		<div { c.Attributes()... } role="status">@snackbarContents(c)
-</div>
+		@ui.SnackbarMessage(ui.SnackbarProps{Variant:c.Variant,Attrs:c.Attributes(),Inline:true,Action:snackbarExampleActions(c)}){ @snackbarExampleText(c) }
 	}
 }
 
-templ snackbarContents(c componentCase) {
-	@useComponentAssets("messages")
-	<span class="md-feedback-text">
-		if c.Variant=="two-lines" {
-			<span>Message sent.</span>
-			<br/>
-			<span>You can undo this action.</span>
-		} else {
-			{ "Message sent" }
-		}
-	</span>
-	<button { c.FeedbackAttributes("md-button md-text-button md-feedback-action")... } data-snackbar-action>Undo</button>
-	<button { c.FeedbackAttributes("md-icon-button md-snackbar-close")... } aria-label="Dismiss notification" data-snackbar-close>@materialSymbol("close")
-</button>
+templ snackbarContents(c componentCase){ @ui.FeedbackText(){ @snackbarExampleText(c) } @snackbarExampleActions(c) }
+templ snackbarExampleText(c componentCase){
+ if c.Variant=="two-lines"  {
+<span>Message sent.</span><br/><span>You can undo this action.</span>
 }
+ else {
+ Message sent
+ }
+}
+templ snackbarExampleActions(c componentCase){ <button {c.FeedbackAttributes("md-button md-text-button md-feedback-action")...} data-snackbar-action>Undo</button>
+ }

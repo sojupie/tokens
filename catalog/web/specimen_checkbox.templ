@@ -1,6 +1,6 @@
 package web
 
-import "fmt"
+import "github.com/sojupie/tokens/forge/components/ui"
 
 templ specimenCheckbox(c componentCase) {
 	@checkboxChoice(c, "Receive updates")
@@ -9,6 +9,11 @@ templ specimenCheckbox(c componentCase) {
 templ checkboxChoice(c componentCase, label string) {
 	@useComponentAssets("checkbox")
 	@selectionExample(c.ID(), label) {
-	<label { c.Attributes()... }><input type="checkbox" id={ c.ID() + "-input" } aria-labelledby={ c.ID() + "-label" } aria-invalid={ fmt.Sprint(c.Invalid) } checked?={ c.Selected } disabled?={ c.State=="disabled" } data-indeterminate={ fmt.Sprint(c.Variant == "indeterminate") }/><span class="md-checkbox-box" aria-hidden="true"><svg class="md-checkbox-check" viewBox="0 0 18 18" fill="none"><path d="m4 9 3 3 7-7" stroke="currentColor" stroke-width="2"></path></svg><svg class="md-checkbox-dash" viewBox="0 0 18 18" fill="none"><path d="M4 9h10" stroke="currentColor" stroke-width="2"></path></svg></span></label>
+@checkboxSurface(c,label,c.ID()+"-label")
 	}
+}
+
+templ checkboxSurface(c componentCase,label string,labelID ...string) {
+ {{ props:=ui.ChoiceProps{ID:c.ID()+"-input",Label:label,Checked:c.Selected,Disabled:c.State=="disabled",Invalid:c.Invalid,Indeterminate:c.Variant=="indeterminate",Attrs:c.Attributes()};if len(labelID)>0 {props.LabelledBy=labelID[0]} }}
+ @ui.CheckboxControl(props)
 }

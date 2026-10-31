@@ -1,6 +1,7 @@
 package web
 
 import "fmt"
+import "github.com/sojupie/tokens/forge/components/ui"
 
 templ specimenRadio(c componentCase) {
 	@useComponentAssets("radio")
@@ -17,17 +18,5 @@ templ specimenRadio(c componentCase) {
 }
 
 templ radioChoice(c componentCase, index int, label string) {
-	@useComponentAssets("radio")
-	{{ input := c.RadioInput(index) }}
-	if label!="" {
-		{{ delete(input, "aria-label") }}
-	}
-	<label class="md-radio-choice">
-		<span { c.RadioControl(index)... }><input { input... }/><span class="md-radio-icon" aria-hidden="true"></span></span>
-		if label!="" {
-			<span class="md-radio-label">{ label }</span>
-		}
-	</label>
+ @ui.Radio(ui.ChoiceProps{Label:label,Attrs:c.RadioControl(index),InputAttrs:c.RadioInput(index)})
 }
-
-// Search actions retain the selected configuration when search is focused.

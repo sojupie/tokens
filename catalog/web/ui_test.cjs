@@ -47,6 +47,7 @@ test('theme buttons restore, switch and persist settings independently', () => {
   const theme = new Button();
   const contrasts = ['default', 'medium', 'high'].map(appContrast => new Button({appContrast}));
   const icons = ['light', 'dark'].map(themeIcon => ({dataset: {themeIcon}}));
+  const sources = ['light-high','dark-medium','dark-high'].map(imageAppearance => ({dataset:{imageAppearance},media:'not all'}));
   const root = {dataset: {}};
   let saved = JSON.stringify({theme: 'dark', contrast: 'medium'});
   let ready;
@@ -55,7 +56,7 @@ test('theme buttons restore, switch and persist settings independently', () => {
       documentElement: root,
       addEventListener: (_, listener) => { ready = listener; },
       querySelector: () => theme,
-      querySelectorAll: selector => selector === '[data-app-contrast]' ? contrasts : icons,
+      querySelectorAll: selector => selector === '[data-app-contrast]' ? contrasts : selector === 'source[data-image-appearance]' ? sources : icons,
     },
     localStorage: {getItem: () => saved, setItem: (_, value) => { saved = value; }},
   });
@@ -63,10 +64,12 @@ test('theme buttons restore, switch and persist settings independently', () => {
   ready();
   assert.equal(theme.attributes['aria-pressed'], 'true');
   assert.equal(contrasts[1].attributes['aria-pressed'], 'true');
+  assert.equal(sources[1].media, 'all');
   assert.equal(icons[0].hidden, true);
   theme.dispatchEvent(new Event('click'));
   contrasts[2].dispatchEvent(new Event('click'));
   assert.deepEqual(JSON.parse(saved), {theme: 'light', contrast: 'high'});
+  assert.equal(sources[0].media, 'all');assert.equal(sources[1].media, 'not all');
   assert.equal(theme.attributes['aria-pressed'], 'false');
   assert.equal(icons[1].hidden, true);
   assert.equal(contrasts[1].attributes['aria-pressed'], 'false');
@@ -343,8 +346,9 @@ test('table modes preserve preview preference and folder state, with matching ac
   const controls = Object.fromEntries(['previews', 'view', 'expand'].map(action => {
     const attributes = {};
     const icons = {on: {hidden: false}, off: {hidden: true}};
+    const tooltipText = {}; const tooltip = {querySelector: () => tooltipText};
     return [action, {
-      dataset: {action}, attributes, icons,
+      dataset: {action}, attributes, icons, tooltip, tooltipText, closest: () => tooltip,
       setAttribute: (key, value) => { attributes[key] = value; },
       getAttribute: key => attributes[key],
       querySelector: selector => icons[selector.includes('"off"') ? 'off' : 'on'],
@@ -380,6 +384,8 @@ test('table modes preserve preview preference and folder state, with matching ac
   assert.equal(classes.has('tokens-grid-view'), true);
   assert.equal(controls.previews.hidden, true);
   assert.equal(controls.view.icons.off.hidden, false);
+  assert.equal(controls.view.tooltipText.textContent, 'Show table view');
+  assert.equal(controls.previews.tooltip.hidden, true);
   assert.deepEqual(groups.map(group => group.open), [true, false]);
   await click('view');
   assert.equal(controls.previews.hidden, false);
@@ -449,40 +455,32 @@ test('theme controls survive body restoration without duplicate click handlers',
   assert.equal(theme.disabled, false);
 });
 
-test('export dialog retains collection URLs and binds restored history content', () => {
-  const events = {};
-  function panel() {
-    const listeners = {}, link = {href:'https://catalog.example/md3/downloads/dtcg/light-default/tokens.tokens.json'}, report = {};
-    const fields = {format:{value:'tokens.css'},context:{value:'dark-high'}};
-    const node = {
-      link, report, fields, opens:0,
-      querySelector(selector) {
-        if(selector==='[data-export-link]')return link;
-        if(selector==='[data-export-report]')return report;
-        if(selector==='[data-export-description]')return {};
-        if(selector==='[role="combobox"],button')return {focus(){}};
-        return fields[selector.includes('format')?'format':'context'];
-      },
-      addEventListener(type,handler){listeners[type]=handler;},
-      showModal(){this.opens++;},
-      close(){listeners.close();}
-    };
-    return node;
-  }
-  const original=panel();let current=original;
-  runScript('site-ui.js',{
-    document:{readyState:'complete',querySelector:selector=>selector==='svg[data-artwork]'?null:({src:'https://catalog.example/md3/static/site-ui.js'}),querySelectorAll:()=>[],addEventListener(type,handler){events[type]=handler;},getElementById(id){return id==='tokens-site-download'?current:null;}},
-    window:{addEventListener(){}},matchMedia:()=>({matches:false,addEventListener(){}}),URL
-  });
-  assert.equal(current.link.href,'https://catalog.example/md3/downloads/dtcg/dark-high/tokens.css');
-  assert.equal(current.report.href,'https://catalog.example/md3/downloads/dtcg/dark-high/report.json');
-  current=panel();current.fields.format.value='report.json';events['htmx:historyRestore']();
-  let focused=false;
-  const trigger={isConnected:true,focus(){focused=true;}};
-  events.click({target:{closest:selector=>selector==='[data-export-open]'?trigger:null}});
-  assert.equal(current.opens,1);assert.equal(original.opens,0);
-  assert.equal(current.link.href,'https://catalog.example/md3/downloads/dtcg/dark-high/report.json');
-  current.close();assert.equal(focused,true);
+test('scoped export keeps the collection mount and rebinds restored dialogs', async () => {
+ const events={};
+ function panel(){
+  const fields=Object.fromEntries(Object.entries({kind:'component',slug:'buttons',set:'button|color|filled',q:'icon',content:'tokens',scope:'view',format:'css','context.Theme':'Dark'}).map(([name,value])=>[name,{name,value,type:'hidden',closest:()=>null}]));
+  const form={action:'https://catalog.example/md3/downloads/export',fields,setAttribute(){},querySelectorAll:()=>Object.values(fields),addEventListener(){},elements:{namedItem:name=>fields[name]}};
+  const nodes={'form':form,'[data-export-report]':{},'[data-export-description]':{},'[data-export-context-summary]':{},'[data-export-token-formats]':{},'[data-export-counts]':{},'[data-export-error]':{},'[data-export-submit]':{attributes:{},label:{},setAttribute(name,value){this.attributes[name]=value;},querySelector(){return this.label;}},'[role="combobox"]':{focus(){}}};
+  const listeners={};return {dataset:{hasCss:'true',hasImplementation:'true',componentExport:'true'},nodes,opens:0,querySelector:s=>nodes[s],querySelectorAll:()=>[],addEventListener:(name,fn)=>listeners[name]=fn,change(){listeners.change();},showModal(){this.open=true;this.opens++;},close(){this.open=false;listeners.close();}};
+ }
+ let current=panel();const original=current;const requests=[];let delayOptions=false;const releases=[];
+ class FormData extends Map {constructor(form){super(Object.entries(form.fields).map(([name,input])=>[name,input.value]));}}
+ runScript('export.js',{document:{readyState:'complete',addEventListener:(name,fn)=>events[name]=fn,getElementById:()=>current,querySelector:()=>null},location:{search:''},CSS:{escape:x=>x},URL,URLSearchParams,FormData,AbortController,fetch:async url=>{requests.push(String(url));if(delayOptions)await new Promise(resolve=>releases.push(resolve));return {ok:true,json:async()=>({selected:1,exported:1,dependencies:2,omitted:0})};}});
+ current=panel();events['htmx:historyRestore']();let focused=false;const trigger={dataset:{exportScope:'view'},focus(){focused=true;}};
+ events.click({target:{closest:selector=>selector==='[data-export-open]'?trigger:null}});
+ assert.equal(current.dataset.exportBusy,'true');assert.equal(current.nodes['[data-export-submit]'].attributes['aria-busy'],'true');assert.equal(current.nodes['[data-export-submit]'].disabled,true);
+ await new Promise(resolve=>setImmediate(resolve));
+ assert.equal(current.dataset.exportBusy,'false');assert.equal(current.nodes['[data-export-submit]'].attributes['aria-busy'],'false');
+ assert.equal(current.opens,1);assert.equal(original.opens,0);
+ const requested=new URL(requests[0]);assert.equal(requested.pathname,'/md3/downloads/export');assert.equal(requested.searchParams.get('scope'),'view');assert.equal(requested.searchParams.get('q'),'icon');assert.equal(requested.searchParams.get('context.Theme'),'Dark');
+ assert.equal(new URL(current.nodes['[data-export-report]'].href).searchParams.get('format'),'report');assert.match(current.nodes['[data-export-counts]'].textContent,/2 required references/);assert.equal(current.nodes['[data-export-submit]'].disabled,false);
+ delayOptions=true;current.change();current.change();assert.equal(current.dataset.exportBusy,'true');
+ delayOptions=false;releases.shift()();await new Promise(resolve=>setImmediate(resolve));
+ assert.equal(current.dataset.exportBusy,'true','an aborted request must not clear the newer request indicator');
+ releases.shift()();await new Promise(resolve=>setImmediate(resolve));assert.equal(current.dataset.exportBusy,'false');
+ delayOptions=true;current.change();assert.equal(current.dataset.exportBusy,'true');
+ current.close();assert.equal(focused,true);assert.equal(current.dataset.exportBusy,'false');assert.equal(current.nodes['[data-export-submit]'].attributes['aria-busy'],'false');
+ releases.shift()();await new Promise(resolve=>setImmediate(resolve));assert.equal(current.dataset.exportBusy,'false');
 });
 
 test('mosaic artwork pauses for the control, reduced motion, and offscreen visibility', () => {
@@ -706,6 +704,24 @@ test('shared header establishes desktop docking before deferred scripts run', ()
     assert.equal(root.dataset.siteDrawer,docked?'expanded':'modal');
     assert.equal(drawer.dataset.variant,docked?'standard':'modal');
     assert.equal(Object.hasOwn(drawer,'open'),docked);
-    assert.equal(drawer.role,docked?'navigation':undefined);
+    assert.equal(drawer.role,undefined);
   }
+});
+
+test('disclosure expansion retargets a reversed animation and honors reduced motion', async()=>{
+ const events={},attributes=new Set(),animations=[];let reduced=false,rendered;
+ const body={inert:false};
+ const detail={open:false,style:{},children:[],getBoundingClientRect(){return {height:rendered??(this.open?220:60)};},setAttribute:k=>attributes.add(k),removeAttribute:k=>attributes.delete(k),animate(frames){let resolve,reject;const finished=new Promise((a,b)=>{resolve=a;reject=b;});const animation={frames,finished,finish:resolve,cancel(){this.cancelled=true;reject(Error('cancelled'));}};animations.push(animation);return animation;}};
+ const toggle={setAttribute(){}};
+ const summary={parentElement:detail,querySelector:()=>toggle,getBoundingClientRect:()=>({height:58})};detail.children=[summary,body];
+ runScript('site-ui.js',{
+  document:{readyState:'loading',addEventListener:(name,fn)=>(events[name]??=[]).push(fn)},window:{addEventListener(){}},
+  matchMedia:()=>({matches:reduced}),getComputedStyle:()=>({borderTopWidth:'1',borderBottomWidth:'1'}),MaterialMotion:{timing:()=>({duration:450,easing:'linear'})}
+ });
+ const click=(icon=true)=>events.click[0]({target:{closest:selector=>selector==='[data-disclosure-toggle]'?(icon?toggle:null):summary},preventDefault(){}});
+ await click(false);assert.equal(detail.open,false);assert.equal(animations.length,0,'card surface does not expand');
+ const opening=click();assert.equal(detail.open,true);assert.equal(animations[0].frames[1].height,'220px');
+ rendered=130;const closing=click();assert.equal(animations[0].cancelled,true);assert.equal(animations[1].frames[0].height,'130px');assert.equal(animations[1].frames[1].height,'60px');assert.equal(body.inert,true);
+ animations[1].finish();await Promise.all([opening,closing]);assert.equal(detail.open,false);assert.equal(body.inert,false);assert.equal(attributes.size,0);
+ reduced=true;rendered=undefined;await click();assert.equal(detail.open,true);assert.equal(animations.length,2,'reduced motion changes state without a height animation');
 });

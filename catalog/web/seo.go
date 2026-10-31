@@ -10,6 +10,11 @@ import (
 )
 
 type pageMetadata struct {
+	Illustration       *Illustration
+	ImagePageURL       string
+	ImageURL           string
+	ImageAlt           string
+	Export             *exportPage
 	Tools              []toolDestination
 	GeneratedDownloads bool
 	Path               string
@@ -72,8 +77,8 @@ func (server *Server) basicMetadata(path string, query url.Values) pageMetadata 
 	info := pageMetadata{NoIndex: server.publicOrigin == "" || hasContentFilters(query), AgentDiscovery: server.publicOrigin != ""}
 	switch path {
 	case "/":
-		info.Title = "Material Design 3 Tokens and Change History"
-		info.Description = "Browse Material Design 3 components and styles. Compare token values by context, follow named references, download JSON and review observed changes."
+		info.Title = "Material Design 3 Tokens, Playgrounds and Change History"
+		info.Description = "Browse Material Design 3 components and styles. Try interactive playgrounds, compare token values by context, follow named references, download CSS variables or JSON and review observed changes."
 	case "/for-agents":
 		info.Title = "Use Material Design 3 Tokens with a Coding Agent"
 		info.Description = "Connect a coding agent to Token Catalog. Copy setup instructions, install the skill or use MCP to find Material Design 3 tokens, contexts and observed changes."
@@ -81,11 +86,11 @@ func (server *Server) basicMetadata(path string, query url.Values) pageMetadata 
 		info.Title = "Tools for Motion Analysis and Interaction Testing"
 		info.Description = "Analyze motion in video recordings, compare reference curves, and inspect carousel interaction behavior with Token Catalog tools."
 	case "/components":
-		info.Title = "Material Design 3 Components and Component Tokens"
-		info.Description = "Explore tokens for Material Design 3 components, including buttons, navigation and input. Compare context-specific values, named references and observed changes."
+		info.Title = "Material Design 3 Components, Playgrounds and Component Tokens"
+		info.Description = "Explore tokens and interactive playgrounds for Material Design 3 components, including buttons, navigation and input. Compare context-specific values, named references and observed changes. Download tokens or component CSS."
 	case "/styles":
 		info.Title = "Material Design 3 Styles, Foundations and Token Sources"
-		info.Description = "Explore Material Design 3 styles and token sources, including color, typography and shape. Compare context-specific values, named references and observed changes."
+		info.Description = "Explore Material Design 3 styles and token sources, including color, typography and shape. Compare context-specific values, named references and observed changes. Download tokens as CSS variables or JSON."
 	case "/changes":
 		info.Title = "Material Design 3 Token Change Log"
 		info.Description = "Review observed changes across Material Design 3 token snapshots. Compare previous and current values by token, subject and observation date."

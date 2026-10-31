@@ -15,6 +15,7 @@ import (
 )
 
 type Server struct {
+	illustrations  map[string]Illustration
 	motionURL      string
 	motionLabURL   string
 	thumbnailMu    sync.Mutex
@@ -26,6 +27,7 @@ type Server struct {
 	basePath       string
 	browserOrigin  string
 	state          publish.PublishedState
+	cssValues      map[string]map[string]string
 	tokenAssetsDir string
 	downloadsDir   string
 	themeCSS       string
@@ -78,6 +80,16 @@ func (server *Server) Handler() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /for-agents", server.handleForAgents)
 	mux.HandleFunc("GET /tools", server.handleTools)
+	mux.HandleFunc("GET /illustrations/index.json", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("X-Robots-Tag", "noindex")
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(server.IllustrationJobs())
+	})
+	mux.HandleFunc("GET /illustrations/review", server.handleApplicationSceneReview)
+	mux.HandleFunc("GET /illustrations/review/components", server.handleSceneReview)
+	mux.HandleFunc("GET /illustrations/apps/{app}/{view}", server.handleApplicationScene)
+	mux.HandleFunc("GET /illustrations/render/{path...}", server.handleIllustrationRender)
+	mux.HandleFunc("GET /illustrations/images/{file}", server.handleIllustrationFile)
 	mux.HandleFunc("GET /sitemap.xml", server.handleSitemap)
 	mux.HandleFunc("GET /sitemap.css", handleSitemapCSS)
 	mux.HandleFunc("GET /robots.txt", server.handleRobots)
@@ -100,6 +112,7 @@ func (server *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /api/v1/components/{slug...}", server.handleComponent)
 	mux.HandleFunc("GET /static/", handleStaticAsset)
 	mux.HandleFunc("GET /downloads/dtcg/{variant}/{file}", server.handleDTCGDownload)
+	mux.HandleFunc("GET /downloads/export", server.handleSelectedExport)
 	mux.HandleFunc("GET /downloads/{path...}", server.handleDownload)
 	mux.HandleFunc("GET /", server.handleOverview)
 	mux.HandleFunc("GET /changes", server.handleGlobalChanges)

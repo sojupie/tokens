@@ -1,21 +1,10 @@
 package web
-
-templ specimenSegmented(c componentCase) {
-	@useComponentAssets("segmented")
-	<div { c.Attributes()... } role={ c.SegmentRole() } aria-label="View selection">
-		for i,label := range []string{"Home","Files","Saved"} {
-			<label { c.SegmentAttributes(i)... }>
-				<input { c.SegmentInput(i,label)... }/>
-				<span class="md-segment-face">
-					<span class="md-segment-check">@materialSymbol("check")
-</span>
-					if c.Control!="label" {
-						<span class="md-segment-icon">@materialSymbol([]string{"home", "folder", "star"}[i])
-</span>
-					}
-					<span class={ templ.KV("tokens-visually-hidden", c.Control == "icon") }>{ label }</span>
-				</span>
-			</label>
-		}
-	</div>
+import "github.com/sojupie/tokens/forge/components/ui"
+templ specimenSegmented(c componentCase){ @segmentedSurface(c) }
+templ segmentedSurface(c componentCase){
+ @ui.SegmentedButtons(ui.SegmentedProps{Label:"View selection",Attrs:c.Attributes(),Multiple:c.Variant=="multiple"}){
+ for i,label:=range c.labelsOr([3]string{"Home","Files","Saved"}){
+ @ui.Segment(ui.SegmentProps{Label:label,Icon:[]string{"home","folder","star"}[i],Content:c.Control,Attrs:c.SegmentAttributes(i),InputAttrs:c.SegmentInput(i,label)})
+ }
+ }
 }

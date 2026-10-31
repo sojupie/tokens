@@ -3,6 +3,7 @@ package web
 import (
 	"fmt"
 	"github.com/a-h/templ"
+	"github.com/sojupie/tokens/forge/components/ui"
 	"net/url"
 	"strings"
 )
@@ -161,4 +162,8 @@ func (c componentCase) SearchReply() templ.Attributes {
 	a["data-button-case"] = c.ID() + "-reply"
 	a["data-search-reply"] = ""
 	return a
+}
+
+func (c componentCase) searchProps(label, value string, disclosure bool) ui.SearchProps {
+	return ui.SearchProps{ID: c.ID(), AvatarText:"A", Options:searchExampleOptions(), Label: label, Value: value, Variant: c.Variant, Control: c.Control, Leading: c.Shape, Actions: c.Width, Elevation: c.SearchElevation, Expanded: c.Expanded, Disclosure: disclosure, BarAttrs: c.SearchBar(), PanelAttrs: c.SearchPanel()}
 }

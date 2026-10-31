@@ -1,38 +1,139 @@
 package web
 
+import (
+ "fmt"
+ "github.com/sojupie/tokens/forge/components/ui"
+)
+
 templ siteDownloadButton() {
-	<button class="md-button md-outlined-button" type="button" data-export-open aria-haspopup="dialog" aria-controls="tokens-site-download">Download tokens</button>
+ @useComponentAssets("split")
+ <div class="md-split-demo tokens-download-split">
+  <div class="md-split-button" data-size="small" role="group" aria-label="Download">
+   <button class="md-button md-filled-button md-split-leading" data-size="small" type="button" data-split-primary data-export-open data-export-content="tokens" aria-haspopup="dialog" aria-controls="tokens-site-download">Download tokens</button>
+   <button class="md-button md-filled-button md-split-trailing" data-size="small" type="button" popovertarget="tokens-download-options" aria-controls="tokens-download-options" aria-haspopup="menu" aria-expanded="false" aria-label="More download options">@materialSymbol("expand_more")</button>
+  </div>
+  <div class="md-menu md-split-menu" data-variant="standard" id="tokens-download-options" popover="auto" role="menu" aria-label="Download options">
+   <ul>
+    <li><button class="md-menu-item" type="button" role="menuitem" tabindex="-1" data-split-option data-export-open data-export-content="tokens">Download design tokens</button></li>
+    if page := metadata(ctx).Export; page != nil && page.Implementations {
+     <li><button class="md-menu-item" type="button" role="menuitem" tabindex="-1" data-split-option data-export-open data-export-content="implementation">Download component</button></li>
+    }
+    <li><button class="md-menu-item" type="button" role="menuitem" tabindex="-1" data-split-option data-export-open data-export-content="custom">Configure download</button></li>
+   </ul>
+  </div>
+ </div>
 }
 
 templ siteDownloadMenu() {
-	@useComponentAssets("dialog")
-	<div class="tokens-export">
-		@siteDownloadButton()
-		<dialog hx-boost="false" class="md-dialog tokens-export-dialog" data-dialog-surface id="tokens-site-download" aria-labelledby="tokens-site-download-title" aria-describedby="tokens-export-scope">
-			<header class="md-basic-header"><h2 id="tokens-site-download-title">Download tokens</h2></header>
-			<div class="md-dialog-content">
-				if metadata(ctx).GeneratedDownloads {
-					<p id="tokens-export-scope">All components and styles for one context. Page, table and search filters do not apply.</p>
-					<div class="tokens-export-fields">
-						@catalogSelect("export-format", "format", "Format", "tokens.tokens.json", exportFormatChoices())
-						@catalogSelect("export-context", "context", "Appearance", "light-default", exportContextChoices())
-					</div>
-					<p class="tokens-export-description" data-export-description>DTCG 2025.10 values and aliases, with source metadata.</p>
-					<p class="md-typescale-body-small">Web · 3P · Static font · Standard motion · Small language height</p>
-					<a class="tokens-link" data-export-report href="/downloads/dtcg/light-default/report.json">View conversion report</a>
-				} else {
-					<p id="tokens-export-scope">DTCG downloads are unavailable for this publication. Generated assets must be built before these files can be served.</p>
-				}
-			</div>
-			<footer class="md-basic-actions">
-				<button class="md-button md-text-button" type="button" data-export-cancel>Close</button>
-				if metadata(ctx).GeneratedDownloads {
-					<a class="md-button md-filled-button" data-export-link href="/downloads/dtcg/light-default/tokens.tokens.json" download>Download DTCG JSON</a>
-				}
-			</footer>
-		</dialog>
-		if metadata(ctx).GeneratedDownloads {
-			<noscript><p><a href="/downloads/dtcg/light-default/tokens.tokens.json" download>DTCG JSON · Light, default contrast</a> · <a href="/downloads/dtcg/light-default/tokens.css" download>CSS variables</a> · <a href="/downloads/dtcg/light-default/report.json" download>Conversion report</a></p></noscript>
-		}
-	</div>
+ @useComponentAssets("dialog")
+ @useComponentAssets("radio")
+ @useComponentAssets("checkbox")
+ @useComponentAssets("messages")
+ @useComponentAssets("loading")
+ <div class="tokens-export">
+  <button class="md-button md-filled-button" type="button" data-export-open aria-haspopup="dialog" aria-controls="tokens-site-download">Download tokens</button>
+  <dialog hx-boost="false" class="md-dialog tokens-export-dialog" data-dialog-surface id="tokens-site-download" aria-labelledby="tokens-site-download-title" aria-describedby="tokens-export-scope" data-component-export={fmt.Sprint(metadata(ctx).Export != nil && metadata(ctx).Export.Component)} data-default-scope={metadata(ctx).Export.defaultScope()} data-has-css={fmt.Sprint(metadata(ctx).Export != nil && metadata(ctx).Export.CSS)} data-has-implementation={fmt.Sprint(metadata(ctx).Export != nil && metadata(ctx).Export.Implementations)}>
+   <header class="md-basic-header"><h2 id="tokens-site-download-title">Download</h2></header>
+   <form id="tokens-export-form" action="/downloads/export" method="get" class="md-dialog-content">
+    if page := metadata(ctx).Export; page != nil {
+     <input type="hidden" name="kind" value={page.Kind}/><input type="hidden" name="slug" value={page.Slug}/><input type="hidden" name="set" value={page.Set}/><input type="hidden" name="q" value={page.Query}/>
+     <p id="tokens-export-scope">Choose what to include. CSS and DTCG exports include required token references.</p>
+     <div class="tokens-export-primary">
+     @exportChoices("content", "Content", "tokens", []catalogChoice{{"tokens","Design tokens"},{"implementation","Component implementation"}}, false)
+     <details class="tokens-export-include tokens-export-disclosure">
+      <summary role="group" tabindex="-1"><span class="tokens-export-disclosure-label"><span class="tokens-export-title">Include</span><span data-export-scope-summary>{ choiceLabel(page.Scopes(), page.Scope) }</span></span><button class="md-icon-button md-standard-icon-button tokens-export-chevron" data-size="xsmall" type="button" data-disclosure-toggle aria-label="Include" aria-expanded="false">@materialSymbol("expand_more")</button></summary>
+      @exportChoices("scope", "Include", page.Scope, page.Scopes(), false)
+     </details>
+     </div>
+     <div data-export-token-formats>
+      @exportChoices("format", "File formats", "dtcg", []catalogChoice{{"dtcg","DTCG JSON"},{"css","CSS variables"},{"source","Source JSON"},{"report","Conversion report"}}, true)
+     </div>
+     <p class="tokens-export-description" data-export-description></p>
+     <details class="tokens-export-context tokens-export-disclosure">
+      <summary role="group" tabindex="-1"><span class="tokens-export-disclosure-label"><span class="tokens-export-title" id="export-context-title">Token context</span><span data-export-context-summary>Current settings</span></span><button class="md-icon-button md-standard-icon-button tokens-export-chevron" data-size="xsmall" type="button" data-disclosure-toggle aria-label="Token context" aria-expanded="false">@materialSymbol("expand_more")</button></summary>
+      <div class="tokens-export-context-heading">
+       <p>Choose the values to export. Multiple formats or contexts download together in a ZIP.</p>
+       <div class="md-tooltip-demo">
+        <button class="md-icon-button md-standard-icon-button" data-size="xsmall" type="button" popovertarget="export-context-help" aria-haspopup="dialog" aria-label="About token contexts">@materialSymbol("info")</button>
+        <section class="md-tooltip" data-variant="rich" id="export-context-help" popover="auto" role="dialog" aria-label="About token contexts">
+         <h3>Token contexts</h3>
+         <p>Upstream labels are preserved. Only settings with defined values for your selection and its token references are shown.</p>
+         <p>Language height changes line spacing, not font size. Some labels, including Font: iOS bold, also have captured Web values.</p>
+         <p>Each token context has a separate file with the same token names. CSS uses :root; loading alternative files together makes the later values override earlier ones.</p>
+        </section>
+       </div>
+      </div>
+      <div class="tokens-export-context-options">
+      for _, control := range page.Contexts {
+       <div data-export-context={control.Name}>
+        @exportChoices("context."+control.Name, control.Name, control.Selected, control.Choices, control.Name=="Theme" || control.Name=="Contrast")
+       </div>
+      }
+      </div>
+     </details>
+     <p class="md-typescale-body-small" data-export-counts role="status" aria-live="polite"></p>
+     <p class="md-typescale-body-small" data-export-error role="alert" hidden></p>
+     <a class="tokens-link" data-export-report href="/downloads/export?scope=collection&amp;format=report">View conversion report</a>
+    }
+   </form>
+   <footer class="md-basic-actions tokens-export-actions">
+    <button class="md-button md-text-button" type="button" data-export-cancel>Close</button>
+    @ui.LoadingButton(templ.Attributes{"class":"md-button md-filled-button md-loading-button", "type":"submit", "form":"tokens-export-form", "data-export-submit":""}, "Download")
+   </footer>
+  </dialog>
+  <noscript><p><a href="/downloads/dtcg/light-default/tokens.tokens.json" download>DTCG JSON · Light, default contrast</a> · <a href="/downloads/dtcg/light-default/tokens.css" download>CSS variables</a> · <a href="/downloads/dtcg/light-default/report.json" download>Conversion report</a></p></noscript>
+ </div>
+}
+
+// Native radios and checkbox-backed filter chips preserve form and keyboard behavior.
+templ exportChoices(name, title, selected string, choices []catalogChoice, multiple bool, help ...templ.Component) {
+ <fieldset class="tokens-export-choices" aria-label={ title }>
+  <legend><span>{ title }</span>
+ if len(help)>0 {
+ @help[0]
+ }
+ </legend>
+  <div>
+   for _, choice := range choices {
+    if multiple {
+     <label class="md-filter-chip">
+      <input class="tokens-visually-hidden" type="checkbox" name={name} value={choice.Value} checked?={choice.Value==selected}/>
+      <span class="md-chip-face">@materialSymbol("check")<span>{ choice.Label }</span></span>
+     </label>
+    } else {
+     <label class="md-radio-choice">
+      <span class="md-radio"><input type="radio" name={name} value={choice.Value} checked?={choice.Value==selected}/><span class="md-radio-icon" aria-hidden="true"></span></span>
+      <span class="md-radio-label">{ choice.Label }</span>
+     </label>
+    }
+   }
+  </div>
+ </fieldset>
+}
+
+templ tableControlTooltip(label string) {
+ <div class="md-tooltip-demo tokens-table-tooltip">
+  { children... }
+  <div class="md-tooltip" data-variant="plain" popover="manual" role="tooltip"><p>{label}</p></div>
+ </div>
+}
+
+templ tableDownloadButton() {
+ @useComponentAssets("messages")
+ @tableControlTooltip("Download table") {
+  <button class="md-icon-button md-standard-icon-button tokens-icon-button" type="button" data-export-open data-export-scope="view" aria-label="Download table" aria-haspopup="dialog" aria-controls="tokens-site-download">@materialSymbol("download")</button>
+ }
+}
+
+templ tableTools() {
+ @tableDownloadButton()
+ @tableControlTooltip("Hide previews") {
+  <button class="md-icon-button md-standard-icon-button tokens-icon-button" type="button" data-action="previews" aria-label="Hide previews" aria-pressed="true"><span data-icon="on">@materialSymbol("visibility")</span><span data-icon="off" hidden>@materialSymbol("visibility_off")</span></button>
+ }
+ @tableControlTooltip("Show grid view") {
+  <button class="md-icon-button md-standard-icon-button tokens-icon-button" type="button" data-action="view" aria-label="Show grid view" aria-pressed="false"><span data-icon="on">@materialSymbol("grid_view")</span><span data-icon="off" hidden>@materialSymbol("table_rows")</span></button>
+ }
+ @tableControlTooltip("Expand all groups") {
+  <button class="md-icon-button md-standard-icon-button tokens-icon-button" type="button" data-action="expand" aria-label="Expand all groups" aria-expanded="false"><span data-icon="on">@materialSymbol("unfold_more")</span><span data-icon="off" hidden>@materialSymbol("unfold_less")</span></button>
+ }
 }

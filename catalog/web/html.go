@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/sojupie/tokens/forge/components/ui"
 	"math"
 	"net/http"
 	"net/url"
@@ -149,7 +150,14 @@ func (server *Server) handleHTMLSubject(response http.ResponseWriter, request *h
 	info := server.basicMetadata(subjectURL(subjects[0]), query)
 	info.Title = subjectTokenTitle(subjects[0])
 	info.Heading = info.Title
-	info.Description = subjectTokenDescription(subjects[0])
+	if preview != nil {
+		info.Title += " and playground"
+		info.Heading = info.Title
+	}
+	info.Description = subjectTokenDescription(subjects[0], preview != nil)
+	server.setIllustrationMetadata(&info, subjectURL(subjects[0]))
+	export := server.exportPage(&subjects[0], query)
+	info.Export = &export
 	downloadQuery := url.Values{"scope": {"all"}}
 	if len(browser.Sets) > 0 {
 		downloadQuery.Set("scope", "view")
@@ -245,8 +253,15 @@ func (server *Server) renderHTML(response http.ResponseWriter, request *http.Req
 	}
 	info := metadata(ctx)
 	info.Path = request.URL.Path
+	if info.Illustration == nil {
+		server.setIllustrationMetadata(&info, request.URL.Path)
+	}
 	info.Tools = server.toolDestinations()
 	info.GeneratedDownloads = server.tokenAssetsDir != ""
+	if info.Export == nil {
+		page := server.exportPage(nil, request.URL.Query())
+		info.Export = &page
+	}
 	ctx = context.WithValue(ctx, pageMetadataKey{}, info)
 	if metadata(ctx).NoIndex {
 		response.Header().Set("X-Robots-Tag", "noindex, follow")
@@ -254,7 +269,7 @@ func (server *Server) renderHTML(response http.ResponseWriter, request *http.Req
 	ctx = context.WithValue(ctx, pageThemeKey{}, server.pageThemes())
 	ctx = context.WithValue(ctx, themeVersionKey{}, assetVersion([]byte(server.themeCSS)))
 	assets := &componentAssets{modules: map[string]bool{}, server: server}
-	ctx = context.WithValue(ctx, componentAssetsKey{}, assets)
+	ctx = ui.WithAssets(context.WithValue(ctx, componentAssetsKey{}, assets), ui.Assets(assets.modules))
 	var rendered bytes.Buffer
 	if err := component.Render(ctx, &rendered); err != nil {
 		return err

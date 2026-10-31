@@ -1,6 +1,7 @@
 package web
 
 import "fmt"
+import "github.com/sojupie/tokens/forge/components/ui"
 
 templ specimenList(c componentCase) {
 	@useComponentAssets("list")
@@ -65,63 +66,41 @@ templ listContents(c componentCase, index int) {
 }
 
 templ listItemContents(c componentCase, index int, content listItemContent) {
-	@useComponentAssets("list")
-	if c.Width!="none" {
-		<span class={ "md-list-leading md-list-" + c.Width } aria-hidden?={ c.Width!="checkbox"&&c.Width!="radio" }>
-			switch c.Width {
-				case "checkbox", "radio":
-					@listSelectionControl(c, index)
-				case "icon":
-					@materialSymbol("folder")
-				case "avatar":
-					<span class="md-list-avatar-label">{ content.Avatar }</span>
-				case "image":
-					<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="100" height="100" fill="var(--md-sys-color-secondary-container)"></rect><circle cx="75" cy="25" r="12" fill="var(--md-sys-color-tertiary)"></circle><path d="M0 90 35 40 65 80 85 55 100 90v10H0Z" fill="var(--md-sys-color-secondary)"></path></svg>
-				case "video":
-					<svg viewBox="0 0 100 56" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="100" height="56" fill="var(--md-sys-color-tertiary-container)"></rect><path d="m42 16 20 12-20 12Z" fill="var(--md-sys-color-on-tertiary-container)"></path></svg>
-			}
-		</span>
-	}
-	<span class="md-list-body">
-		if c.ListText=="overline" {
-			<span class="md-list-overline">{ content.Overline }</span>
-		}
-		<span class="md-list-label">{ content.Label }</span>
-		if c.Size!="one-line" {
-			<span class="md-list-supporting">{ content.Supporting }</span>
-		}
-	</span>
-	if c.ListTrailing!="none" || c.Control=="expand" {
-		<span class="md-list-tail">
-			if c.ListTrailing=="" || c.ListTrailing=="text" {
-				<span class="md-list-meta">{ content.Metadata }</span>
-			}
-			if c.ListTrailing=="checkbox" || c.ListTrailing=="radio" || c.ListTrailing=="switch" {
-				@listSelectionControl(c, index)
-			}
-			if c.Control=="expand" && index<3 {
-				<span class="md-list-expand-icon">@materialSymbol("expand_more")
-</span>
-			} else if c.ListTrailing=="icon" {
-				<span class="md-list-trailing-icon">@materialSymbol("chevron_right")
-</span>
-			}
-		</span>
-	}
+ {{ props:=ui.ListItemProps{Label:content.Label,Supporting:content.Supporting,Avatar:content.Avatar,LeadingKind:ui.ListLeading(c.Width),SingleLine:c.Size=="one-line"};if c.ListText=="overline" {props.Overline=content.Overline};if c.ListTrailing==""||c.ListTrailing=="text" {props.Metadata=content.Metadata};if content.Badge!="" {props.Badge=ui.Badge("small","",nil)};props.ImageSrc=staticURL("paintings/"+listContentImage(content.Image,index));if c.Width!="avatar"&&c.Width!="image" {props.Leading=listLeadingContent(c,index,content)};if c.ListTrailing=="checkbox"||c.ListTrailing=="radio"||c.ListTrailing=="switch"||c.ListTrailing=="icon"||(c.Control=="expand"&&index<3) {props.Trailing=listTrailingContent(c,index)} }}
+ @ui.ListContent(props)
+}
+
+templ listLeadingContent(c componentCase,index int,content listItemContent) {
+ switch c.Width {
+ case "checkbox","radio":
+ @listSelectionControl(c,index)
+ case "icon":
+ @ui.Icon(listContentIcon(content.Icon))
+ case "video":
+ <svg viewBox="0 0 100 56" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="100" height="56" fill="var(--md-sys-color-tertiary-container)"></rect><path d="m42 16 20 12-20 12Z" fill="var(--md-sys-color-on-tertiary-container)"></path></svg>
+ }
+}
+
+templ listTrailingContent(c componentCase,index int) {
+ if c.ListTrailing=="checkbox"||c.ListTrailing=="radio"||c.ListTrailing=="switch" {
+ @listSelectionControl(c,index)
+ }
+ if c.Control=="expand"&&index<3 {
+ <span class="md-list-expand-icon">@ui.Icon("expand_more")</span>
+ } else if c.ListTrailing=="icon" {
+ <span class="md-list-trailing-icon">@ui.Icon("chevron_right")</span>
+ }
 }
 
 // Reuse the checkbox, radio and switch renderers without nesting an input in a button.
 templ listSelectionControl(c componentCase, index int) {
-	@useComponentAssets(c.ListNativeKind())
-	<label { c.ListControlAttributes(index)... }>
-		<input { c.ListControlInput(index)... }/>
-		switch c.ListNativeKind() {
-			case "radio":
-				<span class="md-radio-icon" aria-hidden="true"></span>
-			case "checkbox":
-				<span class="md-checkbox-box" aria-hidden="true"><svg class="md-checkbox-check" viewBox="0 0 18 18" fill="none"><path d="m4 9 3 3 7-7" stroke="currentColor" stroke-width="2"></path></svg></span>
-			case "switch":
-				<span class="md-switch-track" aria-hidden="true"></span><span class="md-switch-handle" aria-hidden="true"><svg class="md-switch-on" viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2"></path></svg><svg class="md-switch-off" viewBox="0 0 24 24" fill="none"><path d="m7 7 10 10M7 17 17 7" stroke="currentColor" stroke-width="2"></path></svg></span>
-		}
-	</label>
+ {{ p:=ui.ChoiceProps{Attrs:c.ListControlAttributes(index),InputAttrs:c.ListControlInput(index)} }}
+ switch c.ListNativeKind() {
+ case "radio":
+ @ui.RadioControl(p)
+ case "checkbox":
+ @ui.CheckboxControl(p)
+ case "switch":
+ @ui.SwitchControl(p)
+ }
 }

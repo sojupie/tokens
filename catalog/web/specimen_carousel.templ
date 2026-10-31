@@ -1,52 +1,30 @@
 package web
-
 import "fmt"
-
-templ specimenCarousel(c componentCase) {
-	@useComponentAssets("carousel")
-	<section { c.Attributes()... } aria-label="Example carousel" aria-roledescription="carousel">
-        if c.Variant != "full-screen" && c.CarouselAction == "header-arrow" {
-            <header class="md-carousel-header">
-                <h3 class="md-typescale-title-large">Featured items</h3>
-                <button type="button" class="md-icon-button md-standard-icon-button" data-size="small" aria-label="Show all featured items">@materialSymbol("arrow_forward")</button>
-            </header>
-        }
-		<div class="md-carousel-viewport" tabindex="0" aria-label="Carousel items">
-			<div class="md-carousel-scroll-track">
-				<div class="md-carousel-snaps" aria-hidden="true">
-					for range 6 {
-						<span class="md-carousel-snap"></span>
-					}
-				</div>
-				<ol class="md-carousel-track">
-					for index := range 6 {
-						<li class="md-carousel-slot">
-							<button { c.CarouselItem(index)... }>
-								<span class="md-carousel-art" aria-hidden="true">
-									@carouselArtwork(index)
-								</span>
-								<span class="md-carousel-number" aria-hidden="true">{ fmt.Sprint(index+1) }</span>
-							</button>
-						</li>
-					}
-				</ol>
-			</div>
-		</div>
-		if c.Variant != "full-screen" && c.CarouselAction != "none" && c.CarouselAction != "header-arrow" {
-   <div class="md-carousel-all-action">
-    <button type="button" class="md-button md-text-button" data-size="small">Show all</button>
-   </div>
-  }
-		<div class="md-carousel-controls">
-			<button type="button" class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" data-carousel-step="-1" aria-label="Previous item">@materialSymbol("chevron_left")
-</button>
-			<output class="md-typescale-label-medium" aria-live="polite">Item 1 of 6</output>
-			<button type="button" class="md-icon-button md-standard-icon-button" data-size="small" data-shape="round" data-carousel-step="1" aria-label="Next item">@materialSymbol("chevron_right")
-</button>
-		</div>
-	</section>
+import "github.com/sojupie/tokens/forge/components/ui"
+templ specimenCarousel(c componentCase){ @carouselSurface(c,true) }
+templ carouselSurface(c componentCase,demonstration bool){
+ {{p:=ui.CarouselProps{Label:"Example carousel",Attrs:c.Attributes()};if demonstration {p.Header=carouselExampleHeader(c);p.Actions=carouselExampleActions(c);p.Controls=carouselExampleControls()}}}
+ @ui.Carousel(p,6){
+ for index:=range 6 {
+ @ui.CarouselItem(ui.CarouselItemProps{Index:index,Count:6,ImageSrc:staticURL("paintings/"+carouselPaintings[index%len(carouselPaintings)]),SlotAttrs:c.CarouselSlot(index),Attrs:c.CarouselItem(index)}){
+ if demonstration  {
+<span class="md-carousel-number" aria-hidden="true">{fmt.Sprint(index+1)}</span>
 }
-
-templ carouselArtwork(index int) {
-<svg viewBox="0 0 240 192" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label={ fmt.Sprintf("Landscape %d",index+1) }><rect width="240" height="192" fill="var(--md-sys-color-tertiary-container)"></rect><circle cx={ fmt.Sprint(60 + index*20) } cy="58" r="35" fill="var(--md-sys-color-primary-container)"></circle><path d="M0 192V142L76 62 142 142 190 95 240 145V192Z" fill="var(--md-sys-color-secondary)"></path><path d="M0 192V155L85 112 160 174 240 115V192Z" fill="var(--md-sys-color-tertiary)"></path></svg>
+ }
+ }
+ }
 }
+templ carouselExampleHeader(c componentCase){
+ if c.Variant!="full-screen"&&c.CarouselAction=="header-arrow"  {
+<header class="md-carousel-header"><h3 class="md-typescale-title-large">Featured items</h3>@ui.IconButton(ui.IconButtonProps{Label:"Show all featured items",Icon:"arrow_forward"})</header>
+ }
+}
+templ carouselExampleActions(c componentCase){
+ if c.Variant!="full-screen"&&c.CarouselAction!="none"&&c.CarouselAction!="header-arrow"  {
+<div class="md-carousel-all-action">@ui.Action(ui.ButtonProps{Variant:ui.Text}){Show all}</div>
+ }
+}
+templ carouselExampleControls(){
+ <div class="md-carousel-controls">@ui.IconButton(ui.IconButtonProps{Label:"Previous item",Icon:"chevron_left",Attrs:templ.Attributes{"data-carousel-step":"-1"}})<output class="md-typescale-label-medium" aria-live="polite">Item 1 of 6</output>@ui.IconButton(ui.IconButtonProps{Label:"Next item",Icon:"chevron_right",Attrs:templ.Attributes{"data-carousel-step":"1"}})</div>
+}
+templ carouselArtwork(index int){<img src={staticURL("paintings/"+carouselPaintings[index%len(carouselPaintings)])} alt="" width="1200" height="800" draggable="false"/>}

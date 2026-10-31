@@ -2,11 +2,18 @@
 (() => {
   const root = document.documentElement;
   const initialized = new WeakSet();
+  function updateImages() {
+    const variant = root.dataset.theme + '-' + root.dataset.contrast;
+    document.querySelectorAll('source[data-image-appearance]').forEach(source => {source.media = source.dataset.imageAppearance === variant ? 'all' : 'not all';});
+  }
+  document.addEventListener('DOMContentLoaded', updateImages);
+  document.addEventListener('htmx:afterSwap', updateImages);
   function initialize() {
     const theme = document.querySelector('[data-app-theme]');
     if (!theme) return;
     const contrastButtons = document.querySelectorAll('[data-app-contrast]');
     const update = () => {
+      updateImages();
       theme.setAttribute('aria-pressed', String(root.dataset.theme === 'dark'));
       theme.title = root.dataset.theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
       document.querySelectorAll('[data-theme-icon]').forEach(icon => {
@@ -24,7 +31,8 @@
       initialized.add(theme);
       theme.addEventListener('click', () => {
         root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
-        update();
+        updateImages();
+    update();
       });
     }
     contrastButtons.forEach(button => {
@@ -33,9 +41,11 @@
       initialized.add(button);
       button.addEventListener('click', () => {
         root.dataset.contrast = button.dataset.appContrast;
-        update();
+        updateImages();
+    update();
       });
     });
+    updateImages();
     update();
   }
   document.addEventListener('DOMContentLoaded', initialize);

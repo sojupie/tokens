@@ -7,6 +7,20 @@
   },
   "security": [],
   "paths": {
+    "/downloads/export": {"get": {
+      "operationId": "exportSelection", "summary": "Export selected tokens or a component implementation",
+      "description": "Token exports include required alias targets. Repeat format or context.<dimension> query parameters to download each combination in a ZIP (up to 64 combinations). For example, context.Theme=Light&context.Theme=Dark exports both themes. Add summary=1 to inspect a selection without downloading. Implementation ZIPs require subject or collection scope and use the catalog Web theme.",
+      "parameters": [
+        {"name":"scope","in":"query","required":true,"schema":{"type":"string","enum":["view","set","subject","collection"]}},
+        {"name":"format","in":"query","required":true,"style":"form","explode":true,"schema":{"type":"array","items":{"type":"string","enum":["dtcg","css","source","report","summary","zip"]}}},
+        {"name":"content","in":"query","schema":{"type":"string","enum":["tokens","implementation"],"default":"tokens"}},
+        {"name":"kind","in":"query","schema":{"type":"string"}},
+        {"name":"slug","in":"query","schema":{"type":"string"}},
+        {"name":"set","in":"query","schema":{"type":"string"}},
+        {"name":"q","in":"query","schema":{"type":"string"}}
+      ],
+      "responses":{"200":{"description":"Selected token document, CSS, report, summary, or implementation ZIP"},"400":{"description":"Invalid scope or context"},"422":{"description":"Required generated CSS assets are unavailable"}}
+    }},
     "/api/v1/health": {"get": {
       "operationId": "getHealth", "summary": "Read the active publication identifiers",
       "responses": {"200": {"description": "Server status", "content": {"application/json": {"schema": {"type": "object", "required": ["status", "publicationId", "snapshotId"], "properties": {"status": {"type": "string"}, "publicationId": {"type": "string"}, "snapshotId": {"type": "string"}}}}}}}

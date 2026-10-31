@@ -1,0 +1,876 @@
+package web
+
+import "fmt"
+import "github.com/sojupie/tokens/forge/components/ui"
+
+templ applicationReviewPage(apps []applicationScene) {
+	<!DOCTYPE html>
+	<html lang="en" data-theme="light" data-contrast="default">
+		<head>
+			<meta charset="utf-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<meta name="robots" content="noindex"/>
+			<title>Application scenes · Token Catalog</title>
+			<link rel="stylesheet" href="/theme.css"/>
+			<link rel="stylesheet" href={ staticURL("app.css") }/>
+			<link rel="stylesheet" href={ staticURL("scene-screens.css") }/>
+			<link rel="stylesheet" href={ staticURL("application-scenes.css") }/>
+			<script src={ staticURL("scene-review.js") } defer></script>
+			<script src={ staticURL("application-scenes.js") } defer></script>
+		</head>
+		<body class="scene-review-page">
+			<header class="scene-review-controls">
+				<div><h1 class="md-typescale-title-large">Application scenes</h1><p class="md-typescale-body-medium">Six applications · Full scenes before image framing</p></div>
+				<label><input type="checkbox" data-review-grid/>Column overlay</label><label>Appearance <select data-review-theme><option value="light">Light</option><option value="dark">Dark</option></select></label><label>Contrast <select data-review-contrast><option value="default">Default</option><option value="medium">Medium</option><option value="high">High</option></select></label>
+			</header>
+			<nav class="scene-review-index" aria-label="Applications">
+				for _,a:=range apps {
+					<a href={ templ.SafeURL("#review-" + a.ID) }>{ a.Name }</a>
+				}
+			</nav>
+			<main>
+				for _,a:=range apps {
+					<section class="scene-review-entry" id={ "review-" + a.ID } data-app-review>
+						<header><h2 class="md-typescale-title-large">{ a.Name }</h2><span class="md-typescale-body-medium" data-app-dimensions>{ fmt.Sprintf("%d × %d",a.Width,a.Height) }</span><a data-app-native href={ templ.SafeURL(a.URL(a.Views[0].ID)) } target="_blank" rel="noopener">Open at native size</a></header>
+						<p class="md-typescale-body-medium app-coverage">{ a.Components }</p>
+if a.ID!="museum" {
+<label class="app-review-window">Window width <select data-app-width aria-label={a.Name+" window width"}>
+for _,width:=range []int{840,1024,1200,1440} {
+<option value={fmt.Sprint(width)} selected?={width==a.Width}>{fmt.Sprintf("%d px",width)}</option>
+}
+</select></label>
+}
+						<nav class="app-review-states" aria-label={ a.Name + " screen states" }>
+							for i,v:=range a.Views {
+								<button type="button" aria-pressed={ fmt.Sprint(i == 0) } data-app-view={ a.URL(v.ID) }>{ v.Name }</button>
+							}
+						</nav>
+						<div class="scene-review-viewport" style={ templ.SafeCSS(fmt.Sprintf("--frame-width:%d;--frame-height:%d", a.Width, a.Height)) }><iframe title={ a.Name + " app scene" } src={ a.URL(a.Views[0].ID) } width={ fmt.Sprint(a.Width) } height={ fmt.Sprint(a.Height) } loading="lazy"></iframe></div>
+					</section>
+				}
+			</main>
+		</body>
+	</html>
+}
+
+templ applicationScenePage(a applicationScene, v applicationState) {
+	<!DOCTYPE html>
+	<html lang="en" data-theme="light" data-contrast="default">
+		<head>
+			<meta charset="utf-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<meta name="robots" content="noindex"/>
+			<title>{ a.Name+" · "+v.Name }</title>
+			<link rel="stylesheet" href="/theme.css"/>
+			for _,file:=range []string{"site.css","app.css","buttons.css","bundles/common.css","scene-screens.css","application-scenes.css"} {
+				<link rel="stylesheet" href={ staticURL(file) }/>
+			}
+
+<script src={staticURL("motion.js")} defer></script>
+<script src={staticURL("buttons.js")} defer></script>
+<script src={staticURL("runtime/utils.js")} defer></script>
+<script src={staticURL("runtime/navigation.js")} defer></script>
+<script src={staticURL("fields.js")} defer></script>
+<script src={staticURL("menus.js")} defer></script>
+<script src={staticURL("asset-loader.js")} data-sources={componentScriptSources()} data-shapes-version={loadingGeometry.version} defer></script>
+<script src={staticURL("scene-review.js")} defer></script>
+<script src={staticURL("application-scenes.js")} defer></script>
+		</head>
+		<body class="application-body">
+			@componentAssetScope() {
+				@useComponentAssets("card")
+				@useComponentAssets("list")
+				<main class="application-screen tokens-layout tokens-layout-content" data-application={ a.ID } data-view={ v.ID } style={ templ.SafeCSS(fmt.Sprintf("--app-width:%dpx;--app-height:%dpx", a.Width, a.Height)) }>
+					if a.ID=="museum" {
+						<div class="app-system md-typescale-label-medium">
+							<span>9:30</span>
+							<span>
+								@materialSymbol("wifi")
+								@materialSymbol("battery_full")
+							</span>
+						</div>
+					}
+					switch a.ID {
+						case "mail":
+							@mailApplication(v)
+						case "learning":
+							@learningApplication(v)
+						case "artwork":
+							@artworkApplication(v)
+						case "workspace":
+							@workspaceApplication(v.ID)
+						case "shop":
+							@shopApplication(v)
+						case "museum":
+							@museumApplication(v.ID)
+					}
+					if a.ID=="museum" {
+						<div class="app-system-bottom"><span></span></div>
+					}
+				</main>
+			}
+		</body>
+	</html>
+}
+
+templ applicationGrid() {
+	<div class="app-column-overlay tokens-layout-content" aria-hidden="true">
+		for range 12 {
+			<span></span>
+		}
+	</div>
+}
+
+templ appPane(tone string) {
+	<section class="app-pane tokens-layout" data-tone={ tone }>
+		<div class="app-pane-content tokens-layout-content">
+			{ children... }
+		</div>@applicationGrid()
+	</section>
+}
+
+templ appHeader(title string, subtitle string) {
+@ui.AppBar(ui.AppBarProps{Title:title,Subtitle:subtitle,Variant:"small"}) {
+{ children... }
+}
+}
+
+templ appNavigation(app string, selected int, rail bool, labels []string, icons []string, unread string) {
+@useComponentAssets("navigation")
+{{ c:=applicationNavigationCase(app,rail) }}
+<nav { c.Attributes()... }>
+if app=="mail" {
+<header>
+@useComponentAssets("fab")
+<a { applicationComposeAttributes(c)... } href="/illustrations/apps/mail/compose">
+@materialSymbol("edit")
+<span>Compose</span>
+</a>
+</header>
+}
+if !rail {
+<h2 class="md-typescale-title-medium">Studio</h2>
+}
+<div class="md-nav-items">
+for i,label:=range labels {
+<a { applicationNavigationItem(c,i,selected)... } href={templ.SafeURL("/illustrations/apps/"+app+"/"+icons[i*2])}>
+@applicationNavigationContents(c,label,icons[i*2+1],map[bool]string{true:unread,false:""}[app=="mail"&&i==0])
+</a>
+}
+</div>
+</nav>
+}
+
+templ applicationNavigationContents(c ui.NavigationProps,label,icon,count string) {
+<span class="md-nav-indicator">
+<span class="md-nav-icon">
+@materialSymbol(applicationIcon(icon,false))
+@materialSymbol(applicationIcon(icon,true))
+if c.Kind=="rail" && count!="" {
+@useComponentAssets("badge")
+@ui.Badge("labeled",count,templ.Attributes{"class":"md-badge md-nav-badge"})
+}
+</span>
+<span class="md-nav-label" data-navigation-label={label}>{label}</span>
+if c.Kind=="drawer" && count!="" {
+<span class="md-nav-count">{count}</span>
+}
+</span>
+}
+
+templ mailApplication(state applicationState) {
+{{ view:=state.ID }}
+	<div class="app-shell app-mail">
+@appNavigation("mail",map[string]int{"calendar":1,"date":1,"time":1,"compose":2}[view],true,[]string{"Inbox","Calendar","Drafts"},[]string{"inbox","mail","calendar","calendar_month","compose","edit"},applicationUnreadTotal(state))
+
+		<div class="app-main tokens-layout">
+			if view=="calendar" || view=="date" || view=="time" {
+				<div class="app-body app-calendar-body tokens-layout-content">
+					@appPane("content") {
+						@appHeader("Calendar", "19–23 October 2026") {
+							@sceneIcon("chevron_left", "Previous week")
+							@sceneIcon("chevron_right", "Next week")
+						}
+						@applicationCalendar()
+					}
+					@appPane("supporting") {
+						<h2 class="md-typescale-title-large">Installation review</h2>
+						<p class="md-typescale-body-medium app-muted">Exhibition 2026 · Event details</p>
+						<div class="app-form">
+							@sceneField("event-title", "Title", "Installation review", "", false)
+							@sceneField("event-date", "Date", "Wednesday, 21 October 2026", "", false)
+							@applicationDatePicker(view=="date")
+							@sceneField("event-time", "Time", "10:10–11:10", "", false)
+							@applicationTimePicker(view=="time")
+							@sceneField("event-location", "Location", "Gallery 2", "", false)
+							@sceneField("event-attendees", "Guests", "Maya Chen, Alex Morgan", "", false)
+						</div><button class="md-button md-filled-button" data-size="small">Save event</button>
+					}
+				</div>
+			} else {
+				<div class="app-body app-mail-panes tokens-layout-content">
+<div class="app-mail-list-region tokens-layout">
+<div class="app-mail-search">
+@applicationSearch("mail-search", "Search mail", "")
+</div>
+					@appPane("list") {
+						@appHeader("Inbox", applicationUnreadTotal(state)+" unread · maya@example.com") {
+							<span class="md-typescale-label-medium">Recent</span>
+						}
+ @ui.List(ui.ListProps{ID:"mail-messages",Label:"Conversations",Leading:ui.LeadingAvatar}) {
+ for _,row:=range applicationInboxRows(view=="archived",state.Item) {
+ {{ p:=ui.ListItemProps{Label:row[1],Supporting:row[2],Avatar:row[0],Metadata:row[3],LeadingKind:ui.LeadingAvatar,Unread:applicationUnread(row[1])!="",Current:applicationMessageIndex(row[1])==state.Item&&view=="inbox",Attrs:templ.Attributes{"aria-label":applicationMailLabel(row)}};if p.Unread {p.Badge=ui.Badge("small","",nil)} }}
+ @ui.ListLink(fmt.Sprintf("/illustrations/apps/mail/inbox?item=%d",applicationMessageIndex(row[1])),p)
+ }
+ }
+
+					}
+</div>
+					@appPane("content") {
+						if view=="compose" {
+							@appHeader("New message", "Draft saved just now") {
+								@sceneIcon("close", "Close draft")
+							}
+							<div class="app-form app-compose-fields">
+								@sceneField("mail-to", "To", "Alex Morgan <alex@example.com>", "", false)
+								@sceneField("mail-subject", "Subject", "Exhibition installation plan", "", false)
+							</div>
+							<article class="app-letter md-typescale-body-large"><p>Hi Alex,</p><p>I’ve attached the installation plan for next week. The artwork list is final and the labels are ready for proofing.</p><p>Could you confirm the team’s arrival time on Wednesday? We can start in gallery 2 while the lighting is being adjusted in gallery 1.</p><p>Thanks,<br/>Maya</p></article>
+							<div class="app-attachment">
+								@materialSymbol("description")
+								<div><strong>Installation plan.pdf</strong><p class="app-muted">2.4 MB · Attached</p></div>@sceneIcon("close", "Remove attachment")
+							</div>
+							<footer class="app-composer-actions">
+								{{ split := ui.SplitButtonProps{ID:"mail-send",Label:"Send",Icon:"send",Content:"label",Variant:"filled",Size:ui.Small} }}
+								<div class="md-split-demo">
+									@ui.SplitButton(split)
+									<nav class="md-menu md-split-menu" id="mail-send-menu" popover="auto" data-variant="standard" role="menu" aria-label="Sending options"><ul><li><button type="button" class="md-menu-item" role="menuitem" data-split-option>Schedule send</button></li><li><button type="button" class="md-menu-item" role="menuitem" data-split-option>Save draft</button></li></ul></nav>
+								</div>
+								@sceneIcon("attach_file", "Attach file")
+								@sceneIcon("image", "Insert image")
+								@sceneIcon("delete", "Discard draft")
+							</footer>
+						} else if view=="archived" {
+<div class="app-list-detail-empty"><h1 class="md-typescale-headline-small">Conversation archived</h1><p class="md-typescale-body-large app-section">Choose another conversation from your inbox.</p></div>
+} else {
+							@appHeader(applicationMessageSubject(state.Item), "Exhibition 2026") {
+								<a class="md-icon-button md-standard-icon-button" data-size="small" href={templ.SafeURL(fmt.Sprintf("/illustrations/apps/mail/archived?item=%d",state.Item))} aria-label="Archive conversation">
+									@materialSymbol("archive")
+								</a> @sceneIcon("delete", "Delete conversation")
+								@sceneIcon("more_vert", "More actions")
+							}
+							<div class="app-sender">
+								<span class="app-avatar">{sceneInboxRows(false)[state.Item][0]}</span>
+								<div><strong class="md-typescale-title-medium">{sceneInboxRows(false)[state.Item][1]}</strong><p class="md-typescale-body-small app-muted">To Maya Chen · Today, {sceneInboxRows(false)[state.Item][3]}</p></div>@sceneIcon("star_outline", "Star message")
+							</div>
+							if state.Item==1 {
+<article class="app-letter md-typescale-body-large"><p>Hi Maya,</p><p>The second version looks good. The warmer paper works well with the coastal prints, and the labels are easier to read at this size.</p><p>I’ve marked two small changes in the attached proof. Could we check the hanging heights together before sending the final files?</p><p>I can be at gallery 2 on Wednesday at 9. The installation team will bring the revised plan and a complete set of labels.</p><p>See you then,<br/>Alex</p></article>
+} else {
+<article class="app-letter md-typescale-body-large"><p>Hi Maya,</p><p>{sceneInboxRows(false)[state.Item][2]}</p><p>The project files are ready for your review. Please let me know if you need anything else before our next meeting.</p><p>{sceneInboxRows(false)[state.Item][1]}</p></article>
+}
+							if state.Item==1 {
+<div class="app-attachment">
+								@materialSymbol("description")
+								<div><strong>Print proofs v2.pdf</strong><p class="app-muted">4 pages · 3.2 MB</p></div>@sceneIcon("download", "Download proof")
+							</div>
+
+}
+<div class="app-actions app-section"><button class="md-button md-outlined-button" data-size="small">Reply</button><button class="md-button md-outlined-button" data-size="small">Reply all</button><button class="md-button md-text-button" data-size="small">Forward</button></div>
+							if state.Item==1 {
+<article class="app-message-history"><strong class="md-typescale-title-small">Maya Chen</strong><span class="md-typescale-body-small app-muted">Yesterday, 16:45</span><p class="md-typescale-body-medium">Thanks for reviewing these. Here is the updated set with the paper and spacing changes we discussed.</p></article>
+}
+
+						}
+					}
+				</div>
+				if view=="archived" {
+					@useComponentAssets("messages")
+					<div class="app-snackbar"><div class="md-snackbar" data-variant="single-line" role="status"><span class="md-feedback-text">Conversation archived</span><a class="md-button md-text-button md-feedback-action" href={templ.SafeURL(fmt.Sprintf("/illustrations/apps/mail/inbox?item=%d",state.Item))}>Undo</a></div></div>
+				}
+			}
+		</div>
+	</div>
+}
+
+templ applicationCalendar() {
+<div class="app-calendar" data-calendar-view="week">
+
+	<div class="app-actions app-section">
+		@ui.SegmentedButtons(ui.SegmentedProps{Label:"View selection",Content:"label"}){
+ for i,label:=range []string{"Day","Week","Month"}{
+ @ui.Segment(ui.SegmentProps{Name:"calendar-view",Value:label,Label:label,Content:"label",Selected:i==1})
+ }
+ }
+		<button class="md-button md-text-button" data-size="small">Today</button>
+	</div>
+	<div class="scene-week-calendar app-week-calendar">
+		<div class="scene-calendar-hours md-typescale-label-medium">
+			for _,hour:=range []string{"09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00"} {
+				<span>{ hour }</span>
+			}
+		</div>
+		for i,day:=range []string{"Mon 19","Tue 20","Wed 21","Thu 22","Fri 23"} {
+			<section>
+				<h3 class="md-typescale-label-large">{ day }</h3>
+				<div class={ "scene-calendar-event scene-event-" + fmt.Sprint(i) }><strong class="md-typescale-label-large">{ []string{"Planning","Studio visit","Installation review","Design review","Team lunch"}[i] }</strong><span class="md-typescale-body-small">{ []string{"9:00–10:00","11:00–12:00","10:10–11:10","9:00–10:00","12:00–13:00"}[i] }</span></div>
+				if i==1 || i==3 {
+					<div class="scene-calendar-event scene-event-late"><strong class="md-typescale-label-large">Workshop</strong><span class="md-typescale-body-small">14:00–15:30</span></div>
+				}
+			</section>
+		}
+	</div>
+<div class="app-month-calendar" hidden>
+for _,day:=range []string{"Mon","Tue","Wed","Thu","Fri","Sat","Sun"} {
+<strong class="md-typescale-label-large">{day}</strong>
+}
+for n:=range 35 {
+<div class="md-typescale-body-medium">
+if n>=3&&n<34 {
+{fmt.Sprint(n-2)}
+if n==23 {
+<small>Installation review · 10:10</small>
+}
+}
+</div>
+}
+</div>
+</div>
+}
+
+templ learningApplication(state applicationState) {
+{{ view:=state.ID }}
+	<div class="app-shell">
+		@appNavigation("learning", applicationLearningDestination(view,state.Filter), true, []string{"Courses", "Saved", "Learning"}, []string{"courses", "home", "courses?filter=saved", "star", "lesson", "play_circle"}, "")
+		<div class="app-main tokens-layout">
+			if view=="courses" {
+				@ui.AppBar(ui.AppBarProps{Title:map[bool]string{true:"Saved courses",false:"Courses"}[state.Filter=="saved"],Variant:"medium-flexible",Expanded:true}) {
+@sceneIcon("search","Search courses")
+@sceneIcon("person","Your account")
+}
+				<div class="app-body tokens-layout-content">
+					@appPane("content") {
+						<div class="app-actions app-section">
+							@sceneFilter("All courses", true)
+							@sceneFilter("Painting", false)
+							@sceneFilter("Photography", false)
+							@sceneFilter("Drawing", false)
+							<span class="app-spacer"></span><button class="md-button md-text-button" data-size="small">Sort: Recently opened</button>
+						</div>
+						<div class="app-feed tokens-layout-grid">
+							for i,title:=range applicationCourseTitles {
+if state.Filter!="saved" || i==0 || i==3 {
+								<a class="md-card md-filled-card md-interactive-card app-course" href={templ.SafeURL(fmt.Sprintf("/illustrations/apps/learning/lesson?item=%d",i))}>
+									<img class="md-card-media" src={ staticURL("paintings/" + applicationPainting("learning", i)) } alt="Painting used in this course"/>
+									<div class="md-card-content">
+										<h2 class="md-card-headline">{ title }</h2>
+										<p class="md-card-supporting-text">{ []string{"Maya Chen · 8 lessons","Alex Morgan · 10 lessons","Studio North · 6 lessons","Jamie Park · 12 lessons"}[i%4] }</p>
+										<div class="app-course-progress md-typescale-label-medium">
+											<span>{ []string{"2 of 8 completed","6 of 10 completed","Start course","2 of 12 completed"}[i%4] }</span>@materialSymbol("arrow_forward")
+										</div>
+									</div>
+								</a>
+}
+							}
+						</div>
+					}
+				</div>
+			} else {
+				@appHeader(applicationCourseTitles[state.Item], "Framing the subject") {
+<a class="md-icon-button md-standard-icon-button" href="/illustrations/apps/learning/courses" aria-label="Back to courses">@materialSymbol("arrow_back")
+</a>
+@sceneIcon("star_outline","Save course")
+}
+				<div class="app-body app-support-layout tokens-layout-content">
+					@appPane("content") {
+						<div class="app-lesson-media">
+							<img class="scene-art" src={staticURL("paintings/"+applicationPainting("learning",state.Item))} alt={applicationCourseTitles[state.Item]}/>
+							if view=="loading" {
+								<div class="app-media-loading">
+									@ui.Loading(ui.ProgressProps{ID:"lesson-loading",Label:"Loading lesson"})
+									<span class="md-typescale-body-medium">Preparing lesson</span>
+								</div>
+							} else {
+								<button class="md-icon-button md-filled-icon-button app-play" data-size="large" aria-label="Play lesson">
+									@materialSymbol("play_circle")
+								</button>
+							}
+						</div>
+						<div class="app-actions app-section md-typescale-body-medium">
+							<span data-app-lesson-time>05:00 / 12:30</span><span class="app-spacer"></span>@sceneIcon("volume_up", "Volume")
+							@sceneIcon("open_in_new", "Fullscreen")
+						</div>
+						@ui.Progress(ui.ProgressProps{ID:"lesson-progress",Label:"Lesson playback",Value:applicationPercent(40)})
+						<h2 class="md-typescale-headline-medium app-section" data-app-lesson-title>Framing the subject</h2>
+						<p class="md-typescale-body-large app-reading" data-app-lesson-summary>Explore how foreground, middle ground and distance guide the viewer through a landscape. Compare three arrangements, then make a study using the view outside your window.</p>
+						<div class="app-lesson-notes" data-app-lesson-notes><h2 class="md-typescale-title-large">Practice</h2><p class="md-typescale-body-large">Draw three thumbnail compositions. Move the horizon between each one. Keep the same subject and use only three values.</p><h3 class="md-typescale-title-medium">Materials</h3><ul class="md-typescale-body-large"><li>A sketchbook and soft pencil</li><li>A view with a clear foreground and distance</li><li>Twenty minutes of uninterrupted time</li></ul><button class="md-button md-tonal-button" data-size="small">Download exercise sheet</button></div>
+					}
+					@appPane("supporting") {
+						<h2 class="md-typescale-title-large">Lessons in this course</h2>
+						<p class="md-typescale-body-medium app-muted">2 of 8 completed · 25%</p>
+						@ui.List(ui.ListProps{ID:"course-lessons",Label:"Lessons in this course",Leading:ui.LeadingImage,Ordered:true}){
+ for i,title:=range []string{"Seeing the landscape","Choosing a viewpoint","Framing the subject","Light and shadow","Color relationships","Water and reflections","Developing your study","Your final composition"}{
+ @ui.ListButton(ui.ListItemProps{Label:title,Supporting:[]string{"4:14 · Completed","6:20 · Completed","12:30 · In progress","8:12","5:43","9:10","7:22","11:45"}[i],LeadingKind:ui.LeadingImage,ImageSrc:staticURL("paintings/"+applicationPainting("learning",i)),Current:i==2,Trailing:ui.Icon("chevron_right"),Attrs:templ.Attributes{"data-app-lesson":title,"data-app-duration":[]string{"4:14","6:20","12:30","8:12","5:43","9:10","7:22","11:45"}[i]}})
+ }
+ }
+
+						<hr class="md-divider"/>
+						<h3 class="md-typescale-title-medium">Your notes</h3>
+						<p class="md-typescale-body-medium">A darker foreground frames the lighter middle distance. Try the lower horizon for the final study.</p><button class="md-button md-text-button" data-size="small">Edit notes</button>
+					}
+				</div>
+			}
+		</div>
+	</div>
+}
+
+templ artworkApplication(state applicationState) {
+{{ view:=state.ID }}
+	<div class="app-shell">
+		@appNavigation("artwork", applicationArtworkDestination(view,state.Filter), true, []string{"Library", "Favorites", "Editor"}, []string{"library", "image", "library?filter=favorites", "star", "editor", "edit"}, "")
+		<div class="app-main tokens-layout">
+			<header class="app-topbar">
+				<span class="md-typescale-title-large">Atelier</span><span class="app-muted md-typescale-body-medium">Personal collection</span><span class="app-spacer"></span>@sceneIcon("check_circle", "All changes saved")
+				<span class="app-avatar">M</span>
+			</header>
+			if view=="editor" {
+				<div class="app-body app-support-layout tokens-layout-content">
+					@appPane("canvas") {
+						@appHeader(applicationArtworkTitles[state.Item],"Original image") {
+@sceneIcon("undo","Undo")
+@sceneIcon("redo","Redo")
+}
+						<div class="app-photo-canvas"><img src={ staticURL("paintings/" + applicationPainting("artwork", state.Item)) } alt={applicationArtworkTitles[state.Item]}/></div>
+						<div class="app-canvas-status md-typescale-body-small"><span>Fit to screen · 64%</span><span>WebP · sRGB</span></div>
+						@useComponentAssets("toolbar")
+						{{ toolbar := ui.ToolbarProps{Label:"Photo editing tools",Variant:"floating",Orientation:"horizontal",Size:"small",Content:"icon"} }}
+						<div class="app-floating-tools">
+							<div {toolbar.Attributes()...}>
+								for i,label:=range []string{"Crop","Adjust","Rotate"} {
+									@plainTooltip(label, fmt.Sprintf("photo-tool-tip-%d", i)) {
+										<button type="button" class="md-icon-button md-toolbar-item" data-toolbar-item={fmt.Sprint(i)} aria-label={label} aria-pressed={fmt.Sprint(i==1)} aria-describedby={fmt.Sprintf("photo-tool-tip-%d",i)}>
+											@materialSymbol([]string{"crop", "edit", "rotate_left"}[i])
+										</button>
+									}
+								}
+							</div>
+						</div>
+					}
+					@appPane("supporting") {
+						@appHeader("Adjustments", "") {
+							<button class="md-button md-text-button" data-size="small">Reset</button>
+						}
+						<div class="app-adjustments">
+							for i,label:=range []string{"Exposure","Contrast","Saturation","Highlights","Shadows"} {
+								<section>
+									<div class="app-actions md-typescale-title-small"><span>{ label }</span><span class="app-spacer"></span><output data-app-adjustment-value>40</output></div>@ui.Range(ui.SliderProps{ID:"photo-slider-"+fmt.Sprint(i),Label:label,Value:40,Size:ui.Small})
+								</section>
+							}
+						</div>
+						<hr class="md-divider"/>
+						<h3 class="md-typescale-title-medium app-section">Presets</h3>
+						<div class="app-preset-grid">
+							for i,label:=range []string{"Original","Warm","Soft","Cool"} {
+								<button class="app-preset"><img src={ staticURL("paintings/" + applicationPainting("artwork", state.Item)) } alt="" style={ templ.SafeCSS([]string{"filter:none", "filter:sepia(.3)", "filter:contrast(.8)", "filter:saturate(.6)"}[i]) }/><span class="md-typescale-label-medium">{ label }</span></button>
+							}
+						</div>
+						<footer class="app-pane-footer"><a class="md-button md-text-button" href="/illustrations/apps/artwork/library">Cancel</a><button class="md-button md-filled-button" data-size="small">Save a copy</button></footer>
+					}
+				</div>
+			} else {
+				<div class={ "app-body tokens-layout-content",templ.KV("app-with-sheet",view=="details") }>
+					@appPane("content") {
+						@appHeader(map[bool]string{true:"Favorites",false:"Library"}[state.Filter=="favorites"],map[bool]string{true:"3 artworks",false:"9 artworks"}[state.Filter=="favorites"]) {
+							<a class="md-button md-tonal-button" data-size="small" href={templ.SafeURL(fmt.Sprintf("/illustrations/apps/artwork/editor?item=%d",state.Item))}>Open editor</a>@sceneIcon("more_vert", "Library actions")
+						}
+						<div class="app-search-host">
+@applicationSearch("artwork-search", "Search artworks", "")
+</div>
+						<div class="app-actions app-section">
+							@sceneFilter("Landscape", true)
+							@sceneFilter("In collection", true)
+							@sceneFilter("On display", false)
+							<span class="app-spacer"></span><button class="md-button md-text-button" data-size="small">Recently added</button>
+						</div>
+						<div class="app-art-feed tokens-layout-grid">
+							for i,title:=range applicationArtworkTitles {
+if state.Filter!="favorites" || i<3 {
+								@ui.CardLink(fmt.Sprintf("/illustrations/apps/artwork/details?item=%d",i),ui.CardProps{Headline:title,Supporting:"Public-domain painting",ImageSrc:staticURL("paintings/"+applicationPainting("artwork",i)),ImageAlt:title+", public-domain painting",Attrs:templ.Attributes{"aria-current":map[bool]string{true:"page",false:"false"}[view=="details"&&i==state.Item]}})
+}
+							}
+						</div>
+					}
+					if view=="details" {
+						{{ sheet := ui.SheetProps{ID:"artwork-metadata",Kind:ui.SideSheet} }}
+						<aside class="app-sheet md-sheet-host">
+							@ui.SheetSurface(sheet) {
+								<header class="md-sheet-header">
+									<h2 class="md-sheet-title" id="artwork-metadata-heading">{applicationArtworkTitles[state.Item]}</h2>
+									<a class="md-icon-button md-standard-icon-button" data-size="small" aria-label="Close details" href="/illustrations/apps/artwork/library">
+										@materialSymbol("close")
+									</a>
+								</header>
+								<div class="md-sheet-body"><img class="scene-sheet-thumbnail" src={ staticURL("paintings/" + applicationPainting("artwork", state.Item)) } alt={applicationArtworkTitles[state.Item]}/><dl class="scene-metadata"><dt>Collection</dt><dd>Landscapes</dd><dt>Added</dt><dd>21 October 2026</dd><dt>Format</dt><dd>WebP image</dd><dt>Rights</dt><dd>Public domain</dd><dt>Owner</dt><dd>Maya Chen</dd></dl></div>
+								<footer class="md-sheet-footer">
+									<a class="md-button md-filled-button" data-size="small" href={templ.SafeURL(fmt.Sprintf("/illustrations/apps/artwork/editor?item=%d",state.Item))}>Edit image</a>@sceneIcon("download", "Download artwork")
+								</footer>
+							}
+						</aside>
+					}
+				</div>
+			}
+		</div>
+	</div>
+}
+
+templ workspaceApplication(view string) {
+	<div class="app-shell">
+@appNavigation("workspace",map[string]int{"tasks":0,"document":1,"delete":1,"settings":2}[view],false,[]string{"Tasks","Documents","Preferences"},[]string{"tasks","check_circle","document","description","settings","notifications"},"")
+
+		<div class="app-main tokens-layout">
+			<header class="app-topbar">
+				<span class="md-typescale-title-medium">Exhibition 2026</span><span class="app-muted md-typescale-body-medium">Studio North</span><span class="app-spacer"></span>@sceneIcon("search", "Search workspace")
+				@sceneIcon("notifications", "Notifications")
+				<span class="app-avatar">M</span>
+			</header>
+			if view=="document" || view=="delete" {
+				@documentCommandBar(view == "document")
+				<div class="app-body app-support-layout tokens-layout-content">
+					@appPane("canvas") {
+						<div class="app-document-shell">
+							@documentPaper()
+						</div>
+					}
+					@appPane("supporting") {
+						<h2 class="md-typescale-title-large">Comments</h2>
+						<p class="md-typescale-body-medium app-muted">Installation plan · 3 open</p>
+						for i,name:=range []string{"Alex Morgan","Jamie Park","Maya Chen"} {
+							<article class="app-comment"><div class="app-sender"><span class="app-avatar">{ name[:1] }</span><div><strong class="md-typescale-title-small">{ name }</strong><p class="md-typescale-body-small app-muted">{ []string{"12 minutes ago","Yesterday, 16:20","Yesterday, 14:05"}[i] }</p></div></div><p class="md-typescale-body-medium">{ []string{"Can we confirm the team’s arrival time before this goes to print?","The label proofs are ready. I’ll bring a full set on Wednesday.","Keep the central walkway clear while the lighting team is working."}[i] }</p><button class="md-button md-text-button" data-size="small">Reply</button></article>
+						}
+						<button type="button" class="md-button md-text-button app-section" data-app-dialog-open="document-delete-panel">Move document to Trash</button>
+					}
+				</div>
+@applicationDeleteDialog(view=="delete")
+
+			} else if view=="settings" {
+				<div class="app-body app-settings-layout tokens-layout-content">
+					@appPane("list") {
+						<h1 class="md-typescale-headline-small">Preferences</h1>
+						@applicationSettingsList()
+					}
+					@appPane("content") {
+						<div id="notifications">
+@appHeader("Notifications", "Manage how Studio keeps you up to date.")
+</div>
+						<h2 class="md-typescale-title-medium app-section">Project activity</h2>
+						<div class="app-settings-group">
+							for i,label:=range []string{"Direct messages","Mentions and replies","Task assignments"} {
+								<section class="app-setting-row">
+									<div><h3 class="md-typescale-title-medium">{ label }</h3><p class="md-typescale-body-medium app-muted">{ []string{"When someone sends you a message","Activity in conversations you follow","When a task is assigned to you"}[i] }</p></div>@ui.SwitchControl(ui.ChoiceProps{ID:"notification-"+fmt.Sprint(i),Label:label,Checked:true})
+								</section>
+							}
+						</div>
+						<hr class="md-divider app-section"/>
+						<h2 class="md-typescale-title-medium">Email updates</h2>
+						<div class="app-settings-group">
+							for i,label:=range []string{"Weekly project summary","Product updates"} {
+								<section class="app-setting-row">
+									<div><h3 class="md-typescale-title-medium">{ label }</h3><p class="md-typescale-body-medium app-muted">{ []string{"A digest every Monday morning","New features and improvements"}[i] }</p></div>@ui.SwitchControl(ui.ChoiceProps{ID:"email-"+fmt.Sprint(i),Label:label,Checked:i==0})
+								</section>
+							}
+						</div>
+						<hr class="md-divider app-section"/>
+						<h2 class="md-typescale-title-medium">Delivery</h2>
+						<p class="md-typescale-body-large app-section">Quiet hours are on from 20:00 to 08:00. Urgent mentions can still reach you.</p><button class="md-button md-tonal-button" data-size="small">Edit quiet hours</button>
+<section id="account" class="app-section">
+<h2 class="md-typescale-title-large">Account</h2>
+<div class="app-form">
+@sceneField("account-name","Name","Maya Chen","",false)
+@sceneField("account-email","Email","maya@example.com","",false)
+</div>
+</section>
+<section id="storage" class="app-section"><h2 class="md-typescale-title-large">Storage</h2><p class="md-typescale-body-large app-section">1.2 GB of 15 GB used</p></section>
+<section id="accessibility" class="app-section"><h2 class="md-typescale-title-large">Accessibility</h2>
+<div class="app-setting-row"><label for="reduce-effects-input" class="md-typescale-body-large">Reduce visual effects</label>
+@ui.SwitchControl(ui.ChoiceProps{ID:"reduce-effects-input",Label:"Reduce visual effects"})
+</div></section>
+
+					}
+				</div>
+			} else {
+				<div class="app-body app-task-layout tokens-layout-content">
+					@appPane("list") {
+						@appHeader("Tasks", "Exhibition 2026 · 7 open") {
+							@sceneIcon("add", "Add task")
+						}
+						<div class="md-tabs-example">
+ @ui.Tabs(ui.TabsProps{Label:"Library views",Variant:"secondary",Content:"label"}){
+ for i,label:=range []string{"All tasks","Assigned to me","Completed"}{
+ @ui.Tab(ui.TabProps{ID:fmt.Sprintf("project-tabs-tab-%d",i),PanelID:fmt.Sprintf("project-tabs-panel-%d",i),Label:label,Content:"label",Selected:i==0})
+ }
+ }
+
+							for i:=range 3 {
+								<section role="tabpanel" id={ fmt.Sprintf("project-tabs-panel-%d", i) } aria-labelledby={ fmt.Sprintf("project-tabs-tab-%d", i) } hidden?={ i!=0 }>
+									{{ tasks:=ui.ListProps{ID:"tasks-list-"+fmt.Sprint(i),Label:"Project tasks",Leading:ui.NoLeading} }}
+<ul {tasks.Attributes()...}>
+										for j,label:=range []string{"Confirm artwork list","Book installation team","Print exhibition labels","Arrange refreshments","Check lighting","Send invitations","Prepare opening remarks","Update the visitor guide","Review press release"} {
+												<li>
+<div {(ui.ListItemProps{Label:label}).Attributes()...} data-current?={j==2} data-app-task={fmt.Sprint(j)}>
+<div class="md-list-leading">
+@ui.CheckboxControl(ui.ChoiceProps{ID:fmt.Sprintf("project-task-%d-%d-input",i,j),Label:label,Checked:j<2})
+</div>
+<span class="md-list-body"><label class="md-list-label" for={fmt.Sprintf("project-task-%d-%d-input",i,j)}>{label}</label><span class="md-list-supporting">{[]string{"Maya · Completed","Alex · Completed","Jamie · Due today","Robin · Tomorrow","Alex · Fri, 6 Nov","Maya · Thu, 5 Nov","Jamie · Fri, 6 Nov","Lea · Tomorrow","Sam · Thu, 5 Nov"}[j]}</span></span>
+</div>
+</li>
+										}
+									</ul>
+								</section>
+							}
+						</div>
+					}
+					@appPane("content") {
+						<div class="app-task-empty" hidden><h2 class="md-typescale-title-large">Select a task</h2><p class="md-typescale-body-large app-section">Choose a task from this list to view its details.</p></div>
+						<div class="app-task-detail">
+							@appHeader("Print exhibition labels", "Assigned to Jamie Park") {
+								@sceneIcon("more_vert", "Task actions")
+							}
+							<div class="app-task-properties"><span class="md-typescale-label-large app-muted">STATUS</span><span class="app-tag" data-app-task-status>In progress</span><span class="md-typescale-label-large app-muted">DUE DATE</span><span>Today, 17:00</span><span class="md-typescale-label-large app-muted">PROJECT</span><span>Exhibition 2026</span></div>
+							<h2 class="md-typescale-title-medium app-section">Description</h2>
+							<p class="md-typescale-body-large app-reading">Print the approved labels on matte paper. Check the artwork titles against the final list and leave a complete spare set with visitor services.</p>
+							<h2 class="md-typescale-title-medium app-section">Files</h2>@sceneDataRows([][4]string{{"description", "Exhibition labels v3.pdf", "24 pages · 2.4 MB", ""}, {"table_chart", "Final artwork list.xlsx", "128 KB · Updated today", ""}}, false)
+							<h2 class="md-typescale-title-medium app-section">Activity</h2>
+							<article class="app-comment"><strong class="md-typescale-title-small">Alex Morgan</strong><p class="md-typescale-body-medium">The proofs look good. Please use the warmer paper for the final set.</p><span class="md-typescale-body-small app-muted">Today, 9:10</span></article>
+							<div class="app-form">
+								@sceneField("task-comment", "Add a comment", "", "", false)
+							</div>
+						</div>
+					}
+				</div>
+			}
+		</div>
+	</div>
+}
+
+templ shopApplication(state applicationState) {
+{{ view:=state.ID;price:=applicationPrice(state) }}
+	<div class="app-shop">
+		<header class="app-shop-header">
+			<a class="md-typescale-title-large" href="/illustrations/apps/shop/product">Gallery Editions</a>
+			<nav aria-label="Shop"><a href="/illustrations/apps/shop/product">Prints</a><a href="/illustrations/apps/shop/checkout">Your bag</a></nav><span class="app-spacer"></span>@sceneIcon("search", "Search shop")
+			<a class="md-icon-button md-standard-icon-button" data-size="small" aria-label="Shopping bag, one item" href="/illustrations/apps/shop/checkout">
+				@materialSymbol("shopping_bag")
+			</a>
+		</header>
+		<div class="app-body tokens-layout-content">
+			if view=="product" {
+				@appPane("content") {
+					<p class="md-typescale-body-medium app-muted">Prints / Landscapes / Peaceful valley</p>
+					<div class="app-product">
+						<div>
+							<div class="app-product-image"><img src={ staticURL("paintings/" + applicationPainting("shop", 0)) } alt="Peaceful valley, framed art print"/></div>
+
+							<p class="md-typescale-body-small app-muted app-section">Public-domain artwork · Printed and framed in Sweden</p>
+						</div>
+						<section class="app-product-info">
+							<h1 class="md-typescale-headline-large">Peaceful valley</h1>
+							<p class="md-typescale-body-large app-muted">Archival pigment print on textured matte paper</p>
+							<p class="md-typescale-headline-small" data-app-product-price>€48</p>
+							<p class="md-typescale-body-large">A landscape print for your home. Printed to order with rich detail and a soft, natural finish.</p>
+							<fieldset class="app-product-options" data-app-product-option="size"><legend class="md-typescale-title-medium">Size</legend>
+for i,label:=range []string{"30 × 40 cm","50 × 70 cm"} {
+@ui.Radio(ui.ChoiceProps{Name:"product-size",Value:label,Label:label,Checked:i==0})
+}
+</fieldset>
+<fieldset class="app-product-options" data-app-product-option="frame"><legend class="md-typescale-title-medium">Frame</legend>
+for i,label:=range []string{"Unframed","Oak","Black"} {
+@ui.Radio(ui.ChoiceProps{Name:"product-frame",Value:label,Label:label,Checked:i==0})
+}
+</fieldset>
+							<div class="app-actions">
+								<a class="md-button md-filled-button" data-size="medium" href="/illustrations/apps/shop/checkout">
+									@materialSymbol("shopping_bag")
+									<span data-app-product-buy>Add to bag · €48</span>
+								</a><button class="md-button md-outlined-button" data-size="medium">Save for later</button>
+							</div>
+							<p class="md-typescale-body-medium app-muted">Made to order · Ships in 3–5 working days</p>
+							<hr class="md-divider"/>
+							<h2 class="md-typescale-title-medium">Paper and care</h2>
+							<p class="md-typescale-body-large">230 gsm matte paper, printed with archival inks. Keep away from direct sunlight and frame behind glass.</p>
+							<div class="app-actions"><span class="app-tag">Public domain</span><span class="app-tag">Plastic-free packaging</span></div>
+						</section>
+					</div>
+				}
+			} else {
+				<div class="app-checkout-layout">
+					@appPane("content") {
+						@appHeader("Checkout", "Contact and delivery → Payment → Confirmation")
+						<h2 class="md-typescale-title-large app-section">Contact</h2>@sceneField("checkout-email", "Email", "maya@example.com", "Your receipt and delivery updates will be sent here.", false)
+						<h2 class="md-typescale-title-large app-section">Shipping address</h2>
+						<div class="scene-form-grid">
+							@sceneField("checkout-first", "First name", "Maya", "", false)
+							@sceneField("checkout-last", "Last name", "Chen", "", false)
+							<div class="scene-field-full">
+								@sceneField("checkout-address", "Street address", "12 Riverside Road", "", false)
+							</div>
+							@sceneField("checkout-postal", "Postal code", "114 28", "", false)
+							@sceneField("checkout-city", "City", "Stockholm", "", false)
+						</div>
+						<h2 class="md-typescale-title-large app-section">Delivery method</h2>
+						<div class="app-delivery-methods">
+							for i,label:=range []string{"Standard delivery","Express delivery","Collect in store"} {
+								<section>
+									@ui.Radio(ui.ChoiceProps{Name:"checkout-delivery",Value:label,Label:label,Checked:i==0})
+									<p class="md-typescale-body-medium app-muted">{ []string{"3–5 working days · €4.90","1–2 working days · €9.90","Ready tomorrow · Free"}[i] }</p>
+								</section>
+							}
+						</div>
+						<div class="app-actions app-section"><a class="md-button md-text-button" href="/illustrations/apps/shop/product">Return to shop</a><span class="app-spacer"></span><button class="md-button md-filled-button" data-size="medium">Continue to payment</button></div>
+					}
+					@appPane("supporting") {
+						<h2 class="md-typescale-title-large">Order summary</h2>
+						<div class="app-order-item"><img src={ staticURL("paintings/" + applicationPainting("shop", 0)) } alt="Peaceful valley art print"/><div><strong class="md-typescale-title-medium">Peaceful valley</strong><p class="md-typescale-body-medium app-muted">{[]string{"30 × 40 cm","50 × 70 cm"}[state.Size-1]+" · "+[]string{"Unframed","Oak","Black"}[state.Frame-1]}</p><p class="md-typescale-body-medium">{fmt.Sprintf("Quantity 1 · €%d.00",price)}</p></div></div>
+						<hr class="md-divider"/>
+						<dl class="app-order-totals md-typescale-body-large"><dt>Subtotal</dt><dd>{fmt.Sprintf("€%d.00",price)}</dd><dt>Delivery</dt><dd>€4.90</dd><dt>Tax</dt><dd>Included</dd><dt class="md-typescale-title-large">Total</dt><dd class="md-typescale-title-large">{fmt.Sprintf("€%.2f",float64(price)+4.9)}</dd></dl>
+						<div class="app-form app-section">
+							@sceneField("checkout-code", "Discount code", "", "", false)
+							<button class="md-button md-tonal-button" data-size="small">Apply</button>
+						</div>
+						<hr class="md-divider"/>
+						<h3 class="md-typescale-title-medium app-section">Made with care</h3>
+						<p class="md-typescale-body-medium app-muted">Your print is produced to order and packed in recyclable materials. We’ll email you when it’s on its way.</p>
+					}
+				</div>
+			}
+		</div>
+	</div>
+}
+
+templ museumHeader(title string){
+ @ui.AppBar(ui.AppBarProps{Title:title,Variant:"small"}){ @sceneIcon("search","Search museum") @sceneIcon("person","Your account") }
+}
+
+templ museumApplication(view string) {
+	@museumHeader(map[string]string{"discover": "Discover", "visit": "Riverside Museum", "planner": "Your visit", "audio": "Audio guide"}[view])
+	<div class="app-museum-content tokens-layout md-sheet-host" data-interactive="true" data-app-initial-open?={view=="visit"}>
+		<div class="app-museum-scroll tokens-layout-content">
+			if view=="discover" || view=="visit" {
+				<div class="app-actions"><h2 class="md-typescale-title-large">Explore the collection</h2></div>
+				@applicationCarousel()
+				<p class="md-typescale-body-medium app-muted">Landscapes, water and changing light</p>
+				<h2 class="md-typescale-title-large app-section">At the museum</h2>
+				if view=="visit" {
+<button class="app-museum-feature" type="button" data-sheet-open aria-controls="museum-routes-panel" aria-expanded="false">
+<img src={ staticURL("paintings/" + applicationPainting("museum", 0)) } alt="Painting in the Landscapes exhibition"/><div><h3 class="md-typescale-title-medium">Landscapes across Europe</h3><p class="md-typescale-body-medium app-muted">Gallery 4 · Until 12 December</p><span class="md-typescale-label-large">Plan your visit →</span></div>
+</button>
+} else {
+<a class="app-museum-feature" href="/illustrations/apps/museum/visit"><img src={ staticURL("paintings/" + applicationPainting("museum", 0)) } alt="Painting in the Landscapes exhibition"/><div><h3 class="md-typescale-title-medium">Landscapes across Europe</h3><p class="md-typescale-body-medium app-muted">Gallery 4 · Until 12 December</p><span class="md-typescale-label-large">Plan your visit →</span></div></a>
+}
+				@sceneDataRows([][4]string{{"music_note", "Listen as you explore", "12 stories from the collection", ""}, {"schedule", "Today at Riverside", "Open 10:00–18:00 · Free admission", ""}}, false)
+			} else if view=="planner" {
+				<p class="md-typescale-body-large">Friday, 6 November</p>
+				<p class="md-typescale-body-medium app-muted">3 stops · About 90 minutes</p>
+				@ui.List(ui.ListProps{ID:"visit-stops",Label:"Visit stops",Leading:ui.LeadingImage}){
+ for i,title:=range []string{"Landscapes across Europe","Fields and mountains","Works on paper"}{
+ @ui.ListLink("/illustrations/apps/museum/"+[]string{"visit","audio","discover"}[i],ui.ListItemProps{Label:title,Supporting:[]string{"10:00 · Gallery 4 · 40 minutes","10:40 · Gallery 2 · 30 minutes","11:10 · Print room · 20 minutes"}[i],LeadingKind:ui.LeadingImage,ImageSrc:staticURL("paintings/"+applicationPainting("museum",i))})
+ }
+ }
+
+				@useComponentAssets("fab-menu")
+				<div class="app-museum-fab">
+					@ui.FABMenu(ui.FABMenuProps{ID:"visit-create",Label:"Create",Variant:"primary"}){
+ for i,label:=range []string{"Add collection","Add artwork","Add a note"}{
+ @ui.FABMenuItem(ui.FABMenuItemProps{Label:label,Icon:[]string{"edit","folder","add"}[i]})
+ }
+ }
+				</div>
+			} else {
+				<div class="app-audio-cover"><img src={ staticURL("paintings/" + applicationPainting("museum", 1)) } alt="Painting discussed in the audio guide"/></div><span class="md-typescale-label-large app-muted">STOP 4 OF 12 · GALLERY 2</span>
+				<h2 class="md-typescale-headline-small app-section">Fields and mountains</h2>
+				<p class="md-typescale-body-large app-muted">Explore the paths, fields and mountains in this landscape.</p>
+				@ui.Range(ui.SliderProps{ID:"audio-position",Label:"Playback position",Value:40,Size:ui.ExtraSmall})
+				<div class="app-actions md-typescale-body-small app-muted"><span>02:14</span><span class="app-spacer"></span><span>05:30</span></div>
+				@useComponentAssets("button-group")
+				@ui.ButtonGroupSurface(ui.GroupProps{Label:"Playback",Variant:"tonal"}){
+ for i,label:=range []string{"Previous","Pause","Next"}{
+ @ui.GroupItem(ui.GroupItemProps{Label:label,Icon:[]string{"skip_previous","pause","skip_next"}[i],Index:i,Variant:ui.Tonal,Size:ui.Small})
+ }
+ }
+
+				<div class="app-actions app-section"><button class="md-button md-text-button" data-size="small">Speed: 1×</button><span class="app-spacer"></span><button class="md-button md-text-button" data-size="small">Transcript</button></div>
+				<h3 class="md-typescale-title-medium app-section">Up next</h3>@sceneDataRows([][4]string{{"play_circle", "The changing sky", "Stop 5 · 4:20", ""}}, false)
+			}
+		</div>@applicationGrid()
+		if view=="visit" {
+			<div>
+				{{ sheet := ui.SheetProps{ID:"museum-routes",Kind:ui.BottomSheet,Modal:true} }}
+				@ui.SheetSurface(sheet) {
+					<header class="md-sheet-header">
+						<h2 class="md-sheet-title" id="museum-routes-heading">Plan your visit</h2>
+						<button type="button" class="md-icon-button md-standard-icon-button md-sheet-close" data-sheet-close data-size="small" aria-label="Close visit details">
+							@materialSymbol("close")
+						</button>
+					</header>
+					<div class="md-sheet-body">
+						<p class="md-typescale-body-large">Riverside Museum</p>
+						<p class="md-typescale-body-medium app-muted">12 Riverside Road · Open until 18:00</p>@sceneDataRows([][4]string{{"directions_walk", "Walk via Riverside Road", "1.8 km · Mostly flat", "24 min"}, {"directions_bus", "Bus 12 · Museum stop", "Departs 9:42 · Every 15 min", "18 min"}, {"directions_bike", "Cycle via the park", "2.1 km · Cycle lanes", "9 min"}}, false)
+					</div>
+					<footer class="md-sheet-footer"><a class="md-button md-filled-button" data-size="small" href="/illustrations/apps/museum/planner">Add to visit plan</a></footer>
+				}
+			</div>
+		}
+	</div>
+	@useComponentAssets("navigation")
+	{{ nav:=ui.NavigationProps{ID:"museum-navigation",Label:"Museum destinations",Kind:"bar",Variant:"vertical"} }}
+<nav {nav.Attributes()...}>
+		<div class="md-nav-items">
+			for i,label:=range []string{"Discover","Your visit","Audio"} {
+				<a {applicationNavigationItem(nav,i,map[string]int{"discover":0,"visit":0,"planner":1,"audio":2}[view])...} href={templ.SafeURL("/illustrations/apps/museum/"+[]string{"discover","planner","audio"}[i])}>
+@applicationNavigationContents(nav,label,[]string{"explore","location_on","music_note"}[i],"")
+</a>
+			}
+		</div>
+	</nav>
+}
+
+templ applicationSearch(id, label, value string) {
+@ui.SearchBarSurface(ui.SearchProps{ID:id,Label:label,Value:value,Control:"contained",Leading:"icon"})
+}
+
+
+templ applicationDatePicker(initial bool) {
+{{ c:=ui.DatePickerProps{ID:"event-date-picker",Variant:"modal",Value:applicationDate(2026,10,21),Today:applicationDate(2026,10,18)} }}
+<div class="md-date-demo" data-app-initial-open?={initial}>
+<button type="button" class="md-button md-text-button" data-size="small" data-date-open aria-haspopup="dialog" aria-expanded="false" aria-controls="event-date-picker-date">Change date</button>
+@ui.DatePickerPanel(c)
+<output data-date-output class="tokens-visually-hidden" aria-live="polite"></output>
+</div>
+}
+
+templ applicationTimePicker(initial bool) {
+ @ui.TimePicker(ui.TimePickerProps{ID:"event-time-picker",Name:"event-time",Label:"Change time",Hour:10,Minute:10,Attrs:templ.Attributes{"data-app-initial-open":initial}})
+}
+
+templ applicationDeleteActions() {
+ @ui.DialogClose("document-delete-panel","Cancel","cancel",ui.ButtonProps{Variant:ui.Text,Attrs:templ.Attributes{"autofocus":true}})
+ @ui.DialogClose("document-delete-panel","Move to Trash","delete",ui.ButtonProps{Variant:ui.Text})
+}
+
+templ applicationDeleteDialog(initial bool) {
+ @ui.Modal(ui.DialogProps{ID:"document-delete-panel",Title:"Move installation plan to Trash?",Description:"Other project members will lose access to this document. You can restore it from Trash for 30 days.",Actions:applicationDeleteActions(),Attrs:templ.Attributes{"data-app-dialog":"","data-app-initial-open":initial}})
+}
+
+templ applicationSettingsList() {
+ @ui.List(ui.ListProps{ID:"settings-categories",Label:"Preference categories",Leading:ui.LeadingIcon}) {
+ for i,label:=range []string{"Notifications","Account","Storage","Accessibility"} {
+ @ui.ListLink("#"+[]string{"notifications","account","storage","accessibility"}[i],ui.ListItemProps{Label:label,LeadingKind:ui.LeadingIcon,Leading:ui.Icon([]string{"notifications","person","storage","visibility"}[i]),SingleLine:true})
+ }
+ }
+}
+
+templ applicationCarousel(){
+ @ui.Carousel(ui.CarouselProps{Label:"Featured collections",Variant:"multi-browse"},6){
+ for i:=range 6 {
+ @ui.CarouselItem(ui.CarouselItemProps{Index:i,Count:6,ImageSrc:staticURL("paintings/"+carouselPaintings[i%len(carouselPaintings)])})
+ }
+ }
+}

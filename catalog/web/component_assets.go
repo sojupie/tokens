@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/sojupie/tokens/forge/components/ui"
 	"html"
 	"io"
 	"io/fs"
@@ -19,6 +20,7 @@ import (
 type componentAssetsKey struct{}
 type componentAssets struct {
 	modules     map[string]bool
+	headModules map[string]bool
 	server      *Server
 	deferStyles bool
 }
@@ -55,8 +57,8 @@ func componentAssetScope() templ.Component {
 		if !ok {
 			return children.Render(templ.ClearChildren(ctx), writer)
 		}
-		assets := &componentAssets{modules: map[string]bool{}, server: parent.server}
-		ctx = context.WithValue(templ.ClearChildren(ctx), componentAssetsKey{}, assets)
+		assets := &componentAssets{modules: map[string]bool{}, headModules: parent.headModules, server: parent.server}
+		ctx = ui.WithAssets(context.WithValue(templ.ClearChildren(ctx), componentAssetsKey{}, assets), ui.Assets(assets.modules))
 		var content bytes.Buffer
 		if err := children.Render(ctx, &content); err != nil {
 			return err
@@ -70,6 +72,29 @@ func componentAssetScope() templ.Component {
 		}
 		_, err = content.WriteTo(writer)
 		return err
+	})
+}
+
+// The preserved site shell needs styles whose lifetime spans body replacements.
+func siteNavigationStyles() templ.Component {
+	return templ.ComponentFunc(func(ctx context.Context, writer io.Writer) error {
+		parent, ok := ctx.Value(componentAssetsKey{}).(*componentAssets)
+		if !ok {
+			return nil
+		}
+		assets := &componentAssets{modules: map[string]bool{"navigation": true}, server: parent.server}
+		links, err := parent.server.componentAssetLinks(assets)
+		if err != nil {
+			return err
+		}
+		if _, err = writer.Write(links); err != nil {
+			return err
+		}
+		if parent.headModules == nil {
+			parent.headModules = map[string]bool{}
+		}
+		parent.headModules["navigation"] = true
+		return nil
 	})
 }
 
@@ -107,7 +132,7 @@ func (server *Server) componentAssetLinks(assets *componentAssets) ([]byte, erro
 		fmt.Fprintf(&links, ` media="print" onload="this.media='all'" onerror="this.dataset.stylesheetError=''"><noscript><link rel="stylesheet" href="%s"></noscript>`, url)
 	}
 	for _, name := range componentModuleOrder() {
-		if name == "common" || !assets.modules[name] {
+		if name == "common" || !assets.modules[name] || assets.headModules[name] {
 			continue
 		}
 		if len(server.themeBundles) > 0 {
@@ -130,7 +155,7 @@ var componentScriptSources = sync.OnceValue(func() string {
 		"runtime/sliders.js", "runtime/toolbars.js", "runtime/app-bars.js", "runtime/snackbars.js",
 		"runtime/fab-menus.js", "runtime/split-buttons.js", "runtime/tooltips.js",
 		"progress.js", "sheets.js", "lists.js", "carousel.js", "search.js", "date-picker.js",
-		"time-picker.js", "dialogs.js", "loading.js", "artwork.js", "artwork-canvas.js", "component-demos.js",
+		"time-picker.js", "dialogs.js", "loading.js", "artwork.js", "artwork-canvas.js", "component-demos.js", "dialog-demo.js",
 	} {
 		sources[name] = strings.TrimPrefix(staticURL(name), "/static/")
 	}

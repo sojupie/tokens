@@ -25,3 +25,34 @@ func TestCarouselItemStates(t *testing.T) {
 		t.Fatal("a disabled specimen must not disable the whole carousel")
 	}
 }
+
+func TestCarouselAspectRatioExamples(t *testing.T) {
+	c := componentCase{Family: "carousel", Variant: "uncontained-multi-aspect-ratio"}
+	seen := map[string]bool{}
+	for i := range 4 {
+		seen[c.CarouselSlot(i)["style"].(string)] = true
+	}
+	if len(seen) != 4 {
+		t.Fatal("multi-aspect variant must demonstrate four distinct source ratios")
+	}
+	c.Variant = "uncontained"
+	if _, ok := c.CarouselSlot(0)["style"]; ok {
+		t.Fatal("ordinary uncontained items must keep a single width")
+	}
+}
+
+func TestCarouselScrollingAndScreenOptions(t *testing.T) {
+	page := &componentPreview{Cases: []componentCase{{Family: "carousel", Variant: "uncontained-multi-aspect-ratio"}, {Family: "carousel", Variant: "full-screen"}}}
+	if err := configureCarouselPreview(page, map[string][]string{"preview.scrolling": {"snap"}, "preview.screen": {"portrait"}}); err != nil {
+		t.Fatal(err)
+	}
+	if page.Cases[0].CarouselScroll != "snap" || page.Cases[1].Orientation != "portrait" {
+		t.Fatal("explicit configuration lost")
+	}
+	if err := configureCarouselPreview(page, map[string][]string{"preview.screen": {"other"}}); err == nil {
+		t.Fatal("invalid frame accepted")
+	}
+	if err := configureCarouselPreview(page, map[string][]string{"preview.scrolling": {"other"}}); err == nil {
+		t.Fatal("invalid scrolling accepted")
+	}
+}

@@ -20,10 +20,12 @@ templ subjectListPage(snapshot publish.SnapshotView, subjects []publish.SubjectV
 					id="subject-search"
 					type="search"
 					name="q"
-					value={ query }
+					value={ query
+ }
 					placeholder=" "
 					autocomplete="off"
-					hx-get={ subjectListPath(styles) }
+					hx-get={ subjectListPath(styles)
+ }
 					hx-target="#subject-list"
 					hx-trigger="input changed delay:250ms"
 					hx-push-url="true"
@@ -38,7 +40,7 @@ templ subjectListPage(snapshot publish.SnapshotView, subjects []publish.SubjectV
 }
 
 templ subjectCardGrid(subjects []publish.SubjectView, thumbnails map[string]componentCase, styles bool) {
-	<ul class="tokens-card-grid">
+	<ul class="tokens-card-grid tokens-layout-grid">
 		for _, subject := range subjects {
 			if (subject.Key.Kind!=publish.SubjectComponent)==styles {
 				@subjectCard(subject, thumbnails, styles)
@@ -51,10 +53,16 @@ templ subjectCardGrid(subjects []publish.SubjectView, thumbnails map[string]comp
 }
 
 templ subjectCard(subject publish.SubjectView, thumbnails map[string]componentCase, styles bool) {
-	@deferThumbnailStyles()
+	if _,ok:=thumbnailIllustration(ctx,subjectURL(subject)); !ok {
+ @deferThumbnailStyles()
+
+ }
 	<li class="tokens-component-tile">
 		<div class="tokens-component-thumbnail">
-			if styles {
+			if image,ok:=thumbnailIllustration(ctx,subjectURL(subject)); ok {
+ @thumbnailPicture(image)
+
+ } else if styles {
 				@styleThumbnail(subject)
 			} else if specimen, ok := thumbnails[subject.Key.Slug]; ok {
 				<div class="tokens-component-thumbnail-scene" inert aria-hidden="true" data-thumbnail={ subject.Key.Slug }>

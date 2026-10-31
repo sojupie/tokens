@@ -1,32 +1,36 @@
 package web
 
+import "github.com/sojupie/tokens/forge/components/ui"
+
 templ specimenTooltip(c componentCase) {
 	@useComponentAssets("messages")
 	if c.State=="interactive" {
 		<div class="md-tooltip-demo">
 			if c.Variant=="plain" {
-				<button class="md-icon-button md-standard-icon-button" type="button" aria-label="Details" aria-describedby={ c.ID() + "-tip" }>@materialSymbol("info")
-</button>
-				<div { c.Attributes()... } role="tooltip" id={ c.ID() + "-tip" }><p>More information</p></div>
+				<button class="md-icon-button md-standard-icon-button" type="button" aria-label="Details" aria-describedby={ c.ID() + "-tip" }>
+					@materialSymbol("info")
+				</button>
+				@ui.Tooltip(ui.TooltipProps{ID: c.ID() + "-tip", Variant: "plain", Text: "More information", Attrs: c.Attributes()})
 			} else {
 				<button class="md-button md-outlined-button" type="button" popovertarget={ c.ID() + "-tip" } aria-haspopup="dialog">Show details</button>
-				<section { c.Attributes()... } id={ c.ID() + "-tip" } popover="auto" role="dialog" aria-label="Details">@tooltipContents(c)
-</section>
+				@ui.Tooltip(tooltipExampleProps(c, false))
 			}
 		</div>
 	} else {
-		<section { c.Attributes()... }>@tooltipContents(c)
-</section>
+		@ui.Tooltip(tooltipExampleProps(c, true))
 	}
 }
 
-templ tooltipContents(c componentCase) {
-	@useComponentAssets("messages")
-	if c.Variant=="rich" {
-		<h3>Details</h3>
-	}
-	<p>More information about this action.</p>
+templ tooltipExampleAction(c componentCase) {
 	if c.Variant=="rich" {
 		<button { c.FeedbackAttributes("md-button md-text-button md-feedback-action")... } data-size="xsmall" data-tooltip-close>Got it</button>
 	}
+}
+
+func tooltipExampleProps(c componentCase, inline bool) ui.TooltipProps {
+	title := ""
+	if c.Variant == "rich" {
+		title = "Details"
+	}
+	return ui.TooltipProps{ID: c.ID() + "-tip", Variant: c.Variant, Title: title, Text: "More information about this action.", Inline: inline, Attrs: c.Attributes(), Actions: tooltipExampleAction(c)}
 }

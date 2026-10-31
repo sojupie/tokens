@@ -54,7 +54,7 @@ func TestTableAndDownloadButtonsUseSharedImplementation(t *testing.T) {
 		}
 	}
 	visit(document)
-	if count != 4 {
-		t.Fatalf("checked %d common buttons, want 4", count)
+	if count != 5 {
+		t.Fatalf("checked %d common buttons, want 5", count)
 	}
 }

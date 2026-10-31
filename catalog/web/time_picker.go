@@ -3,13 +3,10 @@ package web
 import (
 	"fmt"
 	"github.com/a-h/templ"
-	"math"
+	"github.com/sojupie/tokens/forge/components/ui"
 )
 
-type timeTick struct {
-	Label string
-	X, Y  float64
-}
+type timeTick = ui.TimeTick
 
 func (c componentCase) TimeActive() string {
 	if c.Shape == "minute" {
@@ -66,37 +63,9 @@ func (c componentCase) TimeDial() templ.Attributes {
 	}
 	return templ.Attributes{"class": "md-time-dial", "data-time-dial": "", "data-ring": "outer", "role": "slider", "tabindex": "0", "aria-label": label, "aria-valuemin": fmt.Sprint(min), "aria-valuemax": fmt.Sprint(max), "aria-valuenow": "10", "style": fmt.Sprintf("--_time-angle:%ddeg;", angle)}
 }
-func (c componentCase) TimeTicks() []timeTick {
-	result := []timeTick{}
-	for ring := range 2 {
-		if ring == 1 && (c.Width != "24h" || c.TimeActive() != "hour") {
-			break
-		}
-		radius := 101.0 / 256
-		if ring == 1 {
-			radius = 69.0 / 256
-		}
-		for i := range 12 {
-			label := fmt.Sprint(i)
-			if c.TimeActive() == "minute" {
-				label = fmt.Sprintf("%02d", i*5)
-			} else if ring == 1 {
-				label = fmt.Sprint(i + 12)
-			} else if i == 0 {
-				if c.Width == "24h" {
-					label = "00"
-				} else {
-					label = "12"
-				}
-			}
-			theta := float64(i) * math.Pi / 6
-			result = append(result, timeTick{Label: label, X: 50 + math.Sin(theta)*radius*100, Y: 50 - math.Cos(theta)*radius*100})
-		}
-	}
-	return result
-}
-func (t timeTick) Style() string {
-	return fmt.Sprintf("--_time-label-x:%g%%;--_time-label-y:%g%%;", t.X, t.Y)
+func (c componentCase) TimeTicks() []timeTick { return c.timePickerProps().Ticks() }
+func (c componentCase) timePickerProps() ui.TimePickerProps {
+	return ui.TimePickerProps{ID: c.ID(), Hour: 10, Minute: 10, Inline: c.State != "interactive", Format24: c.Width == "24h", InputMode: c.Variant == "input", Landscape: c.Orientation == "landscape", Active: c.TimeActive(), PanelAttrs: c.TimePanel(), ValueAttrs: map[string]templ.Attributes{"hour": c.TimeValue("hour"), "minute": c.TimeValue("minute")}, InputAttrs: map[string]templ.Attributes{"hour": c.TimeInput("hour"), "minute": c.TimeInput("minute")}, PeriodAttrs: map[string]templ.Attributes{"am": c.TimePeriod("am"), "pm": c.TimePeriod("pm")}, DialAttrs: c.TimeDial()}
 }
 
 func (c componentCase) TimeModeLabel() string {

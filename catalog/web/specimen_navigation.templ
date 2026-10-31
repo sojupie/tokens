@@ -1,19 +1,24 @@
 package web
 
 import "fmt"
+import "github.com/sojupie/tokens/forge/components/ui"
 
 templ specimenNavRail(c componentCase) {
 	<div { c.RailFrame()... }>
 		<div class="md-navigation-slot">
 			<div class="md-navigation-surface">
-				<nav { c.Attributes()... } aria-label="Primary navigation">@navigationContents(c)
-</nav>
+				<nav { c.Attributes()... } aria-label="Primary navigation">
+					@navigationContents(c)
+				</nav>
 			</div>
 		</div>
 		<button class="md-navigation-scrim" type="button" tabindex="-1" data-navigation-dismiss aria-label="Collapse navigation" hidden></button>
 		<div class="md-rail-body">
-			<header><button class="md-icon-button md-standard-icon-button md-rail-external-menu" type="button" data-size="small" data-shape="round" data-width="default" data-navigation-expand aria-label="Expand navigation" aria-expanded="false">@materialSymbol("menu")
-</button><span>Workspace</span></header>
+			<header>
+				<button class="md-icon-button md-standard-icon-button md-rail-external-menu" type="button" data-size="small" data-shape="round" data-width="default" data-navigation-expand aria-label="Expand navigation" aria-expanded="false">
+					@materialSymbol("menu")
+				</button><span>Workspace</span>
+			</header>
 			<section class="md-rail-screen" id={ c.ID() + "-screen" }>
 				<h3 data-navigation-title tabindex="-1">
 					if c.Selected {
@@ -24,8 +29,12 @@ templ specimenNavRail(c componentCase) {
 				</h3>
 				<p data-navigation-description>Documents and collections in your workspace.</p>
 				for _, label := range []string{"Project notes","Weekend plans","Reading list","Ideas","References","Shared documents","Drafts","Resources","Planning","Archive"} {
-					<article><span>@materialSymbol("folder")
-</span><div><strong>{ label }</strong><p>Updated recently</p></div></article>
+					<article>
+						<span>
+							@materialSymbol("folder")
+						</span>
+						<div><strong>{ label }</strong><p>Updated recently</p></div>
+					</article>
 				}
 			</section>
 		</div>
@@ -36,8 +45,29 @@ templ specimenNavBar(c componentCase) {
 	if c.State=="interactive" && c.Variant=="modal" {
 		<div data-navigation-demo>
 			<button type="button" class="md-button md-outlined-button" data-navigation-open aria-haspopup="dialog" aria-controls={ c.ID() + "-modal" }>Open navigation</button>
-			<dialog { c.Attributes()... } id={ c.ID() + "-modal" } data-navigation-modal aria-label="Navigation preview">@navigationContents(c)
-</dialog>
+			<dialog { c.Attributes()... } id={ c.ID() + "-modal" } data-navigation-modal aria-label="Navigation preview">
+				@navigationContents(c)
+			</dialog>
+		</div>
+	} else if c.Family=="nav-bar" {
+		<div class="tokens-navbar-preview" data-navbar-demo style={ c.NavBarPreviewStyle() }>
+			if c.State=="interactive" {
+				<section class="tokens-navbar-screen" id={ c.ID() + "-screen" } aria-label="Destination content">
+					for i,label:=range c.NavigationLabels() {
+						<div data-navbar-page={ label } tabindex="0" hidden?={ c.NavigationItem(i)["aria-current"]!="page" }>
+							<h3 class="md-typescale-title-large">{ label }</h3>
+							<p class="md-typescale-body-medium">{ map[string]string{"Home":"Recently opened documents","Files":"Documents in your workspace","Saved":"Items you saved for later","Recent":"Your latest activity","Settings":"Workspace preferences"}[label] }</p>
+							<ul class="md-typescale-body-medium">
+								for _,item:=range navBarPageItems(label) {
+									<li>{ item }</li>
+								}
+							</ul>
+						</div>
+					}
+				</section>
+			}
+			<nav { c.Attributes()... } aria-label="Navigation preview">@navigationContents(c)
+</nav>
 		</div>
 	} else {
 		<nav { c.Attributes()... } aria-label="Navigation preview">@navigationContents(c)
@@ -45,19 +75,26 @@ templ specimenNavBar(c componentCase) {
 	}
 }
 
-templ navigationContents(c componentCase) {
+templ navigationDestinations(c componentCase, labels []string) {
 	@useComponentAssets("navigation")
 	if c.Family=="nav-rail" && (c.RailMenu()||c.RailFAB()) {
 		<header>
 			if c.RailMenu() {
-				<button class="md-icon-button md-standard-icon-button md-rail-menu" type="button" data-size="small" data-shape="round" data-width="default" data-navigation-expand aria-label={ c.NavigationToggleLabel() } aria-expanded={ fmt.Sprint(c.Variant == "expanded") }><span data-navigation-menu-icon>@materialSymbol("menu")
-</span><span data-navigation-collapse-icon>@materialSymbol("menu_open")
-</span></button>
+				<button class="md-icon-button md-standard-icon-button md-rail-menu" type="button" data-size="small" data-shape="round" data-width="default" data-navigation-expand aria-label={ c.NavigationToggleLabel() } aria-expanded={ fmt.Sprint(c.Variant == "expanded") }>
+					<span data-navigation-menu-icon>
+						@materialSymbol("menu")
+					</span>
+					<span data-navigation-collapse-icon>
+						@materialSymbol("menu_open")
+					</span>
+				</button>
 			}
 			if c.RailFAB() {
 				@useComponentAssets("fab")
-				<button { c.NavigationFAB()... }>@materialSymbol("edit")
-<span>Create</span></button>
+				<button { c.NavigationFAB()... }>
+					@materialSymbol("edit")
+					<span>Create</span>
+				</button>
 			}
 		</header>
 	}
@@ -65,7 +102,7 @@ templ navigationContents(c componentCase) {
 		<h3>Library</h3>
 	}
 	<div class="md-nav-items">
-		for i,label:=range c.NavigationLabels() {
+		for i,label:=range labels {
 			if i==4 && c.Family=="nav-drawer" {
 				<hr/>
 				<h3>Workspace</h3>
@@ -73,31 +110,19 @@ templ navigationContents(c componentCase) {
 			if i==4 && c.Family=="nav-rail" {
 				<h3 class="md-nav-section">Library</h3>
 			}
-			<button { c.NavigationItem(i)... } data-navigation-secondary?={ c.Family=="nav-rail"&&i>=4 }>@navigationItemContents(c, i, label, c.NavigationIcon(i))
-</button>
+			<button { c.NavigationItem(i)... } data-navigation-secondary?={ c.Family=="nav-rail"&&i>=4 }>
+				@navigationItemContents(c, i, label, c.NavigationIcon(i))
+			</button>
 		}
 	</div>
 	<output class="tokens-visually-hidden" id={ c.ID() + "-selection" } aria-live="polite"></output>
 }
 
-templ navigationItemContents(c componentCase, i int, label string, icon string) {
-	@useComponentAssets("navigation")
-	<span class="md-nav-indicator">
-		<span class="md-nav-icon">
-			@materialSymbol(icon + "_outline")
-			@materialSymbol(icon + "_filled")
-		if c.Family=="nav-rail" && i==1 && c.NavBadge!=""&&c.NavBadge!="none" && c.NavigationItem(i)["aria-current"]!="page" {
-			@useComponentAssets("badge")
-			<span class={ "md-badge md-nav-badge" } data-variant={ c.NavBadge } aria-label={ c.NavigationBadgeLabel() } aria-hidden="true">
-				if c.NavBadge=="labeled" {
-					3
-				}
-			</span>
-		}
-		</span><span class="md-nav-label">{ label }</span>
-		if c.Family=="nav-drawer" {
-			<span class="md-nav-count">{ fmt.Sprint(i+1) }</span>
-		}
+templ navigationItemContents(c componentCase,i int,label,icon string){
+ {{ p:=ui.NavigationItemProps{Label:label,Icon:icon};if c.NavigationHasBadge(i){p.Badge=c.NavBadge;p.BadgeText="3";p.BadgeLabel=c.NavigationBadgeLabel()};if c.Family=="nav-drawer"{p.Count=fmt.Sprint(i+1)} }}
+ @ui.NavigationItemContent(p)
+}
 
-	</span>
+templ navigationContents(c componentCase) {
+	@navigationDestinations(c, c.NavigationLabels())
 }

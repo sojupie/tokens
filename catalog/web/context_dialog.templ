@@ -1,0 +1,48 @@
+package web
+
+templ tableContextDialog(filters []tokenFilter) {
+ @useComponentAssets("dialog")
+ <dialog id="tokens-context-picker" class="md-dialog tokens-context-dialog tokens-export-dialog" data-dialog-surface aria-labelledby="tokens-context-title">
+  <header class="md-basic-header"><h2 id="tokens-context-title">See more values</h2></header>
+  <div class="md-dialog-content">
+   <p>Compare token values by selecting another context.</p>
+   <div class="tokens-context-fields">
+    for _, filter := range tableContextFilters(filters, false) {
+     @tableContextChoices(filter)
+    }
+    if extra := tableContextFilters(filters, true); len(extra)>0 {
+     <details class="tokens-context-advanced tokens-export-disclosure">
+      <summary role="group" tabindex="-1"><span class="tokens-export-disclosure-label"><span class="tokens-export-title">More contexts</span></span><button class="md-icon-button md-standard-icon-button tokens-export-chevron" data-size="xsmall" type="button" data-disclosure-toggle aria-label="More contexts" aria-expanded="false">@materialSymbol("expand_more")</button></summary>
+      <div class="tokens-export-context-options">
+       for _, filter := range extra {
+        @tableContextChoices(filter)
+       }
+      </div>
+     </details>
+    }
+   </div>
+   <p class="tokens-context-status" role="status" aria-live="polite"></p>
+  </div>
+  <footer class="md-basic-actions"><button class="md-button md-text-button" type="button" data-action="cancel">Cancel</button><button class="md-button md-filled-button" type="submit">Save</button></footer>
+ </dialog>
+}
+
+templ tableContextChoices(filter tokenFilter) {
+ if filter.Name=="Audience" {
+  @exportChoices(filter.Key, filter.Name, filter.Selected, tableContextOptions(filter), false, audienceContextHelp())
+ } else {
+  @exportChoices(filter.Key, filter.Name, filter.Selected, tableContextOptions(filter), false)
+ }
+}
+
+templ audienceContextHelp() {
+ @useComponentAssets("messages")
+ <span class="md-tooltip-demo tokens-context-help">
+  <button class="md-icon-button md-standard-icon-button" data-size="xsmall" type="button" popovertarget="tokens-audience-help" aria-haspopup="dialog" aria-label="What do 1P and 3P mean?">@materialSymbol("info")</button>
+  <span class="md-tooltip" data-variant="rich" id="tokens-audience-help" popover="auto" role="dialog" aria-label="What do 1P and 3P mean?">
+   <span class="md-typescale-title-small" role="heading" aria-level="3">What do 1P and 3P mean?</span>
+   <span>1P means first-party; 3P means third-party. We interpret <strong>1P Baseline</strong> as the configuration for Google’s own products, and <strong>3P</strong> as the configuration for other developers.</span>
+   <span>Material supplies these audience labels but does not define them in the captured data. They are not a baseline-versus-Expressive switch.</span>
+  </span>
+ </span>
+}

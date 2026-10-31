@@ -1,6 +1,7 @@
 package web
 
 import "fmt"
+import "github.com/sojupie/tokens/forge/components/ui"
 
 templ specimenAppbar(c componentCase) {
 	@useComponentAssets("appbar")
@@ -8,7 +9,7 @@ templ specimenAppbar(c componentCase) {
   <div class="md-appbar-demo md-search-demo" data-interactive="true">
    <div class="md-search-scene md-appbar-search-scene">
     <section class="md-search-page" data-appbar-demo data-interactive="true">
-     @appbarSurface(c)
+     @appbarSurface(c,"Title")
      <div class="md-appbar-content">
       <h3 data-search-page-title tabindex="-1">Component library</h3>
       <p data-search-page-description>Find controls and patterns for your next screen.</p>
@@ -24,7 +25,7 @@ templ specimenAppbar(c componentCase) {
   </div>
  } else {
 	<div class="md-appbar-demo" data-appbar-demo data-interactive={ fmt.Sprint(c.State == "interactive") }>
-		@appbarSurface(c)
+		@appbarSurface(c,"Title")
 		if c.State=="interactive" && c.Variant!="bottom" {
 			<div class="md-appbar-content" tabindex="0" role="region" aria-label="Scrollable preview content">
 				for i := range 12 {
@@ -36,51 +37,32 @@ templ specimenAppbar(c componentCase) {
  }
 }
 
-templ appbarSurface(c componentCase) {
-	<div { c.Attributes()... } role="group" aria-label="App bar">
-		<div class="md-appbar-row">
-			<button { c.BarAction(0)... }>@materialSymbol("arrow_back")
-</button>
-			if c.Variant!="bottom" && !c.BarExpanded() {
-				if c.Control=="search" {
-      if c.State=="interactive" {
-       <button class="md-button md-appbar-search" type="button" data-search-open aria-label="Search" aria-haspopup="dialog" aria-expanded="false" aria-controls={ c.AppbarSearch().ID()+"-view" }>@materialSymbol("search")<span>Search</span></button>
-      } else {
-					<label class="md-appbar-search">@materialSymbol("search")
-<input type="search" placeholder="Search" aria-label="Search preview"/></label>
-      }
-				} else {
-					<span class="md-appbar-copy">
-						<h3 class="md-appbar-title">Title</h3>
-						if c.Control=="subtitle" {
-							<span class="md-appbar-subtitle">Subtitle</span>
-						}
-					</span>
-				}
-			}
-			<div class="md-appbar-actions">
-				<button { c.BarAction(1)... }>@materialSymbol("star")
-</button>
-				if c.Control=="avatar" {
-					<span class="md-appbar-avatar-slot"><span class="md-appbar-avatar" role="img" aria-label="Profile">A</span></span>
-				} else {
-					<button { c.BarAction(2)... }>@materialSymbol("menu")
-</button>
-				}
-				if c.Control=="fab" {
-					@useComponentAssets("fab")
-					<button class="md-button md-fab" data-variant="secondary-container" data-size="default" type="button" aria-label="Create">@materialSymbol("add")
-</button>
-				}
-			</div>
-		</div>
-		if c.BarExpanded() {
-			<div class="md-appbar-copy md-appbar-expanded">
-				<h3 class="md-appbar-title">Title</h3>
-				if c.Control=="subtitle" {
-					<span class="md-appbar-subtitle">Subtitle</span>
-				}
-			</div>
-		}
-	</div>
+templ appbarSurface(c componentCase,title string){
+ {{ p:=ui.AppBarProps{Title:title,Expanded:c.BarExpanded(),Variant:c.Variant,Attrs:c.Attributes(),Leading:appbarExampleLeading(c),Actions:appbarExampleActions(c)};if c.Control=="subtitle"{p.Subtitle="Subtitle"};if c.Control=="search"{p.Search=appbarExampleSearch(c)} }}
+ @ui.AppBar(p)
+}
+templ appbarExampleLeading(c componentCase){ @ui.Button(c.BarAction(0)){ @ui.Icon("arrow_back") } }
+templ appbarExampleActions(c componentCase){
+ @ui.Button(c.BarAction(1)){ @ui.Icon("star") }
+ if c.Control=="avatar" {
+ <span class="md-appbar-avatar-slot"><span class="md-appbar-avatar" role="img" aria-label="Profile">A</span></span>
+ }else{
+ @ui.Button(c.BarAction(2)){ @ui.Icon("menu") }
+ }
+ if c.Control=="fab" {
+ @ui.FAB(ui.FABProps{Label:"Create",Icon:"add",Variant:"secondary-container"})
+ }
+}
+templ appbarExampleSearch(c componentCase){
+ if c.State=="interactive" {
+ <button class="md-appbar-search" type="button" data-search-open aria-label="Search" aria-haspopup="dialog" aria-expanded="false" aria-controls={c.AppbarSearch().ID()+"-view"}>@ui.Icon("search")<span>Search</span></button>
+ }else{
+ <label class="md-appbar-search">@ui.Icon("search")<input type="search" placeholder="Search" aria-label="Search preview"/></label>
+ }
+}
+
+// Content app bars share the same anatomy and generated bindings as specimens.
+// The host provides meaningful actions and chooses whether a subtitle is needed.
+templ contentAppBar(c componentCase,title,subtitle string){
+ @ui.AppBar(ui.AppBarProps{Title:title,Subtitle:subtitle,Expanded:c.BarExpanded(),Attrs:c.Attributes()}){ {children...} }
 }

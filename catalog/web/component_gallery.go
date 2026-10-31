@@ -7,8 +7,22 @@ import (
 
 // componentCase configures Catalog specimens; it is not a public component API.
 type componentCase struct {
+	TabLayout          string `json:"tabLayout,omitempty"`
+	TabCount           string `json:"tabCount,omitempty"`
+	TabBadge           string `json:"tabBadge,omitempty"`
+	TabDirection       string `json:"tabDirection,omitempty"`
+	TabAlignment       string `json:"tabAlignment,omitempty"`
+	NavCount           string `json:"navCount,omitempty"`
+	NavViewport        string `json:"navViewport,omitempty"`
+	NavDirection       string `json:"navDirection,omitempty"`
+	NavBarAlignment    string `json:"navBarAlignment,omitempty"`
+	BadgeContent       string `json:"badgeContent,omitempty"`
+	BadgePlacement     string `json:"badgePlacement,omitempty"`
+	BadgeDirection     string `json:"badgeDirection,omitempty"`
+	illustrationLabels [3]string
 	// instanceID scopes nested controls without changing their token configuration.
 	CarouselAction  string `json:"carouselAction,omitempty"`
+	CarouselScroll  string `json:"carouselScroll,omitempty"`
 	instanceID      string
 	SliderIcon      string `json:"sliderIcon,omitempty"`
 	SliderStops     string `json:"sliderStops,omitempty"`

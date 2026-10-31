@@ -1,9 +1,5 @@
 package web
-
-templ specimenFab(c componentCase) {
-	@useComponentAssets("fab")
-	@plainTooltip("Create", c.ID()+"-tip") {
-	<button { c.Attributes()... }>@materialSymbol("add")
-</button>
-	}
+import "github.com/sojupie/tokens/forge/components/ui"
+templ specimenFab(c componentCase){
+@plainTooltip("Create",c.ID()+"-tip") { @ui.FAB(ui.FABProps{Label:"Create",Icon:"add",Attrs:c.Attributes()}) }
 }

@@ -1,24 +1,23 @@
 package web
 
 import "fmt"
+import "github.com/sojupie/tokens/forge/components/ui"
 
 templ specimenTabs(c componentCase) {
 	@useComponentAssets("tabs")
-	<div { c.Attributes()... }>
-		<div class="md-tabs" role="tablist" aria-label="Library views" data-variant={ c.Variant } data-control={ c.Control }>
-			for i,label := range []string{"Home","Files","Saved"} {
-				<button { c.TabAttributes(i)... }>
-					<span class="md-tab-content">
-						if c.Control!="label" {
-							@materialSymbol([]string{"home", "folder", "star"}[i])
-						}
-						<span class={ templ.KV("tokens-visually-hidden", c.Control == "icon") }>{ label }</span>
-					</span><span class="md-tab-active-indicator" aria-hidden="true"></span>
-				</button>
-			}
-		</div>
-		for i,label := range []string{"Home","Files","Saved"} {
+	<div { c.Attributes()... } data-tabs-demo>
+		@tabsBar(c)
+		for i,label := range c.TabLabels() {
 			<section role="tabpanel" tabindex="0" id={ fmt.Sprintf("%s-panel-%d", c.ID(), i) } aria-labelledby={ fmt.Sprintf("%s-tab-%d", c.ID(), i) } hidden?={ !c.ItemSelected(i) }><p class="md-typescale-body-medium">{ label+" content" }</p></section>
 		}
 	</div>
+}
+
+templ tabsBar(c componentCase){
+ @ui.Tabs(ui.TabsProps{Label:"Library views",Variant:c.Variant,Content:c.Control,Layout:c.TabLayout,Alignment:c.TabAlignment,Direction:c.TabDirection}){
+ for i,label:=range c.TabLabels(){
+ {{badge:="";if c.TabHasBadge(i){badge=c.TabBadge}}}
+ @ui.Tab(ui.TabProps{Label:label,Icon:[]string{"home","folder","star"}[i%3],Content:c.Control,Variant:c.Variant,Badge:badge,BadgeText:"3",Attrs:c.TabAttributes(i)})
+ }
+ }
 }

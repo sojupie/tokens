@@ -3,6 +3,7 @@ package web
 import (
 	"fmt"
 	"github.com/a-h/templ"
+	"github.com/sojupie/tokens/forge/components/ui"
 	"net/url"
 	"strconv"
 )
@@ -175,4 +176,34 @@ func configureSliderPreview(page *componentPreview, query url.Values) error {
 		c.SliderStart, c.SliderEnd, c.SliderStep = selected["lower"], selected["value"], selected["step"]
 	}
 	return nil
+}
+
+func sliderSurfaceLabel(labels []string) string {
+	if len(labels) > 0 {
+		return labels[0]
+	}
+	return "Value"
+}
+func (c componentCase) SliderInputNamed(handle, label string) templ.Attributes {
+	a := c.SliderInput(handle)
+	a["aria-label"] = label
+	return a
+}
+
+func (c componentCase) sliderProps(label string) ui.SliderProps {
+	end, _ := strconv.ParseFloat(c.SliderValue("end"), 64)
+	step, _ := strconv.ParseFloat(c.SliderStep, 64)
+	if c.Variant == "discrete" && step == 0 {
+		step = 10
+	}
+	p := ui.SliderProps{ID: c.ID(), Name: c.ID() + "-end", Label: label, Value: end, Max: 100, Step: step, Size: ui.Size(c.Size), Vertical: c.Orientation == "vertical", Discrete: c.Variant == "discrete", Disabled: c.State == "disabled", Display: c.SliderDisplay, EndStops: c.SliderStops, Attrs: c.SliderAttributes(), StartAttrs: c.SliderHandle("start"), EndAttrs: c.SliderHandle("end")}
+	if c.Control == "range" {
+		start, _ := strconv.ParseFloat(c.SliderValue("start"), 64)
+		p.Start = &start
+		p.Name = c.ID()
+	}
+	if icon := c.SliderInsetIcon(); icon != "" {
+		p.Icon = ui.Icon(icon)
+	}
+	return p
 }

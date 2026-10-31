@@ -67,28 +67,74 @@ func TestTokenDownloadsMatchTableAndKeepFullContextsOptional(t *testing.T) {
 	}
 }
 
-func TestDownloadDialogOffersWholeContextFormats(t *testing.T) {
-	for _, available := range []bool{false, true} {
-		var output bytes.Buffer
-		ctx := context.WithValue(context.Background(), pageMetadataKey{}, pageMetadata{GeneratedDownloads: available})
-		if err := siteDownloadMenu().Render(ctx, &output); err != nil {
-			t.Fatal(err)
+func TestDownloadDialogOffersScopesAndFormats(t *testing.T) {
+	var output bytes.Buffer
+	page := exportPage{Slug: "buttons", Kind: "component", Set: "button|color|filled", Scope: "subject", CSS: true, Implementations: true}
+	ctx := context.WithValue(context.Background(), pageMetadataKey{}, pageMetadata{GeneratedDownloads: true, Export: &page})
+	if err := siteDownloadMenu().Render(ctx, &output); err != nil {
+		t.Fatal(err)
+	}
+	for _, want := range []string{`class="tokens-export-include tokens-export-disclosure"`, `class="tokens-export-context tokens-export-disclosure"`, `data-disclosure-toggle`, `data-dialog-surface`, `aria-describedby="tokens-export-scope"`, "DTCG JSON", "CSS variables", "Source JSON", "Component implementation", "Current filtered table", "Whole table", "Whole collection", `action="/downloads/export"`} {
+		if !strings.Contains(output.String(), want) {
+			t.Fatalf("missing %q", want)
 		}
-		body := output.String()
-		if !strings.Contains(body, `data-dialog-surface`) || !strings.Contains(body, `aria-describedby="tokens-export-scope"`) {
-			t.Fatal("missing shared dialog anatomy or scope description")
+	}
+}
+
+func TestDownloadSplitPresetsAndRegularFooter(t *testing.T) {
+	page := exportPage{Kind: "component", Slug: "buttons", Scope: "subject", Implementations: true}
+	ctx := context.WithValue(context.Background(), pageMetadataKey{}, pageMetadata{Export: &page})
+	var heading, footer, table bytes.Buffer
+	if err := siteDownloadButton().Render(ctx, &heading); err != nil {
+		t.Fatal(err)
+	}
+	if err := siteDownloadMenu().Render(ctx, &footer); err != nil {
+		t.Fatal(err)
+	}
+	if err := tableDownloadButton().Render(ctx, &table); err != nil {
+		t.Fatal(err)
+	}
+	for _, want := range []string{`md-split-button`, `md-filled-button md-split-leading`, `data-export-content="tokens"`, `data-export-content="implementation"`, `data-export-content="custom"`, `Download design tokens`, `Configure download`} {
+		if !strings.Contains(heading.String(), want) {
+			t.Fatal(want, heading.String())
 		}
-		if available {
-			for _, want := range []string{"DTCG JSON", "CSS variables", "Conversion report", "dark-high", "All components and styles for one context", "filters do not apply", "/downloads/dtcg/light-default/tokens.tokens.json"} {
-				if !strings.Contains(body, want) {
-					t.Fatalf("missing %q", want)
-				}
-			}
-			if strings.Contains(body, `value="view"`) || strings.Contains(body, `value="set"`) {
-				t.Fatal("DTCG chooser must not promise filtered exports")
-			}
-		} else if strings.Contains(body, `data-export-link`) || !strings.Contains(body, "unavailable for this publication") {
-			t.Fatal("missing assets must not produce a broken download action")
+	}
+	if strings.Contains(footer.String(), `md-split-button`) || !strings.Contains(footer.String(), `class="md-button md-filled-button" type="button" data-export-open`) {
+		t.Fatal("footer must remain a regular filled button")
+	}
+	if !strings.Contains(table.String(), `md-standard-icon-button`) {
+		t.Fatal("table download must be standard")
+	}
+}
+
+func TestTableContextUsesNativeModalAndInfoControl(t *testing.T) {
+	var output bytes.Buffer
+	filters := []tokenFilter{{Name: "Theme", Key: "context.Theme", Selected: "Light", Options: []string{"Light", "Dark"}}, {Name: "Platform", Key: "context.Platform", Selected: "Web", Options: []string{"Web", "Android"}}, {Name: "Audience", Key: "context.Audience", Selected: "3P", Options: []string{"1P Baseline", "3P"}}}
+	if err := tableContextDialog(filters).Render(context.Background(), &output); err != nil {
+		t.Fatal(err)
+	}
+	markup := output.String()
+	for _, want := range []string{`<dialog`, `data-dialog-surface`, `md-basic-header`, `md-dialog-content`, `md-basic-actions`, `tokens-export-disclosure`, `aria-label="What do 1P and 3P mean?"`, `popovertarget="tokens-audience-help"`} {
+		if !strings.Contains(markup, want) {
+			t.Fatal(want)
+		}
+	}
+	if strings.Index(markup, `context.Platform`) > strings.Index(markup, `context.Theme`) {
+		t.Fatal("Platform must precede Theme")
+	}
+	if strings.Contains(markup, `tokens-audience-help"><summary>`) {
+		t.Fatal("audience help must be an info control")
+	}
+}
+
+func TestTableTooltipUsesPrimitiveTextAnatomy(t *testing.T) {
+	var output bytes.Buffer
+	if err := tableTools().Render(context.Background(), &output); err != nil {
+		t.Fatal(err)
+	}
+	for _, label := range []string{"Download table", "Hide previews", "Show grid view", "Expand all groups"} {
+		if !strings.Contains(output.String(), `role="tooltip"><p>`+label+`</p></div>`) {
+			t.Fatalf("missing primitive tooltip text for %s", label)
 		}
 	}
 }

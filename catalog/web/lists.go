@@ -145,11 +145,14 @@ func (c componentCase) ListControlInput(index int) templ.Attributes {
 }
 
 func (c componentCase) ListLabel(index int) string {
+	if index < len(c.illustrationLabels) && c.illustrationLabels[index] != "" {
+		return c.illustrationLabels[index]
+	}
 	return []string{"First item", "Second item", "Third item", "Nested item", "Another nested item"}[index]
 }
 
 type listItemContent struct {
-	Label, Supporting, Overline, Avatar, Metadata string
+	Label, Supporting, Overline, Avatar, Metadata, Icon, Image, Badge string
 }
 
 func (c componentCase) ListItem(index int) templ.Attributes {
@@ -256,4 +259,32 @@ func (c componentCase) ListRowRole() string {
 		return "presentation"
 	}
 	return "listitem"
+}
+
+func listContentIcon(icon string) string {
+	if icon == "" {
+		return "folder"
+	}
+	return icon
+}
+func listContentImage(image string, index int) string {
+	if image == "" {
+		return carouselPaintings[index%len(carouselPaintings)]
+	}
+	return image
+}
+
+func contentListCase(id string) componentCase {
+	return componentCase{Family: "list", Variant: "standard", Shape: "expressive", Size: "two-line", Control: "none", ListDivider: "none", State: "interactive", instanceID: id}
+}
+func contentListItem(c componentCase, index int, label string) templ.Attributes {
+	a := c.ListItemWithLabel(index, label)
+	delete(a, "type")
+	return a
+}
+
+func contentListAttributes(c componentCase, label string) templ.Attributes {
+	a := c.ListContainerAttributes()
+	a["aria-label"] = label
+	return a
 }

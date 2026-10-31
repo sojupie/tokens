@@ -7,10 +7,16 @@ import (
 )
 
 type sitemapEntry struct {
-	Location string `xml:"loc"`
+	Location string         `xml:"loc"`
+	Images   []sitemapImage `xml:"image:image,omitempty"`
+}
+
+type sitemapImage struct {
+	Location string `xml:"image:loc"`
 }
 
 type sitemapDocument struct {
+	ImageNS string         `xml:"xmlns:image,attr,omitempty"`
 	XMLName xml.Name       `xml:"urlset"`
 	XMLNS   string         `xml:"xmlns,attr"`
 	URLs    []sitemapEntry `xml:"url"`
@@ -21,9 +27,13 @@ func (server *Server) handleSitemap(response http.ResponseWriter, request *http.
 		http.Error(response, "Configure serve --public-origin to enable the sitemap.", http.StatusServiceUnavailable)
 		return
 	}
-	document := sitemapDocument{XMLNS: "http://www.sitemaps.org/schemas/sitemap/0.9"}
+	document := sitemapDocument{ImageNS: "http://www.google.com/schemas/sitemap-image/1.1", XMLNS: "http://www.sitemaps.org/schemas/sitemap/0.9"}
 	add := func(path string) {
-		document.URLs = append(document.URLs, sitemapEntry{Location: server.publicOrigin + path})
+		entry := sitemapEntry{Location: server.publicOrigin + path}
+		if image, ok := server.illustrations[path]; ok {
+			entry.Images = []sitemapImage{{Location: server.publicOrigin + illustrationFileURL(image.Files["light-default"])}}
+		}
+		document.URLs = append(document.URLs, entry)
 	}
 	for _, path := range []string{"/", "/components", "/styles", "/changes", "/for-agents", "/tools"} {
 		add(path)

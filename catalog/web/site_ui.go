@@ -17,9 +17,3 @@ func choiceLabel(choices []catalogChoice, selected string) string {
 	}
 	return selected
 }
-func exportFormatChoices() []catalogChoice {
-	return []catalogChoice{{"tokens.tokens.json", "DTCG JSON"}, {"tokens.css", "CSS variables"}, {"report.json", "Conversion report"}}
-}
-func exportContextChoices() []catalogChoice {
-	return []catalogChoice{{"light-default", "Light · Default contrast"}, {"light-medium", "Light · Medium contrast"}, {"light-high", "Light · High contrast"}, {"dark-default", "Dark · Default contrast"}, {"dark-medium", "Dark · Medium contrast"}, {"dark-high", "Dark · High contrast"}}
-}

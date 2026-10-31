@@ -13,7 +13,7 @@ import (
 	"github.com/sojupie/tokens/source/publish"
 )
 
-var errPreviewInput = errors.New("invalid preview selection")
+var errPreviewInput = errors.New("invalid playground selection")
 
 type previewControl struct {
 	Name, Label, Selected string
@@ -31,6 +31,9 @@ type componentPreview struct {
 }
 
 func (page componentPreview) Caption(c componentCase) string {
+	if c.Family == "nav-bar" && page.Dimension == "variant" && !page.Interactive {
+		return map[string]string{"adaptive": "Flexible: automatic", "vertical": "Flexible: vertical", "horizontal": "Flexible: horizontal", "baseline": "Baseline (not recommended)"}[c.Variant]
+	}
 	if page.Interactive {
 		return "Interactive"
 	}
@@ -48,6 +51,10 @@ func (page componentPreview) Caption(c componentCase) string {
 
 func previewLabel(value string) string {
 	switch value {
+	case "uncontained-multi-aspect-ratio":
+		return "Uncontained multi-aspect ratio"
+	case "center-aligned-hero":
+		return "Center-aligned hero"
 	case "right-bottom":
 		return "Right and bottom"
 	case "scrolled":
@@ -422,6 +429,9 @@ func selectComponentPreview(cases []componentCase, query url.Values) (*component
 		if !containsPreview(values, value) {
 			value = values[0]
 		}
+		if cases[0].Family == "tabs" && key == "selection" && comparison != "states" {
+			value = "selected"
+		}
 		if search && comparison == "states" && key == "disclosure" {
 			value = "collapsed"
 		}
@@ -429,7 +439,7 @@ func selectComponentPreview(cases []componentCase, query url.Values) (*component
 			value = "enabled"
 		}
 		selected[key] = value
-		if key != varying && len(values) > 1 && !(search && comparison == "states" && key == "disclosure") && !(comparison == "interactive" && key == "state") {
+		if key != varying && len(values) > 1 && !(search && comparison == "states" && key == "disclosure") && !(comparison == "interactive" && key == "state") && !(cases[0].Family == "tabs" && key == "selection" && comparison != "states") {
 			result.Controls = append(result.Controls, previewControl{Name: key, Label: previewControlLabel(cases[0].Family, key), Selected: value, Options: values})
 		}
 	}
@@ -449,6 +459,11 @@ func selectComponentPreview(cases []componentCase, query url.Values) (*component
 				c.State = "interactive"
 			}
 			result.Cases = append(result.Cases, c)
+		}
+	}
+	if len(result.Cases) > 0 && result.Cases[0].Family == "badge" {
+		if err := configureBadgePreview(result, query); err != nil {
+			return nil, err
 		}
 	}
 	if len(result.Cases) > 0 && result.Cases[0].Family == "carousel" {
@@ -478,6 +493,16 @@ func selectComponentPreview(cases []componentCase, query url.Values) (*component
 	}
 	if len(result.Cases) > 0 && result.Cases[0].Family == "search" {
 		if err := configureSearchPreview(result, query); err != nil {
+			return nil, err
+		}
+	}
+	if len(result.Cases) > 0 && result.Cases[0].Family == "tabs" {
+		if err := configureTabsPreview(result, query); err != nil {
+			return nil, err
+		}
+	}
+	if len(result.Cases) > 0 && result.Cases[0].Family == "nav-bar" {
+		if err := configureNavBarPreview(result, query); err != nil {
 			return nil, err
 		}
 	}
