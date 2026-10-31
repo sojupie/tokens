@@ -16,7 +16,6 @@
    if(drawer.open)drawer.close();
    drawer.dataset.variant=wide.matches?'standard':'modal';
    if(wide.matches){
-    drawer.setAttribute('role','navigation');
     {
      const previous=document.activeElement;
      drawer.show();

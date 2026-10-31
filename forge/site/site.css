@@ -42,3 +42,53 @@
 
 .tokens-tool-destinations { display:flex; flex-direction:column; padding-inline-start:var(--md-sys-measurement-space200); }
 .tokens-tool-destinations .md-nav-label { font:var(--md-sys-typescale-body-medium); }
+
+/* Site and scene layout regions. See docs/reference/layout.md.
+   These thresholds measure the available region, including simulated windows. */
+.tokens-layout {
+  container: tokens-layout / inline-size;
+  min-inline-size: 0;
+}
+.tokens-layout-content {
+  --layout-columns: 4;
+  --layout-margin: var(--md-sys-measurement-space200);
+  --layout-gutter: var(--md-sys-measurement-space100);
+  --layout-related-gap: var(--md-sys-measurement-space100);
+  --layout-pane-gap: var(--md-sys-measurement-space300);
+  --layout-section-gap: var(--md-sys-measurement-space400);
+}
+@container tokens-layout (min-width: 600px) {
+  .tokens-layout-content {
+    --layout-columns: 8;
+    --layout-margin: var(--md-sys-measurement-space300);
+  }
+}
+@container tokens-layout (min-width: 1200px) {
+  .tokens-layout-content { --layout-columns: 12; }
+}
+.tokens-layout-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--layout-columns), minmax(0, 1fr));
+  column-gap: var(--layout-gutter);
+  row-gap: var(--layout-related-gap);
+}
+.tokens-layout-grid > * {
+  grid-column: span var(--layout-span, var(--layout-columns));
+  min-inline-size: 0;
+}
+.tokens-layout-site { display:flex; flex:1; flex-direction:column; inline-size:100%; }
+.tokens-layout-site .tokens-footer-content { padding-inline:var(--layout-margin); }
+.tokens-layout-site .tokens-footer-content::before { inset-inline:var(--layout-margin); }
+
+/* Shared accessible text utility, including standalone review pages. */
+.tokens-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

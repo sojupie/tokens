@@ -7,7 +7,6 @@
  if(wide){
   const drawer=header.querySelector('#tokens-site-menu');
   drawer.dataset.variant='standard';
-  drawer.setAttribute('role','navigation');
   drawer.setAttribute('open','');
  }
 }

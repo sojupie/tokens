@@ -180,7 +180,7 @@ func Footer(config Config) templ.Component {
 			templ_7745c5c3_Var5 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "<footer class=\"tokens-site-footer\" data-component-assets><div class=\"tokens-footer-content\"><div class=\"tokens-footer-credit\"><a class=\"tokens-link\" href=\"https://marmenlind.com\">Made by Olle Marmenlind</a><p>Independent project. Not affiliated with Google.</p></div><nav class=\"tokens-footer-links\" aria-label=\"Project links\"><a class=\"tokens-link\" href=\"https://github.com/sojupie/tokens\">GitHub</a> ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "<footer class=\"tokens-site-footer\" data-component-assets><div class=\"tokens-footer-content tokens-layout-content\"><div class=\"tokens-footer-credit\"><a class=\"tokens-link\" href=\"https://marmenlind.com\">Made by Olle Marmenlind</a><p>Independent project. Not affiliated with Google.</p></div><nav class=\"tokens-footer-links\" aria-label=\"Project links\"><a class=\"tokens-link\" href=\"https://github.com/sojupie/tokens\">GitHub</a> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
