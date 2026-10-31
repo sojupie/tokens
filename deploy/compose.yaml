@@ -97,8 +97,11 @@ services:
     init: true
     read_only: true
     cap_drop: [ALL]
-    security_opt: [no-new-privileges:true]
+    security_opt:
+      - no-new-privileges:true
+      - seccomp=./chromium-seccomp.json
     tmpfs: [/tmp]
+    shm_size: 256m
     mem_limit: ${TOKENS_UPDATE_MEMORY:-4g}
     volumes:
       - type: bind
