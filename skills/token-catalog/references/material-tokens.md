@@ -30,11 +30,28 @@ parameters. Do not invent contexts that the subject does not support.
 For example, a filtered table can contain 7 tokens and 7 values. The same table
 with scope=set can contain 7 tokens and 153 values. The whole subject with
 scope=all can contain 13 tokens and 159 values across two tables. These counts
-are illustrative; the HTML download previews show exact counts for the current
+are illustrative; the download dialog shows exact counts for the current
 snapshot and filters. scope=all on /downloads/tokens.json means the entire site,
 whereas scope=all on a subject download means only that subject.
 MCP and WebMCP get_tokens always return the entire subject with every context;
 use the filtered HTTP download endpoint when you want scope=view or scope=set.
+
+For scoped exports in DTCG JSON or CSS, use
+{{PUBLIC_ORIGIN}}/downloads/export?kind=component&slug=buttons&scope=subject&format=dtcg.
+Scopes are view (filtered table), set (whole table), subject, and collection.
+Formats are dtcg, css, source, report, and summary. Pass set and q for a table
+selection and context.<dimension> for context choices. A single selection downloads
+one file. Repeat format or context.<dimension> parameters to download combinations
+in a ZIP, with selections.txt mapping each folder to its settings (up to 64
+combinations). Add summary=1 to check the selection or options=1 to read applicable
+context choices. Inactive contexts are removed before batch expansion. DTCG and
+CSS include required alias targets. The original JSON endpoints
+above keep their existing all-context scope semantics.
+
+To download a component implementation, use content=implementation&format=zip
+with subject or collection scope. The ZIP includes example HTML, component CSS,
+required scripts, fonts, and notices. It uses the catalog Web theme and supports
+Theme and Contrast choices rather than the token export's full context controls.
 
 ## Interpret token values
 

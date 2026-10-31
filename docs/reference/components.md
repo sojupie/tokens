@@ -51,7 +51,7 @@ assessments and their exact revisions live in the canonical component
 
 The generated `components-coverage.json` lists source bindings, exclusions, and supported configurations.
 Component pages such as `/md3/components/cards`, `/md3/components/menus`, and
-`/md3/components/text-fields` contain live previews above their token tables.
+`/md3/components/text-fields` contain interactive playgrounds above their token tables.
 
 The homepage thumbnails have separate compositions in
 `catalog/web/component_thumbnails.templ`. Their fixed specimen choices are in
@@ -65,16 +65,16 @@ browser-specific sizing calculations.
 Component pages open with Variants selected when several variants are available,
 and States otherwise. Progress and loading indicators default to Indeterminate.
 
-Choose States, Sizes, or Variants to vary one dimension across the preview grid.
+Choose States, Sizes, or Variants to vary one dimension across the playground grid.
 The remaining controls fix the other dimensions. Interactive renders one specimen
 without a forced interaction state. Only supported dimensions appear. Text fields
 include a control selector for text fields, selects and autocomplete.
 
-Preview settings use `preview.*` query parameters, for example
+Playground settings use `preview.*` query parameters, for example
 `/md3/components/icon-buttons?preview.compare=sizes&preview.variant=tonal`.
 The form preserves token-table query parameters. Theme and contrast follow the
 site controls. Unsupported component families retain their token tables without
-a preview. New renderers use the same configuration list and preview container.
+a playground. New renderers use the same configuration list and playground container.
 
 Navigation bars and rails use the current separate `md.comp.nav-bar` and
 `md.comp.nav-rail` sets. Their older combined sets remain available as data.

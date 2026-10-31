@@ -17,9 +17,12 @@ Find tokens by component or style, inspect their references, and filter values
 by platform, theme and other settings. Downloads can include the filtered table,
 all values in a table, a whole component, or the collection.
 
-For example, select a Buttons table, choose a platform and theme, then download
-“This table, with your filters” to export that selection. Broader download
-options include values outside the selected table and filters.
+Download tokens as DTCG JSON, CSS variables or source JSON, or download a
+component implementation with CSS, example HTML and required JavaScript.
+
+For example, select a Buttons table, choose a platform and theme, then choose
+“Current filtered table” in the download dialog to export that selection.
+Broader scopes include tokens outside the selected table and filters.
 
 The change log compares retained captures. It shows added, removed and changed
 values, including changes to individual settings. Dates record when a change

@@ -46,8 +46,9 @@ they do not contain the component implementations.
 | Part | Maintained source | Generated output |
 | --- | --- | --- |
 | Pages and site layout | `catalog/web/layout.templ`, `overview.templ`, `subject*.templ`, `changes.templ`, `agents.templ`, and `downloads.templ` | Matching `*_templ.go` files, compiled into the Go server |
-| Component specimens | `catalog/web/specimen_<family>.templ` and matching Go attribute helpers | Selected through the small `component_specimen.templ` dispatcher |
-| Preview configuration | `catalog/web/component_preview.go`, `component_gallery.go`, `component_preview.templ`, and family configuration helpers | HTML rendered for the requested preview settings |
+| Component API | `forge/components/ui/*.go` and `*.templ` | Typed Go configuration, shared component anatomy and nested asset requirements |
+| Catalog specimens | `catalog/web/specimen_<family>.templ` and matching Go helpers | Playground configurations, sample content and forced states passed to the component API |
+| Playground configuration | `catalog/web/component_preview.go`, `component_gallery.go`, `component_preview.templ`, and family configuration helpers | HTML rendered for the requested playground settings |
 | Layout and anatomy | `forge/components/styles/*.css`, `static/elevation.css`, and the anatomy in `forge/material/generate-buttons.mjs` | Assembled `static/components-base.css`, then token-bound `static/components.css` and `buttons.css` |
 | Token-to-component mappings | `forge/material/generate-components.mjs` and `generate-buttons.mjs` | CSS selectors binding component roles to captured token variables |
 | Browser behavior | `forge/components/behaviors/*.js` and dedicated `static/` files such as `buttons.js`, `menus.js`, and `fields.js` | `static/components.js` is assembled from behavior sources; dedicated scripts are served directly |
@@ -90,7 +91,9 @@ Forge does not publish a Web Components package.
 
 ## Shared site and tools
 
-`forge/site/` owns the shared navigation, appearance controls and utility footer.
+`forge/site/` owns the shared navigation, appearance controls, utility footer and
+layout-region measurements. See [site and scene layout](reference/layout.md) for
+container grids, spacing and composition rules.
 Catalog and Material Motion Lab render its Go templates. `tokens site-shell` exports
 the same HTML and assets for the static Carousel playground. Desktop navigation
 is persistent; narrower layouts use a modal navigation drawer. The footer uses

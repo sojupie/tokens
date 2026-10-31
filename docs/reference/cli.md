@@ -227,3 +227,14 @@ current. Hosts also load the Forge navigation styles and runtime described in
 The corresponding environment variables are `TOKENS_MOTION_URL` and
 `TOKENS_MOTION_LAB_URL`. Each accepts an absolute HTTP(S) URL or a root-relative
 path. These settings change links; they do not host the applications.
+
+## Illustration assets
+
+`tokens illustrations --published DIRECTORY` builds the large component and
+style illustrations after CSS generation. `--assets DIRECTORY` selects an
+external generated asset directory, and `--chrome-path PATH` selects Chromium.
+The command renders editorial scenes at 1200 × 630 and catalog thumbnails at 720 × 450 in light/dark and default/medium/high
+contrast, then writes content-addressed JPEGs and an atomic image manifest under
+`assets/illustrations/`. Existing images remain available for older page URLs.
+`--from-captures DIRECTORY` encodes an existing complete set of browser captures
+instead of launching Chromium. No image rendering occurs during website requests.

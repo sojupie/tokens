@@ -74,11 +74,29 @@ The server exposes these files when generated assets are present:
 /downloads/dtcg/light-default/report.json
 ```
 
-The site's **Download tokens** dialog exposes these three formats and all six
-appearance contexts. DTCG JSON is the default. Each file includes the whole
-collection for that context; page, table and search filters do not apply. The
-older custom JSON API/download URLs remain available for compatibility. They
-have not been silently changed to DTCG.
+The site's **Download tokens** dialog offers scoped DTCG JSON, CSS variables,
+source JSON, and conversion reports. Scope can be the current filtered table,
+the whole table, the component or style, or the collection. Context controls
+start from page selections and are validated against the captured data.
+Required alias targets are included automatically.
+
+`GET /downloads/export` accepts `kind`, `slug`, `scope` (`view`, `set`, `subject`,
+or `collection`), `set`, `q`, and `context.<dimension>`. The `format` parameter is
+`dtcg`, `css`, `source`, `report`, or `summary`. The summary reports selected roots,
+exported roots, dependencies, and omissions. CSS conversion uses a build-time
+value index compiled by Style Dictionary, including captured values outside the
+six prebuilt appearance contexts. The server validates its publication and
+checksum; no Node process is started for a download.
+
+`content=implementation&format=zip` exports a whole component or the collection.
+The archive contains example markup, CSS modules declared by that markup,
+module-owned runtime scripts, the catalog theme, font files, and license notices.
+Its Web theme and motion scheme follow the catalog implementation rather than
+raw token context choices. Theme and contrast can be selected; other token
+context controls do not apply to implementation archives.
+
+The prebuilt whole-collection URLs above and the original JSON API/download
+URLs remain available. Their formats and scope semantics are unchanged.
 
 Replace `light-default` with `light-medium`, `light-high`, `dark-default`,
 `dark-medium` or `dark-high`. Include the collection mount, such as `/md3`,
@@ -166,3 +184,13 @@ Percentage lengths remain in the Material source extension on groups without a
 DTCG `$value`, following the existing handling of circular shapes. The CSS
 compiler reads that extension and emits `%`. This preserves values such as
 selected split-button corners without inventing a DTCG dimension unit.
+
+Repeat `format` or `context.<dimension>` parameters to export multiple selections
+in one ZIP. For example, `format=css&format=dtcg&context.Theme=Light&context.Theme=Dark`
+produces four exports. `selections.txt` identifies each folder's exact selection.
+A request can contain up to 64 combinations. Add `summary=1` to inspect the batch
+without downloading it.
+
+Use `options=1` on the scoped export endpoint to read applicable context values.
+Undefined captured values do not create choices. Inactive context parameters are
+removed before batch expansion so they do not produce duplicate exports.

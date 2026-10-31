@@ -4,6 +4,8 @@ Install Go 1.26 or newer. Chrome or Chromium is needed for live crawling.
 Node.js 22 or newer is needed for CSS generation and the browser-script checks. Serving a saved publication
 and running the Go tests do not require Chromium.
 
+For component authoring and state ownership, see [Go/templ components](reference/components-api.md).
+
 ## Build and capture
 
 Run commands from the repository root:
@@ -387,3 +389,46 @@ The [motion contract and browser checks](reference/components.md#motion-schemes-
 describe assignments, interruption handling, reduced motion and popup fallbacks.
 Run `go run ./forge/conformance` alongside Catalog and open
 `http://127.0.0.1:8082/motion.html` to repeat the checks.
+
+## Site and scene layout
+
+Follow [the layout contract](reference/layout.md) for region grids, margins,
+spacing, app-bar title ownership and scene framing. Shared measurements live in
+`forge/site/site.css`; content-specific spans stay with the page or scene.
+
+## Component illustrations
+
+Catalog cards use generated images of the simple previews. Interactive playgrounds keep their live markup.
+Larger illustrations on component and style pages are built from editorial HTML
+scenes using those same specimens. Each scene has light and dark appearances at
+all three contrast levels. The default light image also supplies the page's
+Open Graph image and image-sitemap entry.
+
+After building token assets, generate the image files with Chromium:
+
+```sh
+go run ./cmd/tokens illustrations --published published-review --chrome-path /usr/bin/chromium
+```
+
+Use `--assets DIRECTORY` for an external asset generation. The command captures
+1200 × 630 editorial scenes and separate 720 × 450 catalog thumbnails after fonts and static geometry settle, encodes JPEG files,
+and publishes `illustrations/manifest.json` only when every image succeeds.
+Files have content hashes in their names; existing image URLs remain usable.
+The server only reads finished images. It does not launch Chromium for requests.
+The deployment asset build runs this step before switching `site-assets`.
+
+Scene composition lives in `catalog/web/illustration_scenes.templ` and
+`catalog/web/static/illustrations.css`. Component measurements stay in Forge.
+Review a scene at `/illustrations/render/components/time-pickers?theme=dark&contrast=high`. Add `composition=thumbnail` to render its simple catalog preview. Catalog cards use those generated images when the manifest contains them; the playground remains live markup.
+Render routes and the build index have `noindex`; public images are served from
+`/illustrations/images/`. The server does not advertise images when no image
+manifest exists. Rebuild illustrations after changing their scenes or specimens.
+
+Review the six application scenes at `/illustrations/review`. Each application
+has controls for its related screen states, plus shared appearance, contrast and
+column-overlay controls. Wide scenes use a 1440 × 1000 window; the museum app
+uses 412 × 892. Open individual states at `/illustrations/apps/{app}/{view}`.
+Their composition lives in `catalog/web/application_scenes.templ` and
+`catalog/web/static/application-scenes.css`, using the shared site layout values
+and Forge components. This review does not generate or replace published images.
+The earlier individual-component review remains at `/illustrations/review/components`.
