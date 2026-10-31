@@ -105,7 +105,7 @@ func Tooltip(p TooltipProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, attributes(templ.Attributes{"id": p.ID, "class": "md-tooltip", "data-variant": "rich", "popover": "auto", "role": "dialog", "aria-label": p.Title}, p.Attrs))
+			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, attributes(templ.Attributes{"id": p.ID, "class": "md-tooltip", "data-variant": "rich", "popover": map[bool]any{true: nil, false: "auto"}[p.Inline], "role": "dialog", "aria-label": p.Title}, p.Attrs))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

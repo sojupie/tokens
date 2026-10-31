@@ -11,7 +11,7 @@ templ PlainTooltip(id, label string) {
 templ Tooltip(p TooltipProps) {
 	@Require("messages")
 	if p.Variant=="rich" {
-		<section { attributes(templ.Attributes{"id":p.ID,"class":"md-tooltip","data-variant":"rich","popover":"auto","role":"dialog","aria-label":p.Title},p.Attrs)... }>
+		<section { attributes(templ.Attributes{"id":p.ID,"class":"md-tooltip","data-variant":"rich","popover":map[bool]any{true:nil,false:"auto"}[p.Inline],"role":"dialog","aria-label":p.Title},p.Attrs)... }>
 			@TooltipContent(p)
 		</section>
 	} else {

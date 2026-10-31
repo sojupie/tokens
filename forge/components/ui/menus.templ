@@ -8,33 +8,54 @@ func menuItemAttributes(attrs templ.Attributes) templ.Attributes {
 	return defaults
 }
 
-// MenuItem owns the label and icon slots used by the shared menu styles.
-// Attributes supply command, submenu, selection and disabled semantics.
+// MenuItem is the compact form of MenuEntry.
 templ MenuItem(attrs templ.Attributes, label string, leading templ.Component, trailing templ.Component) {
+	@MenuEntry(MenuEntryProps{Attrs: attrs, Label: label, Leading: leading, Trailing: trailing})
+}
+
+// MenuEntry owns item slots; the application supplies command and selection semantics.
+templ MenuEntry(p MenuEntryProps) {
 	@Require("common")
-	<button { menuItemAttributes(attrs)... }>
-		if leading != nil {
-			<span data-slot="leading-icon" aria-hidden="true">
-				@leading
-			</span>
+	<button { menuItemAttributes(p.Attrs)... }>
+		if p.Leading!=nil {
+			<span data-slot="leading-icon" aria-hidden="true">@p.Leading
+</span>
 		}
-		<span class="md-menu-item-text"><span>{ label }</span></span>
-		if trailing != nil {
-			<span data-slot="trailing-icon" aria-hidden="true">
-				@trailing
+		if !p.IconOnly {
+			<span class="md-menu-item-text">
+				<span>{ p.Label }</span>
+				if p.Supporting!="" {
+					<span data-slot="supporting-text">{ p.Supporting }</span>
+				}
 			</span>
+			if p.Trailing!=nil {
+				<span data-slot="trailing-icon" aria-hidden="true">@p.Trailing
+</span>
+			}
+			if p.Shortcut!=nil {
+				<small class="md-menu-shortcut" data-slot="trailing-supporting-text" aria-label={ p.ShortcutLabel }>@p.Shortcut
+</small>
+			}
 		}
 	</button>
 }
 
-// These wrappers preserve the Catalog component anatomy; callers supply content.
-templ Menu(id string, label string, main bool) {
+// MenuSurface accepts application attributes for static, popover and nested menus.
+templ MenuSurface(attrs templ.Attributes, heading string) {
 	@Require("common")
-	<div id={ id } class="md-menu" data-variant="standard" data-orientation="vertical" popover="auto" data-menu-panel data-menu-main?={ main } role="menu" aria-label={ label }>
+	<div { attributes(templ.Attributes{"class":"md-menu","data-menu-panel":"","data-variant":"standard","data-orientation":"vertical","role":"menu"},attrs)... }>
 		<section>
-			<ul role="presentation">
-				{ children... }
-			</ul>
+			if heading!="" {
+				<h3>{ heading }</h3>
+			}
+			<ul role="presentation">{ children... }
+</ul>
 		</section>
 	</div>
+}
+
+templ Menu(id string, label string, main bool) {
+	@MenuSurface(templ.Attributes{"id": id, "popover": "auto", "data-menu-main": main, "aria-label": label}, "") {
+		{ children... }
+	}
 }
