@@ -80,20 +80,20 @@
         {
           "id": "8a723c56-bcbd-485e-88af-271f755fcfcb",
           "title": "Color",
-          "status": "unclear",
-          "notes": "Six roles are listed, but the numbered diagram is required to map roles to bar elements; badge role assignments are explicitly delegated to badge specs."
+          "status": "mapped",
+          "notes": "The current nav-bar token bindings provide these roles; badges use their separate error/on-error roles."
         },
         {
           "id": "157e10ed-aa85-40b8-af40-65d924fce10d",
           "title": "States",
-          "status": "unclear",
-          "notes": "Enabled, hovered, focused and pressed states and their state-layer percentages appear in an uninspected illustration; on-touch and cursor feedback is captured by navigation-bar-touch-and-cursor-feedback."
+          "status": "mapped",
+          "notes": "The shared navigation styles apply captured state colors and the specified system opacities; the shared button behavior supplies pointer ripples."
         },
         {
           "id": "e57abd9a-9a80-4b83-95dc-8dfa96084c02",
           "title": "Measurements",
-          "status": "unclear",
-          "notes": "The full-width bar and dynamic/equal versus fixed item-width behavior are captured by navigation-bar-item-width-distribution. Compact/medium numerical margins and padding appear only in uninspected diagrams."
+          "status": "mapped",
+          "notes": "Chromium at local /components/navigation-bar: measured these dimensions in compact and medium windows. Explicit overrides correct the captured vertical gap and horizontal trailing padding; labels at 200% grow the bar without moving icons out of alignment."
         },
         {
           "id": "46dc2521-acf0-44e3-bbc0-78dc225b9749",
@@ -111,19 +111,19 @@
           "id": "1d62ff86-f860-4400-a681-5a856cdbca54",
           "title": "Color",
           "status": "unclear",
-          "notes": "Six baseline roles are listed, but their mapping to bar elements depends on an uninspected diagram; badge role assignments are delegated to badge specs."
+          "notes": "The legacy diagram labels the container role Surface, but the captured md.comp.navigation-bar.container.color references md.sys.color.surface-container. The implementation retains that captured reference rather than silently changing the source color. Other baseline roles are explicitly mapped."
         },
         {
           "id": "465dd07e-5315-4c9f-8d37-aba92887a693",
           "title": "States",
-          "status": "unclear",
-          "notes": "Baseline enabled, hovered, focused and pressed states are listed in the captured text. Additional visual treatment details in the uninspected illustration remain unresolved."
+          "status": "mapped",
+          "notes": "Baseline tokens are mapped separately from the flexible set and share the focus and ripple mechanics; selected and inactive source state colors remain distinct."
         },
         {
           "id": "6f329e0c-c278-4ac8-9b02-1afcb2790ac3",
           "title": "Measurements",
-          "status": "unclear",
-          "notes": "The baseline measurement section contains only uninspected diagrams; exact baseline padding, bar height and touch-target geometry cannot be confirmed from the captured text."
+          "status": "mapped",
+          "notes": "Chromium local baseline playground: measured 80px height, 64x32px indicator, 24px icons, 4px label gap and 12px/16px padding. The full corner is bounded to a finite 16px radius. Enlarged labels grow the bar and retain aligned icons."
         },
         {
           "id": "be5e3c0e-66cb-4ed2-adfc-3cbc55029309",
@@ -1213,6 +1213,188 @@
           "summary": "Grow navigation bars for scaled labels and center horizontal destinations"
         }
       ]
+    },
+    {
+      "id": "navigation-bar-destination-count",
+      "statement": "Use three to five destinations with a visible icon and label for each destination, and keep exactly one destination active.",
+      "condition": "For navigation bar examples and component configurations.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-30",
+          "url": "https://m3.material.io/components/navigation-bar/guidelines",
+          "section": "9c390dc9-db39-47d7-8ea2-97241e73888c",
+          "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+          "markdownSha256": "1b4f36bfc868cc1ede7e6f4176c8be5409099fe0bb99583cca967b82c1c62987",
+          "extractorVersion": 2,
+          "summary": "Curated the numeric destination-count requirement from captured Usage guidance; checked against the live page."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "navigation-bar-flexible-color-roles",
+      "statement": "Use surface-container for the flexible bar, secondary-container for the selected indicator, on-secondary-container for its icon, secondary for its label, and on-surface-variant for inactive icons and labels.",
+      "condition": "When implementing the corresponding navigation bar variant.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-30",
+          "url": "https://m3.material.io/components/navigation-bar/specs",
+          "section": "8a723c56-bcbd-485e-88af-271f755fcfcb",
+          "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+          "markdownSha256": "7f467cb18faa8ba58ea51f3e15ae450db379c5a63dc40982fff8091985fd6968",
+          "extractorVersion": 2,
+          "summary": "Curated from the specification diagram after visual inspection."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "navigation-bar-flexible-state-layers",
+      "statement": "Provide enabled, hovered, focused and pressed navigation items; use an 8% hover layer and 10% focus and pressed layers.",
+      "condition": "When implementing the corresponding navigation bar variant.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-30",
+          "url": "https://m3.material.io/components/navigation-bar/specs",
+          "section": "157e10ed-aa85-40b8-af40-65d924fce10d",
+          "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+          "markdownSha256": "7f467cb18faa8ba58ea51f3e15ae450db379c5a63dc40982fff8091985fd6968",
+          "extractorVersion": 2,
+          "summary": "Curated from the specification diagram after visual inspection."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "navigation-bar-flexible-measurements",
+      "statement": "Use a 64dp flexible bar. Vertical items use a 56x32dp indicator, 4dp label gap and 6dp top/bottom padding. Horizontal items use a 40dp indicator, 4dp icon/label gap, 20dp trailing padding and 12dp top/bottom padding.",
+      "condition": "When implementing the corresponding navigation bar variant.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-30",
+          "url": "https://m3.material.io/components/navigation-bar/specs",
+          "section": "e57abd9a-9a80-4b83-95dc-8dfa96084c02",
+          "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+          "markdownSha256": "7f467cb18faa8ba58ea51f3e15ae450db379c5a63dc40982fff8091985fd6968",
+          "extractorVersion": 2,
+          "summary": "Curated from the specification diagram after visual inspection."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "navigation-bar-baseline-color-roles",
+      "statement": "Use surface for the baseline container, on-secondary-container for its active icon, on-surface for its active label, secondary-container for its indicator and on-surface-variant for inactive content.",
+      "condition": "When implementing the corresponding navigation bar variant.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-30",
+          "url": "https://m3.material.io/components/navigation-bar/specs",
+          "section": "1d62ff86-f860-4400-a681-5a856cdbca54",
+          "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+          "markdownSha256": "7f467cb18faa8ba58ea51f3e15ae450db379c5a63dc40982fff8091985fd6968",
+          "extractorVersion": 2,
+          "summary": "Curated from the specification diagram after visual inspection."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "navigation-bar-baseline-states",
+      "statement": "Provide baseline enabled, hovered, focused and pressed treatment, retaining its selected indicator, filled active icon and prominent active label.",
+      "condition": "When implementing the corresponding navigation bar variant.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-30",
+          "url": "https://m3.material.io/components/navigation-bar/specs",
+          "section": "465dd07e-5315-4c9f-8d37-aba92887a693",
+          "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+          "markdownSha256": "7f467cb18faa8ba58ea51f3e15ae450db379c5a63dc40982fff8091985fd6968",
+          "extractorVersion": 2,
+          "summary": "Curated from the specification diagram after visual inspection."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "navigation-bar-baseline-measurements",
+      "statement": "Use an 80dp baseline bar with a 64x32dp active indicator, 24dp icon, 4dp label gap and 12dp/16dp top/bottom padding. Divide the full-width surface into equal destination targets.",
+      "condition": "When implementing the corresponding navigation bar variant.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-30",
+          "url": "https://m3.material.io/components/navigation-bar/specs",
+          "section": "6f329e0c-c278-4ac8-9b02-1afcb2790ac3",
+          "capture": "snapshots/material-guidance/20261025T165641.645740676Z-287996182/capture.json",
+          "markdownSha256": "7f467cb18faa8ba58ea51f3e15ae450db379c5a63dc40982fff8091985fd6968",
+          "extractorVersion": 2,
+          "summary": "Curated from the specification diagram after visual inspection."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
     }
   ]
 }

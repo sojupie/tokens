@@ -56,8 +56,8 @@
         {
           "id": "39c8f300-669e-40c8-8daf-4a84187d5753",
           "title": "Primary tabs color",
-          "status": "unclear",
-          "notes": "Color-role mapping is shown only in an uninspected diagram."
+          "status": "mapped",
+          "notes": "Inspected the rendered light/dark color-role diagrams on 2026-10-30; explicit role checks added."
         },
         {
           "id": "29c9deac-e504-40da-b735-2dd0907179d5",
@@ -74,8 +74,8 @@
         {
           "id": "75758bbd-2c74-4e6f-bba9-a422f5b618fe",
           "title": "Secondary tabs color",
-          "status": "unclear",
-          "notes": "Color-role mapping is shown only in an uninspected diagram."
+          "status": "mapped",
+          "notes": "Inspected the rendered light/dark color-role diagrams on 2026-10-30; explicit role checks added."
         },
         {
           "id": "8d5287be-f5a9-491e-9174-33b97d80ac16",
@@ -1066,6 +1066,58 @@
         "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [],
         "notes": "The tab panel example contains no nested swipeable content, so there is no competing gesture direction to disambiguate."
+      },
+      "fixes": []
+    },
+    {
+      "id": "primary-tab-color-roles",
+      "statement": "Use Surface for primary tab containers, Primary for the active icon, label and indicator, On surface variant for inactive icons and labels, and Outline variant for the divider.",
+      "condition": "For primary tabs in light and dark schemes.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-30",
+          "url": "https://m3.material.io/components/tabs/specs",
+          "section": "39c8f300-669e-40c8-8daf-4a84187d5753",
+          "capture": "snapshots/material-guidance/20261025T165949.028889369Z-1197277053/capture.json",
+          "markdownSha256": "96330483f15cb347bbfb786aca18ceb3477fa615bb38d772cdc6a7c4e1fe3a7b",
+          "extractorVersion": 2,
+          "summary": "Visually inspected numbered light/dark color-role diagram."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "secondary-tab-color-roles",
+      "statement": "Use Surface for secondary tab containers, On surface for active labels, On surface variant for inactive labels, Outline variant for the divider, and Primary for the active indicator.",
+      "condition": "For secondary tabs in light and dark schemes.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-10-30",
+          "url": "https://m3.material.io/components/tabs/specs",
+          "section": "75758bbd-2c74-4e6f-bba9-a422f5b618fe",
+          "capture": "snapshots/material-guidance/20261025T165949.028889369Z-1197277053/capture.json",
+          "markdownSha256": "96330483f15cb347bbfb786aca18ceb3477fa615bb38d772cdc6a7c4e1fe3a7b",
+          "extractorVersion": 2,
+          "summary": "Visually inspected numbered light/dark color-role diagram."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
       },
       "fixes": []
     }
