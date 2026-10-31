@@ -317,17 +317,17 @@
         }
       ],
       "implementation": {
-        "status": "unclear",
+        "status": "implemented",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "79fa9806ea26d8ccf5696fcdc9df545b1b131c65",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/tabs.css:89-109",
-            "result": "Focus and pressed state rules are explicit and the shared button state layer applies to tabs; selected/hovered combinations have not been checked in a browser."
+            "location": "forge/components/styles/tabs.css; forge/material/generate-components.mjs",
+            "result": "Inspected light/dark state diagrams. Browser checked primary and secondary active/inactive state comparisons: hover 0.08, focus/pressed 0.10, rounded focus ring only for focus, source-bound colors and indicator selection. Dark/high-contrast roles checked on real page."
           }
         ],
-        "notes": "State combinations need runtime inspection."
+        "notes": ""
       },
       "fixes": []
     },
@@ -350,17 +350,17 @@
         }
       ],
       "implementation": {
-        "status": "unclear",
+        "status": "implemented",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "79fa9806ea26d8ccf5696fcdc9df545b1b131c65",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/tabs.css:81-109",
-            "result": "Secondary tabs use their own layout and inherit the same focus/pressed state layer, but selected/hovered combinations have not been checked in a browser."
+            "location": "forge/components/styles/tabs.css; forge/material/generate-components.mjs",
+            "result": "Inspected light/dark state diagrams. Browser checked primary and secondary active/inactive state comparisons: hover 0.08, focus/pressed 0.10, rounded focus ring only for focus, source-bound colors and indicator selection. Dark/high-contrast roles checked on real page."
           }
         ],
-        "notes": "State combinations need runtime inspection."
+        "notes": ""
       },
       "fixes": []
     },
@@ -383,17 +383,17 @@
         }
       ],
       "implementation": {
-        "status": "unclear",
+        "status": "implemented",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "79fa9806ea26d8ccf5696fcdc9df545b1b131c65",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/tabs.css:27-75",
-            "result": "Equal flex distribution, icon sizing and indicator/divider dimensions are token-bound; this code trace does not establish all resolved documented dimensions/gaps."
+            "location": "forge/components/styles/tabs.css",
+            "result": "Browser measurements: primary stacked rows 64px, secondary inline/text rows 48px, icons 24px, primary indicator 3px and content width minus 4px with 24px minimum; secondary indicator 2px and whole-cell width. Inline icon/text gap 8px, text/badge gap 4px, stacked badge overlap 6px. Divider is inside the row."
           }
         ],
-        "notes": "Computed measurement values were not captured."
+        "notes": ""
       },
       "fixes": []
     },
@@ -472,12 +472,12 @@
       "implementation": {
         "status": "implemented",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "ed047f98d90146a9d60979c3fdb822f986ef48d7",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/tabs.css:3-5,27-37",
-            "result": "The tablist spans 100% width, its tabs flex equally, and each tab includes the token-bound bottom divider."
+            "location": "forge/components/styles/tabs.css; forge/material/generate-components.mjs",
+            "result": "Container color and divider bindings belong to the tablist. One token-bound gradient paints the divider across cells and margins; transparent tab backgrounds and border colors prevent a second paint/color mismatch. Browser confirmed the same resolved divider color across the row, plus equal fixed widths and natural scrollable widths."
           }
         ],
         "notes": ""
@@ -538,15 +538,15 @@
       "implementation": {
         "status": "implemented",
         "sourceRevision": 1,
+        "assessedBaseline": "ed047f98d90146a9d60979c3fdb822f986ef48d7",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_tabs.templ; forge/components/styles/tabs.css",
-            "result": "The implemented fixed tab row uses short Home, Files and Saved labels with consistent padding. The source permits scrollable tabs as an alternative for longer labels; this specimen does not offer scrollable tabs or arbitrary label content."
+            "location": "catalog/web/specimen_tabs.go; forge/components/styles/tabs.css",
+            "result": "Fixed labels can wrap to two lines. Scrollable labels retain natural width and consistent padding with a 52px leading inset. Browser verified 3,4,5,6,8 tabs all overflow; no artificial width selector is needed."
           }
         ],
-        "notes": "The 52dp leading-offset condition applies when using scrollable tabs. It does not require adding scrollable mode to an already-fitting fixed row. No implementation change or historical fix is claimed.",
-        "assessedBaseline": "e23e979d8041e1fe8755e6f85051f8d076e0b928"
+        "notes": ""
       },
       "fixes": []
     },
@@ -569,11 +569,17 @@
         }
       ],
       "implementation": {
-        "status": "not-applicable",
+        "status": "implemented",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
-        "evidence": [],
-        "notes": "No tab badge is present in the specimen, and notification lifecycle/content is supplied by the caller."
+        "assessedBaseline": "79fa9806ea26d8ccf5696fcdc9df545b1b131c65",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/specimen_tabs.templ; forge/components/behaviors/tabs.js",
+            "result": "Optional shared small/labeled badges attach to stacked icons or follow inline labels. Activating unread content removes its badge and updates the owning accessible name. Browser verified Space activation and removal; shared badge formatter limits numeric content."
+          }
+        ],
+        "notes": ""
       },
       "fixes": []
     },
@@ -683,17 +689,17 @@
         }
       ],
       "implementation": {
-        "status": "unclear",
+        "status": "implemented",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "ed047f98d90146a9d60979c3fdb822f986ef48d7",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_tabs.templ:8-17; forge/components/styles/tabs.css:3-5,27-35",
-            "result": "The current specimen contains three short fixed tabs and divides a full-width tablist into equal flex items, so the four-tab threshold and overflow choice are not exercised. No wider/narrower viewport observation establishes the documented widest-label cap and fluid group margins."
+            "location": "catalog/web/specimen_tabs.go; catalog/web/component_preview.go; catalog/web/tabs_test.go",
+            "result": "Fixed examples offer 2\u20134 tabs; scrollable examples offer 3\u20136 or 8 with longer realistic labels in one responsive 360px example. Browser verified overflow at every scrollable count, including 3, and at a 320px viewport without page overflow. Fixed-group alignment is hidden for scrollable tabs; selection controls appear only in state comparisons as First tab Active/Inactive."
           }
         ],
-        "notes": "The current three-tab example does not trigger the five-or-more/overflow conditions. The fixed layout is full-width and equal-sectioned; its behavior against the separate widest-label/fluid-margin guidance remains unestablished at other widths."
+        "notes": ""
       },
       "fixes": []
     },
@@ -716,17 +722,17 @@
         }
       ],
       "implementation": {
-        "status": "unclear",
+        "status": "implemented",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "79fa9806ea26d8ccf5696fcdc9df545b1b131c65",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/tabs.css:89-109",
-            "result": "Focus and pressed states are explicit; enabled and hover/selected interaction combinations use shared state variables but were not checked at runtime."
+            "location": "forge/components/styles/tabs.css; forge/material/generate-components.mjs",
+            "result": "Inspected light/dark state diagrams. Browser checked primary and secondary active/inactive state comparisons: hover 0.08, focus/pressed 0.10, rounded focus ring only for focus, source-bound colors and indicator selection. Dark/high-contrast roles checked on real page."
           }
         ],
-        "notes": "The complete state matrix was not exercised."
+        "notes": ""
       },
       "fixes": []
     },
@@ -749,11 +755,17 @@
         }
       ],
       "implementation": {
-        "status": "not-applicable",
+        "status": "implemented",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
-        "evidence": [],
-        "notes": "Swipe-to-switch is described as an allowed interaction; this implementation selects tabs by click/keyboard and has no competing swipeable child content."
+        "assessedBaseline": "79fa9806ea26d8ccf5696fcdc9df545b1b131c65",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/components/behaviors/tabs.js; forge/components/tabs_test.cjs",
+            "result": "Click/Space/Enter selects its associated panel. Fixed content accepts horizontal touch swipes, ignores vertical motion and interactive descendants, and stops at either end. Actual handler tests cover adjacent selection, vertical rejection and bounds; native touch gesture not browser-verified."
+          }
+        ],
+        "notes": ""
       },
       "fixes": []
     },
@@ -809,17 +821,17 @@
         }
       ],
       "implementation": {
-        "status": "not-applicable",
+        "status": "implemented",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "79fa9806ea26d8ccf5696fcdc9df545b1b131c65",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_tabs.templ:8-17; forge/components/styles/tabs.css:3-5,27-35",
-            "result": "The captured specimen renders only Home, Files, and Saved as fixed equal-width tabs; it does not present an overflowing set or long-label case that triggers the scrollable-tabs condition."
+            "location": "forge/components/styles/tabs.css; forge/components/behaviors/tabs.js",
+            "result": "Native horizontal scrolling, natural label widths and constant padding; focus scrolls offscreen destinations into view. Browser verified End navigation to sixth tab in LTR and RTL without activation or infinite wrap."
           }
         ],
-        "notes": "This status covers the current three-short-label specimen only. The source condition (tabs exceed available screen width) is not present here; the baseline does not establish behavior for larger consumer tab sets."
+        "notes": ""
       },
       "fixes": []
     },
@@ -869,17 +881,17 @@
         }
       ],
       "implementation": {
-        "status": "unclear",
+        "status": "implemented",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "79fa9806ea26d8ccf5696fcdc9df545b1b131c65",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_tabs.templ:8-21; forge/components/behaviors/tabs.js:5-20,36-59",
-            "result": "The specimen exposes three labeled tabs linked to tab panels and changes selection/panel visibility. It has no off-screen tab set or primary actions within scrolling content, so those outcomes are not demonstrated."
+            "location": "catalog/web/specimen_tabs.go; forge/components/behaviors/tabs.js",
+            "result": "Each tab has tab/tabpanel ID linkage and roving tabindex. Browser verified offscreen focus scrolling, activation of matching panel, and icon-only accessible text. Application scroll attachment remains integration-owned."
           }
         ],
-        "notes": "Tab-to-panel navigation is represented, but off-screen selection depends on a scrollable set and primary-action access during content scrolling depends on screen composition; neither is modeled in this specimen."
+        "notes": ""
       },
       "fixes": []
     },
@@ -904,21 +916,21 @@
       "implementation": {
         "status": "implemented",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "79fa9806ea26d8ccf5696fcdc9df545b1b131c65",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_tabs.go:9-21; forge/components/behaviors/tabs.js:36-60; forge/components/static/buttons.js:75-79,249-269; forge/components/styles/tabs.css:89-110; forge/components/static/components.css:1",
-            "result": "The fixed specimen uses native tab buttons, so Space/Enter activation dispatches click; focus/arrow/click selects the tab and panel, the click path supplies ripple feedback, and generated hover rules plus authored pressed/focus styles provide visual states. navigationIndex wraps the fixed set, but the source no-loop guidance is explicitly for scrollable tabs."
+            "location": "forge/components/behaviors/tabs.js; forge/components/tabs_test.cjs",
+            "result": "Arrow/Home/End move roving focus without activation; Space/Enter use native button activation. Traversal skips unavailable items, respects RTL and stops at endpoints. Browser checked focus/selection separation and panel activation."
           }
         ],
-        "notes": "Scrollable swipe, no-loop, and scrollable key clauses do not apply to this fixed-only three-tab specimen; applicable fixed-tab feedback, activation, and navigation are represented."
+        "notes": ""
       },
       "fixes": []
     },
     {
       "id": "tabs-density-target",
-      "statement": "Do not apply density by default if it reduces targets below 48×48 CSS pixels; if offering density control, keep its targets at least 48×48 CSS pixels so it can be reverted.",
+      "statement": "Do not apply density by default if it reduces targets below 48\u00d748 CSS pixels; if offering density control, keep its targets at least 48\u00d748 CSS pixels so it can be reverted.",
       "condition": "When offering dense tab layouts or a density setting.",
       "basis": "explicit",
       "notes": "",
@@ -962,17 +974,17 @@
         }
       ],
       "implementation": {
-        "status": "unclear",
+        "status": "implemented",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "79fa9806ea26d8ccf5696fcdc9df545b1b131c65",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_tabs.go:9-14",
-            "result": "Only the selected tab is in the tab order; there is no code that moves initial focus to the first interactive item. Source guidance elsewhere says Space/Enter activate the focused destination, creating a wording conflict with this check’s instruction to reserve those keys."
+            "location": "forge/components/behaviors/tabs.js; forge/components/styles/tabs.css",
+            "result": "Initial active tab is the tab stop. Arrow focus gets a separate rounded focus ring; Space/Enter activates it. Browser confirmed focus can differ from the active destination, matching the source keyboard activation table."
           }
         ],
-        "notes": "The current focus behavior and conflicting keyboard instructions need interpretation."
+        "notes": ""
       },
       "fixes": []
     },
@@ -997,12 +1009,12 @@
       "implementation": {
         "status": "implemented",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "79fa9806ea26d8ccf5696fcdc9df545b1b131c65",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/behaviors/tabs.js:40-55",
-            "result": "Arrow keys move focus among tab buttons and native button activation supports Space/Enter for the focused destination."
+            "location": "forge/components/behaviors/tabs.js; forge/components/tabs_test.cjs",
+            "result": "Arrow keys move focus; Space/Enter activate focused destination. Browser verified ArrowLeft, End, Space and Enter; handler tests cover RTL and no wrapping."
           }
         ],
         "notes": ""
@@ -1045,9 +1057,9 @@
     {
       "id": "tabs-different-gesture-directions",
       "statement": "When tabs and other swipeable content must coexist in the same content area, use different gesture directions to distinguish tab navigation from the nested content interaction.",
-      "condition": "When using tabs alongside swipeable content within the tabs’ content area.",
+      "condition": "When using tabs alongside swipeable content within the tabs\u2019 content area.",
       "basis": "explicit",
-      "notes": "The guidelines give different gesture directions as the “Do” alternative to avoiding swipeable items in the tab content area. This applies only when both interactions must coexist.",
+      "notes": "The guidelines give different gesture directions as the \u201cDo\u201d alternative to avoiding swipeable items in the tab content area. This applies only when both interactions must coexist.",
       "sourceHistory": [
         {
           "change": "added",
@@ -1088,9 +1100,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "79fa9806ea26d8ccf5696fcdc9df545b1b131c65",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs; forge/components/styles/tabs.css",
+            "result": "Source roles remain token-bound. Browser inspected selected/inactive labels, surface, divider and indicator; dark high contrast retains system color roles."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -1114,9 +1133,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "79fa9806ea26d8ccf5696fcdc9df545b1b131c65",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs; forge/components/styles/tabs.css",
+            "result": "Source roles remain token-bound. Browser inspected selected/inactive labels, surface, divider and indicator; dark high contrast retains system color roles."
+          }
+        ],
         "notes": ""
       },
       "fixes": []

@@ -327,16 +327,16 @@
           {
             "kind": "code",
             "location": "catalog/web/specimen_navigation.templ:35-45",
-            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition “When moving beyond compact layout.”."
+            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition \u201cWhen moving beyond compact layout.\u201d."
           }
         ],
-        "notes": "The source instruction is “Adapt or replace the navigation bar at larger breakpoints with an appropriate rail or drawer.” under “When moving beyond compact layout.”. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
+        "notes": "The source instruction is \u201cAdapt or replace the navigation bar at larger breakpoints with an appropriate rail or drawer.\u201d under \u201cWhen moving beyond compact layout.\u201d. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
       },
       "fixes": []
     },
     {
       "id": "allow-the-bar-to-grow-vertically-while",
-      "statement": "Allow the bar to grow vertically while retaining default padding; labels may wrap, must remain fully visible through 2× text size, and may truncate only beyond 2×.",
+      "statement": "Allow the bar to grow vertically while retaining default padding; labels may wrap, must remain fully visible through 2\u00d7 text size, and may truncate only beyond 2\u00d7.",
       "condition": "When device text scaling increases.",
       "basis": "explicit",
       "notes": "",
@@ -359,16 +359,16 @@
           {
             "kind": "code",
             "location": "forge/components/styles/navigation.css; forge/components/behaviors/navigation.js",
-            "result": "Vertical labels are measured with the existing shared ResizeObserver; the surface grows while retaining token padding. Horizontal destinations use equal intrinsic grid columns centered within the surface instead of stretching between the window edges."
+            "result": "Label and item sizes are observed without size containment on destination buttons. The surface grows with wrapped labels while preserving minimum padding, icon alignment and the full label through 200% text size."
           },
           {
             "kind": "browser",
-            "location": "forge/conformance/navigation-text.html",
-            "result": "Chromium: 22 assertions pass at 2x text size for compact vertical and medium horizontal layouts, checking every label and horizontal overflow."
+            "location": "http://100.103.168.9:8085/components/navigation-bar?preview.compare=interactive",
+            "result": "Chromium local review: exercised flexible vertical/horizontal/automatic and baseline layouts, 3/4/5 destinations, compact 412px and medium 840px windows, LTR/RTL, labels at 100%/200%, dark/high contrast, keyboard Tab and Space, badge acknowledgement and reselection scroll-to-top. Flexible vertical: 64px high, 56x32px indicator, 6px top/bottom padding and 4px label gap. Horizontal: 64px high, 40px indicator, 16px/20px indicator padding; equal item widths remain unchanged on selection and extra window width appears at the ends. Baseline: 80px high, 64x32px indicator, 12px/16px top/bottom padding and finite 16px corners. Enlarged labels grow the bar with aligned icons and remain contained."
           }
         ],
-        "notes": "The preview still selects orientation explicitly. This does not implement automatic breakpoint selection of horizontal versus vertical items.",
-        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
+        "notes": "",
+        "assessedBaseline": "e02014c8d65bb9ba4178e19fc16f73a15566164b"
       },
       "fixes": [
         {
@@ -404,10 +404,10 @@
           {
             "kind": "code",
             "location": "catalog/web/specimen_navigation.templ:35-45",
-            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition “When maintaining baseline navigation or adopting M3 Expressive.”."
+            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition \u201cWhen maintaining baseline navigation or adopting M3 Expressive.\u201d."
           }
         ],
-        "notes": "The source instruction is “The baseline navigation bar is no longer recommended; replace it with the shorter flexible navigation bar, which supports horizontal items in medium windows.” under “When maintaining baseline navigation or adopting M3 Expressive.”. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
+        "notes": "The source instruction is \u201cThe baseline navigation bar is no longer recommended; replace it with the shorter flexible navigation bar, which supports horizontal items in medium windows.\u201d under \u201cWhen maintaining baseline navigation or adopting M3 Expressive.\u201d. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
       },
       "fixes": []
     },
@@ -430,17 +430,22 @@
         }
       ],
       "implementation": {
-        "status": "unclear",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "e02014c8d65bb9ba4178e19fc16f73a15566164b",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_navigation.templ:83-90; forge/components/styles/navigation.css:17-21,75-78; forge/material/generate-components.mjs:390-416",
-            "result": "The selected glyph is explicitly filled and the active label uses a tokenized item font; the available source does not demonstrate that this token resolves to the stated bold weight for all applicable designs."
+            "location": "forge/components/styles/navigation.css; forge/components/styles/navigation-rail.css",
+            "result": "Selected destinations use the filled glyph and prominent label weight; other destinations use outlined glyphs and medium labels. Hidden bold-width reservation keeps horizontal destinations stationary."
+          },
+          {
+            "kind": "browser",
+            "location": "http://100.103.168.9:8085/components/navigation-bar?preview.compare=interactive",
+            "result": "Chromium local review: exercised flexible vertical/horizontal/automatic and baseline layouts, 3/4/5 destinations, compact 412px and medium 840px windows, LTR/RTL, labels at 100%/200%, dark/high contrast, keyboard Tab and Space, badge acknowledgement and reselection scroll-to-top. Flexible vertical: 64px high, 56x32px indicator, 6px top/bottom padding and 4px label gap. Horizontal: 64px high, 40px indicator, 16px/20px indicator padding; equal item widths remain unchanged on selection and extra window width appears at the ends. Baseline: 80px high, 64x32px indicator, 12px/16px top/bottom padding and finite 16px corners. Enlarged labels grow the bar with aligned icons and remain contained."
           }
         ],
-        "notes": "The filled-icon behavior is explicit. The active-label boldness is token-derived and its resolved weight has not been inspected, so the full combined rule remains unclear."
+        "notes": ""
       },
       "fixes": []
     },
@@ -470,10 +475,10 @@
           {
             "kind": "code",
             "location": "catalog/web/specimen_navigation.templ:35-45",
-            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition “When selecting M3 Expressive navigation variants.”."
+            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition \u201cWhen selecting M3 Expressive navigation variants.\u201d."
           }
         ],
-        "notes": "The source instruction is “M3 Expressive adds the flexible navigation bar and recommends it over the available baseline navigation bar.” under “When selecting M3 Expressive navigation variants.”. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
+        "notes": "The source instruction is \u201cM3 Expressive adds the flexible navigation bar and recommends it over the available baseline navigation bar.\u201d under \u201cWhen selecting M3 Expressive navigation variants.\u201d. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
       },
       "fixes": []
     },
@@ -496,17 +501,22 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/navigation.css; catalog/web/specimen_navigation.templ",
-            "result": "Explicit horizontal items now retain intrinsic widths and centered spacing as the bar grows, with text scaling support. An adaptive bar composition that selects horizontal items at the medium breakpoint is still absent."
+            "location": "forge/components/styles/navigation.css",
+            "result": "Horizontal destinations use equal intrinsic grid columns at a fixed content width; additional window width becomes outer space. Automatic layout changes orientation at 600px; explicit vertical/horizontal choices are respected."
+          },
+          {
+            "kind": "browser",
+            "location": "http://100.103.168.9:8085/components/navigation-bar?preview.compare=interactive",
+            "result": "Chromium local review: exercised flexible vertical/horizontal/automatic and baseline layouts, 3/4/5 destinations, compact 412px and medium 840px windows, LTR/RTL, labels at 100%/200%, dark/high contrast, keyboard Tab and Space, badge acknowledgement and reselection scroll-to-top. Flexible vertical: 64px high, 56x32px indicator, 6px top/bottom padding and 4px label gap. Horizontal: 64px high, 40px indicator, 16px/20px indicator padding; equal item widths remain unchanged on selection and extra window width appears at the ends. Baseline: 80px high, 64x32px indicator, 12px/16px top/bottom padding and finite 16px corners. Enlarged labels grow the bar with aligned icons and remain contained."
           }
         ],
-        "notes": "The old assessment conflated the missing adaptive composition with absent horizontal width/centering styles. Preserve the explicit orientation control; add a distinct adaptive example if this integration is implemented.",
-        "assessedBaseline": "e23e979d8041e1fe8755e6f85051f8d076e0b928"
+        "notes": "Current implementation replaces the former width-based override, which silently changed explicit vertical layouts and could collapse intrinsic columns.",
+        "assessedBaseline": "e02014c8d65bb9ba4178e19fc16f73a15566164b"
       },
       "fixes": []
     },
@@ -628,17 +638,22 @@
         }
       ],
       "implementation": {
-        "status": "unclear",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "e02014c8d65bb9ba4178e19fc16f73a15566164b",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_navigation.templ:83-101; forge/components/styles/navigation.css:17-23",
-            "result": "The navigation-bar specimen does not render a badge, and the shared optional badge markup is only present for the rail. There is no bar badge placement path to compare with the source rule."
+            "location": "catalog/web/specimen_navigation.templ; forge/components/styles/badges.css",
+            "result": "Both navigation bar orientations use the shared icon-corner badge anchor. Small/count badges are optional and selected destinations suppress unread badges; selecting a destination acknowledges its badge."
+          },
+          {
+            "kind": "browser",
+            "location": "http://100.103.168.9:8085/components/navigation-bar?preview.compare=interactive",
+            "result": "Chromium local review: exercised flexible vertical/horizontal/automatic and baseline layouts, 3/4/5 destinations, compact 412px and medium 840px windows, LTR/RTL, labels at 100%/200%, dark/high contrast, keyboard Tab and Space, badge acknowledgement and reselection scroll-to-top. Flexible vertical: 64px high, 56x32px indicator, 6px top/bottom padding and 4px label gap. Horizontal: 64px high, 40px indicator, 16px/20px indicator padding; equal item widths remain unchanged on selection and extra window width appears at the ends. Baseline: 80px high, 64x32px indicator, 12px/16px top/bottom padding and finite 16px corners. Enlarged labels grow the bar with aligned icons and remain contained."
           }
         ],
-        "notes": "The navigation-bar specimen does not render a badge, and the shared optional badge markup is only present for the rail. There is no bar badge placement path to compare with the source rule."
+        "notes": ""
       },
       "fixes": []
     },
@@ -668,10 +683,10 @@
           {
             "kind": "code",
             "location": "catalog/web/specimen_navigation.templ:35-45",
-            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition “When laying out the navigation bar.”."
+            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition \u201cWhen laying out the navigation bar.\u201d."
           }
         ],
-        "notes": "The source instruction is “Place the navigation-bar container at the bottom, spanning the full window; center navigation items within it and use a color fill to separate it from content.” under “When laying out the navigation bar.”. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
+        "notes": "The source instruction is \u201cPlace the navigation-bar container at the bottom, spanning the full window; center navigation items within it and use a color fill to separate it from content.\u201d under \u201cWhen laying out the navigation bar.\u201d. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
       },
       "fixes": []
     },
@@ -694,17 +709,22 @@
         }
       ],
       "implementation": {
-        "status": "unclear",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "e02014c8d65bb9ba4178e19fc16f73a15566164b",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/navigation.go:44-49; catalog/web/component_preview.go:1-160",
-            "result": "Preview cases set vertical versus horizontal by variant, but this file does not encode the upstream M3 versus M3 Expressive generation availability table; no per-generation mapping is present in this specimen."
+            "location": "forge/material/generate-components.mjs; catalog/web/navigation.go",
+            "result": "Exposes flexible automatic, vertical and horizontal configurations plus the separately mapped baseline variant marked not recommended. Compact preview examples use vertical items; horizontal examples use a medium window."
+          },
+          {
+            "kind": "browser",
+            "location": "http://100.103.168.9:8085/components/navigation-bar?preview.compare=interactive",
+            "result": "Chromium local review: exercised flexible vertical/horizontal/automatic and baseline layouts, 3/4/5 destinations, compact 412px and medium 840px windows, LTR/RTL, labels at 100%/200%, dark/high contrast, keyboard Tab and Space, badge acknowledgement and reselection scroll-to-top. Flexible vertical: 64px high, 56x32px indicator, 6px top/bottom padding and 4px label gap. Horizontal: 64px high, 40px indicator, 16px/20px indicator padding; equal item widths remain unchanged on selection and extra window width appears at the ends. Baseline: 80px high, 64x32px indicator, 12px/16px top/bottom padding and finite 16px corners. Enlarged labels grow the bar with aligned icons and remain contained."
           }
         ],
-        "notes": "Preview cases set vertical versus horizontal by variant, but this file does not encode the upstream M3 versus M3 Expressive generation availability table; no per-generation mapping is present in this specimen."
+        "notes": ""
       },
       "fixes": []
     },
@@ -734,10 +754,10 @@
           {
             "kind": "code",
             "location": "catalog/web/specimen_navigation.templ:35-45",
-            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition “When allowing the bar to respond to scrolling.”."
+            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition \u201cWhen allowing the bar to respond to scrolling.\u201d."
           }
         ],
-        "notes": "The source instruction is “The navigation bar may hide on downward scroll and reappear on upward scroll, but must not hide while a screen reader is active.” under “When allowing the bar to respond to scrolling.”. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
+        "notes": "The source instruction is \u201cThe navigation bar may hide on downward scroll and reappear on upward scroll, but must not hide while a screen reader is active.\u201d under \u201cWhen allowing the bar to respond to scrolling.\u201d. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
       },
       "fixes": []
     },
@@ -760,17 +780,17 @@
         }
       ],
       "implementation": {
-        "status": "unclear",
+        "status": "implemented",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "e02014c8d65bb9ba4178e19fc16f73a15566164b",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/static/buttons.js:76-80,249-305; forge/components/behaviors/navigation.js:4-19; forge/components/styles/navigation.css:93-101,118-145; forge/material/generate-components.mjs:390-427,881-907; forge/components/styles/navigation-rail.css:2-21",
-            "result": "Shared feedback recognizes .md-nav-item and injects its animated ripple into .md-nav-indicator at activation. Selection sets aria-current, and navigation CSS switches to filled glyphs and selected token colors. Hover uses a state layer. The captured description of a reduced hover indicator has not been established against resolved hover geometry."
+            "location": "forge/components/styles/navigation.css; forge/components/static/buttons.js",
+            "result": "Uses the shared pointer ripple inside the indicator and captured hover/focus/pressed state layers. Selection changes icon fill and color, with an indicator expansion on the horizontal axis."
           }
         ],
-        "notes": "Shared feedback recognizes .md-nav-item and injects its animated ripple into .md-nav-indicator at activation. Selection sets aria-current, and navigation CSS switches to filled glyphs and selected token colors. Hover uses a state layer. The captured description of a reduced hover indicator has not been established against resolved hover geometry."
+        "notes": ""
       },
       "fixes": []
     },
@@ -793,17 +813,22 @@
         }
       ],
       "implementation": {
-        "status": "not-applicable",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "e02014c8d65bb9ba4178e19fc16f73a15566164b",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/behaviors/navigation.js:4-19",
-            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition “When handling destination selection and re-selection.”."
+            "location": "forge/components/behaviors/navigation.js; catalog/web/static/component-demos.js",
+            "result": "The component emits the destination label and whether it was already selected. The playground preserves destination views and scrolls the active view to its top on reselection; product navigation remains the host application responsibility."
+          },
+          {
+            "kind": "browser",
+            "location": "http://100.103.168.9:8085/components/navigation-bar?preview.compare=interactive",
+            "result": "Chromium local review: exercised flexible vertical/horizontal/automatic and baseline layouts, 3/4/5 destinations, compact 412px and medium 840px windows, LTR/RTL, labels at 100%/200%, dark/high contrast, keyboard Tab and Space, badge acknowledgement and reselection scroll-to-top. Flexible vertical: 64px high, 56x32px indicator, 6px top/bottom padding and 4px label gap. Horizontal: 64px high, 40px indicator, 16px/20px indicator padding; equal item widths remain unchanged on selection and extra window width appears at the ends. Baseline: 80px high, 64x32px indicator, 12px/16px top/bottom padding and finite 16px corners. Enlarged labels grow the bar with aligned icons and remain contained."
           }
         ],
-        "notes": "The source instruction is “On destination change, choose either preserve per-destination state or reset it based on product needs; selecting the already active destination resets scroll to the top. Do not use swipe between destinations.” under “When handling destination selection and re-selection.”. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
+        "notes": ""
       },
       "fixes": []
     },
@@ -826,17 +851,17 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "implemented",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "e02014c8d65bb9ba4178e19fc16f73a15566164b",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/navigation.css:79-95; forge/components/behaviors/navigation.js:4-19",
-            "result": "Selection changes aria-current and paints the indicator; no indicator geometry animation from the icon center or top-level page transition exists in this component/demo handler."
+            "location": "forge/components/styles/navigation.css; catalog/web/static/component-demos.js",
+            "result": "The active indicator expands from its center on one axis. The interactive Catalog example changes the destination view with an effects transition, preserves each view and resets its scroll position on reselection. Reduced motion skips these animations."
           }
         ],
-        "notes": "The selected indicator appears, but the source’s center-expansion and top-level transition behavior is absent from the available web path; the demo emits a selection event and changes state without a page transition."
+        "notes": ""
       },
       "fixes": []
     },
@@ -899,10 +924,10 @@
           {
             "kind": "code",
             "location": "catalog/web/specimen_navigation.templ:35-45",
-            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition “When positioning the bar.”."
+            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition \u201cWhen positioning the bar.\u201d."
           }
         ],
-        "notes": "The source instruction is “Place the navigation bar at the bottom of compact layouts.” under “When positioning the bar.”. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
+        "notes": "The source instruction is \u201cPlace the navigation bar at the bottom of compact layouts.\u201d under \u201cWhen positioning the bar.\u201d. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
       },
       "fixes": []
     },
@@ -998,10 +1023,10 @@
           {
             "kind": "code",
             "location": "catalog/web/specimen_navigation.templ:35-45",
-            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition “When selecting primary navigation.”."
+            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition \u201cWhen selecting primary navigation.\u201d."
           }
         ],
-        "notes": "The source instruction is “Use a navigation bar for a small set of primary destinations; do not combine it with another primary navigation component on the same screen.” under “When selecting primary navigation.”. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
+        "notes": "The source instruction is \u201cUse a navigation bar for a small set of primary destinations; do not combine it with another primary navigation component on the same screen.\u201d under \u201cWhen selecting primary navigation.\u201d. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
       },
       "fixes": []
     },
@@ -1031,10 +1056,10 @@
           {
             "kind": "code",
             "location": "catalog/web/specimen_navigation.templ:35-45",
-            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition “When choosing primary navigation for compact windows.”."
+            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition \u201cWhen choosing primary navigation for compact windows.\u201d."
           }
         ],
-        "notes": "The source instruction is “Use a navigation bar to move among primary destinations on smaller devices.” under “When choosing primary navigation for compact windows.”. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
+        "notes": "The source instruction is \u201cUse a navigation bar to move among primary destinations on smaller devices.\u201d under \u201cWhen choosing primary navigation for compact windows.\u201d. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
       },
       "fixes": []
     },
@@ -1064,10 +1089,10 @@
           {
             "kind": "code",
             "location": "catalog/web/navigation.go:55-62; forge/components/styles/navigation.css:102-104",
-            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition “When labeling destinations.”."
+            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition \u201cWhen labeling destinations.\u201d."
           }
         ],
-        "notes": "The source instruction is “Use clear destination labels and preserve visibility as text size increases.” under “When labeling destinations.”. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
+        "notes": "The source instruction is \u201cUse clear destination labels and preserve visibility as text size increases.\u201d under \u201cWhen labeling destinations.\u201d. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
       },
       "fixes": []
     },
@@ -1130,10 +1155,10 @@
           {
             "kind": "code",
             "location": "catalog/web/specimen_navigation.templ:35-45",
-            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition “When selecting M3 Expressive navigation.”."
+            "result": "The isolated component specimen has no application policy or surrounding route state to satisfy the condition \u201cWhen selecting M3 Expressive navigation.\u201d."
           }
         ],
-        "notes": "The source instruction is “Use the expressive navigation bar as the recommended variant for new designs; preserve the distinction from baseline availability and styling.” under “When selecting M3 Expressive navigation.”. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
+        "notes": "The source instruction is \u201cUse the expressive navigation bar as the recommended variant for new designs; preserve the distinction from baseline availability and styling.\u201d under \u201cWhen selecting M3 Expressive navigation.\u201d. This requires app-level layout, routing, destination hierarchy, or product-selection context that this component specimen does not own. Disposition applies only to that integration condition."
       },
       "fixes": []
     },
@@ -1194,17 +1219,17 @@
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/navigation.css; forge/components/behaviors/navigation.js",
-            "result": "Vertical labels are measured with the existing shared ResizeObserver; the surface grows while retaining token padding. Horizontal destinations use equal intrinsic grid columns centered within the surface instead of stretching between the window edges."
+            "location": "forge/components/styles/navigation.css",
+            "result": "The bar spans its owner width. Vertical items use equal dynamic columns; horizontal items use equal intrinsic widths and outer margins. Destination buttons do not use size containment, which previously collapsed the columns."
           },
           {
             "kind": "browser",
-            "location": "forge/conformance/navigation-text.html",
-            "result": "Chromium: 22 assertions pass at 2x text size for compact vertical and medium horizontal layouts, checking every label and horizontal overflow."
+            "location": "http://100.103.168.9:8085/components/navigation-bar?preview.compare=interactive",
+            "result": "Chromium local review: exercised flexible vertical/horizontal/automatic and baseline layouts, 3/4/5 destinations, compact 412px and medium 840px windows, LTR/RTL, labels at 100%/200%, dark/high contrast, keyboard Tab and Space, badge acknowledgement and reselection scroll-to-top. Flexible vertical: 64px high, 56x32px indicator, 6px top/bottom padding and 4px label gap. Horizontal: 64px high, 40px indicator, 16px/20px indicator padding; equal item widths remain unchanged on selection and extra window width appears at the ends. Baseline: 80px high, 64x32px indicator, 12px/16px top/bottom padding and finite 16px corners. Enlarged labels grow the bar with aligned icons and remain contained."
           }
         ],
-        "notes": "The preview still selects orientation explicitly. This does not implement automatic breakpoint selection of horizontal versus vertical items.",
-        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
+        "notes": "Current implementation replaces the former width-based override, which silently changed explicit vertical layouts and could collapse intrinsic columns.",
+        "assessedBaseline": "e02014c8d65bb9ba4178e19fc16f73a15566164b"
       },
       "fixes": [
         {
@@ -1233,10 +1258,27 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "verified",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "catalog/web/navigation.go; catalog/web/specimen_navigation.templ",
+            "result": "The playground accepts only three, four or five labeled destinations and renders exactly one selected destination."
+          },
+          {
+            "kind": "test",
+            "location": "catalog/web/navigation_bar_test.go",
+            "result": "Covers each supported variant, five destinations, badge semantics, one active destination and rejection of unsupported counts."
+          },
+          {
+            "kind": "browser",
+            "location": "http://100.103.168.9:8085/components/navigation-bar?preview.compare=interactive",
+            "result": "Chromium local review: exercised flexible vertical/horizontal/automatic and baseline layouts, 3/4/5 destinations, compact 412px and medium 840px windows, LTR/RTL, labels at 100%/200%, dark/high contrast, keyboard Tab and Space, badge acknowledgement and reselection scroll-to-top. Flexible vertical: 64px high, 56x32px indicator, 6px top/bottom padding and 4px label gap. Horizontal: 64px high, 40px indicator, 16px/20px indicator padding; equal item widths remain unchanged on selection and extra window width appears at the ends. Baseline: 80px high, 64x32px indicator, 12px/16px top/bottom padding and finite 16px corners. Enlarged labels grow the bar with aligned icons and remain contained."
+          }
+        ],
+        "notes": "",
+        "assessedBaseline": "e02014c8d65bb9ba4178e19fc16f73a15566164b"
       },
       "fixes": []
     },
@@ -1259,9 +1301,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "e02014c8d65bb9ba4178e19fc16f73a15566164b",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs; forge/material/overrides.json; forge/components/styles/navigation.css",
+            "result": "The current nav-bar token bindings provide these roles; badges use their separate error/on-error roles."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -1285,9 +1334,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "e02014c8d65bb9ba4178e19fc16f73a15566164b",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs; forge/material/overrides.json; forge/components/styles/navigation.css",
+            "result": "The shared navigation styles apply captured state colors and the specified system opacities; the shared button behavior supplies pointer ripples."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -1311,9 +1367,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "verified",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "e02014c8d65bb9ba4178e19fc16f73a15566164b",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "http://100.103.168.9:8085/components/navigation-bar",
+            "result": "Chromium at local /components/navigation-bar: measured these dimensions in compact and medium windows. Explicit overrides correct the captured vertical gap and horizontal trailing padding; labels at 200% grow the bar without moving icons out of alignment."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -1337,10 +1400,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "unclear",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedBaseline": "e02014c8d65bb9ba4178e19fc16f73a15566164b",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs; forge/material/overrides.json; forge/components/styles/navigation.css",
+            "result": "The legacy diagram labels the container role Surface, but the captured md.comp.navigation-bar.container.color references md.sys.color.surface-container. The implementation retains that captured reference rather than silently changing the source color. Other baseline roles are explicitly mapped."
+          }
+        ],
+        "notes": "The legacy diagram labels the container role Surface, but the captured md.comp.navigation-bar.container.color references md.sys.color.surface-container. The implementation retains that captured reference rather than silently changing the source color. Other baseline roles are explicitly mapped."
       },
       "fixes": []
     },
@@ -1363,9 +1433,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "implemented",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "e02014c8d65bb9ba4178e19fc16f73a15566164b",
+        "evidence": [
+          {
+            "kind": "code",
+            "location": "forge/material/generate-components.mjs; forge/material/overrides.json; forge/components/styles/navigation.css",
+            "result": "Baseline tokens are mapped separately from the flexible set and share the focus and ripple mechanics; selected and inactive source state colors remain distinct."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
@@ -1389,9 +1466,16 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "verified",
         "sourceRevision": 1,
-        "evidence": [],
+        "assessedBaseline": "e02014c8d65bb9ba4178e19fc16f73a15566164b",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "http://100.103.168.9:8085/components/navigation-bar",
+            "result": "Chromium local baseline playground: measured 80px height, 64x32px indicator, 24px icons, 4px label gap and 12px/16px padding. The full corner is bounded to a finite 16px radius. Enlarged labels grow the bar and retain aligned icons."
+          }
+        ],
         "notes": ""
       },
       "fixes": []
