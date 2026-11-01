@@ -402,6 +402,9 @@ async function main() {
       [
         "forge/site/site.css",
         "forge/site/site.templ",
+        ...(await readdir("forge/components/ui"))
+          .filter(file => file.endsWith(".templ") || file.endsWith(".go") && !file.endsWith("_templ.go") && !file.endsWith("_test.go"))
+          .map(file => "forge/components/ui/" + file),
         "catalog/web/static/app.css",
         "catalog/web/static/token-table.css",
         "catalog/web/static/scene-screens.css",
