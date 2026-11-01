@@ -9,6 +9,7 @@ import (
 func configureNavigationPreview(page *componentPreview, query url.Values) error {
 	for _, choice := range []previewControl{
 		{Name: "layout", Label: "Expanded layout", Options: []string{"standard", "modal"}},
+		{Name: "collapse", Label: "Closed appearance", Options: []string{"collapsed-rail", "hidden"}, Labels: map[string]string{"collapsed-rail": "Collapsed rail", "hidden": "Hidden expanded rail"}},
 		{Name: "secondary", Label: "Additional destinations", Options: []string{"always", "expanded-only"}, Labels: map[string]string{"always": "Always visible", "expanded-only": "Expanded only"}},
 		{Name: "alignment", Label: "Destination alignment", Options: []string{"top", "center"}},
 		{Name: "header", Label: "Header", Options: []string{"menu-fab", "menu", "fab", "none"}},
@@ -28,6 +29,8 @@ func configureNavigationPreview(page *componentPreview, query url.Values) error 
 			switch choice.Name {
 			case "layout":
 				c.NavLayout = choice.Selected
+			case "collapse":
+				c.NavCollapse = choice.Selected
 			case "secondary":
 				c.NavSecondary = choice.Selected
 			case "alignment":
@@ -50,7 +53,7 @@ func configureNavigationPreview(page *componentPreview, query url.Values) error 
 	return nil
 }
 func (c componentCase) RailFrame() templ.Attributes {
-	return templ.Attributes{"class": "md-rail-frame", "data-navigation-demo": "", "data-header": c.NavHeader, "data-alignment": c.NavAlign, "data-width": c.Width, "data-interactive": fmt.Sprint(c.State == "interactive")}
+	return templ.Attributes{"class": "md-rail-frame", "data-navigation-demo": "", "data-collapse": c.NavCollapse, "data-header": c.NavHeader, "data-alignment": c.NavAlign, "data-width": c.Width, "data-interactive": fmt.Sprint(c.State == "interactive")}
 }
 func (c componentCase) NavigationLabels() []string {
 	if c.Family == "nav-drawer" {

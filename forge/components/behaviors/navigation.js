@@ -63,7 +63,8 @@
       }),
     );
     const frame = group.closest(".md-rail-frame");
-    if (frame?.dataset.modalOpen === "true") setRailExpanded(frame, false);
+    if (frame && (frame.dataset.modalOpen === "true" || frame.dataset.collapse === "hidden"))
+      setRailExpanded(frame, false, true);
     void closeDrawer(group.closest("dialog[data-navigation-modal]:modal"));
   }
   document.addEventListener("keydown", (event) => {
@@ -113,6 +114,8 @@
       hidden = !expanded && frame.dataset.collapse === "hidden";
     frame.dataset.modalOpen = String(modal);
     frame.dataset.railHidden = String(hidden);
+    const opener = frame.querySelector(".md-rail-external-menu");
+    if (opener) opener.hidden = !hidden;
     frame.querySelector(".md-navigation-surface").hidden = hidden;
     const surface = frame.querySelector(".md-navigation-surface");
     if (modal) {
@@ -189,7 +192,7 @@
     const restoreFocus = () => {
       if (focus) {
         const target = targetHidden
-          ? frame.querySelector(".md-rail-screen")
+          ? frame.querySelector(".md-rail-external-menu")
           : rail.querySelector(
               "[data-navigation-expand],.md-nav-fab,[data-navigation-item]",
             );
@@ -439,13 +442,14 @@
   }
   document.addEventListener("keydown", (event) => {
     const frame = event.target.closest?.(".md-rail-frame");
-    if (!frame || frame.dataset.modalOpen !== "true") return;
-    if (event.key === "Escape") {
+    if (!frame) return;
+    const expanded = frame.querySelector(".md-navigation-rail").dataset.variant === "expanded";
+    if (event.key === "Escape" && expanded && (frame.dataset.modalOpen === "true" || frame.dataset.collapse === "hidden")) {
       event.preventDefault();
       setRailExpanded(frame, false, true);
       return;
     }
-    if (event.key === "Tab") {
+    if (event.key === "Tab" && frame.dataset.modalOpen === "true") {
       const controls = [
           ...frame
             .querySelector(".md-navigation-rail")

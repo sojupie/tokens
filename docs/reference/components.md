@@ -92,13 +92,15 @@ standard expansion moves body content, while modal expansion overlays it with a
 scrim. The simulated app body becomes inert, focus stays within the expanded
 surface, and Escape, the scrim, the menu button or destination activation
 collapses it. Controls elsewhere on the catalog page remain available; this is
-a scoped preview, not a document-wide native modal. Collapsing restores the collapsed rail.
+a scoped preview, not a document-wide native modal. Collapsing restores the collapsed rail by default. The immersive “Hidden expanded rail”
+configuration instead dismisses the expanded rail entirely and supplies an opener
+in the simulated page header; closing returns focus to that opener.
 
 Rail headers optionally contain a menu, a FAB, both or neither. Menus change to
 the collapse icon when expanded. The nested FAB has level-zero elevation and
 becomes an extended FAB. All six destinations stay visible by default; “Expanded only”
 explicitly hides them in the collapsed variant. The optional menu button belongs
-to the rail header; disabling it removes it entirely. Destinations can be top
+to the rail header; disabling it removes it from the rail. The immersive opener is a separate page control. Destinations can be top
 or center aligned while header controls stay at the top. Badges are optional;
 their position follows vertical or horizontal label layout. The rail itself
 always remains vertical and sits outside the simulated page pane. Page content

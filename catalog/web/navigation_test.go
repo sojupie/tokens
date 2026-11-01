@@ -85,3 +85,28 @@ func TestRailAdditionalDestinationsRequireExplicitExpandedOnlyChoice(t *testing.
 		}
 	}
 }
+
+func TestHiddenExpandedRailHasIndependentOpener(t *testing.T) {
+	for _, variant := range []string{"collapsed", "expanded"} {
+		page := &componentPreview{Cases: []componentCase{{Family: "nav-rail", Variant: variant, State: "interactive"}}}
+		if err := configureNavigationPreview(page, map[string][]string{"preview.collapse": {"hidden"}, "preview.header": {"none"}}); err != nil {
+			t.Fatal(err)
+		}
+		c := page.Cases[0]
+		if c.RailFrame()["data-collapse"] != "hidden" {
+			t.Fatal("hidden mode missing from frame")
+		}
+		var output bytes.Buffer
+		if err := componentSpecimen(c).Render(context.Background(), &output); err != nil {
+			t.Fatal(err)
+		}
+		html := output.String()
+		if strings.Count(html, "data-navigation-expand") != 1 || !strings.Contains(html, "md-rail-external-menu") {
+			t.Fatalf("%s: hidden rail needs exactly one page opener", variant)
+		}
+		start, end := strings.Index(html, "<nav "), strings.Index(html, "</nav>")
+		if start < 0 || end < start || strings.Contains(html[start:end], "data-navigation-expand") {
+			t.Fatal("page opener must not enable the optional rail header menu")
+		}
+	}
+}
