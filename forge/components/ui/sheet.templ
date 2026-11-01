@@ -44,7 +44,7 @@ templ SheetSurface(p SheetProps) {
 
 templ sheetFrame(p SheetProps) {
 	if p.Kind=="" || p.Kind==BottomSheet {
-		<button { attributes(templ.Attributes{"type":"button","class":"md-sheet-handle","data-sheet-handle":"","aria-controls":p.ID+"-content","aria-label":map[bool]string{true:"Expand sheet",false:"Minimize sheet"}[p.Minimized],"aria-expanded":strconv.FormatBool(!p.Minimized)},p.HandleAttrs)... }><span class="md-sheet-handle-mark"></span></button>
+		<button { attributes(templ.Attributes{"type":"button","class":"md-sheet-handle","data-sheet-handle":"","aria-controls":p.ID+"-content","aria-label":p.handleLabel(),"aria-expanded":strconv.FormatBool(!p.Minimized)},p.HandleAttrs)... }><span class="md-sheet-handle-mark"></span></button>
 	}
 	<div class="md-sheet-content" id={ p.ID + "-content" } hidden?={ p.Minimized }>
 		{ children... }

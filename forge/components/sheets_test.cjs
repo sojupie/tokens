@@ -6,18 +6,22 @@ const exported={exports:{}};
 runInNewContext(readFileSync(`${__dirname}/static/sheets.js`,'utf8'),{module:exported});
 const {sheetTarget,sheetExit}=exported.exports;
 
-test('sheet dragging respects positional thresholds and available anchors',()=>{
- assert.equal(sheetTarget('expanded',360,384,56,0,56,.125),'expanded');
- assert.equal(sheetTarget('expanded',300,384,56,0,56,.125),'minimized');
- assert.equal(sheetTarget('expanded',20,384,56,0,56,.125),'hidden');
- assert.equal(sheetTarget('minimized',100,56,56,0,56,.125),'minimized');
- assert.equal(sheetTarget('minimized',120,56,56,0,56,.125),'expanded');
+const anchors=[{name:'minimized',height:56},{name:'default',height:360},{name:'full',height:644}];
+test('sheet dragging can reach every anchor and dismiss below the peek',()=>{
+ assert.equal(sheetTarget(anchors,'full',620,0,56,.125),'full');
+ assert.equal(sheetTarget(anchors,'full',390,0,56,.125),'default');
+ assert.equal(sheetTarget(anchors,'default',100,0,56,.125),'minimized');
+ assert.equal(sheetTarget(anchors,'minimized',340,0,56,.125),'default');
+ assert.equal(sheetTarget(anchors,'default',600,0,56,.125),'full');
+ assert.equal(sheetTarget(anchors,'default',20,0,56,.125),'hidden');
 });
-test('sheet flings follow the last direction even after a reverse drag',()=>{
- assert.equal(sheetTarget('expanded',370,384,56,.2,56,.125),'minimized');
- assert.equal(sheetTarget('minimized',55,56,56,.2,56,.125),'hidden');
- assert.equal(sheetTarget('minimized',55,56,56,-.2,56,.125),'expanded');
- assert.equal(sheetTarget('expanded',20,384,56,-.2,56,.125),'expanded');
+test('sheet flings use the neighboring anchor in the final direction',()=>{
+ assert.equal(sheetTarget(anchors,'default',350,-.2,56,.125),'full');
+ assert.equal(sheetTarget(anchors,'full',630,.2,56,.125),'default');
+ assert.equal(sheetTarget(anchors,'default',600,.2,56,.125),'default');
+ assert.equal(sheetTarget(anchors,'minimized',55,.2,56,.125),'hidden');
+ assert.equal(sheetTarget(anchors,'minimized',55,-.2,56,.125),'default');
+ assert.equal(sheetTarget(anchors,'full',20,-.2,56,.125),'minimized');
 });
 test('side sheet enter and exit direction follows logical edge and text direction',()=>{
  assert.equal(sheetExit(true,false,false),'translateY(100%)');
@@ -27,8 +31,8 @@ test('side sheet enter and exit direction follows logical edge and text directio
  assert.equal(sheetExit(false,true,true),'translateX(100%)');
 });
 
-function sheetFixture() {
- const listeners={},attrs=new Set(),body={hidden:false,inert:false};
+function sheetFixture(allowFull=false) {
+ const listeners={},attrs=new Set(allowFull?['data-sheet-allow-full']:[]),body={hidden:false,inert:false};
  const handle={
   setAttribute(){},focus(){},setPointerCapture(){},releasePointerCapture(){},hasPointerCapture(){return true;},
   hasAttribute(name){return name==='data-sheet-handle';},
@@ -37,14 +41,14 @@ function sheetFixture() {
  };
  class Dialog {}
  const sheet=Object.assign(new Dialog(),{
-  dataset:{variant:'expanded',control:'modal'},style:{height:''},open:true,
+  dataset:{variant:'expanded',control:'modal',sheetSize:'default'},style:{height:''},open:true,
   classList:{contains:name=>name==='md-bottom-sheet'},
   matches:selector=>selector==='dialog.md-bottom-sheet[data-control="modal"]',
   hasAttribute:name=>attrs.has(name),
   toggleAttribute(name,value){value?attrs.add(name):attrs.delete(name);},
   closest(){return host;},
   querySelector:selector=>selector==='.md-sheet-content'?body:handle,
-  getBoundingClientRect(){const height=parseFloat(this.style.height)||(this.dataset.variant==='minimized'?56:attrs.has('data-sheet-full-height')?644:360);return {height,bottom:720,top:720-height};},
+  getBoundingClientRect(){const height=parseFloat(this.style.height)||(this.dataset.variant==='minimized'?56:this.dataset.sheetSize==='full'?644:360);return {height,bottom:720,top:720-height};},
   addEventListener(){},
  });
  const host={querySelector:selector=>selector==='.md-sheet'?sheet:null};
@@ -60,38 +64,48 @@ function sheetFixture() {
  return {sheet,body,listeners,handle,click,pointer};
 }
 
-test('sheet handle taps keep variant, height and content synchronized across cycles',async()=>{
- const f=sheetFixture();
- for(const variant of ['minimized','expanded','minimized']) {
-  f.pointer('pointerdown',100);f.pointer('pointerup',100,10);f.click(0);
-  await Promise.resolve();
-  assert.equal(f.sheet.dataset.variant,variant);
-  assert.equal(f.sheet.style.height,'','settled state must release its measured height');
-  assert.equal(f.body.hidden,variant==='minimized');
-  assert.equal(f.body.inert,variant==='minimized');
-  assert.equal(f.sheet.getBoundingClientRect().height,variant==='minimized'?56:644);
+test('sheet handle cycles through all enabled heights and returns to default',async()=>{
+ for(const allowFull of [false,true]) {
+  const f=sheetFixture(allowFull),cycle=allowFull?['full','minimized','default','full','minimized','default']:['minimized','default','minimized','default'];
+  for(const size of cycle) {
+   f.pointer('pointerdown',100);f.pointer('pointerup',100,10);f.click(0);
+   await Promise.resolve();
+   assert.equal(f.sheet.dataset.sheetSize,size);
+   assert.equal(f.sheet.dataset.variant,size==='minimized'?'minimized':'expanded');
+   assert.equal(f.sheet.style.height,'','settled state must release its measured height');
+   assert.equal(f.body.hidden,size==='minimized');assert.equal(f.body.inert,size==='minimized');
+   assert.equal(f.sheet.getBoundingClientRect().height,anchors.find(anchor=>anchor.name===size).height);
+  }
  }
 });
 
 test('a zero-detail compatibility click cannot toggle a sheet again after dragging',async()=>{
  const f=sheetFixture();
- f.pointer('pointerdown',100);f.pointer('pointermove',200,100);f.pointer('pointerup',200,300);
+ f.pointer('pointerdown',100);f.pointer('pointermove',360,100);f.pointer('pointerup',360,300);
  await Promise.resolve();
  assert.equal(f.sheet.dataset.variant,'minimized');
  f.click(0);await Promise.resolve();
  assert.equal(f.sheet.dataset.variant,'minimized','drag must not be followed by a second toggle');
  f.listeners.keydown({target:f.handle,key:'Enter'});f.click(0);await Promise.resolve();
- assert.equal(f.sheet.dataset.variant,'expanded','keyboard activation remains available');
+ assert.equal(f.sheet.dataset.sheetSize,'default','keyboard activation restores the default height');
  const keyboard=sheetFixture();
- keyboard.pointer('pointerdown',100);keyboard.pointer('pointermove',200,100);keyboard.pointer('pointerup',200,300);
+ keyboard.pointer('pointerdown',100);keyboard.pointer('pointermove',360,100);keyboard.pointer('pointerup',360,300);
  await Promise.resolve();
  keyboard.listeners.keydown({target:keyboard.handle,key:'Enter'});keyboard.click(0);await Promise.resolve();
- assert.equal(keyboard.sheet.dataset.variant,'expanded','a drag without a compatibility click must not swallow keyboard activation');
+ assert.equal(keyboard.sheet.dataset.sheetSize,'default','a drag without a compatibility click must not swallow keyboard activation');
 });
 
 test('a cancelled sheet drag restores its original state',async()=>{
  const f=sheetFixture();
- f.pointer('pointerdown',100);f.pointer('pointermove',200,100);f.pointer('pointercancel',200,150);
+ f.pointer('pointerdown',100);f.pointer('pointermove',360,100);f.pointer('pointercancel',200,150);
  await Promise.resolve();
- assert.equal(f.sheet.dataset.variant,'expanded');assert.equal(f.body.hidden,false);assert.equal(f.sheet.style.height,'');
+ assert.equal(f.sheet.dataset.sheetSize,'default');assert.equal(f.body.hidden,false);assert.equal(f.sheet.style.height,'');
+});
+
+test('sheet arrow keys visit adjacent anchors and Home/End select the extremes',async()=>{
+ const f=sheetFixture(true);
+ for(const [key,size] of [['ArrowUp','full'],['ArrowDown','default'],['ArrowDown','minimized'],['ArrowUp','default'],['Home','full'],['End','minimized']]) {
+  f.listeners.keydown({target:f.handle,key,preventDefault(){}});await Promise.resolve();
+  assert.equal(f.sheet.dataset.sheetSize,size);
+ }
 });

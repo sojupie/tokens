@@ -38,7 +38,7 @@ func TestSheetActionStateDoesNotDisableDismissal(t *testing.T) {
 		t.Fatal("side-sheet actions must use their own color profile")
 	}
 	c = componentCase{Family: "bottom-sheet", Variant: "minimized"}
-	if c.SheetHandle()["aria-expanded"] != "false" || c.SheetHandle()["aria-label"] != "Expand sheet" {
+	if c.SheetHandle()["aria-expanded"] != "false" || c.SheetHandle()["aria-label"] != "Restore sheet" {
 		t.Fatal("minimized handle does not describe its action")
 	}
 }

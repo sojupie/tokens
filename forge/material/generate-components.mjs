@@ -259,7 +259,11 @@ function binding(set, suffix) {
       return {...parsed,family,selector,property:role};
     }
     if(key.startsWith("modal.")||key.startsWith("standard.")){const type=key.split('.')[0];selector+=`:where([data-control="${type}"])`;key=key.slice(type.length+1);rank=1;}
-    if(key.startsWith("minimized.")){selector+=':where([data-variant="minimized"])';key=key.slice(10);rank=2;}
+    if(key.startsWith("minimized.")){
+      // The square docked peek shape is not the modal sheet's minimized anchor.
+      if(bottom)selector+=':where([data-control="standard"])';
+      selector+=':where([data-variant="minimized"])';key=key.slice(10);rank=2;
+    }
     if(key.startsWith("detached.")){selector+=':where([data-variant="detached"])';key=key.slice(9);rank=2;}
     const roles={"container.width":"width","drag-handle.color":"handle","drag-handle.opacity":"handle-opacity","drag-handle.width":"handle-width","drag-handle.height":"handle-height","divider.color":"divider",...roleProperties};
     const role=roles[key]||textRole(key,["headline"]);

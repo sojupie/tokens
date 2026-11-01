@@ -79,7 +79,7 @@ func sheetSurface(c componentCase) templ.Component {
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = ui.SheetSurface(ui.SheetProps{ID: c.ID(), Kind: ui.SheetKind(map[bool]string{true: "side", false: "bottom"}[c.Family == "side-sheet"]), Modal: c.Control == "modal", Inline: c.State != "interactive", Hidden: c.State == "interactive", Minimized: c.Family == "bottom-sheet" && c.Variant == "minimized", Attrs: c.SheetAttributes(), HandleAttrs: c.SheetHandle()}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = ui.SheetSurface(ui.SheetProps{ID: c.ID(), Kind: ui.SheetKind(map[bool]string{true: "side", false: "bottom"}[c.Family == "side-sheet"]), Modal: c.Control == "modal", AllowFullHeight: c.Control == "modal" && c.Family == "bottom-sheet", Inline: c.State != "interactive", Hidden: c.State == "interactive", Minimized: c.Family == "bottom-sheet" && c.Variant == "minimized", Attrs: c.SheetAttributes(), HandleAttrs: c.SheetHandle()}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

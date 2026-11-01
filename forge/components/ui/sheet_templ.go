@@ -251,7 +251,7 @@ func sheetFrame(p SheetProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, attributes(templ.Attributes{"type": "button", "class": "md-sheet-handle", "data-sheet-handle": "", "aria-controls": p.ID + "-content", "aria-label": map[bool]string{true: "Expand sheet", false: "Minimize sheet"}[p.Minimized], "aria-expanded": strconv.FormatBool(!p.Minimized)}, p.HandleAttrs))
+			templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, attributes(templ.Attributes{"type": "button", "class": "md-sheet-handle", "data-sheet-handle": "", "aria-controls": p.ID + "-content", "aria-label": p.handleLabel(), "aria-expanded": strconv.FormatBool(!p.Minimized)}, p.HandleAttrs))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

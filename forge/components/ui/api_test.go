@@ -261,3 +261,19 @@ func TestMenuAndBadgePreserveBaseClassesForConsumers(t *testing.T) {
 		}
 	}
 }
+
+func TestBottomSheetHeightAnchorsAreExplicitAndFullHeightIsOptional(t *testing.T) {
+	for _, full := range []bool{false, true} {
+		text, _ := renderAPI(t, Sheet(SheetProps{ID: "routes", Title: "Routes", Modal: true, AllowFullHeight: full}))
+		if !strings.Contains(text, `data-sheet-size="default"`) {
+			t.Fatal(text)
+		}
+		if strings.Contains(text, `data-sheet-allow-full`) != full {
+			t.Fatal(text)
+		}
+	}
+	text, _ := renderAPI(t, Sheet(SheetProps{ID: "routes", Title: "Routes", Modal: true, Minimized: true}))
+	if !strings.Contains(text, `data-sheet-size="minimized"`) || !strings.Contains(text, `aria-label="Restore sheet"`) {
+		t.Fatal(text)
+	}
+}

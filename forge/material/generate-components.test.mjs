@@ -334,6 +334,7 @@ test("sheets map handle opacity, mirrored shape corners, focus rings and action 
  assert.ok(coverage.configurations.some(c=>c.family==='bottom-sheet'&&c.variant==='minimized'&&c.control==='modal'));
  assert.ok(coverage.configurations.some(c=>c.family==='side-sheet'&&c.variant==='detached'&&c.orientation==='start'));
  assert.match(css,/--_sheet-handle-opacity: var\(--md-comp-sheet-bottom-docked-drag-handle-opacity\)/);
+ assert.match(css,/\.md-bottom-sheet:where\(\[data-control="standard"\]\):where\(\[data-variant="minimized"\]\) \{ --_sheet-shape: var\(--md-comp-sheet-bottom-docked-minimized-container-shape\)/);
  assert.match(css,/--_sheet-action-pressed-state-color: var\(--md-comp-sheet-side-docked-action-pressed-state-layer-color\)/);
  assert.ok(css.indexOf('--_sheet-shape: var(--md-comp-sheet-side-detached-container-shape)')>css.indexOf('--_sheet-shape: var(--md-comp-sheet-side-docked-modal-container-shape)'));
  assert.match(css,/--_sheet-shape-tl: var\(--md-comp-sheet-side-docked-modal-container-shape\)/);

@@ -292,7 +292,7 @@ dialog.md-side-sheet[data-variant="detached"] {
   block-size: auto;
 }
 
-dialog.md-bottom-sheet[data-control="modal"][data-variant="expanded"][data-sheet-full-height] {
+dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   block-size: calc(100svh - 72px);
 }
 @media (min-width: 641px) {
@@ -300,7 +300,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-variant="expanded"][data-sheet
     inline-size: min(640px, calc(100svw - 112px));
     max-block-size: calc(100svh - 56px);
   }
-  dialog.md-bottom-sheet[data-control="modal"][data-variant="expanded"][data-sheet-full-height] {
+  dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
     block-size: calc(100svh - 56px);
   }
 }

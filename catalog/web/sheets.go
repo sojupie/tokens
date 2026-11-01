@@ -15,6 +15,8 @@ func (c componentCase) SheetHandle() templ.Attributes {
 	minimized := c.Variant == "minimized"
 	attrs := templ.Attributes{"type": "button", "class": "md-sheet-handle", "data-sheet-handle": "", "aria-controls": c.ID() + "-content", "aria-expanded": fmt.Sprint(!minimized), "aria-label": "Minimize sheet"}
 	if minimized {
+		attrs["aria-label"] = "Restore sheet"
+	} else if c.Control == "modal" {
 		attrs["aria-label"] = "Expand sheet"
 	}
 	if c.State == "focused" {

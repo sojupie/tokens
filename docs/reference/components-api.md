@@ -79,6 +79,17 @@ anatomy when the application needs its own header. Place interactive sheets insi
 `SheetHost`; render a trigger alongside the sheet. `Hidden: true` starts a standard
 sheet closed. Modal sheets start closed through native dialog state.
 
+Bottom sheets have explicit `minimized` and `default` height anchors. Set
+`SheetProps.AllowFullHeight` on a modal bottom sheet to add a `full` anchor.
+The handle cycles default → full → minimized → default when enabled; without
+full height it alternates default and minimized. Dragging snaps to the enabled
+anchors, arrow keys move one anchor, and Home/End select the largest/smallest.
+Equivalent heights are skipped. Reopening restores the configured initial height.
+`data-sheet-size` records the active anchor; `data-variant` remains the captured
+expanded/minimized visual configuration. Modal sheets retain rounded top corners
+at the minimized anchor; the captured square minimized shape applies to standard
+sheets.
+
 `Attrs` and `InputAttrs` extend application hooks or adapt playground states.
 `Attrs["class"]` merges consumer classes with the component classes. Root styles
 and application hooks use these attributes; shared variants use typed props.
