@@ -71,7 +71,7 @@ templ SelectField(p SelectProps) {
 	<div { p.Attributes()... }>
 		if p.Outlined {
 			@FieldOutline(p.Label)
-			<label for={ p.ID } data-slot="label">{ p.Label }</label>
+			<label for={ fmt.Sprint(p.InputAttributes()["id"]) } data-slot="label">{ p.Label }</label>
 			<input { p.InputAttributes()... }/>
 			<button type="button" class="md-field-toggle" data-field-toggle tabindex="-1" aria-label={ "Show " + p.Label + " options" } aria-controls={ p.ID + "-options" } disabled?={ p.Disabled }>
 				<span data-slot="trailing-icon">
@@ -126,7 +126,7 @@ templ TextField(p TextFieldProps) {
 		if !p.Filled {
 			@FieldOutline(p.Label)
 		}
-		<label for={ p.ID } data-slot="label">{ p.Label }</label>
+		<label for={ fmt.Sprint(p.input()["id"]) } data-slot="label">{ p.Label }</label>
 		if p.Leading!=nil {
 			<span data-slot="leading-icon" aria-hidden="true">
 				@p.Leading

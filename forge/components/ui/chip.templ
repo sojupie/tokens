@@ -49,7 +49,7 @@ templ chipLeading(p ChipProps) {
 templ FilterChipField(p ChoiceProps) {
 	@Require("common")
 	<label { attributes(templ.Attributes{"class":"md-filter-chip"},p.Attrs)... }>
-		<input { attributes(p.input("checkbox"),templ.Attributes{"class":"tokens-visually-hidden"})... }/>
+		<input { p.input("checkbox")... }/>
 		<span class="md-chip-face">
 			@Icon("check")
 			<span>{ p.Label }</span>

@@ -294,7 +294,7 @@ func FilterChipField(p ChoiceProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, attributes(p.input("checkbox"), templ.Attributes{"class": "tokens-visually-hidden"}))
+		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, p.input("checkbox"))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
