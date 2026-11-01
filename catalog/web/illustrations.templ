@@ -1,0 +1,56 @@
+package web
+
+import "github.com/sojupie/tokens/source/publish"
+
+// Capture the existing catalog previews without an application scene.
+templ illustrationPage(subject publish.SubjectView, c componentCase, theme, contrast string) {
+ <!DOCTYPE html>
+ <html lang="en" data-theme={ theme } data-contrast={ contrast }>
+  <head>
+   <meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+   <meta name="robots" content="noindex"/><title>{ subjectName(subject) } thumbnail</title>
+   <link rel="stylesheet" href="/theme.css"/>
+   for _,file:=range []string{"site.css","app.css","buttons.css","components.css","bundles/common.css","illustrations.css"} {
+    <link rel="stylesheet" href={ staticURL(file) }/>
+   }
+   for _,file:=range []string{"motion.js","buttons.js","components.js","fields.js","date-picker.js","time-picker.js","progress.js","carousel.js","illustration-ready.js"} {
+    <script src={ staticURL(file) } defer></script>
+   }
+  </head>
+  <body class="tokens-illustration-body" data-composition="thumbnail">
+   @componentAssetScope() {
+    <main data-component-assets class="tokens-illustration">
+     <div class="scene-thumbnail-capture"><div class="tokens-component-thumbnail" data-preview-ready><div class="tokens-component-thumbnail-scene" inert>
+      if subject.Key.Kind==publish.SubjectComponent {
+ @componentThumbnail(c)
+ } else {
+ @styleThumbnail(subject)
+ }
+     </div></div></div>
+    </main>
+   }
+  </body>
+ </html>
+}
+
+templ subjectIllustration(image Illustration) {
+	<figure class="tokens-subject-illustration">
+		<picture>
+			for _,variant := range []string{"dark-high","dark-medium","dark-default","light-high","light-medium"} {
+				<source data-image-appearance={ variant } srcset={ illustrationFileURL(image.Files[variant]) } media="not all"/>
+			}
+			<img src={ illustrationFileURL(image.Files["light-default"]) } alt={ image.Alt } width="1200" height="630" decoding="async" fetchpriority="high"/>
+		</picture>
+		@illustrationImageTheme()
+	</figure>
+}
+
+templ thumbnailPicture(image Illustration) {
+	<picture class="tokens-thumbnail-image">
+		for _,variant := range []string{"dark-high","dark-medium","dark-default","light-high","light-medium"} {
+			<source data-image-appearance={ variant } srcset={ illustrationFileURL(image.Files[variant]) } media="not all"/>
+		}
+		<img src={ illustrationFileURL(image.Files["light-default"]) } alt={ image.Name + " component preview" } width="720" height="450" loading="lazy" decoding="async"/>
+	</picture>
+	@illustrationImageTheme()
+}

@@ -399,36 +399,17 @@ spacing, app-bar title ownership and scene framing. Shared measurements live in
 ## Component illustrations
 
 Catalog cards use generated images of the simple previews. Interactive playgrounds keep their live markup.
-Larger illustrations on component and style pages are built from editorial HTML
-scenes using those same specimens. Each scene has light and dark appearances at
-all three contrast levels. The default light image also supplies the page's
-Open Graph image and image-sitemap entry.
+The application and editorial scenes have been removed. Their review and render
+URLs return 404. Page headers and sharing metadata omit scene images until new
+scenes are built.
 
-After building token assets, generate the image files with Chromium:
+Generate the simple catalog thumbnails after building token assets:
 
 ```sh
 go run ./cmd/tokens illustrations --published published-review --chrome-path /usr/bin/chromium
 ```
 
-Use `--assets DIRECTORY` for an external asset generation. The command captures
-1200 × 630 editorial scenes and separate 720 × 450 catalog thumbnails after fonts and static geometry settle, encodes JPEG files,
-and publishes `illustrations/manifest.json` only when every image succeeds.
-Files have content hashes in their names; existing image URLs remain usable.
-The server only reads finished images. It does not launch Chromium for requests.
-The deployment asset build runs this step before switching `site-assets`.
-
-Scene composition lives in `catalog/web/illustration_scenes.templ` and
-`catalog/web/static/illustrations.css`. Component measurements stay in Forge.
-Review a scene at `/illustrations/render/components/time-pickers?theme=dark&contrast=high`. Add `composition=thumbnail` to render its simple catalog preview. Catalog cards use those generated images when the manifest contains them; the playground remains live markup.
-Render routes and the build index have `noindex`; public images are served from
-`/illustrations/images/`. The server does not advertise images when no image
-manifest exists. Rebuild illustrations after changing their scenes or specimens.
-
-Review the six application scenes at `/illustrations/review`. Each application
-has controls for its related screen states, plus shared appearance, contrast and
-column-overlay controls. Wide scenes use a 1440 × 1000 window; the museum app
-uses 412 × 892. Open individual states at `/illustrations/apps/{app}/{view}`.
-Their composition lives in `catalog/web/application_scenes.templ` and
-`catalog/web/static/application-scenes.css`, using the shared site layout values
-and Forge components. This review does not generate or replace published images.
-The earlier individual-component review remains at `/illustrations/review/components`.
+The command captures 720 × 450 thumbnails in six appearances and publishes
+`illustrations/manifest.json` after every capture succeeds. Rendering lives in
+`catalog/web/illustrations.templ`; component anatomy and measurements remain in
+Forge. The playground stays interactive.

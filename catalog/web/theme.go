@@ -107,7 +107,7 @@ func publicationThemeVariant(state publish.PublishedState, theme, contrast strin
 	// Include preview text colour inputs alongside the tokens referenced by the styles.
 	wanted := map[string]bool{"md-ref-palette-neutral0": true, "md-sys-color-on-primary": true}
 	pattern := themeTokenReference
-	for _, file := range []string{"static/app.css", "static/token-table.css", "static/buttons.css", "static/components.css", "static/application-scenes.css"} {
+	for _, file := range []string{"static/app.css", "static/token-table.css", "static/buttons.css", "static/components.css"} {
 		data, err := readStaticFile(file)
 		if err != nil {
 			return "", err

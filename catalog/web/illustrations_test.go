@@ -43,10 +43,10 @@ func TestIllustrationBuildManifestAndRenderRoutes(t *testing.T) {
 	if err := json.Unmarshal(response.Body.Bytes(), &manifest); err != nil {
 		t.Fatal(err)
 	}
-	if len(manifest.Images) != 4 {
+	if len(manifest.Images) != 1 {
 		t.Fatal(manifest)
 	}
-	for _, path := range []string{"/illustrations/render/components/snackbar?theme=dark&contrast=high", "/illustrations/render/"} {
+	for _, path := range []string{"/illustrations/render/components/snackbar?theme=dark&contrast=high&composition=thumbnail"} {
 		response = httptest.NewRecorder()
 		server.Handler().ServeHTTP(response, httptest.NewRequest("GET", path, nil))
 		if response.Code != 200 || response.Header().Get("X-Robots-Tag") == "" || !strings.Contains(response.Body.String(), `data-component-assets class="tokens-illustration"`) {
@@ -127,5 +127,27 @@ func TestCatalogThumbnailUsesItsOwnThemeAwareImage(t *testing.T) {
 	server.Handler().ServeHTTP(response, httptest.NewRequest("GET", "/illustrations/render/components/snackbar?composition=thumbnail", nil))
 	if response.Code != 200 || !strings.Contains(response.Body.String(), `data-composition="thumbnail"`) {
 		t.Fatal("thumbnail source unavailable")
+	}
+}
+
+func TestRemovedSceneRoutesReturnNotFound(t *testing.T) {
+	server := New(seoTestState(), "")
+	for _, path := range []string{"/illustrations/review", "/illustrations/review/components", "/illustrations/apps/mail/inbox", "/illustrations/render/components/snackbar", "/illustrations/render/"} {
+		response := httptest.NewRecorder()
+		server.Handler().ServeHTTP(response, httptest.NewRequest("GET", path, nil))
+		if response.Code != 404 {
+			t.Fatalf("removed scene %s returned %d", path, response.Code)
+		}
+	}
+}
+
+func TestThumbnailOnlyManifestDoesNotAdvertiseSceneImage(t *testing.T) {
+	server := New(seoTestState(), "")
+	image := Illustration{Path: "/components/snackbar", Thumbnails: map[string]string{"light-default": "thumbnail-0123456789abcdef.jpg"}}
+	server.illustrations = map[string]Illustration{image.Path: image}
+	var info pageMetadata
+	server.setIllustrationMetadata(&info, image.Path)
+	if info.Illustration != nil || info.ImageURL != "" {
+		t.Fatal("thumbnail-only publication advertised a scene image")
 	}
 }

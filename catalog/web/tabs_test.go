@@ -83,14 +83,6 @@ func TestTabsLayoutSwitchNormalizesCount(t *testing.T) {
 	}
 }
 
-func TestTabsSceneKeepsItsOrderCategories(t *testing.T) {
-	c := scenePreset(componentCase{Family: "tabs", TabCount: "3"})
-	labels := c.TabLabels()
-	if strings.Join(labels, ",") != "Active,Completed,Cancelled" {
-		t.Fatal("playground labels replaced scene categories", labels)
-	}
-}
-
 func TestTabsExposeSelectionOnlyForStateComparison(t *testing.T) {
 	var cases []componentCase
 	for _, selected := range []bool{true, false} {

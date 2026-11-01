@@ -275,7 +275,7 @@ async function main() {
       "md-sys-color-on-primary",
     ]);
     // Scene renders use the full theme; normal pages keep their existing subsets.
-    for (const file of ["catalog/web/static/app.css", "catalog/web/static/illustrations.css", "catalog/web/static/scene-screens.css", "catalog/web/static/application-scenes.css", "catalog/web/static/token-table.css", "forge/site/site.css"]) {
+    for (const file of ["catalog/web/static/app.css", "catalog/web/static/illustrations.css", "catalog/web/static/token-table.css", "forge/site/site.css"]) {
       const css = await readFile(file, "utf8");
       for (const match of css.matchAll(/var\(\s*--((?:md|catalog)-[a-z0-9-]+)\s*[,)]/g))
         required.add(match[1]);
@@ -407,8 +407,6 @@ async function main() {
           .map(file => "forge/components/ui/" + file),
         "catalog/web/static/app.css",
         "catalog/web/static/token-table.css",
-        "catalog/web/static/scene-screens.css",
-        "catalog/web/static/application-scenes.css",
         ...(await readdir("catalog/web"))
           .filter((file) => file.endsWith(".templ"))
           .map((file) => "catalog/web/" + file),

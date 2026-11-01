@@ -35,17 +35,12 @@ func (server *Server) IllustrationJobs() IllustrationManifest {
 	for _, subject := range sortedSubjects(server.state) {
 		result.Images = append(result.Images, Illustration{Path: subjectURL(subject), Name: subjectName(subject), Alt: illustrationAlt(subject)})
 	}
-	for _, path := range []string{"/", "/components", "/styles"} {
-		result.Images = append(result.Images, Illustration{Path: path, Name: "Token Catalog", Alt: map[string]string{"/": "Material Design 3 cards, buttons, chips and switches in a collection interface.", "/components": "Material Design 3 action buttons, choices and a landscape card.", "/styles": "Material Design 3 typography, color roles and corner shapes."}[path]})
-	}
+
 	return result
 }
 
 func illustrationAlt(subject publish.SubjectView) string {
-	descriptions := map[string]string{
-		"app-bars": "An app bar above a journal of saved places.", "badges": "An inbox with unread counts on folders and a notification dot.", "bottom-sheets": "An expanded bottom sheet over a collection of saved places.", "button-groups": "A button group choosing between walking, cycling and driving routes.", "buttons": "Filled and outlined buttons for saving a coastal route and getting directions.", "cards": "Two cards with landscape paintings, place names and supporting descriptions.", "carousel": "A carousel of places to explore in a travel collection.", "checkbox": "A packing checklist with checked and unchecked items.", "chips": "Filter and assist chips above a collection of walking destinations.", "date-pickers": "A date picker over a calendar of scheduled events.", "dialogs": "A dialog over a collection of saved discoveries.", "divider": "Dividers separating personal and shared collections.", "extended-fab": "An extended floating action button for creating a collection.", "fab-menu": "A floating action button menu for creating documents in a library.", "floating-action-button": "A floating action button for adding to a collection.", "icon-buttons": "Icon buttons for managing a collection of favorite places.", "lists": "A reading list with descriptions and item counts alongside a landscape painting.", "loading-indicator": "A loading indicator while a library is being retrieved.", "menus": "An open menu beside a page of weekend notes.", "navigation-bar": "A horizontal navigation bar anchored below a recently played music library.", "navigation-drawer": "A navigation drawer beside an inbox of messages.", "navigation-rail": "A navigation rail beside a course overview and lesson list.", "progress-indicators": "A progress indicator showing a photo download.", "radio-button": "Radio buttons choosing who can view a collection.", "search": "A search interface with suggestions for saved places.", "segmented-buttons": "Segmented buttons switching between day, week and month calendar views.", "side-sheets": "A docked side sheet displaying metadata beside a landscape photo.", "sliders": "A volume slider beside album artwork and playback controls.", "snackbar": "A snackbar confirming an action in a travel journal.", "split-button": "A split button offering send options in a message composer.", "switch": "On and off switches for notification, download and playback preferences.", "tabs": "Tabs above a collection of outdoor destinations.", "text-fields": "A text field for naming a new collection.", "time-pickers": "A time picker over a calendar of scheduled events.", "toolbars": "A floating toolbar over a travel journal entry.", "tooltips": "A tooltip explaining an action in a notes workspace.", "elevation": "Overlapping filled and elevated cards with a floating action button.", "motion/overview": "A motion curve and directional control illustrating movement between states.", "shape/corner-radius": "Landscape cards and icon surfaces with contrasting corner shapes.", "spacing": "Three content cards demonstrating 8, 16 and 24dp outer spacing.", "typography/type-scale": "Display, headline, body and button typography in a travel interface.",
-	}
-	return descriptions[subject.Key.Slug]
+	return subjectName(subject) + " preview."
 }
 
 // UseIllustrations pins a completed image generation for the serving process.
@@ -70,7 +65,7 @@ func (server *Server) UseIllustrations() error {
 	server.illustrations = map[string]Illustration{}
 	for _, image := range manifest.Images {
 		for _, variant := range []string{"light-default", "light-medium", "light-high", "dark-default", "dark-medium", "dark-high"} {
-			if image.Files[variant] == "" {
+			if len(image.Files) > 0 && image.Files[variant] == "" {
 				return fmt.Errorf("missing illustration appearance: %s %s", image.Path, variant)
 			}
 		}
@@ -124,7 +119,7 @@ func (server *Server) handleIllustrationRender(w http.ResponseWriter, r *http.Re
 		contrast = "default"
 	}
 	var subject publish.SubjectView
-	found := path == "/" || path == "/components" || path == "/styles"
+	found := false
 	for _, item := range sortedSubjects(server.state) {
 		if subjectURL(item) == path {
 			subject = item
@@ -144,23 +139,15 @@ func (server *Server) handleIllustrationRender(w http.ResponseWriter, r *http.Re
 			return
 		}
 		specimen = cases[subject.Key.Slug]
-		specimen = scenePreset(specimen)
 	}
-	if r.URL.Query().Get("composition") == "thumbnail" && subject.Key.Kind == publish.SubjectComponent {
-		cases, err := server.componentThumbnails([]publish.SubjectView{subject})
-		if err != nil {
-			http.Error(w, err.Error(), 500)
-			return
-		}
-		specimen = cases[subject.Key.Slug]
-		specimen.instanceID = "thumbnail-main"
+	if r.URL.Query().Get("composition") != "thumbnail" || subject.Key.Slug == "" {
+		http.NotFound(w, r)
+		return
 	}
-	if subject.Key.Slug == "" {
-		specimen = componentCase{Family: "overview", Control: path, Variant: "filled", Size: "medium", Shape: "round", State: "enabled"}
-	}
+	specimen.instanceID = "thumbnail-main"
 	// Use the same asset ownership and exact publication theme as normal pages.
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	if err := server.renderHTML(w, r, illustrationPage(subject, specimen, theme, contrast, r.URL.Query().Get("composition") == "thumbnail", r.URL.Query().Get("view") == "review")); err != nil {
+	if err := server.renderHTML(w, r, illustrationPage(subject, specimen, theme, contrast)); err != nil {
 		http.Error(w, err.Error(), 500)
 	}
 }
@@ -169,7 +156,7 @@ func illustrationFileURL(file string) string { return "/illustrations/images/" +
 
 func (server *Server) setIllustrationMetadata(info *pageMetadata, path string) {
 	image, ok := server.illustrations[path]
-	if !ok {
+	if !ok || len(image.Files) == 0 {
 		return
 	}
 	info.Illustration = &image
@@ -178,23 +165,6 @@ func (server *Server) setIllustrationMetadata(info *pageMetadata, path string) {
 		info.ImageURL = server.publicOrigin + illustrationFileURL(image.Files["light-default"])
 		info.ImageAlt = image.Alt
 	}
-}
-
-func (c componentCase) sceneTitle() string {
-	titles := map[string]string{"appbar": "Courses", "badge": "Messages", "bottom-sheet": "Riverside Museum", "button-group": "Now playing", "button": "Coastal study", "card": "Exhibitions", "carousel": "Discover", "checkbox": "Exhibition opening", "chip": "Collection", "date": "Edit event", "dialog": "Exhibition 2026", "divider": "Account settings", "extended-fab": "Inbox", "fab-menu": "Exhibition 2026", "fab": "Notes", "icon": "Valley study.jpg", "list": "Downloads", "loading": "Maya Chen", "menu": "Exhibition installation plan", "nav-bar": "Library", "nav-drawer": "Inbox", "nav-rail": "My courses", "progress": "Transfers", "radio": "Delivery", "search": "Search collection", "segmented": "Calendar", "side-sheet": "Photo library", "slider": "Edit photo", "snackbar": "Inbox", "split": "New message", "switch": "Notifications", "tabs": "Orders", "field": "Shipping address", "time": "Edit alarm", "toolbar": "Harbour study", "tooltip": "Exhibition budget"}
-	if title := titles[c.Family]; title != "" {
-		return title
-	}
-	return "Make room for good ideas"
-}
-
-func (c componentCase) sceneInstance(index int) componentCase {
-	c.instanceID = fmt.Sprintf("illustration-choice-%d", index)
-	return c
-}
-func (c componentCase) sceneLabel(label string) componentCase {
-	c.illustrationLabels = [3]string{label}
-	return c
 }
 
 // Apply the saved appearance while parsing the picture, before its first paint.

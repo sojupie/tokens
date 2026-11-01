@@ -30,7 +30,7 @@ func (server *Server) handleSitemap(response http.ResponseWriter, request *http.
 	document := sitemapDocument{ImageNS: "http://www.google.com/schemas/sitemap-image/1.1", XMLNS: "http://www.sitemaps.org/schemas/sitemap/0.9"}
 	add := func(path string) {
 		entry := sitemapEntry{Location: server.publicOrigin + path}
-		if image, ok := server.illustrations[path]; ok {
+		if image, ok := server.illustrations[path]; ok && image.Files["light-default"] != "" {
 			entry.Images = []sitemapImage{{Location: server.publicOrigin + illustrationFileURL(image.Files["light-default"])}}
 		}
 		document.URLs = append(document.URLs, entry)

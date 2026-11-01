@@ -12,10 +12,10 @@ var dateMonths = ui.DateMonths
 type dateCell = ui.DateCell
 
 func (c componentCase) dateBase() ui.DatePickerProps {
-	return ui.DatePickerProps{ID: c.ID(), Variant: c.Variant, Range: c.DateRange, Pane: c.Control, Inline: c.State != "interactive", Value: applicationDate(2026, 10, 21), End: applicationDate(2026, 10, 26), Today: applicationDate(2026, 10, 18)}
+	return ui.DatePickerProps{ID: c.ID(), Variant: c.Variant, Range: c.DateRange, Pane: c.Control, Inline: c.State != "interactive", Value: datePickerSampleDate(2026, 10, 21), End: datePickerSampleDate(2026, 10, 26), Today: datePickerSampleDate(2026, 10, 18)}
 }
 func dateRows(month int) [][]dateCell {
-	return (componentCase{}).dateBase().Rows(applicationDate(2026, month, 1))
+	return (componentCase{}).dateBase().Rows(datePickerSampleDate(2026, month, 1))
 }
 func (c componentCase) DateEntryLabel(part string) string      { return c.dateBase().DateEntryLabel(part) }
 func (c componentCase) DateEntry(part string) templ.Attributes { return c.dateBase().DateEntry(part) }
@@ -95,4 +95,8 @@ func (c componentCase) datePickerProps() ui.DatePickerProps {
 		p.MonthAttrs[month] = c.DateMonth(month)
 	}
 	return p
+}
+
+func datePickerSampleDate(year, month, day int) time.Time {
+	return time.Date(year, time.Month(month), day, 0, 0, 0, 0, time.UTC)
 }

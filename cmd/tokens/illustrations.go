@@ -29,7 +29,7 @@ func runIllustrations(args []string) error {
 	flags := flag.NewFlagSet("tokens illustrations", flag.ContinueOnError)
 	published := flags.String("published", "published", "publication directory")
 	assets := flags.String("assets", "", "generated asset directory; defaults to publication/assets")
-	captures := flags.String("from-captures", "", "use existing 1200×630 scene and 720×450 thumbnail captures instead of launching Chromium")
+	captures := flags.String("from-captures", "", "use existing 720×450 thumbnail captures instead of launching Chromium")
 	chrome := flags.String("chrome-path", "", "optional Chromium executable")
 	if err := flags.Parse(args); err != nil {
 		if errors.Is(err, flag.ErrHelp) {
@@ -77,63 +77,49 @@ func runIllustrations(args []string) error {
 		image := &manifest.Images[i]
 		image.Files = map[string]string{}
 		image.Thumbnails = map[string]string{}
-		compositions := []string{"scene"}
-		if strings.HasPrefix(image.Path, "/components/") || strings.HasPrefix(image.Path, "/styles/") {
-			compositions = append(compositions, "thumbnail")
-		}
-		for _, composition := range compositions {
-			width, height := web.IllustrationWidth, web.IllustrationHeight
-			if composition == "thumbnail" {
-				width, height = 720, 450
-			}
-			for _, theme := range []string{"light", "dark"} {
-				for _, contrast := range []string{"default", "medium", "high"} {
-					variant := theme + "-" + contrast
-					name := strings.Trim(strings.ReplaceAll(image.Path, "/", "-"), "-")
-					if name == "" {
-						name = "catalog"
-					}
-					assetName := name
-					if composition == "thumbnail" {
-						assetName += "-thumbnail"
-					}
-					captureName := assetName + "--" + variant + ".png"
-					var capture []byte
-					if *captures != "" {
-						capture, err = os.ReadFile(filepath.Join(*captures, captureName))
-					} else {
-						ctx, cancel := context.WithTimeout(browser, 30*time.Second)
-						renderURL := origin + "/illustrations/render" + image.Path + "?theme=" + url.QueryEscape(theme) + "&contrast=" + url.QueryEscape(contrast) + "&composition=" + composition
-						err = chromedp.Run(ctx, chromedp.EmulateViewport(int64(width), int64(height)), chromedp.Navigate(renderURL), chromedp.WaitReady("[data-scene-ready]"), chromedp.CaptureScreenshot(&capture))
-						cancel()
-					}
-					if err != nil {
-						return fmt.Errorf("%s / %s: %w", image.Path, variant, err)
-					}
-					bitmap, _, err := imageformat.Decode(bytes.NewReader(capture))
-					if err != nil {
-						return err
-					}
-					if bitmap.Bounds().Dx() != width || bitmap.Bounds().Dy() != height {
-						return fmt.Errorf("wrong capture dimensions for %s", captureName)
-					}
-					var encoded bytes.Buffer
-					if err = jpeg.Encode(&encoded, bitmap, &jpeg.Options{Quality: 90}); err != nil {
-						return err
-					}
-					hash := sha256.Sum256(encoded.Bytes())
-					file := fmt.Sprintf("%s-%s-%x.jpg", assetName, variant, hash[:8])
-					if err = os.WriteFile(filepath.Join(output, file), encoded.Bytes(), 0644); err != nil {
-						return err
-					}
-					if composition == "thumbnail" {
-						image.Thumbnails[variant] = file
-					} else {
-						image.Files[variant] = file
-					}
+
+		width, height := 720, 450
+		for _, theme := range []string{"light", "dark"} {
+			for _, contrast := range []string{"default", "medium", "high"} {
+				variant := theme + "-" + contrast
+				name := strings.Trim(strings.ReplaceAll(image.Path, "/", "-"), "-")
+				if name == "" {
+					name = "catalog"
 				}
+				assetName := name + "-thumbnail"
+				captureName := assetName + "--" + variant + ".png"
+				var capture []byte
+				if *captures != "" {
+					capture, err = os.ReadFile(filepath.Join(*captures, captureName))
+				} else {
+					ctx, cancel := context.WithTimeout(browser, 30*time.Second)
+					renderURL := origin + "/illustrations/render" + image.Path + "?theme=" + url.QueryEscape(theme) + "&contrast=" + url.QueryEscape(contrast) + "&composition=thumbnail"
+					err = chromedp.Run(ctx, chromedp.EmulateViewport(int64(width), int64(height)), chromedp.Navigate(renderURL), chromedp.WaitReady("[data-scene-ready]"), chromedp.CaptureScreenshot(&capture))
+					cancel()
+				}
+				if err != nil {
+					return fmt.Errorf("%s / %s: %w", image.Path, variant, err)
+				}
+				bitmap, _, err := imageformat.Decode(bytes.NewReader(capture))
+				if err != nil {
+					return err
+				}
+				if bitmap.Bounds().Dx() != width || bitmap.Bounds().Dy() != height {
+					return fmt.Errorf("wrong capture dimensions for %s", captureName)
+				}
+				var encoded bytes.Buffer
+				if err = jpeg.Encode(&encoded, bitmap, &jpeg.Options{Quality: 90}); err != nil {
+					return err
+				}
+				hash := sha256.Sum256(encoded.Bytes())
+				file := fmt.Sprintf("%s-%s-%x.jpg", assetName, variant, hash[:8])
+				if err = os.WriteFile(filepath.Join(output, file), encoded.Bytes(), 0644); err != nil {
+					return err
+				}
+				image.Thumbnails[variant] = file
 			}
 		}
+
 		fmt.Printf("%d/%d %s\n", i+1, len(manifest.Images), image.Path)
 	}
 	data, err := json.MarshalIndent(manifest, "", "  ")

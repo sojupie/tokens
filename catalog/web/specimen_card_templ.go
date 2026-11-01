@@ -31,7 +31,7 @@ func specimenCard(c componentCase) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = ui.CardButton(ui.CardProps{Variant: c.Variant, Headline: "Along the coast", Supporting: "Discover a route along the shoreline, starting at the old harbour.", ImageSrc: staticURL("paintings/" + scenePainting("card", "coast")), ImageAlt: "A landscape along the coast", Attrs: c.Attributes()}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = ui.CardButton(ui.CardProps{Variant: c.Variant, Headline: "Along the coast", Supporting: "Discover a route along the shoreline, starting at the old harbour.", ImageSrc: staticURL("paintings/" + cardPainting), ImageAlt: "A landscape along the coast", Attrs: c.Attributes()}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
