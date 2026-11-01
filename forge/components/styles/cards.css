@@ -50,8 +50,20 @@
   outline: var(--_card-focus-width) solid var(--_card-focus-color);
   outline-offset: var(--_card-focus-offset);
 }
-.md-card.md-interactive-card[aria-disabled="true"] {
+.md-card.md-interactive-card:is(:disabled, [aria-disabled="true"]) {
   cursor: default;
+  --_card-icon: var(--md-sys-color-on-surface);
+  /* Disabled alpha is composited over a solid card surface, not the page.
+     https://github.com/androidx/androidx/blob/androidx-main/compose/material3/material3/src/commonMain/kotlin/androidx/compose/material3/Card.kt */
+  background: color-mix(in srgb,
+    var(--_card-container) calc(var(--_card-container-opacity) * 100%),
+    var(--_card-disabled-base, var(--_card-container)));
+}
+.md-filled-card {
+  --_card-disabled-base: var(--md-comp-filled-card-container-color);
+}
+.md-card.md-interactive-card:is(:disabled, [aria-disabled="true"]) > :not(.md-button-ripple) {
+  opacity: var(--md-sys-state-disabled-state-layer-opacity);
 }
 
 @media (prefers-reduced-motion: reduce) {

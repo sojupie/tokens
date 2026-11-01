@@ -164,7 +164,7 @@ function harness(reduced = false, initialCheckboxes = []) {
             "--_group-width-damping": "0.9",
             "--_group-width-stiffness": "1400",
             "--_button-rest-shape":
-              button.getAttribute("aria-pressed") === "true"
+              ["aria-pressed", "aria-selected", "data-selected"].some(name => button.getAttribute(name) === "true")
                 ? "12px"
                 : "calc(infinity * 1px)",
             "--_button-pressed-shape": "8px",
@@ -413,24 +413,25 @@ test("a repeated press restarts at its new position and invalidates old release 
   assert.equal(b.children.length, 0);
 });
 
-test("application selection changes retarget the release shape", () => {
+for (const attribute of ["aria-pressed", "aria-selected", "data-selected"])
+test(`application ${attribute} changes retarget the release shape`, () => {
   const h = harness(), b = h.button();
-  b.setAttribute("aria-pressed", "false");
+  b.setAttribute(attribute, "false");
   h.emit("pointerdown", b);
   h.emit("pointerup", b);
   h.emit("click", b);
   const returning = h.animations.filter(a => a.frames[0].borderRadius).at(-1);
   assert.equal(returning.frames.at(-1).borderRadius, "20px 20px 20px 20px");
-  b.setAttribute("aria-pressed", "true");
-  h.mutate([{target:b, attributeName:"aria-pressed", oldValue:"false"}]);
+  b.setAttribute(attribute, "true");
+  h.mutate([{target:b, attributeName:attribute, oldValue:"false"}]);
   const selected = h.animations.filter(a => a.frames[0].borderRadius).at(-1);
   assert.equal(returning.cancelled, true);
   assert.equal(selected.frames.at(-1).borderRadius, "12px 12px 12px 12px");
   const count = h.animations.length;
-  h.mutate([{target:b, attributeName:"aria-pressed", oldValue:"true"}]);
+  h.mutate([{target:b, attributeName:attribute, oldValue:"true"}]);
   assert.equal(h.animations.length, count);
-  b.setAttribute("aria-pressed", "false");
-  h.mutate([{target:b, attributeName:"aria-pressed", oldValue:"true"}]);
+  b.setAttribute(attribute, "false");
+  h.mutate([{target:b, attributeName:attribute, oldValue:"true"}]);
   const unselected = h.animations.filter(a => a.frames[0].borderRadius).at(-1);
   assert.equal(selected.cancelled, true);
   assert.equal(unselected.frames.at(-1).borderRadius, "20px 20px 20px 20px");

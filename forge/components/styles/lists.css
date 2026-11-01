@@ -37,6 +37,25 @@
 .md-list[data-variant="standard"]:not([data-shape="expressive"]) > li:last-child {
   --_list-edge-bottom: var(--_list-shape);
 }
+.md-list[data-shape="expressive"] > li:first-child {
+  --_list-edge-top: var(--_list-shape);
+}
+.md-list[data-shape="expressive"] > li:last-child {
+  --_list-edge-bottom: var(--_list-shape);
+}
+.md-list[data-shape="expressive"] > li > .md-list-item,
+.md-list[data-shape="expressive"] > li > .md-list-row > .md-list-item {
+  --_button-rest-shape:
+    max(var(--_list-edge-top), var(--_list-item-shape))
+    max(var(--_list-edge-top), var(--_list-item-shape))
+    max(var(--_list-edge-bottom), var(--_list-item-shape))
+    max(var(--_list-edge-bottom), var(--_list-item-shape));
+  --_button-pressed-shape:
+    max(var(--_list-edge-top), var(--_list-item-pressed-shape, var(--_list-item-shape)))
+    max(var(--_list-edge-top), var(--_list-item-pressed-shape, var(--_list-item-shape)))
+    max(var(--_list-edge-bottom), var(--_list-item-pressed-shape, var(--_list-item-shape)))
+    max(var(--_list-edge-bottom), var(--_list-item-pressed-shape, var(--_list-item-shape)));
+}
 .md-list[data-variant="standard"]:not([data-shape="expressive"]) > li > .md-list-item,
 .md-list[data-variant="standard"]:not([data-shape="expressive"]) > li > .md-list-row > .md-list-item {
   --_list-item-shape:

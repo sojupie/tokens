@@ -626,7 +626,7 @@
     // MutationObserver runs before paint, including changes made by app click handlers.
     for(const group of changedGroups)widthGroup(widthGroups.get(group).items[0],false);
     for (const mutation of mutations) {
-      if (!["aria-pressed","aria-expanded"].includes(mutation.attributeName)) continue;
+      if (!["aria-pressed","aria-expanded","aria-selected","data-selected"].includes(mutation.attributeName)) continue;
       const button = buttonFor(mutation.target);
       if (button && button === mutation.target && button.isConnected &&
           !disabled(button) && !active.has(button) &&
@@ -653,7 +653,7 @@
     characterData: true,
     attributes: true,
     attributeOldValue: true,
-    attributeFilter: ["disabled", "aria-disabled", "aria-pressed", "aria-expanded", "aria-busy"],
+    attributeFilter: ["disabled", "aria-disabled", "aria-pressed", "aria-expanded", "aria-selected", "data-selected", "aria-busy"],
   });
   if(document.fonts)document.fonts.ready.then(initializeWidthGroups);else initializeWidthGroups();
   document.documentElement.setAttribute("data-feedback-ready", "");
