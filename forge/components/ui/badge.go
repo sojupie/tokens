@@ -23,8 +23,5 @@ func BadgeContent(content string) string {
 
 func badgeAttributes(variant string, content string, attrs templ.Attributes) templ.Attributes {
 	result := templ.Attributes{"class": "md-badge", "data-variant": variant, "aria-hidden": "true", "data-characters": strconv.Itoa(len([]rune(BadgeContent(content))))}
-	for key, value := range attrs {
-		result[key] = value
-	}
-	return result
+	return attributes(result, attrs)
 }

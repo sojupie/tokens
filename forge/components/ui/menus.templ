@@ -2,10 +2,7 @@ package ui
 
 func menuItemAttributes(attrs templ.Attributes) templ.Attributes {
 	defaults := templ.Attributes{"type": "button", "class": "md-menu-item", "role": "menuitem", "tabindex": "-1"}
-	for key, value := range attrs {
-		defaults[key] = value
-	}
-	return defaults
+	return attributes(defaults, attrs)
 }
 
 // MenuItem is the compact form of MenuEntry.

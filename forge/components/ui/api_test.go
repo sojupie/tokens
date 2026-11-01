@@ -249,3 +249,15 @@ func TestChipAndGroupConditionalContent(t *testing.T) {
 		t.Fatalf("avatar and leading icon both rendered: %s", text)
 	}
 }
+
+func TestMenuAndBadgePreserveBaseClassesForConsumers(t *testing.T) {
+	for _, component := range []templ.Component{
+		MenuItem(templ.Attributes{"class": "consumer"}, "Save", nil, nil),
+		Badge("small", "", templ.Attributes{"class": "consumer"}),
+	} {
+		text, _ := renderAPI(t, component)
+		if !strings.Contains(text, `class="md-`) || !strings.Contains(text, ` consumer"`) {
+			t.Fatal(text)
+		}
+	}
+}
