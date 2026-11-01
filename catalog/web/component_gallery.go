@@ -44,7 +44,7 @@ type componentCase struct {
 	ListSurface     string `json:"listSurface,omitempty"`
 	ListExpandIcon  string `json:"listExpandIcon,omitempty"`
 	NavLayout       string `json:"navLayout,omitempty"`
-	NavCollapse     string `json:"navCollapse,omitempty"`
+	NavSecondary    string `json:"navSecondary,omitempty"`
 	NavAlign        string `json:"navAlign,omitempty"`
 	NavHeader       string `json:"navHeader,omitempty"`
 	NavIndicator    string `json:"navIndicator,omitempty"`

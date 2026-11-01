@@ -263,9 +263,6 @@
   padding: var(--md-sys-measurement-space200);
   font: inherit;
 }
-.md-rail-external-menu[hidden] {
-  display: none;
-}
 .md-rail-screen {
   flex: 1;
   min-block-size: 0;

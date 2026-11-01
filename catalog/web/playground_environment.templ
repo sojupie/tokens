@@ -100,9 +100,7 @@ templ playgroundSearch(c componentCase) {
 templ playgroundNavRail(c componentCase) {
 	@ui.RailFrame(c.RailFrame(), navigationExampleSurface(c)) {
 		<header>
-			@ui.IconButtonContent(ui.IconButtonProps{Variant: "standard", Label: "Expand navigation", Attrs: templ.Attributes{"class": "md-rail-external-menu", "type": "button", "data-width": "default", "data-navigation-expand": true, "aria-expanded": "false"}, Size: ui.Size("small"), Shape: ui.ButtonShape("round")}) {
-				@materialSymbol("menu")
-			}
+
 			<span>Workspace</span>
 		</header>
 		<section class="md-rail-screen" id={ c.ID() + "-screen" }>

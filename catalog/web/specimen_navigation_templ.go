@@ -589,7 +589,7 @@ func navigationExampleSurface(c componentCase) templ.Component {
 }
 
 func navigationExampleItem(c componentCase, i int, label, icon string) ui.NavigationItemProps {
-	p := ui.NavigationItemProps{Label: label, Icon: icon, Attrs: c.NavigationItem(i), Secondary: c.Family == "nav-rail" && i >= 4}
+	p := ui.NavigationItemProps{Label: label, Icon: icon, Attrs: c.NavigationItem(i), Secondary: c.Family == "nav-rail" && c.NavSecondary == "expanded-only" && i >= 4}
 	if c.NavigationHasBadge(i) {
 		p.Badge = c.NavBadge
 		p.BadgeText = "3"

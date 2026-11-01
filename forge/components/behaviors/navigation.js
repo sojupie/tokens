@@ -131,9 +131,6 @@
         expanded ? "Collapse navigation" : "Expand navigation",
       );
     }
-    const external = frame.querySelector(".md-rail-external-menu");
-    external.hidden =
-      !hidden && !["fab", "none"].includes(frame.dataset.header);
     const fab = rail.querySelector(".md-nav-fab");
     if (fab) {
       fab.classList.toggle("md-fab", !expanded);
@@ -192,7 +189,7 @@
     const restoreFocus = () => {
       if (focus) {
         const target = targetHidden
-          ? frame.querySelector(".md-rail-external-menu")
+          ? frame.querySelector(".md-rail-screen")
           : rail.querySelector(
               "[data-navigation-expand],.md-nav-fab,[data-navigation-item]",
             );

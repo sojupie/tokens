@@ -9,14 +9,14 @@ import (
 
 func TestNavigationRailConfigurations(t *testing.T) {
 	page := &componentPreview{Cases: []componentCase{{Family: "nav-rail", Variant: "expanded", Orientation: "vertical"}}}
-	if err := configureNavigationPreview(page, map[string][]string{"preview.layout": {"modal"}, "preview.collapse": {"hidden"}, "preview.alignment": {"center"}, "preview.header": {"menu-fab"}, "preview.badge": {"labeled"}, "preview.indicator": {"fill"}}); err != nil {
+	if err := configureNavigationPreview(page, map[string][]string{"preview.layout": {"modal"}, "preview.secondary": {"expanded-only"}, "preview.alignment": {"center"}, "preview.header": {"menu-fab"}, "preview.badge": {"labeled"}, "preview.indicator": {"fill"}}); err != nil {
 		t.Fatal(err)
 	}
 	c := page.Cases[0]
 	if previewDimensions(c)["orientation"] != "" {
 		t.Fatal("rail label layout must follow its variant, not filter variants out")
 	}
-	if c.NavIndicator != "fill" || c.Orientation != "horizontal" || c.NavLayout != "modal" || c.NavCollapse != "hidden" || c.NavAlign != "center" || !c.RailFAB() || !c.RailMenu() {
+	if c.NavIndicator != "fill" || c.Orientation != "horizontal" || c.NavLayout != "modal" || c.NavSecondary != "expanded-only" || c.NavAlign != "center" || !c.RailFAB() || !c.RailMenu() {
 		t.Fatalf("lost configuration: %#v", c)
 	}
 	if c.Attributes()["data-variant"] != "expanded" || c.Attributes()["data-layout"] != "modal" {
@@ -45,5 +45,43 @@ func TestNavigationDrawerContent(t *testing.T) {
 	}
 	if strings.Count(html.String(), "<hr") != 1 || strings.Contains(html.String(), ">Close</button>") {
 		t.Fatal("drawer must have only the section divider and no footer close button")
+	}
+}
+
+func TestRailMenuExistsOnlyInsideConfiguredRail(t *testing.T) {
+	for _, variant := range []string{"collapsed", "expanded"} {
+		for _, header := range []string{"none", "fab", "menu", "menu-fab"} {
+			c := componentCase{Family: "nav-rail", Variant: variant, State: "interactive", NavHeader: header}
+			var output bytes.Buffer
+			if err := componentSpecimen(c).Render(context.Background(), &output); err != nil {
+				t.Fatal(err)
+			}
+			html := output.String()
+			count := strings.Count(html, "data-navigation-expand")
+			if strings.Contains(html, "md-rail-external-menu") {
+				t.Fatal("external menu rendered")
+			}
+			if c.RailMenu() {
+				start, end := strings.Index(html, "<nav "), strings.Index(html, "</nav>")
+				if count != 1 || start < 0 || end < start || !strings.Contains(html[start:end], "data-navigation-expand") {
+					t.Fatalf("%s/%s: menu not exclusively inside rail", variant, header)
+				}
+			} else if count != 0 {
+				t.Fatalf("%s/%s: menu rendered without configuration", variant, header)
+			}
+		}
+	}
+}
+
+func TestRailAdditionalDestinationsRequireExplicitExpandedOnlyChoice(t *testing.T) {
+	c := componentCase{Family: "nav-rail"}
+	for _, choice := range []string{"always", "expanded-only"} {
+		c.NavSecondary = choice
+		for i := 0; i < 6; i++ {
+			p := navigationExampleItem(c, i, c.NavigationLabels()[i], c.NavigationIcon(i))
+			if p.Secondary != (choice == "expanded-only" && i >= 4) {
+				t.Fatalf("%s item %d: wrong visibility policy", choice, i)
+			}
+		}
 	}
 }
