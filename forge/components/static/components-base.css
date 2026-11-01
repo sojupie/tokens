@@ -8276,13 +8276,11 @@ html:has(dialog:modal) {
 }
 .md-navigation-rail[data-variant="expanded"] .md-rail-menu {
   margin-inline-start: calc(
-    (
-        var(--md-comp-fab-container-width) -
-          var(--md-comp-icon-button-small-container-height)
-      ) /
-      2
+    (var(--_rail-rest-width) - var(--md-comp-icon-button-small-container-height)) / 2 -
+    var(--md-comp-nav-rail-item-horizontal-full-width-leading-space)
   );
 }
+
 .md-navigation-rail .md-nav-items {
   flex: none;
   inline-size: 100%;

@@ -160,6 +160,7 @@
           font: style.font,
           color: style.color,
           spacing: style.letterSpacing,
+          padding: style.padding,
           align: style.textAlign,
           opacity: style.opacity,
           direction: style.direction,
@@ -277,6 +278,8 @@
         font: old.font,
         color: old.color,
         letterSpacing: old.spacing,
+        boxSizing: "border-box",
+        padding: old.padding,
         textAlign: old.align,
         direction: old.direction,
       });

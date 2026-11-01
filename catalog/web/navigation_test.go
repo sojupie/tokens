@@ -9,14 +9,14 @@ import (
 
 func TestNavigationRailConfigurations(t *testing.T) {
 	page := &componentPreview{Cases: []componentCase{{Family: "nav-rail", Variant: "expanded", Orientation: "vertical"}}}
-	if err := configureNavigationPreview(page, map[string][]string{"preview.layout": {"modal"}, "preview.secondary": {"expanded-only"}, "preview.alignment": {"center"}, "preview.header": {"menu-fab"}, "preview.badge": {"labeled"}, "preview.indicator": {"fill"}}); err != nil {
+	if err := configureNavigationPreview(page, map[string][]string{"preview.layout": {"modal"}, "preview.alignment": {"center"}, "preview.header": {"menu-fab"}, "preview.badge": {"labeled"}, "preview.indicator": {"fill"}}); err != nil {
 		t.Fatal(err)
 	}
 	c := page.Cases[0]
 	if previewDimensions(c)["orientation"] != "" {
 		t.Fatal("rail label layout must follow its variant, not filter variants out")
 	}
-	if c.NavIndicator != "fill" || c.Orientation != "horizontal" || c.NavLayout != "modal" || c.NavSecondary != "expanded-only" || c.NavAlign != "center" || !c.RailFAB() || !c.RailMenu() {
+	if c.NavIndicator != "fill" || c.Orientation != "horizontal" || c.NavLayout != "modal" || c.NavAlign != "center" || !c.RailFAB() || !c.RailMenu() {
 		t.Fatalf("lost configuration: %#v", c)
 	}
 	if c.Attributes()["data-variant"] != "expanded" || c.Attributes()["data-layout"] != "modal" {
@@ -73,40 +73,47 @@ func TestRailMenuExistsOnlyInsideConfiguredRail(t *testing.T) {
 	}
 }
 
-func TestRailAdditionalDestinationsRequireExplicitExpandedOnlyChoice(t *testing.T) {
+func TestRailAdditionalDestinationsAreExpandedOnly(t *testing.T) {
 	c := componentCase{Family: "nav-rail"}
-	for _, choice := range []string{"always", "expanded-only"} {
-		c.NavSecondary = choice
-		for i := 0; i < 6; i++ {
-			p := navigationExampleItem(c, i, c.NavigationLabels()[i], c.NavigationIcon(i))
-			if p.Secondary != (choice == "expanded-only" && i >= 4) {
-				t.Fatalf("%s item %d: wrong visibility policy", choice, i)
-			}
+	for i := range 6 {
+		p := navigationExampleItem(c, i, c.NavigationLabels()[i], c.NavigationIcon(i))
+		if p.Secondary != (i >= 4) {
+			t.Fatalf("item %d: wrong visibility policy", i)
 		}
 	}
 }
 
-func TestHiddenExpandedRailHasIndependentOpener(t *testing.T) {
-	for _, variant := range []string{"collapsed", "expanded"} {
-		page := &componentPreview{Cases: []componentCase{{Family: "nav-rail", Variant: variant, State: "interactive"}}}
-		if err := configureNavigationPreview(page, map[string][]string{"preview.collapse": {"hidden"}, "preview.header": {"none"}}); err != nil {
-			t.Fatal(err)
-		}
-		c := page.Cases[0]
-		if c.RailFrame()["data-collapse"] != "hidden" {
-			t.Fatal("hidden mode missing from frame")
-		}
-		var output bytes.Buffer
-		if err := componentSpecimen(c).Render(context.Background(), &output); err != nil {
-			t.Fatal(err)
-		}
-		html := output.String()
-		if strings.Count(html, "data-navigation-expand") != 1 || !strings.Contains(html, "md-rail-external-menu") {
-			t.Fatalf("%s: hidden rail needs exactly one page opener", variant)
-		}
-		start, end := strings.Index(html, "<nav "), strings.Index(html, "</nav>")
-		if start < 0 || end < start || strings.Contains(html[start:end], "data-navigation-expand") {
-			t.Fatal("page opener must not enable the optional rail header menu")
+func TestRailInteractiveStates(t *testing.T) {
+	for _, state := range []string{"collapsed", "expanded", "hidden"} {
+		for _, header := range []string{"none", "fab", "menu", "menu-fab"} {
+			page := &componentPreview{Interactive: true, Controls: []previewControl{{Name: "variant"}}, Cases: []componentCase{{Family: "nav-rail", Variant: "collapsed", State: "interactive"}}}
+			if err := configureNavigationPreview(page, map[string][]string{"preview.rail-state": {state}, "preview.header": {header}}); err != nil {
+				t.Fatal(err)
+			}
+			c := page.Cases[0]
+			for _, control := range page.Controls {
+				if control.Name == "variant" || control.Name == "collapse" || control.Name == "secondary" {
+					t.Fatalf("redundant control %s", control.Name)
+				}
+				if state == "hidden" && control.Name == "header" && (containsPreview(control.Options, "none") || containsPreview(control.Options, "fab")) {
+					t.Fatal("hidden mode offered no-menu header")
+				}
+			}
+			if state == "hidden" {
+				if c.NavCollapse != "hidden" || !c.RailMenu() {
+					t.Fatal("hidden rail needs an internal menu")
+				}
+			} else if c.Variant != state || c.NavCollapse == "hidden" {
+				t.Fatalf("wrong initial state: %#v", c)
+			}
+			var output bytes.Buffer
+			if err := componentSpecimen(c).Render(context.Background(), &output); err != nil {
+				t.Fatal(err)
+			}
+			html := output.String()
+			if strings.Contains(html, "md-rail-external-menu") != (state == "hidden") {
+				t.Fatal("page opener must be exclusive to hidden mode")
+			}
 		}
 	}
 }

@@ -7,18 +7,49 @@ import (
 )
 
 func configureNavigationPreview(page *componentPreview, query url.Values) error {
+	initial := ""
+	if page.Interactive {
+		initial = query.Get("preview.rail-state")
+		if initial == "" {
+			initial = page.Cases[0].Variant
+			if query.Get("preview.collapse") == "hidden" {
+				initial = "hidden"
+			}
+		}
+		if !containsPreview([]string{"collapsed", "expanded", "hidden"}, initial) {
+			return fmt.Errorf("%w: rail state %s", errPreviewInput, initial)
+		}
+		controls := page.Controls[:0]
+		for _, control := range page.Controls {
+			if control.Name != "variant" {
+				controls = append(controls, control)
+			}
+		}
+		page.Controls = append(controls, previewControl{Name: "rail-state", Label: "Initial state", Options: []string{"collapsed", "expanded", "hidden"}, Selected: initial})
+		for i := range page.Cases {
+			page.Cases[i].Variant = initial
+			if initial == "hidden" {
+				page.Cases[i].Variant = "collapsed"
+				page.Cases[i].NavCollapse = "hidden"
+			}
+		}
+	}
 	for _, choice := range []previewControl{
 		{Name: "layout", Label: "Expanded layout", Options: []string{"standard", "modal"}},
-		{Name: "collapse", Label: "Closed appearance", Options: []string{"collapsed-rail", "hidden"}, Labels: map[string]string{"collapsed-rail": "Collapsed rail", "hidden": "Hidden expanded rail"}},
-		{Name: "secondary", Label: "Additional destinations", Options: []string{"always", "expanded-only"}, Labels: map[string]string{"always": "Always visible", "expanded-only": "Expanded only"}},
 		{Name: "alignment", Label: "Destination alignment", Options: []string{"top", "center"}},
 		{Name: "header", Label: "Header", Options: []string{"menu-fab", "menu", "fab", "none"}},
 		{Name: "indicator", Label: "Expanded indicator", Options: []string{"hug", "fill"}},
 		{Name: "badge", Label: "Badge", Options: []string{"none", "small", "labeled"}},
 	} {
+		if choice.Name == "header" && initial == "hidden" {
+			choice.Options = []string{"menu-fab", "menu"}
+		}
 		choice.Selected = query.Get("preview." + choice.Name)
 		if choice.Selected == "" {
 			choice.Selected = choice.Options[0]
+		}
+		if choice.Name == "header" && initial == "hidden" && (choice.Selected == "none" || choice.Selected == "fab") {
+			choice.Selected = "menu-fab"
 		}
 		if !containsPreview(choice.Options, choice.Selected) {
 			return fmt.Errorf("%w: %s %s", errPreviewInput, choice.Name, choice.Selected)
@@ -29,10 +60,6 @@ func configureNavigationPreview(page *componentPreview, query url.Values) error 
 			switch choice.Name {
 			case "layout":
 				c.NavLayout = choice.Selected
-			case "collapse":
-				c.NavCollapse = choice.Selected
-			case "secondary":
-				c.NavSecondary = choice.Selected
 			case "alignment":
 				c.NavAlign = choice.Selected
 			case "header":
