@@ -94,7 +94,7 @@
     if(button.hasAttribute('data-sheet-open')){open(sheet,button);return;}
     if(button.hasAttribute('data-sheet-close')){close(sheet,button.hasAttribute('data-sheet-save'));return;}
     if(button.hasAttribute('data-sheet-handle')){
-      if(state.suppressClick&&event.detail){state.suppressClick=false;event.preventDefault();return;}
+      if(state.suppressClick){state.suppressClick=false;event.preventDefault();return;}
       resize(sheet,sheet.dataset.variant==='minimized'?'expanded':'minimized');
     }
   });
@@ -102,6 +102,8 @@
     const sheet=event.target.closest?.(':is(.md-sheet-demo,.md-sheet-host)[data-interactive="true"] .md-sheet');if(!sheet)return;
     if(event.key==='Escape'&&(!(sheet instanceof HTMLDialogElement)||sheet.dataset.control==='standard')){event.preventDefault();event.stopPropagation();close(sheet);return;}
     if(!event.target.matches('[data-sheet-handle]'))return;
+    // Keyboard activation is independent of any preceding captured drag.
+    if(event.key==='Enter'||event.key===' ')entry(sheet).suppressClick=false;
     if(['ArrowUp','Home','ArrowDown','End'].includes(event.key)){event.preventDefault();resize(sheet,['ArrowUp','Home'].includes(event.key)?'expanded':'minimized');}
   });
   // Dismiss only when both ends of a pointer gesture are on the native backdrop.
