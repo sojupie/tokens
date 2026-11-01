@@ -24,13 +24,12 @@
 }
 .tokens-drawer-brand { flex:1; min-inline-size:0; padding:var(--md-sys-measurement-space200); font:var(--md-sys-typescale-title-medium); }
 .tokens-site-header .md-nav-items > h3 { margin:0; color:var(--md-sys-color-on-surface-variant); }
-/* Paint the full drawer region even when browser bars retract. */
-.tokens-site-header[data-docked="true"] { position:fixed; inset-block:0; inset-inline-start:0; inline-size:var(--site-drawer-width); block-size:100lvh; }
+/* One viewport-sized shell owns docked geometry; its drawer fills that shell. */
+.tokens-site-header[data-docked="true"] { position:fixed; inset-block-start:var(--site-drawer-top, 0px); inset-block-end:auto; inset-inline-start:0; inline-size:var(--site-drawer-width); block-size:var(--site-drawer-height, 100dvh); }
 .tokens-site-header[data-docked="true"] .tokens-primary-nav { display:none; }
 :root { --site-drawer-width:18rem; }
 :root[data-site-drawer="expanded"] body { padding-inline-start:var(--site-drawer-width); }
-/* Keep docked controls stable while mobile browser bars expand and retract. */
-.tokens-site-header[data-docked="true"] .md-navigation-drawer { box-shadow:none; height:100svh; max-height:100svh; }
+.tokens-site-header[data-docked="true"] .md-navigation-drawer { position:absolute; inset-block:0; box-shadow:none; block-size:100%; max-block-size:100%; }
 
 /* Site layout density; shared component token values remain unchanged. */
 .tokens-site-header[data-docked="true"] .md-navigation-drawer { width:var(--site-drawer-width); padding-inline:var(--md-sys-measurement-space150); }

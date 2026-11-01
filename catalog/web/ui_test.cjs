@@ -725,3 +725,36 @@ test('disclosure expansion retargets a reversed animation and honors reduced mot
  animations[1].finish();await Promise.all([opening,closing]);assert.equal(detail.open,false);assert.equal(body.inert,false);assert.equal(attributes.size,0);
  reduced=true;rendered=undefined;await click();assert.equal(detail.open,true);assert.equal(animations.length,2,'reduced motion changes state without a height animation');
 });
+
+test('docked shell follows visual viewport frames without reopening or retaining a small-height gap',()=>{
+ const styles=new Map(),events={},wideEvents={},frames=[];
+ let shows=0,closes=0;
+ const body={blur(){}},opener={setAttribute(){}};
+ const drawer={open:false,dataset:{},setAttribute(){},removeAttribute(){},addEventListener(){},show(){this.open=true;shows++;},close(){this.open=false;closes++;}};
+ const header={dataset:{drawerBreakpoint:'1100'},style:{setProperty:(key,value)=>styles.set(key,value),removeProperty:key=>styles.delete(key)},querySelector:selector=>selector==='#tokens-site-menu'?drawer:opener,getBoundingClientRect:()=>({height:64})};
+ const wide={matches:true,addEventListener:(name,fn)=>wideEvents[name]=fn};
+ const viewport={height:700,offsetTop:0,scale:1,addEventListener:(name,fn)=>events[name]=fn};
+ runInNewContext(readFileSync(join(__dirname,'../../forge/site/site.js'),'utf8'),{
+  document:{getElementById:()=>header,body,activeElement:body,documentElement:{dataset:{},style:{setProperty(){}}}},
+  window:{visualViewport:viewport},matchMedia:()=>wide,
+  requestAnimationFrame:fn=>{frames.push(fn);return 1;},ResizeObserver:class {observe(){}},
+ });
+ assert.equal(styles.get('--site-drawer-height'),'700px');
+ for(const height of [712,724,736,748,760,748,736,724,712,700]){
+  viewport.height=height;events.resize();events.scroll();
+  assert.equal(frames.length,1,'viewport events in the same frame are coalesced');
+  frames.shift()();
+  assert.equal(styles.get('--site-drawer-height'),`${height}px`);
+ }
+ viewport.offsetTop=12;events.scroll();frames.shift()();
+ assert.equal(styles.get('--site-drawer-top'),'12px');
+ assert.equal(shows,1);assert.equal(closes,0,'toolbar scrolling must not rearrange the native dialog');
+ viewport.scale=2;events.resize();frames.shift()();
+ assert.equal(styles.has('--site-drawer-height'),false,'pinch zoom preserves normal layout sizing');
+ viewport.scale=1;wide.matches=false;wideEvents.change();
+ assert.equal(styles.has('--site-drawer-height'),false);
+ assert.equal(styles.has('--site-drawer-top'),false);
+ assert.equal(drawer.open,false);assert.equal(header.dataset.docked,'false');
+ wide.matches=true;viewport.height=800;wideEvents.change();
+ assert.equal(styles.get('--site-drawer-height'),'800px');assert.equal(drawer.open,true);
+});
