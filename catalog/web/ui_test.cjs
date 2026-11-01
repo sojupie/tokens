@@ -747,7 +747,8 @@ test('docked shell follows visual viewport frames without reopening or retaining
   assert.equal(styles.get('--site-drawer-height'),`${height}px`);
  }
  viewport.offsetTop=12;events.scroll();frames.shift()();
- assert.equal(styles.get('--site-drawer-top'),'12px');
+ assert.equal(styles.has('--site-drawer-top'),false,'elastic-scroll offsets must not translate a fixed drawer');
+ assert.equal(styles.get('--site-drawer-height'),'700px');
  assert.equal(shows,1);assert.equal(closes,0,'toolbar scrolling must not rearrange the native dialog');
  viewport.scale=2;events.resize();frames.shift()();
  assert.equal(styles.has('--site-drawer-height'),false,'pinch zoom preserves normal layout sizing');

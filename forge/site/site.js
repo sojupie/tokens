@@ -9,13 +9,11 @@
   let viewportFrame=0;
   function syncViewport(){
    viewportFrame=0;
-   // Track browser chrome without resizing the drawer during pinch zoom.
+   // Follow browser-chrome height, not elastic-scroll offsets or pinch zoom.
    if(wide.matches&&viewport?.scale===1){
     header.style.setProperty('--site-drawer-height',`${viewport.height}px`);
-    header.style.setProperty('--site-drawer-top',`${viewport.offsetTop}px`);
    } else {
     header.style.removeProperty('--site-drawer-height');
-    header.style.removeProperty('--site-drawer-top');
    }
   }
   function scheduleViewport(){
