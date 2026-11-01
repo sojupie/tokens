@@ -95,7 +95,9 @@ collapses it. Controls elsewhere on the catalog page remain available; this is
 a scoped preview, not a document-wide native modal. Interactive previews offer
 Collapsed, Expanded or Hidden as their initial state.
 Hidden uses an immersive expanded rail, requires its header menu, and supplies a
-page opener while dismissed. Closing returns focus to that opener.
+page opener while dismissed. Closing returns focus to that opener. The page
+opener shares the rail menu’s token-based anchor and keeps its header slot while
+hidden; it reappears only after the page pane finishes moving.
 
 Rail headers optionally contain a menu, a FAB, both or neither. Menus change to
 the collapse icon when expanded. The nested FAB has level-zero elevation and

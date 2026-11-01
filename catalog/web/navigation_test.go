@@ -111,6 +111,9 @@ func TestRailInteractiveStates(t *testing.T) {
 				t.Fatal(err)
 			}
 			html := output.String()
+			if strings.Contains(html, "md-rail-opener-slot") != (state == "hidden") {
+				t.Fatal("immersive opener must retain a layout slot")
+			}
 			if strings.Contains(html, "md-rail-external-menu") != (state == "hidden") {
 				t.Fatal("page opener must be exclusive to hidden mode")
 			}

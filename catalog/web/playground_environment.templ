@@ -101,9 +101,11 @@ templ playgroundNavRail(c componentCase) {
 	@ui.RailFrame(c.RailFrame(), navigationExampleSurface(c)) {
 		<header>
 			if c.NavCollapse == "hidden" {
-				@ui.IconButtonContent(ui.IconButtonProps{Variant: "standard", Label: "Expand navigation", Attrs: templ.Attributes{"class": "md-rail-external-menu", "type": "button", "data-navigation-expand": true, "aria-expanded": "false", "hidden": c.Variant == "expanded"}, Size: ui.Size("small"), Shape: ui.ButtonShape("round")}) {
-					@materialSymbol("menu")
-				}
+				<span class="md-rail-opener-slot">
+					@ui.IconButtonContent(ui.IconButtonProps{Variant: "standard", Label: "Expand navigation", Attrs: templ.Attributes{"class": "md-rail-external-menu", "type": "button", "data-navigation-expand": true, "aria-expanded": "false", "hidden": c.Variant == "expanded"}, Size: ui.Size("small"), Shape: ui.ButtonShape("round")}) {
+						@materialSymbol("menu")
+					}
+				</span>
 			}
 			<span>Workspace</span>
 		</header>

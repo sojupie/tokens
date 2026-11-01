@@ -8461,6 +8461,20 @@ html:has(dialog:modal) {
   padding: var(--md-sys-measurement-space200);
   font: inherit;
 }
+/* The immersive page opener shares the expanded rail menu's token-based
+   anchor. Keep its slot while the rail owns the visible menu. */
+.md-rail-frame[data-collapse="hidden"] .md-rail-body > header {
+  padding-block-start: var(--md-comp-nav-rail-expanded-top-space);
+  padding-inline-start: calc(
+    (var(--_rail-rest-width) - var(--md-comp-icon-button-small-container-height)) / 2
+  );
+}
+.md-rail-opener-slot {
+  display: grid;
+  flex: none;
+  inline-size: var(--md-comp-icon-button-small-container-height);
+  block-size: var(--md-comp-icon-button-small-container-height);
+}
 .md-rail-screen {
   flex: 1;
   min-block-size: 0;

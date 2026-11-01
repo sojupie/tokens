@@ -560,6 +560,10 @@
       return;
     }
     if (targetHidden) {
+      // The page body moves during dismissal. Reveal its opener only after
+      // that motion finishes, so it cannot travel across the exiting rail.
+      const opener = frame.querySelector(".md-rail-external-menu");
+      if (opener) opener.hidden = true;
       frame.querySelector(".md-navigation-surface").hidden = false;
       frame.dataset.railHidden = "false";
     }
