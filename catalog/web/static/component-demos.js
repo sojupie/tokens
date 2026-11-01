@@ -82,6 +82,14 @@
     const button = event.target,
       group = button.closest(".md-button-group"),
       output = group.closest(".md-button-group-demo")?.querySelector("output");
+    if (group.hasAttribute("data-preview-compare")) {
+      const input = group.parentElement.querySelector('input[name="preview.compare"]');
+      if (input.value !== button.dataset.previewComparison) {
+        input.value = button.dataset.previewComparison;
+        input.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+      return;
+    }
     if (!output) return;
     const selected = [
       ...group.querySelectorAll('button[aria-pressed="true"]'),

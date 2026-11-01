@@ -759,3 +759,25 @@ test('docked shell follows visual viewport frames without reopening or retaining
  wide.matches=true;viewport.height=800;wideEvents.change();
  assert.equal(styles.get('--site-drawer-height'),'800px');assert.equal(drawer.open,true);
 });
+
+test('playground comparison group updates its form value only when the mode changes', () => {
+  const listeners = {};
+  const input = new EventTarget();
+  input.value = 'interactive';
+  let changes = 0;
+  input.addEventListener('change', () => changes++);
+  const group = {
+    closest: () => null,
+    hasAttribute: name => name === 'data-preview-compare',
+    parentElement: {querySelector: () => input},
+  };
+  const button = {dataset: {previewComparison: 'variants'}, closest: () => group};
+  runScript('component-demos.js', {
+    document: {addEventListener: (name, listener) => {listeners[name] = listener;}}, Event,
+  });
+  listeners['md-button-group-action']({target: button});
+  assert.equal(input.value, 'variants');
+  assert.equal(changes, 1);
+  listeners['md-button-group-action']({target: button});
+  assert.equal(changes, 1);
+});

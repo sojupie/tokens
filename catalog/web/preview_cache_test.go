@@ -70,8 +70,8 @@ func TestShowcaseUpdatesReturnOnlyCacheablePreviewHTML(t *testing.T) {
 		if partial && (response.Header().Get("Cache-Control") != "public, no-cache" || !strings.Contains(response.Header().Get("Vary"), "HX-Target")) {
 			t.Fatal("preview caching must distinguish the full document")
 		}
-		if !strings.Contains(body, `hx-trigger="change"`) || !strings.Contains(body, `data-field-select`) {
-			t.Fatal("preview must apply pill selections directly")
+		if !strings.Contains(body, `hx-trigger="change"`) || !strings.Contains(body, `data-preview-compare`) || !strings.Contains(body, `name="preview.compare"`) {
+			t.Fatal("preview must apply connected comparison selections directly")
 		}
 	}
 }

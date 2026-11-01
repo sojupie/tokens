@@ -4,6 +4,13 @@ import "github.com/sojupie/tokens/forge/components/ui"
 
 type catalogChoice struct{ Value, Label string }
 
+func previewCompareTabIndex(selected bool) string {
+	if selected {
+		return "0"
+	}
+	return "-1"
+}
+
 func previewChoices(control previewControl) []catalogChoice {
 	choices := make([]catalogChoice, 0, len(control.Options))
 	for _, value := range control.Options {

@@ -41,5 +41,17 @@ templ componentPreviewView(page componentPreview) {
 }
 
 templ previewSelect(control previewControl) {
-	@previewFilter(control)
+	if control.Name == "compare" {
+		<div class="tokens-preview-comparison">
+			<span class="md-typescale-label-large">Compare:</span>
+			<input type="hidden" name="preview.compare" value={ control.Selected }/>
+			@ui.ButtonGroupSurface(ui.GroupProps{Label: control.Label, Connected: true, Variant: "tonal", Size: ui.Size("xsmall"), Attrs: templ.Attributes{"data-preview-compare": ""}}) {
+				for index, choice := range previewChoices(control) {
+					@ui.GroupItem(ui.GroupItemProps{Label: choice.Label, Index: index, Connected: true, Selected: choice.Value == control.Selected, Variant: ui.ButtonVariant("tonal"), Size: ui.Size("xsmall"), Attrs: templ.Attributes{"id": "preview-compare-"+choice.Value, "data-preview-comparison": choice.Value, "tabindex": previewCompareTabIndex(choice.Value == control.Selected)}})
+				}
+			}
+		</div>
+	} else {
+		@previewFilter(control)
+	}
 }

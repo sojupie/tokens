@@ -299,6 +299,9 @@ button:not(:disabled), [role=button]:not([aria-disabled=true]) { cursor:pointer;
 .tokens-thumbnail-loading .md-loading { --_loading-container:var(--md-sys-color-surface); --_loading-color:var(--md-sys-color-primary); }
 
 .tokens-gallery-filters { display:flex;flex-wrap:wrap;align-items:center;gap:var(--md-sys-measurement-space100); }
+.tokens-preview-comparison { display:flex;flex-wrap:wrap;align-items:center;gap:var(--md-sys-measurement-space100);max-inline-size:100%; }
+.tokens-preview-comparison > .md-button-group[data-control="connected"] { box-sizing:border-box;inline-size:max-content;max-inline-size:100%;overflow-x:auto;overflow-y:hidden;padding:var(--md-sys-measurement-space100); }
+.tokens-preview-comparison > .md-button-group[data-control="connected"] > .md-button { flex:1 0 auto; }
 
 .tokens-landing-hero { display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:var(--md-sys-measurement-space100); }
 .tokens-landing-copy { display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:var(--md-sys-measurement-space300);padding:var(--md-sys-measurement-space500) var(--md-sys-measurement-space400);border-radius:var(--md-sys-shape-corner-extra-large);background:var(--md-sys-color-surface-container-low);color:var(--md-sys-color-on-surface); }
