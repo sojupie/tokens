@@ -3,25 +3,30 @@ package web
 import "github.com/sojupie/tokens/forge/components/ui"
 
 templ specimenMenu(c componentCase) {
-	<div class="md-menu-demo" data-menu-example>
+	@ui.MenuHost(templ.Attributes{"class": "md-menu-demo"}) {
 		if c.State=="interactive" {
-			<button type="button" class="md-button md-outlined-button" data-menu-open={ c.ID() + "-menu" } aria-controls={ c.ID() + "-menu" } aria-haspopup="menu" aria-expanded="false">Open menu</button>
+			@ui.Action(ui.ButtonProps{Variant: ui.ButtonVariant("outlined"), Attrs: templ.Attributes{"data-menu-open": c.ID() + "-menu", "aria-controls": c.ID() + "-menu", "aria-haspopup": "menu", "aria-expanded": "false"}}) {
+				Open menu
+			}
 		}
 		@ui.MenuSurface(c.MenuPanel(false), menuExampleHeading(c)) {
 			for index,label:=range []string{"Favorite","Download","Edit"} {
 				if index==2 && c.Variant=="baseline" && c.Shape=="divided" {
-					<li role="separator">@ui.Divider("full", templ.Attributes{"aria-hidden": "true"})
-</li>
+					<li role="separator">
+						@ui.Divider("full", templ.Attributes{"aria-hidden": "true"})
+					</li>
 				}
 				<li role="presentation">
 					@ui.MenuEntry(menuExampleProps(c, index, label))
 					if index==0 && c.Shape=="cascade" {
 						@ui.MenuSurface(c.MenuPanel(true), "") {
-							<li role="presentation">@ui.MenuItem(templ.Attributes{"data-menu-back": ""}, "Back", ui.Icon("arrow_back"), nil)
-</li>
+							<li role="presentation">
+								@ui.MenuItem(templ.Attributes{"data-menu-back": ""}, "Back", ui.Icon("arrow_back"), nil)
+							</li>
 							for _,action:=range []string{"Add to favorites","Manage favorites"} {
-								<li role="presentation">@ui.MenuItem(templ.Attributes{"data-menu-action": ""}, action, nil, nil)
-</li>
+								<li role="presentation">
+									@ui.MenuItem(templ.Attributes{"data-menu-action": ""}, action, nil, nil)
+								</li>
 							}
 						}
 					}
@@ -29,7 +34,7 @@ templ specimenMenu(c componentCase) {
 			}
 		}
 		<output data-menu-output aria-live="polite"></output>
-	</div>
+	}
 }
 
 func menuExampleHeading(c componentCase) string {
@@ -47,10 +52,12 @@ func menuExampleSupporting(c componentCase, index int) string {
 
 templ menuExampleLeading(c componentCase, index int) {
 	if c.Shape=="icon-only" && c.MenuSelectable(index) {
-		<span data-menu-checked-icon hidden?={ !c.MenuSelected(index) }>@ui.Icon("check")
-</span>
-		<span data-menu-unchecked-icon hidden?={ c.MenuSelected(index) }>@ui.Icon([]string{"star", "download", "edit"}[index])
-</span>
+		<span data-menu-checked-icon hidden?={ !c.MenuSelected(index) }>
+			@ui.Icon("check")
+		</span>
+		<span data-menu-unchecked-icon hidden?={ c.MenuSelected(index) }>
+			@ui.Icon([]string{"star", "download", "edit"}[index])
+		</span>
 	} else {
 		@ui.Icon([]string{"star", "download", "edit"}[index])
 	}
@@ -60,8 +67,9 @@ templ menuExampleTrailing(c componentCase, index int) {
 	if index==0 && c.Shape=="cascade" {
 		@ui.Icon("chevron_right")
 	} else if c.MenuSelectable(index) {
-		<span data-menu-checked-icon hidden?={ !c.MenuSelected(index) }>@ui.Icon("check")
-</span>
+		<span data-menu-checked-icon hidden?={ !c.MenuSelected(index) }>
+			@ui.Icon("check")
+		</span>
 	}
 }
 

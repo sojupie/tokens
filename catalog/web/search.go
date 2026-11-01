@@ -165,5 +165,5 @@ func (c componentCase) SearchReply() templ.Attributes {
 }
 
 func (c componentCase) searchProps(label, value string, disclosure bool) ui.SearchProps {
-	return ui.SearchProps{ID: c.ID(), AvatarText:"A", Options:searchExampleOptions(), Label: label, Value: value, Variant: c.Variant, Control: c.Control, Leading: c.Shape, Actions: c.Width, Elevation: c.SearchElevation, Expanded: c.Expanded, Disclosure: disclosure, BarAttrs: c.SearchBar(), PanelAttrs: c.SearchPanel()}
+	return ui.SearchProps{ID: c.ID(), AvatarText: "A", Options: searchExampleOptions(c.ID()), Label: label, Value: value, Variant: c.Variant, Control: c.Control, Leading: c.Shape, Actions: c.Width, Elevation: c.SearchElevation, Expanded: c.Expanded, Disclosure: disclosure, BarAttrs: c.SearchBar(), PanelAttrs: c.SearchPanel()}
 }

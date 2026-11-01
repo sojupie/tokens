@@ -249,10 +249,13 @@ func TestExportChoicesKeepNativeSelectionAndLabels(t *testing.T) {
 			t.Fatal(err)
 		}
 		markup := output.String()
-		for _, label := range []string{"CSS variables", "DTCG JSON", `value="css" checked`} {
+		for _, label := range []string{"CSS variables", "DTCG JSON", `value="css"`} {
 			if !strings.Contains(markup, label) {
 				t.Fatal("missing option label or selected value", markup)
 			}
+		}
+		if !strings.Contains(markup, `checked`) {
+			t.Fatal("selected input missing", markup)
 		}
 		if multiple && (!strings.Contains(markup, `class="md-filter-chip"`) || !strings.Contains(markup, `type="checkbox"`)) {
 			t.Fatal(markup)

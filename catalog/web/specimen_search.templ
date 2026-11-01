@@ -3,29 +3,7 @@ package web
 import "github.com/sojupie/tokens/forge/components/ui"
 
 templ specimenSearch(c componentCase) {
-	@useComponentAssets("search")
-	<div { c.Attributes()... }>
-		if c.Variant=="adaptive" {
-			@useComponentAssets("card")
-			@useComponentAssets("fab")
-			<label class="md-search-composition-size">Composition width <input type="range" min="320" max="1200" value="1200" step="1" data-search-composition-width/><output data-search-composition-width-label>Fit to available space</output></label>
-			<div class="md-search-workspace">
-				<div class="md-search-app">
-					<div class="md-search-mail-navigation">
-						@searchCompositionNavigation(c)
-					</div>
-					@searchScene(c)
-					<section { c.SearchMessageSurface()... } aria-label="Message"><button type="button" class="md-icon-button md-standard-icon-button md-search-message-back" data-size="small" data-shape="round" data-search-message-back aria-label="Back to inbox">@materialSymbol("arrow_back")
-</button><h3 data-search-page-title tabindex="-1">Buttons</h3><p class="md-search-mail-sender">Design team · 09:30</p><p>Hello,</p><p data-search-page-description>Review the latest component updates and examples.</p><p>The updated examples are ready for review. Let us know what you think.</p><button { c.SearchReply()... }>@materialSymbol("reply")
-<span>Reply</span></button></section>
-					@searchScrim()
-				</div>
-			</div>
-		} else {
-			@searchScene(c)
-		}
-		<output class="md-typescale-body-small" data-search-feedback aria-live="polite"></output>
-	</div>
+	@playgroundSearch(c)
 }
 
 templ searchScene(c componentCase) {
@@ -36,12 +14,11 @@ templ searchScene(c componentCase) {
 			if c.Variant=="adaptive" {
 				<h3 data-search-folder-title>Inbox</h3>
 				<div class="md-list-demo md-search-messages">
-					<ul { c.SearchMessageList()... }>
+					@ui.List(ui.ListProps{Attrs: c.SearchMessageList()}) {
 						for index,label:=range searchExamples {
-							<li data-list-row data-list-label={ label }><div class="md-list-row"><button { c.SearchMessageItem(index,label)... }>@listItemContents(searchMessageList(), index, listItemContent{Label: label, Supporting: "Review the latest component updates and examples.", Overline: "Design team", Avatar: "D", Metadata: "09:30"})
-</button></div></li>
+							@ui.ListRowFrame(ui.ListRowFrameProps{Attrs: templ.Attributes{"data-list-row": "", "data-list-label": label}, ContentAttrs: c.SearchMessageItem(index, label), Content: searchExampleMessage(index, label)})
 						}
-					</ul>
+					}
 					<output class="tokens-visually-hidden" aria-live="polite"></output>
 				</div>
 			} else {
@@ -57,8 +34,9 @@ templ searchScene(c componentCase) {
 		}
 		@searchView(c)
 		if c.Shape=="menu" {
-			<dialog { c.SearchNavigationPanel()... }>@navigationContents(c.SearchNavigation())
-</dialog>
+			@ui.NavigationSurface(c.SearchNavigationPanel(), true) {
+				@navigationContents(c.SearchNavigation())
+			}
 		}
 	</div>
 }
@@ -66,33 +44,55 @@ templ searchScene(c componentCase) {
 templ searchCompositionNavigation(c componentCase) {
 	@useComponentAssets("navigation")
 	@useComponentAssets("fab")
-	<nav { c.SearchMailNavigation()... } aria-label="Example mail navigation">
+	@ui.NavigationSurface(c.SearchMailNavigation(), false) {
 		<header>
-			<button { c.SearchCompose()... }>
+			@ui.Button(c.SearchCompose()) {
 				@materialSymbol("edit")
-			</button>
-		</header>
-		<div class="md-nav-items">
-			for index,label:=range []string{"Inbox","Chat","Spaces"} {
-				<button { c.SearchMailDestination(index)... }>@navigationItemContents(searchMailNavigation(), index, label, []string{"mail", "chat", "groups"}[index])
-</button>
 			}
-		</div>
+		</header>
+		@ui.NavigationItems() {
+			for index,label:=range []string{"Inbox","Chat","Spaces"} {
+				@ui.Button(c.SearchMailDestination(index)) {
+					@navigationItemContents(searchMailNavigation(), index, label, []string{"mail", "chat", "groups"}[index])
+				}
+			}
+		}
 		<output class="tokens-visually-hidden" aria-live="polite"></output>
-	</nav>
+	}
 }
 
-templ searchScrim(){ @ui.SearchScrim() }
-templ searchView(c componentCase){
- @ui.SearchView(c.searchProps("Search tokens",c.SearchQuery(),true)) {
- for _,label:=range searchExamples {
- @ui.SearchResult(label)
- }
- }
+templ searchScrim() {
+	@ui.SearchScrim()
 }
-templ searchBar(c componentCase,label string){ @searchBarValue(c,label,c.SearchQuery()) }
-templ searchBarValue(c componentCase,label,value string){ @searchBarContent(c,label,value,true) }
-templ searchBarContent(c componentCase,label,value string,disclosure bool){ @ui.SearchBar(c.searchProps(label,value,disclosure),label,value,disclosure) }
-templ searchBarSurface(c componentCase,label,value string){ @ui.SearchBarSurface(c.searchProps(label,value,false)) }
 
-templ searchExampleOptions(){ <label><input type="checkbox" data-search-exact/>Match exact names</label> }
+templ searchView(c componentCase) {
+	@ui.SearchView(c.searchProps("Search tokens", c.SearchQuery(), true)) {
+		for _,label:=range searchExamples {
+			@ui.SearchResult(label)
+		}
+	}
+}
+
+templ searchBar(c componentCase, label string) {
+	@searchBarValue(c, label, c.SearchQuery())
+}
+
+templ searchBarValue(c componentCase, label, value string) {
+	@searchBarContent(c, label, value, true)
+}
+
+templ searchBarContent(c componentCase, label, value string, disclosure bool) {
+	@ui.SearchBar(c.searchProps(label, value, disclosure), label, value, disclosure)
+}
+
+templ searchBarSurface(c componentCase, label, value string) {
+	@ui.SearchBarSurface(c.searchProps(label, value, false))
+}
+
+templ searchExampleOptions(id string) {
+	@ui.CheckboxField(ui.ChoiceProps{ID: id + "-exact-names", Label: "Match exact names", InputAttrs: templ.Attributes{"data-search-exact": true}})
+}
+
+templ searchExampleMessage(index int, label string) {
+	@listItemContents(searchMessageList(), index, listItemContent{Label: label, Supporting: "Review the latest component updates and examples.", Overline: "Design team", Avatar: "D", Metadata: "09:30"})
+}

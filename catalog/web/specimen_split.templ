@@ -4,15 +4,20 @@ import "github.com/sojupie/tokens/forge/components/ui"
 
 templ specimenSplit(c componentCase) {
 	@useComponentAssets("split")
-	<div class="md-split-demo">
+	@ui.SplitHost() {
 		@splitSurface(c, "Add to cart", "add")
-		<nav class="md-menu md-split-menu" data-variant="standard" id={ c.ID() + "-menu" } popover="auto" role="menu" aria-label="Cart options">
-			<ul><li><button type="button" class="md-menu-item" role="menuitem" tabindex="-1" data-split-option>Save for later</button></li><li><button type="button" class="md-menu-item" role="menuitem" tabindex="-1" data-split-option>Add to wishlist</button></li></ul>
-		</nav>
+		@ui.SplitMenu(c.ID(), "Cart options") {
+			<li>
+				@ui.MenuItem(templ.Attributes{"data-split-option": ""}, "Save for later", nil, nil)
+			</li>
+			<li>
+				@ui.MenuItem(templ.Attributes{"data-split-option": ""}, "Add to wishlist", nil, nil)
+			</li>
+		}
 		<output class="md-typescale-body-small" aria-live="polite"></output>
-	</div>
+	}
 }
 
-templ splitSurface(c componentCase,label,icon string){
- @ui.SplitButton(ui.SplitButtonProps{ID:c.ID(),Label:label,Icon:icon,Content:c.Shape,Variant:c.Variant,Size:ui.Size(c.Size),Attrs:c.Attributes(),PrimaryAttrs:c.SplitAction(false),MenuAttrs:c.SplitAction(true)})
+templ splitSurface(c componentCase, label, icon string) {
+	@ui.SplitButton(ui.SplitButtonProps{ID: c.ID(), Label: label, Icon: icon, Content: c.Shape, Variant: c.Variant, Size: ui.Size(c.Size), Attrs: c.Attributes(), PrimaryAttrs: c.SplitAction(false), MenuAttrs: c.SplitAction(true)})
 }

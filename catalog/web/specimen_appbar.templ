@@ -1,68 +1,54 @@
 package web
 
-import "fmt"
 import "github.com/sojupie/tokens/forge/components/ui"
 
 templ specimenAppbar(c componentCase) {
-	@useComponentAssets("appbar")
-	if c.Control=="search" && c.State=="interactive" {
-  <div class="md-appbar-demo md-search-demo" data-interactive="true">
-   <div class="md-search-scene md-appbar-search-scene">
-    <section class="md-search-page" data-appbar-demo data-interactive="true">
-     @appbarSurface(c,"Title")
-     <div class="md-appbar-content">
-      <h3 data-search-page-title tabindex="-1">Component library</h3>
-      <p data-search-page-description>Find controls and patterns for your next screen.</p>
-      for i := range 12 {
-       <p>{ fmt.Sprintf("Preview content %d",i+1) }</p>
-      }
-     </div>
-    </section>
-    @searchScrim()
-    @searchView(c.AppbarSearch())
-   </div>
-   <output class="md-typescale-body-small" data-search-feedback aria-live="polite"></output>
-  </div>
- } else {
-	<div class="md-appbar-demo" data-appbar-demo data-interactive={ fmt.Sprint(c.State == "interactive") }>
-		@appbarSurface(c,"Title")
-		if c.State=="interactive" && c.Variant!="bottom" {
-			<div class="md-appbar-content" tabindex="0" role="region" aria-label="Scrollable preview content">
-				for i := range 12 {
-					<p class="md-typescale-body-medium">{ fmt.Sprintf("Preview content %d",i+1) }</p>
-				}
-			</div>
-		}
-	</div>
- }
+	@playgroundAppbar(c)
 }
 
-templ appbarSurface(c componentCase,title string){
- {{ p:=ui.AppBarProps{Title:title,Expanded:c.BarExpanded(),Variant:c.Variant,Attrs:c.Attributes(),Leading:appbarExampleLeading(c),Actions:appbarExampleActions(c)};if c.Control=="subtitle"{p.Subtitle="Subtitle"};if c.Control=="search"{p.Search=appbarExampleSearch(c)} }}
- @ui.AppBar(p)
+templ appbarSurface(c componentCase, title string) {
+	{{
+		p := ui.AppBarProps{Title: title, Expanded: c.BarExpanded(), Variant: c.Variant, Attrs: c.Attributes(), Leading: appbarExampleLeading(c), Actions: appbarExampleActions(c)}
+		if c.Control == "subtitle" {
+			p.Subtitle = "Subtitle"
+		}
+		if c.Control == "search" {
+			p.Search = appbarExampleSearch(c)
+		}
+	}}
+	@ui.AppBar(p)
 }
-templ appbarExampleLeading(c componentCase){ @ui.Button(c.BarAction(0)){ @ui.Icon("arrow_back") } }
-templ appbarExampleActions(c componentCase){
- @ui.Button(c.BarAction(1)){ @ui.Icon("star") }
- if c.Control=="avatar" {
- <span class="md-appbar-avatar-slot"><span class="md-appbar-avatar" role="img" aria-label="Profile">A</span></span>
- }else{
- @ui.Button(c.BarAction(2)){ @ui.Icon("menu") }
- }
- if c.Control=="fab" {
- @ui.FAB(ui.FABProps{Label:"Create",Icon:"add",Variant:"secondary-container"})
- }
+
+templ appbarExampleLeading(c componentCase) {
+	@ui.Button(c.BarAction(0)) {
+		@ui.Icon("arrow_back")
+	}
 }
-templ appbarExampleSearch(c componentCase){
- if c.State=="interactive" {
- <button class="md-appbar-search" type="button" data-search-open aria-label="Search" aria-haspopup="dialog" aria-expanded="false" aria-controls={c.AppbarSearch().ID()+"-view"}>@ui.Icon("search")<span>Search</span></button>
- }else{
- <label class="md-appbar-search">@ui.Icon("search")<input type="search" placeholder="Search" aria-label="Search preview"/></label>
- }
+
+templ appbarExampleActions(c componentCase) {
+	@ui.Button(c.BarAction(1)) {
+		@ui.Icon("star")
+	}
+	if c.Control=="avatar" {
+		@ui.AppBarAvatar("A", "Profile")
+	} else {
+		@ui.Button(c.BarAction(2)) {
+			@ui.Icon("menu")
+		}
+	}
+	if c.Control=="fab" {
+		@ui.FAB(ui.FABProps{Label: "Create", Icon: "add", Variant: "secondary-container"})
+	}
+}
+
+templ appbarExampleSearch(c componentCase) {
+	@ui.AppBarSearch(c.AppbarSearch().ID()+"-view", "Search", c.State == "interactive")
 }
 
 // Content app bars share the same anatomy and generated bindings as specimens.
 // The host provides meaningful actions and chooses whether a subtitle is needed.
-templ contentAppBar(c componentCase,title,subtitle string){
- @ui.AppBar(ui.AppBarProps{Title:title,Subtitle:subtitle,Expanded:c.BarExpanded(),Attrs:c.Attributes()}){ {children...} }
+templ contentAppBar(c componentCase, title, subtitle string) {
+	@ui.AppBar(ui.AppBarProps{Title: title, Subtitle: subtitle, Expanded: c.BarExpanded(), Attrs: c.Attributes()}) {
+		{ children... }
+	}
 }

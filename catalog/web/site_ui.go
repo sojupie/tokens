@@ -1,5 +1,7 @@
 package web
 
+import "github.com/sojupie/tokens/forge/components/ui"
+
 type catalogChoice struct{ Value, Label string }
 
 func previewChoices(control previewControl) []catalogChoice {
@@ -16,4 +18,12 @@ func choiceLabel(choices []catalogChoice, selected string) string {
 		}
 	}
 	return selected
+}
+
+func catalogOptions(choices []catalogChoice) []ui.Option {
+	options := make([]ui.Option, len(choices))
+	for i, c := range choices {
+		options[i] = ui.Option{Value: c.Value, Label: c.Label}
+	}
+	return options
 }

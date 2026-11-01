@@ -13,8 +13,8 @@
     // Site navigation loads with the core layout, before optional controls.
     ["runtime/sliders.js", ".md-slider"],
     ["runtime/toolbars.js", ".md-toolbar"],
-    ["runtime/app-bars.js", "[data-appbar-demo]"],
-    ["runtime/snackbars.js", "[data-snackbar-demo]"],
+    ["runtime/app-bars.js", "[data-appbar-demo],[data-appbar-scroll-target]"],
+    ["runtime/snackbars.js", ".md-snackbar"],
     ["runtime/fab-menus.js", ".md-fab-menu"],
     ["runtime/split-buttons.js", ".md-split-demo"],
     ["runtime/tooltips.js", ".md-tooltip-demo"],

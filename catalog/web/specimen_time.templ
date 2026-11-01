@@ -6,7 +6,9 @@ templ specimenTime(c componentCase) {
 	@useComponentAssets("time")
 	<div { c.Attributes()... }>
 		if c.State=="interactive" {
-			<button type="button" class="md-button md-outlined-button" data-time-open aria-controls={ c.ID() + "-time" } aria-haspopup="dialog" aria-expanded="false">Choose time</button>
+			@ui.Action(ui.ButtonProps{Variant: ui.ButtonVariant("outlined"), Attrs: templ.Attributes{"data-time-open": true, "aria-controls": c.ID() + "-time", "aria-haspopup": "dialog", "aria-expanded": "false"}}) {
+				Choose time
+			}
 		}
 		@timePickerPanel(c)
 		<output class="md-typescale-body-small" data-time-output aria-live="polite"></output>
@@ -15,5 +17,5 @@ templ specimenTime(c componentCase) {
 
 // Time picker anatomy; the host owns its opener and surrounding application.
 templ timePickerPanel(c componentCase) {
- @ui.TimePickerPanel(c.timePickerProps())
+	@ui.TimePickerPanel(c.timePickerProps())
 }

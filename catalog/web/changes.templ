@@ -1,5 +1,7 @@
 package web
 
+import "github.com/sojupie/tokens/forge/components/ui"
+
 import (
 	"github.com/sojupie/tokens/source/publish"
 	"strings"
@@ -9,8 +11,10 @@ templ changesPage(state publish.PublishedState, subject string, baseURL string, 
 	@layout(timelineTitle(subject)) {
 		<header class="tokens-history-intro">
 			if subject != "" {
-				<a class="tokens-link tokens-history-back" href="/changes">@materialSymbol("arrow_back")
-All changes</a>
+				<a class="tokens-link tokens-history-back" href="/changes">
+					@materialSymbol("arrow_back")
+					All changes
+				</a>
 			}
 			<h1 class="md-typescale-headline-medium">{ changePageHeading(ctx, subject) }</h1>
 			<p class="md-typescale-body-large">Dates show when we detected changes, not when Material published them.</p>
@@ -44,7 +48,7 @@ All changes</a>
 					for _, group := range changeGroups(batch.Changes, state.Subjects) {
 						if subject == "" {
 							@useComponentAssets("card")
-							<article class="md-card md-outlined-card tokens-change-summary">
+							@ui.CardSurface(ui.CardProps{Variant: "outlined", Attrs: templ.Attributes{"class": "md-card md-outlined-card tokens-change-summary"}}) {
 								<h3 class="md-typescale-title-medium">
 									if group.URL != "" {
 										<a class="tokens-link" href={ group.URL }>{ group.Label }</a>
@@ -59,18 +63,18 @@ All changes</a>
 										{ changedItemCount(group.Changes) } items changed
 									}
 								</p>
-								<a class="md-button md-text-button" href={ groupChangelogURL(baseURL, group, batch.Changes[0].SnapshotID) }>
+								@ui.ButtonLink(string(groupChangelogURL(baseURL, group, batch.Changes[0].SnapshotID)), ui.ButtonProps{Variant: ui.ButtonVariant("text")}) {
 									View changes
 									@materialSymbol("chevron_right")
-								</a>
-							</article>
+								}
+							}
 						} else {
 							if group.URL != "" {
 								<p class="tokens-change-component-link">
-									<a class="md-button md-outlined-button" href={ group.URL }>
+									@ui.ButtonLink(string(group.URL), ui.ButtonProps{Variant: ui.ButtonVariant("outlined")}) {
 										Browse tokens
 										@materialSymbol("arrow_forward")
-									</a>
+									}
 								</p>
 							}
 							@changeRecordList(group.Changes)
@@ -82,11 +86,15 @@ All changes</a>
 		if hasPrevious || hasNext {
 			<nav class="tokens-pagination" aria-label="Change log pages">
 				if hasPrevious {
-					<a class="md-button md-outlined-button" href={ changesPageURL(baseURL, page-1) }>Previous</a>
+					@ui.ButtonLink(string(changesPageURL(baseURL, page-1)), ui.ButtonProps{Variant: ui.ButtonVariant("outlined")}) {
+						Previous
+					}
 				}
 				<span class="md-typescale-body-small">Page { page }</span>
 				if hasNext {
-					<a class="md-button md-outlined-button" href={ changesPageURL(baseURL, page+1) }>Next</a>
+					@ui.ButtonLink(string(changesPageURL(baseURL, page+1)), ui.ButtonProps{Variant: ui.ButtonVariant("outlined")}) {
+						Next
+					}
 				}
 			</nav>
 		}
@@ -102,21 +110,24 @@ templ changeFilterForm(filters changeFilters, baseURL string) {
 			@filterPill("history-snapshot", "snapshot", "Observed", filters.Snapshot, historyChoices("All dates", filters.Snapshots), false)
 			@filterPill("history-type", "type", "Change", filters.Type, []catalogChoice{{"", "All changes"}, {"changed", "Updated"}, {"added", "Added"}, {"removed", "Removed"}}, false)
 			<div class="tokens-change-filter-actions">
-				<noscript><button class="md-button md-filled-button" type="submit">Apply filters</button></noscript>
-				<a class="md-button md-text-button" href={ strings.SplitN(baseURL, "?", 2)[0] }>Reset</a>
+				<noscript>
+					@ui.Action(ui.ButtonProps{Variant: ui.ButtonVariant("filled"), Type: "submit"}) {
+						Apply filters
+					}
+				</noscript>
+				@ui.ButtonLink(string(strings.SplitN(baseURL, "?", 2)[0]), ui.ButtonProps{Variant: ui.ButtonVariant("text")}) {
+					Reset
+				}
 			</div>
 		</div>
-		<label class="md-outlined-text-field">
-			<input id="history-query" type="search" name="q" value={ filters.Query } placeholder=" "/>
-			<span data-slot="label">Token name</span>
-		</label>
+		@ui.TextField(ui.TextFieldProps{ID: "history-query", Name: "q", Type: "search", Value: filters.Query, Label: "Token name"})
 	</form>
 }
 
 templ changeRecordList(changes []labeledChange) {
 	for _, change := range changes {
 		@useComponentAssets("card")
-		<details class="md-card md-outlined-card tokens-change-card tokens-change-disclosure">
+		<details { (ui.CardProps{Variant:"outlined",Attrs:templ.Attributes{"class":"tokens-change-card tokens-change-disclosure"}}).Attributes()... }>
 			<summary class="tokens-change-heading">
 				@materialSymbol("chevron_right")
 				<h4>{ change.Name }</h4>

@@ -1,48 +1,30 @@
 package web
 
-import "fmt"
 import "github.com/sojupie/tokens/forge/components/ui"
 
 templ specimenBottomSheet(c componentCase) {
-	@useComponentAssets("sheet")
-	<div class="md-sheet-demo" data-interactive={ fmt.Sprint(c.State == "interactive") } data-kind={ c.Family }>
-		if c.State=="interactive" {
-			<button { c.SheetOpener()... }>Open sheet</button>
-		}
-		<div class="md-sheet-frame">
-			if c.State=="interactive" {
-				<span class="md-typescale-body-medium md-sheet-page-label">Page content</span>
-			}
-			@sheetSurface(c) {
-				@sheetExampleContents(c)
-			}
-		</div>
-		if c.State=="interactive" {
-			<output class="md-typescale-body-small" data-sheet-status aria-live="polite"></output>
-		}
-	</div>
+	@playgroundBottomSheet(c)
 }
 
 // Playground configuration is adapted to the shared sheet surface.
 templ sheetSurface(c componentCase) {
- @ui.SheetSurface(ui.SheetProps{ID:c.ID(),Kind:ui.SheetKind(map[bool]string{true:"side",false:"bottom"}[c.Family=="side-sheet"]),Modal:c.Control=="modal",Inline:c.State!="interactive",Hidden:c.State=="interactive",Minimized:c.Family=="bottom-sheet"&&c.Variant=="minimized",Attrs:c.SheetAttributes(),HandleAttrs:c.SheetHandle()}){ {children...} }
+	@ui.SheetSurface(ui.SheetProps{ID: c.ID(), Kind: ui.SheetKind(map[bool]string{true: "side", false: "bottom"}[c.Family == "side-sheet"]), Modal: c.Control == "modal", Inline: c.State != "interactive", Hidden: c.State == "interactive", Minimized: c.Family == "bottom-sheet" && c.Variant == "minimized", Attrs: c.SheetAttributes(), HandleAttrs: c.SheetHandle()}) {
+		{ children... }
+	}
 }
 
 templ sheetExampleContents(c componentCase) {
-	<header class="md-sheet-header">
-		<h3 class="md-sheet-title" id={ c.ID() + "-heading" }>Details</h3>
-		<button class="md-icon-button md-standard-icon-button md-sheet-close" type="button" aria-label="Close sheet" data-sheet-close data-sheet-initial-focus?={ c.Family=="side-sheet" } autofocus?={ c.Family=="side-sheet" && c.Control=="modal" && c.State=="interactive" }>
-			@materialSymbol("close")
-		</button>
-	</header>
-	<div class="md-sheet-body">
+	@ui.SheetHeader(ui.SheetProps{ID: c.ID(), Title: "Details", CloseAttrs: templ.Attributes{"aria-label": "Close sheet", "data-sheet-initial-focus": c.Family == "side-sheet", "autofocus": c.Family == "side-sheet" && c.Control == "modal" && c.State == "interactive"}})
+	@ui.SheetBody() {
 		<p class="md-typescale-body-medium">Supporting text</p>
-		<div class="md-outlined-text-field">
-			@outlinedFieldFrame("Name")
-			<label for={ c.ID() + "-name" } data-slot="label">Name</label><input id={ c.ID() + "-name" } value="Sample" placeholder="Name"/>
-		</div>
-	</div>
-	<footer class="md-sheet-footer">
-		<button { c.SheetAction(0)... }>Cancel</button><button { c.SheetAction(1)... }>Done</button>
-	</footer>
+		@ui.TextField(ui.TextFieldProps{ID: c.ID() + "-name", Name: "name", Label: "Name", Value: "Sample", Placeholder: "Name"})
+	}
+	@ui.SheetActions() {
+		@ui.Button(c.SheetAction(0)) {
+			Cancel
+		}
+		@ui.Button(c.SheetAction(1)) {
+			Done
+		}
+	}
 }

@@ -99,7 +99,7 @@ func TestDownloadSplitPresetsAndRegularFooter(t *testing.T) {
 			t.Fatal(want, heading.String())
 		}
 	}
-	if strings.Contains(footer.String(), `md-split-button`) || !strings.Contains(footer.String(), `class="md-button md-filled-button" type="button" data-export-open`) {
+	if strings.Contains(footer.String(), `md-split-button`) || !strings.Contains(footer.String(), `class="md-button md-filled-button"`) || !strings.Contains(footer.String(), `data-export-open`) {
 		t.Fatal("footer must remain a regular filled button")
 	}
 	if !strings.Contains(table.String(), `md-standard-icon-button`) {

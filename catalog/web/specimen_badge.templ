@@ -3,17 +3,17 @@ package web
 import "github.com/sojupie/tokens/forge/components/ui"
 
 templ specimenBadge(c componentCase) {
- @useComponentAssets("badge")
- <button type="button" class="md-icon-button md-standard-icon-button tokens-badge-example" data-size="small" data-badge-placement={c.BadgePlacement} dir={c.BadgeDirection} aria-label={c.BadgeLabel()}>
-  <span class="md-badge-anchor">
-   @materialSymbol("notifications")
-   if c.BadgePlacement!="trailing" {
-    @ui.Badge(c.Variant,c.BadgeText(),nil)
-   }
-  </span>
-  if c.BadgePlacement=="trailing" {
-   <span>Notifications</span>
-   @ui.Badge(c.Variant,c.BadgeText(),nil)
-  }
- </button>
+	@useComponentAssets("badge")
+	@ui.IconButtonContent(ui.IconButtonProps{Variant: "standard", Label: c.BadgeLabel(), Attrs: templ.Attributes{"type": "button", "class": "tokens-badge-example", "data-badge-placement": c.BadgePlacement, "dir": c.BadgeDirection}, Size: ui.Size("small")}) {
+		@ui.BadgeAnchor() {
+			@materialSymbol("notifications")
+			if c.BadgePlacement!="trailing" {
+				@ui.Badge(c.Variant, c.BadgeText(), nil)
+			}
+		}
+		if c.BadgePlacement=="trailing" {
+			<span>Notifications</span>
+			@ui.Badge(c.Variant, c.BadgeText(), nil)
+		}
+	}
 }

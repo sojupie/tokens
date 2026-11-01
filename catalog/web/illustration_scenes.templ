@@ -1,5 +1,7 @@
 package web
 
+import "github.com/sojupie/tokens/forge/components/ui"
+
 import "github.com/sojupie/tokens/source/publish"
 
 // These are editorial scenes, not additional playground implementations. Every
@@ -76,7 +78,15 @@ templ styleScene(subject publish.SubjectView) {
 		<h1>{ subjectName(subject) }</h1>
 		switch subject.Key.Slug {
 			case "typography/type-scale":
-				<div class="scene-type"><span class="md-typescale-display-large">Take the<br/>long way.</span><div><h2 class="md-typescale-headline-medium">A day worth keeping.</h2><p class="md-typescale-body-large">Leave the familiar behind. Find a path by the water, a quiet café, or a new corner of the city.</p><button class="md-button md-filled-button" data-size="small">Start exploring</button></div></div>
+				<div class="scene-type">
+					<span class="md-typescale-display-large">Take the<br/>long way.</span>
+					<div>
+						<h2 class="md-typescale-headline-medium">A day worth keeping.</h2>
+						<p class="md-typescale-body-large">Leave the familiar behind. Find a path by the water, a quiet café, or a new corner of the city.</p>@ui.Action(ui.ButtonProps{Variant: ui.ButtonVariant("filled"), Size: ui.Size("small")}) {
+	Start exploring
+}
+					</div>
+				</div>
 			case "motion/overview":
 				<div class="scene-motion">
 					<svg viewBox="0 0 600 300"><path class="scene-motion-axis" d="M40 20V260H580"></path><path class="scene-motion-curve" d="M40 260C100 260 150 25 580 25"></path><circle cx="330" cy="53" r="20"></circle></svg>
@@ -105,21 +115,29 @@ templ styleScene(subject publish.SubjectView) {
 			case "spacing":
 				<div class="scene-space-grid">
 					for _,size:=range []string{"8","16","24"} {
-						<div class={ "scene-spacing-example scene-spacing-" + size }><span class="scene-overline">{ size+"dp" }</span><article><h2>A little room.</h2><p>Space to breathe.</p><button class="md-button md-tonal-button" data-size="small">Explore</button></article></div>
+						<div class={ "scene-spacing-example scene-spacing-" + size }>
+							<span class="scene-overline">{ size+"dp" }</span>
+							<article>
+								<h2>A little room.</h2>
+								<p>Space to breathe.</p>@ui.Action(ui.ButtonProps{Variant: ui.ButtonVariant("tonal"), Size: ui.Size("small")}) {
+	Explore
+}
+							</article>
+						</div>
 					}
 				</div>
 			default:
 				<div class="scene-elevation">
-					<article class="md-card md-filled-card">
+					@ui.CardSurface(ui.CardProps{Variant: "filled", Attrs: templ.Attributes{"class": "md-card md-filled-card"}}) {
 						<h2>Places to come back to.</h2>@sceneArtwork(subject.Key.Slug, "coast")
-					</article>
-					<article class="md-card md-elevated-card">
+					}
+					@ui.CardSurface(ui.CardProps{Variant: "elevated", Attrs: templ.Attributes{"class": "md-card md-elevated-card"}}) {
 						<h2>Make room for another.</h2>
 						<p>Save something worth keeping.</p>
-						<button class="md-fab md-button" data-size="default" data-variant="primary">
+						@ui.Button(templ.Attributes{"class": "md-fab md-button", "data-size": "default", "data-variant": "primary"}) {
 							@materialSymbol("add")
-						</button>
-					</article>
+						}
+					}
 				</div>
 		}
 	</section>
@@ -150,11 +168,15 @@ templ overviewScene(kind string) {
 				<section>
 					<h2>Actions</h2>
 					<div class="scene-overview-button-row">
-						<button class="md-button md-filled-button" data-size="medium">Save</button>
-						<button class="md-icon-button md-tonal-icon-button" data-size="medium" aria-label="Edit">
+						@ui.Action(ui.ButtonProps{Variant: ui.ButtonVariant("filled"), Size: ui.Size("medium")}) {
+							Save
+						}
+						@ui.IconButtonContent(ui.IconButtonProps{Variant: "tonal", Label: "Edit", Size: ui.Size("medium")}) {
 							@materialSymbol("edit")
-						</button>
-					</div><button class="md-button md-outlined-button" data-size="small">Get directions</button>
+						}
+					</div>@ui.Action(ui.ButtonProps{Variant: ui.ButtonVariant("outlined"), Size: ui.Size("small")}) {
+	Get directions
+}
 				</section>
 				<section>
 					<h2>Choices</h2>@componentSpecimen(componentCase{Family: "chip", Variant: "filter", State: "enabled", Selected: true, illustrationLabels: [3]string{"Near the water"}})
@@ -163,22 +185,34 @@ templ overviewScene(kind string) {
 						@switchChoice(componentCase{Family: "switch", State: "enabled", Selected: true}, "Notifications")
 					</div>
 				</section>
-				<article class="md-card md-filled-card scene-overview-place">
+				@ui.CardSurface(ui.CardProps{Variant: "filled", Attrs: templ.Attributes{"class": "md-card md-filled-card scene-overview-place"}}) {
 					@sceneArtwork("card", "hills")
 					<div><h2>Into the hills</h2><p>A little further from the city.</p></div>
-				</article>
+				}
 			</div>
 		} else {
 			<h1>{ map[string]string{"/":"Material Design 3","/components":"Components"}[kind] }</h1>
 			<p class="scene-overview-intro">{ map[string]string{"/":"Explore the details that bring an interface together.","/components":"Controls and patterns, ready to explore."}[kind] }</p>
 			<div class="scene-overview-components">
-				<article class="md-card md-filled-card scene-overview-place">
+				@ui.CardSurface(ui.CardProps{Variant: "filled", Attrs: templ.Attributes{"class": "md-card md-filled-card scene-overview-place"}}) {
 					@sceneArtwork("card", "coast")
-					<div><h2>Along the coast</h2><p>A route for the weekend.</p><button class="md-button md-filled-button" data-size="small">View route</button></div>
-				</article>
+					<div>
+						<h2>Along the coast</h2>
+						<p>A route for the weekend.</p>@ui.Action(ui.ButtonProps{Variant: ui.ButtonVariant("filled"), Size: ui.Size("small")}) {
+	View route
+}
+					</div>
+				}
 				<div class="scene-overview-controls">
 					<h2>Make it yours</h2>
-					<div class="scene-overview-button-row"><button class="md-button md-filled-button" data-size="medium">Save</button><button class="md-button md-outlined-button" data-size="medium">Cancel</button></div>
+					<div class="scene-overview-button-row">
+						@ui.Action(ui.ButtonProps{Variant: ui.ButtonVariant("filled"), Size: ui.Size("medium")}) {
+							Save
+						}
+						@ui.Action(ui.ButtonProps{Variant: ui.ButtonVariant("outlined"), Size: ui.Size("medium")}) {
+							Cancel
+						}
+					</div>
 					@componentSpecimen(componentCase{Family: "chip", Variant: "filter", State: "enabled", Selected: true, illustrationLabels: [3]string{"Near the water"}})
 					<div class="scene-overview-options">
 						@switchChoice(componentCase{Family: "switch", State: "enabled", Selected: true}, "Notifications")

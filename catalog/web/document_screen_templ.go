@@ -80,7 +80,7 @@ func documentCommandBar(menuOpen bool) templ.Component {
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = ui.Button(templ.Attributes{"class": "md-icon-button md-standard-icon-button", "data-size": "small", "data-menu-open": "installation-menu", "aria-label": "Document actions", "aria-haspopup": "menu", "aria-expanded": "false", "aria-controls": "installation-menu"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = ui.IconButtonContent(ui.IconButtonProps{Variant: "standard", Label: "Document actions", Attrs: templ.Attributes{"data-menu-open": "installation-menu", "aria-haspopup": "menu", "aria-expanded": "false", "aria-controls": "installation-menu"}, Size: ui.Size("small")}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

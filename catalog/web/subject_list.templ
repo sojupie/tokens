@@ -1,5 +1,7 @@
 package web
 
+import "github.com/sojupie/tokens/forge/components/ui"
+
 import "github.com/sojupie/tokens/source/publish"
 
 templ subjectListPage(snapshot publish.SnapshotView, subjects []publish.SubjectView, styles bool, query string, thumbnails map[string]componentCase) {
@@ -15,23 +17,7 @@ templ subjectListPage(snapshot publish.SnapshotView, subjects []publish.SubjectV
 		</header>
 		<div data-nosnippet><p class="tokens-metadata">Current snapshot: <code class="tokens-code">{ snapshot.ID }</code></p></div>
 		<form hx-boost="false" class="tokens-search-form" method="get" action={ subjectListPath(styles) } role="search">
-			<label class="md-outlined-text-field">
-				<input
-					id="subject-search"
-					type="search"
-					name="q"
-					value={ query
- }
-					placeholder=" "
-					autocomplete="off"
-					hx-get={ subjectListPath(styles)
- }
-					hx-target="#subject-list"
-					hx-trigger="input changed delay:250ms"
-					hx-push-url="true"
-				/>
-				<span data-slot="label">Search by name or slug</span>
-			</label>
+			@ui.TextField(ui.TextFieldProps{ID: "subject-search", Name: "q", Type: "search", Value: query, Label: "Search by name or slug", InputAttrs: templ.Attributes{"autocomplete": "off", "hx-get": subjectListPath(styles), "hx-target": "#subject-list", "hx-trigger": "input changed delay:250ms", "hx-push-url": "true"}})
 		</form>
 		<div id="subject-list" aria-live="polite">
 			@subjectCardGrid(subjects, thumbnails, styles)
@@ -54,15 +40,13 @@ templ subjectCardGrid(subjects []publish.SubjectView, thumbnails map[string]comp
 
 templ subjectCard(subject publish.SubjectView, thumbnails map[string]componentCase, styles bool) {
 	if _,ok:=thumbnailIllustration(ctx,subjectURL(subject)); !ok {
- @deferThumbnailStyles()
-
- }
+		@deferThumbnailStyles()
+	}
 	<li class="tokens-component-tile">
 		<div class="tokens-component-thumbnail">
 			if image,ok:=thumbnailIllustration(ctx,subjectURL(subject)); ok {
- @thumbnailPicture(image)
-
- } else if styles {
+				@thumbnailPicture(image)
+			} else if styles {
 				@styleThumbnail(subject)
 			} else if specimen, ok := thumbnails[subject.Key.Slug]; ok {
 				<div class="tokens-component-thumbnail-scene" inert aria-hidden="true" data-thumbnail={ subject.Key.Slug }>

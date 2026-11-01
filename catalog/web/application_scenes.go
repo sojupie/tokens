@@ -135,17 +135,6 @@ func applicationUnread(name string) string {
 	return map[string]string{"Maya Chen": "2", "Alex Morgan": "5", "Jamie Park": "1"}[name]
 }
 
-func applicationIcon(icon string, filled bool) string {
-	suffix := "_outline"
-	if filled {
-		suffix = "_filled"
-	}
-	if materialSymbolPath(icon+suffix) != "" {
-		return icon + suffix
-	}
-	return icon
-}
-
 func applicationNavigationCase(app string, rail bool) ui.NavigationProps {
 	p := ui.NavigationProps{ID: app + "-navigation", Label: "Application destinations", Kind: "drawer", Variant: "standard", Layout: "standard"}
 	if rail {

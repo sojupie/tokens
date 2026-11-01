@@ -7,18 +7,21 @@ templ specimenDialog(c componentCase) {
 	@useComponentAssets("dialog")
 	<div class="md-dialog-demo">
 		if c.State=="interactive" {
-			<button type="button" class="md-button md-outlined-button" data-dialog-open aria-controls={ c.ID() + "-panel" } aria-haspopup="dialog" aria-expanded="false">Open dialog</button>
+			@ui.Action(ui.ButtonProps{Variant: ui.ButtonVariant("outlined"), Attrs: templ.Attributes{"data-dialog-open": true, "aria-controls": c.ID() + "-panel", "aria-haspopup": "dialog", "aria-expanded": "false"}}) {
+				Open dialog
+			}
 		}
- {{p:=ui.DialogProps{ID:c.ID()+"-panel",TitleID:c.ID()+"-heading",Title:c.DialogHeading(),FullScreen:c.Variant=="full-screen",HideTitle:c.DialogHeadline=="hidden",Dividers:c.DialogDividers(),BottomActions:c.Orientation=="bottom",Attrs:c.DialogPanel(),CloseAttrs:c.DialogClose(),Actions:dialogExampleActions(c),HeaderActions:dialogExampleSave(c),ContentAttrs:templ.Attributes{"tabindex":"0","aria-label":"Dialog content"}};if c.DialogIcon(){p.Icon=ui.Icon("info")} }}
- @ui.Modal(p){ @dialogSample(c) }
-
-
+		{{
+			p := ui.DialogProps{ID: c.ID() + "-panel", TitleID: c.ID() + "-heading", Title: c.DialogHeading(), FullScreen: c.Variant == "full-screen", HideTitle: c.DialogHeadline == "hidden", Dividers: c.DialogDividers(), BottomActions: c.Orientation == "bottom", Attrs: c.DialogPanel(), CloseAttrs: c.DialogClose(), Actions: dialogExampleActions(c), HeaderActions: dialogExampleSave(c), ContentAttrs: templ.Attributes{"tabindex": "0", "aria-label": "Dialog content"}}
+			if c.DialogIcon() {
+				p.Icon = ui.Icon("info")
+			}
+		}}
+		@ui.Modal(p) {
+			@dialogSample(c)
+		}
 		if c.Variant=="full-screen" {
-			<dialog class="md-dialog md-dialog-discard" data-dialog-discard role="alertdialog" aria-labelledby={ c.ID() + "-discard-heading" } aria-describedby={ c.ID() + "-discard-support" }>
-				<h2 id={ c.ID() + "-discard-heading" }>Discard changes?</h2>
-				<p id={ c.ID() + "-discard-support" }>Your edits will be lost.</p>
-				<footer class="md-basic-actions"><button class="md-button md-text-button" type="button" data-dialog-keep>Keep editing</button><button class="md-button md-text-button" type="button" data-dialog-discard-confirm>Discard</button></footer>
-			</dialog>
+			@ui.Modal(ui.DialogProps{ID: c.ID() + "-discard", Title: "Discard changes?", Description: "Your edits will be lost.", Alert: true, Attrs: templ.Attributes{"class": "md-dialog-discard", "data-dialog-discard": ""}, Actions: dialogDiscardActions()})
 		}
 		<output data-dialog-output aria-live="polite"></output>
 	</div>
@@ -27,11 +30,7 @@ templ specimenDialog(c componentCase) {
 templ dialogSample(c componentCase) {
 	<h3 data-slot="subhead">Item details</h3>
 	<p id={ c.ID() + "-support" } data-slot="supporting-text">Supporting text</p>
-	<div class="md-outlined-text-field">
-		@outlinedFieldFrame("Name")
-		<label for={ c.ID() + "-name" } data-slot="label">Name</label>
-		<input id={ c.ID() + "-name" } name="item" placeholder="Name" value="Sample" required data-dialog-value aria-invalid="false" aria-describedby={ c.ID() + "-error" }/><small data-slot="supporting-text" id={ c.ID() + "-error" } data-dialog-error aria-live="polite">Required</small>
-	</div>
+	@ui.Field(ui.FieldProps{TextFieldProps: ui.TextFieldProps{ID: c.ID(), Name: "item", Label: "Name", Value: "Sample", Placeholder: "Name", Required: true, Supporting: "Required", InputAttrs: templ.Attributes{"id": c.ID() + "-name", "data-dialog-value": "", "aria-describedby": c.ID() + "-error"}}, HelpAttrs: templ.Attributes{"id": c.ID() + "-error", "data-dialog-error": "", "aria-live": "polite"}})
 	if c.Expanded || c.Variant=="full-screen" {
 		for i:=range 12 {
 			<section><h3 data-slot="subhead">{ fmt.Sprintf("Section %d",i+1) }</h3><p data-slot="supporting-text">Supporting text for this section.</p></section>
@@ -39,10 +38,26 @@ templ dialogSample(c componentCase) {
 	}
 }
 
-templ dialogSurface(c componentCase) {
- @useComponentAssets("dialog")
- <dialog {c.DialogPanel()...}>{children...}</dialog>
+templ dialogExampleSave(c componentCase) {
+	@ui.Button(c.DialogAction(true)) {
+		Save
+	}
 }
 
-templ dialogExampleSave(c componentCase){ <button {c.DialogAction(true)...}>Save</button> }
-templ dialogExampleActions(c componentCase){ <button {c.DialogAction(false)...}>Cancel</button><button {c.DialogAction(true)...}>Save</button> }
+templ dialogExampleActions(c componentCase) {
+	@ui.Button(c.DialogAction(false)) {
+		Cancel
+	}
+	@ui.Button(c.DialogAction(true)) {
+		Save
+	}
+}
+
+templ dialogDiscardActions() {
+	@ui.Action(ui.ButtonProps{Variant: ui.Text, Attrs: templ.Attributes{"data-dialog-keep": ""}}) {
+		Keep editing
+	}
+	@ui.Action(ui.ButtonProps{Variant: ui.Text, Attrs: templ.Attributes{"data-dialog-discard-confirm": ""}}) {
+		Discard
+	}
+}

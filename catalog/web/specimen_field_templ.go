@@ -32,14 +32,21 @@ func specimenField(c componentCase) templ.Component {
 		}
 		ctx = templ.ClearChildren(ctx)
 		p := ui.FieldProps{TextFieldProps: ui.TextFieldProps{ID: c.ID(), Label: c.FieldLabel(), Supporting: c.FieldSupporting(), Filled: c.Variant == "filled", Invalid: c.Invalid, Disabled: c.State == "disabled", Attrs: c.Attributes(), InputAttrs: c.FieldInput()}, Kind: map[bool]string{true: "text", false: c.Family}[c.Family == "field"], MenuIcons: c.Shape == "icons", HelpAttrs: c.FieldHelpAttributes()}
+		if c.Invalid {
+			p.Supporting = "Enter a valid value."
+		}
 		if c.Shape == "affixes" {
 			p.Prefix = "$"
 			p.Suffix = "/kg"
 			p.PrefixDescription = "US dollars"
 			p.SuffixDescription = "per kilogram"
 		}
-		for _, value := range fieldOptions {
-			p.Options = append(p.Options, ui.Option{Value: value, Label: value})
+		for index, value := range fieldOptions {
+			option := ui.Option{Value: value, Label: value, DividerBefore: index == 2}
+			if c.Shape == "icons" {
+				option.Leading = ui.Icon("star")
+			}
+			p.Options = append(p.Options, option)
 		}
 		if c.Width == "populated" {
 			p.Value = "Input text"
@@ -48,35 +55,6 @@ func specimenField(c componentCase) templ.Component {
 			}
 		}
 		templ_7745c5c3_Err = ui.Field(p).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		return nil
-	})
-}
-
-func outlinedFieldFrame(label string) templ.Component {
-	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
-		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
-		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
-			return templ_7745c5c3_CtxErr
-		}
-		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
-		if !templ_7745c5c3_IsBuffer {
-			defer func() {
-				templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
-				if templ_7745c5c3_Err == nil {
-					templ_7745c5c3_Err = templ_7745c5c3_BufErr
-				}
-			}()
-		}
-		ctx = templ.InitializeContext(ctx)
-		templ_7745c5c3_Var2 := templ.GetChildren(ctx)
-		if templ_7745c5c3_Var2 == nil {
-			templ_7745c5c3_Var2 = templ.NopComponent
-		}
-		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = ui.FieldOutline(label).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

@@ -1,17 +1,23 @@
 package web
-import "github.com/sojupie/tokens/forge/components/ui"
-templ specimenFabMenu(c componentCase){ @fabMenuSurface(c) }
-templ fabMenuSurface(c componentCase){
- @ui.FABMenu(ui.FABMenuProps{ID:c.ID(),Label:"Create",Inline:c.State!="interactive",Attrs:c.Attributes(),OpenerAttrs:c.FABMenuOpener(),PanelAttrs:c.FABMenuPanel(),Close:fabMenuExampleClose(c)}){
- for i,label:=range c.labelsOr([3]string{"New file","New folder","New project"}){
- @ui.FABMenuItem(ui.FABMenuItemProps{Label:label,Icon:[]string{"edit","folder","add"}[i],Attrs:c.FABMenuAction(i)})
- }
 
- }
+import "github.com/sojupie/tokens/forge/components/ui"
+
+templ specimenFabMenu(c componentCase) {
+	@fabMenuSurface(c)
 }
 
-templ fabMenuExampleClose(c componentCase){
- if c.State!="interactive" {
- <button {c.FABMenuAction(-1)...}>@ui.Icon("close")</button>
- }
+templ fabMenuSurface(c componentCase) {
+	@ui.FABMenu(ui.FABMenuProps{ID: c.ID(), Label: "Create", Inline: c.State != "interactive", Attrs: c.Attributes(), OpenerAttrs: c.FABMenuOpener(), PanelAttrs: c.FABMenuPanel(), Close: fabMenuExampleClose(c)}) {
+		for i,label:=range c.labelsOr([3]string{"New file","New folder","New project"}) {
+			@ui.FABMenuItem(ui.FABMenuItemProps{Label: label, Icon: []string{"edit", "folder", "add"}[i], Attrs: c.FABMenuAction(i)})
+		}
+	}
+}
+
+templ fabMenuExampleClose(c componentCase) {
+	if c.State!="interactive" {
+		@ui.Button(c.FABMenuAction(-1)) {
+			@ui.Icon("close")
+		}
+	}
 }

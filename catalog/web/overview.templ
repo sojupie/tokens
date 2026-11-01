@@ -1,5 +1,7 @@
 package web
 
+import "github.com/sojupie/tokens/forge/components/ui"
+
 import (
 	"fmt"
 	"github.com/sojupie/tokens/source/publish"
@@ -13,8 +15,12 @@ templ overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView
 				<h1 class="md-typescale-display-small" id="landing-heading">Material Design 3 tokens, playgrounds and change history</h1>
 				<p class="md-typescale-title-large">Browse Material Design 3 components and styles. Try interactive playgrounds, compare values, follow references, and download the tokens as CSS variables or JSON for your project.</p>
 				<div class="tokens-landing-actions">
-					<a class="md-button md-filled-button" data-size="medium" href="/components">Browse components</a>
-					<a class="md-button md-tonal-button" data-size="medium" href="/styles">Explore styles</a>
+					@ui.ButtonLink(string("/components"), ui.ButtonProps{Variant: ui.ButtonVariant("filled"), Size: ui.Size("medium")}) {
+						Browse components
+					}
+					@ui.ButtonLink(string("/styles"), ui.ButtonProps{Variant: ui.ButtonVariant("tonal"), Size: ui.Size("medium")}) {
+						Explore styles
+					}
 				</div>
 			</div>
 			@landingArtwork(renderer)
@@ -34,17 +40,21 @@ templ overviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView
 		<section class="tokens-section tokens-landing-workflows" aria-labelledby="workflows-heading">
 			<h2 class="md-typescale-title-large" id="workflows-heading">Work with tokens</h2>
 			<div class="tokens-audience-grid">
-				<section class="md-card md-outlined-card tokens-card-content" aria-labelledby="history-heading">
+				@ui.CardSurface(ui.CardProps{Variant: "outlined", Attrs: templ.Attributes{"class": "md-card md-outlined-card tokens-card-content", "aria-labelledby": "history-heading"}}) {
 					<h3 class="md-typescale-title-medium" id="history-heading">Follow token changes</h3>
 					<p>See what changed between captured snapshots, with previous values and source references.</p>
-					<a class="md-button md-text-button" href="/changes">View change history</a>
-				</section>
+					@ui.ButtonLink(string("/changes"), ui.ButtonProps{Variant: ui.ButtonVariant("text")}) {
+						View change history
+					}
+				}
 				if metadata(ctx).AgentDiscovery {
-					<section class="md-card md-outlined-card tokens-card-content" aria-labelledby="agent-heading">
+					@ui.CardSurface(ui.CardProps{Variant: "outlined", Attrs: templ.Attributes{"class": "md-card md-outlined-card tokens-card-content", "aria-labelledby": "agent-heading"}}) {
 						<h3 class="md-typescale-title-medium" id="agent-heading">Use with your agent</h3>
 						<p>Give your coding agent access to the same token data through a prompt, skill, or MCP.</p>
-						<a class="md-button md-text-button" href="/for-agents">Give this to your agent</a>
-					</section>
+						@ui.ButtonLink(string("/for-agents"), ui.ButtonProps{Variant: ui.ButtonVariant("text")}) {
+							Give this to your agent
+						}
+					}
 				}
 			</div>
 		</section>

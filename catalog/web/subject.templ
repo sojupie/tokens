@@ -1,5 +1,7 @@
 package web
 
+import "github.com/sojupie/tokens/forge/components/ui"
+
 import "github.com/sojupie/tokens/source/publish"
 
 templ subjectPage(subject publish.SubjectView, changes []publish.ChangeView, browser tokenBrowser) {
@@ -7,39 +9,40 @@ templ subjectPage(subject publish.SubjectView, changes []publish.ChangeView, bro
 }
 
 templ tokenSetPicker(subject publish.SubjectView, browser tokenBrowser) {
-	<button class="md-filter-chip tokens-token-set" data-selected="true" type="button" popovertarget="tokens-token-set-menu" aria-label={ "Token set: " + selectedTableLabel(subject, browser.Selected) }>
-		<span class="tokens-context-label" title={ selectedTableLabel(subject, browser.Selected) }>{ selectedTableLabel(subject, browser.Selected) }</span>
-		<span class="md-chip-icon" data-slot="trailing-icon" aria-hidden="true">@materialSymbol("expand_more")</span>
-	</button>
-	<nav class="md-menu tokens-token-set-menu" id="tokens-token-set-menu" popover="auto" aria-label="Token sets">
-		for index, group := range tokenSetMenuGroups(subject, browser.Sets) {
-			if index > 0 {
-				<hr class="md-divider" data-inset="middle"/>
+	@ui.MenuHost(templ.Attributes{"class": "tokens-token-set-host", "style": "display:contents"}) {
+		@ui.Button(templ.Attributes{"class": "md-filter-chip tokens-token-set", "data-selected": "true", "type": "button", "data-menu-open": "tokens-token-set-menu", "aria-controls": "tokens-token-set-menu", "aria-haspopup": "menu", "aria-expanded": "false", "aria-label": "Token set: " + selectedTableLabel(subject, browser.Selected)}) {
+			<span class="tokens-context-label" title={ selectedTableLabel(subject, browser.Selected) }>{ selectedTableLabel(subject, browser.Selected) }</span>
+			<span class="md-chip-icon" data-slot="trailing-icon" aria-hidden="true">
+				@materialSymbol("expand_more")
+			</span>
+		}
+		@ui.MenuPanel(templ.Attributes{"class": "tokens-token-set-menu", "id": "tokens-token-set-menu", "aria-label": "Token sets", "data-menu-panel": "", "data-menu-main": ""}) {
+			for index, group := range tokenSetMenuGroups(subject, browser.Sets) {
+				if index > 0 {
+					@ui.Divider("full", templ.Attributes{"class": "md-divider", "data-inset": "middle"})
+				}
+				<section>
+					<ul>
+						for _, set := range group.Sets {
+							<li>
+								@ui.MenuLink(tokenSetLinkURL(subject, set, browser), templ.Attributes{"aria-current": currentTokenSet(set.Key == browser.Selected.Key)}, ui.Icon("check")) {
+									{ tokenTableQualifier(subject,set) }
+								}
+							</li>
+						}
+					</ul>
+				</section>
 			}
-			<section>
+			@ui.Divider("full", templ.Attributes{"class": "md-divider", "data-inset": "middle"})
+			<section aria-label="All tokens">
 				<ul>
-					for _, set := range group.Sets {
-						<li>
-							<a class="md-menu-item" href={ tokenSetLinkURL(subject, set, browser) } aria-current={ currentTokenSet(set.Key == browser.Selected.Key) }>
-								<span class="md-menu-item-text">{ tokenTableQualifier(subject, set) }</span>
-								<span data-slot="trailing-icon" aria-hidden="true">@materialSymbol("check")
-</span>
-							</a>
-						</li>
-					}
+					<li>
+						@ui.MenuLink(tokenSetLinkURL(subject, allTokenSet(subject), browser), templ.Attributes{"aria-current": currentTokenSet(browser.Selected.All)}, ui.Icon("check")) {
+							All tokens
+						}
+					</li>
 				</ul>
 			</section>
 		}
-		<hr class="md-divider" data-inset="middle"/>
-		<section aria-label="All tokens">
-			<ul>
-				<li>
-					<a class="md-menu-item" href={ tokenSetLinkURL(subject, allTokenSet(subject), browser) } aria-current={ currentTokenSet(browser.Selected.All) }>
-						<span class="md-menu-item-text">All tokens</span>
-						<span data-slot="trailing-icon" aria-hidden="true">@materialSymbol("check")</span>
-					</a>
-				</li>
-			</ul>
-		</section>
-	</nav>
+	}
 }

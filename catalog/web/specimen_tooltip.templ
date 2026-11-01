@@ -5,17 +5,19 @@ import "github.com/sojupie/tokens/forge/components/ui"
 templ specimenTooltip(c componentCase) {
 	@useComponentAssets("messages")
 	if c.State=="interactive" {
-		<div class="md-tooltip-demo">
+		@ui.TooltipHost(nil) {
 			if c.Variant=="plain" {
-				<button class="md-icon-button md-standard-icon-button" type="button" aria-label="Details" aria-describedby={ c.ID() + "-tip" }>
+				@ui.IconButtonContent(ui.IconButtonProps{Variant: "standard", Label: "Details", Attrs: templ.Attributes{"type": "button", "aria-describedby": c.ID() + "-tip"}}) {
 					@materialSymbol("info")
-				</button>
+				}
 				@ui.Tooltip(ui.TooltipProps{ID: c.ID() + "-tip", Variant: "plain", Text: "More information", Attrs: c.Attributes()})
 			} else {
-				<button class="md-button md-outlined-button" type="button" popovertarget={ c.ID() + "-tip" } aria-haspopup="dialog">Show details</button>
+				@ui.Action(ui.ButtonProps{Variant: ui.ButtonVariant("outlined"), Attrs: templ.Attributes{"popovertarget": c.ID() + "-tip", "aria-haspopup": "dialog"}}) {
+					Show details
+				}
 				@ui.Tooltip(tooltipExampleProps(c, false))
 			}
-		</div>
+		}
 	} else {
 		@ui.Tooltip(tooltipExampleProps(c, true))
 	}
@@ -23,7 +25,9 @@ templ specimenTooltip(c componentCase) {
 
 templ tooltipExampleAction(c componentCase) {
 	if c.Variant=="rich" {
-		<button { c.FeedbackAttributes("md-button md-text-button md-feedback-action")... } data-size="xsmall" data-tooltip-close>Got it</button>
+		@ui.Button(templ.Attributes{"data-size": "xsmall", "data-tooltip-close": true}, c.FeedbackAttributes("md-button md-text-button md-feedback-action")) {
+			Got it
+		}
 	}
 }
 
