@@ -1,6 +1,11 @@
 package ui
 
-templ Button(attrs templ.Attributes) {
+templ Button(attrs templ.Attributes, extra ...templ.Attributes) {
+	{{
+		for _, more := range extra {
+			attrs = attributes(attrs, more)
+		}
+	}}
 	@Require("common")
 	<button
 		if attrs["type"] == nil {
@@ -20,7 +25,7 @@ templ ButtonGroup(class string, attrs templ.Attributes) {
 }
 
 templ LoadingButton(attrs templ.Attributes, label string) {
-	@Require("common")
+	@Require("common", "loading")
 	<span class="md-loading-button-slot">
 		@Button(attrs) {
 			<span data-button-label>{ label }</span>

@@ -13,7 +13,7 @@ type ChipProps struct {
 
 func (p ChipProps) Attributes() templ.Attributes {
 	v := fallback(p.Variant, "filter")
-	a := templ.Attributes{"class": "md-" + v + "-chip", "data-variant": v, "data-selected": fmt.Sprint(p.Selected), "data-elevated": fmt.Sprint(p.Elevated), "data-shape": "label"}
+	a := templ.Attributes{"class": "md-" + v + "-chip", "data-family": "chip", "data-variant": v, "data-selected": fmt.Sprint(p.Selected), "data-elevated": fmt.Sprint(p.Elevated), "data-shape": "label"}
 	if p.Icon != "" {
 		a["data-shape"] = "icon"
 	}

@@ -13,9 +13,9 @@ type SheetProps struct {
 	ID, Title                         string
 	Kind                              SheetKind
 	Modal, Detached, Start, Minimized bool
-	Inline, Hidden                    bool
-	HandleAttrs                       templ.Attributes
-	Actions                           templ.Component
+	Inline, Hidden, HideClose         bool
+	HandleAttrs, CloseAttrs           templ.Attributes
+	Actions, Close                    templ.Component
 	Attrs                             templ.Attributes
 }
 

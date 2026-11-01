@@ -48,7 +48,7 @@ func TestProcessingIndicatorsRenderSharedAnatomy(t *testing.T) {
 }
 func TestFieldNamesAndButtonState(t *testing.T) {
 	var out bytes.Buffer
-	if e := Select("position", "Position", []Option{{"x", "Horizontal"}}).Render(context.Background(), &out); e != nil {
+	if e := Select("position", "Position", []Option{{Value: "x", Label: "Horizontal"}}).Render(context.Background(), &out); e != nil {
 		t.Fatal(e)
 	}
 	for _, required := range []string{`aria-controls="position-options"`, `id="position-options"`, `role="listbox"`, `data-field-value="x"`, `id="position"`, `class="md-chip-icon" data-slot="trailing-icon"`} {
@@ -138,10 +138,10 @@ func TestDrawerLinkPreservesNativeURLAndCurrentState(t *testing.T) {
 
 func TestSelectRendersInitialSelectionBeforeRuntimeLoads(t *testing.T) {
 	var out bytes.Buffer
-	if err := Select("speed", "Speed", []Option{{"0.5", "Half"}, {"1", "Normal"}}, "1").Render(context.Background(), &out); err != nil {
+	if err := Select("speed", "Speed", []Option{{Value: "0.5", Label: "Half"}, {Value: "1", Label: "Normal"}}, "1").Render(context.Background(), &out); err != nil {
 		t.Fatal(err)
 	}
-	for _, required := range []string{`data-field-display>Normal`, `data-field-value value="1"`, `value="1" selected`, `aria-selected="true"`} {
+	for _, required := range []string{`data-field-display>Normal`, `name="" value="1" data-field-value`, `value="1" selected`, `aria-selected="true"`} {
 		if !strings.Contains(out.String(), required) {
 			t.Fatal(required, out.String())
 		}

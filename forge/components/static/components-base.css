@@ -7473,6 +7473,8 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-full-height] {
 .md-chip-select [data-field-display] { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .md-chip-select > .md-filter-chip { max-inline-size: 100%; }
 .md-chip-select .md-filter-chip > span:first-child { flex: none; }
+
+.md-field-menu .md-menu-item[role="option"]:not([aria-selected="true"]) > [data-slot="trailing-icon"] { visibility: hidden; }
 /* Dialog viewport sizes and content spacing are renderer layout rules. */
 .md-dialog-demo {
   --_dialog-enter-duration: var(--_motion-fast-effects-duration);

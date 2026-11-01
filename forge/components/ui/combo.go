@@ -35,6 +35,13 @@ func (p FieldProps) FieldInput() templ.Attributes {
 		a["aria-describedby"] = v
 	}
 	if p.Kind == "select" || p.Kind == "autocomplete" {
+		delete(a, "name")
+		for _, option := range p.Options {
+			if option.Value == p.Value {
+				a["value"] = option.Label
+				break
+			}
+		}
 		a["role"] = "combobox"
 		a["aria-expanded"] = "false"
 		a["aria-haspopup"] = "listbox"

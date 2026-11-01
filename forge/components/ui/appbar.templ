@@ -35,3 +35,23 @@ templ appBarTitle(p AppBarProps) {
 		}
 	</div>
 }
+
+templ AppBarAvatar(text, label string) {
+	@Require("appbar")
+	<span class="md-appbar-avatar-slot"><span class="md-appbar-avatar" role="img" aria-label={ label }>{ text }</span></span>
+}
+
+templ AppBarSearch(target, label string, disclosure bool) {
+	@Require("appbar")
+	if disclosure {
+		@Button(templ.Attributes{"class": "md-appbar-search", "data-search-open": "", "aria-label": label, "aria-haspopup": "dialog", "aria-expanded": "false", "aria-controls": target}) {
+			@Icon("search")
+			<span>{ label }</span>
+		}
+	} else {
+		<label class="md-appbar-search">
+			@Icon("search")
+			<input type="search" placeholder={ label } aria-label={ label }/>
+		</label>
+	}
+}

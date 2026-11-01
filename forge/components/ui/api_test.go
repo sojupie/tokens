@@ -179,3 +179,56 @@ func TestDatePickerUsesCivilDatesAcrossYearsAndLeapDays(t *testing.T) {
 		}
 	}
 }
+
+func TestConsumerChipAndSelectNeedNoPlaygroundAttributes(t *testing.T) {
+	chip, _ := renderAPI(t, Chip(ChipProps{Label: "Saved", Variant: "filter"}))
+	if !strings.Contains(chip, `data-family="chip"`) || !strings.Contains(chip, `data-chip-select`) {
+		t.Fatal(chip)
+	}
+	selectHTML, _ := renderAPI(t, SelectField(SelectProps{ID: "platform", Name: "context.Platform", Label: "Platform", Value: "web", Options: []Option{{Value: "web", Label: "Web browser"}, {Value: "ios", Label: "iOS"}, {Value: "android", Label: "Android"}}}))
+	for _, want := range []string{`name="context.Platform" value="web"`, `data-field-display>Web browser`, `data-field-value="web"`, `aria-controls="platform-options"`} {
+		if !strings.Contains(selectHTML, want) {
+			t.Fatal(want, selectHTML)
+		}
+	}
+	if strings.Contains(selectHTML, "md-field-menu-divider") || strings.Contains(selectHTML, "data-component-state") {
+		t.Fatal(selectHTML)
+	}
+	field, _ := renderAPI(t, Field(FieldProps{TextFieldProps: TextFieldProps{ID: "result", Name: "result", Value: "web", Label: "Platform", Invalid: true, Supporting: "Choose a platform."}, Kind: "select", Options: []Option{{Value: "web", Label: "Web browser"}}}))
+	for _, want := range []string{`value="Web browser"`, `name="result" value="web"`, `Choose a platform.`} {
+		if !strings.Contains(field, want) {
+			t.Fatal(want, field)
+		}
+	}
+	if strings.Contains(field, "Enter a valid value.") {
+		t.Fatal(field)
+	}
+}
+
+func TestModalCanUseItsContentRegionAsANativeForm(t *testing.T) {
+	text, _ := renderAPI(t, Modal(DialogProps{ID: "download", Title: "Download", FormAttrs: templ.Attributes{"id": "export-form", "action": "/export", "method": "get"}, Actions: Action(ButtonProps{Type: "submit", Attrs: templ.Attributes{"form": "export-form"}})}))
+	tree, err := html.Parse(strings.NewReader(text))
+	if err != nil {
+		t.Fatal(err)
+	}
+	forms := 0
+	var visit func(*html.Node)
+	visit = func(n *html.Node) {
+		if n.Type == html.ElementNode && n.Data == "form" {
+			a := map[string]string{}
+			for _, v := range n.Attr {
+				a[v.Key] = v.Val
+			}
+			if a["id"] == "export-form" && a["class"] == "md-dialog-content" && a["action"] == "/export" && a["method"] == "get" {
+				forms++
+			}
+		}
+		for child := n.FirstChild; child != nil; child = child.NextSibling {
+			visit(child)
+		}
+	}
+	visit(tree)
+	if forms != 1 || !strings.Contains(text, `form="export-form"`) {
+		t.Fatal(text)
+	}
+}

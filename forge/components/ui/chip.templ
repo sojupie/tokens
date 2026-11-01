@@ -48,3 +48,15 @@ templ chipLeading(p ChipProps) {
 		</span>
 	}
 }
+
+// FilterChipField preserves a native checkbox and its form value.
+templ FilterChipField(p ChoiceProps) {
+	@Require("common")
+	<label { attributes(templ.Attributes{"class":"md-filter-chip"},p.Attrs)... }>
+		<input { attributes(p.input("checkbox"),templ.Attributes{"class":"tokens-visually-hidden"})... }/>
+		<span class="md-chip-face">
+			@Icon("check")
+			<span>{ p.Label }</span>
+		</span>
+	</label>
+}

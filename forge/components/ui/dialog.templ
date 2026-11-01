@@ -44,14 +44,11 @@ templ Modal(p DialogProps) {
 				}
 			</header>
 		}
-		<div { attributes(templ.Attributes{"class":"md-dialog-content","data-dialog-content":""},p.ContentAttrs)... }>
-			if p.Description!="" {
-				<p data-slot="supporting-text" id={ p.ID + "-support" }>{ p.Description }</p>
-			}
+		@dialogContent(p) {
 			{ children... }
-		</div>
+		}
 		if p.Actions!=nil&&(!p.FullScreen||p.BottomActions) {
-			<footer class={ templ.KV("md-basic-actions",!p.FullScreen),templ.KV("md-full-action-bar",p.FullScreen) }>
+			<footer { attributes(templ.Attributes{"class":templ.Classes(templ.KV("md-basic-actions",!p.FullScreen),templ.KV("md-full-action-bar",p.FullScreen)).String()},p.ActionsAttrs)... }>
 				if p.Dividers {
 					<hr class="md-divider"/>
 				}
@@ -83,4 +80,36 @@ templ DialogClose(target, label, value string, p ButtonProps) {
 	@Button(attrs) {
 		{ label }
 	}
+}
+
+// DialogSurface is for content-slot compositions and static illustration fixtures.
+templ DialogSurface(attrs templ.Attributes) {
+	@Require("dialog")
+	<dialog { attrs... }>
+		{ children... }
+	</dialog>
+}
+
+templ dialogContent(p DialogProps) {
+	{{ attrs := attributes(templ.Attributes{"class": "md-dialog-content", "data-dialog-content": ""}, p.ContentAttrs) }}
+	if p.FormAttrs!=nil {
+		<form { attributes(attrs,p.FormAttrs)... }>
+			@dialogContentBody(p) {
+				{ children... }
+			}
+		</form>
+	} else {
+		<div { attrs... }>
+			@dialogContentBody(p) {
+				{ children... }
+			}
+		</div>
+	}
+}
+
+templ dialogContentBody(p DialogProps) {
+	if p.Description!="" {
+		<p data-slot="supporting-text" id={ p.descriptionID() }>{ p.Description }</p>
+	}
+	{ children... }
 }

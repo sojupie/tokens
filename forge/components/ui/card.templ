@@ -1,21 +1,19 @@
 package ui
 
 templ Card(p CardProps) {
-	@Require("card")
-	<article { attributes(templ.Attributes{"class":"md-card md-"+fallback(p.Variant,"filled")+"-card"},p.Attrs)... }>
+	@CardSurface(p) {
 		@cardContent(p) {
 			{ children... }
 		}
-	</article>
+	}
 }
 
 templ CardLink(href string, p CardProps) {
-	@Require("card")
-	<a href={ templ.SafeURL(href) } { attributes(templ.Attributes{"class":"md-card md-"+fallback(p.Variant,"filled")+"-card md-interactive-card"},p.Attrs)... }>
+	@CardLinkSurface(href, p) {
 		@cardContent(p) {
 			{ children... }
 		}
-	</a>
+	}
 }
 
 templ CardButton(p CardProps) {
@@ -54,4 +52,31 @@ templ cardContent(p CardProps) {
 			@p.Actions
 		</div>
 	}
+}
+
+// CardSurface is the content-slot form used when an application supplies its own body.
+templ CardSurface(p CardProps) {
+	@Require("card")
+	<article { p.Attributes()... }>
+		{ children... }
+	</article>
+}
+
+templ CardBody(attrs templ.Attributes) {
+	@Require("card")
+	<div { attributes(templ.Attributes{"class":"md-card-content"},attrs)... }>
+		{ children... }
+	</div>
+}
+
+templ CardLinkSurface(href string, p CardProps) {
+	@Require("card")
+	<a href={ templ.SafeURL(href) } { attributes(templ.Attributes{"class":"md-card md-"+fallback(p.Variant,"filled")+"-card md-interactive-card"},p.Attrs)... }>
+		{ children... }
+	</a>
+}
+
+templ CardMedia(src, alt string, attrs templ.Attributes) {
+	@Require("card")
+	<img src={ templ.SafeURL(src) } alt={ alt } { attributes(templ.Attributes{"class":"md-card-media"},attrs)... }/>
 }

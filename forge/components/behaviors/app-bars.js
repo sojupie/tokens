@@ -4,6 +4,11 @@
     "scroll",
     (event) => {
       const demo = event.target;
+      for(const bar of document.querySelectorAll('[data-appbar-scroll-target]')) {
+        const target=bar.dataset.appbarScrollTarget;
+        if(target==='document'&&demo===document)bar.toggleAttribute('data-scrolled',document.scrollingElement.scrollTop>0);
+        else if(demo.id&&target===demo.id)bar.toggleAttribute('data-scrolled',demo.scrollTop>0);
+      }
       if (demo.matches?.('[data-appbar-demo][data-interactive="true"]'))
         demo
           .querySelector(".md-app-bar")

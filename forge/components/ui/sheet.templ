@@ -53,19 +53,40 @@ templ sheetFrame(p SheetProps) {
 
 templ Sheet(p SheetProps) {
 	@SheetSurface(p) {
-		<header class="md-sheet-header">
-			<h2 class="md-sheet-title" id={ p.ID + "-heading" }>{ p.Title }</h2>
-			@Button(templ.Attributes{"class": "md-icon-button md-standard-icon-button md-sheet-close", "data-size": "small", "data-sheet-close": "", "aria-label": "Close " + p.Title}) {
-				@Icon("close")
-			}
-		</header>
-		<div class="md-sheet-body">
+		@SheetHeader(p)
+		@SheetBody() {
 			{ children... }
-		</div>
+		}
 		if p.Actions!=nil {
-			<footer class="md-sheet-footer">
+			@SheetActions() {
 				@p.Actions
-			</footer>
+			}
 		}
 	}
+}
+
+templ SheetHeader(p SheetProps) {
+	@Require("sheet")
+	<header class="md-sheet-header">
+		<h2 class="md-sheet-title" id={ p.ID + "-heading" }>{ p.Title }</h2>
+		if p.Close!=nil {
+			@p.Close
+		} else if !p.HideClose {
+			@Button(attributes(templ.Attributes{"class": "md-icon-button md-standard-icon-button md-sheet-close", "data-size": "small", "data-sheet-close": "", "aria-label": "Close " + p.Title}, p.CloseAttrs)) {
+				@Icon("close")
+			}
+		}
+	</header>
+}
+
+templ SheetBody() {
+	<div class="md-sheet-body">
+		{ children... }
+	</div>
+}
+
+templ SheetActions() {
+	<footer class="md-sheet-footer">
+		{ children... }
+	</footer>
 }

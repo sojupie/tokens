@@ -8,3 +8,9 @@ templ Badge(variant string, content string, attrs templ.Attributes) {
 		}
 	</span>
 }
+
+templ BadgeAnchor() {
+	@Require("badge")
+	<span class="md-badge-anchor">{ children... }
+</span>
+}

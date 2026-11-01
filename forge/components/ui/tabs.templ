@@ -34,3 +34,12 @@ templ TabPanel(id, tabID string, selected bool) {
 		{ children... }
 	</section>
 }
+
+templ TabsHost(attrs templ.Attributes, extra ...templ.Attributes) {
+	@Require("tabs")
+	{{ for _, more := range extra {
+	attrs = attributes(attrs, more)
+} }}
+	<div { attributes(templ.Attributes{"class":"md-tabs-example"},attrs)... }>{ children... }
+</div>
+}

@@ -17,16 +17,16 @@ templ SplitButton(p SplitButtonProps) {
 	</div>
 }
 
-templ SplitHost() {
+templ SplitHost(attrs ...templ.Attributes) {
 	@Require("split")
-	<div class="md-split-demo">
+	<div { attributes(templ.Attributes{"class":"md-split-demo"},firstAttrs(attrs))... }>
 		{ children... }
 	</div>
 }
 
-templ SplitMenu(id, label string) {
+templ SplitMenu(id, label string, attrs ...templ.Attributes) {
 	@Require("split")
-	<nav class="md-menu md-split-menu" data-variant="standard" id={ id + "-menu" } popover="auto" role="menu" aria-label={ label }>
+	<nav { attributes(templ.Attributes{"class":"md-menu md-split-menu","data-variant":"standard","id":id+"-menu","popover":"auto","role":"menu","aria-label":label},firstAttrs(attrs))... }>
 		<ul>
 			{ children... }
 		</ul>

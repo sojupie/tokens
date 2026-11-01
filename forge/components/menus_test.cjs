@@ -14,6 +14,7 @@ test('pressing a submenu trigger cancels its delayed hover opener',()=>{
  const event={target:{closest:()=>trigger},pointerType:'mouse',buttons:0,relatedTarget:null};
  events.pointerover(event);assert.equal(timers.size,1);events.pointerdown(event);assert.equal(timers.size,0);
  events.pointerover({...event,buttons:1});assert.equal(timers.size,0);
+ events.pointerover({...event,pointerType:'pen'});assert.equal(timers.size,0,'Pencil hover must not change submenu state before activation');
 });
 test('each selectable menu item updates its state and check icon',()=>{
  const events={},output={textContent:''};

@@ -537,3 +537,5 @@
 .md-chip-select [data-field-display] { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .md-chip-select > .md-filter-chip { max-inline-size: 100%; }
 .md-chip-select .md-filter-chip > span:first-child { flex: none; }
+
+.md-field-menu .md-menu-item[role="option"]:not([aria-selected="true"]) > [data-slot="trailing-icon"] { visibility: hidden; }

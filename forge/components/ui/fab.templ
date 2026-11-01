@@ -9,3 +9,18 @@ templ FAB(p FABProps) {
 		}
 	</button>
 }
+
+templ FABLink(href string, p FABProps) {
+	@Require("fab")
+	{{
+		attrs := p.Attributes()
+		delete(attrs, "type")
+		delete(attrs, "disabled")
+	}}
+	<a href={ templ.SafeURL(href) } { attrs... }>
+		@Icon(p.Icon)
+		if p.Extended {
+			<span>{ p.Label }</span>
+		}
+	</a>
+}

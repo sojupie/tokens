@@ -1,5 +1,7 @@
 package ui
 
+import "fmt"
+
 templ Carousel(p CarouselProps, count int) {
 	@Require("carousel")
 	<section { p.Attributes()... }>
@@ -40,4 +42,25 @@ templ CarouselItem(p CarouselItemProps) {
 			{ children... }
 		</button>
 	</li>
+}
+
+templ CarouselHeader() {
+	@Require("carousel")
+	<header class="md-carousel-header">{ children... }
+</header>
+}
+
+templ CarouselAction() {
+	@Require("carousel")
+	<div class="md-carousel-all-action">{ children... }
+</div>
+}
+
+templ CarouselControls(current, total int) {
+	@Require("carousel")
+	<div class="md-carousel-controls">
+		@IconButton(IconButtonProps{Label: "Previous item", Icon: "chevron_left", Attrs: templ.Attributes{"data-carousel-step": "-1"}})
+		<output class="md-typescale-label-medium" aria-live="polite">{ fmt.Sprintf("Item %d of %d",current,total) }</output>
+		@IconButton(IconButtonProps{Label: "Next item", Icon: "chevron_right", Attrs: templ.Attributes{"data-carousel-step": "1"}})
+	</div>
 }

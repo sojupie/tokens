@@ -65,8 +65,8 @@ templ NavigationItemContent(p NavigationItemProps) {
 	@Require("navigation")
 	<span class="md-nav-indicator">
 		<span class="md-nav-icon">
-			@Icon(p.Icon + "_outline")
-			@Icon(p.Icon + "_filled")
+			@Icon(navigationIcon(p.Icon, false))
+			@Icon(navigationIcon(p.Icon, true))
 			if p.Badge!="" {
 				@Badge(p.Badge, p.BadgeText, templ.Attributes{"class": "md-nav-badge", "aria-label": p.BadgeLabel})
 			}
@@ -75,4 +75,45 @@ templ NavigationItemContent(p NavigationItemProps) {
 			<span class="md-nav-count">{ p.Count }</span>
 		}
 	</span>
+}
+
+// NavigationSurface supports a modal drawer or an inline navigation region.
+templ NavigationSurface(attrs templ.Attributes, modal bool, extra ...templ.Attributes) {
+	{{
+		for _, more := range extra {
+			attrs = attributes(attrs, more)
+		}
+	}}
+	@Require("navigation")
+	if modal {
+		<dialog { attrs... }>
+			{ children... }
+		</dialog>
+	} else {
+		<nav { attrs... }>
+			{ children... }
+		</nav>
+	}
+}
+
+templ NavigationItems() {
+	@Require("navigation")
+	<div class="md-nav-items">
+		{ children... }
+	</div>
+}
+
+templ RailFrame(attrs templ.Attributes, navigation templ.Component) {
+	@Require("navigation")
+	<div { attrs... }>
+		<div class="md-navigation-slot">
+			<div class="md-navigation-surface">
+				@navigation
+			</div>
+		</div>
+		<button class="md-navigation-scrim" type="button" tabindex="-1" data-navigation-dismiss aria-label="Collapse navigation" hidden></button>
+		<div class="md-rail-body">
+			{ children... }
+		</div>
+	</div>
 }

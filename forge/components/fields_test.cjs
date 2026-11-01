@@ -7,12 +7,12 @@ test('readonly inputs and pill buttons toggle and survive native light-dismiss',
  for(const useButton of [false,true]) {
  const listeners={},attrs={},positions={},empty={hidden:true};let shown=false,focused=0,prevented=0;
  const options=['One','Two'].map((name,index)=>({id:`option-${index}`,hidden:false,dataset:{fieldOption:name},classList:{contains:c=>c==='md-menu-item'},attrs:{},getAttribute(name){return this.attrs[name]??null;},setAttribute(name,value){this.attrs[name]=value;},scrollIntoView(){}}));
- const menu={dataset:{},scrollWidth:260,scrollHeight:2000,offsetHeight:120,style:{setProperty:(name,value)=>positions[name]=value},matches:()=>shown,showPopover(){shown=true;},hidePopover(){shown=false;},addEventListener(){},querySelectorAll:()=>options,querySelector:s=>s==='.md-field-empty'?empty:null};
+ const menu={dataset:{},scrollWidth:260,scrollHeight:2000,offsetHeight:120,style:{setProperty:(name,value)=>positions[name]=value},matches:()=>shown,showPopover(){shown=true;},hidePopover(){shown=false;},addEventListener(){},querySelectorAll:s=>s==='.md-field-menu-divider'?[]:options,querySelector:s=>s==='.md-field-empty'?empty:null};
  const root={dataset:{},getBoundingClientRect:()=>({left:20,top:300,bottom:356,width:200}),querySelector:s=>s==='.md-field-menu'?menu:null};
  const input={classList:{contains:name=>useButton&&name==='md-filter-chip'},readOnly:!useButton,hasAttribute:name=>useButton&&name==='data-field-select',value:'One',closest:s=>s==='[data-field-example]'?root:null,focus(){focused++;},setAttribute(k,v){attrs[k]=v;},removeAttribute(k){delete attrs[k];}};
  runInNewContext(readFileSync(`${__dirname}/static/fields.js`,'utf8'),{
   document:{readyState:'complete',documentElement:{clientWidth:800},querySelectorAll:s=>s==='[data-field-combo]'?[input]:[],addEventListener:(name,fn)=>listeners[name]=fn},
-  window:{innerHeight:600,addEventListener(){}},getComputedStyle:()=>({getPropertyValue:()=> '8px'})
+  Event:class {constructor(type){this.type=type;}},window:{innerHeight:600,addEventListener(){}},getComputedStyle:()=>({getPropertyValue:()=> '8px'})
  });
  const click=()=>listeners.click({target:input,detail:1,preventDefault(){}});
  const down=()=>listeners.pointerdown({target:input,preventDefault(){prevented++;}});
@@ -35,6 +35,17 @@ test('readonly inputs and pill buttons toggle and survive native light-dismiss',
  listeners.keydown({target:input,key:'Escape',preventDefault(){},stopPropagation(){}});
  assert.equal(shown,false);assert.equal(attrs['aria-expanded'],'false');assert.equal(options[0].dataset.componentState,undefined);
  assert.equal(input.value,'One');assert.equal(focused,3);assert.equal(prevented,3);
+ // Pencil contact must protect the option until release, including focusout.
+ options[0].closest=selector=>selector==='[data-field-example]'?root:selector==='[data-field-option]'?options[0]:selector==='.md-field-menu'?menu:null;
+ root.contains=()=>false;
+ let changes=0;input.dispatchEvent=event=>{if(event.type==='change')changes++;};
+ down();click();
+ listeners.pointerdown({target:options[0],pointerType:'pen',pointerId:9,clientX:10,clientY:10,preventDefault(){throw Error('pen contact must not suppress compatibility activation');}});
+ listeners.focusout({target:input,relatedTarget:null});assert.equal(shown,true,'pen focusout must not dismiss before selection');
+ listeners.pointerup({target:options[0],pointerId:9,preventDefault(){}});
+ assert.equal(shown,false);assert.equal(changes,1);
+ listeners.click({target:options[0],detail:0});assert.equal(changes,1,'zero-detail pen compatibility click must not commit twice');
+
  }
 });
 

@@ -18,8 +18,9 @@ templ MenuEntry(p MenuEntryProps) {
 	@Require("common")
 	<button { menuItemAttributes(p.Attrs)... }>
 		if p.Leading!=nil {
-			<span data-slot="leading-icon" aria-hidden="true">@p.Leading
-</span>
+			<span data-slot="leading-icon" aria-hidden="true">
+				@p.Leading
+			</span>
 		}
 		if !p.IconOnly {
 			<span class="md-menu-item-text">
@@ -29,12 +30,14 @@ templ MenuEntry(p MenuEntryProps) {
 				}
 			</span>
 			if p.Trailing!=nil {
-				<span data-slot="trailing-icon" aria-hidden="true">@p.Trailing
-</span>
+				<span data-slot="trailing-icon" aria-hidden="true">
+					@p.Trailing
+				</span>
 			}
 			if p.Shortcut!=nil {
-				<small class="md-menu-shortcut" data-slot="trailing-supporting-text" aria-label={ p.ShortcutLabel }>@p.Shortcut
-</small>
+				<small class="md-menu-shortcut" data-slot="trailing-supporting-text" aria-label={ p.ShortcutLabel }>
+					@p.Shortcut
+				</small>
 			}
 		}
 	</button>
@@ -48,8 +51,9 @@ templ MenuSurface(attrs templ.Attributes, heading string) {
 			if heading!="" {
 				<h3>{ heading }</h3>
 			}
-			<ul role="presentation">{ children... }
-</ul>
+			<ul role="presentation">
+				{ children... }
+			</ul>
 		</section>
 	</div>
 }
@@ -58,4 +62,33 @@ templ Menu(id string, label string, main bool) {
 	@MenuSurface(templ.Attributes{"id": id, "popover": "auto", "data-menu-main": main, "aria-label": label}, "") {
 		{ children... }
 	}
+}
+
+// MenuLink keeps command-like navigation as a native link.
+templ MenuLink(href string, attrs templ.Attributes, trailing ...templ.Component) {
+	@Require("common")
+	<a href={ templ.SafeURL(href) } { attributes(templ.Attributes{"class":"md-menu-item","role":"menuitem","data-menu-action":""},attrs)... }>
+		<span class="md-menu-item-text">
+			{ children... }
+		</span>
+		if len(trailing)>0 {
+			<span data-slot="trailing-icon" aria-hidden="true">
+				@trailing[0]
+			</span>
+		}
+	</a>
+}
+
+templ MenuHost(attrs templ.Attributes) {
+	@Require("common")
+	<div { attributes(templ.Attributes{"data-menu-example":""},attrs)... }>
+		{ children... }
+	</div>
+}
+
+templ MenuPanel(attrs templ.Attributes) {
+	@Require("common")
+	<nav { attributes(templ.Attributes{"class":"md-menu","role":"menu","popover":"auto"},attrs)... }>
+		{ children... }
+	</nav>
 }

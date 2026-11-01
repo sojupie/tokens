@@ -71,7 +71,11 @@ templ ListContent(p ListItemProps) {
 		if p.Overline!="" {
 			<span class="md-list-overline">{ p.Overline }</span>
 		}
-		<span class="md-list-label">{ p.Label }</span>
+		if p.LabelFor!="" {
+			<label class="md-list-label" for={ p.LabelFor }>{ p.Label }</label>
+		} else {
+			<span class="md-list-label">{ p.Label }</span>
+		}
 		if !p.SingleLine {
 			<span class="md-list-supporting">{ p.Supporting }</span>
 		}
@@ -86,4 +90,52 @@ templ ListContent(p ListItemProps) {
 			}
 		</span>
 	}
+}
+
+// ListRowFrame owns the interaction wrappers shared by advanced lists.
+templ ListRowFrame(p ListRowFrameProps) {
+	@Require("list")
+	<li { p.Attrs... }>
+		<div { attributes(templ.Attributes{"class":"md-list-row"},p.FrameAttrs)... }>
+			if p.Before!=nil {
+				@p.Before
+			}
+			if p.Native {
+				<div { p.ContentAttrs... }>
+					@p.Content
+				</div>
+			} else {
+				@Button(p.ContentAttrs) {
+					@p.Content
+				}
+			}
+			if p.After!=nil {
+				@p.After
+			}
+		</div>
+		if p.Expanded!=nil {
+			<ul { attributes(templ.Attributes{"class":"md-list-expand-content"},p.ChildrenAttrs)... }>
+				@p.Expanded
+			</ul>
+		}
+	</li>
+}
+
+templ ListReorderSheet(id string) {
+	@Require("sheet", "list")
+	<dialog class="md-sheet md-bottom-sheet md-list-reorder-sheet" data-control="standard" data-variant="expanded" data-list-reorder-sheet id={ id } aria-label="Reorder item" tabindex="-1">
+		<div class="md-sheet-content">
+			<div class="md-sheet-body">
+				<div class="md-list" data-variant="standard" data-size="one-line" data-shape="baseline" data-width="icon">
+					{ children... }
+				</div>
+			</div><output class="tokens-visually-hidden" data-list-move-status aria-live="polite"></output>
+		</div>
+	</dialog>
+}
+
+templ ListIcon(name string, disclosure bool) {
+	@Require("list")
+	<span class={ templ.KV("md-list-expand-icon",disclosure),templ.KV("md-list-trailing-icon",!disclosure) }>@Icon(name)
+</span>
 }

@@ -21,7 +21,7 @@
  function filter(state,query) {
   const visible=new Set(matches(state.options.map(e=>e.dataset.fieldOption),query));state.options.forEach((e,index)=>{e.hidden=!visible.has(index);e.setAttribute('aria-selected',String(e.dataset.fieldOption===state.input.value));});
   state.menu.querySelector('.md-field-empty').hidden=visible.size>0;
-  const divider=state.menu.querySelector('.md-field-menu-divider');if(divider)divider.hidden=!state.options.slice(0,2).some(e=>!e.hidden&&e.getAttribute('aria-disabled')!=='true')||!state.options.slice(2).some(e=>!e.hidden&&e.getAttribute('aria-disabled')!=='true');active(state,-1);
+  for(const divider of state.menu.querySelectorAll('.md-field-menu-divider')){const row=divider.closest('li');const list=Array.from(row.parentElement.children),index=list.indexOf(row),visible=nodes=>nodes.some(n=>{const option=n.querySelector('[data-field-option]');return option&&!option.hidden;});row.hidden=!visible(list.slice(0,index))||!visible(list.slice(index+1));}active(state,-1);
  }
  function position(state) {
   const style=getComputedStyle(state.root),gap=Number.parseFloat(style.getPropertyValue('--md-sys-measurement-space100')),rect=state.root.getBoundingClientRect(),viewport={width:document.documentElement.clientWidth,height:window.innerHeight};
@@ -38,6 +38,7 @@
   const p=popupPosition(rect,viewport,height,gap,contentWidth);state.menu.dataset.menuAbove=String(p.top<rect.top);state.menu.style.setProperty('--_menu-origin-x',Math.max(0,Math.min(100,(rect.left+rect.width/2-p.left)/p.width*100))+'%');for(const [key,value]of Object.entries(p))state.menu.style.setProperty('--_field-popup-'+key,value+'px');
  }
  function open(state,query='') {
+  delete state.touchCommitted;
   if(state.input.disabled)return;filter(state,query);if(!state.menu.matches(':popover-open'))state.menu.showPopover();position(state);state.input.setAttribute('aria-expanded','true');
  }
  function close(state) {if(state.menu.matches(':popover-open'))state.menu.hidePopover();state.input.setAttribute('aria-expanded','false');active(state,-1);}
@@ -48,7 +49,7 @@
  function init(){for(const input of document.querySelectorAll('[data-field-combo]')){const root=rootFor(input);if(states.has(root))continue;const menu=root.querySelector('.md-field-menu'),state={root,input,menu,readOnly:input.readOnly||input.hasAttribute('data-field-select'),options:Array.from(menu.querySelectorAll('[data-field-option]')),active:-1,buffer:'',typedAt:0};states.set(root,state);input.setAttribute('aria-expanded','false');input.removeAttribute('aria-activedescendant');menu.addEventListener('beforetoggle',event=>{if(event.newState==='closed'){input.setAttribute('aria-expanded','false');active(state,-1);}});}}
  document.addEventListener('click',event=>{
   const state=stateFor(event.target);if(!state||state.input.disabled)return;
-  const option=event.target.closest('[data-field-option]');if(option){if(event.detail>0&&state.touchCommitted===option){delete state.touchCommitted;return;}choose(state,option);return;}
+  const option=event.target.closest('[data-field-option]');if(option){if(state.touchCommitted===option){delete state.touchCommitted;return;}choose(state,option);return;}
   if(event.target.closest('[data-field-toggle]')||state.readOnly&&!event.target.closest('.md-field-menu')){
    event.preventDefault();
    // Native light-dismiss may already have closed the popup on pointerup.
@@ -58,11 +59,11 @@
  });
  document.addEventListener('pointerdown',event=>{
   const state=stateFor(event.target);
-  if(state){delete state.touchCommitted;const option=event.target.closest('[data-field-option]');state.touchOption=event.pointerType==='touch'&&option?{option,id:event.pointerId,x:event.clientX,y:event.clientY,moved:false}:null;if(state.touchOption)touchState=state;}
+  if(state){delete state.touchCommitted;const option=event.target.closest('[data-field-option]');state.touchOption=(event.pointerType==='touch'||event.pointerType==='pen')&&option?{option,id:event.pointerId,x:event.clientX,y:event.clientY,moved:false}:null;if(state.touchOption)touchState=state;}
   if(state&&(event.target.closest('[data-field-toggle]')||state.readOnly&&!event.target.closest('.md-field-menu'))){state.pointerOpen=state.menu.matches(':popover-open');event.preventDefault();}
-  else if(event.pointerType!=='touch'&&event.target.closest?.('[data-field-option]'))event.preventDefault();
+  else if(event.pointerType!=='touch'&&event.pointerType!=='pen'&&event.target.closest?.('[data-field-option]'))event.preventDefault();
  });
- // Commit touch selection on release: Safari can blur the trigger before it
+ // Commit direct pointer selection on release: Safari can blur the trigger for touch or pen before it
  // delivers a click on a non-focusable option. Keep focusout from hiding it first.
  document.addEventListener('pointermove',event=>{const touch=touchState?.touchOption;if(touch&&touch.id===event.pointerId&&Math.hypot(event.clientX-touch.x,event.clientY-touch.y)>8)touch.moved=true;});
  document.addEventListener('pointerup',event=>{const state=touchState,touch=state?.touchOption;if(!touch||touch.id!==event.pointerId)return;touchState=null;state.touchOption=null;if(touch.moved)return;if(event.target.closest('[data-field-option]')===touch.option&&state.menu.matches(':popover-open')){event.preventDefault();state.touchCommitted=touch.option;choose(state,touch.option);}else close(state);});
@@ -70,7 +71,7 @@
  document.addEventListener('pointercancel',event=>{const state=touchState;if(state?.touchOption?.id===event.pointerId){touchState=null;state.touchOption=null;}});
  document.addEventListener('input',event=>{
   const root=rootFor(event.target);if(root)root.dataset.populated=String(event.target.value!=='');
-  const state=stateFor(event.target);if(state&&event.target===state.input&&!state.readOnly&&!state.committing)open(state,state.input.value);
+  const state=stateFor(event.target);if(state&&event.target===state.input&&!state.readOnly&&!state.committing){const value=state.root.querySelector('[data-field-value]');if(value)value.value=state.input.value;open(state,state.input.value);}
  });
  document.addEventListener('keydown',event=>{
   const state=stateFor(event.target);if(!state||state.input.disabled||event.target!==state.input)return;

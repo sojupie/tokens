@@ -8,3 +8,7 @@ type CardProps struct {
 	Actions                                  templ.Component
 	Attrs                                    templ.Attributes
 }
+
+func (p CardProps) Attributes() templ.Attributes {
+	return attributes(templ.Attributes{"class": "md-card md-" + fallback(p.Variant, "filled") + "-card"}, p.Attrs)
+}

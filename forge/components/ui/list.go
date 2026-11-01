@@ -59,11 +59,11 @@ func (p ListProps) Attributes() templ.Attributes {
 }
 
 type ListItemProps struct {
-	ID, Label, Supporting, Overline, Metadata, Avatar, ImageSrc string
-	LeadingKind                                                 ListLeading
-	Leading, Trailing, Badge                                    templ.Component
-	SingleLine, Unread, Current, Disabled                       bool
-	Attrs                                                       templ.Attributes
+	ID, Label, LabelFor, Supporting, Overline, Metadata, Avatar, ImageSrc string
+	LeadingKind                                                           ListLeading
+	Leading, Trailing, Badge                                              templ.Component
+	SingleLine, Unread, Current, Disabled                                 bool
+	Attrs                                                                 templ.Attributes
 }
 
 func (p ListItemProps) Attributes() templ.Attributes {
@@ -75,4 +75,11 @@ func (p ListItemProps) Attributes() templ.Attributes {
 		a["aria-current"] = "page"
 	}
 	return attributes(a, p.Attrs)
+}
+
+// ListRowFrameProps describes structural slots for reveal, reorder and nested rows.
+type ListRowFrameProps struct {
+	Attrs, FrameAttrs, ContentAttrs, ChildrenAttrs templ.Attributes
+	Native                                         bool
+	Before, After, Content, Expanded               templ.Component
 }

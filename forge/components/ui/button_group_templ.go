@@ -108,7 +108,7 @@ func GroupItem(p GroupItemProps) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "else  ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "else ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

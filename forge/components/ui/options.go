@@ -46,3 +46,10 @@ const (
 	Large      Size = "large"
 	ExtraLarge Size = "xlarge"
 )
+
+func firstAttrs(values []templ.Attributes) templ.Attributes {
+	if len(values) > 0 {
+		return values[0]
+	}
+	return nil
+}

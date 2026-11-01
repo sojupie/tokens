@@ -41,3 +41,14 @@ func (p NavigationItemProps) Attributes() templ.Attributes {
 	}
 	return attributes(a, p.Attrs)
 }
+
+func navigationIcon(name string, filled bool) string {
+	suffix := "_outline"
+	if filled {
+		suffix = "_filled"
+	}
+	if IconPath(name+suffix) != "" {
+		return name + suffix
+	}
+	return name
+}
