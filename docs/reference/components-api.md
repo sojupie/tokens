@@ -55,6 +55,22 @@ A link card must not contain another interactive control. Put independent action
 buttons in a content card's `Actions` slot. `CardButton` accepts phrasing content
 and does not render an actions slot.
 
+`DialogProps.FormAttrs` makes its content region a native form, with the normal
+content class and spacing. Supply the form ID/action/method there and associate
+footer submit controls through their native `form` attribute. `DescriptionID`
+preserves an existing supporting-text reference when adapting a playground.
+
+`SelectField` accepts an ID, form name, value, options, outlined/chip presentation
+and consumer attributes. Display labels and submitted values remain separate.
+`Field` uses the same option list for select/autocomplete; option dividers and
+leading content are supplied by callers. The compatibility `Select` entry point
+retains its hidden native select for existing tool integrations.
+
+`AppBarProps.ScrollTarget` names an application scroll container, or `document`, to
+update its scrolled surface without a playground host. `MenuHost` supplies the
+root for command and submenu coordination; callers supply commands and optional
+feedback. A menu command does not require a demo feedback output.
+
 `Modal` accepts a title, optional description, body children and an `Actions`
 component. `FullScreen` selects the full-screen anatomy; `BottomActions` places
 its actions in the bottom action bar. `DialogTrigger` opens it; `DialogClose` supplies a result. `Sheet`
@@ -64,6 +80,11 @@ anatomy when the application needs its own header. Place interactive sheets insi
 sheet closed. Modal sheets start closed through native dialog state.
 
 `Attrs` and `InputAttrs` extend application hooks or adapt playground states.
+`Attrs["class"]` merges consumer classes with the component classes. Root styles
+and application hooks use these attributes; shared variants use typed props.
+`IconButtonContent`, `CardSurface`, `CardLinkSurface`, `CardBody`, `SheetHeader`,
+`SheetBody` and `SheetActions` provide slots for application compositions without
+copying component structure.
 Normal callers should use typed props rather than copy `md-*` classes or forced
 `data-component-state` values. Existing attribute-based helpers remain compatible;
 they are lower-level entry points, not a second component implementation.
@@ -161,6 +182,14 @@ navigation controls. Search results, optional search options and page content
 belong to the caller. A navigation-button search bar requires the host to provide
 its matching navigation dialog. `MenuEntry` adds supporting text and shortcut slots to `MenuItem`. Their attributes carry command IDs, submenu
 relationships and checked states; command execution belongs to the application.
+
+Playground environment composition lives in Catalog's
+`playground_environment.templ`: simulated viewports, scroll regions, backdrop and
+sample application layout. `component_preview.templ` marks the environment and
+specimen boundaries with `data-playground-environment` and
+`data-playground-specimens`. These are inspection hooks, not a second component
+runtime. Legacy `md-*-demo` classes remain where existing CSS/controllers need
+them. Environment controls use the same APIs where they represent components.
 
 Catalog still has adapters for its playground controls and older illustration
 fixtures. They choose configurations and sample content. They are not the API for

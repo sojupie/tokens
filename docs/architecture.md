@@ -48,6 +48,7 @@ they do not contain the component implementations.
 | Pages and site layout | `catalog/web/layout.templ`, `overview.templ`, `subject*.templ`, `changes.templ`, `agents.templ`, and `downloads.templ` | Matching `*_templ.go` files, compiled into the Go server |
 | Component API | `forge/components/ui/*.go` and `*.templ` | Typed Go configuration, shared component anatomy and nested asset requirements |
 | Catalog specimens | `catalog/web/specimen_<family>.templ` and matching Go helpers | Playground configurations, sample content and forced states passed to the component API |
+| Playground environment | `catalog/web/playground_environment.templ` and `component_preview.templ` | Simulated viewport, scale, comparison arrangement and controls around API-rendered specimens |
 | Playground configuration | `catalog/web/component_preview.go`, `component_gallery.go`, `component_preview.templ`, and family configuration helpers | HTML rendered for the requested playground settings |
 | Layout and anatomy | `forge/components/styles/*.css`, `static/elevation.css`, and the anatomy in `forge/material/generate-buttons.mjs` | Assembled `static/components-base.css`, then token-bound `static/components.css` and `buttons.css` |
 | Token-to-component mappings | `forge/material/generate-components.mjs` and `generate-buttons.mjs` | CSS selectors binding component roles to captured token variables |
@@ -85,6 +86,13 @@ are scoped to `[data-component-assets]` regions, or `#component-preview` in stan
 Galleries collect assets from their rendered thumbnails.
 The server verifies their publication manifest checksums and retains the bytes at
 startup. Older asset manifests keep the complete theme as a fallback.
+
+Catalog uses the Forge Go/templ API for shared component anatomy, including
+playgrounds, dialogs, table controls, scenes and implementation downloads. Catalog
+owns sample content, application actions and the exterior playground environment.
+Custom component and tool tiles remain site designs. Consumer classes and hooks
+use `Attrs` and slot attributes; recurring anatomy and behavior fixes belong in Forge.
+See [component authoring](reference/components-api.md) for the API contract.
 
 Catalog uses native HTML/CSS/JavaScript components and shared Go templ controls.
 Forge does not publish a Web Components package.
