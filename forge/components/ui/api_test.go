@@ -232,3 +232,20 @@ func TestModalCanUseItsContentRegionAsANativeForm(t *testing.T) {
 		t.Fatal(text)
 	}
 }
+
+func TestChipAndGroupConditionalContent(t *testing.T) {
+	for _, component := range []templ.Component{
+		Chip(ChipProps{Label: "Painting", Variant: "filter"}),
+		Chip(ChipProps{Label: "Maya", Variant: "input", Avatar: "M"}),
+		GroupItem(GroupItemProps{Label: "Play", Connected: true, Icon: "play_arrow"}),
+	} {
+		text, _ := renderAPI(t, component)
+		if strings.Contains(text, "else") {
+			t.Fatalf("conditional rendered as content: %s", text)
+		}
+	}
+	text, _ := renderAPI(t, Chip(ChipProps{Label: "Maya", Variant: "input", Avatar: "M", Icon: "star"}))
+	if strings.Contains(text, `data-slot="leading-icon"`) {
+		t.Fatalf("avatar and leading icon both rendered: %s", text)
+	}
+}

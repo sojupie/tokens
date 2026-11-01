@@ -29,9 +29,7 @@ templ Chip(p ChipProps) {
 templ chipLeading(p ChipProps) {
 	if p.Avatar!="" {
 		<span class="md-chip-avatar" aria-hidden="true">{ p.Avatar }</span>
-	}
-	else
-	if p.Variant=="filter"||p.Variant=="" {
+	} else if p.Variant=="filter"||p.Variant=="" {
 		<span class="md-chip-icon md-chip-check" data-slot="leading-icon">
 			@Icon("check")
 		</span>
@@ -40,9 +38,7 @@ templ chipLeading(p ChipProps) {
 				@Icon(p.Icon)
 			</span>
 		}
-	}
-	else
-	if p.Icon!="" {
+	} else if p.Icon!="" {
 		<span class="md-chip-icon" data-slot="leading-icon">
 			@Icon(p.Icon)
 		</span>

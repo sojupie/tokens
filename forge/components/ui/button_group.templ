@@ -14,9 +14,7 @@ templ GroupItem(p GroupItemProps) {
 			<span class="md-group-check" aria-hidden="true">
 				@Icon("check")
 			</span>
-		}
-		else
-		if p.Icon!="" {
+		} else if p.Icon!="" {
 			@Icon(p.Icon)
 		}
 		<span>{ p.Label }</span>
