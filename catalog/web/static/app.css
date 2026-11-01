@@ -299,7 +299,7 @@ button:not(:disabled), [role=button]:not([aria-disabled=true]) { cursor:pointer;
 .tokens-thumbnail-loading .md-loading { --_loading-container:var(--md-sys-color-surface); --_loading-color:var(--md-sys-color-primary); }
 
 .tokens-gallery-filters { display:flex;flex-wrap:wrap;align-items:center;gap:var(--md-sys-measurement-space100); }
-.tokens-preview-comparison { display:flex;flex-wrap:wrap;align-items:center;gap:var(--md-sys-measurement-space100);max-inline-size:100%; }
+.tokens-preview-comparison { display:flex;flex-direction:column;align-items:flex-start;gap:var(--md-sys-measurement-space100);inline-size:100%;min-inline-size:0; }
 .tokens-preview-comparison > .md-button-group[data-control="connected"] { box-sizing:border-box;inline-size:max-content;max-inline-size:100%;overflow-x:auto;overflow-y:hidden;padding:var(--md-sys-measurement-space100); }
 .tokens-preview-comparison > .md-button-group[data-control="connected"] > .md-button { flex:1 0 auto; }
 
