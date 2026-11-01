@@ -41,10 +41,8 @@ templ siteDownloadMenu() {
 				<div class="tokens-export-primary">
 					@exportChoices("content", "Content", "tokens", []catalogChoice{{"tokens", "Design tokens"}, {"implementation", "Component implementation"}}, false)
 					<details class="tokens-export-include tokens-export-disclosure">
-						<summary role="group" tabindex="-1">
-							<span class="tokens-export-disclosure-label"><span class="tokens-export-title">Include</span><span data-export-scope-summary>{ choiceLabel(page.Scopes(), page.Scope) }</span></span>@ui.IconButtonContent(ui.IconButtonProps{Variant: "standard", Label: "Include", Attrs: templ.Attributes{"class": "tokens-export-chevron", "type": "button", "data-disclosure-toggle": true, "aria-expanded": "false"}, Size: ui.Size("xsmall")}) {
-	@materialSymbol("expand_more")
-}
+						<summary>
+							<span class="tokens-export-disclosure-label"><span class="tokens-export-title">Include</span><span data-export-scope-summary>{ choiceLabel(page.Scopes(), page.Scope) }</span></span><span class="tokens-export-chevron" aria-hidden="true">@materialSymbol("expand_more")</span>
 						</summary>
 						@exportChoices("scope", "Include", page.Scope, page.Scopes(), false)
 					</details>
@@ -54,10 +52,8 @@ templ siteDownloadMenu() {
 				</div>
 				<p class="tokens-export-description" data-export-description></p>
 				<details class="tokens-export-context tokens-export-disclosure">
-					<summary role="group" tabindex="-1">
-						<span class="tokens-export-disclosure-label"><span class="tokens-export-title" id="export-context-title">Token context</span><span data-export-context-summary>Current settings</span></span>@ui.IconButtonContent(ui.IconButtonProps{Variant: "standard", Label: "Token context", Attrs: templ.Attributes{"class": "tokens-export-chevron", "type": "button", "data-disclosure-toggle": true, "aria-expanded": "false"}, Size: ui.Size("xsmall")}) {
-	@materialSymbol("expand_more")
-}
+					<summary>
+						<span class="tokens-export-disclosure-label"><span class="tokens-export-title" id="export-context-title">Token context</span><span data-export-context-summary>Current settings</span></span><span class="tokens-export-chevron" aria-hidden="true">@materialSymbol("expand_more")</span>
 					</summary>
 					<div class="tokens-export-context-heading">
 						<p>Choose the values to export. Multiple formats or contexts download together in a ZIP.</p>

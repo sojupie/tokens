@@ -4,10 +4,8 @@
     const summary = event.target.closest?.('details.tokens-export-disclosure > summary');
     if (!summary) return;
     event.preventDefault();
-    if (!event.target.closest?.('[data-disclosure-toggle]')) return;
     const detail = summary.parentElement, previous = disclosures.get(detail);
     const opening = !(previous ? previous.opening : detail.open);
-    summary.querySelector('[data-disclosure-toggle]').setAttribute('aria-expanded', String(opening));
     const from = detail.getBoundingClientRect().height;
     previous?.animation.cancel();
     detail.open = true;
@@ -40,11 +38,6 @@
       for (const child of detail.children) child.inert = false;
       disclosures.delete(detail);
     }
-  }, true);
-  document.addEventListener('toggle', event => {
-    const detail = event.target;
-    if (!detail.matches?.('details.tokens-export-disclosure')) return;
-    detail.querySelector('[data-disclosure-toggle]')?.setAttribute('aria-expanded', String(disclosures.get(detail)?.opening ?? detail.open));
   }, true);
   // Safari can retain :focus-visible after touch-driven programmatic focus.
   document.addEventListener('pointerdown',()=>document.documentElement.setAttribute('data-pointer-focus',''),true);

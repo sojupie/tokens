@@ -74,7 +74,7 @@ func TestDownloadDialogOffersScopesAndFormats(t *testing.T) {
 	if err := siteDownloadMenu().Render(ctx, &output); err != nil {
 		t.Fatal(err)
 	}
-	for _, want := range []string{`class="tokens-export-include tokens-export-disclosure"`, `class="tokens-export-context tokens-export-disclosure"`, `data-disclosure-toggle`, `data-dialog-surface`, `aria-describedby="tokens-export-scope"`, "DTCG JSON", "CSS variables", "Source JSON", "Component implementation", "Current filtered table", "Whole table", "Whole collection", `action="/downloads/export"`} {
+	for _, want := range []string{`class="tokens-export-include tokens-export-disclosure"`, `class="tokens-export-context tokens-export-disclosure"`, `<summary>`, `data-dialog-surface`, `aria-describedby="tokens-export-scope"`, "DTCG JSON", "CSS variables", "Source JSON", "Component implementation", "Current filtered table", "Whole table", "Whole collection", `action="/downloads/export"`} {
 		if !strings.Contains(output.String(), want) {
 			t.Fatalf("missing %q", want)
 		}

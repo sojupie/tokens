@@ -719,8 +719,7 @@ test('disclosure expansion retargets a reversed animation and honors reduced mot
   matchMedia:()=>({matches:reduced}),getComputedStyle:()=>({borderTopWidth:'1',borderBottomWidth:'1'}),MaterialMotion:{timing:()=>({duration:450,easing:'linear'})}
  });
  const click=(icon=true)=>events.click[0]({target:{closest:selector=>selector==='[data-disclosure-toggle]'?(icon?toggle:null):summary},preventDefault(){}});
- await click(false);assert.equal(detail.open,false);assert.equal(animations.length,0,'card surface does not expand');
- const opening=click();assert.equal(detail.open,true);assert.equal(animations[0].frames[1].height,'220px');
+ const opening=click(false);assert.equal(detail.open,true);assert.equal(animations[0].frames[1].height,'220px');
  rendered=130;const closing=click();assert.equal(animations[0].cancelled,true);assert.equal(animations[1].frames[0].height,'130px');assert.equal(animations[1].frames[1].height,'60px');assert.equal(body.inert,true);
  animations[1].finish();await Promise.all([opening,closing]);assert.equal(detail.open,false);assert.equal(body.inert,false);assert.equal(attributes.size,0);
  reduced=true;rendered=undefined;await click();assert.equal(detail.open,true);assert.equal(animations.length,2,'reduced motion changes state without a height animation');

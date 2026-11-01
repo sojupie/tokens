@@ -11,10 +11,8 @@ templ tableContextDialog(filters []tokenFilter) {
 			}
 			if extra := tableContextFilters(filters, true); len(extra)>0 {
 				<details class="tokens-context-advanced tokens-export-disclosure">
-					<summary role="group" tabindex="-1">
-						<span class="tokens-export-disclosure-label"><span class="tokens-export-title">More contexts</span></span>@ui.IconButtonContent(ui.IconButtonProps{Variant: "standard", Label: "More contexts", Attrs: templ.Attributes{"class": "tokens-export-chevron", "type": "button", "data-disclosure-toggle": true, "aria-expanded": "false"}, Size: ui.Size("xsmall")}) {
-	@materialSymbol("expand_more")
-}
+					<summary>
+						<span class="tokens-export-disclosure-label"><span class="tokens-export-title">More contexts</span></span><span class="tokens-export-chevron" aria-hidden="true">@materialSymbol("expand_more")</span>
 					</summary>
 					<div class="tokens-export-context-options">
 						for _, filter := range extra {
