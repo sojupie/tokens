@@ -8256,9 +8256,6 @@ html:has(dialog:modal) {
 .md-navigation-rail[data-width="narrow"] {
   --_rail-rest-width: var(--md-comp-nav-rail-collapsed-narrow-container-width);
 }
-.md-rail-external-menu[hidden] {
-  display: none;
-}
 .md-navigation-rail > header {
   flex: none;
   flex-direction: column;
@@ -8402,15 +8399,11 @@ html:has(dialog:modal) {
   opacity: 0;
   transform: rotate(-90deg);
 }
-.md-navigation-rail[data-variant="expanded"]
-  .md-rail-menu
-  > [data-navigation-menu-icon] {
+.md-icon-button.md-rail-menu[aria-expanded="true"] > [data-navigation-menu-icon] {
   opacity: 0;
   transform: rotate(90deg);
 }
-.md-navigation-rail[data-variant="expanded"]
-  .md-rail-menu
-  > [data-navigation-collapse-icon] {
+.md-icon-button.md-rail-menu[aria-expanded="true"] > [data-navigation-collapse-icon] {
   opacity: 1;
   transform: rotate(0deg);
 }
@@ -8461,15 +8454,23 @@ html:has(dialog:modal) {
   padding: var(--md-sys-measurement-space200);
   font: inherit;
 }
-/* The immersive page opener shares the expanded rail menu's token-based
-   anchor. Keep its slot while the rail owns the visible menu. */
+/* One immersive toggle stays above both moving panes. Empty header slots
+   preserve the page and rail anatomy without duplicating the control. */
+.md-rail-frame > .md-rail-toggle {
+  position: absolute;
+  z-index: 4;
+  inset-block-start: var(--md-comp-nav-rail-expanded-top-space);
+  inset-inline-start: calc(
+    (var(--_rail-rest-width) - var(--md-comp-icon-button-small-container-height)) / 2
+  );
+}
 .md-rail-frame[data-collapse="hidden"] .md-rail-body > header {
   padding-block-start: var(--md-comp-nav-rail-expanded-top-space);
   padding-inline-start: calc(
     (var(--_rail-rest-width) - var(--md-comp-icon-button-small-container-height)) / 2
   );
 }
-.md-rail-opener-slot {
+.md-rail-menu-slot {
   display: grid;
   flex: none;
   inline-size: var(--md-comp-icon-button-small-container-height);

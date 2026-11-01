@@ -103,9 +103,12 @@ templ NavigationItems() {
 	</div>
 }
 
-templ RailFrame(attrs templ.Attributes, navigation templ.Component) {
+templ RailFrame(attrs templ.Attributes, navigation templ.Component, toggle ...templ.Component) {
 	@Require("navigation")
 	<div { attrs... }>
+		if len(toggle) > 0 {
+			@toggle[0]
+		}
 		<div class="md-navigation-slot">
 			<div class="md-navigation-surface">
 				@navigation

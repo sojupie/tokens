@@ -3,6 +3,7 @@ package web
 import (
 	"bytes"
 	"context"
+	"net/url"
 	"strings"
 	"testing"
 )
@@ -58,7 +59,7 @@ func TestRailMenuExistsOnlyInsideConfiguredRail(t *testing.T) {
 			}
 			html := output.String()
 			count := strings.Count(html, "data-navigation-expand")
-			if strings.Contains(html, "md-rail-external-menu") {
+			if strings.Contains(html, "md-rail-toggle") {
 				t.Fatal("external menu rendered")
 			}
 			if c.RailMenu() {
@@ -101,7 +102,7 @@ func TestRailInteractiveStates(t *testing.T) {
 			}
 			if state == "hidden" {
 				if c.NavCollapse != "hidden" || !c.RailMenu() {
-					t.Fatal("hidden rail needs an internal menu")
+					t.Fatal("hidden rail needs a menu")
 				}
 			} else if c.Variant != state || c.NavCollapse == "hidden" {
 				t.Fatalf("wrong initial state: %#v", c)
@@ -111,11 +112,36 @@ func TestRailInteractiveStates(t *testing.T) {
 				t.Fatal(err)
 			}
 			html := output.String()
-			if strings.Contains(html, "md-rail-opener-slot") != (state == "hidden") {
-				t.Fatal("immersive opener must retain a layout slot")
+			if state == "hidden" && strings.Count(html, "data-navigation-expand") != 1 {
+				t.Fatal("immersive rail must have exactly one persistent toggle")
 			}
-			if strings.Contains(html, "md-rail-external-menu") != (state == "hidden") {
-				t.Fatal("page opener must be exclusive to hidden mode")
+			if strings.Contains(html, "md-rail-menu-slot") != (state == "hidden") {
+				t.Fatal("immersive menu must retain header layout slots")
+			}
+			if strings.Contains(html, "md-rail-toggle") != (state == "hidden") {
+				t.Fatal("persistent toggle must be exclusive to hidden mode")
+			}
+		}
+	}
+}
+
+func TestRailVariantComparisonKeepsExpandedAtNarrowWidth(t *testing.T) {
+	cases := []componentCase{
+		{Family: "nav-rail", Variant: "collapsed", Width: "default", Size: "default", State: "enabled"},
+		{Family: "nav-rail", Variant: "collapsed", Width: "narrow", Size: "default", State: "enabled"},
+		{Family: "nav-rail", Variant: "expanded", Width: "default", Size: "default", State: "enabled"},
+	}
+	for _, width := range []string{"default", "narrow"} {
+		page, err := selectComponentPreview(cases, url.Values{"preview.compare": {"variants"}, "preview.width": {width}, "preview.rail-state": {"hidden"}})
+		if err != nil {
+			t.Fatal(err)
+		}
+		if len(page.Cases) != 2 || page.Cases[0].Variant != "collapsed" || page.Cases[1].Variant != "expanded" || page.Cases[0].Width != width {
+			t.Fatalf("%s: variants were filtered out: %#v", width, page.Cases)
+		}
+		for _, control := range page.Controls {
+			if control.Name == "rail-state" {
+				t.Fatal("interactive initial state leaked into static comparison")
 			}
 		}
 	}

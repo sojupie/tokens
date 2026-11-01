@@ -50,13 +50,10 @@ templ navigationDestinations(c componentCase, labels []string) {
 	if c.Family=="nav-rail" && (c.RailMenu()||c.RailFAB()) {
 		<header>
 			if c.RailMenu() {
-				@ui.IconButtonContent(ui.IconButtonProps{Variant: "standard", Label: c.NavigationToggleLabel(), Attrs: templ.Attributes{"class": "md-rail-menu", "type": "button", "data-width": "default", "data-navigation-expand": true, "aria-expanded": fmt.Sprint(c.Variant == "expanded")}, Size: ui.Size("small"), Shape: ui.ButtonShape("round")}) {
-					<span data-navigation-menu-icon>
-						@materialSymbol("menu")
-					</span>
-					<span data-navigation-collapse-icon>
-						@materialSymbol("menu_open")
-					</span>
+				if c.NavCollapse == "hidden" {
+					<span class="md-rail-menu-slot" aria-hidden="true"></span>
+				} else {
+					@navigationRailToggle(c, "")
 				}
 			}
 			if c.RailFAB() {
@@ -121,4 +118,22 @@ func navigationExampleItem(c componentCase, i int, label, icon string) ui.Naviga
 		p.Count = fmt.Sprint(i + 1)
 	}
 	return p
+}
+
+// Immersive navigation keeps the same control mounted above the moving panes.
+templ persistentRailToggle(c componentCase) {
+	if c.NavCollapse == "hidden" {
+		@navigationRailToggle(c, "md-rail-toggle")
+	}
+}
+
+templ navigationRailToggle(c componentCase, class string) {
+	@ui.IconButtonContent(ui.IconButtonProps{Variant: "standard", Label: c.NavigationToggleLabel(), Attrs: templ.Attributes{"class": "md-rail-menu " + class, "type": "button", "data-width": "default", "data-navigation-expand": true, "aria-expanded": fmt.Sprint(c.Variant == "expanded")}, Size: ui.Size("small"), Shape: ui.ButtonShape("round")}) {
+		<span data-navigation-menu-icon>
+			@materialSymbol("menu")
+		</span>
+		<span data-navigation-collapse-icon>
+			@materialSymbol("menu_open")
+		</span>
+	}
 }

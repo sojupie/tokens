@@ -106,6 +106,10 @@ func previewDimensions(c componentCase) map[string]string {
 	d := map[string]string{"variant": c.Variant, "size": c.Size, "shape": c.Shape, "width": c.Width, "state": c.State, "control": c.Family, "orientation": c.Orientation}
 	if c.Family == "nav-rail" {
 		d["orientation"] = ""
+		// Narrow is a collapsed-rail width, not an expanded-rail filter.
+		if c.Variant == "expanded" {
+			d["width"] = ""
+		}
 	}
 	if c.Control != "" {
 		d["control"] = c.Control
@@ -567,6 +571,9 @@ func containsPreview(values []string, value string) bool {
 }
 
 func previewControlLabel(family, key string) string {
+	if family == "nav-rail" && key == "width" {
+		return "Collapsed width"
+	}
 	if family == "nav-rail" && key == "orientation" {
 		return "Label layout"
 	}

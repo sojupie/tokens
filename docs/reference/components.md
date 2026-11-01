@@ -94,19 +94,18 @@ surface, and Escape, the scrim, the menu button or destination activation
 collapses it. Controls elsewhere on the catalog page remain available; this is
 a scoped preview, not a document-wide native modal. Interactive previews offer
 Collapsed, Expanded or Hidden as their initial state.
-Hidden uses an immersive expanded rail, requires its header menu, and supplies a
-page opener while dismissed. Closing returns focus to that opener. The page
-opener shares the rail menu’s token-based anchor and keeps its header slot while
-hidden; it reappears only after the page pane finishes moving.
+Hidden uses an immersive expanded rail with a single persistent menu toggle
+above the moving panes. It remains visible and
+anchored through expansion and dismissal, preserving focus, hover, ripple and
+icon rotation on the same button. Empty header slots preserve layout.
 
 Rail headers optionally contain a menu, a FAB, both or neither. Menus change to
 the collapse icon when expanded. The nested FAB has level-zero elevation and
 becomes an extended FAB. The four primary destinations remain visible when
 collapsed; the Library heading and its additional destinations appear only when
 expanded. The optional menu button belongs to the rail header; disabling it
-removes it from the rail. The immersive opener is a separate page control.
-Destinations can be top
-or center aligned while header controls stay at the top. Badges are optional;
+removes it from the rail. Immersive mode always retains its toggle.
+Destinations can be top or center aligned while header controls stay at the top. Badges are optional;
 their position follows vertical or horizontal label layout. The rail itself
 always remains vertical and sits outside the simulated page pane. Page content
 scrolls independently. Compact-app navigation-bar substitution is application

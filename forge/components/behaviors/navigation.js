@@ -114,8 +114,6 @@
       hidden = !expanded && frame.dataset.collapse === "hidden";
     frame.dataset.modalOpen = String(modal);
     frame.dataset.railHidden = String(hidden);
-    const opener = frame.querySelector(".md-rail-external-menu");
-    if (opener) opener.hidden = !hidden;
     frame.querySelector(".md-navigation-surface").hidden = hidden;
     const surface = frame.querySelector(".md-navigation-surface");
     if (modal) {
@@ -192,11 +190,9 @@
       effects = MaterialMotion.timing(rail, "default-effects");
     const restoreFocus = () => {
       if (focus) {
-        const target = targetHidden
-          ? frame.querySelector(".md-rail-external-menu")
-          : rail.querySelector(
-              "[data-navigation-expand],.md-nav-fab,[data-navigation-item]",
-            );
+        const target = frame.querySelector(".md-rail-toggle") || rail.querySelector(
+          "[data-navigation-expand],.md-nav-fab,[data-navigation-item]",
+        );
         target?.focus({ preventScroll: true });
       }
     };
@@ -205,10 +201,6 @@
       return;
     }
     if (targetHidden) {
-      // The page body moves during dismissal. Reveal its opener only after
-      // that motion finishes, so it cannot travel across the exiting rail.
-      const opener = frame.querySelector(".md-rail-external-menu");
-      if (opener) opener.hidden = true;
       frame.querySelector(".md-navigation-surface").hidden = false;
       frame.dataset.railHidden = "false";
     }
@@ -458,9 +450,8 @@
     }
     if (event.key === "Tab" && frame.dataset.modalOpen === "true") {
       const controls = [
-          ...frame
-            .querySelector(".md-navigation-rail")
-            .querySelectorAll("button"),
+          ...frame.querySelectorAll(".md-rail-toggle"),
+          ...frame.querySelector(".md-navigation-rail").querySelectorAll("button"),
         ].filter((e) => e.getClientRects().length),
         first = controls[0],
         last = controls.at(-1);
