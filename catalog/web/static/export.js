@@ -48,7 +48,13 @@
     const ctx = event.detail.ctx;
     if (ctx.sourceElement.id !== 'tokens-export-form') return;
     const panel = ctx.sourceElement.closest('dialog');
-    ctx.exportDisclosures = Array.from(panel.querySelectorAll('.tokens-export-disclosure'), detail => detail.open);
+    // Apply local disclosure state before insertion: after:swap runs after
+    // settling, so restoring it there briefly paints a collapsed modal.
+    const disclosures = Array.from(panel.querySelectorAll('.tokens-export-disclosure'), detail => detail.open && detail.dataset.expanding !== 'false');
+    for (const task of event.detail.tasks) {
+      if (task.target?.id !== 'tokens-export-fields') continue;
+      task.fragment.querySelectorAll('.tokens-export-disclosure').forEach((detail, i) => { detail.open = disclosures[i]; });
+    }
     const input = document.activeElement;
     if (panel.contains(input) && input.matches('input')) ctx.exportFocus = {name:input.name,value:input.value};
   });
@@ -57,7 +63,6 @@
     if (ctx.sourceElement.id !== 'tokens-export-form') return;
     const panel = ctx.sourceElement.closest('dialog');
     if (pending.get(panel) !== ctx || ctx.response.status !== 200) return;
-    panel.querySelectorAll('.tokens-export-disclosure').forEach((detail, i) => { detail.open = ctx.exportDisclosures[i]; });
     const fields = panel.querySelector('#tokens-export-fields'), button = panel.querySelector('[data-export-submit]');
     button.disabled = fields.dataset.exportReady !== 'true';
     button.querySelector('[data-button-label]').textContent = fields.dataset.exportLabel;

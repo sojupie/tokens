@@ -73,21 +73,28 @@ unbound('.tokens-token-browser').forEach(browser => {
   const dialog = browser.querySelector('.tokens-context-dialog');
   const groups = [...browser.querySelectorAll('.tokens-token-folder')];
   let contextFields = '';
-  let contextRequest, changedField, advancedOpen;
+  let contextRequest, changedField;
   // htmx owns validation requests and replacement; these hooks own dialog feedback.
   dialog?.addEventListener('change', event => { changedField = event.target.name; });
   dialog?.addEventListener('htmx:before:request', event => {
     if (event.detail.ctx.sourceElement !== dialog) return;
     contextRequest = event.detail.ctx;
-    advancedOpen = dialog.querySelector('.tokens-context-advanced')?.open;
     dialog.querySelector('[type="submit"]').disabled = true;
     dialog.querySelector('[role="status"]').textContent = '';
     dialog.setAttribute('aria-busy', 'true');
   });
+  dialog?.addEventListener('htmx:before:swap', event => {
+    if (event.detail.ctx !== contextRequest) return;
+    const current = dialog.querySelector('.tokens-context-advanced');
+    const open = current?.open && current.dataset.expanding !== 'false';
+    for (const task of event.detail.tasks) {
+      if (task.target?.id !== 'tokens-context-fields') continue;
+      const advanced = task.fragment.querySelector('.tokens-context-advanced');
+      if (advanced) advanced.open = open;
+    }
+  });
   dialog?.addEventListener('htmx:after:swap', event => {
     if (event.detail.ctx !== contextRequest || event.detail.ctx.response.status !== 200) return;
-    const advanced = dialog.querySelector('.tokens-context-advanced');
-    if (advanced) advanced.open = advancedOpen;
     dialog.querySelector(`input[name="${CSS.escape(changedField)}"]:checked`)?.focus({preventScroll:true});
     dialog.querySelector('[type="submit"]').disabled = false;
   });

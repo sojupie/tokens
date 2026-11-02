@@ -455,6 +455,19 @@ test('theme controls survive body restoration without duplicate click handlers',
   assert.equal(theme.disabled, false);
 });
 
+test('export disclosures receive local open state before the fragment is inserted', () => {
+ const events={},live=[{open:false,dataset:{}},{open:true,dataset:{}}],incoming=[{open:true},{open:false}];
+ const panel={querySelectorAll:()=>live,contains:()=>false};
+ const sourceElement={id:'tokens-export-form',closest:()=>panel};
+ runScript('export.js',{document:{readyState:'loading',addEventListener:(name,fn)=>events[name]=fn},location:{search:''}});
+ events['htmx:before:swap']({detail:{ctx:{sourceElement},tasks:[{target:{id:'tokens-export-fields'},fragment:{querySelectorAll:()=>incoming}}]}});
+ assert.deepEqual(incoming.map(detail=>detail.open),[false,true]);
+ // Changes made while the request was pending are read immediately before insertion.
+ live[1].dataset.expanding='false';
+ events['htmx:before:swap']({detail:{ctx:{sourceElement},tasks:[{target:{id:'tokens-export-fields'},fragment:{querySelectorAll:()=>incoming}}]}});
+ assert.deepEqual(incoming.map(detail=>detail.open),[false,false]);
+});
+
 test('export feedback follows the latest htmx request and preserves native download submission', () => {
  const events={},requests=[];
  function panel(){
