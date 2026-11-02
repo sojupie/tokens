@@ -104,7 +104,10 @@ Forge does not publish a Web Components package.
 `forge/site/` owns the shared navigation, appearance controls, utility footer and
 layout-region measurements. See [site and scene layout](reference/layout.md) for
 container grids, spacing and composition rules.
-Catalog and Material Motion Lab render its Go templates. `tokens site-shell` exports
+Catalog renders its Go templates per request. Material Motion Lab renders them
+during its static build, collects Forge dependencies from the component tree and
+packages matching styles and controllers. Its exporter rejects stale component
+imports. `tokens site-shell` exports
 the same HTML and assets for the static Carousel playground. Desktop navigation
 is persistent; narrower layouts use a modal navigation drawer. The footer uses
 the host page background.
