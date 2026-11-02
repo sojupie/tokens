@@ -310,7 +310,8 @@
 }
 .md-carousel-caption {
   position:absolute;
-  inset-inline:var(--md-sys-measurement-space200);
+  inset-inline-start:var(--md-sys-measurement-space200);
+  inline-size:calc(var(--_carousel-caption-layout-width,var(--_carousel-logical)) - 2 * var(--md-sys-measurement-space200));
   inset-block-end:var(--md-sys-measurement-space200);
   color:#fff;
   text-align:start;

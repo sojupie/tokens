@@ -264,6 +264,8 @@
     const slots=state.slots=[...root.querySelectorAll('.md-carousel-slot')];
     state.starts=[];let start=0;
     state.widths=slots.map(slot=>{state.starts.push(start);const size=slot.getBoundingClientRect().width;start+=size+gap;return size;});
+    // Text keeps the full-size item's line breaks while its mask changes.
+    slots.forEach((slot,i)=>slot.style?.setProperty('--_carousel-caption-layout-width',(state.flow?state.widths[i]:state.plan.large)+'px'));
     state.max=state.vertical?state.viewport.scrollHeight-state.viewport.clientHeight:state.viewport.scrollWidth-state.viewport.clientWidth;
     const snaps=[...root.querySelectorAll(state.flow?'.md-carousel-slot':'.md-carousel-snap')];
     state.targets=state.vertical?snaps.map((snap,i)=>Math.min(i*(state.plan.large+gap),state.max)):scrollTargets(snaps.map(snap=>snap.getBoundingClientRect()),state.rtl,state.max);
