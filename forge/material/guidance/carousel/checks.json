@@ -528,17 +528,23 @@
       "implementation": {
         "status": "verified",
         "sourceRevision": 1,
-        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
+        "assessedCommit": "9d053d27d7a462669135be88ac221494ab6817b8",
         "evidence": [
           {
             "kind": "browser",
             "location": "forge/conformance/carousel-checklist.html",
-            "result": "Codex in-app Chromium 155 on Linux, normal motion unless stated; Catalog http://100.103.168.9:8085, assessed runtime 6301a60af14d437e902b180c200020884a8bc213. Run carousel checklist: mixed-ratio widths differ at every sampled viewport; ordinary uncontained widths remain equal."
+            "result": "Codex in-app Chromium 155 on Linux, normal motion, local Catalog port 8085 through the conformance proxy. Run carousel checklist: 198 assertions pass at available widths 360, 768, 772 and 1200px. Ordinary uncontained retains equal intrinsic slot widths; mixed-ratio retains varying intrinsic widths. Visible masks are allowed to change with scrolling. Images retain a fixed 5px overscan per side for press reveal. The earlier stable-visible-width assertion tested the wrong model."
           }
         ],
-        "notes": "Run carousel checklist: mixed-ratio widths differ at every sampled viewport; ordinary uncontained widths remain equal."
+        "notes": "Physical iPad gestures and native OS reduced-motion settings have not been exercised."
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "6b2411885a2e557acab407de1ef3c0b587e8deb0",
+          "sourceRevision": 1,
+          "summary": "Distinguish intrinsic media sizes from changing visible masks in uncontained rendering and its browser checks."
+        }
+      ]
     },
     {
       "id": "hero-snap",
@@ -678,21 +684,26 @@
       "implementation": {
         "status": "implemented",
         "sourceRevision": 1,
-        "assessedCommit": "6d9c7f56356d4f2e8e19835329564c9955ef1190",
+        "assessedCommit": "9d053d27d7a462669135be88ac221494ab6817b8",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/static/carousel.js; forge/components/styles/carousels.css",
-            "result": "Reduced-motion flow removes mask expansion/parallax and inline viewport padding. Runtime tests pass for six variants. Preload matchMedia and actual stylesheet branch simulation in Chromium shows stable equal widths and no art transforms; this is not a native OS-preference verification. The newer mixed-ratio equal-width interpretation remains a source uncertainty."
+            "location": "forge/components/static/carousel.js; forge/components/carousel_test.cjs",
+            "result": "Reduced-motion flow removes scroll masking/parallax and press expansion/overscan; a released free mouse drag does not coast. Runtime tests cover reduced-mode branches across six variants. Native OS-preference and physical iPad verification remain outstanding; the newer mixed-ratio equal-width interpretation remains a source uncertainty."
           }
         ],
-        "notes": "Physical iPad touch and screen-reader speech are not verified. Reduced-motion browser observations use branch simulation, not an OS preference."
+        "notes": "Physical iPad gestures and native OS reduced-motion settings have not been exercised."
       },
       "fixes": [
         {
           "commit": "6d9c7f56356d4f2e8e19835329564c9955ef1190",
           "sourceRevision": 1,
           "summary": "Remove reduced-motion inline padding and masking, with stable hero widths."
+        },
+        {
+          "commit": "6b2411885a2e557acab407de1ef3c0b587e8deb0",
+          "sourceRevision": 1,
+          "summary": "Disable new scroll/press transformations and free mouse coasting in reduced-motion mode."
         }
       ]
     },
@@ -1329,19 +1340,25 @@
         }
       ],
       "implementation": {
-        "status": "unclear",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
+        "assessedCommit": "9d053d27d7a462669135be88ac221494ab6817b8",
         "evidence": [
           {
             "kind": "browser",
-            "location": "forge/components/static/carousel.js; forge/components/styles/carousels.css; https://m3.material.io/components/carousel/guidelines",
-            "result": "Codex in-app Chromium 155 on Linux, normal motion unless stated; Catalog http://100.103.168.9:8085, assessed runtime 6301a60af14d437e902b180c200020884a8bc213. Fractional clock samples at 25% and 50% keep multi-browse images 168px wide while masks and image offsets move. This establishes reveal geometry, not timing fidelity. Motion Lab imported all six upstream clips; visually checked corner tracking and fitted easing/spring comparisons were obtained for multi-browse and centered hero. Hero feature tracking drifted into the image and was rejected as mask-edge evidence. Release timing cannot be isolated reliably from all gesture demonstrations, and generic parallax prose must be read alongside the rigid uncontained examples. No universal duration is inferred. Reproduce fitting in sibling ui-motion: import the linked multi-browse and centered reference clips into a temporary --projects directory; track --method feature --start 120 --end 180 --search 70 with regions 680,300,65,65 and 939,300,65,65 respectively; measure --curve emphasized --fit. Over this 2.0-3.0s whole-transition interval, fitted durations are 1182ms/1177ms and RMS errors 6.96px/2.43px. These are observed image-space transitions, not isolated release durations or normative settings."
+            "location": "forge/conformance/carousel-motion.html",
+            "result": "Codex in-app Chromium 155 on Linux, normal motion, local Catalog port 8085 through the conformance proxy. Run motion checks: independent image/mask displacement is exercised for all six variants, with stable image size. At a 360px hero viewport, an 80px scroll moves the tested mask edge 80px and image 46.67px; full-screen moves the tested page edge 180px and image 90px. Normal-motion uncontained now interpolates visible masks while preserving intrinsic media sizes; contained masks no longer recenter their media after viewport clipping. Width/mask and image-feature tracking of the supplied uncontained videos established centered reveal geometry. This verifies the visual mechanism, not pixel-identical gesture timing."
           }
         ],
-        "notes": "Fractional clock samples at 25% and 50% keep multi-browse images 168px wide while masks and image offsets move. This establishes reveal geometry, not timing fidelity. Motion Lab imported all six upstream clips; visually checked corner tracking and fitted easing/spring comparisons were obtained for multi-browse and centered hero. Hero feature tracking drifted into the image and was rejected as mask-edge evidence. Release timing cannot be isolated reliably from all gesture demonstrations, and generic parallax prose must be read alongside the rigid uncontained examples. No universal duration is inferred."
+        "notes": "Physical iPad gestures and native OS reduced-motion settings have not been exercised."
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "6b2411885a2e557acab407de1ef3c0b587e8deb0",
+          "sourceRevision": 1,
+          "summary": "Restore mask/image separation in uncontained and full-screen layouts and preserve contained media positioning at viewport edges."
+        }
+      ]
     },
     {
       "id": "carousel-all-items-controls",
@@ -1482,19 +1499,25 @@
         }
       ],
       "implementation": {
-        "status": "missing",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
+        "assessedCommit": "9d053d27d7a462669135be88ac221494ab6817b8",
         "evidence": [
           {
-            "kind": "code",
-            "location": "forge/components/styles/carousels.css; forge/components/static/buttons.js",
-            "result": "Shared pointer feedback supplies a ripple, but --_button-rest-shape and --_button-pressed-shape both resolve to the same captured 28px radius. No slight pressed-shape change is implemented. The exact missing pressed value is not specified here and no override is invented. Physical touch remains untested this pass."
+            "kind": "browser",
+            "location": "forge/conformance/carousel-motion.html; forge/components/static/buttons.js",
+            "result": "Codex in-app Chromium 155 on Linux, normal motion, local Catalog port 8085 through the conformance proxy. Run motion checks: press expansion, unchanged media size/position, complete image coverage and restoration on release are exercised in all six variants. Uncontained uses synthetic touch PointerEvents through shared feedback; the other fixtures use mouse PointerEvents. A separate real mouse hold on the Catalog changed the mask 240 -> 250 -> 240px with image width fixed at 250px. The freshly exported ZIP changed its mask 239.11 -> 249.11 -> 239.11px with image fixed at 249.11px. The bundled ui-motion Carousel press example tracks release from 264.09 to 244.12 video pixels (2x scale), so the effect is mask width, not a missing corner-radius token. Motion Lab standard-easing comparisons at 300/350/400ms gave RMSE 1.55/0.99/1.00 video pixels across 21 valid width samples. Physical iPad input remains unverified. Reproduce the reference measurement in sibling ui-motion with internal/analysis/example/carousel.mp4 and project.json, width region 673,222,264,185 over frames 131–151; measure --axis width --curve md3-standard --duration 350."
           }
         ],
-        "notes": "Shared pointer feedback supplies a ripple, but --_button-rest-shape and --_button-pressed-shape both resolve to the same captured 28px radius. No slight pressed-shape change is implemented. The exact missing pressed value is not specified here and no override is invented. Physical touch remains untested this pass."
+        "notes": "Physical iPad gestures and native OS reduced-motion settings have not been exercised."
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "6b2411885a2e557acab407de1ef3c0b587e8deb0",
+          "sourceRevision": 1,
+          "summary": "Consume shared press/release/cancel events to expand the mask by 5px per side, reserve fixed image overscan, and use the captured medium3 duration without altering corner tokens."
+        }
+      ]
     },
     {
       "id": "carousel-pointer-feedback",
@@ -1666,17 +1689,23 @@
       "implementation": {
         "status": "verified",
         "sourceRevision": 1,
-        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
+        "assessedCommit": "9d053d27d7a462669135be88ac221494ab6817b8",
         "evidence": [
           {
             "kind": "browser",
-            "location": "forge/conformance/carousel-checklist.html",
-            "result": "Codex in-app Chromium 155 on Linux, normal motion unless stated; Catalog http://100.103.168.9:8085, assessed runtime 6301a60af14d437e902b180c200020884a8bc213. At all four sampled widths, ordinary uncontained has 16px leading padding, 8px top/bottom padding, 8px gaps, and 28px corners. Equal-height items share a vertical center."
+            "location": "forge/conformance/carousel-checklist.html; forge/components/carousel_test.cjs",
+            "result": "Codex in-app Chromium 155 on Linux, normal motion, local Catalog port 8085 through the conformance proxy. Run carousel checklist: leading padding 16px, trailing padding 0, block padding 8px, track gap 8px and corners 28px remain valid across four widths. Run node --test forge/components/carousel_test.cjs: uncontained interpolation retains 8px visible gaps and stable intrinsic media widths through half-pixel scroll samples for uniform and mixed-width sets. The mask may expand on press; artwork has a fixed 5px overscan per side."
           }
         ],
-        "notes": "At all four sampled widths, ordinary uncontained has 16px leading padding, 8px top/bottom padding, 8px gaps, and 28px corners. Equal-height items share a vertical center."
+        "notes": "Physical iPad gestures and native OS reduced-motion settings have not been exercised."
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "6b2411885a2e557acab407de1ef3c0b587e8deb0",
+          "sourceRevision": 1,
+          "summary": "Interpolate edge-preview masks with intact gaps and fixed intrinsic item dimensions."
+        }
+      ]
     },
     {
       "id": "mixed-aspect-ratio-range",
@@ -1699,17 +1728,23 @@
       "implementation": {
         "status": "verified",
         "sourceRevision": 1,
-        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
+        "assessedCommit": "9d053d27d7a462669135be88ac221494ab6817b8",
         "evidence": [
           {
             "kind": "browser",
-            "location": "forge/conformance/carousel-checklist.html",
-            "result": "Codex in-app Chromium 155 on Linux, normal motion unless stated; Catalog http://100.103.168.9:8085, assessed runtime 6301a60af14d437e902b180c200020884a8bc213. At all four sampled widths, sampled ratios are 16:9, 9:16, 1:1, and 3:4 within rounding tolerance. The API accepts a positive ratio without enforcing this range; the verified result applies to Catalog examples, not input validation for arbitrary consumers."
+            "location": "forge/conformance/carousel-checklist.html; forge/components/ui/carousel_test.go",
+            "result": "Codex in-app Chromium 155 on Linux, normal motion, local Catalog port 8085 through the conformance proxy. Run carousel checklist: intrinsic slot ratios remain within 9:16–16:9 at all four widths; visible mask widths may change and images include fixed press overscan. go test ./forge/components/ui verifies API aspect-ratio clamping. The earlier assessment that the API accepted out-of-range positive ratios was superseded by the previous API fix."
           }
         ],
-        "notes": "At all four sampled widths, sampled ratios are 16:9, 9:16, 1:1, and 3:4 within rounding tolerance. The API accepts a positive ratio without enforcing this range; the verified result applies to Catalog examples, not input validation for arbitrary consumers."
+        "notes": "Physical iPad gestures and native OS reduced-motion settings have not been exercised."
       },
-      "fixes": []
+      "fixes": [
+        {
+          "commit": "6b2411885a2e557acab407de1ef3c0b587e8deb0",
+          "sourceRevision": 1,
+          "summary": "Preserve mixed intrinsic ratios while applying scroll masks independently of media size."
+        }
+      ]
     },
     {
       "id": "hero-compact-item-composition",
