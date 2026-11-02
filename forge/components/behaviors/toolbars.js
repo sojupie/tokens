@@ -6,7 +6,7 @@
       value = (key) =>
         Number.parseFloat(style.getPropertyValue("--_toolbar-" + key));
     const demo = group.parentElement,
-      scene = demo.closest("[data-toolbar-viewport],.md-toolbar-scene") || demo,
+      scene = demo.closest("[data-toolbar-viewport],.md-toolbar-scene"),
       items = [...group.querySelectorAll("[data-toolbar-item]")];
     items.forEach((item) => (item.hidden = false));
     const width = (item) => {
@@ -57,8 +57,8 @@
             )
           : 0;
       const available =
-        (vertical ? scene.clientHeight : scene.clientWidth) -
-        2 * clearance -
+        (vertical ? (scene || demo).clientHeight : (scene || demo).clientWidth) -
+        (scene ? 2 * clearance : 0) -
         fabSpace;
       const fits = () =>
         vertical
