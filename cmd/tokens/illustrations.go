@@ -72,6 +72,10 @@ func runIllustrations(args []string) error {
 		defer cancel()
 		browser, cancel = chromedp.NewContext(allocator)
 		defer cancel()
+		// Allocate on the batch context so canceling one capture keeps Chromium alive.
+		if err = chromedp.Run(browser); err != nil {
+			return fmt.Errorf("start thumbnail renderer: %w", err)
+		}
 	}
 	for i := range manifest.Images {
 		image := &manifest.Images[i]
