@@ -133,7 +133,8 @@
   });
   document.addEventListener('htmx:afterSwap',initialize);
   document.addEventListener('htmx:beforeCleanupElement',event=>{
-    for(const [element,entry]of entries)if(element===event.detail.elt||event.detail.elt.contains(element)){resize.unobserve(element);visibility.unobserve(element);entry.changes.disconnect();entries.delete(element);}
+    const root=event.detail?.elt || event.target;
+    for(const [element,entry]of entries)if(element===root||root.contains(element)){resize.unobserve(element);visibility.unobserve(element);entry.changes.disconnect();entries.delete(element);}
   });
   document.addEventListener('visibilitychange',schedule);
   reduce.addEventListener('change',()=>{for(const [element,entry]of entries)paint(element,entry,0);schedule();});

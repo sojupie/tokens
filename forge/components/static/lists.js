@@ -28,7 +28,7 @@
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
   reduced.addEventListener('change',()=>{if(reduced.matches)for(const panel of document.querySelectorAll('[data-list-animating]'))animations.get(panel)?.finish();});
   document.addEventListener('htmx:afterSwap',init);
-  document.addEventListener('htmx:beforeCleanupElement',event=>{for(const item of event.detail.elt.querySelectorAll?.('.md-list-item')||[])sizes.unobserve(item);});
+  document.addEventListener('htmx:beforeCleanupElement',event=>{for(const item of (event.detail?.elt || event.target).querySelectorAll?.('.md-list-item')||[])sizes.unobserve(item);});
   document.addEventListener('change',event=>{
     const input=event.target;if(!input.matches('.md-list-selection-control > input'))return;
     const list=input.closest('.md-list');
@@ -164,7 +164,7 @@
   });
   document.addEventListener('pointerup',event=>{if(gesture&&gesture.id===event.pointerId)finish();});
   document.addEventListener('pointercancel',event=>{if(gesture&&gesture.id===event.pointerId)finish(true);});
-  document.addEventListener('htmx:beforeCleanupElement',event=>{if(gesture&&event.detail.elt.contains(gesture.list))finish(true);});
+  document.addEventListener('htmx:beforeCleanupElement',event=>{if(gesture&&(event.detail?.elt || event.target).contains(gesture.list))finish(true);});
   window.addEventListener('blur',()=>finish(true));
   document.addEventListener('tokens:assets-ready',init);
 })();

@@ -94,7 +94,7 @@
     }
   });
   document.addEventListener('htmx:beforeCleanupElement',event=>{
-    const node=event.detail?.elt;if(typeof node?.querySelectorAll!=='function')return;
+    const node=(event.detail?.elt || event.target);if(typeof node?.querySelectorAll!=='function')return;
     for(const root of [...(node.matches?.('.md-search-demo')?[node]:[]),...node.querySelectorAll('.md-search-demo')]){const state=examples.get(root);if(state)scenes.unobserve(state.scene);examples.delete(root);}
   });
   document.addEventListener('htmx:afterSwap',init);document.addEventListener('htmx:historyRestore',init);

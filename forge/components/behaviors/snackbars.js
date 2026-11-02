@@ -61,7 +61,7 @@
   document.addEventListener("focusin", reposition);
   document.addEventListener("htmx:afterSwap", () => initialize());
   document.addEventListener("htmx:beforeCleanupElement", (event) => {
-    const root = event.detail.elt;
+    const root = (event.detail?.elt || event.target);
     if (root.matches?.(".md-snackbar[popover]")) timers.get(root)?.stop();
     for (const bar of root.querySelectorAll?.(".md-snackbar[popover]") || [])
       timers.get(bar)?.stop();

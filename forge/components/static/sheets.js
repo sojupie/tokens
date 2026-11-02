@@ -170,7 +170,7 @@
   document.addEventListener('pointercancel',event=>release(event,true));
   document.addEventListener('htmx:afterSwap',initialize);
   document.addEventListener('htmx:beforeCleanupElement',event=>{
-    const root=event.detail.elt;
+    const root=(event.detail?.elt || event.target);
     for(const sheet of root.matches?.('.md-sheet')?[root]:root.querySelectorAll?.('.md-sheet')||[]){const state=entry(sheet);state?.animation?.cancel();if(sheet instanceof HTMLDialogElement&&sheet.open)sheet.close();states.delete(sheet);}
   });
   reduced.addEventListener('change',()=>{if(reduced.matches)for(const sheet of document.querySelectorAll('.md-sheet'))entry(sheet)?.animation?.finish();});

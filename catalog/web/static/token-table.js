@@ -265,7 +265,7 @@ unbound('.tokens-token-browser').forEach(browser => {
   });
   syncControls();
   document.addEventListener('htmx:beforeCleanupElement', event => {
-    if (event.detail.elt === browser || event.detail.elt.contains(browser)) {
+    if ((event.detail?.elt || event.target) === browser || (event.detail?.elt || event.target).contains(browser)) {
       contextRequest?.abort();
       lifecycle.abort();
     }

@@ -817,7 +817,7 @@
     }
   });
   document.addEventListener("htmx:beforeCleanupElement", (event) => {
-    const root = event.detail.elt;
+    const root = (event.detail?.elt || event.target);
     for (const label of root.querySelectorAll?.(
       ".md-rail-frame .md-nav-label, .md-navigation-bar .md-nav-label",
     ) || [])
@@ -1113,7 +1113,7 @@
   initialize();
   document.addEventListener("htmx:afterSwap", () => initialize());
   document.addEventListener("htmx:beforeCleanupElement", (event) => {
-    const root = event.detail.elt;
+    const root = (event.detail?.elt || event.target);
     if (root.matches?.(".md-slider")) sliderResize.unobserve(root);
     for (const slider of root.querySelectorAll?.(".md-slider") || [])
       sliderResize.unobserve(slider);
@@ -1258,7 +1258,7 @@
   initialize();
   document.addEventListener("htmx:afterSwap", () => initialize());
   document.addEventListener("htmx:beforeCleanupElement", (event) => {
-    const root = event.detail.elt;
+    const root = (event.detail?.elt || event.target);
     if (root.matches?.(".md-toolbar,[data-toolbar-item]"))
       toolbarResize.unobserve(root);
     for (const item of root.querySelectorAll?.(
@@ -1350,7 +1350,7 @@
   document.addEventListener("focusin", reposition);
   document.addEventListener("htmx:afterSwap", () => initialize());
   document.addEventListener("htmx:beforeCleanupElement", (event) => {
-    const root = event.detail.elt;
+    const root = (event.detail?.elt || event.target);
     if (root.matches?.(".md-snackbar[popover]")) timers.get(root)?.stop();
     for (const bar of root.querySelectorAll?.(".md-snackbar[popover]") || [])
       timers.get(bar)?.stop();
@@ -1767,7 +1767,7 @@
     if (active && active === event.target.closest?.('.md-tooltip-demo') && pointerFocus) event.preventDefault();
   });
   document.addEventListener("htmx:beforeCleanupElement", event => {
-    const root = event.detail.elt;
+    const root = (event.detail?.elt || event.target);
     if (active && root.contains(active)) hide();
     if (hold && root.contains(hold.demo)) cancelHold();
   });

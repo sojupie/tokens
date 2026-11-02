@@ -10,7 +10,7 @@ templ layout(title string) {
 		<head>
 			<meta charset="utf-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
-			<meta name="htmx-config" content='{"historyCacheSize":0,"historyRestoreAsHxRequest":false}'/>
+			<meta name="htmx-config" content='{"compat":{"suppressInheritanceLogs":true}}'/>
 			@initialThemeScript()
 			<script src={ staticURL("theme.js") } defer></script>
 			<link rel="stylesheet" href={ themeURL(ctx) }/>
@@ -30,6 +30,7 @@ templ layout(title string) {
 			<script src={ staticURL("site.js") } defer></script>
 			<script src={ staticURL("menus.js") } defer></script>
 			<script src={ staticURL("htmx.min.js") } defer></script>
+			<script src={ staticURL("htmx-2-compat.min.js") } defer></script>
 			<script src={ staticURL("token-table.js") } defer></script>
 			<script src={ staticURL("webmcp.js") } defer></script>
 			<script src={ staticURL("prefetch.js") } defer></script>

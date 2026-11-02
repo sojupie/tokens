@@ -462,7 +462,7 @@
     }
   });
   document.addEventListener("htmx:beforeCleanupElement", (event) => {
-    const root = event.detail.elt;
+    const root = (event.detail?.elt || event.target);
     for (const label of root.querySelectorAll?.(
       ".md-rail-frame .md-nav-label, .md-navigation-bar .md-nav-label",
     ) || [])

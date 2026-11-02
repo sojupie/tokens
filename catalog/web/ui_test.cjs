@@ -665,12 +665,12 @@ test('returning to a gallery restores its saved offset instantly without restori
   sessionStorage:{setItem:(key,value)=>storage.set(key,value),getItem:key=>storage.get(key)??null},
   matchMedia:()=>({matches:false,addEventListener(){}}),requestAnimationFrame:fn=>fn(),Promise
  });
- events['htmx:beforeRequest']({detail:{requestConfig:{boosted:true}}});
+ events['htmx:before:request']({detail:{ctx:{request:{headers:{'HX-Boosted':'true'}}}}});
  assert.equal(storage.get('tokens-scroll:/md3/components'),'780');
  location.pathname='/md3/components/cards';windows.pagehide();
- location.pathname='/md3/components';events['htmx:afterSettle']({detail:{requestConfig:{boosted:true}}});await Promise.resolve();
+ location.pathname='/md3/components';events['htmx:after:swap']({detail:{ctx:{request:{headers:{'HX-Boosted':'true'}}}}});await Promise.resolve();
  assert.equal(scrolls.length,1);assert.equal(scrolls[0].top,780);assert.equal(scrolls[0].behavior,'instant');
- events['htmx:afterSettle']({detail:{requestConfig:{boosted:false}}});await Promise.resolve();assert.equal(scrolls.length,1);
+ events['htmx:after:swap']({detail:{ctx:{request:{headers:{}}}}});await Promise.resolve();assert.equal(scrolls.length,1);
 });
 
 test('thumbnail reveal waits for component styles and a measured frame',()=>{

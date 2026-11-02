@@ -91,6 +91,6 @@
  document.addEventListener('focusout',event=>{const state=stateFor(event.target);if(state&&!state.touchOption&&!state.root.contains(event.relatedTarget))close(state);});
  window.addEventListener('resize',()=>{for(const menu of document.querySelectorAll('.md-field-menu:popover-open'))close(stateFor(menu));});
  document.addEventListener('scroll',event=>{if(event.target.closest?.('.md-field-menu'))return;for(const menu of document.querySelectorAll('.md-field-menu:popover-open'))close(stateFor(menu));},true);
- document.addEventListener('htmx:beforeCleanupElement',event=>{const node=event.detail?.elt;if(typeof node?.querySelectorAll!=='function')return;for(const root of [...(node.matches?.('[data-field-example]')?[node]:[]),...node.querySelectorAll('[data-field-example]')]){const state=states.get(root);if(state){close(state);states.delete(root);}}});
+ document.addEventListener('htmx:beforeCleanupElement',event=>{const node=(event.detail?.elt || event.target);if(typeof node?.querySelectorAll!=='function')return;for(const root of [...(node.matches?.('[data-field-example]')?[node]:[]),...node.querySelectorAll('[data-field-example]')]){const state=states.get(root);if(state){close(state);states.delete(root);}}});
  document.addEventListener('htmx:afterSwap',init);document.addEventListener('htmx:historyRestore',init);if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();

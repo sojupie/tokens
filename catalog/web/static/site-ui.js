@@ -61,7 +61,7 @@
   }
   document.addEventListener("tokens:styles-ready",()=>settleThumbnails());
   document.addEventListener("tokens:styles-error",()=>settleThumbnails(true));
-  document.addEventListener("htmx:beforeCleanupElement",event=>{const node=event.detail?.elt;if(typeof node?.querySelectorAll!=='function')return;if(node.matches?.(".tokens-component-thumbnail"))thumbnailSizes.unobserve(node);for(const thumbnail of node.querySelectorAll(".tokens-component-thumbnail"))thumbnailSizes.unobserve(thumbnail);});
+  document.addEventListener("htmx:beforeCleanupElement",event=>{const node=(event.detail?.elt || event.target);if(typeof node?.querySelectorAll!=='function')return;if(node.matches?.(".tokens-component-thumbnail"))thumbnailSizes.unobserve(node);for(const thumbnail of node.querySelectorAll(".tokens-component-thumbnail"))thumbnailSizes.unobserve(thumbnail);});
   // Boost document links only. Downloads, API documents and external links stay native.
   function navigationLinks(root=document){
     const base=new URL('../',document.querySelector('script[src*="site-ui.js"]').src).pathname.replace(/\/$/,'');
@@ -72,7 +72,7 @@
         !(path==='/'||path==='/for-agents'||['components','styles','changes'].some(section=>path==='/'+section||path.startsWith('/'+section+'/'))))link.setAttribute('hx-boost','false');
     });
   }
-  document.addEventListener('htmx:beforeProcessNode',event=>navigationLinks(event.detail.elt));
+  document.addEventListener('htmx:beforeProcessNode',event=>navigationLinks((event.detail?.elt || event.target)));
   function updateDocument(html,url){
     const incoming=new DOMParser().parseFromString(html,'text/html');
     const assets=doc=>Array.from(doc.head.querySelectorAll('script[src]:not([data-component-script]),link[rel="stylesheet"]'),node=>[node.getAttribute('src')||node.getAttribute('href'),node.getAttribute('data-sources')||'',node.getAttribute('data-shapes-version')||''].join('\n')).join('\n');
@@ -89,19 +89,18 @@
     }
     return true;
   }
-  document.addEventListener('htmx:beforeSwap',event=>{
-    if(event.detail.requestConfig?.boosted&&event.detail.xhr.status===200&&!updateDocument(event.detail.xhr.responseText,event.detail.xhr.responseURL))event.detail.shouldSwap=false;
+  document.addEventListener('htmx:before:swap',event=>{
+    const ctx=event.detail.ctx;
+    if(ctx.target===document.body&&ctx.response.status===200&&!updateDocument(ctx.text,ctx.response.raw.url))event.preventDefault();
   });
-  document.addEventListener('htmx:historyCacheMissLoad',event=>updateDocument(event.detail.response,event.detail.path));
   // Explicit gallery links and browser history both return to the saved offset.
   const galleryKey=()=>/\/(components|styles)\/?$/.test(location.pathname)?location.pathname+location.search:null;
   function saveGallery(){const key=galleryKey();if(key&&document.getElementById('subject-list'))try{sessionStorage.setItem('tokens-scroll:'+key,String(window.scrollY));}catch{}}
   function restoreGallery(){const key=galleryKey();if(!key)return;let saved;try{saved=sessionStorage.getItem('tokens-scroll:'+key);}catch{return;}if(saved===null)return;
     Promise.resolve(globalThis.TokenAssets?.ready).then(()=>requestAnimationFrame(()=>window.scrollTo({top:Number(saved),left:0,behavior:'instant'})));
   }
-  document.addEventListener('htmx:beforeRequest',event=>{if(event.detail.requestConfig?.boosted)saveGallery();});
-  document.addEventListener('htmx:afterSettle',event=>{if(event.detail.requestConfig?.boosted)restoreGallery();});
-  document.addEventListener('htmx:historyRestore',restoreGallery);
+  document.addEventListener('htmx:before:request',event=>{if(event.detail.ctx.request.headers['HX-Boosted']==='true')saveGallery();});
+  document.addEventListener('htmx:after:swap',event=>{const headers=event.detail.ctx.request.headers;if(headers['HX-Boosted']==='true'||headers['HX-History-Restore-Request']==='true')restoreGallery();});
   window.addEventListener('pagehide',saveGallery);
   window.addEventListener('pageshow',restoreGallery);
   function initialize(){

@@ -8,6 +8,11 @@ test('HTMX cleanup ignores text nodes while component controllers stay registere
    document,window:{addEventListener(){}},addEventListener(){},matchMedia:()=>({matches:false,addEventListener(){}}),ResizeObserver:class {observe(){} unobserve(){}}
   });
   const handlers=listeners.get('htmx:beforeCleanupElement');assert.ok(handlers?.length,`${file} has a cleanup controller`);
-  for(const handler of handlers)assert.doesNotThrow(()=>handler({detail:{elt:{nodeType:3,textContent:' '}}}),file);
+  for(const handler of handlers){
+   assert.doesNotThrow(()=>handler({detail:{elt:{nodeType:3,textContent:' '}}}),file);
+   let queried=false;const target={matches:()=>false,querySelectorAll(){queried=true;return []}};
+   assert.doesNotThrow(()=>handler({detail:{},target}),file+' htmx 4 target');
+   assert.ok(queried,file+' cleans up the event target without detail.elt');
+  }
  }
 });

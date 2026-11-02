@@ -128,7 +128,7 @@
     if (active && active === event.target.closest?.('.md-tooltip-demo') && pointerFocus) event.preventDefault();
   });
   document.addEventListener("htmx:beforeCleanupElement", event => {
-    const root = event.detail.elt;
+    const root = (event.detail?.elt || event.target);
     if (active && root.contains(active)) hide();
     if (hold && root.contains(hold.demo)) cancelHold();
   });

@@ -136,7 +136,7 @@
   initialize();
   document.addEventListener("htmx:afterSwap", () => initialize());
   document.addEventListener("htmx:beforeCleanupElement", (event) => {
-    const root = event.detail.elt;
+    const root = (event.detail?.elt || event.target);
     if (root.matches?.(".md-toolbar,[data-toolbar-item]"))
       toolbarResize.unobserve(root);
     for (const item of root.querySelectorAll?.(

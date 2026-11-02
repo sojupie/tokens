@@ -44,7 +44,7 @@
  document.addEventListener('pointerdown',event=>{const panel=event.target.closest?.(selector);backdrop=panel&&panel.open&&!panel.hasAttribute('data-dialog-inline')&&panel.dataset.variant!=='full-screen'&&outside(panel,event)?{panel,id:event.pointerId}:null});
  document.addEventListener('pointerup',event=>{const hit=backdrop;backdrop=null;if(hit?.id===event.pointerId&&outside(hit.panel,event))close(hit.panel,'','backdrop')});
  document.addEventListener('pointercancel',()=>{backdrop=null});
- document.addEventListener('htmx:beforeCleanupElement',event=>{const node=event.detail?.elt;if(typeof node?.querySelectorAll!=='function')return;for(const panel of [...(node.matches?.(selector)?[node]:[]),...node.querySelectorAll(selector)]){const state=states.get(panel);if(!state)continue;++state.revision;state.animation?.cancel();state.opener=null;state.observer?.disconnect();if(panel.open)panel.close();states.delete(panel)}});
+ document.addEventListener('htmx:beforeCleanupElement',event=>{const node=(event.detail?.elt || event.target);if(typeof node?.querySelectorAll!=='function')return;for(const panel of [...(node.matches?.(selector)?[node]:[]),...node.querySelectorAll(selector)]){const state=states.get(panel);if(!state)continue;++state.revision;state.animation?.cancel();state.opener=null;state.observer?.disconnect();if(panel.open)panel.close();states.delete(panel)}});
  for(const name of ['DOMContentLoaded','htmx:afterSwap','htmx:historyRestore','tokens:assets-ready'])document.addEventListener(name,init);
  reduced.addEventListener?.('change',()=>{if(reduced.matches)for(const panel of document.querySelectorAll(selector))states.get(panel)?.animation?.finish()});
  init();

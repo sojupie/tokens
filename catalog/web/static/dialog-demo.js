@@ -39,6 +39,6 @@
   else if(event.target.closest('[data-dialog-cancel]'))MaterialDialogs.close(state.panel,'cancel','action');
  });
  document.addEventListener('input',event=>{if(event.target.matches?.('[data-dialog-value]')){const state=stateFor(event.target);if(state)validity(state,true)}});
- document.addEventListener('htmx:beforeCleanupElement',event=>{const node=event.detail?.elt;if(typeof node?.querySelectorAll!=='function')return;for(const panel of [...(node.matches?.('[data-dialog-preview]')?[node]:[]),...node.querySelectorAll('[data-dialog-preview]')]){const state=states.get(panel);if(state?.discard?.open)state.discard.close();states.delete(panel)}});
+ document.addEventListener('htmx:beforeCleanupElement',event=>{const node=(event.detail?.elt || event.target);if(typeof node?.querySelectorAll!=='function')return;for(const panel of [...(node.matches?.('[data-dialog-preview]')?[node]:[]),...node.querySelectorAll('[data-dialog-preview]')]){const state=states.get(panel);if(state?.discard?.open)state.discard.close();states.delete(panel)}});
  for(const name of ['DOMContentLoaded','htmx:afterSwap','htmx:historyRestore','tokens:assets-ready'])document.addEventListener(name,init);init();
 })();

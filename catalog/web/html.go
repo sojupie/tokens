@@ -141,7 +141,7 @@ func (server *Server) handleHTMLSubject(response http.ResponseWriter, request *h
 		http.NotFound(response, request)
 		return
 	}
-	if preview != nil && request.Header.Get("HX-Request") == "true" && request.Header.Get("HX-Target") == "component-preview" && !wantsMarkdown(request) {
+	if preview != nil && request.Header.Get("HX-Request") == "true" && (request.Header.Get("HX-Target") == "component-preview" || request.Header.Get("HX-Target") == "section#component-preview") && !wantsMarkdown(request) {
 		if err := server.renderHTML(response, request, componentPreviewView(*preview)); err != nil {
 			http.Error(response, err.Error(), http.StatusInternalServerError)
 		}

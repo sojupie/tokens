@@ -122,7 +122,15 @@ maintained in `catalog/web/static/app.css` and `token-table.css`. HTML templates
 are written in templ; generated Go files are committed alongside them.
 See [development](../development.md) for regeneration and checks.
 
-HTMX is bundled in `catalog/web/static/htmx.min.js`, and Roboto is self-hosted.
+HTMX 4.0.1 is bundled in `catalog/web/static/htmx.min.js`, alongside its upstream
+`htmx-2-compat.min.js` extension, from commit
+`ddb27295febe1d8e0c234e452fe184481f32ab08`. The extension preserves legacy
+component lifecycle event names and inherited attributes while Catalog uses the
+4.x request context for navigation metadata and scroll restoration. Component
+cleanup accepts the event target as well as the older `detail.elt` shape. Server
+fragment handling accepts both old target IDs and 4.x `tag#id` identifiers.
+History uses 4.x network restoration without the optional history-cache extension.
+Roboto is self-hosted.
 The server does not need a CDN. Their licenses are listed in
 [third-party notices](../../THIRD_PARTY_NOTICES.md).
 

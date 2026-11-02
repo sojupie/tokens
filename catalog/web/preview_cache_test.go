@@ -40,11 +40,12 @@ func TestShowcaseUpdatesReturnOnlyCacheablePreviewHTML(t *testing.T) {
 	key := publish.SubjectKey{Kind: publish.SubjectComponent, Slug: "switch"}
 	server := New(publish.PublishedState{Subjects: map[publish.SubjectKey]publish.SubjectView{key: {Key: key, Name: "Switch"}}}, "")
 	server.tokenAssetsDir = directory
-	for _, partial := range []bool{false, true} {
+	for _, target := range []string{"", "component-preview", "section#component-preview"} {
+		partial := target != ""
 		request := httptest.NewRequest("GET", "/components/switch?preview.compare=interactive", nil)
 		if partial {
 			request.Header.Set("HX-Request", "true")
-			request.Header.Set("HX-Target", "component-preview")
+			request.Header.Set("HX-Target", target)
 		}
 		response := httptest.NewRecorder()
 		server.Handler().ServeHTTP(response, request)

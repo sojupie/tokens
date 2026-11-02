@@ -246,7 +246,7 @@
   document.addEventListener('pointerup',finish);document.addEventListener('pointercancel',e=>finish(e,true));
   window.addEventListener('blur',()=>{if(drag)finish({pointerId:drag.id},true);});
   document.addEventListener('htmx:beforeCleanupElement',event=>{
-    const node=event.detail?.elt;if(!node)return;
+    const node=(event.detail?.elt || event.target);if(!node)return;
     const affected=[...(node.matches?.('.md-carousel')?[node]:[]),...node.querySelectorAll('.md-carousel')];
     for(const root of affected){observer.unobserve(root);const state=roots.get(root);if(state)cancelMotion(state);if(drag?.state===state)drag=null;roots.delete(root);}
   });

@@ -219,7 +219,7 @@
   initialize();
   document.addEventListener("htmx:afterSwap", () => initialize());
   document.addEventListener("htmx:beforeCleanupElement", (event) => {
-    const root = event.detail.elt;
+    const root = (event.detail?.elt || event.target);
     if (root.matches?.(".md-slider")) sliderResize.unobserve(root);
     for (const slider of root.querySelectorAll?.(".md-slider") || [])
       sliderResize.unobserve(slider);

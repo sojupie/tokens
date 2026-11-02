@@ -69,7 +69,8 @@
   document.addEventListener('htmx:afterSwap',initialize);
   document.addEventListener('tokens:assets-ready',initialize);
   document.addEventListener('htmx:beforeCleanupElement',event=>{
-    for(const [element]of entries)if(element===event.detail.elt||event.detail.elt.contains(element)){visibility.unobserve(element);entries.delete(element);}
+    const root=event.detail?.elt || event.target;
+    for(const [element]of entries)if(element===root||root.contains(element)){visibility.unobserve(element);entries.delete(element);}
   });
   reduced.addEventListener('change',()=>{for(const [element,entry]of entries)paint(element,entry,0);schedule();});
   document.addEventListener('visibilitychange',schedule);
