@@ -183,6 +183,22 @@
     state.root.dataset.carouselSettled=state.root.dataset.carouselIndex;
 
   }
+  function paintCaptions(state) {
+    if(!state.captions.length)return;
+    const view=state.viewport.getBoundingClientRect();
+    // Read all rendered text bounds after geometry, then write opacity together.
+    // A narrow image can still fit a short or wrapped label. Viewport clipping
+    // matters even when an uncontained item's intrinsic width stays unchanged.
+    const opacity=state.captions.map(caption=>{
+      const item=caption.closest('.md-carousel-item').getBoundingClientRect(),box=caption.getBoundingClientRect();
+      const range=caption.ownerDocument.createRange();range.selectNodeContents(caption);
+      const text=range.getBoundingClientRect();
+      const clearance=Math.min(text.left-Math.max(view.left,item.left,box.left),Math.min(view.right,item.right,box.right)-text.right,text.top-Math.max(view.top,item.top,box.top),Math.min(view.bottom,item.bottom,box.bottom)-text.bottom);
+      const lineHeight=parseFloat(getComputedStyle(caption).lineHeight)||text.height;
+      return clamp(1+clearance/Math.max(1,lineHeight),0,1);
+    });
+    state.captions.forEach((caption,i)=>{caption.style.opacity=String(opacity[i]);});
+  }
   function paint(state,scroll=offset(state)) {
     if(state.lastPainted===scroll)return;
     state.lastPainted=scroll;
@@ -193,13 +209,9 @@
     if(!state.flow||uncontained||state.vertical)buttons.forEach((button,index)=>{
       const frame=frames?.[index]??(state.vertical?{left:0,size:width,media:width}:itemFrame(plan,index,position,buttons.length));
       const left=frame.left,size=frame.size;
-      // Keep labels opaque at medium size and fade them toward the small
-      // keyline. Flow layouts use the same 40-56dp small-item range.
       const slot=state.slots?.[index];
       slot?.style?.setProperty('--_carousel-caption-left',left+'px');
       slot?.style?.setProperty('--_carousel-caption-width',size+'px');
-      const small=plan.small??clamp(width*.12,40,56),medium=(plan.large+small)/2;
-      slot?.style?.setProperty('--_carousel-text-opacity',clamp((size-small)/Math.max(1,medium-small),0,1));
       const press=reduced.matches?0:state.press?.button===button?state.press.value:button.dataset?.componentState==='pressed'?5:0;
       const raw=frames?state.starts[index]-scroll:0;
       button.style.visibility=left+size<=0||left>=width?'hidden':'visible';
@@ -214,6 +226,7 @@
         art.style.transform=state.vertical?`translate(${state.rtl?-shift:shift}px,${verticalShift}px)`:`translateX(${state.rtl?-shift:shift}px)`;
       }
     });
+    paintCaptions(state);
     let index=state.flow?state.targets.reduce((best,target,i)=>Math.abs(target-scroll)<Math.abs(state.targets[best]-scroll)?i:best,0):clamp(Math.round(position),0,buttons.length-1);
     root.dataset.carouselIndex=String(index);
     if(state.pagination){
@@ -269,12 +282,13 @@
       // Landing-page thumbnails are static compositions without a scrolling track.
       if(!root.querySelector('.md-carousel-scroll-track'))continue;
       if(roots.has(root))continue;
-      const viewport=root.querySelector('.md-carousel-viewport'),buttons=items(root),state={root,viewport,buttons,art:buttons.map(button=>button.querySelector('.md-carousel-art'))};roots.set(root,state);
+      const viewport=root.querySelector('.md-carousel-viewport'),buttons=items(root),state={root,viewport,buttons,captions:[...root.querySelectorAll('.md-carousel-caption')],art:buttons.map(button=>button.querySelector('.md-carousel-art'))};roots.set(root,state);
       root.dataset.carouselReady='';
       viewport.addEventListener('scroll',()=>{if(!state.motion&&!(drag?.state===state&&drag.moved)){state.requestedIndex=undefined;paint(state);}},{passive:true});
       viewport.addEventListener('wheel',()=>{cancelMotion(state);state.pendingFocus=undefined;},{passive:true});
       viewport.addEventListener('scrollend',()=>settled(state));
       observer.observe(root);resize(root);
+      document.fonts?.ready.then(()=>{state.lastPainted=undefined;paint(state);});
     }
   }
   document.addEventListener('click',event=>{
@@ -375,7 +389,8 @@
       delete state.root.dataset.carouselDragging;
       const momentum=!cancel&&event.timeStamp-lastTime<80?velocity*(state.rtl?1:-1)*120:0;
       const position=offset(state)+momentum;
-      let index=state.flow?state.targets.reduce((best,target,i)=>Math.abs(target-position)<Math.abs(state.targets[best]-position)?i:best,0):Math.round(position/(state.plan.large+state.plan.gap));
+      paintCaptions(state);
+    let index=state.flow?state.targets.reduce((best,target,i)=>Math.abs(target-position)<Math.abs(state.targets[best]-position)?i:best,0):Math.round(position/(state.plan.large+state.plan.gap));
       if(state.vertical||state.root.dataset.variant.includes('hero'))index=clamp(index,origin-1,origin+1);
       go(state,index);
     }

@@ -5165,7 +5165,6 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   inset-block-end:var(--md-sys-measurement-space200);
   color:#fff;
   text-align:start;
-  opacity:var(--_carousel-text-opacity,1);
   white-space:normal;
   display:-webkit-box;
   -webkit-line-clamp:2;
@@ -5190,7 +5189,6 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   position:absolute;
   inset-inline-start:var(--_carousel-caption-left,0px);
   inline-size:var(--_carousel-caption-width,var(--_carousel-logical));
-  opacity:var(--_carousel-text-opacity,1);
 }
 .md-carousel[data-carousel-layout="masked"] .md-carousel-before { inset-block-start:0; }
 .md-carousel[data-carousel-layout="masked"] .md-carousel-after { inset-block-start:calc(var(--_carousel-before-space) + var(--_carousel-height) + var(--_carousel-gap)); }

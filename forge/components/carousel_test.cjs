@@ -47,7 +47,7 @@ test('mouse release settles smoothly before restoring snapping',()=>{
    scrollTo(options){calls.push({...options,snap:this.style.scrollSnapType});this.scrollLeft=Math.round(options.left);},
   };
   const root={dataset:{variant:'multi-browse'},style:{setProperty(){}},
-   querySelectorAll:selector=>['.md-carousel-snap','.md-carousel-slot'].includes(selector)?snaps:buttons,
+   querySelectorAll:selector=>selector==='.md-carousel-caption'?[]:['.md-carousel-snap','.md-carousel-slot'].includes(selector)?snaps:buttons,
    querySelector:selector=>selector==='.md-carousel-pagination'?null:selector==='.md-carousel-scroll-track'?{}:selector==='.md-carousel-viewport'?viewport:selector==='output'?output:controls[selector]??={},
   };
   const target={closest:selector=>selector==='.md-carousel'?root:selector==='.md-carousel-viewport'?viewport:null};
@@ -116,7 +116,7 @@ function nativeCarousel({variant='uncontained',reduced=false,scrolling='free',sh
  };
  const pagination={children:[],attributes:{},replaceChildren(...children){this.children=children;},setAttribute(name,value){this.attributes[name]=value;}};
  const controls={},root={dataset:{variant,scrolling},style:{setProperty(){}},
-  querySelectorAll:selector=>['.md-carousel-slot','.md-carousel-snap'].includes(selector)?slots:buttons,
+  querySelectorAll:selector=>selector==='.md-carousel-caption'?[]:['.md-carousel-slot','.md-carousel-snap'].includes(selector)?slots:buttons,
   querySelector:selector=>selector==='.md-carousel-pagination'?pagination:selector==='.md-carousel-scroll-track'?{}:selector==='.md-carousel-viewport'?viewport:selector==='output'?(showControls?output:null):!showControls&&selector.startsWith('[data-carousel-step=')?null:controls[selector]??={},
  };
  const target={closest:selector=>selector==='.md-carousel'?root:selector==='.md-carousel-viewport'?viewport:null};
