@@ -344,17 +344,17 @@
         }
       ],
       "implementation": {
-        "status": "implemented",
+        "status": "failing",
         "sourceRevision": 1,
-        "assessedBaseline": "8a9e20684205546e4cc303d7b2b1557cab96f793",
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
         "evidence": [
           {
-            "kind": "code",
-            "location": "forge/components/static/carousel.js; forge/components/styles/carousels.css; forge/components/carousel_test.cjs; catalog/web/carousel.go; catalog/web/carousel_test.go; forge/material/generate-components.mjs",
-            "result": "All six captured layouts are configured: multi-browse, uncontained, uncontained multi-aspect ratio, hero, center-aligned hero, and full-screen."
+            "kind": "browser",
+            "location": "forge/conformance/carousel-checklist.html",
+            "result": "Codex in-app Chromium 155 on Linux, normal motion unless stated; Catalog http://100.103.168.9:8085, assessed runtime 6301a60af14d437e902b180c200020884a8bc213. Run carousel checklist: six variants render, but full-screen uses horizontal scrolling and centered hero has missing previews or extra large items at sampled widths."
           }
         ],
-        "notes": "All six captured layouts are configured: multi-browse, uncontained, uncontained multi-aspect ratio, hero, center-aligned hero, and full-screen."
+        "notes": "Run carousel checklist: six variants render, but full-screen uses horizontal scrolling and centered hero has missing previews or extra large items at sampled widths."
       },
       "fixes": []
     },
@@ -377,17 +377,17 @@
         }
       ],
       "implementation": {
-        "status": "implemented",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "8a9e20684205546e4cc303d7b2b1557cab96f793",
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
         "evidence": [
           {
-            "kind": "code",
-            "location": "forge/components/static/carousel.js; forge/components/styles/carousels.css; forge/components/carousel_test.cjs; catalog/web/carousel.go; catalog/web/carousel_test.go; forge/material/generate-components.mjs",
-            "result": "Uncontained layouts default to native free scrolling and offer optional snapping. Masked multi-browse and hero layouts snap; full-screen always snaps. Mouse release no longer forces uncontained free scrolling to an item boundary."
+            "kind": "browser",
+            "location": "forge/conformance/carousel-checklist.html",
+            "result": "Codex in-app Chromium 155 on Linux, normal motion unless stated; Catalog http://100.103.168.9:8085, assessed runtime 6301a60af14d437e902b180c200020884a8bc213. Run carousel checklist at 360, 768, 772, and 1200px available width: uncontained variants have scroll-snap-type:none; contained variants use mandatory snapping. Axis correctness is assessed separately."
           }
         ],
-        "notes": "Uncontained layouts default to native free scrolling and offer optional snapping. Masked multi-browse and hero layouts snap; full-screen always snaps. Mouse release no longer forces uncontained free scrolling to an item boundary."
+        "notes": "Run carousel checklist at 360, 768, 772, and 1200px available width: uncontained variants have scroll-snap-type:none; contained variants use mandatory snapping. Axis correctness is assessed separately."
       },
       "fixes": []
     },
@@ -412,15 +412,15 @@
       "implementation": {
         "status": "unclear",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/static/carousel.js:5-32; forge/components/styles/carousels.css:84-129",
-            "result": "Algorithm sizes and clips item windows and keeps the artwork at full visual size, but recognizability of imagery/text is a content decision and needs visual review."
+            "location": "catalog/web/specimen_carousel.templ; forge/components/static/carousel.js",
+            "result": "Recognition depends on the chosen imagery and item maximum. The Catalog uses paintings and numeric annotations; this does not establish recognition for arbitrary content. No general recognition pass is claimed."
           }
         ],
-        "notes": "Algorithm sizes and clips item windows and keeps the artwork at full visual size, but recognizability of imagery/text is a content decision and needs visual review."
+        "notes": "Recognition depends on the chosen imagery and item maximum. The Catalog uses paintings and numeric annotations; this does not establish recognition for arbitrary content. No general recognition pass is claimed."
       },
       "fixes": []
     },
@@ -445,15 +445,15 @@
       "implementation": {
         "status": "not-applicable",
         "sourceRevision": 1,
-        "assessedBaseline": "205611a1976adfe25ad0137e60b4c8483b024fc3",
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_carousel.templ; catalog/web/carousel.go; forge/components/styles/carousels.css; catalog/web/carousel_items_test.go",
-            "result": "Preview configuration selects the lower standard text button or the leading header and 48dp arrow button. Both use type=button without a destination; the separate all-items page and route have been removed."
+            "location": "catalog/web/specimen_carousel.templ",
+            "result": "The Catalog intentionally demonstrates inert all-items actions without a destination page, as requested. This specimen does not establish the product-level accessible vertical alternative; consumers still need that integration."
           }
         ],
-        "notes": "The Catalog specimen offers None, Show all below, and Header with arrow configurations. Buttons are intentionally non-navigating demonstrations; the product-level all-items destination is outside this specimen. Full-screen carousels omit these actions. The lower button retains 4dp clearance; the header arrow control measures 48dp."
+        "notes": "The Catalog intentionally demonstrates inert all-items actions without a destination page, as requested. This specimen does not establish the product-level accessible vertical alternative; consumers still need that integration."
       },
       "fixes": [
         {
@@ -487,17 +487,17 @@
         }
       ],
       "implementation": {
-        "status": "not-applicable",
+        "status": "unclear",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_carousel.templ:15-25",
-            "result": "The specimen uses six simple decorative landscape images and no text-bearing content, so content complexity/compact text-item limits do not apply."
+            "location": "catalog/web/specimen_carousel.templ",
+            "result": "The Catalog examples use paintings rather than representative simple imagery and adaptive titles. Suitability for complex imagery or text cannot be approved from the numeric demo labels."
           }
         ],
-        "notes": "The specimen uses six simple decorative landscape images and no text-bearing content, so content complexity/compact text-item limits do not apply."
+        "notes": "The Catalog examples use paintings rather than representative simple imagery and adaptive titles. Suitability for complex imagery or text cannot be approved from the numeric demo labels."
       },
       "fixes": []
     },
@@ -520,17 +520,17 @@
         }
       ],
       "implementation": {
-        "status": "implemented",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "8a9e20684205546e4cc303d7b2b1557cab96f793",
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
         "evidence": [
           {
-            "kind": "code",
-            "location": "forge/components/static/carousel.js; forge/components/styles/carousels.css; forge/components/carousel_test.cjs; catalog/web/carousel.go; catalog/web/carousel_test.go; forge/material/generate-components.mjs",
-            "result": "The multi-aspect specimen supplies distinct 16:9, 9:16, 1:1 and 3:4 item widths at a common height. Ordinary uncontained items use a single width."
+            "kind": "browser",
+            "location": "forge/conformance/carousel-checklist.html",
+            "result": "Codex in-app Chromium 155 on Linux, normal motion unless stated; Catalog http://100.103.168.9:8085, assessed runtime 6301a60af14d437e902b180c200020884a8bc213. Run carousel checklist: mixed-ratio widths differ at every sampled viewport; ordinary uncontained widths remain equal."
           }
         ],
-        "notes": "The multi-aspect specimen supplies distinct 16:9, 9:16, 1:1 and 3:4 item widths at a common height. Ordinary uncontained items use a single width."
+        "notes": "Run carousel checklist: mixed-ratio widths differ at every sampled viewport; ordinary uncontained widths remain equal."
       },
       "fixes": []
     },
@@ -553,17 +553,17 @@
         }
       ],
       "implementation": {
-        "status": "implemented",
+        "status": "failing",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
         "evidence": [
           {
-            "kind": "code",
-            "location": "forge/components/styles/carousels.css:21-30; forge/components/static/carousel.js:5-32",
-            "result": "All contained layouts use mandatory snap scrolling, including hero; uncontained explicitly uses free scrolling."
+            "kind": "browser",
+            "location": "http://100.103.168.9:8085/components/carousel?preview.compare=interactive&preview.variant=hero; forge/components/static/carousel.js",
+            "result": "Codex in-app Chromium 155 on Linux, normal motion unless stated; Catalog http://100.103.168.9:8085, assessed runtime 6301a60af14d437e902b180c200020884a8bc213. At a 360px isolated carousel viewport, a 250px mouse drag released from index 0 at offset 250 settled at index 2, offset 576. The projected velocity allows skipping a primary item."
           }
         ],
-        "notes": "All contained layouts use mandatory snap scrolling, including hero; uncontained explicitly uses free scrolling."
+        "notes": "At a 360px isolated carousel viewport, a 250px mouse drag released from index 0 at offset 250 settled at index 2, offset 576. The projected velocity allows skipping a primary item."
       },
       "fixes": []
     },
@@ -586,17 +586,17 @@
         }
       ],
       "implementation": {
-        "status": "implemented",
+        "status": "failing",
         "sourceRevision": 1,
-        "assessedBaseline": "8a9e20684205546e4cc303d7b2b1557cab96f793",
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
         "evidence": [
           {
-            "kind": "code",
-            "location": "forge/components/static/carousel.js; forge/components/styles/carousels.css; forge/components/carousel_test.cjs; catalog/web/carousel.go; catalog/web/carousel_test.go; forge/material/generate-components.mjs",
-            "result": "The full-screen specimen fills its simulated frame and offers landscape (16:9) or portrait (9:16) frames. A container query limits portrait presentation to compact and medium containers below 840px; expanded containers stay landscape."
+            "kind": "browser",
+            "location": "forge/conformance/carousel-checklist.html",
+            "result": "Codex in-app Chromium 155 on Linux, normal motion unless stated; Catalog http://100.103.168.9:8085, assessed runtime 6301a60af14d437e902b180c200020884a8bc213. Run carousel checklist: default full-screen is landscape and scrolls horizontally. At 360px the viewport is 360x202.5, horizontal extent 1880, vertical extent 0. The portrait option still leaves horizontal scrolling; its height also reverts above the container threshold."
           }
         ],
-        "notes": "The full-screen specimen fills its simulated frame and offers landscape (16:9) or portrait (9:16) frames. A container query limits portrait presentation to compact and medium containers below 840px; expanded containers stay landscape."
+        "notes": "Run carousel checklist: default full-screen is landscape and scrolls horizontally. At 360px the viewport is 360x202.5, horizontal extent 1880, vertical extent 0. The portrait option still leaves horizontal scrolling; its height also reverts above the container threshold."
       },
       "fixes": []
     },
@@ -619,17 +619,17 @@
         }
       ],
       "implementation": {
-        "status": "implemented",
+        "status": "failing",
         "sourceRevision": 1,
-        "assessedBaseline": "8a9e20684205546e4cc303d7b2b1557cab96f793",
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
         "evidence": [
           {
-            "kind": "code",
-            "location": "forge/components/static/carousel.js; forge/components/styles/carousels.css; forge/components/carousel_test.cjs; catalog/web/carousel.go; catalog/web/carousel_test.go; forge/material/generate-components.mjs",
-            "result": "The extra viewport tab stop is removed, so native Tab initially reaches the first enabled item. Left/right and Home/End move items; up/down focus the preceding/following visible control outside the carousel. Native flow also exposes offscreen uncontained items to normal Tab navigation."
+            "kind": "browser",
+            "location": "http://100.103.168.9:8085/components/carousel?preview.compare=interactive&preview.variant=multi-browse; forge/components/static/carousel.js",
+            "result": "Codex in-app Chromium 155 on Linux, normal motion unless stated; Catalog http://100.103.168.9:8085, assessed runtime 6301a60af14d437e902b180c200020884a8bc213. At a 390px browser frame, Tab from item 1 visits items 2 and 3, then Show all, skipping hidden items 4-6. ArrowDown from item 1 focuses Token set: Carousel Item instead of the carousel Show all action."
           }
         ],
-        "notes": "The extra viewport tab stop is removed, so native Tab initially reaches the first enabled item. Left/right and Home/End move items; up/down focus the preceding/following visible control outside the carousel. Native flow also exposes offscreen uncontained items to normal Tab navigation."
+        "notes": "At a 390px browser frame, Tab from item 1 visits items 2 and 3, then Show all, skipping hidden items 4-6. ArrowDown from item 1 focuses Token set: Carousel Item instead of the carousel Show all action."
       },
       "fixes": []
     },
@@ -652,17 +652,17 @@
         }
       ],
       "implementation": {
-        "status": "implemented",
+        "status": "failing",
         "sourceRevision": 1,
-        "assessedBaseline": "8a9e20684205546e4cc303d7b2b1557cab96f793",
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
         "evidence": [
           {
-            "kind": "code",
-            "location": "forge/components/static/carousel.js; forge/components/styles/carousels.css; forge/components/carousel_test.cjs; catalog/web/carousel.go; catalog/web/carousel_test.go; forge/material/generate-components.mjs",
-            "result": "Reduced motion switches to uniform, complete native-flow items, with no mask-width animation or art translation. Programmatic moves are immediate; snap alignment keeps stationary items complete. The preference change rebuilds the layout rather than merely finishing the motion clock."
+            "kind": "browser",
+            "location": "forge/components/static/carousel.js; forge/components/styles/carousels.css",
+            "result": "Codex in-app Chromium 155 on Linux, normal motion unless stated; Catalog http://100.103.168.9:8085, assessed runtime 6301a60af14d437e902b180c200020884a8bc213. Simulate matchMedia(prefers-reduced-motion:reduce) before runtime loading and apply the actual reduced-motion stylesheet rules at 390px. Mask expansion and art transforms stop, but the padded uniform-item presentation does not demonstrate the specified edge treatment or hero partial next item. Mixed ratios become equal widths; applicability to the newer mixed-ratio layout remains unclear. This is branch simulation, not a native OS-preference test."
           }
         ],
-        "notes": "Reduced motion switches to uniform, complete native-flow items, with no mask-width animation or art translation. Programmatic moves are immediate; snap alignment keeps stationary items complete. The preference change rebuilds the layout rather than merely finishing the motion clock."
+        "notes": "Simulate matchMedia(prefers-reduced-motion:reduce) before runtime loading and apply the actual reduced-motion stylesheet rules at 390px. Mask expansion and art transforms stop, but the padded uniform-item presentation does not demonstrate the specified edge treatment or hero partial next item. Mixed ratios become equal widths; applicability to the newer mixed-ratio layout remains unclear. This is branch simulation, not a native OS-preference test."
       },
       "fixes": []
     },
@@ -685,17 +685,17 @@
         }
       ],
       "implementation": {
-        "status": "implemented",
+        "status": "missing",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_carousel.templ:7-8; catalog/web/specimen_carousel.templ:29-35; forge/components/static/carousel.js:104-110",
-            "result": "Carousel section has label and roledescription, and live output announces “Item n of 6” after settling."
+            "location": "forge/components/ui/carousel.go; forge/components/ui/carousel.templ",
+            "result": "The Catalog defaults name the section and use Item n of 6. A supplied CarouselItemProps.Label replaces the ordinal/count entirely, so the API does not preserve the required position information for custom-named items. Actual screen-reader speech remains untested."
           }
         ],
-        "notes": "Carousel section has label and roledescription, and live output announces “Item n of 6” after settling."
+        "notes": "The Catalog defaults name the section and use Item n of 6. A supplied CarouselItemProps.Label replaces the ordinal/count entirely, so the API does not preserve the required position information for custom-named items. Actual screen-reader speech remains untested."
       },
       "fixes": []
     },
@@ -718,17 +718,17 @@
         }
       ],
       "implementation": {
-        "status": "implemented",
+        "status": "not-applicable",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/static/carousel.js:5-9; forge/material/generate-components.mjs:1090-1093",
-            "result": "Uncontained variant is generated and renderer has a dedicated uncontained layout branch; upstream introduction dates do not constrain runtime behavior."
+            "location": "catalog/web/component_preview.go",
+            "result": "The upstream release dates are descriptive history, not a runtime conformance requirement. The current Catalog exposes all six named configurations."
           }
         ],
-        "notes": "Uncontained variant is generated and renderer has a dedicated uncontained layout branch; upstream introduction dates do not constrain runtime behavior."
+        "notes": "The upstream release dates are descriptive history, not a runtime conformance requirement. The current Catalog exposes all six named configurations."
       },
       "fixes": []
     },
@@ -751,17 +751,17 @@
         }
       ],
       "implementation": {
-        "status": "implemented",
+        "status": "failing",
         "sourceRevision": 1,
-        "assessedBaseline": "8a9e20684205546e4cc303d7b2b1557cab96f793",
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
         "evidence": [
           {
-            "kind": "code",
-            "location": "forge/components/static/carousel.js; forge/components/styles/carousels.css; forge/components/carousel_test.cjs; catalog/web/carousel.go; catalog/web/carousel_test.go; forge/material/generate-components.mjs",
-            "result": "Dynamic small keylines are clamped to the captured 40–56px range. Large/medium widths adapt to the available container width using renderer size inputs; no item shape or state token is overridden."
+            "kind": "browser",
+            "location": "forge/conformance/carousel-checklist.html; forge/components/static/carousel.js",
+            "result": "Codex in-app Chromium 155 on Linux, normal motion unless stated; Catalog http://100.103.168.9:8085, assessed runtime 6301a60af14d437e902b180c200020884a8bc213. The CSS renderer input --_carousel-preferred is treated as a preference, not a maximum. Centered hero at 768px has a 608px large item for a 240px preference; at 772px it switches to three 198.656px large slots. Endpoint interpolation also removes the bounded small size at multiple resting stops."
           }
         ],
-        "notes": "Dynamic small keylines are clamped to the captured 40–56px range. Large/medium widths adapt to the available container width using renderer size inputs; no item shape or state token is overridden."
+        "notes": "The CSS renderer input --_carousel-preferred is treated as a preference, not a maximum. Centered hero at 768px has a 608px large item for a 240px preference; at 772px it switches to three 198.656px large slots. Endpoint interpolation also removes the bounded small size at multiple resting stops."
       },
       "fixes": []
     },
@@ -784,17 +784,17 @@
         }
       ],
       "implementation": {
-        "status": "implemented",
+        "status": "failing",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
         "evidence": [
           {
-            "kind": "code",
-            "location": "forge/components/static/carousel.js:10-31",
-            "result": "Multi-browse keyline plan includes small edge items, large items, and an interpolated medium item when the layout fits."
+            "kind": "browser",
+            "location": "forge/conformance/carousel-checklist.html",
+            "result": "Codex in-app Chromium 155 on Linux, normal motion unless stated; Catalog http://100.103.168.9:8085, assessed runtime 6301a60af14d437e902b180c200020884a8bc213. Run carousel checklist: at 360px, penultimate index 4 rests at widths 104/104/104 instead of large/medium/small. At wider widths multiple resting stops also lack either the full large or bounded small role."
           }
         ],
-        "notes": "Multi-browse keyline plan includes small edge items, large items, and an interpolated medium item when the layout fits."
+        "notes": "Run carousel checklist: at 360px, penultimate index 4 rests at widths 104/104/104 instead of large/medium/small. At wider widths multiple resting stops also lack either the full large or bounded small role."
       },
       "fixes": []
     },
@@ -827,10 +827,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "verified",
         "sourceRevision": 2,
-        "evidence": [],
-        "notes": ""
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "forge/conformance/carousel-checklist.html",
+            "result": "Codex in-app Chromium 155 on Linux, normal motion unless stated; Catalog http://100.103.168.9:8085, assessed runtime 6301a60af14d437e902b180c200020884a8bc213. Run carousel checklist at 360, 768, 772, and 1200px: measured inline padding 16/16, block padding 8/8, gap 8, normal item corners 28px. Items share a common vertical center."
+          }
+        ],
+        "notes": "Run carousel checklist at 360, 768, 772, and 1200px: measured inline padding 16/16, block padding 8/8, gap 8, normal item corners 28px. Items share a common vertical center."
       },
       "fixes": []
     },
@@ -853,17 +860,17 @@
         }
       ],
       "implementation": {
-        "status": "implemented",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "8a9e20684205546e4cc303d7b2b1557cab96f793",
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
         "evidence": [
           {
-            "kind": "code",
-            "location": "forge/components/static/carousel.js; forge/components/styles/carousels.css; forge/components/carousel_test.cjs; catalog/web/carousel.go; catalog/web/carousel_test.go; forge/material/generate-components.mjs",
-            "result": "Native-flow uncontained items retain their full widths and can scroll across the initial 16px leading padding to the viewport edge. Trailing padding is zero; item boxes are not resized or re-centered as they cross an edge."
+            "kind": "browser",
+            "location": "forge/conformance/carousel-checklist.html; forge/components/styles/carousels.css",
+            "result": "Codex in-app Chromium 155 on Linux, normal motion unless stated; Catalog http://100.103.168.9:8085, assessed runtime 6301a60af14d437e902b180c200020884a8bc213. At all four sampled widths, the ordinary and mixed-ratio uncontained variants use native-flow items and leading-only padding. Moving to offset 145 retains widths while items pass across the viewport edges; they are not pinched into the contained arrangement."
           }
         ],
-        "notes": "Native-flow uncontained items retain their full widths and can scroll across the initial 16px leading padding to the viewport edge. Trailing padding is zero; item boxes are not resized or re-centered as they cross an edge."
+        "notes": "At all four sampled widths, the ordinary and mixed-ratio uncontained variants use native-flow items and leading-only padding. Moving to offset 145 retains widths while items pass across the viewport edges; they are not pinched into the contained arrangement."
       },
       "fixes": []
     },
@@ -896,10 +903,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "verified",
         "sourceRevision": 2,
-        "evidence": [],
-        "notes": ""
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "forge/conformance/carousel-checklist.html",
+            "result": "Codex in-app Chromium 155 on Linux, normal motion unless stated; Catalog http://100.103.168.9:8085, assessed runtime 6301a60af14d437e902b180c200020884a8bc213. At all four sampled widths, mixed-ratio layout has 16px leading and 0 trailing padding, 8px block padding, 8px gaps, and 28px corners. All item heights are equal and vertically aligned."
+          }
+        ],
+        "notes": "At all four sampled widths, mixed-ratio layout has 16px leading and 0 trailing padding, 8px block padding, 8px gaps, and 28px corners. All item heights are equal and vertically aligned."
       },
       "fixes": []
     },
@@ -932,10 +946,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "verified",
         "sourceRevision": 2,
-        "evidence": [],
-        "notes": ""
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "forge/conformance/carousel-checklist.html",
+            "result": "Codex in-app Chromium 155 on Linux, normal motion unless stated; Catalog http://100.103.168.9:8085, assessed runtime 6301a60af14d437e902b180c200020884a8bc213. At all four sampled widths, hero has 16px leading/trailing padding, 8px block padding, 8px gaps, and 28px normal corners; items share a vertical center."
+          }
+        ],
+        "notes": "At all four sampled widths, hero has 16px leading/trailing padding, 8px block padding, 8px gaps, and 28px normal corners; items share a vertical center."
       },
       "fixes": []
     },
@@ -968,10 +989,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "verified",
         "sourceRevision": 2,
-        "evidence": [],
-        "notes": ""
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "forge/conformance/carousel-checklist.html",
+            "result": "Codex in-app Chromium 155 on Linux, normal motion unless stated; Catalog http://100.103.168.9:8085, assessed runtime 6301a60af14d437e902b180c200020884a8bc213. At all four sampled widths, centered hero has 16px leading/trailing padding, 8px block padding, 8px gaps, and 28px normal corners; items share a vertical center. This does not validate its item arrangement."
+          }
+        ],
+        "notes": "At all four sampled widths, centered hero has 16px leading/trailing padding, 8px block padding, 8px gaps, and 28px normal corners; items share a vertical center. This does not validate its item arrangement."
       },
       "fixes": []
     },
@@ -1004,10 +1032,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "failing",
         "sourceRevision": 2,
-        "evidence": [],
-        "notes": ""
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "forge/conformance/carousel-checklist.html",
+            "result": "Codex in-app Chromium 155 on Linux, normal motion unless stated; Catalog http://100.103.168.9:8085, assessed runtime 6301a60af14d437e902b180c200020884a8bc213. Zero viewport padding and a 16px gap are present, but the item fills a short landscape strip rather than the portrait content window; full-screen scrolling remains horizontal."
+          }
+        ],
+        "notes": "Zero viewport padding and a 16px gap are present, but the item fills a short landscape strip rather than the portrait content window; full-screen scrolling remains horizontal."
       },
       "fixes": []
     },
@@ -1030,17 +1065,17 @@
         }
       ],
       "implementation": {
-        "status": "implemented",
+        "status": "failing",
         "sourceRevision": 1,
-        "assessedBaseline": "8a9e20684205546e4cc303d7b2b1557cab96f793",
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
         "evidence": [
           {
-            "kind": "code",
-            "location": "forge/components/static/carousel.js; forge/components/styles/carousels.css; forge/components/carousel_test.cjs; catalog/web/carousel.go; catalog/web/carousel_test.go; forge/material/generate-components.mjs",
-            "result": "Center-aligned hero uses one centered large keyline and 40–56px small previews at each side. At the first/last item the nonexistent neighbor leaves that boundary empty; interior items have both previews."
+            "kind": "browser",
+            "location": "forge/conformance/carousel-checklist.html",
+            "result": "Codex in-app Chromium 155 on Linux, normal motion unless stated; Catalog http://100.103.168.9:8085, assessed runtime 6301a60af14d437e902b180c200020884a8bc213. At 360px the first and last states contain an empty 48px neighbor region. At 772px and 1200px the layout adds three large slots and near-boundary stops lose one small preview. The Catalog single-focal configuration is checked separately from the specs wording at least one large item."
           }
         ],
-        "notes": "Center-aligned hero uses one centered large keyline and 40–56px small previews at each side. At the first/last item the nonexistent neighbor leaves that boundary empty; interior items have both previews."
+        "notes": "At 360px the first and last states contain an empty 48px neighbor region. At 772px and 1200px the layout adds three large slots and near-boundary stops lose one small preview. The Catalog single-focal configuration is checked separately from the specs wording at least one large item."
       },
       "fixes": []
     },
@@ -1063,17 +1098,17 @@
         }
       ],
       "implementation": {
-        "status": "implemented",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "8a9e20684205546e4cc303d7b2b1557cab96f793",
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
         "evidence": [
           {
-            "kind": "code",
-            "location": "forge/components/static/carousel.js; forge/components/styles/carousels.css; forge/components/carousel_test.cjs; catalog/web/carousel.go; catalog/web/carousel_test.go; forge/material/generate-components.mjs",
-            "result": "The component uses 100% of its available container rather than a fixed 40rem width. Dynamic keylines recompute on resize; native-flow layouts derive snap targets from actual item geometry."
+            "kind": "browser",
+            "location": "forge/conformance/carousel-checklist.html",
+            "result": "Codex in-app Chromium 155 on Linux, normal motion unless stated; Catalog http://100.103.168.9:8085, assessed runtime 6301a60af14d437e902b180c200020884a8bc213. Across four available widths, visible item counts and widths change with variant and available region. The container stretches to that region. Variant-specific composition failures are recorded in their own checks. An RTL resize test for all five horizontal configurations at 278px then 258px retains logical index 1 and focused item 1; ArrowLeft advances to index 1 using negative native scroll offsets."
           }
         ],
-        "notes": "The component uses 100% of its available container rather than a fixed 40rem width. Dynamic keylines recompute on resize; native-flow layouts derive snap targets from actual item geometry."
+        "notes": "Across four available widths, visible item counts and widths change with variant and available region. The container stretches to that region. Variant-specific composition failures are recorded in their own checks. An RTL resize test for all five horizontal configurations at 278px then 258px retains logical index 1 and focused item 1; ArrowLeft advances to index 1 using negative native scroll offsets."
       },
       "fixes": []
     },
@@ -1096,17 +1131,17 @@
         }
       ],
       "implementation": {
-        "status": "unclear",
+        "status": "failing",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
         "evidence": [
           {
-            "kind": "code",
-            "location": "forge/components/styles/carousels.css:2-20; forge/components/static/carousel.js:5-32",
-            "result": "Renderer supports three preset preferred widths and dynamic large/medium/small keylines, but no 40–56dp small range or compact-only large maximum is enforced."
+            "kind": "browser",
+            "location": "forge/conformance/carousel-checklist.html",
+            "result": "Codex in-app Chromium 155 on Linux, normal motion unless stated; Catalog http://100.103.168.9:8085, assessed runtime 6301a60af14d437e902b180c200020884a8bc213. The resting-role matrix finds missing large/medium/small hierarchy near the multi-browse end and missing small roles near the hero end. Preferred-width fitting is not a strict customizable maximum."
           }
         ],
-        "notes": "Renderer supports three preset preferred widths and dynamic large/medium/small keylines, but no 40–56dp small range or compact-only large maximum is enforced."
+        "notes": "The resting-role matrix finds missing large/medium/small hierarchy near the multi-browse end and missing small roles near the hero end. Preferred-width fitting is not a strict customizable maximum."
       },
       "fixes": []
     },
@@ -1129,17 +1164,17 @@
         }
       ],
       "implementation": {
-        "status": "not-applicable",
+        "status": "unclear",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_carousel.templ:19-23",
-            "result": "The specimen items contain decorative SVG art and an aria-hidden number, with no visible text label to wrap or truncate."
+            "location": "catalog/web/specimen_carousel.templ; forge/components/ui/carousel.templ",
+            "result": "The sample uses numeric markers, not full title/label content across large, medium, and small masks. Custom Content is clipped inside the item button. Brief adaptive text and the compact two-line caution have not been verified with representative content."
           }
         ],
-        "notes": "The specimen items contain decorative SVG art and an aria-hidden number, with no visible text label to wrap or truncate."
+        "notes": "The sample uses numeric markers, not full title/label content across large, medium, and small masks. Custom Content is clipped inside the item button. Brief adaptive text and the compact two-line caution have not been verified with representative content."
       },
       "fixes": []
     },
@@ -1164,15 +1199,15 @@
       "implementation": {
         "status": "not-applicable",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_carousel.templ:15-25",
-            "result": "Only decorative imagery is shown, so a text-heavy content layout is not represented."
+            "location": "catalog/web/specimen_carousel.templ",
+            "result": "The current specimens do not demonstrate substantial text. This is a consumer content/layout choice; it does not validate the absent uncontained per-item surrounding-content API."
           }
         ],
-        "notes": "Only decorative imagery is shown, so a text-heavy content layout is not represented."
+        "notes": "The current specimens do not demonstrate substantial text. This is a consumer content/layout choice; it does not validate the absent uncontained per-item surrounding-content API."
       },
       "fixes": []
     },
@@ -1197,15 +1232,15 @@
       "implementation": {
         "status": "unclear",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/static/carousel.js:5-32; forge/components/styles/carousels.css:2-20",
-            "result": "Multi-browse computes keylines from width, but no compact breakpoint caps visible count at three or forces full-screen to one."
+            "location": "catalog/web/carousel.go; catalog/web/specimen_carousel.templ",
+            "result": "Default compact measurements show up to three contained items, but no representative text-bearing compact examples establish readability or the optional higher-count exception. Full-screen is separately failing."
           }
         ],
-        "notes": "Multi-browse computes keylines from width, but no compact breakpoint caps visible count at three or forces full-screen to one."
+        "notes": "Default compact measurements show up to three contained items, but no representative text-bearing compact examples establish readability or the optional higher-count exception. Full-screen is separately failing."
       },
       "fixes": []
     },
@@ -1230,15 +1265,15 @@
       "implementation": {
         "status": "unclear",
         "sourceRevision": 1,
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
         "evidence": [
           {
-            "kind": "code",
-            "location": "forge/components/static/carousel.js:itemFrame,paint",
-            "result": "The runtime changes keyline positions and mask widths while translating full-size artwork by (maskWidth-logicalWidth)/2. The earlier finding incorrectly said there was no artwork offset. Whether this matches the precise upstream illustrated parallax has not been established."
+            "kind": "browser",
+            "location": "forge/components/static/carousel.js; forge/components/styles/carousels.css; https://m3.material.io/components/carousel/guidelines",
+            "result": "Codex in-app Chromium 155 on Linux, normal motion unless stated; Catalog http://100.103.168.9:8085, assessed runtime 6301a60af14d437e902b180c200020884a8bc213. Fractional clock samples at 25% and 50% keep multi-browse images 168px wide while masks and image offsets move. This establishes reveal geometry, not timing fidelity. Motion Lab imported all six upstream clips; visually checked corner tracking and fitted easing/spring comparisons were obtained for multi-browse and centered hero. Hero feature tracking drifted into the image and was rejected as mask-edge evidence. Release timing cannot be isolated reliably from all gesture demonstrations, and generic parallax prose must be read alongside the rigid uncontained examples. No universal duration is inferred. Reproduce fitting in sibling ui-motion: import the linked multi-browse and centered reference clips into a temporary --projects directory; track --method feature --start 120 --end 180 --search 70 with regions 680,300,65,65 and 939,300,65,65 respectively; measure --curve emphasized --fit. Over this 2.0-3.0s whole-transition interval, fitted durations are 1182ms/1177ms and RMS errors 6.96px/2.43px. These are observed image-space transitions, not isolated release durations or normative settings."
           }
         ],
-        "notes": "Keep the established settling pipeline until a comparison with the source motion establishes a concrete difference.",
-        "assessedBaseline": "b2434146c760cf45797c18d8f1bf700c2c41428e"
+        "notes": "Fractional clock samples at 25% and 50% keep multi-browse images 168px wide while masks and image offsets move. This establishes reveal geometry, not timing fidelity. Motion Lab imported all six upstream clips; visually checked corner tracking and fitted easing/spring comparisons were obtained for multi-browse and centered hero. Hero feature tracking drifted into the image and was rejected as mask-edge evidence. Release timing cannot be isolated reliably from all gesture demonstrations, and generic parallax prose must be read alongside the rigid uncontained examples. No universal duration is inferred."
       },
       "fixes": []
     },
@@ -1271,17 +1306,17 @@
         }
       ],
       "implementation": {
-        "status": "unclear",
+        "status": "not-applicable",
         "sourceRevision": 2,
-        "assessedBaseline": "205611a1976adfe25ad0137e60b4c8483b024fc3",
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
         "evidence": [
           {
-            "kind": "code",
-            "location": "catalog/web/specimen_carousel.templ; catalog/web/carousel.go; forge/components/styles/carousels.css; catalog/web/carousel_items_test.go",
-            "result": "Preview configuration selects the lower standard text button or the leading header and 48dp arrow button. Both use type=button without a destination; the separate all-items page and route have been removed."
+            "kind": "browser",
+            "location": "forge/conformance/carousel-all.html",
+            "result": "Codex in-app Chromium 155 on Linux, normal motion unless stated; Catalog http://100.103.168.9:8085, assessed runtime 6301a60af14d437e902b180c200020884a8bc213. Run carousel action checks: lower-button 4px surrounding clearance and 48px header arrow are exercised, along with leading header alignment and inert actions. The requested specimen omits the destination page; this is not a complete product-level all-items-access implementation. The internal button padding remains token-owned."
           }
         ],
-        "notes": "The Catalog specimen offers None, Show all below, and Header with arrow configurations. Buttons are intentionally non-navigating demonstrations; the product-level all-items destination is outside this specimen. Full-screen carousels omit these actions. The lower button retains 4dp clearance; the header arrow control measures 48dp."
+        "notes": "Run carousel action checks: lower-button 4px surrounding clearance and 48px header arrow are exercised, along with leading header alignment and inert actions. The requested specimen omits the destination page; this is not a complete product-level all-items-access implementation. The internal button padding remains token-owned."
       },
       "fixes": [
         {
@@ -1315,17 +1350,17 @@
         }
       ],
       "implementation": {
-        "status": "implemented",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
         "evidence": [
           {
-            "kind": "code",
-            "location": "catalog/web/specimen_carousel.templ:29-35",
-            "result": "Previous/next controls are placed outside the viewport, below the carousel items."
+            "kind": "browser",
+            "location": "forge/conformance/carousel-all.html",
+            "result": "Codex in-app Chromium 155 on Linux, normal motion unless stated; Catalog http://100.103.168.9:8085, assessed runtime 6301a60af14d437e902b180c200020884a8bc213. Run carousel action checks across six variants and three action configurations: header actions are above, lower actions and previous/next controls are below the viewport, not overlaid on or beside the items. Full-screen omits the all-items action."
           }
         ],
-        "notes": "Previous/next controls are placed outside the viewport, below the carousel items."
+        "notes": "Run carousel action checks across six variants and three action configurations: header actions are above, lower actions and previous/next controls are below the viewport, not overlaid on or beside the items. Full-screen omits the all-items action."
       },
       "fixes": []
     },
@@ -1350,15 +1385,15 @@
       "implementation": {
         "status": "implemented",
         "sourceRevision": 1,
-        "assessedBaseline": "8a9e20684205546e4cc303d7b2b1557cab96f793",
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/static/carousel.js; forge/components/styles/carousels.css; forge/components/carousel_test.cjs; catalog/web/carousel.go; catalog/web/carousel_test.go; forge/material/generate-components.mjs",
-            "result": "Named carousel regions, native item buttons, live counts, directional navigation and up/down focus exit permit users to navigate, activate and leave the carousel. Header and lower all-items buttons remain intentionally inert specimen actions."
+            "location": "forge/components/ui/carousel.templ; forge/components/static/carousel.js",
+            "result": "Named section and native item buttons provide region navigation and activation; arrow keys move through items and Up/Down leave the item sequence. This code support is not a screen-reader verification. Tab completeness and the exit destination fail their dedicated checks."
           }
         ],
-        "notes": "Named carousel regions, native item buttons, live counts, directional navigation and up/down focus exit permit users to navigate, activate and leave the carousel. Header and lower all-items buttons remain intentionally inert specimen actions."
+        "notes": "Named section and native item buttons provide region navigation and activation; arrow keys move through items and Up/Down leave the item sequence. This code support is not a screen-reader verification. Tab completeness and the exit destination fail their dedicated checks."
       },
       "fixes": []
     },
@@ -1381,17 +1416,17 @@
         }
       ],
       "implementation": {
-        "status": "unclear",
+        "status": "missing",
         "sourceRevision": 1,
-        "assessedBaseline": "8a9e20684205546e4cc303d7b2b1557cab96f793",
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/static/carousel.js; forge/components/styles/carousels.css; forge/components/carousel_test.cjs; catalog/web/carousel.go; catalog/web/carousel_test.go; forge/material/generate-components.mjs",
-            "result": "The shared feedback primitive supplies token-mapped state layers and pointer-origin ripples. The captured shape token remains authoritative; the prose mentions a slight pressed-shape change but gives no numeric delta, so this audit does not invent a radius override."
+            "location": "forge/components/styles/carousels.css; forge/components/static/buttons.js",
+            "result": "Shared pointer feedback supplies a ripple, but --_button-rest-shape and --_button-pressed-shape both resolve to the same captured 28px radius. No slight pressed-shape change is implemented. The exact missing pressed value is not specified here and no override is invented. Physical touch remains untested this pass."
           }
         ],
-        "notes": "The shared feedback primitive supplies token-mapped state layers and pointer-origin ripples. The captured shape token remains authoritative; the prose mentions a slight pressed-shape change but gives no numeric delta, so this audit does not invent a radius override."
+        "notes": "Shared pointer feedback supplies a ripple, but --_button-rest-shape and --_button-pressed-shape both resolve to the same captured 28px radius. No slight pressed-shape change is implemented. The exact missing pressed value is not specified here and no override is invented. Physical touch remains untested this pass."
       },
       "fixes": []
     },
@@ -1414,17 +1449,22 @@
         }
       ],
       "implementation": {
-        "status": "unclear",
+        "status": "implemented",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/carousels.css:84-149; forge/components/static/buttons.js:455-478",
-            "result": "Item has state layer/ripple and focus styling; this stylesheet contains no explicit hover selector, so generated hover token mapping needs computed browser confirmation."
+            "location": "forge/components/static/buttons.js; forge/components/styles/carousels.css; forge/material/generate-components.mjs",
+            "result": "Carousel items are registered with the shared pointer-feedback runtime. Carousel CSS maps state layers and pressed ripple variables to captured item tokens."
+          },
+          {
+            "kind": "browser",
+            "location": "http://100.103.168.9:8085/components/carousel?preview.compare=states; forge/components/static/buttons.js",
+            "result": "Codex in-app Chromium 155 on Linux, normal motion unless stated; Catalog http://100.103.168.9:8085, assessed runtime 6301a60af14d437e902b180c200020884a8bc213. Forced state specimens were inspected in light/dark and default/medium/high contrast: hover state opacity 0.08, focused/pressed layers 0.10, focus ring 3px with 2px offset, disabled art opacity 0.38, and context colors resolve. Native pointer ripple wiring is present in the shared button runtime; a full rendered ripple trajectory was not measured in this pass. Standard and outlined configurations were checked across all six appearances; outlined borders resolve to 1px, with disabled outline alpha 0.12. These are computed-style/state checks, not a physical-touch or zoom/DPR verification."
           }
         ],
-        "notes": "Item has state layer/ripple and focus styling; this stylesheet contains no explicit hover selector, so generated hover token mapping needs computed browser confirmation."
+        "notes": "Forced state specimens were inspected in light/dark and default/medium/high contrast: hover state opacity 0.08, focused/pressed layers 0.10, focus ring 3px with 2px offset, disabled art opacity 0.38, and context colors resolve. Native pointer ripple wiring is present in the shared button runtime; a full rendered ripple trajectory was not measured in this pass. Standard and outlined configurations were checked across all six appearances; outlined borders resolve to 1px, with disabled outline alpha 0.12. These are computed-style/state checks, not a physical-touch or zoom/DPR verification."
       },
       "fixes": []
     },
@@ -1447,17 +1487,17 @@
         }
       ],
       "implementation": {
-        "status": "implemented",
+        "status": "missing",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/carousels.css:155-189",
-            "result": "Artwork occupies the item mask and item number overlays within it; surrounding controls are outside the viewport and remain unmasked."
+            "location": "forge/components/ui/carousel.go; forge/components/ui/carousel.templ; forge/components/styles/carousels.css",
+            "result": "CarouselItem places Content and children inside the clipped item button. There are no per-item before/after slots outside that mask. Header/Actions/Controls around the entire carousel do not satisfy this per-item content capability."
           }
         ],
-        "notes": "Artwork occupies the item mask and item number overlays within it; surrounding controls are outside the viewport and remain unmasked."
+        "notes": "CarouselItem places Content and children inside the clipped item button. There are no per-item before/after slots outside that mask. Header/Actions/Controls around the entire carousel do not satisfy this per-item content capability."
       },
       "fixes": []
     },
@@ -1480,17 +1520,17 @@
         }
       ],
       "implementation": {
-        "status": "implemented",
+        "status": "failing",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
         "evidence": [
           {
-            "kind": "code",
-            "location": "forge/components/static/carousel.js:168-179",
-            "result": "ArrowLeft/ArrowRight move to adjacent enabled item; Home/End move to first/last, focusing the target after scroll settles."
+            "kind": "browser",
+            "location": "http://100.103.168.9:8085/components/carousel?preview.compare=interactive&preview.variant=multi-browse; forge/components/static/carousel.js",
+            "result": "Codex in-app Chromium 155 on Linux, normal motion unless stated; Catalog http://100.103.168.9:8085, assessed runtime 6301a60af14d437e902b180c200020884a8bc213. At a 390px browser frame, native Tab goes item 1 -> item 2 -> item 3 -> Show all. Offscreen masked items 4-6 are visibility:hidden and skipped; there is no Tab handler to reveal them. Arrow navigation exists but does not repair Tab traversal."
           }
         ],
-        "notes": "ArrowLeft/ArrowRight move to adjacent enabled item; Home/End move to first/last, focusing the target after scroll settles."
+        "notes": "At a 390px browser frame, native Tab goes item 1 -> item 2 -> item 3 -> Show all. Offscreen masked items 4-6 are visibility:hidden and skipped; there is no Tab handler to reveal them. Arrow navigation exists but does not repair Tab traversal."
       },
       "fixes": []
     },
@@ -1513,17 +1553,17 @@
         }
       ],
       "implementation": {
-        "status": "implemented",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
         "evidence": [
           {
-            "kind": "code",
-            "location": "catalog/web/specimen_carousel.templ:17-23",
-            "result": "Each carousel item is a native button, so focused-item activation uses browser Space/Enter button semantics."
+            "kind": "browser",
+            "location": "http://100.103.168.9:8085/components/carousel?preview.compare=states",
+            "result": "Codex in-app Chromium 155 on Linux, normal motion unless stated; Catalog http://100.103.168.9:8085, assessed runtime 6301a60af14d437e902b180c200020884a8bc213. Native Enter on the enabled item changes its output to Item 1 selected; native Space also activates the native item button. Activation uses button semantics rather than a replacement keyboard click implementation."
           }
         ],
-        "notes": "Each carousel item is a native button, so focused-item activation uses browser Space/Enter button semantics."
+        "notes": "Native Enter on the enabled item changes its output to Item 1 selected; native Space also activates the native item button. Activation uses button semantics rather than a replacement keyboard click implementation."
       },
       "fixes": []
     },
@@ -1546,10 +1586,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "verified",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "forge/conformance/carousel-checklist.html",
+            "result": "Codex in-app Chromium 155 on Linux, normal motion unless stated; Catalog http://100.103.168.9:8085, assessed runtime 6301a60af14d437e902b180c200020884a8bc213. At all four sampled widths, ordinary uncontained has 16px leading padding, 8px top/bottom padding, 8px gaps, and 28px corners. Equal-height items share a vertical center."
+          }
+        ],
+        "notes": "At all four sampled widths, ordinary uncontained has 16px leading padding, 8px top/bottom padding, 8px gaps, and 28px corners. Equal-height items share a vertical center."
       },
       "fixes": []
     },
@@ -1572,10 +1619,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "verified",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "forge/conformance/carousel-checklist.html",
+            "result": "Codex in-app Chromium 155 on Linux, normal motion unless stated; Catalog http://100.103.168.9:8085, assessed runtime 6301a60af14d437e902b180c200020884a8bc213. At all four sampled widths, sampled ratios are 16:9, 9:16, 1:1, and 3:4 within rounding tolerance. The API accepts a positive ratio without enforcing this range; the verified result applies to Catalog examples, not input validation for arbitrary consumers."
+          }
+        ],
+        "notes": "At all four sampled widths, sampled ratios are 16:9, 9:16, 1:1, and 3:4 within rounding tolerance. The API accepts a positive ratio without enforcing this range; the verified result applies to Catalog examples, not input validation for arbitrary consumers."
       },
       "fixes": []
     },
@@ -1598,10 +1652,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "verified",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "forge/conformance/carousel-checklist.html",
+            "result": "Codex in-app Chromium 155 on Linux, normal motion unless stated; Catalog http://100.103.168.9:8085, assessed runtime 6301a60af14d437e902b180c200020884a8bc213. At an isolated 360px viewport, the initial hero layout shows a 280px large item and 40px small preview; wider sampled viewports add large items. This verifies the initial composition, not its failing endpoint arrangements."
+          }
+        ],
+        "notes": "At an isolated 360px viewport, the initial hero layout shows a 280px large item and 40px small preview; wider sampled viewports add large items. This verifies the initial composition, not its failing endpoint arrangements."
       },
       "fixes": []
     },
@@ -1624,10 +1685,17 @@
         }
       ],
       "implementation": {
-        "status": "unassessed",
+        "status": "failing",
         "sourceRevision": 1,
-        "evidence": [],
-        "notes": ""
+        "assessedCommit": "6301a60af14d437e902b180c200020884a8bc213",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "forge/components/static/carousel.js; forge/components/styles/carousels.css",
+            "result": "Codex in-app Chromium 155 on Linux, normal motion unless stated; Catalog http://100.103.168.9:8085, assessed runtime 6301a60af14d437e902b180c200020884a8bc213. In the simulated reduced-motion branch at a 390px browser frame, hero displays one 247px item filling the padded inner width. No portion of the next item remains visible at rest, unlike the source hero reduced-motion example. Native OS-preference testing remains outstanding."
+          }
+        ],
+        "notes": "In the simulated reduced-motion branch at a 390px browser frame, hero displays one 247px item filling the padded inner width. No portion of the next item remains visible at rest, unlike the source hero reduced-motion example. Native OS-preference testing remains outstanding."
       },
       "fixes": []
     }
