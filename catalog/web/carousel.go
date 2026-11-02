@@ -65,13 +65,11 @@ func configureCarouselPreview(page *componentPreview, query url.Values) error {
 		return fmt.Errorf("%w: carousel content %s", errPreviewInput, content)
 	}
 	contentOptions := []string{"none", "overlay"}
-	if hasAction {
-		contentOptions = append(contentOptions, "above", "below")
-	}
+	// Old playground links with external text fall back to image-only.
 	if !containsPreview(contentOptions, content) {
 		content = "none"
 	}
-	page.Controls = append(page.Controls, previewControl{Name: "content", Label: "Item text", Selected: content, Options: contentOptions, Labels: map[string]string{"none": "Image only", "overlay": "On image", "above": "Above image", "below": "Below image"}})
+	page.Controls = append(page.Controls, previewControl{Name: "content", Label: "Item text", Selected: content, Options: contentOptions, Labels: map[string]string{"none": "Image only", "overlay": "On image"}})
 	viewport := query.Get("preview.viewport")
 	if viewport == "" {
 		viewport = "available"

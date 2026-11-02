@@ -42,7 +42,7 @@ templ carouselExample(c componentCase, demonstration bool) {
 	}}
 	@ui.Carousel(p, 6) {
 		for index:=range 6 {
-			@ui.CarouselItem(ui.CarouselItemProps{Index: index, Count: 6, ImageSrc: staticURL("paintings/" + carouselPaintings[index%len(carouselPaintings)]), SlotAttrs: c.CarouselSlot(index), Attrs: c.CarouselItem(index), Label: carouselPaintingTitles[index%len(carouselPaintingTitles)], Before: carouselExampleCaption(c, index, demonstration, "above"), After: carouselExampleCaption(c, index, demonstration, "below")}) {
+			@ui.CarouselItem(ui.CarouselItemProps{Index: index, Count: 6, ImageSrc: staticURL("paintings/" + carouselPaintings[index%len(carouselPaintings)]), SlotAttrs: c.CarouselSlot(index), Attrs: c.CarouselItem(index), Label: carouselPaintingTitles[index%len(carouselPaintingTitles)]}) {
 				if demonstration && c.CarouselContent=="overlay" {
 					@ui.CarouselText() {
 						{ carouselCaption(index) }
@@ -77,11 +77,4 @@ templ carouselExampleControls() {
 
 templ carouselArtwork(index int) {
 	<img src={ staticURL("paintings/" + carouselPaintings[index%len(carouselPaintings)]) } alt="" width="1200" height="800" draggable="false"/>
-}
-
-// Captions belong to the example; the API keeps them outside the masked button.
-templ carouselExampleCaption(c componentCase, index int, demonstration bool, placement string) {
-	if demonstration&&c.CarouselContent==placement&&c.Variant!="full-screen" {
-		<p class="md-typescale-body-medium" style="margin:0">{ carouselCaption(index) }</p>
-	}
 }

@@ -49,6 +49,11 @@ func TestCarouselContentAndViewport(t *testing.T) {
 			if err := configureCarouselPreview(page, url.Values{"preview.content": {content}, "preview.viewport": {"360"}}); err != nil {
 				t.Fatal(err)
 			}
+			for _, control := range page.Controls {
+				if control.Name == "content" && strings.Join(control.Options, ",") != "none,overlay" {
+					t.Fatal("external text must remain consumer composition")
+				}
+			}
 			var out bytes.Buffer
 			if err := specimenCarousel(page.Cases[0]).Render(context.Background(), &out); err != nil {
 				t.Fatal(err)
@@ -61,7 +66,7 @@ func TestCarouselContentAndViewport(t *testing.T) {
 				t.Fatalf("%s/%s: overlay", variant, content)
 			}
 			external := strings.Contains(html, `<p class="md-typescale-body-medium"`)
-			if external != (variant != "full-screen" && (content == "above" || content == "below")) {
+			if external {
 				t.Fatalf("%s/%s: external content", variant, content)
 			}
 			if strings.Contains(html, `class="md-carousel-pagination"`) != (variant != "full-screen") || strings.Contains(html, `<output`) || strings.Contains(html, `class="md-carousel-number"`) {
