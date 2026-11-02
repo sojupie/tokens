@@ -150,7 +150,7 @@ function harness(reduced = false, initialCheckboxes = []) {
     ...Object.fromEntries(["TopLeft","TopRight","BottomRight","BottomLeft"].map((name,index)=>[
       "border"+name+"Radius",button.style.borderRadius
         ? module.exports.corners(button.style.borderRadius,120,40)[index]+"px"
-        : button.hasAttribute("data-pressed")?"8px":"20px"
+        : button.animatedCorner != null ? button.animatedCorner+"px" : button.nativeActive || button.hasAttribute("data-pressed")?"8px":"20px"
     ])),
     paddingInlineStart: "24px",
     paddingInlineEnd: "24px",
@@ -259,6 +259,40 @@ test("spring follows captured damping/stiffness and reaches its destination", ()
   );
   assert.deepEqual(Array.from(corners("calc(infinity * 1px) 4px 4px calc(infinity * 1px)",120,40)),[20,4,4,20]);
   assert.throws(() => springFrames(0, 1400));
+});
+
+test("presses after idle start at resting corners even when native :active is already applied", async () => {
+ for (const selected of [false,true]) {
+  const h=harness(),button=h.button();button.nativeActive=true;
+  if(selected)button.setAttribute('aria-pressed','true');
+  for(let press=0;press<2;press++) {
+   h.emit('pointerdown',button);
+   const animation=h.animations.filter(a=>a.frames[0].borderRadius).at(-1);
+   const rest=selected?12:20;
+   assert.equal(animation.frames[0].borderRadius,Array(4).fill(rest+'px').join(' '));
+   assert.equal(animation.frames.at(-1).borderRadius,'8px 8px 8px 8px');
+   animation.complete();await Promise.resolve();
+   h.emit('pointerup',button);h.emit('click',button,{detail:1});
+   h.animations.filter(a=>a.frames[0].borderRadius).at(-1).complete();await Promise.resolve();
+  }
+ }
+});
+
+test("an interrupted shape starts at the rendered corners and retains spring velocity", () => {
+ const h=harness(),button=h.button();button.nativeActive=true;
+ h.emit('pointerdown',button);
+ const press=h.animations.filter(a=>a.frames[0].borderRadius).at(-1);press.currentTime=30;
+ button.animatedCorner=14;h.emit('pointerup',button);h.emit('click',button,{detail:1});
+ const release=h.animations.filter(a=>a.frames[0].borderRadius).at(-1);release.currentTime=60;
+ button.animatedCorner=16;h.emit('pointerdown',button);
+ const redirected=h.animations.filter(a=>a.frames[0].borderRadius).at(-1);
+ assert.equal(redirected.frames[0].borderRadius,'16px 16px 16px 16px');
+ assert.equal(release.cancelled,true);
+ const {springState}=require('./static/motion.cjs');
+ const pressVelocity=springState(.9,1400,.03,20,8,0).velocity;
+ const releaseVelocity=springState(.9,1400,.06,14,20,pressVelocity).velocity;
+ const expected=springState(.9,1400,1/60,16,8,releaseVelocity).value;
+ assert.ok(Math.abs(parseFloat(redirected.frames[1].borderRadius)-expected)<.000001);
 });
 
 test("a held press returns from its pressed corners without restarting on click", async () => {

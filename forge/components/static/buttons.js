@@ -199,7 +199,11 @@
     const style = getComputedStyle(button);
     // Leave CSS transitions untouched when this component has no shape spring.
     if (!style.getPropertyValue("--_button-spring-damping").trim()) return;
-    const start = initial || currentCorners(button);
+    // Native :active is applied before pointerdown. With no running animation,
+    // computed corners already describe the pressed state, not the visual rest.
+    const start = initial || (!old && target === "--_button-pressed-shape"
+      ? targetCorners(button, "--_button-rest-shape")
+      : currentCorners(button));
     old?.cancel();
     const end = targetCorners(button, target);
     if (!button.isConnected) {
@@ -242,11 +246,8 @@
     entry.point = point;
     entry.phase = "waiting-click";
     active.set(button, entry);
-    const start = shapes.has(button)
-      ? null
-      : currentCorners(button);
     button.setAttribute("data-pressed", "");
-    shapeTo(button, "--_button-pressed-shape", start);
+    shapeTo(button, "--_button-pressed-shape");
     widthGroup(button,true);
     return entry;
   }
