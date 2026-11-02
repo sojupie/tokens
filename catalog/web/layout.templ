@@ -33,7 +33,7 @@ templ layout(title string) {
 			<script src={ staticURL("token-table.js") } defer></script>
 			<script src={ staticURL("webmcp.js") } defer></script>
 			<script src={ staticURL("prefetch.js") } defer></script>
-			<script src={ staticURL("asset-loader.js") } data-sources={ componentScriptSources() } data-shapes-version={ loadingGeometry.version } defer></script>
+			<script src={ staticURL("asset-loader.js") } data-sources={ componentScriptSources() } data-shapes-version={ loadingGeometryVersion } defer></script>
 			<link rel="icon" type="image/svg+xml" href={ staticURL("logo.svg") }/>
 			<link rel="apple-touch-icon" href={ staticURL("logo-250x250.png") }/>
 			<title>{ pageTitle(ctx, title) } | Token Catalog</title>

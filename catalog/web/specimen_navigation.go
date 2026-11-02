@@ -31,17 +31,7 @@ func (c componentCase) NavigationToggleLabel() string {
 	return "Expand navigation"
 }
 
-// Demonstrate an unread destination without showing a stale badge on the open view.
+// Badge presence is independent of which destination is selected.
 func (c componentCase) NavigationHasBadge(index int) bool {
-	if c.NavBadge == "" || c.NavBadge == "none" {
-		return false
-	}
-	if c.Family == "nav-bar" {
-		unread := 1
-		if !c.Selected {
-			unread = 2
-		}
-		return index == unread
-	}
-	return c.Family == "nav-rail" && index == 1 && c.Selected
+	return (c.Family == "nav-bar" || c.Family == "nav-rail") && c.NavBadge != "" && c.NavBadge != "none" && index == 1
 }

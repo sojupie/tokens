@@ -1,5 +1,5 @@
 package web
 import "github.com/sojupie/tokens/forge/components/ui"
 templ specimenFab(c componentCase){
-@plainTooltip("Create",c.ID()+"-tip") { @ui.FAB(ui.FABProps{Label:"Create",Icon:"add",Attrs:c.Attributes()}) }
+@plainTooltip("Create",c.ID()+"-tip") { @ui.FAB(ui.FABProps{Label:"Create",Icon:"add",Variant:c.Variant,Size:ui.Size(c.Size),Disabled:c.State=="disabled",Attrs:c.Attributes()}) }
 }

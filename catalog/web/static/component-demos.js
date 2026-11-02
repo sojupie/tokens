@@ -124,4 +124,41 @@
         ? "Added to cart."
         : button.textContent + ".";
   });
+
+  function searchExample(root, label, description) {
+    for (const item of root.querySelectorAll('[data-search-message]')) {const selected=item.dataset.searchMessage===label;item.setAttribute('aria-pressed',String(selected));item.dataset.selected=String(selected);}
+    root.querySelector('[data-search-page-title]').textContent=label;
+    root.querySelector('[data-search-page-description]').textContent=description;
+    if(root.querySelector('.md-search-view').dataset.layout==='adaptive') {
+      root.dataset.messageOpen='true';
+      root.querySelector('[data-search-page-title]').focus({preventScroll:true});
+    }
+  }
+  document.addEventListener('md-search-select',event=>{
+    const root=event.target.closest('#component-preview .md-search-demo');if(!root)return;
+    searchExample(root,event.detail.label,'Selected from search results.');
+    root.querySelector('[data-search-feedback]').textContent=event.detail.label+' opened';
+  });
+  document.addEventListener('md-search-profile',event=>{
+    const root=event.target.closest('#component-preview .md-search-demo');if(root)root.querySelector('[data-search-feedback]').textContent='Profile selected';
+  });
+  document.addEventListener('click',event=>{
+    const root=event.target.closest?.('#component-preview .md-search-demo');if(!root)return;
+    const destination=event.target.closest('[data-search-mail-destination]');
+    if(destination){root.querySelector('[data-search-folder-title]').textContent=destination.querySelector('.md-nav-label').textContent;return;}
+    const message=event.target.closest('[data-search-message]');
+    if(message){searchExample(root,message.dataset.searchMessage,'Review the latest component updates and examples.');return;}
+    if(event.target.closest('[data-search-message-back]')){delete root.dataset.messageOpen;root.querySelector('[data-search-message][aria-pressed="true"]')?.focus({preventScroll:true});return;}
+    if(event.target.closest('[data-search-compose],[data-search-reply]'))root.querySelector('[data-search-feedback]').textContent='Example mail composition: use search to explore the component.';
+  });
+  document.addEventListener('input',event=>{
+    if(!event.target.matches?.('[data-search-composition-width]'))return;
+    const root=event.target.closest('.md-search-demo'),viewport=root.querySelector('[data-search-viewport]');
+    viewport.style.setProperty('--_search-composition-width',event.target.value+'px');
+    root.querySelector('[data-search-composition-width-label]').textContent=Math.round(viewport.getBoundingClientRect().width)+'px';
+  });
+  document.addEventListener('md-list-change',event=>{
+    const host=event.target.closest('#component-preview .md-list-demo');if(!host)return;
+    for(const output of host.querySelectorAll('output:not([data-list-status])'))output.textContent=event.detail.text;
+  });
 })();

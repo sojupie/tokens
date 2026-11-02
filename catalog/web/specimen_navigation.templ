@@ -47,38 +47,12 @@ templ specimenNavBar(c componentCase) {
 
 templ navigationDestinations(c componentCase, labels []string) {
 	@useComponentAssets("navigation")
-	if c.Family=="nav-rail" && (c.RailMenu()||c.RailFAB()) {
-		<header>
-			if c.RailMenu() {
-				if c.NavCollapse == "hidden" {
-					<span class="md-rail-menu-slot" aria-hidden="true"></span>
-				} else {
-					@navigationRailToggle(c, "")
-				}
-			}
-			if c.RailFAB() {
-				@useComponentAssets("fab")
-				@ui.Button(c.NavigationFAB()) {
-					@materialSymbol("edit")
-					<span>Create</span>
-				}
-			}
-		</header>
-	}
+
 	if c.Family=="nav-drawer" {
 		<h3>Library</h3>
 	}
 	@ui.NavigationItems() {
-		for i,label:=range labels {
-			if i==4 && c.Family=="nav-drawer" {
-				@ui.Divider("full", nil)
-				<h3>Workspace</h3>
-			}
-			if i==4 && c.Family=="nav-rail" {
-				<h3 class="md-nav-section">Library</h3>
-			}
-			@ui.NavigationItem(navigationExampleItem(c, i, label, c.NavigationIcon(i)))
-		}
+		@navigationDestinationItems(c, labels)
 	}
 	<output class="tokens-visually-hidden" id={ c.ID() + "-selection" } aria-live="polite"></output>
 }
@@ -102,9 +76,11 @@ func navigationExampleAttrs(c componentCase, modal bool) templ.Attributes {
 }
 
 templ navigationExampleSurface(c componentCase) {
-	@ui.NavigationSurface(navigationExampleAttrs(c, false), false) {
-		@navigationContents(c)
-	}
+ if c.Family == "nav-rail" {
+  @navigationRailSurface(c,c.NavigationLabels())
+ } else {
+  @ui.NavigationSurface(navigationExampleAttrs(c,false),false) { @navigationContents(c) }
+ }
 }
 
 func navigationExampleItem(c componentCase, i int, label, icon string) ui.NavigationItemProps {
@@ -123,17 +99,25 @@ func navigationExampleItem(c componentCase, i int, label, icon string) ui.Naviga
 // Immersive navigation keeps the same control mounted above the moving panes.
 templ persistentRailToggle(c componentCase) {
 	if c.NavCollapse == "hidden" {
-		@navigationRailToggle(c, "md-rail-toggle")
+		@ui.RailToggle(c.Variant == "expanded", templ.Attributes{"class":"md-rail-toggle"})
 	}
 }
 
-templ navigationRailToggle(c componentCase, class string) {
-	@ui.IconButtonContent(ui.IconButtonProps{Variant: "standard", Label: c.NavigationToggleLabel(), Attrs: templ.Attributes{"class": "md-rail-menu " + class, "type": "button", "data-width": "default", "data-navigation-expand": true, "aria-expanded": fmt.Sprint(c.Variant == "expanded")}, Size: ui.Size("small"), Shape: ui.ButtonShape("round")}) {
-		<span data-navigation-menu-icon>
-			@materialSymbol("menu")
-		</span>
-		<span data-navigation-collapse-icon>
-			@materialSymbol("menu_open")
-		</span>
-	}
+
+templ navigationDestinationItems(c componentCase, labels []string) {
+		for i,label:=range labels {
+			if i==4 && c.Family=="nav-drawer" {
+				@ui.Divider("full", nil)
+				<h3>Workspace</h3>
+			}
+			if i==4 && c.Family=="nav-rail" {
+				<h3 class="md-nav-section">Library</h3>
+			}
+			@ui.NavigationItem(navigationExampleItem(c, i, label, c.NavigationIcon(i)))
+		}
+}
+
+templ navigationRailSurface(c componentCase, labels []string) {
+ @ui.NavigationRail(c.RailProps()) { @navigationDestinationItems(c, labels) }
+ <output class="tokens-visually-hidden" id={ c.ID() + "-selection" } aria-live="polite"></output>
 }

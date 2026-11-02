@@ -407,9 +407,6 @@
     for (const item of group.querySelectorAll("[data-navigation-item]"))
       item.removeAttribute("aria-current");
     button.setAttribute("aria-current", "page");
-    const badges = button.querySelectorAll(".md-nav-badge");
-    if (badges.length) button.removeAttribute("aria-label");
-    for (const badge of badges) badge.remove();
     const label = button.querySelector(".md-nav-label").textContent;
     group.dispatchEvent(
       new CustomEvent("md-navigation-select", {
@@ -1131,7 +1128,7 @@
       value = (key) =>
         Number.parseFloat(style.getPropertyValue("--_toolbar-" + key));
     const demo = group.parentElement,
-      scene = demo.closest(".md-toolbar-scene"),
+      scene = demo.closest("[data-toolbar-viewport],.md-toolbar-scene") || demo,
       items = [...group.querySelectorAll("[data-toolbar-item]")];
     items.forEach((item) => (item.hidden = false));
     const width = (item) => {
@@ -1167,7 +1164,6 @@
         ) + "px",
       );
     } else {
-      if (!scene) return;
       const vertical = group.dataset.orientation === "vertical",
         clearance =
           parseFloat(

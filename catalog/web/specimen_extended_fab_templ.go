@@ -31,7 +31,7 @@ func specimenExtendedFab(c componentCase) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = ui.FAB(ui.FABProps{Label: "Create", Icon: "add", Extended: true, Attrs: c.Attributes()}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = ui.FAB(ui.FABProps{Label: "Create", Icon: "add", Extended: true, Variant: c.Variant, Size: ui.Size(c.Size), Disabled: c.State == "disabled", Attrs: c.Attributes()}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

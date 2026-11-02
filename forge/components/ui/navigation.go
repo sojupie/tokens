@@ -6,6 +6,7 @@ import (
 
 type NavigationProps struct {
 	ID, Label, Kind, Variant, Alignment, Direction, Orientation, Layout, Indicator, Width string
+	Size                                                                                  Size
 	Attrs                                                                                 templ.Attributes
 }
 
@@ -25,7 +26,7 @@ func (p NavigationProps) Attributes() templ.Attributes {
 			orientation = variant
 		}
 	}
-	return attributes(templ.Attributes{"data-orientation": orientation, "data-layout": fallback(p.Layout, "standard"), "data-indicator": fallback(p.Indicator, "fill"), "data-width": p.Width, "class": "md-navigation md-navigation-" + kind, "id": p.ID, "aria-label": p.Label, "data-variant": variant, "data-navigation-group": "", "data-alignment": fallback(p.Alignment, "center"), "dir": fallback(p.Direction, "ltr")}, p.Attrs)
+	return attributes(templ.Attributes{"data-orientation": orientation, "data-layout": fallback(p.Layout, "standard"), "data-indicator": fallback(p.Indicator, "fill"), "data-width": p.Width, "data-size": fallback(string(p.Size), "default"), "class": "md-navigation md-navigation-" + kind, "id": p.ID, "aria-label": p.Label, "data-variant": variant, "data-navigation-group": "", "data-alignment": fallback(p.Alignment, "center"), "dir": fallback(p.Direction, "ltr")}, p.Attrs)
 }
 
 type NavigationItemProps struct {
@@ -51,4 +52,20 @@ func navigationIcon(name string, filled bool) string {
 		return name + suffix
 	}
 	return name
+}
+
+// RailProps owns rail anatomy; children supply destinations and section content.
+// PersistentMenu reserves the header slot when RailToggle is hosted by RailFrame.
+type RailProps struct {
+	NavigationProps
+	Menu, PersistentMenu bool
+	FAB                  *FABProps
+}
+
+func (p RailProps) expanded() bool { return p.Variant == "expanded" }
+func (p RailProps) fab() FABProps {
+	f := *p.FAB
+	f.Extended = p.expanded()
+	f.Attrs = attributes(templ.Attributes{"class": "md-nav-fab"}, f.Attrs)
+	return f
 }

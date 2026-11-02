@@ -46,12 +46,8 @@
   background: var(--md-sys-color-surface);
 }
 .md-search-mail-navigation {
-  --_rail-rest-width: var(--md-comp-nav-rail-collapsed-container-width);
   min-block-size: 0;
   overflow: auto;
-}
-.md-search-mail-navigation .md-navigation-rail > header {
-  margin-inline: 0;
 }
 .md-search-app .md-search-scene {
   isolation: auto;

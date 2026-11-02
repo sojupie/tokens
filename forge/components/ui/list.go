@@ -63,6 +63,7 @@ type ListItemProps struct {
 	LeadingKind                                                           ListLeading
 	Leading, Trailing, Badge                                              templ.Component
 	SingleLine, Unread, Current, Disabled                                 bool
+	Selected                                                              *bool
 	Attrs                                                                 templ.Attributes
 }
 
@@ -70,6 +71,9 @@ func (p ListItemProps) Attributes() templ.Attributes {
 	a := templ.Attributes{"class": "md-list-item", "data-list-item": "", "data-list-label": p.Label, "data-unread": p.Unread}
 	if p.ID != "" {
 		a["id"] = p.ID
+	}
+	if p.Selected != nil {
+		a["data-selected"] = *p.Selected
 	}
 	if p.Current {
 		a["aria-current"] = "page"

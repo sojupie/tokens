@@ -24,7 +24,7 @@ func TestNavigationBadgeNamesAndInitialSelection(t *testing.T) {
 	if err := navigationItemContents(c, 1, "Files", "folder").Render(context.Background(), &out); err != nil {
 		t.Fatal(err)
 	}
-	if strings.Contains(out.String(), "md-nav-badge") {
-		t.Error("Already-selected destination must not show unread badge")
+	if !strings.Contains(out.String(), "md-nav-badge") {
+		t.Error("Selection must not change unread state")
 	}
 }

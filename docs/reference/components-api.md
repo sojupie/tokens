@@ -3,7 +3,7 @@
 Import `github.com/sojupie/tokens/forge/components/ui` from a Go/templ caller.
 Forge owns component anatomy, token bindings, accessibility attributes and browser
 mechanics. Catalog owns page layouts, sample content, playground configurations
-and application actions. Scenes use the same Forge package as other callers.
+and application actions. Future scenes must use the same Forge package as other callers.
 
 The package is part of this repository's Go module. It is not a separately
 versioned library. Component CSS and scripts must come from the same build.
@@ -158,8 +158,8 @@ cancellation and page caches have separate owners and invariants.
 ## Component families
 
 Every component family has an entry point in `forge/components/ui`. Templates
-and props are grouped by component. The six application scenes use these APIs
-without `componentCase` or specimen renderers.
+and props are grouped by component. Application scenes have been removed; the
+remaining compatibility adapters are tracked in the refactor plan.
 
 | Family | Entry points |
 | --- | --- |
@@ -171,8 +171,8 @@ without `componentCase` or specimen renderers.
 | Text, select and autocomplete fields | `TextField`, `Field` with `Kind: "select"` or `Kind: "autocomplete"` |
 | Date and time pickers | `DatePicker`, `DatePickerPanel`, `DateEntryField`, `TimePicker`, `TimePickerPanel` |
 | Search and carousel | `Search`, `SearchView`, `SearchBarSurface`, `SearchResult`, `Carousel`, `CarouselItem` |
-| Lists | `List`, `ListRow`, `ListButton`, `ListLink`, `ListContent` |
-| Navigation | `NavigationRegion`, `NavigationItem`, `NavigationItemContent`, `Drawer`, `DrawerToggle` |
+| Lists | `ListHost`, `List`, `ListRow`, `ListButton`, `ListLink`, `ListContent` |
+| Navigation | `NavigationRail`, `RailToggle`, `NavigationRegion`, `NavigationItem`, `NavigationItemContent`, `Drawer`, `DrawerToggle` |
 | Tabs and segmented controls | `Tabs`, `Tab`, `TabPanel`, `SegmentedButtons`, `Segment` |
 | App bars and toolbars | `AppBar`, `ToolbarSurface` |
 | Dialogs and sheets | `Modal`, `DialogTrigger`, `DialogClose`, `SheetHost`, `SheetTrigger`, `Sheet`, `SheetSurface` |
@@ -210,3 +210,27 @@ scene templates, with pane/grid rules from `docs/reference/layout.md`.
 The migration preserves the existing CSS implementation. API coverage does not
 by itself certify every component against Material guidelines. Source fidelity,
 layout and interaction checks still apply.
+
+## Compound components and application boundaries
+
+`NavigationRail(RailProps)` owns its optional menu header, FAB and destination
+region. Supply destinations as children. Its FAB retains label anatomy during
+collapse; callers should not construct a separate header or copy rail FAB classes.
+`PersistentMenu` reserves the internal menu slot when `RailFrame` supplies the
+single anchored toggle for immersive mode. Selection never marks badges read.
+
+`ListHost` supplies live announcements for interactive lists. A non-nil
+`ListItemProps.Selected` gives an action row an explicit selection state.
+`md-list-change` carries feedback text for application listeners; Catalog may show
+that text in its sample output without becoming a runtime dependency.
+
+Search emits `md-search-select` with `detail.label` and `md-search-profile` for
+application actions. Result activation closes search and restores input focus;
+it does not route or rewrite application content. Mark inert background regions
+with `data-search-background` and an adaptive viewport with
+`data-search-viewport`. Playground width controls remain consumer code.
+
+Floating toolbar hosts can identify available space using
+`data-toolbar-viewport`; without that hook, measurement uses the component's
+parent. Use `Loading` for shared loading geometry instead of interpreting the
+shape asset in a consumer.

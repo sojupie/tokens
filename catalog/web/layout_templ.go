@@ -340,9 +340,9 @@ func layout(title string) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var24 string
-		templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs(loadingGeometry.version)
+		templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs(loadingGeometryVersion)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/layout.templ`, Line: 36, Col: 135}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/layout.templ`, Line: 36, Col: 134}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var24))
 		if templ_7745c5c3_Err != nil {

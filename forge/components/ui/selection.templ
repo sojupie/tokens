@@ -48,3 +48,12 @@ templ Radio(p ChoiceProps) {
 		<span class="md-radio-label">{ p.Label }</span>
 	</label>
 }
+
+// RadioGroup owns native grouping; callers supply the choices and form values.
+templ RadioGroup(label string, attrs templ.Attributes) {
+ @Require("radio")
+ <fieldset { attributes(templ.Attributes{"class":"md-radio-group","role":"radiogroup"},attrs)... }>
+  <legend>{ label }</legend>
+  { children... }
+ </fieldset>
+}

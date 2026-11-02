@@ -25,6 +25,7 @@ func main() {
 		log.Fatal(err)
 	}
 	mux := http.NewServeMux()
+	mux.HandleFunc("GET /api-contracts", apiContracts)
 	mux.HandleFunc("GET /profile/cpu", counters)
 	proxy := httputil.NewSingleHostReverseProxy(target)
 	mux.Handle("/md3/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

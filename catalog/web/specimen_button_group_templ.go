@@ -55,7 +55,7 @@ func specimenButtonGroup(c componentCase) templ.Component {
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = ui.ButtonGroupSurface(ui.GroupProps{Attrs: c.Attributes()}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = ui.ButtonGroupSurface(ui.GroupProps{Label: "Actions", Variant: c.Variant, Size: ui.Size(c.Size), Connected: c.Control == "connected", Selection: c.Shape, Attrs: c.Attributes()}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

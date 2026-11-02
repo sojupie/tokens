@@ -1,6 +1,7 @@
 # Catalog component API refactor
 
-Status: implementation complete; device and extended manual checks remain open below.
+Status: reopened after the 2026-11-02 ownership audit. Historical migration checks
+below record work performed; they do not establish standalone API parity.
 Baseline: `5e2fb3b`. Update the checklist as work completes. Record the relevant
 commit and checks under each completed phase; keep implementation evidence in
 its existing location rather than creating another assessment system.
@@ -218,3 +219,40 @@ for modest HTML growth. No global component bundle was substituted. Actual gzip
 responses and ETag conditional requests were also checked; the latter returned
 304. Response caching, immutable URL handling and prefetch code were unchanged.
 All 1,585 existing illustration files match their baseline hashes.
+
+## Ownership audit · 2026-11-02
+
+The search playground exposed an incomplete migration beyond navigation. API
+imports and root markers had concealed consumer-owned anatomy and controllers
+that assumed Catalog sample content. The earlier completion claim was too broad.
+Application scenes were subsequently deleted; the historical phase 7 record does
+not describe a current scene implementation.
+
+| Boundary | Finding | Correction and verification |
+| --- | --- | --- |
+| Rail composition | Catalog built headers, FABs and destinations independently | `NavigationRail` owns header, retained FAB label, menu and item region; Catalog supplies typed configuration and destinations |
+| Search | Shared controller edited sample mail content and assumed feedback/headings | Emit `md-search-select` and `md-search-profile`; Catalog handles sample actions; explicit background and viewport hooks |
+| Navigation unread state | Selection deleted badges | Preserve badges; application owns read state independently of selection |
+| Lists | Announcements required a Catalog wrapper | `ListHost` supplies live status; `md-list-change` informs application feedback; typed selected rows |
+| Toolbars | Floating measurement required a playground scene | Explicit viewport hook with component-parent fallback |
+| Loading indicator | Catalog interpreted shared geometry again | `Loading` owns geometry; Catalog only versions the geometry asset |
+| Radio/menu anatomy | Catalog copied group and selection-icon structure | Shared `RadioGroup` and `MenuSelectionIcon` |
+| Configuration | Several callers supplied normal variants only through attributes | Pass typed configuration for buttons, groups, FABs, carousel and progress/loading; retain deliberate forced-state adapters |
+| Evidence | Marker tests could pass while public callers failed | Public-API-only browser fixture plus nested asset and composition assertions |
+
+Remaining acceptance work:
+
+- [ ] Complete a family-by-family standalone interaction matrix, including advanced list reveal/reorder and toolbar overflow. Existing root render tests are smoke checks.
+- [ ] Audit remaining attribute adapters against typed props, distinguishing deliberate forced states, content slots and application hooks from missing API capabilities.
+- [ ] Verify real iPadOS/Pencil behavior and Safari viewport changes on hardware.
+
+Keep delivery checks separate: dependency collection, fragments, downloads,
+versioned assets and lazy loading must continue passing. No global production
+bundle replaces the existing module boundaries.
+
+Verified in this audit: Go tests under `catalog/...`, `forge/...` and `cmd/...`;
+component assembly check; 193 UI tests; 47 token-build tests (4 skipped); full
+review theme build; 10 standalone public-API browser assertions; 142 navigation
+browser assertions. On the real adaptive search page, changing destinations and
+selecting a search result preserved Catalog sample actions after separation.
+These checks do not close the remaining acceptance items above.

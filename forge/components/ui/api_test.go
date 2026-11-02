@@ -277,3 +277,19 @@ func TestBottomSheetHeightAnchorsAreExplicitAndFullHeightIsOptional(t *testing.T
 		t.Fatal(text)
 	}
 }
+
+func TestRailCompositionOwnsFABAndNestedDependencies(t *testing.T) {
+	for _, variant := range []string{"collapsed", "expanded"} {
+		text, assets := renderAPI(t, NavigationRail(RailProps{NavigationProps: NavigationProps{Label: "Mail", Variant: variant}, Menu: true, FAB: &FABProps{Label: "Compose", Icon: "edit"}}))
+		for _, module := range []string{"navigation", "fab", "common"} {
+			if !assets[module] {
+				t.Fatalf("%s missing %s", variant, module)
+			}
+		}
+		for _, part := range []string{"md-nav-fab", "data-navigation-expand", "<span>Compose</span>", "md-nav-items"} {
+			if !strings.Contains(text, part) {
+				t.Fatalf("%s missing %s", variant, part)
+			}
+		}
+	}
+}

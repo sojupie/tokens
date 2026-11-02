@@ -45,7 +45,7 @@ func TestRenderedComponentsCollectNestedAssets(t *testing.T) {
 		{"radio row", specimenList(componentCase{Family: "list", ListTrailing: "radio", Width: "icon"}), []string{"radio", "list"}},
 		{"adaptive search", specimenSearch(componentCase{Family: "search", Variant: "adaptive", Shape: "icon"}), []string{"card", "fab", "navigation", "list", "search"}},
 		{"fab menu opener", specimenFabMenu(componentCase{Family: "fab-menu", State: "interactive"}), []string{"fab", "fab-menu"}},
-		{"rail fab", navigationContents(componentCase{Family: "nav-rail", NavHeader: "menu-fab"}), []string{"fab", "navigation"}},
+		{"rail fab", navigationExampleSurface(componentCase{Family: "nav-rail", NavHeader: "menu-fab"}), []string{"fab", "navigation"}},
 		{"search results", searchScene(componentCase{Family: "search", Shape: "icon"}), []string{"list", "search"}},
 		{"loading control", specimenLoading(componentCase{Family: "loading", State: "interactive", Control: "determinate"}), []string{"slider", "progress", "loading"}},
 		{"toolbar fab", specimenToolbar(componentCase{Family: "toolbar", Variant: "floating", Size: "small"}), []string{"fab", "toolbar"}},
@@ -165,7 +165,7 @@ func TestRenderHTMLCollectsAssetsBeforeWritingContent(t *testing.T) {
 	body := response.Body.String()
 	for _, name := range []string{"list", "sheet", "switch"} {
 		link := strings.Index(body, staticURL("bundles/"+name+".css"))
-		if link < 0 || link > strings.Index(body, `class="md-list-demo`) {
+		if link < 0 || link > strings.Index(body, `data-list-host`) {
 			t.Fatalf("module %s did not precede content", name)
 		}
 	}

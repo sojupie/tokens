@@ -4,7 +4,7 @@ import "github.com/sojupie/tokens/forge/components/ui"
 templ specimenProgress(c componentCase) {
 	@useComponentAssets("progress")
 	<div class="md-progress-demo">
-		@ui.ProgressIndicator(c.ProgressAttributes())
+		@ui.Progress(c.progressProps("Loading preview content"))
 		if c.State=="interactive" && c.Control=="determinate" {
 			<div class="md-progress-control">@componentSpecimen(c.ProgressControl())
 <output class="md-typescale-body-small">40%</output></div>
@@ -14,6 +14,5 @@ templ specimenProgress(c componentCase) {
 
 templ progressSurface(c componentCase,label string) {
 @useComponentAssets("progress")
-{{ attrs:=c.ProgressAttributes();attrs["aria-label"]=label }}
-@ui.ProgressIndicator(attrs)
+@ui.Progress(c.progressProps(label))
 }

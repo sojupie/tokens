@@ -39,7 +39,7 @@ func specimenProgress(c componentCase) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = ui.ProgressIndicator(c.ProgressAttributes()).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = ui.Progress(c.progressProps("Loading preview content")).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -90,9 +90,7 @@ func progressSurface(c componentCase, label string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		attrs := c.ProgressAttributes()
-		attrs["aria-label"] = label
-		templ_7745c5c3_Err = ui.ProgressIndicator(attrs).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = ui.Progress(c.progressProps(label)).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

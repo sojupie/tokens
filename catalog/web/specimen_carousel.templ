@@ -8,7 +8,7 @@ templ specimenCarousel(c componentCase) {
 }
 
 templ carouselSurface(c componentCase, demonstration bool) {
-	{{ p := ui.CarouselProps{Label: "Example carousel", Attrs: c.Attributes()}
+	{{ p := ui.CarouselProps{Label: "Example carousel", Variant:c.Variant,Orientation:c.Orientation,Scrolling:c.CarouselScroll,Attrs: c.Attributes()}
 if demonstration {
 	p.Header = carouselExampleHeader(c)
 	p.Actions = carouselExampleActions(c)

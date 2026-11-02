@@ -27,7 +27,7 @@ templ ListLink(href string, p ListItemProps) {
 templ ListButton(p ListItemProps) {
 	@Require("list")
 	<li>
-		<button type="button" disabled?={ p.Disabled } { p.Attributes()... }>
+		<button type="button" disabled?={ p.Disabled } if p.Selected != nil { aria-pressed={ strconv.FormatBool(*p.Selected) } } { p.Attributes()... }>
 			@ListContent(p)
 		</button>
 	</li>
@@ -138,4 +138,13 @@ templ ListIcon(name string, disclosure bool) {
 	@Require("list")
 	<span class={ templ.KV("md-list-expand-icon",disclosure),templ.KV("md-list-trailing-icon",!disclosure) }>@Icon(name)
 </span>
+}
+
+// ListHost owns announcement and interaction scope for advanced list compositions.
+templ ListHost(attrs templ.Attributes) {
+ @Require("list")
+ <div { attributes(templ.Attributes{"class":"md-list-host","data-list-host":""},attrs)... }>
+  { children... }
+  <output class="tokens-visually-hidden" data-list-status aria-live="polite"></output>
+ </div>
 }

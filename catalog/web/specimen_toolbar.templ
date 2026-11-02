@@ -7,10 +7,5 @@ templ specimenToolbar(c componentCase) {
 }
 
 templ toolbarExampleCheck(c componentCase) {
-	<span data-menu-checked-icon hidden?={ !c.Selected }>
-		@ui.Icon("check")
-	</span>
-	<span data-menu-unchecked-icon hidden?={ c.Selected }>
-		@ui.Icon("edit")
-	</span>
+	@ui.MenuSelectionIcon(c.Selected,"edit")
 }

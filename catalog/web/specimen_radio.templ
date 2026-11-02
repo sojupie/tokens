@@ -6,12 +6,11 @@ import "github.com/sojupie/tokens/forge/components/ui"
 templ specimenRadio(c componentCase) {
 	@useComponentAssets("radio")
 	if c.State=="interactive" {
-		<fieldset class="md-radio-group" role="radiogroup">
-			<legend>Options</legend>
+		@ui.RadioGroup("Options",nil) {
 			for index:=range 3 {
 				@radioChoice(c, index, fmt.Sprintf("Option %d",index+1))
 			}
-		</fieldset>
+		}
 	} else {
 		@radioChoice(c, 0, "Option 1")
 	}

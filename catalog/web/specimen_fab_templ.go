@@ -43,7 +43,7 @@ func specimenFab(c componentCase) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = ui.FAB(ui.FABProps{Label: "Create", Icon: "add", Attrs: c.Attributes()}).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = ui.FAB(ui.FABProps{Label: "Create", Icon: "add", Variant: c.Variant, Size: ui.Size(c.Size), Disabled: c.State == "disabled", Attrs: c.Attributes()}).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

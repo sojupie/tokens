@@ -10,7 +10,7 @@ templ playgroundAppbar(c componentCase) {
 	if c.Control=="search" && c.State=="interactive" {
 		<div class="md-appbar-demo md-search-demo" data-interactive="true">
 			<div class="md-search-scene md-appbar-search-scene">
-				<section class="md-search-page" data-appbar-demo data-interactive="true">
+				<section class="md-search-page" data-search-background data-appbar-demo data-interactive="true">
 					@appbarSurface(c, "Title")
 					<div class="md-appbar-content">
 						<h3 data-search-page-title tabindex="-1">Component library</h3>
@@ -68,13 +68,13 @@ templ playgroundSearch(c componentCase) {
 			@useComponentAssets("card")
 			@useComponentAssets("fab")
 			<label class="md-search-composition-size">Composition width <input type="range" min="320" max="1200" value="1200" step="1" data-search-composition-width/><output data-search-composition-width-label>Fit to available space</output></label>
-			<div class="md-search-workspace">
+			<div class="md-search-workspace" data-search-viewport>
 				<div class="md-search-app">
-					<div class="md-search-mail-navigation">
+					<div class="md-search-mail-navigation" data-search-background>
 						@searchCompositionNavigation(c)
 					</div>
 					@searchScene(c)
-					@ui.CardSurface(ui.CardProps{Attrs: c.SearchMessageSurface()}) {
+					@ui.CardSurface(ui.CardProps{Variant:"filled",Attrs: c.SearchMessageSurface()}) {
 						@ui.IconButtonContent(ui.IconButtonProps{Variant: "standard", Label: "Back to inbox", Attrs: templ.Attributes{"type": "button", "class": "md-search-message-back", "data-search-message-back": true}, Size: ui.Size("small"), Shape: ui.ButtonShape("round")}) {
 							@materialSymbol("arrow_back")
 						}
@@ -82,7 +82,7 @@ templ playgroundSearch(c componentCase) {
 						<p class="md-search-mail-sender">Design team · 09:30</p>
 						<p>Hello,</p>
 						<p data-search-page-description>Review the latest component updates and examples.</p>
-						<p>The updated examples are ready for review. Let us know what you think.</p>@ui.Button(c.SearchReply()) {
+						<p>The updated examples are ready for review. Let us know what you think.</p>@ui.Action(c.SearchReply()) {
 	@materialSymbol("reply")
 	<span>Reply</span>
 }
@@ -182,7 +182,7 @@ templ playgroundToolbar(c componentCase) {
 
 templ playgroundList(c componentCase) {
 	@useComponentAssets("list")
-	<div class={ "md-list-demo", templ.KV("md-sheet-demo",c.Control=="reorder") } data-interactive="true">
+	@ui.ListHost(templ.Attributes{"class":templ.Classes("md-list-demo",templ.KV("md-sheet-demo",c.Control=="reorder")).String(),"data-interactive":"true"}) {
 		@ui.List(ui.ListProps{Attrs: c.ListContainerAttributes()}) {
 			for index:=range 3 {
 				@ui.ListRowFrame(ui.ListRowFrameProps{Attrs: templ.Attributes{"role": c.ListRowRole(), "data-list-row": "", "data-list-label": c.ListLabel(index), "data-list-expanded": fmt.Sprint(c.Control == "expand" && c.Expanded && index == 0)}, ContentAttrs: c.ListItem(index), Native: c.ListNativeKind() != "", Content: listContents(c, index), Before: listExampleBefore(c, index), After: listExampleAfter(c, index), Expanded: listExampleExpanded(c, index), ChildrenAttrs: templ.Attributes{"aria-label": c.ListLabel(index) + " items", "id": fmt.Sprintf("%s-children-%d", c.ID(), index), "hidden": !(c.Expanded && index == 0)}})
@@ -198,5 +198,5 @@ templ playgroundList(c componentCase) {
 			}
 		}
 		<output class="md-typescale-body-small" aria-live="polite"></output>
-	</div>
+	}
 }

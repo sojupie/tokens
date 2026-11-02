@@ -3,6 +3,7 @@ package web
 import (
 	"fmt"
 	"github.com/a-h/templ"
+	"github.com/sojupie/tokens/forge/components/ui"
 	"net/url"
 )
 
@@ -109,12 +110,12 @@ func (c componentCase) RailMenu() bool {
 	return c.NavHeader == "" || c.NavHeader == "menu" || c.NavHeader == "menu-fab"
 }
 func (c componentCase) RailFAB() bool { return c.NavHeader == "fab" || c.NavHeader == "menu-fab" }
-func (c componentCase) NavigationFAB() templ.Attributes {
-	class := "md-button md-fab md-nav-fab"
-	if c.Variant == "expanded" {
-		class = "md-button md-extended-fab md-nav-fab"
+func (c componentCase) RailProps() ui.RailProps {
+	p := ui.RailProps{NavigationProps: ui.NavigationProps{Label: "Navigation preview", Size: ui.Size(c.Size), Variant: c.Variant, Width: c.Width, Layout: c.NavLayout, Indicator: c.NavIndicator, Alignment: c.NavAlign, Attrs: c.Attributes()}, Menu: c.RailMenu(), PersistentMenu: c.NavCollapse == "hidden"}
+	if c.RailFAB() {
+		p.FAB = &ui.FABProps{Label: "Create", Icon: "edit", Attrs: templ.Attributes{"data-navigation-create": "", "aria-label": "Create file"}}
 	}
-	return templ.Attributes{"type": "button", "class": class, "data-size": "default", "data-variant": "primary-container", "data-navigation-create": "", "aria-label": "Create file"}
+	return p
 }
 
 func configureNavBarPreview(page *componentPreview, query url.Values) error {

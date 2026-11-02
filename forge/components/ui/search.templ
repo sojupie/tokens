@@ -7,7 +7,7 @@ templ Search(p SearchProps) {
 	@Require("search")
 	<div { attributes(templ.Attributes{"class":"md-search-demo","data-interactive":"true","data-disclosure":fmt.Sprint(p.Expanded)},p.Attrs)... }>
 		<div class="md-search-scene">
-			<section class="md-search-page">
+			<section class="md-search-page" data-search-background>
 				if p.Page!=nil {
 					@p.Page
 				}
@@ -101,7 +101,8 @@ templ SearchBar(p SearchProps, label string, value string, disclosure bool) {
 				</span>
 			}
 			if p.Leading=="menu" {
-				<button class="md-icon-button md-standard-icon-button md-search-navigation" data-size="small" data-shape="round" type="button" data-search-navigation aria-label="Open navigation" aria-haspopup="dialog" aria-controls={ p.ID + "-navigation" }>
+                @Require("navigation")
+				<button class="md-icon-button md-standard-icon-button md-search-navigation" data-size="small" data-shape="round" type="button" data-search-navigation data-navigation-open aria-label="Open navigation" aria-haspopup="dialog" aria-controls={ p.ID + "-navigation" }>
 					@Icon("menu")
 				</button>
 			}

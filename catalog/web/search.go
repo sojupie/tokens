@@ -111,59 +111,25 @@ func (c componentCase) SearchNavigationPanel() templ.Attributes {
 	return a
 }
 
-func searchMailNavigation() componentCase {
-	return componentCase{Family: "nav-rail", Variant: "collapsed", State: "interactive", Size: "default", Width: "default", Orientation: "vertical", Selected: true, NavHeader: "fab"}
-}
-func (c componentCase) SearchMailNavigation() templ.Attributes {
-	child := searchMailNavigation()
-	a := child.Attributes()
-	a["data-component-case"] = c.ID() + "-mail-" + child.Family
-	a["class"] = a["class"].(string) + " md-search-mail-nav"
-	return a
+func (c componentCase) SearchMailRail() ui.RailProps {
+	return ui.RailProps{NavigationProps: ui.NavigationProps{ID: c.ID() + "-mail-nav", Label: "Mail navigation", Variant: "collapsed", Width: "default", Alignment: "top", Attrs: templ.Attributes{"class": "md-search-mail-nav"}}, FAB: &ui.FABProps{Label: "Compose", Icon: "edit", Variant: "tertiary-container", Attrs: templ.Attributes{"data-search-compose": ""}}}
 }
 func (c componentCase) SearchMailDestination(index int) templ.Attributes {
-	a := searchMailNavigation().NavigationItem(index)
-	a["aria-controls"] = c.ID() + "-mail-screen"
-	a["data-search-mail-destination"] = fmt.Sprint(index)
-	return a
+	return templ.Attributes{"aria-controls": c.ID() + "-mail-screen", "data-search-mail-destination": fmt.Sprint(index)}
 }
-func (c componentCase) SearchCompose() templ.Attributes {
-	child := componentCase{Family: "fab", Variant: "tertiary-container", Size: "default", State: "interactive"}
-	a := child.Attributes()
-	a["data-component-case"] = c.ID() + "-compose-" + child.Family
-	a["data-search-compose"] = ""
-	a["aria-label"] = "Compose"
-	return a
+func (c componentCase) SearchMessageList() ui.ListProps {
+	return ui.ListProps{ID: c.ID() + "-messages", Label: "Inbox messages", Appearance: ui.Expressive, Lines: ui.ThreeLines, Leading: ui.LeadingAvatar}
 }
-func searchMessageList() componentCase {
-	return componentCase{Family: "list", Variant: "standard", Size: "three-line", Shape: "baseline", Width: "avatar", State: "interactive", Control: "select", Selection: "single", Selected: true, ListDivider: "none", ListTrailing: "text", ListText: "overline"}
-}
-func (c componentCase) SearchMessageList() templ.Attributes {
-	a := searchMessageList().Attributes()
-	a["data-component-case"] = c.ID() + "-messages"
-	a["aria-label"] = "Inbox messages"
-	return a
-}
-func (c componentCase) SearchMessageItem(index int, label string) templ.Attributes {
-	a := searchMessageList().ListItemWithLabel(index, label)
-	a["data-search-message"] = label
-	return a
+func (c componentCase) SearchMessage(index int, label string) ui.ListItemProps {
+	selected := index == 0
+	return ui.ListItemProps{Label: label, Supporting: "Review the latest component updates and examples.", Overline: "Design team", Avatar: "D", Metadata: "09:30", LeadingKind: ui.LeadingAvatar, Selected: &selected, Attrs: templ.Attributes{"data-search-message": label}}
 }
 func (c componentCase) SearchMessageSurface() templ.Attributes {
-	a := (componentCase{Family: "card", Variant: "filled", State: "enabled"}).Attributes()
-	a["class"] = "md-card md-filled-card md-search-mail-detail"
-	a["id"] = c.ID() + "-mail-screen"
-	a["data-component-case"] = c.ID() + "-message-card"
-	return a
+	return templ.Attributes{"class": "md-search-mail-detail", "id": c.ID() + "-mail-screen", "data-search-background": ""}
 }
-
-func (c componentCase) SearchReply() templ.Attributes {
-	a := (componentCase{Family: "button", Variant: "filled", Size: "small", Shape: "round", State: "interactive"}).Attributes()
-	a["data-button-case"] = c.ID() + "-reply"
-	a["data-search-reply"] = ""
-	return a
+func (c componentCase) SearchReply() ui.ButtonProps {
+	return ui.ButtonProps{Variant: ui.Filled, Attrs: templ.Attributes{"data-search-reply": ""}}
 }
-
 func (c componentCase) searchProps(label, value string, disclosure bool) ui.SearchProps {
 	return ui.SearchProps{ID: c.ID(), AvatarText: "A", Options: searchExampleOptions(c.ID()), Label: label, Value: value, Variant: c.Variant, Control: c.Control, Leading: c.Shape, Actions: c.Width, Elevation: c.SearchElevation, Expanded: c.Expanded, Disclosure: disclosure, BarAttrs: c.SearchBar(), PanelAttrs: c.SearchPanel()}
 }

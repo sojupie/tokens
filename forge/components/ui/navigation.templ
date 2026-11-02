@@ -1,5 +1,7 @@
 package ui
 
+import "fmt"
+
 templ DrawerToggle(target string, label string) {
 	@Require("navigation")
 	@Button(templ.Attributes{"class": "md-icon-button md-standard-icon-button", "data-size": "small", "data-shape": "round", "data-width": "default", "data-navigation-open": "", "aria-label": label, "aria-haspopup": "dialog", "aria-expanded": "false", "aria-controls": target}) {
@@ -119,4 +121,34 @@ templ RailFrame(attrs templ.Attributes, navigation templ.Component, toggle ...te
 			{ children... }
 		</div>
 	</div>
+}
+
+// NavigationRail supplies the same header, FAB and item layout to every consumer.
+templ NavigationRail(p RailProps) {
+ {{ p.Kind = "rail"; p.Alignment = fallback(p.Alignment,"top") }}
+ @NavigationRegion(p.NavigationProps) {
+  if p.Menu || p.FAB != nil {
+   <header>
+    if p.Menu {
+     if p.PersistentMenu {
+      <span class="md-rail-menu-slot" aria-hidden="true"></span>
+     } else {
+      @RailToggle(p.expanded(), nil)
+     }
+    }
+    if p.FAB != nil {
+     @fab(p.fab(), true)
+    }
+   </header>
+  }
+  @NavigationItems() { { children... } }
+ }
+}
+
+templ RailToggle(expanded bool, attrs templ.Attributes) {
+ @Require("navigation")
+ @IconButtonContent(IconButtonProps{Variant:"standard", Label:map[bool]string{true:"Collapse navigation",false:"Expand navigation"}[expanded],Size:Small,Shape:Round,Attrs:attributes(templ.Attributes{"class":"md-rail-menu","data-navigation-expand":true,"aria-expanded":fmt.Sprint(expanded)},attrs)}) {
+  <span data-navigation-menu-icon>@Icon("menu")</span>
+  <span data-navigation-collapse-icon>@Icon("menu_open")</span>
+ }
 }

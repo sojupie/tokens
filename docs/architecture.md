@@ -88,11 +88,13 @@ The server verifies their publication manifest checksums and retains the bytes a
 startup. Older asset manifests keep the complete theme as a fallback.
 
 Catalog uses the Forge Go/templ API for shared component anatomy, including
-playgrounds, dialogs, table controls, scenes and implementation downloads. Catalog
+playgrounds, dialogs, table controls and implementation downloads. Catalog
 owns sample content, application actions and the exterior playground environment.
 Custom component and tool tiles remain site designs. Consumer classes and hooks
 use `Attrs` and slot attributes; recurring anatomy and behavior fixes belong in Forge.
-See [component authoring](reference/components-api.md) for the API contract.
+See [component authoring](reference/components-api.md) for the API contract and
+[the migration checklist](component-api-refactor-plan.md) for remaining adapter
+and standalone interaction audits. API imports alone do not establish adoption.
 
 Catalog uses native HTML/CSS/JavaScript components and shared Go templ controls.
 Forge does not publish a Web Components package.

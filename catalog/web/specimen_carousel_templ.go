@@ -61,7 +61,7 @@ func carouselSurface(c componentCase, demonstration bool) templ.Component {
 			templ_7745c5c3_Var2 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		p := ui.CarouselProps{Label: "Example carousel", Attrs: c.Attributes()}
+		p := ui.CarouselProps{Label: "Example carousel", Variant: c.Variant, Orientation: c.Orientation, Scrolling: c.CarouselScroll, Attrs: c.Attributes()}
 		if demonstration {
 			p.Header = carouselExampleHeader(c)
 			p.Actions = carouselExampleActions(c)

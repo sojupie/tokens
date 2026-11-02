@@ -3,6 +3,7 @@ package web
 import (
 	"bytes"
 	"context"
+	"github.com/sojupie/tokens/forge/components/ui"
 	"strings"
 	"testing"
 )
@@ -104,14 +105,18 @@ func TestSearchElevationIsExplicit(t *testing.T) {
 func TestAdaptiveSearchUsesComponentPrimitives(t *testing.T) {
 	c := componentCase{Family: "search", Variant: "adaptive", Control: "contained", Shape: "icon", Width: "clear", State: "interactive"}
 	var html bytes.Buffer
-	if err := componentSpecimen(c).Render(context.Background(), &html); err != nil {
+	assets := ui.Assets{}
+	if err := componentSpecimen(c).Render(ui.WithAssets(context.Background(), assets), &html); err != nil {
 		t.Fatal(err)
 	}
 	text := html.String()
-	for _, family := range []string{"nav-rail", "list", "card", "fab"} {
-		if !strings.Contains(text, `data-family="`+family+`"`) {
-			t.Errorf("composition missing %s primitive", family)
+	for _, module := range []string{"navigation", "list", "card", "fab", "search"} {
+		if !assets[module] {
+			t.Errorf("composition missing %s dependency", module)
 		}
+	}
+	if !strings.Contains(text, "md-nav-fab") {
+		t.Fatal("nested FAB must use rail anatomy")
 	}
 	if strings.Contains(text, `data-family="nav-drawer"`) {
 		t.Fatal("adaptive composition must not include a drawer")
@@ -119,8 +124,8 @@ func TestAdaptiveSearchUsesComponentPrimitives(t *testing.T) {
 	if strings.Count(text, `data-search-message=`) != len(searchExamples) || strings.Count(text, `class="md-list-avatar-label"`) != len(searchExamples) {
 		t.Fatal("mail content must use the shared list avatar slots for every message")
 	}
-	if !strings.Contains(text, `data-button-case="`+c.ID()+`-reply"`) {
-		t.Fatal("reply must use the shared button renderer")
+	if !strings.Contains(text, `data-search-reply`) || !strings.Contains(text, `data-shape="expressive"`) {
+		t.Fatal("mail content must use typed action and expressive list configuration")
 	}
 	if strings.Count(text, `class="md-search-input"`) != 1 {
 		t.Fatal("composition must keep a single search input")

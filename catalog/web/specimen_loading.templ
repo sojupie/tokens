@@ -5,7 +5,7 @@ templ specimenLoading(c componentCase) {
 	@useComponentAssets("loading")
 	@useComponentAssets("progress")
 	<div class="md-progress-demo" data-loading-adaptive?={ c.State=="interactive" }>
-		@ui.LoadingSurface(c.ProgressAttributes(),loadingInitialPath(c.Control),loadingRotation(c.Control))
+		@ui.Loading(c.progressProps("Loading preview content"))
 		if c.State=="interactive" && c.Control=="determinate" {
 			<div class="md-progress-control">@componentSpecimen(c.ProgressControl())
 <output class="md-typescale-body-small">40%</output></div>
@@ -16,5 +16,5 @@ templ specimenLoading(c componentCase) {
 templ loadingSurface(c componentCase) {
 @useComponentAssets("loading")
 @useComponentAssets("progress")
-@ui.LoadingSurface(c.ProgressAttributes(),loadingInitialPath(c.Control),loadingRotation(c.Control))
+@ui.Loading(c.progressProps("Loading preview content"))
 }

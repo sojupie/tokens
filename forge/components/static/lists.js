@@ -15,7 +15,7 @@
     item.setAttribute('aria-selected',String(selected));
     announce(list,item.dataset.listLabel+(selected?' selected.':' unselected.'));
   }
-  const announce=(list,text)=>{for(const output of list.closest('.md-list-demo').querySelectorAll('output'))output.textContent=text;};
+  const announce=(list,text)=>{const host=list.closest('[data-list-host],.md-list-demo'),status=host?.querySelector('[data-list-status]');if(status)status.textContent=text;list.dispatchEvent(new CustomEvent('md-list-change',{bubbles:true,detail:{text}}));};
   const timing=element=>MaterialMotion.timing(element,'default-spatial');
   const cancelFeedback=button=>button.dispatchEvent(new CustomEvent('material:cancel-feedback',{bubbles:true}));
   // Baseline list measurements top-align content at 88dp, including rows
@@ -57,7 +57,7 @@
     const items=rows(list),row=items.find(item=>item.hasAttribute('data-list-action-target'));
     if(!row)return;
     const index=items.indexOf(row);
-    for(const button of list.closest('.md-list-demo').querySelectorAll('[data-list-move]'))button.disabled=primary(row).disabled||(button.dataset.listMove==='up'&&index===0)||(button.dataset.listMove==='down'&&index===items.length-1);
+    for(const button of list.closest('[data-list-host],.md-list-demo').querySelectorAll('[data-list-move]'))button.disabled=primary(row).disabled||(button.dataset.listMove==='up'&&index===0)||(button.dataset.listMove==='down'&&index===items.length-1);
   }
   function move(row,index) {
     const list=row.parentElement,items=rows(list),from=new Map(items.map(item=>[item,item.getBoundingClientRect().top]));
@@ -84,7 +84,7 @@
     if(state.id!==undefined&&state.handle?.hasPointerCapture(state.id))state.handle.releasePointerCapture(state.id);
   }
   document.addEventListener('click',event=>{
-    const row=event.target.closest?.('[data-list-row]')||(event.target.closest?.('[data-list-move]')&&event.target.closest('.md-list-demo').querySelector('[data-list-action-target]'));if(!row)return;
+    const row=event.target.closest?.('[data-list-row]')||(event.target.closest?.('[data-list-move]')&&event.target.closest('[data-list-host],.md-list-demo').querySelector('[data-list-action-target]'));if(!row)return;
     const native=row.querySelector('.md-list-selection-control > input');
     if(native&&!event.target.closest('.md-list-selection-control')&&!event.target.closest('button')){if(!native.disabled)native.click();return;}
     const list=row.closest('.md-list'),button=event.target.closest('button');if(!button||button.disabled)return;
@@ -93,7 +93,7 @@
     if(button.hasAttribute('data-list-reveal-action')){reveal(row,false);primary(row).focus();announce(list,row.dataset.listLabel+' marked done.');return;}
     if(button.hasAttribute('data-list-grip')){
       for(const item of rows(list)){item.toggleAttribute('data-list-action-target',item===row);if(item===row)primary(item).setAttribute('data-dragged','true');else primary(item).removeAttribute('data-dragged');}
-      const sheet=list.closest('.md-list-demo').querySelector('[data-list-reorder-sheet]');sheet.setAttribute('aria-label','Reorder '+row.dataset.listLabel);
+      const sheet=list.closest('[data-list-host],.md-list-demo').querySelector('[data-list-reorder-sheet]');sheet.setAttribute('aria-label','Reorder '+row.dataset.listLabel);
       if(!sheet.dataset.listTargetCleanup){sheet.dataset.listTargetCleanup='true';sheet.addEventListener('close',()=>{for(const item of rows(list)){item.removeAttribute('data-list-action-target');primary(item).removeAttribute('data-dragged');}});}
       updateMoveActions(list);sheet.querySelector('[data-list-move]:not(:disabled)')?.focus({preventScroll:true});return;
     }

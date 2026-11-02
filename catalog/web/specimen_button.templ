@@ -3,7 +3,7 @@ package web
 import "github.com/sojupie/tokens/forge/components/ui"
 
 templ specimenButton(c componentCase) {
-	@ui.Button(c.Attributes()) {
+	@ui.Action(ui.ButtonProps{Variant:ui.ButtonVariant(c.Variant),Size:ui.Size(c.Size),Shape:ui.ButtonShape(c.Shape),Disabled:c.State=="disabled",Attrs:c.Attributes()}) {
 		@materialSymbol("check")
 		<span>Button</span>
 	}

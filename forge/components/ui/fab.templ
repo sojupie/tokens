@@ -1,10 +1,14 @@
 package ui
 
 templ FAB(p FABProps) {
+ @fab(p, false)
+}
+
+templ fab(p FABProps, retainLabel bool) {
 	@Require("fab")
 	<button { p.Attributes()... }>
 		@Icon(p.Icon)
-		if p.Extended {
+		if p.Extended || retainLabel {
 			<span>{ p.Label }</span>
 		}
 	</button>

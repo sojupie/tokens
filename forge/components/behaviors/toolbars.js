@@ -6,7 +6,7 @@
       value = (key) =>
         Number.parseFloat(style.getPropertyValue("--_toolbar-" + key));
     const demo = group.parentElement,
-      scene = demo.closest(".md-toolbar-scene"),
+      scene = demo.closest("[data-toolbar-viewport],.md-toolbar-scene") || demo,
       items = [...group.querySelectorAll("[data-toolbar-item]")];
     items.forEach((item) => (item.hidden = false));
     const width = (item) => {
@@ -42,7 +42,6 @@
         ) + "px",
       );
     } else {
-      if (!scene) return;
       const vertical = group.dataset.orientation === "vertical",
         clearance =
           parseFloat(

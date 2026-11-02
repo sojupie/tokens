@@ -39,7 +39,7 @@ func playgroundAppbar(c componentCase) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		if c.Control == "search" && c.State == "interactive" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"md-appbar-demo md-search-demo\" data-interactive=\"true\"><div class=\"md-search-scene md-appbar-search-scene\"><section class=\"md-search-page\" data-appbar-demo data-interactive=\"true\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"md-appbar-demo md-search-demo\" data-interactive=\"true\"><div class=\"md-search-scene md-appbar-search-scene\"><section class=\"md-search-page\" data-search-background data-appbar-demo data-interactive=\"true\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -325,7 +325,7 @@ func playgroundSearch(c componentCase) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, " <label class=\"md-search-composition-size\">Composition width <input type=\"range\" min=\"320\" max=\"1200\" value=\"1200\" step=\"1\" data-search-composition-width><output data-search-composition-width-label>Fit to available space</output></label><div class=\"md-search-workspace\"><div class=\"md-search-app\"><div class=\"md-search-mail-navigation\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, " <label class=\"md-search-composition-size\">Composition width <input type=\"range\" min=\"320\" max=\"1200\" value=\"1200\" step=\"1\" data-search-composition-width><output data-search-composition-width-label>Fit to available space</output></label><div class=\"md-search-workspace\" data-search-viewport><div class=\"md-search-app\"><div class=\"md-search-mail-navigation\" data-search-background>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -401,13 +401,13 @@ func playgroundSearch(c componentCase) templ.Component {
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = ui.Button(c.SearchReply()).Render(templ.WithChildren(ctx, templ_7745c5c3_Var13), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = ui.Action(c.SearchReply()).Render(templ.WithChildren(ctx, templ_7745c5c3_Var13), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = ui.CardSurface(ui.CardProps{Attrs: c.SearchMessageSurface()}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var11), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = ui.CardSurface(ui.CardProps{Variant: "filled", Attrs: c.SearchMessageSurface()}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var11), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -788,29 +788,7 @@ func playgroundList(c componentCase) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var25 = []any{"md-list-demo", templ.KV("md-sheet-demo", c.Control == "reorder")}
-		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var25...)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 56, "<div class=\"")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var26 string
-		templ_7745c5c3_Var26, templ_7745c5c3_Err = templ.JoinStringErrs(templ.CSSClasses(templ_7745c5c3_Var25).String())
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/playground_environment.templ`, Line: 1, Col: 0}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var26))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 57, "\" data-interactive=\"true\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Var27 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_Var25 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
 			if !templ_7745c5c3_IsBuffer {
@@ -822,20 +800,7 @@ func playgroundList(c componentCase) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			for index := range 3 {
-				templ_7745c5c3_Err = ui.ListRowFrame(ui.ListRowFrameProps{Attrs: templ.Attributes{"role": c.ListRowRole(), "data-list-row": "", "data-list-label": c.ListLabel(index), "data-list-expanded": fmt.Sprint(c.Control == "expand" && c.Expanded && index == 0)}, ContentAttrs: c.ListItem(index), Native: c.ListNativeKind() != "", Content: listContents(c, index), Before: listExampleBefore(c, index), After: listExampleAfter(c, index), Expanded: listExampleExpanded(c, index), ChildrenAttrs: templ.Attributes{"aria-label": c.ListLabel(index) + " items", "id": fmt.Sprintf("%s-children-%d", c.ID(), index), "hidden": !(c.Expanded && index == 0)}}).Render(ctx, templ_7745c5c3_Buffer)
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-			}
-			return nil
-		})
-		templ_7745c5c3_Err = ui.List(ui.ListProps{Attrs: c.ListContainerAttributes()}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var27), templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		if c.Control == "reorder" {
-			templ_7745c5c3_Var28 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+			templ_7745c5c3_Var26 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 				templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 				templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
 				if !templ_7745c5c3_IsBuffer {
@@ -847,38 +812,73 @@ func playgroundList(c componentCase) templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				for _, direction := range []string{"up", "down"} {
-					templ_7745c5c3_Var29 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
-						templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
-						templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
-						if !templ_7745c5c3_IsBuffer {
-							defer func() {
-								templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
-								if templ_7745c5c3_Err == nil {
-									templ_7745c5c3_Err = templ_7745c5c3_BufErr
-								}
-							}()
-						}
-						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = ui.ListContent(ui.ListItemProps{Label: "Move " + direction, SingleLine: true, LeadingKind: ui.LeadingIcon, Leading: ui.Icon(map[string]string{"up": "arrow_upward", "down": "arrow_downward"}[direction])}).Render(ctx, templ_7745c5c3_Buffer)
-						if templ_7745c5c3_Err != nil {
-							return templ_7745c5c3_Err
-						}
-						return nil
-					})
-					templ_7745c5c3_Err = ui.Button(c.ListMoveAction(0, direction)).Render(templ.WithChildren(ctx, templ_7745c5c3_Var29), templ_7745c5c3_Buffer)
+				for index := range 3 {
+					templ_7745c5c3_Err = ui.ListRowFrame(ui.ListRowFrameProps{Attrs: templ.Attributes{"role": c.ListRowRole(), "data-list-row": "", "data-list-label": c.ListLabel(index), "data-list-expanded": fmt.Sprint(c.Control == "expand" && c.Expanded && index == 0)}, ContentAttrs: c.ListItem(index), Native: c.ListNativeKind() != "", Content: listContents(c, index), Before: listExampleBefore(c, index), After: listExampleAfter(c, index), Expanded: listExampleExpanded(c, index), ChildrenAttrs: templ.Attributes{"aria-label": c.ListLabel(index) + " items", "id": fmt.Sprintf("%s-children-%d", c.ID(), index), "hidden": !(c.Expanded && index == 0)}}).Render(ctx, templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = ui.ListReorderSheet(c.ID()+"-reorder").Render(templ.WithChildren(ctx, templ_7745c5c3_Var28), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = ui.List(ui.ListProps{Attrs: c.ListContainerAttributes()}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var26), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 58, "<output class=\"md-typescale-body-small\" aria-live=\"polite\"></output></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 56, " ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			if c.Control == "reorder" {
+				templ_7745c5c3_Var27 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+					templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+					templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+					if !templ_7745c5c3_IsBuffer {
+						defer func() {
+							templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+							if templ_7745c5c3_Err == nil {
+								templ_7745c5c3_Err = templ_7745c5c3_BufErr
+							}
+						}()
+					}
+					ctx = templ.InitializeContext(ctx)
+					for _, direction := range []string{"up", "down"} {
+						templ_7745c5c3_Var28 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+							templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+							templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+							if !templ_7745c5c3_IsBuffer {
+								defer func() {
+									templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+									if templ_7745c5c3_Err == nil {
+										templ_7745c5c3_Err = templ_7745c5c3_BufErr
+									}
+								}()
+							}
+							ctx = templ.InitializeContext(ctx)
+							templ_7745c5c3_Err = ui.ListContent(ui.ListItemProps{Label: "Move " + direction, SingleLine: true, LeadingKind: ui.LeadingIcon, Leading: ui.Icon(map[string]string{"up": "arrow_upward", "down": "arrow_downward"}[direction])}).Render(ctx, templ_7745c5c3_Buffer)
+							if templ_7745c5c3_Err != nil {
+								return templ_7745c5c3_Err
+							}
+							return nil
+						})
+						templ_7745c5c3_Err = ui.Button(c.ListMoveAction(0, direction)).Render(templ.WithChildren(ctx, templ_7745c5c3_Var28), templ_7745c5c3_Buffer)
+						if templ_7745c5c3_Err != nil {
+							return templ_7745c5c3_Err
+						}
+					}
+					return nil
+				})
+				templ_7745c5c3_Err = ui.ListReorderSheet(c.ID()+"-reorder").Render(templ.WithChildren(ctx, templ_7745c5c3_Var27), templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 57, " <output class=\"md-typescale-body-small\" aria-live=\"polite\"></output>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			return nil
+		})
+		templ_7745c5c3_Err = ui.ListHost(templ.Attributes{"class": templ.Classes("md-list-demo", templ.KV("md-sheet-demo", c.Control == "reorder")).String(), "data-interactive": "true"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var25), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

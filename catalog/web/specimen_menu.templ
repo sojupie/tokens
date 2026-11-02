@@ -52,12 +52,7 @@ func menuExampleSupporting(c componentCase, index int) string {
 
 templ menuExampleLeading(c componentCase, index int) {
 	if c.Shape=="icon-only" && c.MenuSelectable(index) {
-		<span data-menu-checked-icon hidden?={ !c.MenuSelected(index) }>
-			@ui.Icon("check")
-		</span>
-		<span data-menu-unchecked-icon hidden?={ c.MenuSelected(index) }>
-			@ui.Icon([]string{"star", "download", "edit"}[index])
-		</span>
+		@ui.MenuSelectionIcon(c.MenuSelected(index), []string{"star", "download", "edit"}[index])
 	} else {
 		@ui.Icon([]string{"star", "download", "edit"}[index])
 	}
@@ -67,9 +62,7 @@ templ menuExampleTrailing(c componentCase, index int) {
 	if index==0 && c.Shape=="cascade" {
 		@ui.Icon("chevron_right")
 	} else if c.MenuSelectable(index) {
-		<span data-menu-checked-icon hidden?={ !c.MenuSelected(index) }>
-			@ui.Icon("check")
-		</span>
+		@ui.MenuSelectionIcon(c.MenuSelected(index), "")
 	}
 }
 

@@ -51,8 +51,8 @@ func TestNavigationBadgeSurvivesEitherInitialSelection(t *testing.T) {
 		for i := range c.NavigationLabels() {
 			if c.NavigationHasBadge(i) {
 				count++
-				if c.NavigationItem(i)["aria-current"] == "page" {
-					t.Fatal("badge on viewed content")
+				if i != 1 {
+					t.Fatal("selection changed the badge destination")
 				}
 			}
 		}

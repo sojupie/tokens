@@ -10,17 +10,17 @@ templ searchScene(c componentCase) {
 	@useComponentAssets("list")
 	@useComponentAssets("search")
 	<div class="md-search-scene">
-		<section class="md-search-page">
+		<section class="md-search-page" data-search-background>
 			if c.Variant=="adaptive" {
 				<h3 data-search-folder-title>Inbox</h3>
-				<div class="md-list-demo md-search-messages">
-					@ui.List(ui.ListProps{Attrs: c.SearchMessageList()}) {
+				@ui.ListHost(templ.Attributes{"class":"md-list-demo md-search-messages"}) {
+					@ui.List(c.SearchMessageList()) {
 						for index,label:=range searchExamples {
-							@ui.ListRowFrame(ui.ListRowFrameProps{Attrs: templ.Attributes{"data-list-row": "", "data-list-label": label}, ContentAttrs: c.SearchMessageItem(index, label), Content: searchExampleMessage(index, label)})
+							@ui.ListButton(c.SearchMessage(index,label))
 						}
 					}
 					<output class="tokens-visually-hidden" aria-live="polite"></output>
-				</div>
+				}
 			} else {
 				<h3 data-search-page-title>Component library</h3>
 				<p data-search-page-description>Find controls and patterns for your next screen.</p>
@@ -42,23 +42,11 @@ templ searchScene(c componentCase) {
 }
 
 templ searchCompositionNavigation(c componentCase) {
-	@useComponentAssets("navigation")
-	@useComponentAssets("fab")
-	@ui.NavigationSurface(c.SearchMailNavigation(), false) {
-		<header>
-			@ui.Button(c.SearchCompose()) {
-				@materialSymbol("edit")
-			}
-		</header>
-		@ui.NavigationItems() {
-			for index,label:=range []string{"Inbox","Chat","Spaces"} {
-				@ui.Button(c.SearchMailDestination(index)) {
-					@navigationItemContents(searchMailNavigation(), index, label, []string{"mail", "chat", "groups"}[index])
-				}
-			}
-		}
-		<output class="tokens-visually-hidden" aria-live="polite"></output>
-	}
+ @ui.NavigationRail(c.SearchMailRail()) {
+  for index,label:=range []string{"Inbox","Chat","Spaces"} {
+   @ui.NavigationItem(ui.NavigationItemProps{Label:label,Icon:[]string{"mail","chat","groups"}[index],Current:index==0,Attrs:c.SearchMailDestination(index)})
+  }
+ }
 }
 
 templ searchScrim() {
@@ -91,8 +79,4 @@ templ searchBarSurface(c componentCase, label, value string) {
 
 templ searchExampleOptions(id string) {
 	@ui.CheckboxField(ui.ChoiceProps{ID: id + "-exact-names", Label: "Match exact names", InputAttrs: templ.Attributes{"data-search-exact": true}})
-}
-
-templ searchExampleMessage(index int, label string) {
-	@listItemContents(searchMessageList(), index, listItemContent{Label: label, Supporting: "Review the latest component updates and examples.", Overline: "Design team", Avatar: "D", Metadata: "09:30"})
 }

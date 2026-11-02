@@ -186,9 +186,11 @@ templ componentThumbnail(c componentCase) {
 		case "nav-drawer", "nav-rail":
 			<div class="tokens-thumbnail-desktop">
 				<div class="tokens-thumbnail-navigation">
-					@ui.NavigationSurface(c.Attributes(), false, templ.Attributes{"aria-label": "Primary navigation"}) {
-						@navigationDestinations(c, c.NavigationLabels()[:3])
-					}
+					if c.Family == "nav-rail" {
+                        @navigationRailSurface(c, c.NavigationLabels()[:3])
+                    } else {
+                        @ui.NavigationSurface(c.Attributes(), false, templ.Attributes{"aria-label": "Primary navigation"}) { @navigationDestinations(c, c.NavigationLabels()[:3]) }
+                    }
 				</div>
 				<div class="tokens-thumbnail-content">
 					<h3>Recent notes</h3>@thumbnailDocument()

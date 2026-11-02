@@ -9,9 +9,8 @@
   const examples=new WeakMap();
   const stateFor=target=>examples.get(target.closest?.('.md-search-demo'));
   function measure(state){
-    state.panel.dataset.variant=searchLayout(state.panel.dataset.layout,(state.root.querySelector('.md-search-workspace')||state.scene).clientWidth);
+    state.panel.dataset.variant=searchLayout(state.panel.dataset.layout,(state.root.querySelector('[data-search-viewport]')||state.scene).clientWidth);
     state.panel.style.setProperty('--_search-results-height',state.results.scrollHeight+'px');
-    const workspace=state.root.querySelector('.md-search-workspace');if(workspace)state.root.querySelector('[data-search-composition-width-label]').textContent=Math.round(workspace.getBoundingClientRect().width)+'px';
   }
   function filter(state){
     const query=state.input.value.trim();let count=0;
@@ -32,7 +31,7 @@
     state.input.setAttribute('aria-expanded',String(open));state.input.readOnly=!open;
     state.results.inert=!open;state.results.setAttribute('aria-hidden',String(!open));
     state.scrim.hidden=!open;
-    for(const region of [state.page,...state.root.querySelectorAll('.md-search-mail-navigation,.md-search-mail-detail')])region.inert=open;
+    for(const region of state.root.querySelectorAll('[data-search-background]'))region.inert=open;
     state.back.hidden=false;state.back.inert=!open;
     const leading=state.panel.querySelector('.md-search-navigation,.md-search-leading');
     if(leading){leading.hidden=false;leading.inert=open;}
@@ -61,22 +60,19 @@
     if(event.target.closest('[data-search-back],.md-search-scrim')){setOpen(state,false);return;}
     if(event.target.closest('[data-search-clear]')){state.input.value='';state.submitted=false;filter(state);if(state.open)state.input.focus({preventScroll:true});return;}
     const result=event.target.closest('[data-search-result]');
-    if(result){const label=result.dataset.searchResult;for(const item of state.root.querySelectorAll('[data-search-message]'))item.setAttribute('aria-pressed',String(item.dataset.searchMessage===label));state.root.querySelector('[data-search-page-title]').textContent=label;state.root.querySelector('[data-search-page-description]').textContent='Selected from search results.';if(state.panel.dataset.layout==='adaptive')state.root.dataset.messageOpen='true';state.root.querySelector('[data-search-feedback]').textContent=`${label} opened`;setOpen(state,false,state.panel.dataset.layout!=='adaptive');if(state.panel.dataset.layout==='adaptive')state.root.querySelector('[data-search-page-title]').focus({preventScroll:true});return;}
-    const destination=event.target.closest('[data-search-mail-destination]');
-    if(destination){for(const item of state.root.querySelectorAll('[data-search-mail-destination]')){if(item.dataset.searchMailDestination===destination.dataset.searchMailDestination)item.setAttribute('aria-current','page');else item.removeAttribute('aria-current');}state.page.querySelector('[data-search-folder-title]').textContent=destination.querySelector('.md-nav-label').textContent;return;}
-    const message=event.target.closest('[data-search-message]');
-    if(message){for(const item of state.root.querySelectorAll('[data-search-message]'))item.setAttribute('aria-pressed',String(item===message));state.root.querySelector('[data-search-page-title]').textContent=message.dataset.searchMessage;state.root.querySelector('[data-search-page-description]').textContent='Review the latest component updates and examples.';state.root.dataset.messageOpen='true';state.root.querySelector('[data-search-page-title]').focus({preventScroll:true});return;}
-    if(event.target.closest('[data-search-message-back]')){delete state.root.dataset.messageOpen;state.root.querySelector('[data-search-message][aria-pressed="true"]')?.focus({preventScroll:true});return;}
-    if(event.target.closest('[data-search-compose],[data-search-reply]')){state.root.querySelector('[data-search-feedback]').textContent='Example mail composition: use search to explore the component.';return;}
-    if(event.target.closest('[data-search-navigation]'))state.root.querySelector('[data-search-navigation-panel]').showModal();
-    if(event.target.closest('.md-search-avatar'))state.root.querySelector('[data-search-feedback]').textContent='Profile selected';
+    if(result){
+      const label=result.dataset.searchResult;
+      setOpen(state,false);
+      state.root.dispatchEvent(new CustomEvent('md-search-select',{bubbles:true,detail:{label}}));
+      return;
+    }
+    if(event.target.closest('.md-search-avatar'))state.root.dispatchEvent(new CustomEvent('md-search-profile',{bubbles:true}));
   });
   document.addEventListener('change',event=>{
     if(!event.target.matches?.('[data-search-exact]'))return;
     const state=stateFor(event.target);if(state){state.exact=event.target.checked;filter(state);}
   });
   document.addEventListener('input',event=>{
-    if(event.target.matches?.('[data-search-composition-width]')){const root=event.target.closest('.md-search-demo');root.querySelector('.md-search-workspace').style.setProperty('--_search-composition-width',event.target.value+'px');measure(stateFor(event.target));return;}
     if(!event.target.matches?.('.md-search-input'))return;
     const state=stateFor(event.target);if(state){state.submitted=false;filter(state);}
   });

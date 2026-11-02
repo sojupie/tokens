@@ -89,3 +89,11 @@ templ MenuPanel(attrs templ.Attributes) {
 		{ children... }
 	</nav>
 }
+
+// MenuSelectionIcon owns the two icon states coordinated by the menu controller.
+templ MenuSelectionIcon(selected bool, icon string) {
+ <span data-menu-checked-icon hidden?={ !selected }>@Icon("check")</span>
+ if icon != "" {
+  <span data-menu-unchecked-icon hidden?={ selected }>@Icon(icon)</span>
+ }
+}
