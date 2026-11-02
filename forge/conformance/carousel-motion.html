@@ -14,15 +14,15 @@ async function load(variant){
  await wait(100);return{w,d,root,view,items:[...root.querySelectorAll('.md-carousel-item')]};
 }
 function measure(c,i=0){const b=c.items[i],r=b.getBoundingClientRect(),art=b.querySelector('img').getBoundingClientRect();return{left:r.left,top:r.top,width:r.width,height:r.height,imageLeft:art.left,imageTop:art.top,imageWidth:art.width,imageHeight:art.height};}
-function pointer(c,type,button,x=100,y=100){button.dispatchEvent(new c.w.PointerEvent(type,{bubbles:true,pointerId:71,pointerType:'mouse',isPrimary:true,button:0,clientX:x,clientY:y}));}
+function pointer(c,type,button,x=100,y=100,pointerType='mouse'){button.dispatchEvent(new c.w.PointerEvent(type,{bubbles:true,pointerId:71,pointerType,isPrimary:true,button:0,clientX:x,clientY:y}));}
 document.querySelector('#run').onclick=async()=>{
  const tests=[],records=[],check=(name,pass,detail)=>tests.push({name,pass:!!pass,detail});out.textContent='Running';document.querySelector('#run').disabled=true;
  try{for(const variant of variants){
-  const c=await load(variant),before=measure(c);pointer(c,'pointerdown',c.items[0]);await wait(400);const held=measure(c);
+  const c=await load(variant),before=measure(c),input=variant==='uncontained'?'touch':'mouse';pointer(c,'pointerdown',c.items[0],100,100,input);await wait(400);const held=measure(c);
   check(variant+': press widens mask',Math.abs(held.width-before.width-10)<.1,{before,held});
   check(variant+': press preserves image scale/position',Math.abs(held.imageWidth-before.imageWidth)<.1&&Math.abs(held.imageLeft-before.imageLeft)<.1,{before,held});
   check(variant+': pressed mask remains covered by image',held.imageLeft<=held.left+.1&&held.imageLeft+held.imageWidth>=held.left+held.width-.1,{held});
-  pointer(c,'pointerup',c.items[0]);c.items[0].click();await wait(400);const released=measure(c);
+  pointer(c,'pointerup',c.items[0],100,100,input);c.items[0].click();await wait(400);const released=measure(c);
   check(variant+': release restores mask',Math.abs(released.width-before.width)<.1,{before,released});
   const index=1,a=measure(c,index),vertical=variant==='full-screen';
   const free=c.d.createElement('style');free.textContent='.md-carousel-viewport{scroll-snap-type:none!important}';c.d.head.append(free);c.view.scrollTo(vertical?{top:180,behavior:'instant'}:{left:80,behavior:'instant'});await wait(120);const b=measure(c,index);
