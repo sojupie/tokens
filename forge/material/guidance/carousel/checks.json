@@ -800,7 +800,7 @@
     },
     {
       "id": "multibrowse-side-padding",
-      "statement": "Provide padding on both sides of a multi-browse carousel container.",
+      "statement": "Vertically center multi-browse items; use 16dp leading/trailing padding, 8dp top/bottom padding, 8dp between items, and 28dp item corners.",
       "condition": "For multi-browse layout.",
       "basis": "explicit",
       "notes": "",
@@ -814,20 +814,23 @@
           "markdownSha256": "7259d8a111f90537c8958233728578a398f87892343f9cf90eea5fdeac5c2c5a",
           "extractorVersion": 2,
           "summary": "Curated from the captured Measurements instructions."
+        },
+        {
+          "change": "corrected",
+          "date": "2026-11-02",
+          "url": "https://m3.material.io/components/carousel/specs",
+          "section": "bbcb4bcc-33d1-4701-8c2a-77a93d239aae",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "7259d8a111f90537c8958233728578a398f87892343f9cf90eea5fdeac5c2c5a",
+          "extractorVersion": 2,
+          "summary": "Complete the omitted numeric measurements from the same captured specification table; no upstream change."
         }
       ],
       "implementation": {
-        "status": "implemented",
-        "sourceRevision": 1,
-        "assessedBaseline": "8a9e20684205546e4cc303d7b2b1557cab96f793",
-        "evidence": [
-          {
-            "kind": "code",
-            "location": "forge/components/static/carousel.js; forge/components/styles/carousels.css; forge/components/carousel_test.cjs; catalog/web/carousel.go; catalog/web/carousel_test.go; forge/material/generate-components.mjs",
-            "result": "The captured measurement table is applied: 16px inline padding, 8px block padding and 8px item gaps. Container padding is no longer canceled with negative inline margins."
-          }
-        ],
-        "notes": "The captured measurement table is applied: 16px inline padding, 8px block padding and 8px item gaps. Container padding is no longer canceled with negative inline margins."
+        "status": "unassessed",
+        "sourceRevision": 2,
+        "evidence": [],
+        "notes": ""
       },
       "fixes": []
     },
@@ -866,7 +869,7 @@
     },
     {
       "id": "multi-aspect-leading-gap",
-      "statement": "Use leading padding only and 8dp between items in an uncontained multi-aspect-ratio carousel.",
+      "statement": "Vertically center uncontained multi-aspect-ratio items; use 16dp leading padding only, 8dp top/bottom padding, 8dp between items, and 28dp item corners.",
       "condition": "For the uncontained multi-aspect-ratio layout.",
       "basis": "explicit",
       "notes": "",
@@ -880,26 +883,29 @@
           "markdownSha256": "7259d8a111f90537c8958233728578a398f87892343f9cf90eea5fdeac5c2c5a",
           "extractorVersion": 2,
           "summary": "Curated from the captured Measurements instructions."
+        },
+        {
+          "change": "corrected",
+          "date": "2026-11-02",
+          "url": "https://m3.material.io/components/carousel/specs",
+          "section": "fd49e47f-16b3-499d-a526-c5cd4dc6595d",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "7259d8a111f90537c8958233728578a398f87892343f9cf90eea5fdeac5c2c5a",
+          "extractorVersion": 2,
+          "summary": "Complete the omitted numeric measurements from the same captured specification table; no upstream change."
         }
       ],
       "implementation": {
-        "status": "implemented",
-        "sourceRevision": 1,
-        "assessedBaseline": "8a9e20684205546e4cc303d7b2b1557cab96f793",
-        "evidence": [
-          {
-            "kind": "code",
-            "location": "forge/components/static/carousel.js; forge/components/styles/carousels.css; forge/components/carousel_test.cjs; catalog/web/carousel.go; catalog/web/carousel_test.go; forge/material/generate-components.mjs",
-            "result": "Multi-aspect uncontained uses 16px leading padding, zero trailing padding, 8px block padding and 8px item gaps. Its four captured example ratios retain a shared height."
-          }
-        ],
-        "notes": "Multi-aspect uncontained uses 16px leading padding, zero trailing padding, 8px block padding and 8px item gaps. Its four captured example ratios retain a shared height."
+        "status": "unassessed",
+        "sourceRevision": 2,
+        "evidence": [],
+        "notes": ""
       },
       "fixes": []
     },
     {
       "id": "hero-side-padding",
-      "statement": "Provide padding on both sides of the hero carousel container.",
+      "statement": "Vertically center hero items; use 16dp leading/trailing padding, 8dp top/bottom padding, 8dp between items, and 28dp item corners.",
       "condition": "For hero layout.",
       "basis": "explicit",
       "notes": "",
@@ -913,26 +919,29 @@
           "markdownSha256": "7259d8a111f90537c8958233728578a398f87892343f9cf90eea5fdeac5c2c5a",
           "extractorVersion": 2,
           "summary": "Curated from the captured Measurements instructions."
+        },
+        {
+          "change": "corrected",
+          "date": "2026-11-02",
+          "url": "https://m3.material.io/components/carousel/specs",
+          "section": "acf30fbe-5f07-494c-a9e4-28ca204d8e2a",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "7259d8a111f90537c8958233728578a398f87892343f9cf90eea5fdeac5c2c5a",
+          "extractorVersion": 2,
+          "summary": "Complete the omitted numeric measurements from the same captured specification table; no upstream change."
         }
       ],
       "implementation": {
-        "status": "implemented",
-        "sourceRevision": 1,
-        "assessedBaseline": "8a9e20684205546e4cc303d7b2b1557cab96f793",
-        "evidence": [
-          {
-            "kind": "code",
-            "location": "forge/components/static/carousel.js; forge/components/styles/carousels.css; forge/components/carousel_test.cjs; catalog/web/carousel.go; catalog/web/carousel_test.go; forge/material/generate-components.mjs",
-            "result": "Leading hero has 16px inline padding, 8px block padding and 8px gaps. Its large-item keylines are leading-aligned, with a small trailing preview; larger containers can fit additional large items."
-          }
-        ],
-        "notes": "Leading hero has 16px inline padding, 8px block padding and 8px gaps. Its large-item keylines are leading-aligned, with a small trailing preview; larger containers can fit additional large items."
+        "status": "unassessed",
+        "sourceRevision": 2,
+        "evidence": [],
+        "notes": ""
       },
       "fixes": []
     },
     {
       "id": "center-hero-side-padding",
-      "statement": "Provide padding on both sides of a center-aligned hero carousel.",
+      "statement": "Vertically center center-aligned hero items; use 16dp leading/trailing padding, 8dp top/bottom padding, 8dp between items, and 28dp item corners.",
       "condition": "For center-aligned hero layout.",
       "basis": "explicit",
       "notes": "",
@@ -946,26 +955,29 @@
           "markdownSha256": "7259d8a111f90537c8958233728578a398f87892343f9cf90eea5fdeac5c2c5a",
           "extractorVersion": 2,
           "summary": "Curated from the captured Measurements instructions."
+        },
+        {
+          "change": "corrected",
+          "date": "2026-11-02",
+          "url": "https://m3.material.io/components/carousel/specs",
+          "section": "2a9a2deb-896e-42bd-93a7-e15f3ed91ddd",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "7259d8a111f90537c8958233728578a398f87892343f9cf90eea5fdeac5c2c5a",
+          "extractorVersion": 2,
+          "summary": "Complete the omitted numeric measurements from the same captured specification table; no upstream change."
         }
       ],
       "implementation": {
-        "status": "implemented",
-        "sourceRevision": 1,
-        "assessedBaseline": "8a9e20684205546e4cc303d7b2b1557cab96f793",
-        "evidence": [
-          {
-            "kind": "code",
-            "location": "forge/components/static/carousel.js; forge/components/styles/carousels.css; forge/components/carousel_test.cjs; catalog/web/carousel.go; catalog/web/carousel_test.go; forge/material/generate-components.mjs",
-            "result": "Center-aligned hero is a distinct configuration with 16px inline padding, 8px block padding and 8px gaps. The large focal keyline is centered with small keylines on each side."
-          }
-        ],
-        "notes": "Center-aligned hero is a distinct configuration with 16px inline padding, 8px block padding and 8px gaps. The large focal keyline is centered with small keylines on each side."
+        "status": "unassessed",
+        "sourceRevision": 2,
+        "evidence": [],
+        "notes": ""
       },
       "fixes": []
     },
     {
       "id": "fullscreen-edge-to-edge",
-      "statement": "Fill the window edge-to-edge in the full-screen layout.",
+      "statement": "Center the full-screen item and fill the content window edge-to-edge, with zero leading/trailing and top/bottom padding and 16dp between items.",
       "condition": "For full-screen layout.",
       "basis": "explicit",
       "notes": "",
@@ -979,20 +991,23 @@
           "markdownSha256": "7259d8a111f90537c8958233728578a398f87892343f9cf90eea5fdeac5c2c5a",
           "extractorVersion": 2,
           "summary": "Curated from the captured Measurements instructions."
+        },
+        {
+          "change": "corrected",
+          "date": "2026-11-02",
+          "url": "https://m3.material.io/components/carousel/specs",
+          "section": "88f3116e-8248-45a9-a38c-304cc5658a91",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "7259d8a111f90537c8958233728578a398f87892343f9cf90eea5fdeac5c2c5a",
+          "extractorVersion": 2,
+          "summary": "Complete the omitted numeric measurements from the same captured specification table; no upstream change."
         }
       ],
       "implementation": {
-        "status": "implemented",
-        "sourceRevision": 1,
-        "assessedBaseline": "8a9e20684205546e4cc303d7b2b1557cab96f793",
-        "evidence": [
-          {
-            "kind": "code",
-            "location": "forge/components/static/carousel.js; forge/components/styles/carousels.css; forge/components/carousel_test.cjs; catalog/web/carousel.go; catalog/web/carousel_test.go; forge/material/generate-components.mjs",
-            "result": "Full-screen has zero viewport padding and 16px item gaps. Each item occupies the full available frame width, and native edge snapping shows one item when settled. Frame height follows its simulated window orientation."
-          }
-        ],
-        "notes": "Full-screen has zero viewport padding and 16px item gaps. Each item occupies the full available frame width, and native edge snapping shows one item when settled. Frame height follows its simulated window orientation."
+        "status": "unassessed",
+        "sourceRevision": 2,
+        "evidence": [],
+        "notes": ""
       },
       "fixes": []
     },
@@ -1509,6 +1524,110 @@
           }
         ],
         "notes": "Each carousel item is a native button, so focused-item activation uses browser Space/Enter button semantics."
+      },
+      "fixes": []
+    },
+    {
+      "id": "uncontained-measurements",
+      "statement": "Vertically center uncontained items; use 16dp leading padding, 8dp top/bottom padding, 8dp between items, and 28dp item corners.",
+      "condition": "For the ordinary uncontained layout.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-11-02",
+          "url": "https://m3.material.io/components/carousel/specs",
+          "section": "48c7d3d6-3f41-4b4c-8364-3fc7915def55",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "7259d8a111f90537c8958233728578a398f87892343f9cf90eea5fdeac5c2c5a",
+          "extractorVersion": 2,
+          "summary": "Add the measurements omitted from the captured uncontained specification table."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "mixed-aspect-ratio-range",
+      "statement": "Keep uncontained multi-aspect-ratio items between 9:16 and 16:9.",
+      "condition": "For an uncontained multi-aspect-ratio layout.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-11-02",
+          "url": "https://m3.material.io/components/carousel/guidelines",
+          "section": "dfd4376f-a049-4c45-beba-2d90434705f5",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "9568ecdd6d3f4e4d69cd3e1ea6435a93d4ee60c4e30cc7de6fc77a1f730bb66a",
+          "extractorVersion": 2,
+          "summary": "Retain the explicit lower and upper aspect-ratio bounds separately from the requirement to use different widths."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "hero-compact-item-composition",
+      "statement": "Show one large item and one small item at a compact breakpoint; wider screens may show additional large items.",
+      "condition": "For the ordinary hero layout.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-11-02",
+          "url": "https://m3.material.io/components/carousel/guidelines",
+          "section": "5991f961-79aa-4955-b86e-3e15432108e6",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "9568ecdd6d3f4e4d69cd3e1ea6435a93d4ee60c4e30cc7de6fc77a1f730bb66a",
+          "extractorVersion": 2,
+          "summary": "Retain the compact composition and wider-screen exception from the Hero section and video caption."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "hero-reduced-motion-preview",
+      "statement": "With reduced motion, keep hero items at equal size and show the neighboring item only partially.",
+      "condition": "For hero carousels with reduced motion.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-11-02",
+          "url": "https://m3.material.io/components/carousel/accessibility",
+          "section": "c6e0540a-72a9-4251-afc5-408e40aaafa3",
+          "capture": "snapshots/material-guidance/20261025T165258.371412099Z-2581895235/capture.json",
+          "markdownSha256": "198d68ec4b280ade6ce469ca472b3810c238eb2f89bc39e608dca601467faef3",
+          "extractorVersion": 2,
+          "summary": "Retain the hero-specific reduced-motion example, previously omitted from the general reduced-motion check."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
       },
       "fixes": []
     }
