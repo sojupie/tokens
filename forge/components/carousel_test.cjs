@@ -2,23 +2,19 @@ const test=require('node:test'),assert=require('node:assert/strict');
 const {readFileSync}=require('node:fs'),{runInNewContext}=require('node:vm');
 const out={exports:{}};runInNewContext(readFileSync(`${__dirname}/static/carousel.js`,'utf8'),{module:out});
 const {layout,itemFrame,scrollTargets}=out.exports;
-test('multi-browse end transition has monotonic edges and widths',()=>{
- for(const width of [280,384,640,900])for(const preferred of [160,240,320]) {
-  const plan=layout(width,preferred,8,'multi-browse',6);
-  if(plan.variant==='uncontained')continue;
-  const start=5-Math.min(plan.keylines.at(-1).i,5);
-  for(let index=0;index<6;index++) {
-   const first=itemFrame(plan,index,start,6),last=itemFrame(plan,index,5,6);
-   let prior=first;
-   for(let n=1;n<=500;n++) {
-    const frame=itemFrame(plan,index,start+(5-start)*n/500,6);
-    for(const edge of ['left','size']) {
-     const direction=Math.sign(last[edge]-first[edge]);
-     assert.ok(direction*(frame[edge]-prior[edge])>=-1e-8,`${width}/${preferred}: item ${index} ${edge} reversed`);
-     if(direction===0)assert.ok(Math.abs(frame[edge]-first[edge])<1e-8);
-    }
-    prior=frame;
-   }
+test('every resting arrangement retains its size hierarchy and interpolates without overlap',()=>{
+ for(const width of [177,328,736,740,1168])for(const variant of ['multi-browse','hero','center-aligned-hero']){
+  const plan=layout(width,240,8,variant,6),max=variant==='center-aligned-hero'?5:6-plan.big;
+  for(let stop=0;stop<=max;stop++){
+   const visible=Array.from({length:6},(_,i)=>itemFrame(plan,i,stop,6)).filter(f=>f.left>=-.01&&f.left+f.size<=width+.01);
+   assert.ok(visible.some(f=>Math.abs(f.size-plan.large)<.01),`${variant}/${width}/${stop}: large`);
+   assert.ok(visible.some(f=>Math.abs(f.size-plan.small)<.01),`${variant}/${width}/${stop}: small`);
+   if(variant==='multi-browse')assert.ok(visible.some(f=>f.size>plan.small&&f.size<plan.large));
+   if(variant==='center-aligned-hero')assert.equal(visible.filter(f=>Math.abs(f.size-plan.large)<.01).length,1);
+  }
+  for(let n=0;n<=max*100;n++)for(let i=0;i<5;i++){
+   const a=itemFrame(plan,i,n/100,6),b=itemFrame(plan,i+1,n/100,6);
+   assert.ok(b.left-a.left-a.size>=8-.001,`${variant}/${width}/${n}: overlap`);
   }
  }
 });
@@ -58,7 +54,7 @@ test('mouse release settles smoothly before restoring snapping',()=>{
   const document={readyState:'complete',querySelectorAll:()=>[root],addEventListener:(name,fn)=>listeners[name]=fn};
   runInNewContext(readFileSync(`${__dirname}/static/carousel.js`,'utf8'),{
    document,matchMedia:()=>({matches:reduced}),window:{addEventListener(){}},
-   getComputedStyle:()=>({direction:'ltr',paddingInlineStart:'8px',paddingInlineEnd:'8px',getPropertyValue:name=>name==='--_carousel-preferred'?'160px':name==='--md-sys-motion-duration-medium2'?'300ms':name==='--md-sys-motion-easing-standard'?'cubic-bezier(0.2,0,0,1)':'8px'}),
+   getComputedStyle:()=>({direction:'ltr',paddingInlineStart:'8px',paddingInlineEnd:'8px',getPropertyValue:name=>name==='--_carousel-maximum'?'':name==='--_carousel-preferred'?'160px':name==='--md-sys-motion-duration-medium2'?'300ms':name==='--md-sys-motion-easing-standard'?'cubic-bezier(0.2,0,0,1)':'8px'}),
    Animation:class{constructor(effect){this.effect=effect;this.playState='running';clock=this;}play(){}cancel(){}},KeyframeEffect:class{getComputedTiming(){return{progress:clock.playState==='finished'?1:.5};}},requestAnimationFrame:fn=>{nextFrame=fn;return 1;},cancelAnimationFrame(){},
    ResizeObserver:class{constructor(fn){this.fn=fn;}observe(target){this.fn([{target}]);}},
   });
@@ -66,7 +62,7 @@ test('mouse release settles smoothly before restoring snapping',()=>{
   viewport.scrollLeft=-20;scrollListeners.scroll();
   assert.deepEqual(buttons.map(button=>button.style.width),initialWidths,'start overscroll must not become forward motion');
   viewport.scrollLeft=0;
-  listeners.pointerdown({target,pointerType:'mouse',button:0,pointerId:1,clientX:500,timeStamp:0});
+  calls.length=0;listeners.pointerdown({target,pointerType:'mouse',button:0,pointerId:1,clientX:500,timeStamp:0});
   listeners.pointermove({pointerId:1,clientX:440,timeStamp:60,preventDefault(){}});
   assert.equal(viewport.scrollLeft,60);
   scrollListeners.scrollend(); // An idle moment while held is not the end of the gesture.
@@ -98,7 +94,7 @@ test('hero layouts are distinct and dynamic small items stay in the captured 40â
    const plan=layout(width,240,8,variant,6);
    if(plan.variant==='uncontained')continue;
    assert.ok(plan.small>=40&&plan.small<=56);
-   const first=itemFrame(plan,0,0,6);
+   const first=itemFrame(plan,variant==='center-aligned-hero'?1:0,variant==='center-aligned-hero'?1:0,6);
    if(variant==='center-aligned-hero')assert.ok(Math.abs(first.left+first.size/2-width/2)<.001);
    else assert.ok(Math.abs(first.left)<.001);
    if(variant==='hero')assert.ok(plan.keylines.filter(k=>k.size===plan.small).length===2);
@@ -119,19 +115,19 @@ function nativeCarousel({variant='uncontained',reduced=false,scrolling='free',sh
  };
  const controls={},root={dataset:{variant,scrolling},style:{setProperty(){}},
   querySelectorAll:selector=>['.md-carousel-slot','.md-carousel-snap'].includes(selector)?slots:buttons,
-  querySelector:selector=>selector==='.md-carousel-scroll-track'?{}:selector==='.md-carousel-viewport'?viewport:selector==='output'?output:!showControls&&selector.startsWith('[data-carousel-step=')?null:controls[selector]??={},
+  querySelector:selector=>selector==='.md-carousel-scroll-track'?{}:selector==='.md-carousel-viewport'?viewport:selector==='output'?(showControls?output:null):!showControls&&selector.startsWith('[data-carousel-step=')?null:controls[selector]??={},
  };
  const target={closest:selector=>selector==='.md-carousel'?root:selector==='.md-carousel-viewport'?viewport:null};
  const document={readyState:'complete',querySelectorAll:()=>[root],addEventListener:(name,fn)=>listeners[name]=fn};
  runInNewContext(readFileSync(`${__dirname}/static/carousel.js`,'utf8'),{
   document,matchMedia:()=>({matches:reduced}),window:{addEventListener(){}},
-  getComputedStyle:()=>({direction:'ltr',paddingInlineStart:'16px',paddingInlineEnd:'0px',getPropertyValue:name=>name==='--_carousel-preferred'?'160px':'8px'}),
+  getComputedStyle:()=>({direction:'ltr',paddingInlineStart:'16px',paddingInlineEnd:'0px',getPropertyValue:name=>name==='--_carousel-maximum'?'':name==='--_carousel-preferred'?'160px':'8px'}),
   ResizeObserver:class{observe(){}},
  });
- return{root,viewport,buttons,moves,drag(){
+ moves.length=0;return{root,viewport,buttons,moves,drag(distance=60,fast=false){
   listeners.pointerdown({target,pointerType:'mouse',button:0,pointerId:1,clientX:200,timeStamp:0});
-  listeners.pointermove({pointerId:1,clientX:140,timeStamp:60,preventDefault(){}});
-  listeners.pointerup({pointerId:1,timeStamp:200});
+  listeners.pointermove({pointerId:1,clientX:200-distance,timeStamp:60,preventDefault(){}});
+  listeners.pointerup({pointerId:1,timeStamp:fast?70:200});
  }};
 }
 test('uncontained variants retain native item widths and free-scroll positions on release',()=>{
@@ -178,5 +174,19 @@ test('carousel scenes can omit previous and next controls',()=>{
   const c=nativeCarousel({variant,showControls:false});
   assert.equal(c.root.dataset.carouselReady,'');
   assert.ok(c.buttons.every(button=>Number.isFinite(parseFloat(button.style.width))||c.root.dataset.carouselLayout==='flow'));
+ }
+});
+
+test('an explicit maximum bounds all large slots',()=>{
+ for(const variant of ['multi-browse','hero','center-aligned-hero']){
+  const plan=layout(320,240,8,variant,6,200);
+  assert.ok(plan.large<=200);
+ }
+});
+
+test('hero mouse fling advances at most one item, including reduced motion',()=>{
+ for(const variant of ['hero','center-aligned-hero']) {
+  const c=nativeCarousel({variant,reduced:true});c.drag(500,true);
+  assert.equal(c.moves.at(-1).left,168);
  }
 });

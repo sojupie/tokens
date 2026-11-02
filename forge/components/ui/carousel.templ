@@ -32,6 +32,9 @@ templ Carousel(p CarouselProps, count int) {
 templ CarouselItem(p CarouselItemProps) {
 	@Require("carousel")
 	<li { p.slot()... }>
+		if p.Before!=nil {
+			@p.Before
+		}
 		<button { p.Attributes()... }>
 			if p.ImageSrc!="" {
 				<span class="md-carousel-art" aria-hidden="true"><img src={ templ.SafeURL(p.ImageSrc) } alt={ p.ImageAlt } width="1200" height="800" draggable="false"/></span>
@@ -41,19 +44,24 @@ templ CarouselItem(p CarouselItemProps) {
 			}
 			{ children... }
 		</button>
+		if p.After!=nil {
+			@p.After
+		}
 	</li>
 }
 
 templ CarouselHeader() {
 	@Require("carousel")
-	<header class="md-carousel-header">{ children... }
-</header>
+	<header class="md-carousel-header">
+		{ children... }
+	</header>
 }
 
 templ CarouselAction() {
 	@Require("carousel")
-	<div class="md-carousel-all-action">{ children... }
-</div>
+	<div class="md-carousel-all-action">
+		{ children... }
+	</div>
 }
 
 templ CarouselControls(current, total int) {

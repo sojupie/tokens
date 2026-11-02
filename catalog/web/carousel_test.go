@@ -56,3 +56,20 @@ func TestCarouselScrollingAndScreenOptions(t *testing.T) {
 		t.Fatal("invalid scrolling accepted")
 	}
 }
+
+func TestCarouselControlsOnlyApplyToVisibleLayouts(t *testing.T) {
+	for _, variant := range []string{"hero", "full-screen"} {
+		page := &componentPreview{Cases: []componentCase{{Family: "carousel", Variant: variant}}}
+		if err := configureCarouselPreview(page, nil); err != nil {
+			t.Fatal(err)
+		}
+		for _, c := range page.Controls {
+			if c.Name == "scrolling" || c.Name == "screen" {
+				t.Fatalf("%s exposes irrelevant %s", variant, c.Name)
+			}
+		}
+		if variant == "full-screen" && page.Cases[0].Orientation != "portrait" {
+			t.Fatal("full screen defaults to landscape")
+		}
+	}
+}

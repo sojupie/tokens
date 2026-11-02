@@ -2,26 +2,27 @@
   const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
   // Keylines map logical, equally spaced item centers to visible masked centers.
   // Media keeps its full size as the button's visible window changes width.
-  function layout(width,preferred,gap,variant,count) {
+  function layout(width,preferred,gap,variant,count,maximum=Infinity) {
     if(variant.startsWith('uncontained')||variant==='full-screen'||width<3*40+2*gap||count<3) {
-      const large=variant==='full-screen'?width:Math.min(preferred,width);
+      const large=variant==='full-screen'?width:Math.min(preferred,width,maximum);
       return {large,gap,width,variant:'uncontained',keylines:[]};
     }
-    const small=clamp(width*.12,40,56);
+    let small=clamp(width*.12,40,56);
+    if(variant==='center-aligned-hero'&&Number.isFinite(maximum))small=clamp(Math.max(small,(width-maximum-2*gap)/2),40,56);
     let large,big=1;
-    if(variant==='center-aligned-hero'){big=clamp(Math.round((width-2*small-gap)/(preferred+gap)),1,count);if(big%2===0)big--;large=(width-2*small-(big+1)*gap)/big;}
-    else if(variant==='hero'){big=clamp(Math.round((width-small-gap)/(preferred+gap)),1,count-1);large=(width-small-big*gap)/big;}
+    if(variant==='center-aligned-hero')large=width-2*small-2*gap;
+    else if(variant==='hero'){big=clamp(Math.max(Math.round((width-small-gap)/(preferred+gap)),Math.ceil((width-small)/(maximum+gap))),1,count-1);large=(width-small-big*gap)/big;}
     else {
       let best=Infinity;
       for(let n=1;n<=Math.min(count-2,8);n++) {
         const candidate=(width-1.5*small-(n+1)*gap)/(n+.5);
-        if(candidate<=small)continue;
+        if(candidate<=small||candidate>maximum)continue;
         const cost=Math.abs(candidate-preferred);
         if(cost<best){large=candidate;big=n;best=cost;}
       }
-      if(!large)return layout(width,preferred,gap,'uncontained',count);
+      if(!large)return layout(width,preferred,gap,'uncontained',count,maximum);
     }
-    if(large<=small)return layout(width,preferred,gap,'uncontained',count);
+    if(large<=small||large>maximum)return layout(width,preferred,gap,'uncontained',count,maximum);
     const keylines=[];
     if(variant==='center-aligned-hero') {
       const half=(big-1)/2;
@@ -35,7 +36,7 @@
       if(variant==='hero')keylines.push({i:big,x:width-small/2,size:small});
       else {const medium=(large+small)/2;keylines.push({i:big,x:left+medium/2,size:medium},{i:big+1,x:width-small/2,size:small});}
     }
-    return {width,large,gap,small,variant,keylines};
+    return {width,large,gap,small,big,variant,keylines};
   }
   function keylineAt(lines,t,gap) {
     if(t<lines[0].i){const p=lines[0];return{x:p.x+(t-p.i)*(p.size+gap),size:p.size};}
@@ -43,21 +44,38 @@
     const right=lines.findIndex(p=>p.i>=t),b=lines[right],a=lines[Math.max(0,right-1)],f=b.i===a.i?0:(t-a.i)/(b.i-a.i);
     return{x:a.x+(b.x-a.x)*f,size:a.size+(b.size-a.size)*f};
   }
-  function itemFrame(plan,index,position,count) {
-    const {width,large,gap,variant}=plan,step=large+gap,t=index-position;
-    if(variant==='uncontained')return{left:t*step,size:large};
-    let p=keylineAt(plan.keylines,t,gap);
-    if(variant!=='center-aligned-hero') {
-      const span=Math.min(plan.keylines.at(-1).i,count-1),mix=clamp((position-(count-1-span))/span,0,1);
-      if(mix>0) {
-        // Interpolate fixed endpoint layouts. Moving both layouts during the blend
-        // makes edges reverse direction and item widths repeatedly shrink and grow.
-        const start=keylineAt(plan.keylines,index-(count-1-span),gap);
-        const end=keylineAt(plan.keylines,count-1-index,gap);
-        p={x:start.x*(1-mix)+(width-end.x)*mix,size:start.size*(1-mix)+end.size*mix};
-      }
+  // Each integer stop has a complete arrangement. Near the ends, move the
+  // preview slots around the focal range instead of blending two distant layouts.
+  function restingFrame(plan,index,position,count) {
+    const {width,large,gap,small,big,variant}=plan;
+    if(variant==='uncontained')return{left:(index-position)*(large+gap),size:large};
+    let sizes,first;
+    if(variant==='center-aligned-hero') {
+      if(position===0){sizes=[large,small,small];first=0;}
+      else if(position===count-1){sizes=[small,small,large];first=count-3;}
+      else {sizes=[small,large,small];first=position-1;}
+    } else {
+      sizes=Array(big).fill(large);
+      if(variant==='multi-browse')sizes.push((large+small)/2);
+      sizes.push(small);
+      first=Math.min(position,count-sizes.length);
+      const shift=position-first;
+      for(let n=0;n<shift;n++)sizes.unshift(sizes.splice(big+n,1)[0]);
     }
-    return{left:p.x-p.size/2,size:p.size};
+    const lines=[{i:first-1,x:-small/2-gap,size:small}];let x=0;
+    sizes.forEach((size,k)=>{lines.push({i:first+k,x:x+size/2,size});x+=size+gap;});
+    lines.push({i:first+sizes.length,x:width+gap+small/2,size:small});
+    const frame=keylineAt(lines,index,gap);
+    return{left:frame.x-frame.size/2,size:frame.size};
+  }
+  function itemFrame(plan,index,position,count) {
+    const max=plan.variant==='center-aligned-hero'?count-1:count-(plan.big||1);
+    position=clamp(position,0,max);
+    const start=Math.floor(position),fraction=position-start;
+    const a=restingFrame(plan,index,start,count);
+    if(!fraction)return a;
+    const b=restingFrame(plan,index,start+1,count);
+    return{left:a.left+(b.left-a.left)*fraction,size:a.size+(b.size-a.size)*fraction};
   }
   function scrollTargets(rects,rtl,max) {
     const edge=rtl?'right':'left',first=rects[0][edge];
@@ -67,26 +85,30 @@
   if(typeof document==='undefined')return;
   const roots=new WeakMap(),reduced=matchMedia('(prefers-reduced-motion: reduce)');
   const items=root=>[...root.querySelectorAll('.md-carousel-item')];
+  function scrollTo(state,position,behavior='instant'){
+    state.viewport.scrollTo(state.vertical?{top:position,behavior}:{left:(state.rtl?-1:1)*position,behavior});
+  }
   function offset(state){
     // Safari can report positions beyond either end during rubber-banding.
     // Taking abs() would fold a negative LTR overscroll into forward movement.
-    return clamp((state.rtl?-1:1)*state.viewport.scrollLeft,0,state.max??Infinity);
+    return clamp(state.vertical?state.viewport.scrollTop:(state.rtl?-1:1)*state.viewport.scrollLeft,0,state.max??Infinity);
   }
   function cancelMotion(state) {
     if(state.motion){
       // Hand the visible position back to native scrolling before user input or resize.
-      state.viewport.scrollTo({left:(state.rtl?-1:1)*state.motion.position,behavior:'instant'});
+      scrollTo(state,state.motion.position);
       state.motion.clock.cancel();cancelAnimationFrame(state.motion.frame);state.motion=null;
     }
   }
   function go(state,index,focus=false) {
+    if(!state.buttons.length)return;
     index=clamp(index,0,state.buttons.length-1);
     const from=state.motion?.position??offset(state);cancelMotion(state);
-    const requested=state.targets[index];
+    const requested=state.targets[index];state.requestedIndex=index;
     state.pendingFocus=focus&&!state.buttons[index].disabled?index:undefined;
     if(state.flow){
       state.viewport.style.removeProperty('scroll-snap-type');
-      state.viewport.scrollTo({left:(state.rtl?-1:1)*requested,behavior:reduced.matches?'instant':'smooth'});
+      scrollTo(state,requested,reduced.matches?'instant':'smooth');
       if(reduced.matches||Math.abs(from-requested)<.01)settled(state);
       return;
     }
@@ -94,10 +116,10 @@
     delete state.root.dataset.carouselSettled;
     // Resolve the real snap offset through the browser once, including its scroll
     // precision. Keep fractional keylines; rounding every item changes the layout.
-    state.viewport.scrollTo({left:(state.rtl?-1:1)*requested,behavior:'instant'});
+    scrollTo(state,requested);
     const target=offset(state);
     if(reduced.matches||Math.abs(from-target)<.01){settled(state);return;}
-    state.viewport.scrollTo({left:(state.rtl?-1:1)*from,behavior:'instant'});
+    scrollTo(state,from);
     // The sticky visual track does not need native scrolling on every animation
     // frame. One token clock drives fractional geometry; sync at completion/input.
     const style=getComputedStyle(state.root),clock=new Animation(new KeyframeEffect(null,[],{
@@ -118,9 +140,10 @@
     if(state.motion||drag?.state===state&&drag.moved)return;
     state.viewport.style.removeProperty('scroll-snap-type');
     paint(state);
+    if(state.requestedIndex!==undefined){state.root.dataset.carouselIndex=String(state.requestedIndex);state.requestedIndex=undefined;}
     if(state.pendingFocus!==undefined){const index=state.pendingFocus,button=state.buttons[index];state.pendingFocus=undefined;state.root.dataset.carouselIndex=String(index);button.focus({preventScroll:true});}
     state.root.dataset.carouselSettled=state.root.dataset.carouselIndex;
-    state.root.querySelector('output').textContent=`Item ${Number(state.root.dataset.carouselIndex)+1} of ${state.buttons.length}`;
+    const output=state.root.querySelector('output');if(output)output.textContent=`Item ${Number(state.root.dataset.carouselIndex)+1} of ${state.buttons.length}`;
   }
   function paint(state,scroll=offset(state)) {
     if(state.lastPainted===scroll)return;
@@ -138,7 +161,7 @@
       const art=state.art[index],shift=(size-plan.large)/2;
       if(art)art.style.transform=`translateX(${state.rtl?-shift:shift}px)`;
     });
-    const index=state.flow?state.targets.reduce((best,target,i)=>Math.abs(target-scroll)<Math.abs(state.targets[best]-scroll)?i:best,0):clamp(Math.round(position),0,buttons.length-1);
+    let index=state.flow?state.targets.reduce((best,target,i)=>Math.abs(target-scroll)<Math.abs(state.targets[best]-scroll)?i:best,0):clamp(Math.round(position),0,buttons.length-1);
     root.dataset.carouselIndex=String(index);
     const previous=root.querySelector('[data-carousel-step="-1"]'),next=root.querySelector('[data-carousel-step="1"]');
     if(previous)previous.disabled=scroll<1;
@@ -147,29 +170,31 @@
   function resize(root) {
     const state=roots.get(root);if(!state)return;cancelMotion(state);
     const style=getComputedStyle(root),prior=state.plan?offset(state)/(state.plan.large+state.plan.gap):0,priorIndex=Number(root.dataset.carouselIndex)||0;
-    state.rtl=style.direction==='rtl';
+    state.rtl=style.direction==='rtl';state.vertical=root.dataset.variant==='full-screen';
     const viewportStyle=getComputedStyle(state.viewport),width=state.viewport.clientWidth-parseFloat(viewportStyle.paddingInlineStart)-parseFloat(viewportStyle.paddingInlineEnd);
     const preferred=parseFloat(style.getPropertyValue('--_carousel-preferred')),gap=parseFloat(style.getPropertyValue('--_carousel-gap'));
-    state.plan=layout(width,preferred,gap,root.dataset.variant,state.buttons.length);
+    const maximum=parseFloat(style.getPropertyValue('--_carousel-maximum'))||Infinity;
+    state.plan=layout(width,preferred,gap,root.dataset.variant,state.buttons.length,maximum);
     state.flow=reduced.matches||state.plan.variant==='uncontained';
     root.dataset.carouselLayout=state.flow?'flow':'masked';
-    if(reduced.matches){
+    if(reduced.matches&&!state.vertical){
       const count=root.dataset.variant==='full-screen'?1:Math.max(1,Math.floor((width+gap)/(Math.min(preferred,width)+gap)));
-      state.plan.large=(width-(count-1)*gap)/count;
+      state.plan.large=root.dataset.variant.includes('hero')?Math.min(preferred,width):(width-(count-1)*gap)/count;
     }
+    if(state.vertical){state.plan.large=state.viewport.clientHeight;root.style.setProperty('--_carousel-page-height',state.plan.large+'px');}
     root.style.setProperty('--_carousel-width',width+'px');
     root.style.setProperty('--_carousel-logical',state.plan.large+'px');
-    root.style.setProperty('--_carousel-end',(state.flow?0:Math.max(0,width-state.plan.large))+'px');
+    root.style.setProperty('--_carousel-end',(state.flow?0:Math.max(0,width-state.plan.large*(state.plan.big||1)-((state.plan.big||1)-1)*gap))+'px');
     if(state.flow)for(let i=0;i<state.buttons.length;i++){
       const button=state.buttons[i];
       for(const name of ['width','transform','visibility'])button.style[name]='';
       if(state.art[i])state.art[i].style.transform='';
     }
-    state.max=state.viewport.scrollWidth-state.viewport.clientWidth;
+    state.max=state.vertical?state.viewport.scrollHeight-state.viewport.clientHeight:state.viewport.scrollWidth-state.viewport.clientWidth;
     const snaps=[...root.querySelectorAll(state.flow?'.md-carousel-slot':'.md-carousel-snap')];
-    state.targets=scrollTargets(snaps.map(snap=>snap.getBoundingClientRect()),state.rtl,state.max);
+    state.targets=state.vertical?snaps.map((snap,i)=>Math.min(i*(state.plan.large+gap),state.max)):scrollTargets(snaps.map(snap=>snap.getBoundingClientRect()),state.rtl,state.max);
     state.lastPainted=undefined;
-    state.viewport.scrollLeft=(state.rtl?-1:1)*(state.flow?state.targets[priorIndex]:prior*(state.plan.large+state.plan.gap));paint(state);
+    scrollTo(state,state.flow?state.targets[priorIndex]:Math.min(prior*(state.plan.large+state.plan.gap),state.max));paint(state);
   }
   const observer=new ResizeObserver(entries=>entries.forEach(e=>resize(e.target)));
   function init(scope=document) {
@@ -179,7 +204,7 @@
       if(roots.has(root))continue;
       const viewport=root.querySelector('.md-carousel-viewport'),buttons=items(root),state={root,viewport,buttons,art:buttons.map(button=>button.querySelector('.md-carousel-art'))};roots.set(root,state);
       root.dataset.carouselReady='';
-      viewport.addEventListener('scroll',()=>{if(!state.motion&&!(drag?.state===state&&drag.moved))paint(state);},{passive:true});
+      viewport.addEventListener('scroll',()=>{if(!state.motion&&!(drag?.state===state&&drag.moved)){state.requestedIndex=undefined;paint(state);}},{passive:true});
       viewport.addEventListener('wheel',()=>{cancelMotion(state);state.pendingFocus=undefined;},{passive:true});
       viewport.addEventListener('scrollend',()=>settled(state));
       observer.observe(root);resize(root);
@@ -189,47 +214,51 @@
     const root=event.target.closest?.('.md-carousel');if(!root)return;const state=roots.get(root);if(!state)return;
     if(state.suppress&&event.detail!==0){event.preventDefault();event.stopImmediatePropagation();state.suppress=false;return;}
     const step=event.target.closest('[data-carousel-step]');if(step){go(state,Number(root.dataset.carouselIndex)+Number(step.dataset.carouselStep));return;}
-    const button=event.target.closest('.md-carousel-item');if(button&&!button.disabled)root.querySelector('output').textContent=`Item ${Number(button.dataset.carouselIndex)+1} selected`;
+    const button=event.target.closest('.md-carousel-item'),output=root.querySelector('output');if(button&&!button.disabled&&output)output.textContent=`Item ${Number(button.dataset.carouselIndex)+1} selected`;
   },true);
   document.addEventListener('keydown',event=>{
     const root=event.target.closest?.('.md-carousel');if(!root||!event.target.closest('.md-carousel-viewport'))return;const state=roots.get(root);if(!state)return;
     const button=event.target.closest('.md-carousel-item'),index=state.pendingFocus??(button?Number(button.dataset.carouselIndex):Number(root.dataset.carouselIndex));
-    if(event.key==='ArrowUp'||event.key==='ArrowDown'){
+    if(!state.vertical&&(event.key==='ArrowUp'||event.key==='ArrowDown')){
       const forward=event.key==='ArrowDown';
-      const outside=[...document.querySelectorAll('a[href],button,input,select,textarea,[tabindex]')].filter(el=>el.tabIndex>=0&&!el.disabled&&!el.closest('[inert]')&&el.getClientRects().length&&getComputedStyle(el).visibility==='visible'&&!root.contains(el)&&(root.compareDocumentPosition(el)&(forward?Node.DOCUMENT_POSITION_FOLLOWING:Node.DOCUMENT_POSITION_PRECEDING)));
+      const outside=[...document.querySelectorAll('a[href],button,input,select,textarea,[tabindex]')].filter(el=>el.tabIndex>=0&&!el.disabled&&!el.closest('[inert]')&&el.getClientRects().length&&getComputedStyle(el).visibility==='visible'&&!state.viewport.contains(el)&&(state.viewport.compareDocumentPosition(el)&(forward?Node.DOCUMENT_POSITION_FOLLOWING:Node.DOCUMENT_POSITION_PRECEDING)));
       const next=forward?outside[0]:outside.at(-1);
       if(next){event.preventDefault();next.focus();}
       return;
     }
     let target;
-    if(event.key==='ArrowRight')target=index+(state.rtl?-1:1);
-    if(event.key==='ArrowLeft')target=index+(state.rtl?1:-1);
+    if(event.key==='Tab'&&button)target=index+(event.shiftKey?-1:1);
+    if(state.vertical){if(event.key==='ArrowDown')target=index+1;if(event.key==='ArrowUp')target=index-1;}
+    else {if(event.key==='ArrowRight')target=index+(state.rtl?-1:1);if(event.key==='ArrowLeft')target=index+(state.rtl?1:-1);}
     if(event.key==='Home')target=0;if(event.key==='End')target=state.buttons.length-1;
-    if(target===undefined)return;event.preventDefault();
+    if(target===undefined)return;
+    if(event.key==='Tab'&&(target<0||target>=state.buttons.length))return;
     const direction=target>=index?1:-1;
     while(target>=0&&target<state.buttons.length&&state.buttons[target].disabled)target+=direction;
-    go(state,target,true);
+    if(event.key==='Tab'&&(target<0||target>=state.buttons.length))return;
+    event.preventDefault();
+    if(target>=0&&target<state.buttons.length)go(state,target,true);
   });
   let drag;
   document.addEventListener('pointerdown',event=>{
     const root=event.target.closest?.('.md-carousel');if(!root||!event.target.closest('.md-carousel-viewport'))return;
     const state=roots.get(root);if(!state)return;cancelMotion(state);state.pendingFocus=undefined;state.suppress=false;
     if(event.pointerType!=='mouse'||event.button!==0)return;
-    drag={state,id:event.pointerId,x:event.clientX,start:state.viewport.scrollLeft,button:event.target.closest('.md-carousel-item'),moved:false,lastX:event.clientX,lastTime:event.timeStamp,velocity:0};
+    drag={state,id:event.pointerId,x:state.vertical?event.clientY:event.clientX,start:state.vertical?state.viewport.scrollTop:state.viewport.scrollLeft,origin:Number(root.dataset.carouselIndex),button:event.target.closest('.md-carousel-item'),moved:false,lastX:state.vertical?event.clientY:event.clientX,lastTime:event.timeStamp,velocity:0};
   });
   document.addEventListener('pointermove',event=>{
-    if(!drag||event.pointerId!==drag.id)return;const dx=event.clientX-drag.x;
+    if(!drag||event.pointerId!==drag.id)return;const pointer=drag.state.vertical?event.clientY:event.clientX,dx=pointer-drag.x;
     if(!drag.moved&&Math.abs(dx)<8)return;
     if(!drag.moved){drag.moved=true;drag.state.root.dataset.carouselDragging='';drag.state.viewport.style.scrollSnapType='none';drag.state.viewport.setPointerCapture(event.pointerId);drag.button?.dispatchEvent(new Event('material:cancel-feedback',{bubbles:true}));}
     const dt=event.timeStamp-drag.lastTime;
-    if(dt>0)drag.velocity=(event.clientX-drag.lastX)/dt;
-    drag.lastX=event.clientX;drag.lastTime=event.timeStamp;
-    event.preventDefault();drag.state.viewport.scrollLeft=drag.start-dx;
+    if(dt>0)drag.velocity=(pointer-drag.lastX)/dt;
+    drag.lastX=pointer;drag.lastTime=event.timeStamp;
+    event.preventDefault();if(drag.state.vertical)drag.state.viewport.scrollTop=drag.start-dx;else drag.state.viewport.scrollLeft=drag.start-dx;
     paint(drag.state);
   });
   function finish(event,cancel=false) {
     if(!drag||event.pointerId!==drag.id)return;
-    const {state,moved,id,velocity,lastTime}=drag;drag=null;
+    const {state,moved,id,velocity,lastTime,origin}=drag;drag=null;
     if(state.viewport.hasPointerCapture(id))state.viewport.releasePointerCapture(id);
     if(moved){
       state.suppress=true;
@@ -239,7 +268,8 @@
       delete state.root.dataset.carouselDragging;
       const momentum=!cancel&&event.timeStamp-lastTime<80?velocity*(state.rtl?1:-1)*120:0;
       const position=offset(state)+momentum;
-      const index=state.flow?state.targets.reduce((best,target,i)=>Math.abs(target-position)<Math.abs(state.targets[best]-position)?i:best,0):Math.round(position/(state.plan.large+state.plan.gap));
+      let index=state.flow?state.targets.reduce((best,target,i)=>Math.abs(target-position)<Math.abs(state.targets[best]-position)?i:best,0):Math.round(position/(state.plan.large+state.plan.gap));
+      if(state.vertical||state.root.dataset.variant.includes('hero'))index=clamp(index,origin-1,origin+1);
       go(state,index);
     }
   }

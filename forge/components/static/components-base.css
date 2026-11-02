@@ -5015,11 +5015,13 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   inset-inline-start: calc(-1 * var(--_carousel-item-outline-width));
   translate: none;
 }
+.md-carousel-art > img,
 .md-carousel-art svg {
   display: block;
   inline-size: 100%;
   block-size: 100%;
 }
+.md-carousel-art > img { object-fit:cover; }
 .md-carousel-item:disabled {
   cursor: default;
 }
@@ -5097,7 +5099,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   padding-inline-end:0;
   scroll-snap-type:none;
 }
-.md-carousel[data-variant="full-screen"] { --_carousel-gap:var(--md-sys-measurement-space200);container-type:inline-size; }
+.md-carousel[data-variant="full-screen"] { --_carousel-gap:var(--md-sys-measurement-space200);display:flex;flex-direction:column;block-size:100dvh; }
 .md-carousel[data-variant="full-screen"] .md-carousel-viewport { padding:0;scroll-padding-inline:0; }
 /* Snap is an optional uncontained configuration, not its default behavior. */
 .md-carousel[data-variant^="uncontained"][data-scrolling="snap"] .md-carousel-viewport { scroll-snap-type:x mandatory; }
@@ -5118,21 +5120,24 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
 }
 .md-carousel[data-variant="uncontained-multi-aspect-ratio"][data-carousel-layout="flow"] .md-carousel-track > .md-carousel-slot { inline-size:calc(var(--_carousel-height) * var(--_carousel-aspect-ratio,1)); }
 .md-carousel[data-carousel-layout="flow"] .md-carousel-art { inset-inline-start:0;inline-size:100%;translate:none; }
-/* Equal, complete items replace resizing/parallax under reduced motion. */
+/* Uncontained consumers can put text/actions outside the image button. */
+.md-carousel[data-variant^="uncontained"][data-carousel-layout="flow"] .md-carousel-track { align-items:start;block-size:auto; }
+.md-carousel[data-variant^="uncontained"][data-carousel-layout="flow"] .md-carousel-slot { display:flex;flex-direction:column;block-size:auto;gap:var(--md-sys-measurement-space100); }
+.md-carousel[data-variant^="uncontained"][data-carousel-layout="flow"] .md-carousel-item { position:relative;inset:auto;flex:none;block-size:var(--_carousel-height); }
+.md-carousel:is([data-variant="hero"],[data-variant="center-aligned-hero"]) .md-carousel-snap { scroll-snap-stop:always; }
+/* Reduced motion removes mask expansion; hero retains a partial next item. */
 @media(prefers-reduced-motion:reduce) {
-  .md-carousel[data-carousel-layout="flow"] .md-carousel-viewport { scroll-snap-type:x mandatory; }
+  .md-carousel[data-carousel-layout="flow"] .md-carousel-viewport { padding-inline:0;scroll-padding-inline:0; }
   .md-carousel[data-variant="uncontained-multi-aspect-ratio"][data-carousel-layout="flow"] .md-carousel-track > .md-carousel-slot { inline-size:var(--_carousel-logical); }
 }
 
-/* Full-screen specimens simulate a window rather than a short item strip. */
-.md-carousel[data-variant="full-screen"] .md-carousel-viewport {
-  --_carousel-height:calc(100cqi * 9 / 16);
-}
-@container (width < 840px) {
-  .md-carousel[data-variant="full-screen"][data-orientation="portrait"] .md-carousel-viewport {
-    --_carousel-height:calc(100cqi * 16 / 9);
-  }
-}
+/* The consumer supplies a window; the component scrolls pages vertically. */
+.md-carousel[data-variant="full-screen"] .md-carousel-viewport { flex:1;min-block-size:0;overflow-x:hidden;scroll-snap-type:y mandatory;scroll-padding:0;overscroll-behavior-y:contain; }
+.md-carousel[data-variant="full-screen"] .md-carousel-scroll-track { inline-size:100%; }
+.md-carousel[data-variant="full-screen"][data-carousel-layout="flow"] .md-carousel-track { flex-direction:column;inline-size:100%;block-size:max-content; }
+.md-carousel[data-variant="full-screen"][data-carousel-layout="flow"] .md-carousel-slot { inline-size:100%;block-size:var(--_carousel-page-height,100dvh);scroll-snap-stop:always; }
+.md-carousel[data-variant="full-screen"] .md-carousel-art { inline-size:100%; }
+.md-carousel[data-variant="center-aligned-hero"] { margin-inline:auto;max-inline-size:min(100%,calc(var(--_carousel-maximum,100000px) + 144px)); }
 /* Search keeps one persistent header and input inside a bounded app screen.
    Elevation is optional for either style; full-screen stays flat. */
 .md-search-demo {

@@ -7,7 +7,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/sojupie/tokens/forge/components/ui"
+	xhtml "golang.org/x/net/html"
 	"html"
+	"io/fs"
 	"net/http"
 	"net/url"
 	"sort"
@@ -172,13 +174,17 @@ func (server *Server) implementationFiles(ctx context.Context, query url.Values)
 		}
 		files["loading-shapes.json"] = data
 	}
+	exampleHTML, err := bundleExampleImages(examples.String(), files)
+	if err != nil {
+		return nil, "", err
+	}
 	theme := "light"
 	if selection["Theme"] == "Dark" {
 		theme = "dark"
 	}
 	contrast := strings.ToLower(strings.TrimSuffix(selection["Contrast"], " contrast"))
 	files["example.css"] = []byte("body{margin:0;padding:24px;background:var(--md-sys-color-surface);color:var(--md-sys-color-on-surface);font-family:Roboto,sans-serif}main{display:grid;gap:32px}section{min-width:0}h1,h2{font:inherit}svg{vertical-align:middle}button,input,select{font:inherit}\n")
-	files["index.html"] = []byte(fmt.Sprintf("<!doctype html>\n<html lang=\"en\" data-theme=%q data-contrast=%q><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>%s example</title><link rel=\"stylesheet\" href=\"tokens.css\"><link rel=\"stylesheet\" href=\"components.css\"><link rel=\"stylesheet\" href=\"fonts.css\"><link rel=\"stylesheet\" href=\"example.css\">%s</head><body><main data-component-assets>%s</main></body></html>", theme, contrast, html.EscapeString(name), scriptHTML.String(), examples.String()))
+	files["index.html"] = []byte(fmt.Sprintf("<!doctype html>\n<html lang=\"en\" data-theme=%q data-contrast=%q><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>%s example</title><link rel=\"stylesheet\" href=\"tokens.css\"><link rel=\"stylesheet\" href=\"components.css\"><link rel=\"stylesheet\" href=\"fonts.css\"><link rel=\"stylesheet\" href=\"example.css\">%s</head><body><main data-component-assets>%s</main></body></html>", theme, contrast, html.EscapeString(name), scriptHTML.String(), exampleHTML))
 	files["README.txt"] = []byte("Component implementation from Token Catalog\n\nServe this directory with any static HTTP server, then open index.html. Some browser features (including loading-indicator geometry) require HTTP rather than file://. No build step or external CDN is required.\n\nindex.html contains example markup from the maintained playground specimens. components.css includes authored component rules and generated token bindings. tokens.css contains the catalog's Web theme and its overrides, including all six light/dark and contrast appearances; change data-theme and data-contrast on <html> to switch. It uses the catalog's motion scheme. This implementation theme differs from raw captured token exports. Roboto font files and their license are included. See NOTICE.txt for code and third-party license terms.\n\nThe JavaScript files provide component behavior. Keep their relative paths and script order. Nested components and common controls are included through the maintained module declarations. Example actions do not implement your application logic.\n\nToken data and implementation provenance: https://github.com/sojupie/tokens\nIndependent project. Not affiliated with Google.\n")
 	return files, name, nil
 }
@@ -218,4 +224,45 @@ func (server *Server) handleImplementationExport(w http.ResponseWriter, r *http.
 	w.Header().Set("Content-Type", "application/zip")
 	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=%q", name+"-implementation.zip"))
 	_, _ = w.Write(output.Bytes())
+}
+
+// Copy maintained example images into the archive instead of retaining Catalog URLs.
+func bundleExampleImages(markup string, files map[string][]byte) (string, error) {
+	z := xhtml.NewTokenizer(strings.NewReader(markup))
+	for {
+		kind := z.Next()
+		if kind == xhtml.ErrorToken {
+			break
+		}
+		if kind != xhtml.StartTagToken && kind != xhtml.SelfClosingTagToken {
+			continue
+		}
+		token := z.Token()
+		if token.Data != "img" {
+			continue
+		}
+		for _, a := range token.Attr {
+			if a.Key != "src" {
+				continue
+			}
+			u, err := url.Parse(a.Val)
+			if err != nil || u.IsAbs() || u.Host != "" {
+				continue
+			}
+			_, relative, ok := strings.Cut(u.Path, "/static/")
+			if !ok || !fs.ValidPath(relative) {
+				continue
+			}
+			name := "assets/" + relative
+			if _, ok := files[name]; !ok {
+				data, err := readStaticFile("static/" + relative)
+				if err != nil {
+					return "", fmt.Errorf("example image %s: %w", relative, err)
+				}
+				files[name] = data
+			}
+			markup = strings.ReplaceAll(markup, html.EscapeString(a.Val), html.EscapeString(name))
+		}
+	}
+	return markup, nil
 }

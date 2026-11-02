@@ -296,3 +296,19 @@ func TestExportContextOrdersPlatformBeforeAppearance(t *testing.T) {
 		t.Fatalf("wrong dependency order: %#v", page.Contexts)
 	}
 }
+
+func TestImplementationBundlesExampleImages(t *testing.T) {
+	files := map[string][]byte{}
+	src := staticURL("paintings/" + carouselPaintings[0])
+	markup, err := bundleExampleImages(`<img src="`+src+`" alt="Example">`, files)
+	if err != nil {
+		t.Fatal(err)
+	}
+	name := "assets/paintings/" + carouselPaintings[0]
+	if !strings.Contains(markup, `src="`+name+`"`) || len(files[name]) == 0 {
+		t.Fatal("standalone example lost its image")
+	}
+	if strings.Contains(markup, "/static/") {
+		t.Fatal("Catalog image dependency remains")
+	}
+}

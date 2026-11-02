@@ -11,3 +11,7 @@ var carouselPaintings = [...]string{
 	"lake-lucerne-1990.50.1.webp",
 	"sunset-at-scheveningen-a-fleet-of-fishing-vessels-at-anchor-2012.48.1.webp",
 }
+
+var carouselPaintingTitles = [...]string{
+	"Argenteuil", "Autumn on the Hudson River", "Cliffs at Pourville", "Green River Cliffs, Wyoming", "Lake Lucerne", "Sunset at Scheveningen",
+}

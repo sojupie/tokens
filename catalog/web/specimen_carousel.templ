@@ -8,15 +8,32 @@ templ specimenCarousel(c componentCase) {
 }
 
 templ carouselSurface(c componentCase, demonstration bool) {
-	{{ p := ui.CarouselProps{Label: "Example carousel", Variant:c.Variant,Orientation:c.Orientation,Scrolling:c.CarouselScroll,Attrs: c.Attributes()}
-if demonstration {
-	p.Header = carouselExampleHeader(c)
-	p.Actions = carouselExampleActions(c)
-	p.Controls = carouselExampleControls()
-} }}
+	if c.Variant=="full-screen" {
+		<div class="tokens-carousel-frame" style="inline-size:min(100%,384px);aspect-ratio:9/16;position:relative;margin-inline:auto">
+			@carouselExample(c, demonstration)
+		</div>
+	} else {
+		@carouselExample(c, demonstration)
+	}
+}
+
+templ carouselExample(c componentCase, demonstration bool) {
+	{{
+		p := ui.CarouselProps{Label: "Example carousel", Variant: c.Variant, Orientation: c.Orientation, Scrolling: c.CarouselScroll, Attrs: c.Attributes()}
+		if c.Variant == "full-screen" {
+			p.Attrs["style"] = "position:absolute;inset:0;block-size:100%"
+		}
+		if demonstration {
+			p.Header = carouselExampleHeader(c)
+			p.Actions = carouselExampleActions(c)
+			if c.Variant != "full-screen" {
+				p.Controls = carouselExampleControls()
+			}
+		}
+	}}
 	@ui.Carousel(p, 6) {
 		for index:=range 6 {
-			@ui.CarouselItem(ui.CarouselItemProps{Index: index, Count: 6, ImageSrc: staticURL("paintings/" + carouselPaintings[index%len(carouselPaintings)]), SlotAttrs: c.CarouselSlot(index), Attrs: c.CarouselItem(index)}) {
+			@ui.CarouselItem(ui.CarouselItemProps{Index: index, Count: 6, ImageSrc: staticURL("paintings/" + carouselPaintings[index%len(carouselPaintings)]), SlotAttrs: c.CarouselSlot(index), Attrs: c.CarouselItem(index), After: carouselExampleCaption(c, index, demonstration)}) {
 				if demonstration {
 					<span class="md-carousel-number" aria-hidden="true">{ fmt.Sprint(index+1) }</span>
 				}
@@ -49,4 +66,11 @@ templ carouselExampleControls() {
 
 templ carouselArtwork(index int) {
 	<img src={ staticURL("paintings/" + carouselPaintings[index%len(carouselPaintings)]) } alt="" width="1200" height="800" draggable="false"/>
+}
+
+// Captions belong to the example; the API keeps them outside the masked button.
+templ carouselExampleCaption(c componentCase, index int, demonstration bool) {
+	if demonstration&&(c.Variant=="uncontained"||c.Variant=="uncontained-multi-aspect-ratio") {
+		<p class="md-typescale-body-medium" style="margin:0">{ carouselPaintingTitles[index%len(carouselPaintingTitles)] }</p>
+	}
 }

@@ -156,7 +156,7 @@ func componentPreviewView(page componentPreview) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			if page.HasFullScreenCarousel() {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "<p class=\"md-typescale-body-small\">Portrait full-screen frames apply below 840px. Larger frames stay landscape.</p>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "<p class=\"md-typescale-body-small\">Full-screen carousels scroll vertically in a portrait window.</p>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
