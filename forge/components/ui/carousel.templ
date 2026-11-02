@@ -1,7 +1,5 @@
 package ui
 
-import "fmt"
-
 templ Carousel(p CarouselProps, count int) {
 	@Require("carousel")
 	<section { p.Attributes()... }>
@@ -64,11 +62,17 @@ templ CarouselAction() {
 	</div>
 }
 
-templ CarouselControls(current, total int) {
+templ CarouselControls() {
 	@Require("carousel")
 	<div class="md-carousel-controls">
 		@IconButton(IconButtonProps{Label: "Previous item", Icon: "chevron_left", Attrs: templ.Attributes{"data-carousel-step": "-1"}})
-		<output class="md-typescale-label-medium" aria-live="polite">{ fmt.Sprintf("Item %d of %d",current,total) }</output>
+		<progress class="md-carousel-position" aria-label="Carousel scroll position" max="1" value="0"></progress>
 		@IconButton(IconButtonProps{Label: "Next item", Icon: "chevron_right", Attrs: templ.Attributes{"data-carousel-step": "1"}})
 	</div>
+}
+
+// CarouselText is optional overlay content supplied by the consumer.
+templ CarouselText() {
+	<span class="md-carousel-caption md-typescale-body-medium">{ children... }
+</span>
 }

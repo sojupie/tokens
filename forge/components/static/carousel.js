@@ -140,11 +140,9 @@
     const from=state.motion?.position??offset(state);cancelMotion(state);
     const requested=state.targets[index];state.requestedIndex=index;
     state.pendingFocus=focus&&!state.buttons[index].disabled?index:undefined;
-    if(state.flow){
+    if(reduced.matches){
       state.viewport.style.removeProperty('scroll-snap-type');
-      scrollTo(state,requested,reduced.matches?'instant':'smooth');
-      if(reduced.matches||Math.abs(from-requested)<.01)settled(state);
-      return;
+      scrollTo(state,requested);settled(state);return;
     }
     animateTo(state,requested);
   }
@@ -183,7 +181,7 @@
     if(state.requestedIndex!==undefined){state.root.dataset.carouselIndex=String(state.requestedIndex);state.requestedIndex=undefined;}
     if(state.pendingFocus!==undefined){const index=state.pendingFocus,button=state.buttons[index];state.pendingFocus=undefined;state.root.dataset.carouselIndex=String(index);button.focus({preventScroll:true});}
     state.root.dataset.carouselSettled=state.root.dataset.carouselIndex;
-    const output=state.root.querySelector('output');if(output)output.textContent=`Item ${Number(state.root.dataset.carouselIndex)+1} of ${state.buttons.length}`;
+
   }
   function paint(state,scroll=offset(state)) {
     if(state.lastPainted===scroll)return;
@@ -211,6 +209,7 @@
     });
     let index=state.flow?state.targets.reduce((best,target,i)=>Math.abs(target-scroll)<Math.abs(state.targets[best]-scroll)?i:best,0):clamp(Math.round(position),0,buttons.length-1);
     root.dataset.carouselIndex=String(index);
+    const progress=root.querySelector('.md-carousel-position');if(progress)progress.value=max>0?scroll/max:0;
     const previous=root.querySelector('[data-carousel-step="-1"]'),next=root.querySelector('[data-carousel-step="1"]');
     if(previous)previous.disabled=scroll<1;
     if(next)next.disabled=scroll>=max-1;
@@ -264,8 +263,12 @@
   document.addEventListener('click',event=>{
     const root=event.target.closest?.('.md-carousel');if(!root)return;const state=roots.get(root);if(!state)return;
     if(state.suppress&&event.detail!==0){event.preventDefault();event.stopImmediatePropagation();state.suppress=false;return;}
-    const step=event.target.closest('[data-carousel-step]');if(step){go(state,Number(root.dataset.carouselIndex)+Number(step.dataset.carouselStep));return;}
-    const button=event.target.closest('.md-carousel-item'),output=root.querySelector('output');if(button&&!button.disabled&&output)output.textContent=`Item ${Number(button.dataset.carouselIndex)+1} selected`;
+    const step=event.target.closest('[data-carousel-step]');if(step){
+      const anchor=state.requestedIndex===undefined?offset(state):state.targets[state.requestedIndex];
+      const forward=Number(step.dataset.carouselStep)>0;
+      let index=forward?state.targets.findIndex(target=>target>anchor+1):state.targets.findLastIndex(target=>target<anchor-1);
+      if(index>=0)go(state,index);return;
+    }
   },true);
   document.addEventListener('keydown',event=>{
     const root=event.target.closest?.('.md-carousel');if(!root||!event.target.closest('.md-carousel-viewport'))return;const state=roots.get(root);if(!state)return;

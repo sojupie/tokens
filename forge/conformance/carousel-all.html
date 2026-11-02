@@ -7,7 +7,7 @@ run.onclick=async()=>{run.disabled=true;const checks=[],assert=(ok,message)=>{if
 try{
  for(const variant of ['multi-browse','uncontained','uncontained-multi-aspect-ratio','hero','center-aligned-hero','full-screen'])for(const action of ['none','show-all','header-arrow']){
   samples.replaceChildren();const f=document.createElement('iframe');samples.append(f);
-  await new Promise(resolve=>{f.onload=resolve;f.src=`/md3/components/carousel?preview.compare=interactive&preview.variant=${variant}&preview.action=${action}`});
+  await new Promise(resolve=>{f.onload=resolve;f.src=`/components/carousel?preview.compare=interactive&preview.variant=${variant}&preview.action=${action}`});
   const w=f.contentWindow,d=f.contentDocument;await w.TokenAssets.ready;
   const root=d.querySelector('#component-preview .md-carousel'),bottom=root.querySelector('.md-carousel-all-action'),header=root.querySelector('.md-carousel-header');
   const viewport=root.querySelector('.md-carousel-viewport'),style=w.getComputedStyle(viewport),full=variant==='full-screen',flow=variant.startsWith('uncontained');
@@ -19,11 +19,16 @@ try{
   if(radius)assert(Math.abs(parseFloat(w.getComputedStyle(items[0]).borderTopLeftRadius)-parseFloat(radius))<.1,`${variant}: captured item shape token`);
   if(variant==='uncontained-multi-aspect-ratio'){
     const height=items[0].getBoundingClientRect().height;
-    [16/9,9/16,1,3/4].forEach((ratio,i)=>assert(Math.abs(items[i].getBoundingClientRect().width/height-ratio)<.01,`Mixed item ${i+1}: source ratio`));
+    [16/9,9/16,1,3/4].forEach((ratio,i)=>assert(Math.abs(root.querySelectorAll('.md-carousel-slot')[i].getBoundingClientRect().width/height-ratio)<.01,`Mixed item ${i+1}: source ratio`));
   }
   assert(!!bottom===(variant!=='full-screen'&&action==='show-all'),`${variant}/${action}: lower action configuration`);
   assert(!!header===(variant!=='full-screen'&&action==='header-arrow'),`${variant}/${action}: header configuration`);
-  if(bottom){const style=w.getComputedStyle(bottom);assert([style.paddingTop,style.paddingRight,style.paddingBottom,style.paddingLeft].every(v=>parseFloat(v)===4),'Show all retains 4px clearance');}
+  if(bottom){const style=w.getComputedStyle(bottom);assert([style.paddingTop,style.paddingRight,style.paddingBottom,style.paddingLeft].every(v=>parseFloat(v)===4),'Show all retains 4px clearance');
+    const button=bottom.querySelector('button').getBoundingClientRect(),box=root.getBoundingClientRect();
+    assert(Math.abs(box.right-button.right-4)<.1,'Show all aligns to trailing edge with 4px clearance');
+    assert(Math.abs(button.top-items[0].getBoundingClientRect().bottom-4)<.1,'Show all is 4px below items, without stacked viewport padding');
+  }
+  if(!full)assert(root.querySelector('progress')&&!root.querySelector('output'),'Scroll-position indicator does not report a misleading item count');
   if(header){const box=header.querySelector('button').getBoundingClientRect();assert(Math.abs(box.width-48)<.1&&Math.abs(box.height-48)<.1,'Header arrow control is 48px square');}
   const button=bottom?.querySelector('button')||header?.querySelector('button');
   if(button){const before=f.contentWindow.location.href;button.click();assert(f.contentWindow.location.href===before,'Demo action does not navigate');}

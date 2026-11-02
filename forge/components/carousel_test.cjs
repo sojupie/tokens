@@ -102,13 +102,14 @@ test('hero layouts are distinct and dynamic small items stay in the captured 40â
  }
 });
 
-function nativeCarousel({variant='uncontained',reduced=false,scrolling='free',showControls=true}={}) {
+function nativeCarousel({variant='uncontained',reduced=false,scrolling='free',showControls=true,viewportWidth=336}={}) {
  const listeners={},scrollListeners={},output={},moves=[];
+ let nextFrame,clock;
  const widths=variant==='uncontained-multi-aspect-ratio'?[160,90,120,135,160,90]:[160,160,160,160,160,160];
  let start=0;
  const slots=widths.map(width=>{const left=start;start+=width+8;return{getBoundingClientRect:()=>({left,width})};});
  const buttons=widths.map(()=>({style:{},disabled:false,querySelector:()=>({style:{}}),focus(){}}));
- const viewport={clientWidth:336,clientHeight:600,scrollHeight:3640,scrollTop:0,scrollWidth:start-8+16,scrollLeft:0,
+ const viewport={clientWidth:viewportWidth,clientHeight:600,scrollHeight:3640,scrollTop:0,scrollWidth:start-8+16,scrollLeft:0,
   style:{removeProperty(){delete this.scrollSnapType;}},addEventListener:(name,fn)=>scrollListeners[name]=fn,
   scrollTo(options){moves.push(options);if(options.top!==undefined)this.scrollTop=options.top;else this.scrollLeft=Math.max(0,Math.min(options.left,this.scrollWidth-this.clientWidth));},
   setPointerCapture(){},hasPointerCapture:()=>false,
@@ -122,9 +123,10 @@ function nativeCarousel({variant='uncontained',reduced=false,scrolling='free',sh
  runInNewContext(readFileSync(`${__dirname}/static/carousel.js`,'utf8'),{
   document,matchMedia:()=>({matches:reduced}),window:{addEventListener(){}},
   getComputedStyle:()=>({direction:'ltr',paddingInlineStart:'16px',paddingInlineEnd:'0px',getPropertyValue:name=>name==='--_carousel-maximum'?'':name==='--_carousel-preferred'?'160px':'8px'}),
+  Animation:class{constructor(effect){this.effect=effect;this.playState='running';clock=this;}play(){}cancel(){}},KeyframeEffect:class{getComputedTiming(){return{progress:clock.playState==='finished'?1:.5};}},requestAnimationFrame:fn=>{nextFrame=fn;return 1;},cancelAnimationFrame(){},
   ResizeObserver:class{observe(){}},
  });
- moves.length=0;return{root,viewport,buttons,moves,drag(distance=60,fast=false){
+ moves.length=0;return{root,viewport,buttons,moves,step(direction){listeners.click({target:{closest:selector=>selector==='.md-carousel'?root:selector==='[data-carousel-step]'?{dataset:{carouselStep:String(direction)}}:null},detail:0});},finishAnimation(){clock.playState='finished';nextFrame();},drag(distance=60,fast=false){
   listeners.pointerdown({target,pointerType:'mouse',button:0,pointerId:1,clientX:200,timeStamp:0});
   listeners.pointermove({pointerId:1,clientX:200-distance,timeStamp:60,preventDefault(){}});
   listeners.pointerup({pointerId:1,timeStamp:fast?70:200});
@@ -142,9 +144,11 @@ test('uncontained variants retain measured media widths while their visible mask
 });
 test('optional uncontained snapping uses native flow, including unequal item widths',()=>{
  const c=nativeCarousel({variant:'uncontained-multi-aspect-ratio',scrolling:'snap'});c.drag();
- assert.equal(c.moves.length,1);
- assert.equal(c.moves[0].left,0);
- assert.equal(c.moves[0].behavior,'smooth');
+ assert.equal(c.viewport.style.scrollSnapType,'none');
+ c.finishAnimation();
+ assert.equal(c.viewport.scrollLeft,0);
+ assert.equal(c.viewport.style.scrollSnapType,undefined);
+ assert.ok(c.moves.every(move=>move.behavior==='instant'),'one shared token clock owns animated frames');
 });
 test('reduced motion uses complete stable items without width masking or parallax',()=>{
  for(const variant of ['multi-browse','uncontained','uncontained-multi-aspect-ratio','hero','center-aligned-hero','full-screen']) {
@@ -204,4 +208,15 @@ test('uncontained masks interpolate continuously with intact gaps and stable med
   }
   const end=uncontainedFrames(328,widths,8,max,max).at(-1);assert.ok(Math.abs(end.left+end.size-328)<.001);
  }
+});
+
+test('arrows skip duplicate end targets and reverse without a stuck item index',()=>{
+ const c=nativeCarousel({viewportWidth:640});
+ for(let i=0;i<4;i++){c.step(1);c.finishAnimation();}
+ assert.equal(c.viewport.scrollLeft,c.viewport.scrollWidth-c.viewport.clientWidth);
+ const end=c.viewport.scrollLeft;
+ c.step(-1);c.finishAnimation();
+ assert.ok(c.viewport.scrollLeft<end);
+ c.step(-1);c.step(-1);c.finishAnimation();
+ assert.equal(c.viewport.scrollLeft,0,'rapid arrows advance from the requested destination');
 });

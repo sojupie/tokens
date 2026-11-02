@@ -228,7 +228,11 @@
 }
 
 .md-carousel-all-action {
+  display:flex;
+  justify-content:flex-end;
   padding: var(--md-sys-measurement-space50);
+  /* The viewport already includes 8dp below the images; the action needs 4dp. */
+  margin-block-start: calc(-1 * var(--md-sys-measurement-space100));
 }
 .md-carousel-header {
   padding-inline:var(--md-sys-measurement-space200);
@@ -288,3 +292,30 @@
 .md-carousel[data-variant="full-screen"][data-carousel-layout="flow"] .md-carousel-slot { inline-size:100%;block-size:var(--_carousel-page-height,100dvh);scroll-snap-stop:always; }
 .md-carousel[data-variant="full-screen"] .md-carousel-art { inline-size:100%; }
 .md-carousel[data-variant="center-aligned-hero"] { margin-inline:auto;max-inline-size:min(100%,calc(var(--_carousel-maximum,100000px) + 144px)); }
+
+.md-carousel-position {
+  appearance:none;
+  border:0;
+  inline-size:64px;
+  block-size:4px;
+  border-radius:2px;
+  overflow:hidden;
+  background:var(--md-sys-color-surface-container-highest);
+  color:var(--md-sys-color-primary);
+}
+.md-carousel-position::-webkit-progress-bar { background:var(--md-sys-color-surface-container-highest); }
+.md-carousel-position::-webkit-progress-value { background:var(--md-sys-color-primary); }
+.md-carousel-position::-moz-progress-bar { background:var(--md-sys-color-primary); }
+.md-carousel-caption {
+  position:absolute;
+  inset-inline:var(--md-sys-measurement-space100);
+  inset-block-end:var(--md-sys-measurement-space100);
+  padding:var(--md-sys-measurement-space100);
+  border-radius:var(--md-sys-measurement-space100);
+  background:var(--md-sys-color-surface);
+  color:var(--md-sys-color-on-surface);
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  pointer-events:none;
+}

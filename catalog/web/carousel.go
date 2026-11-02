@@ -52,10 +52,38 @@ func configureCarouselPreview(page *componentPreview, query url.Values) error {
 		}
 	}
 	if hasUncontained {
-		page.Controls = append(page.Controls, previewControl{Name: "scrolling", Label: "Uncontained scrolling", Selected: scroll, Options: []string{"free", "snap"}, Labels: map[string]string{"free": "Free", "snap": "Snap"}})
+		page.Controls = append(page.Controls, previewControl{Name: "scrolling", Label: "Gesture scrolling", Selected: scroll, Options: []string{"free", "snap"}, Labels: map[string]string{"free": "Free", "snap": "Snap"}})
 	}
 	for i := range page.Cases {
 		page.Cases[i].CarouselScroll = scroll
+	}
+	content := query.Get("preview.content")
+	if content == "" {
+		content = "none"
+	}
+	if !containsPreview([]string{"none", "overlay", "above", "below"}, content) {
+		return fmt.Errorf("%w: carousel content %s", errPreviewInput, content)
+	}
+	contentOptions := []string{"none", "overlay"}
+	if hasUncontained {
+		contentOptions = append(contentOptions, "above", "below")
+	}
+	if !containsPreview(contentOptions, content) {
+		content = "none"
+	}
+	page.Controls = append(page.Controls, previewControl{Name: "content", Label: "Item text", Selected: content, Options: contentOptions, Labels: map[string]string{"none": "Image only", "overlay": "On image", "above": "Above (uncontained)", "below": "Below (uncontained)"}})
+	viewport := query.Get("preview.viewport")
+	if viewport == "" {
+		viewport = "available"
+	}
+	widths := []string{"available", "360", "600", "840", "1200"}
+	if !containsPreview(widths, viewport) {
+		return fmt.Errorf("%w: carousel viewport %s", errPreviewInput, viewport)
+	}
+	page.Controls = append(page.Controls, previewControl{Name: "viewport", Label: "Preview width · environment", Selected: viewport, Options: widths, Labels: map[string]string{"available": "Available width", "360": "360px", "600": "600px", "840": "840px", "1200": "1200px"}})
+	for i := range page.Cases {
+		page.Cases[i].CarouselContent = content
+		page.Cases[i].CarouselViewport = viewport
 	}
 	screen := query.Get("preview.screen")
 	if screen == "" {
@@ -86,6 +114,15 @@ func (c componentCase) CarouselSlot(index int) templ.Attributes {
 func (page componentPreview) HasFullScreenCarousel() bool {
 	for _, c := range page.Cases {
 		if c.Family == "carousel" && c.Variant == "full-screen" {
+			return true
+		}
+	}
+	return false
+}
+
+func (page componentPreview) HasUncontainedCarousel() bool {
+	for _, c := range page.Cases {
+		if c.Family == "carousel" && (c.Variant == "uncontained" || c.Variant == "uncontained-multi-aspect-ratio") {
 			return true
 		}
 	}

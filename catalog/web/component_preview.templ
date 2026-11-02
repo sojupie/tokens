@@ -22,6 +22,9 @@ templ componentPreviewView(page componentPreview) {
 			if len(page.Cases) > 0 && page.Cases[0].Family == "slider" {
 				<p class="md-typescale-body-small">Inset icons apply to standard single sliders in medium, large, and extra-large sizes. “On interaction” shows the value when a handle is hovered, focused, or pressed.</p>
 			}
+			if page.HasUncontainedCarousel() {
+				<p class="md-typescale-body-small">Gesture scrolling: Free stops between items; Snap settles on an item. Arrows and keyboard navigation always advance to an item.</p>
+			}
 			if page.HasFullScreenCarousel() {
 				<p class="md-typescale-body-small">Full-screen carousels scroll vertically in a portrait window.</p>
 			}

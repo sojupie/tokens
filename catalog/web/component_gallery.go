@@ -21,47 +21,49 @@ type componentCase struct {
 	BadgeDirection     string `json:"badgeDirection,omitempty"`
 	illustrationLabels [3]string
 	// instanceID scopes nested controls without changing their token configuration.
-	CarouselAction  string `json:"carouselAction,omitempty"`
-	CarouselScroll  string `json:"carouselScroll,omitempty"`
-	instanceID      string
-	SliderIcon      string `json:"sliderIcon,omitempty"`
-	SliderStops     string `json:"sliderStops,omitempty"`
-	SliderDisplay   string `json:"sliderDisplay,omitempty"`
-	SliderStart     string `json:"sliderStart,omitempty"`
-	SliderEnd       string `json:"sliderEnd,omitempty"`
-	SliderStep      string `json:"sliderStep,omitempty"`
-	MenuMode        string `json:"menuMode,omitempty"`
-	SegmentDensity  string `json:"segmentDensity,omitempty"`
-	SearchContent   string `json:"searchContent,omitempty"`
-	SearchElevation string `json:"searchElevation,omitempty"`
-	DialogHeadline  string `json:"dialogHeadline,omitempty"`
-	DateRange       bool   `json:"dateRange,omitempty"`
-	ListMedia       string `json:"listMedia,omitempty"`
-	ListDivider     string `json:"listDivider,omitempty"`
-	ListTrailing    string `json:"listTrailing,omitempty"`
-	ListText        string `json:"listText,omitempty"`
-	ListInset       string `json:"listInset,omitempty"`
-	ListSurface     string `json:"listSurface,omitempty"`
-	ListExpandIcon  string `json:"listExpandIcon,omitempty"`
-	NavLayout       string `json:"navLayout,omitempty"`
-	NavCollapse     string `json:"navCollapse,omitempty"`
-	NavAlign        string `json:"navAlign,omitempty"`
-	NavHeader       string `json:"navHeader,omitempty"`
-	NavIndicator    string `json:"navIndicator,omitempty"`
-	NavBadge        string `json:"navBadge,omitempty"`
-	Expanded        bool   `json:"expanded,omitempty"`
-	Orientation     string `json:"orientation,omitempty"`
-	Control         string `json:"control,omitempty"`
-	Selection       string `json:"selection,omitempty"`
-	Family          string `json:"family"`
-	Variant         string `json:"variant"`
-	Size            string `json:"size"`
-	Shape           string `json:"shape"`
-	Width           string `json:"width"`
-	State           string `json:"state"`
-	Selected        bool   `json:"selected"`
-	Elevated        bool   `json:"elevated"`
-	Invalid         bool   `json:"invalid"`
+	CarouselAction   string `json:"carouselAction,omitempty"`
+	CarouselScroll   string `json:"carouselScroll,omitempty"`
+	CarouselContent  string `json:"carouselContent,omitempty"`
+	CarouselViewport string `json:"carouselViewport,omitempty"`
+	instanceID       string
+	SliderIcon       string `json:"sliderIcon,omitempty"`
+	SliderStops      string `json:"sliderStops,omitempty"`
+	SliderDisplay    string `json:"sliderDisplay,omitempty"`
+	SliderStart      string `json:"sliderStart,omitempty"`
+	SliderEnd        string `json:"sliderEnd,omitempty"`
+	SliderStep       string `json:"sliderStep,omitempty"`
+	MenuMode         string `json:"menuMode,omitempty"`
+	SegmentDensity   string `json:"segmentDensity,omitempty"`
+	SearchContent    string `json:"searchContent,omitempty"`
+	SearchElevation  string `json:"searchElevation,omitempty"`
+	DialogHeadline   string `json:"dialogHeadline,omitempty"`
+	DateRange        bool   `json:"dateRange,omitempty"`
+	ListMedia        string `json:"listMedia,omitempty"`
+	ListDivider      string `json:"listDivider,omitempty"`
+	ListTrailing     string `json:"listTrailing,omitempty"`
+	ListText         string `json:"listText,omitempty"`
+	ListInset        string `json:"listInset,omitempty"`
+	ListSurface      string `json:"listSurface,omitempty"`
+	ListExpandIcon   string `json:"listExpandIcon,omitempty"`
+	NavLayout        string `json:"navLayout,omitempty"`
+	NavCollapse      string `json:"navCollapse,omitempty"`
+	NavAlign         string `json:"navAlign,omitempty"`
+	NavHeader        string `json:"navHeader,omitempty"`
+	NavIndicator     string `json:"navIndicator,omitempty"`
+	NavBadge         string `json:"navBadge,omitempty"`
+	Expanded         bool   `json:"expanded,omitempty"`
+	Orientation      string `json:"orientation,omitempty"`
+	Control          string `json:"control,omitempty"`
+	Selection        string `json:"selection,omitempty"`
+	Family           string `json:"family"`
+	Variant          string `json:"variant"`
+	Size             string `json:"size"`
+	Shape            string `json:"shape"`
+	Width            string `json:"width"`
+	State            string `json:"state"`
+	Selected         bool   `json:"selected"`
+	Elevated         bool   `json:"elevated"`
+	Invalid          bool   `json:"invalid"`
 }
 
 func (c componentCase) ID() string {

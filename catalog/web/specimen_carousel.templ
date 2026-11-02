@@ -1,6 +1,5 @@
 package web
 
-import "fmt"
 import "github.com/sojupie/tokens/forge/components/ui"
 
 templ specimenCarousel(c componentCase) {
@@ -9,7 +8,15 @@ templ specimenCarousel(c componentCase) {
 
 templ carouselSurface(c componentCase, demonstration bool) {
 	if c.Variant=="full-screen" {
-		<div class="tokens-carousel-frame" style="inline-size:min(100%,384px);aspect-ratio:9/16;position:relative;margin-inline:auto">
+		{{ width := "384"
+if demonstration && c.CarouselViewport != "" && c.CarouselViewport != "available" {
+	width = c.CarouselViewport
+} }}
+		<div data-playground-environment class="tokens-carousel-frame" style={ "inline-size:min(100%," + width + "px);aspect-ratio:9/16;position:relative;margin-inline:auto" }>
+			@carouselExample(c, demonstration)
+		</div>
+	} else if demonstration && c.CarouselViewport!="" && c.CarouselViewport!="available" {
+		<div data-playground-environment class="tokens-carousel-frame" style={ "inline-size:min(100%," + c.CarouselViewport + "px);margin-inline:auto" }>
 			@carouselExample(c, demonstration)
 		</div>
 	} else {
@@ -33,9 +40,11 @@ templ carouselExample(c componentCase, demonstration bool) {
 	}}
 	@ui.Carousel(p, 6) {
 		for index:=range 6 {
-			@ui.CarouselItem(ui.CarouselItemProps{Index: index, Count: 6, ImageSrc: staticURL("paintings/" + carouselPaintings[index%len(carouselPaintings)]), SlotAttrs: c.CarouselSlot(index), Attrs: c.CarouselItem(index), After: carouselExampleCaption(c, index, demonstration)}) {
-				if demonstration {
-					<span class="md-carousel-number" aria-hidden="true">{ fmt.Sprint(index+1) }</span>
+			@ui.CarouselItem(ui.CarouselItemProps{Index: index, Count: 6, ImageSrc: staticURL("paintings/" + carouselPaintings[index%len(carouselPaintings)]), SlotAttrs: c.CarouselSlot(index), Attrs: c.CarouselItem(index), Label: carouselPaintingTitles[index%len(carouselPaintingTitles)], Before: carouselExampleCaption(c, index, demonstration, "above"), After: carouselExampleCaption(c, index, demonstration, "below")}) {
+				if demonstration && c.CarouselContent=="overlay" {
+					@ui.CarouselText() {
+						{ carouselPaintingTitles[index%len(carouselPaintingTitles)] }
+					}
 				}
 			}
 		}
@@ -61,7 +70,7 @@ templ carouselExampleActions(c componentCase) {
 }
 
 templ carouselExampleControls() {
-	@ui.CarouselControls(1, 6)
+	@ui.CarouselControls()
 }
 
 templ carouselArtwork(index int) {
@@ -69,8 +78,8 @@ templ carouselArtwork(index int) {
 }
 
 // Captions belong to the example; the API keeps them outside the masked button.
-templ carouselExampleCaption(c componentCase, index int, demonstration bool) {
-	if demonstration&&(c.Variant=="uncontained"||c.Variant=="uncontained-multi-aspect-ratio") {
+templ carouselExampleCaption(c componentCase, index int, demonstration bool, placement string) {
+	if demonstration&&c.CarouselContent==placement&&(c.Variant=="uncontained"||c.Variant=="uncontained-multi-aspect-ratio") {
 		<p class="md-typescale-body-medium" style="margin:0">{ carouselPaintingTitles[index%len(carouselPaintingTitles)] }</p>
 	}
 }
