@@ -29,7 +29,22 @@ try{
     assert(Math.abs(box.right-button.right-4)<.1,'Show all aligns to trailing edge with 4px clearance');
     assert(Math.abs(button.top-items[0].getBoundingClientRect().bottom-4)<.1,'Show all is 4px below items, without stacked viewport padding');
   }
-  if(!full)assert(root.querySelector('progress')&&!root.querySelector('output'),'Scroll-position indicator does not report a misleading item count');
+  if(!full)assert(root.querySelector('.md-carousel-pagination')&&!root.querySelector('output'),'Pagination uses distinct scroll positions without visible numbers');
+  if(!full&&action==='none'){
+    await new Promise(r=>setTimeout(r,350));
+    const pagination=root.querySelector('.md-carousel-pagination'),dots=[...pagination.children],active=dots[0];
+    const snaps=[...root.querySelectorAll(root.dataset.carouselLayout==='flow'?'.md-carousel-slot':'.md-carousel-snap')],first=snaps[0].getBoundingClientRect().left,max=viewport.scrollWidth-viewport.clientWidth;
+    const targets=[...new Set(snaps.map(snap=>Math.min(max,Math.max(0,Math.abs(snap.getBoundingClientRect().left-first)))))];
+    assert(dots.length===targets.length,`${variant}: pagination counts actual distinct positions`);
+    assert(dots.filter(dot=>dot.hasAttribute('data-active')).length===1,'Exactly one pagination pill is active');
+    assert(Math.abs(active.getBoundingClientRect().width-16)<.1&&Math.abs(active.getBoundingClientRect().height-8)<.1,'Active pill is twice the circle width');
+    root.querySelector('[data-carousel-step="1"]').click();await new Promise(r=>setTimeout(r,120));
+    const incoming=dots.find(dot=>dot.hasAttribute('data-active'));
+    if(incoming!==active)assert(incoming.getBoundingClientRect().width>8&&incoming.getBoundingClientRect().width<16,'Pagination morphs through intermediate widths');
+    await new Promise(r=>setTimeout(r,600));
+    assert(!active.hasAttribute('data-active')&&Math.abs(active.getBoundingClientRect().width-8)<.1,'Previous pill returns to a circle');
+    assert(pagination.querySelectorAll('[data-active]').length===1&&Math.abs(pagination.querySelector('[data-active]').getBoundingClientRect().width-16)<.1,'Next active circle expands into a pill');
+  }
   if(header){const box=header.querySelector('button').getBoundingClientRect();assert(Math.abs(box.width-48)<.1&&Math.abs(box.height-48)<.1,'Header arrow control is 48px square');}
   const button=bottom?.querySelector('button')||header?.querySelector('button');
   if(button){const before=f.contentWindow.location.href;button.click();assert(f.contentWindow.location.href===before,'Demo action does not navigate');}

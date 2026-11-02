@@ -31,8 +31,9 @@ templ CarouselItem(p CarouselItemProps) {
 	@Require("carousel")
 	<li { p.slot()... }>
 		if p.Before!=nil {
-			<div class="md-carousel-before">@p.Before
-</div>
+			<div class="md-carousel-before">
+				@p.Before
+			</div>
 		}
 		<button { p.Attributes()... }>
 			if p.ImageSrc!="" {
@@ -44,8 +45,9 @@ templ CarouselItem(p CarouselItemProps) {
 			{ children... }
 		</button>
 		if p.After!=nil {
-			<div class="md-carousel-after">@p.After
-</div>
+			<div class="md-carousel-after">
+				@p.After
+			</div>
 		}
 	</li>
 }
@@ -68,14 +70,19 @@ templ CarouselControls() {
 	@Require("carousel")
 	<div class="md-carousel-controls">
 		@IconButton(IconButtonProps{Label: "Previous item", Icon: "chevron_left", Attrs: templ.Attributes{"data-carousel-step": "-1"}})
-		<progress class="md-carousel-position" aria-label="Carousel scroll position" max="1" value="0"></progress>
+		@CarouselPagination()
 		@IconButton(IconButtonProps{Label: "Next item", Icon: "chevron_right", Attrs: templ.Attributes{"data-carousel-step": "1"}})
 	</div>
 }
 
 // CarouselText is optional overlay content supplied by the consumer.
 templ CarouselText() {
-	<span class="md-carousel-caption md-typescale-body-medium">
+	<span class="md-carousel-caption md-typescale-title-medium">
 		{ children... }
 	</span>
+}
+
+// Pagination is populated from the actual distinct scroll stops.
+templ CarouselPagination() {
+	<span class="md-carousel-pagination" role="img" aria-label="Carousel position"></span>
 }

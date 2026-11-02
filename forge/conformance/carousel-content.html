@@ -16,10 +16,12 @@ for(const variant of ['multi-browse','hero','center-aligned-hero','uncontained',
   const caption=items[0].querySelector('.md-carousel-caption'),style=w.getComputedStyle(caption);
   check(style.backgroundColor==='rgba(0, 0, 0, 0)'&&parseFloat(style.paddingTop)===0&&parseFloat(style.borderRadius)===0,tag+': plain text without a container');
   check(caption.textContent.trim().length<=14,tag+': brief label');
-  const middle=items.find(item=>{const width=item.getBoundingClientRect().width;return width>80&&width<144});
-  if(middle){const opacity=parseFloat(w.getComputedStyle(middle.querySelector('.md-carousel-caption')).opacity);check(opacity>0&&opacity<1,tag+': intermediate mask width partially fades text');}
-  const narrow=items.find(item=>item.getBoundingClientRect().width<=80);
-  if(narrow)check(parseFloat(w.getComputedStyle(narrow.querySelector('.md-carousel-caption')).opacity)===0,tag+': narrow mask hides text');
+  check(parseFloat(style.fontSize)===16&&parseFloat(style.lineHeight)===24,tag+': title-medium typography');
+  check(parseFloat(style.insetInlineStart)===16&&parseFloat(style.bottom)===16,tag+': 16px text inset');
+  const text=items.filter(item=>item.getBoundingClientRect().width>100).map(item=>parseFloat(w.getComputedStyle(item.querySelector('.md-carousel-caption')).opacity));
+  check(text.some(opacity=>opacity===1),tag+': readable item has opaque text');
+  const narrow=items.find(item=>item.getBoundingClientRect().width<=56);
+  if(narrow)check(parseFloat(w.getComputedStyle(narrow.querySelector('.md-carousel-caption')).opacity)===0,tag+': small mask hides text');
  }else{
   const caption=root.querySelector(content==='above'?'.md-carousel-before':'.md-carousel-after'),a=caption.getBoundingClientRect(),b=items[0].getBoundingClientRect();
   check(a.width>0&&a.height>0,tag+': external caption visible');

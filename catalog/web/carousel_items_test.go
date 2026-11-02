@@ -64,7 +64,7 @@ func TestCarouselContentAndViewport(t *testing.T) {
 			if external != (variant != "full-screen" && (content == "above" || content == "below")) {
 				t.Fatalf("%s/%s: external content", variant, content)
 			}
-			if strings.Contains(html, `<progress`) != (variant != "full-screen") || strings.Contains(html, `<output`) || strings.Contains(html, `class="md-carousel-number"`) {
+			if strings.Contains(html, `class="md-carousel-pagination"`) != (variant != "full-screen") || strings.Contains(html, `<output`) || strings.Contains(html, `class="md-carousel-number"`) {
 				t.Fatal("must use position, not item counts")
 			}
 		}

@@ -193,12 +193,13 @@
     if(!state.flow||uncontained||state.vertical)buttons.forEach((button,index)=>{
       const frame=frames?.[index]??(state.vertical?{left:0,size:width,media:width}:itemFrame(plan,index,position,buttons.length));
       const left=frame.left,size=frame.size;
-      // Fade brief labels before their mask becomes too narrow to read. These
-      // renderer thresholds are not prescribed motion/token values.
+      // Keep labels opaque at medium size and fade them toward the small
+      // keyline. Flow layouts use the same 40-56dp small-item range.
       const slot=state.slots?.[index];
       slot?.style?.setProperty('--_carousel-caption-left',left+'px');
       slot?.style?.setProperty('--_carousel-caption-width',size+'px');
-      slot?.style?.setProperty('--_carousel-text-opacity',clamp((size-80)/64,0,1));
+      const small=plan.small??clamp(width*.12,40,56),medium=(plan.large+small)/2;
+      slot?.style?.setProperty('--_carousel-text-opacity',clamp((size-small)/Math.max(1,medium-small),0,1));
       const press=reduced.matches?0:state.press?.button===button?state.press.value:button.dataset?.componentState==='pressed'?5:0;
       const raw=frames?state.starts[index]-scroll:0;
       button.style.visibility=left+size<=0||left>=width?'hidden':'visible';
@@ -215,7 +216,11 @@
     });
     let index=state.flow?state.targets.reduce((best,target,i)=>Math.abs(target-scroll)<Math.abs(state.targets[best]-scroll)?i:best,0):clamp(Math.round(position),0,buttons.length-1);
     root.dataset.carouselIndex=String(index);
-    const progress=root.querySelector('.md-carousel-position');if(progress)progress.value=max>0?scroll/max:0;
+    if(state.pagination){
+      const page=state.pages.reduce((best,target,i)=>Math.abs(target-scroll)<Math.abs(state.pages[best]-scroll)?i:best,0);
+      state.dots.forEach((dot,i)=>dot.toggleAttribute('data-active',i===page));
+      state.pagination.setAttribute('aria-label',`Carousel position ${page+1} of ${state.pages.length}`);
+    }
     const previous=root.querySelector('[data-carousel-step="-1"]'),next=root.querySelector('[data-carousel-step="1"]');
     if(previous)previous.disabled=scroll<1;
     if(next)next.disabled=scroll>=max-1;
@@ -249,6 +254,12 @@
     state.max=state.vertical?state.viewport.scrollHeight-state.viewport.clientHeight:state.viewport.scrollWidth-state.viewport.clientWidth;
     const snaps=[...root.querySelectorAll(state.flow?'.md-carousel-slot':'.md-carousel-snap')];
     state.targets=state.vertical?snaps.map((snap,i)=>Math.min(i*(state.plan.large+gap),state.max)):scrollTargets(snaps.map(snap=>snap.getBoundingClientRect()),state.rtl,state.max);
+    state.pages=[...new Set(state.targets)];
+    state.pagination=root.querySelector('.md-carousel-pagination');
+    if(state.pagination){
+      state.dots=state.pages.map(()=>{const dot=document.createElement('span');dot.setAttribute('aria-hidden','true');return dot;});
+      state.pagination.replaceChildren(...state.dots);
+    }
     state.lastPainted=undefined;
     scrollTo(state,state.flow?state.targets[priorIndex]:Math.min(prior*(state.plan.large+state.plan.gap),state.max));paint(state);
   }

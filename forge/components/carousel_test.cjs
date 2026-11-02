@@ -48,7 +48,7 @@ test('mouse release settles smoothly before restoring snapping',()=>{
   };
   const root={dataset:{variant:'multi-browse'},style:{setProperty(){}},
    querySelectorAll:selector=>['.md-carousel-snap','.md-carousel-slot'].includes(selector)?snaps:buttons,
-   querySelector:selector=>selector==='.md-carousel-scroll-track'?{}:selector==='.md-carousel-viewport'?viewport:selector==='output'?output:controls[selector]??={},
+   querySelector:selector=>selector==='.md-carousel-pagination'?null:selector==='.md-carousel-scroll-track'?{}:selector==='.md-carousel-viewport'?viewport:selector==='output'?output:controls[selector]??={},
   };
   const target={closest:selector=>selector==='.md-carousel'?root:selector==='.md-carousel-viewport'?viewport:null};
   const document={readyState:'complete',querySelectorAll:()=>[root],addEventListener:(name,fn)=>listeners[name]=fn};
@@ -114,19 +114,20 @@ function nativeCarousel({variant='uncontained',reduced=false,scrolling='free',sh
   scrollTo(options){moves.push(options);if(options.top!==undefined)this.scrollTop=options.top;else this.scrollLeft=Math.max(0,Math.min(options.left,this.scrollWidth-this.clientWidth));},
   setPointerCapture(){},hasPointerCapture:()=>false,
  };
+ const pagination={children:[],attributes:{},replaceChildren(...children){this.children=children;},setAttribute(name,value){this.attributes[name]=value;}};
  const controls={},root={dataset:{variant,scrolling},style:{setProperty(){}},
   querySelectorAll:selector=>['.md-carousel-slot','.md-carousel-snap'].includes(selector)?slots:buttons,
-  querySelector:selector=>selector==='.md-carousel-scroll-track'?{}:selector==='.md-carousel-viewport'?viewport:selector==='output'?(showControls?output:null):!showControls&&selector.startsWith('[data-carousel-step=')?null:controls[selector]??={},
+  querySelector:selector=>selector==='.md-carousel-pagination'?pagination:selector==='.md-carousel-scroll-track'?{}:selector==='.md-carousel-viewport'?viewport:selector==='output'?(showControls?output:null):!showControls&&selector.startsWith('[data-carousel-step=')?null:controls[selector]??={},
  };
  const target={closest:selector=>selector==='.md-carousel'?root:selector==='.md-carousel-viewport'?viewport:null};
- const document={readyState:'complete',querySelectorAll:()=>[root],addEventListener:(name,fn)=>listeners[name]=fn};
+ const document={readyState:'complete',querySelectorAll:()=>[root],addEventListener:(name,fn)=>listeners[name]=fn,createElement:()=>({active:false,setAttribute(){},toggleAttribute(name,on){this.active=on;}})};
  runInNewContext(readFileSync(`${__dirname}/static/carousel.js`,'utf8'),{
   document,matchMedia:()=>({matches:reduced}),window:{addEventListener(){}},
   getComputedStyle:()=>({direction:'ltr',paddingInlineStart:'16px',paddingInlineEnd:'0px',getPropertyValue:name=>name==='--_carousel-maximum'?'':name==='--_carousel-preferred'?'160px':'8px'}),
   Animation:class{constructor(effect){this.effect=effect;this.playState='running';clock=this;}play(){}cancel(){}},KeyframeEffect:class{getComputedTiming(){return{progress:clock.playState==='finished'?1:.5};}},requestAnimationFrame:fn=>{nextFrame=fn;return 1;},cancelAnimationFrame(){},
   ResizeObserver:class{observe(){}},
  });
- moves.length=0;return{root,viewport,buttons,moves,step(direction){listeners.click({target:{closest:selector=>selector==='.md-carousel'?root:selector==='[data-carousel-step]'?{dataset:{carouselStep:String(direction)}}:null},detail:0});},finishAnimation(){clock.playState='finished';nextFrame();},drag(distance=60,fast=false){
+ moves.length=0;return{root,viewport,buttons,moves,pagination,step(direction){listeners.click({target:{closest:selector=>selector==='.md-carousel'?root:selector==='[data-carousel-step]'?{dataset:{carouselStep:String(direction)}}:null},detail:0});},finishAnimation(){clock.playState='finished';nextFrame();},drag(distance=60,fast=false){
   listeners.pointerdown({target,pointerType:'mouse',button:0,pointerId:1,clientX:200,timeStamp:0});
   listeners.pointermove({pointerId:1,clientX:200-distance,timeStamp:60,preventDefault(){}});
   listeners.pointerup({pointerId:1,timeStamp:fast?70:200});
@@ -219,4 +220,14 @@ test('arrows skip duplicate end targets and reverse without a stuck item index',
  assert.ok(c.viewport.scrollLeft<end);
  c.step(-1);c.step(-1);c.finishAnimation();
  assert.equal(c.viewport.scrollLeft,0,'rapid arrows advance from the requested destination');
+});
+
+test('pagination counts unique reachable positions and moves its active pill',()=>{
+ const c=nativeCarousel({viewportWidth:640});
+ assert.equal(c.pagination.children.length,4,'clamped duplicate end positions are one page');
+ assert.equal(c.pagination.children.filter(dot=>dot.active).length,1);
+ assert.equal(c.pagination.children[0].active,true);
+ c.step(1);c.finishAnimation();
+ assert.equal(c.pagination.children[1].active,true);
+ assert.equal(c.pagination.attributes['aria-label'],'Carousel position 2 of 4');
 });
