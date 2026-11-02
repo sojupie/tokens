@@ -1213,12 +1213,31 @@ captured container tokens. The target measurement uses `space600`.
 
 ## Carousel motion
 
-Carousel scrolling uses an empty track with snap positions. The visible items
-share a stationary sticky layer, where their masks and positions update together.
-Native scrolling never translates the visible items separately from those
-updates. Item shapes, colors and states continue to use the captured tokens.
-Mouse release scrolls smoothly to the nearest stop before restoring native
-snapping. Reduced-motion mode settles immediately.
+Contained carousels use native snap positions with a sticky visual track. Mask
+width and image position are calculated separately; viewport clipping does not
+recenter the image. Uncontained layouts retain measured media widths, including
+mixed aspect ratios, while their visible masks interpolate between full-size and
+edge-preview arrangements. Captions remain outside the mask in normal flow.
+Full-screen pages scroll vertically and center their media within the visible
+portion of the page, producing parallax without scaling it.
+
+Touch and trackpad scrolling retain browser momentum. Free mouse drags coast with
+an exponential velocity decay; paused or cancelled drags stop where released.
+Snapping configurations settle to an item, with hero flings limited to one primary
+item. Reduced motion removes mask expansion, parallax, press expansion and mouse
+coasting.
+
+The shared feedback runtime emits bubbling `material:press` events with
+`detail.pressed` on press, release and cancellation. Carousel consumes that
+lifecycle to widen its mask by 5px per side and restore it on release; dragging
+cancels the feedback. Media scale and position stay unchanged. A fixed 5px image overscan on each side
+prevents the expanded mask from revealing empty strips. This amplitude
+comes from the bundled Motion Lab press reference (20 video pixels wider at 2x
+scale), not an override of captured corner-radius tokens. Press and release use the captured
+350ms `medium3` duration and standard easing, selected by comparing the bundled
+reference in Motion Lab. The renderer's mouse
+coasting uses a 250ms decay constant, informed by the measured reference tail;
+it is not a prescribed Material duration.
 
 ## Date picker input and layout
 

@@ -1,4 +1,5 @@
 function runMotionScript(code, globals) {
+  globals.CustomEvent=class{constructor(type,options){this.type=type;Object.assign(this,options)}};
   runInNewContext(readFileSync(require.resolve('./static/motion.cjs'), 'utf8'), globals);
   return runInNewContext(code, globals);
 }
@@ -43,6 +44,7 @@ function harness(reduced = false, initialCheckboxes = []) {
       this.isConnected = true;
       this.className = "";
     }
+    dispatchEvent(event) { (this.events??=[]).push(event); return true; }
     setAttribute(k, v) {
       this.attrs.set(k, String(v));
     }
@@ -766,4 +768,12 @@ test('busy button honors reduced motion and skips short-lived loading',()=>{
  assert.equal(h.animations.length,0);assert.equal(button.hasAttribute('data-loading-visible'),false);
  busy('true');h.advance(200);assert.equal(button.style.width,'40px');assert.equal(h.animations.length,0);
  busy('false');assert.equal(button.style.width,'');assert.equal(slot.style.width,'');
+});
+
+test('shared press lifecycle notifies geometry consumers on release and cancellation',()=>{
+ const h=harness(),b=h.button();
+ h.emit('pointerdown',b);h.emit('pointerup',b);
+ assert.deepEqual(b.events.map(e=>[e.type,e.detail.pressed]),[['material:press',true],['material:press',false]]);
+ h.emit('pointerdown',b);h.emit('pointercancel',b);
+ assert.equal(b.events.at(-1).detail.pressed,false);
 });

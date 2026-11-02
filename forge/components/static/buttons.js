@@ -189,6 +189,7 @@
     if (!button.hasAttribute("data-pressed")) return;
     const start = currentCorners(button);
     button.removeAttribute("data-pressed");
+    button.dispatchEvent(new CustomEvent("material:press",{bubbles:true,detail:{pressed:false}}));
     shapeTo(button, "--_button-rest-shape", start);
     widthGroup(button,false);
   }
@@ -247,6 +248,7 @@
     entry.phase = "waiting-click";
     active.set(button, entry);
     button.setAttribute("data-pressed", "");
+    button.dispatchEvent(new CustomEvent("material:press",{bubbles:true,detail:{pressed:true}}));
     shapeTo(button, "--_button-pressed-shape");
     widthGroup(button,true);
     return entry;

@@ -6,6 +6,7 @@
   --_carousel-height: 192px;
   --_carousel-gap: var(--md-sys-measurement-space100);
   --_carousel-aspect-ratio: 1;
+  --_carousel-press-duration: var(--md-sys-motion-duration-medium3);
   inline-size: 100%;
   max-inline-size: 100%;
   min-inline-size: 0;

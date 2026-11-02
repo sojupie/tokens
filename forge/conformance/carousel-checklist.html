@@ -22,7 +22,16 @@ document.querySelector('#run').onclick=async()=>{
   check(`${variant}/${width}: gap`,parseFloat(c.w.getComputedStyle(c.root.querySelector('.md-carousel-track')).gap)===(full?16:8));
   if(!full)check(`${variant}/${width}: corners`,m.items.every(i=>i.radius==='28px'));
   if(full){check(`${variant}/${width}: vertical full-screen`,m.maxY>0&&m.maxX===0,m);check(`${variant}/${width}: portrait`,m.height>m.width,[m.width,m.height]);continue;}
-  if(flow){const before=m.items.map(i=>i.width);c.v.scrollLeft=145;await wait(80);const after=measure(c);check(`${variant}/${width}: stable widths`,after.items.every((i,n)=>Math.abs(i.width-before[n])<.02));if(variant==='uncontained')check(`${variant}/${width}: equal widths`,before.every(v=>Math.abs(v-before[0])<.02));else check(`${variant}/${width}: varied ratios in range`,new Set(before).size>1&&after.items.every(i=>i.width/i.height>=9/16-.001&&i.width/i.height<=16/9+.001));continue;}
+  if(flow){
+   const media=()=>c.items.map(i=>i.querySelector('img').getBoundingClientRect().width),before=media();
+   c.v.scrollLeft=145;await wait(80);const after=measure(c),afterMedia=media();
+   check(`${variant}/${width}: stable media widths`,afterMedia.every((v,n)=>Math.abs(v-before[n])<.02));
+   check(`${variant}/${width}: changing masks`,after.items.some((i,n)=>Math.abs(i.width-m.items[n].width)>.1));
+   const slots=[...c.root.querySelectorAll('.md-carousel-slot')].map(i=>i.getBoundingClientRect());
+   check(`${variant}/${width}: media includes fixed press overscan`,afterMedia.every((v,n)=>Math.abs(v-slots[n].width-10)<.02));
+   if(variant==='uncontained')check(`${variant}/${width}: equal media widths`,before.every(v=>Math.abs(v-before[0])<.02));
+   else check(`${variant}/${width}: varied media ratios in range`,new Set(before).size>1&&after.items.every((i,n)=>slots[n].width/i.height>=9/16-.001&&slots[n].width/i.height<=16/9+.001));continue;
+  }
   const step=m.logical+8;
   for(const position of [0,1,2,3,4,5]){
    c.v.scrollTo({left:position*step,behavior:'instant'});await wait(90);const current=measure(c),visible=current.items.filter(i=>i.visible&&i.width>.5);records.push({...current,position});

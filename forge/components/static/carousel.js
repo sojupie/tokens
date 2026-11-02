@@ -77,11 +77,45 @@
     const b=restingFrame(plan,index,start+1,count);
     return{left:a.left+(b.left-a.left)*fraction,size:a.size+(b.size-a.size)*fraction};
   }
+  // Uncontained items retain their measured media width, not a constant visible
+  // mask. The trailing medium keyline follows Material's uncontained strategy.
+  function uncontainedFrames(width,widths,gap,scroll,max) {
+    if(!widths.length)return [];
+    function arrangement(first,media=widths){
+      const frames=Array(media.length);let left=0,preview=media[first],cut=false;
+      for(let i=first;i<media.length;i++){
+        let size=media[i];
+        if(left+size>width){
+          const remaining=Math.max(0,width-left);
+          let medium=Math.max(gap,remaining*1.5);
+          if(medium>size*.85)medium=Math.max(size*.85,remaining*1.2);
+          size=Math.min(size,medium);if(!cut){preview=size;cut=true;}
+        }
+        frames[i]={left,size,media:media[i]};left+=size+gap;
+      }
+      left=-gap;
+      for(let i=first-1;i>=0;i--){const size=Math.min(media[i],preview/2);left-=size;frames[i]={left,size,media:media[i]};left-=gap;}
+      return frames;
+    }
+    const stops=[0];let start=0;
+    for(const size of widths){start+=size+gap;if(start<max)stops.push(start);}
+    if(max>0)stops.push(max);
+    scroll=clamp(scroll,0,max);
+    const end=stops.findIndex(v=>v>=scroll),last=Math.max(0,end),first=Math.max(0,last-1);
+    function at(stop){
+      if(stop===stops.length-1&&max>0){
+        return arrangement(0,[...widths].reverse()).reverse().map(f=>({...f,left:width-f.left-f.size}));
+      }
+      return arrangement(stop);
+    }
+    const a=at(first),b=at(last),fraction=stops[last]===stops[first]?0:(scroll-stops[first])/(stops[last]-stops[first]);
+    return a.map((f,i)=>({left:f.left+(b[i].left-f.left)*fraction,size:f.size+(b[i].size-f.size)*fraction,media:f.media}));
+  }
   function scrollTargets(rects,rtl,max) {
     const edge=rtl?'right':'left',first=rects[0][edge];
     return rects.map(rect=>clamp(Math.abs(rect[edge]-first),0,max));
   }
-  if(typeof module!=='undefined')module.exports={layout,itemFrame,scrollTargets};
+  if(typeof module!=='undefined')module.exports={layout,itemFrame,scrollTargets,uncontainedFrames};
   if(typeof document==='undefined')return;
   const roots=new WeakMap(),reduced=matchMedia('(prefers-reduced-motion: reduce)');
   const items=root=>[...root.querySelectorAll('.md-carousel-item')];
@@ -112,6 +146,10 @@
       if(reduced.matches||Math.abs(from-requested)<.01)settled(state);
       return;
     }
+    animateTo(state,requested);
+  }
+  function animateTo(state,requested,duration,easing,decay) {
+    const from=state.motion?.position??offset(state);cancelMotion(state);
     state.viewport.style.scrollSnapType='none';
     delete state.root.dataset.carouselSettled;
     // Resolve the real snap offset through the browser once, including its scroll
@@ -123,13 +161,15 @@
     // The sticky visual track does not need native scrolling on every animation
     // frame. One token clock drives fractional geometry; sync at completion/input.
     const style=getComputedStyle(state.root),clock=new Animation(new KeyframeEffect(null,[],{
-      duration:parseFloat(style.getPropertyValue('--md-sys-motion-duration-medium2')),
-      easing:style.getPropertyValue('--md-sys-motion-easing-standard').trim(),fill:'both',
+      duration:duration??parseFloat(style.getPropertyValue('--md-sys-motion-duration-medium2')),
+      easing:easing??style.getPropertyValue('--md-sys-motion-easing-standard').trim(),fill:'both',
     }),document.timeline);
     const motion=state.motion={clock,position:from,frame:0};clock.play();
     function tick(){
-      const progress=clock.effect.getComputedTiming().progress??0;
+      let progress=clock.effect.getComputedTiming().progress??0;
+      if(decay)progress=(1-Math.exp(-progress*duration/decay))/(1-Math.exp(-duration/decay));
       motion.position=from+(target-from)*progress;
+      if(state.flow)scrollTo(state,motion.position);
       paint(state,motion.position);
       if(clock.playState==='finished'){cancelMotion(state);settled(state);}
       else motion.frame=requestAnimationFrame(tick);
@@ -150,16 +190,24 @@
     state.lastPainted=scroll;
     const {root,buttons,plan}=state,position=scroll/(plan.large+plan.gap),width=plan.width;
     const max=state.max;
-    if(!state.flow)buttons.forEach((button,index)=>{
-      const frame=itemFrame(plan,index,position,buttons.length),left=Math.max(0,frame.left),right=Math.min(width,frame.left+frame.size),size=Math.max(0,right-left);
-      // Outside items remain in the native scroll track without extending its bounds.
-      button.style.visibility=size<1?'hidden':'visible';
-      button.style.width=size+'px';
-      button.style.transform=`translateX(${state.rtl?-left:left}px)`;
-      // Position artwork from the same fractional mask width, without percentage
-      // layout on a changing box. Static thumbnails retain their CSS centering.
-      const art=state.art[index],shift=(size-plan.large)/2;
-      if(art)art.style.transform=`translateX(${state.rtl?-shift:shift}px)`;
+    const uncontained=state.flow&&!state.vertical&&!reduced.matches;
+    const frames=uncontained?uncontainedFrames(width,state.widths,plan.gap,scroll,state.max):null;
+    if(!state.flow||uncontained||state.vertical)buttons.forEach((button,index)=>{
+      const frame=frames?.[index]??(state.vertical?{left:0,size:width,media:width}:itemFrame(plan,index,position,buttons.length));
+      const left=frame.left,size=frame.size;
+      const press=reduced.matches?0:state.press?.button===button?state.press.value:button.dataset?.componentState==='pressed'?5:0;
+      const raw=frames?state.starts[index]-scroll:0;
+      button.style.visibility=left+size<=0||left>=width?'hidden':'visible';
+      button.style.width=(size+2*press)+'px';
+      button.style.transform=`translateX(${(state.rtl?-1:1)*(left-raw-press)}px)`;
+      const art=state.art[index],media=(frame.media??plan.large)+(reduced.matches?0:10),shift=(size-media)/2+press;
+      if(art){
+        // Reserve the press reveal at rest: pressing must never expose an empty strip.
+        art.style.width=media+'px';
+        const top=index*(plan.large+plan.gap)-scroll;
+        const verticalShift=state.vertical&&!reduced.matches?(Math.max(0,-top)+Math.min(plan.large,plan.large-top)-plan.large)/2:0;
+        art.style.transform=state.vertical?`translate(${state.rtl?-shift:shift}px,${verticalShift}px)`:`translateX(${state.rtl?-shift:shift}px)`;
+      }
     });
     let index=state.flow?state.targets.reduce((best,target,i)=>Math.abs(target-scroll)<Math.abs(state.targets[best]-scroll)?i:best,0):clamp(Math.round(position),0,buttons.length-1);
     root.dataset.carouselIndex=String(index);
@@ -188,8 +236,11 @@
     if(state.flow)for(let i=0;i<state.buttons.length;i++){
       const button=state.buttons[i];
       for(const name of ['width','transform','visibility'])button.style[name]='';
-      if(state.art[i])state.art[i].style.transform='';
+      if(state.art[i]){state.art[i].style.transform='';state.art[i].style.width='';}
     }
+    const slots=[...root.querySelectorAll('.md-carousel-slot')];
+    state.starts=[];let start=0;
+    state.widths=slots.map(slot=>{state.starts.push(start);const size=slot.getBoundingClientRect().width;start+=size+gap;return size;});
     state.max=state.vertical?state.viewport.scrollHeight-state.viewport.clientHeight:state.viewport.scrollWidth-state.viewport.clientWidth;
     const snaps=[...root.querySelectorAll(state.flow?'.md-carousel-slot':'.md-carousel-snap')];
     state.targets=state.vertical?snaps.map((snap,i)=>Math.min(i*(state.plan.large+gap),state.max)):scrollTargets(snaps.map(snap=>snap.getBoundingClientRect()),state.rtl,state.max);
@@ -239,6 +290,30 @@
     event.preventDefault();
     if(target>=0&&target<state.buttons.length)go(state,target,true);
   });
+  document.addEventListener('material:press',event=>{
+    const button=event.target,root=button.closest?.('.md-carousel');
+    if(!button.matches?.('.md-carousel-item')||!root)return;
+    const state=roots.get(root);if(!state)return;
+    const from=state.press?.button===button?state.press.value:0;
+    state.press?.animation?.cancel();cancelAnimationFrame(state.press?.frame);
+    // The bundled Motion Lab reference expands the mask by 10px per side at
+    // 2x scale. Keep media and captured corner tokens unchanged.
+    const to=event.detail.pressed&&!reduced.matches?5:0;
+    const press=state.press={button,value:from,frame:0};
+    if(reduced.matches){press.value=to;state.lastPainted=undefined;paint(state);return;}
+    const style=getComputedStyle(root);
+    const animation=press.animation=new Animation(new KeyframeEffect(null,[],{
+      duration:parseFloat(style.getPropertyValue('--_carousel-press-duration')),
+      easing:style.getPropertyValue('--md-sys-motion-easing-standard').trim(),fill:'both'
+    }),document.timeline);animation.play();
+    function tick(){
+      press.value=from+(to-from)*(animation.effect.getComputedTiming().progress??0);
+      state.lastPainted=undefined;paint(state,state.motion?.position??offset(state));
+      if(animation.playState==='finished'){animation.cancel();press.animation=null;}
+      else press.frame=requestAnimationFrame(tick);
+    }
+    press.frame=requestAnimationFrame(tick);
+  });
   let drag;
   document.addEventListener('pointerdown',event=>{
     const root=event.target.closest?.('.md-carousel');if(!root||!event.target.closest('.md-carousel-viewport'))return;
@@ -262,7 +337,19 @@
     if(state.viewport.hasPointerCapture(id))state.viewport.releasePointerCapture(id);
     if(moved){
       state.suppress=true;
-      if(state.root.dataset.variant.startsWith('uncontained')&&state.root.dataset.scrolling!=='snap'&&!reduced.matches){delete state.root.dataset.carouselDragging;settled(state);return;}
+      if(state.root.dataset.variant.startsWith('uncontained')&&state.root.dataset.scrolling!=='snap'){
+        delete state.root.dataset.carouselDragging;
+        const speed=!cancel&&event.timeStamp-lastTime<80?velocity*(state.rtl?1:-1):0;
+        if(!reduced.matches&&Math.abs(speed)>.02){
+          // Mouse dragging has no browser inertia. A 250ms decay constant follows
+          // the measured reference tail; this is renderer physics, not a token override.
+          const decay=250,duration=Math.min(1500,decay*Math.log(Math.abs(speed)/.02));
+          const distance=speed*decay*(1-Math.exp(-duration/decay));
+          animateTo(state,offset(state)+distance,duration,'linear',decay);
+        }
+        else settled(state);
+        return;
+      }
       // Keep snapping off through the smooth settle; restoring it first can snap immediately.
       state.viewport.style.scrollSnapType='none';
       delete state.root.dataset.carouselDragging;
@@ -278,7 +365,7 @@
   document.addEventListener('htmx:beforeCleanupElement',event=>{
     const node=(event.detail?.elt || event.target);if(!node)return;
     const affected=[...(node.matches?.('.md-carousel')?[node]:[]),...node.querySelectorAll('.md-carousel')];
-    for(const root of affected){observer.unobserve(root);const state=roots.get(root);if(state)cancelMotion(state);if(drag?.state===state)drag=null;roots.delete(root);}
+    for(const root of affected){observer.unobserve(root);const state=roots.get(root);if(state){cancelMotion(state);state.press?.animation?.cancel();cancelAnimationFrame(state.press?.frame);}if(drag?.state===state)drag=null;roots.delete(root);}
   });
   reduced.addEventListener?.('change',()=>{for(const root of document.querySelectorAll('.md-carousel'))resize(root);});
   document.addEventListener('htmx:afterSwap',()=>init());

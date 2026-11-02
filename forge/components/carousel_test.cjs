@@ -1,7 +1,7 @@
 const test=require('node:test'),assert=require('node:assert/strict');
 const {readFileSync}=require('node:fs'),{runInNewContext}=require('node:vm');
 const out={exports:{}};runInNewContext(readFileSync(`${__dirname}/static/carousel.js`,'utf8'),{module:out});
-const {layout,itemFrame,scrollTargets}=out.exports;
+const {layout,itemFrame,scrollTargets,uncontainedFrames}=out.exports;
 test('every resting arrangement retains its size hierarchy and interpolates without overlap',()=>{
  for(const width of [177,328,736,740,1168])for(const variant of ['multi-browse','hero','center-aligned-hero']){
   const plan=layout(width,240,8,variant,6),max=variant==='center-aligned-hero'?5:6-plan.big;
@@ -106,11 +106,11 @@ function nativeCarousel({variant='uncontained',reduced=false,scrolling='free',sh
  const listeners={},scrollListeners={},output={},moves=[];
  const widths=variant==='uncontained-multi-aspect-ratio'?[160,90,120,135,160,90]:[160,160,160,160,160,160];
  let start=0;
- const slots=widths.map(width=>{const left=start;start+=width+8;return{getBoundingClientRect:()=>({left})};});
+ const slots=widths.map(width=>{const left=start;start+=width+8;return{getBoundingClientRect:()=>({left,width})};});
  const buttons=widths.map(()=>({style:{},disabled:false,querySelector:()=>({style:{}}),focus(){}}));
- const viewport={clientWidth:336,scrollWidth:start-8+16,scrollLeft:0,
+ const viewport={clientWidth:336,clientHeight:600,scrollHeight:3640,scrollTop:0,scrollWidth:start-8+16,scrollLeft:0,
   style:{removeProperty(){delete this.scrollSnapType;}},addEventListener:(name,fn)=>scrollListeners[name]=fn,
-  scrollTo(options){moves.push(options);this.scrollLeft=Math.max(0,Math.min(options.left,this.scrollWidth-this.clientWidth));},
+  scrollTo(options){moves.push(options);if(options.top!==undefined)this.scrollTop=options.top;else this.scrollLeft=Math.max(0,Math.min(options.left,this.scrollWidth-this.clientWidth));},
   setPointerCapture(){},hasPointerCapture:()=>false,
  };
  const controls={},root={dataset:{variant,scrolling},style:{setProperty(){}},
@@ -130,13 +130,14 @@ function nativeCarousel({variant='uncontained',reduced=false,scrolling='free',sh
   listeners.pointerup({pointerId:1,timeStamp:fast?70:200});
  }};
 }
-test('uncontained variants retain native item widths and free-scroll positions on release',()=>{
+test('uncontained variants retain measured media widths while their visible masks adapt',()=>{
  for(const variant of ['uncontained','uncontained-multi-aspect-ratio']) {
   const c=nativeCarousel({variant});c.drag();
   assert.equal(c.root.dataset.carouselLayout,'flow');
   assert.equal(c.viewport.scrollLeft,60);
   assert.equal(c.moves.length,0,'free release does not seek a snap target');
-  assert.ok(c.buttons.every(b=>b.style.width===''&&b.style.transform===''));
+  assert.ok(c.buttons.every(b=>Number.isFinite(parseFloat(b.style.width))));
+  assert.ok(c.buttons.some((b,i)=>parseFloat(b.style.width)<c.root.querySelectorAll('.md-carousel-slot')[i].getBoundingClientRect().width));
  }
 });
 test('optional uncontained snapping uses native flow, including unequal item widths',()=>{
@@ -149,8 +150,8 @@ test('reduced motion uses complete stable items without width masking or paralla
  for(const variant of ['multi-browse','uncontained','uncontained-multi-aspect-ratio','hero','center-aligned-hero','full-screen']) {
   const c=nativeCarousel({variant,reduced:true});c.drag();
   assert.equal(c.root.dataset.carouselLayout,'flow');
-  assert.ok(c.buttons.every(b=>b.style.width===''&&b.style.transform===''));
-  assert.equal(c.moves[0].behavior,'instant');
+  if(variant!=='full-screen')assert.ok(c.buttons.every(b=>b.style.width===''&&b.style.transform===''));
+  if(!variant.startsWith('uncontained'))assert.equal(c.moves[0].behavior,'instant');
  }
 });
 
@@ -188,5 +189,19 @@ test('hero mouse fling advances at most one item, including reduced motion',()=>
  for(const variant of ['hero','center-aligned-hero']) {
   const c=nativeCarousel({variant,reduced:true});c.drag(500,true);
   assert.equal(c.moves.at(-1).left,168);
+ }
+});
+
+test('uncontained masks interpolate continuously with intact gaps and stable media',()=>{
+ for(const widths of [[240,240,240,240,240,240],[320,108,192,144,240,180]]){
+  const max=widths.reduce((a,b)=>a+b,0)+8*(widths.length-1)-328;
+  for(let scroll=0;scroll<=max;scroll+=.5){
+   const frames=uncontainedFrames(328,widths,8,scroll,max);
+   for(let i=0;i<frames.length;i++){
+    const f=frames[i];assert.equal(f.media,widths[i]);assert.ok(f.size>0&&f.size<=f.media+.001);
+    if(i)assert.ok(Math.abs(f.left-frames[i-1].left-frames[i-1].size-8)<.001);
+   }
+  }
+  const end=uncontainedFrames(328,widths,8,max,max).at(-1);assert.ok(Math.abs(end.left+end.size-328)<.001);
  }
 });
