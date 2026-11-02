@@ -37,7 +37,7 @@ type CarouselItemProps struct {
 	AspectRatio               float64
 	SlotAttrs, Attrs          templ.Attributes
 	Content                   templ.Component
-	// Before and After are unmasked content slots for uncontained carousels.
+	// Before and After are unmasked caption slots for horizontal carousels.
 	Before, After templ.Component
 }
 

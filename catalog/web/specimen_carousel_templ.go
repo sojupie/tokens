@@ -72,7 +72,7 @@ func carouselSurface(c componentCase, demonstration bool) templ.Component {
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templruntime.SanitizeStyleAttributeValues("inline-size:min(100%," + width + "px);aspect-ratio:9/16;position:relative;margin-inline:auto")
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/specimen_carousel.templ`, Line: 15, Col: 167}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/specimen_carousel.templ`, Line: 17, Col: 167}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -98,7 +98,7 @@ func carouselSurface(c componentCase, demonstration bool) templ.Component {
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templruntime.SanitizeStyleAttributeValues("inline-size:min(100%," + c.CarouselViewport + "px);margin-inline:auto")
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/specimen_carousel.templ`, Line: 19, Col: 144}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/specimen_carousel.templ`, Line: 21, Col: 144}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -197,9 +197,9 @@ func carouselExample(c componentCase, demonstration bool) templ.Component {
 							}
 							ctx = templ.InitializeContext(ctx)
 							var templ_7745c5c3_Var9 string
-							templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(carouselPaintingTitles[index%len(carouselPaintingTitles)])
+							templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(carouselCaption(index))
 							if templ_7745c5c3_Err != nil {
-								return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/specimen_carousel.templ`, Line: 46, Col: 65}
+								return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/specimen_carousel.templ`, Line: 48, Col: 30}
 							}
 							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 							if templ_7745c5c3_Err != nil {
@@ -406,7 +406,7 @@ func carouselArtwork(index int) templ.Component {
 		var templ_7745c5c3_Var17 string
 		templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(staticURL("paintings/" + carouselPaintings[index%len(carouselPaintings)]))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/specimen_carousel.templ`, Line: 77, Col: 85}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/specimen_carousel.templ`, Line: 79, Col: 85}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 		if templ_7745c5c3_Err != nil {
@@ -442,15 +442,15 @@ func carouselExampleCaption(c componentCase, index int, demonstration bool, plac
 			templ_7745c5c3_Var18 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		if demonstration && c.CarouselContent == placement && (c.Variant == "uncontained" || c.Variant == "uncontained-multi-aspect-ratio") {
+		if demonstration && c.CarouselContent == placement && c.Variant != "full-screen" {
 			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<p class=\"md-typescale-body-medium\" style=\"margin:0\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var19 string
-			templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(carouselPaintingTitles[index%len(carouselPaintingTitles)])
+			templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(carouselCaption(index))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/specimen_carousel.templ`, Line: 83, Col: 114}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/specimen_carousel.templ`, Line: 85, Col: 79}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 			if templ_7745c5c3_Err != nil {

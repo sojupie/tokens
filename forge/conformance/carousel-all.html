@@ -16,7 +16,8 @@ try{
   assert(parseFloat(w.getComputedStyle(root.querySelector('.md-carousel-track')).gap)===(full?16:8),`${variant}: specified item gap`);
   const items=[...root.querySelectorAll('.md-carousel-item')];
   const radius=w.getComputedStyle(root).getPropertyValue('--md-comp-carousel-item-container-shape');
-  if(radius)assert(Math.abs(parseFloat(w.getComputedStyle(items[0]).borderTopLeftRadius)-parseFloat(radius))<.1,`${variant}: captured item shape token`);
+  if(full)assert(parseFloat(w.getComputedStyle(items[0]).borderTopLeftRadius)===0,'Full-screen pages have square corners');
+  else if(radius)assert(Math.abs(parseFloat(w.getComputedStyle(items[0]).borderTopLeftRadius)-parseFloat(radius))<.1,`${variant}: captured item shape token`);
   if(variant==='uncontained-multi-aspect-ratio'){
     const height=items[0].getBoundingClientRect().height;
     [16/9,9/16,1,3/4].forEach((ratio,i)=>assert(Math.abs(root.querySelectorAll('.md-carousel-slot')[i].getBoundingClientRect().width/height-ratio)<.01,`Mixed item ${i+1}: source ratio`));

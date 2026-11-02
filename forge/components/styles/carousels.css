@@ -308,14 +308,37 @@
 .md-carousel-position::-moz-progress-bar { background:var(--md-sys-color-primary); }
 .md-carousel-caption {
   position:absolute;
-  inset-inline:var(--md-sys-measurement-space100);
-  inset-block-end:var(--md-sys-measurement-space100);
-  padding:var(--md-sys-measurement-space100);
-  border-radius:var(--md-sys-measurement-space100);
-  background:var(--md-sys-color-surface);
-  color:var(--md-sys-color-on-surface);
+  inset-inline:var(--md-sys-measurement-space200);
+  inset-block-end:var(--md-sys-measurement-space200);
+  color:#fff;
+  text-align:start;
+  text-shadow:0 1px 3px #000;
+  opacity:var(--_carousel-text-opacity,1);
+  white-space:normal;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
   overflow:hidden;
-  white-space:nowrap;
-  text-overflow:ellipsis;
   pointer-events:none;
 }
+/* Full-screen pages meet the window edges; the generic rounded item shape is
+   for the horizontal layouts. Captured source values remain unchanged. */
+.md-carousel[data-variant="full-screen"] .md-carousel-item { border-radius:0;--_button-rest-shape:0px;--_button-pressed-shape:0px; }
+.md-carousel { --_carousel-before-space:0px;--_carousel-after-space:0px; }
+.md-carousel:has(.md-carousel-before:not(:empty)) { --_carousel-before-space:calc(var(--md-sys-typescale-body-medium-line-height) + var(--_carousel-gap)); }
+.md-carousel:has(.md-carousel-after:not(:empty)) { --_carousel-after-space:calc(var(--md-sys-typescale-body-medium-line-height) + var(--_carousel-gap)); }
+.md-carousel-before:empty,.md-carousel-after:empty { display:none; }
+.md-carousel-before,.md-carousel-after { min-inline-size:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+.md-carousel-before > *,.md-carousel-after > * { margin:0;overflow:hidden;text-overflow:ellipsis; }
+.md-carousel[data-carousel-layout="masked"] .md-carousel-scroll-track > .md-carousel-track {
+  block-size:calc(var(--_carousel-height) + var(--_carousel-before-space) + var(--_carousel-after-space));
+}
+.md-carousel[data-carousel-layout="masked"] .md-carousel-item { inset-block-start:var(--_carousel-before-space);inset-block-end:auto;block-size:var(--_carousel-height); }
+.md-carousel[data-carousel-layout="masked"] :is(.md-carousel-before,.md-carousel-after) {
+  position:absolute;
+  inset-inline-start:var(--_carousel-caption-left,0px);
+  inline-size:var(--_carousel-caption-width,var(--_carousel-logical));
+  opacity:var(--_carousel-text-opacity,1);
+}
+.md-carousel[data-carousel-layout="masked"] .md-carousel-before { inset-block-start:0; }
+.md-carousel[data-carousel-layout="masked"] .md-carousel-after { inset-block-start:calc(var(--_carousel-before-space) + var(--_carousel-height) + var(--_carousel-gap)); }

@@ -65,13 +65,13 @@ func configureCarouselPreview(page *componentPreview, query url.Values) error {
 		return fmt.Errorf("%w: carousel content %s", errPreviewInput, content)
 	}
 	contentOptions := []string{"none", "overlay"}
-	if hasUncontained {
+	if hasAction {
 		contentOptions = append(contentOptions, "above", "below")
 	}
 	if !containsPreview(contentOptions, content) {
 		content = "none"
 	}
-	page.Controls = append(page.Controls, previewControl{Name: "content", Label: "Item text", Selected: content, Options: contentOptions, Labels: map[string]string{"none": "Image only", "overlay": "On image", "above": "Above (uncontained)", "below": "Below (uncontained)"}})
+	page.Controls = append(page.Controls, previewControl{Name: "content", Label: "Item text", Selected: content, Options: contentOptions, Labels: map[string]string{"none": "Image only", "overlay": "On image", "above": "Above image", "below": "Below image"}})
 	viewport := query.Get("preview.viewport")
 	if viewport == "" {
 		viewport = "available"
@@ -127,4 +127,9 @@ func (page componentPreview) HasUncontainedCarousel() bool {
 		}
 	}
 	return false
+}
+
+// Brief specimen labels; the full artwork titles remain the accessible labels.
+func carouselCaption(index int) string {
+	return []string{"Argenteuil", "Hudson River", "Pourville", "Green River", "Lake Lucerne", "Scheveningen"}[index%6]
 }

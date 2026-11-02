@@ -8,10 +8,12 @@ templ specimenCarousel(c componentCase) {
 
 templ carouselSurface(c componentCase, demonstration bool) {
 	if c.Variant=="full-screen" {
-		{{ width := "384"
-if demonstration && c.CarouselViewport != "" && c.CarouselViewport != "available" {
-	width = c.CarouselViewport
-} }}
+		{{
+			width := "384"
+			if demonstration && c.CarouselViewport != "" && c.CarouselViewport != "available" {
+				width = c.CarouselViewport
+			}
+		}}
 		<div data-playground-environment class="tokens-carousel-frame" style={ "inline-size:min(100%," + width + "px);aspect-ratio:9/16;position:relative;margin-inline:auto" }>
 			@carouselExample(c, demonstration)
 		</div>
@@ -43,7 +45,7 @@ templ carouselExample(c componentCase, demonstration bool) {
 			@ui.CarouselItem(ui.CarouselItemProps{Index: index, Count: 6, ImageSrc: staticURL("paintings/" + carouselPaintings[index%len(carouselPaintings)]), SlotAttrs: c.CarouselSlot(index), Attrs: c.CarouselItem(index), Label: carouselPaintingTitles[index%len(carouselPaintingTitles)], Before: carouselExampleCaption(c, index, demonstration, "above"), After: carouselExampleCaption(c, index, demonstration, "below")}) {
 				if demonstration && c.CarouselContent=="overlay" {
 					@ui.CarouselText() {
-						{ carouselPaintingTitles[index%len(carouselPaintingTitles)] }
+						{ carouselCaption(index) }
 					}
 				}
 			}
@@ -79,7 +81,7 @@ templ carouselArtwork(index int) {
 
 // Captions belong to the example; the API keeps them outside the masked button.
 templ carouselExampleCaption(c componentCase, index int, demonstration bool, placement string) {
-	if demonstration&&c.CarouselContent==placement&&(c.Variant=="uncontained"||c.Variant=="uncontained-multi-aspect-ratio") {
-		<p class="md-typescale-body-medium" style="margin:0">{ carouselPaintingTitles[index%len(carouselPaintingTitles)] }</p>
+	if demonstration&&c.CarouselContent==placement&&c.Variant!="full-screen" {
+		<p class="md-typescale-body-medium" style="margin:0">{ carouselCaption(index) }</p>
 	}
 }

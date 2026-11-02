@@ -193,6 +193,12 @@
     if(!state.flow||uncontained||state.vertical)buttons.forEach((button,index)=>{
       const frame=frames?.[index]??(state.vertical?{left:0,size:width,media:width}:itemFrame(plan,index,position,buttons.length));
       const left=frame.left,size=frame.size;
+      // Fade brief labels before their mask becomes too narrow to read. These
+      // renderer thresholds are not prescribed motion/token values.
+      const slot=state.slots?.[index];
+      slot?.style?.setProperty('--_carousel-caption-left',left+'px');
+      slot?.style?.setProperty('--_carousel-caption-width',size+'px');
+      slot?.style?.setProperty('--_carousel-text-opacity',clamp((size-80)/64,0,1));
       const press=reduced.matches?0:state.press?.button===button?state.press.value:button.dataset?.componentState==='pressed'?5:0;
       const raw=frames?state.starts[index]-scroll:0;
       button.style.visibility=left+size<=0||left>=width?'hidden':'visible';
@@ -237,7 +243,7 @@
       for(const name of ['width','transform','visibility'])button.style[name]='';
       if(state.art[i]){state.art[i].style.transform='';state.art[i].style.width='';}
     }
-    const slots=[...root.querySelectorAll('.md-carousel-slot')];
+    const slots=state.slots=[...root.querySelectorAll('.md-carousel-slot')];
     state.starts=[];let start=0;
     state.widths=slots.map(slot=>{state.starts.push(start);const size=slot.getBoundingClientRect().width;start+=size+gap;return size;});
     state.max=state.vertical?state.viewport.scrollHeight-state.viewport.clientHeight:state.viewport.scrollWidth-state.viewport.clientWidth;

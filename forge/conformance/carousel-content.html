@@ -1,0 +1,39 @@
+<!doctype html><meta charset="utf-8"><title>Carousel content checks</title>
+<style>body{font:16px system-ui;margin:20px}iframe{width:390px;height:780px}pre{white-space:pre-wrap}</style>
+<h1>Carousel content checks</h1><button id="run">Run content checks</button><pre id="result">Ready</pre><div id="samples"></div>
+<script>
+const run=document.querySelector('#run'),out=document.querySelector('#result'),samples=document.querySelector('#samples');
+run.onclick=async()=>{run.disabled=true;const checks=[],check=(ok,name)=>{if(!ok)throw Error(name);checks.push(name)},wait=ms=>new Promise(r=>setTimeout(r,ms));
+try{
+for(const variant of ['multi-browse','hero','center-aligned-hero','uncontained','uncontained-multi-aspect-ratio','full-screen'])for(const content of (variant==='full-screen'?['overlay']:['above','below','overlay'])){
+ samples.replaceChildren();const frame=document.createElement('iframe');samples.append(frame);
+ await new Promise(resolve=>{frame.onload=resolve;frame.src=`/components/carousel?preview.compare=interactive&preview.variant=${variant}&preview.content=${content}&preview.viewport=360`});
+ const d=frame.contentDocument,w=frame.contentWindow;await w.TokenAssets.ready;await wait(80);
+ const root=d.querySelector('#component-preview .md-carousel'),items=[...root.querySelectorAll('.md-carousel-item')];
+ const tag=variant+'/'+content;
+ if(variant==='full-screen')check(parseFloat(w.getComputedStyle(items[0]).borderTopLeftRadius)===0,tag+': square corners');
+ if(content==='overlay'){
+  const caption=items[0].querySelector('.md-carousel-caption'),style=w.getComputedStyle(caption);
+  check(style.backgroundColor==='rgba(0, 0, 0, 0)'&&parseFloat(style.paddingTop)===0&&parseFloat(style.borderRadius)===0,tag+': plain text without a container');
+  check(caption.textContent.trim().length<=14,tag+': brief label');
+  const middle=items.find(item=>{const width=item.getBoundingClientRect().width;return width>80&&width<144});
+  if(middle){const opacity=parseFloat(w.getComputedStyle(middle.querySelector('.md-carousel-caption')).opacity);check(opacity>0&&opacity<1,tag+': intermediate mask width partially fades text');}
+  const narrow=items.find(item=>item.getBoundingClientRect().width<=80);
+  if(narrow)check(parseFloat(w.getComputedStyle(narrow.querySelector('.md-carousel-caption')).opacity)===0,tag+': narrow mask hides text');
+ }else{
+  const caption=root.querySelector(content==='above'?'.md-carousel-before':'.md-carousel-after'),a=caption.getBoundingClientRect(),b=items[0].getBoundingClientRect();
+  check(a.width>0&&a.height>0,tag+': external caption visible');
+  check(Math.abs(a.left-b.left)<.2,tag+': caption aligns with image');
+  check(content==='above'?a.bottom<=b.top:a.top>=b.bottom,tag+': caption outside image');
+  const tops=items.filter(i=>w.getComputedStyle(i).visibility!=='hidden').map(i=>i.getBoundingClientRect().top);
+  check(tops.every(top=>Math.abs(top-tops[0])<.2),tag+': image tops align');
+  const viewport=root.querySelector('.md-carousel-viewport');viewport.style.scrollSnapType='none';viewport.scrollLeft=60;await wait(80);
+  const moved=items.find(item=>w.getComputedStyle(item).visibility!=='hidden'&&item.getBoundingClientRect().width>80);
+  if(moved){const label=moved.parentElement.querySelector(content==='above'?'.md-carousel-before':'.md-carousel-after');check(Math.abs(label.getBoundingClientRect().left-(variant.startsWith('uncontained')?moved.parentElement:moved).getBoundingClientRect().left)<.2,tag+': caption follows its scrolling item');}
+
+ }
+}
+out.textContent=JSON.stringify({passed:checks.length,checks},null,2);
+}catch(error){out.textContent=JSON.stringify({passed:checks.length,error:error.stack,checks},null,2)}finally{run.disabled=false}
+};
+</script>

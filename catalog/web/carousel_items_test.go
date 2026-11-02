@@ -43,7 +43,7 @@ func TestCarouselActionConfigurations(t *testing.T) {
 }
 
 func TestCarouselContentAndViewport(t *testing.T) {
-	for _, variant := range []string{"hero", "uncontained", "uncontained-multi-aspect-ratio"} {
+	for _, variant := range []string{"multi-browse", "hero", "center-aligned-hero", "uncontained", "uncontained-multi-aspect-ratio", "full-screen"} {
 		for _, content := range []string{"none", "overlay", "above", "below"} {
 			page := &componentPreview{Cases: []componentCase{{Family: "carousel", Variant: variant, State: "interactive"}}}
 			if err := configureCarouselPreview(page, url.Values{"preview.content": {content}, "preview.viewport": {"360"}}); err != nil {
@@ -61,10 +61,10 @@ func TestCarouselContentAndViewport(t *testing.T) {
 				t.Fatalf("%s/%s: overlay", variant, content)
 			}
 			external := strings.Contains(html, `<p class="md-typescale-body-medium"`)
-			if external != (strings.HasPrefix(variant, "uncontained") && (content == "above" || content == "below")) {
+			if external != (variant != "full-screen" && (content == "above" || content == "below")) {
 				t.Fatalf("%s/%s: external content", variant, content)
 			}
-			if !strings.Contains(html, `<progress`) || strings.Contains(html, `<output`) || strings.Contains(html, `class="md-carousel-number"`) {
+			if strings.Contains(html, `<progress`) != (variant != "full-screen") || strings.Contains(html, `<output`) || strings.Contains(html, `class="md-carousel-number"`) {
 				t.Fatal("must use position, not item counts")
 			}
 		}

@@ -31,7 +31,8 @@ templ CarouselItem(p CarouselItemProps) {
 	@Require("carousel")
 	<li { p.slot()... }>
 		if p.Before!=nil {
-			@p.Before
+			<div class="md-carousel-before">@p.Before
+</div>
 		}
 		<button { p.Attributes()... }>
 			if p.ImageSrc!="" {
@@ -43,7 +44,8 @@ templ CarouselItem(p CarouselItemProps) {
 			{ children... }
 		</button>
 		if p.After!=nil {
-			@p.After
+			<div class="md-carousel-after">@p.After
+</div>
 		}
 	</li>
 }
@@ -73,6 +75,7 @@ templ CarouselControls() {
 
 // CarouselText is optional overlay content supplied by the consumer.
 templ CarouselText() {
-	<span class="md-carousel-caption md-typescale-body-medium">{ children... }
-</span>
+	<span class="md-carousel-caption md-typescale-body-medium">
+		{ children... }
+	</span>
 }
