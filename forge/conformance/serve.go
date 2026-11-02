@@ -32,7 +32,7 @@ func main() {
 		r.URL.Path = strings.TrimPrefix(r.URL.Path, "/md3")
 		proxy.ServeHTTP(w, r)
 	}))
-	for _, route := range []string{"/components", "/components/", "/styles", "/styles/", "/static/", "/themes/", "/theme.css", "/changes", "/for-agents", "/sitemap.xml"} {
+	for _, route := range []string{"/components", "/components/", "/styles", "/styles/", "/static/", "/themes/", "/theme.css", "/changes", "/for-agents", "/sitemap.xml", "/downloads/"} {
 		mux.Handle(route, proxy)
 	}
 	files := http.FileServer(http.Dir("forge/conformance"))

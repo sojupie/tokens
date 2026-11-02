@@ -12,20 +12,8 @@ templ Header(config Config) {
 			</a>
 		</div>
 		@ui.Drawer("tokens-site-menu", true, "Token Catalog", drawerBrand(config)) {
-			<nav class="md-nav-items" aria-label="Primary">
-				@navLink(config, "/components", "Components")
-				@navLink(config, "/styles", "Styles")
-				@navLink(config, "/changes", "Changes")
-				if config.Agents {
-					@navLink(config, "/for-agents", "For agents")
-				}
-				<hr/>
-				@navLink(config, "/tools", "Tools")
-				<div class="tokens-tool-destinations" role="group" aria-label="Tools destinations">
-					for _, tool := range config.Tools {
-						@ui.DrawerLink(tool.URL, templ.Attributes{"hx-boost": "false", "aria-current": toolCurrent(config, tool)}, tool.Name)
-					}
-				</div>
+			<nav id="tokens-site-destinations" class="md-nav-items" aria-label="Primary">
+				@Destinations(config)
 			</nav>
 			<div class="tokens-drawer-appearance">
 				{ children... }
@@ -59,7 +47,24 @@ templ navLink(config Config, path string, label string) {
 
 templ drawerBrand(config Config) {
 	<a class="tokens-brand tokens-drawer-brand" href={ templ.SafeURL(config.Catalog + "/") }>
-				@templ.Raw(brandLogo)
-				Token Catalog
-			</a>
+		@templ.Raw(brandLogo)
+		Token Catalog
+	</a>
+}
+
+// Destinations updates independently of the persistent drawer and its appearance controls.
+templ Destinations(config Config) {
+	@navLink(config, "/components", "Components")
+	@navLink(config, "/styles", "Styles")
+	@navLink(config, "/changes", "Changes")
+	if config.Agents {
+		@navLink(config, "/for-agents", "For agents")
+	}
+	<hr/>
+	@navLink(config, "/tools", "Tools")
+	<div class="tokens-tool-destinations" role="group" aria-label="Tools destinations">
+		for _, tool := range config.Tools {
+			@ui.DrawerLink(tool.URL, templ.Attributes{"hx-boost": "false", "aria-current": toolCurrent(config, tool)}, tool.Name)
+		}
+	</div>
 }

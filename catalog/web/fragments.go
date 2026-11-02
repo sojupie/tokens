@@ -7,6 +7,7 @@ import (
 	"html"
 	"io"
 	"net/url"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -16,6 +17,19 @@ import (
 
 func tokenBrowserView(subject publish.SubjectView, browser tokenBrowser) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, writer io.Writer) error {
+		if _, err := io.WriteString(writer, `<div id="tokens-token-browser" class="tokens-token-browser" data-component-assets>`); err != nil {
+			return err
+		}
+		if err := componentAssetScope().Render(templ.WithChildren(ctx, tokenBrowserContents(subject, browser)), writer); err != nil {
+			return err
+		}
+		_, err := io.WriteString(writer, `</div>`)
+		return err
+	})
+}
+
+func tokenBrowserContents(subject publish.SubjectView, browser tokenBrowser) templ.Component {
+	return templ.ComponentFunc(func(ctx context.Context, writer io.Writer) error {
 		write := func(value string) error {
 			_, err := io.WriteString(writer, value)
 			return err
@@ -23,13 +37,26 @@ func tokenBrowserView(subject publish.SubjectView, browser tokenBrowser) templ.C
 		if len(browser.Sets) == 0 {
 			return write(`<p class="tokens-empty md-typescale-body-large">No published tokens for this page.</p>`)
 		}
-		if err := write(`<div class="tokens-token-browser">` + tokenTableSharedMarkup() + `<form class="tokens-token-filters" method="get" action="` + html.EscapeString(subjectURL(subject)) + `"><input type="hidden" name="set" value="` + html.EscapeString(browser.Selected.Key) + `"><div class="tokens-token-toolbar">`); err != nil {
+		if err := write(tokenTableSharedMarkup() + `<form class="tokens-token-filters" hx-boost="false" hx-target="#tokens-token-browser" hx-swap="outerHTML" hx-sync="this:replace" hx-push-url="true" hx-get="` + html.EscapeString(subjectURL(subject)) + `" method="get" action="` + html.EscapeString(subjectURL(subject)) + `"><input type="hidden" name="set" value="` + html.EscapeString(browser.Selected.Key) + `"><div class="tokens-token-toolbar">`); err != nil {
 			return err
+		}
+		keys := make([]string, 0, len(browser.PreviewQuery))
+		for key := range browser.PreviewQuery {
+			keys = append(keys, key)
+		}
+		sort.Strings(keys)
+		for _, key := range keys {
+			values := browser.PreviewQuery[key]
+			for _, value := range values {
+				if err := write(`<input type="hidden" name="` + html.EscapeString(key) + `" value="` + html.EscapeString(value) + `">`); err != nil {
+					return err
+				}
+			}
 		}
 		if err := tokenSetPicker(subject, browser).Render(ctx, writer); err != nil {
 			return err
 		}
-		if err := write(`<div class="tokens-token-actions"><label class="tokens-token-search">` + tableIcon("search") + `<span class="tokens-visually-hidden">Search tokens</span><input type="search" name="q" value="` + html.EscapeString(browser.Query) + `" placeholder="Search"></label><div class="tokens-token-tools" role="group" aria-label="Table controls">`); err != nil {
+		if err := write(`<div class="tokens-token-actions"><label class="tokens-token-search">` + tableIcon("search") + `<span class="tokens-visually-hidden">Search tokens</span><input id="tokens-token-search" type="search" name="q" value="` + html.EscapeString(browser.Query) + `" placeholder="Search"></label><div class="tokens-token-tools" role="group" aria-label="Table controls">`); err != nil {
 			return err
 		}
 		if err := tableTools().Render(ctx, writer); err != nil {
@@ -45,7 +72,7 @@ func tokenBrowserView(subject publish.SubjectView, browser tokenBrowser) templ.C
 			if err := write(`<button class="md-filter-chip tokens-context-button" type="button" data-action="context" aria-haspopup="dialog" aria-expanded="false" aria-controls="tokens-context-picker">` + `<span class="tokens-context-label" title="` + html.EscapeString(tableContextLabel(browser.Filters)) + `">` + html.EscapeString(tableContextLabel(browser.Filters)) + `</span>` + `<span data-slot="trailing-icon" aria-hidden="true">` + tableIcon("dropdown") + `</span></button></div>`); err != nil {
 				return err
 			}
-			if err := tableContextDialog(browser.Filters).Render(ctx, writer); err != nil {
+			if err := tableContextDialog(browser.Filters, subjectURL(subject)).Render(ctx, writer); err != nil {
 				return err
 			}
 
@@ -56,7 +83,7 @@ func tokenBrowserView(subject publish.SubjectView, browser tokenBrowser) templ.C
 			return err
 		}
 		if browser.Count == 0 {
-			return write(`<p class="tokens-empty md-typescale-body-large">No tokens match these filters.</p></div>`)
+			return write(`<p class="tokens-empty md-typescale-body-large">No tokens match these filters.</p>`)
 		}
 		if err := write(`<div class="tokens-token-groups">`); err != nil {
 			return err
@@ -66,7 +93,7 @@ func tokenBrowserView(subject publish.SubjectView, browser tokenBrowser) templ.C
 				return err
 			}
 		}
-		return write(`</div></div>`)
+		return write(`</div>`)
 	})
 }
 
@@ -252,7 +279,7 @@ func writeTokenReferences(writer io.Writer, token tokenRow) error {
 	if err := writeReferenceBranches(writer, token.References); err != nil {
 		return err
 	}
-	return write(`</div></div>`)
+	return write(`</div>`)
 }
 
 func writeReferenceBranches(writer io.Writer, references []publish.TokenReference) error {

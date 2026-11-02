@@ -17,7 +17,7 @@ templ subjectListPage(snapshot publish.SnapshotView, subjects []publish.SubjectV
 		</header>
 		<div data-nosnippet><p class="tokens-metadata">Current snapshot: <code class="tokens-code">{ snapshot.ID }</code></p></div>
 		<form hx-boost="false" class="tokens-search-form" method="get" action={ subjectListPath(styles) } role="search">
-			@ui.TextField(ui.TextFieldProps{ID: "subject-search", Name: "q", Type: "search", Value: query, Label: "Search by name or slug", InputAttrs: templ.Attributes{"autocomplete": "off", "hx-get": subjectListPath(styles), "hx-target": "#subject-list", "hx-trigger": "input changed delay:250ms", "hx-push-url": "true"}})
+			@ui.TextField(ui.TextFieldProps{ID: "subject-search", Name: "q", Type: "search", Value: query, Label: "Search by name or slug", InputAttrs: templ.Attributes{"autocomplete": "off", "hx-get": subjectListPath(styles), "hx-target": "#subject-list", "hx-trigger": "input changed delay:250ms", "hx-push-url": "true", "hx-sync": "this:replace"}})
 		</form>
 		<div id="subject-list" aria-live="polite">
 			@subjectCardGrid(subjects, thumbnails, styles)

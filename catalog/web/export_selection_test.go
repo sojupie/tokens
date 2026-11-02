@@ -83,6 +83,25 @@ func TestImplementationArchiveIncludesNestedAssetsAndRunnableExample(t *testing.
 		t.Fatal(err)
 	}
 	query := url.Values{"scope": {"subject"}, "kind": {"component"}, "slug": {"switch"}, "content": {"implementation"}, "format": {"zip"}}
+	// The HTML dialog remembers token formats and inactive contexts, but must not
+	// send them to implementation validation or lose them on a round trip.
+	draft := cloneExportQuery(query)
+	draft["format"] = []string{"dtcg", "css"}
+	draft.Set("context.Platform", "Web")
+	draft.Set("context.Theme", "Light")
+	dialog := server.exportDialog(context.Background(), draft)
+	if !dialog.Ready || dialog.Error != "" || len(dialog.Query["_token-format"]) != 2 {
+		t.Fatalf("implementation dialog: %+v", dialog)
+	}
+	draft = cloneExportQuery(dialog.Query)
+	draft.Set("content", "tokens")
+	draft.Set("slug", "buttons")
+	draft.Del("context.Platform")
+	draft.Set("context.Theme", "Light")
+	dialog = server.exportDialog(context.Background(), draft)
+	if !dialog.Ready || len(dialog.Query["format"]) != 2 {
+		t.Fatalf("token format round trip: %+v", dialog)
+	}
 	files, _, err := server.implementationFiles(context.Background(), query)
 	if err != nil {
 		t.Fatal(err)

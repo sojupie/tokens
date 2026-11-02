@@ -141,6 +141,21 @@ func (server *Server) handleHTMLSubject(response http.ResponseWriter, request *h
 		http.NotFound(response, request)
 		return
 	}
+	if request.Header.Get("HX-Request") == "true" && !wantsMarkdown(request) {
+		var fragment templ.Component
+		switch request.Header.Get("HX-Target") {
+		case "tokens-token-browser", "div#tokens-token-browser":
+			fragment = tokenBrowserView(subjects[0], browser)
+		case "tokens-context-fields", "div#tokens-context-fields":
+			fragment = tableContextFields(browser.Filters)
+		}
+		if fragment != nil {
+			if err := server.renderHTML(response, request, fragment); err != nil {
+				http.Error(response, err.Error(), http.StatusInternalServerError)
+			}
+			return
+		}
+	}
 	if preview != nil && request.Header.Get("HX-Request") == "true" && (request.Header.Get("HX-Target") == "component-preview" || request.Header.Get("HX-Target") == "section#component-preview") && !wantsMarkdown(request) {
 		if err := server.renderHTML(response, request, componentPreviewView(*preview)); err != nil {
 			http.Error(response, err.Error(), http.StatusInternalServerError)

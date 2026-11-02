@@ -34,45 +34,9 @@ templ siteDownloadMenu() {
 		@ui.Action(ui.ButtonProps{Variant: ui.ButtonVariant("filled"), Attrs: templ.Attributes{"data-export-open": true, "aria-haspopup": "dialog", "aria-controls": "tokens-site-download"}}) {
 			Download tokens
 		}
-		@ui.Modal(ui.DialogProps{ID: "tokens-site-download", TitleID: "tokens-site-download-title", Title: "Download", Attrs: templ.Attributes{"hx-boost": "false", "class": "tokens-export-dialog", "aria-describedby": "tokens-export-scope", "data-component-export": fmt.Sprint(metadata(ctx).Export != nil && metadata(ctx).Export.Component), "data-default-scope": metadata(ctx).Export.defaultScope(), "data-has-css": fmt.Sprint(metadata(ctx).Export != nil && metadata(ctx).Export.CSS), "data-has-implementation": fmt.Sprint(metadata(ctx).Export != nil && metadata(ctx).Export.Implementations)}, FormAttrs: templ.Attributes{"id": "tokens-export-form", "action": "/downloads/export", "method": "get"}, Actions: downloadDialogActions(), ActionsAttrs: templ.Attributes{"class": "tokens-export-actions"}}) {
+		@ui.Modal(ui.DialogProps{ID: "tokens-site-download", TitleID: "tokens-site-download-title", Title: "Download", Attrs: templ.Attributes{"hx-boost": "false", "class": "tokens-export-dialog", "aria-describedby": "tokens-export-scope", "data-component-export": fmt.Sprint(metadata(ctx).Export != nil && metadata(ctx).Export.Component), "data-default-scope": metadata(ctx).Export.defaultScope(), "data-has-css": fmt.Sprint(metadata(ctx).Export != nil && metadata(ctx).Export.CSS), "data-has-implementation": fmt.Sprint(metadata(ctx).Export != nil && metadata(ctx).Export.Implementations)}, FormAttrs: templ.Attributes{"id": "tokens-export-form", "action": "/downloads/export", "method": "get", "hx-get": "/downloads/export/options", "hx-trigger": "change, export-refresh", "hx-target": "#tokens-export-fields", "hx-swap": "outerHTML", "hx-sync": "this:replace"}, Actions: downloadDialogActions(), ActionsAttrs: templ.Attributes{"class": "tokens-export-actions"}}) {
 			if page := metadata(ctx).Export; page != nil {
-				<input type="hidden" name="kind" value={ page.Kind }/><input type="hidden" name="slug" value={ page.Slug }/><input type="hidden" name="set" value={ page.Set }/><input type="hidden" name="q" value={ page.Query }/>
-				<p id="tokens-export-scope">Choose what to include. CSS and DTCG exports include required token references.</p>
-				<div class="tokens-export-primary">
-					@exportChoices("content", "Content", "tokens", []catalogChoice{{"tokens", "Design tokens"}, {"implementation", "Component implementation"}}, false)
-					<details class="tokens-export-include tokens-export-disclosure">
-						<summary>
-							<span class="tokens-export-disclosure-label"><span class="tokens-export-title">Include</span><span data-export-scope-summary>{ choiceLabel(page.Scopes(), page.Scope) }</span></span><span class="tokens-export-chevron" aria-hidden="true">@materialSymbol("expand_more")</span>
-						</summary>
-						@exportChoices("scope", "Include", page.Scope, page.Scopes(), false)
-					</details>
-				</div>
-				<div data-export-token-formats>
-					@exportChoices("format", "File formats", "dtcg", []catalogChoice{{"dtcg", "DTCG JSON"}, {"css", "CSS variables"}, {"source", "Source JSON"}, {"report", "Conversion report"}}, true)
-				</div>
-				<p class="tokens-export-description" data-export-description></p>
-				<details class="tokens-export-context tokens-export-disclosure">
-					<summary>
-						<span class="tokens-export-disclosure-label"><span class="tokens-export-title" id="export-context-title">Token context</span><span data-export-context-summary>Current settings</span></span><span class="tokens-export-chevron" aria-hidden="true">@materialSymbol("expand_more")</span>
-					</summary>
-					<div class="tokens-export-context-heading">
-						<p>Choose the values to export. Multiple formats or contexts download together in a ZIP.</p>
-						@ui.TooltipHost(nil) {
-							@ui.IconButton(ui.IconButtonProps{Label: "About token contexts", Icon: "info", Size: ui.ExtraSmall, Attrs: templ.Attributes{"popovertarget": "export-context-help", "aria-haspopup": "dialog"}})
-							@ui.Tooltip(ui.TooltipProps{ID: "export-context-help", Title: "Token contexts", Variant: "rich", Body: exportContextHelp()})
-						}
-					</div>
-					<div class="tokens-export-context-options">
-						for _, control := range page.Contexts {
-							<div data-export-context={ control.Name }>
-								@exportChoices("context."+control.Name, control.Name, control.Selected, control.Choices, control.Name == "Theme" || control.Name == "Contrast")
-							</div>
-						}
-					</div>
-				</details>
-				<p class="md-typescale-body-small" data-export-counts role="status" aria-live="polite"></p>
-				<p class="md-typescale-body-small" data-export-error role="alert" hidden></p>
-				<a class="tokens-link" data-export-report href="/downloads/export?scope=collection&amp;format=report">View conversion report</a>
+				@exportDialogFields(initialExportDialog(*page))
 			}
 		}
 		<noscript><p><a href="/downloads/dtcg/light-default/tokens.tokens.json" download>DTCG JSON · Light, default contrast</a> · <a href="/downloads/dtcg/light-default/tokens.css" download>CSS variables</a> · <a href="/downloads/dtcg/light-default/report.json" download>Conversion report</a></p></noscript>
@@ -161,4 +125,87 @@ templ exportContextHelp() {
 	<p>Upstream labels are preserved. Only settings with defined values for your selection and its token references are shown.</p>
 	<p>Language height changes line spacing, not font size. Some labels, including Font: iOS bold, also have captured Web values.</p>
 	<p>Each token context has a separate file with the same token names. CSS uses :root; loading alternative files together makes the later values override earlier ones.</p>
+}
+
+// Keep the form, modal and animated action mounted while replacing its choices.
+templ exportDialogFields(state exportDialogState) {
+	<div id="tokens-export-fields" data-export-ready={ fmt.Sprint(state.Ready) } data-export-label={ state.Label } data-component-assets>
+		@componentAssetScope() {
+			<input type="hidden" name="kind" value={ state.Page.Kind }/><input type="hidden" name="slug" value={ state.Page.Slug }/><input type="hidden" name="set" value={ state.Query.Get("set") }/><input type="hidden" name="q" value={ state.Query.Get("q") }/>
+			<p id="tokens-export-scope">Choose what to include. CSS and DTCG exports include required token references.</p>
+			<div class="tokens-export-primary">
+				@exportDialogChoices(state, "content", "Content", []catalogChoice{{"tokens", "Design tokens"}, {"implementation", "Component implementation"}}, false)
+				<details class="tokens-export-include tokens-export-disclosure">
+					<summary>
+						<span class="tokens-export-disclosure-label"><span class="tokens-export-title">Include</span><span data-export-scope-summary>{ choiceLabel(state.Page.Scopes(), state.Query.Get("scope")) }</span></span>
+						<span class="tokens-export-chevron" aria-hidden="true">
+							@materialSymbol("expand_more")
+						</span>
+					</summary>
+					@exportDialogChoices(state, "scope", "Include", state.Page.Scopes(), false)
+				</details>
+			</div>
+			if state.implementation() {
+				<input type="hidden" name="format" value="zip"/>
+				for _, format := range state.Query["_token-format"] {
+					<input type="hidden" name="_token-format" value={ format }/>
+				}
+			}
+			<div data-export-token-formats hidden?={ state.implementation() }>
+				@exportDialogChoices(state, "format", "File formats", []catalogChoice{{"dtcg", "DTCG JSON"}, {"css", "CSS variables"}, {"source", "Source JSON"}, {"report", "Conversion report"}}, true)
+			</div>
+			<p class="tokens-export-description" data-export-description>
+				if state.implementation() {
+					ZIP archive with component CSS, example HTML, and required JavaScript, including nested components.
+				} else {
+					Source JSON retains captured values and reference metadata.
+				}
+			</p>
+			<details class="tokens-export-context tokens-export-disclosure">
+				<summary>
+					<span class="tokens-export-disclosure-label"><span class="tokens-export-title" id="export-context-title">Token context</span><span data-export-context-summary>{ state.contextSummary() }</span></span>
+					<span class="tokens-export-chevron" aria-hidden="true">
+						@materialSymbol("expand_more")
+					</span>
+				</summary>
+				<div class="tokens-export-context-heading">
+					<p>Choose the values to export. Multiple formats or contexts download together in a ZIP.</p>
+					@ui.TooltipHost(nil) {
+						@ui.IconButton(ui.IconButtonProps{Label: "About token contexts", Icon: "info", Size: ui.ExtraSmall, Attrs: templ.Attributes{"popovertarget": "export-context-help", "aria-haspopup": "dialog"}})
+						@ui.Tooltip(ui.TooltipProps{ID: "export-context-help", Title: "Token contexts", Variant: "rich", Body: exportContextHelp()})
+					}
+				</div>
+				<div class="tokens-export-context-options">
+					for _, control := range state.Page.Contexts {
+						if state.Allowed != nil && len(state.choices("context."+control.Name)) == 0 {
+							for _, value := range state.Query["context."+control.Name] {
+								<input type="hidden" name={ "_context." + control.Name } value={ value }/>
+							}
+						}
+						<div data-export-context={ control.Name } hidden?={ state.Allowed != nil && len(state.choices("context."+control.Name)) == 0 }>
+							@exportDialogChoices(state, "context."+control.Name, control.Name, control.Choices, control.Name == "Theme" || control.Name == "Contrast")
+						</div>
+					}
+				</div>
+			</details>
+			<p class="md-typescale-body-small" data-export-counts role="status" aria-live="polite">{ state.Counts }</p>
+			<p class="md-typescale-body-small" data-export-error role="alert" hidden?={ state.Error == "" }>{ state.Error }</p>
+			<a class="tokens-link" data-export-report hidden?={ state.implementation() } href={ templ.SafeURL(state.reportURL()) }>View conversion report</a>
+		}
+	</div>
+}
+
+templ exportDialogChoices(state exportDialogState, name, title string, choices []catalogChoice, multiple bool) {
+	<fieldset class="tokens-export-choices" aria-label={ title }>
+		<legend><span>{ title }</span></legend>
+		<div>
+			for _, choice := range choices {
+				if multiple {
+					@ui.FilterChipField(state.choice(name, choice))
+				} else {
+					@ui.Radio(state.choice(name, choice))
+				}
+			}
+		</div>
+	</fieldset>
 }

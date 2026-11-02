@@ -364,15 +364,15 @@ button:not(:disabled), [role=button]:not([aria-disabled=true]) { cursor:pointer;
 .tokens-selection-example > label:last-child { cursor:pointer; }
 
 /* The page uses compact table typography; the export form has its own hierarchy. */
-.tokens-export-dialog .md-dialog-content {
+.tokens-export-dialog :is(.md-dialog-content, [data-export-ready]) {
  display:flex; flex-direction:column; gap:var(--md-sys-measurement-space200);
  font-family:var(--md-sys-typescale-body-medium-font); font-size:var(--md-sys-typescale-body-medium-size);
  line-height:var(--md-sys-typescale-body-medium-line-height); font-weight:var(--md-sys-typescale-body-medium-weight);
  letter-spacing:var(--md-sys-typescale-body-medium-tracking);
 }
-.tokens-export-dialog .md-dialog-content > * { flex-shrink:0; }
-.tokens-export-dialog .md-dialog-content > p { margin:0; }
-.tokens-export-dialog .md-dialog-content > input[type="hidden"] { display:none; }
+.tokens-export-dialog :is(.md-dialog-content, [data-export-ready]) > * { flex-shrink:0; }
+.tokens-export-dialog :is(.md-dialog-content, [data-export-ready]) > p { margin:0; }
+.tokens-export-dialog :is(.md-dialog-content, [data-export-ready]) > input[type="hidden"] { display:none; }
 .tokens-export-primary { display:grid; gap:var(--md-sys-measurement-space200); }
 .tokens-export-choices { border:0; padding:0; margin:0; min-inline-size:0; }
 .tokens-export-choices legend, .tokens-export-title {

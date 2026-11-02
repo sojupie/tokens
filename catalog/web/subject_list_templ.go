@@ -98,7 +98,7 @@ func subjectListPage(snapshot publish.SnapshotView, subjects []publish.SubjectVi
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = ui.TextField(ui.TextFieldProps{ID: "subject-search", Name: "q", Type: "search", Value: query, Label: "Search by name or slug", InputAttrs: templ.Attributes{"autocomplete": "off", "hx-get": subjectListPath(styles), "hx-target": "#subject-list", "hx-trigger": "input changed delay:250ms", "hx-push-url": "true"}}).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = ui.TextField(ui.TextFieldProps{ID: "subject-search", Name: "q", Type: "search", Value: query, Label: "Search by name or slug", InputAttrs: templ.Attributes{"autocomplete": "off", "hx-get": subjectListPath(styles), "hx-target": "#subject-list", "hx-trigger": "input changed delay:250ms", "hx-push-url": "true", "hx-sync": "this:replace"}}).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

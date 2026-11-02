@@ -258,12 +258,34 @@ HTML, Markdown and static CSS/JS negotiate
 gzip; compressed and uncompressed representations have separate ETags.
 DTCG downloads revalidate and remain tied to the loaded publication.
 
-HTMX boosts internal navigation and preserves `#tokens-site-header`, keeping the
-navbar in place while page content changes. Native links remain usable without
-JavaScript. Preview filters submit directly; their responses reuse the server
-cache. The context popup uses shared controls and the surface color role. Its
-request checks available context combinations without flashing a loading message;
-errors remain visible.
+HTMX 4.0.1 boosts internal navigation and preserves `#tokens-site-header`.
+The official `hx-head` extension merges document metadata. An asset-version guard
+forces a full navigation when deployed core assets change; dynamically loaded
+component scripts remain mounted. The official 2.x compatibility extension keeps
+existing lifecycle listeners working during migration.
+
+Normal and boosted navigation share the document cache. An inert
+`<template hx type="partial">` in that document updates only
+`#tokens-site-destinations`; the drawer and appearance controls retain their
+instances. Index search uses `hx-sync="this:replace"` so late responses cannot
+replace a newer query.
+
+Playground requests and token-table submissions replace their own regions.
+Table submissions retain the latest playground query settings, view preferences
+and folder expansion. Table and modal-field styles stay inside their replaceable
+asset scopes, so repeated updates remove their previous stylesheet links. Context validation replaces only its fields; Cancel restores the
+unapplied values. Requests use htmx synchronization and cancellation, while local
+JavaScript owns focus, disclosure state and pending/error feedback.
+
+Editing a download selection requests `/downloads/export/options` once. The
+server resolves supported contexts and formats and renders the choices and
+summary together. The action stays mounted for its loading transition. The form's
+submit remains a native file download; the public JSON options and summary API
+remain available. Multi-format and context selections keep their ZIP behavior.
+
+Run `/htmx-catalog.html` through the conformance server to check region identity,
+context cancellation, download selections, metadata, drawer updates and history.
+Native links and GET forms remain usable without JavaScript.
 
 ## Rendering and motion
 

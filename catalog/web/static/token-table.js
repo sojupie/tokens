@@ -1,5 +1,17 @@
 (() => {
 const initialized = new WeakSet();
+let tableDisplay;
+function folderKey(group) {
+  const path=[];
+  for(let node=group;node;node=node.parentElement.closest('details.tokens-token-folder')) path.unshift(node.querySelector('summary').textContent);
+  return JSON.stringify(path);
+}
+document.addEventListener('htmx:before:swap', event => {
+  if (event.detail.ctx.target?.id !== 'tokens-token-browser') return;
+  const browser = event.detail.ctx.target;
+  tableDisplay = {grid:browser.classList.contains('tokens-grid-view'),hidden:browser.classList.contains('tokens-no-previews'),groups:new Map([...browser.querySelectorAll('details.tokens-token-folder')].map(group=>[folderKey(group),group.open]))};
+});
+
 function unbound(selector) {
   return [...document.querySelectorAll(selector)].filter(element => {
     if (initialized.has(element)) return false;
@@ -39,52 +51,57 @@ unbound('[data-site-download-open]').forEach(button => {
 });
 
 unbound('.tokens-token-browser').forEach(browser => {
+  if (tableDisplay) {
+    browser.classList.toggle('tokens-grid-view',tableDisplay.grid);
+    browser.classList.toggle('tokens-no-previews',tableDisplay.hidden);
+    for(const group of browser.querySelectorAll('details.tokens-token-folder')){const open=tableDisplay.groups.get(folderKey(group));if(open!==undefined)group.open=open;}
+    tableDisplay = null;
+  }
   const lifecycle = new AbortController();
   const signal = lifecycle.signal;
   const form = browser.querySelector('form');
+  // Playground swaps update the URL independently of the table. Capture its
+  // current settings before htmx (or a native GET) serializes this form.
+  form.addEventListener('submit', () => {
+    form.querySelectorAll('input[name^="preview."]').forEach(input => input.remove());
+    for (const [name, value] of new URLSearchParams(location.search)) {
+      if (!name.startsWith('preview.')) continue;
+      const input = document.createElement('input');
+      input.type = 'hidden'; input.name = name; input.value = value; form.append(input);
+    }
+  }, {capture:true});
   const dialog = browser.querySelector('.tokens-context-dialog');
   const groups = [...browser.querySelectorAll('.tokens-token-folder')];
   let contextFields = '';
-  let contextRequest;
-
-  // Ask the server for supported choices; keep one source of context rules.
-  if (dialog) dialog.addEventListener('change', async event => {
-    const changedField = event.target.name;
-    contextRequest?.abort();
-    const request = new AbortController();
-    contextRequest = request;
-    const save = dialog.querySelector('[type="submit"]');
-    const status = dialog.querySelector('[role="status"]');
-    save.disabled = true;
-    status.textContent = '';
+  let contextRequest, changedField, advancedOpen;
+  // htmx owns validation requests and replacement; these hooks own dialog feedback.
+  dialog?.addEventListener('change', event => { changedField = event.target.name; });
+  dialog?.addEventListener('htmx:before:request', event => {
+    if (event.detail.ctx.sourceElement !== dialog) return;
+    contextRequest = event.detail.ctx;
+    advancedOpen = dialog.querySelector('.tokens-context-advanced')?.open;
+    dialog.querySelector('[type="submit"]').disabled = true;
+    dialog.querySelector('[role="status"]').textContent = '';
     dialog.setAttribute('aria-busy', 'true');
-    const url = new URL(form.action);
-    url.search = new URLSearchParams(new FormData(form)).toString();
-    try {
-      const response = await fetch(url, {signal: request.signal, cache: 'no-store'});
-      if (!response.ok) throw new Error('Context request failed');
-      const page = new DOMParser().parseFromString(await response.text(), 'text/html');
-      const fields = page.querySelector('.tokens-context-fields');
-      if (!fields) throw new Error('Missing context choices');
-      const advancedOpen = dialog.querySelector('.tokens-context-advanced')?.open;
-      dialog.querySelector('.tokens-context-fields').replaceWith(fields);
-      const advanced = dialog.querySelector('.tokens-context-advanced');
-      if (advanced) advanced.open = advancedOpen;
-      dialog.querySelector(`input[name="${CSS.escape(changedField)}"]:checked`)?.focus({preventScroll:true});
-      status.textContent = '';
-      save.disabled = false;
-
-    } catch (error) {
-      if (!request.signal.aborted) status.textContent = 'Could not check contexts. Change a selection to retry, or cancel.';
-    } finally {
-      if (contextRequest === request) dialog.removeAttribute('aria-busy');
-    }
   });
-
+  dialog?.addEventListener('htmx:after:swap', event => {
+    if (event.detail.ctx !== contextRequest || event.detail.ctx.response.status !== 200) return;
+    const advanced = dialog.querySelector('.tokens-context-advanced');
+    if (advanced) advanced.open = advancedOpen;
+    dialog.querySelector(`input[name="${CSS.escape(changedField)}"]:checked`)?.focus({preventScroll:true});
+    dialog.querySelector('[type="submit"]').disabled = false;
+  });
+  dialog?.addEventListener('htmx:finally:request', event => {
+    if (event.detail.ctx !== contextRequest) return;
+    dialog.removeAttribute('aria-busy');
+    if (dialog.querySelector('[type="submit"]').disabled) dialog.querySelector('[role="status"]').textContent = 'Could not check contexts. Change a selection to retry, or cancel.';
+  });
   const cancelContext = () => {
-    contextRequest?.abort();
+    contextRequest = null;
+    htmx.trigger(dialog, 'htmx:abort');
     dialog.removeAttribute('aria-busy');
     dialog.querySelector('.tokens-context-fields').innerHTML = contextFields;
+    htmx.process(dialog.querySelector('.tokens-context-fields'));
     dialog.querySelector('[role="status"]').textContent = '';
     dialog.querySelector('[type="submit"]').disabled = false;
   };
@@ -266,7 +283,7 @@ unbound('.tokens-token-browser').forEach(browser => {
   syncControls();
   document.addEventListener('htmx:beforeCleanupElement', event => {
     if ((event.detail?.elt || event.target) === browser || (event.detail?.elt || event.target).contains(browser)) {
-      contextRequest?.abort();
+      if (dialog) htmx.trigger(dialog, 'htmx:abort');
       lifecycle.abort();
     }
   }, {signal});

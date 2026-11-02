@@ -361,7 +361,7 @@ test('table modes preserve preview preference and folder state, with matching ac
       toggle: value => { if (classes.has(value)) { classes.delete(value); return false; } classes.add(value); return true; },
     },
     querySelector: selector => {
-      if (selector === 'form') return {};
+      if (selector === 'form') return {addEventListener(){}};
       if (selector === '.tokens-context-dialog') return null;
       if (selector === '.tokens-token-set') return {};
       if (selector === '.tokens-token-set-menu') return menu;
@@ -455,32 +455,36 @@ test('theme controls survive body restoration without duplicate click handlers',
   assert.equal(theme.disabled, false);
 });
 
-test('scoped export keeps the collection mount and rebinds restored dialogs', async () => {
- const events={};
+test('export feedback follows the latest htmx request and preserves native download submission', () => {
+ const events={},requests=[];
  function panel(){
-  const fields=Object.fromEntries(Object.entries({kind:'component',slug:'buttons',set:'button|color|filled',q:'icon',content:'tokens',scope:'view',format:'css','context.Theme':'Dark'}).map(([name,value])=>[name,{name,value,type:'hidden',closest:()=>null}]));
-  const form={action:'https://catalog.example/md3/downloads/export',fields,setAttribute(){},querySelectorAll:()=>Object.values(fields),addEventListener(){},elements:{namedItem:name=>fields[name]}};
-  const nodes={'form':form,'[data-export-report]':{},'[data-export-description]':{},'[data-export-context-summary]':{},'[data-export-token-formats]':{},'[data-export-counts]':{},'[data-export-error]':{},'[data-export-submit]':{attributes:{},label:{},setAttribute(name,value){this.attributes[name]=value;},querySelector(){return this.label;}},'[role="combobox"]':{focus(){}}};
-  const listeners={};return {dataset:{hasCss:'true',hasImplementation:'true',componentExport:'true'},nodes,opens:0,querySelector:s=>nodes[s],querySelectorAll:()=>[],addEventListener:(name,fn)=>listeners[name]=fn,change(){listeners.change();},showModal(){this.open=true;this.opens++;},close(){this.open=false;listeners.close();}};
+  const fields=Object.fromEntries(Object.entries({kind:'component',slug:'buttons',set:'filled',q:'icon',content:'tokens',scope:'view',format:'css','context.Theme':'Dark'}).map(([name,value])=>[name,{name,value,type:'hidden'}]));
+  const form={id:'tokens-export-form',fields,setAttribute(){},querySelectorAll:()=>Object.values(fields),closest:()=>result};
+  const nodes={'form':form,'[data-export-counts]':{},'[data-export-error]':{},'#tokens-export-fields':{dataset:{exportReady:'true',exportLabel:'Download ZIP'}},'[data-export-submit]':{attributes:{},label:{},setAttribute(name,value){this.attributes[name]=value;},querySelector(){return this.label;}}};
+  const listeners={};const result={dataset:{defaultScope:'subject'},nodes,querySelector:s=>nodes[s],querySelectorAll:()=>[],addEventListener:(name,fn)=>listeners[name]=fn,contains:()=>false,showModal(){this.open=true;},close(){this.open=false;listeners.close();}};return result;
  }
- let current=panel();const original=current;const requests=[];let delayOptions=false;const releases=[];
+ let current=panel();const original=current;
  class FormData extends Map {constructor(form){super(Object.entries(form.fields).map(([name,input])=>[name,input.value]));}}
- runScript('export.js',{document:{readyState:'complete',addEventListener:(name,fn)=>events[name]=fn,getElementById:()=>current,querySelector:()=>null},location:{search:''},CSS:{escape:x=>x},URL,URLSearchParams,FormData,AbortController,fetch:async url=>{requests.push(String(url));if(delayOptions)await new Promise(resolve=>releases.push(resolve));return {ok:true,json:async()=>({selected:1,exported:1,dependencies:2,omitted:0})};}});
- current=panel();events['htmx:historyRestore']();let focused=false;const trigger={dataset:{exportScope:'view'},focus(){focused=true;}};
+ runScript('export.js',{document:{readyState:'complete',addEventListener:(name,fn)=>events[name]=fn,getElementById:()=>current,querySelector:()=>null},location:{search:''},URLSearchParams,FormData,htmx:{trigger:(form,event)=>requests.push({form,event})}});
+ current=panel();events['htmx:historyRestore']();let focused=false;
+ const trigger={dataset:{exportScope:'view'},focus(){focused=true;}};
  events.click({target:{closest:selector=>selector==='[data-export-open]'?trigger:null}});
- assert.equal(current.dataset.exportBusy,'true');assert.equal(current.nodes['[data-export-submit]'].attributes['aria-busy'],'true');assert.equal(current.nodes['[data-export-submit]'].disabled,true);
- await new Promise(resolve=>setImmediate(resolve));
- assert.equal(current.dataset.exportBusy,'false');assert.equal(current.nodes['[data-export-submit]'].attributes['aria-busy'],'false');
- assert.equal(current.opens,1);assert.equal(original.opens,0);
- const requested=new URL(requests[0]);assert.equal(requested.pathname,'/md3/downloads/export');assert.equal(requested.searchParams.get('scope'),'view');assert.equal(requested.searchParams.get('q'),'icon');assert.equal(requested.searchParams.get('context.Theme'),'Dark');
- assert.equal(new URL(current.nodes['[data-export-report]'].href).searchParams.get('format'),'report');assert.match(current.nodes['[data-export-counts]'].textContent,/2 required references/);assert.equal(current.nodes['[data-export-submit]'].disabled,false);
- delayOptions=true;current.change();current.change();assert.equal(current.dataset.exportBusy,'true');
- delayOptions=false;releases.shift()();await new Promise(resolve=>setImmediate(resolve));
- assert.equal(current.dataset.exportBusy,'true','an aborted request must not clear the newer request indicator');
- releases.shift()();await new Promise(resolve=>setImmediate(resolve));assert.equal(current.dataset.exportBusy,'false');
- delayOptions=true;current.change();assert.equal(current.dataset.exportBusy,'true');
- current.close();assert.equal(focused,true);assert.equal(current.dataset.exportBusy,'false');assert.equal(current.nodes['[data-export-submit]'].attributes['aria-busy'],'false');
- releases.shift()();await new Promise(resolve=>setImmediate(resolve));assert.equal(current.dataset.exportBusy,'false');
+ assert.equal(current.open,true);assert.equal(original.open,undefined);
+ assert.equal(requests[0].event,'export-refresh');assert.equal(requests[0].form,current.nodes.form);
+ assert.equal(current.nodes.form.fields.scope.value,'view');
+ const first={sourceElement:current.nodes.form},second={sourceElement:current.nodes.form};
+ const emit=(name,ctx)=>events[name]({detail:{ctx}});
+ emit('htmx:before:request',first);emit('htmx:before:request',second);
+ first.status='error: AbortError';emit('htmx:finally:request',first);
+ assert.equal(current.dataset.exportBusy,'true','older completion must not clear the latest indicator');
+ assert.equal(current.nodes['[data-export-submit]'].disabled,true);
+ second.exportDisclosures=[];second.status='swapped';second.response={status:200};emit('htmx:after:swap',second);emit('htmx:finally:request',second);
+ assert.equal(current.dataset.exportBusy,'false');assert.equal(current.nodes['[data-export-submit]'].disabled,false);
+ assert.equal(current.nodes['[data-export-submit]'].label.textContent,'Download ZIP');
+ emit('htmx:before:request',first);current.close();assert.equal(focused,true);
+ emit('htmx:finally:request',first);assert.equal(current.dataset.exportBusy,'false');assert.equal(requests.at(-1).event,'htmx:abort');
+ const source=readFileSync(join(__dirname,'static/export.js'),'utf8');
+ assert(!source.includes('fetch('));assert(!source.includes("addEventListener('submit'"),'native submit must remain unhandled');
 });
 
 test('mosaic artwork pauses for the control, reduced motion, and offscreen visibility', () => {

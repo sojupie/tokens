@@ -110,7 +110,7 @@ func TestDownloadSplitPresetsAndRegularFooter(t *testing.T) {
 func TestTableContextUsesNativeModalAndInfoControl(t *testing.T) {
 	var output bytes.Buffer
 	filters := []tokenFilter{{Name: "Theme", Key: "context.Theme", Selected: "Light", Options: []string{"Light", "Dark"}}, {Name: "Platform", Key: "context.Platform", Selected: "Web", Options: []string{"Web", "Android"}}, {Name: "Audience", Key: "context.Audience", Selected: "3P", Options: []string{"1P Baseline", "3P"}}}
-	if err := tableContextDialog(filters).Render(context.Background(), &output); err != nil {
+	if err := tableContextDialog(filters, "/components/buttons").Render(context.Background(), &output); err != nil {
 		t.Fatal(err)
 	}
 	markup := output.String()

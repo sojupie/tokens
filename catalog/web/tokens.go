@@ -14,13 +14,14 @@ import (
 )
 
 type tokenBrowser struct {
-	Preview  *componentPreview
-	Contexts url.Values
-	Sets     []tokenSet
-	Selected tokenSet
-	Filters  []tokenFilter
-	Query    string
-	Count    int
+	Preview      *componentPreview
+	Contexts     url.Values
+	PreviewQuery url.Values
+	Sets         []tokenSet
+	Selected     tokenSet
+	Filters      []tokenFilter
+	Query        string
+	Count        int
 }
 
 type tokenSet struct {
@@ -160,6 +161,12 @@ func tokenSets(subject publish.SubjectView) []tokenSet {
 
 func buildTokenBrowser(subject publish.SubjectView, query url.Values) tokenBrowser {
 	browser := tokenBrowser{Query: strings.TrimSpace(query.Get("q")), Sets: tokenSets(subject)}
+	browser.PreviewQuery = make(url.Values)
+	for key, values := range query {
+		if strings.HasPrefix(key, "preview.") {
+			browser.PreviewQuery[key] = append([]string(nil), values...)
+		}
+	}
 	browser.Contexts = make(url.Values)
 	for key, values := range query {
 		if strings.HasPrefix(key, "context.") {

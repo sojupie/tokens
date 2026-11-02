@@ -73,25 +73,28 @@
     });
   }
   document.addEventListener('htmx:beforeProcessNode',event=>navigationLinks((event.detail?.elt || event.target)));
-  function updateDocument(html,url){
-    const incoming=new DOMParser().parseFromString(html,'text/html');
-    const assets=doc=>Array.from(doc.head.querySelectorAll('script[src]:not([data-component-script]),link[rel="stylesheet"]'),node=>[node.getAttribute('src')||node.getAttribute('href'),node.getAttribute('data-sources')||'',node.getAttribute('data-shapes-version')||''].join('\n')).join('\n');
-    // A deployed asset change needs the new head and behavior as well as new content.
-    if(assets(incoming)!==assets(document)){location.assign(url);return false;}
-    const menu=document.getElementById('tokens-site-menu');if(menu?.matches(":modal"))menu.close();
-    document.querySelectorAll('#tokens-site-menu [data-navigation-item]').forEach(link=>{
-      const current=Array.from(incoming.querySelectorAll('#tokens-site-menu [data-navigation-item]')).find(next=>next.getAttribute('href')===link.getAttribute('href'))?.getAttribute('aria-current');
-      if(current)link.setAttribute('aria-current',current);else link.removeAttribute('aria-current');
-    });
-    for(const selector of ['meta[name="description"]','meta[name="robots"]','meta[property^="og:"]','meta[name^="twitter:"]','link[rel="canonical"]','link[rel="alternate"]']){
-      document.head.querySelectorAll(selector).forEach(node=>node.remove());
-      incoming.head.querySelectorAll(selector).forEach(node=>document.head.append(node.cloneNode(true)));
-    }
-    return true;
-  }
-  document.addEventListener('htmx:before:swap',event=>{
+  // Check deployed assets before hx-head reads and merges a full response.
+  const assets=doc=>Array.from(doc.head.querySelectorAll('script[src]:not([data-component-script]),link[rel="stylesheet"]'),node=>[node.getAttribute('src')||node.getAttribute('href'),node.getAttribute('data-sources')||'',node.getAttribute('data-shapes-version')||''].join('\n')).join('\n');
+  document.addEventListener('htmx:head:before:merge',event=>{
     const ctx=event.detail.ctx;
-    if(ctx.target===document.body&&ctx.response.status===200&&!updateDocument(ctx.text,ctx.response.raw.url))event.preventDefault();
+    if(ctx.target!==document.body||ctx.response.status!==200){event.preventDefault();return;}
+    const read=ctx.response.raw.text.bind(ctx.response.raw);
+    ctx.response.raw.text=async()=>{
+      const html=await read();
+      const incoming=new DOMParser().parseFromString(html,'text/html');
+      ctx.catalogAssetChange=assets(incoming)!==assets(document);
+      return ctx.catalogAssetChange?'':html;
+    };
+  });
+  document.addEventListener('htmx:head:before:remove',event=>{
+    if(event.detail.headElement.matches('[data-component-script]'))event.preventDefault();
+  });
+  document.addEventListener('htmx:after:request',event=>{
+    const ctx=event.detail.ctx;
+    if(ctx.catalogAssetChange){event.preventDefault();location.assign(ctx.response.raw.url);return;}
+    if(ctx.target===document.body&&ctx.response.status===200){
+      const menu=document.getElementById('tokens-site-menu');if(menu?.matches(':modal'))menu.close();
+    }
   });
   // Explicit gallery links and browser history both return to the saved offset.
   const galleryKey=()=>/\/(components|styles)\/?$/.test(location.pathname)?location.pathname+location.search:null;
