@@ -25,13 +25,21 @@
  const panel=trigger=>document.getElementById(trigger.dataset.menuSubmenu||trigger.dataset.menuOpen);
  const triggerFor=menu=>menu.closest('[data-menu-example]')?.querySelector('['+(menu.hasAttribute('data-menu-main')?'data-menu-open':'data-menu-submenu')+'="'+menu.id+'"]');
  function activity(menu){const demo=menu.closest('[data-menu-example]');for(const p of demo.querySelectorAll('[data-menu-panel]'))if(p===menu||p.matches(':popover-open')||p.hasAttribute('data-menu-main'))p.dataset.menuActivity=p===menu?'active':'inactive';}
- function focus(menu,item){if(!item)return;for(const node of items(menu))node.tabIndex=node===item?0:-1;item.focus({preventScroll:true});activity(menu);}
+ function focus(menu,item){if(!item)return;for(const node of items(menu))node.tabIndex=node===item?0:-1;item.focus();activity(menu);}
  function position(menu){
+  const scrollTop=menu.scrollTop;
   menu.removeAttribute('data-menu-scrollable');
-  menu.toggleAttribute('data-menu-scrollable',menu.scrollHeight>menu.clientHeight);
+  if(menu.hasAttribute('data-menu-main'))menu.style.maxHeight='';
   const trigger=triggerFor(menu);if(!trigger)return;const r=trigger.getBoundingClientRect(),b={width:menu.offsetWidth,height:menu.offsetHeight},rtl=getComputedStyle(trigger).direction==='rtl',viewport=document.documentElement.clientWidth,gap=Number.parseFloat(getComputedStyle(menu).getPropertyValue('--md-sys-measurement-space100'));
   let x,y;
-  if(menu.hasAttribute('data-menu-main')){x=rtl?r.right-b.width:r.left;y=r.bottom+gap;if(y+b.height>innerHeight-gap)y=r.top-b.height-gap;}
+  if(menu.hasAttribute('data-menu-main')){
+   const below=Math.max(0,innerHeight-r.bottom-gap*2),above=Math.max(0,r.top-gap*2);
+   const upwards=b.height>below&&above>below;
+   menu.style.maxHeight=Math.min(b.height,upwards?above:below)+'px';
+   menu.toggleAttribute('data-menu-scrollable',menu.scrollHeight>menu.clientHeight);
+   b.width=menu.offsetWidth;b.height=menu.offsetHeight;
+   x=rtl?r.right-b.width:r.left;y=upwards?r.top-b.height-gap:r.bottom+gap;
+  }
   else{
    const parent=trigger.closest('[data-menu-panel]'),bounds=parent.getBoundingClientRect();
    menu.style.inlineSize='';
@@ -42,6 +50,8 @@
    b.width=menu.offsetWidth;b.height=menu.offsetHeight;
    x=placement.left;y=placement.replace?bounds.top:r.top;
   }
+  menu.toggleAttribute('data-menu-scrollable',menu.scrollHeight>menu.clientHeight);
+  menu.scrollTop=scrollTop;
   menu.dataset.menuAbove=String(y+b.height<=r.top);
   const left=Math.max(gap,Math.min(x,viewport-b.width-gap));menu.style.left=left+'px';menu.style.top=Math.max(gap,Math.min(y,innerHeight-b.height-gap))+'px';menu.style.setProperty('--_menu-origin-x',Math.max(0,Math.min(100,(r.left+r.width/2-left)/b.width*100))+'%');
  }
@@ -93,7 +103,11 @@
  });
  document.addEventListener('pointerdown',event=>{const trigger=event.target.closest?.('[data-menu-submenu],[data-menu-open]');if(trigger){clearTimeout(pending.get(trigger));pointerOpen.set(trigger,panel(trigger).matches(':popover-open'));}});
  document.addEventListener('pointerout',event=>{const trigger=event.target.closest?.('[data-menu-submenu]');if(trigger&&!trigger.contains(event.relatedTarget))clearTimeout(pending.get(trigger));});
- const reposition=()=>{for(const menu of document.querySelectorAll('[data-menu-example] [data-menu-panel]:popover-open'))position(menu);};
+ const reposition=event=>{for(const menu of document.querySelectorAll('[data-menu-example] [data-menu-panel]:popover-open')){
+  // Only scrolling an anchor's ancestors changes its viewport position.
+  if(event.type==='scroll'&&event.target!==document&&!event.target.contains?.(triggerFor(menu)))continue;
+  position(menu);
+ }};
  addEventListener('resize',reposition);document.addEventListener('scroll',reposition,true);
  document.addEventListener('htmx:beforeCleanupElement',event=>{const root=(event.detail?.elt || event.target);if(typeof root?.querySelectorAll!=='function')return;for(const trigger of root.querySelectorAll('[data-menu-submenu]'))clearTimeout(pending.get(trigger));for(const menu of root.querySelectorAll('[data-menu-panel]:popover-open'))menu.hidePopover();});
  document.addEventListener('htmx:afterSwap',init);document.addEventListener('htmx:historyRestore',init);if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();

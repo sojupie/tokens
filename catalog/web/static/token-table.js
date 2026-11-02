@@ -122,36 +122,10 @@ unbound('.tokens-token-browser').forEach(browser => {
     });
   }
 
-  const picker = browser.querySelector('.tokens-token-set');
   const menu = browser.querySelector('.tokens-token-set-menu');
-  const placeMenu = () => {
-    const bounds = picker.getBoundingClientRect();
-    const edge = 16;
-    const below = innerHeight - bounds.bottom - edge;
-    const above = bounds.top - edge;
-    const upwards = below < 200 && above > below;
-    menu.dataset.menuAbove = String(upwards);
-    menu.style.left = `${Math.max(edge, Math.min(bounds.left, innerWidth - menu.offsetWidth - edge))}px`;
-    menu.style.maxHeight = `${Math.max(0, upwards ? above : below)}px`;
-    menu.style.top = `${upwards ? bounds.top - menu.offsetHeight : bounds.bottom}px`;
-  };
   menu.addEventListener('toggle', event => {
-    if (event.newState === 'open') {
-      placeMenu();
-      menu.querySelector('[aria-current="page"]')?.focus();
-    }
+    if (event.newState === 'open') menu.querySelector('[aria-current="page"]')?.focus();
   });
-  menu.addEventListener('keydown', event => {
-    if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) return;
-    const links = [...menu.querySelectorAll('a')];
-    let index = links.indexOf(document.activeElement);
-    if (event.key === 'Home') index = 0;
-    else if (event.key === 'End') index = links.length - 1;
-    else index = (index + (event.key === 'ArrowDown' ? 1 : -1) + links.length) % links.length;
-    links[index]?.focus();
-    event.preventDefault();
-  });
-  addEventListener('resize', () => { if (menu.matches(':popover-open')) placeMenu(); }, {signal});
   const previewToggle = browser.querySelector('[data-action="previews"]');
   const viewToggle = browser.querySelector('[data-action="view"]');
   const expandToggle = browser.querySelector('[data-action="expand"]');
