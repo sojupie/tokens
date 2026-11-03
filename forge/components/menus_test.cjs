@@ -120,3 +120,15 @@ test('a command that disables itself on activation still closes its menu',()=>{
   assert.equal(output.textContent,initiallyDisabled?'':'New project activated');
  }
 });
+
+
+test('action menus meet their trigger when placed below or above it',()=>{
+ const events={};let rect={left:40,right:140,top:100,bottom:140};
+ const trigger={getBoundingClientRect:()=>rect};
+ const menu={offsetWidth:180,offsetHeight:120,scrollTop:21,scrollHeight:120,clientHeight:120,dataset:{},style:{setProperty(){}},removeAttribute(){},toggleAttribute(){},hasAttribute:name=>name==='data-menu-main',closest:()=>({querySelector:()=>trigger})};
+ const document={readyState:'loading',documentElement:{clientWidth:800},querySelectorAll:()=>[menu],addEventListener(){}};
+ runMotionScript(readFileSync(`${__dirname}/static/menus.js`,'utf8'),{document,innerHeight:400,addEventListener:(name,fn)=>events[name]=fn,getComputedStyle:()=>({direction:'ltr',getPropertyValue:()=> '8'})});
+ events.resize({type:'resize'});assert.equal(menu.style.top,'140px');assert.equal(menu.scrollTop,21);
+ rect={left:40,right:140,top:320,bottom:360};
+ events.resize({type:'resize'});assert.equal(menu.style.top,'200px');assert.equal(menu.style.left,'40px');
+});

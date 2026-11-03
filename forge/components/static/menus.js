@@ -33,12 +33,12 @@
   const trigger=triggerFor(menu);if(!trigger)return;const r=trigger.getBoundingClientRect(),b={width:menu.offsetWidth,height:menu.offsetHeight},rtl=getComputedStyle(trigger).direction==='rtl',viewport=document.documentElement.clientWidth,gap=Number.parseFloat(getComputedStyle(menu).getPropertyValue('--md-sys-measurement-space100'));
   let x,y;
   if(menu.hasAttribute('data-menu-main')){
-   const below=Math.max(0,innerHeight-r.bottom-gap*2),above=Math.max(0,r.top-gap*2);
+   const below=Math.max(0,innerHeight-r.bottom-gap),above=Math.max(0,r.top-gap);
    const upwards=b.height>below&&above>below;
    menu.style.maxHeight=Math.min(b.height,upwards?above:below)+'px';
    menu.toggleAttribute('data-menu-scrollable',menu.scrollHeight>menu.clientHeight);
    b.width=menu.offsetWidth;b.height=menu.offsetHeight;
-   x=rtl?r.right-b.width:r.left;y=upwards?r.top-b.height-gap:r.bottom+gap;
+   x=rtl?r.right-b.width:r.left;y=upwards?r.top-b.height:r.bottom;
   }
   else{
    const parent=trigger.closest('[data-menu-panel]'),bounds=parent.getBoundingClientRect();
