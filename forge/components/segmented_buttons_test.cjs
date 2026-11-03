@@ -12,7 +12,7 @@ function harness(type = 'radio', file = 'segmented-buttons.js') {
     closest() { return this.unavailable ? {} : null; },
     click() { clicks++; },
   };
-  runInNewContext(readFileSync(`${__dirname}/behaviors/${file}`, 'utf8'), {
+  runInNewContext(readFileSync(`${__dirname}/static/runtime/${file}`, 'utf8'), {
     document: { addEventListener(type, handler) { assert.equal(type, 'keydown'); handlers.push(handler); } },
   });
   return { input, get clicks() { return clicks; }, key(key = 'Enter', options = {}) {
@@ -63,8 +63,8 @@ test('multi-select arrows move focus without changing selection', () => {
   closest:selector=>selector==='.md-segmented-buttons'?group:null,
   getClientRects:()=>[{}],focus(){focused=this;},click(){throw Error('arrow must not activate');}});
  const globals={document:{addEventListener:(type,handler)=>handlers.push(handler)},getComputedStyle:()=>({direction:'ltr',visibility:'visible'})};
- runInNewContext(readFileSync(`${__dirname}/behaviors/utils.js`,'utf8'),globals);
- runInNewContext(readFileSync(`${__dirname}/behaviors/segmented-buttons.js`,'utf8'),globals);
+
+ runInNewContext(readFileSync(`${__dirname}/static/runtime/segmented-buttons.js`,'utf8'),globals);
  handlers[0]({target:items[0],key:'ArrowRight',preventDefault(){}});
  assert.equal(focused,items[1]);assert.deepEqual(items.map(i=>i.checked),[false,true,false]);
  handlers[0]({target:items[0],key:'ArrowLeft',preventDefault(){}});assert.equal(focused,items[2]);

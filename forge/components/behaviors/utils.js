@@ -1,3 +1,5 @@
+import { navigationIndex } from "../helpers/navigation.js";
+
 (() => {
   // Snackbar timing is renderer behavior; Material's captured tokens contain no timeout.
   function snackbarTimer(close, clock) {
@@ -48,22 +50,6 @@
         }
       },
     };
-  }
-  function navigationIndex(index, length, key, horizontal, rtl = false) {
-    if (key === "Home") return 0;
-    if (key === "End") return length - 1;
-    const forward = horizontal
-      ? rtl
-        ? "ArrowLeft"
-        : "ArrowRight"
-      : "ArrowDown";
-    const backward = horizontal
-      ? rtl
-        ? "ArrowRight"
-        : "ArrowLeft"
-      : "ArrowUp";
-    if (key !== forward && key !== backward) return null;
-    return (index + (key === forward ? 1 : -1) + length) % length;
   }
   function toolbarGap(available, widths, min, max) {
     if (widths.length < 2) return 0;

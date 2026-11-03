@@ -1,6 +1,7 @@
+import { navigationIndex } from "../helpers/navigation.js";
+
 (() => {
   if (typeof document === "undefined") return;
-  const { navigationIndex } = globalThis.MaterialComponents;
   document.addEventListener("click", (event) => {
     const button = event.target.closest?.("[data-group-button]");
     if (!button || button.disabled) return;

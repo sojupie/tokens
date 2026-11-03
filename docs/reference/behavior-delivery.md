@@ -23,6 +23,25 @@ Catalog-owned; they are not dependencies of exported Forge components.
 prerequisite graph. Existing scripts are IIFEs that use globals; their global
 dependencies cannot be reliably inferred from filenames or DOM selectors.
 
+## Source imports
+
+Behavior entry points can import stateless functions from `forge/components/helpers/`.
+The component build uses esbuild to resolve and bundle those imports into the
+existing classic-script files. Missing modules and exports fail compilation.
+Imports add no browser requests and do not require another runtime dependency
+manifest. The legacy aggregate is assembled from the same compiled entries.
+
+Button groups and segmented controls import `navigationIndex` directly. Their
+delivered scripts no longer require `MaterialComponents` for keyboard navigation.
+The utilities entry imports the same function and retains its existing global
+and guarded Node exports for other consumers.
+
+This approach is limited to stateless functions. Independently bundling a module
+that registers listeners or owns shared mutable state would create separate
+instances. Those services need a shared runtime contract before conversion.
+Layout measurements still require CSS readiness; source imports do not determine
+when a DOM-dependent controller should initialize.
+
 ## Next stages
 
 - [x] Audit script execution prerequisites, CSS measurements, initialization and
@@ -53,14 +72,15 @@ Run `npm run check:components`, `npm run test:tokens`, `npm run test:ui`, and
 
 ## Prerequisite and lifecycle audit
 
-The following describes the scripts inspected on 2026-11-03. It is an audit
-snapshot, not an execution graph consumed by the loader.
+The table distinguishes execution prerequisites from node initialization and
+cleanup. The loader does not consume it as an execution graph.
 
 | Scripts | Prerequisites and lifecycle |
 | --- | --- |
 | `motion.js`, `buttons.js`, `runtime/utils.js` | Motion publishes `MaterialMotion`; buttons reads it during evaluation. Utilities publish `MaterialComponents`. These are host prerequisites today. |
-| `runtime/button-groups.js`, `runtime/fab-menus.js`, `runtime/split-buttons.js` | Read utilities during evaluation and register delegated handlers. Layout measurements occur on interaction. |
-| `runtime/chips.js`, `runtime/tabs.js`, `runtime/segmented-buttons.js`, `runtime/switches.js`, `runtime/app-bars.js` | Register delegated handlers. Tabs use motion during selection; segmented controls read utilities during keyboard interaction. They do not need a per-node initialization pass. |
+| `runtime/fab-menus.js`, `runtime/split-buttons.js` | Read utilities during evaluation and register delegated handlers. Layout measurements occur on interaction. |
+| `runtime/button-groups.js`, `runtime/segmented-buttons.js` | Register delegated handlers and include the imported navigation helper in their own compiled files. They do not need the global helper provider or a per-node initialization pass. |
+| `runtime/chips.js`, `runtime/tabs.js`, `runtime/switches.js`, `runtime/app-bars.js` | Register delegated handlers. Tabs use motion during selection. They do not need a per-node initialization pass. |
 | `runtime/navigation.js`, `runtime/sliders.js`, `runtime/toolbars.js`, `runtime/snackbars.js` | Read utilities during evaluation. Initialize per-node state and/or observers, retry on asset readiness and swaps, and clean up removed nodes. Navigation also has a direct history-restoration hook. |
 | `runtime/tooltips.js`, `fields.js`, `menus.js` | Initialize per-node state and measure geometry during interaction. Cleanup hooks exist. Tooltips retry on asset readiness; fields and menus are core scripts with direct history-restoration hooks. Menu motion needs `MaterialMotion`. |
 | `sheets.js`, `lists.js`, `carousel.js` | Maintain per-node or gesture state. Sheets and lists use motion; lists also read utilities during keyboard interaction. Carousel initializes measured layout and observers. All have swap/asset-ready and cleanup hooks. |
@@ -72,8 +92,9 @@ snapshot, not an execution graph consumed by the loader.
 The current safe boundary is still the existing host script order and CSS-before-
 initialization barrier. Parallel fetching must not imply parallel evaluation or
 skip initialization after styles resolve. An enforceable source-import contract
-has not been introduced yet; converting IIFEs requires preserving standalone
-exports, the legacy aggregate and tool consumers.
+is now used for the stateless navigation helper. Runtime services still use
+globals; converting them requires preserving standalone exports, the legacy
+aggregate and tool consumers.
 
 ## Diagnostic comparison
 

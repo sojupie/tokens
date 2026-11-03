@@ -32,7 +32,7 @@ function navigation(options = {}) {
     ResizeObserver: class { observe() {} },
     getComputedStyle: element => ({ direction: element.direction || 'ltr', visibility: element.visibility || 'visible' }),
   };
-  runInNewContext(readFileSync(`${__dirname}/behaviors/utils.js`, 'utf8'), globals);
+  runInNewContext(readFileSync(`${__dirname}/static/runtime/utils.js`, 'utf8'), globals);
   runInNewContext(readFileSync(`${__dirname}/behaviors/navigation.js`, 'utf8'), globals);
   return {
     key(index, key) {

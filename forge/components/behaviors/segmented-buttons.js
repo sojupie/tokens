@@ -1,3 +1,5 @@
+import { navigationIndex } from "../helpers/navigation.js";
+
 (() => {
   if (typeof document === "undefined") return;
   document.addEventListener("keydown", (event) => {
@@ -11,7 +13,7 @@
         !item.matches(":disabled") && !item.closest('[inert],[aria-disabled="true"]') &&
         item.getClientRects().length && getComputedStyle(item).visibility === "visible");
       if (!items.includes(input)) return;
-      const next = globalThis.MaterialComponents.navigationIndex(items.indexOf(input), items.length,
+      const next = navigationIndex(items.indexOf(input), items.length,
         event.key, true, getComputedStyle(group).direction === "rtl");
       event.preventDefault();
       items[next].focus();

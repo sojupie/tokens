@@ -66,7 +66,7 @@ test('ordinary list arrows wrap, include horizontal keys and skip unavailable it
   closest(selector){if(selector==='.md-list')return list;if(selector==='[data-list-row]')return {};if(selector==='[inert]')return this.inert?{}:null;return null},
   matches:selector=>selector==='.md-list-item',getClientRects(){return this.hidden?[]:[{}]},focus(){focused=this}}));
  const globals={document:{readyState:'loading',addEventListener:(name,fn)=>events[name]=fn},window:{addEventListener(){}},matchMedia:()=>({matches:false,addEventListener(){}}),ResizeObserver:class{},getComputedStyle:()=>({direction:'ltr',visibility:'visible'})};
- runInNewContext(readFileSync(`${__dirname}/behaviors/utils.js`,'utf8'),globals);runInNewContext(readFileSync(`${__dirname}/static/lists.js`,'utf8'),globals);
+ runInNewContext(readFileSync(`${__dirname}/static/runtime/utils.js`,'utf8'),globals);runInNewContext(readFileSync(`${__dirname}/static/lists.js`,'utf8'),globals);
  const key=(target,key)=>events.keydown({target,key,preventDefault(){}});
  key(items[0],'ArrowUp');assert.equal(focused,items[2]);key(items[2],'ArrowDown');assert.equal(focused,items[0]);
  key(items[0],'ArrowRight');assert.equal(focused,items[1]);key(items[0],'ArrowLeft');assert.equal(focused,items[2]);
