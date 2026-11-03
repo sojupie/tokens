@@ -4,7 +4,6 @@ import (
 	"archive/zip"
 	"bytes"
 	"context"
-	"encoding/json"
 	"fmt"
 	"github.com/sojupie/tokens/forge/components/ui"
 	xhtml "golang.org/x/net/html"
@@ -12,6 +11,7 @@ import (
 	"io/fs"
 	"net/http"
 	"net/url"
+	"slices"
 	"sort"
 	"strings"
 
@@ -86,14 +86,6 @@ func (server *Server) implementationFiles(ctx context.Context, query url.Values)
 	if count == 0 {
 		return nil, "", fmt.Errorf("no implemented component examples in this selection")
 	}
-	manifestBytes, err := components.Files.ReadFile("modules.json")
-	if err != nil {
-		return nil, "", err
-	}
-	var manifest map[string]struct{ Scripts []string }
-	if err := json.Unmarshal(manifestBytes, &manifest); err != nil {
-		return nil, "", err
-	}
 	files := map[string][]byte{}
 	notices, e := components.Files.ReadFile("static/NOTICE.txt")
 	if e != nil {
@@ -123,7 +115,7 @@ func (server *Server) implementationFiles(ctx context.Context, query url.Values)
 	cssFiles := []string{"buttons.css", "bundles/common.css"}
 	themeFiles := []string{"shared"}
 	scripts := []string{"motion.js", "buttons.js"}
-	seen := map[string]bool{"motion.js": true, "buttons.js": true}
+	var scriptModules []string
 	// Common runtime utilities precede every optional module.
 	for _, id := range componentModuleOrder() {
 		if id == "common" || assets.modules[id] {
@@ -131,14 +123,14 @@ func (server *Server) implementationFiles(ctx context.Context, query url.Values)
 				cssFiles = append(cssFiles, "bundles/"+id+".css")
 				themeFiles = append(themeFiles, id)
 			}
-			for _, script := range manifest[id].Scripts {
-				if !seen[script] {
-					scripts = append(scripts, script)
-					seen[script] = true
-				}
-			}
+			scriptModules = append(scriptModules, id)
 		}
 	}
+	moduleScripts, err := components.ScriptsFor(scriptModules...)
+	if err != nil {
+		return nil, "", err
+	}
+	scripts = append(scripts, moduleScripts...)
 	var tokenCSS, componentCSS strings.Builder
 	for _, id := range themeFiles {
 		tokenCSS.Write(server.themeBundles[id])
@@ -167,7 +159,7 @@ func (server *Server) implementationFiles(ctx context.Context, query url.Values)
 		files[script] = data
 		fmt.Fprintf(&scriptHTML, "<script src=%q defer></script>\n", script)
 	}
-	if seen["loading.js"] {
+	if slices.Contains(scripts, "loading.js") {
 		data, e := readStaticFile("static/loading-shapes.json")
 		if e != nil {
 			return nil, "", e

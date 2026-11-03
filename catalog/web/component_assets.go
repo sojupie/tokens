@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/sojupie/tokens/forge/components"
 	"github.com/sojupie/tokens/forge/components/ui"
 	xhtml "golang.org/x/net/html"
 	"html"
@@ -153,13 +154,13 @@ func (server *Server) componentAssetLinks(assets *componentAssets) ([]byte, erro
 
 var componentScriptSources = sync.OnceValue(func() string {
 	sources := map[string]string{}
-	for _, name := range []string{
-		"runtime/chips.js", "runtime/tabs.js", "runtime/button-groups.js", "runtime/segmented-buttons.js", "runtime/switches.js", "runtime/navigation.js",
-		"runtime/sliders.js", "runtime/toolbars.js", "runtime/app-bars.js", "runtime/snackbars.js",
-		"runtime/fab-menus.js", "runtime/split-buttons.js", "runtime/tooltips.js",
-		"progress.js", "sheets.js", "lists.js", "carousel.js", "search.js", "date-picker.js",
-		"time-picker.js", "dialogs.js", "loading.js", "artwork.js", "artwork-canvas.js", "component-demos.js", "dialog-demo.js",
-	} {
+	scripts, err := components.ScriptsFor(componentModuleOrder()...)
+	if err != nil {
+		panic(err)
+	}
+	// These scripts belong to Catalog examples rather than exported Forge controls.
+	scripts = append(scripts, "artwork.js", "artwork-canvas.js", "component-demos.js", "dialog-demo.js")
+	for _, name := range scripts {
 		sources[name] = strings.TrimPrefix(staticURL(name), "/static/")
 	}
 	data, err := json.Marshal(sources)

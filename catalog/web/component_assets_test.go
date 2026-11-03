@@ -7,6 +7,7 @@ import (
 	"reflect"
 
 	"github.com/a-h/templ"
+	"github.com/sojupie/tokens/forge/components"
 	"github.com/sojupie/tokens/forge/components/ui"
 	"github.com/sojupie/tokens/source/publish"
 	"io"
@@ -113,6 +114,28 @@ func TestEveryComponentAssetIsServed(t *testing.T) {
 				t.Fatalf("component asset unavailable: %d %v", response.Code, response.Header())
 			}
 		})
+	}
+}
+
+func TestBehaviorSourceURLsCoverTheComponentManifest(t *testing.T) {
+	data, err := components.Files.ReadFile("modules.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var modules map[string]struct{ Scripts []string }
+	if err := json.Unmarshal(data, &modules); err != nil {
+		t.Fatal(err)
+	}
+	var sources map[string]string
+	if err := json.Unmarshal([]byte(componentScriptSources()), &sources); err != nil {
+		t.Fatal(err)
+	}
+	for name, module := range modules {
+		for _, script := range module.Scripts {
+			if sources[script] != strings.TrimPrefix(staticURL(script), "/static/") {
+				t.Errorf("module %s script %s missing its versioned delivery URL; rebuild module assets", name, script)
+			}
+		}
 	}
 }
 

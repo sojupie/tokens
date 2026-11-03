@@ -1,13 +1,33 @@
-import { readFile, writeFile, mkdir } from "node:fs/promises";
+import { readFile, writeFile, mkdir, readdir } from "node:fs/promises";
 import { transformSync } from 'esbuild';
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 
 const root = new URL("./", import.meta.url);
 
+// This checks file ownership, not the globals or execution order inside scripts.
+export function validateScriptOwnership(modules, inventory) {
+  const files = new Set(inventory), owners = new Map();
+  for (const [id, module] of Object.entries(modules)) {
+    for (const script of module.scripts || []) {
+      if (!files.has(script)) throw Error(`Unknown component script: ${script}`);
+      if (owners.has(script)) throw Error(`Duplicate script owner: ${script} (${owners.get(script)}, ${id})`);
+      owners.set(script, id);
+    }
+  }
+  for (const file of files)
+    if (!owners.has(file)) throw Error(`Unowned component script: ${file}`);
+}
+
 // Concatenate the maintained sources in manifest order, preserving public asset paths
 // and the CSS cascade.
 export async function componentAssets() {
+  const modules = JSON.parse(await readFile(new URL("modules.json", root), "utf8"));
+  const behaviors = JSON.parse(await readFile(new URL("behavior-sources.json", root), "utf8"));
+  const standalone = (await readdir(new URL("static/", root)))
+    // These two files are the shared button runtime and the legacy aggregate.
+    .filter(name => name.endsWith(".js") && !["buttons.js", "components.js"].includes(name));
+  validateScriptOwnership(modules, [...standalone, ...behaviors.map(file => `runtime/${path.basename(file)}`)]);
   const outputs = new Map();
   for (const [manifest, output, kind] of [
     ["style-sources.json", "static/components-base.css", "styles"],
