@@ -42,7 +42,7 @@ templ carouselExample(c componentCase, demonstration bool) {
 	}}
 	@ui.Carousel(p, 6) {
 		for index:=range 6 {
-			@ui.CarouselItem(ui.CarouselItemProps{Index: index, Count: 6, ImageSrc: staticURL("paintings/" + carouselPaintings[index%len(carouselPaintings)]), SlotAttrs: c.CarouselSlot(index), Attrs: c.CarouselItem(index), Label: carouselPaintingTitles[index%len(carouselPaintingTitles)]}) {
+			@ui.CarouselItem(ui.CarouselItemProps{Index: index, Count: 6, ImageSrc: staticURL("paintings/" + carouselPaintings[index%len(carouselPaintings)]), ImagePosition: carouselPaintingPositions[index%len(carouselPaintingPositions)], ImageScale: carouselPaintingScales[index%len(carouselPaintingScales)], SlotAttrs: c.CarouselSlot(index), Attrs: c.CarouselItem(index), Label: carouselPaintingTitles[index%len(carouselPaintingTitles)]}) {
 				if demonstration && c.CarouselContent=="overlay" {
 					@ui.CarouselText() {
 						{ carouselCaption(index) }
@@ -76,5 +76,5 @@ templ carouselExampleControls() {
 }
 
 templ carouselArtwork(index int) {
-	<img src={ staticURL("paintings/" + carouselPaintings[index%len(carouselPaintings)]) } alt="" width="1200" height="800" draggable="false"/>
+	<img src={ staticURL("paintings/" + carouselPaintings[index%len(carouselPaintings)]) } alt="" width="1200" height="800" draggable="false" style={ carouselArtworkStyle(index) }/>
 }

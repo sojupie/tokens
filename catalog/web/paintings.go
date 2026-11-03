@@ -1,5 +1,7 @@
 package web
 
+import "fmt"
+
 // Public-domain paintings used by component previews.
 const cardPainting = "blue-morning-1963.10.82.webp"
 
@@ -15,4 +17,17 @@ var carouselPaintings = [...]string{
 
 var carouselPaintingTitles = [...]string{
 	"Beach at Trouville", "Woman with a Parasol — Madame Monet and Her Son", "Argenteuil", "Cliffs at Pourville", "Washerwomen on the Beach of Étretat", "The Louvre, Afternoon, Rainy Weather",
+}
+
+// Keep people, shorelines and buildings in frame when artwork is cover-cropped.
+var carouselPaintingPositions = [...]string{
+	"50% 100%", "52% 10%", "52% 100%", "48% 100%", "50% 100%", "50% 100%",
+}
+
+// Reduce empty sky while retaining enough context around each subject.
+var carouselPaintingScales = [...]float64{1.35, 1, 1.15, 1.1, 1.1, 1.05}
+
+func carouselArtworkStyle(index int) string {
+	position := carouselPaintingPositions[index%len(carouselPaintingPositions)]
+	return fmt.Sprintf("object-position:%s;transform:scale(%g);transform-origin:%s", position, carouselPaintingScales[index%len(carouselPaintingScales)], position)
 }

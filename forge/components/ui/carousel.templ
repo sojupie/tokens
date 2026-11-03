@@ -37,7 +37,10 @@ templ CarouselItem(p CarouselItemProps) {
 		}
 		<button { p.Attributes()... }>
 			if p.ImageSrc!="" {
-				<span class="md-carousel-art" aria-hidden="true"><img src={ templ.SafeURL(p.ImageSrc) } alt={ p.ImageAlt } width="1200" height="800" draggable="false"/></span>
+				<span class="md-carousel-art" aria-hidden="true"><img src={ templ.SafeURL(p.ImageSrc) } alt={ p.ImageAlt } width="1200" height="800" draggable="false"
+ if p.ImagePosition!="" || p.ImageScale>0 {
+ style={ p.imageStyle() }
+ }/></span>
 			}
 			if p.Content!=nil {
 				@p.Content

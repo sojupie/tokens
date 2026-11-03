@@ -43,3 +43,19 @@ func TestCarouselMaximumWithConsumerStyle(t *testing.T) {
 		t.Fatal("consumer style replaced maximum")
 	}
 }
+
+func TestCarouselArtworkFraming(t *testing.T) {
+	p := CarouselItemProps{ImageSrc: "/painting.webp", ImagePosition: "50% 100%", ImageScale: 1.2}
+	var out bytes.Buffer
+	if err := CarouselItem(p).Render(context.Background(), &out); err != nil {
+		t.Fatal(err)
+	}
+	for _, value := range []string{"object-position:50% 100%", "transform:scale(1.2)", "transform-origin:50% 100%"} {
+		if !strings.Contains(out.String(), value) {
+			t.Fatalf("missing artwork framing: %s", value)
+		}
+	}
+	if !strings.Contains((CarouselItemProps{}).imageStyle(), "scale(1)") {
+		t.Fatal("default artwork scale changed")
+	}
+}

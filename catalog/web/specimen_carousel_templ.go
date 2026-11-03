@@ -214,7 +214,7 @@ func carouselExample(c componentCase, demonstration bool) templ.Component {
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = ui.CarouselItem(ui.CarouselItemProps{Index: index, Count: 6, ImageSrc: staticURL("paintings/" + carouselPaintings[index%len(carouselPaintings)]), SlotAttrs: c.CarouselSlot(index), Attrs: c.CarouselItem(index), Label: carouselPaintingTitles[index%len(carouselPaintingTitles)]}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var7), templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = ui.CarouselItem(ui.CarouselItemProps{Index: index, Count: 6, ImageSrc: staticURL("paintings/" + carouselPaintings[index%len(carouselPaintings)]), ImagePosition: carouselPaintingPositions[index%len(carouselPaintingPositions)], ImageScale: carouselPaintingScales[index%len(carouselPaintingScales)], SlotAttrs: c.CarouselSlot(index), Attrs: c.CarouselItem(index), Label: carouselPaintingTitles[index%len(carouselPaintingTitles)]}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var7), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -412,7 +412,20 @@ func carouselArtwork(index int) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\" alt=\"\" width=\"1200\" height=\"800\" draggable=\"false\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\" alt=\"\" width=\"1200\" height=\"800\" draggable=\"false\" style=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var18 string
+		templ_7745c5c3_Var18, templ_7745c5c3_Err = templruntime.SanitizeStyleAttributeValues(carouselArtworkStyle(index))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/specimen_carousel.templ`, Line: 79, Col: 174}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

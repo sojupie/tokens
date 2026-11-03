@@ -34,9 +34,13 @@ func (p CarouselProps) Attributes() templ.Attributes {
 type CarouselItemProps struct {
 	Index, Count              int
 	Label, ImageSrc, ImageAlt string
-	AspectRatio               float64
-	SlotAttrs, Attrs          templ.Attributes
-	Content                   templ.Component
+	// ImageScale zooms artwork around its focal point; zero defaults to 1.
+	ImageScale float64
+	// ImagePosition selects the focal point within cover-cropped artwork.
+	ImagePosition    string
+	AspectRatio      float64
+	SlotAttrs, Attrs templ.Attributes
+	Content          templ.Component
 	// Before and After are unmasked caption slots for horizontal carousels.
 	Before, After templ.Component
 }
@@ -54,4 +58,13 @@ func (p CarouselItemProps) Attributes() templ.Attributes {
 		label = p.Label + ", " + label
 	}
 	return attributes(templ.Attributes{"class": "md-carousel-item", "type": "button", "aria-label": label, "data-carousel-index": fmt.Sprint(p.Index)}, p.Attrs)
+}
+
+func (p CarouselItemProps) imageStyle() string {
+	scale := p.ImageScale
+	if scale <= 0 {
+		scale = 1
+	}
+	position := fallback(p.ImagePosition, "50% 50%")
+	return fmt.Sprintf("object-position:%s;transform:scale(%g);transform-origin:%s", position, scale, position)
 }
