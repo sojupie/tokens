@@ -37,10 +37,10 @@
 .tokens-site-header[data-docked="true"] { position:fixed;inset-block-start:0;inset-block-end:auto;inset-inline-start:0;inline-size:var(--site-drawer-width);block-size:var(--site-drawer-height,100dvh); }
 :root[data-site-drawer="expanded"] body { padding-inline-start:var(--site-drawer-width); }
 .tokens-site-header[data-docked="true"] .tokens-primary-nav,.tokens-site-header[data-docked="true"] .md-navigation-header { display:none; }
-.tokens-site-header[data-docked="true"] #tokens-site-menu { position:absolute;inset:0;inset-inline-start:var(--site-rail-width);inline-size:var(--site-panel-width);block-size:100%;max-block-size:100%;max-inline-size:none;--_elevation-level:var(--md-sys-elevation-level0);border-radius:0; }
+.tokens-site-header[data-docked="true"] #tokens-site-menu { position:absolute;inset:0;inset-inline-start:var(--site-rail-width);inline-size:var(--site-panel-width);block-size:100%;max-block-size:100%;max-inline-size:none;--_elevation-level:var(--md-sys-elevation-level0);border-radius:0;border-start-end-radius:var(--md-sys-shape-corner-large);border-end-end-radius:var(--md-sys-shape-corner-large); }
 .tokens-site-header[data-docked="true"] .tokens-site-navigation { flex-direction:row; }
 .tokens-site-header[data-docked="true"] .tokens-site-main { display:none; }
-.tokens-site-header[data-docked="true"] #tokens-site-rail { display:block;position:absolute;inset-block:0;inset-inline-start:0;inline-size:var(--site-rail-width); }
+.tokens-site-header[data-docked="true"] #tokens-site-rail { display:block;position:absolute;z-index:1;background:var(--md-sys-color-surface-container-low);inset-block:0;inset-inline-start:0;inline-size:var(--site-rail-width); }
 .tokens-site-header[data-docked="true"] .tokens-site-rail-column { display:flex;block-size:100%;box-sizing:border-box;flex:none;flex-direction:column;inline-size:var(--site-rail-width);min-block-size:0; }
 .tokens-rail-home-logo,.tokens-rail-home-logo .tokens-brand-logo { display:block;inline-size:100%;block-size:100%; }
 .tokens-site-header[data-docked="true"] .tokens-site-rail { display:flex;flex-direction:column;flex:1;min-block-size:0;overflow:auto;padding-block:var(--md-sys-measurement-space100);box-shadow:none;background:transparent; }
@@ -54,7 +54,7 @@
 /* The section list runs beside the docked appearance action, not above it. */
 .tokens-site-header[data-docked="true"] #tokens-site-destinations { block-size:100%; }
 .tokens-site-header[data-docked="true"] .tokens-site-rail-column { padding-block-end:calc(2 * var(--md-sys-measurement-space600) + var(--md-sys-measurement-space200) + var(--md-comp-divider-thickness)); }
-.tokens-site-header[data-docked="true"] .tokens-drawer-appearance { position:absolute;inset-inline-start:0;inset-block-end:0;background:var(--md-sys-color-surface-container-low); }
+.tokens-site-header[data-docked="true"] .tokens-drawer-appearance { position:absolute;z-index:1;inset-inline-start:0;inset-block-end:0;background:var(--md-sys-color-surface-container-low); }
 /* The page owns reserved width; hover only changes the drawer layered above it. */
 :root[data-site-layout="medium"] { --site-drawer-width:var(--site-rail-width); }
 .tokens-site-header[data-docked="true"] #tokens-site-menu {
