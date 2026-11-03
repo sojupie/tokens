@@ -10,7 +10,7 @@
   const rail=matchMedia('(min-width:600px)');
   const viewport=window.visualViewport;
   const scrollPositions=new Map();
-  let viewportFrame=0,navigation,pointerType,latched=false,pendingSection;
+  let viewportFrame=0,navigation,navigationState,pointerType,latched=false,pendingSection;
   function rememberScroll(){
    for(const list of header.querySelectorAll('[data-site-scroll]')) if(list.getClientRects().length)scrollPositions.set(list.dataset.siteScroll,list.scrollTop);
   }
@@ -18,7 +18,11 @@
    const previousSection=header.dataset.section;
    header.dataset.section=section;
    header.dataset.mobileLevel=section?'section':'main';
-   for(const panel of header.querySelectorAll('[data-site-panel]')){panel.hidden=panel.dataset.sitePanel!==section;panel.inert=panel.hidden;}
+   for(const panel of header.querySelectorAll('[data-site-panel]')){
+    const hidden=panel.dataset.sitePanel!==section;
+    panel.toggleAttribute('data-site-enter',panel.hidden&&!hidden);
+    panel.hidden=hidden;panel.inert=hidden;
+   }
    for(const button of header.querySelectorAll('[data-site-section]'))button.setAttribute('aria-expanded',String(button.dataset.siteSection===section));
    if(focus){
     const target=section?header.querySelector('[data-site-panel]:not([hidden]) [data-site-back]'):header.querySelector(`[data-site-section="${previousSection}"]`);
@@ -27,8 +31,10 @@
   }
   function refreshNavigation(){
    const next=header.querySelector('[data-site-navigation]');
-   if(!next||navigation===next)return;
-   navigation=next;
+   if(!next)return;
+   const state=next.dataset.activeSection+'\n'+next.dataset.activePage;
+   if(navigation===next&&navigationState===state)return;
+   navigation=next;navigationState=state;
    const section=next.dataset.activeSection;
    document.documentElement.dataset.siteSection=section;
    header.dataset.drawerPersistent=String(wide.matches&&!!section);
@@ -88,7 +94,12 @@
   header.addEventListener('scroll',event=>{
    if(event.target.matches('[data-site-scroll]'))scrollPositions.set(event.target.dataset.siteScroll,event.target.scrollTop);
   },true);
-  document.addEventListener('htmx:beforeSwap',rememberScroll);
+  document.addEventListener('htmx:beforeSwap',()=>{
+   rememberScroll();
+   // Preserved headers temporarily enter htmx's hidden pantry. Reinsertion is
+   // not a section entrance and must not restart its opacity transition.
+   for(const panel of header.querySelectorAll('[data-site-panel]'))panel.removeAttribute('data-site-enter');
+  });
   document.addEventListener('htmx:afterSwap',refreshNavigation);
   function syncViewport(){
    viewportFrame=0;

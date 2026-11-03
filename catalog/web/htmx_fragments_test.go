@@ -52,7 +52,7 @@ func TestNavigationUsesInertPartialToKeepDocumentCacheShared(t *testing.T) {
 		if !strings.Contains(body, `<template hx type="partial" hx-target="#tokens-site-destinations"`) {
 			t.Fatal("wrong partial", body)
 		}
-		for _, want := range []string{`id="tokens-site-destinations"`, `hx-head.min.js`, `hx-sync="this:replace"`} {
+		for _, want := range []string{`id="tokens-site-destinations"`, `hx-head.min.js`, `hx-sync="this:replace"`, `hx-target="#tokens-site-destinations" hx-swap="innerMorph"`, `hx-target="#tokens-site-rail" hx-swap="innerMorph"`} {
 			if !strings.Contains(body, want) {
 				t.Fatal(want)
 			}

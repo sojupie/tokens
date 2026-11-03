@@ -73,9 +73,9 @@ templ layout(title string) {
 			}
 		</head>
 		<body class="tokens-body" hx-boost="true">
-			<template hx type="partial" hx-target="#tokens-site-rail" hx-swap="innerHTML">@site.Rail(siteConfig(ctx))
+			<template hx type="partial" hx-target="#tokens-site-rail" hx-swap="innerMorph">@site.Rail(siteConfig(ctx))
 </template>
-			<template hx type="partial" hx-target="#tokens-site-destinations" hx-swap="innerHTML">
+			<template hx type="partial" hx-target="#tokens-site-destinations" hx-swap="innerMorph">
 				@site.Destinations(siteConfig(ctx))
 			</template>
 			@componentAssetScope() {

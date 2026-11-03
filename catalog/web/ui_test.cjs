@@ -834,7 +834,7 @@ test('site navigation drills into a single mobile list and preserves its positio
  let width=390;
  const handlers={},docHandlers={},root={dataset:{},style:{setProperty(){}}};
  const focus=[],body={blur(){}},opener={setAttribute(){}};
- const panels=['/components','/styles'].map(path=>({dataset:{sitePanel:path},hidden:false}));
+ const panels=['/components','/styles'].map(path=>({dataset:{sitePanel:path},hidden:false,attributes:{},toggleAttribute(name,value){if(value)this.attributes[name]='';else delete this.attributes[name];},removeAttribute(name){delete this.attributes[name];}}));
  const buttons=panels.map(p=>({dataset:{siteSection:p.dataset.sitePanel},setAttribute(){},focus(){focus.push(this.dataset.siteSection);}}));
  const back={focus(){focus.push('back');}},main={focus(){focus.push('main');}};
  let node={dataset:{activeSection:'/components'}},lists=panels.map(p=>({dataset:{siteScroll:p.dataset.sitePanel},scrollTop:0,getClientRects:()=>p.hidden?[]:[{}],querySelector:()=>null,matches:()=>true}));
@@ -853,9 +853,13 @@ test('site navigation drills into a single mobile list and preserves its positio
  click(buttons[1]);assert.equal(panels[0].hidden,true);assert.equal(panels[1].hidden,false);assert.equal(focus.at(-1),'back');
  click(null,true);assert.equal(header.dataset.mobileLevel,'main');assert.ok(panels.every(p=>p.hidden));assert.equal(focus.at(-1),'/styles');
  click(buttons[0]);lists[0].scrollTop=270;handlers.scroll({target:lists[0]});
- docHandlers['htmx:beforeSwap']();lists=lists.map(l=>({...l,scrollTop:0}));node={dataset:{activeSection:'/components'}};docHandlers['htmx:afterSwap']();
+ assert.equal(panels[0].attributes['data-site-enter'],'');
+ docHandlers['htmx:beforeSwap']();assert.equal(panels[0].attributes['data-site-enter'],undefined,'navigation must not replay the section entrance');lists=lists.map(l=>({...l,scrollTop:0}));node={dataset:{activeSection:'/components'}};docHandlers['htmx:afterSwap']();
  assert.equal(lists[0].scrollTop,270,'navigation updates must retain the existing list position');
  assert.equal(header.dataset.mobileLevel,'section');
+ node.dataset.activeSection='/styles';node.dataset.activePage='/styles/shape';docHandlers['htmx:afterSwap']();
+ assert.equal(panels[1].hidden,false,'morphing retains the navigation node but must refresh changed page metadata');
+ node.dataset.activeSection='/components';node.dataset.activePage='/components';docHandlers['htmx:afterSwap']();
  width=900;
  const railLink={href:'/styles',dataset:{siteRailSection:'/styles'}};
  prevented=false;
