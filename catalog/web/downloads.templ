@@ -29,14 +29,15 @@ templ siteDownloadMenu() {
 	@useComponentAssets("radio")
 	@useComponentAssets("checkbox")
 	@useComponentAssets("messages")
-	@useComponentAssets("loading")
 	<div class="tokens-export">
 		@ui.Action(ui.ButtonProps{Variant: ui.ButtonVariant("filled"), Attrs: templ.Attributes{"data-export-open": true, "aria-haspopup": "dialog", "aria-controls": "tokens-site-download"}}) {
 			Download tokens
 		}
-		@ui.Modal(ui.DialogProps{ID: "tokens-site-download", TitleID: "tokens-site-download-title", Title: "Download", Attrs: templ.Attributes{"hx-boost": "false", "class": "tokens-export-dialog", "aria-describedby": "tokens-export-scope", "data-component-export": fmt.Sprint(metadata(ctx).Export != nil && metadata(ctx).Export.Component), "data-default-scope": metadata(ctx).Export.defaultScope(), "data-has-css": fmt.Sprint(metadata(ctx).Export != nil && metadata(ctx).Export.CSS), "data-has-implementation": fmt.Sprint(metadata(ctx).Export != nil && metadata(ctx).Export.Implementations)}, FormAttrs: templ.Attributes{"id": "tokens-export-form", "action": "/downloads/export", "method": "get", "hx-get": "/downloads/export/options", "hx-trigger": "change, export-refresh", "hx-target": "#tokens-export-fields", "hx-swap": "outerHTML", "hx-sync": "this:replace"}, Actions: downloadDialogActions(), ActionsAttrs: templ.Attributes{"class": "tokens-export-actions"}}) {
+		@ui.Modal(ui.DialogProps{ID: "tokens-site-download", TitleID: "tokens-site-download-title", Title: "Download", Attrs: templ.Attributes{"hx-boost": "false", "class": "tokens-export-dialog", "aria-describedby": "tokens-export-scope", "data-component-export": fmt.Sprint(metadata(ctx).Export != nil && metadata(ctx).Export.Component), "data-default-scope": metadata(ctx).Export.defaultScope(), "data-has-css": fmt.Sprint(metadata(ctx).Export != nil && metadata(ctx).Export.CSS), "data-has-implementation": fmt.Sprint(metadata(ctx).Export != nil && metadata(ctx).Export.Implementations)}, FormAttrs: templ.Attributes{"id": "tokens-export-form", "action": "/downloads/export", "method": "get", "hx-get": "/downloads/export/options", "hx-trigger": "export-refresh", "hx-target": "#tokens-export-fields", "hx-swap": "outerMorph", "hx-sync": "this:replace", "hx-indicator": "#tokens-export-options-status", "hx-disable": "#tokens-export-fields fieldset, #tokens-export-submit-pending"}, Actions: downloadDialogActions(), ActionsAttrs: templ.Attributes{"class": "tokens-export-actions"}}) {
 			if page := metadata(ctx).Export; page != nil {
 				@exportDialogFields(initialExportDialog(*page))
+				<p id="tokens-export-options-status" class="htmx-indicator" role="status">Updating available options…</p>
+				@exportDialogSummary(initialExportDialog(*page), false)
 			}
 		}
 		<noscript><p><a href="/downloads/dtcg/light-default/tokens.tokens.json" download>DTCG JSON · Light, default contrast</a> · <a href="/downloads/dtcg/light-default/tokens.css" download>CSS variables</a> · <a href="/downloads/dtcg/light-default/report.json" download>Conversion report</a></p></noscript>
@@ -118,7 +119,9 @@ templ downloadDialogActions() {
 	@ui.Action(ui.ButtonProps{Variant: ui.Text, Attrs: templ.Attributes{"data-export-cancel": ""}}) {
 		Close
 	}
-	@ui.LoadingButton(templ.Attributes{"class": "md-button md-filled-button md-loading-button", "type": "submit", "form": "tokens-export-form", "data-export-submit": ""}, "Download")
+	<fieldset id="tokens-export-submit-pending" class="tokens-export-submit-pending">
+		@exportDownloadAction(exportDialogState{Label: "Download"})
+	</fieldset>
 }
 
 templ exportContextHelp() {
@@ -129,13 +132,13 @@ templ exportContextHelp() {
 
 // Keep the form, modal and animated action mounted while replacing its choices.
 templ exportDialogFields(state exportDialogState) {
-	<div id="tokens-export-fields" data-export-ready={ fmt.Sprint(state.Ready) } data-export-label={ state.Label } data-component-assets>
+	<div id="tokens-export-fields" class="tokens-export-fields" data-component-assets>
 		@componentAssetScope() {
 			<input type="hidden" name="kind" value={ state.Page.Kind }/><input type="hidden" name="slug" value={ state.Page.Slug }/><input type="hidden" name="set" value={ state.Query.Get("set") }/><input type="hidden" name="q" value={ state.Query.Get("q") }/>
 			<p id="tokens-export-scope">Choose what to include. CSS and DTCG exports include required token references.</p>
 			<div class="tokens-export-primary">
 				@exportDialogChoices(state, "content", "Content", []catalogChoice{{"tokens", "Design tokens"}, {"implementation", "Component implementation"}}, false)
-				<details class="tokens-export-include tokens-export-disclosure">
+				<details id="export-include" class="tokens-export-include tokens-export-disclosure">
 					<summary>
 						<span class="tokens-export-disclosure-label"><span class="tokens-export-title">Include</span><span data-export-scope-summary>{ choiceLabel(state.Page.Scopes(), state.Query.Get("scope")) }</span></span>
 						<span class="tokens-export-chevron" aria-hidden="true">
@@ -161,7 +164,7 @@ templ exportDialogFields(state exportDialogState) {
 					Source JSON retains captured values and reference metadata.
 				}
 			</p>
-			<details class="tokens-export-context tokens-export-disclosure">
+			<details id="export-context" class="tokens-export-context tokens-export-disclosure">
 				<summary>
 					<span class="tokens-export-disclosure-label"><span class="tokens-export-title" id="export-context-title">Token context</span><span data-export-context-summary>{ state.contextSummary() }</span></span>
 					<span class="tokens-export-chevron" aria-hidden="true">
@@ -188,15 +191,12 @@ templ exportDialogFields(state exportDialogState) {
 					}
 				</div>
 			</details>
-			<p class="md-typescale-body-small" data-export-counts role="status" aria-live="polite">{ state.Counts }</p>
-			<p class="md-typescale-body-small" data-export-error role="alert" hidden?={ state.Error == "" }>{ state.Error }</p>
-			<a class="tokens-link" data-export-report hidden?={ state.implementation() } href={ templ.SafeURL(state.reportURL()) }>View conversion report</a>
 		}
 	</div>
 }
 
 templ exportDialogChoices(state exportDialogState, name, title string, choices []catalogChoice, multiple bool) {
-	<fieldset class="tokens-export-choices" aria-label={ title }>
+	<fieldset id={ exportChoiceID(name) } class="tokens-export-choices" aria-label={ title } { state.requestAttrs(name)... }>
 		<legend><span>{ title }</span></legend>
 		<div>
 			for _, choice := range choices {
@@ -208,4 +208,51 @@ templ exportDialogChoices(state exportDialogState, name, title string, choices [
 			}
 		</div>
 	</fieldset>
+}
+
+// Options and their descriptions update before the expensive summary starts.
+templ exportDialogOptionsResponse(state exportDialogState) {
+	@exportDialogFields(state)
+	<hx-partial hx-target="#tokens-export-summary" hx-swap="outerHTML">
+		@exportDialogSummary(state, true)
+	</hx-partial>
+	<hx-partial hx-target="#tokens-export-submit-pending" hx-swap="innerHTML">
+		@exportDownloadAction(state)
+	</hx-partial>
+}
+
+templ exportDialogSummary(state exportDialogState, load bool) {
+	<div
+		id="tokens-export-summary"
+		if load && state.Resolved {
+			hx-get={ "/downloads/export/summary?" + state.Query.Encode() }
+			hx-trigger="load"
+			hx-sync="#tokens-export-form:replace"
+			hx-swap="none"
+			hx-disable="#tokens-export-submit-pending"
+			hx-indicator="this"
+		}
+	>
+		<p class="md-typescale-body-small" data-export-counts role="status" aria-live="polite">
+			{ state.Counts }
+		</p>
+		<p class="md-typescale-body-small tokens-export-summary-status" role="status">Calculating download…</p>
+		<p class="md-typescale-body-small" data-export-error role="alert" hidden?={ state.Error == "" }>{ state.Error }</p>
+		<a class="tokens-link" data-export-report hidden?={ !state.Ready || state.implementation() } href={ templ.SafeURL(state.reportURL()) }>View conversion report</a>
+	</div>
+}
+
+templ exportDownloadAction(state exportDialogState) {
+	@ui.Action(ui.ButtonProps{Variant: ui.Filled, Attrs: templ.Attributes{"type": "submit", "form": "tokens-export-form", "data-export-submit": "", "disabled": !state.Ready}}) {
+		{ state.Label }
+	}
+}
+
+templ exportDialogSummaryResponse(state exportDialogState) {
+	<hx-partial hx-target="#tokens-export-summary" hx-swap="outerHTML">
+		@exportDialogSummary(state, false)
+	</hx-partial>
+	<hx-partial hx-target="#tokens-export-submit-pending" hx-swap="innerHTML">
+		@exportDownloadAction(state)
+	</hx-partial>
 }

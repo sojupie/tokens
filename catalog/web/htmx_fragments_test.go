@@ -71,11 +71,21 @@ func TestExportDialogReturnsResolvedHTMLAndPreservesMultipleSelections(t *testin
 	w := httptest.NewRecorder()
 	server.Handler().ServeHTTP(w, httptest.NewRequest("GET", "/downloads/export/options?"+query.Encode(), nil))
 	body := w.Body.String()
-	if w.Code != 200 || !strings.Contains(body, `data-export-ready="true"`) || strings.Contains(body, `<dialog`) || strings.Contains(body, `<!doctype`) {
+	if w.Code != 200 || !strings.Contains(body, `class="tokens-export-fields"`) || !strings.Contains(body, `hx-trigger="load"`) || !strings.Contains(body, `/downloads/export/summary?`) || strings.Contains(body, `<dialog`) || strings.Contains(body, `<!doctype`) {
 		t.Fatal(w.Code, body)
 	}
 	if strings.Count(body, `checked`) < 4 {
 		t.Fatal("selected inputs missing", body)
+	}
+	options := server.exportDialogOptions(query)
+	if !options.Resolved || options.Ready || options.Counts != "" {
+		t.Fatalf("options must resolve before calculating exports: %+v", options)
+	}
+	w = httptest.NewRecorder()
+	server.Handler().ServeHTTP(w, httptest.NewRequest("GET", "/downloads/export/summary?"+query.Encode(), nil))
+	body = w.Body.String()
+	if !strings.Contains(body, "4 format/context combinations") || !strings.Contains(body, `hx-target="#tokens-export-submit-pending"`) || strings.Contains(body, `hx-trigger="load"`) {
+		t.Fatal("summary must confirm its own action without reloading", body)
 	}
 	query.Del("format")
 	state = server.exportDialog(context.Background(), query)
@@ -92,5 +102,20 @@ func TestExportDialogReturnsResolvedHTMLAndPreservesMultipleSelections(t *testin
 	state = server.exportDialog(context.Background(), query)
 	if state.Ready || state.Error == "" {
 		t.Fatal("unknown context accepted")
+	}
+}
+
+func TestExportRequestDependenciesFollowContextOrder(t *testing.T) {
+	if got := exportChoiceID("context.Language height"); got != "export-choices-context-language-height" {
+		t.Fatal(got)
+	}
+	state := exportDialogState{Page: exportPage{Contexts: []exportContext{{Name: "Platform"}, {Name: "Theme"}, {Name: "Contrast"}, {Name: "Audience"}}}}
+	attrs := state.requestAttrs("context.Theme")
+	targets := attrs["hx-disable"].(string)
+	if strings.Contains(targets, "context-theme") || strings.Contains(targets, "context-platform") || !strings.Contains(targets, "context-contrast") || !strings.Contains(targets, "context-audience") {
+		t.Fatal(targets)
+	}
+	if state.requestAttrs("format")["hx-get"] != "/downloads/export/summary" {
+		t.Fatal("format changes must not wait for option resolution")
 	}
 }

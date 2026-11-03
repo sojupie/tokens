@@ -363,15 +363,15 @@ button:not(:disabled), [role=button]:not([aria-disabled=true]) { cursor:pointer;
 .tokens-selection-example > label:last-child { cursor:pointer; }
 
 /* The page uses compact table typography; the export form has its own hierarchy. */
-.tokens-export-dialog :is(.md-dialog-content, [data-export-ready]) {
+.tokens-export-dialog :is(.md-dialog-content, .tokens-export-fields) {
  display:flex; flex-direction:column; gap:var(--md-sys-measurement-space200);
  font-family:var(--md-sys-typescale-body-medium-font); font-size:var(--md-sys-typescale-body-medium-size);
  line-height:var(--md-sys-typescale-body-medium-line-height); font-weight:var(--md-sys-typescale-body-medium-weight);
  letter-spacing:var(--md-sys-typescale-body-medium-tracking);
 }
-.tokens-export-dialog :is(.md-dialog-content, [data-export-ready]) > * { flex-shrink:0; }
-.tokens-export-dialog :is(.md-dialog-content, [data-export-ready]) > p { margin:0; }
-.tokens-export-dialog :is(.md-dialog-content, [data-export-ready]) > input[type="hidden"] { display:none; }
+.tokens-export-dialog :is(.md-dialog-content, .tokens-export-fields) > * { flex-shrink:0; }
+.tokens-export-dialog :is(.md-dialog-content, .tokens-export-fields) > p { margin:0; }
+.tokens-export-dialog :is(.md-dialog-content, .tokens-export-fields) > input[type="hidden"] { display:none; }
 .tokens-export-primary { display:grid; gap:var(--md-sys-measurement-space200); }
 .tokens-export-choices { border:0; padding:0; margin:0; min-inline-size:0; }
 .tokens-export-choices legend, .tokens-export-title {
@@ -510,3 +510,13 @@ button:not(:disabled), [role=button]:not([aria-disabled=true]) { cursor:pointer;
  .tokens-preview-grid:has(.md-tabs) { padding-inline:0; margin-inline:calc(-1 * var(--layout-margin)); inline-size:calc(100% + 2 * var(--layout-margin)); }
  .tokens-component-example:has(.md-tabs) { padding-inline:0; }
 }
+
+.tokens-export-submit-pending { display:inline-grid; border:0; padding:0; margin:0; min-inline-size:0; }
+#tokens-export-summary { display:grid; gap:var(--md-sys-measurement-space150); }
+#tokens-export-summary > p { margin:0; }
+.tokens-export-dialog:has(#tokens-export-options-status.htmx-request) .tokens-export-description { opacity:.5; }
+#tokens-export-options-status { display:none; }
+#tokens-export-options-status.htmx-request { display:block; }
+.tokens-export-dialog:has(#tokens-export-options-status.htmx-request) #tokens-export-summary { display:none; }
+.tokens-export-summary-status, #tokens-export-summary.htmx-request [data-export-counts], #tokens-export-summary [data-export-counts]:empty { display:none; }
+#tokens-export-summary.htmx-request .tokens-export-summary-status { display:block; }

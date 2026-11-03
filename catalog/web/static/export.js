@@ -1,18 +1,11 @@
 (() => {
-  const initialized = new WeakSet(), openers = new WeakMap(), pending = new WeakMap();
+  const initialized = new WeakSet(), openers = new WeakMap();
   const inputs = (form, name) => Array.from(form.querySelectorAll('input[name]')).filter(input => input.name === name);
   function set(form, name, next) {
     for (const input of inputs(form, name)) {
       if (input.type === 'radio' || input.type === 'checkbox') input.checked = input.value === next;
       else input.value = next;
     }
-  }
-  function busy(panel, active) {
-    panel.dataset.exportBusy = String(active);
-    panel.querySelector('form').setAttribute('aria-busy', String(active));
-    const button = panel.querySelector('[data-export-submit]');
-    button.setAttribute('aria-busy', String(active));
-    if (active) button.disabled = true;
   }
   function sync(panel, trigger) {
     const form = panel.querySelector('form'), table = document.querySelector('.tokens-token-filters');
@@ -36,17 +29,28 @@
     }
     if (event.target.closest?.('[data-export-cancel]')) panel.close();
   });
+  document.addEventListener('htmx:config:request', event => {
+    const form = event.detail.ctx.sourceElement.closest('#tokens-export-form');
+    if (!form) return;
+    // A second parent choice can arrive while htmx has disabled its children.
+    // Those draft values still belong to the selection, unlike unavailable inputs.
+    for (const input of form.querySelectorAll('fieldset:disabled input[name]:not([disabled])')) {
+      if (!['checkbox','radio'].includes(input.type) || input.checked)
+        event.detail.ctx.request.body.append(input.name, input.value);
+    }
+  });
   document.addEventListener('htmx:before:request', event => {
-    const ctx = event.detail.ctx;
-    if (ctx.sourceElement.id !== 'tokens-export-form') return;
-    const panel = ctx.sourceElement.closest('dialog');
-    pending.set(panel, ctx); busy(panel, true);
-    panel.querySelector('[data-export-counts]').textContent = 'Checking selection…';
+    const source = event.detail.ctx.sourceElement;
+    if (!source.closest('#tokens-export-form')) return;
+    const panel = source.closest('dialog');
+    // This selection is unconfirmed. htmx owns temporary request disabling;
+    // only the server's summary response may confirm the Download action.
+    panel.querySelector('[data-export-submit]').disabled = true;
     panel.querySelector('[data-export-error]').hidden = true;
   });
   document.addEventListener('htmx:before:swap', event => {
     const ctx = event.detail.ctx;
-    if (ctx.sourceElement.id !== 'tokens-export-form') return;
+    if (!ctx.sourceElement.closest('#tokens-export-form')) return;
     const panel = ctx.sourceElement.closest('dialog');
     // Apply local disclosure state before insertion: after:swap runs after
     // settling, so restoring it there briefly paints a collapsed modal.
@@ -55,39 +59,23 @@
       if (task.target?.id !== 'tokens-export-fields') continue;
       task.fragment.querySelectorAll('.tokens-export-disclosure').forEach((detail, i) => { detail.open = disclosures[i]; });
     }
-    const input = document.activeElement;
-    if (panel.contains(input) && input.matches('input')) ctx.exportFocus = {name:input.name,value:input.value};
   });
-  document.addEventListener('htmx:after:swap', event => {
-    const ctx = event.detail.ctx;
-    if (ctx.sourceElement.id !== 'tokens-export-form') return;
-    const panel = ctx.sourceElement.closest('dialog');
-    if (pending.get(panel) !== ctx || ctx.response.status !== 200) return;
-    const fields = panel.querySelector('#tokens-export-fields'), button = panel.querySelector('[data-export-submit]');
-    button.disabled = fields.dataset.exportReady !== 'true';
-    button.querySelector('[data-button-label]').textContent = fields.dataset.exportLabel;
-    const focus = ctx.exportFocus;
-    const input = focus && inputs(ctx.sourceElement, focus.name).find(input => input.value === focus.value && !input.disabled);
-    (input || panel.querySelector('input:checked:not(:disabled)'))?.focus({preventScroll:true});
-  });
-  document.addEventListener('htmx:finally:request', event => {
-    const ctx = event.detail.ctx;
-    if (ctx.sourceElement.id !== 'tokens-export-form') return;
-    const panel = ctx.sourceElement.closest('dialog');
-    if (pending.get(panel) !== ctx) return;
-    busy(panel, false);
-    if (ctx.status !== 'swapped' || ctx.response?.status !== 200) {
-      panel.querySelector('[data-export-counts]').textContent = '';
-      const error = panel.querySelector('[data-export-error]');
-      error.textContent = 'Could not check selection. Change a selection to retry, or close the dialog.'; error.hidden = false;
-    }
-  });
+  function requestFailed(event) {
+    const source = event.detail.ctx.sourceElement;
+    if (!source.closest('#tokens-export-form')) return;
+    const panel = source.closest('dialog');
+    const error = panel.querySelector('[data-export-error]');
+    error.textContent = 'Could not check selection. Change a selection to retry, or close the dialog.';
+    error.hidden = false;
+  }
+  document.addEventListener('htmx:error', requestFailed);
+  document.addEventListener('htmx:response:error', requestFailed);
   function initialize() {
     const panel = document.getElementById('tokens-site-download'); if (!panel || initialized.has(panel)) return;
     initialized.add(panel);
     panel.addEventListener('close', () => {
-      pending.delete(panel); htmx.trigger(panel.querySelector('form'), 'htmx:abort');
-      busy(panel, false); openers.get(panel)?.focus({preventScroll:true});
+      htmx.trigger(panel.querySelector('form'), 'htmx:abort');
+      openers.get(panel)?.focus({preventScroll:true});
     });
   }
   document.addEventListener('htmx:afterSwap', initialize);

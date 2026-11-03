@@ -8,6 +8,7 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/a-h/templ"
 	"github.com/sojupie/tokens/forge/components/ui"
 )
 
@@ -18,7 +19,7 @@ type exportDialogState struct {
 	Query                url.Values
 	Allowed              map[string][]string
 	Counts, Error, Label string
-	Ready                bool
+	Ready, Resolved      bool
 }
 
 func initialExportDialog(page exportPage) exportDialogState {
@@ -52,7 +53,7 @@ func (state exportDialogState) choice(name string, choice catalogChoice) ui.Choi
 			disabled = !slices.Contains(state.Allowed[name], choice.Value)
 		}
 	}
-	return ui.ChoiceProps{Name: name, Value: choice.Value, Label: choice.Label, Checked: slices.Contains(state.Query[name], choice.Value), Disabled: disabled}
+	return ui.ChoiceProps{ID: exportChoiceID(name) + "-" + url.QueryEscape(choice.Value), Name: name, Value: choice.Value, Label: choice.Label, Checked: slices.Contains(state.Query[name], choice.Value), Disabled: disabled}
 }
 func (state exportDialogState) contextSummary() string {
 	var labels []string
@@ -73,7 +74,7 @@ func (state exportDialogState) reportURL() string {
 	return "/downloads/export?" + query.Encode()
 }
 
-func (server *Server) exportDialog(ctx context.Context, query url.Values) exportDialogState {
+func (server *Server) exportDialogOptions(query url.Values) exportDialogState {
 	query = cloneExportQuery(query)
 	for key, values := range query {
 		if strings.HasPrefix(key, "_context.") {
@@ -164,7 +165,17 @@ func (server *Server) exportDialog(ctx context.Context, query url.Values) export
 		state.Counts = "Select at least one file format and one value for each context."
 		return state
 	}
-	state.Counts, state.Label, err = server.exportDialogSummary(ctx, query)
+	state.Resolved = true
+	return state
+}
+
+func (server *Server) exportDialog(ctx context.Context, query url.Values) exportDialogState {
+	state := server.exportDialogOptions(query)
+	if !state.Resolved {
+		return state
+	}
+	var err error
+	state.Counts, state.Label, err = server.exportDialogSummary(ctx, state.Query)
 	if err != nil {
 		state.Error = err.Error()
 		return state
@@ -219,8 +230,52 @@ func (server *Server) exportDialogSummary(ctx context.Context, query url.Values)
 }
 
 func (server *Server) handleExportDialog(w http.ResponseWriter, r *http.Request) {
-	state := server.exportDialog(r.Context(), r.URL.Query())
-	if err := server.renderHTML(w, r, exportDialogFields(state)); err != nil {
+	state := server.exportDialogOptions(r.URL.Query())
+	if err := server.renderHTML(w, r, exportDialogOptionsResponse(state)); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+}
+
+func (server *Server) handleExportDialogSummary(w http.ResponseWriter, r *http.Request) {
+	state := server.exportDialog(r.Context(), r.URL.Query())
+	if err := server.renderHTML(w, r, exportDialogSummaryResponse(state)); err != nil {
+		http.Error(w, "Could not render download summary.", http.StatusInternalServerError)
+	}
+}
+
+// Request targets follow the same context order used to resolve allowed choices.
+// Format changes affect only the summary; structural choices refresh dependent options.
+func (state exportDialogState) requestAttrs(name string) templ.Attributes {
+	endpoint := "/downloads/export/options"
+	targets := []string{"#tokens-export-submit-pending"}
+	dependent := name == "content" || name == "scope"
+	if name == "content" {
+		targets = append(targets, "#export-choices-scope")
+	}
+	if dependent {
+		targets = append(targets, "#export-choices-format")
+	}
+	for _, control := range state.Page.Contexts {
+		if dependent {
+			targets = append(targets, "#"+exportChoiceID("context."+control.Name))
+		}
+		if name == "context."+control.Name {
+			dependent = true
+		}
+	}
+	if name == "format" {
+		endpoint = "/downloads/export/summary"
+	}
+	attrs := templ.Attributes{"hx-get": endpoint, "hx-trigger": "change", "hx-include": "closest form", "hx-sync": "closest form:replace", "hx-disable": strings.Join(targets, ","), "hx-target": "#tokens-export-fields", "hx-swap": "outerMorph"}
+	if name == "format" {
+		attrs["hx-swap"] = "none"
+		attrs["hx-indicator"] = "#tokens-export-summary"
+	} else {
+		attrs["hx-indicator"] = "#tokens-export-options-status"
+	}
+	return attrs
+}
+
+func exportChoiceID(name string) string {
+	return "export-choices-" + strings.ToLower(strings.NewReplacer(".", "-", " ", "-").Replace(name))
 }

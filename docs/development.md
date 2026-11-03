@@ -279,11 +279,22 @@ asset scopes, so repeated updates remove their previous stylesheet links. Contex
 unapplied values. Requests use htmx synchronization and cancellation, while local
 JavaScript owns focus, disclosure state and pending/error feedback.
 
-Editing a download selection requests `/downloads/export/options` once. The
-server resolves supported contexts and formats and renders the choices and
-summary together. The action stays mounted for its loading transition. The form's
-submit remains a native file download; the public JSON options and summary API
-remain available. Multi-format and context selections keep their ZIP behavior.
+Download controls declare their request targets and dependent fieldsets from
+Go's export-selection model. Structural choices request
+`/downloads/export/options`, which returns resolved fields through `outerMorph`
+and updates the summary and action through htmx 4 partials. The summary then
+requests `/downloads/export/summary` on `load`; format-only changes request that
+summary directly. Both use the form's `replace` synchronization scope.
+
+`hx-disable` blocks stale dependent fieldsets and a temporary guard around
+Download; `hx-indicator` shows the affected request state. The Download button's
+own disabled state represents server-confirmed validity, independently of the
+request guard. Local JavaScript preserves disclosure state, retains draft values
+from temporarily disabled children during rapid changes, invalidates the action,
+and handles opening, cancellation and errors. Morph swaps retain control focus.
+The form still submits a native file download; the public JSON options and
+summary API remain available. Multi-format and context selections keep their ZIP
+behavior.
 
 Run `/htmx-catalog.html` through the conformance server to check region identity,
 context cancellation, download selections, metadata, drawer updates and history.

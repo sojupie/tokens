@@ -112,6 +112,7 @@ func (server *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /static/", handleStaticAsset)
 	mux.HandleFunc("GET /downloads/dtcg/{variant}/{file}", server.handleDTCGDownload)
 	mux.HandleFunc("GET /downloads/export/options", server.handleExportDialog)
+	mux.HandleFunc("GET /downloads/export/summary", server.handleExportDialogSummary)
 	mux.HandleFunc("GET /downloads/export", server.handleSelectedExport)
 	mux.HandleFunc("GET /downloads/{path...}", server.handleDownload)
 	mux.HandleFunc("GET /", server.handleOverview)

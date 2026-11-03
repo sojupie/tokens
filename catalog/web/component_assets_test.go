@@ -189,7 +189,7 @@ func TestPlaygroundAssetsTravelInsideReplacementRegion(t *testing.T) {
 }
 
 func TestFooterRegistersItsDownloadDialog(t *testing.T) {
-	if got := collectedModules(t, siteDownloadMenu()); !reflect.DeepEqual(got, []string{"radio", "checkbox", "messages", "loading", "dialog"}) {
+	if got := collectedModules(t, siteDownloadMenu()); !reflect.DeepEqual(got, []string{"radio", "checkbox", "messages", "dialog"}) {
 		t.Fatalf("footer dependencies: %v", got)
 	}
 }

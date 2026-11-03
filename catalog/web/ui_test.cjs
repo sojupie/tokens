@@ -476,7 +476,7 @@ test('export disclosures receive local open state before the fragment is inserte
  assert.deepEqual(incoming.map(detail=>detail.open),[false,false]);
 });
 
-test('export feedback follows the latest htmx request and preserves native download submission', () => {
+test('export changes invalidate download and retain native submission and cancellation', () => {
  const events={},requests=[];
  function panel(){
   const fields=Object.fromEntries(Object.entries({kind:'component',slug:'buttons',set:'filled',q:'icon',content:'tokens',scope:'view',format:'css','context.Theme':'Dark'}).map(([name,value])=>[name,{name,value,type:'hidden'}]));
@@ -493,19 +493,27 @@ test('export feedback follows the latest htmx request and preserves native downl
  assert.equal(current.open,true);assert.equal(original.open,undefined);
  assert.equal(requests[0].event,'export-refresh');assert.equal(requests[0].form,current.nodes.form);
  assert.equal(current.nodes.form.fields.scope.value,'view');
- const first={sourceElement:current.nodes.form},second={sourceElement:current.nodes.form};
- const emit=(name,ctx)=>events[name]({detail:{ctx}});
- emit('htmx:before:request',first);emit('htmx:before:request',second);
- first.status='error: AbortError';emit('htmx:finally:request',first);
- assert.equal(current.dataset.exportBusy,'true','older completion must not clear the latest indicator');
- assert.equal(current.nodes['[data-export-submit]'].disabled,true);
- second.exportDisclosures=[];second.status='swapped';second.response={status:200};emit('htmx:after:swap',second);emit('htmx:finally:request',second);
- assert.equal(current.dataset.exportBusy,'false');assert.equal(current.nodes['[data-export-submit]'].disabled,false);
- assert.equal(current.nodes['[data-export-submit]'].label.textContent,'Download ZIP');
- emit('htmx:before:request',first);current.close();assert.equal(focused,true);
- emit('htmx:finally:request',first);assert.equal(current.dataset.exportBusy,'false');assert.equal(requests.at(-1).event,'htmx:abort');
+ const ctx={sourceElement:current.nodes.form};
+ events['htmx:before:request']({detail:{ctx}});
+ assert.equal(current.nodes['[data-export-submit]'].disabled,true,'a changed selection is unconfirmed until the server returns an action');
+ events['htmx:error']({detail:{ctx}});
+ assert.equal(current.nodes['[data-export-error]'].hidden,false);
+ assert.match(current.nodes['[data-export-error]'].textContent,/Could not check/);
+ current.close();assert.equal(focused,true);assert.equal(requests.at(-1).event,'htmx:abort');
  const source=readFileSync(join(__dirname,'static/export.js'),'utf8');
  assert(!source.includes('fetch('));assert(!source.includes("addEventListener('submit'"),'native submit must remain unhandled');
+});
+
+test('rapid export changes retain draft values from temporarily disabled child groups',()=>{
+ const events={},values=new Map();
+ const form={querySelectorAll:()=>[
+  {name:'format',value:'css',type:'checkbox',checked:true},
+  {name:'format',value:'dtcg',type:'checkbox',checked:false},
+  {name:'context.Platform',value:'Web',type:'radio',checked:true},
+ ]};
+ runScript('export.js',{document:{readyState:'loading',addEventListener:(name,fn)=>events[name]=fn},location:{search:''}});
+ events['htmx:config:request']({detail:{ctx:{sourceElement:{closest:()=>form},request:{body:{append:(n,v)=>values.set(n,v)}}}}});
+ assert.deepEqual([...values],[['format','css'],['context.Platform','Web']]);
 });
 
 test('mosaic artwork pauses for the control, reduced motion, and offscreen visibility', () => {
