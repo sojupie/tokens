@@ -100,7 +100,11 @@ func (p DatePickerProps) DatePanel() templ.Attributes {
 		a["open"] = true
 		a["data-date-inline"] = ""
 	}
-	return attributes(a, p.PanelAttrs)
+	a = attributes(a, p.PanelAttrs)
+	// Match the initial calendar height before the client initializes it.
+	style, _ := a["style"].(string)
+	a["style"] = style + fmt.Sprintf(";--_date-rows:%d", len(p.Rows(p.month())))
+	return a
 }
 func (p DatePickerProps) DateDay(d DateCell) templ.Attributes {
 	selected, inRange := d.Selected, false

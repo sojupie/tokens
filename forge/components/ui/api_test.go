@@ -180,6 +180,27 @@ func TestDatePickerUsesCivilDatesAcrossYearsAndLeapDays(t *testing.T) {
 	}
 }
 
+func TestDatePickerRendersInitialCalendarHeight(t *testing.T) {
+	for _, tc := range []struct {
+		month string
+		rows  string
+	}{{"2026-02-01", "4"}, {"2026-10-01", "5"}, {"2026-05-01", "6"}} {
+		t.Run(tc.month, func(t *testing.T) {
+			month, err := time.Parse("2006-01-02", tc.month)
+			if err != nil {
+				t.Fatal(err)
+			}
+			text, _ := renderAPI(t, DatePicker(DatePickerProps{
+				ID: "calendar", Variant: "docked", Inline: true, Month: month,
+				PanelAttrs: templ.Attributes{"style": "color:inherit"},
+			}))
+			if !strings.Contains(text, `style="color:inherit;--_date-rows:`+tc.rows+`"`) {
+				t.Fatal("missing initial row count or consumer style", text)
+			}
+		})
+	}
+}
+
 func TestConsumerChipAndSelectNeedNoPlaygroundAttributes(t *testing.T) {
 	chip, _ := renderAPI(t, Chip(ChipProps{Label: "Saved", Variant: "filter"}))
 	if !strings.Contains(chip, `data-family="chip"`) || !strings.Contains(chip, `data-chip-select`) {
