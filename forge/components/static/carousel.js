@@ -115,7 +115,12 @@
     const edge=rtl?'right':'left',first=rects[0][edge];
     return rects.map(rect=>clamp(Math.abs(rect[edge]-first),0,max));
   }
-  if(typeof module!=='undefined')module.exports={layout,itemFrame,scrollTargets,uncontainedFrames};
+  // Fade before glyphs reach the visible mask edge, never after they are clipped.
+  function captionOpacity(text,clip,fade) {
+    const clearance=Math.min(text.left-clip.left,clip.right-text.right,text.top-clip.top,clip.bottom-text.bottom);
+    return clamp(clearance/Math.max(1,fade),0,1);
+  }
+  if(typeof module!=='undefined')module.exports={layout,itemFrame,scrollTargets,uncontainedFrames,captionOpacity};
   if(typeof document==='undefined')return;
   const roots=new WeakMap(),reduced=matchMedia('(prefers-reduced-motion: reduce)');
   const items=root=>[...root.querySelectorAll('.md-carousel-item')];
@@ -190,12 +195,11 @@
     // A narrow image can still fit a short or wrapped label. Viewport clipping
     // matters even when an uncontained item's intrinsic width stays unchanged.
     const opacity=state.captions.map(caption=>{
-      const item=caption.closest('.md-carousel-item').getBoundingClientRect(),box=caption.getBoundingClientRect();
+      const item=caption.closest('.md-carousel-item').getBoundingClientRect();
       const range=caption.ownerDocument.createRange();range.selectNodeContents(caption);
       const text=range.getBoundingClientRect();
-      const clearance=Math.min(text.left-Math.max(view.left,item.left,box.left),Math.min(view.right,item.right,box.right)-text.right,text.top-Math.max(view.top,item.top,box.top),Math.min(view.bottom,item.bottom,box.bottom)-text.bottom);
       const lineHeight=parseFloat(getComputedStyle(caption).lineHeight)||text.height;
-      return clamp(1+clearance/Math.max(1,lineHeight),0,1);
+      return captionOpacity(text,{left:Math.max(view.left,item.left),right:Math.min(view.right,item.right),top:Math.max(view.top,item.top),bottom:Math.min(view.bottom,item.bottom)},lineHeight/2);
     });
     state.captions.forEach((caption,i)=>{caption.style.opacity=String(opacity[i]);});
   }

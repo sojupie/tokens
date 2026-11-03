@@ -1,7 +1,7 @@
 const test=require('node:test'),assert=require('node:assert/strict');
 const {readFileSync}=require('node:fs'),{runInNewContext}=require('node:vm');
 const out={exports:{}};runInNewContext(readFileSync(`${__dirname}/static/carousel.js`,'utf8'),{module:out});
-const {layout,itemFrame,scrollTargets,uncontainedFrames}=out.exports;
+const {layout,itemFrame,scrollTargets,uncontainedFrames,captionOpacity}=out.exports;
 test('every resting arrangement retains its size hierarchy and interpolates without overlap',()=>{
  for(const width of [177,328,736,740,1168])for(const variant of ['multi-browse','hero','center-aligned-hero']){
   const plan=layout(width,240,8,variant,6),max=variant==='center-aligned-hero'?5:6-plan.big;
@@ -250,4 +250,14 @@ test('items remain visible through viewport padding until their whole mask exits
   }
   assert.ok(partial>0,`${variant}: test must cover masks inside side padding`);
  }
+});
+
+test('captions fade before the visible image clips any glyphs',()=>{
+ const text={left:16,right:59,top:160,bottom:180};
+ const clip={left:0,right:100,top:0,bottom:196};
+ assert.equal(captionOpacity(text,clip,10),1,'fully fitting short labels remain visible');
+ assert.equal(captionOpacity(text,{...clip,right:64},10),.5,'fade as the mask approaches the text');
+ assert.equal(captionOpacity(text,{...clip,right:59},10),0,'hide at the clipping edge');
+ assert.equal(captionOpacity(text,{...clip,right:56},10),0,'a narrow item cannot expose clipped text');
+ assert.equal(captionOpacity(text,{...clip,left:20},10),0,'viewport clipping uses the same rule');
 });
