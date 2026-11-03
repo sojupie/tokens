@@ -23,17 +23,17 @@
 }
 /* Hover adds weight without changing the icon's fill or selection state. */
 @media (hover:hover) {
- .md-navigation-rail .md-nav-item:hover:not([data-touch],[aria-current="page"]) .md-nav-icon > svg:first-of-type { stroke:currentColor;stroke-width:32;stroke-linejoin:round; }
+ .md-navigation-rail .md-nav-item:hover:not([data-touch],[aria-current="page"]) .md-nav-icon > svg:first-of-type { stroke:currentColor;stroke-width:16;stroke-linejoin:round; }
 }
-.md-navigation-rail .md-nav-item[data-component-state="hovered"]:not([aria-current="page"]) .md-nav-icon > svg:first-of-type { stroke:currentColor;stroke-width:32;stroke-linejoin:round; }
+.md-navigation-rail .md-nav-item[data-component-state="hovered"]:not([aria-current="page"]) .md-nav-icon > svg:first-of-type { stroke:currentColor;stroke-width:16;stroke-linejoin:round; }
 /* Animate the glyph only; notification badges keep their size and anchor. */
 .md-navigation-rail .md-nav-icon > :not(.md-nav-badge) {
  transition:scale var(--_motion-fast-spatial-duration) var(--_motion-fast-spatial-easing);
 }
 @media (hover:hover) {
- .md-navigation-rail .md-nav-item:hover:where(:not([data-touch])) .md-nav-icon > :not(.md-nav-badge) { scale:1.1; }
+ .md-navigation-rail .md-nav-item:hover:where(:not([data-touch])) .md-nav-icon > :not(.md-nav-badge) { scale:1.05; }
 }
-.md-navigation-rail .md-nav-item[data-component-state="hovered"] .md-nav-icon > :not(.md-nav-badge) { scale:1.1; }
+.md-navigation-rail .md-nav-item[data-component-state="hovered"] .md-nav-icon > :not(.md-nav-badge) { scale:1.05; }
 .md-navigation-rail .md-nav-item:is(:active,[data-pressed],[data-component-state="pressed"]) .md-nav-icon > :not(.md-nav-badge) { scale:.9; }
 @media (prefers-reduced-motion:reduce) {
  .md-navigation-rail .md-nav-icon > :not(.md-nav-badge) { transition:none; }
