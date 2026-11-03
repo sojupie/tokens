@@ -2,6 +2,7 @@ package web
 
 import (
 	"encoding/json"
+	"github.com/sojupie/tokens/forge/site"
 	"net/http"
 	"os"
 	"path"
@@ -15,6 +16,7 @@ import (
 )
 
 type Server struct {
+	navigation     []site.Section
 	illustrations  map[string]Illustration
 	motionURL      string
 	motionLabURL   string
@@ -73,7 +75,7 @@ type changesResponse struct {
 
 func New(state publish.PublishedState, downloadsDir string) *Server {
 	css, err := publicationTheme(state)
-	return &Server{motionURL: "/tools/motion/", motionLabURL: "/tools/motion-lab/", state: state, downloadsDir: downloadsDir, themeCSS: css, themeError: err}
+	return &Server{navigation: SiteNavigation(state), motionURL: "/tools/motion/", motionLabURL: "/tools/motion-lab/", state: state, downloadsDir: downloadsDir, themeCSS: css, themeError: err}
 }
 
 func (server *Server) Handler() http.Handler {

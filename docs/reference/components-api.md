@@ -234,3 +234,8 @@ Floating toolbar hosts can identify available space using
 `data-toolbar-viewport`; without that hook, measurement uses the component's
 parent. Use `Loading` for shared loading geometry instead of interpreting the
 shape asset in a consumer.
+
+Navigation items accept child content for a trailing indicator, such as a
+section disclosure chevron. The site shell owns section switching; destination
+items retain native links. Keep navigation hierarchy and appearance controls in
+the host shell rather than adding site behavior to the navigation primitive.

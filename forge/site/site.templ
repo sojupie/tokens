@@ -11,12 +11,17 @@ templ Header(config Config) {
 				Token Catalog
 			</a>
 		</div>
+		<div id="tokens-site-rail">
+			@Rail(config)
+		</div>
 		@ui.Drawer("tokens-site-menu", true, "Token Catalog", drawerBrand(config)) {
-			<nav id="tokens-site-destinations" class="md-nav-items" aria-label="Primary">
+			<div id="tokens-site-destinations">
 				@Destinations(config)
-			</nav>
+			</div>
 			<div class="tokens-drawer-appearance">
-				{ children... }
+				<div id="tokens-site-appearance" class="tokens-appearance-content">
+					{ children... }
+				</div>
 			</div>
 		}
 		@templ.Raw("<script>" + initialLayout + "</script>")
@@ -41,10 +46,6 @@ templ Footer(config Config) {
 	</footer>
 }
 
-templ navLink(config Config, path string, label string) {
-	@ui.DrawerLink(config.Catalog+path, templ.Attributes{"aria-current": config.current(path)}, label)
-}
-
 templ drawerBrand(config Config) {
 	<a class="tokens-brand tokens-drawer-brand" href={ templ.SafeURL(config.Catalog + "/") }>
 		@templ.Raw(brandLogo)
@@ -52,19 +53,53 @@ templ drawerBrand(config Config) {
 	</a>
 }
 
-// Destinations updates independently of the persistent drawer and its appearance controls.
+// Only this region changes during page navigation; the surrounding shell stays mounted.
 templ Destinations(config Config) {
-	@navLink(config, "/components", "Components")
-	@navLink(config, "/styles", "Styles")
-	@navLink(config, "/changes", "Changes")
-	if config.Agents {
-		@navLink(config, "/for-agents", "For agents")
-	}
-	<hr/>
-	@navLink(config, "/tools", "Tools")
-	<div class="tokens-tool-destinations" role="group" aria-label="Tools destinations">
-		for _, tool := range config.Tools {
-			@ui.DrawerLink(tool.URL, templ.Attributes{"hx-boost": "false", "aria-current": toolCurrent(config, tool)}, tool.Name)
+	<div class="tokens-site-navigation" data-site-navigation data-active-section={ config.panelSection() } data-active-page={ config.Active }>
+		<nav class="md-nav-items tokens-site-main" aria-label="Main destinations" data-navigation-group>
+			@ui.NavigationItem(ui.NavigationItemProps{Label: "Home", Icon: "home", Href: config.Catalog + "/", Current: config.Active == "/"})
+			for _, section := range config.sections() {
+				if len(section.Items)>0 {
+					@ui.NavigationItem(ui.NavigationItemProps{Label: section.Name, Icon: section.Icon, Current: config.section() == section.Path, Attrs: templ.Attributes{"data-site-section": section.Path, "aria-controls": "tokens-site-section-" + section.Path[1:], "aria-expanded": "false"}}) {
+						@ui.Icon("chevron_right")
+					}
+				} else {
+					@ui.NavigationItem(ui.NavigationItemProps{Label: section.Name, Icon: section.Icon, Href: config.Catalog + section.Path, Current: config.section() == section.Path})
+				}
+			}
+		</nav>
+		for _, section := range config.sections() {
+			if len(section.Items)>0 {
+				<section id={ "tokens-site-section-" + section.Path[1:] } class="tokens-site-section" data-site-panel={ section.Path } aria-label={ section.Name } hidden?={ config.section()!=section.Path }>
+					<div class="tokens-section-header">
+						@ui.Action(ui.ButtonProps{Variant: ui.Text, Attrs: templ.Attributes{"data-site-back": true, "class": "md-button md-text-button tokens-site-back"}}) {
+							@ui.Icon("arrow_back")
+							<span>Main menu</span>
+						}
+					</div>
+					<nav class="md-nav-items tokens-section-links" aria-label={ section.Name + " pages" } data-navigation-group data-site-scroll={ section.Path }>
+						@ui.DrawerLink(config.Catalog+section.Path, templ.Attributes{"aria-current": config.destinationCurrent(Destination{URL: section.Path})}, section.Name+" overview")
+						for _, item := range section.Items {
+							@ui.DrawerLink(config.destinationURL(item), templ.Attributes{"aria-current": config.destinationCurrent(item), "hx-boost": map[bool]string{true: "false", false: "true"}[section.Path == "/tools"]}, item.Name)
+						}
+					</nav>
+				</section>
+			}
+		}
+	</div>
+}
+
+// The rail is a sibling of the modal drawer, never a drawer descendant.
+templ Rail(config Config) {
+	<div class="tokens-site-rail-column">
+		<a class="tokens-brand tokens-rail-brand" href={ templ.SafeURL(config.Catalog + "/") } aria-label="Token Catalog home">
+			@templ.Raw(brandLogo)
+		</a>
+		@ui.NavigationRail(ui.RailProps{NavigationProps: ui.NavigationProps{Label: "Primary", Variant: "collapsed", Alignment: "top", Attrs: templ.Attributes{"class": "md-navigation md-navigation-rail tokens-site-rail"}}}) {
+			@ui.NavigationItem(ui.NavigationItemProps{Label: "Home", Icon: "home", Href: config.Catalog + "/", Current: config.Active == "/"})
+			for _, section := range config.sections() {
+				@ui.NavigationItem(ui.NavigationItemProps{Label: section.Name, Icon: section.Icon, Href: config.Catalog + section.Path, Current: config.section() == section.Path, Attrs: templ.Attributes{"data-site-rail-section": section.Path}})
+			}
 		}
 	</div>
 }

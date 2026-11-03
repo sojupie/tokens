@@ -3,6 +3,7 @@ package web
 import (
 	"context"
 	"fmt"
+	"github.com/sojupie/tokens/forge/site"
 	"net/url"
 	"path"
 	"strconv"
@@ -10,6 +11,7 @@ import (
 )
 
 type pageMetadata struct {
+	Navigation         []site.Section
 	Illustration       *Illustration
 	ImagePageURL       string
 	ImageURL           string

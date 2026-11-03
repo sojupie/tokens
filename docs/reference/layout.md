@@ -16,7 +16,7 @@ Material window breakpoints describe the complete application window:
 | Large | 1200–1599dp | 12 |
 | Extra-large | 1600dp and above | 12 |
 
-The site's content region excludes the docked drawer. A scene window excludes
+The site's content region excludes the docked primary rail and section drawer. A scene window excludes
 its illustration backdrop. `.tokens-layout` measures that region using a named
 CSS container. Its descendants adapt to the region's available width, rather
 than assuming the browser viewport is the width available to them. Region

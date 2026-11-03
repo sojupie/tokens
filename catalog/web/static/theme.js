@@ -16,6 +16,8 @@
       updateImages();
       theme.setAttribute('aria-pressed', String(root.dataset.theme === 'dark'));
       theme.title = root.dataset.theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
+      theme.setAttribute('aria-label', theme.title);
+      document.querySelectorAll('[data-contrast-icon]').forEach(icon => {icon.hidden = icon.dataset.contrastIcon !== root.dataset.contrast;});
       document.querySelectorAll('[data-theme-icon]').forEach(icon => {
         icon.hidden = icon.dataset.themeIcon !== root.dataset.theme;
       });

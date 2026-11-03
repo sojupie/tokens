@@ -438,7 +438,7 @@ function binding(set, suffix) {
       if (property.startsWith("modal.") || property.startsWith("standard.")) {
         const variant = property.split(".")[0]; selector += `:where([data-variant="${variant}"])`; property = property.slice(variant.length+1);
       } else if (parsed.state || parsed.selected || property.startsWith("icon.") || property.startsWith("label-text.") || property.startsWith("large-badge-label.") || property.startsWith("focus.indicator.")) {
-        family = "nav-item"; selector += " .md-nav-item";
+        family = "nav-item"; selector += " .md-nav-item:where(:not(.md-navigation-rail .md-nav-item, .md-navigation-bar .md-nav-item))";
       }
     }
     if (property === "container.surface-tint-layer.color") return {excluded:"The source surface color supplies its tonal treatment."};

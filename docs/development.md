@@ -64,7 +64,7 @@ the pinned templ version:
 go run github.com/a-h/templ/cmd/templ@v0.3.960 generate -path .
 ```
 
-Commit both the template and generated Go file. The shared site header, navigation menu and footer live in `forge/site/`; the catalog renders those Go templates per request; Material Motion Lab renders them during its static build. `tokens site-shell --out DIRECTORY` exports the same markup and assets for the static carousel lab. Hosts also load the shared `navigation` CSS module and its `runtime/utils.js` and `runtime/navigation.js` scripts. The site drawer uses native links; its opener, dismissal, focus return and swipe handling belong to the shared component runtime. Site CSS and JavaScript are maintained
+Commit both the template and generated Go file. The shared site header, navigation menu and footer live in `forge/site/`; the catalog renders those Go templates per request; Material Motion Lab renders them during its static build. `tokens site-shell --out DIRECTORY` exports the same markup and assets for the static carousel lab. Hosts also load the shared `navigation` CSS module and its `runtime/utils.js` and `runtime/navigation.js` scripts. The site uses a primary rail beside a scrolling section drawer on wide windows. Medium windows keep the rail visible and reveal the section drawer over content on hover, focus or click. Compact windows use one modal drawer with main-menu and section views. The rail is a sibling of the drawer; drawer styles never own rail anatomy. Destinations use native links; opening, dismissal, focus return and swipe handling belong to the shared component runtime. The site shell owns section selection and preserves section-list scroll positions across HTMX swaps. Site CSS and JavaScript are maintained
 in `catalog/web/static/`. Shared component CSS sources live in
 `forge/components/styles/`; behavior sources live in `forge/components/behaviors/`.
 Run `npm run build:components` to assemble them into the existing served files in
@@ -267,7 +267,9 @@ existing lifecycle listeners working during migration.
 Normal and boosted navigation share the document cache. An inert
 `<template hx type="partial">` in that document updates only
 `#tokens-site-destinations`; the drawer and appearance controls retain their
-instances. Index search uses `hx-sync="this:replace"` so late responses cannot
+instances. Component and style navigation comes from the loaded publication and
+is cached when the server starts. The section list retains its scroll position
+while its current-page link updates. Index search uses `hx-sync="this:replace"` so late responses cannot
 replace a newer query.
 
 Playground requests and token-table submissions replace their own regions.
@@ -435,3 +437,14 @@ The command captures 720 × 450 thumbnails in six appearances and publishes
 `illustrations/manifest.json` after every capture succeeds. Rendering lives in
 `catalog/web/illustrations.templ`; component anatomy and measurements remain in
 Forge. The playground stays interactive.
+
+When exporting the shared shell for a static tool, include the publication to
+build the same component and style links without a browser-side navigation fetch:
+
+```sh
+go run ./cmd/tokens site-shell --published published-review --out /tmp/site-shell
+```
+
+The `--published` argument is optional for consumers that need only the primary
+navigation and tool links. Appearance controls stay docked in the mobile drawer;
+on desktop the rail's Appearance button opens those same controls in a popover.

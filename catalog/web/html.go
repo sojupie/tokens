@@ -272,6 +272,7 @@ func (server *Server) renderHTML(response http.ResponseWriter, request *http.Req
 		server.setIllustrationMetadata(&info, request.URL.Path)
 	}
 	info.Tools = server.toolDestinations()
+	info.Navigation = server.navigation
 	info.GeneratedDownloads = server.tokenAssetsDir != ""
 	if info.Export == nil {
 		page := server.exportPage(nil, request.URL.Query())

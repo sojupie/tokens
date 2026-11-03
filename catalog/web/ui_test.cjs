@@ -709,7 +709,7 @@ test('thumbnail reveal waits for component styles and a measured frame',()=>{
 
 test('shared header establishes desktop docking before deferred scripts run', () => {
   const script = readFileSync(join(__dirname, '../../forge/site/site-init.js'), 'utf8');
-  for (const [breakpoint, width, docked] of [[1100,1099,false],[1100,1100,true],[1440,1200,false],[1440,1440,true]]) {
+  for (const [breakpoint, width, docked] of [[1100,599,false],[1100,600,true],[1100,1099,true],[1100,1100,true],[1440,1200,true],[1440,1440,true]]) {
     const drawer = {dataset:{variant:'modal'},setAttribute(name,value){this[name]=value;}};
     const header = {dataset:{drawerBreakpoint:String(breakpoint)},querySelector:()=>drawer};
     const root = {dataset:{}};
@@ -721,7 +721,7 @@ test('shared header establishes desktop docking before deferred scripts run', ()
     assert.equal(root.dataset.siteDrawer,docked?'expanded':'modal');
     assert.equal(drawer.dataset.variant,docked?'standard':'modal');
     assert.equal(Object.hasOwn(drawer,'open'),docked);
-    assert.equal(drawer.role,undefined);
+    assert.equal(drawer.role,docked?'navigation':undefined);
   }
 });
 
@@ -747,11 +747,11 @@ test('docked shell follows visual viewport frames without reopening or retaining
  let shows=0,closes=0;
  const body={blur(){}},opener={setAttribute(){}};
  const drawer={open:false,dataset:{},setAttribute(){},removeAttribute(){},addEventListener(){},show(){this.open=true;shows++;},close(){this.open=false;closes++;}};
- const header={dataset:{drawerBreakpoint:'1100'},style:{setProperty:(key,value)=>styles.set(key,value),removeProperty:key=>styles.delete(key)},querySelector:selector=>selector==='#tokens-site-menu'?drawer:opener,getBoundingClientRect:()=>({height:64})};
+ const header={addEventListener(){},querySelectorAll:()=>[],dataset:{drawerBreakpoint:'1100'},style:{setProperty:(key,value)=>styles.set(key,value),removeProperty:key=>styles.delete(key)},querySelector:selector=>selector==='#tokens-site-menu'?drawer:selector==='[data-navigation-open]'?opener:null,getBoundingClientRect:()=>({height:64})};
  const wide={matches:true,addEventListener:(name,fn)=>wideEvents[name]=fn};
  const viewport={height:700,offsetTop:0,scale:1,addEventListener:(name,fn)=>events[name]=fn};
  runInNewContext(readFileSync(join(__dirname,'../../forge/site/site.js'),'utf8'),{
-  document:{getElementById:()=>header,body,activeElement:body,documentElement:{dataset:{},style:{setProperty(){}}}},
+  document:{addEventListener(){},getElementById:()=>header,body,activeElement:body,documentElement:{dataset:{},style:{setProperty(){}}}},
   window:{visualViewport:viewport},matchMedia:()=>wide,
   requestAnimationFrame:fn=>{frames.push(fn);return 1;},ResizeObserver:class {observe(){}},
  });
@@ -796,4 +796,39 @@ test('playground comparison group updates its form value only when the mode chan
   assert.equal(changes, 1);
   listeners['md-button-group-action']({target: button});
   assert.equal(changes, 1);
+});
+
+test('site navigation drills into a single mobile list and preserves its position across swaps',()=>{
+ let width=390;
+ const handlers={},docHandlers={},root={dataset:{},style:{setProperty(){}}};
+ const focus=[],body={blur(){}},opener={setAttribute(){}};
+ const panels=['/components','/styles'].map(path=>({dataset:{sitePanel:path},hidden:false}));
+ const buttons=panels.map(p=>({dataset:{siteSection:p.dataset.sitePanel},setAttribute(){},focus(){focus.push(this.dataset.siteSection);}}));
+ const back={focus(){focus.push('back');}},main={focus(){focus.push('main');}};
+ let node={dataset:{activeSection:'/components'}},lists=panels.map(p=>({dataset:{siteScroll:p.dataset.sitePanel},scrollTop:0,getClientRects:()=>p.hidden?[]:[{}],querySelector:()=>null,matches:()=>true}));
+ const drawer={open:false,dataset:{},close(){this.open=false;},removeAttribute(){},setAttribute(){},addEventListener(){}};
+ const header={dataset:{drawerBreakpoint:'1100'},style:{removeProperty(){}},getBoundingClientRect:()=>({height:64}),addEventListener:(name,fn)=>handlers[name]=fn,
+ querySelectorAll:selector=>selector==='[data-site-panel]'?panels:selector==='[data-site-section]'?buttons:lists,
+ querySelector:selector=>selector==='#tokens-site-menu'?drawer:selector==='[data-navigation-open]'?opener:selector==='#tokens-site-appearance'?null:selector==='[data-site-navigation]'?node:selector.includes('[data-site-back]')?back:selector==='.tokens-site-main a'?main:selector.startsWith('[data-site-section=')?buttons.find(b=>selector.includes(b.dataset.siteSection)):selector.startsWith('[data-site-panel=')?panels.find(p=>selector.includes(p.dataset.sitePanel)):null};
+ runInNewContext(readFileSync(join(__dirname,'../../forge/site/site.js'),'utf8'),{
+  document:{getElementById:()=>header,addEventListener:(name,fn)=>docHandlers[name]=fn,documentElement:root,body,activeElement:body},
+  window:{},matchMedia:query=>({get matches(){return width>=Number(query.match(/\d+/)[0]);},addEventListener(){}}),ResizeObserver:class{observe(){}},
+ });
+ let prevented=false;handlers.click({target:{closest:selector=>selector==='[data-site-section]'?{dataset:{siteSection:'/components'}}:null},preventDefault(){prevented=true;},stopPropagation(){}});
+ assert.equal(prevented,false,'the document section attribute must not intercept ordinary links or appearance controls');
+ assert.equal(header.dataset.mobileLevel,'section');assert.equal(panels[0].hidden,false);assert.equal(panels[1].hidden,true);
+ const click=(section,isBack=false)=>handlers.click({target:{closest:selector=>selector==='.tokens-appearance-toggle'?null:selector==='button[data-site-section]'?section:isBack?back:null},preventDefault(){},stopPropagation(){}});
+ click(buttons[1]);assert.equal(panels[0].hidden,true);assert.equal(panels[1].hidden,false);assert.equal(focus.at(-1),'back');
+ click(null,true);assert.equal(header.dataset.mobileLevel,'main');assert.ok(panels.every(p=>p.hidden));assert.equal(focus.at(-1),'/styles');
+ click(buttons[0]);lists[0].scrollTop=270;handlers.scroll({target:lists[0]});
+ docHandlers['htmx:beforeSwap']();lists=lists.map(l=>({...l,scrollTop:0}));node={dataset:{activeSection:'/components'}};docHandlers['htmx:afterSwap']();
+ assert.equal(lists[0].scrollTop,270,'navigation updates must retain the existing list position');
+ assert.equal(header.dataset.mobileLevel,'section');
+ width=900;
+ const railLink={dataset:{siteRailSection:'/styles'}};
+ handlers.pointerover({target:{closest:()=>railLink},pointerType:'mouse'});
+ assert.equal(header.dataset.panelOpen,'true');assert.equal(panels[1].hidden,false);
+ handlers.pointerleave();assert.equal(header.dataset.panelOpen,'false');
+ handlers.focusin({target:{closest:()=>railLink}});assert.equal(header.dataset.panelOpen,'true');
+ handlers.keydown({key:'Escape',preventDefault(){}});assert.equal(header.dataset.panelOpen,'false');
 });

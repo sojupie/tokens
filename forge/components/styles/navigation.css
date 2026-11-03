@@ -182,14 +182,14 @@
   padding: var(--md-sys-measurement-space200)
     calc((var(--_nav-width) - var(--_nav-indicator-width)) / 2);
 }
-.md-navigation-drawer .md-nav-item {
+.md-navigation-drawer .md-nav-item:where(:not(.md-navigation-rail .md-nav-item, .md-navigation-bar .md-nav-item)) {
   min-height: var(--_nav-indicator-height);
   font-family: var(--_nav-item-font-family);
   font-size: var(--_nav-item-font-size);
   font-weight: var(--_nav-item-font-weight);
   line-height: var(--_nav-item-line-height);
 }
-.md-navigation-drawer .md-nav-indicator {
+.md-navigation-drawer .md-nav-indicator:where(:not(.md-navigation-rail .md-nav-indicator, .md-navigation-bar .md-nav-indicator)) {
   width: var(--_nav-indicator-width);
   max-width: 100%;
   justify-content: start;
@@ -270,7 +270,7 @@
   overscroll-behavior-y: contain;
   flex: 1;
 }
-.md-navigation-drawer .md-nav-item {
+.md-navigation-drawer .md-nav-item:where(:not(.md-navigation-rail .md-nav-item, .md-navigation-bar .md-nav-item)) {
   flex: none;
 }
 

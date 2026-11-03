@@ -73,8 +73,11 @@ templ layout(title string) {
 			}
 		</head>
 		<body class="tokens-body" hx-boost="true">
-			<template hx type="partial" hx-target="#tokens-site-destinations" hx-swap="innerHTML">@site.Destinations(siteConfig(ctx))
+			<template hx type="partial" hx-target="#tokens-site-rail" hx-swap="innerHTML">@site.Rail(siteConfig(ctx))
 </template>
+			<template hx type="partial" hx-target="#tokens-site-destinations" hx-swap="innerHTML">
+				@site.Destinations(siteConfig(ctx))
+			</template>
 			@componentAssetScope() {
 				@useComponentAssets("navigation")
 				@site.Header(siteConfig(ctx)) {
@@ -87,7 +90,15 @@ templ layout(title string) {
 								@materialSymbol("light_mode")
 							</span>
 						}
-						<div class="tokens-contrast-buttons" role="group" aria-label="Contrast">
+						@ui.IconButtonContent(ui.IconButtonProps{Variant: "standard", Label: "Contrast", Attrs: templ.Attributes{"popovertarget": "tokens-contrast-options", "data-contrast-toggle": true, "title": "Contrast"}}) {
+							<span data-contrast-icon="default">@materialSymbol("brightness_low")
+</span>
+							<span data-contrast-icon="medium" hidden>@materialSymbol("brightness_medium")
+</span>
+							<span data-contrast-icon="high" hidden>@materialSymbol("brightness_high")
+</span>
+						}
+						<div id="tokens-contrast-options" class="tokens-contrast-buttons" popover="auto" role="group" aria-label="Contrast">
 							@ui.IconButtonContent(ui.IconButtonProps{Variant: "filled", Label: "Standard contrast", Attrs: templ.Attributes{"type": "button", "data-app-contrast": "default", "aria-pressed": "true", "title": "Standard contrast"}, Disabled: true}) {
 								@materialSymbol("brightness_low")
 							}

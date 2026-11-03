@@ -55,10 +55,12 @@ templ NavigationItem(p NavigationItemProps) {
 	if p.Href!="" {
 		<a href={ templ.SafeURL(p.Href) } { p.Attributes()... }>
 			@NavigationItemContent(p)
+   { children... }
 		</a>
 	} else {
 		<button type="button" { p.Attributes()... }>
 			@NavigationItemContent(p)
+   { children... }
 		</button>
 	}
 }
