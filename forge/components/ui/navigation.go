@@ -30,6 +30,8 @@ func (p NavigationProps) Attributes() templ.Attributes {
 }
 
 type NavigationItemProps struct {
+	// IconContent supplies a consumer-owned icon, such as a brand mark.
+	IconContent                                            templ.Component
 	Label, Icon, Href, Badge, BadgeText, BadgeLabel, Count string
 	Current, Secondary                                     bool
 	Attrs                                                  templ.Attributes

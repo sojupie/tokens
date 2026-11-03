@@ -826,6 +826,9 @@ test('site navigation drills into a single mobile list and preserves its positio
  assert.equal(header.dataset.mobileLevel,'section');
  width=900;
  const railLink={dataset:{siteRailSection:'/styles'}};
+ prevented=false;
+ handlers.click({target:{closest:selector=>selector==='[data-site-rail-section]'?railLink:null},preventDefault(){prevented=true;},stopPropagation(){}});
+ assert.equal(prevented,false,'rail links navigate directly at medium widths');
  handlers.pointerover({target:{closest:()=>railLink},pointerType:'mouse'});
  assert.equal(header.dataset.panelOpen,'true');assert.equal(panels[1].hidden,false);
  handlers.pointerleave();assert.equal(header.dataset.panelOpen,'false');

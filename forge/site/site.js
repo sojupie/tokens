@@ -40,10 +40,6 @@
   }
   header.addEventListener('click',event=>{
    const section=event.target.closest('button[data-site-section]'),back=event.target.closest('[data-site-back]');
-   const railSection=event.target.closest('[data-site-rail-section]');
-   if(rail.matches&&!wide.matches&&railSection&&header.querySelector(`[data-site-panel="${railSection.dataset.siteRailSection}"]`)){
-    event.preventDefault();event.stopPropagation();rememberScroll();showSection(railSection.dataset.siteRailSection);header.dataset.panelOpen='true';return;
-   }
    if(!section&&!back)return;
    event.preventDefault();event.stopPropagation();rememberScroll();
    showSection(section?.dataset.siteSection??'',true);

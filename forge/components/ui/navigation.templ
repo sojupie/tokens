@@ -69,8 +69,12 @@ templ NavigationItemContent(p NavigationItemProps) {
 	@Require("navigation")
 	<span class="md-nav-indicator">
 		<span class="md-nav-icon">
-			@Icon(navigationIcon(p.Icon, false))
-			@Icon(navigationIcon(p.Icon, true))
+            if p.IconContent != nil {
+                @p.IconContent
+            } else {
+                @Icon(navigationIcon(p.Icon, false))
+                @Icon(navigationIcon(p.Icon, true))
+            }
 			if p.Badge!="" {
 				@Badge(p.Badge, p.BadgeText, templ.Attributes{"class": "md-nav-badge", "aria-label": p.BadgeLabel})
 			}

@@ -236,6 +236,8 @@ parent. Use `Loading` for shared loading geometry instead of interpreting the
 shape asset in a consumer.
 
 Navigation items accept child content for a trailing indicator, such as a
-section disclosure chevron. The site shell owns section switching; destination
+section disclosure chevron. `NavigationItemProps.IconContent` accepts a custom
+icon component, such as the site logo; otherwise `Icon` supplies the standard
+outline and selected symbols. The site shell owns section switching; destination
 items retain native links. Keep navigation hierarchy and appearance controls in
 the host shell rather than adding site behavior to the navigation primitive.
