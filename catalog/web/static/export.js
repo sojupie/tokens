@@ -73,14 +73,45 @@
   function initialize() {
     const panel = document.getElementById('tokens-site-download'); if (!panel || initialized.has(panel)) return;
     initialized.add(panel);
-    const guard = panel.querySelector('#tokens-export-submit-pending');
+    const guard = panel.querySelector('#tokens-export-submit-pending'), form = panel.querySelector('form');
+    let downloadToken = '', downloadTimer;
+    const clearCookie = token => { document.cookie = `tokens-download-${token}=; Max-Age=0; Path=/; SameSite=Strict`; };
+    function finishDownload(error) {
+      clearInterval(downloadTimer);
+      if (downloadToken) clearCookie(downloadToken);
+      downloadToken = '';
+      form.querySelector('input[name="_download"]').value = '';
+      reflectLoading();
+      if (error) {
+        const notice = panel.querySelector('[data-export-error]');
+        notice.textContent = error; notice.hidden = false;
+      }
+    }
     const reflectLoading = () => {
-      panel.querySelector('[data-export-submit]').setAttribute('aria-busy', String(guard.classList.contains('htmx-request')));
+      const button = panel.querySelector('[data-export-submit]');
+      button.disabled = !!downloadToken;
+      button.setAttribute('aria-busy', String(!!downloadToken || guard.classList.contains('htmx-request')));
     };
-    // The component owns its loading animation; htmx owns the request lifetime.
+    // The component owns the animation. htmx tracks option requests; the response
+    // cookie tracks preparation of the native attachment.
     new MutationObserver(reflectLoading).observe(guard, {attributes:true, attributeFilter:['class']});
     reflectLoading();
+    form.addEventListener('submit', event => {
+      if (downloadToken) { event.preventDefault(); return; }
+      downloadToken = Date.now().toString(36) + '-' + Math.random().toString(36).slice(2);
+      form.querySelector('input[name="_download"]').value = downloadToken;
+      form.target = 'tokens-export-transfer';
+      panel.querySelector('[data-export-error]').hidden = true;
+      reflectLoading();
+      const deadline = Date.now() + 300000;
+      downloadTimer = setInterval(() => {
+        const cookie = document.cookie.split('; ').find(value => value.startsWith(`tokens-download-${downloadToken}=`));
+        if (cookie) finishDownload(cookie.endsWith('=ready') ? '' : 'Could not prepare download. Try again.');
+        else if (Date.now() > deadline) finishDownload('Download preparation has not responded. Try again.');
+      }, 150);
+    });
     panel.addEventListener('close', () => {
+      finishDownload('');
       htmx.trigger(panel.querySelector('form'), 'htmx:abort');
       openers.get(panel)?.focus({preventScroll:true});
     });

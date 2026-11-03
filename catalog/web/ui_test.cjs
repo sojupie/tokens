@@ -477,17 +477,19 @@ test('export disclosures receive local open state before the fragment is inserte
 });
 
 test('export changes invalidate download and retain native submission and cancellation', () => {
- const events={},requests=[],observers=[];
+ const events={},requests=[],observers=[],timers=[];
  class MutationObserver {constructor(fn){observers.push(fn);}observe(){}}
  function panel(){
   const fields=Object.fromEntries(Object.entries({kind:'component',slug:'buttons',set:'filled',q:'icon',content:'tokens',scope:'view',format:'css','context.Theme':'Dark'}).map(([name,value])=>[name,{name,value,type:'hidden'}]));
-  const form={id:'tokens-export-form',fields,setAttribute(){},querySelectorAll:()=>Object.values(fields),closest:()=>result};
+  fields._download={name:'_download',value:''};
+  const form={id:'tokens-export-form',fields,listeners:{},addEventListener(name,fn){this.listeners[name]=fn;},querySelector:()=>fields._download,setAttribute(){},querySelectorAll:()=>Object.values(fields),closest:()=>result};
   const nodes={'form':form,'[data-export-confirmation]':{},'#tokens-export-submit-pending':{busy:false,classList:{contains(){return current.nodes['#tokens-export-submit-pending'].busy;}}},'[data-export-counts]':{},'[data-export-error]':{},'#tokens-export-fields':{dataset:{exportReady:'true',exportLabel:'Download ZIP'}},'[data-export-submit]':{attributes:{},label:{},setAttribute(name,value){this.attributes[name]=value;},querySelector(){return this.label;}}};
   const listeners={};const result={dataset:{defaultScope:'subject'},nodes,querySelector:s=>nodes[s],querySelectorAll:()=>[],addEventListener:(name,fn)=>listeners[name]=fn,contains:()=>false,showModal(){this.open=true;},close(){this.open=false;listeners.close();}};return result;
  }
  let current;current=panel();const original=current;
  class FormData extends Map {constructor(form){super(Object.entries(form.fields).map(([name,input])=>[name,input.value]));}}
- runScript('export.js',{document:{readyState:'complete',addEventListener:(name,fn)=>events[name]=fn,getElementById:()=>current,querySelector:()=>null},location:{search:''},URLSearchParams,FormData,MutationObserver,htmx:{trigger:(form,event)=>requests.push({form,event})}});
+ const document={cookie:'',readyState:'complete',addEventListener:(name,fn)=>events[name]=fn,getElementById:()=>current,querySelector:()=>null};
+ runScript('export.js',{document,setInterval:fn=>{timers.push(fn);return timers.length;},clearInterval(){},location:{search:''},URLSearchParams,FormData,MutationObserver,htmx:{trigger:(form,event)=>requests.push({form,event})}});
  current=panel();events['htmx:historyRestore']();let focused=false;
  const trigger={dataset:{exportScope:'view'},focus(){focused=true;}};
  events.click({target:{closest:selector=>selector==='[data-export-open]'?trigger:null}});
@@ -504,9 +506,22 @@ test('export changes invalidate download and retain native submission and cancel
  events['htmx:error']({detail:{ctx}});
  assert.equal(current.nodes['[data-export-error]'].hidden,false);
  assert.match(current.nodes['[data-export-error]'].textContent,/Could not check/);
+ current.nodes['[data-export-confirmation]'].disabled=false;
+ const form=current.nodes.form,button=current.nodes['[data-export-submit]'];
+ form.listeners.submit({preventDefault(){throw Error('native download was intercepted');}});
+ assert.equal(form.target,'tokens-export-transfer');
+ assert.equal(button.attributes['aria-busy'],'true');assert.equal(button.disabled,true);
+ const token=form.fields._download.value;assert(token);
+ let duplicate=false;form.listeners.submit({preventDefault(){duplicate=true;}});assert(duplicate);
+ document.cookie=`tokens-download-${token}=ready`;timers.at(-1)();
+ assert.equal(button.attributes['aria-busy'],'false');assert.equal(button.disabled,false);
+ form.listeners.submit({preventDefault(){}});
+ document.cookie=`tokens-download-${form.fields._download.value}=error`;timers.at(-1)();
+ assert.match(current.nodes['[data-export-error]'].textContent,/Could not prepare/);
+ assert.equal(button.attributes['aria-busy'],'false');
  current.close();assert.equal(focused,true);assert.equal(requests.at(-1).event,'htmx:abort');
  const source=readFileSync(join(__dirname,'static/export.js'),'utf8');
- assert(!source.includes('fetch('));assert(!source.includes("addEventListener('submit'"),'native submit must remain unhandled');
+ assert(!source.includes('fetch('));assert(!source.includes('createObjectURL'),'native attachment must not be buffered in JavaScript');
 });
 
 test('rapid export changes retain draft values from temporarily disabled child groups',()=>{

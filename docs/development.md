@@ -301,7 +301,12 @@ is preserved across partials, keeps the label Download and remains in the docked
 footer beside the summary and report link. Local JavaScript preserves disclosure
 state, retains draft values from temporarily disabled children during rapid changes, invalidates the action,
 and handles opening, cancellation and errors. Morph swaps retain control focus.
-The form still submits a native file download; the public JSON options and
+The form still submits a native file download. During preparation, its button
+uses the same loading primitive and blocks duplicate submissions. A per-request
+short-lived response cookie clears that state when attachment headers arrive;
+a hidden transfer frame keeps preparation errors from navigating the page.
+Acknowledged responses are not cached. No download body passes through JavaScript.
+The public JSON options and
 summary API remain available. Multi-format and context selections keep their ZIP
 behavior.
 

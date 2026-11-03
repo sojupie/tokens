@@ -171,7 +171,11 @@ func (server *Server) exportDocument(query url.Values) (dtcg.Node, dtcg.Report, 
 }
 
 func (server *Server) handleSelectedExport(w http.ResponseWriter, r *http.Request) {
+	if token := r.URL.Query().Get("_download"); downloadSignal(token) {
+		w = &exportDownloadResponse{ResponseWriter: w, token: token}
+	}
 	query := r.URL.Query()
+	query.Del("_download")
 	if query.Get("content") != "implementation" {
 		if query.Get("options") == "1" {
 			choices, err := server.exportContextChoices(query)
