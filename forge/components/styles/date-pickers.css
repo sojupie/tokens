@@ -568,3 +568,10 @@
     calc(100dvh - 2 * var(--md-sys-measurement-space200))
   );
 }
+
+@media (scripting: none) {
+ .md-date-fields [data-date-open] { display:none; }
+ .md-date-picker > .md-date-panel { display:none; }
+ .md-native-date { display:grid; gap:.5rem; margin-block:1rem; }
+ .md-native-date input { font:inherit; color:inherit; color-scheme:light dark; }
+}

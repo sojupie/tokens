@@ -14,6 +14,14 @@ templ DatePicker(p DatePickerProps) {
 				}
 			</div>
 		}
+		if p.Inline {
+		<noscript>
+			<label class="md-native-date">{ p.DateEntryLabel("start") }<input type="date" name={ p.Name } value={ dateISO(p.Value) }/></label>
+			if p.Range {
+				<label class="md-native-date">End date<input type="date" name={ p.EndName } value={ dateISO(p.End) }/></label>
+			}
+		</noscript>
+		}
 		@DatePickerPanel(p)
 	</div>
 }

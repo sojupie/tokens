@@ -43,3 +43,8 @@
 @media (prefers-reduced-motion:reduce) {
  .md-loading-button > [data-button-label], .md-loading-button > .md-button-loading-disk { transition:none; }
 }
+
+@media (scripting: none) and (prefers-reduced-motion: no-preference) {
+ .md-loading[data-control="indeterminate"] > svg { animation:md-loading-fallback 1s linear infinite; }
+}
+@keyframes md-loading-fallback { to { transform:rotate(360deg); } }

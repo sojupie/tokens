@@ -61,6 +61,8 @@ templ Modal(p DialogProps) {
 templ DialogTrigger(target, label string, p ButtonProps) {
 	{{
 		attrs := p.Attributes()
+		attrs["commandfor"] = target
+		attrs["command"] = "show-modal"
 		attrs["data-dialog-open"] = target
 		attrs["aria-controls"] = target
 		attrs["aria-haspopup"] = "dialog"
@@ -74,6 +76,8 @@ templ DialogTrigger(target, label string, p ButtonProps) {
 templ DialogClose(target, label, value string, p ButtonProps) {
 	{{
 		attrs := p.Attributes()
+		attrs["commandfor"] = target
+		attrs["command"] = "close"
 		attrs["data-dialog-close"] = target
 		attrs["data-dialog-result"] = value
 	}}

@@ -1,0 +1,49 @@
+package web
+
+templ downloadPage(state exportDialogState) {
+ @layout("Download tokens") {
+  <section class="tokens-download-page">
+   <h1>Download tokens</h1>
+   <form method="get" action="/download" hx-boost="false">
+    <input type="hidden" name="kind" value={ state.Query.Get("kind") }/>
+    <input type="hidden" name="slug" value={ state.Query.Get("slug") }/>
+    <input type="hidden" name="set" value={ state.Query.Get("set") }/>
+    <input type="hidden" name="q" value={ state.Query.Get("q") }/>
+    @nativeExportChoices(state,"content","Content",[]catalogChoice{{"tokens","Design tokens"},{"implementation","Component implementation"}},false)
+    @nativeExportChoices(state,"scope","Include",state.Page.Scopes(),false)
+    if state.implementation() {
+     <input type="hidden" name="format" value="zip"/>
+    } else {
+     @nativeExportChoices(state,"format","File formats",[]catalogChoice{{"dtcg","DTCG JSON"},{"css","CSS variables"},{"source","Source JSON"},{"report","Conversion report"}},true)
+    }
+    for _, control := range state.Page.Contexts {
+     if len(state.choices("context."+control.Name))>0 {
+      @nativeExportChoices(state,"context."+control.Name,control.Name,control.Choices,control.Name=="Theme"||control.Name=="Contrast")
+     }
+    }
+    <p>Apply choices to update available options before downloading.</p>
+    <p role="status">{ state.Counts }</p>
+    if state.Error!="" {
+     <p role="alert">{ state.Error }</p>
+    }
+    <div>
+     <button class="md-button md-outlined-button" type="submit">Apply choices</button>
+     <button class="md-button md-filled-button" type="submit" formaction="/downloads/export" disabled?={ !state.Ready }>Download</button>
+    </div>
+   </form>
+  </section>
+ }
+}
+
+templ nativeExportChoices(state exportDialogState,name,title string,choices []catalogChoice,multiple bool) {
+ <fieldset>
+  <legend>{ title }</legend>
+  for _, choice := range choices {
+   {{ p:=state.choice(name,choice) }}
+   <label>
+    <input type={ nativeChoiceType(multiple) } name={ name } value={ choice.Value } checked?={ p.Checked } disabled?={ p.Disabled }/>
+    { choice.Label }
+   </label>
+  }
+ </fieldset>
+}

@@ -141,7 +141,7 @@ func TestSelectRendersInitialSelectionBeforeRuntimeLoads(t *testing.T) {
 	if err := Select("speed", "Speed", []Option{{Value: "0.5", Label: "Half"}, {Value: "1", Label: "Normal"}}, "1").Render(context.Background(), &out); err != nil {
 		t.Fatal(err)
 	}
-	for _, required := range []string{`data-field-display>Normal`, `name="" value="1" data-field-value`, `value="1" selected`, `aria-selected="true"`} {
+	for _, required := range []string{`data-field-display>Normal`, `aria-label="Speed" data-field-value`, `value="1" selected`, `aria-selected="true"`} {
 		if !strings.Contains(out.String(), required) {
 			t.Fatal(required, out.String())
 		}

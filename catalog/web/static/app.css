@@ -517,3 +517,33 @@ button:not(:disabled), [role=button]:not([aria-disabled=true]) { cursor:pointer;
 #tokens-export-summary { display:grid; gap:var(--md-sys-measurement-space150); min-block-size:calc(2lh + var(--md-sys-measurement-space150)); }
 #tokens-export-summary > p { margin:0; }
 #tokens-export-summary [data-export-counts]:empty { display:none; }
+
+@media (scripting: none) {
+ .tokens-preview-comparison > .md-button-group,
+ .tokens-download-split,.tokens-export > button,
+ .tokens-token-tools,.tokens-context-button,
+ .tokens-context-dialog > header,.tokens-context-dialog > footer { display:none !important; }
+ .tokens-context-dialog { margin:0; padding:var(--md-sys-measurement-space200); inline-size:100%; max-inline-size:100%; border:0; box-shadow:none; }
+ .tokens-token-filters > noscript { display:block; padding:var(--md-sys-measurement-space200); }
+ .tokens-native-downloads { display:flex; flex-wrap:wrap; align-items:center; gap:var(--md-sys-measurement-space150); }
+ .tokens-native-downloads a { display:inline-block; padding-block:var(--md-sys-measurement-space100); }
+ .tokens-download-page { display:grid; gap:var(--md-sys-measurement-space200); max-inline-size:48rem; }
+ .tokens-download-page form { display:grid; gap:var(--md-sys-measurement-space200); }
+}
+
+.tokens-native-set { display:none; }
+@media (scripting: none) {
+ .tokens-native-set { display:grid; gap:var(--md-sys-measurement-space50); padding:var(--md-sys-measurement-space100); }
+ .tokens-token-set-host { display:none !important; }
+}
+
+.tokens-download-page { display:grid; gap:var(--md-sys-measurement-space200); max-inline-size:48rem; }
+.tokens-download-page form { display:grid; gap:var(--md-sys-measurement-space200); }
+.tokens-download-page fieldset { display:flex; flex-wrap:wrap; gap:var(--md-sys-measurement-space150); border:1px solid var(--md-sys-color-outline-variant); border-radius:var(--md-sys-shape-corner-small); }
+.tokens-download-page label { display:inline-flex; align-items:center; gap:.5rem; }
+
+@media (scripting: none) {
+ .tokens-token-browser .tokens-context-dialog:not([open]) { display:block !important; position:static; }
+}
+
+@media (scripting: none) { .md-list-demo[data-native-selection="true"] > .md-list { display:none; } }

@@ -18,3 +18,5 @@
   white-space: nowrap;
   border: 0;
 }
+
+@media (scripting: none) { [data-family="chip"]:is([data-variant="filter"],[data-variant="input"]) { display:none; } }

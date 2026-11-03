@@ -76,6 +76,9 @@ templ searchActions(p SearchProps) {
 }
 
 templ SearchView(p SearchProps) {
+	if p.Action!="" {
+		<noscript><form method="get" action={ templ.SafeURL(p.Action) }><label>{ p.Label }<input type="search" name={ fallback(p.Name,"q") } value={ p.Value }/></label><button class="md-button md-outlined-button" type="submit">Search</button></form></noscript>
+	}
 	@Require("search")
 	@Require("list")
 	<div { p.SearchPanel()... }>

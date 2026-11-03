@@ -105,8 +105,8 @@ func TestSectionNavigationUsesNativeLinksAndOneCurrentSubpage(t *testing.T) {
 			t.Fatalf("missing navigation contract %s", required)
 		}
 	}
-	if strings.Count(html, `href="/components/cards" aria-current="page"`) > 1 {
-		t.Fatal("duplicate current child")
+	if strings.Count(html, `href="/components/cards" aria-current="page"`) != 2 {
+		t.Fatal("expected one current child in each enhanced and native navigation")
 	}
 	if config.panelSection() != "/components" {
 		t.Fatal("active section missing")

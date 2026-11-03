@@ -4,6 +4,20 @@ import "github.com/sojupie/tokens/forge/components/ui"
 
 templ Header(config Config) {
 	<header class="tokens-site-header" id="tokens-site-header" hx-preserve data-component-assets data-drawer-breakpoint={ config.drawerBreakpoint() }>
+		<noscript>
+			<nav class="tokens-native-navigation" aria-label="Token Catalog">
+				<a href={ templ.SafeURL(config.Catalog + "/") }>Home</a>
+				for _, section := range config.sections() {
+					<details>
+						<summary>{ section.Name }</summary>
+						<a href={ templ.SafeURL(config.Catalog + section.Path) }>{ section.Name + " overview" }</a>
+						for _, item := range section.Items {
+							<a href={ templ.SafeURL(config.destinationURL(item)) } aria-current={ config.destinationCurrent(item) }>{ item.Name }</a>
+						}
+					</details>
+				}
+			</nav>
+		</noscript>
 		<div class="tokens-primary-nav">
 			@ui.DrawerToggle("tokens-site-menu", "Open navigation")
 			<a class="tokens-brand md-typescale-title-large" href={ templ.SafeURL(config.Catalog + "/") }>

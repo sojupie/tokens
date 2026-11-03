@@ -7,7 +7,7 @@ templ specimenDialog(c componentCase) {
 	@useComponentAssets("dialog")
 	<div class="md-dialog-demo">
 		if c.State=="interactive" {
-			@ui.Action(ui.ButtonProps{Variant: ui.ButtonVariant("outlined"), Attrs: templ.Attributes{"data-dialog-open": true, "aria-controls": c.ID() + "-panel", "aria-haspopup": "dialog", "aria-expanded": "false"}}) {
+			@ui.Action(ui.ButtonProps{Variant: ui.ButtonVariant("outlined"), Attrs: templ.Attributes{"data-dialog-open": true, "commandfor":c.ID()+"-panel", "command":"show-modal", "aria-controls": c.ID() + "-panel", "aria-haspopup": "dialog", "aria-expanded": "false"}}) {
 				Open dialog
 			}
 		}

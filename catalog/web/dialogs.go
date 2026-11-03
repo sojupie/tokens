@@ -34,7 +34,7 @@ func (c componentCase) DialogHeading() string {
 	return "Edit item"
 }
 func (c componentCase) DialogAction(save bool) templ.Attributes {
-	a := templ.Attributes{"type": "button", "class": "md-button md-text-button"}
+	a := templ.Attributes{"type": "button", "class": "md-button md-text-button", "commandfor": c.ID() + "-panel", "command": "close"}
 	if save {
 		a["data-dialog-save"] = ""
 		if c.State != "interactive" && c.Control == "action" {
@@ -46,7 +46,7 @@ func (c componentCase) DialogAction(save bool) templ.Attributes {
 	return a
 }
 func (c componentCase) DialogClose() templ.Attributes {
-	a := templ.Attributes{"type": "button", "class": "md-icon-button md-standard-icon-button md-dialog-close", "data-size": "small", "data-shape": "round", "data-width": "default", "data-dialog-cancel": "", "aria-label": "Close"}
+	a := templ.Attributes{"type": "button", "class": "md-icon-button md-standard-icon-button md-dialog-close", "data-size": "small", "data-shape": "round", "data-width": "default", "data-dialog-cancel": "", "commandfor": c.ID() + "-panel", "command": "close", "aria-label": "Close"}
 	if c.State != "interactive" && c.Control == "close" {
 		a["data-component-state"] = c.State
 	}

@@ -35,9 +35,9 @@
  function init(){for(const panel of document.querySelectorAll(selector))bind(panel)}
  document.addEventListener('click',event=>{
   const opener=event.target.closest?.('[data-dialog-open]');
-  if(opener){const panel=document.getElementById(opener.dataset.dialogOpen||opener.getAttribute('aria-controls'));if(panel?.matches(selector))open(panel,opener)}
+  if(opener){const panel=document.getElementById(opener.dataset.dialogOpen||opener.getAttribute('aria-controls'));if(panel?.matches(selector)){event.preventDefault();open(panel,opener)}}
   const closer=event.target.closest?.('[data-dialog-close]');
-  if(closer){const panel=document.getElementById(closer.dataset.dialogClose)||closer.closest('dialog[data-dialog-surface]');if(panel)close(panel,closer.dataset.dialogResult||'','action')}
+  if(closer){const panel=document.getElementById(closer.dataset.dialogClose)||closer.closest('dialog[data-dialog-surface]');if(panel){event.preventDefault();close(panel,closer.dataset.dialogResult||'','action')}}
  });
  let backdrop;
  const outside=(panel,event)=>{const r=panel.getBoundingClientRect();return event.target===panel&&(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)};

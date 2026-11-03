@@ -22,7 +22,7 @@ templ tabsBar(c componentCase) {
 if c.TabHasBadge(i) {
 	badge = c.TabBadge
 } }}
-			@ui.Tab(ui.TabProps{Label: label, Icon: []string{"home", "folder", "star"}[i%3], Content: c.Control, Variant: c.Variant, Badge: badge, BadgeText: "3", Attrs: c.TabAttributes(i)})
+			@ui.Tab(ui.TabProps{ID:fmt.Sprintf("%s-tab-%d",c.ID(),i), PanelID:fmt.Sprintf("%s-panel-%d",c.ID(),i), Selected:c.ItemSelected(i), Label: label, Icon: []string{"home", "folder", "star"}[i%3], Content: c.Control, Variant: c.Variant, Badge: badge, BadgeText: "3", Attrs: c.TabAttributes(i)})
 		}
 	}
 }

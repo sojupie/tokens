@@ -27,7 +27,10 @@ templ ListLink(href string, p ListItemProps) {
 templ ListButton(p ListItemProps) {
 	@Require("list")
 	<li>
-		<button type="button" disabled?={ p.Disabled } if p.Selected != nil { aria-pressed={ strconv.FormatBool(*p.Selected) } } { p.Attributes()... }>
+		if p.Selected != nil {
+			<noscript><label class="md-list-item"><input type="checkbox" checked?={ *p.Selected } disabled?={ p.Disabled } aria-label={ p.Label }/><span class="md-list-body"><span class="md-list-label">{ p.Label }</span><span class="md-list-supporting">{ p.Supporting }</span></span></label></noscript>
+		}
+		<button data-list-selectable?={ p.Selected!=nil } type="button" disabled?={ p.Disabled } if p.Selected != nil { aria-pressed={ strconv.FormatBool(*p.Selected) } } { p.Attributes()... }>
 			@ListContent(p)
 		</button>
 	</li>

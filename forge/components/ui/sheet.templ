@@ -12,6 +12,8 @@ templ SheetHost() {
 templ SheetTrigger(target, label string, p ButtonProps) {
 	{{
 		attrs := p.Attributes()
+		attrs["commandfor"] = target + "-panel"
+		attrs["command"] = "show-modal"
 		attrs["data-sheet-open"] = ""
 		attrs["aria-controls"] = target + "-panel"
 		attrs["aria-expanded"] = "false"
@@ -72,7 +74,7 @@ templ SheetHeader(p SheetProps) {
 		if p.Close!=nil {
 			@p.Close
 		} else if !p.HideClose {
-			@Button(attributes(templ.Attributes{"class": "md-icon-button md-standard-icon-button md-sheet-close", "data-size": "small", "data-sheet-close": "", "aria-label": "Close " + p.Title}, p.CloseAttrs)) {
+			@Button(attributes(templ.Attributes{"class": "md-icon-button md-standard-icon-button md-sheet-close", "data-size": "small", "data-sheet-close": "", "commandfor":p.ID+"-panel", "command":"close", "aria-label": "Close " + p.Title}, p.CloseAttrs)) {
 				@Icon("close")
 			}
 		}

@@ -308,3 +308,9 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
 /* Application hosts allocate space for docked sheets without the playground frame. */
 .md-sheet-host { position:relative; }
 .md-sheet-host > .md-side-sheet[data-control="standard"] { position:relative; flex:0 1 var(--_sheet-width); inset:auto; align-self:stretch; block-size:auto; }
+
+@media (scripting: none) {
+ section.md-sheet[hidden],.md-sheet-content[hidden] { display:block !important; }
+ .md-sheet-handle { display:none; }
+ section.md-sheet .md-sheet-close { display:none; }
+}

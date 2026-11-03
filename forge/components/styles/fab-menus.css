@@ -181,3 +181,15 @@
   padding: var(--_fab-menu-scroll-gutter);
   margin: calc(-1 * var(--_fab-menu-scroll-gutter));
 }
+
+@media (scripting: none) {
+ .md-fab-menu-panel[popover] { position:absolute; inset:auto 1rem 5rem auto; margin:0; opacity:0; transition:opacity 150ms linear,display 150ms allow-discrete,overlay 150ms allow-discrete; }
+ .md-fab-menu-panel:popover-open { opacity:1; }
+ @starting-style { .md-fab-menu-panel:popover-open { opacity:0; } }
+ @supports (anchor-name: --fab) {
+  .md-fab-menu { anchor-scope:--fab-fallback; }
+  .md-fab-menu-opener { anchor-name:--fab-fallback; }
+  .md-fab-menu-panel[popover] { position:fixed; position-anchor:--fab-fallback; inset:auto; bottom:anchor(top); right:anchor(right); margin-block-end:.5rem; }
+ }
+}
+@media (scripting: none) and (prefers-reduced-motion: reduce) { .md-fab-menu-panel[popover] { transition:none; } }

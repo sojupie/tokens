@@ -137,7 +137,7 @@ func tabsBar(c componentCase) templ.Component {
 				if c.TabHasBadge(i) {
 					badge = c.TabBadge
 				}
-				templ_7745c5c3_Err = ui.Tab(ui.TabProps{Label: label, Icon: []string{"home", "folder", "star"}[i%3], Content: c.Control, Variant: c.Variant, Badge: badge, BadgeText: "3", Attrs: c.TabAttributes(i)}).Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = ui.Tab(ui.TabProps{ID: fmt.Sprintf("%s-tab-%d", c.ID(), i), PanelID: fmt.Sprintf("%s-panel-%d", c.ID(), i), Selected: c.ItemSelected(i), Label: label, Icon: []string{"home", "folder", "star"}[i%3], Content: c.Control, Variant: c.Variant, Badge: badge, BadgeText: "3", Attrs: c.TabAttributes(i)}).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}

@@ -103,8 +103,8 @@
   document.addEventListener('click',event=>{
     const button=event.target.closest?.('button'),container=button?.closest(':is(.md-sheet-demo,.md-sheet-host)[data-interactive="true"]');if(!container)return;
     const sheet=container.querySelector('.md-sheet'),state=entry(sheet);if(!state)return;
-    if(button.hasAttribute('data-sheet-open')){open(sheet,button);return;}
-    if(button.hasAttribute('data-sheet-close')){close(sheet,button.hasAttribute('data-sheet-save'));return;}
+    if(button.hasAttribute('data-sheet-open')){event.preventDefault();open(sheet,button);return;}
+    if(button.hasAttribute('data-sheet-close')){event.preventDefault();close(sheet,button.hasAttribute('data-sheet-save'));return;}
     if(button.hasAttribute('data-sheet-handle')){
       if(state.suppressClick){state.suppressClick=false;event.preventDefault();return;}
       freeze(sheet);resize(sheet,nextSize(sheet));

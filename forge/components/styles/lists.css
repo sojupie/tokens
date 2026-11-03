@@ -493,3 +493,8 @@
 .md-list-item[data-unread] :is(.md-list-label,.md-list-supporting) {
   font-weight:var(--md-ref-typeface-weight-bold);
 }
+
+@media (scripting: none) {
+ .md-list-item[data-list-selectable] { display:none; }
+ label.md-list-item:has(> input:checked) { background:var(--md-sys-color-secondary-container); color:var(--md-sys-color-on-secondary-container); }
+}

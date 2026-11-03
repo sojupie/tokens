@@ -1,8 +1,11 @@
 package ui
 
+import "fmt"
+
 templ ProgressIndicator(attrs templ.Attributes) {
 	@Require("progress")
 	<div { attributes(templ.Attributes{"class":"md-progress","role":"progressbar"},attrs)... }>
+		<noscript><progress max="100" aria-label={ fmt.Sprint(attrs["aria-label"]) } if attrs["aria-valuenow"]!=nil { value={ fmt.Sprint(attrs["aria-valuenow"]) } }></progress></noscript>
 		<svg width="48" height="4" aria-hidden="true"><path class="md-progress-track"></path><path class="md-progress-active"></path><path class="md-progress-active md-progress-second"></path><rect class="md-progress-stop"></rect></svg>
 	</div>
 }

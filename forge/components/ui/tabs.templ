@@ -11,6 +11,9 @@ templ Tabs(p TabsProps) {
 
 templ Tab(p TabProps) {
 	@Require("tabs")
+	if p.PanelID!="" && !p.Disabled {
+		<noscript><a class="md-tab" href={ templ.SafeURL("#"+p.PanelID) }>{ p.Label }</a></noscript>
+	}
 	<button { p.Attributes()... }>
 		<span class="md-tab-content">
 			if p.content()!="label"&&p.Icon!="" {

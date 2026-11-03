@@ -73,6 +73,8 @@ func SheetTrigger(target, label string, p ButtonProps) templ.Component {
 		}
 		ctx = templ.ClearChildren(ctx)
 		attrs := p.Attributes()
+		attrs["commandfor"] = target + "-panel"
+		attrs["command"] = "show-modal"
 		attrs["data-sheet-open"] = ""
 		attrs["aria-controls"] = target + "-panel"
 		attrs["aria-expanded"] = "false"
@@ -94,7 +96,7 @@ func SheetTrigger(target, label string, p ButtonProps) templ.Component {
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(label)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `forge/components/ui/sheet.templ`, Line: 23, Col: 9}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `forge/components/ui/sheet.templ`, Line: 25, Col: 9}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -267,7 +269,7 @@ func sheetFrame(p SheetProps) templ.Component {
 		var templ_7745c5c3_Var9 string
 		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(p.ID + "-content")
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `forge/components/ui/sheet.templ`, Line: 49, Col: 53}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `forge/components/ui/sheet.templ`, Line: 51, Col: 53}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 		if templ_7745c5c3_Err != nil {
@@ -432,7 +434,7 @@ func SheetHeader(p SheetProps) templ.Component {
 		var templ_7745c5c3_Var15 string
 		templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(p.ID + "-heading")
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `forge/components/ui/sheet.templ`, Line: 71, Col: 51}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `forge/components/ui/sheet.templ`, Line: 73, Col: 51}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 		if templ_7745c5c3_Err != nil {
@@ -445,7 +447,7 @@ func SheetHeader(p SheetProps) templ.Component {
 		var templ_7745c5c3_Var16 string
 		templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(p.Title)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `forge/components/ui/sheet.templ`, Line: 71, Col: 63}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `forge/components/ui/sheet.templ`, Line: 73, Col: 63}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 		if templ_7745c5c3_Err != nil {
@@ -479,7 +481,7 @@ func SheetHeader(p SheetProps) templ.Component {
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = Button(attributes(templ.Attributes{"class": "md-icon-button md-standard-icon-button md-sheet-close", "data-size": "small", "data-sheet-close": "", "aria-label": "Close " + p.Title}, p.CloseAttrs)).Render(templ.WithChildren(ctx, templ_7745c5c3_Var17), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = Button(attributes(templ.Attributes{"class": "md-icon-button md-standard-icon-button md-sheet-close", "data-size": "small", "data-sheet-close": "", "commandfor": p.ID + "-panel", "command": "close", "aria-label": "Close " + p.Title}, p.CloseAttrs)).Render(templ.WithChildren(ctx, templ_7745c5c3_Var17), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

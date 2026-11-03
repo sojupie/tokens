@@ -89,7 +89,12 @@ templ SelectField(p SelectProps) {
 				</span>
 			</button>
 		}
-		<input type="hidden" name={ p.Name } value={ p.Value } disabled?={ p.Disabled } data-field-value/>
+		<label class="md-native-select-label" for={ p.ID+"-native" }>{ p.Label }</label>
+		<select class="md-native-select" id={ p.ID+"-native" } name={ p.Name } aria-label={ p.Label } disabled?={ p.Disabled } data-field-value>
+			for _, option := range p.Options {
+				<option value={ option.Value } selected?={ option.Value==p.Value } disabled?={ option.Disabled }>{ option.Label }</option>
+			}
+		</select>
 		{ children... }
 		@OptionList(p.ID, p.Label, p.Value, p.Options, p.MenuAttrs)
 	</div>

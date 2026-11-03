@@ -9,6 +9,13 @@ templ subjectPage(subject publish.SubjectView, changes []publish.ChangeView, bro
 }
 
 templ tokenSetPicker(subject publish.SubjectView, browser tokenBrowser) {
+	<label class="tokens-native-set">Token set
+			<select name="set">
+				for _, set := range browser.Sets {
+					<option value={ set.Key } selected?={ set.Key==browser.Selected.Key }>{ tokenTableQualifier(subject,set) }</option>
+				}
+			</select>
+	</label>
 	@ui.MenuHost(templ.Attributes{"class": "tokens-token-set-host", "style": "display:contents"}) {
 		@ui.Button(templ.Attributes{"class": "md-filter-chip tokens-token-set", "data-selected": "true", "type": "button", "data-menu-open": "tokens-token-set-menu", "aria-controls": "tokens-token-set-menu", "aria-haspopup": "menu", "aria-expanded": "false", "aria-label": "Token set: " + selectedTableLabel(subject, browser.Selected)}) {
 			<span class="tokens-context-label" title={ selectedTableLabel(subject, browser.Selected) }>{ selectedTableLabel(subject, browser.Selected) }</span>

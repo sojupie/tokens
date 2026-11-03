@@ -6,6 +6,7 @@ import (
 )
 
 templ siteDownloadButton() {
+	<noscript><a class="tokens-link" href={ templ.SafeURL(nativeDownloadURL(metadata(ctx).Export)) }>Download tokens</a></noscript>
 	@ui.SplitHost(templ.Attributes{"class": "tokens-download-split"}) {
 		@ui.SplitButton(ui.SplitButtonProps{ID: "tokens-download-options", Label: "Download tokens", Content: "label", PrimaryAttrs: templ.Attributes{"data-export-open": "", "data-export-content": "tokens", "aria-haspopup": "dialog", "aria-controls": "tokens-site-download"}, MenuAttrs: templ.Attributes{"popovertarget": "tokens-download-options", "aria-controls": "tokens-download-options", "aria-label": "More download options"}, Attrs: templ.Attributes{"aria-label": "Download"}})
 		@ui.SplitMenu("tokens-download-options", "Download options", templ.Attributes{"id": "tokens-download-options"}) {
@@ -41,7 +42,7 @@ templ siteDownloadMenu() {
 			}
 		}
 		<iframe name="tokens-export-transfer" title="Download transfer" hidden></iframe>
-		<noscript><p><a href="/downloads/dtcg/light-default/tokens.tokens.json" download>DTCG JSON · Light, default contrast</a> · <a href="/downloads/dtcg/light-default/tokens.css" download>CSS variables</a> · <a href="/downloads/dtcg/light-default/report.json" download>Conversion report</a></p></noscript>
+		<noscript><nav class="tokens-native-downloads" aria-label="Downloads"><a href={ templ.SafeURL(nativeDownloadURL(metadata(ctx).Export)) }>Configure download</a><a href="/downloads/dtcg/light-default/tokens.tokens.json" download>DTCG JSON</a><a href="/downloads/dtcg/light-default/tokens.css" download>CSS variables</a><a href="/downloads/dtcg/light-default/report.json" download>Conversion report</a></nav></noscript>
 	</div>
 }
 

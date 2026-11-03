@@ -800,6 +800,33 @@ func playgroundList(c componentCase) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
+			if c.Control == "select" {
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 56, "<noscript><fieldset><legend>Select items</legend> ")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				for index := range 3 {
+					if c.Selection == "single" {
+						templ_7745c5c3_Err = ui.Radio(ui.ChoiceProps{Name: c.ID() + "-native-selection", Label: c.ListLabel(index), Checked: c.ListSelected(index), Disabled: index == 0 && c.State == "disabled"}).Render(ctx, templ_7745c5c3_Buffer)
+						if templ_7745c5c3_Err != nil {
+							return templ_7745c5c3_Err
+						}
+					} else {
+						templ_7745c5c3_Err = ui.CheckboxField(ui.ChoiceProps{ID: fmt.Sprintf("%s-native-%d", c.ID(), index), Label: c.ListLabel(index), Checked: c.ListSelected(index), Disabled: index == 0 && c.State == "disabled"}).Render(ctx, templ_7745c5c3_Buffer)
+						if templ_7745c5c3_Err != nil {
+							return templ_7745c5c3_Err
+						}
+					}
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 57, "</fieldset></noscript>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 58, " ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
 			templ_7745c5c3_Var26 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 				templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 				templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -824,7 +851,7 @@ func playgroundList(c componentCase) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 56, " ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 59, " ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -872,13 +899,13 @@ func playgroundList(c componentCase) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 57, " <output class=\"md-typescale-body-small\" aria-live=\"polite\"></output>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 60, " <output class=\"md-typescale-body-small\" aria-live=\"polite\"></output>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = ui.ListHost(templ.Attributes{"class": templ.Classes("md-list-demo", templ.KV("md-sheet-demo", c.Control == "reorder")).String(), "data-interactive": "true"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var25), templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = ui.ListHost(templ.Attributes{"class": templ.Classes("md-list-demo", templ.KV("md-sheet-demo", c.Control == "reorder")).String(), "data-interactive": "true", "data-native-selection": fmt.Sprint(c.Control == "select")}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var25), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

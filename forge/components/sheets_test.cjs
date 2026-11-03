@@ -119,7 +119,7 @@ test('sheet arrow keys visit adjacent anchors and Home/End select the extremes',
 
 test('sheet translations use attached easing while anchored height changes keep spatial motion',async()=>{
  const f=sheetFixture(false,true);
- function action(attribute){const button={hasAttribute:name=>name===attribute,setAttribute(){},closest:selector=>selector==='button'?button:f.host};f.listeners.click({target:button});}
+ function action(attribute){const button={hasAttribute:name=>name===attribute,setAttribute(){},closest:selector=>selector==='button'?button:f.host};f.listeners.click({target:button,preventDefault(){}});}
  action('data-sheet-close');await new Promise(resolve=>setImmediate(resolve));
  assert.equal(f.sheet.open,false);assert.equal(f.animations[0].timing.easing,'cubic-bezier(0.2, 0, 0, 1)');
  action('data-sheet-open');await new Promise(resolve=>setImmediate(resolve));

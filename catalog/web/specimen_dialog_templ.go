@@ -59,7 +59,7 @@ func specimenDialog(c componentCase) templ.Component {
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = ui.Action(ui.ButtonProps{Variant: ui.ButtonVariant("outlined"), Attrs: templ.Attributes{"data-dialog-open": true, "aria-controls": c.ID() + "-panel", "aria-haspopup": "dialog", "aria-expanded": "false"}}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = ui.Action(ui.ButtonProps{Variant: ui.ButtonVariant("outlined"), Attrs: templ.Attributes{"data-dialog-open": true, "commandfor": c.ID() + "-panel", "command": "show-modal", "aria-controls": c.ID() + "-panel", "aria-haspopup": "dialog", "aria-expanded": "false"}}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

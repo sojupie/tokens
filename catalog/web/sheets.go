@@ -33,7 +33,7 @@ func (c componentCase) SheetAction(index int) templ.Attributes {
 	if c.Family == "side-sheet" {
 		class = "md-button md-sheet-action"
 	}
-	attrs := templ.Attributes{"type": "button", "class": class, "data-size": "small", "data-shape": "round", "data-sheet-close": ""}
+	attrs := templ.Attributes{"type": "button", "class": class, "data-size": "small", "data-shape": "round", "data-sheet-close": "", "commandfor": c.ID() + "-panel", "command": "close"}
 	if index == 1 {
 		attrs["data-sheet-save"] = ""
 	}
@@ -52,7 +52,7 @@ func (c componentCase) SheetAction(index int) templ.Attributes {
 }
 
 func (c componentCase) SheetOpener() templ.Attributes {
-	attrs := templ.Attributes{"class": "md-button md-outlined-button", "type": "button", "data-sheet-open": "", "aria-controls": c.ID() + "-panel", "aria-expanded": "false"}
+	attrs := templ.Attributes{"class": "md-button md-outlined-button", "type": "button", "data-sheet-open": "", "commandfor": c.ID() + "-panel", "command": "show-modal", "aria-controls": c.ID() + "-panel", "aria-expanded": "false"}
 	if c.Control == "modal" {
 		attrs["aria-haspopup"] = "dialog"
 	}

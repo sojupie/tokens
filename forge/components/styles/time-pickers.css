@@ -447,3 +447,11 @@
   --_time-label-x: 50%;
   --_time-label-y: 50%;
 }
+
+@media (scripting: none) {
+ .md-time-picker > button { display:none; }
+ .md-time-picker > .md-time-panel { display:none; }
+}
+
+.md-native-time { display:none; }
+@media (scripting: none) { .md-native-time { display:block; font:inherit; } }

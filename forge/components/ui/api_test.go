@@ -207,10 +207,13 @@ func TestConsumerChipAndSelectNeedNoPlaygroundAttributes(t *testing.T) {
 		t.Fatal(chip)
 	}
 	selectHTML, _ := renderAPI(t, SelectField(SelectProps{ID: "platform", Name: "context.Platform", Label: "Platform", Value: "web", Options: []Option{{Value: "web", Label: "Web browser"}, {Value: "ios", Label: "iOS"}, {Value: "android", Label: "Android"}}}))
-	for _, want := range []string{`name="context.Platform" value="web"`, `data-field-display>Web browser`, `data-field-value="web"`, `aria-controls="platform-options"`} {
+	for _, want := range []string{`name="context.Platform"`, `data-field-display>Web browser`, `data-field-value="web"`, `aria-controls="platform-options"`} {
 		if !strings.Contains(selectHTML, want) {
 			t.Fatal(want, selectHTML)
 		}
+	}
+	if strings.Count(selectHTML, `name="context.Platform"`) != 1 || !strings.Contains(selectHTML, `<option value="web" selected>`) {
+		t.Fatal("native selection must be the only submitted value", selectHTML)
 	}
 	if strings.Contains(selectHTML, "md-field-menu-divider") || strings.Contains(selectHTML, "data-component-state") {
 		t.Fatal(selectHTML)

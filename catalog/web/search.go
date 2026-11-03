@@ -131,5 +131,5 @@ func (c componentCase) SearchReply() ui.ButtonProps {
 	return ui.ButtonProps{Variant: ui.Filled, Attrs: templ.Attributes{"data-search-reply": ""}}
 }
 func (c componentCase) searchProps(label, value string, disclosure bool) ui.SearchProps {
-	return ui.SearchProps{ID: c.ID(), AvatarText: "A", Options: searchExampleOptions(c.ID()), Label: label, Value: value, Variant: c.Variant, Control: c.Control, Leading: c.Shape, Actions: c.Width, Elevation: c.SearchElevation, Expanded: c.Expanded, Disclosure: disclosure, BarAttrs: c.SearchBar(), PanelAttrs: c.SearchPanel()}
+	return ui.SearchProps{Action: "/components", Name: "q", ID: c.ID(), AvatarText: "A", Options: searchExampleOptions(c.ID()), Label: label, Value: value, Variant: c.Variant, Control: c.Control, Leading: c.Shape, Actions: c.Width, Elevation: c.SearchElevation, Expanded: c.Expanded, Disclosure: disclosure, BarAttrs: c.SearchBar(), PanelAttrs: c.SearchPanel()}
 }

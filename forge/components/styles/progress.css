@@ -42,3 +42,9 @@
   max-inline-size: 100%;
   gap: var(--md-sys-measurement-space100);
 }
+
+@media (scripting: none) {
+ .md-progress { min-inline-size:8rem; min-block-size:1rem; overflow:visible; }
+ .md-progress > svg { display:none; }
+ .md-progress progress { inline-size:100%; accent-color:var(--md-sys-color-primary); }
+}

@@ -56,7 +56,7 @@ func (p DatePickerProps) DateEntry(part string) templ.Attributes {
 	if part == "end" {
 		value, name = p.End, p.EndName
 	}
-	a := templ.Attributes{"id": p.ID + "-value-" + part, "type": "text", "data-date-value": part, "value": dateISO(value), "placeholder": p.DateEntryLabel(part), "inputmode": "numeric", "maxlength": "32", "autocomplete": "off", "aria-describedby": p.ID + "-value-help-" + part}
+	a := templ.Attributes{"id": p.ID + "-value-" + part, "type": "date", "data-date-value": part, "value": dateISO(value), "placeholder": p.DateEntryLabel(part), "inputmode": "numeric", "maxlength": "32", "autocomplete": "off", "aria-describedby": p.ID + "-value-help-" + part}
 	if name != "" {
 		a["name"] = name
 	}

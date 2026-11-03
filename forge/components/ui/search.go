@@ -8,6 +8,7 @@ import (
 
 type SearchProps struct {
 	ID, Label, Value, Variant, Control, Leading, Actions, Elevation, AvatarText string
+	Action, Name                                                                string
 	Expanded, Disclosure                                                        bool
 	Options, Page                                                               templ.Component
 	Attrs, BarAttrs, PanelAttrs                                                 templ.Attributes

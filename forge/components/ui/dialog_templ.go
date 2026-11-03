@@ -317,6 +317,8 @@ func DialogTrigger(target, label string, p ButtonProps) templ.Component {
 		}
 		ctx = templ.ClearChildren(ctx)
 		attrs := p.Attributes()
+		attrs["commandfor"] = target
+		attrs["command"] = "show-modal"
 		attrs["data-dialog-open"] = target
 		attrs["aria-controls"] = target
 		attrs["aria-haspopup"] = "dialog"
@@ -336,7 +338,7 @@ func DialogTrigger(target, label string, p ButtonProps) templ.Component {
 			var templ_7745c5c3_Var12 string
 			templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(label)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `forge/components/ui/dialog.templ`, Line: 70, Col: 9}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `forge/components/ui/dialog.templ`, Line: 72, Col: 9}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 			if templ_7745c5c3_Err != nil {
@@ -374,6 +376,8 @@ func DialogClose(target, label, value string, p ButtonProps) templ.Component {
 		}
 		ctx = templ.ClearChildren(ctx)
 		attrs := p.Attributes()
+		attrs["commandfor"] = target
+		attrs["command"] = "close"
 		attrs["data-dialog-close"] = target
 		attrs["data-dialog-result"] = value
 		templ_7745c5c3_Var14 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
@@ -391,7 +395,7 @@ func DialogClose(target, label, value string, p ButtonProps) templ.Component {
 			var templ_7745c5c3_Var15 string
 			templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(label)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `forge/components/ui/dialog.templ`, Line: 81, Col: 9}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `forge/components/ui/dialog.templ`, Line: 85, Col: 9}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 			if templ_7745c5c3_Err != nil {
@@ -591,7 +595,7 @@ func dialogContentBody(p DialogProps) templ.Component {
 			var templ_7745c5c3_Var21 string
 			templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(p.descriptionID())
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `forge/components/ui/dialog.templ`, Line: 112, Col: 55}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `forge/components/ui/dialog.templ`, Line: 116, Col: 55}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
 			if templ_7745c5c3_Err != nil {
@@ -604,7 +608,7 @@ func dialogContentBody(p DialogProps) templ.Component {
 			var templ_7745c5c3_Var22 string
 			templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(p.Description)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `forge/components/ui/dialog.templ`, Line: 112, Col: 73}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `forge/components/ui/dialog.templ`, Line: 116, Col: 73}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
 			if templ_7745c5c3_Err != nil {

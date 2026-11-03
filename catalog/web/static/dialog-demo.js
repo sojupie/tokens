@@ -33,6 +33,7 @@
  }}
  document.addEventListener('click',event=>{
   const state=stateFor(event.target);if(!state)return;
+  if(event.target.closest('[data-dialog-save],[data-dialog-cancel]'))event.preventDefault();
   if(event.target.closest('[data-dialog-keep]'))state.discard.close();
   else if(event.target.closest('[data-dialog-discard-confirm]')){state.discard.close();MaterialDialogs.close(state.panel,'discard','action')}
   else if(event.target.closest('[data-dialog-save]'))MaterialDialogs.close(state.panel,'save','action');

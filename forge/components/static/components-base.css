@@ -1114,6 +1114,8 @@
   white-space: nowrap;
   border: 0;
 }
+
+@media (scripting: none) { [data-family="chip"]:is([data-variant="filter"],[data-variant="input"]) { display:none; } }
 .md-interactive-card::before,
 .md-icon-button::before,
 :is(
@@ -1146,6 +1148,10 @@
     background: var(--_button-state-color);
     opacity: var(--_button-state-opacity);
   }
+}
+
+@media (scripting: none) and (prefers-reduced-motion: no-preference) {
+ .md-button,.md-icon-button { transition:border-radius var(--_motion-fast-spatial-duration,150ms) var(--_motion-fast-spatial-easing,ease-out); }
 }
 /* Native inputs handle selection. Mark geometry and handle travel are renderer anatomy. */
 .md-switch {
@@ -2220,6 +2226,13 @@
 .md-tabs-example > [role="tabpanel"] { touch-action:pan-y; }
 
 .md-tabs[data-variant="secondary"] .md-tab-icon { margin-inline-end:4px; }
+
+@media (scripting: none) {
+ .md-tabs-example [role="tabpanel"][hidden] { display:block !important; }
+ .md-tabs-example [role="tabpanel"] { margin-block:1rem; }
+}
+
+@media (scripting: none) { .md-tabs button[role="tab"] { display:none; } }
 .md-segmented-button::before {
   content: "";
   position: absolute;
@@ -3045,6 +3058,16 @@
 .md-slider[data-inset-position="end"] .md-slider-stop-end {
   display: none;
 }
+
+@media (scripting: none) {
+ .md-slider { display:grid; gap:1rem; height:auto; width:100%; }
+ .md-slider-rail,.md-slider-thumb { display:none; }
+ .md-slider .md-slider-input { display:block; position:static; width:100%; height:auto; pointer-events:auto; }
+ .md-slider .md-slider-input > input { all:revert; display:block; inline-size:100%; accent-color:var(--md-sys-color-primary); }
+ .md-slider .md-slider-input > input::-webkit-slider-thumb { all:revert; }
+ .md-slider .md-slider-input > input::-moz-range-thumb { all:revert; }
+ .md-slider .md-slider-input > input::-moz-range-track { all:revert; }
+}
 /* Progress geometry comes from component bindings. The linear length is demo layout. */
 .md-progress-demo {
   display: grid;
@@ -3088,6 +3111,12 @@
   inline-size: 15rem;
   max-inline-size: 100%;
   gap: var(--md-sys-measurement-space100);
+}
+
+@media (scripting: none) {
+ .md-progress { min-inline-size:8rem; min-block-size:1rem; overflow:visible; }
+ .md-progress > svg { display:none; }
+ .md-progress progress { inline-size:100%; accent-color:var(--md-sys-color-primary); }
 }
 .md-loading {
   display: grid;
@@ -3134,6 +3163,11 @@
 @media (prefers-reduced-motion:reduce) {
  .md-loading-button > [data-button-label], .md-loading-button > .md-button-loading-disk { transition:none; }
 }
+
+@media (scripting: none) and (prefers-reduced-motion: no-preference) {
+ .md-loading[data-control="indeterminate"] > svg { animation:md-loading-fallback 1s linear infinite; }
+}
+@keyframes md-loading-fallback { to { transform:rotate(360deg); } }
 /* App bar structure. Insets without component tokens use system spacing. */
 .md-app-bar {
   --_elevation-level: var(--_appbar-elevation);
@@ -3887,6 +3921,12 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
 /* Application hosts allocate space for docked sheets without the playground frame. */
 .md-sheet-host { position:relative; }
 .md-sheet-host > .md-side-sheet[data-control="standard"] { position:relative; flex:0 1 var(--_sheet-width); inset:auto; align-self:stretch; block-size:auto; }
+
+@media (scripting: none) {
+ section.md-sheet[hidden],.md-sheet-content[hidden] { display:block !important; }
+ .md-sheet-handle { display:none; }
+ section.md-sheet .md-sheet-close { display:none; }
+}
 /* Split geometry comes from split-button tokens; colors and feedback use common buttons. */
 .md-split-demo {
   max-inline-size: 100%;
@@ -4354,6 +4394,18 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   padding: var(--_fab-menu-scroll-gutter);
   margin: calc(-1 * var(--_fab-menu-scroll-gutter));
 }
+
+@media (scripting: none) {
+ .md-fab-menu-panel[popover] { position:absolute; inset:auto 1rem 5rem auto; margin:0; opacity:0; transition:opacity 150ms linear,display 150ms allow-discrete,overlay 150ms allow-discrete; }
+ .md-fab-menu-panel:popover-open { opacity:1; }
+ @starting-style { .md-fab-menu-panel:popover-open { opacity:0; } }
+ @supports (anchor-name: --fab) {
+  .md-fab-menu { anchor-scope:--fab-fallback; }
+  .md-fab-menu-opener { anchor-name:--fab-fallback; }
+  .md-fab-menu-panel[popover] { position:fixed; position-anchor:--fab-fallback; inset:auto; bottom:anchor(top); right:anchor(right); margin-block-end:.5rem; }
+ }
+}
+@media (scripting: none) and (prefers-reduced-motion: reduce) { .md-fab-menu-panel[popover] { transition:none; } }
 .md-list-demo {
   inline-size: 24rem;
   max-inline-size: 100%;
@@ -4848,6 +4900,11 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
 /* Unread is host-owned state; the primitive retains its captured type scale. */
 .md-list-item[data-unread] :is(.md-list-label,.md-list-supporting) {
   font-weight:var(--md-ref-typeface-weight-bold);
+}
+
+@media (scripting: none) {
+ .md-list-item[data-list-selectable] { display:none; }
+ label.md-list-item:has(> input:checked) { background:var(--md-sys-color-secondary-container); color:var(--md-sys-color-on-secondary-container); }
 }
 /* Carousel layout dimensions are renderer inputs; captured item tokens own appearance. */
 .md-carousel {
@@ -5862,6 +5919,8 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
 
 /* A standalone bar participates in its host layout; disclosure views remain anchored. */
 .md-search-view[data-layout="inline"] { position:relative; inset:auto; inline-size:100%; block-size:auto; }
+
+@media (scripting: none) { .md-search-view:has(.md-search-trigger) { display:none; } }
 .md-date-demo {
   container-type: inline-size;
   display: flex;
@@ -6432,6 +6491,13 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
     calc(100dvh - 2 * var(--md-sys-measurement-space200))
   );
 }
+
+@media (scripting: none) {
+ .md-date-fields [data-date-open] { display:none; }
+ .md-date-picker > .md-date-panel { display:none; }
+ .md-native-date { display:grid; gap:.5rem; margin-block:1rem; }
+ .md-native-date input { font:inherit; color:inherit; color-scheme:light dark; }
+}
 @property --_time-angle {
   syntax: "<angle>";
   inherits: true;
@@ -6881,6 +6947,14 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   --_time-label-x: 50%;
   --_time-label-y: 50%;
 }
+
+@media (scripting: none) {
+ .md-time-picker > button { display:none; }
+ .md-time-picker > .md-time-panel { display:none; }
+}
+
+.md-native-time { display:none; }
+@media (scripting: none) { .md-native-time { display:block; font:inherit; } }
 /* Chip action anatomy uses system spacing; dimensions and colors use each chip's source set. */
 .md-chip-demo {
   display: inline-flex;
@@ -7580,6 +7654,14 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
 .md-chip-select .md-filter-chip > span:first-child { flex: none; }
 
 .md-field-menu .md-menu-item[role="option"]:not([aria-selected="true"]) > [data-slot="trailing-icon"] { visibility: hidden; }
+
+.md-native-select,.md-native-select-label { display:none; }
+@media (scripting: none) {
+  :is(.md-chip-select,.md-outlined-select) > :not(.md-native-select,.md-native-select-label) { display:none; }
+  :is(.md-chip-select,.md-outlined-select) { display:block; min-block-size:0; border:0; padding:0; }
+  .md-native-select-label { display:block !important; font:inherit; margin-block-end:.25rem; }
+  .md-native-select { display:block !important; max-inline-size:100%; min-block-size:2.5rem; padding:.5rem; font:inherit; color:inherit; background:var(--md-sys-color-surface-container); border:1px solid var(--md-sys-color-outline); border-radius:var(--md-sys-shape-corner-small); }
+}
 /* Dialog viewport sizes and content spacing are renderer layout rules. */
 .md-dialog-demo {
   --_dialog-enter-duration: var(--_motion-fast-effects-duration);

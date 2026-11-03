@@ -646,3 +646,13 @@
 .md-slider[data-inset-position="end"] .md-slider-stop-end {
   display: none;
 }
+
+@media (scripting: none) {
+ .md-slider { display:grid; gap:1rem; height:auto; width:100%; }
+ .md-slider-rail,.md-slider-thumb { display:none; }
+ .md-slider .md-slider-input { display:block; position:static; width:100%; height:auto; pointer-events:auto; }
+ .md-slider .md-slider-input > input { all:revert; display:block; inline-size:100%; accent-color:var(--md-sys-color-primary); }
+ .md-slider .md-slider-input > input::-webkit-slider-thumb { all:revert; }
+ .md-slider .md-slider-input > input::-moz-range-thumb { all:revert; }
+ .md-slider .md-slider-input > input::-moz-range-track { all:revert; }
+}

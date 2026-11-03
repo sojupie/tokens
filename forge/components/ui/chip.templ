@@ -4,6 +4,12 @@ import "fmt"
 
 templ Chip(p ChipProps) {
 	@Require("common")
+	if p.Variant=="filter" || p.Variant=="" {
+		<noscript>@FilterChipField(ChoiceProps{Label:p.Label,Checked:p.Selected,Disabled:p.Disabled})</noscript>
+	}
+	if p.Variant=="input" {
+		<noscript><span class="md-input-chip">{ p.Label }</span></noscript>
+	}
 	if p.Variant=="assist"||p.Variant=="suggestion" {
 		<button { p.Attributes()... }>
 			@chipLeading(p)

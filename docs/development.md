@@ -482,3 +482,24 @@ go run ./cmd/tokens site-shell --published published-review --out /tmp/site-shel
 The `--published` argument is optional for consumers that need only the primary
 navigation and tool links. Appearance controls stay docked in the mobile drawer;
 on desktop the rail's Appearance button opens those same controls in a popover.
+
+### Behavior without JavaScript
+
+The shared site shell provides a native disclosure navigation when scripting is
+unavailable. Catalog playgrounds and token filters submit GET forms; their named
+select elements also hold the values used by the enhanced selectors. Do not add
+an additional hidden input with the same name. The `/download` page uses the
+existing export option resolver and download endpoint with ordinary form submits.
+
+Forge supplies native range, date/time entry, filter-chip and list-selection
+fallbacks. Tab content stays readable, progress uses native `<progress>`, and the
+loading indicator can rotate with CSS. Dialog triggers carry native invoker
+commands alongside the enhanced controller hooks; controllers cancel the native
+default when they handle an action. Browser support for invoker commands controls
+whether basic modal opening works without scripting.
+
+Exact spring/morph motion, draggable sheet anchors, custom calendar/dial behavior,
+live search suggestions, reorder/swipe gestures and application commands remain
+JavaScript enhancements. Their absence must not remove site navigation, token
+content, form choices or downloads. Keep fallback styling in the owning component
+module and catalog presentation in the catalog stylesheets.

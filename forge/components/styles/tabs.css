@@ -147,3 +147,10 @@
 .md-tabs-example > [role="tabpanel"] { touch-action:pan-y; }
 
 .md-tabs[data-variant="secondary"] .md-tab-icon { margin-inline-end:4px; }
+
+@media (scripting: none) {
+ .md-tabs-example [role="tabpanel"][hidden] { display:block !important; }
+ .md-tabs-example [role="tabpanel"] { margin-block:1rem; }
+}
+
+@media (scripting: none) { .md-tabs button[role="tab"] { display:none; } }

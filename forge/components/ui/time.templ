@@ -10,8 +10,9 @@ templ TimePicker(p TimePickerProps) {
 				{ fallback(p.Label,"Choose time") }
 			}
 		}
+
 		@TimePickerPanel(p)
-		<input type="hidden" name={ p.Name } value={ fmt.Sprintf("%02d:%02d", p.hour(), p.minute()) } data-time-value-input/>
+		<input class="md-native-time" aria-label={ fallback(p.Label,"Time") } type="time" name={ p.Name } value={ fmt.Sprintf("%02d:%02d", p.hour(), p.minute()) } data-time-value-input/>
 		<output class="md-typescale-body-small" data-time-output aria-live="polite"></output>
 	</div>
 }
