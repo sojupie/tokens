@@ -41,16 +41,16 @@
   });
   document.addEventListener('htmx:before:request', event => {
     const source = event.detail.ctx.sourceElement;
-    if (!source.closest('#tokens-export-form')) return;
+    if (!source.closest('#tokens-export-form') && source.id !== 'tokens-export-summary') return;
     const panel = source.closest('dialog');
     // This selection is unconfirmed. htmx owns temporary request disabling;
     // only the server's summary response may confirm the Download action.
-    panel.querySelector('[data-export-submit]').disabled = true;
+    panel.querySelector('[data-export-confirmation]').disabled = true;
     panel.querySelector('[data-export-error]').hidden = true;
   });
   document.addEventListener('htmx:before:swap', event => {
     const ctx = event.detail.ctx;
-    if (!ctx.sourceElement.closest('#tokens-export-form')) return;
+    if (!ctx.sourceElement.closest('#tokens-export-form') && ctx.sourceElement.id !== 'tokens-export-summary') return;
     const panel = ctx.sourceElement.closest('dialog');
     // Apply local disclosure state before insertion: after:swap runs after
     // settling, so restoring it there briefly paints a collapsed modal.
@@ -62,7 +62,7 @@
   });
   function requestFailed(event) {
     const source = event.detail.ctx.sourceElement;
-    if (!source.closest('#tokens-export-form')) return;
+    if (!source.closest('#tokens-export-form') && source.id !== 'tokens-export-summary') return;
     const panel = source.closest('dialog');
     const error = panel.querySelector('[data-export-error]');
     error.textContent = 'Could not check selection. Change a selection to retry, or close the dialog.';
@@ -73,6 +73,13 @@
   function initialize() {
     const panel = document.getElementById('tokens-site-download'); if (!panel || initialized.has(panel)) return;
     initialized.add(panel);
+    const guard = panel.querySelector('#tokens-export-submit-pending');
+    const reflectLoading = () => {
+      panel.querySelector('[data-export-submit]').setAttribute('aria-busy', String(guard.classList.contains('htmx-request')));
+    };
+    // The component owns its loading animation; htmx owns the request lifetime.
+    new MutationObserver(reflectLoading).observe(guard, {attributes:true, attributeFilter:['class']});
+    reflectLoading();
     panel.addEventListener('close', () => {
       htmx.trigger(panel.querySelector('form'), 'htmx:abort');
       openers.get(panel)?.focus({preventScroll:true});

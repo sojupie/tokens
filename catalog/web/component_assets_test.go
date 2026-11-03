@@ -18,7 +18,7 @@ import (
 
 func collectedModules(t *testing.T, component templ.Component) []string {
 	t.Helper()
-	assets := &componentAssets{modules: map[string]bool{}}
+	assets := &componentAssets{modules: map[string]bool{}, server: &Server{}}
 	ctx := ui.WithAssets(context.WithValue(context.Background(), componentAssetsKey{}, assets), ui.Assets(assets.modules))
 	var output bytes.Buffer
 	if err := component.Render(ctx, &output); err != nil {
@@ -189,7 +189,7 @@ func TestPlaygroundAssetsTravelInsideReplacementRegion(t *testing.T) {
 }
 
 func TestFooterRegistersItsDownloadDialog(t *testing.T) {
-	if got := collectedModules(t, siteDownloadMenu()); !reflect.DeepEqual(got, []string{"radio", "checkbox", "messages", "dialog"}) {
+	if got := collectedModules(t, siteDownloadMenu()); !reflect.DeepEqual(got, []string{"radio", "checkbox", "messages", "loading", "dialog"}) {
 		t.Fatalf("footer dependencies: %v", got)
 	}
 }

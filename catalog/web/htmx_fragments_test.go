@@ -84,7 +84,7 @@ func TestExportDialogReturnsResolvedHTMLAndPreservesMultipleSelections(t *testin
 	w = httptest.NewRecorder()
 	server.Handler().ServeHTTP(w, httptest.NewRequest("GET", "/downloads/export/summary?"+query.Encode(), nil))
 	body = w.Body.String()
-	if !strings.Contains(body, "4 format/context combinations") || !strings.Contains(body, `hx-target="#tokens-export-submit-pending"`) || strings.Contains(body, `hx-trigger="load"`) {
+	if !strings.Contains(body, "4 format/context combinations") || !strings.Contains(body, `hx-target="#tokens-export-confirmation"`) || strings.Contains(body, `hx-trigger="load"`) {
 		t.Fatal("summary must confirm its own action without reloading", body)
 	}
 	query.Del("format")
@@ -117,5 +117,24 @@ func TestExportRequestDependenciesFollowContextOrder(t *testing.T) {
 	}
 	if state.requestAttrs("format")["hx-get"] != "/downloads/export/summary" {
 		t.Fatal("format changes must not wait for option resolution")
+	}
+}
+
+func TestExportFooterKeepsSummaryAndLoadingActionOutsideScrollingForm(t *testing.T) {
+	server := scopedExportFixture()
+	w := httptest.NewRecorder()
+	server.Handler().ServeHTTP(w, httptest.NewRequest("GET", "/components/buttons", nil))
+	body := w.Body.String()
+	form := strings.Index(body, `id="tokens-export-form"`)
+	if form < 0 {
+		t.Fatal("missing export form")
+	}
+	end := form + strings.Index(body[form:], "</form>")
+	summary := strings.Index(body, `id="tokens-export-summary"`)
+	if summary < end {
+		t.Fatal("export summary must be docked outside the scrolling form")
+	}
+	if !strings.Contains(body, `id="tokens-export-loading-action" hx-preserve`) || !strings.Contains(body, `class="md-button md-filled-button md-loading-button"`) {
+		t.Fatal("loading primitive must remain mounted")
 	}
 }

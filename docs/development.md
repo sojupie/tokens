@@ -287,10 +287,11 @@ requests `/downloads/export/summary` on `load`; format-only changes request that
 summary directly. Both use the form's `replace` synchronization scope.
 
 `hx-disable` blocks stale dependent fieldsets and a temporary guard around
-Download; `hx-indicator` shows the affected request state. The Download button's
-own disabled state represents server-confirmed validity, independently of the
-request guard. Local JavaScript preserves disclosure state, retains draft values
-from temporarily disabled children during rapid changes, invalidates the action,
+Download; `hx-indicator` drives the existing button loading primitive. A separate
+confirmation fieldset represents server-confirmed validity. The loading button
+is preserved across partials, keeps the label Download and remains in the docked
+footer beside the summary and report link. Local JavaScript preserves disclosure
+state, retains draft values from temporarily disabled children during rapid changes, invalidates the action,
 and handles opening, cancellation and errors. Morph swaps retain control focus.
 The form still submits a native file download; the public JSON options and
 summary API remain available. Multi-format and context selections keep their ZIP

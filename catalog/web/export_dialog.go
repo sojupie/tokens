@@ -266,12 +266,9 @@ func (state exportDialogState) requestAttrs(name string) templ.Attributes {
 	if name == "format" {
 		endpoint = "/downloads/export/summary"
 	}
-	attrs := templ.Attributes{"hx-get": endpoint, "hx-trigger": "change", "hx-include": "closest form", "hx-sync": "closest form:replace", "hx-disable": strings.Join(targets, ","), "hx-target": "#tokens-export-fields", "hx-swap": "outerMorph"}
+	attrs := templ.Attributes{"hx-get": endpoint, "hx-trigger": "change", "hx-include": "closest form", "hx-sync": "closest form:replace", "hx-disable": strings.Join(targets, ","), "hx-target": "#tokens-export-fields", "hx-swap": "outerMorph", "hx-indicator": "#tokens-export-submit-pending"}
 	if name == "format" {
 		attrs["hx-swap"] = "none"
-		attrs["hx-indicator"] = "#tokens-export-summary"
-	} else {
-		attrs["hx-indicator"] = "#tokens-export-options-status"
 	}
 	return attrs
 }

@@ -477,16 +477,17 @@ test('export disclosures receive local open state before the fragment is inserte
 });
 
 test('export changes invalidate download and retain native submission and cancellation', () => {
- const events={},requests=[];
+ const events={},requests=[],observers=[];
+ class MutationObserver {constructor(fn){observers.push(fn);}observe(){}}
  function panel(){
   const fields=Object.fromEntries(Object.entries({kind:'component',slug:'buttons',set:'filled',q:'icon',content:'tokens',scope:'view',format:'css','context.Theme':'Dark'}).map(([name,value])=>[name,{name,value,type:'hidden'}]));
   const form={id:'tokens-export-form',fields,setAttribute(){},querySelectorAll:()=>Object.values(fields),closest:()=>result};
-  const nodes={'form':form,'[data-export-counts]':{},'[data-export-error]':{},'#tokens-export-fields':{dataset:{exportReady:'true',exportLabel:'Download ZIP'}},'[data-export-submit]':{attributes:{},label:{},setAttribute(name,value){this.attributes[name]=value;},querySelector(){return this.label;}}};
+  const nodes={'form':form,'[data-export-confirmation]':{},'#tokens-export-submit-pending':{busy:false,classList:{contains(){return current.nodes['#tokens-export-submit-pending'].busy;}}},'[data-export-counts]':{},'[data-export-error]':{},'#tokens-export-fields':{dataset:{exportReady:'true',exportLabel:'Download ZIP'}},'[data-export-submit]':{attributes:{},label:{},setAttribute(name,value){this.attributes[name]=value;},querySelector(){return this.label;}}};
   const listeners={};const result={dataset:{defaultScope:'subject'},nodes,querySelector:s=>nodes[s],querySelectorAll:()=>[],addEventListener:(name,fn)=>listeners[name]=fn,contains:()=>false,showModal(){this.open=true;},close(){this.open=false;listeners.close();}};return result;
  }
- let current=panel();const original=current;
+ let current;current=panel();const original=current;
  class FormData extends Map {constructor(form){super(Object.entries(form.fields).map(([name,input])=>[name,input.value]));}}
- runScript('export.js',{document:{readyState:'complete',addEventListener:(name,fn)=>events[name]=fn,getElementById:()=>current,querySelector:()=>null},location:{search:''},URLSearchParams,FormData,htmx:{trigger:(form,event)=>requests.push({form,event})}});
+ runScript('export.js',{document:{readyState:'complete',addEventListener:(name,fn)=>events[name]=fn,getElementById:()=>current,querySelector:()=>null},location:{search:''},URLSearchParams,FormData,MutationObserver,htmx:{trigger:(form,event)=>requests.push({form,event})}});
  current=panel();events['htmx:historyRestore']();let focused=false;
  const trigger={dataset:{exportScope:'view'},focus(){focused=true;}};
  events.click({target:{closest:selector=>selector==='[data-export-open]'?trigger:null}});
@@ -495,7 +496,11 @@ test('export changes invalidate download and retain native submission and cancel
  assert.equal(current.nodes.form.fields.scope.value,'view');
  const ctx={sourceElement:current.nodes.form};
  events['htmx:before:request']({detail:{ctx}});
- assert.equal(current.nodes['[data-export-submit]'].disabled,true,'a changed selection is unconfirmed until the server returns an action');
+ assert.equal(current.nodes['[data-export-confirmation]'].disabled,true,'a changed selection is unconfirmed until the server returns an action');
+ current.nodes['#tokens-export-submit-pending'].busy=true;observers.at(-1)();
+ assert.equal(current.nodes['[data-export-submit]'].attributes['aria-busy'],'true');
+ current.nodes['#tokens-export-submit-pending'].busy=false;observers.at(-1)();
+ assert.equal(current.nodes['[data-export-submit]'].attributes['aria-busy'],'false');
  events['htmx:error']({detail:{ctx}});
  assert.equal(current.nodes['[data-export-error]'].hidden,false);
  assert.match(current.nodes['[data-export-error]'].textContent,/Could not check/);
