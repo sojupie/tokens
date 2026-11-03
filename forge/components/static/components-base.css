@@ -8398,8 +8398,9 @@ html:has(dialog:modal) {
 .md-navigation-rail[data-orientation="vertical"] .md-nav-label {
   inline-size: max-content;
   max-inline-size: calc(
-    var(--_rail-rest-width) - 2 * var(--md-sys-measurement-space200)
+    var(--_rail-rest-width, var(--_nav-width)) - 2 * var(--md-sys-measurement-space100)
   );
+  text-align: center;
 }
 .md-navigation-rail[data-variant="collapsed"]
   :is([data-navigation-secondary], .md-nav-section) {
