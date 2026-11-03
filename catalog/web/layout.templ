@@ -90,7 +90,8 @@ templ layout(title string) {
 								@materialSymbol("light_mode")
 							</span>
 						}
-						@ui.IconButtonContent(ui.IconButtonProps{Variant: "standard", Label: "Contrast", Attrs: templ.Attributes{"popovertarget": "tokens-contrast-options", "data-contrast-toggle": true, "title": "Contrast"}}) {
+						@ui.Divider("middle", templ.Attributes{"class":"md-divider tokens-theme-divider","aria-hidden":"true"})
+                        @ui.IconButtonContent(ui.IconButtonProps{Variant: "standard", Label: "Contrast", Attrs: templ.Attributes{"popovertarget": "tokens-contrast-options", "data-contrast-toggle": true, "title": "Contrast"}}) {
 							<span data-contrast-icon="default">@materialSymbol("brightness_low")
 </span>
 							<span data-contrast-icon="medium" hidden>@materialSymbol("brightness_medium")
