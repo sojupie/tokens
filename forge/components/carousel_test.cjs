@@ -261,3 +261,14 @@ test('captions fade before the visible image clips any glyphs',()=>{
  assert.equal(captionOpacity(text,{...clip,right:56},10),0,'a narrow item cannot expose clipped text');
  assert.equal(captionOpacity(text,{...clip,left:20},10),0,'viewport clipping uses the same rule');
 });
+
+test('fractional end targets collapse to one reachable page in either direction',()=>{
+ for(const rtl of [false,true]) {
+  const positions=[0,333.1875,666.375,999.5625,1332.75,1665.9375];
+  const rects=positions.map(p=>rtl?{right:2000-p}:{left:16+p});
+  const targets=Array.from(scrollTargets(rects,rtl,1333));
+  assert.deepEqual(targets,[0,333.1875,666.375,999.5625,1333,1333]);
+  assert.equal(new Set(targets).size,5,'rounding must not add an unreachable final dot');
+  assert.equal(targets.findIndex(target=>target>1333+1),-1,'there is no next page at the end');
+ }
+});

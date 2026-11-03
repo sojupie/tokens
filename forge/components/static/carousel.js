@@ -113,7 +113,12 @@
   }
   function scrollTargets(rects,rtl,max) {
     const edge=rtl?'right':'left',first=rects[0][edge];
-    return rects.map(rect=>clamp(Math.abs(rect[edge]-first),0,max));
+    return rects.map(rect=>{
+      const target=clamp(Math.abs(rect[edge]-first),0,max);
+      // Match the navigation tolerance: fractional layout rounding must not
+      // create an extra end page less than one CSS pixel from the boundary.
+      return target<1?0:target>=max-1?max:target;
+    });
   }
   // Fade before glyphs reach the visible mask edge, never after they are clipped.
   function captionOpacity(text,clip,fade) {
