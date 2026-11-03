@@ -88,15 +88,10 @@ used by that loader. It excludes already-delivered host scripts and reports
 declared scripts. Inert-thumbnail behavior and the existing progress exception
 are preserved.
 
-Run `go run ./forge/conformance --catalog http://127.0.0.1:8085` and open
-`/behavior-delivery.html`. The check discovers component destinations from the
-catalog, then audits default and interactive views and each option exposed by
-those views. `?path=/components/search` limits a run to one component. Fetched
-HTML is parsed into detached documents, so comparisons do not evaluate thousands
-of component controllers. A negative control removes declarations and must be
-detected.
-
-The initial run checked 1,026 views with no undeclared behavior. Declaration-only
+The initial browser comparison checked 1,026 views with no undeclared behavior.
+Its temporary review page has been removed. Further matrix comparisons should
+run through CLI tooling suitable for CI, not a dedicated review UI.
+Declaration-only
 scripts were `runtime/chips.js` from the common module, `runtime/snackbars.js`
 from the messages module, and `progress.js` on loading-indicator views. These are
 reported rather than silently removed. This covers exposed individual options,
