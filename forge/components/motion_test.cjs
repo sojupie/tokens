@@ -54,3 +54,11 @@ test('popup fallback mirrors FAB item springs and removes copies on reopen or re
   globals.MaterialMotion.retainExit(element,true);listeners.change({matches:true});
   assert.equal(copies[1].removed,true);assert.equal(timers.size,0);
 });
+
+
+test('attached motion keeps spatial duration but uses captured non-overshooting easing',()=>{
+ const {runInNewContext}=require('node:vm'),{readFileSync}=require('node:fs'),out={exports:{}};
+ runInNewContext(readFileSync(`${__dirname}/static/motion.cjs`,'utf8'),{module:out,getComputedStyle:()=>({getPropertyValue:key=>({'--_motion-default-spatial-duration':'550ms','--_motion-default-spatial-easing':'linear(0,1.1,1)','--md-sys-motion-easing-standard':'cubic-bezier(0.2, 0, 0, 1)'}[key]||'')})});
+ const timing=out.exports.attachedTiming({});
+ assert.equal(timing.duration,550);assert.equal(timing.easing,'cubic-bezier(0.2, 0, 0, 1)');
+});

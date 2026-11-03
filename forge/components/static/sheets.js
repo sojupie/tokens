@@ -39,21 +39,16 @@
     state.animation?.cancel();state.animation=null;sheet.style.height=height+'px';return height;
   }
   function exit(sheet){return sheetExit(sheet.classList.contains('md-bottom-sheet'),sheet.dataset.orientation==='start',getComputedStyle(sheet).direction==='rtl');}
-  function animate(sheet,frames,closing=false,velocity=0){
+  function animate(sheet,frames,velocity=0){
     const state=entry(sheet);state.animation?.cancel();state.animation=null;
     if(reduced.matches)return Promise.resolve(true);
-    const style=getComputedStyle(sheet);let timing=MaterialMotion.timing(sheet,'default-spatial');
+    const style=getComputedStyle(sheet);let timing=frames[0].transform!==undefined?MaterialMotion.attachedTiming(sheet):MaterialMotion.timing(sheet,'default-spatial');
     if(velocity && frames[0].height && frames[1].height) {
       const from=parseFloat(frames[0].height),to=parseFloat(frames[1].height);
       if(from!==to){
         const spring=MaterialMotion.springFrames(parseFloat(style.getPropertyValue('--md-sys-motion-spring-default-spatial-damping')),parseFloat(style.getPropertyValue('--md-sys-motion-spring-default-spatial-stiffness')),velocity/(to-from));
         frames=spring.samples.map((p,i)=>({height:Math.max(0,from+(to-from)*p)+'px',offset:i/(spring.samples.length-1)}));timing={duration:spring.duration,easing:'linear'};
       }
-    }
-    if(velocity && closing && frames[0].transform) {
-      const axis=sheet.classList.contains('md-bottom-sheet')?'Y':'X',matrix=new DOMMatrixReadOnly(frames[0].transform==='none'?undefined:frames[0].transform);
-      const from=axis==='Y'?matrix.m42:matrix.m41,sign=exit(sheet).includes('-100%')?-1:1,to=(axis==='Y'?sheet.offsetHeight:sheet.offsetWidth)*sign;
-      if(from!==to){const spring=MaterialMotion.springFrames(parseFloat(style.getPropertyValue('--md-sys-motion-spring-default-spatial-damping')),parseFloat(style.getPropertyValue('--md-sys-motion-spring-default-spatial-stiffness')),velocity/(to-from));frames=spring.samples.map((p,i)=>({transform:`translate${axis}(${from+(to-from)*p}px)`,offset:i/(spring.samples.length-1)}));timing={duration:spring.duration,easing:'linear'};}
     }
     const animation=sheet.animate(frames,{...timing,fill:'both'});
     state.animation=animation;
@@ -71,7 +66,7 @@
     const from=freeze(sheet);state.phase='resizing';
     content(sheet,true,value!=='minimized');setSize(sheet,value);updateHandle(sheet);
     const to=bounds(sheet,value);sheet.style.height=to+'px';
-    if(await animate(sheet,[{height:from+'px'},{height:to+'px'}],false,velocity)){sheet.style.height='';state.phase='open';content(sheet,value!=='minimized');}
+    if(await animate(sheet,[{height:from+'px'},{height:to+'px'}],velocity)){sheet.style.height='';state.phase='open';content(sheet,value!=='minimized');}
   }
   async function open(sheet,opener){
     const state=entry(sheet);if(!state)return;
@@ -88,12 +83,12 @@
     sheet.querySelector(':is([data-sheet-initial-focus],[data-sheet-handle],.md-sheet-close):not(:disabled)')?.focus({preventScroll:true});
     if(await animate(sheet,[{transform:from,height:(interrupted?fromHeight:to)+'px'},{transform:'none',height:to+'px'}])){sheet.style.height='';state.phase='open';}
   }
-  async function close(sheet,save=false,restoreFocus=true,velocity=0){
+  async function close(sheet,save=false,restoreFocus=true){
     const state=entry(sheet);if(!state||['closed','closing'].includes(state.phase))return;
     if(!sheet.dispatchEvent(new CustomEvent('md-sheet-beforeclose',{bubbles:true,cancelable:true,detail:{reason:save?'confirm':'dismiss'}})))return;
     const from=getComputedStyle(sheet).transform,height=sheet.getBoundingClientRect().height;
     sheet.style.height=height+'px';state.phase='closing';sheet.inert=true;sheet.setAttribute('data-sheet-closing','');
-    if(!await animate(sheet,[{transform:from},{transform:exit(sheet)}],true,velocity))return;
+    if(!await animate(sheet,[{transform:from},{transform:exit(sheet)}]))return;
     if(sheet instanceof HTMLDialogElement)sheet.close();else sheet.hidden=true;
     sheet.inert=false;sheet.style.height='';sheet.removeAttribute('data-sheet-closing');state.phase='closed';sheet.dispatchEvent(new CustomEvent('md-sheet-closed',{bubbles:true,detail:{reason:save?'confirm':'dismiss'}}));
     const opener=state.opener;opener?.setAttribute('aria-expanded','false');if(restoreFocus)opener?.focus({preventScroll:true});
@@ -160,7 +155,7 @@
       drag.samples.push([event.timeStamp,event.clientY]);const recent=drag.samples.filter(([time])=>event.timeStamp-time<=100),first=recent[0];
       const velocity=first&&event.timeStamp>first[0]?(event.clientY-first[1])/(event.timeStamp-first[0]):0;
       const target=sheetTarget(drag.anchors,drag.origin,drag.current,velocity,numeric(sheet,'drag-distance'),numeric(sheet,'drag-velocity')/1000);
-      if(target==='hidden')close(sheet,false,true,velocity*1000);else resize(sheet,target,-velocity*1000);
+      if(target==='hidden')close(sheet);else resize(sheet,target,-velocity*1000);
     }else if(!cancelled&&state.backdrop&&event.target===sheet){
       const r=sheet.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)close(sheet);
     }

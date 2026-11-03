@@ -371,7 +371,7 @@
       drawer.showModal();
     }
     if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      const animation = drawer.animate([{transform:from},{transform:"none"}], MaterialMotion.timing(drawer,"default-spatial"));
+      const animation = drawer.animate([{transform:from},{transform:"none"}], MaterialMotion.attachedTiming(drawer));
       drawerAnimations.set(drawer, {animation,closing:false});
     }
   }
@@ -381,7 +381,7 @@
     resetDrawerMotion(drawer);
     if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
       drawer.dataset.drawerClosing = "";
-      const animation = drawer.animate([{transform:from},{transform:drawerOffscreen(drawer)}], {...MaterialMotion.timing(drawer,"default-spatial"),fill:"both"});
+      const animation = drawer.animate([{transform:from},{transform:drawerOffscreen(drawer)}], {...MaterialMotion.attachedTiming(drawer),fill:"both"});
       drawerAnimations.set(drawer, {animation,closing:true});
       try { await animation.finished; } catch { return; }
       if (drawerAnimations.get(drawer)?.animation !== animation) return;

@@ -80,7 +80,7 @@ function drawerMotion({rtl=false,reduced=false}={}) {
   const pending=[];
   const globals={module:{exports:{}},matchMedia:()=>({matches:reduced}),
     getComputedStyle:()=>({direction:rtl?'rtl':'ltr',transform:'matrix(1, 0, 0, 1, -80, 0)'}),
-    MaterialMotion:{timing:()=>({duration:400,easing:'linear'})},
+    MaterialMotion:{attachedTiming:()=>({duration:400,easing:'cubic-bezier(0.2, 0, 0, 1)'})},
   };
   runInNewContext(readFileSync(`${__dirname}/behaviors/navigation.js`,'utf8'),globals);
   const drawer={open:false,dataset:{},listeners:[],closes:0,
@@ -102,6 +102,7 @@ test('modal drawer slides from the logical start edge and stays open until exit 
   for(const rtl of [false,true]) {
     const {drawer,pending,openDrawer,closeDrawer}=drawerMotion({rtl});
     openDrawer(drawer);
+    assert.equal(pending[0].animation.timing.easing,'cubic-bezier(0.2, 0, 0, 1)');
     assert.equal(pending[0].animation.frames[0].transform,rtl?'translateX(100%)':'translateX(-100%)');
     const exit=closeDrawer(drawer);
     assert.equal(drawer.open,true);

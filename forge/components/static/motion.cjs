@@ -48,6 +48,14 @@
     if (!Number.isFinite(duration) || !easing) throw new Error(`Missing generated ${role} motion`);
     return { duration, easing };
   }
+  // Edge-attached surfaces must never translate past their resting edge.
+  // Keep the generated spatial duration, with the captured bounded easing.
+  function attachedTiming(element, role = 'default-spatial') {
+    const duration = timing(element, role).duration;
+    const easing = getComputedStyle(element).getPropertyValue('--md-sys-motion-easing-standard').trim();
+    if (!easing) throw new Error('Missing captured standard easing for attached motion');
+    return { duration, easing };
+  }
   // An exit copy needs its used geometry and paint, not hundreds of unrelated
   // computed CSS properties (each read can resolve layout in some browsers).
   const exitProperties=('position top right bottom left display box-sizing width height min-width max-width min-height max-height margin padding border border-radius background color box-shadow opacity overflow transform transform-origin translate rotate scale flex flex-direction flex-wrap align-items align-self align-content justify-content gap grid-template-columns grid-template-rows grid-auto-flow grid-column grid-row order font letter-spacing text-align white-space text-overflow word-break overflow-wrap visibility vertical-align fill fill-rule stroke stroke-width stroke-linecap stroke-linejoin clip-path appearance contain isolation z-index pointer-events direction writing-mode --_button-container --_button-background-state-color --_button-background-state-opacity --_button-state-color --_button-state-opacity --_button-ripple-color --_elevation-level --_shadow-color --_menu-container --_field-menu-label-color').split(' ');
@@ -88,7 +96,7 @@
       Promise.all(animations.map(a => a.finished)).then(cleanup, cleanup);
     } catch { cleanup(); }
   }
-  const api = { springState, springFrames, springTrack, cssTiming, timing, retainExit, clearExit };
+  const api = { springState, springFrames, springTrack, cssTiming, timing, attachedTiming, retainExit, clearExit };
   if (typeof module !== 'undefined') module.exports = api;
   globalThis.MaterialMotion = api;
   if (typeof document !== 'undefined' && typeof matchMedia !== 'undefined') matchMedia('(prefers-reduced-motion: reduce)').addEventListener?.('change', event => { if (event.matches) for (const cleanup of [...exits.values()]) cleanup(); });

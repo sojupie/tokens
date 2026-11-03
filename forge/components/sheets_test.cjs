@@ -31,7 +31,8 @@ test('side sheet enter and exit direction follows logical edge and text directio
  assert.equal(sheetExit(false,true,true),'translateX(100%)');
 });
 
-function sheetFixture(allowFull=false) {
+function sheetFixture(allowFull=false,motion=false) {
+ const animations=[];
  const listeners={},attrs=new Set(allowFull?['data-sheet-allow-full']:[]),body={hidden:false,inert:false};
  const handle={
   setAttribute(){},focus(){},setPointerCapture(){},releasePointerCapture(){},hasPointerCapture(){return true;},
@@ -50,18 +51,23 @@ function sheetFixture(allowFull=false) {
   querySelector:selector=>selector==='.md-sheet-content'?body:handle,
   getBoundingClientRect(){const height=parseFloat(this.style.height)||(this.dataset.variant==='minimized'?56:this.dataset.sheetSize==='full'?644:360);return {height,bottom:720,top:720-height};},
   addEventListener(){},
+  setAttribute(name){attrs.add(name);},removeAttribute(name){attrs.delete(name);},dispatchEvent(){return true;},
+  showModal(){this.open=true;},close(){this.open=false;},
+  animate(frames,timing){const animation={frames,timing,finished:Promise.resolve(),cancel(){}};animations.push(animation);return animation;},
  });
  const host={querySelector:selector=>selector==='.md-sheet'?sheet:null};
  const context={
   document:{querySelectorAll:selector=>selector.startsWith(':is(')?[sheet]:[],addEventListener(name,fn){listeners[name]=fn;}},
-  matchMedia:()=>({matches:true,addEventListener(){}}),
+  matchMedia:()=>({matches:!motion,addEventListener(){}}),
+  CustomEvent:class {constructor(type,options){this.type=type;Object.assign(this,options);}},
+  MaterialMotion:{attachedTiming:()=>({duration:400,easing:'cubic-bezier(0.2, 0, 0, 1)'}),timing:()=>({duration:400,easing:'linear(0, 1.1, 1)'})},
   HTMLDialogElement:Dialog,window:{innerHeight:720},
-  getComputedStyle:()=>({getPropertyValue:key=>key==='--md-sys-measurement-space100'?'8':key==='--_sheet-drag-distance'?'56':'125'}),
+  getComputedStyle:()=>({transform:'none',getPropertyValue:key=>key==='--md-sys-measurement-space100'?'8':key==='--_sheet-drag-distance'?'56':'125'}),
  };
  runInNewContext(readFileSync(`${__dirname}/static/sheets.js`,'utf8'),context);
  const click=(detail=1)=>listeners.click({target:handle,detail,preventDefault(){}});
  const pointer=(type,y,time=0)=>listeners[type]({target:handle,button:0,isPrimary:true,pointerType:'pen',pointerId:1,clientY:y,timeStamp:time,preventDefault(){}});
- return {sheet,body,listeners,handle,click,pointer};
+ return {sheet,body,listeners,handle,click,pointer,host,animations};
 }
 
 test('sheet handle cycles through all enabled heights and returns to default',async()=>{
@@ -108,4 +114,16 @@ test('sheet arrow keys visit adjacent anchors and Home/End select the extremes',
   f.listeners.keydown({target:f.handle,key,preventDefault(){}});await Promise.resolve();
   assert.equal(f.sheet.dataset.sheetSize,size);
  }
+});
+
+
+test('sheet translations use attached easing while anchored height changes keep spatial motion',async()=>{
+ const f=sheetFixture(false,true);
+ function action(attribute){const button={hasAttribute:name=>name===attribute,setAttribute(){},closest:selector=>selector==='button'?button:f.host};f.listeners.click({target:button});}
+ action('data-sheet-close');await new Promise(resolve=>setImmediate(resolve));
+ assert.equal(f.sheet.open,false);assert.equal(f.animations[0].timing.easing,'cubic-bezier(0.2, 0, 0, 1)');
+ action('data-sheet-open');await new Promise(resolve=>setImmediate(resolve));
+ assert.equal(f.sheet.open,true);assert.equal(f.animations[1].timing.easing,'cubic-bezier(0.2, 0, 0, 1)');
+ f.click();await new Promise(resolve=>setImmediate(resolve));
+ assert.equal(f.animations[2].timing.easing,'linear(0, 1.1, 1)');assert.ok(f.animations[2].frames.every(frame=>frame.height));
 });
