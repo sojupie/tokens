@@ -318,8 +318,11 @@ test('agent handoff copies visible text and selects it when clipboard access fai
   let copied;
   let selected;
   let fail = false;
+  const handlers={},timers=new Map();let timerID=0;
   const globals = {
-    document: {querySelectorAll: () => [button], getElementById: () => field},
+    setTimeout(fn,ms){assert.equal(ms,1500);timers.set(++timerID,fn);return timerID;},
+    clearTimeout(id){timers.delete(id);},
+    document: {querySelectorAll: () => [button], getElementById: () => field, addEventListener:(name,fn)=>handlers[name]=fn},
     navigator: {clipboard: {writeText: async text => { if (fail) throw new Error('denied'); copied = text; }}},
     window: {getSelection: () => ({selectAllChildren: element => { selected = element; }})},
   };
@@ -328,6 +331,11 @@ test('agent handoff copies visible text and selects it when clipboard access fai
   await button.click();
   assert.equal(copied, field.textContent);
   assert.equal(status.textContent, 'Copied.');
+  const first=timerID;
+  await button.click();assert.equal(timers.has(first),false,'copying again replaces the timeout');
+  timers.get(timerID)();assert.equal(status.textContent,'','success clears after 1.5 seconds');
+  await button.click();handlers.pointerdown();assert.equal(status.textContent,'','another pointer interaction clears success');
+  await button.click();handlers.keydown();assert.equal(status.textContent,'','keyboard interaction also clears success');
   fail = true;
   await button.click();
   assert.equal(field.focused, true);

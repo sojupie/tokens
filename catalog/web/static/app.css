@@ -137,7 +137,6 @@ button:not(:disabled), [role=button]:not([aria-disabled=true]) { cursor:pointer;
 .tokens-thumbnail-landscape { display:block; width:100%; height:100px; object-fit:cover; }
 .tokens-thumbnail-carousel { width:340px; margin-inline-start:30px; }
 .tokens-thumbnail-carousel .md-carousel-item { background:var(--md-sys-color-tertiary-container); }
-.tokens-thumbnail-carousel-label { position:absolute; inset:auto auto 12px 16px; padding:var(--md-sys-measurement-space50) var(--md-sys-measurement-space100); border-radius:var(--md-sys-shape-corner-small); background:var(--md-sys-color-surface); color:var(--md-sys-color-on-surface); }
 .tokens-thumbnail-options { display:grid; gap:var(--md-sys-measurement-space100); width:270px; }
 .tokens-thumbnail-options > div { display:flex; align-items:center; gap:var(--md-sys-measurement-space150); }
 .tokens-thumbnail-switches > div { justify-content:space-between; }

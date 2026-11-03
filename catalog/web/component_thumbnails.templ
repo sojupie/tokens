@@ -75,9 +75,10 @@ templ componentThumbnail(c componentCase) {
 			<div class="tokens-thumbnail-carousel">
 				@ui.Carousel(ui.CarouselProps{Attrs: c.Attributes()}, 3) {
 					for i,label:=range []string{"Trouville","Parasol","Argenteuil"} {
-						@ui.CarouselItem(ui.CarouselItemProps{Index: i, Count: 3, Attrs: c.CarouselItem(i)}) {
-							@carouselArtwork(i)
-							<span class="tokens-thumbnail-carousel-label">{ label }</span>
+						@ui.CarouselItem(ui.CarouselItemProps{Index: i, Count: 3, Attrs: c.CarouselItem(i), ImageSrc: staticURL("paintings/"+carouselPaintings[i]), ImagePosition: carouselPaintingPositions[i], ImageScale: carouselPaintingScales[i]}) {
+							@ui.CarouselText() {
+                                { label }
+                            }
 						}
 					}
 				}

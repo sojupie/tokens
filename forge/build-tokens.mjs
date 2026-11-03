@@ -11,6 +11,7 @@ import { componentBundles } from './component-bundles.mjs';
 import { pageThemes } from './theme-subsets.mjs';
 import {
   readdir,
+  cp,
   realpath,
   mkdir,
   readFile,
@@ -212,6 +213,16 @@ function cssVariables(values, selector, names) {
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([name, value]) => `  --${name}: ${value};`);
   return `${selector} {\n${declarations.join("\n")}\n}\n`;
+}
+
+// Theme rebuilds must not remove independently generated catalog thumbnails.
+export async function preserveIllustrations(target, output, publicationId) {
+  const source = path.join(target, "illustrations");
+  let manifest;
+  try { manifest = JSON.parse(await readFile(path.join(source, "manifest.json"), "utf8")); }
+  catch (error) { if (error.code === "ENOENT") return; throw error; }
+  if (manifest.publicationId === publicationId)
+    await cp(source, path.join(output, "illustrations"), {recursive:true});
 }
 
 async function main() {
@@ -516,6 +527,7 @@ async function main() {
           throw new Error(`${file} differs from the committed server bindings; regenerate and rebuild the application`);
       }
     }
+    await preserveIllustrations(target, output, identity.publicationId);
     const backup = `${output}-previous`;
     let previous = false;
     try {
