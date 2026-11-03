@@ -8,6 +8,7 @@
  document.documentElement.dataset.siteLayout=header.dataset.siteLayout;
  const section=header.querySelector('[data-site-navigation]')?.dataset.activeSection??'';
  document.documentElement.dataset.siteSection=section;
+ header.dataset.drawerPersistent=String(wide&&!!section);
  header.dataset.mobileLevel=section?'section':'main';
  document.documentElement.dataset.siteDrawer=rail?'expanded':'modal';
  if(rail){

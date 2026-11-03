@@ -831,7 +831,16 @@ test('site navigation drills into a single mobile list and preserves its positio
  assert.equal(prevented,false,'rail links navigate directly at medium widths');
  handlers.pointerover({target:{closest:()=>railLink},pointerType:'mouse'});
  assert.equal(header.dataset.panelOpen,'true');assert.equal(panels[1].hidden,false);
- handlers.pointerleave();assert.equal(header.dataset.panelOpen,'false');
+ handlers.pointerleave();assert.equal(header.dataset.panelOpen,'false');assert.equal(panels[1].hidden,false,'overlay exit keeps the hovered section visible through its fade');
  handlers.focusin({target:{closest:()=>railLink}});assert.equal(header.dataset.panelOpen,'true');
  handlers.keydown({key:'Escape',preventDefault(){}});assert.equal(header.dataset.panelOpen,'false');
+ width=1440;node={dataset:{activeSection:'/components'}};docHandlers['htmx:afterSwap']();
+ handlers.pointerover({target:{closest:()=>railLink},pointerType:'mouse'});
+ assert.equal(panels[1].hidden,false,'wide windows also reveal the hovered section');
+ assert.equal(root.dataset.siteSection,'/components','hover must not change reserved content width');
+ handlers.pointerleave();assert.equal(panels[0].hidden,false,'leaving restores the page section');assert.equal(drawer.inert,false);
+ node={dataset:{activeSection:''}};docHandlers['htmx:afterSwap']();
+ handlers.pointerover({target:{closest:()=>railLink},pointerType:'mouse'});
+ assert.equal(header.dataset.panelOpen,'true');assert.equal(root.dataset.siteSection,'','a page without a drawer retains its width');assert.equal(drawer.inert,false);
+ handlers.pointerleave();assert.equal(drawer.inert,true);assert.equal(panels[1].hidden,false,'retain outgoing content for the exit fade');
 });

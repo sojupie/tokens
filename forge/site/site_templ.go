@@ -505,7 +505,7 @@ func Rail(config Config) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = ui.NavigationItem(ui.NavigationItemProps{Label: "Home", IconContent: railHomeIcon(), Href: config.Catalog + "/", Current: config.Active == "/"}).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = ui.NavigationItem(ui.NavigationItemProps{Label: "Home", IconContent: railHomeIcon(), Href: config.Catalog + "/", Current: config.Active == "/", Attrs: templ.Attributes{"data-site-rail-section": ""}}).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

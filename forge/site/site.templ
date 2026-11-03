@@ -93,7 +93,7 @@ templ Destinations(config Config) {
 templ Rail(config Config) {
 	<div class="tokens-site-rail-column">
 		@ui.NavigationRail(ui.RailProps{NavigationProps: ui.NavigationProps{Label: "Primary", Variant: "collapsed", Alignment: "top", Attrs: templ.Attributes{"class": "md-navigation md-navigation-rail tokens-site-rail"}}}) {
-			@ui.NavigationItem(ui.NavigationItemProps{Label: "Home", IconContent: railHomeIcon(), Href: config.Catalog + "/", Current: config.Active == "/"})
+			@ui.NavigationItem(ui.NavigationItemProps{Label: "Home", IconContent: railHomeIcon(), Href: config.Catalog + "/", Current: config.Active == "/", Attrs:templ.Attributes{"data-site-rail-section":""}})
 			for _, section := range config.sections() {
 				@ui.NavigationItem(ui.NavigationItemProps{Label: section.Name, Icon: section.Icon, Href: config.Catalog + section.Path, Current: config.section() == section.Path, Attrs: templ.Attributes{"data-site-rail-section": section.Path}})
 			}
