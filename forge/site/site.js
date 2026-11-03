@@ -32,7 +32,8 @@
    const section=next.dataset.activeSection;
    document.documentElement.dataset.siteSection=section;
    header.dataset.drawerPersistent=String(wide.matches&&!!section);
-   showSection(header.querySelector(`[data-site-panel="${section}"]`)?section:'');
+   const shown=header.querySelector(`[data-site-panel="${section}"]`)?section:rail.matches?header.dataset.section:'';
+   showSection(header.querySelector(`[data-site-panel="${shown}"]`)?shown:'');
    latched=rail.matches&&!wide.matches&&pendingSection===section;
    pendingSection=undefined;
    setPanelOpen(latched);
@@ -67,13 +68,12 @@
   function closePanel(){
    latched=false;
    setPanelOpen(false);
-   if(header.dataset.drawerPersistent==='true'&&navigation?.dataset.activeSection)showSection(navigation.dataset.activeSection);
   }
   function revealSection(event){
    if(!rail.matches||event.pointerType==='touch'||event.pointerType==='pen'||(event.type==='focusin'&&(pointerType==='touch'||pointerType==='pen')))return;
    const link=event.target.closest('[data-site-rail-section]');
    if(!link)return;
-   if(!header.querySelector(`[data-site-panel="${link.dataset.siteRailSection}"]`)){closePanel();return;}
+   if(!header.querySelector(`[data-site-panel="${link.dataset.siteRailSection}"]`))return;
    rememberScroll();showSection(link.dataset.siteRailSection);setPanelOpen(true);
   }
   document.addEventListener('pointerdown',event=>{

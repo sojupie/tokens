@@ -858,8 +858,12 @@ test('site navigation drills into a single mobile list and preserves its positio
  handlers.pointerover({target:{closest:()=>railLink},pointerType:'mouse'});
  assert.equal(panels[1].hidden,false,'wide windows also reveal the hovered section');
  assert.equal(root.dataset.siteSection,'/components','hover must not change reserved content width');
- handlers.pointerleave();assert.equal(panels[0].hidden,false,'leaving restores the page section');assert.equal(drawer.inert,false);
+ const noSubpages={dataset:{siteRailSection:'/changes'}};
+ handlers.pointerover({target:{closest:()=>noSubpages},pointerType:'mouse'});
+ assert.equal(header.dataset.panelOpen,'true');assert.equal(panels[1].hidden,false,'destinations without subpages retain the last shown drawer');
+ handlers.pointerleave();assert.equal(panels[1].hidden,false,'leaving retains the last shown section rather than restoring the selected page');assert.equal(drawer.inert,false);
  node={dataset:{activeSection:''}};docHandlers['htmx:afterSwap']();
+ assert.equal(panels[1].hidden,false,'navigation to a page without subpages remembers the last drawer content');
  handlers.pointerover({target:{closest:()=>railLink},pointerType:'mouse'});
  assert.equal(header.dataset.panelOpen,'true');assert.equal(root.dataset.siteSection,'','a page without a drawer retains its width');assert.equal(drawer.inert,false);
  handlers.pointerleave();assert.equal(drawer.inert,true);assert.equal(panels[1].hidden,false,'retain outgoing content for the exit fade');
