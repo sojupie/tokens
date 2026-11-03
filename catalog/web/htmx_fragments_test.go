@@ -2,6 +2,8 @@ package web
 
 import (
 	"context"
+	"encoding/json"
+	"github.com/sojupie/tokens/source/publish"
 	"net/http/httptest"
 	"net/url"
 	"strings"
@@ -71,7 +73,7 @@ func TestExportDialogReturnsResolvedHTMLAndPreservesMultipleSelections(t *testin
 	w := httptest.NewRecorder()
 	server.Handler().ServeHTTP(w, httptest.NewRequest("GET", "/downloads/export/options?"+query.Encode(), nil))
 	body := w.Body.String()
-	if w.Code != 200 || !strings.Contains(body, `class="tokens-export-fields"`) || !strings.Contains(body, `hx-trigger="load"`) || !strings.Contains(body, `/downloads/export/summary?`) || strings.Contains(body, `<dialog`) || strings.Contains(body, `<!doctype`) {
+	if w.Code != 200 || !strings.Contains(body, `class="tokens-export-fields"`) || strings.Contains(body, `hx-trigger="load"`) || !strings.Contains(body, `4 format/context combinations`) || strings.Contains(body, `<dialog`) || strings.Contains(body, `<!doctype`) {
 		t.Fatal(w.Code, body)
 	}
 	if strings.Count(body, `checked`) < 4 {
@@ -136,5 +138,30 @@ func TestExportFooterKeepsSummaryAndLoadingActionOutsideScrollingForm(t *testing
 	}
 	if !strings.Contains(body, `id="tokens-export-loading-action" hx-preserve`) || !strings.Contains(body, `class="md-button md-filled-button md-loading-button"`) {
 		t.Fatal("loading primitive must remain mounted")
+	}
+}
+
+// Selection feedback must remain independent of serializers and asset assembly.
+func TestExportSelectionFeedbackDoesNotGenerateFiles(t *testing.T) {
+	server := scopedExportFixture()
+	query := url.Values{"kind": {"component"}, "slug": {"buttons"}, "scope": {"subject"}, "content": {"tokens"}, "format": {"dtcg", "source"}, "context.Theme": {"Light", "Dark"}}
+	// This extra malformed token makes whole-collection conversion fail, but cannot
+	// affect the selected subject's choices or combination count.
+	key := publish.SubjectKey{Kind: publish.SubjectStyle, Slug: "broken"}
+	server.state.Subjects[key] = publish.SubjectView{Key: key, Tokens: []publish.TokenView{{SourceName: "broken", Values: []publish.TokenValueView{{Value: json.RawMessage(`{"numeric":1}`), ContextLabels: []string{"invalid label"}}}}}}
+	state := server.exportDialog(context.Background(), query)
+	if !state.Ready || state.Error != "" || !strings.Contains(state.Counts, "4 format/context combinations") {
+		t.Fatalf("%+v", state)
+	}
+	if _, _, _, _, err := server.exportDocument(url.Values{"scope": {"collection"}}); err == nil {
+		t.Fatal("fixture must fail conversion")
+	}
+	server.themeBundles = map[string][]byte{"shared": []byte(":root{}")}
+	server.tokenAssetsDir = t.TempDir()
+	query.Set("content", "implementation")
+	query.Set("format", "zip")
+	state = server.exportDialog(context.Background(), query)
+	if !state.Ready || state.Error != "" {
+		t.Fatalf("summary attempted asset assembly: %+v", state)
 	}
 }

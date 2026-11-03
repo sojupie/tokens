@@ -16,25 +16,27 @@ import (
 )
 
 type Server struct {
-	navigation     []site.Section
-	illustrations  map[string]Illustration
-	motionURL      string
-	motionLabURL   string
-	thumbnailMu    sync.Mutex
-	thumbnails     map[string]componentCase
-	previewMu      sync.Mutex
-	previewFiles   map[string][]componentCase
-	usage          *usage.Store
-	publicOrigin   string
-	basePath       string
-	browserOrigin  string
-	state          publish.PublishedState
-	cssValues      map[string]map[string]string
-	tokenAssetsDir string
-	downloadsDir   string
-	themeCSS       string
-	themeBundles   map[string][]byte
-	themeError     error
+	exportIndexOnce      sync.Once
+	exportSelectionIndex *exportIndex
+	navigation           []site.Section
+	illustrations        map[string]Illustration
+	motionURL            string
+	motionLabURL         string
+	thumbnailMu          sync.Mutex
+	thumbnails           map[string]componentCase
+	previewMu            sync.Mutex
+	previewFiles         map[string][]componentCase
+	usage                *usage.Store
+	publicOrigin         string
+	basePath             string
+	browserOrigin        string
+	state                publish.PublishedState
+	cssValues            map[string]map[string]string
+	tokenAssetsDir       string
+	downloadsDir         string
+	themeCSS             string
+	themeBundles         map[string][]byte
+	themeError           error
 }
 
 type subjectSummary struct {

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"maps"
 	"net/http"
 	"net/url"
 	"sort"
@@ -34,10 +35,6 @@ type exportSummary struct {
 func (server *Server) exportPage(subject *publish.SubjectView, query url.Values) exportPage {
 	page := exportPage{Scope: "collection", CSS: server.cssValues != nil, Implementations: len(server.themeBundles) > 0}
 	selection := dtcg.DefaultContext()
-	tokens := []publish.TokenView{}
-	for _, item := range server.state.Subjects {
-		tokens = append(tokens, item.Tokens...)
-	}
 	if subject != nil {
 		page.Kind, page.Slug, page.Scope = string(subject.Key.Kind), subject.Key.Slug, "subject"
 		page.Set, page.Query = query.Get("set"), query.Get("q")
@@ -53,22 +50,7 @@ func (server *Server) exportPage(subject *publish.SubjectView, query url.Values)
 		}
 		page.Component = subject.Key.Kind == publish.SubjectComponent && componentFamily(subject.Key.Slug) != "" && server.tokenAssetsDir != ""
 	}
-	choices := map[string]map[string]bool{}
-	for _, token := range tokens {
-		for _, value := range token.Values {
-			for _, label := range value.ContextLabels {
-				name, value, ok := strings.Cut(label, ":")
-				if !ok {
-					continue
-				}
-				name, value = strings.TrimSpace(name), strings.TrimSpace(value)
-				if choices[name] == nil {
-					choices[name] = map[string]bool{}
-				}
-				choices[name][value] = true
-			}
-		}
-	}
+	choices := server.exportIndex().choices
 	names := make([]string, 0, len(choices))
 	for name := range choices {
 		names = append(names, name)
@@ -125,9 +107,7 @@ func (server *Server) selectedExport(query url.Values) (map[string]bool, map[str
 	}
 	switch query.Get("scope") {
 	case "collection":
-		for _, item := range server.state.Subjects {
-			add(item.Tokens)
-		}
+		names = maps.Clone(server.exportIndex().names)
 	case "subject":
 		if subject == nil {
 			return nil, nil, nil, fmt.Errorf("choose a component or style")

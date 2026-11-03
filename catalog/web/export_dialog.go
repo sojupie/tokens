@@ -202,35 +202,34 @@ func (server *Server) exportDialogSummary(ctx context.Context, query url.Values)
 	if err != nil {
 		return "", "Download", err
 	}
-	files := 0
-	var summary exportSummary
-	for _, job := range jobs {
-		if err := ctx.Err(); err != nil {
-			return "", "Download", err
-		}
-		if query.Get("content") == "implementation" {
-			entries, _, e := server.implementationFiles(ctx, job)
-			err = e
-			files += len(entries)
-		} else {
-			_, _, summary, _, err = server.exportDocument(job)
-			files++
-		}
+	if err := ctx.Err(); err != nil {
+		return "", "Download", err
+	}
+	if query.Get("content") == "implementation" {
+		_, _, subject, err := server.selectedExport(query)
 		if err != nil {
 			return "", "Download", err
 		}
+		if query.Get("scope") == "subject" && (subject == nil || componentFamily(subject.Key.Slug) == "") {
+			return "", "Download", fmt.Errorf("no implemented component examples in this selection")
+		}
+		if len(jobs) > 1 {
+			return fmt.Sprintf("%d context combinations in one implementation ZIP.", len(jobs)), "Download ZIP", nil
+		}
+		return "Component implementation ZIP, including required assets.", "Download ZIP", nil
 	}
 	if len(jobs) > 1 {
-		return fmt.Sprintf("%d format/context combinations · %d files in one ZIP.", len(jobs), files), "Download ZIP", nil
+		return fmt.Sprintf("%d format/context combinations · %d files in one ZIP.", len(jobs), len(jobs)), "Download ZIP", nil
 	}
-	if query.Get("content") == "implementation" {
-		return fmt.Sprintf("%d files in the implementation archive.", files), "Download ZIP", nil
+	names, _, _, err := server.selectedExport(query)
+	if err != nil {
+		return "", "Download", err
 	}
-	return fmt.Sprintf("%d selected tokens · %d exported · %d required references · %d omitted", summary.Selected, summary.Exported, summary.Dependencies, summary.Omitted), "Download", nil
+	return fmt.Sprintf("%d selected tokens. Required references are included on export.", len(names)), "Download", nil
 }
 
 func (server *Server) handleExportDialog(w http.ResponseWriter, r *http.Request) {
-	state := server.exportDialogOptions(r.URL.Query())
+	state := server.exportDialog(r.Context(), r.URL.Query())
 	if err := server.renderHTML(w, r, exportDialogOptionsResponse(state)); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}

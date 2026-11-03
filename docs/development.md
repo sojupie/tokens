@@ -282,9 +282,17 @@ JavaScript owns focus, disclosure state and pending/error feedback.
 Download controls declare their request targets and dependent fieldsets from
 Go's export-selection model. Structural choices request
 `/downloads/export/options`, which returns resolved fields through `outerMorph`
-and updates the summary and action through htmx 4 partials. The summary then
-requests `/downloads/export/summary` on `load`; format-only changes request that
-summary directly. Both use the form's `replace` synchronization scope.
+and updates the summary and action through htmx 4 partials in the same response.
+Format-only changes request `/downloads/export/summary` directly. Both use the
+form's `replace` synchronization scope.
+
+An index built from the loaded publication stores context vocabulary, parsed
+value labels and token references. Option resolution visits selected tokens and
+their references without reparsing captured JSON or scanning unrelated subjects.
+Selection summaries count jobs using the same `exportSelections` rules as the
+download. They do not convert tokens, render specimens or gather asset contents.
+Exact conversion/dependency/omission counts remain in the on-demand report;
+implementation archives are assembled only when downloaded.
 
 `hx-disable` blocks stale dependent fieldsets and a temporary guard around
 Download; `hx-indicator` drives the existing button loading primitive. A separate

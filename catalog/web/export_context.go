@@ -1,14 +1,12 @@
 package web
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/url"
 	"sort"
 	"strings"
 
 	"github.com/sojupie/tokens/source/dtcg"
-	"github.com/sojupie/tokens/source/publish"
 )
 
 // Context labels describe individual captured values, not a global matrix.
@@ -18,26 +16,8 @@ func (server *Server) exportContextChoices(query url.Values) (map[string][]strin
 	if err != nil {
 		return nil, err
 	}
-	tokens := map[string][]publish.TokenView{}
-	known := map[string]map[string]bool{}
-	for _, subject := range server.state.Subjects {
-		for _, token := range subject.Tokens {
-			tokens[token.SourceName] = append(tokens[token.SourceName], token)
-			for _, value := range token.Values {
-				for _, label := range value.ContextLabels {
-					key, val, ok := strings.Cut(label, ":")
-					if !ok {
-						continue
-					}
-					key, val = strings.TrimSpace(key), strings.TrimSpace(val)
-					if known[key] == nil {
-						known[key] = map[string]bool{}
-					}
-					known[key][val] = true
-				}
-			}
-		}
-	}
+	index := server.exportIndex()
+	known := index.choices
 	for key, values := range query {
 		if !strings.HasPrefix(key, "context.") {
 			continue
@@ -58,24 +38,58 @@ func (server *Server) exportContextChoices(query url.Values) (map[string][]strin
 		queue = append(queue, name)
 	}
 	for i := 0; i < len(queue); i++ {
-		for _, token := range tokens[queue[i]] {
-			for _, value := range token.Values {
-				// References in another platform's value are not dependencies
-				// of this selection. Include every selected theme/contrast.
+		for _, value := range index.tokens[queue[i]] {
+			// References in another platform's value are not dependencies
+			// of this selection. Include every selected theme/contrast.
+			compatible := true
+			for key, required := range value.labels {
+				selected := query["context."+key]
+				if len(selected) == 0 {
+					selected = []string{defaults[key]}
+				}
+				match := false
+				for _, candidate := range selected {
+					if candidate == required {
+						match = true
+						break
+					}
+				}
+				if !match {
+					compatible = false
+					break
+				}
+			}
+			if !compatible {
+				continue
+			}
+			for _, reference := range value.references {
+				if !names[reference.Name] {
+					names[reference.Name] = true
+					queue = append(queue, reference.Name)
+				}
+			}
+		}
+	}
+	choices := map[string]map[string]bool{}
+	for name := range names {
+		for _, value := range index.tokens[name] {
+			if !value.defined {
+				continue
+			}
+			labels := value.labels
+			for dimension, candidate := range labels {
 				compatible := true
-				for _, label := range value.ContextLabels {
-					key, required, ok := strings.Cut(label, ":")
-					if !ok {
+				for other, required := range labels {
+					if other == dimension {
 						continue
 					}
-					key, required = strings.TrimSpace(key), strings.TrimSpace(required)
-					selected := query["context."+key]
+					selected := query["context."+other]
 					if len(selected) == 0 {
-						selected = []string{defaults[key]}
+						selected = []string{defaults[other]}
 					}
 					match := false
-					for _, candidate := range selected {
-						if candidate == required {
+					for _, selectedValue := range selected {
+						if selectedValue == required {
 							match = true
 							break
 						}
@@ -85,61 +99,11 @@ func (server *Server) exportContextChoices(query url.Values) (map[string][]strin
 						break
 					}
 				}
-				if !compatible {
-					continue
-				}
-				for _, reference := range value.References {
-					if !names[reference.Name] {
-						names[reference.Name] = true
-						queue = append(queue, reference.Name)
+				if compatible {
+					if choices[dimension] == nil {
+						choices[dimension] = map[string]bool{}
 					}
-				}
-			}
-		}
-	}
-	choices := map[string]map[string]bool{}
-	for name := range names {
-		for _, token := range tokens[name] {
-			for _, value := range token.Values {
-				var object map[string]json.RawMessage
-				if json.Unmarshal(value.Value, &object) != nil || object["undefined"] != nil {
-					continue
-				}
-				labels := map[string]string{}
-				for _, label := range value.ContextLabels {
-					k, v, ok := strings.Cut(label, ":")
-					if ok {
-						labels[strings.TrimSpace(k)] = strings.TrimSpace(v)
-					}
-				}
-				for dimension, candidate := range labels {
-					compatible := true
-					for other, required := range labels {
-						if other == dimension {
-							continue
-						}
-						selected := query["context."+other]
-						if len(selected) == 0 {
-							selected = []string{defaults[other]}
-						}
-						match := false
-						for _, selectedValue := range selected {
-							if selectedValue == required {
-								match = true
-								break
-							}
-						}
-						if !match {
-							compatible = false
-							break
-						}
-					}
-					if compatible {
-						if choices[dimension] == nil {
-							choices[dimension] = map[string]bool{}
-						}
-						choices[dimension][candidate] = true
-					}
+					choices[dimension][candidate] = true
 				}
 			}
 		}

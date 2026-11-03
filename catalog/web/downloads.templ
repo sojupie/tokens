@@ -116,7 +116,7 @@ templ tableTools() {
 
 templ downloadDialogActions() {
 	if page := metadata(ctx).Export; page != nil {
-		@exportDialogSummary(initialExportDialog(*page), false)
+		@exportDialogSummary(initialExportDialog(*page))
 	}
 	<div class="tokens-export-footer-actions">
 		@ui.Action(ui.ButtonProps{Variant: ui.Text, Attrs: templ.Attributes{"data-export-cancel": ""}}) {
@@ -214,29 +214,19 @@ templ exportDialogChoices(state exportDialogState, name, title string, choices [
 	</fieldset>
 }
 
-// Options and their descriptions update before the expensive summary starts.
+// Option resolution and selection counts require no export generation.
 templ exportDialogOptionsResponse(state exportDialogState) {
 	@exportDialogFields(state)
 	<hx-partial hx-target="#tokens-export-summary" hx-swap="outerHTML">
-		@exportDialogSummary(state, true)
+		@exportDialogSummary(state)
 	</hx-partial>
 	<hx-partial hx-target="#tokens-export-confirmation" hx-swap="outerMorph">
 		@exportDownloadAction(state)
 	</hx-partial>
 }
 
-templ exportDialogSummary(state exportDialogState, load bool) {
-	<div
-		id="tokens-export-summary"
-		if load && state.Resolved {
-			hx-get={ "/downloads/export/summary?" + state.Query.Encode() }
-			hx-trigger="load"
-			hx-sync="#tokens-export-form:replace"
-			hx-swap="none"
-			hx-disable="#tokens-export-submit-pending"
-			hx-indicator="#tokens-export-submit-pending"
-		}
-	>
+templ exportDialogSummary(state exportDialogState) {
+	<div id="tokens-export-summary">
 		<p class="md-typescale-body-small" data-export-counts role="status" aria-live="polite">
 			{ state.Counts }
 		</p>
@@ -257,7 +247,7 @@ templ exportDownloadAction(state exportDialogState) {
 
 templ exportDialogSummaryResponse(state exportDialogState) {
 	<hx-partial hx-target="#tokens-export-summary" hx-swap="outerHTML">
-		@exportDialogSummary(state, false)
+		@exportDialogSummary(state)
 	</hx-partial>
 	<hx-partial hx-target="#tokens-export-confirmation" hx-swap="outerMorph">
 		@exportDownloadAction(state)
