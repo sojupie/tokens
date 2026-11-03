@@ -125,7 +125,14 @@
     const clearance=Math.min(text.left-clip.left,clip.right-text.right,text.top-clip.top,clip.bottom-text.bottom);
     return clamp(clearance/Math.max(1,fade),0,1);
   }
-  if(typeof module!=='undefined')module.exports={layout,itemFrame,scrollTargets,uncontainedFrames,captionOpacity};
+  // Range includes text hidden by line-clamp. Only its visible fragments can
+  // reach the carousel mask; ordinary caption overflow is handled by ellipsis.
+  function captionBounds(rects,box) {
+    const visible=Array.from(rects,r=>({left:Math.max(r.left,box.left),right:Math.min(r.right,box.right),top:Math.max(r.top,box.top),bottom:Math.min(r.bottom,box.bottom)})).filter(r=>r.right>r.left&&r.bottom>r.top);
+    if(!visible.length)return box;
+    return {left:Math.min(...visible.map(r=>r.left)),right:Math.max(...visible.map(r=>r.right)),top:Math.min(...visible.map(r=>r.top)),bottom:Math.max(...visible.map(r=>r.bottom))};
+  }
+  if(typeof module!=='undefined')module.exports={layout,itemFrame,scrollTargets,uncontainedFrames,captionOpacity,captionBounds};
   if(typeof document==='undefined')return;
   const roots=new WeakMap(),reduced=matchMedia('(prefers-reduced-motion: reduce)');
   const items=root=>[...root.querySelectorAll('.md-carousel-item')];
@@ -202,7 +209,7 @@
     const opacity=state.captions.map(caption=>{
       const item=caption.closest('.md-carousel-item').getBoundingClientRect();
       const range=caption.ownerDocument.createRange();range.selectNodeContents(caption);
-      const text=range.getBoundingClientRect();
+      const text=captionBounds(range.getClientRects(),caption.getBoundingClientRect());
       const lineHeight=parseFloat(getComputedStyle(caption).lineHeight)||text.height;
       return captionOpacity(text,{left:Math.max(view.left,item.left),right:Math.min(view.right,item.right),top:Math.max(view.top,item.top),bottom:Math.min(view.bottom,item.bottom)},lineHeight/2);
     });

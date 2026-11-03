@@ -99,11 +99,11 @@ func configureCarouselPreview(page *componentPreview, query url.Values) error {
 	return nil
 }
 
-// These artwork ratios are the four examples in the captured carousel specs.
+// Specimen ratios accommodate each painting; the portrait keeps its source proportions.
 func (c componentCase) CarouselSlot(index int) templ.Attributes {
 	attrs := templ.Attributes{"class": "md-carousel-slot"}
 	if c.Variant == "uncontained-multi-aspect-ratio" {
-		ratios := []float64{16.0 / 9, 9.0 / 16, 1, 3.0 / 4}
+		ratios := []float64{16.0 / 9, 968.0 / 1200, 1, 3.0 / 4}
 		attrs["style"] = fmt.Sprintf("--_carousel-aspect-ratio:%g", ratios[index%len(ratios)])
 	}
 	return attrs

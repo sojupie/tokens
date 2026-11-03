@@ -1,7 +1,7 @@
 const test=require('node:test'),assert=require('node:assert/strict');
 const {readFileSync}=require('node:fs'),{runInNewContext}=require('node:vm');
 const out={exports:{}};runInNewContext(readFileSync(`${__dirname}/static/carousel.js`,'utf8'),{module:out});
-const {layout,itemFrame,scrollTargets,uncontainedFrames,captionOpacity}=out.exports;
+const {layout,itemFrame,scrollTargets,uncontainedFrames,captionOpacity,captionBounds}=out.exports;
 test('every resting arrangement retains its size hierarchy and interpolates without overlap',()=>{
  for(const width of [177,328,736,740,1168])for(const variant of ['multi-browse','hero','center-aligned-hero']){
   const plan=layout(width,240,8,variant,6),max=variant==='center-aligned-hero'?5:6-plan.big;
@@ -260,6 +260,18 @@ test('captions fade before the visible image clips any glyphs',()=>{
  assert.equal(captionOpacity(text,{...clip,right:59},10),0,'hide at the clipping edge');
  assert.equal(captionOpacity(text,{...clip,right:56},10),0,'a narrow item cannot expose clipped text');
  assert.equal(captionOpacity(text,{...clip,left:20},10),0,'viewport clipping uses the same rule');
+});
+
+test('line-clamped captions remain opaque until their displayed text reaches the mask',()=>{
+ const box={left:16,right:136,top:140,bottom:180};
+ const text=captionBounds([
+  {left:16,right:98,top:140,bottom:159},
+  {left:16,right:166,top:160,bottom:179},
+  {left:16,right:110,top:180,bottom:199},
+ ],box);
+ assert.deepEqual({...text}, {left:16,right:136,top:140,bottom:179});
+ assert.equal(captionOpacity(text,{left:0,right:152,top:0,bottom:196},10),1,'hidden overflow does not fade an otherwise visible caption');
+ assert.equal(captionOpacity(text,{left:0,right:141,top:0,bottom:196},10),.5,'the displayed truncation still fades near the viewport edge');
 });
 
 test('fractional end targets collapse to one reachable page in either direction',()=>{
