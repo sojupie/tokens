@@ -294,7 +294,10 @@ func (server *Server) renderHTML(response http.ResponseWriter, request *http.Req
 	if err != nil {
 		return err
 	}
-	content := append(links, rendered.Bytes()...)
+	content, err := hoistComponentStyles(append(links, rendered.Bytes()...))
+	if err != nil {
+		return err
+	}
 	body, err := prefixHTML(content, server.basePath)
 	if err != nil {
 		return err

@@ -1,5 +1,5 @@
 // The host page owns core controls. Load optional behavior once, including after
-// HTMX swaps; native body stylesheets follow the lifetime of the page markup.
+// HTMX swaps. Component styles remain in the head for the document lifetime.
 (() => {
   const script = document.currentScript,
     sources = JSON.parse(script.dataset.sources),
@@ -52,25 +52,47 @@
     pending.set(name, promise);
     return promise;
   }
-  function stylesReady() {
-    return Promise.all(
-      [...document.querySelectorAll("link[data-component-stylesheet]")].map(
-        (link) => {
-          if (link.dataset.stylesheetError !== undefined) return Promise.reject(new Error("Could not load component styles"));
-          if (link.sheet) return Promise.resolve();
-          return new Promise((resolve, reject) => {
-            link.addEventListener("load", resolve, { once: true });
-            link.addEventListener(
-              "error",
-              () => reject(new Error("Could not load component styles")),
-              { once: true },
-            );
-          });
-        },
-      ),
-    );
+  const styles = new Map();
+  function stylesheet(link) {
+    const href = new URL(link.getAttribute('href'), document.baseURI).href;
+    if (styles.has(href)) return styles.get(href);
+    const ready = link.dataset.stylesheetError !== undefined ? Promise.reject(new Error(`Could not load ${href}`)) : link.sheet ? Promise.resolve() : new Promise((resolve, reject) => {
+      link.addEventListener('load', resolve, {once:true});
+      link.addEventListener('error', () => reject(new Error(`Could not load ${href}`)), {once:true});
+    });
+    styles.set(href, ready);
+    ready.catch(() => { styles.delete(href); link.remove(); });
+    return ready;
   }
-  const api = { ready: Promise.resolve() };
+  function stylesReady() {
+    return Promise.all([...document.head.querySelectorAll('link[data-component-stylesheet]')].map(stylesheet));
+  }
+  function stylesChanged(incoming) {
+    const existing = new Map([...document.head.querySelectorAll('link[data-component-stylesheet]')].map(link => {
+      const url = new URL(link.getAttribute('href'), document.baseURI); return [url.pathname, url.href];
+    }));
+    return [...incoming.querySelectorAll('link[data-component-stylesheet]')].some(link => {
+      const url = new URL(link.getAttribute('href'), document.baseURI);
+      return existing.has(url.pathname) && existing.get(url.pathname) !== url.href;
+    });
+  }
+  async function prepareStyles(incoming, signal) {
+    const ready = [];
+    for (const source of incoming.querySelectorAll('link[data-component-stylesheet]')) {
+      const href = new URL(source.getAttribute('href'), document.baseURI).href;
+      const existing = [...document.head.querySelectorAll('link[data-component-stylesheet]')].find(link => link.href === href);
+      if (existing) { ready.push(stylesheet(existing)); continue; }
+      const link = source.cloneNode(false);
+      for (const attr of ['media','onload','onerror']) link.removeAttribute(attr);
+      ready.push(stylesheet(link));
+      // Manifest order controls the cascade, independently of navigation order.
+      const next = [...document.head.querySelectorAll('link[data-component-stylesheet]')].find(node => node.dataset.componentOrder > link.dataset.componentOrder);
+      document.head.insertBefore(link, next || null);
+    }
+    await Promise.all(ready);
+    signal?.throwIfAborted();
+  }
+  const api = { ready: Promise.resolve(), prepareStyles, stylesChanged };
   globalThis.TokenAssets = api;
   function initialize() {
     const preview = document.getElementById("component-preview");

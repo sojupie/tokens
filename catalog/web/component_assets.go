@@ -6,9 +6,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/sojupie/tokens/forge/components/ui"
+	xhtml "golang.org/x/net/html"
 	"html"
 	"io"
 	"io/fs"
+	"sort"
 	"strings"
 	"sync"
 
@@ -16,7 +18,8 @@ import (
 )
 
 // Each replaceable region collects the modules its descendants render. Links
-// travel with that region during HTMX swaps, including playground-only updates.
+// declare dependencies for HTMX swaps, including playground-only updates. Full
+// documents hoist them to the head; the client prepares fragment styles before insertion.
 type componentAssetsKey struct{}
 type componentAssets struct {
 	modules     map[string]bool
@@ -119,9 +122,9 @@ var componentModuleNames = sync.OnceValue(func() map[string]bool {
 
 func (server *Server) componentAssetLinks(assets *componentAssets) ([]byte, error) {
 	var links strings.Builder
-	writeStylesheet := func(url string, pageTheme, blocking bool) {
+	writeStylesheet := func(url string, pageTheme, blocking bool, order int) {
 		url = html.EscapeString(url)
-		fmt.Fprintf(&links, `<link rel="stylesheet" href="%s" data-component-stylesheet`, url)
+		fmt.Fprintf(&links, `<link rel="stylesheet" href="%s" data-component-stylesheet data-component-order="%04d"`, url, order)
 		if pageTheme {
 			links.WriteString(` data-page-theme`)
 		}
@@ -131,7 +134,7 @@ func (server *Server) componentAssetLinks(assets *componentAssets) ([]byte, erro
 		}
 		fmt.Fprintf(&links, ` media="print" onload="this.media='all'" onerror="this.dataset.stylesheetError=''"><noscript><link rel="stylesheet" href="%s"></noscript>`, url)
 	}
-	for _, name := range componentModuleOrder() {
+	for order, name := range componentModuleOrder() {
 		if name == "common" || !assets.modules[name] || assets.headModules[name] {
 			continue
 		}
@@ -140,10 +143,10 @@ func (server *Server) componentAssetLinks(assets *componentAssets) ([]byte, erro
 			if !ok {
 				return nil, fmt.Errorf("missing component theme: %s; rebuild token assets", name)
 			}
-			writeStylesheet(fmt.Sprintf("/themes/%s.css?v=%s", name, assetVersion(theme)), true, !assets.deferStyles || name == "navigation")
+			writeStylesheet(fmt.Sprintf("/themes/%s.css?v=%s", name, assetVersion(theme)), true, !assets.deferStyles || name == "navigation", order*2)
 		}
 		// Navigation is initial shell layout; optional specimens can arrive later.
-		writeStylesheet(staticURL("bundles/"+name+".css"), false, !assets.deferStyles || name == "navigation")
+		writeStylesheet(staticURL("bundles/"+name+".css"), false, !assets.deferStyles || name == "navigation", order*2+1)
 	}
 	return []byte(links.String()), nil
 }
@@ -175,4 +178,65 @@ func (server *Server) pageThemes() pageThemesContext {
 		return pageThemesContext{Shared: "/themes/shared.css?v=" + assetVersion(data)}
 	}
 	return pageThemesContext{}
+}
+
+// Full documents own their component styles in the head. Fragments retain their
+// dependency links for the client to prepare before a swap. Tokenizing leaves
+// scripts, template markup and the rest of the rendered HTML unchanged.
+func hoistComponentStyles(content []byte) ([]byte, error) {
+	if !bytes.Contains(content, []byte("</head>")) {
+		return content, nil
+	}
+	z := xhtml.NewTokenizer(bytes.NewReader(content))
+	var body bytes.Buffer
+	styles := map[string]string{}
+	for {
+		kind := z.Next()
+		if kind == xhtml.ErrorToken {
+			if err := z.Err(); err != io.EOF {
+				return nil, err
+			}
+			break
+		}
+		start := body.Len()
+		body.Write(z.Raw())
+		if kind == xhtml.StartTagToken || kind == xhtml.SelfClosingTagToken {
+			token := z.Token()
+			if token.Data == "link" {
+				component, href, order := false, "", ""
+				for _, attr := range token.Attr {
+					switch attr.Key {
+					case "data-component-stylesheet":
+						component = true
+					case "href":
+						href = attr.Val
+					case "data-component-order":
+						order = attr.Val
+					}
+				}
+				if component {
+					attrs := token.Attr[:0]
+					for _, attr := range token.Attr {
+						if attr.Key != "media" && attr.Key != "onload" && attr.Key != "onerror" {
+							attrs = append(attrs, attr)
+						}
+					}
+					token.Attr = append(attrs, xhtml.Attribute{Key: "onerror", Val: "this.dataset.stylesheetError=''"})
+					styles[order+"\n"+href] = token.String()
+					body.Truncate(start)
+					continue
+				}
+			}
+		}
+	}
+	keys := make([]string, 0, len(styles))
+	for key := range styles {
+		keys = append(keys, key)
+	}
+	sort.Strings(keys)
+	var links strings.Builder
+	for _, key := range keys {
+		links.WriteString(styles[key])
+	}
+	return bytes.Replace(body.Bytes(), []byte("</head>"), []byte(links.String()+"</head>"), 1), nil
 }

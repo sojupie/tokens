@@ -26,7 +26,7 @@ func collectedModules(t *testing.T, component templ.Component) []string {
 	}
 	var names []string
 	for _, name := range componentModuleOrder() {
-		if name!="common" && assets.modules[name] {
+		if name != "common" && assets.modules[name] {
 			names = append(names, name)
 		}
 	}
@@ -217,12 +217,15 @@ func TestContentPagesIncludeCardAssets(t *testing.T) {
 				t.Fatal(err)
 			}
 			body := response.Body.String()
-			main := strings.Index(body, "<main")
+			if tc.name == "agents" && strings.Contains(body, staticURL("bundles/split.css")) {
+				t.Fatal("loaded split-button styles on a page without split buttons")
+			}
+			headEnd := strings.Index(body, "</head>")
 			card := strings.Index(body, `class="md-card`)
 			for _, asset := range []string{staticURL("bundles/card.css"), "/themes/card.css?v="} {
 				at := strings.Index(body, asset)
-				if at < main || at > card || card < 0 {
-					t.Fatalf("card asset %s missing before card inside main", asset)
+				if at < 0 || at > headEnd || card < 0 {
+					t.Fatalf("card asset %s missing from document head", asset)
 				}
 			}
 		})
@@ -258,5 +261,26 @@ func TestPreservedSiteNavigationStylesLiveInDocumentHead(t *testing.T) {
 	links, err := server.componentAssetLinks(&componentAssets{modules: map[string]bool{"navigation": true}})
 	if err != nil || !strings.Contains(string(links), "/themes/navigation.css") {
 		t.Fatal("partial navigation lost its styles", err, string(links))
+	}
+}
+
+func TestComponentStylesAreHoistedDeduplicatedAndOrdered(t *testing.T) {
+	input := []byte(`<!doctype html><html><head><title>Test</title></head><body><script>const html="<head>";</script><main data-component-assets><link rel="stylesheet" href="/b.css" data-component-stylesheet data-component-order="0003" media="print" onload="this.media='all'"><link rel="stylesheet" href="/a.css" data-component-stylesheet data-component-order="0001"><link rel="stylesheet" href="/b.css" data-component-stylesheet data-component-order="0003"><p title="A &amp; B">Text</p></main></body></html>`)
+	body, err := hoistComponentStyles(input)
+	if err != nil {
+		t.Fatal(err)
+	}
+	html := string(body)
+	headEnd := strings.Index(html, "</head>")
+	if strings.Count(html, `href="/b.css"`) != 1 || strings.Index(html, `href="/a.css"`) > strings.Index(html, `href="/b.css"`) || strings.Index(html, `href="/b.css"`) > headEnd {
+		t.Fatal("styles not ordered once in head", html)
+	}
+	if strings.Contains(html, `media="print"`) || !strings.Contains(html, `<p title="A &amp; B">Text</p>`) || !strings.Contains(html, `<script>const html="<head>";</script>`) {
+		t.Fatal("altered content or kept deferred stylesheet", html)
+	}
+	fragment := []byte(`<section><link rel="stylesheet" href="/a.css" data-component-stylesheet></section>`)
+	got, err := hoistComponentStyles(fragment)
+	if err != nil || !bytes.Equal(got, fragment) {
+		t.Fatal("fragment lost dependency declaration")
 	}
 }

@@ -74,24 +74,28 @@
   }
   document.addEventListener('htmx:beforeProcessNode',event=>navigationLinks((event.detail?.elt || event.target)));
   // Check deployed assets before hx-head reads and merges a full response.
-  const assets=doc=>Array.from(doc.head.querySelectorAll('script[src]:not([data-component-script]),link[rel="stylesheet"]'),node=>[node.getAttribute('src')||node.getAttribute('href'),node.getAttribute('data-sources')||'',node.getAttribute('data-shapes-version')||''].join('\n')).join('\n');
+  const assets=doc=>Array.from(doc.head.querySelectorAll('script[src]:not([data-component-script]),link[rel="stylesheet"]:not([data-component-stylesheet])'),node=>[node.getAttribute('src')||node.getAttribute('href'),node.getAttribute('data-sources')||'',node.getAttribute('data-shapes-version')||''].join('\n')).join('\n');
   document.addEventListener('htmx:head:before:merge',event=>{
     const ctx=event.detail.ctx;
-    if(ctx.target!==document.body||ctx.response.status!==200){event.preventDefault();return;}
+    if(ctx.response.status!==200){event.preventDefault();return;}
+    if(ctx.target!==document.body)event.preventDefault();
     const read=ctx.response.raw.text.bind(ctx.response.raw);
     ctx.response.raw.text=async()=>{
       const html=await read();
       const incoming=new DOMParser().parseFromString(html,'text/html');
-      ctx.catalogAssetChange=assets(incoming)!==assets(document);
-      return ctx.catalogAssetChange?'':html;
+      ctx.catalogAssetChange=(ctx.target===document.body&&assets(incoming)!==assets(document))||globalThis.TokenAssets.stylesChanged(incoming);
+      if(ctx.catalogAssetChange)return '';
+      await globalThis.TokenAssets.prepareStyles(incoming,ctx.request.signal);
+      // Dependencies now belong to the head, never to replaceable regions.
+      return html.replace(/<link\b[^>]*\bdata-component-stylesheet\b[^>]*>/gi,'');
     };
   });
   document.addEventListener('htmx:head:before:remove',event=>{
-    if(event.detail.headElement.matches('[data-component-script]'))event.preventDefault();
+    if(event.detail.headElement.matches('[data-component-script],[data-component-stylesheet]'))event.preventDefault();
   });
   document.addEventListener('htmx:after:request',event=>{
     const ctx=event.detail.ctx;
-    if(ctx.catalogAssetChange){event.preventDefault();location.assign(ctx.response.raw.url);return;}
+    if(ctx.catalogAssetChange){event.preventDefault();location.assign(ctx.target===document.body?ctx.response.raw.url:location.href);return;}
     if(ctx.target===document.body&&ctx.response.status===200){
       const menu=document.getElementById('tokens-site-menu');if(menu?.matches(':modal'))menu.close();
     }

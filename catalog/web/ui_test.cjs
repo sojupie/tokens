@@ -904,3 +904,54 @@ test('site navigation drills into a single mobile list and preserves its positio
  assert.equal(header.dataset.panelOpen,'true');assert.equal(root.dataset.siteSection,'','a page without a drawer retains its width');assert.equal(drawer.inert,false);
  handlers.pointerleave();assert.equal(drawer.inert,true);assert.equal(panels[1].hidden,false,'retain outgoing content for the exit fade');
 });
+
+test('component styles load once in persistent manifest order before swaps proceed',async()=>{
+ const links=[],events={};
+ class Link {
+  constructor(path,order){this.path=path;this.dataset={componentOrder:order};this.listeners={};this.sheet=null;}
+  get href(){return new URL(this.path,'https://example.test/md3/').href;}
+  getAttribute(name){return name==='href'?this.path:null;}
+  removeAttribute(){}
+  addEventListener(name,fn){this.listeners[name]=fn;}
+  cloneNode(){return new Link(this.path,this.dataset.componentOrder);}
+  remove(){const at=links.indexOf(this);if(at>=0)links.splice(at,1);}
+ }
+ const head={querySelectorAll:()=>links,insertBefore(link,next){const at=links.indexOf(next);links.splice(at<0?links.length:at,0,link);}};
+ const document={baseURI:'https://example.test/md3/',head,currentScript:{src:'https://example.test/md3/static/asset-loader.js',dataset:{sources:'{}'}},querySelectorAll:()=>[],getElementById:()=>null,addEventListener:(name,fn)=>events[name]=fn,dispatchEvent(){}};
+ const globals={document,URL,CustomEvent:class{},console};runScript('asset-loader.js',globals);
+ const incoming={querySelectorAll:()=>[new Link('/md3/b.css?v=1','0003'),new Link('/md3/a.css?v=1','0001')]};
+ let done=false;const ready=globals.TokenAssets.prepareStyles(incoming).then(()=>done=true);
+ const repeated=globals.TokenAssets.prepareStyles(incoming);
+ assert.deepEqual(links.map(link=>link.path),['/md3/a.css?v=1','/md3/b.css?v=1']);
+ await Promise.resolve();assert.equal(done,false,'new content must wait for all CSS');
+ links[0].listeners.load();await Promise.resolve();assert.equal(done,false);
+ links[1].listeners.load();await ready;await repeated;assert.equal(done,true);
+ await globals.TokenAssets.prepareStyles(incoming);assert.equal(links.length,2,'loaded styles must be reused');
+ assert.equal(globals.TokenAssets.stylesChanged({querySelectorAll:()=>[new Link('/md3/a.css?v=2','0001')]}),true);
+ const failed=globals.TokenAssets.prepareStyles({querySelectorAll:()=>[new Link('/md3/c.css?v=1','0005')]});
+ links.at(-1).listeners.error();await assert.rejects(failed,/Could not load/);
+ assert.equal(links.length,2,'failed stylesheet must be removed so it can be retried');
+});
+
+test('HTMX response preparation waits for component CSS and strips only dependency links',async()=>{
+ const events={},body={},head={querySelectorAll:()=>[]};let release,prepared=false;
+ const gate=new Promise(resolve=>release=resolve);
+ const document={readyState:'loading',body,head,addEventListener:(name,fn)=>events[name]=fn};
+ const TokenAssets={stylesChanged:()=>false,prepareStyles:async()=>{await gate;prepared=true;}};
+ runScript('site-ui.js',{document,window:{addEventListener(){}},TokenAssets,DOMParser:class{parseFromString(){return {head,querySelectorAll:()=>[]};}}});
+ const html='<main><link rel="stylesheet" data-component-stylesheet href="/split.css"><a href="/next">Next</a></main>';
+ const ctx={target:body,response:{status:200,raw:{text:async()=>html}},request:{}};
+ events['htmx:head:before:merge']({detail:{ctx},preventDefault(){throw Error('full head merge was cancelled');}});
+ let result;const pending=ctx.response.raw.text().then(text=>result=text);
+ await Promise.resolve();assert.equal(result,undefined,'htmx must still have the old page while CSS loads');
+ release();await pending;assert.equal(prepared,true);assert.equal(result,'<main><a href="/next">Next</a></main>');
+ let protectedStyles=false;events['htmx:head:before:remove']({detail:{headElement:{matches:selector=>selector.includes('[data-component-stylesheet]')}},preventDefault(){protectedStyles=true;}});
+ assert.equal(protectedStyles,true);
+ const partial={target:{},response:{status:200,raw:{text:async()=>html}},request:{}};let skippedHeadMerge=false;
+ events['htmx:head:before:merge']({detail:{ctx:partial},preventDefault(){skippedHeadMerge=true;}});
+ assert.equal(skippedHeadMerge,true);assert.equal(await partial.response.raw.text(),'<main><a href="/next">Next</a></main>');
+ TokenAssets.stylesChanged=()=>true;
+ const changed={target:body,response:{status:200,raw:{text:async()=>html}},request:{}};
+ events['htmx:head:before:merge']({detail:{ctx:changed},preventDefault(){}});
+ assert.equal(await changed.response.raw.text(),'');assert.equal(changed.catalogAssetChange,true);
+});

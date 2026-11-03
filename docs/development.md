@@ -94,17 +94,26 @@ content. For example, the reorder dialog requests `sheet`; a switch row requests
 `switch` through `listSelectionControl`. Thumbnails that author their own anatomy
 request assets in their rendering branch too. Do not add route or child-family
 maps. `@componentAssetScope()` collects requests from its children and inserts
-versioned CSS and theme links before their markup. Use a scope inside each HTMX
+versioned CSS and theme dependency links before their markup. Full HTML responses
+hoist and deduplicate those links into the document head. Fragment responses
+retain declarations for the client to prepare before swapping. Use a scope inside each HTMX
 replacement boundary. Mark each scope container with `data-component-assets`. The layout scopes its
 main content and footer; the playground has a
-separate scope inside `#component-preview`, so changing a control can add or
-remove modules. The generated module manifest supplies link order.
+separate scope inside `#component-preview`, so changing a control declares its
+current module dependencies. The generated module manifest supplies link order.
 
 `catalog/web/static/asset-loader.js` selects optional behavior from the rendered
 markup. Add a matching selector there when introducing a behavior module.
 
-The layout loads shared CSS and core controls. Page-specific stylesheets live
-inside the replaced page content, so HTMX removes them when leaving a playground.
+The layout loads shared CSS and core controls. Only modules rendered by the
+initial page appear in its head. Before an HTMX swap, the loader adds missing
+component styles in manifest order and waits for all of them in parallel.
+Already loaded styles remain attached for the document lifetime; the fragment
+links are removed before insertion. Failed stylesheet loads leave the current
+content in place and can be retried. Version changes to loaded component styles
+trigger a full reload, as do changes to core assets. This retains code splitting
+without a stylesheet gap when replacing recurring controls. Browser history
+keeps previously loaded styles available.
 The loader fetches each optional script once and emits `tokens:assets-ready` after
 styles and behavior are ready. Initializers must handle that event and remain
 idempotent on revisits. A playground stays inert while its assets load. A failed
