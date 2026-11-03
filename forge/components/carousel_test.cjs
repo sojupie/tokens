@@ -102,7 +102,7 @@ test('hero layouts are distinct and dynamic small items stay in the captured 40â
  }
 });
 
-function nativeCarousel({variant='uncontained',reduced=false,scrolling='free',showControls=true,viewportWidth=336}={}) {
+function nativeCarousel({variant='uncontained',reduced=false,scrolling='free',showControls=true,viewportWidth=336,paddingStart=16,paddingEnd=0}={}) {
  const listeners={},scrollListeners={},output={},moves=[];
  let nextFrame,clock;
  const widths=variant==='uncontained-multi-aspect-ratio'?[160,90,120,135,160,90]:[160,160,160,160,160,160];
@@ -123,11 +123,11 @@ function nativeCarousel({variant='uncontained',reduced=false,scrolling='free',sh
  const document={readyState:'complete',querySelectorAll:()=>[root],addEventListener:(name,fn)=>listeners[name]=fn,createElement:()=>({active:false,setAttribute(){},toggleAttribute(name,on){this.active=on;}})};
  runInNewContext(readFileSync(`${__dirname}/static/carousel.js`,'utf8'),{
   document,matchMedia:()=>({matches:reduced}),window:{addEventListener(){}},
-  getComputedStyle:()=>({direction:'ltr',paddingInlineStart:'16px',paddingInlineEnd:'0px',getPropertyValue:name=>name==='--_carousel-maximum'?'':name==='--_carousel-preferred'?'160px':'8px'}),
+  getComputedStyle:()=>({direction:'ltr',paddingInlineStart:paddingStart+'px',paddingInlineEnd:paddingEnd+'px',getPropertyValue:name=>name==='--_carousel-maximum'?'':name==='--_carousel-preferred'?'160px':'8px'}),
   Animation:class{constructor(effect){this.effect=effect;this.playState='running';clock=this;}play(){}cancel(){}},KeyframeEffect:class{getComputedTiming(){return{progress:clock.playState==='finished'?1:.5};}},requestAnimationFrame:fn=>{nextFrame=fn;return 1;},cancelAnimationFrame(){},
   ResizeObserver:class{observe(){}},
  });
- moves.length=0;return{root,viewport,buttons,moves,pagination,step(direction){listeners.click({target:{closest:selector=>selector==='.md-carousel'?root:selector==='[data-carousel-step]'?{dataset:{carouselStep:String(direction)}}:null},detail:0});},finishAnimation(){clock.playState='finished';nextFrame();},drag(distance=60,fast=false){
+ moves.length=0;return{root,viewport,buttons,moves,pagination,scroll(position){viewport.scrollLeft=position;scrollListeners.scroll();},step(direction){listeners.click({target:{closest:selector=>selector==='.md-carousel'?root:selector==='[data-carousel-step]'?{dataset:{carouselStep:String(direction)}}:null},detail:0});},finishAnimation(){clock.playState='finished';nextFrame();},drag(distance=60,fast=false){
   listeners.pointerdown({target,pointerType:'mouse',button:0,pointerId:1,clientX:200,timeStamp:0});
   listeners.pointermove({pointerId:1,clientX:200-distance,timeStamp:60,preventDefault(){}});
   listeners.pointerup({pointerId:1,timeStamp:fast?70:200});
@@ -230,4 +230,24 @@ test('pagination counts unique reachable positions and moves its active pill',()
  c.step(1);c.finishAnimation();
  assert.equal(c.pagination.children[1].active,true);
  assert.equal(c.pagination.attributes['aria-label'],'Carousel position 2 of 4');
+});
+
+test('items remain visible through viewport padding until their whole mask exits',()=>{
+ for(const variant of ['multi-browse','hero','center-aligned-hero','uncontained']) for(const pressed of [false,true]) {
+  const paddingStart=16,paddingEnd=16,c=nativeCarousel({variant,paddingStart,paddingEnd});
+  if(pressed)c.buttons.forEach(b=>b.dataset={componentState:'pressed'});
+  let partial=0;
+  for(let scroll=0;scroll<=c.viewport.scrollWidth-c.viewport.clientWidth;scroll+=2){
+   c.scroll(scroll);
+   for(let i=0;i<c.buttons.length;i++){
+    const b=c.buttons[i],translation=parseFloat(b.style.transform.slice(11));
+    // Flow items also retain their native position in the scroll track.
+    const left=translation+(variant==='uncontained'?i*168-scroll:0),right=left+parseFloat(b.style.width);
+    const intersects=right>-paddingStart&&left<c.viewport.clientWidth-paddingStart;
+    if(intersects&&(right<=0||left>=c.viewport.clientWidth-paddingStart-paddingEnd))partial++;
+    assert.equal(b.style.visibility,intersects?'visible':'hidden',`${variant}/${scroll}/${i}: clipped a visible mask`);
+   }
+  }
+  assert.ok(partial>0,`${variant}: test must cover masks inside side padding`);
+ }
 });

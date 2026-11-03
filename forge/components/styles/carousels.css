@@ -24,8 +24,10 @@
   scrollbar-width: none;
   overscroll-behavior-inline: contain;
   scroll-snap-type: x mandatory;
-  padding: var(--md-sys-measurement-space100) var(--md-sys-measurement-space200);
-  scroll-padding-inline: var(--md-sys-measurement-space200);
+  /* Outer spacing must not create a visible gutter beyond the masking edge. */
+  margin-inline: var(--md-sys-measurement-space200);
+  padding: var(--md-sys-measurement-space100) 0;
+  scroll-padding-inline: 0;
   outline: none;
   touch-action: pan-x pan-y;
 }
@@ -286,7 +288,7 @@
 }
 
 /* The consumer supplies a window; the component scrolls pages vertically. */
-.md-carousel[data-variant="full-screen"] .md-carousel-viewport { flex:1;min-block-size:0;overflow-x:hidden;scroll-snap-type:y mandatory;scroll-padding:0;overscroll-behavior-y:contain; }
+.md-carousel[data-variant="full-screen"] .md-carousel-viewport { margin-inline:0;flex:1;min-block-size:0;overflow-x:hidden;scroll-snap-type:y mandatory;scroll-padding:0;overscroll-behavior-y:contain; }
 .md-carousel[data-variant="full-screen"] .md-carousel-scroll-track { inline-size:100%; }
 .md-carousel[data-variant="full-screen"][data-carousel-layout="flow"] .md-carousel-track { flex-direction:column;inline-size:100%;block-size:max-content; }
 .md-carousel[data-variant="full-screen"][data-carousel-layout="flow"] .md-carousel-slot { inline-size:100%;block-size:var(--_carousel-page-height,100dvh);scroll-snap-stop:always; }

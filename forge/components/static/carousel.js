@@ -214,7 +214,9 @@
       slot?.style?.setProperty('--_carousel-caption-width',size+'px');
       const press=reduced.matches?0:state.press?.button===button?state.press.value:button.dataset?.componentState==='pressed'?5:0;
       const raw=frames?state.starts[index]-scroll:0;
-      button.style.visibility=left+size<=0||left>=width?'hidden':'visible';
+      // The clipping viewport includes its padding and the pressed mask reveal.
+      // Culling at the content edge makes a still-visible strip pop in or out.
+      button.style.visibility=left+size+press<=-state.paddingStart||left-press>=width+state.paddingEnd?'hidden':'visible';
       button.style.width=(size+2*press)+'px';
       button.style.transform=`translateX(${(state.rtl?-1:1)*(left-raw-press)}px)`;
       const art=state.art[index],media=(frame.media??plan.large)+(reduced.matches?0:10),shift=(size-media)/2+press;
@@ -242,7 +244,9 @@
     const state=roots.get(root);if(!state)return;cancelMotion(state);
     const style=getComputedStyle(root),prior=state.plan?offset(state)/(state.plan.large+state.plan.gap):0,priorIndex=Number(root.dataset.carouselIndex)||0;
     state.rtl=style.direction==='rtl';state.vertical=root.dataset.variant==='full-screen';
-    const viewportStyle=getComputedStyle(state.viewport),width=state.viewport.clientWidth-parseFloat(viewportStyle.paddingInlineStart)-parseFloat(viewportStyle.paddingInlineEnd);
+    const viewportStyle=getComputedStyle(state.viewport);
+    state.paddingStart=parseFloat(viewportStyle.paddingInlineStart)||0;state.paddingEnd=parseFloat(viewportStyle.paddingInlineEnd)||0;
+    const width=state.viewport.clientWidth-state.paddingStart-state.paddingEnd;
     const preferred=parseFloat(style.getPropertyValue('--_carousel-preferred')),gap=parseFloat(style.getPropertyValue('--_carousel-gap'));
     const maximum=parseFloat(style.getPropertyValue('--_carousel-maximum'))||Infinity;
     state.plan=layout(width,preferred,gap,root.dataset.variant,state.buttons.length,maximum);
