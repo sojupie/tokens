@@ -11,6 +11,7 @@ import (
 	"html"
 	"io"
 	"io/fs"
+	"slices"
 	"sort"
 	"strings"
 	"sync"
@@ -23,10 +24,25 @@ import (
 // documents hoist them to the head; the client prepares fragment styles before insertion.
 type componentAssetsKey struct{}
 type componentAssets struct {
-	modules     map[string]bool
-	headModules map[string]bool
-	server      *Server
-	deferStyles bool
+	modules        map[string]bool
+	headModules    map[string]bool
+	server         *Server
+	deferStyles    bool
+	catalogScripts []string
+}
+
+var catalogBehaviorScripts = []string{"artwork.js", "artwork-canvas.js", "component-demos.js", "dialog-demo.js"}
+
+func useCatalogBehavior(name string) templ.Component {
+	return templ.ComponentFunc(func(ctx context.Context, _ io.Writer) error {
+		if !slices.Contains(catalogBehaviorScripts, name) {
+			return fmt.Errorf("unknown Catalog behavior: %s", name)
+		}
+		if assets, ok := ctx.Value(componentAssetsKey{}).(*componentAssets); ok && !slices.Contains(assets.catalogScripts, name) {
+			assets.catalogScripts = append(assets.catalogScripts, name)
+		}
+		return nil
+	})
 }
 
 func useComponentAssets(name string) templ.Component {
@@ -149,6 +165,26 @@ func (server *Server) componentAssetLinks(assets *componentAssets) ([]byte, erro
 		// Navigation is initial shell layout; optional specimens can arrive later.
 		writeStylesheet(staticURL("bundles/"+name+".css"), false, !assets.deferStyles || name == "navigation", order*2+1)
 	}
+	var modules []string
+	for _, name := range componentModuleOrder() {
+		if assets.modules[name] {
+			modules = append(modules, name)
+		}
+	}
+	scripts, err := components.ScriptsFor(modules...)
+	if err != nil {
+		return nil, err
+	}
+	scripts = append(scripts, assets.catalogScripts...)
+	if len(scripts) > 0 {
+		data, err := json.Marshal(scripts)
+		if err != nil {
+			return nil, err
+		}
+		// Diagnostic declarations travel with each independently replaced region.
+		// The selector-based loader remains authoritative during comparison.
+		fmt.Fprintf(&links, `<script type="application/json" data-component-behaviors>%s</script>`, data)
+	}
 	return []byte(links.String()), nil
 }
 
@@ -159,7 +195,7 @@ var componentScriptSources = sync.OnceValue(func() string {
 		panic(err)
 	}
 	// These scripts belong to Catalog examples rather than exported Forge controls.
-	scripts = append(scripts, "artwork.js", "artwork-canvas.js", "component-demos.js", "dialog-demo.js")
+	scripts = append(scripts, catalogBehaviorScripts...)
 	for _, name := range scripts {
 		sources[name] = strings.TrimPrefix(staticURL(name), "/static/")
 	}

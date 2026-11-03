@@ -25,12 +25,12 @@ dependencies cannot be reliably inferred from filenames or DOM selectors.
 
 ## Next stages
 
-- [ ] Audit script execution prerequisites, CSS measurements, initialization and
+- [x] Audit script execution prerequisites, CSS measurements, initialization and
   cleanup entry points. Distinguish fetching from evaluation and initialization.
 - [ ] Choose an enforceable prerequisite contract. Prefer dependencies expressed
   in source imports where practical; avoid maintaining a parallel hand-written
   graph of dependencies already represented in code.
-- [ ] Carry behavior requirements in each rendered asset scope, including nested
+- [x] Carry diagnostic behavior requirements in each rendered asset scope, including nested
   components, Catalog examples and independently replaced fragments. Preserve
   the current eager activation policy initially.
 - [ ] Compare those declarations against current browser discovery across the
@@ -50,3 +50,55 @@ the ownership manifest does not decide when its behavior should become ready.
 
 Run `npm run check:components`, `npm run test:tokens`, `npm run test:ui`, and
 `go test ./forge/components ./catalog/web ./cmd/tokens` for this initial stage.
+
+## Prerequisite and lifecycle audit
+
+The following describes the scripts inspected on 2026-11-03. It is an audit
+snapshot, not an execution graph consumed by the loader.
+
+| Scripts | Prerequisites and lifecycle |
+| --- | --- |
+| `motion.js`, `buttons.js`, `runtime/utils.js` | Motion publishes `MaterialMotion`; buttons reads it during evaluation. Utilities publish `MaterialComponents`. These are host prerequisites today. |
+| `runtime/button-groups.js`, `runtime/fab-menus.js`, `runtime/split-buttons.js` | Read utilities during evaluation and register delegated handlers. Layout measurements occur on interaction. |
+| `runtime/chips.js`, `runtime/tabs.js`, `runtime/segmented-buttons.js`, `runtime/switches.js`, `runtime/app-bars.js` | Register delegated handlers. Tabs use motion during selection; segmented controls read utilities during keyboard interaction. They do not need a per-node initialization pass. |
+| `runtime/navigation.js`, `runtime/sliders.js`, `runtime/toolbars.js`, `runtime/snackbars.js` | Read utilities during evaluation. Initialize per-node state and/or observers, retry on asset readiness and swaps, and clean up removed nodes. Navigation also has a direct history-restoration hook. |
+| `runtime/tooltips.js`, `fields.js`, `menus.js` | Initialize per-node state and measure geometry during interaction. Cleanup hooks exist. Tooltips retry on asset readiness; fields and menus are core scripts with direct history-restoration hooks. Menu motion needs `MaterialMotion`. |
+| `sheets.js`, `lists.js`, `carousel.js` | Maintain per-node or gesture state. Sheets and lists use motion; lists also read utilities during keyboard interaction. Carousel initializes measured layout and observers. All have swap/asset-ready and cleanup hooks. |
+| `search.js`, `date-picker.js`, `time-picker.js`, `dialogs.js` | Initialize per-node state and clean up removed instances. Measurements can occur during initialization or opening. Pickers and dialogs use motion; search and dialogs have direct history-restoration hooks. Other restore paths currently rely on the loader's asset-ready event. |
+| `progress.js`, `loading.js` | Manage observers and animation loops. Loading fetches geometry asynchronously; script `load` completion does not mean that geometry has resolved. Preserve that distinction when defining readiness. |
+| `artwork-canvas.js`, `artwork.js` | Canvas publishes `TokenArtworkCanvas`. Canvas artwork needs that provider before initializing. Artwork also owns visibility, resize and animation work. |
+| `component-demos.js`, `dialog-demo.js` | Catalog owns example actions. Component examples use motion; dialog examples invoke `MaterialDialogs` and attach per-panel listeners. They are separate from the Forge controllers. |
+
+The current safe boundary is still the existing host script order and CSS-before-
+initialization barrier. Parallel fetching must not imply parallel evaluation or
+skip initialization after styles resolve. An enforceable source-import contract
+has not been introduced yet; converting IIFEs requires preserving standalone
+exports, the legacy aggregate and tool consumers.
+
+## Diagnostic comparison
+
+Each asset scope now emits a non-executable `script[type="application/json"]`
+with `data-component-behaviors`. Forge requirements come from rendered primitives
+and the ownership manifest. Catalog example requirements are recorded where their
+markup is rendered. The normal selector-based loader remains authoritative.
+
+`TokenAssets.audit(root)` compares declarations with the same discovery predicate
+used by that loader. It excludes already-delivered host scripts and reports
+`undeclared` and `declarationOnly` separately. It does not load or initialize the
+declared scripts. Inert-thumbnail behavior and the existing progress exception
+are preserved.
+
+Run `go run ./forge/conformance --catalog http://127.0.0.1:8085` and open
+`/behavior-delivery.html`. The check discovers component destinations from the
+catalog, then audits default and interactive views and each option exposed by
+those views. `?path=/components/search` limits a run to one component. Fetched
+HTML is parsed into detached documents, so comparisons do not evaluate thousands
+of component controllers. A negative control removes declarations and must be
+detected.
+
+The initial run checked 1,026 views with no undeclared behavior. Declaration-only
+scripts were `runtime/chips.js` from the common module, `runtime/snackbars.js`
+from the messages module, and `progress.js` on loading-indicator views. These are
+reported rather than silently removed. This covers exposed individual options,
+not every generated configuration combination, live lifecycle behavior or the
+decision to defer a hidden region.

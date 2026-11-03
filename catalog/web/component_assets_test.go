@@ -67,6 +67,56 @@ func TestUnknownComponentModuleFailsRendering(t *testing.T) {
 	}
 }
 
+func TestBehaviorDeclarationsTravelWithIndependentScopes(t *testing.T) {
+	parent := &componentAssets{modules: map[string]bool{}, server: &Server{}}
+	ctx := ui.WithAssets(context.WithValue(context.Background(), componentAssetsKey{}, parent), ui.Assets(parent.modules))
+	child := templ.ComponentFunc(func(ctx context.Context, w io.Writer) error {
+		if err := useCatalogBehavior("component-demos.js").Render(ctx, w); err != nil {
+			return err
+		}
+		return specimenList(componentCase{Family: "list", Control: "reorder", ListTrailing: "switch"}).Render(ctx, w)
+	})
+	var output bytes.Buffer
+	if err := componentAssetScope().Render(templ.WithChildren(ctx, child), &output); err != nil {
+		t.Fatal(err)
+	}
+	body := output.String()
+	for _, script := range []string{"runtime/switches.js", "sheets.js", "lists.js", "component-demos.js"} {
+		if !strings.Contains(body, `"`+script+`"`) {
+			t.Errorf("scope omitted behavior %s", script)
+		}
+	}
+	if !strings.Contains(body, `type="application/json" data-component-behaviors`) || strings.Contains(body, `"carousel.js"`) {
+		t.Fatal("invalid diagnostic declaration", body)
+	}
+	if len(parent.modules) > 0 || len(parent.catalogScripts) > 0 {
+		t.Fatal("child requirements leaked into the parent scope")
+	}
+	if err := useCatalogBehavior("unknown.js").Render(ctx, io.Discard); err == nil {
+		t.Fatal("unknown Catalog behavior accepted")
+	}
+}
+
+func TestRootBehaviorDeclarationsKeepDocumentDoctypeFirst(t *testing.T) {
+	server := &Server{}
+	page := templ.ComponentFunc(func(ctx context.Context, w io.Writer) error {
+		if err := ui.Require("tabs").Render(ctx, w); err != nil {
+			return err
+		}
+		_, err := io.WriteString(w, `<!doctype html><html><head><title>Test</title></head><body>Content</body></html>`)
+		return err
+	})
+	w := httptest.NewRecorder()
+	if err := server.renderHTML(w, httptest.NewRequest("GET", "/", nil), page); err != nil {
+		t.Fatal(err)
+	}
+	body := w.Body.String()
+	declaration := strings.Index(body, `data-component-behaviors`)
+	if !strings.HasPrefix(body, `<!doctype html>`) || declaration < 0 || declaration > strings.Index(body, `</head>`) {
+		t.Fatal("root dependencies escaped the document head", body)
+	}
+}
+
 func TestLazyAssetsKeepVersionedPublicDelivery(t *testing.T) {
 	for _, name := range []string{"runtime/navigation.js", "bundles/common.css", "bundles/date.css", "asset-loader.js"} {
 		data, err := fs.ReadFile(webStaticFiles, name)

@@ -14,6 +14,28 @@ function runScript(name, globals) {
   runInNewContext(readFileSync(join(__dirname, 'static', name), 'utf8'), globals);
 }
 
+test('behavior audit compares declarations without changing inert discovery or eager script handling', () => {
+  const globals={module:{exports:{}}};
+  runInNewContext(readFileSync(join(__dirname,'static','asset-loader.js'),'utf8'),globals);
+  const {auditBehaviors}=globals.module.exports;
+  const previewNode={closest:()=>({})},thumbnail={closest:()=>({})},visible={closest:()=>null};
+  const matches={'.md-button-group':[previewNode,thumbnail],'.md-carousel':[thumbnail],'.md-loading':[visible],'.md-progress':[thumbnail]};
+  let declarations=['runtime/navigation.js','runtime/button-groups.js','loading.js','progress.js','carousel.js'];
+  const root={querySelector:()=>({contains:node=>node===previewNode}),querySelectorAll:selector=>{
+    if(selector==='script[data-component-behaviors]')return [{textContent:JSON.stringify(declarations)}];
+    if(selector==='script[src]:not([data-component-script])')return [{getAttribute:()=>'/static/runtime/navigation.js?v=hash'}];
+    return matches[selector]||[];
+  }};
+  let audit=JSON.parse(JSON.stringify(auditBehaviors(root)));
+  assert.deepEqual(audit.undeclared,[]);
+  assert.deepEqual(audit.declarationOnly,['carousel.js'],'inert thumbnails declare ownership without activating behavior');
+  assert(!audit.declared.includes('runtime/navigation.js'),'core scripts are already delivered');
+  assert(audit.discovered.includes('progress.js'),'preserve the current progress exception');
+  declarations=[];
+  audit=JSON.parse(JSON.stringify(auditBehaviors(root)));
+  assert.deepEqual(audit.undeclared,['loading.js','progress.js','runtime/button-groups.js']);
+});
+
 test('collection download buttons select the matching scope', () => {
   const buttons = ['all', 'components', 'styles'].map(scope => {
     const button = new EventTarget();

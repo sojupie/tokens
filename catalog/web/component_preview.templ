@@ -5,6 +5,7 @@ import "github.com/sojupie/tokens/forge/components/ui"
 templ componentPreviewView(page componentPreview) {
 	<section class="tokens-section" data-playground-environment id="component-preview" data-component-assets aria-labelledby="preview-heading">
 		@componentAssetScope() {
+			@useCatalogBehavior("component-demos.js")
 			<h2 class="md-typescale-title-medium" id="preview-heading">Playground</h2>
 			<form hx-boost="false" method="get" action={ page.Action } hx-get={ page.Action } hx-target="#component-preview" hx-select="#component-preview" hx-swap="outerHTML" hx-replace-url="true" hx-trigger="change" hx-sync="this:replace" class="tokens-gallery-filters">
 				for _, hidden := range page.Hidden {

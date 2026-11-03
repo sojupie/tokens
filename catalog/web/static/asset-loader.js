@@ -1,9 +1,6 @@
 // The host page owns core controls. Load optional behavior once, including after
 // HTMX swaps. Component styles remain in the head for the document lifetime.
 (() => {
-  const script = document.currentScript,
-    sources = JSON.parse(script.dataset.sources),
-    pending = new Map();
   const rules = [
     ["runtime/chips.js", '[data-family="chip"]'],
     ["runtime/tabs.js", ".md-tabs-example"],
@@ -32,6 +29,36 @@
     ["artwork.js", "[data-artwork]"],
     ["component-demos.js", "#component-preview"],
   ];
+  function behaviorNeeded(root, name, selector) {
+    const preview = root.querySelector?.('#component-preview') || root.getElementById?.('component-preview');
+    return [...root.querySelectorAll(selector)].some(node =>
+      name === 'progress.js' || !node.closest('[inert]') || preview?.contains(node),
+    );
+  }
+  function discoverBehaviors(root) {
+    return rules.filter(([name, selector]) => behaviorNeeded(root, name, selector)).map(([name]) => name);
+  }
+  function auditBehaviors(root) {
+    const declared = new Set([...root.querySelectorAll('script[data-component-behaviors]')]
+      .flatMap(node => JSON.parse(node.textContent))),
+      discovered = new Set(discoverBehaviors(root)),
+      eager = [...root.querySelectorAll('script[src]:not([data-component-script])')]
+        .map(node => node.getAttribute('src').split('?')[0]);
+    for (const name of new Set([...declared, ...discovered]))
+      if (eager.some(url => url.endsWith('/' + name))) {
+        declared.delete(name); discovered.delete(name);
+      }
+    return {
+      declared: [...declared].sort(), discovered: [...discovered].sort(),
+      undeclared: [...discovered].filter(name => !declared.has(name)).sort(),
+      declarationOnly: [...declared].filter(name => !discovered.has(name)).sort(),
+    };
+  }
+  if (typeof module !== 'undefined') module.exports = { discoverBehaviors, auditBehaviors };
+  if (typeof document === 'undefined') return;
+  const script = document.currentScript,
+    sources = JSON.parse(script.dataset.sources),
+    pending = new Map();
   function load(name) {
     if (pending.has(name)) return pending.get(name);
     const promise = new Promise((resolve, reject) => {
@@ -92,7 +119,7 @@
     await Promise.all(ready);
     signal?.throwIfAborted();
   }
-  const api = { ready: Promise.resolve(), prepareStyles, stylesChanged };
+  const api = { ready: Promise.resolve(), prepareStyles, stylesChanged, audit: (root = document) => auditBehaviors(root) };
   globalThis.TokenAssets = api;
   function initialize() {
     const preview = document.getElementById("component-preview");
@@ -109,15 +136,8 @@
         document.dispatchEvent(new CustomEvent("tokens:styles-error"));
         throw error;
       }
-      for (const [name, selector] of rules) {
-        const needed = [...document.querySelectorAll(selector)].some(
-          (node) =>
-            name === "progress.js" ||
-            !node.closest("[inert]") ||
-            preview?.contains(node),
-        );
-        if (needed) await load(name);
-      }
+      for (const [name, selector] of rules)
+        if (behaviorNeeded(document, name, selector)) await load(name);
       if (preview?.isConnected) {
         preview.inert = false;
         preview.removeAttribute("aria-busy");

@@ -294,7 +294,14 @@ func (server *Server) renderHTML(response http.ResponseWriter, request *http.Req
 	if err != nil {
 		return err
 	}
-	content, err := hoistComponentStyles(append(links, rendered.Bytes()...))
+	content := rendered.Bytes()
+	if bytes.Contains(content, []byte("</head>")) {
+		// Root dependency declarations belong inside the document, after its doctype.
+		content = bytes.Replace(content, []byte("</head>"), append(links, []byte("</head>")...), 1)
+	} else {
+		content = append(links, content...)
+	}
+	content, err = hoistComponentStyles(content)
 	if err != nil {
 		return err
 	}

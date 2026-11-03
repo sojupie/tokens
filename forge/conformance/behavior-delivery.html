@@ -1,0 +1,44 @@
+<!doctype html><meta charset="utf-8"><title>Behavior declaration checks</title>
+<style>body{font:16px system-ui;margin:24px}pre{white-space:pre-wrap}</style>
+<h1>Behavior declaration checks</h1>
+<p>Compare server declarations with the unchanged browser discovery rules. Check default and interactive component pages and each option exposed by those views. No component scripts are evaluated in fetched pages.</p>
+<button id="run">Audit behavior declarations</button>
+<pre id="result">Ready</pre>
+<script src="/static/asset-loader.js" data-sources="{}" defer></script>
+<script type="module">
+const button=document.querySelector('#run'), result=document.querySelector('#result');
+button.onclick=async()=>{
+ button.disabled=true;
+ const queue=[],seen=new Set(),undeclared={},declarationOnly={},errors=[];
+ let pages=0,negativeControl=false;
+ const filter=new URLSearchParams(location.search).get('path');
+ const add=(path,expand=false)=>{const url=new URL(path,location.href);url.searchParams.sort();const key=url.pathname+url.search;if(!seen.has(key)){seen.add(key);queue.push({path:key,expand});}};
+ const record=(map,name,path)=>{map[name] ||= [];if(map[name].length<3)map[name].push(path);};
+ const read=async(path)=>{const r=await fetch(path);if(!r.ok)throw Error(path+': '+r.status);return new DOMParser().parseFromString(await r.text(),'text/html');};
+ try {
+  if(filter){add(filter,true);add(filter+'?preview.compare=interactive',true);}
+  else {
+   const index=await read('/components');add('/md3/');add('/components');add('/styles');add('/changes');
+   for(const a of index.querySelectorAll('a[href]')){
+    const path=new URL(a.getAttribute('href'),location.href).pathname;
+    if(/^\/(?:md3\/)?components\/[^/]+$/.test(path)){add(path,true);add(path+'?preview.compare=interactive',true);}
+   }
+  }
+  while(queue.length){
+   const {path,expand}=queue.shift(),doc=await read(path),audit=TokenAssets.audit(doc);pages++;
+   for(const name of audit.undeclared)record(undeclared,name,path);
+   for(const name of audit.declarationOnly)record(declarationOnly,name,path);
+   if(!negativeControl&&audit.discovered.length){
+    const control=doc.cloneNode(true);control.querySelectorAll('script[data-component-behaviors]').forEach(e=>e.remove());
+    if(!TokenAssets.audit(control).undeclared.length)throw Error('Missing-declaration negative control was not detected');
+    negativeControl=true;
+   }
+   if(expand)for(const select of doc.querySelectorAll('.tokens-gallery-filters select[name]'))for(const option of select.options){
+    if(option.disabled)continue;const next=new URL(path,location.href);next.searchParams.set(select.name,option.value);add(next.pathname+next.search);
+   }
+   result.textContent=JSON.stringify({pages,remaining:queue.length,undeclared,declarationOnly,negativeControl},null,2);
+  }
+ }catch(error){errors.push(error.stack);}
+ result.textContent=JSON.stringify({pages,remaining:queue.length,undeclared,declarationOnly,negativeControl,errors},null,2);button.disabled=false;
+};
+</script>
