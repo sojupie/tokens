@@ -64,17 +64,17 @@ templ componentThumbnail(c componentCase) {
 		case "card":
 			@useComponentAssets("card")
 			@ui.CardSurface(ui.CardProps{Variant: "elevated", Attrs: templ.Attributes{"class": "md-card md-elevated-card tokens-thumbnail-card"}}) {
-				@thumbnailLandscape()
+				<img class="tokens-thumbnail-landscape" src={ staticURL("paintings/"+cardPainting) } alt="" width="1200" height="517" loading="lazy" draggable="false"/>
 				@ui.CardBody(nil) {
-					<h3 class="md-card-headline">Along the coast</h3>
-					<p class="md-card-supporting-text">A route for the weekend</p>
+					<h3 class="md-card-headline">The Turmoil of Conflict</h3>
+					<p class="md-card-supporting-text">Joan of Arc series, IV</p>
 				}
 			}
 		case "carousel":
 			@useComponentAssets("carousel")
 			<div class="tokens-thumbnail-carousel">
 				@ui.Carousel(ui.CarouselProps{Attrs: c.Attributes()}, 3) {
-					for i,label:=range []string{"Coast","Forest","Hills"} {
+					for i,label:=range []string{"Parasol","Trouville","Argenteuil"} {
 						@ui.CarouselItem(ui.CarouselItemProps{Index: i, Count: 3, Attrs: c.CarouselItem(i)}) {
 							@carouselArtwork(i)
 							<span class="tokens-thumbnail-carousel-label">{ label }</span>
@@ -329,10 +329,6 @@ templ componentThumbnail(c componentCase) {
 
 templ thumbnailDocument() {
 	<div class="tokens-thumbnail-document" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
-}
-
-templ thumbnailLandscape() {
-	<img class="tokens-thumbnail-landscape" src={ staticURL("paintings/washerwomen-on-the-beach-of-etretat-1970.17.17.webp") } alt="" width="1200" height="800" loading="lazy" draggable="false"/>
 }
 
 templ thumbnailSheetAction() {

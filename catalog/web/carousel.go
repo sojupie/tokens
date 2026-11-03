@@ -129,5 +129,5 @@ func (page componentPreview) HasUncontainedCarousel() bool {
 
 // Brief specimen labels; the full artwork titles remain the accessible labels.
 func carouselCaption(index int) string {
-	return []string{"Argenteuil", "Hudson River", "Pourville", "Green River", "Lake Lucerne", "Scheveningen"}[index%6]
+	return []string{"Woman with a Parasol", "Trouville", "Argenteuil", "Pourville", "Étretat", "The Louvre"}[index%6]
 }

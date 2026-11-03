@@ -1,17 +1,18 @@
 package web
 
 // Public-domain paintings used by component previews.
-const cardPainting = "italian-coast-scene-with-ruined-tower-1993.55.1.webp"
+const cardPainting = "the-turmoil-of-conflict-2015.19.37.webp"
 
+// Impressionist paintings keep the carousel visually coherent.
 var carouselPaintings = [...]string{
+	"woman-with-a-parasol-1983.1.29.webp",
+	"beach-at-trouville-1970.17.12.webp",
 	"argenteuil-1970.17.42.webp",
-	"autumn---on-the-hudson-river-1963.9.1.webp",
 	"cliffs-at-pourville-1985.64.27.webp",
-	"green-river-cliffs-wyoming-2011.2.1.webp",
-	"lake-lucerne-1990.50.1.webp",
-	"sunset-at-scheveningen-a-fleet-of-fishing-vessels-at-anchor-2012.48.1.webp",
+	"washerwomen-on-the-beach-of-etretat-1970.17.17.webp",
+	"the-louvre-afternoon-rainy-weather-2014.136.59.webp",
 }
 
 var carouselPaintingTitles = [...]string{
-	"Argenteuil", "Autumn on the Hudson River", "Cliffs at Pourville", "Green River Cliffs, Wyoming", "Lake Lucerne", "Sunset at Scheveningen",
+	"Woman with a Parasol — Madame Monet and Her Son", "Beach at Trouville", "Argenteuil", "Cliffs at Pourville", "Washerwomen on the Beach of Étretat", "The Louvre, Afternoon, Rainy Weather",
 }
