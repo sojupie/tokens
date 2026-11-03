@@ -454,4 +454,4 @@
 }
 
 .md-native-time { display:none; }
-@media (scripting: none) { .md-native-time { display:block; font:inherit; } }
+@media (scripting: none) { .md-native-time { display:block; inline-size:100%; } }

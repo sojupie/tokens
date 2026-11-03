@@ -10,7 +10,7 @@ templ subjectPage(subject publish.SubjectView, changes []publish.ChangeView, bro
 
 templ tokenSetPicker(subject publish.SubjectView, browser tokenBrowser) {
 	<label class="tokens-native-set">Token set
-			<select name="set">
+			<select class="md-native-control" name="set">
 				for _, set := range browser.Sets {
 					<option value={ set.Key } selected?={ set.Key==browser.Selected.Key }>{ tokenTableQualifier(subject,set) }</option>
 				}

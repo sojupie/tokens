@@ -166,3 +166,24 @@
 @media (scripting: none) {
  .tokens-native-navigation details:has(a[aria-current="page"]) > summary { font-weight:600; }
 }
+
+@media (scripting: none) {
+ .tokens-native-navigation { align-content:start; gap:var(--md-sys-measurement-space50); }
+ .tokens-native-navigation a,.tokens-native-navigation summary {
+  display:flex; align-items:center; gap:var(--md-sys-measurement-space150); box-sizing:border-box;
+  min-block-size:var(--md-sys-measurement-space600); padding:var(--md-sys-measurement-space150) var(--md-sys-measurement-space200);
+  border-radius:var(--md-sys-shape-corner-full); text-decoration:none; font:var(--md-sys-typescale-label-large);
+ }
+ .tokens-native-navigation summary { list-style:none; justify-content:space-between; }
+ .tokens-native-navigation summary::-webkit-details-marker { display:none; }
+ .tokens-native-navigation summary::marker { content:""; }
+ .tokens-native-navigation summary > span { display:flex; align-items:center; gap:var(--md-sys-measurement-space150); }
+ .tokens-native-navigation :is(svg,.tokens-brand-logo) { flex:none; inline-size:var(--md-sys-measurement-space300); block-size:var(--md-sys-measurement-space300); }
+ .tokens-native-navigation summary > svg { transition:rotate var(--_motion-fast-effects-duration) var(--_motion-fast-effects-easing); }
+ .tokens-native-navigation details[open] > summary > svg { rotate:180deg; }
+ .tokens-native-navigation details > a { margin-inline-start:var(--md-sys-measurement-space300); }
+ .tokens-native-navigation details:has(a[aria-current="page"]) > summary { background:var(--md-sys-color-secondary-container); color:var(--md-sys-color-on-secondary-container); }
+ .tokens-native-navigation :is(a,summary):hover { background-color:color-mix(in srgb,var(--md-sys-color-on-surface) 8%,transparent); }
+ .tokens-native-navigation :is(a,summary):focus-visible { outline:var(--md-sys-state-focus-indicator-thickness) solid var(--md-sys-color-secondary); outline-offset:var(--md-sys-state-focus-indicator-outer-offset); }
+}
+@media (scripting:none) and (prefers-reduced-motion:reduce) { .tokens-native-navigation summary > svg { transition:none; } }

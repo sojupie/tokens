@@ -547,3 +547,21 @@ button:not(:disabled), [role=button]:not([aria-disabled=true]) { cursor:pointer;
 }
 
 @media (scripting: none) { .md-list-demo[data-native-selection="true"] > .md-list { display:none; } }
+
+/* Context choices are an inline form region when the modal controller is absent. */
+@media (scripting: none) {
+ .tokens-token-browser .tokens-context-dialog:not([open]) {
+  --_elevation-level:var(--md-sys-elevation-level0);
+  box-sizing:border-box; inset:auto; margin:0; padding:var(--md-sys-measurement-space300);
+  inline-size:100%; max-inline-size:none; min-inline-size:0; block-size:auto; max-block-size:none;
+  border:0; border-radius:var(--md-sys-shape-corner-none); box-shadow:none; background:transparent; color:var(--md-sys-color-on-surface);
+ }
+ .tokens-context-dialog > .md-dialog-content { padding:0; margin:0; overflow:visible; }
+ .tokens-context-dialog .tokens-context-fields { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,14rem),1fr)); gap:var(--md-sys-measurement-space300); }
+ .tokens-context-fields > .tokens-context-advanced { grid-column:1/-1; }
+ .tokens-token-filters > noscript { padding-block-start:0; padding-inline:var(--md-sys-measurement-space300); }
+ .tokens-native-set { padding:0; min-inline-size:0; max-inline-size:24rem; font:var(--md-sys-typescale-label-large); color:var(--md-sys-color-on-surface-variant); }
+ .tokens-native-set > select { inline-size:100%; }
+ .tokens-token-toolbar:has(.tokens-native-set) { align-items:end; }
+ .tokens-native-downloads a { color:var(--md-sys-color-primary); font:var(--md-sys-typescale-label-large); }
+}

@@ -1,5 +1,7 @@
 package web
 
+import "github.com/sojupie/tokens/forge/components/ui"
+
 templ downloadPage(state exportDialogState) {
  @layout("Download tokens") {
   <section class="tokens-download-page">
@@ -39,11 +41,12 @@ templ nativeExportChoices(state exportDialogState,name,title string,choices []ca
  <fieldset>
   <legend>{ title }</legend>
   for _, choice := range choices {
-   {{ p:=state.choice(name,choice) }}
-   <label>
-    <input type={ nativeChoiceType(multiple) } name={ name } value={ choice.Value } checked?={ p.Checked } disabled?={ p.Disabled }/>
-    { choice.Label }
-   </label>
+   {{ p:=state.choice(name,choice); p.ID="native-"+p.ID }}
+   if multiple {
+    @ui.FilterChipField(p)
+   } else {
+    @ui.Radio(p)
+   }
   }
  </fieldset>
 }

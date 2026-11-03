@@ -2,13 +2,6 @@ package web
 
 import "net/http"
 
-func nativeChoiceType(multiple bool) string {
-	if multiple {
-		return "checkbox"
-	}
-	return "radio"
-}
-
 func (server *Server) handleDownloadPage(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
 	if !query.Has("content") {

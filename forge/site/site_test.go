@@ -33,7 +33,7 @@ func TestToolsShareCatalogNavigationAndFooter(t *testing.T) {
 			}
 
 			if component.name == "header" {
-				if strings.Count(html, `class="tokens-brand-logo"`) != 3 || strings.Contains(html, `<img class="tokens-brand-logo"`) || !strings.Contains(html, `fill="var(--md-sys-color-tertiary,var(--tokens-logo-fallback))"`) {
+				if strings.Count(html, `class="tokens-brand-logo"`) != 4 || strings.Contains(html, `<img class="tokens-brand-logo"`) || !strings.Contains(html, `fill="var(--md-sys-color-tertiary,var(--tokens-logo-fallback))"`) {
 					t.Fatal("header and drawer must share the inline, theme-aware tertiary logo")
 				}
 				for _, tool := range config.Tools {

@@ -572,6 +572,6 @@
 @media (scripting: none) {
  .md-date-fields [data-date-open] { display:none; }
  .md-date-picker > .md-date-panel { display:none; }
- .md-native-date { display:grid; gap:.5rem; margin-block:1rem; }
- .md-native-date input { font:inherit; color:inherit; color-scheme:light dark; }
+ .md-native-date { display:grid; gap:var(--md-sys-measurement-space100); margin-block:var(--md-sys-measurement-space200); color:var(--md-sys-color-on-surface-variant); font:var(--md-sys-typescale-label-large); }
+ .md-native-date input { inline-size:100%; }
 }

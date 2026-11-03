@@ -12,6 +12,17 @@ var Files embed.FS
 //go:embed logo.svg
 var brandLogo string
 
+// The page theme supplies the color. A noscript subtree must not contain style
+// elements, because history parsers can otherwise activate them on restoration.
+var fallbackLogo = func() string {
+	before, rest, found := strings.Cut(brandLogo, "<style>")
+	if !found {
+		return brandLogo
+	}
+	_, after, _ := strings.Cut(rest, "</style>")
+	return before + after
+}()
+
 //go:embed site-init.js
 var initialLayout string
 

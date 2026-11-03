@@ -6495,8 +6495,8 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
 @media (scripting: none) {
  .md-date-fields [data-date-open] { display:none; }
  .md-date-picker > .md-date-panel { display:none; }
- .md-native-date { display:grid; gap:.5rem; margin-block:1rem; }
- .md-native-date input { font:inherit; color:inherit; color-scheme:light dark; }
+ .md-native-date { display:grid; gap:var(--md-sys-measurement-space100); margin-block:var(--md-sys-measurement-space200); color:var(--md-sys-color-on-surface-variant); font:var(--md-sys-typescale-label-large); }
+ .md-native-date input { inline-size:100%; }
 }
 @property --_time-angle {
   syntax: "<angle>";
@@ -6954,7 +6954,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
 }
 
 .md-native-time { display:none; }
-@media (scripting: none) { .md-native-time { display:block; font:inherit; } }
+@media (scripting: none) { .md-native-time { display:block; inline-size:100%; } }
 /* Chip action anatomy uses system spacing; dimensions and colors use each chip's source set. */
 .md-chip-demo {
   display: inline-flex;
@@ -7659,8 +7659,31 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
 @media (scripting: none) {
   :is(.md-chip-select,.md-outlined-select) > :not(.md-native-select,.md-native-select-label) { display:none; }
   :is(.md-chip-select,.md-outlined-select) { display:block; min-block-size:0; border:0; padding:0; }
-  .md-native-select-label { display:block !important; font:inherit; margin-block-end:.25rem; }
-  .md-native-select { display:block !important; max-inline-size:100%; min-block-size:2.5rem; padding:.5rem; font:inherit; color:inherit; background:var(--md-sys-color-surface-container); border:1px solid var(--md-sys-color-outline); border-radius:var(--md-sys-shape-corner-small); }
+  .md-native-select-label { display:block !important; font-family:var(--md-sys-typescale-label-large-font); font-size:var(--md-sys-typescale-label-large-size); line-height:var(--md-sys-typescale-label-large-line-height); font-weight:var(--md-sys-typescale-label-large-weight); letter-spacing:var(--md-sys-typescale-label-large-tracking); color:var(--md-sys-color-on-surface-variant); margin-block-end:var(--md-sys-measurement-space50); }
+  :is(.md-native-select,.md-native-control) {
+    box-sizing:border-box; appearance:none; color-scheme:light;
+    max-inline-size:100%; min-inline-size:0; min-block-size:var(--md-sys-measurement-space600);
+    padding:var(--md-sys-measurement-space150) var(--md-sys-measurement-space200);
+    font-family:var(--md-sys-typescale-body-large-font); font-size:var(--md-sys-typescale-body-large-size); line-height:var(--md-sys-typescale-body-large-line-height); font-weight:var(--md-sys-typescale-body-large-weight); letter-spacing:var(--md-sys-typescale-body-large-tracking); color:var(--md-sys-color-on-surface);
+    background-color:var(--md-sys-color-surface-container-low);
+    border:var(--md-comp-divider-thickness,1px) solid var(--md-sys-color-outline);
+    border-radius:var(--md-sys-shape-corner-small);
+    accent-color:var(--md-sys-color-primary);
+  }
+  .md-native-select { display:block !important; }
+  select:is(.md-native-select,.md-native-control) {
+    cursor:pointer; padding-inline-end:var(--md-sys-measurement-space500);
+    background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);
+    background-position:calc(100% - 21px) 50%,calc(100% - 16px) 50%; background-size:5px 5px; background-repeat:no-repeat;
+  }
+  select:is(.md-native-select,.md-native-control):dir(rtl) { background-position:21px 50%,16px 50%; }
+  :is(.md-native-select,.md-native-control):focus-visible {
+    outline:var(--md-sys-state-focus-indicator-thickness) solid var(--md-sys-color-secondary);
+    outline-offset:var(--md-sys-state-focus-indicator-outer-offset);
+  }
+  :is(.md-native-select,.md-native-control):disabled { opacity:.38; cursor:default; }
+  :root[data-theme="dark"] :is(.md-native-select,.md-native-control) { color-scheme:dark; }
+  :is(.md-native-select,.md-native-control) > option { background:var(--md-sys-color-surface-container); color:var(--md-sys-color-on-surface); }
 }
 /* Dialog viewport sizes and content spacing are renderer layout rules. */
 .md-dialog-demo {
