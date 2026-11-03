@@ -62,24 +62,28 @@ func tokenBrowserContents(subject publish.SubjectView, browser tokenBrowser) tem
 		if err := tableTools().Render(ctx, writer); err != nil {
 			return err
 		}
-		if err := write(`</div></div></div><div class="tokens-token-columns"><span>Token</span>`); err != nil {
+		if err := write(`</div></div></div>`); err != nil {
 			return err
 		}
 		if len(browser.Filters) > 0 {
 			if err := useComponentAssets("dialog").Render(ctx, writer); err != nil {
 				return err
 			}
-			if err := write(`<button class="md-filter-chip tokens-context-button" type="button" data-action="context" aria-haspopup="dialog" aria-expanded="false" aria-controls="tokens-context-picker">` + `<span class="tokens-context-label" title="` + html.EscapeString(tableContextLabel(browser.Filters)) + `">` + html.EscapeString(tableContextLabel(browser.Filters)) + `</span>` + `<span data-slot="trailing-icon" aria-hidden="true">` + tableIcon("dropdown") + `</span></button></div>`); err != nil {
-				return err
-			}
 			if err := tableContextDialog(browser.Filters, subjectURL(subject)).Render(ctx, writer); err != nil {
 				return err
 			}
-
+		}
+		if err := write(`<noscript><button class="md-button md-filled-button" type="submit">Apply filters</button></noscript><div class="tokens-token-columns"><span>Token</span>`); err != nil {
+			return err
+		}
+		if len(browser.Filters) > 0 {
+			if err := write(`<button class="md-filter-chip tokens-context-button" type="button" data-action="context" aria-haspopup="dialog" aria-expanded="false" aria-controls="tokens-context-picker">` + `<span class="tokens-context-label" title="` + html.EscapeString(tableContextLabel(browser.Filters)) + `">` + html.EscapeString(tableContextLabel(browser.Filters)) + `</span>` + `<span data-slot="trailing-icon" aria-hidden="true">` + tableIcon("dropdown") + `</span></button></div>`); err != nil {
+				return err
+			}
 		} else if err := write(`<span>Value</span></div>`); err != nil {
 			return err
 		}
-		if err := write(`<noscript><button class="md-button md-filled-button" type="submit">Apply filters</button></noscript></form>`); err != nil {
+		if err := write(`</form>`); err != nil {
 			return err
 		}
 		if browser.Count == 0 {

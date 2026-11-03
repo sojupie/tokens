@@ -7684,6 +7684,38 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   :is(.md-native-select,.md-native-control):disabled { opacity:.38; cursor:default; }
   :root[data-theme="dark"] :is(.md-native-select,.md-native-control) { color-scheme:dark; }
   :is(.md-native-select,.md-native-control) > option { background:var(--md-sys-color-surface-container); color:var(--md-sys-color-on-surface); }
+  /* Keep native form and keyboard behavior while opting into a stylable picker. */
+  @supports (appearance: base-select) {
+    select:is(.md-native-select,.md-native-control),
+    select:is(.md-native-select,.md-native-control)::picker(select) { appearance:base-select; }
+    select:is(.md-native-select,.md-native-control) { display:flex !important; align-items:center; gap:var(--md-sys-measurement-space200); padding-inline:var(--md-sys-measurement-space200); background-image:none; }
+    select:is(.md-native-select,.md-native-control)::picker-icon { color:var(--md-sys-color-on-surface-variant); }
+    select:is(.md-native-select,.md-native-control)::picker(select) {
+      padding:var(--md-sys-measurement-space50);
+      border:var(--md-comp-divider-thickness,1px) solid var(--md-sys-color-outline-variant);
+      border-radius:var(--md-sys-shape-corner-large);
+      background:var(--md-sys-color-surface-container-low);
+      color:var(--md-sys-color-on-surface);
+      max-block-size:min(24rem,60dvh); overflow:auto;
+    }
+    select:is(.md-native-select,.md-native-control) > option {
+      min-block-size:var(--md-sys-measurement-space600);
+      padding:var(--md-sys-measurement-space150) var(--md-sys-measurement-space200);
+      border-radius:var(--md-sys-shape-corner-medium);
+      background:transparent; font:inherit;
+    }
+    select:is(.md-native-select,.md-native-control) > option:checked {
+      background:var(--md-sys-color-secondary-container); color:var(--md-sys-color-on-secondary-container);
+    }
+    select:is(.md-native-select,.md-native-control) > option:is(:hover,:focus-visible) {
+      outline:none;
+      background:color-mix(in srgb,var(--md-sys-color-on-surface) 8%,var(--md-sys-color-surface-container-low));
+    }
+    select:is(.md-native-select,.md-native-control) > option:checked:is(:hover,:focus-visible) {
+      background:color-mix(in srgb,var(--md-sys-color-on-secondary-container) 8%,var(--md-sys-color-secondary-container));
+    }
+    select:is(.md-native-select,.md-native-control) > option::checkmark { order:1; margin-inline-start:auto; }
+  }
 }
 /* Dialog viewport sizes and content spacing are renderer layout rules. */
 .md-dialog-demo {
