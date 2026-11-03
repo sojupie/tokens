@@ -32,7 +32,13 @@ templ Footer(config Config) {
 	<footer class="tokens-site-footer" data-component-assets>
 		<div class="tokens-footer-content tokens-layout-content">
 			<div class="tokens-footer-credit">
-				<a class="tokens-link" href="https://marmenlind.com">Made by Olle Marmenlind</a>
+				<p>
+					Made by
+					<a class="tokens-link tokens-author-link" href="https://marmenlind.com">
+						Olle Marmenlind
+						@ui.Icon("open_in_new")
+					</a>
+				</p>
 				<p>Independent project. Not affiliated with Google.</p>
 			</div>
 			<nav class="tokens-footer-links" aria-label="Project links">
@@ -93,7 +99,7 @@ templ Destinations(config Config) {
 templ Rail(config Config) {
 	<div class="tokens-site-rail-column">
 		@ui.NavigationRail(ui.RailProps{NavigationProps: ui.NavigationProps{Label: "Primary", Variant: "collapsed", Alignment: "top", Attrs: templ.Attributes{"class": "md-navigation md-navigation-rail tokens-site-rail"}}}) {
-			@ui.NavigationItem(ui.NavigationItemProps{Label: "Home", IconContent: railHomeIcon(), Href: config.Catalog + "/", Current: config.Active == "/", Attrs:templ.Attributes{"data-site-rail-section":""}})
+			@ui.NavigationItem(ui.NavigationItemProps{Label: "Home", IconContent: railHomeIcon(), Href: config.Catalog + "/", Current: config.Active == "/", Attrs: templ.Attributes{"data-site-rail-section": ""}})
 			for _, section := range config.sections() {
 				@ui.NavigationItem(ui.NavigationItemProps{Label: section.Name, Icon: section.Icon, Href: config.Catalog + section.Path, Current: config.section() == section.Path, Attrs: templ.Attributes{"data-site-rail-section": section.Path}})
 			}
@@ -102,6 +108,7 @@ templ Rail(config Config) {
 }
 
 templ railHomeIcon() {
-	<span class="tokens-rail-home-logo">@templ.Raw(brandLogo)
-</span>
+	<span class="tokens-rail-home-logo">
+		@templ.Raw(brandLogo)
+	</span>
 }

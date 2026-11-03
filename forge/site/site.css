@@ -91,6 +91,8 @@
 .tokens-footer-links > a { display:inline-flex; align-items:center; min-block-size:var(--md-sys-measurement-space600); }
 .tokens-site-footer .tokens-link { color:inherit; text-decoration:none; overflow-wrap:anywhere; }
 .tokens-site-footer .tokens-link:hover { text-decoration:underline; }
+.tokens-site-footer .tokens-author-link { display:inline-flex; align-items:center; gap:var(--md-sys-measurement-space50); text-decoration:underline; text-underline-offset:.15em; }
+.tokens-author-link .tokens-material-symbol { inline-size:1em; block-size:1em; }
 @media(max-width:640px) {
  .tokens-footer-content { padding-inline:var(--md-sys-measurement-space200); }
  .tokens-footer-content::before { inset-inline:var(--md-sys-measurement-space200); }
