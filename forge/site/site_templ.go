@@ -517,7 +517,7 @@ func Rail(config Config) templ.Component {
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = ui.NavigationRail(ui.RailProps{NavigationProps: ui.NavigationProps{Label: "Primary", Variant: "collapsed", Alignment: "center", Attrs: templ.Attributes{"class": "md-navigation md-navigation-rail tokens-site-rail"}}}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var20), templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = ui.NavigationRail(ui.RailProps{NavigationProps: ui.NavigationProps{Label: "Primary", Variant: "collapsed", Alignment: "top", Attrs: templ.Attributes{"class": "md-navigation md-navigation-rail tokens-site-rail"}}}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var20), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

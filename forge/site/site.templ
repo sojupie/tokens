@@ -92,7 +92,7 @@ templ Destinations(config Config) {
 // The rail is a sibling of the modal drawer, never a drawer descendant.
 templ Rail(config Config) {
 	<div class="tokens-site-rail-column">
-		@ui.NavigationRail(ui.RailProps{NavigationProps: ui.NavigationProps{Label: "Primary", Variant: "collapsed", Alignment: "center", Attrs: templ.Attributes{"class": "md-navigation md-navigation-rail tokens-site-rail"}}}) {
+		@ui.NavigationRail(ui.RailProps{NavigationProps: ui.NavigationProps{Label: "Primary", Variant: "collapsed", Alignment: "top", Attrs: templ.Attributes{"class": "md-navigation md-navigation-rail tokens-site-rail"}}}) {
 			@ui.NavigationItem(ui.NavigationItemProps{Label: "Home", IconContent: railHomeIcon(), Href: config.Catalog + "/", Current: config.Active == "/"})
 			for _, section := range config.sections() {
 				@ui.NavigationItem(ui.NavigationItemProps{Label: section.Name, Icon: section.Icon, Href: config.Catalog + section.Path, Current: config.section() == section.Path, Attrs: templ.Attributes{"data-site-rail-section": section.Path}})
