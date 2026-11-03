@@ -477,8 +477,7 @@ test('export disclosures receive local open state before the fragment is inserte
 });
 
 test('export changes invalidate download and retain native submission and cancellation', () => {
- const events={},requests=[],observers=[],timers=[];
- class MutationObserver {constructor(fn){observers.push(fn);}observe(){}}
+ const events={},requests=[],timers=[];
  function panel(){
   const fields=Object.fromEntries(Object.entries({kind:'component',slug:'buttons',set:'filled',q:'icon',content:'tokens',scope:'view',format:'css','context.Theme':'Dark'}).map(([name,value])=>[name,{name,value,type:'hidden'}]));
   fields._download={name:'_download',value:''};
@@ -489,7 +488,7 @@ test('export changes invalidate download and retain native submission and cancel
  let current;current=panel();const original=current;
  class FormData extends Map {constructor(form){super(Object.entries(form.fields).map(([name,input])=>[name,input.value]));}}
  const document={cookie:'',readyState:'complete',addEventListener:(name,fn)=>events[name]=fn,getElementById:()=>current,querySelector:()=>null};
- runScript('export.js',{document,setInterval:fn=>{timers.push(fn);return timers.length;},clearInterval(){},location:{search:''},URLSearchParams,FormData,MutationObserver,htmx:{trigger:(form,event)=>requests.push({form,event})}});
+ runScript('export.js',{document,setInterval:fn=>{timers.push(fn);return timers.length;},clearInterval(){},location:{search:''},URLSearchParams,FormData,htmx:{trigger:(form,event)=>requests.push({form,event})}});
  current=panel();events['htmx:historyRestore']();let focused=false;
  const trigger={dataset:{exportScope:'view'},focus(){focused=true;}};
  events.click({target:{closest:selector=>selector==='[data-export-open]'?trigger:null}});
@@ -499,10 +498,7 @@ test('export changes invalidate download and retain native submission and cancel
  const ctx={sourceElement:current.nodes.form};
  events['htmx:before:request']({detail:{ctx}});
  assert.equal(current.nodes['[data-export-confirmation]'].disabled,true,'a changed selection is unconfirmed until the server returns an action');
- current.nodes['#tokens-export-submit-pending'].busy=true;observers.at(-1)();
- assert.equal(current.nodes['[data-export-submit]'].attributes['aria-busy'],'true');
- current.nodes['#tokens-export-submit-pending'].busy=false;observers.at(-1)();
- assert.equal(current.nodes['[data-export-submit]'].attributes['aria-busy'],'false');
+ assert.equal(current.nodes['[data-export-submit]'].attributes['aria-busy'],'false','validation must not activate the purple loading appearance');
  events['htmx:error']({detail:{ctx}});
  assert.equal(current.nodes['[data-export-error]'].hidden,false);
  assert.match(current.nodes['[data-export-error]'].textContent,/Could not check/);

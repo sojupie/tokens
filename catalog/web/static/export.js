@@ -73,7 +73,7 @@
   function initialize() {
     const panel = document.getElementById('tokens-site-download'); if (!panel || initialized.has(panel)) return;
     initialized.add(panel);
-    const guard = panel.querySelector('#tokens-export-submit-pending'), form = panel.querySelector('form');
+    const form = panel.querySelector('form');
     let downloadToken = '', downloadTimer;
     const clearCookie = token => { document.cookie = `tokens-download-${token}=; Max-Age=0; Path=/; SameSite=Strict`; };
     function finishDownload(error) {
@@ -90,11 +90,10 @@
     const reflectLoading = () => {
       const button = panel.querySelector('[data-export-submit]');
       button.disabled = !!downloadToken;
-      button.setAttribute('aria-busy', String(!!downloadToken || guard.classList.contains('htmx-request')));
+      button.setAttribute('aria-busy', String(!!downloadToken));
     };
-    // The component owns the animation. htmx tracks option requests; the response
-    // cookie tracks preparation of the native attachment.
-    new MutationObserver(reflectLoading).observe(guard, {attributes:true, attributeFilter:['class']});
+    // Only preparing an attachment uses the loading appearance. Option checks
+    // retain the disabled style through htmx's guard and server confirmation.
     reflectLoading();
     form.addEventListener('submit', event => {
       if (downloadToken) { event.preventDefault(); return; }

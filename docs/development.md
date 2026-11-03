@@ -295,14 +295,14 @@ Exact conversion/dependency/omission counts remain in the on-demand report;
 implementation archives are assembled only when downloaded.
 
 `hx-disable` blocks stale dependent fieldsets and a temporary guard around
-Download; `hx-indicator` drives the existing button loading primitive. A separate
+Download; option checks retain its disabled appearance. A separate
 confirmation fieldset represents server-confirmed validity. The loading button
 is preserved across partials, keeps the label Download and remains in the docked
 footer beside the summary and report link. Local JavaScript preserves disclosure
 state, retains draft values from temporarily disabled children during rapid changes, invalidates the action,
 and handles opening, cancellation and errors. Morph swaps retain control focus.
 The form still submits a native file download. During preparation, its button
-uses the same loading primitive and blocks duplicate submissions. A per-request
+uses the button loading primitive and blocks duplicate submissions. A per-request
 short-lived response cookie clears that state when attachment headers arrive;
 a hidden transfer frame keeps preparation errors from navigating the page.
 Acknowledged responses are not cached. No download body passes through JavaScript.
