@@ -89,10 +89,7 @@ declared scripts. Inert-thumbnail behavior and the existing progress exception
 are preserved.
 
 The initial browser comparison checked 1,026 views with no undeclared behavior.
-Its temporary review page has been removed. Further matrix comparisons should
-run through CLI tooling suitable for CI, not a dedicated review UI.
-Declaration-only
-scripts were `runtime/chips.js` from the common module, `runtime/snackbars.js`
+Declaration-only scripts were `runtime/chips.js` from the common module, `runtime/snackbars.js`
 from the messages module, and `progress.js` on loading-indicator views. These are
 reported rather than silently removed. This covers exposed individual options,
 not every generated configuration combination, live lifecycle behavior or the
