@@ -807,12 +807,12 @@ test('site navigation drills into a single mobile list and preserves its positio
  const back={focus(){focus.push('back');}},main={focus(){focus.push('main');}};
  let node={dataset:{activeSection:'/components'}},lists=panels.map(p=>({dataset:{siteScroll:p.dataset.sitePanel},scrollTop:0,getClientRects:()=>p.hidden?[]:[{}],querySelector:()=>null,matches:()=>true}));
  const drawer={open:false,dataset:{},close(){this.open=false;},removeAttribute(){},setAttribute(){},addEventListener(){}};
- const header={dataset:{drawerBreakpoint:'1100'},style:{removeProperty(){}},getBoundingClientRect:()=>({height:64}),addEventListener:(name,fn)=>handlers[name]=fn,
+ const header={contains:target=>target===drawer,dataset:{drawerBreakpoint:'1100'},style:{removeProperty(){}},getBoundingClientRect:()=>({height:64}),addEventListener:(name,fn)=>handlers[name]=fn,
  querySelectorAll:selector=>selector==='[data-site-panel]'?panels:selector==='[data-site-section]'?buttons:lists,
  querySelector:selector=>selector==='#tokens-site-menu'?drawer:selector==='[data-navigation-open]'?opener:selector==='#tokens-site-appearance'?null:selector==='[data-site-navigation]'?node:selector.includes('[data-site-back]')?back:selector==='.tokens-site-main a'?main:selector.startsWith('[data-site-section=')?buttons.find(b=>selector.includes(b.dataset.siteSection)):selector.startsWith('[data-site-panel=')?panels.find(p=>selector.includes(p.dataset.sitePanel)):null};
  runInNewContext(readFileSync(join(__dirname,'../../forge/site/site.js'),'utf8'),{
   document:{getElementById:()=>header,addEventListener:(name,fn)=>docHandlers[name]=fn,documentElement:root,body,activeElement:body},
-  window:{},matchMedia:query=>({get matches(){return width>=Number(query.match(/\d+/)[0]);},addEventListener(){}}),ResizeObserver:class{observe(){}},
+  window:{},URL,location:{href:'http://localhost/components',pathname:'/components'},matchMedia:query=>({get matches(){return width>=Number(query.match(/\d+/)[0]);},addEventListener(){}}),ResizeObserver:class{observe(){}},
  });
  let prevented=false;handlers.click({target:{closest:selector=>selector==='[data-site-section]'?{dataset:{siteSection:'/components'}}:null},preventDefault(){prevented=true;},stopPropagation(){}});
  assert.equal(prevented,false,'the document section attribute must not intercept ordinary links or appearance controls');
@@ -825,7 +825,7 @@ test('site navigation drills into a single mobile list and preserves its positio
  assert.equal(lists[0].scrollTop,270,'navigation updates must retain the existing list position');
  assert.equal(header.dataset.mobileLevel,'section');
  width=900;
- const railLink={dataset:{siteRailSection:'/styles'}};
+ const railLink={href:'/styles',dataset:{siteRailSection:'/styles'}};
  prevented=false;
  handlers.click({target:{closest:selector=>selector==='[data-site-rail-section]'?railLink:null},preventDefault(){prevented=true;},stopPropagation(){}});
  assert.equal(prevented,false,'rail links navigate directly at medium widths');
@@ -834,7 +834,27 @@ test('site navigation drills into a single mobile list and preserves its positio
  handlers.pointerleave();assert.equal(header.dataset.panelOpen,'false');assert.equal(panels[1].hidden,false,'overlay exit keeps the hovered section visible through its fade');
  handlers.focusin({target:{closest:()=>railLink}});assert.equal(header.dataset.panelOpen,'true');
  handlers.keydown({key:'Escape',preventDefault(){}});assert.equal(header.dataset.panelOpen,'false');
+ const currentLink={href:'/components',dataset:{siteRailSection:'/components'}};
+ const activate=link=>{
+  let prevented=false;
+  handlers.click({target:{closest:selector=>selector==='[data-site-rail-section]'?link:null},preventDefault(){prevented=true;},stopPropagation(){}});
+  return prevented;
+ };
+ docHandlers.pointerdown({pointerType:'touch',target:{}});
+ handlers.focusin({type:'focusin',target:{closest:()=>currentLink}});
+ assert.equal(header.dataset.panelOpen,'false','touch focus must not impersonate hover');
+ assert.equal(activate(currentLink),true,'the current page must not navigate again');
+ assert.equal(header.dataset.panelOpen,'true');
+ handlers.pointerleave();assert.equal(header.dataset.panelOpen,'true','a tapped drawer stays open after pointer exit');
+ assert.equal(activate(currentLink),true);assert.equal(header.dataset.panelOpen,'false','a second tap closes the drawer');
+ assert.equal(activate(railLink),false,'another destination still navigates');
+ node={dataset:{activeSection:'/styles'}};docHandlers['htmx:afterSwap']();
+ assert.equal(header.dataset.panelOpen,'true','touch navigation retains its drawer on arrival');
+ docHandlers.pointerdown({pointerType:'touch',target:{}});
+ assert.equal(header.dataset.panelOpen,'false','outside taps dismiss the latched drawer');
+ handlers.keydown({key:'Escape',preventDefault(){}});
  width=1440;node={dataset:{activeSection:'/components'}};docHandlers['htmx:afterSwap']();
+ assert.equal(activate(currentLink),true);assert.equal(drawer.inert,false,'wide current-page activation retains the persistent drawer');
  handlers.pointerover({target:{closest:()=>railLink},pointerType:'mouse'});
  assert.equal(panels[1].hidden,false,'wide windows also reveal the hovered section');
  assert.equal(root.dataset.siteSection,'/components','hover must not change reserved content width');
