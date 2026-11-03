@@ -54,7 +54,7 @@ func (c Config) sections() []Section {
 	if c.Agents {
 		sections = append(sections, Section{Name: "For agents", Path: "/for-agents", Icon: "description"})
 	}
-	return append(sections, Section{Name: "Tools", Path: "/tools", Icon: "settings", Items: c.Tools})
+	return append(sections, Section{Name: "Tools", Path: "/tools", Icon: "handyman", Items: c.Tools})
 }
 func (c Config) section() string {
 	if c.ActiveTool != "" {
