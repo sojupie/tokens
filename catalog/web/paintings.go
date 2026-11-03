@@ -1,7 +1,7 @@
 package web
 
 // Public-domain paintings used by component previews.
-const cardPainting = "the-turmoil-of-conflict-2015.19.37.webp"
+const cardPainting = "blue-morning-1963.10.82.webp"
 
 // Impressionist paintings keep the carousel visually coherent.
 var carouselPaintings = [...]string{

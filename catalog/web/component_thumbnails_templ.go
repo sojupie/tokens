@@ -305,7 +305,7 @@ func componentThumbnail(c componentCase) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "\" alt=\"\" width=\"1200\" height=\"517\" loading=\"lazy\" draggable=\"false\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "\" alt=\"\" width=\"1200\" height=\"935\" loading=\"lazy\" draggable=\"false\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -321,7 +321,7 @@ func componentThumbnail(c componentCase) templ.Component {
 						}()
 					}
 					ctx = templ.InitializeContext(ctx)
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "<h3 class=\"md-card-headline\">The Turmoil of Conflict</h3><p class=\"md-card-supporting-text\">Joan of Arc series, IV</p>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "<h3 class=\"md-card-headline\">Blue Morning</h3><p class=\"md-card-supporting-text\">George Bellows</p>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}

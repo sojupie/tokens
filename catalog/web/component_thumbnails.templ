@@ -64,10 +64,10 @@ templ componentThumbnail(c componentCase) {
 		case "card":
 			@useComponentAssets("card")
 			@ui.CardSurface(ui.CardProps{Variant: "elevated", Attrs: templ.Attributes{"class": "md-card md-elevated-card tokens-thumbnail-card"}}) {
-				<img class="tokens-thumbnail-landscape" src={ staticURL("paintings/"+cardPainting) } alt="" width="1200" height="517" loading="lazy" draggable="false"/>
+				<img class="tokens-thumbnail-landscape" src={ staticURL("paintings/"+cardPainting) } alt="" width="1200" height="935" loading="lazy" draggable="false"/>
 				@ui.CardBody(nil) {
-					<h3 class="md-card-headline">The Turmoil of Conflict</h3>
-					<p class="md-card-supporting-text">Joan of Arc series, IV</p>
+					<h3 class="md-card-headline">Blue Morning</h3>
+					<p class="md-card-supporting-text">George Bellows</p>
 				}
 			}
 		case "carousel":

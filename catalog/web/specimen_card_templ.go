@@ -43,13 +43,13 @@ func specimenCard(c componentCase) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<span class=\"md-card-supporting-text\">Joan of Arc series, IV<br>Louis Maurice Boutet de Monvel</span>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<span class=\"md-card-supporting-text\">1909<br>George Bellows</span>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = ui.CardButton(ui.CardProps{Variant: c.Variant, Headline: "The Turmoil of Conflict", ImageSrc: staticURL("paintings/" + cardPainting), ImageAlt: "Joan of Arc riding among mounted knights in battle", Attrs: c.Attributes()}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = ui.CardButton(ui.CardProps{Variant: c.Variant, Headline: "Blue Morning", ImageSrc: staticURL("paintings/" + cardPainting), ImageAlt: "Workers beside the East River in blue morning light", Attrs: c.Attributes()}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
