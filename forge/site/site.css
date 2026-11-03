@@ -57,16 +57,19 @@
 .tokens-site-header[data-docked="true"] .tokens-drawer-appearance { position:absolute;z-index:1;inset-inline-start:0;inset-block-end:0;background:var(--md-sys-color-surface-container-low); }
 /* The page owns reserved width; hover only changes the drawer layered above it. */
 :root[data-site-layout="medium"] { --site-drawer-width:var(--site-rail-width); }
+/* Renderer timings measured from the 30fps M3 navigation recording.
+   Surface: ~250ms; text: ~75ms out, 150ms delay, ~200ms in. */
 .tokens-site-header[data-docked="true"] #tokens-site-menu {
- opacity:0;visibility:hidden;pointer-events:none;translate:calc(-1 * var(--md-sys-measurement-space100)) 0;
- transition:opacity var(--_motion-fast-effects-duration,150ms) var(--_motion-fast-effects-easing,linear),translate var(--_motion-fast-spatial-duration,250ms) var(--_motion-fast-spatial-easing,ease-out),visibility var(--_motion-fast-effects-duration,150ms),box-shadow var(--_motion-fast-effects-duration,150ms) var(--_motion-fast-effects-easing,linear);
+ inline-size:0;min-inline-size:0;visibility:hidden;pointer-events:none;
+ transition:inline-size 250ms var(--md-sys-motion-easing-standard),visibility 250ms,box-shadow var(--_motion-fast-effects-duration) var(--_motion-fast-effects-easing);
 }
-.tokens-site-header[data-docked="true"]:is([data-drawer-persistent="true"],[data-panel-open="true"]) #tokens-site-menu { opacity:1;visibility:visible;pointer-events:auto;translate:0 0; }
+.tokens-site-header[data-docked="true"]:is([data-drawer-persistent="true"],[data-panel-open="true"]) #tokens-site-menu { inline-size:var(--site-panel-width);visibility:visible;pointer-events:auto; }
 .tokens-site-header[data-docked="true"] .tokens-site-section {
- position:absolute;inset:0;background:var(--md-sys-color-surface-container-low);opacity:1;
- transition:opacity var(--_motion-fast-effects-duration,150ms) var(--_motion-fast-effects-easing,linear),display var(--_motion-fast-effects-duration,150ms) allow-discrete;
+ position:absolute;inset-block:0;inset-inline-start:0;inline-size:var(--site-panel-width);background:var(--md-sys-color-surface-container-low);opacity:1;
+ transition:opacity 200ms linear 150ms,display 200ms allow-discrete;
 }
-.tokens-site-header[data-docked="true"] .tokens-site-section[hidden] { display:none;opacity:0;pointer-events:none; }
+.tokens-site-header[data-docked="true"] .tokens-site-section[hidden] { display:none;opacity:0;pointer-events:none;transition-duration:75ms;transition-delay:0s; }
+.tokens-site-header[data-docked="true"]:not([data-drawer-persistent="true"],[data-panel-open="true"]) .tokens-site-section { opacity:0;transition-duration:75ms;transition-delay:0s; }
 @starting-style { .tokens-site-header[data-docked="true"] .tokens-site-section:not([hidden]) { opacity:0; } }
 @media (hover:hover) {
  .tokens-site-header[data-docked="true"]:has(.tokens-site-rail:hover,#tokens-site-menu:hover) #tokens-site-menu { --_elevation-level:var(--md-sys-elevation-level2); }
