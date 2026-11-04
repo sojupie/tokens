@@ -284,3 +284,23 @@ test('fractional end targets collapse to one reachable page in either direction'
   assert.equal(targets.findIndex(target=>target>1333+1),-1,'there is no next page at the end');
  }
 });
+
+test('carousel resize and font callbacks wait for valid CSS and ignore detached nodes',async()=>{
+ let observed,reads=0;
+ const buttons=Array.from({length:6},()=>({querySelector:()=>({style:{}})}));
+ const viewport={clientWidth:600,scrollLeft:0,addEventListener(){}};
+ const root={isConnected:true,dataset:{variant:'hero'},
+  querySelector:selector=>selector==='.md-carousel-viewport'?viewport:{},
+  querySelectorAll:selector=>selector==='.md-carousel-item'?buttons:[],
+ };
+ const document={readyState:'complete',fonts:{ready:Promise.resolve()},querySelectorAll:()=>[root],addEventListener(){}};
+ runInNewContext(readFileSync(`${__dirname}/static/carousel.js`,'utf8'),{
+  document,window:{addEventListener(){}},matchMedia:()=>({matches:false}),
+  getComputedStyle(){reads++;return{direction:'ltr',paddingInlineStart:'0px',paddingInlineEnd:'0px',getPropertyValue:()=>''}},
+  ResizeObserver:class{constructor(fn){observed=fn}observe(){}},
+ });
+ await Promise.resolve();
+ assert.doesNotThrow(()=>observed([{target:root}]),'missing component CSS must not produce an invalid layout');
+ const before=reads;root.isConnected=false;
+ observed([{target:root}]);assert.equal(reads,before,'queued callbacks must not measure a removed component');
+});

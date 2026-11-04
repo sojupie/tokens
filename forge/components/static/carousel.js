@@ -216,6 +216,7 @@
     state.captions.forEach((caption,i)=>{caption.style.opacity=String(opacity[i]);});
   }
   function paint(state,scroll=offset(state)) {
+    if(!state.plan||state.root.isConnected===false)return;
     if(state.lastPainted===scroll)return;
     state.lastPainted=scroll;
     const {root,buttons,plan}=state,position=scroll/(plan.large+plan.gap),width=plan.width;
@@ -257,13 +258,14 @@
     if(next)next.disabled=scroll>=max-1;
   }
   function resize(root) {
-    const state=roots.get(root);if(!state)return;cancelMotion(state);
+    const state=roots.get(root);if(!state||root.isConnected===false)return;cancelMotion(state);
     const style=getComputedStyle(root),prior=state.plan?offset(state)/(state.plan.large+state.plan.gap):0,priorIndex=Number(root.dataset.carouselIndex)||0;
     state.rtl=style.direction==='rtl';state.vertical=root.dataset.variant==='full-screen';
     const viewportStyle=getComputedStyle(state.viewport);
     state.paddingStart=parseFloat(viewportStyle.paddingInlineStart)||0;state.paddingEnd=parseFloat(viewportStyle.paddingInlineEnd)||0;
     const width=state.viewport.clientWidth-state.paddingStart-state.paddingEnd;
     const preferred=parseFloat(style.getPropertyValue('--_carousel-preferred')),gap=parseFloat(style.getPropertyValue('--_carousel-gap'));
+    if(width<=0||!Number.isFinite(preferred)||preferred<=0||!Number.isFinite(gap)||gap<0)return;
     const maximum=parseFloat(style.getPropertyValue('--_carousel-maximum'))||Infinity;
     state.plan=layout(width,preferred,gap,root.dataset.variant,state.buttons.length,maximum);
     state.flow=reduced.matches||state.plan.variant==='uncontained';
