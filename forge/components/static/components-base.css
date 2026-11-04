@@ -3886,6 +3886,7 @@ dialog.md-side-sheet[data-variant="detached"] {
    remain in the top layer and leave the underlying page width unchanged. */
 .md-sheet-frame:has(> .md-side-sheet[data-control="standard"]) {
   display: flex;
+  justify-content: flex-end;
 }
 .md-sheet-frame:has(> .md-side-sheet[data-control="standard"][data-orientation="start"]) {
   flex-direction: row-reverse;

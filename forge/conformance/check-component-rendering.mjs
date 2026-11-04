@@ -963,7 +963,8 @@ export function checkComponentRendering() {
         const width=el.tagName==='DIALOG'?document.documentElement.clientWidth:el.closest('.md-sheet-frame').clientWidth,
           inset=el.dataset.variant==='detached'?Number.parseFloat(get('md.sys.measurement.space200')):0,
           left=(el.dataset.orientation==='start')!==(cs.direction==='rtl');
-        compare('side-sheet logical edge',cs.left,String(left?inset:width-Number.parseFloat(cs.width)-inset));
+        const origin=el.tagName==='DIALOG'?0:el.closest('.md-sheet-frame').getBoundingClientRect().left;
+        compare('side-sheet logical edge',String(el.getBoundingClientRect().left-origin),String(left?inset:width-Number.parseFloat(cs.width)-inset));
       }
       // Side-sheet geometry is expressed at the trailing edge in the source.
       if (!bottom && ((el.dataset.orientation === "start") !== (cs.direction === "rtl")))

@@ -20,7 +20,7 @@
   function entry(sheet){return states.get(sheet);}
   function content(sheet,visible,interactive=visible){const body=sheet.querySelector('.md-sheet-content');body.hidden=!visible;body.inert=!interactive;}
   function size(sheet){return sheet.dataset.sheetSize||(sheet.dataset.variant==='minimized'?'minimized':'default');}
-  function setSize(sheet,value){sheet.dataset.sheetSize=value;sheet.dataset.variant=value==='minimized'?'minimized':'expanded';}
+  function setSize(sheet,value){if(!sheet.classList.contains('md-bottom-sheet'))return;sheet.dataset.sheetSize=value;sheet.dataset.variant=value==='minimized'?'minimized':'expanded';}
   function sizes(sheet){
     const names=['minimized','default'];
     if(sheet.matches('dialog.md-bottom-sheet[data-control="modal"]')&&sheet.hasAttribute('data-sheet-allow-full'))names.push('full');

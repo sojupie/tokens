@@ -31,7 +31,7 @@ test('side sheet enter and exit direction follows logical edge and text directio
  assert.equal(sheetExit(false,true,true),'translateX(100%)');
 });
 
-function sheetFixture(allowFull=false,motion=false) {
+function sheetFixture(allowFull=false,motion=false,sideVariant) {
  const animations=[];
  const listeners={},attrs=new Set(allowFull?['data-sheet-allow-full']:[]),body={hidden:false,inert:false};
  const handle={
@@ -42,17 +42,17 @@ function sheetFixture(allowFull=false,motion=false) {
  };
  class Dialog {}
  const sheet=Object.assign(new Dialog(),{
-  dataset:{variant:'expanded',control:'modal',sheetSize:'default'},style:{height:''},open:true,
-  classList:{contains:name=>name==='md-bottom-sheet'},
-  matches:selector=>selector==='dialog.md-bottom-sheet[data-control="modal"]',
+  dataset:{variant:sideVariant||'expanded',control:'modal',sheetSize:'default'},style:{height:''},open:true,
+  classList:{contains:name=>name===(sideVariant?'md-side-sheet':'md-bottom-sheet')},
+  matches:selector=>!sideVariant&&selector==='dialog.md-bottom-sheet[data-control="modal"]',
   hasAttribute:name=>attrs.has(name),
   toggleAttribute(name,value){value?attrs.add(name):attrs.delete(name);},
   closest(){return host;},
-  querySelector:selector=>selector==='.md-sheet-content'?body:handle,
+  querySelector:selector=>selector==='.md-sheet-content'?body:sideVariant&&selector==='[data-sheet-handle]'?null:handle,
   getBoundingClientRect(){const height=parseFloat(this.style.height)||(this.dataset.variant==='minimized'?56:this.dataset.sheetSize==='full'?644:360);return {height,bottom:720,top:720-height};},
   addEventListener(){},
   setAttribute(name){attrs.add(name);},removeAttribute(name){attrs.delete(name);},dispatchEvent(){return true;},
-  showModal(){this.open=true;},close(){this.open=false;},
+  show(){this.open=true;},showModal(){this.open=true;},close(){this.open=false;},
   animate(frames,timing){const animation={frames,timing,finished:Promise.resolve(),cancel(){}};animations.push(animation);return animation;},
  });
  const host={querySelector:selector=>selector==='.md-sheet'?sheet:null};
@@ -126,4 +126,25 @@ test('sheet translations use attached easing while anchored height changes keep 
  assert.equal(f.sheet.open,true);assert.equal(f.animations[1].timing.easing,'cubic-bezier(0.2, 0, 0, 1)');
  f.click();await new Promise(resolve=>setImmediate(resolve));
  assert.equal(f.animations[2].timing.easing,'linear(0, 1.1, 1)');assert.ok(f.animations[2].frames.every(frame=>frame.height));
+});
+
+test('side sheet variants survive closing and reopening for either behavior',async()=>{
+ for(const variant of ['docked','detached'])for(const control of ['standard','modal']){
+  const f=sheetFixture(false,true,variant);f.sheet.dataset.control=control;
+  if(control==='standard'){Object.setPrototypeOf(f.sheet,Object.prototype);f.sheet.hidden=false;}
+  const action=attribute=>{
+   const button={hasAttribute:name=>name===attribute,setAttribute(){},focus(){},closest:selector=>selector==='button'?button:f.host};
+   f.listeners.click({target:button,preventDefault(){}});
+  };
+  for(let cycle=0;cycle<2;cycle++){
+   action('data-sheet-close');await new Promise(resolve=>setImmediate(resolve));
+   assert.equal(control==='modal'?f.sheet.open:!f.sheet.hidden,false);
+   action('data-sheet-open');await new Promise(resolve=>setImmediate(resolve));
+   assert.equal(control==='modal'?f.sheet.open:!f.sheet.hidden,true);
+   assert.equal(f.sheet.dataset.variant,variant,`${control} ${variant}`);
+   assert.equal(f.sheet.dataset.sheetSize,'default');
+   assert.equal(f.body.hidden,false);
+   assert.equal(f.sheet.style.height,'');
+  }
+ }
 });

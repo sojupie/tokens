@@ -3,6 +3,36 @@
 <h1>Side sheet layout checks</h1><button id="run">Run sheet layout checks</button><pre id="result">Ready</pre><div id="samples"></div>
 <script type="module">
 const run=document.querySelector('#run'),out=document.querySelector('#result'),samples=document.querySelector('#samples');run.onclick=async()=>{run.disabled=true;const checks=[],assert=(ok,message)=>{if(!ok)throw Error(message);checks.push(message)},wait=ms=>new Promise(r=>setTimeout(r,ms));
-try{for(const side of ['start','end']){samples.replaceChildren();const f=document.createElement('iframe');samples.append(f);await new Promise(resolve=>{f.onload=resolve;f.src=`/md3/components/side-sheets?preview.compare=interactive&preview.control=standard&preview.orientation=${side}`});const w=f.contentWindow,d=f.contentDocument;await w.TokenAssets.ready;const sheet=d.querySelector('#component-preview .md-side-sheet'),frame=sheet.closest('.md-sheet-frame'),label=frame.querySelector('.md-sheet-page-label'),body=sheet.querySelector('.md-sheet-body'),opener=d.querySelector('#component-preview [data-sheet-open]'),original=label.getBoundingClientRect().width;opener.click();await wait(600);assert(label.getBoundingClientRect().width<original,'Standard sheet reserves page width');const r=sheet.getBoundingClientRect(),l=label.getBoundingClientRect();assert(side==='start'?r.right<=l.left+1:l.right<=r.left+1,`${side}: sheet does not cover page content`);for(let i=0;i<30;i++){const p=d.createElement('p');p.textContent='Long sheet content '+i;body.append(p)}body.scrollTop=200;assert(body.scrollTop>0,'Body scrolls independently');assert(sheet.scrollTop===0,'Sheet header and footer do not scroll');const word=d.createElement('p');word.textContent='x'.repeat(200);body.append(word);assert(body.scrollWidth<=body.clientWidth,'Long content does not create horizontal scroll');sheet.querySelector('[data-sheet-close]').click();await wait(600);assert(Math.abs(label.getBoundingClientRect().width-original)<1,'Closing releases reserved page width');}
+async function load(query){
+ samples.replaceChildren();const f=document.createElement('iframe');samples.append(f);
+ await new Promise(resolve=>{f.onload=resolve;f.src='/md3/components/side-sheets?'+new URLSearchParams(query)});
+ await f.contentWindow.TokenAssets.ready;return f.contentDocument;
+}
+try{
+ for(const compare of ['variants','states'])for(const control of ['standard','modal'])for(const side of ['start','end']){
+  const d=await load({'preview.compare':compare,'preview.control':control,'preview.orientation':side,'preview.variant':'detached'});
+  for(const direction of ['ltr','rtl']){
+   d.documentElement.dir=direction;
+   for(const sheet of d.querySelectorAll('#component-preview .md-side-sheet')){
+    const frame=sheet.closest('.md-sheet-frame').getBoundingClientRect(),r=sheet.getBoundingClientRect(),inset=sheet.dataset.variant==='detached'?16:0;
+    const gap=(side==='start')===(direction==='ltr')?r.left-frame.left:frame.right-r.right;
+    assert(Math.abs(gap-inset)<1,`${compare} ${control} ${side} ${direction} ${sheet.dataset.variant}: correct logical edge`);
+    assert(Math.abs(r.top-frame.top-inset)<1&&Math.abs(frame.bottom-r.bottom-inset)<1,'Detached spacing is preserved on both block edges');
+   }
+  }
+ }
+ for(const variant of ['docked','detached'])for(const side of ['start','end']){samples.replaceChildren();const f=document.createElement('iframe');samples.append(f);await new Promise(resolve=>{f.onload=resolve;f.src=`/md3/components/side-sheets?preview.compare=interactive&preview.control=standard&preview.orientation=${side}&preview.variant=${variant}`});const w=f.contentWindow,d=f.contentDocument;await w.TokenAssets.ready;const sheet=d.querySelector('#component-preview .md-side-sheet'),frame=sheet.closest('.md-sheet-frame'),label=frame.querySelector('.md-sheet-page-label'),body=sheet.querySelector('.md-sheet-body'),opener=d.querySelector('#component-preview [data-sheet-open]'),original=label.getBoundingClientRect().width;opener.click();await wait(600);assert(sheet.dataset.variant===variant,`${variant}: opening preserves variant`);assert(label.getBoundingClientRect().width<original,'Standard sheet reserves page width');const r=sheet.getBoundingClientRect(),l=label.getBoundingClientRect();assert(side==='start'?r.right<=l.left+1:l.right<=r.left+1,`${side}: sheet does not cover page content`);for(let i=0;i<30;i++){const p=d.createElement('p');p.textContent='Long sheet content '+i;body.append(p)}body.scrollTop=200;assert(body.scrollTop>0,'Body scrolls independently');assert(sheet.scrollTop===0,'Sheet header and footer do not scroll');const word=d.createElement('p');word.textContent='x'.repeat(200);body.append(word);assert(body.scrollWidth<=body.clientWidth,'Long content does not create horizontal scroll');sheet.querySelector('[data-sheet-close]').click();await wait(600);assert(Math.abs(label.getBoundingClientRect().width-original)<1,'Closing releases reserved page width');}
+for(const variant of ['docked','detached']){
+ const d=await load({'preview.compare':'interactive','preview.control':'modal','preview.variant':variant}),sheet=d.querySelector('#component-preview .md-side-sheet');
+ for(let cycle=0;cycle<2;cycle++){
+  d.querySelector('#component-preview [data-sheet-open]').click();await wait(600);
+  assert(sheet.open&&sheet.matches(':modal'),'Modal sheet opens in the top layer');
+  assert(sheet.dataset.variant===variant,`${variant}: modal reopening preserves variant`);
+  const r=sheet.getBoundingClientRect(),inset=variant==='detached'?16:0;
+  assert(Math.abs(d.documentElement.clientWidth-r.right-inset)<1,'Modal trailing inset matches its variant');
+  assert(Math.abs(r.top-inset)<1,'Modal top inset matches its variant');
+  sheet.querySelector('[data-sheet-close]').click();await wait(600);
+ }
+}
 out.textContent=JSON.stringify({passed:checks.length,checks},null,2)}catch(error){out.textContent=JSON.stringify({passed:checks.length,checks,error:error.stack},null,2)}finally{run.disabled=false}};
 </script>
