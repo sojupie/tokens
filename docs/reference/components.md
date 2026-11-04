@@ -1078,6 +1078,18 @@ field. Closing a fullscreen dialog with unsaved edits opens a discard
 confirmation. Keep editing or Escape returns to the edits; Discard cancels them.
 Initial focus goes to the first control: the basic field or fullscreen Close.
 
+`MaterialDialogs.open(panel, opener)` attaches dialog behavior when opening.
+Closed dialogs allocate no scroll listeners or resize observers. Closing releases
+those resources. `MaterialDialogs.initialize(root)` adopts open dialogs in the
+root and its descendants without resetting values, scroll position or existing
+controllers. Call it after inserting already-open markup. Before removing a
+region, call `MaterialDialogs.dispose(root)` to cancel animations, remove
+listeners, disconnect observers and close its managed dialogs. Disposal skips
+Forge's explicit focus restoration and emits no `md-dialog-closed` event. Both methods accept a dialog
+element or a containing region. Catalog invokes them through its existing asset
+and HTMX events; static consumers can call them directly. Load motion and dialog
+scripts and resolve their styles before opening a dialog.
+
 Captured tokens supply fullscreen container shape and color, header and
 action-bar heights, typography, icon geometry, action states, dividers and scroll
 elevation. Three composite typography fields and the header tint layer are

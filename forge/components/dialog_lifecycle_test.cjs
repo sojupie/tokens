@@ -3,11 +3,11 @@ function harness(){
  const documentHandlers={},panelHandlers={},events=[],animations=[];
  const opener={isConnected:true,expanded:'false',focuses:0,setAttribute(k,v){if(k==='aria-expanded')this.expanded=v},focus(){this.focuses++}};
  const panel={open:false,inert:false,returnValue:'',listeners:panelHandlers,
-  addEventListener(k,fn){panelHandlers[k]=fn},dispatchEvent(event){events.push(event);return !(event.type==='md-dialog-beforeclose'&&this.veto)},
+  addEventListener(k,fn,options){panelHandlers[k]=fn;options?.signal.addEventListener('abort',()=>{if(panelHandlers[k]===fn)delete panelHandlers[k]},{once:true})},dispatchEvent(event){events.push(event);return !(event.type==='md-dialog-beforeclose'&&this.veto)},
   showModal(){this.open=true},close(value=''){this.open=false;this.returnValue=value;panelHandlers.close?.()},
   animate(){let finish,reject;const finished=new Promise((resolve,no)=>{finish=resolve;reject=no});const a={finished,finish,cancel(){reject(new Error('cancelled'))}};animations.push(a);return a}
  };
- const context={document:{activeElement:opener,querySelectorAll(){return [panel]},addEventListener(k,fn){documentHandlers[k]=fn}},matchMedia:()=>({matches:false}),getComputedStyle:()=>({opacity:'0.5'}),MaterialMotion:{timing:()=>({duration:100})},CustomEvent:class {constructor(type,options){this.type=type;Object.assign(this,options)}}};
+ const context={AbortController,document:{activeElement:opener,querySelectorAll(){return [panel]},addEventListener(k,fn){documentHandlers[k]=fn}},matchMedia:()=>({matches:false}),getComputedStyle:()=>({opacity:'0.5'}),MaterialMotion:{timing:()=>({duration:100})},CustomEvent:class {constructor(type,options){this.type=type;Object.assign(this,options)}}};
  runInNewContext(readFileSync(`${__dirname}/static/dialogs.js`,'utf8'),context);
  return {panel,opener,events,animations,api:context.MaterialDialogs,documentHandlers};
 }

@@ -63,9 +63,10 @@ when a DOM-dependent controller should initialize.
 - [ ] Measure cold and warm navigation with the actual delivery protocol before
   changing bundle boundaries or hidden-region activation policy.
 
-Closed dialogs, visible regions and offscreen regions currently share ownership
-declarations. Deferring a closed dialog requires a separate activation contract;
-the ownership manifest does not decide when its behavior should become ready.
+Closed dialogs, visible regions and offscreen regions share ownership
+declarations. Dialog presentation now creates listeners and observers on opening
+and releases them on close. This defers instance work, not the script download.
+The ownership manifest does not decide when behavior should activate.
 
 Run `npm run check:components`, `npm run test:tokens`, `npm run test:ui`, and
 `go test ./forge/components ./catalog/web ./cmd/tokens` for this initial stage.
@@ -84,7 +85,8 @@ cleanup. The loader does not consume it as an execution graph.
 | `runtime/navigation.js`, `runtime/sliders.js`, `runtime/toolbars.js`, `runtime/snackbars.js` | Include imported helpers. Initialize per-node state and/or observers, retry on asset readiness and swaps, and clean up removed nodes. Navigation also has a direct history-restoration hook. |
 | `runtime/tooltips.js`, `fields.js`, `menus.js` | Initialize per-node state and measure geometry during interaction. Cleanup hooks exist. Tooltips retry on asset readiness; fields and menus are core scripts with direct history-restoration hooks. Menu motion needs `MaterialMotion`. |
 | `sheets.js`, `lists.js`, `carousel.js` | Maintain per-node or gesture state. Sheets and lists use motion; lists include the imported keyboard helper. Carousel initializes measured layout and observers. All have swap/asset-ready and cleanup hooks. |
-| `search.js`, `date-picker.js`, `time-picker.js`, `dialogs.js` | Initialize per-node state and clean up removed instances. Measurements can occur during initialization or opening. Pickers and dialogs use motion; search and dialogs have direct history-restoration hooks. Other restore paths currently rely on the loader's asset-ready event. |
+| `search.js`, `date-picker.js`, `time-picker.js` | Initialize per-node state and clean up removed instances. Measurements can occur during initialization or opening. Pickers use motion; search has a direct history-restoration hook. Other restore paths currently rely on the loader's asset-ready event. |
+| `dialogs.js` | Delegates opening and closing. Binds per-dialog listeners and observers on opening; releases them on close. `MaterialDialogs.initialize(root)` adopts open markup without resetting existing instances; `dispose(root)` releases removed instances. Existing HTMX, history and asset hooks use these methods. Motion remains a prerequisite for animations. |
 | `progress.js`, `loading.js` | Manage observers and animation loops. Loading fetches geometry asynchronously; script `load` completion does not mean that geometry has resolved. Preserve that distinction when defining readiness. |
 | `artwork-canvas.js`, `artwork.js` | Canvas publishes `TokenArtworkCanvas`. Canvas artwork needs that provider before initializing. Artwork also owns visibility, resize and animation work. |
 | `component-demos.js`, `dialog-demo.js` | Catalog owns example actions. Component examples use motion; dialog examples invoke `MaterialDialogs` and attach per-panel listeners. They are separate from the Forge controllers. |
