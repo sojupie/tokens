@@ -58,7 +58,20 @@
   if (typeof document === 'undefined') return;
   const script = document.currentScript,
     sources = JSON.parse(script.dataset.sources),
-    pending = new Map();
+    pending = new Map(),
+    preloads = new Map();
+  function preload(root) {
+    for (const name of discoverBehaviors(root)) {
+      if (pending.has(name) || preloads.has(name)) continue;
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'script';
+      link.href = new URL(sources[name], script.src).href;
+      link.onerror = () => { link.remove(); if (preloads.get(name) === link) preloads.delete(name); };
+      preloads.set(name, link);
+      document.head.append(link);
+    }
+  }
   function load(name) {
     if (pending.has(name)) return pending.get(name);
     const promise = new Promise((resolve, reject) => {
@@ -72,6 +85,8 @@
       node.onerror = () => {
         node.remove();
         pending.delete(name);
+        preloads.get(name)?.remove();
+        preloads.delete(name);
         reject(new Error(`Could not load ${name}`));
       };
       document.head.append(node);
@@ -121,7 +136,9 @@
   }
   const api = { ready: Promise.resolve(), prepareStyles, stylesChanged, audit: (root = document) => auditBehaviors(root) };
   globalThis.TokenAssets = api;
+  let generation = 0;
   function initialize() {
+    const current = ++generation;
     const preview = document.getElementById("component-preview");
     // A newly inserted playground must not accept input before its behavior exists.
     if (preview) {
@@ -130,14 +147,21 @@
     }
     const task = (async () => {
       try {
+        // Fetch together without executing controllers before their CSS or
+        // prerequisites. Keep discovery during execution for generated markup.
+        preload(document);
         await stylesReady();
+        if (current !== generation) return;
         document.dispatchEvent(new CustomEvent("tokens:styles-ready"));
       } catch (error) {
-        document.dispatchEvent(new CustomEvent("tokens:styles-error"));
+        if (current === generation) document.dispatchEvent(new CustomEvent("tokens:styles-error"));
         throw error;
       }
-      for (const [name, selector] of rules)
+      for (const [name, selector] of rules) {
+        if (current !== generation) return;
         if (behaviorNeeded(document, name, selector)) await load(name);
+      }
+      if (current !== generation) return;
       if (preview?.isConnected) {
         preview.inert = false;
         preview.removeAttribute("aria-busy");
@@ -148,6 +172,7 @@
     })();
     api.ready = task;
     task.catch((error) => {
+      if (current !== generation) return;
       console.error(error);
       if (preview?.isConnected) {
         preview.inert = false;

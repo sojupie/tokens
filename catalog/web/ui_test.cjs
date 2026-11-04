@@ -977,3 +977,88 @@ test('HTMX response preparation waits for component CSS and strips only dependen
  events['htmx:head:before:merge']({detail:{ctx:changed},preventDefault(){}});
  assert.equal(await changed.response.raw.text(),'');assert.equal(changed.catalogAssetChange,true);
 });
+
+function behaviorLoader({css=false,preview=true}={}) {
+ const nodes=[],events={},dispatched=[],errors=[],matches=new Map();
+ const grid={inert:true},region={inert:false,isConnected:true,busy:false,error:null,
+  setAttribute(){this.busy=true},removeAttribute(){this.busy=false},
+  contains:()=>true,querySelector(selector){return selector==='.tokens-preview-grid'?grid:this.error},
+  append(node){this.error=node}};
+ let current=preview?region:null;
+ const style={sheet:css?null:{},dataset:{},listeners:{},getAttribute:()=>'/style.css?v=1',addEventListener(name,fn){this.listeners[name]=fn},remove(){}};
+ const document={baseURI:'https://example.test/',currentScript:{src:'https://example.test/static/asset-loader.js',dataset:{sources:JSON.stringify(Object.fromEntries(['runtime/button-groups.js','runtime/segmented-buttons.js','dialogs.js','dialog-demo.js','component-demos.js'].map(name=>[name,'/static/'+name+'?v=1']))) }},
+  head:{querySelectorAll:()=>[style],append(node){nodes.push(node)}},
+  querySelector:()=>current,getElementById:()=>current,
+  querySelectorAll:selector=>matches.get(selector)||[],
+  createElement(tag){return {tag,dataset:{},async:true,remove(){if(region.error===this)region.error=null;const index=nodes.indexOf(this);if(index>=0)nodes.splice(index,1)},setAttribute(){}}},
+  addEventListener(name,fn){events[name]=fn},dispatchEvent(event){dispatched.push(event.type)}};
+ const context={document,URL,CustomEvent:class{constructor(type){this.type=type}},console:{error:error=>errors.push(error)}};
+ const add=selector=>matches.set(selector,[{closest:()=>null}]);
+ add('.md-button-group');add('.md-segmented-button');
+ runScript('asset-loader.js',context);
+ return {api:context.TokenAssets,nodes,region,grid,events,dispatched,errors,style,add,
+  remove:selector=>matches.delete(selector),scripts:()=>nodes.filter(node=>node.tag==='script'),
+  hints:()=>nodes.filter(node=>node.tag==='link'),
+  replace(){region.isConnected=false;current={...region,inert:false,isConnected:true,error:null};events['htmx:afterSwap']();return current}};
+}
+
+const settleBehaviorLoader=()=>new Promise(resolve=>setImmediate(resolve));
+
+test('behavior downloads are hinted together while CSS gates ordered script execution',async()=>{
+ const h=behaviorLoader({css:true});
+ assert.deepEqual(h.hints().map(node=>[node.rel,node.as]),[['preload','script'],['preload','script']]);
+ assert(h.hints().every(node=>node.href.endsWith('?v=1')));
+ assert.equal(h.scripts().length,0,'preloading must not execute controllers before CSS');
+ assert.equal(h.region.inert,true);
+ h.style.sheet={};h.style.listeners.load();await settleBehaviorLoader();
+ assert.equal(h.scripts().length,1);assert(h.scripts()[0].src.href.includes('button-groups.js'));
+ h.scripts()[0].onload();await settleBehaviorLoader();
+ assert.equal(h.scripts().length,2);assert(h.scripts()[1].src.href.includes('segmented-buttons.js'));
+ assert(h.scripts().every(node=>node.async===false));
+ h.scripts()[1].onload();await h.api.ready;
+ assert.equal(h.region.inert,false);assert.equal(h.grid.inert,false);
+ assert.deepEqual(h.dispatched,['tokens:styles-ready','tokens:assets-ready']);
+ h.events['htmx:afterSwap']();await h.api.ready;
+ assert.equal(h.hints().length,2);assert.equal(h.scripts().length,2,'activation reuses already evaluated scripts');
+});
+
+test('ordered discovery still finds behavior introduced by an earlier controller',async()=>{
+ const h=behaviorLoader({preview:false});h.remove('.md-segmented-button');
+ await settleBehaviorLoader();
+ h.add('dialog[data-dialog-surface],dialog[data-dialog-preview]');h.add('.md-dialog-demo');
+ h.scripts()[0].onload();await settleBehaviorLoader();
+ assert(h.scripts()[1].src.href.includes('/dialogs.js?'));
+ h.scripts()[1].onload();await settleBehaviorLoader();
+ assert(h.scripts()[2].src.href.includes('/dialog-demo.js?'));
+ h.scripts()[2].onload();await h.api.ready;
+ assert.equal(h.hints().length,2,'only initially discovered requirements receive hints');
+});
+
+test('failed behavior releases its preload and can be retried without reloading successful scripts',async()=>{
+ const h=behaviorLoader();await settleBehaviorLoader();
+ h.scripts()[0].onload();await settleBehaviorLoader();
+ const failed=h.scripts()[1],task=h.api.ready;
+ failed.onerror();await assert.rejects(task,/segmented-buttons/);await settleBehaviorLoader();
+ assert.equal(h.grid.inert,true);assert.equal(h.errors.length,1);
+ assert.equal(h.hints().length,1,'the failed script hint must not block a retry');
+ h.events['htmx:afterSwap']();await settleBehaviorLoader();
+ assert.equal(h.hints().length,2);assert.equal(h.scripts().length,2);
+ h.scripts()[1].onload();await h.api.ready;
+ assert.equal(h.grid.inert,false);assert.equal(h.region.error,null);
+});
+
+test('superseded activations cannot enable a newer preview or report stale errors',async()=>{
+ const h=behaviorLoader();await settleBehaviorLoader();
+ const old=h.api.ready,next=h.replace(),latest=h.api.ready;
+ h.add('dialog[data-dialog-surface],dialog[data-dialog-preview]');
+ await settleBehaviorLoader();h.scripts()[0].onload();await settleBehaviorLoader();
+ assert.equal(next.inert,true);assert.equal(h.dispatched.filter(name=>name==='tokens:assets-ready').length,0);
+ h.scripts()[1].onload();await settleBehaviorLoader();
+ assert.equal(next.inert,true);h.scripts()[2].onload();await Promise.all([old,latest]);
+ assert.equal(next.inert,false);assert.equal(h.dispatched.filter(name=>name==='tokens:assets-ready').length,1);
+ const failed=behaviorLoader();await settleBehaviorLoader();
+ const outdated=failed.api.ready;failed.remove('.md-button-group');failed.remove('.md-segmented-button');
+ const replacement=failed.replace();await failed.api.ready;
+ failed.scripts()[0].onerror();await assert.rejects(outdated,/button-groups/);await settleBehaviorLoader();
+ assert.equal(replacement.error,null);assert.equal(replacement.inert,false);assert.equal(failed.errors.length,0);
+});

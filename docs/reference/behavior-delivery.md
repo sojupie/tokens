@@ -54,8 +54,8 @@ when a DOM-dependent controller should initialize.
   the current eager activation policy initially.
 - [ ] Compare those declarations against current browser discovery across the
   generated component configurations before switching the loader's input.
-- [ ] Fetch independent requirements concurrently while preserving necessary
-  evaluation order and waiting for CSS before geometry-dependent initialization.
+- [x] Start known optional script downloads together while preserving execution
+  order and waiting for CSS before controller evaluation.
 - [ ] Test direct loads, repeated initialization, nested compositions, HTMX
   swaps, history restoration, superseded navigation and failed asset retries.
 - [ ] Verify exported implementations and build-time tool consumers against the
@@ -67,6 +67,15 @@ Closed dialogs, visible regions and offscreen regions share ownership
 declarations. Dialog presentation now creates listeners and observers on opening
 and releases them on close. This defers instance work, not the script download.
 The ownership manifest does not decide when behavior should activate.
+
+The Catalog loader adds native `preload` links for scripts discovered in the
+current document. These links start downloads without evaluating the scripts.
+After component CSS resolves, the loader evaluates scripts in its existing order
+and checks the DOM again before each script. This preserves requirements added
+by earlier controllers. Loaded scripts are reused across swaps. Failed scripts
+release their pending entry and preload link so a later activation can retry.
+Only the latest activation can update preview controls or report an asset error.
+Browsers that ignore preload links retain the ordered loading path.
 
 Run `npm run check:components`, `npm run test:tokens`, `npm run test:ui`, and
 `go test ./forge/components ./catalog/web ./cmd/tokens` for this initial stage.
