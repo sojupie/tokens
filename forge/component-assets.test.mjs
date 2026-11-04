@@ -14,7 +14,7 @@ test("embedded component assets match all maintained sources", async () => {
     const root = new URL("./components/", import.meta.url);
     const sources = JSON.parse(
       await readFile(new URL(`${kind}-sources.json`, root), "utf8"),
-    );
+    ).map(entry => typeof entry === 'string' ? entry : entry.source);
     const files = (await readdir(new URL(`${directory}/`, root))).map(
       (file) => `${directory}/${file}`,
     );

@@ -83,8 +83,7 @@ test('split menu placement measures the full box during opening scale animation'
  const trigger={getBoundingClientRect:()=>({left:270,right:318,top:20,bottom:60}),closest:()=>({getBoundingClientRect:()=>({left:100,right:318})}),setAttribute(){}};
  const demo={querySelector:()=>trigger};
  const menu={matches:()=>true,closest:()=>demo,offsetWidth:240,offsetHeight:156,style:{},dataset:{},querySelectorAll:()=>[],getBoundingClientRect(){throw Error('animated dimensions must not determine placement');}};
- runInNewContext(readFileSync(`${__dirname}/behaviors/split-buttons.js`,'utf8'),{
-  MaterialComponents:exported.exports,
+ runInNewContext(readFileSync(`${__dirname}/static/runtime/split-buttons.js`,'utf8'),{
   document:{documentElement:{clientWidth:328},addEventListener:(type,handler)=>events[type]=handler},
   window:{innerHeight:600,addEventListener(){}},getComputedStyle:()=>({direction:'ltr',getPropertyValue:name=>name.endsWith('space50')?'4':'8'})
  });

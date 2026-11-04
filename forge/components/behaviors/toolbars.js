@@ -1,6 +1,8 @@
+import { navigationIndex } from "../helpers/navigation.js";
+import { toolbarGap } from "../helpers/controls.js";
+
 (() => {
   if (typeof document === "undefined") return;
-  const { navigationIndex, toolbarGap } = globalThis.MaterialComponents;
   function syncToolbar(group) {
     const style = getComputedStyle(group),
       value = (key) =>

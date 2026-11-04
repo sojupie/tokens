@@ -1,6 +1,7 @@
+import { navigationIndex } from "../helpers/navigation.js";
+
 (() => {
   if (typeof document === "undefined") return;
-  const { navigationIndex } = globalThis.MaterialComponents;
   const labels=new WeakMap();
   function positionFABMenu(panel) {
     if (!panel.matches(":popover-open")) return;

@@ -7,8 +7,8 @@ test('a floating toolbar uses its allocated parent width without charging scene 
  const items=[0,1,2].map(index=>({dataset:{toolbarItem:String(index)}}));
  const parent={clientWidth:480,closest:()=>null,querySelector:()=>null};
  const group={parentElement:parent,closest:()=>null,dataset:{variant:'floating',orientation:'horizontal'},scrollWidth:480,querySelectorAll:()=>items,setAttribute(){},style:{setProperty(){}}};
- runInNewContext(readFileSync(`${__dirname}/behaviors/toolbars.js`,'utf8'),{
-  MaterialComponents:{},ResizeObserver:class{observe(){}},
+ runInNewContext(readFileSync(`${__dirname}/static/runtime/toolbars.js`,'utf8'),{
+  ResizeObserver:class{observe(){}},
   getComputedStyle:()=>({getPropertyValue:()=>''}),
   document:{querySelectorAll:()=>[group],addEventListener(){}},
  });

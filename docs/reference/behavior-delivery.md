@@ -77,13 +77,13 @@ cleanup. The loader does not consume it as an execution graph.
 
 | Scripts | Prerequisites and lifecycle |
 | --- | --- |
-| `motion.js`, `buttons.js`, `runtime/utils.js` | Motion publishes `MaterialMotion`; buttons reads it during evaluation. Utilities publish `MaterialComponents`. These are host prerequisites today. |
-| `runtime/fab-menus.js`, `runtime/split-buttons.js` | Read utilities during evaluation and register delegated handlers. Layout measurements occur on interaction. |
+| `motion.js`, `buttons.js`, `runtime/utils.js` | Motion publishes `MaterialMotion`; buttons reads it during evaluation. Utilities retain the compatibility `MaterialComponents` export; current Forge consumers import their helpers instead. Motion remains a host prerequisite. |
+| `runtime/fab-menus.js`, `runtime/split-buttons.js` | Include imported keyboard and positioning helpers and register delegated handlers. Layout measurements occur on interaction. |
 | `runtime/button-groups.js`, `runtime/segmented-buttons.js` | Register delegated handlers and include the imported navigation helper in their own compiled files. They do not need the global helper provider or a per-node initialization pass. |
 | `runtime/chips.js`, `runtime/tabs.js`, `runtime/switches.js`, `runtime/app-bars.js` | Register delegated handlers. Tabs use motion during selection. They do not need a per-node initialization pass. |
-| `runtime/navigation.js`, `runtime/sliders.js`, `runtime/toolbars.js`, `runtime/snackbars.js` | Read utilities during evaluation. Initialize per-node state and/or observers, retry on asset readiness and swaps, and clean up removed nodes. Navigation also has a direct history-restoration hook. |
+| `runtime/navigation.js`, `runtime/sliders.js`, `runtime/toolbars.js`, `runtime/snackbars.js` | Include imported helpers. Initialize per-node state and/or observers, retry on asset readiness and swaps, and clean up removed nodes. Navigation also has a direct history-restoration hook. |
 | `runtime/tooltips.js`, `fields.js`, `menus.js` | Initialize per-node state and measure geometry during interaction. Cleanup hooks exist. Tooltips retry on asset readiness; fields and menus are core scripts with direct history-restoration hooks. Menu motion needs `MaterialMotion`. |
-| `sheets.js`, `lists.js`, `carousel.js` | Maintain per-node or gesture state. Sheets and lists use motion; lists also read utilities during keyboard interaction. Carousel initializes measured layout and observers. All have swap/asset-ready and cleanup hooks. |
+| `sheets.js`, `lists.js`, `carousel.js` | Maintain per-node or gesture state. Sheets and lists use motion; lists include the imported keyboard helper. Carousel initializes measured layout and observers. All have swap/asset-ready and cleanup hooks. |
 | `search.js`, `date-picker.js`, `time-picker.js`, `dialogs.js` | Initialize per-node state and clean up removed instances. Measurements can occur during initialization or opening. Pickers and dialogs use motion; search and dialogs have direct history-restoration hooks. Other restore paths currently rely on the loader's asset-ready event. |
 | `progress.js`, `loading.js` | Manage observers and animation loops. Loading fetches geometry asynchronously; script `load` completion does not mean that geometry has resolved. Preserve that distinction when defining readiness. |
 | `artwork-canvas.js`, `artwork.js` | Canvas publishes `TokenArtworkCanvas`. Canvas artwork needs that provider before initializing. Artwork also owns visibility, resize and animation work. |
@@ -92,7 +92,8 @@ cleanup. The loader does not consume it as an execution graph.
 The current safe boundary is still the existing host script order and CSS-before-
 initialization barrier. Parallel fetching must not imply parallel evaluation or
 skip initialization after styles resolve. An enforceable source-import contract
-is now used for the stateless navigation helper. Runtime services still use
+is now used for keyboard navigation, slider values, toolbar spacing, split-menu
+positioning and snackbar timing. Each entry bundles only its imported helpers. Runtime services still use
 globals; converting them requires preserving standalone exports, the legacy
 aggregate and tool consumers.
 

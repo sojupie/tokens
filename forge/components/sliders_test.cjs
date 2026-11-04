@@ -8,9 +8,9 @@ function harness({step='1',direction='ltr',orientation='horizontal',variant='con
   matches:()=>!input.disabled,closest:selector=>selector==='.md-slider'?root:null,
   dispatchEvent:event=>input.events.push(event.type)};
  const document={querySelectorAll:()=>[],addEventListener:(type,fn)=>(handlers[type]??=[]).push(fn)};
- runInNewContext(readFileSync(`${__dirname}/behaviors/sliders.js`,'utf8'),{
+ runInNewContext(readFileSync(`${__dirname}/static/runtime/sliders.js`,'utf8'),{
   document,window:{addEventListener:(type,fn)=>(handlers[type]??=[]).push(fn)},
-  MaterialComponents:{},ResizeObserver:class{observe(){}},getComputedStyle:()=>({direction}),Event});
+  ResizeObserver:class{observe(){}},getComputedStyle:()=>({direction}),Event});
  return {input,key(key,type='keydown',options={}){const e={key,target:input,preventDefault(){this.defaultPrevented=true},...options};for(const fn of handlers[type]||[])fn(e);return !!e.defaultPrevented}};
 }
 test('Space plus arrows adjusts continuous sliders by ten percent',()=>{
@@ -48,9 +48,8 @@ test('A single inset icon moves to the inactive end when the active track is too
   querySelectorAll(selector){return selector==='input[type="range"]'?[input]:selector==='.md-slider-icon'?[icon]:[];},
   querySelector:selector=>selector==='.md-slider-stop-start'?startStop:endStop};
  let resize;
- runInNewContext(readFileSync(`${__dirname}/behaviors/sliders.js`,'utf8'),{
+ runInNewContext(readFileSync(`${__dirname}/static/runtime/sliders.js`,'utf8'),{
   document:{addEventListener(){},querySelectorAll:()=>[slider]},window:{addEventListener(){}},
-  MaterialComponents:{sliderValues:values=>values},
   ResizeObserver:class{constructor(fn){resize=()=>fn([{target:slider}]);}observe(){}},
   getComputedStyle:()=>({getPropertyValue:name=>({'--_slider-state-size':'44','--_slider-control-width':'4','--_slider-leading':'6','--_slider-trailing':'6','--_slider-icon-size':'24','--_slider-icon-padding':'8'}[name])})
  });

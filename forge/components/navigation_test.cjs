@@ -32,8 +32,8 @@ function navigation(options = {}) {
     ResizeObserver: class { observe() {} },
     getComputedStyle: element => ({ direction: element.direction || 'ltr', visibility: element.visibility || 'visible' }),
   };
-  runInNewContext(readFileSync(`${__dirname}/static/runtime/utils.js`, 'utf8'), globals);
-  runInNewContext(readFileSync(`${__dirname}/behaviors/navigation.js`, 'utf8'), globals);
+
+  runInNewContext(readFileSync(`${__dirname}/static/runtime/navigation.js`, 'utf8'), globals);
   return {
     key(index, key) {
       active = items[index];
@@ -82,7 +82,7 @@ function drawerMotion({rtl=false,reduced=false}={}) {
     getComputedStyle:()=>({direction:rtl?'rtl':'ltr',transform:'matrix(1, 0, 0, 1, -80, 0)'}),
     MaterialMotion:{attachedTiming:()=>({duration:400,easing:'cubic-bezier(0.2, 0, 0, 1)'})},
   };
-  runInNewContext(readFileSync(`${__dirname}/behaviors/navigation.js`,'utf8'),globals);
+  runInNewContext(readFileSync(`${__dirname}/static/runtime/navigation.js`,'utf8'),globals);
   const drawer={open:false,dataset:{},listeners:[],closes:0,
     addEventListener(type,fn){if(type==='close')this.listeners.push(fn);},
     showModal(){this.open=true;},

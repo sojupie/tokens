@@ -1,6 +1,8 @@
+import { navigationIndex } from "../helpers/navigation.js";
+import { splitMenuPosition } from "../helpers/controls.js";
+
 (() => {
   if (typeof document === "undefined") return;
-  const { navigationIndex, splitMenuPosition } = globalThis.MaterialComponents;
   function positionSplitMenu(menu) {
     if (!menu.matches(":popover-open")) return;
     const trigger = menu

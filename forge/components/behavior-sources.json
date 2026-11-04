@@ -12,5 +12,10 @@
   "behaviors/snackbars.js",
   "behaviors/fab-menus.js",
   "behaviors/split-buttons.js",
-  "behaviors/tooltips.js"
+  "behaviors/tooltips.js",
+  {
+    "source": "behaviors/lists.js",
+    "output": "lists.js",
+    "aggregate": false
+  }
 ]

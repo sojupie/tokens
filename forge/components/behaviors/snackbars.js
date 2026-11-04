@@ -1,6 +1,7 @@
+import { snackbarTimer } from "../helpers/controls.js";
+
 (() => {
   if (typeof document === "undefined") return;
-  const { snackbarTimer } = globalThis.MaterialComponents;
   const timers = new WeakMap(), openers = new WeakMap();
   function position(bar) {
     if (!bar.matches(":popover-open")) return;

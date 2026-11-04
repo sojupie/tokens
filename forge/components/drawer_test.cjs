@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const { readFileSync } = require('node:fs');
 const { runInNewContext } = require('node:vm');
 const out = { exports: {} };
-runInNewContext(readFileSync(`${__dirname}/behaviors/navigation.js`, 'utf8'), { module: out });
+runInNewContext(readFileSync(`${__dirname}/static/runtime/navigation.js`, 'utf8'), { module: out });
 test('drawer dismissal follows the logical anchor and rejects taps, vertical scroll and small drags', () => {
   const {drawerDismissed: swipe} = out.exports;
   assert.equal(swipe(-90, 8, 320, false), true);

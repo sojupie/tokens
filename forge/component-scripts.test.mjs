@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { compileBehavior, validateScriptOwnership } from "./components/build-assets.mjs";
 import { Script } from "node:vm";
+import { readFile } from "node:fs/promises";
 
 test("component script ownership rejects omissions, duplicates and missing files", () => {
   const files = ["runtime/utils.js", "carousel.js"];
@@ -13,12 +14,29 @@ test("component script ownership rejects omissions, duplicates and missing files
 });
 
 test("classic behavior entries include their source imports without browser dependencies", async () => {
-  for (const name of ["button-groups", "segmented-buttons"]) {
+  for (const name of ["button-groups", "segmented-buttons", "navigation", "fab-menus", "split-buttons", "toolbars", "lists"]) {
     const result = await compileBehavior(`behaviors/${name}.js`);
     assert(result.inputs.some(file => file.endsWith("helpers/navigation.js")));
     assert(result.inputs.some(file => file.endsWith(`behaviors/${name}.js`)));
     assert(!result.code.includes("MaterialComponents"), "the control must not require the global helper provider");
     assert(!result.code.includes("snackbarTimer"), "unrelated helpers must not enter the chunk");
     new Script(result.code);
+  }
+  for (const name of ["sliders", "snackbars"]) {
+    const result = await compileBehavior(`behaviors/${name}.js`);
+    assert(result.inputs.some(file => file.endsWith("helpers/controls.js")));
+    assert(!result.code.includes("MaterialComponents"));
+    assert(!result.code.includes("navigationIndex"));
+    new Script(result.code);
+  }
+});
+
+test("behavior consumers do not depend on the compatibility helper global", async () => {
+  const entries = JSON.parse(await readFile(new URL('./components/behavior-sources.json', import.meta.url), 'utf8'));
+  for (const entry of entries) {
+    const source = typeof entry === 'string' ? entry : entry.source;
+    if (source === 'behaviors/utils.js') continue;
+    const result = await compileBehavior(source);
+    assert(!result.code.includes('MaterialComponents'), source);
   }
 });

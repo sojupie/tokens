@@ -1,6 +1,7 @@
+import { sliderValues } from "../helpers/controls.js";
+
 (() => {
   if (typeof document === "undefined") return;
-  const { sliderValues } = globalThis.MaterialComponents;
   let spaceInput;
   const clearSpace = () => { spaceInput = undefined; };
   document.addEventListener("keyup", event => {

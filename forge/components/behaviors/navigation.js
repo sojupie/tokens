@@ -1,3 +1,5 @@
+import { navigationIndex } from "../helpers/navigation.js";
+
 (() => {
   const drawerAnimations = new WeakMap();
   function resetDrawerMotion(drawer) {
@@ -44,7 +46,6 @@
   }
   if (typeof module !== "undefined") Object.assign(module.exports, { drawerDismissed, drawerForTrigger, openDrawer, closeDrawer });
   if (typeof document === "undefined") return;
-  const { navigationIndex } = globalThis.MaterialComponents;
   function selectNavigation(button) {
     const group = button.closest("[data-navigation-group]");
     if (!group) return;
