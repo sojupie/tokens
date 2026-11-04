@@ -235,15 +235,19 @@ at most eight distinct destinations, and data-saving or 2G connections skip it.
 Hover and focus listeners run during capture so descendant handlers cannot hide
 events by stopping propagation. Non-element event targets are ignored.
 
-The script uses browser speculation rules where supported, then native document
-prefetch hints. Other browsers keep normal navigation. Rendered responses use the revalidation policy described
-below. The inner
-prefetch handler can set a 30-second private lifetime, but the outer response
-cache replaces it with `public, no-cache` for successful cached responses.
+The script triggers the upstream HTMX 4 preload extension through a custom event.
+The extension constructs the request and retains its response for five seconds.
+A matching HTMX navigation consumes that response, including an in-flight
+request. Expired or network-failed prefetches fall back to normal navigation. Automatic
+mousedown and touch preloading are disabled; the hover/focus policy owns when
+requests start. Rendered responses retain the revalidation policy below.
 
 To check this in a browser, hover a component link briefly, then for more than
-65 ms. In DevTools, check the prefetch request or the speculative loading panel.
-Click the link and confirm the navigation reuses the prefetched response.
+65 ms. In DevTools, check the GET request. Click within five seconds and confirm
+that HTMX consumes the response without a second document request. After the
+response arrives, the asset loader starts the incoming HTML's script downloads
+while preparing its CSS. Scripts execute after the new region is inserted and
+its CSS is ready. This does not fetch destination scripts during the hover.
 
 ## Caching and navigation
 

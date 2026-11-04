@@ -2,21 +2,16 @@
   const connection = navigator.connection;
   if (connection?.saveData || ['slow-2g', '2g'].includes(connection?.effectiveType)) return;
 
-  const speculation = typeof HTMLScriptElement !== 'undefined' &&
-    HTMLScriptElement.supports?.('speculationrules');
-  const hint = document.createElement('link');
-  if (!speculation && !hint.relList?.supports('prefetch')) return;
-
   const base = document.currentScript ? new URL('../', document.currentScript.src).pathname.replace(/\/$/, '') : '';
   const seen = new Set();
   let pending;
   let timer;
 
-  function destination(link) {
-    if (!link || link.hasAttribute('download') || link.closest('[hx-get], [data-hx-get]') ||
+  function destination(link, allowCurrent = false) {
+    if (!link || link.hasAttribute('download') || link.closest('[hx-get], [data-hx-get], [hx-boost="false"], [data-hx-boost="false"]') ||
         (link.target && link.target !== '_self')) return;
     const url = new URL(link.href, location.href);
-    if (url.origin !== location.origin || url.hash || url.href === location.href) return;
+    if (url.origin !== location.origin || url.hash || (!allowCurrent && url.href === location.href)) return;
     const path = url.pathname;
     if (path !== base + '/' && path !== base + '/for-agents' && !['components', 'styles', 'changes'].some(section =>
       path === `${base}/${section}` || path.startsWith(`${base}/${section}/`))) return;
@@ -39,20 +34,17 @@
       if (!link.isConnected || destination(link) !== url || document.visibilityState === 'hidden' ||
           navigator.connection?.saveData || ['slow-2g', '2g'].includes(navigator.connection?.effectiveType)) return;
       seen.add(url);
-      if (speculation) {
-        const rules = document.createElement('script');
-        rules.type = 'speculationrules';
-        rules.textContent = JSON.stringify({prefetch: [{source: 'list', urls: [url], eagerness: 'immediate'}]});
-        document.head.append(rules);
-      } else {
-        const preload = document.createElement('link');
-        preload.rel = 'prefetch';
-        preload.as = 'document';
-        preload.href = url;
-        document.head.append(preload);
-      }
+      link.dispatchEvent(new CustomEvent('tokens:prefetch'));
     }, 65);
   }
+
+  // The upstream extension owns request construction, response reuse and expiry.
+  // Arm persistent navigation links too; the current destination is skipped at use.
+  document.addEventListener('htmx:beforeProcessNode', event => {
+    const link = event.detail?.elt || event.target;
+    if (link.matches?.('a[href]') && destination(link, true))
+      link.setAttribute('hx-preload', 'tokens:prefetch');
+  });
 
   document.addEventListener('pointerover', event => {
     if (event.pointerType === 'mouse' || event.pointerType === 'pen') schedule(event.target?.closest?.('a[href]'));

@@ -119,6 +119,10 @@
     });
   }
   async function prepareStyles(incoming, signal) {
+    signal?.throwIfAborted();
+    // The response identifies the next region's scripts before CSS is ready
+    // and before insertion. Download them now; activation still follows the swap.
+    preload(incoming);
     const ready = [];
     for (const source of incoming.querySelectorAll('link[data-component-stylesheet]')) {
       const href = new URL(source.getAttribute('href'), document.baseURI).href;

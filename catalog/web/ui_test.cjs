@@ -182,42 +182,52 @@ test('WebMCP uses the collection path for both index and token downloads', async
   assert.deepEqual(requests, ['/md3/api/v1/subjects', '/md3/downloads/component/snackbar.json?scope=all']);
 });
 
-function prefetchHarness({speculation = true, native = true, connection = {}} = {}) {
+function prefetchHarness({connection = {}, fail = false} = {}) {
   const listeners = {};
   const scheduled = new Map();
   const appended = [];
+  let extension;
   let now = 0;
   let next = 0;
   const document = {
     currentScript: {src: 'https://tokens.test/md3/static/prefetch.js'},
     visibilityState: 'visible',
+    body: {},
     addEventListener: (name, listener) => { listeners[name] = listener; },
-    createElement: tag => ({tag, relList: {supports: () => native}}),
-    head: {append: element => appended.push(element)},
   };
-  runScript('prefetch.js', {
-    document,
-    navigator: {connection},
-    location: new URL('https://tokens.test/md3/'),
-    URL,
-    HTMLScriptElement: {supports: () => speculation},
-    setTimeout: (callback, delay) => { const id = ++next; scheduled.set(id, {callback, time: now + delay}); return id; },
-    clearTimeout: id => scheduled.delete(id),
-    window: {addEventListener: (name, listener) => { listeners[name] = listener; }},
-  });
+  const internal={
+    attributeValue:(elt,name)=>elt.attrs[name], parseTriggerSpecs:name=>[{name}],
+    determineMethodAndAction:()=>({method:'GET'}),
+    createRequestContext:elt=>({target:document.body,request:{action:elt.href,method:'GET',headers:{}}}),
+    collectFormData:()=>new URLSearchParams(),getAttributeObject:()=>undefined,
+  };
+  const globals={document,navigator:{connection},location:new URL('https://tokens.test/md3/'),URL,URLSearchParams,CustomEvent,
+    htmx:{config:{preload:{autoBoost:false}},registerExtension(name,value){extension=value;value.init(internal)}},
+    fetch:(url,request)=>{const response={status:200};appended.push({url,request,response});return fail?Promise.reject(new Error("offline")):Promise.resolve(response)},
+    Date:{now:()=>now},
+    setTimeout:(callback,delay)=>{const id=++next;scheduled.set(id,{callback,time:now+delay});return id},
+    clearTimeout:id=>scheduled.delete(id),
+    window:{addEventListener:(name,listener)=>{listeners[name]=listener}},
+  };
+  runScript('hx-preload.min.js',globals);runScript('prefetch.js',globals);
   function link(path, options = {}) {
     const anchor = {
       href: new URL(path, 'https://tokens.test').href,
       target: options.target || '',
-      isConnected: true,
+      isConnected: true,attrs:{},_htmx:{boosted:true},listeners:{},
+      matches:()=>true,setAttribute(name,value){this.attrs[name]=value},
+      addEventListener(name,fn){this.listeners[name]=fn},removeEventListener(name){delete this.listeners[name]},
+      dispatchEvent(event){this.listeners[event.type]?.(event);return true},
       hasAttribute: name => name === 'download' && options.download,
-      closest: selector => selector === 'a[href]' ? anchor : options.htmx ? anchor : null,
+      closest: selector => selector === 'a[href]' ? anchor : (options.htmx || options.unboosted) ? anchor : null,
       contains: node => node === anchor,
     };
+    listeners['htmx:beforeProcessNode']?.({target:anchor,detail:{elt:anchor}});
+    extension.htmx_after_init(anchor);
     return anchor;
   }
   return {
-    appended, document, connection, link,
+    appended, document, connection, link, extension, location:globals.location,
     event: (name, target, extra = {}) => listeners[name]?.({target, pointerType: 'mouse', ...extra}),
     advance: milliseconds => {
       now += milliseconds;
@@ -240,7 +250,8 @@ test('hover prefetch waits 65 ms, cancels brief hovers, and deduplicates destina
   h.advance(64);
   assert.equal(h.appended.length, 0);
   h.advance(1);
-  assert.deepEqual(JSON.parse(h.appended[0].textContent).prefetch[0].urls, ['https://tokens.test/md3/components/buttons']);
+  assert.equal(h.appended[0].url, 'https://tokens.test/md3/components/buttons');
+  assert.equal(h.appended[0].request.headers['HX-Request-Type'],'full');
   h.event('pointerover', link);
   h.advance(500);
   assert.equal(h.appended.length, 1);
@@ -264,15 +275,14 @@ test('prefetch skips external, download, API, fragment, HTMX and new-tab links',
   assert.equal(h.appended.length, 0);
 });
 
-test('prefetch handles keyboard focus and native hints, with an eight-page limit', () => {
-  const h = prefetchHarness({speculation: false});
+test('prefetch handles keyboard focus through the upstream extension, with an eight-page limit', () => {
+  const h = prefetchHarness();
   for (let index = 0; index < 10; index++) {
     h.event('focusin', h.link(`/md3/components/subject-${index}`));
     h.advance(65);
   }
   assert.equal(h.appended.length, 8);
-  assert.equal(h.appended[0].rel, 'prefetch');
-  assert.equal(h.appended[0].as, 'document');
+  assert.equal(h.appended[0].url,'https://tokens.test/md3/components/subject-0');
 });
 
 test('prefetch respects data saving, slow connections, visibility and touch input', () => {
@@ -941,7 +951,7 @@ test('component styles load once in persistent manifest order before swaps proce
  const head={querySelectorAll:()=>links,insertBefore(link,next){const at=links.indexOf(next);links.splice(at<0?links.length:at,0,link);}};
  const document={baseURI:'https://example.test/md3/',head,currentScript:{src:'https://example.test/md3/static/asset-loader.js',dataset:{sources:'{}'}},querySelectorAll:()=>[],getElementById:()=>null,addEventListener:(name,fn)=>events[name]=fn,dispatchEvent(){}};
  const globals={document,URL,CustomEvent:class{},console};runScript('asset-loader.js',globals);
- const incoming={querySelectorAll:()=>[new Link('/md3/b.css?v=1','0003'),new Link('/md3/a.css?v=1','0001')]};
+ const incoming={querySelectorAll:selector=>selector.startsWith('link[')?[new Link('/md3/b.css?v=1','0003'),new Link('/md3/a.css?v=1','0001')]:[]};
  let done=false;const ready=globals.TokenAssets.prepareStyles(incoming).then(()=>done=true);
  const repeated=globals.TokenAssets.prepareStyles(incoming);
  assert.deepEqual(links.map(link=>link.path),['/md3/a.css?v=1','/md3/b.css?v=1']);
@@ -950,7 +960,7 @@ test('component styles load once in persistent manifest order before swaps proce
  links[1].listeners.load();await ready;await repeated;assert.equal(done,true);
  await globals.TokenAssets.prepareStyles(incoming);assert.equal(links.length,2,'loaded styles must be reused');
  assert.equal(globals.TokenAssets.stylesChanged({querySelectorAll:()=>[new Link('/md3/a.css?v=2','0001')]}),true);
- const failed=globals.TokenAssets.prepareStyles({querySelectorAll:()=>[new Link('/md3/c.css?v=1','0005')]});
+ const failed=globals.TokenAssets.prepareStyles({querySelectorAll:selector=>selector.startsWith('link[')?[new Link('/md3/c.css?v=1','0005')]:[]});
  links.at(-1).listeners.error();await assert.rejects(failed,/Could not load/);
  assert.equal(links.length,2,'failed stylesheet must be removed so it can be retried');
 });
@@ -1061,4 +1071,44 @@ test('superseded activations cannot enable a newer preview or report stale error
  const replacement=failed.replace();await failed.api.ready;
  failed.scripts()[0].onerror();await assert.rejects(outdated,/button-groups/);await settleBehaviorLoader();
  assert.equal(replacement.error,null);assert.equal(replacement.inert,false);assert.equal(failed.errors.length,0);
+});
+
+test('upstream HTMX preload reuses a response once and expires stale responses',async()=>{
+ const h=prefetchHarness(),link=h.link('/md3/components/buttons');
+ h.event('focusin',link);h.advance(65);
+ const ctx={request:{action:'/md3/components/buttons'}};
+ h.extension.htmx_before_request(link,{ctx});
+ assert.equal(await ctx.fetch(),h.appended[0].response);
+ assert.equal(h.appended.length,1,'navigation must reuse the prefetch rather than issue another fetch');
+ const next={request:{action:'/md3/components/buttons'}};h.extension.htmx_before_request(link,{ctx:next});
+ assert.equal(next.fetch,undefined,'a consumed response must not be reused');
+ const expired=h.link('/md3/components/cards');h.event('focusin',expired);h.advance(65);h.advance(5001);
+ const stale={request:{action:'/md3/components/cards'}};h.extension.htmx_before_request(expired,{ctx:stale});
+ assert.equal(stale.fetch,undefined,'expired content falls back to a normal HTMX request');
+});
+
+test('failed prefetch falls back to navigation, and persistent links remain armed',async()=>{
+ const failed=prefetchHarness({fail:true}),link=failed.link('/md3/components/buttons');
+ failed.event('focusin',link);failed.advance(65);await new Promise(resolve=>setImmediate(resolve));
+ const ctx={request:{action:'/md3/components/buttons'}};failed.extension.htmx_before_request(link,{ctx});
+ assert.equal(ctx.fetch,undefined);
+ const h=prefetchHarness(),home=h.link('/md3/'),unboosted=h.link('/md3/components/cards',{unboosted:true});
+ assert.equal(home.attrs['hx-preload'],'tokens:prefetch');
+ assert.equal(unboosted.attrs['hx-preload'],undefined);
+ h.event('focusin',home);h.advance(65);assert.equal(h.appended.length,0);
+ h.location.href='https://tokens.test/md3/components/buttons';
+ h.event('focusin',home);h.advance(65);assert.equal(h.appended.length,1);
+});
+
+test('incoming HTML starts its script downloads before insertion without evaluating them',async()=>{
+ const h=behaviorLoader({css:true});
+ const incoming={querySelectorAll:selector=>selector==='dialog[data-dialog-surface],dialog[data-dialog-preview]'?[{closest:()=>null}]:[]};
+ await h.api.prepareStyles(incoming);
+ assert(h.hints().some(node=>node.href.includes('/dialogs.js?')));
+ assert.equal(h.scripts().length,0,'incoming behavior must not execute while current CSS is pending');
+ const aborted=new AbortController();aborted.abort();
+ await assert.rejects(h.api.prepareStyles(incoming,aborted.signal),{name:'AbortError'});
+ h.style.sheet={};h.style.listeners.load();await settleBehaviorLoader();
+ h.scripts()[0].onload();await settleBehaviorLoader();h.scripts()[1].onload();await h.api.ready;
+ assert(!h.scripts().some(node=>node.src.href.includes('/dialogs.js?')),'preparing a response must not activate its absent dialog');
 });

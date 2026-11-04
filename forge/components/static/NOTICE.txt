@@ -116,7 +116,7 @@ independent project and is not affiliated with or endorsed by Google.
 
 | Material | Source | License notice |
 | --- | --- | --- |
-| HTMX 4.0.1, its upstream 2.x compatibility extension, and hx-head | [bigskysoftware/htmx](https://github.com/bigskysoftware/htmx/tree/ddb27295febe1d8e0c234e452fe184481f32ab08) | [Zero-Clause BSD](licenses/HTMX-LICENSE.txt) |
+| HTMX 4.0.1, its upstream 2.x compatibility extension, hx-head, and hx-preload | [bigskysoftware/htmx](https://github.com/bigskysoftware/htmx/tree/ddb27295febe1d8e0c234e452fe184481f32ab08) | [Zero-Clause BSD](licenses/HTMX-LICENSE.txt) |
 | Roboto font files | [Google Fonts / Roboto](https://github.com/google/fonts/tree/main/ofl/roboto) | [SIL Open Font License 1.1](catalog/web/static/fonts/OFL.txt), Copyright 2011 The Roboto Project Authors |
 | Material Web ripple geometry and interaction lifecycle (adapted in `forge/components/static/buttons.js` and generated ripple CSS) | [material-components/material-web](https://github.com/material-components/material-web/tree/main/ripple/internal), Copyright 2022 Google LLC | [Apache License 2.0](catalog/web/MATERIAL-SYMBOLS-LICENSE.txt) |
 | Material Web native range clipping geometry (adapted in `forge/components/static/components-base.css`) | [material-components/material-web](https://github.com/material-components/material-web/blob/main/slider/internal/_slider.scss), Copyright 2023 Google LLC | [Apache License 2.0](catalog/web/MATERIAL-SYMBOLS-LICENSE.txt) |

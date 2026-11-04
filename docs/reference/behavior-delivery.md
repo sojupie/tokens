@@ -77,6 +77,12 @@ release their pending entry and preload link so a later activation can retry.
 Only the latest activation can update preview controls or report an asset error.
 Browsers that ignore preload links retain the ordered loading path.
 
+Navigation intent uses the upstream HTMX preload extension. The existing bounded
+hover/focus policy triggers its request; HTMX owns response reuse and expiry.
+When navigation prepares incoming HTML, the same script discovery starts its
+downloads alongside CSS preparation. Controllers still activate after insertion.
+Destination scripts are not fetched before the navigation consumes that HTML.
+
 Run `npm run check:components`, `npm run test:tokens`, `npm run test:ui`, and
 `go test ./forge/components ./catalog/web ./cmd/tokens` for this initial stage.
 
