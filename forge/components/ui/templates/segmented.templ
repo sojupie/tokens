@@ -1,0 +1,28 @@
+package render
+
+import model "github.com/sojupie/tokens/forge/components/ui/internal/model"
+
+templ SegmentedButtons(p model.SegmentedProps) {
+	@model.Require("segmented")
+	<div { p.Attributes()... }>
+		{ children... }
+	</div>
+}
+
+templ Segment(p model.SegmentProps) {
+	@model.Require("segmented")
+	<label { model.Attributes(templ.Attributes{"class":"md-segmented-button"},p.Attrs)... }>
+		<input { p.InputResolved()... }/>
+		<span class="md-segment-face">
+			<span class="md-segment-check">
+				@model.Icon("check")
+			</span>
+			if p.Content!="label"&&p.Icon!="" {
+				<span class="md-segment-icon">
+					@model.Icon(p.Icon)
+				</span>
+			}
+			<span class={ templ.KV("tokens-visually-hidden", p.Content == "icon") }>{ p.Label }</span>
+		</span>
+	</label>
+}

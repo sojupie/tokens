@@ -1,0 +1,155 @@
+Generated from LICENSE and THIRD_PARTY_NOTICES.md; DO NOT EDIT. Run npm run build:components.
+
+Business Source License 1.1
+
+Parameters
+
+Licensor:             Olle Marmenlind
+Licensed Work:        Token Catalog (sojupie/tokens repository code, schemas, and documentation)
+Additional Use Grant: Free, unrestricted use of the Licensed Work is permitted for
+                      all individual developers, AI agents, non-commercial entities,
+                      and any deployment serving publicly available, openly licensed
+                      design tokens. Production use and self-hosting by any entity
+                      to serve, browse, or manage proprietary, internal, or non-open
+                      corporate design systems is strictly prohibited without a
+                      separate commercial agreement from Licensor.
+Change Date:          Three years from the date the Licensed Work is published.
+Change License:       Apache License, Version 2.0
+
+License text copyright © 2017 MariaDB Corporation Ab, All Rights Reserved.
+"Business Source License" is a trademark of MariaDB Corporation Ab.
+
+Terms
+
+The Licensor hereby grants you the right to copy, modify, create derivative
+works, redistribute, and make non-production use of the Licensed Work. The
+Licensor may make an Additional Use Grant, above, permitting limited
+production use.
+
+Effective on the Change Date, or the fourth anniversary of the first publicly
+available distribution of a specific version of the Licensed Work under this
+License, whichever comes first, the Licensor hereby grants you rights under
+the terms of the Change License, and the rights granted in the paragraph
+above terminate.
+
+If your use of the Licensed Work does not comply with the requirements
+currently in effect as described in this License, you must purchase a
+commercial license from the Licensor, its affiliated entities, or authorized
+resellers, or you must refrain from using the Licensed Work.
+
+All copies of the original and modified Licensed Work, and derivative works
+of the Licensed Work, are subject to this License. This License applies
+separately for each version of the Licensed Work and the Change Date may vary
+for each version of the Licensed Work released by Licensor.
+
+You must conspicuously display this License on each original or modified copy
+of the Licensed Work. If you receive the Licensed Work in original or
+modified form from a third party, the terms and conditions set forth in this
+License apply to your use of that work.
+
+Any use of the Licensed Work in violation of this License will automatically
+terminate your rights under this License for the current and all other
+versions of the Licensed Work.
+
+This License does not grant you any right in any trademark or logo of
+Licensor or its affiliates (provided that you may use a trademark or logo of
+Licensor as expressly required by this License).
+
+TO THE EXTENT PERMITTED BY APPLICABLE LAW, THE LICENSED WORK IS PROVIDED ON
+AN “AS IS” BASIS. LICENSOR HEREBY DISCLAIMS ALL WARRANTIES AND CONDITIONS,
+EXPRESS OR IMPLIED, INCLUDING (WITHOUT LIMITATION) WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, AND
+TITLE.
+
+MariaDB hereby grants you permission to use this License’s text to license
+your works, and to refer to it using the trademark “Business Source License”,
+as long as you comply with the Covenants of Licensor below.
+
+Covenants of Licensor
+
+In consideration of the right to use this License’s text and the “Business
+Source License” name and trademark, Licensor covenants to MariaDB, and to all
+other recipients of the licensed work to be provided by Licensor:
+
+1. To specify as the Change License the GPL Version 2.0 or any later version,
+   or a license that is compatible with GPL Version 2.0 or a later version,
+   where “compatible” means that software provided under the Change License can
+   be included in a program with software provided under GPL Version 2.0 or a
+   later version. Licensor may specify additional Change Licenses without
+   limitation.
+
+2. To either: (a) specify an additional grant of rights to use that does not
+   impose any additional restriction on the right granted in this License, as
+   the Additional Use Grant; or (b) insert the text “None”.
+
+3. To specify a Change Date.
+
+4. Not to modify this License in any other way.
+
+
+# Third-party notices
+
+Token Catalog's original code and documentation are licensed under the
+Business Source License 1.1 (BSL 1.1, transitioning to Apache License 2.0
+three years after publication). The following material retains its upstream copyright
+and license terms.
+
+## Material Design 3
+
+Material Design 3 is created by Google. The current collection captures token
+payloads published at [m3.material.io](https://m3.material.io/) and transforms
+them into searchable tables, context-specific values and JSON downloads.
+Token names, source values and upstream design guidance originate with Google.
+
+Google's [Material Design licensing statement](https://m3.material.io/get-started)
+identifies Apache 2.0 or CC BY 4.0 for Material content, guidelines, imagery and
+resources. Item-specific terms and notices govern the material concerned.
+The project's license does not relicense captured payloads, token values,
+or upstream material preserved in snapshots and exports.
+
+Source-page and payload URLs are preserved in the captured evidence. Derived
+publications regroup and filter values and references. These transformations
+are Token Catalog's processing of the source data, not Google's original files.
+
+Material Design and Google names identify the source. Token Catalog is an
+independent project and is not affiliated with or endorsed by Google.
+
+## Bundled assets
+
+| Material | Source | License notice |
+| --- | --- | --- |
+| HTMX 4.0.1, its upstream 2.x compatibility extension, hx-head, and hx-preload | [bigskysoftware/htmx](https://github.com/bigskysoftware/htmx/tree/ddb27295febe1d8e0c234e452fe184481f32ab08) | [Zero-Clause BSD](licenses/HTMX-LICENSE.txt) |
+| Roboto font files | [Google Fonts / Roboto](https://github.com/google/fonts/tree/main/ofl/roboto) | [SIL Open Font License 1.1](catalog/web/assets/fonts/OFL.txt), Copyright 2011 The Roboto Project Authors |
+| Material Web ripple geometry and interaction lifecycle (adapted in `forge/components/behaviors/buttons.js` and generated ripple CSS) | [material-components/material-web](https://github.com/material-components/material-web/tree/main/ripple/internal), Copyright 2022 Google LLC | [Apache License 2.0](catalog/web/assets/fonts/MATERIAL-SYMBOLS-LICENSE.txt) |
+| Material Web native range clipping geometry (adapted in `forge/components/generated/components-base.css`) | [material-components/material-web](https://github.com/material-components/material-web/blob/main/slider/internal/_slider.scss), Copyright 2023 Google LLC | [Apache License 2.0](catalog/web/assets/fonts/MATERIAL-SYMBOLS-LICENSE.txt) |
+| Material Web field layout (adapted in `forge/components/generated/components-base.css`) | [material-components/material-web](https://github.com/material-components/material-web/tree/main/field/internal), Copyright 2021 Google LLC | [Apache License 2.0](catalog/web/assets/fonts/MATERIAL-SYMBOLS-LICENSE.txt) |
+| Material Web chip action navigation and layout (adapted in `forge/components/generated/components.js` and `components-base.css`) | [material-components/material-web](https://github.com/material-components/material-web/tree/main/chips/internal), Copyright 2023 Google LLC | [Apache License 2.0](catalog/web/assets/fonts/MATERIAL-SYMBOLS-LICENSE.txt) |
+| Material Web elevation shadow formulas (adapted in `forge/components/styles/elevation.css`) | [material-components/material-web](https://github.com/material-components/material-web/blob/main/elevation/internal/_elevation.scss), Copyright 2022 Google LLC | [Apache License 2.0](catalog/web/assets/fonts/MATERIAL-SYMBOLS-LICENSE.txt) |
+| AndroidX Material 3 navigation label transition (adapted in `forge/components/generated/components.js`) | [NavigationItem.kt](https://github.com/androidx/androidx/blob/androidx-main/compose/material3/material3/src/commonMain/kotlin/androidx/compose/material3/NavigationItem.kt), Copyright 2024 The Android Open Source Project | [Apache License 2.0](catalog/web/assets/fonts/MATERIAL-SYMBOLS-LICENSE.txt) |
+| AndroidX Material 3 progress animation timing (adapted in `forge/components/behaviors/progress.js`) | [androidx/androidx](https://github.com/androidx/androidx/blob/androidx-main/compose/material3/material3/src/commonMain/kotlin/androidx/compose/material3/ProgressIndicator.kt), Copyright 2020 The Android Open Source Project | [Apache License 2.0](catalog/web/assets/fonts/MATERIAL-SYMBOLS-LICENSE.txt) |
+| AndroidX Material 3 loading shapes and motion (adapted in `forge/material/reference/LoadingShapes.java`, `forge/components/behaviors/loading.js`, and `loading-shapes.json`) | [MaterialShapes.kt](https://github.com/androidx/androidx/blob/androidx-main/compose/material3/material3/src/commonMain/kotlin/androidx/compose/material3/MaterialShapes.kt), [LoadingIndicator.kt](https://github.com/androidx/androidx/blob/androidx-main/compose/material3/material3/src/commonMain/kotlin/androidx/compose/material3/LoadingIndicator.kt), Copyright 2024 The Android Open Source Project | [Apache License 2.0](catalog/web/assets/fonts/MATERIAL-SYMBOLS-LICENSE.txt) |
+| App-bar and floating-toolbar layout guidance | [AppBar.kt](https://github.com/androidx/androidx/blob/androidx-main/compose/material3/material3/src/commonMain/kotlin/androidx/compose/material3/AppBar.kt), [FloatingToolbar.kt](https://github.com/androidx/androidx/blob/androidx-main/compose/material3/material3/src/commonMain/kotlin/androidx/compose/material3/FloatingToolbar.kt), The Android Open Source Project | [Apache License 2.0](catalog/web/assets/fonts/MATERIAL-SYMBOLS-LICENSE.txt) |
+| FAB menu width, opacity and reveal order | [FloatingActionButtonMenu.kt](https://github.com/androidx/androidx/blob/androidx-main/compose/material3/material3/src/commonMain/kotlin/androidx/compose/material3/FloatingActionButtonMenu.kt), Copyright 2024 The Android Open Source Project | [Apache License 2.0](catalog/web/assets/fonts/MATERIAL-SYMBOLS-LICENSE.txt) |
+| Standard button-group neighbor compression | [ButtonGroup.kt](https://github.com/androidx/androidx/blob/androidx-main/compose/material3/material3/src/commonMain/kotlin/androidx/compose/material3/ButtonGroup.kt), Copyright 2024 The Android Open Source Project | [Apache License 2.0](catalog/web/assets/fonts/MATERIAL-SYMBOLS-LICENSE.txt) |
+| Sheet sizing, scrim and gesture defaults | [SheetDefaults.kt](https://github.com/androidx/androidx/blob/androidx-main/compose/material3/material3/src/commonMain/kotlin/androidx/compose/material3/SheetDefaults.kt), [ScrimTokens.kt](https://github.com/androidx/androidx/blob/androidx-main/compose/material3/material3/src/commonMain/kotlin/androidx/compose/material3/tokens/ScrimTokens.kt), Copyright 2023 The Android Open Source Project | [Apache License 2.0](catalog/web/assets/fonts/MATERIAL-SYMBOLS-LICENSE.txt) |
+| Material Symbols SVG paths | [Google Material Design icons](https://github.com/google/material-design-icons) | [Apache License 2.0](catalog/web/assets/fonts/MATERIAL-SYMBOLS-LICENSE.txt) |
+
+The existing [Moby license](deploy/MOBY-LICENSE) is preserved with the deployment
+files. Docker images and their installed packages retain their respective
+licenses.
+
+## Dependencies and further collections
+
+Go dependencies are pinned in [go.mod](go.mod) and retain their upstream licenses.
+CSS build dependencies are pinned in [package-lock.json](package-lock.json).
+[Style Dictionary](https://github.com/style-dictionary/style-dictionary) uses the
+Apache License 2.0; its dependency package includes the upstream license.
+When distributing binaries, preserve applicable dependency notices alongside
+those for the bundled assets. Container distributions also include system
+packages such as Chromium under their own terms.
+
+Further design-system collections need their own source attribution and license
+record. Material Design's terms do not apply to another publisher's data.
+See [licensing and attribution](docs/licensing.md) for repository and data scope.
+
+The site palette is generated with [Material Color Utilities](https://github.com/material-foundation/material-color-utilities), licensed under Apache License 2.0. The npm dependency includes its upstream license.

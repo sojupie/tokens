@@ -1,0 +1,60 @@
+package render
+
+import webassets "github.com/sojupie/tokens/catalog/web/assets"
+
+import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+
+import "github.com/sojupie/tokens/source/publish"
+
+// Capture the existing catalog previews without an application scene.
+templ IllustrationPage(subject publish.SubjectView, c webview.ComponentCase, theme, contrast string) {
+ <!DOCTYPE html>
+ <html lang="en" data-theme={ theme } data-contrast={ contrast }>
+  <head>
+   <meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+   <meta name="robots" content="noindex"/><title>{ webview.SubjectName(subject) } thumbnail</title>
+   <link rel="stylesheet" href="/theme.css"/>
+   for _,file:=range []string{"site.css","app.css","buttons.css","components.css","bundles/common.css","illustrations.css"} {
+    <link rel="stylesheet" href={ webassets.StaticURL(file) }/>
+   }
+   for _,file:=range []string{"motion.js","buttons.js","components.js","fields.js","date-picker.js","time-picker.js","progress.js","carousel.js","illustration-ready.js"} {
+    <script src={ webassets.StaticURL(file) } defer></script>
+   }
+  </head>
+  <body class="tokens-illustration-body" data-composition="thumbnail">
+   @webview.ComponentAssetScope() {
+    <main data-component-assets class="tokens-illustration">
+     <div class="scene-thumbnail-capture"><div class="tokens-component-thumbnail" data-preview-ready><div class="tokens-component-thumbnail-scene" inert>
+      if subject.Key.Kind==publish.SubjectComponent {
+ @ComponentThumbnail(c)
+ } else {
+ @StyleThumbnail(subject)
+ }
+     </div></div></div>
+    </main>
+   }
+  </body>
+ </html>
+}
+
+templ SubjectIllustration(image webview.Illustration) {
+	<figure class="tokens-subject-illustration">
+		<picture>
+			for _,variant := range []string{"dark-high","dark-medium","dark-default","light-high","light-medium"} {
+				<source data-image-appearance={ variant } srcset={ webview.IllustrationFileURL(image.Files[variant]) } media="not all"/>
+			}
+			<img src={ webview.IllustrationFileURL(image.Files["light-default"]) } alt={ image.Alt } width="1200" height="630" decoding="async" fetchpriority="high"/>
+		</picture>
+		@webview.IllustrationImageTheme()
+	</figure>
+}
+
+templ ThumbnailPicture(image webview.Illustration) {
+	<picture class="tokens-thumbnail-image" style={ templ.SafeCSS(webview.ThumbnailPlaceholderStyle(image)) }>
+		for _,variant := range []string{"dark-high","dark-medium","dark-default","light-high","light-medium"} {
+			<source data-image-appearance={ variant } srcset={ webview.ThumbnailSrcset(image,variant) } sizes="auto, 360px" media="not all"/>
+		}
+		<img src={ webview.IllustrationFileURL(image.Files["light-default"]) } srcset={ webview.ThumbnailSrcset(image,"light-default") } sizes="auto, 360px" alt={ image.Name + " component preview" } width="720" height="450" loading="lazy" decoding="async"/>
+	</picture>
+	@webview.IllustrationImageTheme()
+}

@@ -1,9 +1,0 @@
-package web
-
-import "github.com/sojupie/tokens/forge/components/ui"
-
-templ specimenCard(c componentCase) {
- @ui.CardButton(ui.CardProps{Variant:c.Variant,Headline:"Blue Morning",ImageSrc:staticURL("paintings/"+cardPainting),ImageAlt:"Workers beside the East River in blue morning light",Attrs:c.Attributes()}) {
-  <span class="md-card-supporting-text">1909<br/>George Bellows</span>
- }
-}

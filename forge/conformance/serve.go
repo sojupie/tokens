@@ -35,10 +35,20 @@ func main() {
 	for _, route := range []string{"/components", "/components/", "/styles", "/styles/", "/static/", "/themes/", "/theme.css", "/changes", "/for-agents", "/sitemap.xml", "/downloads/"} {
 		mux.Handle(route, proxy)
 	}
-	files := http.FileServer(http.Dir("forge/conformance"))
+	// Keep existing flat review URLs while separating checks from their host.
+	pages := http.FileServer(http.Dir("forge/conformance/pages"))
+	scripts := http.FileServer(http.Dir("forge/conformance/browser"))
+	fixtures := http.FileServer(http.Dir("forge/conformance/fixtures"))
 	mux.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Cache-Control", "no-store")
-		files.ServeHTTP(w, r)
+		switch {
+		case strings.HasSuffix(r.URL.Path, ".mjs"), strings.HasSuffix(r.URL.Path, ".js"):
+			scripts.ServeHTTP(w, r)
+		case strings.HasSuffix(r.URL.Path, ".tmp"):
+			fixtures.ServeHTTP(w, r)
+		default:
+			pages.ServeHTTP(w, r)
+		}
 	}))
 	server := &http.Server{Addr: *listen, Handler: mux, ReadHeaderTimeout: 5 * time.Second}
 	log.Printf("Component checks: http://%s/motion.html", *listen)

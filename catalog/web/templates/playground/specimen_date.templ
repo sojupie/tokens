@@ -1,0 +1,7 @@
+package render
+
+import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+import "github.com/sojupie/tokens/forge/components/ui"
+templ SpecimenDate(c webview.ComponentCase){ @ui.DatePicker(c.DatePickerProps()) }
+templ DateEntryField(c webview.ComponentCase,part string){ @ui.DateEntryField(c.DatePickerProps(),part) }
+templ DatePickerPanel(c webview.ComponentCase){ @ui.DatePickerPanel(c.DatePickerProps()) }

@@ -27,24 +27,26 @@ Component source ownership:
 | `components/styles/` | CSS anatomy, layout, and interaction styling, separated by concern |
 | `components/behaviors/` | Chips, tabs, navigation, sliders, toolbars, snackbars, FAB menus, split buttons, and tooltips |
 | `components/style-sources.json`, `behavior-sources.json` | Assembly order; CSS order preserves the existing cascade |
-| `components/static/` | Dedicated behavior scripts, shared motion, elevation, and generated served assets |
-| `components/static/runtime/` | Generated scripts for individual behavior modules |
-| `components/static/bundles/` | Generated shared and page-specific component CSS |
+| `components/generated/` | Generated served CSS, browser scripts, bundles and notices; edit their sources instead |
+| `components/ui/internal/model/`, `components/ui/templates/` | Typed prop rules and component markup |
+| `components/ui/internal/render/` | Generated component rendering Go |
+| `components/foundations/`, `components/data/` | Shared elevation CSS and loading geometry |
 | `theme-subsets.ts` | Theme dependencies, shared inputs and preview scopes |
 | `component-bundles.ts`, `css-output.ts` | CSS partitioning, declaration grouping, theme deltas, and minification |
 | `material/` | Explicit token bindings, source coverage, and value overrides |
 
-`components/static/components-base.css` and `components.js` are assembled files.
+`components/generated/components-base.css` and `components.js` are assembled files.
+The [component ownership guide](components/README.md) maps every source and output.
 Run `npm run build:components` after editing their sources, or
 `npm run check:components` to check freshness. The token build also assembles them. It generates the individual `static/runtime/`
 scripts from the same behavior sources.
-Other dedicated scripts in `static/`, such as `menus.js`, remain authored source.
-Catalog's specimen markup lives in `catalog/web/specimen_<family>.templ`;
-its example messages and workspace actions live in `catalog/web/static/component-demos.js`.
+Dedicated controllers, including `menus.js`, are authored in `behaviors/` and compiled to `generated/`.
+Catalog's specimen markup lives in `catalog/web/templates/playground/specimen_<family>.templ`;
+its example messages and workspace actions live in `catalog/web/assets/scripts/component-demos.js`.
 Those examples consume behavior events rather than putting their content in Forge.
 
 The build exports selected contexts from a saved publication, generates CSS, and
-writes publication assets. It also updates `forge/components/static/buttons.css`,
+writes publication assets. It also updates `forge/components/generated/buttons.css`,
 and `components.css`, plus the CSS bundles in `static/bundles/`, which the Go
 server embeds. Rebuild the server after regenerating these files.
 The build assembles Catalog's theme from its static stylesheet references and
@@ -58,7 +60,7 @@ these files under `<publication>/assets/themes/` and records their checksums in
 the publication asset manifest. Public token downloads retain their complete selected context. Component
 CSS groups compatible bindings and removes whitespace before partitioning shared
 controls and optional families. Catalog selects the page stylesheet and loads
-optional behavior through `catalog/web/static/asset-loader.js`. The complete
+optional behavior through `catalog/web/assets/generated/asset-loader.js`. The complete
 `components.css` and `components.js` assets remain available.
 
 Production builds run in a separate asset-builder image before server startup

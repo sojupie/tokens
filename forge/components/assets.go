@@ -1,11 +1,37 @@
-// Package components embeds generated component styles and shared browser behavior.
+// Package components exposes Forge's built assets through stable logical paths.
+// Sources live in behaviors/, styles/ and data/; generated/ is rebuildable output.
 package components
 
-import "embed"
+import (
+	"embed"
+	"io"
+	"io/fs"
+	"strings"
+)
 
-// Files holds the component assets consumed by the catalog server.
-//
-//go:embed static/motion.cjs static/buttons.css static/buttons.js static/components.js static/components.css static/progress.js static/loading.js static/sheets.js static/lists.js static/carousel.js static/search.js static/date-picker.js static/time-picker.js static/fields.js static/dialogs.js static/menus.js static/loading-shapes.json
-//go:embed modules.json static/NOTICE.txt
-//go:embed static/runtime/*.js static/bundles/*.css static/bundles/modules.json
-var Files embed.FS
+//go:embed generated data modules.json
+var embedded embed.FS
+
+// Files preserves the static/... contract used by Catalog and exported bundles.
+// Disk ownership can change without forcing consumers to change their URLs.
+var Files assetFiles
+
+type assetFiles struct{}
+
+func (assetFiles) Open(name string) (fs.File, error) {
+	if name == "static/loading-shapes.json" {
+		return embedded.Open("data/loading-shapes.json")
+	}
+	if strings.HasPrefix(name, "static/") {
+		name = "generated/" + strings.TrimPrefix(name, "static/")
+	}
+	return embedded.Open(name)
+}
+func (files assetFiles) ReadFile(name string) ([]byte, error) {
+	file, err := files.Open(name)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+	return io.ReadAll(file)
+}

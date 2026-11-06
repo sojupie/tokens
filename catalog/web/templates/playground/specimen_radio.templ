@@ -1,0 +1,23 @@
+package render
+
+import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+
+import "fmt"
+import "github.com/sojupie/tokens/forge/components/ui"
+
+templ SpecimenRadio(c webview.ComponentCase) {
+	@webview.UseComponentAssets("radio")
+	if c.State=="interactive" {
+		@ui.RadioGroup("Options",nil) {
+			for index:=range 3 {
+				@RadioChoice(c, index, fmt.Sprintf("Option %d",index+1))
+			}
+		}
+	} else {
+		@RadioChoice(c, 0, "Option 1")
+	}
+}
+
+templ RadioChoice(c webview.ComponentCase, index int, label string) {
+ @ui.Radio(ui.ChoiceProps{Label:label,Attrs:c.RadioControl(index),InputAttrs:c.RadioInput(index)})
+}

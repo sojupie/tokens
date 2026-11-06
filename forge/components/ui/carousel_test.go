@@ -14,7 +14,7 @@ func TestCarouselItemContentAndLabel(t *testing.T) {
 	if p.Attributes()["aria-label"] != "Coastal collection, Item 2 of 6" {
 		t.Fatal("custom label lost its position")
 	}
-	if p.slot()["style"] != "--_carousel-aspect-ratio:1.7777777777777777" {
+	if p.SlotResolved()["style"] != "--_carousel-aspect-ratio:1.7777777777777777" {
 		t.Fatal("aspect ratio exceeded the supported range")
 	}
 	var out bytes.Buffer
@@ -55,7 +55,7 @@ func TestCarouselArtworkFraming(t *testing.T) {
 			t.Fatalf("missing artwork framing: %s", value)
 		}
 	}
-	if !strings.Contains((CarouselItemProps{}).imageStyle(), "scale(1)") {
+	if !strings.Contains((CarouselItemProps{}).ImageStyleResolved(), "scale(1)") {
 		t.Fatal("default artwork scale changed")
 	}
 }

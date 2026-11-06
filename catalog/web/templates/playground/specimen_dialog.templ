@@ -1,0 +1,66 @@
+package render
+
+import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+
+import "fmt"
+import "github.com/sojupie/tokens/forge/components/ui"
+
+templ SpecimenDialog(c webview.ComponentCase) {
+	@webview.UseComponentAssets("dialog")
+	@webview.UseCatalogBehavior("dialog-demo.js")
+	<div class="md-dialog-demo">
+		if c.State=="interactive" {
+			@ui.Action(ui.ButtonProps{Variant: ui.ButtonVariant("outlined"), Attrs: templ.Attributes{"data-dialog-open": true, "commandfor":c.ID()+"-panel", "command":"show-modal", "aria-controls": c.ID() + "-panel", "aria-haspopup": "dialog", "aria-expanded": "false"}}) {
+				Open dialog
+			}
+		}
+		{{
+			p := ui.DialogProps{ID: c.ID() + "-panel", TitleID: c.ID() + "-heading", Title: c.DialogHeading(), FullScreen: c.Variant == "full-screen", HideTitle: c.DialogHeadline == "hidden", Dividers: c.DialogDividers(), BottomActions: c.Orientation == "bottom", Attrs: c.DialogPanel(), CloseAttrs: c.DialogClose(), Actions: DialogExampleActions(c), HeaderActions: DialogExampleSave(c), ContentAttrs: templ.Attributes{"tabindex": "0", "aria-label": "Dialog content"}}
+			if c.DialogIcon() {
+				p.Icon = ui.Icon("info")
+			}
+		}}
+		@ui.Modal(p) {
+			@DialogSample(c)
+		}
+		if c.Variant=="full-screen" {
+			@ui.Modal(ui.DialogProps{ID: c.ID() + "-discard", Title: "Discard changes?", Description: "Your edits will be lost.", Alert: true, Attrs: templ.Attributes{"class": "md-dialog-discard", "data-dialog-discard": ""}, Actions: DialogDiscardActions()})
+		}
+		<output data-dialog-output aria-live="polite"></output>
+	</div>
+}
+
+templ DialogSample(c webview.ComponentCase) {
+	<h3 data-slot="subhead">Item details</h3>
+	<p id={ c.ID() + "-support" } data-slot="supporting-text">Supporting text</p>
+	@ui.Field(ui.FieldProps{TextFieldProps: ui.TextFieldProps{ID: c.ID(), Name: "item", Label: "Name", Value: "Sample", Placeholder: "Name", Required: true, Supporting: "Required", InputAttrs: templ.Attributes{"id": c.ID() + "-name", "data-dialog-value": "", "aria-describedby": c.ID() + "-error"}}, HelpAttrs: templ.Attributes{"id": c.ID() + "-error", "data-dialog-error": "", "aria-live": "polite"}})
+	if c.Expanded || c.Variant=="full-screen" {
+		for i:=range 12 {
+			<section><h3 data-slot="subhead">{ fmt.Sprintf("Section %d",i+1) }</h3><p data-slot="supporting-text">Supporting text for this section.</p></section>
+		}
+	}
+}
+
+templ DialogExampleSave(c webview.ComponentCase) {
+	@ui.Button(c.DialogAction(true)) {
+		Save
+	}
+}
+
+templ DialogExampleActions(c webview.ComponentCase) {
+	@ui.Button(c.DialogAction(false)) {
+		Cancel
+	}
+	@ui.Button(c.DialogAction(true)) {
+		Save
+	}
+}
+
+templ DialogDiscardActions() {
+	@ui.Action(ui.ButtonProps{Variant: ui.Text, Attrs: templ.Attributes{"data-dialog-keep": ""}}) {
+		Keep editing
+	}
+	@ui.Action(ui.ButtonProps{Variant: ui.Text, Attrs: templ.Attributes{"data-dialog-discard-confirm": ""}}) {
+		Discard
+	}
+}

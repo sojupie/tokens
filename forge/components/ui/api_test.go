@@ -317,3 +317,14 @@ func TestRailCompositionOwnsFABAndNestedDependencies(t *testing.T) {
 		}
 	}
 }
+
+func TestCalendarLabelsRemainReplaceableThroughPublicAPI(t *testing.T) {
+	previous := DateWeekdays
+	DateWeekdays = append([]string(nil), previous...)
+	DateWeekdays[0] = "Custom Sunday"
+	t.Cleanup(func() { DateWeekdays = previous })
+	markup, _ := renderAPI(t, DatePicker(DatePickerProps{Inline: true}))
+	if !strings.Contains(markup, `aria-label="Custom Sunday"`) {
+		t.Fatal("calendar ignored replacement of public weekday labels")
+	}
+}

@@ -1,0 +1,47 @@
+package render
+
+import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+
+import "github.com/sojupie/tokens/forge/components/ui"
+
+templ SpecimenSnackbar(c webview.ComponentCase) {
+	if c.State=="interactive" {
+		<div data-snackbar-demo>
+			@ui.Action(ui.ButtonProps{Variant: ui.ButtonVariant("outlined"), Attrs: templ.Attributes{"data-snackbar-open": true, "aria-describedby": c.ID() + "-shortcut"}}) {
+				Show snackbar
+			}
+			@ui.SnackbarMessage(ui.SnackbarProps{Variant: c.Variant, Attrs: c.Attributes(), Duration: 6000, Action: SnackbarExampleActions(c)}) {
+				@SnackbarExampleText(c)
+			}
+			<p class="md-typescale-body-small" id={ c.ID() + "-shortcut" }>Press F6 to focus the snackbar action.</p>
+			<output class="md-typescale-body-small" aria-live="polite"></output>
+		</div>
+	} else {
+		@ui.SnackbarMessage(ui.SnackbarProps{Variant: c.Variant, Attrs: c.Attributes(), Inline: true, Action: SnackbarExampleActions(c)}) {
+			@SnackbarExampleText(c)
+		}
+	}
+}
+
+templ SnackbarContents(c webview.ComponentCase) {
+	@ui.FeedbackText() {
+		@SnackbarExampleText(c)
+	}
+	@SnackbarExampleActions(c)
+}
+
+templ SnackbarExampleText(c webview.ComponentCase) {
+	if c.Variant=="two-lines" {
+		<span>Message sent.</span>
+		<br/>
+		<span>You can undo this action.</span>
+	} else {
+		Message sent
+	}
+}
+
+templ SnackbarExampleActions(c webview.ComponentCase) {
+	@ui.Button(templ.Attributes{"data-snackbar-action": true}, c.FeedbackAttributes("md-button md-text-button md-feedback-action")) {
+		Undo
+	}
+}

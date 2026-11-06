@@ -1,0 +1,18 @@
+package render
+
+import model "github.com/sojupie/tokens/forge/components/ui/internal/model"
+
+templ Badge(variant string, content string, attrs templ.Attributes) {
+	@model.Require("badge")
+	<span { model.BadgeAttributes(variant,content,attrs)... }>
+		if variant == "labeled" {
+			{ model.BadgeContent(content) }
+		}
+	</span>
+}
+
+templ BadgeAnchor() {
+	@model.Require("badge")
+	<span class="md-badge-anchor">{ children... }
+</span>
+}

@@ -1,0 +1,111 @@
+package render
+
+import webassets "github.com/sojupie/tokens/catalog/web/assets"
+
+import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+
+import "github.com/sojupie/tokens/forge/components/ui"
+
+templ SpecimenList(c webview.ComponentCase) {
+	@PlaygroundList(c)
+}
+
+templ ListContents(c webview.ComponentCase, index int) {
+	@ListItemContents(c, index, webview.ListItemContent{Label: c.ListLabel(index), Supporting: c.ListSupporting(), Overline: "Overline", Avatar: "A", Metadata: "100+"})
+}
+
+templ ListItemContents(c webview.ComponentCase, index int, content webview.ListItemContent) {
+	{{
+		props := ui.ListItemProps{Label: content.Label, Supporting: content.Supporting, Avatar: content.Avatar, LeadingKind: ui.ListLeading(c.Width), SingleLine: c.Size == "one-line"}
+		if c.ListText == "overline" {
+			props.Overline = content.Overline
+		}
+		if c.ListTrailing == "" || c.ListTrailing == "text" {
+			props.Metadata = content.Metadata
+		}
+		if content.Badge != "" {
+			props.Badge = ui.Badge("small", "", nil)
+		}
+		props.ImageSrc = webassets.StaticURL("paintings/" + webview.ListContentImage(content.Image, index))
+		if c.Width != "avatar" && c.Width != "image" {
+			props.Leading = ListLeadingContent(c, index, content)
+		}
+		if c.ListTrailing == "checkbox" || c.ListTrailing == "radio" || c.ListTrailing == "switch" || c.ListTrailing == "icon" || (c.Control == "expand" && index < 3) {
+			props.Trailing = ListTrailingContent(c, index)
+		}
+	}}
+	@ui.ListContent(props)
+}
+
+templ ListLeadingContent(c webview.ComponentCase, index int, content webview.ListItemContent) {
+	switch c.Width {
+		case "checkbox","radio":
+			@ListSelectionControl(c, index)
+		case "icon":
+			@ui.Icon(webview.ListContentIcon(content.Icon))
+		case "video":
+			<svg viewBox="0 0 100 56" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="100" height="56" fill="var(--md-sys-color-tertiary-container)"></rect><path d="m42 16 20 12-20 12Z" fill="var(--md-sys-color-on-tertiary-container)"></path></svg>
+	}
+}
+
+templ ListTrailingContent(c webview.ComponentCase, index int) {
+	if c.ListTrailing=="checkbox"||c.ListTrailing=="radio"||c.ListTrailing=="switch" {
+		@ListSelectionControl(c, index)
+	}
+	if c.Control=="expand"&&index<3 {
+		@ui.ListIcon("expand_more", true)
+	} else if c.ListTrailing=="icon" {
+		@ui.ListIcon("chevron_right", false)
+	}
+}
+
+// Reuse the checkbox, radio and switch renderers without nesting an input in a button.
+templ ListSelectionControl(c webview.ComponentCase, index int) {
+	{{ p := ui.ChoiceProps{Attrs: c.ListControlAttributes(index), InputAttrs: c.ListControlInput(index)} }}
+	switch c.ListNativeKind() {
+		case "radio":
+			@ui.RadioControl(p)
+		case "checkbox":
+			@ui.CheckboxControl(p)
+		case "switch":
+			@ui.SwitchControl(p)
+	}
+}
+
+templ ListExampleBefore(c webview.ComponentCase, index int) {
+	if c.Control=="reveal" {
+		@ui.Button(c.ListUtility(index, true)) {
+			@ui.Icon("check")
+		}
+	}
+}
+
+templ ListExampleAfter(c webview.ComponentCase, index int) {
+	if c.Control=="reorder" {
+		@ui.Button(c.ListUtility(index, false)) {
+			@ui.Icon("drag_handle")
+		}
+	}
+	if c.Control=="reveal" {
+		@ui.Button(c.ListUtility(index, false)) {
+			@ui.Icon("more_horiz")
+		}
+	}
+}
+
+func ListExampleExpanded(c webview.ComponentCase, index int) templ.Component {
+	if c.Control == "expand" {
+		return ListExampleChildren(c, index)
+	}
+	return nil
+}
+
+templ ListExampleChildren(c webview.ComponentCase, index int) {
+	for child:=3;child<5;child++ {
+		<li>
+			@ui.Button(c.ListItem(child)) {
+				@ListContents(c, child)
+			}
+		</li>
+	}
+}

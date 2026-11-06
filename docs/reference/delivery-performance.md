@@ -54,9 +54,9 @@ are misses. This reduces publication-build work, not browser navigation time.
 Sources: [publication loading](../../source/publish/memory.go),
 [history cache](../../source/publish/history_cache.go),
 [server startup](../../cmd/tokens/serve.go),
-[generated assets](../../catalog/web/generated_assets.go),
-[preview configurations](../../catalog/web/component_preview.go),
-[thumbnail cases](../../catalog/web/component_thumbnails.go).
+[generated assets](../../catalog/web/internal/server/asset_delivery.go),
+[preview configurations](../../catalog/web/internal/server/playground.go),
+[thumbnail cases](../../catalog/web/internal/server/playground.go).
 
 ### Rendered-response cache
 
@@ -100,7 +100,7 @@ response can then be reused by the response cache. There is no application Brotl
 encoder. HTTP/2, HTTP/3, edge caching and connection behavior depend on the hosting
 path; the application does not guarantee a particular transport protocol.
 
-Sources: [static assets](../../catalog/web/static.go),
+Sources: [static assets](../../catalog/web/internal/server/asset_delivery.go),
 [encoding](../../catalog/web/encoding.go).
 
 ### Download option checks and attachment generation
@@ -173,8 +173,8 @@ fallback.
 Sources: [CSS output](../../forge/css-output.ts),
 [module builder](../../forge/component-bundles.ts),
 [theme subsets](../../forge/theme-subsets.ts),
-[rendered requirements](../../catalog/web/component_assets.go),
-[initial head](../../catalog/web/layout.templ).
+[rendered requirements](../../catalog/web/internal/server/asset_delivery.go),
+[initial head](../../catalog/web/templates/shared/layout.templ).
 
 ## Static tool consumers
 
@@ -237,8 +237,8 @@ bundling is not a safe way to duplicate those services.
 They do not certify that every asynchronous controller task has finished or that
 pixels have painted. Loading-indicator geometry is an explicit remaining example.
 
-Sources: [loader](../../catalog/web/static/asset-loader.js),
-[navigation integration](../../catalog/web/static/site-ui.js),
+Sources: [loader](../../catalog/web/assets/generated/asset-loader.js),
+[navigation integration](../../catalog/web/assets/scripts/site-ui.js),
 [behavior compilation](../../forge/components/build-assets.ts).
 The [behavior delivery contract](behavior-delivery.md) has the lifecycle inventory.
 
@@ -263,10 +263,10 @@ and playground/table controls request their replacement regions rather than a
 new full document; subject search is debounced by 250 ms and replaces superseded
 requests.
 
-Sources: [prefetch policy](../../catalog/web/static/prefetch.js),
-[HTMX extension](../../catalog/web/static/hx-preload.min.js),
+Sources: [prefetch policy](../../catalog/web/assets/scripts/prefetch.js),
+[HTMX extension](../../catalog/web/assets/vendor/hx-preload.min.js),
 [site shell](../../forge/site/site.templ),
-[subject search](../../catalog/web/subject_list.templ).
+[subject search](../../catalog/web/templates/pages/subject_list.templ).
 
 ## Work after the page arrives
 
@@ -295,13 +295,13 @@ checked properties are applied before morphing to avoid transient collapsed or
 stale states. A separate button-loading state covers attachment preparation.
 Native forms remain usable without JavaScript.
 
-Sources: [thumbnails](../../catalog/web/subject_list.templ),
-[image markup](../../catalog/web/illustrations.templ),
-[dialogs](../../forge/components/static/dialogs.js),
-[loading](../../forge/components/static/loading.js),
-[progress](../../forge/components/static/progress.js),
-[artwork](../../catalog/web/static/artwork.js),
-[download client](../../catalog/web/static/export.js).
+Sources: [thumbnails](../../catalog/web/templates/pages/subject_list.templ),
+[image markup](../../catalog/web/templates/previews/illustrations.templ),
+[dialogs](../../forge/components/behaviors/dialogs.js),
+[loading](../../forge/components/behaviors/loading.js),
+[progress](../../forge/components/behaviors/progress.js),
+[artwork](../../catalog/web/assets/scripts/artwork.js),
+[download client](../../catalog/web/assets/scripts/export.js).
 
 ## Measurements
 

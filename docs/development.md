@@ -63,15 +63,14 @@ Component examples use `specimen_<family>.templ`; `component_specimen.templ` onl
 dispatches to the selected family. Matching `specimen_*.go` files hold attribute
 helpers, while `component_gallery.go` holds the shared preview case model.
 
-Edit the affected `catalog/web/*.templ` file, then regenerate the Go files with
-the pinned templ version:
+Edit templates under `catalog/web/templates/`, then run `npm run generate:web`.
+This writes compiled Go to `catalog/web/internal/render/` and browser TypeScript
+output to `catalog/web/assets/generated/`. Commit sources and generated output.
+`npm run check:web` detects stale output. See [web ownership](../catalog/web/README.md)
+for the package boundary and directory map.
 
-```sh
-go run github.com/a-h/templ/cmd/templ@v0.3.960 generate -path .
-```
-
-Commit both the template and generated Go file. The shared site header, navigation menu and footer live in `forge/site/`; the catalog renders those Go templates per request; Material Motion Lab renders them during its static build. `tokens site-shell --out DIRECTORY` exports the same markup and assets for the static carousel lab. Hosts also load the shared `navigation` CSS module and its `runtime/utils.js` and `runtime/navigation.js` scripts. The site uses a primary rail beside a scrolling section drawer on wide windows. Rail destinations reveal their section on hover or keyboard focus; clicking a destination follows its native link. Medium windows overlay the section drawer. Wide pages with no section drawer also reveal it over content without changing the reserved width. Section changes fade, overlay drawers enter and exit with effects/spatial motion roles, and only the drawer gains elevation while the rail or drawer is hovered. Compact windows use one modal drawer with main-menu and section views. The rail is a sibling of the drawer; drawer styles never own rail anatomy. Destinations use native links; opening, dismissal, focus return and swipe handling belong to the shared component runtime. The site shell owns section selection and preserves section-list scroll positions across HTMX swaps. Site CSS and JavaScript are maintained
-in `catalog/web/static/`. Shared component CSS sources live in
+The shared site header, navigation menu and footer live in `forge/site/`; the catalog renders those Go templates per request; Material Motion Lab renders them during its static build. `tokens site-shell --out DIRECTORY` exports the same markup and assets for the static carousel lab. Hosts also load the shared `navigation` CSS module and its `runtime/utils.js` and `runtime/navigation.js` scripts. The site uses a primary rail beside a scrolling section drawer on wide windows. Rail destinations reveal their section on hover or keyboard focus; clicking a destination follows its native link. Medium windows overlay the section drawer. Wide pages with no section drawer also reveal it over content without changing the reserved width. Section changes fade, overlay drawers enter and exit with effects/spatial motion roles, and only the drawer gains elevation while the rail or drawer is hovered. Compact windows use one modal drawer with main-menu and section views. The rail is a sibling of the drawer; drawer styles never own rail anatomy. Destinations use native links; opening, dismissal, focus return and swipe handling belong to the shared component runtime. The site shell owns section selection and preserves section-list scroll positions across HTMX swaps. Site CSS and JavaScript are maintained
+in `catalog/web/assets/styles/`. Shared component CSS sources live in
 `forge/components/styles/`; behavior sources live in `forge/components/behaviors/`.
 New browser controllers and shared helpers use TypeScript. The migration currently
 covers the asset loader, chips, switches, button groups, segmented buttons and
@@ -88,16 +87,16 @@ Pure helper imports remain bundled into each entry. There is no browser-side
 TypeScript compiler or new runtime dependency.
 
 Run `npm run build:components` to assemble component sources into the existing
-served files in `forge/components/static/`. This also discovers TypeScript entries
-beside Catalog's static scripts and generates their `.js` siblings. Edit the `.ts`
+served files in `forge/components/generated/`. This also discovers TypeScript entries
+in `catalog/web/assets/scripts/` and writes compiled JavaScript to `assets/generated/`. Edit the `.ts`
 source when a generated file has that header. `npm run check:components` checks
 both types and generated output, including Catalog scripts. Dedicated scripts such as `menus.js` and `fields.js`
-remain maintained in `static/`. Catalog's demo responses live in
-`catalog/web/static/component-demos.js`. Both sets of served assets are embedded
+are maintained in `forge/components/behaviors/` and compiled into `generated/`. Catalog's demo responses live in
+`catalog/web/assets/scripts/component-demos.js`. Both sets of served assets are embedded
 in the binary. Rebuild and restart the
 server after changing them. Styles come from the published token data through
 the [DTCG and CSS build](reference/dtcg.md) when generated assets are present.
-`catalog/web/theme.go` supports publications without generated assets. Layout
+`catalog/web/internal/server/theme.go` supports publications without generated assets. Layout
 rules are in the static stylesheets.
 
 The [component reference](reference/components.md) and [button reference](reference/buttons.md)
@@ -128,7 +127,7 @@ main content and footer; the playground has a
 separate scope inside `#component-preview`, so changing a control declares its
 current module dependencies. The generated module manifest supplies link order.
 
-`catalog/web/static/asset-loader.js` selects optional behavior from rendered JSON
+`catalog/web/assets/generated/asset-loader.js` selects optional behavior from rendered JSON
 declarations. Register Forge ownership in `modules.json` and request its module
 beside the rendering primitive; declare Catalog-owned example scripts at their
 rendering branch. Keep diagnostic selectors aligned for the CLI comparison, but
@@ -202,7 +201,7 @@ placement and layout effect of the reorder indicator. Run the Go render tests
 with `go test ./catalog/web`.
 
 For a theme comparison, copy the complete generated `theme.css` to
-`forge/conformance/baseline-theme.tmp`. Open `/theme-equivalence.html` to compare
+`forge/conformance/fixtures/baseline-theme.tmp`. Open `/theme-equivalence.html` to compare
 layout, typography, colors and surfaces across the gallery in all six appearances.
 `/theme-scoping.html` alternates the complete and page themes in the same document,
 with warmups in each block. It reports time in the control handlers (including any
@@ -221,7 +220,7 @@ loaded the full set for mixed component thumbnails; current image-backed cards
 can omit those live compositions.
 
 For a CSS build comparison, save the previous theme and full component stylesheet
-as `forge/conformance/baseline-theme.tmp` and `baseline-components.tmp`, then open
+as `forge/conformance/fixtures/baseline-theme.tmp` and `baseline-components.tmp`, then open
 `/asset-equivalence.html`. It compares retained root variables in all six contexts and
 computed component properties across the gallery. These temporary baseline files
 are ignored by Git. The comparison complements interaction checks; it does not
@@ -366,7 +365,7 @@ virtualization. Printing disables the containment optimization.
 
 The landing page shows a small component/style selection, then a separate
 section for change history and agent access. Hero artwork lives in
-`catalog/web/static/artwork.js`. Its color-block choreography and loop timing
+`catalog/web/assets/scripts/artwork.js`. Its color-block choreography and loop timing
 are authored; sampled captured spatial springs drive resize and shape
 transitions. Stripe turns use the standard easing and medium2 duration tokens
 to settle without overshoot. Grid resizing, directional corner changes and stripe
@@ -376,7 +375,7 @@ The pause control, reduced-motion preference, document visibility and viewport
 intersection control playback.
 
 The mosaic has an inset inside the frame; complete blocks stay visible throughout
-the loop. The default renderer uses Canvas 2D in `catalog/web/static/artwork-canvas.js`.
+the loop. The default renderer uses Canvas 2D in `catalog/web/assets/scripts/artwork-canvas.js`.
 Add `?artwork=dom` to the homepage to compare the DOM/CSS renderer.
 Both use the same tracks and spring samples from `artwork.js`. Canvas resolves
 palette colors through CSS on appearance changes, resizes its backing buffer with
@@ -475,7 +474,7 @@ then rebuild and restart the server after changing the scheme or shared motion
 code. The build derives CSS `linear()` curves and settling durations from the
 captured damping/stiffness values; it does not approximate them with arbitrary
 short/medium duration tokens. The shared source is
-`forge/components/motion.ts`, compiled to `forge/components/static/motion.cjs`
+`forge/components/motion.ts`, compiled to `forge/components/generated/motion.cjs`
 and served as `motion.js` before component code. Both the browser entry and the
 CSS compiler import spring sampling from `forge/components/helpers/springs.ts`,
 so the compiler does not read a potentially stale generated JavaScript copy.
@@ -612,7 +611,7 @@ go run ./cmd/tokens illustrations --published published-review --chrome-path /us
 
 The command captures 720 × 450 thumbnails in six appearances and publishes
 `illustrations/manifest.json` after every capture succeeds. Rendering lives in
-`catalog/web/illustrations.templ`; component anatomy and measurements remain in
+`catalog/web/templates/previews/illustrations.templ`; component anatomy and measurements remain in
 Forge. The playground stays interactive.
 
 Each capture produces 720px and 360px JPEGs plus a 24 × 15 placeholder embedded

@@ -1,10 +1,14 @@
+// Assemble publication themes and downloads from DTCG, then derive the component
+// bindings embedded by the Go server. A staged output directory prevents readers
+// from seeing a half-written asset set; --check-bindings verifies a rebuilt server
+// uses the same component bindings as the publication it will serve.
 import { cssTiming } from "./components/helpers/springs.ts";
 import { parseArgs } from "node:util";
 import StyleDictionary from "style-dictionary";
 import { siteTheme } from "./material/site-theme.mjs";
 import { circularShapeRadius } from "./material/circular-shapes.mjs";
-import { generateComponents } from "./material/generate-components.mjs";
-import { generateButtons } from "./material/generate-buttons.mjs";
+import { generateComponents } from "./material/components/generate-components.mjs";
+import { generateButtons } from "./material/components/generate-buttons.mjs";
 import { buildComponentAssets } from "./components/build-assets.ts";
 import { buildCatalogAssets } from "../catalog/web/build-assets.ts";
 import { compactCSS, themeVariantsCSS } from './css-output.ts';
@@ -288,7 +292,7 @@ async function main() {
       "md-sys-color-on-primary",
     ]);
     // Scene renders use the full theme; normal pages keep their existing subsets.
-    for (const file of ["catalog/web/static/app.css", "catalog/web/static/illustrations.css", "catalog/web/static/token-table.css", "forge/site/site.css"]) {
+    for (const file of ["catalog/web/assets/styles/app.css", "catalog/web/assets/styles/illustrations.css", "catalog/web/assets/styles/token-table.css", "forge/site/site.css"]) {
       const css = await readFile(file, "utf8");
       for (const match of css.matchAll(/var\(\s*--((?:md|catalog)-[a-z0-9-]+)\s*[,)]/g))
         required.add(match[1]);
@@ -309,11 +313,11 @@ async function main() {
     let componentCSS;
     let componentCoverage;
     const anatomy = await readFile(
-      "forge/components/static/components-base.css",
+      "forge/components/generated/components-base.css",
       "utf8",
     );
     const elevation = await readFile(
-      "forge/components/static/elevation.css",
+      "forge/components/foundations/elevation.css",
       "utf8",
     );
     for (const match of (anatomy + elevation).matchAll(
@@ -408,6 +412,8 @@ async function main() {
         .digest("hex") !== databaseSha256
     )
       throw new Error("Publication changed during the build");
+    buttonCSS = generatedBinding(buttonCSS);
+    componentCSS = generatedBinding(componentCSS);
     const bundles = await componentBundles({
       bindings: componentModules, motionCSS: moduleMotionCSS, elevation, allCSS: componentCSS,
     });
@@ -415,20 +421,20 @@ async function main() {
       [
         "forge/site/site.css",
         "forge/site/site.templ",
-        ...(await readdir("forge/components/ui"))
+        ...(await readdir("forge/components/ui/templates", {recursive:true}))
           .filter(file => file.endsWith(".templ") || file.endsWith(".go") && !file.endsWith("_templ.go") && !file.endsWith("_test.go"))
-          .map(file => "forge/components/ui/" + file),
-        "catalog/web/static/app.css",
-        "catalog/web/static/token-table.css",
-        ...(await readdir("catalog/web"))
+          .map(file => "forge/components/ui/templates/" + file),
+        "catalog/web/assets/styles/app.css",
+        "catalog/web/assets/styles/token-table.css",
+        ...(await readdir("catalog/web/templates", {recursive:true}))
           .filter((file) => file.endsWith(".templ"))
-          .map((file) => "catalog/web/" + file),
+          .map((file) => "catalog/web/templates/" + file),
       ].map((file) => readFile(file, "utf8")),
     );
     sharedSources.push(buttonCSS);
     const runtimeFiles = (
       await Promise.all(
-        ["forge/components/static", "catalog/web/static"].map(
+        ["forge/components/generated", "catalog/web/assets/scripts", "catalog/web/assets/generated"].map(
           async (directory) =>
             (await readdir(directory))
               .filter((file) => file.endsWith(".js") || file.endsWith(".cjs"))
@@ -526,7 +532,7 @@ async function main() {
     );
     if (args["check-bindings"]) {
       for (const [file, css] of [["buttons.css", buttonCSS], ["components.css", componentCSS]]) {
-        if (await readFile(path.join("forge/components/static", file), "utf8") !== css)
+        if (await readFile(path.join("forge/components/generated", file), "utf8") !== css)
           throw new Error(`${file} differs from the committed server bindings; regenerate and rebuild the application`);
       }
     }
@@ -547,27 +553,27 @@ async function main() {
     }
     if (previous) await rm(backup, { recursive: true });
     if (!args["check-bindings"]) {
-      await writeFile("forge/components/static/buttons.css", buttonCSS);
-      await writeFile("forge/components/static/components.css", componentCSS);
+      await writeFile("forge/components/generated/buttons.css", buttonCSS);
+      await writeFile("forge/components/generated/components.css", componentCSS);
     }
     const moduleManifest = JSON.stringify([...bundles.keys()].filter(name => name !== "all")) + "\n";
-    const manifestFile = "forge/components/static/bundles/modules.json";
+    const manifestFile = "forge/components/generated/bundles/modules.json";
     if (args["check-bindings"]) {
       if (await readFile(manifestFile, "utf8") !== moduleManifest)
         throw new Error("Stale component module manifest");
     } else await writeFile(manifestFile, moduleManifest);
-    for (const file of await readdir("forge/components/static/bundles")) {
+    for (const file of await readdir("forge/components/generated/bundles")) {
       if (!file.endsWith(".css") || bundles.has(file.slice(0, -4))) continue;
       if (args["check-bindings"]) throw new Error(`Obsolete component bundle: ${file}`);
-      await rm(path.join("forge/components/static/bundles", file));
+      await rm(path.join("forge/components/generated/bundles", file));
     }
     for (const [name, css] of bundles) {
-      const file = `forge/components/static/bundles/${name}.css`;
+      const file = `forge/components/generated/bundles/${name}.css`;
       if (args['check-bindings']) {
-        if (await readFile(file, 'utf8') !== css) throw new Error(`Stale component bundle: ${name}`);
+        if (await readFile(file, 'utf8') !== generatedBinding(css)) throw new Error(`Stale component bundle: ${name}`);
       } else {
-        await mkdir('forge/components/static/bundles', { recursive: true });
-        await writeFile(file, css);
+        await mkdir('forge/components/generated/bundles', { recursive: true });
+        await writeFile(file, generatedBinding(css));
       }
     }
     console.log(`Built six themes and DTCG/CSS downloads in ${target}`);
@@ -584,4 +590,10 @@ if (
     console.error(error);
     process.exitCode = 1;
   });
+}
+
+// Keep the same source banner in repository and publication bindings: startup
+// checks compare their bytes before serving a publication.
+function generatedBinding(css) {
+ return "/* Generated by forge/build-tokens.mjs. DO NOT EDIT. Run npm run build:tokens -- --published PATH. */\n" + css;
 }

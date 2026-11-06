@@ -1,0 +1,84 @@
+package render
+
+import model "github.com/sojupie/tokens/forge/components/ui/internal/model"
+
+templ Card(p model.CardProps) {
+	@CardSurface(p) {
+		@CardContent(p) {
+			{ children... }
+		}
+	}
+}
+
+templ CardLink(href string, p model.CardProps) {
+	@CardLinkSurface(href, p) {
+		@CardContent(p) {
+			{ children... }
+		}
+	}
+}
+
+templ CardButton(p model.CardProps) {
+	@model.Require("card")
+	<button type="button" { model.Attributes(templ.Attributes{"class":"md-card md-"+model.Fallback(p.Variant,"filled")+"-card md-interactive-card"},p.Attrs)... }>
+		if p.ImageSrc!="" {
+			<img class="md-card-media" src={ templ.SafeURL(p.ImageSrc) } alt={ p.ImageAlt }/>
+		}
+		<span class="md-card-content">
+			if p.Headline!="" {
+				<span class="md-card-headline">{ p.Headline }</span>
+			}
+			if p.Supporting!="" {
+				<span class="md-card-supporting-text">{ p.Supporting }</span>
+			}
+			{ children... }
+		</span>
+	</button>
+}
+
+templ CardContent(p model.CardProps) {
+	if p.ImageSrc!="" {
+		<img class="md-card-media" src={ templ.SafeURL(p.ImageSrc) } alt={ p.ImageAlt }/>
+	}
+	<div class="md-card-content">
+		if p.Headline!="" {
+			<h2 class="md-card-headline">{ p.Headline }</h2>
+		}
+		if p.Supporting!="" {
+			<p class="md-card-supporting-text">{ p.Supporting }</p>
+		}
+		{ children... }
+	</div>
+	if p.Actions!=nil {
+		<div class="md-card-actions">
+			@p.Actions
+		</div>
+	}
+}
+
+// CardSurface is the content-slot form used when an application supplies its own body.
+templ CardSurface(p model.CardProps) {
+	@model.Require("card")
+	<article { p.Attributes()... }>
+		{ children... }
+	</article>
+}
+
+templ CardBody(attrs templ.Attributes) {
+	@model.Require("card")
+	<div { model.Attributes(templ.Attributes{"class":"md-card-content"},attrs)... }>
+		{ children... }
+	</div>
+}
+
+templ CardLinkSurface(href string, p model.CardProps) {
+	@model.Require("card")
+	<a href={ templ.SafeURL(href) } { model.Attributes(templ.Attributes{"class":"md-card md-"+model.Fallback(p.Variant,"filled")+"-card md-interactive-card"},p.Attrs)... }>
+		{ children... }
+	</a>
+}
+
+templ CardMedia(src, alt string, attrs templ.Attributes) {
+	@model.Require("card")
+	<img src={ templ.SafeURL(src) } alt={ alt } { model.Attributes(templ.Attributes{"class":"md-card-media"},attrs)... }/>
+}

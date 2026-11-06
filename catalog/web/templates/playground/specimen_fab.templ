@@ -1,0 +1,7 @@
+package render
+
+import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+import "github.com/sojupie/tokens/forge/components/ui"
+templ SpecimenFab(c webview.ComponentCase){
+@PlainTooltip("Create",c.ID()+"-tip") { @ui.FAB(ui.FABProps{Label:"Create",Icon:"add",Variant:c.Variant,Size:ui.Size(c.Size),Disabled:c.State=="disabled",Attrs:c.Attributes()}) }
+}

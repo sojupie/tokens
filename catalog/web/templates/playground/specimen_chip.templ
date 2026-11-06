@@ -1,0 +1,7 @@
+package render
+
+import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+import "github.com/sojupie/tokens/forge/components/ui"
+templ SpecimenChip(c webview.ComponentCase){
+<span class="md-chip-demo">{{p:=ui.ChipProps{Label:c.ChipLabel(),Variant:c.Variant,Selected:c.Selected,Disabled:c.State=="disabled",Elevated:c.Elevated,Removable:c.Width=="removable",Attrs:c.Attributes()};if c.Shape=="icon"{p.Icon="star"};if c.Variant=="input"&&c.Shape=="avatar"{p.Avatar="A"}}} @ui.Chip(p)<output class="tokens-visually-hidden" aria-live="polite" data-chip-output></output></span>
+}

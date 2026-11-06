@@ -1,0 +1,25 @@
+package render
+
+import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+
+import "github.com/sojupie/tokens/forge/components/ui"
+
+templ SpecimenFabMenu(c webview.ComponentCase) {
+	@FabMenuSurface(c)
+}
+
+templ FabMenuSurface(c webview.ComponentCase) {
+	@ui.FABMenu(ui.FABMenuProps{ID: c.ID(), Label: "Create", Inline: c.State != "interactive", Attrs: c.Attributes(), OpenerAttrs: c.FABMenuOpener(), PanelAttrs: c.FABMenuPanel(), Close: FabMenuExampleClose(c)}) {
+		for i,label:=range c.LabelsOr([3]string{"New file","New folder","New project"}) {
+			@ui.FABMenuItem(ui.FABMenuItemProps{Label: label, Icon: []string{"edit", "folder", "add"}[i], Attrs: c.FABMenuAction(i)})
+		}
+	}
+}
+
+templ FabMenuExampleClose(c webview.ComponentCase) {
+	if c.State!="interactive" {
+		@ui.Button(c.FABMenuAction(-1)) {
+			@ui.Icon("close")
+		}
+	}
+}

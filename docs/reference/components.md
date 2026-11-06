@@ -54,9 +54,9 @@ Component pages such as `/md3/components/cards`, `/md3/components/menus`, and
 `/md3/components/text-fields` contain interactive playgrounds above their token tables.
 
 The homepage thumbnails have separate compositions in
-`catalog/web/component_thumbnails.templ`. Their fixed specimen choices are in
-`catalog/web/component_thumbnails.go`; app frames and illustration layout are in
-`catalog/web/static/app.css`. Reuse the shared component anatomy and generated
+`catalog/web/templates/previews/component_thumbnails.templ`. Their fixed specimen choices are in
+`catalog/web/internal/server/playground.go`; app frames and illustration layout are in
+`catalog/web/assets/styles/app.css`. Reuse the shared component anatomy and generated
 styles. Scale the whole scene or crop the app frame to fit, keeping component
 proportions intact. Thumbnails are inert and share one secondary-palette backdrop. An SVG viewBox
 scales each HTML scene uniformly through a foreignObject, without CSS zoom or
@@ -215,14 +215,14 @@ TOKEN_CATALOG_THEME_DB="$PWD/published/tokens.sqlite" go test ./...
 npm run test:ui
 ```
 
-`forge/material/component-contract.json` records the reviewed source-token
+`forge/material/components/component-contract.json` records the reviewed source-token
 identities. `generate-components.mjs` maps their anatomy and states into CSS
 properties. A missing token, new property, unknown icon-button or menu set, or
 unconverted mapped value stops the build. Review new upstream concepts before
 updating the contract and renderer together.
 
 `forge/components/styles/` defines browser anatomy by family and concern;
-`forge/components/static/components-base.css` is its assembled output.
+`forge/components/generated/components-base.css` is its assembled output.
 `components.css` combines that anatomy, the shared shadow renderer, and generated
 bindings. The server embeds it. Its checksum must match the publication asset
 manifest, so regenerate assets and rebuild the server together.
@@ -330,7 +330,7 @@ remain application UI.
 
 ## Rendered checks
 
-`forge/conformance/check-component-rendering.mjs` compares computed colors,
+`forge/conformance/browser/check-component-rendering.mjs` compares computed colors,
 opacity, dimensions, typography, shapes, outlines, elevation bindings, and
 state layers against source variables in the gallery. Run it in the browser
 through the available browser-testing tool. It reads the DOM without changing
@@ -351,7 +351,7 @@ validation in Interactive mode as well.
 Run `checkHandoffRendering()` on `/md3/for-agents` in all six appearance settings.
 It checks each nested card's foreground role and a minimum text contrast of 4.5:1.
 
-`forge/conformance/feedback-transitions.html` exercises press, release, pointer
+`forge/conformance/pages/feedback-transitions.html` exercises press, release, pointer
 exit, re-entry, and rapid repeated presses across all six appearances. It loads
 the running catalog's component CSS and shared controller, samples rendered
 layers on animation frames, and checks continuity, ripple overlap, and cleanup.
@@ -549,7 +549,7 @@ and a 6,000 ms circular cycle. Wave travel, SVG geometry, and the preview's line
 length are renderer rules. Motion pauses outside the viewport and in hidden tabs.
 Reduced-motion previews show a stationary segment. Catalog thumbnails remain
 stationary. SVGs have intrinsic dimensions so late styles cannot expand their
-first frame to the browser default SVG size. These animation rules live in `forge/components/static/progress.js`;
+first frame to the browser default SVG size. These animation rules live in `forge/components/behaviors/progress.js`;
 the CSS usage report covers CSS declarations only.
 
 ## Loading indicators
@@ -568,7 +568,7 @@ counterclockwise. Indeterminate progress uses the upstream 650 ms morph interval
 spring directly between intervals. Shape matching, centering, rotation, and
 animation scheduling are renderer behavior.
 
-`forge/components/static/loading-shapes.json` holds matched cubic curves exported
+`forge/components/data/loading-shapes.json` holds matched cubic curves exported
 with AndroidX Graphics Shapes 1.1.0. The first frame is rendered in HTML. Live
 previews fetch the geometry once and animate while visible. Homepage thumbnails
 remain stationary and need no geometry request. Reduced motion keeps indeterminate
@@ -583,7 +583,7 @@ curl -fsSL https://dl.google.com/dl/android/maven2/androidx/graphics/graphics-sh
 unzip -p /tmp/loading-shapes/shapes.aar classes.jar > /tmp/loading-shapes/shapes.jar
 curl -fsSL https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib/2.0.21/kotlin-stdlib-2.0.21.jar -o /tmp/loading-shapes/kotlin.jar
 curl -fsSL https://dl.google.com/dl/android/maven2/androidx/collection/collection-jvm/1.5.0/collection-jvm-1.5.0.jar -o /tmp/loading-shapes/collection.jar
-java --class-path '/tmp/loading-shapes/*' forge/material/reference/LoadingShapes.java > forge/components/static/loading-shapes.json
+java --class-path '/tmp/loading-shapes/*' forge/material/reference/LoadingShapes.java > forge/components/data/loading-shapes.json
 npm run test:ui
 ```
 
@@ -627,7 +627,7 @@ controls in the tab order. Their hover, focus, and press elevations use AndroidX
 system elevation roles where the toolbar-FAB capture only supplies resting
 elevation.
 
-`checkBarRendering()` in `forge/conformance/check-component-rendering.mjs` checks
+`checkBarRendering()` in `forge/conformance/browser/check-component-rendering.mjs` checks
 rendered bar dimensions, icon colors, toolbar states, and FAB geometry against
 the active token bindings. Run it on the component page after switching variants
 or appearance.
@@ -1332,7 +1332,7 @@ to the site theme. Public DTCG and token-CSS downloads retain their selected
 context, which defaults to Standard. Component aliases continue to reference
 canonical system spring names. No captured values are overwritten.
 
-`forge/components/static/motion.cjs` supplies the shared unit-mass spring model.
+`forge/components/generated/motion.cjs` supplies the shared unit-mass spring model.
 The Node build samples it into private `--_motion-*-duration` and
 `--_motion-*-easing` properties in generated component CSS. These are derived
 renderer values, not additional Material source tokens. Browser CSS and Web

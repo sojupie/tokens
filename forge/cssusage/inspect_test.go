@@ -46,7 +46,7 @@ func TestSharedLayoutAliasesAreIncludedInUsageReport(t *testing.T) {
 	foundShared, foundScenes := false, false
 	for _, row := range report.Declarations {
 		foundShared = foundShared || row.File == "forge/site/site.css"
-		foundScenes = foundScenes || row.File == "catalog/web/static/illustrations.css"
+		foundScenes = foundScenes || row.File == "catalog/web/assets/styles/illustrations.css"
 		for _, name := range row.UnknownVariables {
 			if strings.HasPrefix(name, "--layout-") {
 				t.Fatalf("shared dependency missing from %s: %s", row.File, name)

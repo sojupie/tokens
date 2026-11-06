@@ -1,0 +1,31 @@
+package render
+
+import model "github.com/sojupie/tokens/forge/components/ui/internal/model"
+
+// Compatibility for the tools' original single-value API.
+templ Slider(id string, label string) {
+	@Range(model.SliderProps{ID: id, Label: label})
+}
+
+templ Range(p model.SliderProps) {
+	@model.Require("slider")
+	<div { p.Attributes()... }>
+		<div class="md-slider-rail" aria-hidden="true">
+			<span class="md-slider-inactive md-slider-before"></span><span class="md-slider-active"></span><span class="md-slider-inactive md-slider-after"></span><span class="md-slider-stop md-slider-stop-start"></span><span class="md-slider-stop md-slider-stop-end"></span>
+			for _,tick:=range p.TicksResolved() {
+				<span class="md-slider-tick" style={ templ.SafeCSS("--_slider-tick:" + model.SliderNumber(tick) + "%") } data-value={ model.SliderNumber(tick) }></span>
+			}
+			if p.Icon!=nil {
+				<span class="md-slider-icon md-slider-leading" data-slider-inset="">
+					@p.Icon
+				</span>
+			}
+		</div>
+		for _,handle:=range p.HandlesResolved() {
+			<div { p.HandleResolved(handle)... }>
+				<input { p.InputResolved(handle)... }/>
+				<span class="md-slider-thumb" aria-hidden="true"><span class="md-slider-state-layer"></span><span class="md-slider-nub"></span><span class="md-slider-value">{ model.SliderNumber(p.ValueResolved(handle)) }</span></span>
+			</div>
+		}
+	</div>
+}

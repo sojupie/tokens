@@ -1,0 +1,32 @@
+package render
+
+import model "github.com/sojupie/tokens/forge/components/ui/internal/model"
+
+templ IconButton(p model.IconButtonProps) {
+	@IconButtonContent(p) {
+		@model.Icon(p.Icon)
+	}
+}
+
+// IconButtonContent allows a consumer to supply changing icon slots.
+templ IconButtonContent(p model.IconButtonProps) {
+	@model.Require("common")
+	<button { p.Attributes()... }>
+		{ children... }
+	</button>
+}
+
+templ IconButtonLink(href string, p model.IconButtonProps) {
+	@model.Require("common")
+	{{
+		attrs := p.Attributes()
+		delete(attrs, "type")
+		delete(attrs, "disabled")
+	}}
+	<a href={ templ.SafeURL(href) } { attrs... }>
+		if p.Icon!="" {
+			@model.Icon(p.Icon)
+		}
+		{ children... }
+	</a>
+}

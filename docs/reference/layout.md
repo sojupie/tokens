@@ -23,6 +23,11 @@ than assuming the browser viewport is the width available to them. Region
 thresholds reuse 600, 840 and 1200 CSS px; this does not change the application's
 window breakpoint or automatically choose a navigation component.
 
+Main content and the footer share a 72rem maximum width and a rail-only center.
+A docked section drawer uses spare leading margin before it shifts that alignment.
+When the centered content would intersect the drawer, it clamps to the reserved
+content region. Hovered overlay drawers do not change the content position.
+
 The site drawer's docking threshold remains an explicit site behavior in
 `forge/site/site.go`. It is not another Material window breakpoint.
 
@@ -50,7 +55,7 @@ track shrinkable and each grid child at `min-inline-size: 0`.
 
 Catalog card feeds use one card per row below 600px, two from 600px, and four
 from 840px. Tool destinations use one below 840px and two above it. These are
-content-specific span decisions in `catalog/web/static/app.css`; column count
+content-specific span decisions in `catalog/web/assets/styles/app.css`; column count
 does not dictate the number of cards or panes.
 
 ## Screen structure

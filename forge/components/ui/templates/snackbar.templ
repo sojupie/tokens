@@ -1,0 +1,13 @@
+package render
+
+import model "github.com/sojupie/tokens/forge/components/ui/internal/model"
+
+templ Snackbar(id string, close templ.Component) {
+	@model.Require("messages")
+	<div id={ id } class="md-snackbar" data-variant="two-lines" popover="manual" role="status" aria-live="polite">
+		<span class="md-feedback-text"></span>
+		<button type="button" class="md-icon-button md-snackbar-close" aria-label="Dismiss notification" data-snackbar-close>
+			@close
+		</button>
+	</div>
+}

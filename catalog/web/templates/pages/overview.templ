@@ -1,0 +1,96 @@
+package render
+
+import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+
+import "github.com/sojupie/tokens/forge/components/ui"
+
+import (
+	"fmt"
+	"github.com/sojupie/tokens/source/publish"
+)
+
+templ OverviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView, thumbnails map[string]webview.ComponentCase, renderer string) {
+	@Layout("Material Design 3 Tokens and Change History") {
+		@webview.UseComponentAssets("card")
+		<section class="tokens-landing-hero" aria-labelledby="landing-heading">
+			<div class="tokens-landing-copy">
+				<h1 class="md-typescale-display-small" id="landing-heading">Material Design 3 tokens, playgrounds and change history</h1>
+				<p class="md-typescale-title-large">Browse Material Design 3 components and styles. Try interactive playgrounds, compare values, follow references, and download the tokens as CSS variables or JSON for your project.</p>
+				<div class="tokens-landing-actions">
+					@ui.ButtonLink(string("/components"), ui.ButtonProps{Variant: ui.ButtonVariant("filled"), Size: ui.Size("medium")}) {
+						Browse components
+					}
+					@ui.ButtonLink(string("/styles"), ui.ButtonProps{Variant: ui.ButtonVariant("tonal"), Size: ui.Size("medium")}) {
+						Explore styles
+					}
+				</div>
+			</div>
+			@LandingArtwork(renderer)
+		</section>
+		<div class="tokens-landing-samples">
+			<section class="tokens-section" aria-labelledby="components-heading">
+				<div class="tokens-landing-section-heading"><h2 class="md-typescale-title-large" id="components-heading">Components</h2></div>
+				@SubjectCardGrid(subjects, thumbnails, false)
+				<a class="tokens-link tokens-landing-view-all" href="/components">View all components</a>
+			</section>
+			<section class="tokens-section" aria-labelledby="styles-heading">
+				<div class="tokens-landing-section-heading"><h2 class="md-typescale-title-large" id="styles-heading">Styles</h2></div>
+				@SubjectCardGrid(subjects, thumbnails, true)
+				<a class="tokens-link tokens-landing-view-all" href="/styles">View all styles</a>
+			</section>
+		</div>
+		<section class="tokens-section tokens-landing-workflows" aria-labelledby="workflows-heading">
+			<h2 class="md-typescale-title-large" id="workflows-heading">Work with tokens</h2>
+			<div class="tokens-audience-grid">
+				@ui.CardSurface(ui.CardProps{Variant: "outlined", Attrs: templ.Attributes{"class": "md-card md-outlined-card tokens-card-content", "aria-labelledby": "history-heading"}}) {
+					<h3 class="md-typescale-title-medium" id="history-heading">Follow token changes</h3>
+					<p>See what changed between captured snapshots, with previous values and source references.</p>
+					@ui.ButtonLink(string("/changes"), ui.ButtonProps{Variant: ui.ButtonVariant("text")}) {
+						View change history
+					}
+				}
+				if webview.Metadata(ctx).AgentDiscovery {
+					@ui.CardSurface(ui.CardProps{Variant: "outlined", Attrs: templ.Attributes{"class": "md-card md-outlined-card tokens-card-content", "aria-labelledby": "agent-heading"}}) {
+						<h3 class="md-typescale-title-medium" id="agent-heading">Use with your agent</h3>
+						<p>Give your coding agent access to the same token data through a prompt, skill, or MCP.</p>
+						@ui.ButtonLink(string("/for-agents"), ui.ButtonProps{Variant: ui.ButtonVariant("text")}) {
+							Give this to your agent
+						}
+					}
+				}
+			</div>
+		</section>
+		<p class="tokens-metadata" data-nosnippet>Current snapshot: <code class="tokens-code">{ snapshot.ID }</code> · Detected: { snapshot.CreatedAt }</p>
+	}
+}
+
+// Decorative geometry is deliberately separate from the public component API.
+templ LandingArtwork(renderer string) {
+	@webview.UseCatalogBehavior("artwork.js")
+	if renderer == "canvas" {
+		@webview.UseCatalogBehavior("artwork-canvas.js")
+	}
+	<div class="tokens-landing-art">
+		<div class="tokens-art-mosaic" data-artwork={ renderer } aria-hidden="true">
+			if renderer == "canvas" {
+				<canvas class="tokens-art-canvas"></canvas>
+			}
+			for col := range 3 {
+				<div class={ fmt.Sprintf("tokens-art-column tokens-art-column-%d", col) }>
+					for row := range 3 {
+						<div class={ fmt.Sprintf("tokens-art-tile tokens-art-palette-%d", (col*3+row)%5) }>
+							<div class="tokens-art-surface"><div class="tokens-art-sections"></div></div>
+						</div>
+					}
+				</div>
+			}
+		</div>
+		<label class="md-icon-button md-tonal-icon-button tokens-art-pause" title="Pause or resume artwork">
+			<input class="tokens-visually-hidden" type="checkbox" aria-label="Pause artwork animation"/>
+			<span class="tokens-art-toggle-face">
+				<svg class="tokens-art-pause-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5H10V19H6ZM14 5H18V19H14Z"></path></svg>
+				<svg class="tokens-art-play-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5V19L19 12Z"></path></svg>
+			</span>
+		</label>
+	</div>
+}

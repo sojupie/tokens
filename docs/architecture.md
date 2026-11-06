@@ -49,18 +49,20 @@ they do not contain the component implementations.
 
 | Part | Maintained source | Generated output |
 | --- | --- | --- |
-| Pages and site layout | `catalog/web/layout.templ`, `overview.templ`, `subject*.templ`, `changes.templ`, `agents.templ`, and `downloads.templ` | Matching `*_templ.go` files, compiled into the Go server |
-| Component API | `forge/components/ui/*.go` and `*.templ` | Typed Go configuration, shared component anatomy and nested asset requirements |
-| Catalog specimens | `catalog/web/specimen_<family>.templ` and matching Go helpers | Playground configurations, sample content and forced states passed to the component API |
-| Playground environment | `catalog/web/playground_environment.templ` and `component_preview.templ` | Simulated viewport, scale, comparison arrangement and controls around API-rendered specimens |
-| Playground configuration | `catalog/web/component_preview.go`, `component_gallery.go`, `component_preview.templ`, and family configuration helpers | HTML rendered for the requested playground settings |
-| Layout and anatomy | `forge/components/styles/*.css`, `static/elevation.css`, and the anatomy in `forge/material/generate-buttons.mjs` | Assembled `static/components-base.css`, then token-bound `static/components.css` and `buttons.css` |
-| Token-to-component mappings | `forge/material/generate-components.mjs` and `generate-buttons.mjs` | CSS selectors binding component roles to captured token variables |
-| Browser behavior | `forge/components/behaviors/*.js` and dedicated `static/` files such as `buttons.js`, `menus.js`, and `fields.js` | `static/components.js` is assembled from behavior sources; dedicated scripts are served directly |
-| Example actions and announcements | `catalog/web/static/component-demos.js` | Catalog listens for component events and supplies example output and workspace content |
+| Pages and site layout | `catalog/web/templates/shared/layout.templ`, `overview.templ`, `subject*.templ`, `changes.templ`, `agents.templ`, and `downloads.templ` | `catalog/web/internal/render/*_templ.go`, compiled into the Go server |
+| Component API | `forge/components/ui/internal/model/*.go` and `ui/templates/*.templ` | Typed Go configuration, shared component anatomy and nested asset requirements |
+| Catalog specimens | `catalog/web/templates/playground/specimen_*.templ` and `internal/presentation/` helpers | Playground configurations, sample content and forced states passed to the component API |
+| Playground environment | `catalog/web/templates/playground/playground_environment.templ` and `component_preview.templ` | Simulated viewport, scale, comparison arrangement and controls around API-rendered specimens |
+| Playground configuration | `catalog/web/internal/presentation/` and `templates/playground/` | HTML rendered for the requested playground settings |
+| Layout and anatomy | `forge/components/styles/*.css`, `foundations/elevation.css`, and the anatomy in `forge/material/components/generate-buttons.mjs` | Assembled `static/components-base.css`, then token-bound `static/components.css` and `buttons.css` |
+| Token-to-component mappings | `forge/material/components/generate-components.mjs` and `generate-buttons.mjs` | CSS selectors binding component roles to captured token variables |
+| Browser behavior | `forge/components/behaviors/*.{js,ts}` and dedicated controller sources such as `buttons.js`, `menus.js`, and `fields.js` | `generated/components.js` is assembled from behavior sources; dedicated scripts compile separately |
+| Example actions and announcements | `catalog/web/assets/scripts/component-demos.js` | Catalog listens for component events and supplies example output and workspace content |
 | Theme and publication assets | DTCG exports, `forge/material/site-theme.json`, `overrides.json`, and `forge/build-tokens.mjs` | `<publication>/assets/` themes, component CSS, downloads, and reports |
 
-`templ generate` compiles `.templ` markup into Go. `npm run build:components`
+`go generate ./catalog/web` compiles Catalog templates into the generated-only
+`catalog/web/internal/render` package. HTTP handlers use pure models from
+`catalog/web/internal/presentation`; those models do not import the server or renderer. `npm run build:components`
 assembles component CSS anatomy and browser behaviors using the explicit order in
 `style-sources.json` and `behavior-sources.json`. It needs no publication or token
 capture. `npm run check:components` detects stale assembled files.
@@ -312,3 +314,9 @@ completed build replaces the external asset symlink before server startup.
 The server pins both publication and asset directories and verifies their
 manifest checksums. Source review digests remain unchanged. See
 [deployment](operations/deployment.md#generated-publication-assets).
+
+The [Catalog web guide](../catalog/web/README.md) describes its HTTP, playground,
+presentation and renderer boundaries. The [Forge component guide](../forge/components/README.md)
+describes the stable Go API and source-to-output build paths. Browser conformance
+pages and reusable runners are separated under `forge/conformance/`; their flat
+review URLs are preserved by its Go host.

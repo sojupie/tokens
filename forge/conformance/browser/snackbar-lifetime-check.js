@@ -1,0 +1,11 @@
+const button=document.querySelector('#run'),out=document.querySelector('#result'),samples=document.querySelector('#samples');
+button.onclick=async()=>{button.disabled=true;const checks=[];const assert=(ok,message)=>{if(!ok)throw Error(message);checks.push(message)};
+try{samples.replaceChildren();const frame=document.createElement('iframe');samples.append(frame);await new Promise(resolve=>{frame.onload=resolve;frame.src='/md3/components/snackbar?preview.compare=interactive'});const w=frame.contentWindow,d=frame.contentDocument;await w.TokenAssets.ready;
+const root=d.querySelector('#component-preview [data-snackbar-demo]'),bar=root.querySelector('.md-snackbar'),opener=root.querySelector('[data-snackbar-open]'),action=bar.querySelector('[data-snackbar-action]');
+opener.focus();opener.click();assert(bar.matches(':popover-open'),'Snackbar opens');assert(d.activeElement===opener,'Opening does not move focus');
+await new Promise(resolve=>setTimeout(resolve,6500));assert(bar.matches(':popover-open'),'Action remains available after the former six-second timeout');
+opener.dispatchEvent(new w.KeyboardEvent('keydown',{key:'F6',bubbles:true,cancelable:true}));assert(d.activeElement===action,'F6 focuses the available action');
+action.click();assert(!bar.matches(':popover-open'),'Action dismisses the bar');assert(d.activeElement===opener,'Action dismissal restores opener focus');
+opener.click();action.focus();action.dispatchEvent(new w.KeyboardEvent('keydown',{key:'Escape',bubbles:true}));assert(!bar.matches(':popover-open')&&d.activeElement===opener,'Escape dismisses and restores focus');
+out.textContent=JSON.stringify({passed:checks.length,checks},null,2);
+}catch(error){out.textContent=JSON.stringify({passed:checks.length,checks,error:error.stack},null,2)}finally{button.disabled=false}};

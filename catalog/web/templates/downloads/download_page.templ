@@ -1,0 +1,54 @@
+package render
+
+import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+
+import "github.com/sojupie/tokens/forge/components/ui"
+
+templ DownloadPage(state webview.ExportDialogState) {
+ @Layout("Download tokens") {
+  <section class="tokens-download-page">
+   <h1>Download tokens</h1>
+   <form method="get" action="/download" hx-boost="false">
+    <input type="hidden" name="kind" value={ state.Query.Get("kind") }/>
+    <input type="hidden" name="slug" value={ state.Query.Get("slug") }/>
+    <input type="hidden" name="set" value={ state.Query.Get("set") }/>
+    <input type="hidden" name="q" value={ state.Query.Get("q") }/>
+    @NativeExportChoices(state,"content","Content",[]webview.CatalogChoice{{Value: "tokens", Label: "Design tokens"},{Value: "implementation", Label: "Component implementation"}},false)
+    @NativeExportChoices(state,"scope","Include",state.Page.Scopes(),false)
+    if state.Implementation() {
+     <input type="hidden" name="format" value="zip"/>
+    } else {
+     @NativeExportChoices(state,"format","File formats",[]webview.CatalogChoice{{Value: "dtcg", Label: "DTCG JSON"},{Value: "css", Label: "CSS variables"},{Value: "source", Label: "Source JSON"}},true)
+    }
+    for _, control := range state.Page.Contexts {
+     if len(state.Choices("context."+control.Name))>0 {
+      @NativeExportChoices(state,"context."+control.Name,control.Name,control.Choices,control.Name=="Theme"||control.Name=="Contrast")
+     }
+    }
+    <p>Apply choices to update available options before downloading.</p>
+    <p role="status">{ state.Counts }</p>
+    if state.Error!="" {
+     <p role="alert">{ state.Error }</p>
+    }
+    <div>
+     <button class="md-button md-outlined-button" type="submit">Apply choices</button>
+     <button class="md-button md-filled-button" type="submit" formaction="/downloads/export" disabled?={ !state.Ready }>Download</button>
+    </div>
+   </form>
+  </section>
+ }
+}
+
+templ NativeExportChoices(state webview.ExportDialogState,name,title string,choices []webview.CatalogChoice,multiple bool) {
+ <fieldset>
+  <legend>{ title }</legend>
+  for _, choice := range choices {
+   {{ p:=state.Choice(name,choice); p.ID="native-"+p.ID }}
+   if multiple {
+    @ui.FilterChipField(p)
+   } else {
+    @ui.Radio(p)
+   }
+  }
+ </fieldset>
+}

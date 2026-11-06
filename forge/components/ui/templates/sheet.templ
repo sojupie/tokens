@@ -1,0 +1,96 @@
+package render
+
+import model "github.com/sojupie/tokens/forge/components/ui/internal/model"
+
+import "strconv"
+
+templ SheetHost() {
+	@model.Require("sheet")
+	<div class="md-sheet-host md-sheet-frame" data-interactive="true">
+		{ children... }
+	</div>
+}
+
+templ SheetTrigger(target, label string, p model.ButtonProps) {
+	{{
+		attrs := p.Attributes()
+		attrs["commandfor"] = target + "-panel"
+		attrs["command"] = "show-modal"
+		attrs["data-sheet-open"] = ""
+		attrs["aria-controls"] = target + "-panel"
+		attrs["aria-expanded"] = "false"
+		if p.Type == "" {
+			attrs["type"] = "button"
+		}
+	}}
+	@Button(attrs) {
+		{ label }
+	}
+}
+
+// SheetSurface owns the panel, handle and collapsible content. Callers supply content slots.
+templ SheetSurface(p model.SheetProps) {
+	@model.Require("sheet")
+	if p.Modal && !p.Inline {
+		<dialog { p.Attributes()... }>
+			@SheetFrame(p) {
+				{ children... }
+			}
+		</dialog>
+	} else {
+		<section role="region" hidden?={ p.Hidden } { p.Attributes()... }>
+			@SheetFrame(p) {
+				{ children... }
+			}
+		</section>
+	}
+}
+
+templ SheetFrame(p model.SheetProps) {
+	if p.Kind=="" || p.Kind==model.BottomSheet {
+		<button { model.Attributes(templ.Attributes{"type":"button","class":"md-sheet-handle","data-sheet-handle":"","aria-controls":p.ID+"-content","aria-label":p.HandleLabelResolved(),"aria-expanded":strconv.FormatBool(!p.Minimized)},p.HandleAttrs)... }><span class="md-sheet-handle-mark"></span></button>
+	}
+	<div class="md-sheet-content" id={ p.ID + "-content" } hidden?={ p.Minimized }>
+		{ children... }
+	</div>
+}
+
+templ Sheet(p model.SheetProps) {
+	@SheetSurface(p) {
+		@SheetHeader(p)
+		@SheetBody() {
+			{ children... }
+		}
+		if p.Actions!=nil {
+			@SheetActions() {
+				@p.Actions
+			}
+		}
+	}
+}
+
+templ SheetHeader(p model.SheetProps) {
+	@model.Require("sheet")
+	<header class="md-sheet-header">
+		<h2 class="md-sheet-title" id={ p.ID + "-heading" }>{ p.Title }</h2>
+		if p.Close!=nil {
+			@p.Close
+		} else if !p.HideClose {
+			@Button(model.Attributes(templ.Attributes{"class": "md-icon-button md-standard-icon-button md-sheet-close", "data-size": "small", "data-sheet-close": "", "commandfor":p.ID+"-panel", "command":"close", "aria-label": "Close " + p.Title}, p.CloseAttrs)) {
+				@model.Icon("close")
+			}
+		}
+	</header>
+}
+
+templ SheetBody() {
+	<div class="md-sheet-body">
+		{ children... }
+	</div>
+}
+
+templ SheetActions() {
+	<footer class="md-sheet-footer">
+		{ children... }
+	</footer>
+}

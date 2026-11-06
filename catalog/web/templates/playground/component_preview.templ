@@ -1,0 +1,67 @@
+package render
+
+import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+
+import "github.com/sojupie/tokens/forge/components/ui"
+
+templ ComponentPreviewView(page webview.ComponentPreview) {
+	<section class="tokens-section" data-playground-environment id="component-preview" data-component-assets aria-labelledby="preview-heading">
+		@webview.ComponentAssetScope() {
+			@webview.UseCatalogBehavior("component-demos.js")
+			<h2 class="md-typescale-title-medium" id="preview-heading">Playground</h2>
+			<form hx-boost="false" method="get" action={ page.Action } hx-get={ page.Action } hx-target="#component-preview" hx-select="#component-preview" hx-swap="outerHTML" hx-replace-url="true" hx-trigger="change" hx-sync="this:replace" class="tokens-gallery-filters">
+				for _, hidden := range page.Hidden {
+					<input type="hidden" name={ hidden.Name } value={ hidden.Value }/>
+				}
+				for _, control := range page.Controls {
+					@PreviewSelect(control)
+				}
+				<noscript>
+					@ui.Action(ui.ButtonProps{Variant: ui.ButtonVariant("outlined"), Type: "submit"}) {
+						Apply
+					}
+				</noscript>
+			</form>
+			if len(page.Cases) > 0 && page.Cases[0].Family == "slider" {
+				<p class="md-typescale-body-small">Inset icons apply to standard single sliders in medium, large, and extra-large sizes. “On interaction” shows the value when a handle is hovered, focused, or pressed.</p>
+			}
+			if page.HasUncontainedCarousel() {
+				<p class="md-typescale-body-small">Gesture scrolling: Free stops between items; Snap settles on an item. Arrows and keyboard navigation always advance to an item.</p>
+			}
+			if page.HasFullScreenCarousel() {
+				<p class="md-typescale-body-small">Full-screen carousels scroll vertically in a portrait window.</p>
+			}
+			<div class="tokens-preview-grid" data-playground-specimens>
+				for _, c := range page.Cases {
+					<figure class="tokens-component-example">
+						<figcaption class="md-typescale-body-small">{ page.Caption(c) }</figcaption>
+						@ComponentSpecimen(c)
+					</figure>
+				}
+			</div>
+			if len(page.Cases) == 0 {
+				<p>This combination is not implemented in the playground.</p>
+			}
+		}
+	</section>
+}
+
+templ PreviewSelect(control webview.PreviewControl) {
+	if control.Name == "compare" {
+		<div class="tokens-preview-comparison">
+			<span class="md-typescale-label-large">Compare:</span>
+			<select class="md-native-select" name="preview.compare" aria-label="Compare">
+			for _, choice := range webview.PreviewChoices(control) {
+				<option value={ choice.Value } selected?={ choice.Value==control.Selected }>{ choice.Label }</option>
+			}
+		</select>
+			@ui.ButtonGroupSurface(ui.GroupProps{Label: control.Label, Connected: true, Variant: "tonal", Size: ui.Size("xsmall"), Attrs: templ.Attributes{"data-preview-compare": ""}}) {
+				for index, choice := range webview.PreviewChoices(control) {
+					@ui.GroupItem(ui.GroupItemProps{Label: choice.Label, Index: index, Connected: true, Selected: choice.Value == control.Selected, Variant: ui.ButtonVariant("tonal"), Size: ui.Size("xsmall"), Attrs: templ.Attributes{"id": "preview-compare-"+choice.Value, "data-preview-comparison": choice.Value, "tabindex": webview.PreviewCompareTabIndex(choice.Value == control.Selected)}})
+				}
+			}
+		</div>
+	} else {
+		@PreviewFilter(control)
+	}
+}

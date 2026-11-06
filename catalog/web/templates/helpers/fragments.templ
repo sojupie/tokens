@@ -1,0 +1,154 @@
+package render
+
+import (
+	"context"
+
+	"html"
+	"io"
+
+	"sort"
+	"strconv"
+
+	"github.com/a-h/templ"
+	webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+	"github.com/sojupie/tokens/source/publish"
+)
+
+func TokenBrowserView(subject publish.SubjectView, browser webview.TokenBrowser) templ.Component {
+	return templ.ComponentFunc(func(ctx context.Context, writer io.Writer) error {
+		if _, err := io.WriteString(writer, `<div id="tokens-token-browser" class="tokens-token-browser" data-component-assets>`); err != nil {
+			return err
+		}
+		if err := webview.ComponentAssetScope().Render(templ.WithChildren(ctx, TokenBrowserContents(subject, browser)), writer); err != nil {
+			return err
+		}
+		_, err := io.WriteString(writer, `</div>`)
+		return err
+	})
+}
+
+func TokenBrowserContents(subject publish.SubjectView, browser webview.TokenBrowser) templ.Component {
+	return templ.ComponentFunc(func(ctx context.Context, writer io.Writer) error {
+		write := func(value string) error {
+			_, err := io.WriteString(writer, value)
+			return err
+		}
+		if len(browser.Sets) == 0 {
+			return write(`<p class="tokens-empty md-typescale-body-large">No published tokens for this page.</p>`)
+		}
+		if err := write(TokenTableSharedMarkup() + `<form class="tokens-token-filters" hx-boost="false" hx-target="#tokens-token-browser" hx-swap="outerHTML" hx-sync="this:replace" hx-push-url="true" hx-get="` + html.EscapeString(webview.SubjectURL(subject)) + `" method="get" action="` + html.EscapeString(webview.SubjectURL(subject)) + `"><div class="tokens-token-toolbar">`); err != nil {
+			return err
+		}
+		keys := make([]string, 0, len(browser.PreviewQuery))
+		for key := range browser.PreviewQuery {
+			keys = append(keys, key)
+		}
+		sort.Strings(keys)
+		for _, key := range keys {
+			values := browser.PreviewQuery[key]
+			for _, value := range values {
+				if err := write(`<input type="hidden" name="` + html.EscapeString(key) + `" value="` + html.EscapeString(value) + `">`); err != nil {
+					return err
+				}
+			}
+		}
+		if err := TokenSetPicker(subject, browser).Render(ctx, writer); err != nil {
+			return err
+		}
+		if err := write(`<div class="tokens-token-actions"><label class="tokens-token-search">` + webview.TableIcon("search") + `<span class="tokens-visually-hidden">Search tokens</span><input id="tokens-token-search" type="search" name="q" value="` + html.EscapeString(browser.Query) + `" placeholder="Search"></label><div class="tokens-token-tools" role="group" aria-label="Table controls">`); err != nil {
+			return err
+		}
+		if err := TableTools().Render(ctx, writer); err != nil {
+			return err
+		}
+		if err := write(`</div></div></div>`); err != nil {
+			return err
+		}
+		if len(browser.Filters) > 0 {
+			if err := webview.UseComponentAssets("dialog").Render(ctx, writer); err != nil {
+				return err
+			}
+			if err := TableContextDialog(browser.Filters, webview.SubjectURL(subject)).Render(ctx, writer); err != nil {
+				return err
+			}
+		}
+		if err := write(`<noscript><button class="md-button md-filled-button" type="submit">Apply filters</button></noscript><div class="tokens-token-columns"><span>Token</span>`); err != nil {
+			return err
+		}
+		if len(browser.Filters) > 0 {
+			if err := write(`<button class="md-filter-chip tokens-context-button" type="button" data-action="context" aria-haspopup="dialog" aria-expanded="false" aria-controls="tokens-context-picker">` + `<span class="tokens-context-label" title="` + html.EscapeString(webview.TableContextLabel(browser.Filters)) + `">` + html.EscapeString(webview.TableContextLabel(browser.Filters)) + `</span>` + `<span data-slot="trailing-icon" aria-hidden="true">` + webview.TableIcon("dropdown") + `</span></button></div>`); err != nil {
+				return err
+			}
+		} else if err := write(`<span>Value</span></div>`); err != nil {
+			return err
+		}
+		if err := write(`</form>`); err != nil {
+			return err
+		}
+		if browser.Count == 0 {
+			return write(`<p class="tokens-empty md-typescale-body-large">No tokens match these filters.</p>`)
+		}
+		if err := write(`<div class="tokens-token-groups">`); err != nil {
+			return err
+		}
+		for _, group := range browser.Selected.Groups {
+			if err := webview.WriteTokenGroup(writer, group, true); err != nil {
+				return err
+			}
+		}
+		return write(`</div>`)
+	})
+}
+
+func SubjectPageComponent(subject publish.SubjectView, changes []publish.ChangeView, browser webview.TokenBrowser) templ.Component {
+	return templ.ComponentFunc(func(ctx context.Context, writer io.Writer) error {
+		content := templ.ComponentFunc(func(ctx context.Context, writer io.Writer) error {
+			write := func(value string) error {
+				_, err := io.WriteString(writer, value)
+				return err
+			}
+			heading := subject.Name
+			if webview.Metadata(ctx).Heading != "" {
+				heading = webview.Metadata(ctx).Heading
+			}
+			if err := write(`<header class="tokens-subject-header"><p class="tokens-back-link"><a class="tokens-link" href="` + webview.SubjectListPath(subject.Key.Kind != publish.SubjectComponent) + `">` + webview.MaterialSymbolSVG("arrow_back") + html.EscapeString(webview.SubjectKindLabel(subject.Key.Kind)) + `</a></p><div class="tokens-subject-heading"><h1 class="md-typescale-headline-medium">` + html.EscapeString(heading) + `</h1>`); err != nil {
+				return err
+			}
+			if err := SiteDownloadButton().Render(ctx, writer); err != nil {
+				return err
+			}
+			if err := write(`</div><nav class="tokens-subject-actions" aria-label="Component links"><a class="tokens-link" href="` + html.EscapeString(webview.SubjectChangesURL(subject)) + `">Change history (` + strconv.Itoa(len(changes)) + `)</a>`); err != nil {
+				return err
+			}
+			if len(subject.SourcePageURLs) > 0 {
+				if sourceURL := webview.SafeSourceDocumentationURL(subject.SourcePageURLs[0]); sourceURL != "" {
+					if err := write(`<a class="tokens-link" href="` + html.EscapeString(sourceURL) + `">Material Design 3 documentation ` + webview.MaterialSymbolSVG("open_in_new") + `</a>`); err != nil {
+						return err
+					}
+				}
+			}
+			if err := write(`</nav></header>`); err != nil {
+				return err
+			}
+			if image := webview.Metadata(ctx).Illustration; image != nil {
+				if err := SubjectIllustration(*image).Render(ctx, writer); err != nil {
+					return err
+				}
+			}
+			if browser.Preview != nil {
+				if err := ComponentPreviewView(*browser.Preview).Render(ctx, writer); err != nil {
+					return err
+				}
+			}
+			if err := write(`<section class="tokens-section" aria-labelledby="tokens-heading"><h2 class="md-typescale-title-medium" id="tokens-heading">Browse tokens</h2>`); err != nil {
+				return err
+			}
+			if err := TokenBrowserView(subject, browser).Render(ctx, writer); err != nil {
+				return err
+			}
+			_, err := io.WriteString(writer, `</section>`)
+			return err
+		})
+		return Layout(subject.Name).Render(templ.WithChildren(ctx, content), writer)
+	})
+}

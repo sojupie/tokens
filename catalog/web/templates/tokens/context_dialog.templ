@@ -1,0 +1,67 @@
+package render
+
+import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+
+import "github.com/sojupie/tokens/forge/components/ui"
+
+templ TableContextDialog(filters []webview.TokenFilter, action string) {
+	@ui.Modal(ui.DialogProps{ID: "tokens-context-picker", TitleID: "tokens-context-title", Title: "See more values", Attrs: templ.Attributes{"class": "tokens-context-dialog tokens-export-dialog", "hx-get": action, "hx-trigger": "change", "hx-include": "closest form", "hx-target": "#tokens-context-fields", "hx-swap": "innerHTML", "hx-sync": "this:replace", "hx-push-url": "false"}, Actions: ContextDialogActions()}) {
+		<p>Compare token values by selecting another context.</p>
+		<div id="tokens-context-fields" class="tokens-context-fields" data-component-assets>
+			@TableContextFields(filters)
+		</div>
+		<p class="tokens-context-status" role="status" aria-live="polite"></p>
+	}
+}
+
+templ TableContextChoices(filter webview.TokenFilter) {
+	if filter.Name=="Audience" {
+		@ExportChoices(filter.Key, filter.Name, filter.Selected, webview.TableContextOptions(filter), false, AudienceContextHelp())
+	} else {
+		@ExportChoices(filter.Key, filter.Name, filter.Selected, webview.TableContextOptions(filter), false)
+	}
+}
+
+templ AudienceContextHelp() {
+	@ui.TooltipHost(templ.Attributes{"class": "tokens-context-help"}) {
+		@ui.IconButton(ui.IconButtonProps{Label: "What do 1P and 3P mean?", Icon: "info", Size: ui.ExtraSmall, Attrs: templ.Attributes{"popovertarget": "tokens-audience-help", "aria-haspopup": "dialog"}})
+		@ui.Tooltip(ui.TooltipProps{ID: "tokens-audience-help", Title: "What do 1P and 3P mean?", Variant: "rich", Body: AudienceHelpBody()})
+	}
+}
+
+templ AudienceHelpBody() {
+	<p>1P means first-party; 3P means third-party. We interpret <strong>1P Baseline</strong> as the configuration for Google’s own products, and <strong>3P</strong> as the configuration for other developers.</p>
+	<p>Material supplies these audience labels but does not define them in the captured data. They are not a baseline-versus-Expressive switch.</p>
+}
+
+templ ContextDialogActions() {
+	@ui.Action(ui.ButtonProps{Variant: ui.Text, Attrs: templ.Attributes{"data-action": "cancel"}}) {
+		Cancel
+	}
+	@ui.Action(ui.ButtonProps{Type: "submit"}) {
+		Save
+	}
+}
+
+templ TableContextFields(filters []webview.TokenFilter) {
+	@webview.ComponentAssetScope() {
+		for _, filter := range webview.TableContextFilters(filters, false) {
+			@TableContextChoices(filter)
+		}
+		if extra := webview.TableContextFilters(filters, true); len(extra)>0 {
+			<details class="tokens-context-advanced tokens-export-disclosure">
+				<summary>
+					<span class="tokens-export-disclosure-label"><span class="tokens-export-title">More contexts</span></span>
+					<span class="tokens-export-chevron" aria-hidden="true">
+						@webview.MaterialSymbol("expand_more")
+					</span>
+				</summary>
+				<div class="tokens-export-context-options">
+					for _, filter := range extra {
+						@TableContextChoices(filter)
+					}
+				</div>
+			</details>
+		}
+	}
+}

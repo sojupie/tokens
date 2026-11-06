@@ -1,3 +1,6 @@
+// Shared navigation interactions own keyboard focus and drawer motion; hosts own
+// destinations and page selection. An interrupted close must not hide a drawer
+// that has already reopened, so completion checks the current animation identity.
 import { navigationIndex } from "../helpers/navigation.ts";
 
 (() => {

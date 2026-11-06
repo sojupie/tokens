@@ -1,0 +1,259 @@
+package render
+
+import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+
+import (
+	"fmt"
+	"github.com/sojupie/tokens/forge/components/ui"
+)
+
+templ SiteDownloadButton() {
+	<noscript><a class="tokens-link" href={ templ.SafeURL(webview.NativeDownloadURL(webview.Metadata(ctx).Export)) }>Download tokens</a></noscript>
+	@ui.SplitHost(templ.Attributes{"class": "tokens-download-split"}) {
+		@ui.SplitButton(ui.SplitButtonProps{ID: "tokens-download-options", Label: "Download tokens", Content: "label", PrimaryAttrs: templ.Attributes{"data-export-open": "", "data-export-content": "tokens", "aria-haspopup": "dialog", "aria-controls": "tokens-site-download"}, MenuAttrs: templ.Attributes{"popovertarget": "tokens-download-options", "aria-controls": "tokens-download-options", "aria-label": "More download options"}, Attrs: templ.Attributes{"aria-label": "Download"}})
+		@ui.SplitMenu("tokens-download-options", "Download options", templ.Attributes{"id": "tokens-download-options"}) {
+			<li>
+				@ui.MenuItem(templ.Attributes{"data-split-option": "", "data-export-open": "", "data-export-content": "tokens"}, "Download design tokens", nil, nil)
+			</li>
+			if page:=webview.Metadata(ctx).Export;page!=nil&&page.Implementations {
+				<li>
+					@ui.MenuItem(templ.Attributes{"data-split-option": "", "data-export-open": "", "data-export-content": "implementation"}, "Download component", nil, nil)
+				</li>
+			}
+			<li>
+				@ui.MenuItem(templ.Attributes{"data-split-option": "", "data-export-open": "", "data-export-content": "custom"}, "Configure download", nil, nil)
+			</li>
+		}
+	}
+}
+
+templ SiteDownloadMenu() {
+	@webview.UseComponentAssets("dialog")
+	@webview.UseComponentAssets("radio")
+	@webview.UseComponentAssets("checkbox")
+	@webview.UseComponentAssets("messages")
+	@webview.UseComponentAssets("loading")
+	<div class="tokens-export">
+		@ui.Action(ui.ButtonProps{Variant: ui.ButtonVariant("filled"), Attrs: templ.Attributes{"data-export-open": true, "aria-haspopup": "dialog", "aria-controls": "tokens-site-download"}}) {
+			Download tokens
+		}
+		@ui.Modal(ui.DialogProps{ID: "tokens-site-download", TitleID: "tokens-site-download-title", Title: "Download", Attrs: templ.Attributes{"hx-boost": "false", "class": "tokens-export-dialog", "aria-describedby": "tokens-export-scope", "data-component-export": fmt.Sprint(webview.Metadata(ctx).Export != nil && webview.Metadata(ctx).Export.Component), "data-default-scope": webview.Metadata(ctx).Export.DefaultScope(), "data-has-css": fmt.Sprint(webview.Metadata(ctx).Export != nil && webview.Metadata(ctx).Export.CSS), "data-has-implementation": fmt.Sprint(webview.Metadata(ctx).Export != nil && webview.Metadata(ctx).Export.Implementations)}, FormAttrs: templ.Attributes{"id": "tokens-export-form", "action": "/downloads/export", "method": "get", "hx-get": "/downloads/export/options", "hx-trigger": "export-refresh", "hx-target": "#tokens-export-fields", "hx-swap": "outerMorph", "hx-sync": "this:replace", "hx-indicator": "#tokens-export-submit-pending", "hx-disable": "#tokens-export-fields fieldset, #tokens-export-submit-pending"}, Actions: DownloadDialogActions(), ActionsAttrs: templ.Attributes{"class": "tokens-export-actions"}}) {
+			<input type="hidden" name="_download" value=""/>
+			if page := webview.Metadata(ctx).Export; page != nil {
+				@ExportDialogFields(webview.InitialExportDialog(*page))
+			}
+		}
+		<iframe name="tokens-export-transfer" title="Download transfer" hidden></iframe>
+		<noscript><nav class="tokens-native-downloads" aria-label="Downloads"><a href={ templ.SafeURL(webview.NativeDownloadURL(webview.Metadata(ctx).Export)) }>Configure download</a><a href="/downloads/dtcg/light-default/tokens.tokens.json" download>DTCG JSON</a><a href="/downloads/dtcg/light-default/tokens.css" download>CSS variables</a></nav></noscript>
+	</div>
+}
+
+// Native radios and checkbox-backed filter chips preserve form and keyboard behavior.
+templ ExportChoices(name, title, selected string, choices []webview.CatalogChoice, multiple bool, help ...templ.Component) {
+	<fieldset class="tokens-export-choices" aria-label={ title }>
+		<legend>
+			<span>{ title }</span>
+			if len(help)>0 {
+				@help[0]
+			}
+		</legend>
+		<div>
+			for _, choice := range choices {
+				if multiple {
+					@ui.FilterChipField(ui.ChoiceProps{Name: name, Value: choice.Value, Label: choice.Label, Checked: choice.Value == selected})
+				} else {
+					@ui.Radio(ui.ChoiceProps{Name: name, Value: choice.Value, Label: choice.Label, Checked: choice.Value == selected})
+				}
+			}
+		</div>
+	</fieldset>
+}
+
+templ TableControlTooltip(label string) {
+	@ui.TooltipHost(templ.Attributes{"class": "tokens-table-tooltip"}) {
+		{ children... }
+		@ui.Tooltip(ui.TooltipProps{Text: label, Attrs: templ.Attributes{"popover": "manual"}})
+	}
+}
+
+templ TableDownloadButton() {
+	@webview.UseComponentAssets("messages")
+	@TableControlTooltip("Download table") {
+		@ui.IconButtonContent(ui.IconButtonProps{Variant: "standard", Label: "Download table", Attrs: templ.Attributes{"class": "tokens-icon-button", "type": "button", "data-export-open": true, "data-export-scope": "view", "aria-haspopup": "dialog", "aria-controls": "tokens-site-download"}}) {
+			@webview.MaterialSymbol("download")
+		}
+	}
+}
+
+templ TableTools() {
+	@TableDownloadButton()
+	@TableControlTooltip("Hide previews") {
+		@ui.IconButtonContent(ui.IconButtonProps{Variant: "standard", Label: "Hide previews", Attrs: templ.Attributes{"class": "tokens-icon-button", "type": "button", "data-action": "previews", "aria-pressed": "true"}}) {
+			<span data-icon="on">
+				@webview.MaterialSymbol("visibility")
+			</span>
+			<span data-icon="off" hidden>
+				@webview.MaterialSymbol("visibility_off")
+			</span>
+		}
+	}
+	@TableControlTooltip("Show grid view") {
+		@ui.IconButtonContent(ui.IconButtonProps{Variant: "standard", Label: "Show grid view", Attrs: templ.Attributes{"class": "tokens-icon-button", "type": "button", "data-action": "view", "aria-pressed": "false"}}) {
+			<span data-icon="on">
+				@webview.MaterialSymbol("grid_view")
+			</span>
+			<span data-icon="off" hidden>
+				@webview.MaterialSymbol("table_rows")
+			</span>
+		}
+	}
+	@TableControlTooltip("Expand all groups") {
+		@ui.IconButtonContent(ui.IconButtonProps{Variant: "standard", Label: "Expand all groups", Attrs: templ.Attributes{"class": "tokens-icon-button", "type": "button", "data-action": "expand", "aria-expanded": "false"}}) {
+			<span data-icon="on">
+				@webview.MaterialSymbol("unfold_more")
+			</span>
+			<span data-icon="off" hidden>
+				@webview.MaterialSymbol("unfold_less")
+			</span>
+		}
+	}
+}
+
+templ DownloadDialogActions() {
+	if page := webview.Metadata(ctx).Export; page != nil {
+		@ExportDialogSummary(webview.InitialExportDialog(*page))
+	}
+	<div class="tokens-export-footer-actions">
+		@ui.Action(ui.ButtonProps{Variant: ui.Text, Attrs: templ.Attributes{"data-export-cancel": ""}}) {
+			Close
+		}
+		<fieldset id="tokens-export-submit-pending" class="tokens-export-submit-pending">
+			@ExportDownloadAction(webview.ExportDialogState{})
+		</fieldset>
+	</div>
+}
+
+templ ExportContextHelp() {
+	<p>Upstream labels are preserved. Only settings with defined values for your selection and its token references are shown.</p>
+	<p>Language height changes line spacing, not font size. Some labels, including Font: iOS bold, also have captured Web values.</p>
+	<p>Each token context has a separate file with the same token names. CSS uses :root; loading alternative files together makes the later values override earlier ones.</p>
+}
+
+// Keep the form, modal and animated action mounted while replacing its choices.
+templ ExportDialogFields(state webview.ExportDialogState) {
+	<div id="tokens-export-fields" class="tokens-export-fields" data-component-assets>
+		@webview.ComponentAssetScope() {
+			<input type="hidden" name="kind" value={ state.Page.Kind }/><input type="hidden" name="slug" value={ state.Page.Slug }/><input type="hidden" name="set" value={ state.Query.Get("set") }/><input type="hidden" name="q" value={ state.Query.Get("q") }/>
+			<p id="tokens-export-scope">Choose what to include. CSS and DTCG exports include required token references.</p>
+			<div class="tokens-export-primary">
+				@ExportDialogChoices(state, "content", "Content", []webview.CatalogChoice{{Value: "tokens", Label: "Design tokens"}, {Value: "implementation", Label: "Component implementation"}}, false)
+				<details id="export-include" class="tokens-export-include tokens-export-disclosure">
+					<summary>
+						<span class="tokens-export-disclosure-label"><span class="tokens-export-title">Include</span><span data-export-scope-summary>{ webview.ChoiceLabel(state.Page.Scopes(), state.Query.Get("scope")) }</span></span>
+						<span class="tokens-export-chevron" aria-hidden="true">
+							@webview.MaterialSymbol("expand_more")
+						</span>
+					</summary>
+					@ExportDialogChoices(state, "scope", "Include", state.Page.Scopes(), false)
+				</details>
+			</div>
+			if state.Implementation() {
+				<input type="hidden" name="format" value="zip"/>
+				for _, format := range state.Query["_token-format"] {
+					<input type="hidden" name="_token-format" value={ format }/>
+				}
+			}
+			<div data-export-token-formats hidden?={ state.Implementation() }>
+				@ExportDialogChoices(state, "format", "File formats", []webview.CatalogChoice{{Value: "dtcg", Label: "DTCG JSON"}, {Value: "css", Label: "CSS variables"}, {Value: "source", Label: "Source JSON"}}, true)
+			</div>
+			<p class="tokens-export-description" data-export-description>
+				if state.Implementation() {
+					ZIP archive with component CSS, example HTML, and required JavaScript, including nested components.
+				} else {
+					Source JSON retains captured values and reference metadata.
+				}
+			</p>
+			<details id="export-context" class="tokens-export-context tokens-export-disclosure">
+				<summary>
+					<span class="tokens-export-disclosure-label"><span class="tokens-export-title" id="export-context-title">Token context</span><span data-export-context-summary>{ state.ContextSummary() }</span></span>
+					<span class="tokens-export-chevron" aria-hidden="true">
+						@webview.MaterialSymbol("expand_more")
+					</span>
+				</summary>
+				<div class="tokens-export-context-heading">
+					<p>Choose the values to export. Multiple formats or contexts download together in a ZIP.</p>
+					@ui.TooltipHost(nil) {
+						@ui.IconButton(ui.IconButtonProps{Label: "About token contexts", Icon: "info", Size: ui.ExtraSmall, Attrs: templ.Attributes{"popovertarget": "export-context-help", "aria-haspopup": "dialog"}})
+						@ui.Tooltip(ui.TooltipProps{ID: "export-context-help", Title: "Token contexts", Variant: "rich", Body: ExportContextHelp()})
+					}
+				</div>
+				<div class="tokens-export-context-options">
+					for _, control := range state.Page.Contexts {
+						if state.Allowed != nil && len(state.Choices("context."+control.Name)) == 0 {
+							for _, value := range state.Query["context."+control.Name] {
+								<input type="hidden" name={ "_context." + control.Name } value={ value }/>
+							}
+						}
+						<div data-export-context={ control.Name } hidden?={ state.Allowed != nil && len(state.Choices("context."+control.Name)) == 0 }>
+							@ExportDialogChoices(state, "context."+control.Name, control.Name, control.Choices, control.Name == "Theme" || control.Name == "Contrast")
+						</div>
+					}
+				</div>
+			</details>
+		}
+	</div>
+}
+
+templ ExportDialogChoices(state webview.ExportDialogState, name, title string, choices []webview.CatalogChoice, multiple bool) {
+	<fieldset id={ webview.ExportChoiceID(name) } class="tokens-export-choices" aria-label={ title } { state.RequestAttrs(name)... }>
+		<legend><span>{ title }</span></legend>
+		<div>
+			for _, choice := range choices {
+				if multiple {
+					@ui.FilterChipField(state.Choice(name, choice))
+				} else {
+					@ui.Radio(state.Choice(name, choice))
+				}
+			}
+		</div>
+	</fieldset>
+}
+
+// Option resolution and selection counts require no export generation.
+templ ExportDialogOptionsResponse(state webview.ExportDialogState) {
+	@ExportDialogFields(state)
+	<hx-partial hx-target="#tokens-export-summary" hx-swap="outerHTML">
+		@ExportDialogSummary(state)
+	</hx-partial>
+	<hx-partial hx-target="#tokens-export-confirmation" hx-swap="outerMorph">
+		@ExportDownloadAction(state)
+	</hx-partial>
+}
+
+templ ExportDialogSummary(state webview.ExportDialogState) {
+	<div id="tokens-export-summary">
+		<p class="md-typescale-body-small" data-export-counts role="status" aria-live="polite">
+			{ state.Counts }
+		</p>
+		<p class="md-typescale-body-small" data-export-error role="alert" hidden?={ state.Error == "" }>{ state.Error }</p>
+	</div>
+}
+
+templ ExportDownloadAction(state webview.ExportDialogState) {
+	<fieldset id="tokens-export-confirmation" class="tokens-export-confirmation" data-export-confirmation data-component-assets disabled?={ !state.Ready }>
+		@webview.ComponentAssetScope() {
+			<span id="tokens-export-loading-action" hx-preserve>
+				@ui.LoadingButton(templ.Attributes{"class": "md-button md-filled-button md-loading-button", "type": "submit", "form": "tokens-export-form", "data-export-submit": "", "aria-busy": "false"}, "Download")
+			</span>
+		}
+	</fieldset>
+}
+
+templ ExportDialogSummaryResponse(state webview.ExportDialogState) {
+	<hx-partial hx-target="#tokens-export-summary" hx-swap="outerHTML">
+		@ExportDialogSummary(state)
+	</hx-partial>
+	<hx-partial hx-target="#tokens-export-confirmation" hx-swap="outerMorph">
+		@ExportDownloadAction(state)
+	</hx-partial>
+}

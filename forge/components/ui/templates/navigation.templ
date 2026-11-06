@@ -1,0 +1,162 @@
+package render
+
+import model "github.com/sojupie/tokens/forge/components/ui/internal/model"
+
+import "fmt"
+
+templ DrawerToggle(target string, label string) {
+	@model.Require("navigation")
+	@Button(templ.Attributes{"class": "md-icon-button md-standard-icon-button", "data-size": "small", "data-shape": "round", "data-width": "default", "data-navigation-open": "", "aria-label": label, "aria-haspopup": "dialog", "aria-expanded": "false", "aria-controls": target}) {
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="24" height="24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"></path></svg>
+	}
+}
+
+templ Drawer(id string, modal bool, label string, heading ...templ.Component) {
+	@model.Require("navigation")
+	if modal {
+		<dialog id={ id } class="md-navigation md-navigation-drawer" data-variant="modal" data-navigation-modal data-navigation-group aria-label={ label }>
+			<div class="md-navigation-header">
+				if len(heading) > 0 {
+					@heading[0]
+				} else {
+					<h3>{ label }</h3>
+				}
+				@Button(templ.Attributes{"class": "md-icon-button md-standard-icon-button", "data-navigation-close": "", "aria-label": "Close navigation"}) {
+					<svg viewBox="0 -960 960 960" width="24" height="24" fill="currentColor" aria-hidden="true"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"></path></svg>
+				}
+			</div>{ children... }
+		</dialog>
+	} else {
+		<nav id={ id } class="md-navigation md-navigation-drawer" data-variant="standard" data-navigation-group aria-label={ label }>
+			{ children... }
+		</nav>
+	}
+}
+
+templ DrawerItem(attrs templ.Attributes, label string) {
+	@model.Require("navigation")
+	<button type="button" class="md-nav-item" data-navigation-item title={ label } { attrs... }><span class="md-nav-indicator"><span class="md-nav-label">{ label }</span></span></button>
+}
+
+// DrawerLink preserves native link navigation, including open in a new tab.
+templ DrawerLink(href string, attrs templ.Attributes, label string) {
+	@model.Require("navigation")
+	<a class="md-nav-item" data-navigation-item href={ templ.SafeURL(href) } { attrs... }><span class="md-nav-indicator"><span class="md-nav-label">{ label }</span></span></a>
+}
+
+// NavigationRegion surrounds caller-owned destinations and optional rail header.
+templ NavigationRegion(p model.NavigationProps) {
+	@model.Require("navigation")
+	<nav { p.Attributes()... }>
+		{ children... }
+	</nav>
+}
+
+templ NavigationItem(p model.NavigationItemProps) {
+	@model.Require("navigation")
+	if p.Href!="" {
+		<a href={ templ.SafeURL(p.Href) } { p.Attributes()... }>
+			@NavigationItemContent(p)
+   { children... }
+		</a>
+	} else {
+		<button type="button" { p.Attributes()... }>
+			@NavigationItemContent(p)
+   { children... }
+		</button>
+	}
+}
+
+templ NavigationItemContent(p model.NavigationItemProps) {
+	@model.Require("navigation")
+	<span class="md-nav-indicator">
+		<span class="md-nav-icon">
+            if p.IconContent != nil {
+                @p.IconContent
+            } else {
+                @model.Icon(model.NavigationIcon(p.Icon, false))
+                @model.Icon(model.NavigationIcon(p.Icon, true))
+            }
+			if p.Badge!="" {
+				@Badge(p.Badge, p.BadgeText, templ.Attributes{"class": "md-nav-badge", "aria-label": p.BadgeLabel})
+			}
+		</span><span class="md-nav-label" data-navigation-label={ p.Label }><span>{ p.Label }</span></span>
+		if p.Count!="" {
+			<span class="md-nav-count">{ p.Count }</span>
+		}
+	</span>
+}
+
+// NavigationSurface supports a modal drawer or an inline navigation region.
+templ NavigationSurface(attrs templ.Attributes, modal bool, extra ...templ.Attributes) {
+	{{
+		for _, more := range extra {
+			attrs = model.Attributes(attrs, more)
+		}
+	}}
+	@model.Require("navigation")
+	if modal {
+		<dialog { attrs... }>
+			{ children... }
+		</dialog>
+	} else {
+		<nav { attrs... }>
+			{ children... }
+		</nav>
+	}
+}
+
+templ NavigationItems() {
+	@model.Require("navigation")
+	<div class="md-nav-items">
+		{ children... }
+	</div>
+}
+
+templ RailFrame(attrs templ.Attributes, navigation templ.Component, toggle ...templ.Component) {
+	@model.Require("navigation")
+	<div { attrs... }>
+		if len(toggle) > 0 {
+			@toggle[0]
+		}
+		<div class="md-navigation-slot">
+			<div class="md-navigation-surface">
+				@navigation
+			</div>
+		</div>
+		<button class="md-navigation-scrim" type="button" tabindex="-1" data-navigation-dismiss aria-label="Collapse navigation" hidden></button>
+		<div class="md-rail-body">
+			{ children... }
+		</div>
+	</div>
+}
+
+// NavigationRail supplies the same header, FAB and item layout to every consumer.
+templ NavigationRail(p model.RailProps) {
+ {{ p.Kind = "rail"; p.Alignment = model.Fallback(p.Alignment,"top") }}
+ @NavigationRegion(p.NavigationProps) {
+  if p.Menu || p.FAB != nil {
+   <header>
+    if p.Menu {
+     if p.PersistentMenu {
+      <span class="md-rail-menu-slot" aria-hidden="true"></span>
+     } else {
+      @RailToggle(p.ExpandedResolved(), nil)
+     }
+    }
+    if p.FAB != nil {
+     @Fab(p.FabResolved(), true)
+    }
+   </header>
+  }
+  @NavigationItems() { { children... } }
+ }
+}
+
+templ RailToggle(expanded bool, attrs templ.Attributes) {
+ @model.Require("navigation")
+ @IconButtonContent(model.IconButtonProps{Variant:"standard", Label:map[bool]string{true:"Collapse navigation",false:"Expand navigation"}[expanded],Size:model.Small,Shape:model.Round,Attrs:model.Attributes(templ.Attributes{"class":"md-rail-menu","data-navigation-expand":true,"aria-expanded":fmt.Sprint(expanded)},attrs)}) {
+  <span data-navigation-menu-icon>@model.Icon("menu")</span>
+  <span data-navigation-collapse-icon>@model.Icon("menu_open")</span>
+ }
+}

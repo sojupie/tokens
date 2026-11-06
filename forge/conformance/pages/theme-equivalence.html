@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" /><title>Page theme equivalence</title>
+  <style>
+    body {
+      font: 16px system-ui;
+      margin: 24px;
+    }
+    iframe {
+      width: 100%;
+      height: 600px;
+    }
+    pre {
+      white-space: pre-wrap;
+    }
+  </style>
+  <h1>Page theme equivalence</h1>
+  <p>
+    Compares layout, typography, color and surface properties in six appearances
+    with the complete theme. Requires baseline-theme.tmp.
+  </p>
+  <button id="run">Check page themes</button>
+  <pre id="result">Ready</pre>
+  <div id="frame"></div>
+  <script type="module" src="./theme-equivalence-check.js"></script>
+</html>

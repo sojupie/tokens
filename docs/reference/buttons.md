@@ -1,8 +1,8 @@
 # Generated Material Design 3 buttons
 
-`forge/material/generate-buttons.mjs` maps the current Material button color and size
+`forge/material/components/generate-buttons.mjs` maps the current Material button color and size
 sets to CSS. `npm run build:tokens -- --published published` runs it against
-all six appearance contexts and writes `forge/components/static/buttons.css`.
+all six appearance contexts and writes `forge/components/generated/buttons.css`.
 Commit this generated file with changes to its mapping. Build the assets before
 building the Go server so its embedded CSS matches the asset manifest.
 
@@ -46,7 +46,7 @@ are described in the [component reference](components.md).
 
 ## Interaction behavior
 
-`forge/components/static/buttons.js` delegates events so buttons inserted by HTMX
+`forge/components/behaviors/buttons.js` delegates events so buttons inserted by HTMX
 receive the same behavior. It handles pointer and keyboard presses, release,
 cancellation, disabled controls, selection and cleanup after removal or loss of
 focus. Disabled anchors have their activation suppressed by the controller.
@@ -80,7 +80,7 @@ Generator checks cover mapping completeness and failure on missing or unknown
 source tokens. Interaction checks cover springs, pointer and keyboard input,
 release, cancellation, disablement, reduced motion and animation cleanup.
 The gallery allows rendered-property checks across the generated configurations
-and all six appearance settings. `forge/conformance/check-button-rendering.mjs` exports
+and all six appearance settings. `forge/conformance/browser/check-button-rendering.mjs` exports
 a read-only browser check for colors, opacity, typography, spacing, icons,
 outlines, elevation bindings and shapes.
 

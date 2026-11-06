@@ -1,0 +1,34 @@
+package render
+
+import model "github.com/sojupie/tokens/forge/components/ui/internal/model"
+
+templ LoadingIndicator(attrs templ.Attributes) {
+	@LoadingSurface(model.Attributes(templ.Attributes{"class": "md-loading", "role": "progressbar", "data-control": "indeterminate", "data-variant": "uncontained"}, attrs), model.InitialLoadingPath, "rotate(90 .5 .5)")
+}
+
+templ LoadingGraphic() {
+	@model.Require("loading")
+	@LoadingSVG(model.InitialLoadingPath, "rotate(90 .5 .5)")
+}
+
+templ Loading(p model.ProgressProps) {
+	{{
+		control := "indeterminate"
+		if p.Value != nil {
+			control = "determinate"
+		}
+	}}
+	@LoadingSurface(p.Attributes(true), model.LoadingPaths[control], model.LoadingRotation(control))
+}
+
+// LoadingSurface lets the playground supply its captured initial morph geometry.
+templ LoadingSurface(attrs templ.Attributes, path, rotation string) {
+	@model.Require("loading", "progress")
+	<div { attrs... }>
+		@LoadingSVG(path, rotation)
+	</div>
+}
+
+templ LoadingSVG(path, rotation string) {
+	<svg width="38" height="38" viewBox="0 0 1 1" aria-hidden="true"><g transform={ rotation }><path d={ path }></path></g></svg>
+}

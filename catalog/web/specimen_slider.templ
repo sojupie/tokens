@@ -1,8 +1,0 @@
-package web
-import "github.com/sojupie/tokens/forge/components/ui"
-templ specimenSlider(c componentCase) {
- @sliderSurface(c)
-}
-templ sliderSurface(c componentCase,label ...string) {
- @ui.Range(c.sliderProps(sliderSurfaceLabel(label)))
-}

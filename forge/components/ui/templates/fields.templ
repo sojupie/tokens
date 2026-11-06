@@ -1,0 +1,148 @@
+package render
+
+import model "github.com/sojupie/tokens/forge/components/ui/internal/model"
+
+import "fmt"
+
+
+
+templ NumberField(id, label, value, min, max string) {
+	<div class="field-row">
+		@TextField(model.TextFieldProps{ID: id, Label: label, Value: value, Type: "number", InputAttrs: templ.Attributes{"min": min, "max": max, "step": "1"}})
+	</div>
+}
+
+// Select retains the native select used by existing tool integrations.
+templ Select(id, label string, options []model.Option, selected ...string) {
+	@SelectField(model.SelectProps{ID: id, Label: label, Options: options, Value: SelectInitial(options, selected).Value, InputAttrs: templ.Attributes{"id": "filter-" + id}}) {
+		<select id={ id } aria-label={ label } hidden>
+			for _,option:=range options {
+				<option value={ option.Value } selected?={ option.Value==SelectInitial(options,selected).Value }>{ option.Label }</option>
+			}
+		</select>
+	}
+}
+
+// OptionList is shared by select, autocomplete and chip-style fields.
+templ OptionList(id, label, selected string, options []model.Option, attrs templ.Attributes) {
+	@model.Require("common")
+	<div { model.Attributes(templ.Attributes{"class":"md-field-menu md-menu","data-variant":"standard","data-orientation":"vertical","id":id+"-options","role":"listbox","aria-label":label,"popover":"auto"},attrs)... }>
+		<section>
+			<ul role="presentation">
+				for index,option:=range options {
+					if option.DividerBefore {
+						<li role="separator"><hr class="md-field-menu-divider" aria-hidden="true"/></li>
+					}
+					@SelectOptionEntry(fmt.Sprintf("%s-option-%d", id, index), option, option.Value == selected)
+				}
+			</ul>
+		</section>
+		<p class="md-field-empty" role="option" aria-disabled="true" hidden>No matches</p>
+	</div>
+}
+
+// SelectOption retains the public entry point for tool-owned option menus.
+templ SelectOption(id, value, label string, selected bool) {
+	@SelectOptionEntry(id, model.Option{Value: value, Label: label}, selected)
+}
+
+templ SelectOptionEntry(id string, option model.Option, selected bool) {
+	@model.Require("common")
+	<li role="presentation">
+		<div { model.Attributes(templ.Attributes{"class":"md-menu-item","id":id,"role":"option","aria-selected":fmt.Sprint(selected),"aria-disabled":fmt.Sprint(option.Disabled),"data-field-option":option.Label,"data-field-value":option.Value},option.Attrs)... }>
+			if option.Leading!=nil {
+				<span data-slot="leading-icon" aria-hidden="true">
+					@option.Leading
+				</span>
+			}
+			<span data-option-label>{ option.Label }</span>
+			<span data-slot="trailing-icon" aria-hidden="true">
+				@model.Icon("check")
+			</span>
+		</div>
+	</li>
+}
+
+templ SelectField(p model.SelectProps) {
+	@model.Require("common")
+	<div { p.Attributes()... }>
+		if p.Outlined {
+			@FieldOutline(p.Label)
+			<label for={ fmt.Sprint(p.InputAttributes()["id"]) } data-slot="label">{ p.Label }</label>
+			<input { p.InputAttributes()... }/>
+			<button type="button" class="md-field-toggle" data-field-toggle tabindex="-1" aria-label={ "Show " + p.Label + " options" } aria-controls={ p.ID + "-options" } disabled?={ p.Disabled }>
+				<span data-slot="trailing-icon">
+					@model.Icon("expand_more")
+				</span>
+			</button>
+		} else {
+			<button { p.InputAttributes()... }>
+				if !p.HideLabel {
+					<span>{ p.Label+":" }</span>
+				}
+				<span data-field-display>{ p.DisplayLabelResolved() }</span>
+				<span class="md-chip-icon" data-slot="trailing-icon" aria-hidden="true">
+					@model.Icon("expand_more")
+				</span>
+			</button>
+		}
+		<label class="md-native-select-label" for={ p.ID+"-native" }>{ p.Label }</label>
+		<select class="md-native-select" id={ p.ID+"-native" } name={ p.Name } aria-label={ p.Label } disabled?={ p.Disabled } data-field-value>
+			for _, option := range p.Options {
+				<option value={ option.Value } selected?={ option.Value==p.Value } disabled?={ option.Disabled }>{ option.Label }</option>
+			}
+		</select>
+		{ children... }
+		@OptionList(p.ID, p.Label, p.Value, p.Options, p.MenuAttrs)
+	</div>
+}
+
+//forge:internal
+func SelectInitial(options []model.Option, selected []string) model.Option {
+	if len(selected) > 0 {
+		for _, option := range options {
+			if option.Value == selected[0] {
+				return option
+			}
+		}
+	}
+	if len(options) > 0 {
+		return options[0]
+	}
+	return model.Option{}
+}
+
+templ FieldOutline(label string) {
+	<fieldset class="md-field-outline" aria-hidden="true"><legend>{ label }</legend></fieldset>
+	<fieldset class="md-field-outline md-field-focus-outline" aria-hidden="true"><legend>{ label }</legend></fieldset>
+}
+
+templ TextField(p model.TextFieldProps) {
+	@model.Require("common")
+	{{
+		variant := "outlined"
+		if p.Filled {
+			variant = "filled"
+		}
+	}}
+	<div { model.Attributes(templ.Attributes{"class":"md-"+variant+"-text-field","data-invalid":p.Invalid},p.Attrs)... }>
+		if !p.Filled {
+			@FieldOutline(p.Label)
+		}
+		<label for={ fmt.Sprint(p.InputResolved()["id"]) } data-slot="label">{ p.Label }</label>
+		if p.Leading!=nil {
+			<span data-slot="leading-icon" aria-hidden="true">
+				@p.Leading
+			</span>
+		}
+		<input { p.InputResolved()... }/>
+		if p.Trailing!=nil {
+			<span data-slot="trailing-icon">
+				@p.Trailing
+			</span>
+		}
+		if p.Supporting!="" {
+			<small data-slot="supporting-text" id={ p.ID + "-help" }>{ p.Supporting }</small>
+		}
+	</div>
+}

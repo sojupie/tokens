@@ -1,0 +1,76 @@
+package render
+
+import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+
+import "github.com/sojupie/tokens/forge/components/ui"
+
+templ SpecimenMenu(c webview.ComponentCase) {
+	@ui.MenuHost(templ.Attributes{"class": "md-menu-demo"}) {
+		if c.State=="interactive" {
+			@ui.Action(ui.ButtonProps{Variant: ui.ButtonVariant("outlined"), Attrs: templ.Attributes{"data-menu-open": c.ID() + "-menu", "aria-controls": c.ID() + "-menu", "aria-haspopup": "menu", "aria-expanded": "false"}}) {
+				Open menu
+			}
+		}
+		@ui.MenuSurface(c.MenuPanel(false), MenuExampleHeading(c)) {
+			for index,label:=range []string{"Favorite","Download","Edit"} {
+				if index==2 && c.Variant=="baseline" && c.Shape=="divided" {
+					<li role="separator">
+						@ui.Divider("full", templ.Attributes{"aria-hidden": "true"})
+					</li>
+				}
+				<li role="presentation">
+					@ui.MenuEntry(MenuExampleProps(c, index, label))
+					if index==0 && c.Shape=="cascade" {
+						@ui.MenuSurface(c.MenuPanel(true), "") {
+							<li role="presentation">
+								@ui.MenuItem(templ.Attributes{"data-menu-back": ""}, "Back", ui.Icon("arrow_back"), nil)
+							</li>
+							for _,action:=range []string{"Add to favorites","Manage favorites"} {
+								<li role="presentation">
+									@ui.MenuItem(templ.Attributes{"data-menu-action": ""}, action, nil, nil)
+								</li>
+							}
+						}
+					}
+				</li>
+			}
+		}
+		<output data-menu-output aria-live="polite"></output>
+	}
+}
+
+func MenuExampleHeading(c webview.ComponentCase) string {
+	if c.Orientation != "horizontal" && c.Variant != "baseline" {
+		return "Section"
+	}
+	return ""
+}
+func MenuExampleSupporting(c webview.ComponentCase, index int) string {
+	if c.Shape == "supporting" {
+		return []string{"Save for later", "Save a copy", "Change this item"}[index]
+	}
+	return ""
+}
+
+templ MenuExampleLeading(c webview.ComponentCase, index int) {
+	if c.Shape=="icon-only" && c.MenuSelectable(index) {
+		@ui.MenuSelectionIcon(c.MenuSelected(index), []string{"star", "download", "edit"}[index])
+	} else {
+		@ui.Icon([]string{"star", "download", "edit"}[index])
+	}
+}
+
+templ MenuExampleTrailing(c webview.ComponentCase, index int) {
+	if index==0 && c.Shape=="cascade" {
+		@ui.Icon("chevron_right")
+	} else if c.MenuSelectable(index) {
+		@ui.MenuSelectionIcon(c.MenuSelected(index), "")
+	}
+}
+
+templ MenuExampleShortcut(c webview.ComponentCase, index int) {
+	if c.Shape!="icon-only" && c.Orientation!="horizontal" && !c.MenuSelectable(index) && !(index==0 && c.Shape=="cascade") {
+		@ui.Icon("keyboard_command_key")
+		<span>{ []string{"K","D","E"}[index] }</span>
+	}
+}

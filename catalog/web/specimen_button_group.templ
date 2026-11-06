@@ -1,9 +1,0 @@
-package web
-import "github.com/sojupie/tokens/forge/components/ui"
-templ specimenButtonGroup(c componentCase){
- <div class="md-button-group-demo">@ui.ButtonGroupSurface(ui.GroupProps{Label:"Actions",Variant:c.Variant,Size:ui.Size(c.Size),Connected:c.Control=="connected",Selection:c.Shape,Attrs:c.Attributes()}){
- for i:=range 3 {
- @ui.GroupItem(ui.GroupItemProps{Label:c.GroupLabel(i),Icon:[]string{"arrow_back","edit","chevron_right"}[i],Index:i,Variant:ui.ButtonVariant(c.Variant),Size:ui.Size(c.Size),Connected:c.Control=="connected",Attrs:c.GroupButton(i)})
- }
- }<output class="md-typescale-body-small" aria-live="polite"></output></div>
-}

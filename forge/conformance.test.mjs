@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { componentRadius } from "./conformance/check-button-rendering.mjs";
+import { componentRadius } from "./conformance/browser/check-button-rendering.mjs";
 test("component corners resolve bounded pixel, full and percentage radii", () => {
   assert.equal(componentRadius("12px", 180, 40), 12);
   assert.equal(componentRadius("calc(infinity * 1px)", 180, 40), 20);

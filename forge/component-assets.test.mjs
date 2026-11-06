@@ -25,19 +25,22 @@ test("embedded component assets match all maintained sources", async () => {
       sources.length,
       "sources appear only once",
     );
-    assert.deepEqual(
-      [...sources].sort(),
-      files.sort(),
-      "every source is included",
-    );
+    if (kind === "style") assert.deepEqual([...sources].sort(), files.sort(), "every CSS source is included in cascade order");
+    else {
+      const assets = await componentAssets();
+      for (const file of files) {
+        const output = `generated/${file.split('/').pop().replace(/\.ts$/, '.js')}`;
+        assert(sources.includes(file) || assets.has(output), `${file} has a declared aggregate or discovered dedicated entry`);
+      }
+    }
   }
   const assets = await componentAssets();
   for (const [file, content] of assets) {
     if (file.endsWith(".js")) new Script(content, { filename: file });
   }
   for (const name of ["chips", "switches", "button-groups", "segmented-buttons"]) {
-    assert(assets.has(`static/runtime/${name}.js`), "TypeScript must keep public JavaScript paths");
-    assert(!assets.has(`static/runtime/${name}.ts`));
+    assert(assets.has(`generated/runtime/${name}.js`), "TypeScript must keep public JavaScript paths");
+    assert(!assets.has(`generated/runtime/${name}.ts`));
   }
   const catalog = await catalogAssets();
   assert(catalog.has("asset-loader.js"));

@@ -1,0 +1,14 @@
+const button=document.querySelector('#run'),out=document.querySelector('#result'),samples=document.querySelector('#samples');
+button.onclick=async()=>{button.disabled=true;const checks=[];const assert=(ok,message)=>{if(!ok)throw Error(message);checks.push(message)};
+try{samples.replaceChildren();const frame=document.createElement('iframe');samples.append(frame);await new Promise(resolve=>{frame.onload=resolve;frame.src='/md3/components/time-pickers?preview.compare=interactive'});const w=frame.contentWindow,d=frame.contentDocument;await w.TokenAssets.ready;
+const root=d.querySelector('#component-preview .md-time-demo'),panel=root.querySelector('dialog'),opener=root.querySelector('[data-time-open]');
+const finish=async()=>{await Promise.all(panel.getAnimations().map(a=>a.finished.catch(()=>{})));await new Promise(w.requestAnimationFrame)};
+const pointer=(type,outside,id=1)=>{const r=panel.getBoundingClientRect();panel.dispatchEvent(new w.PointerEvent(type,{bubbles:true,button:0,isPrimary:true,pointerId:id,clientX:outside?r.left-10:r.left+10,clientY:r.top+10}));};
+opener.click();await finish();assert(panel.open,'Dialog opens');
+const mode=panel.querySelector('[data-time-mode]');assert(mode.getAttribute('aria-label')==='Toggle input picker','Clock mode names its input toggle');mode.click();assert(mode.getAttribute('aria-label')==='Toggle dial picker','Input mode names its dial toggle');assert(panel.querySelector('[data-time-input="hour"]').getAttribute('aria-label')==='Hour'&&panel.querySelector('[data-time-input="minute"]').getAttribute('aria-label')==='Minute','Input names match Hour and Minute labels');mode.click();
+pointer('pointerdown',false);pointer('pointerup',true);await finish();assert(panel.open,'Dragging out from the panel does not dismiss');
+pointer('pointerdown',true);pointer('pointerup',false);await finish();assert(panel.open,'Dragging into the panel does not dismiss');
+pointer('pointerdown',true);pointer('pointercancel',true);pointer('pointerup',true);await finish();assert(panel.open,'Cancelled pointer cannot dismiss');
+pointer('pointerdown',true);pointer('pointerup',true);await finish();assert(!panel.open,'A backdrop gesture dismisses the dialog');assert(d.activeElement===opener,'Dismissal restores opener focus');
+out.textContent=JSON.stringify({passed:checks.length,checks},null,2);
+}catch(error){out.textContent=JSON.stringify({passed:checks.length,checks,error:error.stack},null,2)}finally{button.disabled=false}};

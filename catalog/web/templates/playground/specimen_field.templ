@@ -1,0 +1,34 @@
+package render
+
+import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+
+import "github.com/sojupie/tokens/forge/components/ui"
+
+templ SpecimenField(c webview.ComponentCase) {
+	{{
+		p := ui.FieldProps{TextFieldProps: ui.TextFieldProps{ID: c.ID(), Label: c.FieldLabel(), Supporting: c.FieldSupporting(), Filled: c.Variant == "filled", Invalid: c.Invalid, Disabled: c.State == "disabled", Attrs: c.Attributes(), InputAttrs: c.FieldInput()}, Kind: map[bool]string{true: "text", false: c.Family}[c.Family == "field"], MenuIcons: c.Shape == "icons", HelpAttrs: c.FieldHelpAttributes()}
+		if c.Invalid {
+			p.Supporting = "Enter a valid value."
+		}
+		if c.Shape == "affixes" {
+			p.Prefix = "$"
+			p.Suffix = "/kg"
+			p.PrefixDescription = "US dollars"
+			p.SuffixDescription = "per kilogram"
+		}
+		for index, value := range webview.FieldOptions {
+			option := ui.Option{Value: value, Label: value, DividerBefore: index == 2}
+			if c.Shape == "icons" {
+				option.Leading = ui.Icon("star")
+			}
+			p.Options = append(p.Options, option)
+		}
+		if c.Width == "populated" {
+			p.Value = "Input text"
+			if c.Family != "field" {
+				p.Value = webview.FieldOptions[1]
+			}
+		}
+	}}
+	@ui.Field(p)
+}

@@ -1,0 +1,22 @@
+package render
+
+import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+import "github.com/sojupie/tokens/forge/components/ui"
+
+templ SpecimenLoading(c webview.ComponentCase) {
+	@webview.UseComponentAssets("loading")
+	@webview.UseComponentAssets("progress")
+	<div class="md-progress-demo" data-loading-adaptive?={ c.State=="interactive" }>
+		@ui.Loading(c.ProgressProps("Loading preview content"))
+		if c.State=="interactive" && c.Control=="determinate" {
+			<div class="md-progress-control">@ComponentSpecimen(c.ProgressControl())
+<output class="md-typescale-body-small">40%</output></div>
+		}
+	</div>
+}
+
+templ LoadingSurface(c webview.ComponentCase) {
+@webview.UseComponentAssets("loading")
+@webview.UseComponentAssets("progress")
+@ui.Loading(c.ProgressProps("Loading preview content"))
+}

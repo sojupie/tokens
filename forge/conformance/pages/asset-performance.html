@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" /><title>Asset and theme measurements</title>
+  <style>
+    body {
+      font: 16px system-ui;
+      margin: 24px;
+    }
+    iframe {
+      width: 100%;
+      height: 600px;
+      border: 1px solid #aaa;
+    }
+    pre {
+      white-space: pre-wrap;
+    }
+    button {
+      padding: 12px;
+    }
+  </style>
+  <h1>Asset and theme measurements</h1>
+  <p>
+    Measures actual appearance controls, synchronous style/layout work, and two
+    animation frames. Results depend on the browser and machine.
+  </p>
+  <button id="run">Measure</button>
+  <pre id="result">Ready</pre>
+  <div id="frame"></div>
+  <script type="module" src="./asset-performance-check.js"></script>
+</html>

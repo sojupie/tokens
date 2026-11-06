@@ -1,0 +1,66 @@
+package render
+
+import model "github.com/sojupie/tokens/forge/components/ui/internal/model"
+
+import "fmt"
+
+templ Chip(p model.ChipProps) {
+	@model.Require("common")
+	if p.Variant=="filter" || p.Variant=="" {
+		<noscript>@FilterChipField(model.ChoiceProps{Label:p.Label,Checked:p.Selected,Disabled:p.Disabled})</noscript>
+	}
+	if p.Variant=="input" {
+		<noscript><span class="md-input-chip">{ p.Label }</span></noscript>
+	}
+	if p.Variant=="assist"||p.Variant=="suggestion" {
+		<button { p.Attributes()... }>
+			@ChipLeading(p)
+			<span class="md-chip-label">{ p.Label }</span>
+		</button>
+	} else {
+		<span { p.Attributes()... }>
+			<button class="md-chip-primary" type="button" data-chip-select aria-pressed={ fmt.Sprint(p.Selected) } disabled?={ p.Disabled }>
+				@ChipLeading(p)
+				<span class="md-chip-label">{ p.Label }</span>
+			</button>
+			if p.Removable||p.Variant=="input" {
+				<button class="md-chip-remove" type="button" data-chip-remove aria-label={ "Remove " + p.Label } disabled?={ p.Disabled } tabindex="-1">
+					<span class="md-chip-icon" data-slot="trailing-icon">
+						@model.Icon("close")
+					</span>
+				</button>
+			}
+		</span>
+	}
+}
+
+templ ChipLeading(p model.ChipProps) {
+	if p.Avatar!="" {
+		<span class="md-chip-avatar" aria-hidden="true">{ p.Avatar }</span>
+	} else if p.Variant=="filter"||p.Variant=="" {
+		<span class="md-chip-icon md-chip-check" data-slot="leading-icon">
+			@model.Icon("check")
+		</span>
+		if p.Icon!="" {
+			<span class="md-chip-icon md-chip-leading" data-slot="leading-icon">
+				@model.Icon(p.Icon)
+			</span>
+		}
+	} else if p.Icon!="" {
+		<span class="md-chip-icon" data-slot="leading-icon">
+			@model.Icon(p.Icon)
+		</span>
+	}
+}
+
+// FilterChipField preserves a native checkbox and its form value.
+templ FilterChipField(p model.ChoiceProps) {
+	@model.Require("common")
+	<label { model.Attributes(templ.Attributes{"class":"md-filter-chip"},p.Attrs)... }>
+		<input { p.InputResolved("checkbox")... }/>
+		<span class="md-chip-face">
+			@model.Icon("check")
+			<span>{ p.Label }</span>
+		</span>
+	</label>
+}

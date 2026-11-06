@@ -18,7 +18,7 @@ backend/browser path, measured results and remaining limits.
   behavior during this step.
 
 The inventory comes from `behavior-sources.json` and standalone JavaScript files
-in `forge/components/static/`. The shared `buttons.js` runtime and legacy
+in `forge/components/generated/`. The shared `buttons.js` runtime and legacy
 `components.js` aggregate are excluded explicitly. Catalog example scripts remain
 Catalog-owned; they are not dependencies of exported Forge components.
 

@@ -7,11 +7,16 @@
   },
   "scripts": {
     "build:components": "node forge/components/build-assets.ts && node catalog/web/build-assets.ts",
-    "check:components": "npm run check:types && node forge/components/build-assets.ts --check && node catalog/web/build-assets.ts --check",
+    "check:components": "npm run check:types && go run ./cmd/generate-templates -check && node forge/components/build-assets.ts --check && node catalog/web/build-assets.ts --check",
     "build:tokens": "node forge/build-tokens.mjs",
-    "test:tokens": "node --test forge/*.test.mjs forge/*.test.ts forge/material/*.test.mjs",
-    "test:ui": "node --test catalog/web/ui_test.cjs catalog/web/dialog_demo_test.cjs forge/components/*_test.cjs",
-    "check:types": "tsc --noEmit"
+    "test:tokens": "node --test forge/*.test.mjs forge/*.test.ts forge/material/*.test.mjs forge/material/components/*.test.mjs",
+    "test:ui": "node --test catalog/web/tests/browser/*_test.cjs forge/components/tests/browser/*_test.cjs",
+    "check:types": "tsc --noEmit",
+    "generate:web": "go generate ./catalog/web && node catalog/web/build-assets.ts",
+    "check:web": "go run ./cmd/generate-templates -check && node catalog/web/build-assets.ts --check",
+    "generate:templates": "go run ./cmd/generate-templates",
+    "check:templates": "go run ./cmd/generate-templates -check",
+    "generate": "npm run generate:templates && npm run build:components"
   },
   "devDependencies": {
     "@material/material-color-utilities": "0.3.0",

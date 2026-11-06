@@ -1,5 +1,7 @@
 package ui
 
+import "github.com/sojupie/tokens/forge/components/ui/internal/model"
+
 import (
 	"bytes"
 	"context"
@@ -42,7 +44,7 @@ func TestProcessingIndicatorsRenderSharedAnatomy(t *testing.T) {
 	if err := LoadingIndicator(templ.Attributes{"aria-label": "Loading video engine"}).Render(context.Background(), &out); err != nil {
 		t.Fatal(err)
 	}
-	if !strings.Contains(out.String(), `<svg width="38" height="38"`) || !strings.Contains(out.String(), `data-control="indeterminate"`) || !strings.Contains(out.String(), initialLoadingPath) || strings.Contains(out.String(), `aria-valuenow`) {
+	if !strings.Contains(out.String(), `<svg width="38" height="38"`) || !strings.Contains(out.String(), `data-control="indeterminate"`) || !strings.Contains(out.String(), model.InitialLoadingPath) || strings.Contains(out.String(), `aria-valuenow`) {
 		t.Fatal(out.String())
 	}
 }
@@ -153,7 +155,7 @@ func TestLoadingButtonPreservesLabelAndSharedDisk(t *testing.T) {
 	if err := LoadingButton(templ.Attributes{"class": "md-button md-filled-button md-loading-button", "disabled": true, "aria-busy": "true", "type": "submit"}, "Download").Render(context.Background(), &out); err != nil {
 		t.Fatal(err)
 	}
-	for _, required := range []string{`md-loading-button-slot`, `data-button-label>Download`, `aria-busy="true"`, `disabled`, `md-button-loading-disk`, `aria-hidden="true"`, initialLoadingPath} {
+	for _, required := range []string{`md-loading-button-slot`, `data-button-label>Download`, `aria-busy="true"`, `disabled`, `md-button-loading-disk`, `aria-hidden="true"`, model.InitialLoadingPath} {
 		if !strings.Contains(out.String(), required) {
 			t.Fatal(required, out.String())
 		}
