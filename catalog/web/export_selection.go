@@ -167,6 +167,11 @@ func (server *Server) exportDocument(query url.Values) (dtcg.Node, dtcg.Report, 
 	}
 	sort.Strings(report.ExtensionOnly)
 	summary := exportSummary{Selected: len(names), Exported: roots, Dependencies: dependencies, Omitted: len(omitted), Context: context}
+	// Keep conversion accounting with the scoped DTCG document. These extensions
+	// do not alter captured token values or references.
+	metadata := document["$extensions"].(map[string]any)["dev.tokencatalog.export"].(map[string]any)
+	metadata["conversionReport"] = report
+	metadata["selection"] = summary
 	return document, report, summary, subject, nil
 }
 
@@ -246,6 +251,11 @@ func (server *Server) exportTokenFile(query url.Values) ([]byte, string, string,
 	if err != nil {
 		return nil, "", "", err
 	}
+	return server.renderTokenFile(query, document, report, summary, subject)
+}
+
+func (server *Server) renderTokenFile(query url.Values, document dtcg.Node, report dtcg.Report, summary exportSummary, subject *publish.SubjectView) ([]byte, string, string, error) {
+	var err error
 	format := query.Get("format")
 	filename := "tokens"
 	if subject != nil && query.Get("scope") != "collection" {

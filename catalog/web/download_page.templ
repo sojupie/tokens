@@ -16,7 +16,7 @@ templ downloadPage(state exportDialogState) {
     if state.implementation() {
      <input type="hidden" name="format" value="zip"/>
     } else {
-     @nativeExportChoices(state,"format","File formats",[]catalogChoice{{"dtcg","DTCG JSON"},{"css","CSS variables"},{"source","Source JSON"},{"report","Conversion report"}},true)
+     @nativeExportChoices(state,"format","File formats",[]catalogChoice{{"dtcg","DTCG JSON"},{"css","CSS variables"},{"source","Source JSON"}},true)
     }
     for _, control := range state.Page.Contexts {
      if len(state.choices("context."+control.Name))>0 {

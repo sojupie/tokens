@@ -1,4 +1,4 @@
-import { sliderValues } from "../helpers/controls.js";
+import { sliderValues } from "../helpers/controls.ts";
 
 (() => {
   if (typeof document === "undefined") return;

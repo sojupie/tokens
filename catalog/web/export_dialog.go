@@ -68,12 +68,6 @@ func (state exportDialogState) contextSummary() string {
 	return strings.Join(labels, " · ")
 }
 
-func (state exportDialogState) reportURL() string {
-	query := cloneExportQuery(state.Query)
-	query.Set("format", "report")
-	return "/downloads/export?" + query.Encode()
-}
-
 func (server *Server) exportDialogOptions(query url.Values) exportDialogState {
 	query = cloneExportQuery(query)
 	for key, values := range query {
@@ -218,14 +212,15 @@ func (server *Server) exportDialogSummary(ctx context.Context, query url.Values)
 		}
 		return "Component implementation ZIP, including required assets.", "Download ZIP", nil
 	}
+	warning := server.exportOmissionWarning(jobs)
 	if len(jobs) > 1 {
-		return fmt.Sprintf("%d format/context combinations · %d files in one ZIP.", len(jobs), len(jobs)), "Download ZIP", nil
+		return fmt.Sprintf("%d format/context combinations in one ZIP, including conversion reports.", len(jobs)) + warning, "Download ZIP", nil
 	}
 	names, _, _, err := server.selectedExport(query)
 	if err != nil {
 		return "", "Download", err
 	}
-	return fmt.Sprintf("%d selected tokens. Required references are included on export.", len(names)), "Download", nil
+	return fmt.Sprintf("%d selected tokens. Required references are included on export.", len(names)) + warning, "Download", nil
 }
 
 func (server *Server) handleExportDialog(w http.ResponseWriter, r *http.Request) {
@@ -274,4 +269,69 @@ func (state exportDialogState) requestAttrs(name string) templ.Attributes {
 
 func exportChoiceID(name string) string {
 	return "export-choices-" + strings.ToLower(strings.NewReplacer(".", "-", " ", "-").Replace(name))
+}
+
+// Read precomputed value metadata; editing choices never builds an export.
+func (server *Server) exportOmissionWarning(jobs []url.Values) string {
+	seen := map[string]bool{}
+	missing, unsupported := 0, 0
+	for _, job := range jobs {
+		if job.Get("format") != "css" && job.Get("format") != "dtcg" {
+			continue
+		}
+		key := cloneExportQuery(job)
+		key.Del("format")
+		if seen[key.Encode()] {
+			continue
+		}
+		seen[key.Encode()] = true
+		names, selection, _, err := server.selectedExport(job)
+		if err != nil {
+			continue
+		}
+		for name := range names {
+			best := -1
+			convertible := false
+			for _, value := range server.exportIndex().tokens[name] {
+				if !value.defined {
+					continue
+				}
+				compatible := true
+				for dimension, choice := range value.labels {
+					if selection[dimension] != choice {
+						compatible = false
+						break
+					}
+				}
+				if compatible && len(value.labels) > best {
+					best = len(value.labels)
+					convertible = value.convertible
+				}
+			}
+			if best < 0 {
+				missing++
+			} else if !convertible {
+				unsupported++
+			}
+		}
+	}
+	var reasons []string
+	if missing > 0 {
+		noun, verb := "token values", "have"
+		if missing == 1 {
+			noun, verb = "token value", "has"
+		}
+		reasons = append(reasons, fmt.Sprintf("%d %s %s no defined value in the selected contexts", missing, noun, verb))
+	}
+	if unsupported > 0 {
+		noun := "token values"
+		if unsupported == 1 {
+			noun = "token value"
+		}
+		reasons = append(reasons, fmt.Sprintf("%d %s cannot be converted to CSS or DTCG", unsupported, noun))
+	}
+	if len(reasons) == 0 {
+		return ""
+	}
+	return " Omitted: " + strings.Join(reasons, "; ") + ". Choose another context or Source JSON to keep captured data."
 }

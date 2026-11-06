@@ -79,6 +79,11 @@ func TestDownloadDialogOffersScopesAndFormats(t *testing.T) {
 			t.Fatalf("missing %q", want)
 		}
 	}
+	for _, unwanted := range []string{"View conversion report", "Conversion report", `value="report"`} {
+		if strings.Contains(output.String(), unwanted) {
+			t.Fatalf("report control remains: %s", unwanted)
+		}
+	}
 }
 
 func TestDownloadSplitPresetsAndRegularFooter(t *testing.T) {

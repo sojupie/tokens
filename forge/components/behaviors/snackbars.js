@@ -1,4 +1,4 @@
-import { snackbarTimer } from "../helpers/controls.js";
+import { snackbarTimer } from "../helpers/controls.ts";
 
 (() => {
   if (typeof document === "undefined") return;

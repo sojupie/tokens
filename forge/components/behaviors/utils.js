@@ -1,5 +1,5 @@
-import { navigationIndex } from "../helpers/navigation.js";
-import { snackbarTimer, toolbarGap, sliderValues, splitMenuPosition } from "../helpers/controls.js";
+import { navigationIndex } from "../helpers/navigation.ts";
+import { snackbarTimer, toolbarGap, sliderValues, splitMenuPosition } from "../helpers/controls.ts";
 
 (() => {
   const helpers = {

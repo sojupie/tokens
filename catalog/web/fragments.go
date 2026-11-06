@@ -252,8 +252,8 @@ func writeTokenReferences(writer io.Writer, token tokenRow) error {
 	if label == "" || label == "Color not resolved" || label == "Undefined: true" {
 		if len(token.References) > 0 {
 			label = token.References[0].Name
-		} else {
-			label = "—"
+		} else if label != "Color not resolved" {
+			label = "No captured value"
 		}
 	}
 	style := ""

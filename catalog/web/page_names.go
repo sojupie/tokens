@@ -124,7 +124,7 @@ func titleTokenPhrase(value string) string {
 }
 
 func allTokenSet(subject publish.SubjectView) tokenSet {
-	return tokenSet{Key: "all", All: true, Label: "All tokens", sourceTokens: subject.Tokens}
+	return tokenSet{Key: "all", All: true, Label: "All tokens", sourceTokens: tokenTableTokens(subject)}
 }
 
 func isDefaultTokenSet(subject publish.SubjectView, set tokenSet) bool {

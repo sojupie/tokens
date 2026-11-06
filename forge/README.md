@@ -30,8 +30,8 @@ Component source ownership:
 | `components/static/` | Dedicated behavior scripts, shared motion, elevation, and generated served assets |
 | `components/static/runtime/` | Generated scripts for individual behavior modules |
 | `components/static/bundles/` | Generated shared and page-specific component CSS |
-| `theme-subsets.mjs` | Theme dependencies, shared inputs and preview scopes |
-| `component-bundles.mjs`, `css-output.mjs` | CSS partitioning, declaration grouping, theme deltas, and minification |
+| `theme-subsets.ts` | Theme dependencies, shared inputs and preview scopes |
+| `component-bundles.ts`, `css-output.ts` | CSS partitioning, declaration grouping, theme deltas, and minification |
 | `material/` | Explicit token bindings, source coverage, and value overrides |
 
 `components/static/components-base.css` and `components.js` are assembled files.
@@ -51,7 +51,7 @@ The build assembles Catalog's theme from its static stylesheet references and
 configured color/motion scheme. Expressive site springs are selected separately
 from the Standard-motion public downloads.
 The theme defines shared values once and emits differences for the six appearance
-contexts. `theme-subsets.mjs` derives a shared theme and family themes from the
+contexts. `theme-subsets.ts` derives a shared theme and family themes from the
 component CSS bundles. It follows CSS aliases across appearances and includes
 literal JavaScript reads. Dynamic spring inputs are explicit. The build writes
 these files under `<publication>/assets/themes/` and records their checksums in

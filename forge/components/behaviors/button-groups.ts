@@ -1,11 +1,12 @@
-import { navigationIndex } from "../helpers/navigation.js";
+import { navigationIndex } from "../helpers/navigation.ts";
 
 (() => {
   if (typeof document === "undefined") return;
   document.addEventListener("click", (event) => {
-    const button = event.target.closest?.("[data-group-button]");
+    const button = (event.target as Element | null)?.closest?.<HTMLButtonElement>("[data-group-button]");
     if (!button || button.disabled) return;
-    const group = button.closest(".md-button-group");
+    const group = button.closest<HTMLElement>(".md-button-group");
+    if (!group) return;
     if (
       group.dataset.control === "connected" &&
       group.dataset.shape === "single"
@@ -17,14 +18,15 @@ import { navigationIndex } from "../helpers/navigation.js";
     );
   });
   document.addEventListener("focusin", event => {
-    const button = event.target.closest?.("[data-group-button]");
-    if (button) for (const item of button.closest(".md-button-group").querySelectorAll("button")) item.tabIndex = item === button ? 0 : -1;
+    const button = (event.target as Element | null)?.closest?.<HTMLButtonElement>("[data-group-button]");
+    if (button) for (const item of button.closest<HTMLElement>(".md-button-group")?.querySelectorAll("button") || []) item.tabIndex = item === button ? 0 : -1;
   });
   document.addEventListener("keydown", (event) => {
-    const button = event.target.closest?.("[data-group-button]");
+    const button = (event.target as Element | null)?.closest?.<HTMLButtonElement>("[data-group-button]");
     if (!button) return;
-    const group = button.closest(".md-button-group"),
-      items = [...group.querySelectorAll("button:not(:disabled):not([aria-disabled=\"true\"])")].filter(item => item.getClientRects().length && !item.closest("[inert]") && getComputedStyle(item).visibility === "visible");
+    const group = button.closest<HTMLElement>(".md-button-group");
+    if (!group) return;
+    const items = [...group.querySelectorAll<HTMLButtonElement>("button:not(:disabled):not([aria-disabled=\"true\"])")].filter(item => item.getClientRects().length && !item.closest("[inert]") && getComputedStyle(item).visibility === "visible");
     if (!items.includes(button)) return;
     const next = navigationIndex(
       items.indexOf(button),

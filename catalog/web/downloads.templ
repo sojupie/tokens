@@ -42,7 +42,7 @@ templ siteDownloadMenu() {
 			}
 		}
 		<iframe name="tokens-export-transfer" title="Download transfer" hidden></iframe>
-		<noscript><nav class="tokens-native-downloads" aria-label="Downloads"><a href={ templ.SafeURL(nativeDownloadURL(metadata(ctx).Export)) }>Configure download</a><a href="/downloads/dtcg/light-default/tokens.tokens.json" download>DTCG JSON</a><a href="/downloads/dtcg/light-default/tokens.css" download>CSS variables</a><a href="/downloads/dtcg/light-default/report.json" download>Conversion report</a></nav></noscript>
+		<noscript><nav class="tokens-native-downloads" aria-label="Downloads"><a href={ templ.SafeURL(nativeDownloadURL(metadata(ctx).Export)) }>Configure download</a><a href="/downloads/dtcg/light-default/tokens.tokens.json" download>DTCG JSON</a><a href="/downloads/dtcg/light-default/tokens.css" download>CSS variables</a></nav></noscript>
 	</div>
 }
 
@@ -162,7 +162,7 @@ templ exportDialogFields(state exportDialogState) {
 				}
 			}
 			<div data-export-token-formats hidden?={ state.implementation() }>
-				@exportDialogChoices(state, "format", "File formats", []catalogChoice{{"dtcg", "DTCG JSON"}, {"css", "CSS variables"}, {"source", "Source JSON"}, {"report", "Conversion report"}}, true)
+				@exportDialogChoices(state, "format", "File formats", []catalogChoice{{"dtcg", "DTCG JSON"}, {"css", "CSS variables"}, {"source", "Source JSON"}}, true)
 			</div>
 			<p class="tokens-export-description" data-export-description>
 				if state.implementation() {
@@ -234,7 +234,6 @@ templ exportDialogSummary(state exportDialogState) {
 			{ state.Counts }
 		</p>
 		<p class="md-typescale-body-small" data-export-error role="alert" hidden?={ state.Error == "" }>{ state.Error }</p>
-		<a class="tokens-link" data-export-report hidden?={ !state.Ready || state.implementation() } href={ templ.SafeURL(state.reportURL()) }>View conversion report</a>
 	</div>
 }
 

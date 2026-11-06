@@ -32,7 +32,7 @@ Other context dimensions keep their selected values.
 
 ## Generate CSS locally
 
-Install Node.js 22 or newer and Go, then run from the repository root:
+Install Node.js 22.18 or newer and Go, then run from the repository root:
 
 ```sh
 npm ci
@@ -75,10 +75,14 @@ The server exposes these files when generated assets are present:
 ```
 
 The site's **Download tokens** dialog offers scoped DTCG JSON, CSS variables,
-source JSON, and conversion reports. Scope can be the current filtered table,
+and source JSON. Scope can be the current filtered table,
 the whole table, the component or style, or the collection. Context controls
 start from page selections and are validated against the captured data.
-Required alias targets are included automatically.
+Required alias targets are included automatically. Token ZIPs include a conversion
+report beside each exported file. Scoped DTCG JSON includes the report and selection
+counts in its `dev.tokencatalog.export` extension. Single-file CSS and source JSON
+exports remain single files. The dialog shows omission counts and reasons from
+indexed value metadata; changing options does not generate an export.
 
 `GET /downloads/export` accepts `kind`, `slug`, `scope` (`view`, `set`, `subject`,
 or `collection`), `set`, `q`, and `context.<dimension>`. The `format` parameter is

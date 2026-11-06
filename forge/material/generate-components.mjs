@@ -1,5 +1,5 @@
 import { readFileSync } from "node:fs";
-import { groupBindings } from '../css-output.mjs';
+import { groupBindings } from '../css-output.ts';
 
 const contract = JSON.parse(
   readFileSync(new URL("./component-contract.json", import.meta.url)),

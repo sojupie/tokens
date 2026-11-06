@@ -2,6 +2,7 @@ package web
 
 import (
 	"encoding/json"
+	"github.com/sojupie/tokens/source/dtcg"
 	"github.com/sojupie/tokens/source/publish"
 	"strings"
 )
@@ -14,14 +15,16 @@ type exportIndex struct {
 	names   map[string]bool
 }
 type indexedExportValue struct {
-	labels     map[string]string
-	references []publish.TokenReference
-	defined    bool
+	labels      map[string]string
+	references  []publish.TokenReference
+	defined     bool
+	convertible bool
 }
 
 func (server *Server) exportIndex() *exportIndex {
 	server.exportIndexOnce.Do(func() {
 		index := &exportIndex{tokens: map[string][]indexedExportValue{}, choices: map[string]map[string]bool{}, names: map[string]bool{}}
+		converted := map[string]bool{}
 		for _, subject := range server.state.Subjects {
 			for _, token := range subject.Tokens {
 				index.names[token.SourceName] = true
@@ -29,6 +32,16 @@ func (server *Server) exportIndex() *exportIndex {
 					var object map[string]json.RawMessage
 					entry := indexedExportValue{labels: map[string]string{}, references: value.References}
 					entry.defined = json.Unmarshal(value.Value, &object) == nil && object["undefined"] == nil
+					if entry.defined {
+						key := string(value.Value)
+						valid, known := converted[key]
+						if !known {
+							_, err := dtcg.Convert(value.Value)
+							valid = err == nil
+							converted[key] = valid
+						}
+						entry.convertible = valid
+					}
 					for _, label := range value.ContextLabels {
 						name, choice, ok := strings.Cut(label, ":")
 						if !ok {

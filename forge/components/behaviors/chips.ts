@@ -1,10 +1,10 @@
 (() => {
   if (typeof document === "undefined") return;
   document.addEventListener("click", (event) => {
-    const select = event.target.closest?.("[data-chip-select]"),
-      remove = event.target.closest?.("[data-chip-remove]"),
-      action = event.target.closest?.("[data-chip-action]");
-    const chip = (select || remove || action)?.closest('[data-family="chip"]');
+    const select = (event.target as Element | null)?.closest?.("[data-chip-select]"),
+      remove = (event.target as Element | null)?.closest?.("[data-chip-remove]"),
+      action = (event.target as Element | null)?.closest?.("[data-chip-action]");
+    const chip = (select || remove || action)?.closest<HTMLElement>('[data-family="chip"]');
     if (!chip || chip.getAttribute("aria-disabled") === "true") return;
     if (select) {
       const selected = select.getAttribute("aria-pressed") !== "true";
@@ -21,7 +21,7 @@
       chip.dispatchEvent(
         new CustomEvent("md-chip-action", {
           bubbles: true,
-          detail: { label: action.textContent.trim() },
+          detail: { label: action.textContent?.trim() ?? "" },
         }),
       );
     if (remove) {
@@ -30,10 +30,10 @@
     }
   });
   document.addEventListener("keydown", (event) => {
-    const chip = event.target.closest?.('[data-family="chip"]');
+    const chip = (event.target as Element | null)?.closest?.<HTMLElement>('[data-family="chip"]');
     if (!chip || chip.getAttribute("aria-disabled") === "true") return;
-    const primary = chip.querySelector("[data-chip-select]"),
-      remove = chip.querySelector("[data-chip-remove]");
+    const primary = chip.querySelector<HTMLElement>("[data-chip-select]"),
+      remove = chip.querySelector<HTMLElement>("[data-chip-remove]");
     if (!primary || !remove) return;
     if (event.key === "Delete" || event.key === "Backspace") {
       event.preventDefault();
@@ -52,13 +52,13 @@
     }
   });
   document.addEventListener("focusin", (event) => {
-    const remove = event.target.closest?.("[data-chip-remove]");
-    if (remove)
-      remove.parentElement.querySelector("[data-chip-select]").tabIndex = -1;
+    const remove = (event.target as Element | null)?.closest?.("[data-chip-remove]");
+    const primary = remove?.parentElement?.querySelector<HTMLElement>("[data-chip-select]");
+    if (primary) primary.tabIndex = -1;
   });
   document.addEventListener("focusout", (event) => {
-    const remove = event.target.closest?.("[data-chip-remove]");
-    if (remove)
-      remove.parentElement.querySelector("[data-chip-select]").tabIndex = 0;
+    const remove = (event.target as Element | null)?.closest?.("[data-chip-remove]");
+    const primary = remove?.parentElement?.querySelector<HTMLElement>("[data-chip-select]");
+    if (primary) primary.tabIndex = 0;
   });
 })();

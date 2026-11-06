@@ -28,10 +28,11 @@ type componentAssets struct {
 	headModules    map[string]bool
 	server         *Server
 	deferStyles    bool
+	static         bool
 	catalogScripts []string
 }
 
-var catalogBehaviorScripts = []string{"artwork.js", "artwork-canvas.js", "component-demos.js", "dialog-demo.js"}
+var catalogBehaviorScripts = []string{"artwork-canvas.js", "artwork.js", "component-demos.js", "dialog-demo.js"}
 
 func useCatalogBehavior(name string) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, _ io.Writer) error {
@@ -70,14 +71,15 @@ func deferThumbnailStyles() templ.Component {
 	})
 }
 
-func componentAssetScope() templ.Component {
+func componentAssetScope(static ...bool) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, writer io.Writer) error {
 		children := templ.GetChildren(ctx)
 		parent, ok := ctx.Value(componentAssetsKey{}).(*componentAssets)
 		if !ok {
 			return children.Render(templ.ClearChildren(ctx), writer)
 		}
-		assets := &componentAssets{modules: map[string]bool{}, headModules: parent.headModules, server: parent.server}
+		assets := &componentAssets{modules: map[string]bool{}, headModules: parent.headModules, server: parent.server, static: len(static) > 0 && static[0]}
+		assets.deferStyles = assets.static && parent.deferStyles
 		ctx = ui.WithAssets(context.WithValue(templ.ClearChildren(ctx), componentAssetsKey{}, assets), ui.Assets(assets.modules))
 		var content bytes.Buffer
 		if err := children.Render(ctx, &content); err != nil {
@@ -176,20 +178,25 @@ func (server *Server) componentAssetLinks(assets *componentAssets) ([]byte, erro
 		return nil, err
 	}
 	scripts = append(scripts, assets.catalogScripts...)
+	if assets.static {
+		// Static progress examples need their SVG paths painted; other thumbnail
+		// components use CSS only and must not activate interactive controllers.
+		scripts = slices.DeleteFunc(scripts, func(name string) bool { return name != "progress.js" })
+	}
 	if len(scripts) > 0 {
 		data, err := json.Marshal(scripts)
 		if err != nil {
 			return nil, err
 		}
-		// Diagnostic declarations travel with each independently replaced region.
-		// The selector-based loader remains authoritative during comparison.
+		// Requirements travel with each independently replaced region.
 		fmt.Fprintf(&links, `<script type="application/json" data-component-behaviors>%s</script>`, data)
 	}
 	return []byte(links.String()), nil
 }
 
 var componentScriptSources = sync.OnceValue(func() string {
-	sources := map[string]string{}
+	var sources strings.Builder
+	sources.WriteByte('{')
 	scripts, err := components.ScriptsFor(componentModuleOrder()...)
 	if err != nil {
 		panic(err)
@@ -197,13 +204,15 @@ var componentScriptSources = sync.OnceValue(func() string {
 	// These scripts belong to Catalog examples rather than exported Forge controls.
 	scripts = append(scripts, catalogBehaviorScripts...)
 	for _, name := range scripts {
-		sources[name] = strings.TrimPrefix(staticURL(name), "/static/")
+		if sources.Len() > 1 {
+			sources.WriteByte(',')
+		}
+		key, _ := json.Marshal(name)
+		value, _ := json.Marshal(strings.TrimPrefix(staticURL(name), "/static/"))
+		fmt.Fprintf(&sources, "%s:%s", key, value)
 	}
-	data, err := json.Marshal(sources)
-	if err != nil {
-		panic(err)
-	}
-	return string(data)
+	sources.WriteByte('}')
+	return sources.String()
 })
 
 // Shared tokens stay on the document root; rendered modules add scoped tokens.

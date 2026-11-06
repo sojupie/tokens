@@ -1,4 +1,4 @@
-import { navigationIndex } from "../helpers/navigation.js";
+import { navigationIndex } from "../helpers/navigation.ts";
 
 (() => {
   function revealSnap(offset,distance,rtl=false) {return (rtl?offset:-offset)>=distance/2;}

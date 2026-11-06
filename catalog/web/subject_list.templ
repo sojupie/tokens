@@ -47,10 +47,14 @@ templ subjectCard(subject publish.SubjectView, thumbnails map[string]componentCa
 			if image,ok:=thumbnailIllustration(ctx,subjectURL(subject)); ok {
 				@thumbnailPicture(image)
 			} else if styles {
-				@styleThumbnail(subject)
+				@componentAssetScope(true) {
+ @styleThumbnail(subject)
+ }
 			} else if specimen, ok := thumbnails[subject.Key.Slug]; ok {
 				<div class="tokens-component-thumbnail-scene" inert aria-hidden="true" data-thumbnail={ subject.Key.Slug }>
-					@componentThumbnail(specimen)
+					@componentAssetScope(true) {
+ @componentThumbnail(specimen)
+ }
 				</div>
 			} else {
 				@materialSymbol("widgets")

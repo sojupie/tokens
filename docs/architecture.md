@@ -37,6 +37,10 @@ renderer supports publications without them. Production requires matching
 external assets and runs the Node asset build before server startup or restart.
 See [DTCG exports](reference/dtcg.md) for the build procedure.
 
+The [delivery and performance reference](reference/delivery-performance.md)
+covers backend caching, CSS subsets, browser scheduling and reuse, lifecycle work,
+benchmarks and the experimental custom-property name transform.
+
 ## Component authoring
 
 The components are handwritten HTML anatomy, CSS layout and browser behavior,
@@ -73,14 +77,18 @@ direct edits to those outputs, token-bound CSS, or `*_templ.go` files are overwr
 The CSS build uses `forge/components/modules.json` to assign structural source
 files and generated binding families to modules. Templates register modules as
 they render, including nested components. Catalog collects the requests and
-inserts versioned stylesheet and theme links within each replaceable region.
-Those links follow the content through both page and playground HTMX updates. The browser loader selects behavior
-from rendered anatomy and loads each script once.
+emits versioned stylesheet/theme links and behavior declarations for each
+replaceable region. Full documents hoist and deduplicate stylesheet links into
+the head; fragments retain dependencies for preparation before insertion. The
+browser loader uses rendered declarations to choose optional behavior, starts
+downloads together and evaluates scripts in order after CSS resolves. Loaded
+component styles and scripts remain available across swaps. Selector discovery
+is retained for auditing, not delivery.
 
 The site theme preserves captured aliases where the site conversions produce the
 same values. Common declarations appear once; the six appearance selectors hold
 only changed definitions. Public context exports retain their existing output.
-`forge/theme-subsets.mjs` follows CSS references through all six appearances.
+`forge/theme-subsets.ts` follows CSS references through all six appearances.
 Shared site and control inputs live on the document root. Optional module inputs
 are scoped to `[data-component-assets]` regions, or `#component-preview` in standalone fixtures.
 Galleries collect assets from their rendered thumbnails.

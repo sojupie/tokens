@@ -121,7 +121,7 @@ func TestComponentGalleryRendersNativeStates(t *testing.T) {
 			response := httptest.NewRecorder()
 			server.Handler().ServeHTTP(response, request)
 			body := response.Body.String()
-			if response.Code != 200 || !strings.Contains(body, `class="tokens-card-grid"`) || strings.Contains(body, `data-new-component`) {
+			if response.Code != 200 || !strings.Contains(body, `class="tokens-card-grid tokens-layout-grid"`) || strings.Contains(body, `data-new-component`) {
 				t.Fatalf("card grid missing: %s fragment=%v status=%d", path, fragment, response.Code)
 			}
 			if strings.Contains(path, "q=segmented") && strings.Count(body, `class="tokens-component-tile"`) != 1 {

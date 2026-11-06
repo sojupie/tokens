@@ -1,7 +1,7 @@
-import postcss from "postcss";
+import postcss, {type Rule, type Declaration} from "postcss";
 import { transformSync } from "esbuild";
 
-export function compactCSS(css) {
+export function compactCSS(css: string) {
   return transformSync(css, {
     loader: "css",
     minifyWhitespace: true,
@@ -11,10 +11,10 @@ export function compactCSS(css) {
 
 // Move custom-property declarations into an earlier identical selector only if
 // no intervening rule writes those properties. Preserve cascade precedence.
-export function groupBindings(css) {
+export function groupBindings(css: string) {
   const root = postcss.parse(css);
-  const candidates = new Map(),
-    lastWrite = new Map();
+  const candidates = new Map<string, {rule:Rule; index:number}>(),
+    lastWrite = new Map<string,number>();
   for (const [index, rule] of [...root.nodes].entries()) {
     if (rule.type === "comment") continue;
     if (
@@ -25,11 +25,12 @@ export function groupBindings(css) {
       lastWrite.clear();
       continue;
     }
-    const properties = rule.nodes.map((n) => n.prop);
+    const declarations = rule.nodes.filter((n): n is Declaration => n.type === "decl");
+    const properties = declarations.map((n) => n.prop);
     const earlier = candidates.get(rule.selector);
     if (
       earlier &&
-      rule.nodes.every((n) => (lastWrite.get(n.prop) ?? -1) <= earlier.index)
+      declarations.every((n) => (lastWrite.get(n.prop) ?? -1) <= earlier.index)
     ) {
       for (const declaration of [...rule.nodes])
         earlier.rule.append(declaration);
@@ -44,10 +45,10 @@ export function groupBindings(css) {
   return root.toString();
 }
 
-export function themeVariantsCSS(variants, names) {
+export function themeVariantsCSS(variants: {theme:string;selector:string;values:Record<string,unknown>}[], names: Iterable<string>) {
   if (!variants.length) throw new Error("A default theme is required");
   const base = variants[0];
-  const declarations = (values) =>
+  const declarations = (values: Record<string,unknown>) =>
     [...names]
       .sort()
       .map((name) => {

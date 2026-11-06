@@ -1,23 +1,23 @@
 import postcss from "postcss";
-import { compactCSS } from "./css-output.mjs";
+import { compactCSS } from "./css-output.ts";
 
 // Follow CSS references in every appearance, including nested fallback values.
 // Captured aliases remain CSS references and are followed transitively.
 export function themeSubset(
-  theme,
-  sources,
-  { scope = "", exclude = new Set() } = {},
+  theme: string,
+  sources: string[],
+  { scope = "", exclude = new Set<string>() }: {scope?:string;exclude?:Set<string>} = {},
 ) {
   const root = postcss.parse(theme),
-    values = new Map(),
-    wanted = new Set();
+    values = new Map<string,string[]>(),
+    wanted = new Set<string>();
   root.walkDecls((declaration) => {
     if (!declaration.prop.startsWith("--")) return;
     const entries = values.get(declaration.prop) ?? [];
     entries.push(declaration.value);
     values.set(declaration.prop, entries);
   });
-  function include(source) {
+  function include(source: string) {
     for (const match of source.matchAll(/var\(\s*(--[\w-]+)/g)) {
       const name = match[1];
       if (wanted.has(name)) continue;
@@ -27,7 +27,7 @@ export function themeSubset(
         continue; // Component-local properties are defined by component CSS.
       }
       wanted.add(name);
-      for (const value of values.get(name)) include(String(value));
+      for (const value of values.get(name) || []) include(String(value));
     }
   }
   for (const source of sources) include(source);
@@ -41,17 +41,19 @@ export function themeSubset(
       rule.selector = rule.selectors
         .map((selector) => `${selector} ${scope}`)
         .join(",");
-      rule.walkDecls("color-scheme", (declaration) => declaration.remove());
+      rule.walkDecls("color-scheme", (declaration) => { declaration.remove(); });
     });
   return { css: compactCSS(root.toString()), names: wanted };
 }
 
 // CSS and literal runtime reads form the dependency roots. Spring readers build
 // their property names dynamically, so their twelve inputs stay explicit here.
-export function pageThemes(theme, bundles, sharedSources, runtimeSources) {
+export function pageThemes(theme: string, bundles: Map<string,string>, sharedSources: string[], runtimeSources: string[]) {
+  const common = bundles.get("common");
+  if (common === undefined) throw new Error("Missing common component bundle");
   const inputs = [
     ...sharedSources,
-    bundles.get("common"),
+    common,
     "var(--tokens-preview-on-light) var(--tokens-preview-on-dark)",
   ];
   for (const source of runtimeSources)

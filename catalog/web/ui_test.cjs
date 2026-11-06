@@ -810,7 +810,7 @@ test('docked shell follows visual viewport frames without reopening or retaining
  const styles=new Map(),events={},wideEvents={},frames=[];
  let shows=0,closes=0;
  const body={blur(){}},opener={setAttribute(){}};
- const drawer={open:false,dataset:{},setAttribute(){},removeAttribute(){},addEventListener(){},show(){this.open=true;shows++;},close(){this.open=false;closes++;}};
+ const drawer={open:true,dataset:{variant:'standard'},setAttribute(){},removeAttribute(){},addEventListener(){},show(){this.open=true;shows++;},close(){this.open=false;closes++;}};
  const header={addEventListener(){},querySelectorAll:()=>[],dataset:{drawerBreakpoint:'1100'},style:{setProperty:(key,value)=>styles.set(key,value),removeProperty:key=>styles.delete(key)},querySelector:selector=>selector==='#tokens-site-menu'?drawer:selector==='[data-navigation-open]'?opener:null,getBoundingClientRect:()=>({height:64})};
  const wide={matches:true,addEventListener:(name,fn)=>wideEvents[name]=fn};
  const viewport={height:700,offsetTop:0,scale:1,addEventListener:(name,fn)=>events[name]=fn};
@@ -829,7 +829,7 @@ test('docked shell follows visual viewport frames without reopening or retaining
  viewport.offsetTop=12;events.scroll();frames.shift()();
  assert.equal(styles.has('--site-drawer-top'),false,'elastic-scroll offsets must not translate a fixed drawer');
  assert.equal(styles.get('--site-drawer-height'),'700px');
- assert.equal(shows,1);assert.equal(closes,0,'toolbar scrolling must not rearrange the native dialog');
+ assert.equal(shows,0);assert.equal(closes,0,'startup and toolbar scrolling preserve the already docked dialog');
  viewport.scale=2;events.resize();frames.shift()();
  assert.equal(styles.has('--site-drawer-height'),false,'pinch zoom preserves normal layout sizing');
  viewport.scale=1;wide.matches=false;wideEvents.change();
@@ -988,8 +988,21 @@ test('HTMX response preparation waits for component CSS and strips only dependen
  assert.equal(await changed.response.raw.text(),'');assert.equal(changed.catalogAssetChange,true);
 });
 
-function behaviorLoader({css=false,preview=true}={}) {
+test('per-node HTMX link policy does not rescan processed containers',()=>{
+ const events={};
+ runScript('site-ui.js',{document:{readyState:'loading',addEventListener:(name,fn)=>events[name]=fn,querySelector:()=>({src:'https://example.test/static/site-ui.js'})},window:{addEventListener(){}},URL,location:{origin:'https://example.test'}});
+ events['htmx:beforeProcessNode']({detail:{elt:{matches:()=>false,querySelectorAll(){throw Error('must not rescan descendants');}}}});
+ for(const href of ['https://example.test/components/cards','https://example.test/download','https://outside.test/']){
+  const attributes={};
+  const link={href,matches:()=>true,querySelectorAll:()=>[],setAttribute:(name,value)=>attributes[name]=value};
+  events['htmx:beforeProcessNode']({detail:{elt:link}});
+  assert.equal(attributes['hx-boost'],href.includes('/components/')?undefined:'false');
+ }
+});
+
+function behaviorLoader({css=false,preview=true,eager=[],declared=['runtime/button-groups.js','runtime/segmented-buttons.js']}={}) {
  const nodes=[],events={},dispatched=[],errors=[],matches=new Map();
+ const declarations=new Set(declared);
  const grid={inert:true},region={inert:false,isConnected:true,busy:false,error:null,
   setAttribute(){this.busy=true},removeAttribute(){this.busy=false},
   contains:()=>true,querySelector(selector){return selector==='.tokens-preview-grid'?grid:this.error},
@@ -999,14 +1012,14 @@ function behaviorLoader({css=false,preview=true}={}) {
  const document={baseURI:'https://example.test/',currentScript:{src:'https://example.test/static/asset-loader.js',dataset:{sources:JSON.stringify(Object.fromEntries(['runtime/button-groups.js','runtime/segmented-buttons.js','dialogs.js','dialog-demo.js','component-demos.js'].map(name=>[name,'/static/'+name+'?v=1']))) }},
   head:{querySelectorAll:()=>[style],append(node){nodes.push(node)}},
   querySelector:()=>current,getElementById:()=>current,
-  querySelectorAll:selector=>matches.get(selector)||[],
+  querySelectorAll:selector=>selector==='script[data-component-behaviors]'?[{textContent:JSON.stringify([...declarations])}]:selector==='script[src]:not([data-component-script])'?eager.map(name=>({getAttribute:()=>'/static/'+name+'?v=1'})):matches.get(selector)||[],
   createElement(tag){return {tag,dataset:{},async:true,remove(){if(region.error===this)region.error=null;const index=nodes.indexOf(this);if(index>=0)nodes.splice(index,1)},setAttribute(){}}},
   addEventListener(name,fn){events[name]=fn},dispatchEvent(event){dispatched.push(event.type)}};
  const context={document,URL,CustomEvent:class{constructor(type){this.type=type}},console:{error:error=>errors.push(error)}};
  const add=selector=>matches.set(selector,[{closest:()=>null}]);
  add('.md-button-group');add('.md-segmented-button');
  runScript('asset-loader.js',context);
- return {api:context.TokenAssets,nodes,region,grid,events,dispatched,errors,style,add,
+ return {api:context.TokenAssets,declarations,nodes,region,grid,events,dispatched,errors,style,add,
   remove:selector=>matches.delete(selector),scripts:()=>nodes.filter(node=>node.tag==='script'),
   hints:()=>nodes.filter(node=>node.tag==='link'),
   replace(){region.isConnected=false;current={...region,inert:false,isConnected:true,error:null};events['htmx:afterSwap']();return current}};
@@ -1021,9 +1034,9 @@ test('behavior downloads are hinted together while CSS gates ordered script exec
  assert.equal(h.scripts().length,0,'preloading must not execute controllers before CSS');
  assert.equal(h.region.inert,true);
  h.style.sheet={};h.style.listeners.load();await settleBehaviorLoader();
- assert.equal(h.scripts().length,1);assert(h.scripts()[0].src.href.includes('button-groups.js'));
+ assert.equal(h.scripts().length,1);assert(h.scripts()[0].src.includes('button-groups.js'));
  h.scripts()[0].onload();await settleBehaviorLoader();
- assert.equal(h.scripts().length,2);assert(h.scripts()[1].src.href.includes('segmented-buttons.js'));
+ assert.equal(h.scripts().length,2);assert(h.scripts()[1].src.includes('segmented-buttons.js'));
  assert(h.scripts().every(node=>node.async===false));
  h.scripts()[1].onload();await h.api.ready;
  assert.equal(h.region.inert,false);assert.equal(h.grid.inert,false);
@@ -1032,16 +1045,16 @@ test('behavior downloads are hinted together while CSS gates ordered script exec
  assert.equal(h.hints().length,2);assert.equal(h.scripts().length,2,'activation reuses already evaluated scripts');
 });
 
-test('ordered discovery still finds behavior introduced by an earlier controller',async()=>{
- const h=behaviorLoader({preview:false});h.remove('.md-segmented-button');
+test('declared children load even when their markup is created by an earlier controller',async()=>{
+ const h=behaviorLoader({preview:false,declared:['runtime/button-groups.js','dialogs.js','dialog-demo.js']});h.remove('.md-segmented-button');
  await settleBehaviorLoader();
  h.add('dialog[data-dialog-surface],dialog[data-dialog-preview]');h.add('.md-dialog-demo');
  h.scripts()[0].onload();await settleBehaviorLoader();
- assert(h.scripts()[1].src.href.includes('/dialogs.js?'));
+ assert(h.scripts()[1].src.includes('/dialogs.js?'));
  h.scripts()[1].onload();await settleBehaviorLoader();
- assert(h.scripts()[2].src.href.includes('/dialog-demo.js?'));
+ assert(h.scripts()[2].src.includes('/dialog-demo.js?'));
  h.scripts()[2].onload();await h.api.ready;
- assert.equal(h.hints().length,2,'only initially discovered requirements receive hints');
+ assert.equal(h.hints().length,3,'parent declarations preload child behavior before its markup exists');
 });
 
 test('failed behavior releases its preload and can be retried without reloading successful scripts',async()=>{
@@ -1060,14 +1073,14 @@ test('failed behavior releases its preload and can be retried without reloading 
 test('superseded activations cannot enable a newer preview or report stale errors',async()=>{
  const h=behaviorLoader();await settleBehaviorLoader();
  const old=h.api.ready,next=h.replace(),latest=h.api.ready;
- h.add('dialog[data-dialog-surface],dialog[data-dialog-preview]');
+ h.declarations.add('dialogs.js');
  await settleBehaviorLoader();h.scripts()[0].onload();await settleBehaviorLoader();
  assert.equal(next.inert,true);assert.equal(h.dispatched.filter(name=>name==='tokens:assets-ready').length,0);
  h.scripts()[1].onload();await settleBehaviorLoader();
  assert.equal(next.inert,true);h.scripts()[2].onload();await Promise.all([old,latest]);
  assert.equal(next.inert,false);assert.equal(h.dispatched.filter(name=>name==='tokens:assets-ready').length,1);
  const failed=behaviorLoader();await settleBehaviorLoader();
- const outdated=failed.api.ready;failed.remove('.md-button-group');failed.remove('.md-segmented-button');
+ const outdated=failed.api.ready;failed.declarations.clear();failed.remove('.md-button-group');failed.remove('.md-segmented-button');
  const replacement=failed.replace();await failed.api.ready;
  failed.scripts()[0].onerror();await assert.rejects(outdated,/button-groups/);await settleBehaviorLoader();
  assert.equal(replacement.error,null);assert.equal(replacement.inert,false);assert.equal(failed.errors.length,0);
@@ -1102,7 +1115,7 @@ test('failed prefetch falls back to navigation, and persistent links remain arme
 
 test('incoming HTML starts its script downloads before insertion without evaluating them',async()=>{
  const h=behaviorLoader({css:true});
- const incoming={querySelectorAll:selector=>selector==='dialog[data-dialog-surface],dialog[data-dialog-preview]'?[{closest:()=>null}]:[]};
+ const incoming={querySelectorAll:selector=>selector==='script[data-component-behaviors]'?[{textContent:'["dialogs.js"]'}]:[]};
  await h.api.prepareStyles(incoming);
  assert(h.hints().some(node=>node.href.includes('/dialogs.js?')));
  assert.equal(h.scripts().length,0,'incoming behavior must not execute while current CSS is pending');
@@ -1110,5 +1123,38 @@ test('incoming HTML starts its script downloads before insertion without evaluat
  await assert.rejects(h.api.prepareStyles(incoming,aborted.signal),{name:'AbortError'});
  h.style.sheet={};h.style.listeners.load();await settleBehaviorLoader();
  h.scripts()[0].onload();await settleBehaviorLoader();h.scripts()[1].onload();await h.api.ready;
- assert(!h.scripts().some(node=>node.src.href.includes('/dialogs.js?')),'preparing a response must not activate its absent dialog');
+ assert(!h.scripts().some(node=>node.src.includes('/dialogs.js?')),'preparing a response must not activate its absent dialog');
+});
+
+
+test('selectors cannot silently load undeclared behavior', async()=>{
+ const h=behaviorLoader({css:true});h.declarations.clear();h.add('.md-dialog-demo');
+ h.style.sheet={};h.style.listeners.load();await h.api.ready;
+ assert.equal(h.scripts().length,0);
+ assert.equal(h.api.audit().undeclared.includes('dialog-demo.js'),true);
+});
+
+test('unknown declared behavior fails before creating a script request', async()=>{
+ const h=behaviorLoader({css:true});h.declarations.add('missing.js');
+ h.style.sheet={};h.style.listeners.load();await assert.rejects(h.api.ready,/Unknown component behavior/);
+ assert.equal(h.scripts().length,0);
+});
+
+
+test('declared delivery reuses host scripts and follows source order rather than markup order',async()=>{
+ const h=behaviorLoader({declared:['runtime/segmented-buttons.js','runtime/navigation.js','runtime/button-groups.js'],eager:['runtime/navigation.js']});
+ assert(h.hints()[0].href.includes('button-groups.js'));
+ assert.equal(h.hints().length,2,'host navigation must not be requested again');
+ await settleBehaviorLoader();h.scripts()[0].onload();await settleBehaviorLoader();h.scripts()[1].onload();await h.api.ready;
+ assert(h.scripts()[0].src.includes('button-groups.js'));
+});
+
+
+test('export morph applies confirmed radio selection instead of preserving a disabled dirty choice',()=>{
+ const events={};const live=[{id:'scope-view',checked:true},{id:'scope-collection',checked:false}];
+ const confirmed=[{id:'scope-view',checked:false},{id:'scope-collection',checked:true}];
+ const panel={querySelectorAll:()=>[]};const sourceElement={closest:()=>panel};
+ runScript('export.js',{document:{readyState:'loading',addEventListener:(n,fn)=>events[n]=fn},location:{search:''}});
+ events['htmx:before:swap']({detail:{ctx:{sourceElement},tasks:[{target:{id:'tokens-export-fields',querySelectorAll:()=>live},fragment:{querySelectorAll:selector=>selector.startsWith('input')?confirmed:[]}}]}});
+ assert.deepEqual(live.map(i=>i.checked),[false,true]);
 });

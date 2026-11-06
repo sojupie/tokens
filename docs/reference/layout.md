@@ -83,24 +83,6 @@ compositions. Start large scenes with the intended phone, tablet or desktop
 viewport. Preserve its geometry when framing it. The 1200×630 social-image export
 is an output format, not the application's viewport.
 
-Review the six applications at `/illustrations/review`. Mail, learning, artwork,
-workspace and shop start at 1440×1000; museum starts at 412×892. The window-width
-selector changes the actual iframe viewport. Outside scaling only fits that
-viewport into the review page. Theme, contrast and column-overlay controls apply
-to loaded frames and frames loaded later. The older component-by-component review
-remains at `/illustrations/review/components`.
-
-`catalog/web/application_scenes.go` owns the application/state inventory and
-validated query selections. `application_scenes.templ` owns composition;
-`static/application-scenes.css` allocates panes and content regions. Feeds use
-`.tokens-layout-grid`, not a separately painted approximation of the overlay.
-`document_screen.templ` provides the shared document composition. Forge surfaces
-and controllers own controls, menu positioning, modal focus, sizing and behavior.
-Do not place a FAB in a drawer or in a sibling area styled as part of that drawer.
-Mail uses an expanded rail with its supported FAB slot; the workspace drawer has
-navigation only. Keep playground wrappers and specimen controls out of component
-surfaces. A successful render is not visual acceptance.
-
 Review markup before regenerating illustration images. The existing published
 images remain separate and are not rebuilt by visiting the review page.
 

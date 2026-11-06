@@ -72,7 +72,10 @@
         !(path==='/'||path==='/for-agents'||['components','styles','changes'].some(section=>path==='/'+section||path.startsWith('/'+section+'/'))))link.setAttribute('hx-boost','false');
     });
   }
-  document.addEventListener('htmx:beforeProcessNode',event=>navigationLinks((event.detail?.elt || event.target)));
+  document.addEventListener('htmx:beforeProcessNode',event=>{
+    const node=event.detail?.elt || event.target;
+    if(node.matches?.('a[href]'))navigationLinks(node);
+  });
   // Check deployed assets before hx-head reads and merges a full response.
   const assets=doc=>Array.from(doc.head.querySelectorAll('script[src]:not([data-component-script]),link[rel="stylesheet"]:not([data-component-stylesheet])'),node=>[node.getAttribute('src')||node.getAttribute('href'),node.getAttribute('data-sources')||'',node.getAttribute('data-shapes-version')||''].join('\n')).join('\n');
   document.addEventListener('htmx:head:before:merge',event=>{
@@ -81,11 +84,17 @@
     if(ctx.target!==document.body)event.preventDefault();
     const read=ctx.response.raw.text.bind(ctx.response.raw);
     ctx.response.raw.text=async()=>{
+      globalThis.TokenBenchmark?.mark("response-read-start");
       const html=await read();
+      globalThis.TokenBenchmark?.mark("response-read-end");
+      globalThis.TokenBenchmark?.mark("html-parse-start");
       const incoming=new DOMParser().parseFromString(html,'text/html');
+      globalThis.TokenBenchmark?.mark("html-parse-end");
       ctx.catalogAssetChange=(ctx.target===document.body&&assets(incoming)!==assets(document))||globalThis.TokenAssets.stylesChanged(incoming);
       if(ctx.catalogAssetChange)return '';
+      globalThis.TokenBenchmark?.mark("styles-prepare-start");
       await globalThis.TokenAssets.prepareStyles(incoming,ctx.request.signal);
+      globalThis.TokenBenchmark?.mark("styles-prepare-end");
       // Dependencies now belong to the head, never to replaceable regions.
       return html.replace(/<link\b[^>]*\bdata-component-stylesheet\b[^>]*>/gi,'');
     };

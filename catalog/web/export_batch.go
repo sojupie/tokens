@@ -4,6 +4,7 @@ import (
 	"archive/zip"
 	"bytes"
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
 	"sort"
@@ -104,25 +105,38 @@ func (server *Server) handleExportBatch(w http.ResponseWriter, r *http.Request, 
 				}
 			}
 		} else {
-			var data []byte
-			var filename string
-			if query.Get("summary") != "1" {
-				data, _, filename, err = server.exportTokenFile(job)
-			}
-			if err == nil && query.Get("summary") != "1" {
-				entry, e := archive.Create(folder + filename)
-				err = e
-				if err == nil {
-					_, err = entry.Write(data)
+			document, report, summary, subject, e := server.exportDocument(job)
+			err = e
+			if err == nil {
+				summaries = append(summaries, summary)
+				files++
+				if job.Get("format") != "report" {
 					files++
 				}
-			}
-			if err == nil {
-				_, _, summary, _, e := server.exportDocument(job)
-				err = e
-				summaries = append(summaries, summary)
-				if query.Get("summary") == "1" {
-					files++
+				if query.Get("summary") != "1" {
+					var data []byte
+					var filename string
+					data, _, filename, err = server.renderTokenFile(job, document, report, summary, subject)
+					if err == nil {
+						var entry io.Writer
+						entry, err = archive.Create(folder + filename)
+						if err == nil {
+							_, err = entry.Write(data)
+						}
+					}
+					// An explicitly requested report is already the selection's metadata.
+					if err == nil && job.Get("format") != "report" {
+						reportQuery := cloneExportQuery(job)
+						reportQuery.Set("format", "report")
+						data, _, filename, err = server.renderTokenFile(reportQuery, document, report, summary, subject)
+						if err == nil {
+							var entry io.Writer
+							entry, err = archive.Create(folder + filename)
+							if err == nil {
+								_, err = entry.Write(data)
+							}
+						}
+					}
 				}
 			}
 		}

@@ -1,5 +1,5 @@
 // Stateless keyboard navigation shared by independently delivered controls.
-export function navigationIndex(index, length, key, horizontal, rtl = false) {
+export function navigationIndex(index: number, length: number, key: string, horizontal: boolean, rtl = false) {
   if (key === "Home") return 0;
   if (key === "End") return length - 1;
   const forward = horizontal

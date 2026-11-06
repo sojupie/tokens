@@ -1,5 +1,5 @@
 import { readFile } from "node:fs/promises";
-import { compactCSS } from "./css-output.mjs";
+import { compactCSS } from "./css-output.ts";
 
 // Ownership is declared alongside component sources. No selectors are classified.
 export async function componentBundles({
@@ -7,17 +7,17 @@ export async function componentBundles({
   motionCSS,
   elevation,
   allCSS,
-}) {
+}: { bindings: Map<string,string>; motionCSS: string; elevation: string; allCSS: string }) {
   const root = new URL("./components/", import.meta.url);
-  const modules = JSON.parse(
+  const modules: Record<string, {styles:string[]; bindings:string[]}> = JSON.parse(
     await readFile(new URL("modules.json", root), "utf8"),
   );
-  const sources = JSON.parse(
+  const sources: string[] = JSON.parse(
     await readFile(new URL("style-sources.json", root), "utf8"),
   );
-  const files = new Map(),
-    owners = new Map(),
-    result = new Map();
+  const files = new Map<string,string>(),
+    owners = new Map<string,string>(),
+    result = new Map<string,string>();
   for (const [id, module] of Object.entries(modules)) {
     for (const file of module.styles) {
       if (files.has(file)) throw Error(`Duplicate source owner: ${file}`);
@@ -43,9 +43,9 @@ export async function componentBundles({
         .map((file) => readFile(new URL(file, root), "utf8")),
     );
     const generated = module.bindings.map((family) => {
-      if (!bindings.has(family))
-        throw Error(`Missing binding family: ${family}`);
-      return bindings.get(family);
+      const css = bindings.get(family);
+      if (typeof css !== "string") throw Error(`Missing binding family: ${family}`);
+      return css;
     });
     result.set(
       id,

@@ -1,8 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import postcss from "postcss";
-import { groupBindings, themeVariantsCSS } from "./css-output.mjs";
-import { componentBundles } from "./component-bundles.mjs";
+import { groupBindings, themeVariantsCSS } from "./css-output.ts";
+import { componentBundles } from "./component-bundles.ts";
 
 test("binding grouping preserves intervening state and variant precedence", () => {
   const css = groupBindings(".a{--x:1}.b{--z:2}.a{--y:3}.b{--x:4}.a{--x:5}");

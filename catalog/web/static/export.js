@@ -57,6 +57,14 @@
     const disclosures = Array.from(panel.querySelectorAll('.tokens-export-disclosure'), detail => detail.open && detail.dataset.expanding !== 'false');
     for (const task of event.detail.tasks) {
       if (task.target?.id !== 'tokens-export-fields') continue;
+      // Morphing preserves dirty checked properties. These choices are server-
+      // confirmed: a disabled old scope must not override its valid replacement.
+      const current = new Map([...(task.target.querySelectorAll?.('input[type="radio"],input[type="checkbox"]') || [])]
+        .map(input => [input.id, input]));
+      for (const input of task.fragment.querySelectorAll('input[type="radio"],input[type="checkbox"]')) {
+        const live = current.get(input.id);
+        if (live) live.checked = input.checked;
+      }
       task.fragment.querySelectorAll('.tokens-export-disclosure').forEach((detail, i) => { detail.open = disclosures[i]; });
     }
   });

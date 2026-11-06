@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 )
 
@@ -30,7 +31,13 @@ func TestResponseCacheValidationAndInvalidation(t *testing.T) {
 	if first.Code != 200 || first.Body.Len() != 0 || calls != 1 {
 		t.Fatal("HEAD must seed the GET representation")
 	}
+	if !strings.Contains(first.Header().Get("Server-Timing"), `desc="miss"`) || !strings.Contains(first.Header().Get("Server-Timing"), "render;dur=") {
+		t.Fatal("missing render timing")
+	}
 	next := fetch("GET", "/components", "", "")
+	if !strings.Contains(next.Header().Get("Server-Timing"), `desc="hit"`) || strings.Contains(next.Header().Get("Server-Timing"), "render;") {
+		t.Fatal("cache hit reused stale render timing")
+	}
 	if next.Body.String() != "first::" || calls != 1 {
 		t.Fatal("cache did not reuse rendered response")
 	}

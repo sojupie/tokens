@@ -1,14 +1,15 @@
-import motion from "./components/static/motion.cjs";
+import { cssTiming } from "./components/helpers/springs.ts";
 import { parseArgs } from "node:util";
 import StyleDictionary from "style-dictionary";
 import { siteTheme } from "./material/site-theme.mjs";
 import { circularShapeRadius } from "./material/circular-shapes.mjs";
 import { generateComponents } from "./material/generate-components.mjs";
 import { generateButtons } from "./material/generate-buttons.mjs";
-import { buildComponentAssets } from "./components/build-assets.mjs";
-import { compactCSS, themeVariantsCSS } from './css-output.mjs';
-import { componentBundles } from './component-bundles.mjs';
-import { pageThemes } from './theme-subsets.mjs';
+import { buildComponentAssets } from "./components/build-assets.ts";
+import { buildCatalogAssets } from "../catalog/web/build-assets.ts";
+import { compactCSS, themeVariantsCSS } from './css-output.ts';
+import { componentBundles } from './component-bundles.ts';
+import { pageThemes } from './theme-subsets.ts';
 import {
   readdir,
   cp,
@@ -237,6 +238,7 @@ async function main() {
   if (!args.published)
     throw new Error("Usage: npm run build:tokens -- --published <directory> [--assets <directory>] [--check-bindings]");
   await buildComponentAssets({ check: args["check-bindings"] });
+  await buildCatalogAssets({ check: args["check-bindings"] });
   const executable = args["tokens-binary"] ?? "go";
   const prefix = args["tokens-binary"] ? [] : ["run", "./cmd/tokens"];
   const published = await realpath(args.published);
@@ -366,7 +368,7 @@ async function main() {
       for (const speed of ["fast", "default", "slow"]) for (const type of ["spatial", "effects"]) {
         const name = `md-sys-motion-spring-${speed}-${type}`;
         for (const property of ["damping", "stiffness"]) required.add(`${name}-${property}`);
-        const timing = motion.cssTiming(Number(compiled.values[`${name}-damping`]), Number(compiled.values[`${name}-stiffness`]));
+        const timing = cssTiming(Number(compiled.values[`${name}-damping`]), Number(compiled.values[`${name}-stiffness`]));
         for (const property of ["duration", "easing"]) motionProperties.push(`  --_motion-${speed}-${type}-${property}: ${timing[property]};`);
       }
       const motionCSS = `:root {\n${motionProperties.join("\n")}\n}\n`;
@@ -429,11 +431,12 @@ async function main() {
         ["forge/components/static", "catalog/web/static"].map(
           async (directory) =>
             (await readdir(directory))
-              .filter((file) => file.endsWith(".js"))
+              .filter((file) => file.endsWith(".js") || file.endsWith(".cjs"))
               .map((file) => path.join(directory, file)),
         ),
       )
     ).flat();
+    runtimeFiles.push("forge/site/site.js");
     const runtimeSources = await Promise.all(
       runtimeFiles.map((file) => readFile(file, "utf8")),
     );

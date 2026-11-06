@@ -1,4 +1,4 @@
-import { navigationIndex } from "../helpers/navigation.js";
+import { navigationIndex } from "../helpers/navigation.ts";
 
 (() => {
   if (typeof document === "undefined") return;

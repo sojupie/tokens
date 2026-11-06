@@ -5,7 +5,7 @@ import { spawnSync } from "node:child_process";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { componentAssets } from "./components/build-assets.mjs";
+import { componentAssets } from "./components/build-assets.ts";
 import { compile, flatten, inheritReferencePalette, preserveIllustrations } from "./build-tokens.mjs";
 
 const meta = (kind, value) => ({

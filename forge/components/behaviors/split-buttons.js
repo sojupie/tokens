@@ -1,5 +1,5 @@
-import { navigationIndex } from "../helpers/navigation.js";
-import { splitMenuPosition } from "../helpers/controls.js";
+import { navigationIndex } from "../helpers/navigation.ts";
+import { splitMenuPosition } from "../helpers/controls.ts";
 
 (() => {
   if (typeof document === "undefined") return;

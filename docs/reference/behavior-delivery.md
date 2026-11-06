@@ -3,6 +3,9 @@
 This work preserves incremental asset delivery. Changes are staged so dependency
 ownership, scheduling and component lifecycle can be verified separately.
 
+The [delivery and performance reference](delivery-performance.md) covers the full
+backend/browser path, measured results and remaining limits.
+
 ## Initial work
 
 - [x] Resolve Forge script ownership from `forge/components/modules.json` through
@@ -49,37 +52,38 @@ when a DOM-dependent controller should initialize.
 - [ ] Choose an enforceable prerequisite contract. Prefer dependencies expressed
   in source imports where practical; avoid maintaining a parallel hand-written
   graph of dependencies already represented in code.
-- [x] Carry diagnostic behavior requirements in each rendered asset scope, including nested
-  components, Catalog examples and independently replaced fragments. Preserve
-  the current eager activation policy initially.
-- [ ] Compare those declarations against current browser discovery across the
-  generated component configurations before switching the loader's input.
+- [x] Use rendered behavior requirements for delivery, including nested
+  components, Catalog examples and independently replaced fragments.
+- [x] Compare declarations against browser discovery across default views,
+  states, interactive views and the options exposed by those views.
 - [x] Start known optional script downloads together while preserving execution
   order and waiting for CSS before controller evaluation.
 - [ ] Test direct loads, repeated initialization, nested compositions, HTMX
   swaps, history restoration, superseded navigation and failed asset retries.
 - [ ] Verify exported implementations and build-time tool consumers against the
   same contract.
-- [ ] Measure cold and warm navigation with the actual delivery protocol before
-  changing bundle boundaries or hidden-region activation policy.
+- [x] Measure cold and warm navigation on the local HTTP/1.1 path, including
+  prefetch reuse/expiry, with separate traces for browser work. Remote and other
+  transport/browser profiles remain unmeasured.
 
 Closed dialogs, visible regions and offscreen regions share ownership
 declarations. Dialog presentation now creates listeners and observers on opening
 and releases them on close. This defers instance work, not the script download.
 The ownership manifest does not decide when behavior should activate.
 
-The Catalog loader adds native `preload` links for scripts discovered in the
+The Catalog loader adds native `preload` links for scripts declared in the
 current document. These links start downloads without evaluating the scripts.
-After component CSS resolves, the loader evaluates scripts in its existing order
-and checks the DOM again before each script. This preserves requirements added
-by earlier controllers. Loaded scripts are reused across swaps. Failed scripts
-release their pending entry and preload link so a later activation can retry.
+After component CSS resolves, the loader evaluates scripts in the order supplied
+by the module manifest. Parents declare the dependencies of markup they generate;
+selectors do not add missing requirements. Loaded scripts are reused across swaps.
+Failed scripts release their pending entry and preload link so a later activation
+can retry.
 Only the latest activation can update preview controls or report an asset error.
 Browsers that ignore preload links retain the ordered loading path.
 
 Navigation intent uses the upstream HTMX preload extension. The existing bounded
 hover/focus policy triggers its request; HTMX owns response reuse and expiry.
-When navigation prepares incoming HTML, the same script discovery starts its
+When navigation prepares incoming HTML, the rendered requirements start their
 downloads alongside CSS preparation. Controllers still activate after insertion.
 Destination scripts are not fetched before the navigation consumes that HTML.
 
@@ -119,17 +123,43 @@ aggregate and tool consumers.
 Each asset scope now emits a non-executable `script[type="application/json"]`
 with `data-component-behaviors`. Forge requirements come from rendered primitives
 and the ownership manifest. Catalog example requirements are recorded where their
-markup is rendered. The normal selector-based loader remains authoritative.
+markup is rendered. The loader uses these declarations to select downloads.
+Selector discovery is retained only for comparison.
 
-`TokenAssets.audit(root)` compares declarations with the same discovery predicate
-used by that loader. It excludes already-delivered host scripts and reports
+`TokenAssets.audit(root)` compares declarations with diagnostic selector
+discovery. It excludes already-delivered host scripts and reports
 `undeclared` and `declarationOnly` separately. It does not load or initialize the
 declared scripts. Inert-thumbnail behavior and the existing progress exception
 are preserved.
 
-The initial browser comparison checked 1,026 views with no undeclared behavior.
+The CLI comparison checked 1,209 views with no undeclared behavior.
 Declaration-only scripts were `runtime/chips.js` from the common module, `runtime/snackbars.js`
 from the messages module, and `progress.js` on loading-indicator views. These are
 reported rather than silently removed. This covers exposed individual options,
 not every generated configuration combination, live lifecycle behavior or the
 decision to defer a hidden region.
+
+Run the browser comparison from the repository root against a running Catalog:
+
+```sh
+go run ./cmd/check-behaviors --catalog http://127.0.0.1:8085
+```
+
+Use `--chrome-path PATH` to select Chrome or Chromium and
+`--path /components/search` to restrict the check. The command discovers component
+routes and controls from rendered HTML. It parses responses into detached browser
+documents without running each page's controllers. Missing declarations fail the
+check. A negative control removes declarations and must detect missing behavior.
+This checks individual exposed options, not every combination of options.
+
+Inert gallery thumbnails use style-only asset scopes. Static progress examples
+also declare `progress.js` because it draws their SVG paths. Common and messages
+modules still declare chip and snackbar scripts more broadly than the selector
+check requires; the command reports these extra declarations.
+
+Runtime-created date cells, clock ticks, carousel indicators, list placeholders,
+navigation labels and feedback spans use their parent's existing behavior or the
+eager button runtime. No separate runtime loading API is needed for these cases.
+Closed dialogs and hidden controls remain declared with their parents. Component
+exports and Motion Lab retain their own delivery paths through the same module
+ownership data; they do not need the Catalog loader.

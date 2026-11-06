@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"reflect"
+	"slices"
 
 	"github.com/a-h/templ"
 	"github.com/sojupie/tokens/forge/components"
@@ -87,7 +88,7 @@ func TestBehaviorDeclarationsTravelWithIndependentScopes(t *testing.T) {
 		}
 	}
 	if !strings.Contains(body, `type="application/json" data-component-behaviors`) || strings.Contains(body, `"carousel.js"`) {
-		t.Fatal("invalid diagnostic declaration", body)
+		t.Fatal("invalid behavior declaration", body)
 	}
 	if len(parent.modules) > 0 || len(parent.catalogScripts) > 0 {
 		t.Fatal("child requirements leaked into the parent scope")
@@ -355,5 +356,51 @@ func TestComponentStylesAreHoistedDeduplicatedAndOrdered(t *testing.T) {
 	got, err := hoistComponentStyles(fragment)
 	if err != nil || !bytes.Equal(got, fragment) {
 		t.Fatal("fragment lost dependency declaration")
+	}
+}
+
+func TestStaticScopeKeepsStylesWithoutInteractiveScripts(t *testing.T) {
+	parent := &componentAssets{modules: map[string]bool{}, server: &Server{}}
+	ctx := ui.WithAssets(context.WithValue(context.Background(), componentAssetsKey{}, parent), ui.Assets(parent.modules))
+	child := templ.ComponentFunc(func(ctx context.Context, w io.Writer) error {
+		return ui.Require("carousel", "progress", "loading").Render(ctx, w)
+	})
+	var output bytes.Buffer
+	if err := componentAssetScope(true).Render(templ.WithChildren(ctx, child), &output); err != nil {
+		t.Fatal(err)
+	}
+	body := output.String()
+	for _, name := range []string{"carousel", "progress", "loading"} {
+		if !strings.Contains(body, "bundles/"+name+".css") {
+			t.Errorf("static scope lost %s styling", name)
+		}
+	}
+	if !strings.Contains(body, `["progress.js"]`) || strings.Contains(body, `"carousel.js"`) || strings.Contains(body, `"loading.js"`) {
+		t.Fatal("static scope activated an interactive controller", body)
+	}
+}
+
+func TestBehaviorSourceOrderPreservesProviders(t *testing.T) {
+	// JSON object order is the loader's evaluation order, so decode as a stream.
+	decoder := json.NewDecoder(strings.NewReader(componentScriptSources()))
+	if _, err := decoder.Token(); err != nil {
+		t.Fatal(err)
+	}
+	var names []string
+	for decoder.More() {
+		key, err := decoder.Token()
+		if err != nil {
+			t.Fatal(err)
+		}
+		names = append(names, key.(string))
+		var value string
+		if err := decoder.Decode(&value); err != nil {
+			t.Fatal(err)
+		}
+	}
+	for _, pair := range [][2]string{{"artwork-canvas.js", "artwork.js"}, {"dialogs.js", "dialog-demo.js"}, {"progress.js", "loading.js"}} {
+		if slices.Index(names, pair[0]) < 0 || slices.Index(names, pair[0]) >= slices.Index(names, pair[1]) {
+			t.Fatalf("provider order %v: %v", pair, names)
+		}
 	}
 }

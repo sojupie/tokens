@@ -71,10 +71,28 @@ type tokenFolder struct {
 	children map[string]*tokenFolder
 }
 
+// Elevation's payload includes these supporting definitions outside its table.
+// Keep them in the publication and subject exports, but omit them from browsing.
+func tokenTableTokens(subject publish.SubjectView) []publish.TokenView {
+	if subject.Key.Kind != publish.SubjectStyle || subject.Key.Slug != "elevation" {
+		return subject.Tokens
+	}
+	var tokens []publish.TokenView
+	for _, token := range subject.Tokens {
+		switch token.SourceName {
+		case "md.sys.color.primary", "md.ref.palette.primary20", "md.ref.palette.primary30",
+			"md.ref.palette.primary40", "md.ref.palette.primary80", "md.ref.palette.primary90", "md.ref.palette.primary95":
+			continue
+		}
+		tokens = append(tokens, token)
+	}
+	return tokens
+}
+
 func tokenSets(subject publish.SubjectView) []tokenSet {
 	var result []tokenSet
 	sets := make(map[string]*tokenSet)
-	for _, token := range subject.Tokens {
+	for _, token := range tokenTableTokens(subject) {
 		if source := token.Presentation; source != nil {
 			key := source.SetName
 			set := sets[key]
@@ -203,6 +221,12 @@ func buildTokenBrowser(subject publish.SubjectView, query url.Values) tokenBrows
 		_, _, state, path := tokenLocation(token, subject.Key.Kind == publish.SubjectComponent)
 		value, hasValue := selectTokenValue(token.Values, selectedFilters)
 		row := tokenRow{Name: tokenDisplayName(token), SourceName: token.SourceName, HasValue: hasValue, References: value.References}
+		if !hasValue {
+			row.Value = "No value for selected context"
+			if len(token.Values) == 0 {
+				row.Value = "No captured value"
+			}
+		}
 		if hasValue {
 			row.Value = tokenValueDisplay(token.Category, value.Value)
 			row.Shape = shapePreviewCSS(value.Value)

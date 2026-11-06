@@ -1,14 +1,16 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile, readdir } from "node:fs/promises";
+import { buildCatalogAssets, catalogAssets } from "../catalog/web/build-assets.ts";
 import { Script } from "node:vm";
 import {
   buildComponentAssets,
   componentAssets,
-} from "./components/build-assets.mjs";
+} from "./components/build-assets.ts";
 
 test("embedded component assets match all maintained sources", async () => {
   await buildComponentAssets({ check: true });
+  await buildCatalogAssets({ check: true });
   for (const kind of ["style", "behavior"]) {
     const directory = kind === "style" ? "styles" : "behaviors";
     const root = new URL("./components/", import.meta.url);
@@ -30,5 +32,14 @@ test("embedded component assets match all maintained sources", async () => {
     );
   }
   const assets = await componentAssets();
-  new Script(assets.get("static/components.js"));
+  for (const [file, content] of assets) {
+    if (file.endsWith(".js")) new Script(content, { filename: file });
+  }
+  for (const name of ["chips", "switches", "button-groups", "segmented-buttons"]) {
+    assert(assets.has(`static/runtime/${name}.js`), "TypeScript must keep public JavaScript paths");
+    assert(!assets.has(`static/runtime/${name}.ts`));
+  }
+  const catalog = await catalogAssets();
+  assert(catalog.has("asset-loader.js"));
+  for (const [file, content] of catalog) new Script(content, { filename: file });
 });

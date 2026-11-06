@@ -183,3 +183,57 @@ func TestTableSharesDecorationButIncludesAllReferenceData(t *testing.T) {
 		t.Fatalf("Markdown must preserve reference data and omit the shared controls: %s", markdown)
 	}
 }
+
+func TestMissingTokenValuesHaveExplicitLabels(t *testing.T) {
+	subject := publish.SubjectView{Key: publish.SubjectKey{Kind: publish.SubjectStyle, Slug: "spacing"}, Tokens: []publish.TokenView{
+		{SourceName: "md.sys.color.primary", Category: "COLOR"},
+		{SourceName: "md.sys.color.secondary", Category: "COLOR", Values: []publish.TokenValueView{{Value: json.RawMessage(`{"undefined":true}`)}}},
+	}}
+	browser := buildTokenBrowser(subject, url.Values{"set": {"all"}})
+	var labels []string
+	var visit func([]tokenGroup)
+	visit = func(groups []tokenGroup) {
+		for _, g := range groups {
+			for _, row := range g.Tokens {
+				labels = append(labels, row.Value)
+			}
+			visit(g.Children)
+		}
+	}
+	visit(browser.Selected.Groups)
+	if len(labels) != 2 || !strings.Contains(strings.Join(labels, "|"), "No captured value") || !strings.Contains(strings.Join(labels, "|"), "No value for selected context") {
+		t.Fatal(labels)
+	}
+	var out bytes.Buffer
+	if err := writeTokenReferences(&out, tokenRow{Name: "Color", Value: "Color not resolved", HasValue: true}); err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(out.String(), "Color not resolved") || strings.Contains(out.String(), ">—<") {
+		t.Fatal(out.String())
+	}
+}
+
+func TestElevationTableExcludesOnlySupportingColorDefinitions(t *testing.T) {
+	subject := publish.SubjectView{Key: publish.SubjectKey{Kind: publish.SubjectStyle, Slug: "elevation"}}
+	for _, name := range []string{"md.sys.color.primary", "md.ref.palette.primary20", "md.ref.palette.primary30", "md.ref.palette.primary40", "md.ref.palette.primary80", "md.ref.palette.primary90", "md.ref.palette.primary95", "md.sys.elevation.level1", "md.sys.elevation.surface-tint-color"} {
+		subject.Tokens = append(subject.Tokens, publish.TokenView{SourceName: name})
+	}
+	if got := allTokenSet(subject); len(got.sourceTokens) != 2 {
+		t.Fatalf("all table: %v", got.sourceTokens)
+	}
+	count := 0
+	for _, set := range tokenSets(subject) {
+		count += len(set.sourceTokens)
+	}
+	if count != 2 || len(subject.Tokens) != 9 {
+		t.Fatal("table filtering changed source records", count, len(subject.Tokens))
+	}
+	subject.Key.Slug = "spacing"
+	if len(allTokenSet(subject).sourceTokens) != 9 {
+		t.Fatal("exclusion leaked into another style")
+	}
+	subject.Key = publish.SubjectKey{Kind: publish.SubjectComponent, Slug: "elevation"}
+	if len(allTokenSet(subject).sourceTokens) != 9 {
+		t.Fatal("exclusion leaked into components")
+	}
+}

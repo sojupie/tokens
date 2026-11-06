@@ -1,7 +1,7 @@
 # Development
 
 Install Go 1.26 or newer. Chrome or Chromium is needed for live crawling.
-Node.js 22 or newer is needed for CSS generation and the browser-script checks. Serving a saved publication
+Node.js 22.18 or newer is needed for CSS generation and the browser-script checks. Serving a saved publication
 and running the Go tests do not require Chromium.
 
 For component authoring and state ownership, see [Go/templ components](reference/components-api.md).
@@ -37,6 +37,12 @@ npm run test:tokens
 npm run check:components
 ```
 
+To check rendered behavior requirements against a running Catalog, run
+`go run ./cmd/check-behaviors --catalog http://127.0.0.1:8085`.
+Chrome or Chromium is required; use `--chrome-path PATH` when needed.
+Use `--path /components/search` to check one component.
+
+
 To include captured-data checks, build assets for a local publication, then run:
 
 ```sh
@@ -67,8 +73,25 @@ go run github.com/a-h/templ/cmd/templ@v0.3.960 generate -path .
 Commit both the template and generated Go file. The shared site header, navigation menu and footer live in `forge/site/`; the catalog renders those Go templates per request; Material Motion Lab renders them during its static build. `tokens site-shell --out DIRECTORY` exports the same markup and assets for the static carousel lab. Hosts also load the shared `navigation` CSS module and its `runtime/utils.js` and `runtime/navigation.js` scripts. The site uses a primary rail beside a scrolling section drawer on wide windows. Rail destinations reveal their section on hover or keyboard focus; clicking a destination follows its native link. Medium windows overlay the section drawer. Wide pages with no section drawer also reveal it over content without changing the reserved width. Section changes fade, overlay drawers enter and exit with effects/spatial motion roles, and only the drawer gains elevation while the rail or drawer is hovered. Compact windows use one modal drawer with main-menu and section views. The rail is a sibling of the drawer; drawer styles never own rail anatomy. Destinations use native links; opening, dismissal, focus return and swipe handling belong to the shared component runtime. The site shell owns section selection and preserves section-list scroll positions across HTMX swaps. Site CSS and JavaScript are maintained
 in `catalog/web/static/`. Shared component CSS sources live in
 `forge/components/styles/`; behavior sources live in `forge/components/behaviors/`.
-Run `npm run build:components` to assemble them into the existing served files in
-`forge/components/static/`. Dedicated scripts such as `menus.js` and `fields.js`
+New browser controllers and shared helpers use TypeScript. The migration currently
+covers the asset loader, chips, switches, button groups, segmented buttons and
+shared control/navigation helpers. Other controllers and most build/test scripts
+still use JavaScript. `forge/short-css-names.ts` and the component asset builder
+also use TypeScript. CSS grouping, module bundling, theme subsets and the shared
+motion runtime have also moved to TypeScript.
+
+Run `npm run check:types` for strict type checking. Node 22.18+ executes build
+TypeScript by stripping types; it does not type-check it. `erasableSyntaxOnly`
+rejects syntax that needs further runtime transformation. The existing esbuild
+step compiles browser TypeScript to classic JavaScript at the same public paths.
+Pure helper imports remain bundled into each entry. There is no browser-side
+TypeScript compiler or new runtime dependency.
+
+Run `npm run build:components` to assemble component sources into the existing
+served files in `forge/components/static/`. This also discovers TypeScript entries
+beside Catalog's static scripts and generates their `.js` siblings. Edit the `.ts`
+source when a generated file has that header. `npm run check:components` checks
+both types and generated output, including Catalog scripts. Dedicated scripts such as `menus.js` and `fields.js`
 remain maintained in `static/`. Catalog's demo responses live in
 `catalog/web/static/component-demos.js`. Both sets of served assets are embedded
 in the binary. Rebuild and restart the
@@ -84,8 +107,11 @@ explain how to find manual declarations and change a token value.
 
 ## Asset delivery checks
 
+The [delivery and performance reference](reference/delivery-performance.md)
+collects the implemented backend/browser optimizations, measurements and limits.
+
 `forge/components/modules.json` assigns each structural CSS source and generated
-binding family to one module. `forge/component-bundles.mjs` builds those modules
+binding family to one module. `forge/component-bundles.ts` builds those modules
 without inspecting selectors. The build rejects missing and duplicate owners.
 
 Renderers request their module with `@useComponentAssets("list")`. Put the request
@@ -102,8 +128,11 @@ main content and footer; the playground has a
 separate scope inside `#component-preview`, so changing a control declares its
 current module dependencies. The generated module manifest supplies link order.
 
-`catalog/web/static/asset-loader.js` selects optional behavior from the rendered
-markup. Add a matching selector there when introducing a behavior module.
+`catalog/web/static/asset-loader.js` selects optional behavior from rendered JSON
+declarations. Register Forge ownership in `modules.json` and request its module
+beside the rendering primitive; declare Catalog-owned example scripts at their
+rendering branch. Keep diagnostic selectors aligned for the CLI comparison, but
+do not rely on a selector to supply a missing declaration.
 
 The layout loads shared CSS and core controls. Only modules rendered by the
 initial page appear in its head. Before an HTMX swap, the loader adds missing
@@ -135,7 +164,7 @@ warmups, synchronous style/layout median fell from 49.5 ms to 42.6 ms on
 Time through two animation frames did not improve in that first pass.
 These figures describe this local browser run, not a cross-browser performance guarantee.
 
-`forge/theme-subsets.mjs` now derives theme inputs from shared CSS, template
+`forge/theme-subsets.ts` now derives theme inputs from shared CSS, template
 references, family bundles and literal JavaScript reads. It follows CSS aliases
 in all appearances. Captured DTCG aliases remain CSS references when their
 resolved values agree after the site conversions. Public context exports retain
@@ -187,8 +216,9 @@ fell from 68.3 ms to 51.1 ms on `/changes` and from 68.4 ms to 51.2 ms on the ra
 The forced style/layout flush medians fell from 17.3 ms to 10.2 ms and from
 15.7 ms to 10.2 ms respectively. Frame cadence differs between runs; use the
 within-run comparison. The root set fell from 4,115 to 2,017 variables, with 153
-additional variables scoped to the rail preview. Overview pages still load the
-full set for their mixed component thumbnails.
+additional variables scoped to the rail preview. Overview pages in that run
+loaded the full set for mixed component thumbnails; current image-backed cards
+can omit those live compositions.
 
 For a CSS build comparison, save the previous theme and full component stylesheet
 as `forge/conformance/baseline-theme.tmp` and `baseline-components.tmp`, then open
@@ -445,12 +475,115 @@ then rebuild and restart the server after changing the scheme or shared motion
 code. The build derives CSS `linear()` curves and settling durations from the
 captured damping/stiffness values; it does not approximate them with arbitrary
 short/medium duration tokens. The shared source is
-`forge/components/static/motion.cjs`, served as `motion.js` before component code.
+`forge/components/motion.ts`, compiled to `forge/components/static/motion.cjs`
+and served as `motion.js` before component code. Both the browser entry and the
+CSS compiler import spring sampling from `forge/components/helpers/springs.ts`,
+so the compiler does not read a potentially stale generated JavaScript copy.
 
 The [motion contract and browser checks](reference/components.md#motion-schemes-and-lifecycle)
 describe assignments, interruption handling, reduced motion and popup fallbacks.
 Run `go run ./forge/conformance` alongside Catalog and open
 `http://127.0.0.1:8082/motion.html` to repeat the checks.
+
+## Navigation benchmarks
+
+Run Catalog, then measure its real navigation and download controls in Chrome:
+
+```sh
+go run ./cmd/bench-navigation --catalog http://127.0.0.1:8085 \
+  --chrome-path /usr/bin/chromium --runs 15 --output /tmp/catalog-benchmark
+```
+
+The command writes raw samples to `results.json` and prints median and p95 times.
+It captures an additional trace per scenario, excluded from those statistics,
+and records another 500 ms after readiness to include subsequent paints.
+Import a `*.trace.json` file into Chrome DevTools' Performance panel to inspect
+main-thread work, layout, paint and screenshots. Use `--traces=false` to omit them.
+
+Navigation cases cover cold destination assets, warmed HTTP assets, reused
+prefetches and expired prefetches. Each sample starts in a fresh document; warm
+assets do not mean previously initialized component instances survive. The source
+page still loads its own dependencies in every case. Server response caching is
+independent: `Server-Timing` identifies cache hits and handler rendering on misses.
+The command checks that prefetch scenarios actually reuse or expire their response.
+The download case measures changing content in an already open dialog until the
+new options are confirmed and Download is enabled.
+
+`dom` means the expected content is present. `ready` means the navigation asset
+loader has finished, or the download selection is confirmed. `frame-opportunity`
+records two animation-frame callbacks after the content change. None of these
+marks proves a paint; use the trace's paint events and screenshots for that.
+Activation uses a programmatic click, so these are not physical-input or INP
+measurements.
+
+Keep browser, hardware, power settings and viewport consistent between runs.
+The default viewport is 1440 × 900; change it with `--width` and `--height`.
+Samples record the browser, viewport, resource sizes, protocol and server timings.
+Use `--journey cards`, `date` or `download` to limit a run. Measure slower clients
+separately with `--cpu-rate 4` or `--latency-ms 150`; the latency option does not
+limit bandwidth. Establish repeat-run variance before setting CI thresholds.
+
+### Custom-property name experiment
+
+```sh
+go run ./cmd/bench-css-names --catalog http://127.0.0.1:8085 \
+  --chrome-path /usr/bin/chromium --runs 15 --output /tmp/css-names
+```
+
+This captures rendered Cards, Date Picker and Carousel pages, then compares the
+same frozen DOM with original and shortened custom-property names. Application
+scripts and animations are removed from both arms. An identical small controller
+keeps benchmark theme/contrast controls usable. This measures CSS costs without changing
+the site's runtime or its public token names. JavaScript consumers, including
+dynamically constructed property names, still need a shared naming contract
+before this transform can be used in a live build.
+
+The transform uses PostCSS to visit declarations, `var()` references and relevant
+at-rule parameters. It leaves quoted text and other dashed identifiers alone.
+Names are ordered by occurrence count, with a lexical tie-break, then assigned
+unique identifiers from a 64-character ASCII alphabet. The first 64 names need
+one character after `--`; the next 4,096 need two. The mapping is deterministic
+for the complete captured corpus, independent of file order. Changing that
+corpus can change assignments: it is not a stable public API or a per-file pass.
+Escaped and non-ASCII custom-property identifiers are rejected by this experiment.
+
+Each arm uses prebuilt gzip responses, cold browser caches and a 1440 × 900
+viewport. Run order alternates each round. Results include raw and gzip CSS
+sizes, observed CSS and total page transfers, first contentful paint, load-time
+style/layout counters, isolated parsing with `CSSStyleSheet.replaceSync`, and
+forced style recalculation while switching themes. Appearance tests run before
+the isolated parsing loops, so their stylesheet allocations cannot affect those
+tests. These are full-document loads and attribute changes on frozen pages, not
+the site's enhanced navigation or component-controller interactions.
+
+The first pair must have identical computed standard styles and geometry across
+the rendered elements in all six theme/contrast appearances. Both screenshots are saved for visual comparison, along
+with `names.json`, source snapshots and raw measurements in `results.json`.
+Use `--names original`, `short` or `both` to select an arm, `--paths` to change the
+captured pages, and `--cpu-rate 4` to run a separate slower-client profile.
+Run from the repository root with Node dependencies installed.
+
+To combine actual rendered specimens from 14 component families into one page:
+
+```sh
+go run ./cmd/bench-css-names --catalog http://127.0.0.1:8085 \
+  --chrome-path /usr/bin/chromium --mixed --runs 15 \
+  --listen 127.0.0.1:8096 --output /tmp/css-names-mixed
+```
+
+The command prints original/short page URLs and keeps them available until
+interrupted. Components retain frozen behavior; the page's Theme and Contrast
+controls work. `--paths` overrides the captured families. Shared CSS is deduplicated
+and optional modules retain manifest order. `--input /tmp/css-names-mixed/original.json`
+replays the exact captured corpus for another run or CPU profile instead of
+recapturing pages; keep the same `--catalog` for referenced fonts and images.
+
+Each appearance test covers both theme directions at default, medium and high
+contrast, and all six directed contrast pairs in both light and dark themes.
+One complete transition block warms up; two measured blocks reverse their order.
+Raw samples record each transition's synchronous forced style/layout duration and
+elapsed time through two animation-frame callbacks. The latter includes frame
+scheduling and is not a paint-duration measurement.
 
 ## Site and scene layout
 
@@ -461,9 +594,6 @@ spacing, app-bar title ownership and scene framing. Shared measurements live in
 ## Component illustrations
 
 Catalog cards use generated images of the simple previews. Interactive playgrounds keep their live markup.
-The application and editorial scenes have been removed. Their review and render
-URLs return 404. Page headers and sharing metadata omit scene images until new
-scenes are built.
 
 Generate the simple catalog thumbnails after building token assets:
 
@@ -507,3 +637,10 @@ live search suggestions, reorder/swipe gestures and application commands remain
 JavaScript enhancements. Their absence must not remove site navigation, token
 content, form choices or downloads. Keep fallback styling in the owning component
 module and catalog presentation in the catalog stylesheets.
+
+
+### CSS name experiments
+
+Full custom-property shortening remains a frozen-page benchmark. Private-only
+live delivery and class/ID shortening were removed after measurement; see the
+[results and decision](reference/delivery-performance.md#standards-mode-comparison-and-recommendation).

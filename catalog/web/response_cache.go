@@ -3,9 +3,11 @@ package web
 import (
 	"bytes"
 	"container/list"
+	"fmt"
 	"net/http"
 	"strings"
 	"sync"
+	"time"
 )
 
 // Publications, templates and embedded assets are fixed for a running handler.
@@ -90,11 +92,12 @@ func etagMatches(value, etag string) bool {
 	}
 	return false
 }
-func writeCachedResponse(w http.ResponseWriter, r *http.Request, entry *cachedResponse) {
+func writeCachedResponse(w http.ResponseWriter, r *http.Request, entry *cachedResponse, timing string) {
 	r.Pattern = entry.pattern
 	for key, values := range entry.header {
 		w.Header()[key] = append([]string(nil), values...)
 	}
+	w.Header().Set("Server-Timing", timing)
 	if etagMatches(r.Header.Get("If-None-Match"), entry.header.Get("ETag")) {
 		w.WriteHeader(http.StatusNotModified)
 		return
@@ -118,17 +121,21 @@ func cacheResponses(next http.Handler) http.Handler {
 			variant.Header.Del("HX-Target")
 		}
 		key := strings.Join([]string{r.URL.RequestURI(), variant.Header.Get("HX-Request"), variant.Header.Get("HX-Target"), r.Header.Get("Accept"), r.Header.Get("Accept-Encoding")}, "\n")
+		lookup := time.Now()
 		if entry := cache.get(key); entry != nil {
-			writeCachedResponse(w, r, entry)
+			writeCachedResponse(w, r, entry, fmt.Sprintf(`cache;desc="hit";dur=%.3f`, float64(time.Since(lookup).Nanoseconds())/1e6))
 			return
 		}
 		// Render HEAD through GET so it never seeds an empty cached representation.
 		request := variant
 		request.Method = "GET"
 		response := &bufferedResponse{header: make(http.Header)}
+		renderStart := time.Now()
 		next.ServeHTTP(response, request)
+		renderMS := float64(time.Since(renderStart).Nanoseconds()) / 1e6
 		r.Pattern = request.Pattern
 		if response.status != http.StatusOK || strings.Contains(response.header.Get("Cache-Control"), "no-store") || response.header.Get("Set-Cookie") != "" {
+			response.header.Set("Server-Timing", fmt.Sprintf(`cache;desc="bypass", render;dur=%.3f`, renderMS))
 			for key, values := range response.header {
 				w.Header()[key] = values
 			}
@@ -147,6 +154,6 @@ func cacheResponses(next http.Handler) http.Handler {
 		response.header.Set("ETag", `"`+assetVersion(response.Bytes())+`"`)
 		entry := &cachedResponse{key: key, header: response.header, body: response.Bytes(), pattern: request.Pattern}
 		cache.put(entry)
-		writeCachedResponse(w, r, entry)
+		writeCachedResponse(w, r, entry, fmt.Sprintf(`cache;desc="miss", render;dur=%.3f`, renderMS))
 	})
 }

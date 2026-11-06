@@ -158,10 +158,10 @@ func TestExportMultipleFormatsAndContexts(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(archive.File) != 5 {
-		t.Fatalf("expected four exports and manifest, got %d", len(archive.File))
+	if len(archive.File) != 9 {
+		t.Fatalf("expected four exports, four reports and manifest, got %d", len(archive.File))
 	}
-	light, dark, css, dtcg := 0, 0, 0, 0
+	light, dark, css, dtcg, reports := 0, 0, 0, 0, 0
 	for _, file := range archive.File {
 		reader, err := file.Open()
 		if err != nil {
@@ -181,11 +181,24 @@ func TestExportMultipleFormatsAndContexts(t *testing.T) {
 				dark++
 			}
 		}
+		if strings.HasSuffix(file.Name, "-report.json") {
+			reports++
+			var report struct {
+				Context   map[string]string `json:"context"`
+				Selection exportSummary     `json:"selection"`
+			}
+			if err := json.Unmarshal(data, &report); err != nil {
+				t.Fatal(err)
+			}
+			if report.Selection.Selected != 3 || (report.Context["Theme"] != "Light" && report.Context["Theme"] != "Dark") {
+				t.Fatalf("invalid bundled report: %s", data)
+			}
+		}
 		if strings.HasSuffix(file.Name, ".tokens.json") {
 			dtcg++
 		}
 	}
-	if light != 1 || dark != 1 || css != 2 || dtcg != 2 {
+	if light != 1 || dark != 1 || css != 2 || dtcg != 2 || reports != 4 {
 		t.Fatalf("wrong context/format exports: %d %d %d %d", light, dark, css, dtcg)
 	}
 	query.Set("summary", "1")
@@ -310,5 +323,80 @@ func TestImplementationBundlesExampleImages(t *testing.T) {
 	}
 	if strings.Contains(markup, "/static/") {
 		t.Fatal("Catalog image dependency remains")
+	}
+}
+
+func TestSingleTokenExportsKeepTheirFormatAndConversionMetadata(t *testing.T) {
+	server := scopedExportFixture()
+	for _, format := range []string{"css", "dtcg", "source", "report"} {
+		query := url.Values{"scope": {"subject"}, "kind": {"component"}, "slug": {"buttons"}, "format": {format}, "context.Theme": {"Light"}}
+		w := httptest.NewRecorder()
+		server.Handler().ServeHTTP(w, httptest.NewRequest("GET", "/downloads/export?"+query.Encode(), nil))
+		if w.Code != 200 || w.Header().Get("Content-Type") == "application/zip" {
+			t.Fatalf("%s: %d %s", format, w.Code, w.Body.String())
+		}
+		if format == "dtcg" {
+			var doc map[string]any
+			if err := json.Unmarshal(w.Body.Bytes(), &doc); err != nil {
+				t.Fatal(err)
+			}
+			metadata := doc["$extensions"].(map[string]any)["dev.tokencatalog.export"].(map[string]any)
+			report := metadata["conversionReport"].(map[string]any)
+			if report["exported"] != float64(4) || report["context"].(map[string]any)["Theme"] != "Light" {
+				t.Fatal(metadata)
+			}
+		}
+	}
+}
+
+func TestExportDialogWarnsAboutOmissionsWithoutBuildingExports(t *testing.T) {
+	server := scopedExportFixture()
+	key := publish.SubjectKey{Kind: publish.SubjectComponent, Slug: "buttons"}
+	subject := server.state.Subjects[key]
+	subject.Tokens[0].Values = subject.Tokens[0].Values[:1] // No Dark value.
+	subject.Tokens[1].Values = []publish.TokenValueView{{Value: json.RawMessage(`{"numeric":null}`)}}
+	server.state.Subjects[key] = subject
+	query := url.Values{"scope": {"subject"}, "kind": {"component"}, "slug": {"buttons"}, "format": {"css", "dtcg"}, "context.Theme": {"Light", "Dark"}}
+	state := server.exportDialog(context.Background(), query)
+	if !state.Ready || state.Error != "" {
+		t.Fatal(state)
+	}
+	for _, want := range []string{"1 token value has no defined value", "2 token values cannot be converted", "including conversion reports"} {
+		if !strings.Contains(state.Counts, want) {
+			t.Fatalf("missing %s: %s", want, state.Counts)
+		}
+	}
+	query.Set("format", "source")
+	state = server.exportDialog(context.Background(), query)
+	if strings.Contains(state.Counts, "Omitted:") {
+		t.Fatalf("raw source download incorrectly warns about conversion: %s", state.Counts)
+	}
+	// The actual reports agree with the precomputed warning across both contexts.
+	omitted := 0
+	for _, theme := range []string{"Light", "Dark"} {
+		q := cloneExportQuery(query)
+		q.Set("context.Theme", theme)
+		_, report, _, _, err := server.exportDocument(q)
+		if err != nil {
+			t.Fatal(err)
+		}
+		omitted += len(report.Omitted)
+	}
+	if omitted != 3 {
+		t.Fatalf("actual omissions: %d", omitted)
+	}
+}
+
+func TestNativeDownloadPageOmitsReportControls(t *testing.T) {
+	server := scopedExportFixture()
+	w := httptest.NewRecorder()
+	server.Handler().ServeHTTP(w, httptest.NewRequest("GET", "/download?scope=subject&kind=component&slug=buttons&format=dtcg&context.Theme=Light", nil))
+	if w.Code != 200 {
+		t.Fatal(w.Code, w.Body.String())
+	}
+	for _, unwanted := range []string{`value="report"`, "Conversion report", "View conversion report"} {
+		if strings.Contains(w.Body.String(), unwanted) {
+			t.Fatalf("native download page still offers %s", unwanted)
+		}
 	}
 }

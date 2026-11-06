@@ -123,13 +123,18 @@
    rememberScroll();syncViewport();
    header.dataset.panelOpen='false';
    if(appearance)(rail.matches?header:drawer).append(appearance);
-   if(drawer.open)drawer.close();
-   drawer.dataset.variant=rail.matches?'standard':'modal';
+   const variant=rail.matches?'standard':'modal';
+   // The inline layout already opens the docked drawer. Preserve that surface
+   // and its focus; close only when changing native modal/docked modes.
+   if(drawer.open&&(drawer.dataset.variant!==variant||!rail.matches))drawer.close();
+   drawer.dataset.variant=variant;
    if(rail.matches){
     drawer.setAttribute('role','navigation');
-    const previous=document.activeElement;drawer.show();
-    if(previous===document.body)document.activeElement?.blur();
-    else if(previous?.getClientRects().length)previous.focus({preventScroll:true});
+    if(!drawer.open){
+     const previous=document.activeElement;drawer.show();
+     if(previous===document.body)document.activeElement?.blur();
+     else if(previous?.getClientRects().length)previous.focus({preventScroll:true});
+    }
    } else drawer.removeAttribute('role');
    sync();navigation=undefined;refreshNavigation();
   }
