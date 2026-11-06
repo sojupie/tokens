@@ -534,6 +534,22 @@ func selectComponentPreview(cases []componentCase, query url.Values) (*component
 			}
 		}
 	}
+	if len(result.Cases) > 0 && result.Cases[0].Family == "button" {
+		colors := []string{"default", "primary", "secondary", "tertiary", "error"}
+		color := query.Get("preview.color")
+		if color == "" {
+			color = "default"
+		}
+		if !containsPreview(colors, color) {
+			return nil, fmt.Errorf("%w: color %s", errPreviewInput, color)
+		}
+		result.Controls = append(result.Controls, previewControl{Name: "color", Label: "Color", Selected: color, Options: colors})
+		if color != "default" {
+			for i := range result.Cases {
+				result.Cases[i].Color = color
+			}
+		}
+	}
 	for key, values := range query {
 		if strings.HasPrefix(key, "preview.") {
 			continue

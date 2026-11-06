@@ -710,6 +710,10 @@ func pageMetadata(page string) (area, subject, pageType string) {
 		return "", "", ""
 	}
 	parts := strings.Split(strings.Trim(parsed.Path, "/"), "/")
+	// This token table lives under the static scheme guide, not a /tokens URL.
+	if strings.Trim(parsed.Path, "/") == "styles/color/static/baseline" {
+		return "styles", "color", "tokens"
+	}
 	if len(parts) >= 3 && parts[0] == "components" && parts[len(parts)-1] == "specs" {
 		return "components", strings.Join(parts[1:len(parts)-1], "/"), "specs"
 	}
@@ -901,16 +905,8 @@ func isComponentSpecsPage(page string) bool {
 }
 
 func isStyleTokenSourcePage(page string) bool {
-	parsed, err := url.Parse(page)
-	if err != nil {
-		return false
-	}
-	parts := strings.Split(strings.Trim(parsed.Path, "/"), "/")
-	if len(parts) < 3 || parts[0] != "styles" {
-		return false
-	}
-	last := parts[len(parts)-1]
-	return last == "tokens" || last == "specs" || strings.HasSuffix(last, "-tokens") || strings.HasSuffix(last, "-scale")
+	area, _, _ := pageMetadata(page)
+	return area == "styles"
 }
 
 func isTokenSourcePage(page string) bool {

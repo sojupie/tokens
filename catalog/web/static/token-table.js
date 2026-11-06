@@ -159,7 +159,7 @@ unbound('.tokens-token-browser').forEach(browser => {
 
   // Native popovers provide Escape, outside-click dismissal and invoker focus.
   // Position beside the active value where space allows, then clamp to the viewport.
-  let invoker;
+  let invoker, copyStatus, copyStatusTimer;
   const prepareReference = popup => {
     if (popup.querySelector('header')) return;
     const row = popup.closest('tr');
@@ -220,17 +220,36 @@ unbound('.tokens-token-browser').forEach(browser => {
     const copy = event.target.closest('[data-copy-reference]');
     if (copy) {
       const status = copy.closest('.tokens-reference-popover').querySelector('[role="status"]');
+      if (copyStatus) copyStatus.textContent = '';
+      clearTimeout(copyStatusTimer);
+      copyStatus = status;
       try {
-        await navigator.clipboard.writeText(copy.dataset.copyReference);
+        let copied = false;
+        if (navigator.clipboard?.writeText) {
+          try { await navigator.clipboard.writeText(copy.dataset.copyReference); copied = true; } catch {}
+        }
+        // Local HTTP previews lack the Clipboard API. Copy inside the active
+        // popover so native focus handling does not interfere with the fallback.
+        if (!copied) {
+          const field = document.createElement('textarea');
+          field.value = copy.dataset.copyReference;
+          field.readOnly = true;
+          field.style.cssText = 'position:fixed;opacity:0;pointer-events:none;inset:0 auto auto 0;';
+          copy.closest('.tokens-reference-popover').append(field);
+          try {
+            field.focus({preventScroll:true});
+            field.select();
+            if (!document.execCommand('copy')) throw new Error('Copy failed');
+          } finally {
+            field.remove();
+            copy.focus({preventScroll:true});
+          }
+        }
         status.textContent = 'Copied.';
       } catch {
-        const range = document.createRange();
-        range.selectNodeContents(copy.previousElementSibling);
-        const selection = getSelection();
-        selection.removeAllRanges();
-        selection.addRange(range);
-        status.textContent = 'Reference selected. Copy it with your keyboard.';
+        status.textContent = 'Could not copy.';
       }
+      copyStatusTimer = setTimeout(() => { status.textContent = ''; }, 1500);
       return;
     }
     const button = event.target.closest('button[data-action]');

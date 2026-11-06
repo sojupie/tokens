@@ -53,7 +53,7 @@ func specimenButton(c componentCase) templ.Component {
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = ui.Action(ui.ButtonProps{Variant: ui.ButtonVariant(c.Variant), Size: ui.Size(c.Size), Shape: ui.ButtonShape(c.Shape), Disabled: c.State == "disabled", Attrs: c.Attributes()}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = ui.Action(ui.ButtonProps{Variant: ui.ButtonVariant(c.Variant), Size: ui.Size(c.Size), Shape: ui.ButtonShape(c.Shape), Color: ui.ColorFamily(c.Color), Disabled: c.State == "disabled", Attrs: c.Attributes()}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

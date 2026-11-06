@@ -1,5 +1,8 @@
 import { Blend, Hct, argbFromHex, hexFromArgb, SchemeTonalSpot, MaterialDynamicColors } from "@material/material-color-utilities";
 
+// Additional baseline palettes are independent of the app's theme seeds.
+const staticPalettes = new Set(["blue", "blue-variant", "cyan", "green", "grey", "grey-variant", "orange", "pink", "purple", "red", "yellow"]);
+
 // Customize only the app's build input. Public exports retain captured values.
 export function siteTheme(document, appearance, { primary, secondary, extensions = {}, motionScheme }, motionDocument) {
   for (const seed of [primary, secondary, ...Object.values(extensions)])
@@ -19,12 +22,14 @@ export function siteTheme(document, appearance, { primary, secondary, extensions
     return { colorSpace: "srgb", components: [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255), alpha: 1 };
   };
   for (const [name, token] of Object.entries(themed.md.sys.color)) {
-    const role = name.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+    const role = name === "surface-tint-color" ? "surfaceTint" : name.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
     if (!MaterialDynamicColors[role]?.getArgb) throw new Error(`Unmapped site color: ${name}`);
     (token.$root ?? token).$value = colorValue(MaterialDynamicColors[role].getArgb(scheme));
   }
   for (const [name, token] of Object.entries(themed.md.ref.palette)) {
+    if (name === "black" || name === "white") continue;
     const [, family, tone] = name.match(/^(.+?)(\d+)$/) ?? [];
+    if (staticPalettes.has(family)) continue;
     const palette = scheme[`${family?.replace(/-([a-z])/g, (_, c) => c.toUpperCase())}Palette`];
     if (!palette) throw new Error(`Unmapped site palette: ${name}`);
     (token.$root ?? token).$value = colorValue(palette.tone(Number(tone)));

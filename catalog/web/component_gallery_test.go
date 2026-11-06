@@ -102,11 +102,11 @@ func TestComponentGalleryRendersNativeStates(t *testing.T) {
 			t.Fatalf("%s: %d", path, response.Code)
 		}
 		body := response.Body.String()
-		if !strings.Contains(body, `class="tokens-component-tile"`) || !strings.Contains(body, `class="tokens-component-thumbnail-scene" inert aria-hidden="true"`) {
-			t.Fatal("missing inert component illustration")
+		if !strings.Contains(body, `class="tokens-component-tile"`) || !strings.Contains(body, `data-thumbnail-missing`) {
+			t.Fatal("missing image placeholder")
 		}
-		if !strings.Contains(body, `class="md-time-panel"`) {
-			t.Fatal("missing time picker illustration")
+		if strings.Contains(body, `class="md-time-panel"`) || strings.Contains(body, `data-thumbnail=`) {
+			t.Fatal("missing image must not fall back to live components")
 		}
 		if !strings.Contains(body, `class="tokens-component-tile-link"`) {
 			t.Fatal("missing separate card link")
@@ -127,8 +127,8 @@ func TestComponentGalleryRendersNativeStates(t *testing.T) {
 			if strings.Contains(path, "q=segmented") && strings.Count(body, `class="tokens-component-tile"`) != 1 {
 				t.Fatal("single search result must retain exactly one illustrated card")
 			}
-			if strings.Contains(path, "/styles?q=shape") && !strings.Contains(body, `data-style-thumbnail="shape/corner-radius"`) {
-				t.Fatal("style search must retain its illustration")
+			if strings.Contains(path, "/styles?q=shape") && (!strings.Contains(body, `data-thumbnail-missing`) || strings.Contains(body, `data-style-thumbnail=`)) {
+				t.Fatal("missing style image must not fall back to live components")
 			}
 			if strings.Contains(path, "q=nonexistent") && !strings.Contains(body, "No matching subjects.") {
 				t.Fatal("empty search needs a result message")

@@ -138,6 +138,8 @@ func TestPageScopes(t *testing.T) {
 	}
 	for _, page := range []string{
 		"https://m3.material.io/styles/elevation/tokens",
+		"https://m3.material.io/styles/color/static/baseline",
+		"https://m3.material.io/styles/color/static/baseline/",
 		"https://m3.material.io/styles/motion/overview/specs",
 		"https://m3.material.io/styles/typography/type-scale-tokens",
 		"https://m3.material.io/styles/shape/corner-radius-scale",
@@ -146,8 +148,14 @@ func TestPageScopes(t *testing.T) {
 			t.Fatalf("expected style token-source page: %s", page)
 		}
 	}
-	if isStyleTokenSourcePage("https://m3.material.io/styles/motion/overview") {
-		t.Fatal("did not expect style overview page")
+	for _, page := range []string{
+		"https://m3.material.io/styles/motion/overview",
+		"https://m3.material.io/styles/color/static/custom-brand",
+		"https://m3.material.io/styles/color/static/baseline/details",
+	} {
+		if isStyleTokenSourcePage(page) {
+			t.Fatalf("did not expect guidance-only page: %s", page)
+		}
 	}
 }
 
@@ -155,6 +163,7 @@ func TestCatalogRoundTripAndDiff(t *testing.T) {
 	path := t.TempDir() + "/pages.json"
 	pages := []string{
 		"https://m3.material.io/components/buttons/specs",
+		"https://m3.material.io/styles/color/static/baseline",
 		"https://m3.material.io/styles/elevation/tokens",
 	}
 	if err := writePageCatalog(path, "https://m3.material.io/sitemap.xml", pages); err != nil {
@@ -164,7 +173,7 @@ func TestCatalogRoundTripAndDiff(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(got) != 2 || got[0] != pages[0] || got[1] != pages[1] {
+	if len(got) != 3 || got[0] != pages[0] || got[1] != pages[1] || got[2] != pages[2] {
 		t.Fatalf("unexpected catalog pages: %#v", got)
 	}
 	added, removed := pageDiff(got, []string{
@@ -174,7 +183,7 @@ func TestCatalogRoundTripAndDiff(t *testing.T) {
 	if len(added) != 1 || added[0] != "https://m3.material.io/components/dialogs/specs" {
 		t.Fatalf("unexpected additions: %#v", added)
 	}
-	if len(removed) != 1 || removed[0] != "https://m3.material.io/styles/elevation/tokens" {
+	if len(removed) != 2 || removed[0] != pages[1] || removed[1] != pages[2] {
 		t.Fatalf("unexpected removals: %#v", removed)
 	}
 }
@@ -184,6 +193,7 @@ func TestPageMetadata(t *testing.T) {
 		page, area, subject, pageType string
 	}{
 		{"https://m3.material.io/components/navigation-bar/specs", "components", "navigation-bar", "specs"},
+		{"https://m3.material.io/styles/color/static/baseline", "styles", "color", "tokens"},
 		{"https://m3.material.io/styles/motion/overview/specs", "styles", "motion/overview", "specs"},
 		{"https://m3.material.io/styles/spacing/tokens", "styles", "spacing", "tokens"},
 		{"https://m3.material.io/styles/typography/type-scale-tokens", "styles", "typography/type-scale", "tokens"},

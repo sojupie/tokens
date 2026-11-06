@@ -344,11 +344,6 @@ button:not(:disabled), [role=button]:not([aria-disabled=true]) { cursor:pointer;
 .tokens-landing-section-heading { display:flex;align-items:baseline;justify-content:space-between;gap:var(--md-sys-measurement-space200);margin-block-end:var(--md-sys-measurement-space100); }
 @media(max-width:48rem) { .tokens-landing-hero { grid-template-columns:1fr; }.tokens-landing-copy { padding:var(--md-sys-measurement-space400) var(--md-sys-measurement-space300); }.tokens-landing-art { min-block-size:0;block-size:18rem; } }
 
-/* The aspect ratio reserves the preview's exact space while its descendants
-   are skipped off screen. Titles and links remain ordinary document content. */
-.tokens-component-thumbnail { content-visibility:auto;contain-intrinsic-size:auto 225px; }
-@media print { .tokens-component-thumbnail { content-visibility:visible; } }
-
 .tokens-art-canvas { position:absolute;inset:0;inline-size:100%;block-size:100%;visibility:hidden; }
 [data-canvas-ready] > .tokens-art-canvas { visibility:visible; }
 [data-canvas-ready] > .tokens-art-column { display:none; }
@@ -458,8 +453,27 @@ button:not(:disabled), [role=button]:not([aria-disabled=true]) { cursor:pointer;
 .tokens-component-example > .md-card:has(.md-card-media) { max-inline-size:360px; }
 .tokens-component-thumbnail > .tokens-subject-illustration { display:block; width:100%; margin:0; border-radius:var(--md-sys-shape-corner-none); }
 .tokens-component-thumbnail > .tokens-subject-illustration img { width:100%; height:100%; aspect-ratio:8/5; object-fit:cover; }
-.tokens-thumbnail-image { display:block; width:100%; height:100%; }
-.tokens-thumbnail-image img { display:block; width:100%; height:100%; object-fit:cover; }
+.tokens-thumbnail-image { position:relative;display:block;width:100%;height:100%;isolation:isolate;--_thumbnail-placeholder:var(--_thumbnail-light-default,none); }
+.tokens-thumbnail-image::before { content:"";position:absolute;inset:-8%;z-index:-1;background:var(--_thumbnail-placeholder) center/cover;filter:blur(10px); }
+.tokens-thumbnail-image img { display:block;width:100%;height:100%;object-fit:cover;transition:opacity 280ms ease-out,filter 280ms ease-out; }
+.tokens-thumbnail-image[data-image-loading] img { opacity:0;filter:blur(8px); }
+:root[data-theme="dark"] .tokens-thumbnail-image { --_thumbnail-placeholder:var(--_thumbnail-dark-default,none); }
+:root[data-theme="light"][data-contrast="medium"] .tokens-thumbnail-image { --_thumbnail-placeholder:var(--_thumbnail-light-medium,none); }
+:root[data-theme="light"][data-contrast="high"] .tokens-thumbnail-image { --_thumbnail-placeholder:var(--_thumbnail-light-high,none); }
+:root[data-theme="dark"][data-contrast="medium"] .tokens-thumbnail-image { --_thumbnail-placeholder:var(--_thumbnail-dark-medium,none); }
+:root[data-theme="dark"][data-contrast="high"] .tokens-thumbnail-image { --_thumbnail-placeholder:var(--_thumbnail-dark-high,none); }
+@media(prefers-reduced-motion:reduce) { .tokens-thumbnail-image img { transition:none; } }
+.tokens-style-colors { display:flex;gap:var(--md-sys-measurement-space100);width:296px;height:152px; }
+.tokens-style-colors > div { display:flex;flex:1;flex-direction:column;border-radius:var(--md-sys-shape-corner-large);overflow:hidden; }
+.tokens-style-colors strong,.tokens-style-colors span { display:grid;place-items:center;flex:1;font-family:var(--md-sys-typescale-title-large-font);font-size:var(--md-sys-typescale-title-large-size);font-weight:var(--md-sys-typescale-title-large-weight);line-height:var(--md-sys-typescale-title-large-line-height); }
+.tokens-style-colors [data-color-family="primary"] { background:var(--md-sys-color-primary);color:var(--md-sys-color-on-primary); }
+.tokens-style-colors [data-color-family="primary"] span { background:var(--md-sys-color-primary-container);color:var(--md-sys-color-on-primary-container); }
+.tokens-style-colors [data-color-family="secondary"] { background:var(--md-sys-color-secondary);color:var(--md-sys-color-on-secondary); }
+.tokens-style-colors [data-color-family="secondary"] span { background:var(--md-sys-color-secondary-container);color:var(--md-sys-color-on-secondary-container); }
+.tokens-style-colors [data-color-family="tertiary"] { background:var(--md-sys-color-tertiary);color:var(--md-sys-color-on-tertiary); }
+.tokens-style-colors [data-color-family="tertiary"] span { background:var(--md-sys-color-tertiary-container);color:var(--md-sys-color-on-tertiary-container); }
+.tokens-style-colors [data-color-family="error"] { background:var(--md-sys-color-error);color:var(--md-sys-color-on-error); }
+.tokens-style-colors [data-color-family="error"] span { background:var(--md-sys-color-error-container);color:var(--md-sys-color-on-error-container); }
 
 /* Card count is a content decision; cards span the shared region grid. */
 @container tokens-layout (min-width:840px) {

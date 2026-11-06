@@ -56,6 +56,7 @@ type componentCase struct {
 	Control          string `json:"control,omitempty"`
 	Selection        string `json:"selection,omitempty"`
 	Family           string `json:"family"`
+	Color            string `json:"color,omitempty"`
 	Variant          string `json:"variant"`
 	Size             string `json:"size"`
 	Shape            string `json:"shape"`

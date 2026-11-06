@@ -39,25 +39,12 @@ templ subjectCardGrid(subjects []publish.SubjectView, thumbnails map[string]comp
 }
 
 templ subjectCard(subject publish.SubjectView, thumbnails map[string]componentCase, styles bool) {
-	if _,ok:=thumbnailIllustration(ctx,subjectURL(subject)); !ok {
-		@deferThumbnailStyles()
-	}
 	<li class="tokens-component-tile">
 		<div class="tokens-component-thumbnail">
 			if image,ok:=thumbnailIllustration(ctx,subjectURL(subject)); ok {
 				@thumbnailPicture(image)
-			} else if styles {
-				@componentAssetScope(true) {
- @styleThumbnail(subject)
- }
-			} else if specimen, ok := thumbnails[subject.Key.Slug]; ok {
-				<div class="tokens-component-thumbnail-scene" inert aria-hidden="true" data-thumbnail={ subject.Key.Slug }>
-					@componentAssetScope(true) {
- @componentThumbnail(specimen)
- }
-				</div>
 			} else {
-				@materialSymbol("widgets")
+				<span data-thumbnail-missing aria-hidden="true">@materialSymbol("widgets")</span>
 			}
 		</div>
 		<a class="tokens-component-tile-link" href={ subjectURL(subject) }>

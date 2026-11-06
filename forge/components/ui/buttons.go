@@ -17,6 +17,15 @@ const (
 
 type ButtonShape string
 
+type ColorFamily string
+
+const (
+	ColorPrimary   ColorFamily = "primary"
+	ColorSecondary ColorFamily = "secondary"
+	ColorTertiary  ColorFamily = "tertiary"
+	ColorError     ColorFamily = "error"
+)
+
 const (
 	Round  ButtonShape = "round"
 	Square ButtonShape = "square"
@@ -27,13 +36,18 @@ type ButtonProps struct {
 	Variant               ButtonVariant
 	Size                  Size
 	Shape                 ButtonShape
-	Disabled              bool
-	Pressed               *bool
-	Attrs                 templ.Attributes
+	// Color selects a system color family; empty preserves the source mapping.
+	Color    ColorFamily
+	Disabled bool
+	Pressed  *bool
+	Attrs    templ.Attributes
 }
 
 func (p ButtonProps) Attributes() templ.Attributes {
 	a := templ.Attributes{"class": "md-button md-" + fallback(string(p.Variant), "filled") + "-button", "type": fallback(p.Type, "button"), "data-size": fallback(string(p.Size), "small"), "data-shape": fallback(string(p.Shape), "round"), "disabled": p.Disabled}
+	if p.Color != "" {
+		a["data-color"] = string(p.Color)
+	}
 	if p.ID != "" {
 		a["id"] = p.ID
 	}

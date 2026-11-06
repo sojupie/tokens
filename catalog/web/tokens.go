@@ -196,6 +196,9 @@ func buildTokenBrowser(subject publish.SubjectView, query url.Values) tokenBrows
 	}
 
 	selectedKey := query.Get("set")
+	if selectedKey == "" && subject.Key.Kind == publish.SubjectStyle && subject.Key.Slug == "color" {
+		selectedKey = "md.sys.color"
+	}
 	for _, set := range browser.Sets {
 		if set.Key == selectedKey {
 			browser.Selected = set

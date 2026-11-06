@@ -293,6 +293,22 @@ export function generateButtons(document, values) {
         emit(selector, bindings);
       }
     }
+    // Remap only this style's accent family. Surface, outline, disabled and
+    // inverse roles retain their source mappings, including toggle states.
+    const accent = variant === "tonal" ? "secondary" : "primary";
+    for (const family of ["primary", "secondary", "tertiary", "error"]) {
+      const declarations = [];
+      for (const [name, { meta }] of source) {
+        if (meta.presentation?.setName !== `md.comp.button.${variant}`) continue;
+        const role = meta.references?.[0]?.name;
+        const match = role?.match(new RegExp(`^md\\.sys\\.color\\.(on-)?${accent}(-container)?$`));
+        if (!match) continue;
+        const target = `md-sys-color-${match[1] ?? ""}${family}${match[2] ?? ""}`;
+        requiredNames.add(target);
+        declarations.push(`  --${name.replaceAll(".", "-")}: var(--${target});`);
+      }
+      rules.push(`.md-${variant}-button[data-color="${family}"] {\n${declarations.join("\n")}\n}`);
+    }
     for (const size of sizes)
       for (const shape of ["round", "square"])
         for (const selection of selections)

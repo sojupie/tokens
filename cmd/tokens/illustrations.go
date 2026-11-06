@@ -4,11 +4,13 @@ import (
 	"bytes"
 	"context"
 	"crypto/sha256"
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"flag"
 	"fmt"
 	imageformat "image"
+	"image/color"
 	"image/jpeg"
 	_ "image/png"
 	"net/http/httptest"
@@ -81,6 +83,8 @@ func runIllustrations(args []string) error {
 		image := &manifest.Images[i]
 		image.Files = map[string]string{}
 		image.Thumbnails = map[string]string{}
+		image.SmallThumbnails = map[string]string{}
+		image.Placeholders = map[string]string{}
 
 		width, height := 720, 450
 		for _, theme := range []string{"light", "dark"} {
@@ -111,16 +115,26 @@ func runIllustrations(args []string) error {
 				if bitmap.Bounds().Dx() != width || bitmap.Bounds().Dy() != height {
 					return fmt.Errorf("wrong capture dimensions for %s", captureName)
 				}
-				var encoded bytes.Buffer
-				if err = jpeg.Encode(&encoded, bitmap, &jpeg.Options{Quality: 90}); err != nil {
-					return err
+				for _, size := range []struct{ width, height, quality int }{{720, 450, 80}, {360, 225, 75}, {24, 15, 15}} {
+					encoded, err := thumbnailJPEG(bitmap, size.width, size.height, size.quality)
+					if err != nil {
+						return err
+					}
+					if size.width == 24 {
+						image.Placeholders[variant] = base64.StdEncoding.EncodeToString(encoded)
+						continue
+					}
+					hash := sha256.Sum256(encoded)
+					file := fmt.Sprintf("%s-%d-%s-%x.jpg", assetName, size.width, variant, hash[:8])
+					if err = os.WriteFile(filepath.Join(output, file), encoded, 0644); err != nil {
+						return err
+					}
+					if size.width == 720 {
+						image.Thumbnails[variant] = file
+					} else {
+						image.SmallThumbnails[variant] = file
+					}
 				}
-				hash := sha256.Sum256(encoded.Bytes())
-				file := fmt.Sprintf("%s-%s-%x.jpg", assetName, variant, hash[:8])
-				if err = os.WriteFile(filepath.Join(output, file), encoded.Bytes(), 0644); err != nil {
-					return err
-				}
-				image.Thumbnails[variant] = file
 			}
 		}
 
@@ -135,4 +149,33 @@ func runIllustrations(args []string) error {
 		return err
 	}
 	return os.Rename(temporary, filepath.Join(output, "manifest.json"))
+}
+
+func thumbnailJPEG(source imageformat.Image, width, height, quality int) ([]byte, error) {
+	bitmap := source
+	if source.Bounds().Dx() != width || source.Bounds().Dy() != height {
+		resized := imageformat.NewRGBA(imageformat.Rect(0, 0, width, height))
+		bounds := source.Bounds()
+		for y := 0; y < height; y++ {
+			for x := 0; x < width; x++ {
+				var red, green, blue, count uint64
+				for sy := y * bounds.Dy() / height; sy < (y+1)*bounds.Dy()/height; sy++ {
+					for sx := x * bounds.Dx() / width; sx < (x+1)*bounds.Dx()/width; sx++ {
+						r, g, b, _ := source.At(bounds.Min.X+sx, bounds.Min.Y+sy).RGBA()
+						red += uint64(r)
+						green += uint64(g)
+						blue += uint64(b)
+						count++
+					}
+				}
+				resized.SetRGBA(x, y, color.RGBA{uint8(red / count >> 8), uint8(green / count >> 8), uint8(blue / count >> 8), 255})
+			}
+		}
+		bitmap = resized
+	}
+	var output bytes.Buffer
+	if err := jpeg.Encode(&output, bitmap, &jpeg.Options{Quality: quality}); err != nil {
+		return nil, err
+	}
+	return output.Bytes(), nil
 }

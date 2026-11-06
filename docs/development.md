@@ -508,6 +508,12 @@ independent: `Server-Timing` identifies cache hits and handler rendering on miss
 The command checks that prefetch scenarios actually reuse or expire their response.
 The download case measures changing content in an already open dialog until the
 new options are confirmed and Download is enabled.
+Use `--journey gallery` to measure returning from Cards to the component index.
+`--scenario cold|warm|prefetch|expired` limits a run to one cache condition.
+Gallery samples include `visibleImages` and an `images-ready` mark after the
+visible full-resolution candidates decode. Resource entries distinguish cached
+image bytes (`transferBytes: 0`) from network transfers. These marks exclude the
+intentional image fade; decoding and finishing that transition are separate.
 
 `dom` means the expected content is present. `ready` means the navigation asset
 loader has finished, or the download selection is confirmed. `frame-opportunity`
@@ -594,6 +600,9 @@ spacing, app-bar title ownership and scene framing. Shared measurements live in
 ## Component illustrations
 
 Catalog cards use generated images of the simple previews. Interactive playgrounds keep their live markup.
+Generate thumbnails for each new publication before serving it. Theme rebuilds
+preserve images only when their manifest matches the publication. Missing images
+show a placeholder; catalog cards never substitute live component markup.
 
 Generate the simple catalog thumbnails after building token assets:
 
@@ -605,6 +614,12 @@ The command captures 720 × 450 thumbnails in six appearances and publishes
 `illustrations/manifest.json` after every capture succeeds. Rendering lives in
 `catalog/web/illustrations.templ`; component anatomy and measurements remain in
 Forge. The playground stays interactive.
+
+Each capture produces 720px and 360px JPEGs plus a 24 × 15 placeholder embedded
+in the manifest. Cards inline the placeholders for immediate blurred artwork and
+use native lazy loading with responsive image candidates. The full image fades
+in after decoding; reduced motion disables the transition. Aspect ratios reserve
+card space, and full-page refresh leaves scroll restoration to the browser.
 
 When exporting the shared shell for a static tool, include the publication to
 build the same component and style links without a browser-side navigation fetch:

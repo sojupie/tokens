@@ -12,6 +12,8 @@
  header.dataset.mobileLevel=section?'section':'main';
  document.documentElement.dataset.siteDrawer=rail?'expanded':'modal';
  if(rail){
+  const appearance=header.querySelector('.tokens-drawer-appearance');
+  if(appearance)header.append(appearance);
   const drawer=header.querySelector('#tokens-site-menu');
   drawer.dataset.variant='standard';
   drawer.setAttribute('open','');

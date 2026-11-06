@@ -30,6 +30,8 @@ go run ./cmd/tokens crawl --discover --scope token-source-pages --dry-run
 This scope considers component `/specs` pages and style or foundation token
 pages ending in `/tokens`, `/specs`, `-tokens`, or `-scale`. It reports candidates and page-catalog drift;
 it does not prove that every Material page publishes a token table.
+It also includes `/styles/color/static/baseline`, which publishes the baseline
+color-scheme table despite having no token suffix in its URL.
 
 Update the page URL catalog after reviewing the reported additions and removals:
 

@@ -60,17 +60,6 @@ func useComponentAssets(name string) templ.Component {
 	})
 }
 
-// Gallery artwork can stay blurred while its styles arrive. Detail pages retain
-// blocking styles so their interactive controls never paint unfinished.
-func deferThumbnailStyles() templ.Component {
-	return templ.ComponentFunc(func(ctx context.Context, _ io.Writer) error {
-		if assets, ok := ctx.Value(componentAssetsKey{}).(*componentAssets); ok {
-			assets.deferStyles = true
-		}
-		return nil
-	})
-}
-
 func componentAssetScope(static ...bool) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, writer io.Writer) error {
 		children := templ.GetChildren(ctx)

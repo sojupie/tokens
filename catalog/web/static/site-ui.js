@@ -42,26 +42,6 @@
   // Safari can retain :focus-visible after touch-driven programmatic focus.
   document.addEventListener('pointerdown',()=>document.documentElement.setAttribute('data-pointer-focus',''),true);
   document.addEventListener('keydown',event=>{if(!event.metaKey&&!event.altKey&&!event.ctrlKey)document.documentElement.removeAttribute('data-pointer-focus');},true);
-  // HTML specimens avoid Safari foreignObject compositing and clipping bugs.
-  const thumbnailSizes=new ResizeObserver(entries=>{for(const {target,contentRect} of entries)target.style.setProperty("--_thumbnail-scale",String(contentRect.width/360));});
-  const thumbnails=new WeakSet();
-  // Styles and measured scale must both be settled before removing the blur.
-  function settleThumbnails(failed=false){
-    const pending=[...document.querySelectorAll(".tokens-component-thumbnail:not([data-preview-ready])")];
-    for(const thumbnail of pending){
-      thumbnail.style.setProperty("--_thumbnail-scale",String(thumbnail.getBoundingClientRect().width/360));
-      if(failed)thumbnail.setAttribute("data-preview-error","");
-    }
-    if(!failed)requestAnimationFrame(()=>{
-      for(const thumbnail of pending){
-        thumbnail.removeAttribute("data-preview-error");
-        thumbnail.setAttribute("data-preview-ready","");
-      }
-    });
-  }
-  document.addEventListener("tokens:styles-ready",()=>settleThumbnails());
-  document.addEventListener("tokens:styles-error",()=>settleThumbnails(true));
-  document.addEventListener("htmx:beforeCleanupElement",event=>{const node=(event.detail?.elt || event.target);if(typeof node?.querySelectorAll!=='function')return;if(node.matches?.(".tokens-component-thumbnail"))thumbnailSizes.unobserve(node);for(const thumbnail of node.querySelectorAll(".tokens-component-thumbnail"))thumbnailSizes.unobserve(thumbnail);});
   // Boost document links only. Downloads, API documents and external links stay native.
   function navigationLinks(root=document){
     const base=new URL('../',document.querySelector('script[src*="site-ui.js"]').src).pathname.replace(/\/$/,'');
@@ -118,10 +98,8 @@
   document.addEventListener('htmx:before:request',event=>{if(event.detail.ctx.request.headers['HX-Boosted']==='true')saveGallery();});
   document.addEventListener('htmx:after:swap',event=>{const headers=event.detail.ctx.request.headers;if(headers['HX-Boosted']==='true'||headers['HX-History-Restore-Request']==='true')restoreGallery();});
   window.addEventListener('pagehide',saveGallery);
-  window.addEventListener('pageshow',restoreGallery);
   function initialize(){
     navigationLinks();
-    for(const thumbnail of document.querySelectorAll(".tokens-component-thumbnail"))if(!thumbnails.has(thumbnail)){thumbnails.add(thumbnail);thumbnailSizes.observe(thumbnail);}
   }
   document.addEventListener('htmx:afterSwap',initialize);document.addEventListener('htmx:historyRestore',initialize);
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initialize);else initialize();

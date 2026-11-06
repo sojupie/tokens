@@ -410,11 +410,18 @@ test('table modes preserve preview preference and folder state, with matching ac
     querySelectorAll: selector => selector === '.tokens-token-folder' ? groups : [],
     addEventListener: (name, handler) => { listeners[name] = handler; },
   };
-  let copied;
+  let copied, failClipboard = false, copyField, copyFallback = true, clearCopyStatus;
+  const clipboard = {writeText: async value => { if (failClipboard) throw Error('denied'); copied = value; }};
+  const navigator = {clipboard};
   runScript('token-table.js', {
-    document: {querySelectorAll: selector => selector === '.tokens-token-browser' ? [browser] : []},
-    addEventListener() {},
-    navigator: {clipboard: {writeText: async value => { copied = value; }}},
+    document: {
+      querySelectorAll: selector => selector === '.tokens-token-browser' ? [browser] : [],
+      createElement: () => ({style:{},focus(){},select(){},remove(){copyField=undefined;}}),
+      execCommand: command => { assert.equal(command,'copy'); copied=copyField.value; return copyFallback; },
+    },
+    addEventListener() {}, navigator,
+    setTimeout: (fn, delay) => { assert.equal(delay,1500); clearCopyStatus=fn; return 1; },
+    clearTimeout() {},
   });
   const click = action => listeners.click({target: {closest: selector => selector === 'button[data-action]' ? controls[action] : null}});
   await click('previews');
@@ -438,10 +445,29 @@ test('table modes preserve preview preference and folder state, with matching ac
   assert.equal(classes.has('tokens-grid-view'), true);
   assert.deepEqual(groups.map(group => group.open), [false, false]);
   const status = {};
-  const copy = {dataset: {copyReference: 'md.sys.color.primary'}, closest: () => ({querySelector: () => status})};
+  const copy = {dataset: {copyReference: 'md.sys.color.primary'}, focus(){}, closest: () => ({querySelector: () => status,append: field => {copyField=field;}})};
   await listeners.click({target: {closest: selector => selector === '[data-copy-reference]' ? copy : null}});
   assert.equal(copied, 'md.sys.color.primary');
   assert.equal(status.textContent, 'Copied.');
+  clearCopyStatus();
+  assert.equal(status.textContent, '');
+  const copyReference = () => listeners.click({target:{closest: selector => selector === '[data-copy-reference]' ? copy : null}});
+  failClipboard = true;
+  copied = undefined;
+  await copyReference();
+  assert.equal(copied,'md.sys.color.primary');
+  assert.equal(status.textContent,'Copied.');
+  assert.equal(copyField,undefined);
+  navigator.clipboard = undefined;
+  copied = undefined;
+  copy.dataset.copyReference = 'md.ref.palette.primary40';
+  await copyReference();
+  assert.equal(copied,'md.ref.palette.primary40');
+  assert.equal(status.textContent,'Copied.');
+  copyFallback = false;
+  await copyReference();
+  assert.equal(status.textContent,'Could not copy.');
+  assert.equal(copyField,undefined);
 });
 
 test('history restoration binds replacement download controls once', () => {
@@ -748,34 +774,34 @@ test('returning to a gallery restores its saved offset instantly without restori
  });
  events['htmx:before:request']({detail:{ctx:{request:{headers:{'HX-Boosted':'true'}}}}});
  assert.equal(storage.get('tokens-scroll:/md3/components'),'780');
+ assert.equal(windows.pageshow,undefined,'full refresh uses browser scroll restoration');
  location.pathname='/md3/components/cards';windows.pagehide();
  location.pathname='/md3/components';events['htmx:after:swap']({detail:{ctx:{request:{headers:{'HX-Boosted':'true'}}}}});await Promise.resolve();
  assert.equal(scrolls.length,1);assert.equal(scrolls[0].top,780);assert.equal(scrolls[0].behavior,'instant');
  events['htmx:after:swap']({detail:{ctx:{request:{headers:{}}}}});await Promise.resolve();assert.equal(scrolls.length,1);
 });
 
-test('thumbnail reveal waits for component styles and a measured frame',()=>{
- const events={},frames=[],attributes=new Set(),scale=[];
- const thumbnail={style:{setProperty:(name,value)=>scale.push([name,value])},getBoundingClientRect:()=>({width:270}),setAttribute:name=>attributes.add(name),removeAttribute:name=>attributes.delete(name)};
- runScript('site-ui.js',{
-  document:{readyState:'loading',addEventListener:(name,fn)=>events[name]=fn,querySelectorAll:()=>[thumbnail]},
-  window:{addEventListener(){}},requestAnimationFrame:fn=>frames.push(fn)
- });
- assert.equal(attributes.has('data-preview-ready'),false);
- events['tokens:styles-ready']();
- assert.deepEqual(scale,[['--_thumbnail-scale','0.75']]);
- assert.equal(attributes.has('data-preview-ready'),false);
- frames.shift()();assert.equal(attributes.has('data-preview-ready'),true);
- attributes.clear();events['tokens:styles-error']();
- assert.equal(attributes.has('data-preview-error'),true);
- assert.equal(attributes.has('data-preview-ready'),false);
+test('image previews reveal after decode and keep their placeholder on failure',async()=>{
+ const events={},attributes=new Set(); let decoded;
+ const picture={setAttribute:name=>attributes.add(name),removeAttribute:name=>attributes.delete(name)};
+ class TestImage {complete=false;naturalWidth=0;closest(){return picture;}decode(){return new Promise(resolve=>decoded=resolve);}}
+ const image=new TestImage();
+ runScript('thumbnail-images.js',{HTMLImageElement:TestImage,document:{readyState:'complete',addEventListener:(name,fn)=>events[name]=fn,querySelectorAll:()=>[image]}});
+ assert(attributes.has('data-image-loading'));
+ events.load({target:image});assert(attributes.has('data-image-loading'));
+ decoded();await new Promise(setImmediate);
+ assert(!attributes.has('data-image-loading'));
+ attributes.add('data-image-loading');image.decode=()=>Promise.reject(new Error('failed'));
+ events.load({target:image});await new Promise(setImmediate);
+ assert(attributes.has('data-image-loading'));
 });
 
 test('shared header establishes desktop docking before deferred scripts run', () => {
   const script = readFileSync(join(__dirname, '../../forge/site/site-init.js'), 'utf8');
   for (const [breakpoint, width, docked] of [[1100,599,false],[1100,600,true],[1100,1099,true],[1100,1100,true],[1440,1200,true],[1440,1440,true]]) {
     const drawer = {dataset:{variant:'modal'},setAttribute(name,value){this[name]=value;}};
-    const header = {dataset:{drawerBreakpoint:String(breakpoint)},querySelector:()=>drawer};
+    const appearance={},placed=[];
+    const header = {dataset:{drawerBreakpoint:String(breakpoint)},querySelector:selector=>selector==='.tokens-drawer-appearance'?appearance:selector==='#tokens-site-menu'?drawer:null,append:node=>placed.push(node)};
     const root = {dataset:{}};
     runInNewContext(script, {
       document:{currentScript:{parentElement:header},documentElement:root},
@@ -786,6 +812,8 @@ test('shared header establishes desktop docking before deferred scripts run', ()
     assert.equal(drawer.dataset.variant,docked?'standard':'modal');
     assert.equal(Object.hasOwn(drawer,'open'),docked);
     assert.equal(drawer.role,docked?'navigation':undefined);
+    assert.equal(placed.length,docked?1:0,'appearance controls start in their final responsive container before paint');
+    if(docked)assert.equal(placed[0],appearance);
   }
 });
 

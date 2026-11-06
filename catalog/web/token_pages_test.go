@@ -55,3 +55,16 @@ func TestStyleTokenSetsHaveProperLabels(t *testing.T) {
 		t.Fatalf("sets[0].Label = %q, want %q", sets[0].Label, "Shape")
 	}
 }
+
+func TestColorTableDefaultsToSchemeAndPreservesExplicitSelection(t *testing.T) {
+	subject := publish.SubjectView{Key: publish.SubjectKey{Kind: publish.SubjectStyle, Slug: "color"}, Name: "Color"}
+	for i, name := range []string{"md.ref.palette", "md.sys.color"} {
+		subject.Tokens = append(subject.Tokens, publish.TokenView{SourceName: name + ".primary", Presentation: &publish.TokenPresentation{SetName: name, SetLabel: name, SetOrder: i}})
+	}
+	for _, test := range []struct{ selection, want string }{{"", "md.sys.color"}, {"md.ref.palette", "md.ref.palette"}, {"all", "all"}} {
+		browser := buildTokenBrowser(subject, url.Values{"set": {test.selection}})
+		if browser.Selected.Key != test.want {
+			t.Fatalf("selection %q: got %q, want %q", test.selection, browser.Selected.Key, test.want)
+		}
+	}
+}

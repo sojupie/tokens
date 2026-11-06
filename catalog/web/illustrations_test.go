@@ -110,12 +110,14 @@ func TestCatalogThumbnailUsesItsOwnThemeAwareImage(t *testing.T) {
 	for _, variant := range []string{"light-default", "light-medium", "light-high", "dark-default", "dark-medium", "dark-high"} {
 		image.Files[variant] = "scene-" + variant + "-0123456789abcdef.jpg"
 		image.Thumbnails[variant] = "thumbnail-" + variant + "-0123456789abcdef.jpg"
+		image.SmallThumbnails = map[string]string{"light-default": "thumbnail-small-0123456789abcdef.jpg"}
+		image.Placeholders = map[string]string{"light-default": "YWJj"}
 	}
 	server.illustrations = map[string]Illustration{image.Path: image}
 	response := httptest.NewRecorder()
 	server.Handler().ServeHTTP(response, httptest.NewRequest("GET", "/components", nil))
 	body := response.Body.String()
-	for _, want := range []string{"thumbnail-light-default-0123456789abcdef.jpg", "thumbnail-dark-high-0123456789abcdef.jpg", `width="720" height="450"`, `loading="lazy"`} {
+	for _, want := range []string{"thumbnail-light-default-0123456789abcdef.jpg", "thumbnail-dark-high-0123456789abcdef.jpg", `width="720" height="450"`, `loading="lazy"`, "thumbnail-small-0123456789abcdef.jpg 360w", "720w", "data:image/jpeg;base64,YWJj"} {
 		if !strings.Contains(body, want) {
 			t.Fatalf("thumbnail missing %s", want)
 		}

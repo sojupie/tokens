@@ -2,6 +2,7 @@ package web
 
 import (
 	"context"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -19,11 +20,13 @@ const IllustrationWidth, IllustrationHeight = 1200, 630
 
 // Illustration files are build outputs, independent of the live playground state.
 type Illustration struct {
-	Path       string            `json:"path"`
-	Name       string            `json:"name"`
-	Alt        string            `json:"alt"`
-	Files      map[string]string `json:"files,omitempty"`
-	Thumbnails map[string]string `json:"thumbnails,omitempty"`
+	Path            string            `json:"path"`
+	Name            string            `json:"name"`
+	Alt             string            `json:"alt"`
+	Files           map[string]string `json:"files,omitempty"`
+	Thumbnails      map[string]string `json:"thumbnails,omitempty"`
+	SmallThumbnails map[string]string `json:"smallThumbnails,omitempty"`
+	Placeholders    map[string]string `json:"placeholders,omitempty"`
 }
 type IllustrationManifest struct {
 	PublicationID string         `json:"publicationId"`
@@ -64,6 +67,11 @@ func (server *Server) UseIllustrations() error {
 	}
 	server.illustrations = map[string]Illustration{}
 	for _, image := range manifest.Images {
+		for _, data := range image.Placeholders {
+			if _, err := base64.StdEncoding.DecodeString(data); err != nil {
+				return fmt.Errorf("invalid thumbnail placeholder: %w", err)
+			}
+		}
 		for _, variant := range []string{"light-default", "light-medium", "light-high", "dark-default", "dark-medium", "dark-high"} {
 			if len(image.Files) > 0 && image.Files[variant] == "" {
 				return fmt.Errorf("missing illustration appearance: %s %s", image.Path, variant)
@@ -81,6 +89,9 @@ func (server *Server) UseIllustrations() error {
 			}
 		}
 		for _, file := range image.Thumbnails {
+			allFiles = append(allFiles, file)
+		}
+		for _, file := range image.SmallThumbnails {
 			allFiles = append(allFiles, file)
 		}
 		for _, file := range allFiles {
@@ -153,6 +164,24 @@ func (server *Server) handleIllustrationRender(w http.ResponseWriter, r *http.Re
 }
 
 func illustrationFileURL(file string) string { return "/illustrations/images/" + url.PathEscape(file) }
+
+func thumbnailSrcset(image Illustration, variant string) string {
+	full := illustrationFileURL(image.Files[variant])
+	if small := image.SmallThumbnails[variant]; small != "" {
+		return illustrationFileURL(small) + " 360w, " + full + " 720w"
+	}
+	return full
+}
+
+func thumbnailPlaceholderStyle(image Illustration) string {
+	var css strings.Builder
+	for _, variant := range []string{"light-default", "light-medium", "light-high", "dark-default", "dark-medium", "dark-high"} {
+		if data := image.Placeholders[variant]; data != "" {
+			fmt.Fprintf(&css, "--_thumbnail-%s:url(data:image/jpeg;base64,%s);", variant, data)
+		}
+	}
+	return css.String()
+}
 
 func (server *Server) setIllustrationMetadata(info *pageMetadata, path string) {
 	image, ok := server.illustrations[path]

@@ -10,6 +10,15 @@ versioned library. Component CSS and scripts must come from the same build.
 
 ## Authoring
 
+Buttons accept a color family independently of their visual variant:
+`ui.ButtonProps{Variant: ui.Filled, Color: ui.ColorTertiary}`. The HTML equivalent
+is `class="md-button md-filled-button" data-color="tertiary"`. Available families
+are primary, secondary, tertiary and error. Omitting the color preserves the
+captured default mapping. Tonal buttons use the family's container/on-container
+pair; the other styles remap their primary accent roles. Neutral, disabled and
+inverse roles retain their source mappings. These are Forge mappings; exported
+upstream DTCG tokens are unchanged.
+
 Use typed props for normal configuration. Supply content through templ children
 or component slots. Supply unique IDs for fields and panels. Use native links for
 navigation and native buttons for actions.

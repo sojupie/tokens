@@ -31,6 +31,15 @@ test(
     const document = JSON.parse(await readFile(file, "utf8"));
     const { values } = await compile(document, ":root", { appTheme: true });
     const generated = generateButtons(document, values);
+    for (const family of ["primary", "secondary", "tertiary", "error"]) {
+      const filled = generated.css.split(`.md-filled-button[data-color="${family}"] {`)[1].split("}")[0];
+      assert.ok(filled.includes(`--md-comp-button-filled-container-color: var(--md-sys-color-${family});`));
+      assert.ok(filled.includes(`--md-comp-button-filled-pressed-state-layer-color: var(--md-sys-color-on-${family});`));
+      assert.doesNotMatch(filled, /disabled|unselected|shadow/);
+      const tonal = generated.css.split(`.md-tonal-button[data-color="${family}"] {`)[1].split("}")[0];
+      assert.ok(tonal.includes(`--md-comp-button-tonal-container-color: var(--md-sys-color-${family}-container);`));
+      assert.ok(tonal.includes(`--md-comp-button-tonal-label-text-color: var(--md-sys-color-on-${family}-container);`));
+    }
     assert.equal(generated.coverage.mapped.length, 295);
     assert.ok(generated.css.includes(':is(:disabled,[aria-disabled="true"]):not([aria-busy="true"])'), 'busy buttons retain enabled token colors');
     assert.match(

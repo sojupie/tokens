@@ -6,6 +6,26 @@ import (
 	"testing"
 )
 
+func TestButtonPreviewColorFamily(t *testing.T) {
+	cases := []componentCase{{Family: "button", Variant: "filled", Size: "small", Shape: "round", State: "enabled"}}
+	for _, color := range []string{"default", "primary", "secondary", "tertiary", "error"} {
+		page, err := selectComponentPreview(cases, url.Values{"preview.color": {color}})
+		if err != nil {
+			t.Fatal(err)
+		}
+		want := color
+		if want == "default" {
+			want = ""
+		}
+		if len(page.Cases) != 1 || page.Cases[0].Color != want {
+			t.Fatalf("color %s: unexpected cases %#v", color, page.Cases)
+		}
+	}
+	if _, err := selectComponentPreview(cases, url.Values{"preview.color": {"unknown"}}); !errors.Is(err, errPreviewInput) {
+		t.Fatalf("unexpected invalid color result: %v", err)
+	}
+}
+
 func TestPreviewVariesOneDimensionAndKeepsValidCombinations(t *testing.T) {
 	var cases []componentCase
 	for _, variant := range []string{"tonal", "text"} {

@@ -46,11 +46,11 @@ templ subjectIllustration(image Illustration) {
 }
 
 templ thumbnailPicture(image Illustration) {
-	<picture class="tokens-thumbnail-image">
+	<picture class="tokens-thumbnail-image" style={ templ.SafeCSS(thumbnailPlaceholderStyle(image)) }>
 		for _,variant := range []string{"dark-high","dark-medium","dark-default","light-high","light-medium"} {
-			<source data-image-appearance={ variant } srcset={ illustrationFileURL(image.Files[variant]) } media="not all"/>
+			<source data-image-appearance={ variant } srcset={ thumbnailSrcset(image,variant) } sizes="auto, 360px" media="not all"/>
 		}
-		<img src={ illustrationFileURL(image.Files["light-default"]) } alt={ image.Name + " component preview" } width="720" height="450" loading="lazy" decoding="async"/>
+		<img src={ illustrationFileURL(image.Files["light-default"]) } srcset={ thumbnailSrcset(image,"light-default") } sizes="auto, 360px" alt={ image.Name + " component preview" } width="720" height="450" loading="lazy" decoding="async"/>
 	</picture>
 	@illustrationImageTheme()
 }

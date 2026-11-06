@@ -29,15 +29,16 @@ var probe string
 
 type journey struct{ Name, From, To, Kind string }
 type sample struct {
-	UserAgent string             `json:"userAgent"`
-	Viewport  map[string]int     `json:"viewport"`
-	Journey   string             `json:"journey"`
-	Scenario  string             `json:"scenario"`
-	Round     int                `json:"round"`
-	Trace     string             `json:"trace,omitempty"`
-	Marks     map[string]float64 `json:"marks"`
-	LongTasks []json.RawMessage  `json:"longTasks"`
-	Resources []resource         `json:"resources"`
+	UserAgent     string             `json:"userAgent"`
+	Viewport      map[string]int     `json:"viewport"`
+	Journey       string             `json:"journey"`
+	Scenario      string             `json:"scenario"`
+	Round         int                `json:"round"`
+	Trace         string             `json:"trace,omitempty"`
+	VisibleImages int                `json:"visibleImages"`
+	Marks         map[string]float64 `json:"marks"`
+	LongTasks     []json.RawMessage  `json:"longTasks"`
+	Resources     []resource         `json:"resources"`
 }
 type resource struct {
 	Protocol      string            `json:"protocol"`
@@ -63,11 +64,18 @@ func run() error {
 	out := flag.String("output", "", "output directory; default is a temporary directory")
 	cpu := flag.Float64("cpu-rate", 1, "CPU slowdown factor, at least 1")
 	latency := flag.Float64("latency-ms", 0, "added network latency; throughput is unchanged")
-	only := flag.String("journey", "", "cards, date or download; default all")
+	only := flag.String("journey", "", "cards, date, gallery or download; default all")
+	onlyScenario := flag.String("scenario", "", "cold, warm, prefetch or expired; default all")
 	width := flag.Int("width", 1440, "viewport width in CSS pixels")
 	height := flag.Int("height", 900, "viewport height in CSS pixels")
 	traces := flag.Bool("traces", true, "capture one additional traced run per scenario, excluded from statistics")
 	flag.Parse()
+	if *onlyScenario != "" && *onlyScenario != "cold" && *onlyScenario != "warm" && *onlyScenario != "prefetch" && *onlyScenario != "expired" {
+		return fmt.Errorf("unknown scenario %q", *onlyScenario)
+	}
+	if *only == "download" && (*onlyScenario == "prefetch" || *onlyScenario == "expired") {
+		return fmt.Errorf("download supports only cold and warm scenarios")
+	}
 	if *width < 320 || *height < 320 || *runs < 1 || *cpu < 1 || *latency < 0 || math.IsNaN(*cpu) || math.IsNaN(*latency) || math.IsInf(*cpu, 0) || math.IsInf(*latency, 0) {
 		return fmt.Errorf("invalid run count or throttling")
 	}
@@ -94,6 +102,7 @@ func run() error {
 	alloc, cancel := chromedp.NewExecAllocator(context.Background(), options...)
 	defer cancel()
 	journeys := []journey{{"cards", "components", "components/cards", "navigation"}, {"date", "components/cards", "components/date-pickers?preview.compare=interactive&preview.variant=modal", "navigation"}, {"download", "components/cards", "", "download"}}
+	journeys = append(journeys, journey{"gallery", "components/cards", "components", "navigation"})
 	var results []sample
 	write := func() error {
 		data, e := json.MarshalIndent(struct {
@@ -119,6 +128,9 @@ func run() error {
 			scenarios = scenarios[:2]
 		}
 		for _, scenario := range scenarios {
+			if *onlyScenario != "" && scenario != *onlyScenario {
+				continue
+			}
 			n := *runs
 			if *traces {
 				n++
@@ -142,14 +154,20 @@ func run() error {
 					return e
 				}
 			}
-			var ready, dom []float64
+			var ready, dom, images []float64
 			for _, s := range results {
 				if s.Journey == j.Name && s.Scenario == scenario && s.Trace == "" {
 					ready = append(ready, s.Marks["ready"])
 					dom = append(dom, s.Marks["dom"])
+					if s.VisibleImages > 0 {
+						images = append(images, s.Marks["images-ready"])
+					}
 				}
 			}
 			fmt.Printf("%s %-8s DOM p50/p95 %.1f/%.1f ms; ready %.1f/%.1f ms (n=%d)\n", j.Name, scenario, percentile(dom, .5), percentile(dom, .95), percentile(ready, .5), percentile(ready, .95), len(ready))
+			if len(images) > 0 {
+				fmt.Printf("  Visible images decoded p50/p95 %.1f/%.1f ms\n", percentile(images, .5), percentile(images, .95))
+			}
 		}
 	}
 	if !found {
@@ -174,7 +192,7 @@ func measure(alloc context.Context, base *url.URL, j journey, scenario string, c
 	dest := func(path string) string { u, _ := base.Parse(path); return u.String() }
 	quote := func(s string) string { v, _ := json.Marshal(s); return string(v) }
 	ready := func() error {
-		return evaluate(`TokenAssets.ready.then(()=>document.fonts.ready).then(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(()=>r(true)))))`)
+		return evaluate(`TokenAssets.ready.then(()=>document.fonts.ready).then(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(()=>r(true))))).then(()=>Promise.all([...document.querySelectorAll('.tokens-thumbnail-image img')].filter(e=>{const r=e.getBoundingClientRect();return r.top<innerHeight&&r.bottom>0}).map(e=>e.decode())))`)
 	}
 	var result sample
 	if err := run(network.Enable(), network.ClearBrowserCache(), emulation.SetCPUThrottlingRate(cpu), emulation.SetDeviceMetricsOverride(int64(width), int64(height), 1, false), network.EmulateNetworkConditions(false, latency, -1, -1), chromedp.ActionFunc(func(ctx context.Context) error {
@@ -241,9 +259,12 @@ func measure(alloc context.Context, base *url.URL, j journey, scenario string, c
 	if j.Kind == "download" {
 		action = `document.querySelector('input[name=content][value=implementation]').click()`
 	}
-	expected := ".md-card"
+	expected := "#component-preview .md-card"
 	if j.Name == "date" {
-		expected = ".md-date-demo"
+		expected = "#component-preview .md-date-demo"
+	}
+	if j.Name == "gallery" {
+		expected = "#subject-list .tokens-thumbnail-image"
 	}
 	if err := evaluate(`TokenBenchmark.reset(` + quote(j.Kind) + `,` + quote(path.Path) + `,` + quote(expected) + `);` + action + `;true`); err != nil {
 		return result, err
