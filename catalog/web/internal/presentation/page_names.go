@@ -98,6 +98,19 @@ func AllTokenSet(subject publish.SubjectView) TokenSet {
 }
 
 func IsDefaultTokenSet(subject publish.SubjectView, set TokenSet) bool {
-	sets := TokenSets(subject)
-	return !set.All && len(sets) > 0 && set.Key == sets[0].Key
+	return !set.All && set.Key != "" && set.Key == DefaultTokenSet(subject, TokenSets(subject)).Key
+}
+
+func DefaultTokenSet(subject publish.SubjectView, sets []TokenSet) TokenSet {
+	if subject.Key.Kind == publish.SubjectStyle && subject.Key.Slug == "color" {
+		for _, set := range sets {
+			if set.Key == "md.sys.color" {
+				return set
+			}
+		}
+	}
+	if len(sets) > 0 {
+		return sets[0]
+	}
+	return TokenSet{}
 }

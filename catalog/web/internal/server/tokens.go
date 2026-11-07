@@ -38,9 +38,6 @@ func buildTokenBrowser(subject publish.SubjectView, query url.Values) webview.To
 	}
 
 	selectedKey := query.Get("set")
-	if selectedKey == "" && subject.Key.Kind == publish.SubjectStyle && subject.Key.Slug == "color" {
-		selectedKey = "md.sys.color"
-	}
 	for _, set := range browser.Sets {
 		if set.Key == selectedKey {
 			browser.Selected = set
@@ -48,7 +45,7 @@ func buildTokenBrowser(subject publish.SubjectView, query url.Values) webview.To
 		}
 	}
 	if browser.Selected.Key == "" {
-		browser.Selected = browser.Sets[0]
+		browser.Selected = webview.DefaultTokenSet(subject, browser.Sets)
 	}
 	if selectedKey == "all" {
 		browser.Selected = webview.AllTokenSet(subject)

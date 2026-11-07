@@ -11,6 +11,7 @@ import (
 	webrender "github.com/sojupie/tokens/catalog/web/internal/render"
 	"github.com/sojupie/tokens/source/publish"
 	"html"
+	"net/http"
 	"net/http/httptest"
 	"net/url"
 	"os"
@@ -617,5 +618,22 @@ func TestColorTableDefaultsToSchemeAndPreservesExplicitSelection(t *testing.T) {
 		if browser.Selected.Key != test.want {
 			t.Fatalf("selection %q: got %q, want %q", test.selection, browser.Selected.Key, test.want)
 		}
+	}
+
+	handler := New(publish.PublishedState{Subjects: map[publish.SubjectKey]publish.SubjectView{subject.Key: subject}}, "").Handler()
+	response := httptest.NewRecorder()
+	handler.ServeHTTP(response, httptest.NewRequest(http.MethodGet, "/styles/color", nil))
+	if response.Code != http.StatusOK || !strings.Contains(response.Body.String(), `href="/styles/color/sets/md.ref.palette"`) {
+		t.Fatal("Color Schemes must link to the explicit Palettes page")
+	}
+
+	request := httptest.NewRequest(http.MethodGet, "/styles/color/sets/md.ref.palette", nil)
+	request.Header.Set("HX-Request", "true")
+	request.Header.Set("HX-Target", "tokens-token-browser")
+	response = httptest.NewRecorder()
+	handler.ServeHTTP(response, request)
+	body := response.Body.String()
+	if response.Code != http.StatusOK || !strings.Contains(body, "md.ref.palette.primary") || strings.Contains(body, "md.sys.color.primary") || !strings.Contains(body, `href="/styles/color" aria-current="false"`) {
+		t.Fatal("Palettes must render its own tokens and link back to Color Schemes")
 	}
 }
