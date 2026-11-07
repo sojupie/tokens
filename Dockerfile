@@ -24,7 +24,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends chromium fonts-
 WORKDIR /src
 COPY package.json package-lock.json ./
 RUN npm ci
-COPY LICENSE THIRD_PARTY_NOTICES.md ./
+COPY LICENSE THIRD_PARTY_NOTICES.md tsconfig.json ./
 COPY forge ./forge
 COPY catalog/web ./catalog/web
 COPY --from=build /out/tokens /usr/local/bin/tokens
