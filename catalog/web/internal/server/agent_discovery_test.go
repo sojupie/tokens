@@ -383,7 +383,7 @@ func TestMarkdownSubjectLinks(t *testing.T) {
 	request.Header.Set("Accept", "text/markdown")
 	server.Handler().ServeHTTP(response, request)
 	body := response.Body.String()
-	for _, link := range []string{"(https://tokens.example/components)", "[Change history (0)](https://tokens.example/components/snackbar/changes)"} {
+	for _, link := range []string{"[Change history (0)](https://tokens.example/components/snackbar/changes)"} {
 		if !strings.Contains(body, link) {
 			t.Fatalf("missing %q: %s", link, body)
 		}

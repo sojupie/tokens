@@ -88,3 +88,6 @@ if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href){
   const result=shorten(corpus);
   await writeFile(output,JSON.stringify(result));
 }
+
+// Release builds use the same CSS tokenizer with a conservative runtime boundary.
+export { walk as rewriteProperties };

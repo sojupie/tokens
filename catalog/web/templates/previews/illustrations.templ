@@ -13,9 +13,9 @@ templ IllustrationPage(subject publish.SubjectView, c webview.ComponentCase, the
   <head>
    <meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
    <meta name="robots" content="noindex"/><title>{ webview.SubjectName(subject) } thumbnail</title>
-   <link rel="stylesheet" href="/theme.css"/>
+   <link rel="stylesheet" href={ webview.StylesheetURL(ctx,"/theme.css") }/>
    for _,file:=range []string{"site.css","app.css","buttons.css","components.css","bundles/common.css","illustrations.css"} {
-    <link rel="stylesheet" href={ webassets.StaticURL(file) }/>
+    <link rel="stylesheet" href={ webview.StylesheetURL(ctx,webassets.StaticURL(file)) }/>
    }
    for _,file:=range []string{"motion.js","buttons.js","components.js","fields.js","date-picker.js","time-picker.js","progress.js","carousel.js","illustration-ready.js"} {
     <script src={ webassets.StaticURL(file) } defer></script>

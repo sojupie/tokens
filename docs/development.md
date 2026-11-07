@@ -653,8 +653,23 @@ content, form choices or downloads. Keep fallback styling in the owning componen
 module and catalog presentation in the catalog stylesheets.
 
 
-### CSS name experiments
+### CSS names in releases
 
-Full custom-property shortening remains a frozen-page benchmark. Private-only
-live delivery and class/ID shortening were removed after measurement; see the
-[results and decision](reference/delivery-performance.md#standards-mode-comparison-and-recommendation).
+Production asset builds use shortened CSS custom properties by default.
+`deploy/build-assets.sh` passes `--css-names short`; set
+`TOKENS_CSS_NAMES=original` to release original names. Local `build:tokens`
+builds default to original names and accept `--css-names short` for review.
+
+The delivery pack shares one deterministic name map across site, component and
+theme CSS. Names referenced by controllers, inline styles or templates retain
+their original spelling. The build scans those sources automatically; there is
+no browser translation table. DTCG, exported CSS and component implementation
+downloads retain original names and bytes.
+
+The server verifies the pack against its embedded styles and loaded themes at
+startup. Profiled stylesheet URLs include both the content hash and name-map ID.
+Original stylesheet URLs remain available to static consumers. See the
+[delivery details](reference/delivery-performance.md#production-css-delivery).
+
+Full custom-property rewriting and class/ID shortening remain separate benchmark
+experiments; the release pack does not rewrite runtime selectors or markup.

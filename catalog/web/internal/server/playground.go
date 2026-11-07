@@ -102,6 +102,8 @@ func (server *Server) componentThumbnails(subjects []publish.SubjectView) (map[s
 		case "split-button":
 			query.Set("preview.variant", "filled")
 			query.Set("preview.size", "small")
+		case "carousel":
+			query.Set("preview.content", "overlay")
 		case "cards":
 			query.Set("preview.variant", "filled")
 		case "icon-buttons":

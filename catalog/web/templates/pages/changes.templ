@@ -12,12 +12,6 @@ import (
 templ ChangesPage(state publish.PublishedState, subject string, baseURL string, filters webview.ChangeFilters, counts string, changes []publish.ChangeView, page int, total int, hasPrevious bool, hasNext bool) {
 	@Layout(webview.TimelineTitle(subject)) {
 		<header class="tokens-history-intro">
-			if subject != "" {
-				<a class="tokens-link tokens-history-back" href="/changes">
-					@webview.MaterialSymbol("arrow_back")
-					All changes
-				</a>
-			}
 			<h1 class="md-typescale-headline-medium">{ webview.ChangePageHeading(ctx, subject) }</h1>
 			<p class="md-typescale-body-large">Dates show when we detected changes, not when Material published them.</p>
 			<p class="tokens-metadata">{ webview.HistoryCoverage(state.Snapshots) }</p>

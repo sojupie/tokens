@@ -111,7 +111,7 @@ func SubjectPageComponent(subject publish.SubjectView, changes []publish.ChangeV
 			if webview.Metadata(ctx).Heading != "" {
 				heading = webview.Metadata(ctx).Heading
 			}
-			if err := write(`<header class="tokens-subject-header"><p class="tokens-back-link"><a class="tokens-link" href="` + webview.SubjectListPath(subject.Key.Kind != publish.SubjectComponent) + `">` + webview.MaterialSymbolSVG("arrow_back") + html.EscapeString(webview.SubjectKindLabel(subject.Key.Kind)) + `</a></p><div class="tokens-subject-heading"><h1 class="md-typescale-headline-medium">` + html.EscapeString(heading) + `</h1>`); err != nil {
+			if err := write(`<header class="tokens-subject-header"><div class="tokens-subject-heading"><h1 class="md-typescale-headline-medium">` + html.EscapeString(heading) + `</h1>`); err != nil {
 				return err
 			}
 			if err := SiteDownloadButton().Render(ctx, writer); err != nil {

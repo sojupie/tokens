@@ -25,6 +25,7 @@ type ComponentAssetsKey struct{}
 // AssetDelivery exposes only the publication lookups that rendering needs.
 // HTTP routing, requests and mutable server caches remain in package web.
 type AssetDelivery interface {
+	StylesheetURL(string) string
 	ComponentAssetLinks(*ComponentAssets) ([]byte, error)
 	ThumbnailIllustration(string) (Illustration, bool)
 }

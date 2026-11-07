@@ -17,6 +17,7 @@ import (
 )
 
 type Server struct {
+	deliveryCSS          *cssDelivery
 	exportIndexOnce      sync.Once
 	exportSelectionIndex *exportIndex
 	navigation           []site.Section
@@ -155,6 +156,9 @@ func (server *Server) Handler() http.Handler {
 		if request.URL.Path == "/mcp" {
 			response.Header().Set("X-Robots-Tag", "noindex")
 			server.handleMCP(response, request)
+			return
+		}
+		if server.serveDeliveryCSS(response, request) {
 			return
 		}
 		cachedMux.ServeHTTP(response, request)

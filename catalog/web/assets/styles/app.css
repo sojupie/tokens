@@ -37,7 +37,7 @@ button:not(:disabled), [role=button]:not([aria-disabled=true]) { cursor:pointer;
 .tokens-source-list, .tokens-subject-list { list-style:none; margin:0; padding:0; }
 .tokens-list-item { flex-wrap:wrap; display:flex; align-items:baseline; gap:var(--md-sys-measurement-space100); padding:var(--md-sys-measurement-space100) 0; border-bottom:var(--md-comp-divider-thickness) solid var(--md-sys-color-outline-variant); }
 .tokens-list-item:last-child { border:0; }
-.tokens-back-link, .tokens-actions { margin:0; }
+.tokens-actions { margin:0; }
 .tokens-change-card + .tokens-change-card { margin-top:var(--md-sys-measurement-space200); }
 .tokens-pagination { display:flex; align-items:center; justify-content:center; gap:var(--md-sys-measurement-space200); padding:var(--md-sys-measurement-space200) 0; }
 

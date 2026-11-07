@@ -2,6 +2,7 @@
 // bindings embedded by the Go server. A staged output directory prevents readers
 // from seeing a half-written asset set; --check-bindings verifies a rebuilt server
 // uses the same component bindings as the publication it will serve.
+import { buildDeliveryStyles } from "./css-delivery.ts";
 import { cssTiming } from "./components/helpers/springs.ts";
 import { parseArgs } from "node:util";
 import StyleDictionary from "style-dictionary";
@@ -237,10 +238,12 @@ async function main() {
       assets: { type: "string" },
       "tokens-binary": { type: "string" },
       "check-bindings": { type: "boolean", default: false },
+      "css-names": { type: "string", default: "original" },
     },
   });
   if (!args.published)
     throw new Error("Usage: npm run build:tokens -- --published <directory> [--assets <directory>] [--check-bindings]");
+  if (!["original", "short"].includes(args["css-names"])) throw Error("--css-names must be original or short");
   await buildComponentAssets({ check: args["check-bindings"] });
   await buildCatalogAssets({ check: args["check-bindings"] });
   const executable = args["tokens-binary"] ?? "go";
@@ -576,6 +579,7 @@ async function main() {
         await writeFile(file, generatedBinding(css));
       }
     }
+    if (args["css-names"] === "short") await buildDeliveryStyles(target);
     console.log(`Built six themes and DTCG/CSS downloads in ${target}`);
   } finally {
     await rm(output, { recursive: true, force: true });

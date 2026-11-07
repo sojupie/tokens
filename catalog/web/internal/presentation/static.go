@@ -11,7 +11,16 @@ func ThemeURL(ctx context.Context) string {
 		return themes.Shared
 	}
 	if version, ok := ctx.Value(ThemeVersionKey{}).(string); ok {
-		return "/theme.css?v=" + version
+		return StylesheetURL(ctx, "/theme.css?v="+version)
 	}
-	return "/theme.css"
+	return StylesheetURL(ctx, "/theme.css")
+}
+
+// StylesheetURL selects a server's delivery profile without changing public
+// component exports or embedding a property-name dictionary in the browser.
+func StylesheetURL(ctx context.Context, original string) string {
+	if assets, ok := ctx.Value(ComponentAssetsKey{}).(*ComponentAssets); ok && assets.Server != nil {
+		return assets.Server.StylesheetURL(original)
+	}
+	return original
 }

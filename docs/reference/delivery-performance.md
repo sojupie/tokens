@@ -503,8 +503,9 @@ conformance guides for interaction, history and static-tool checks.
 - Response caches are local to a process. Cold renders, index construction and
   static compression still cost work; attachment generation still costs memory
   and CPU. No distributed response cache or cold-miss coalescing is implemented.
-- Full custom-property shortening remains a benchmark experiment.
-  Private-only delivery and class/ID shortening have been removed.
+- Production CSS shortens names used only inside CSS. Runtime-facing names,
+  selectors and markup retain their original spelling. Full rewriting remains
+  a benchmark experiment.
 - Current measurements cover local Chromium, HTTP/1.1 and defined workloads.
   They do not establish Firefox/Safari behavior, HTTP/3 gains, remote-user latency
   or CI regression thresholds.
@@ -518,10 +519,11 @@ before live use. Private-only delivery preserved public and runtime-facing
 properties but added separate assets, source scanning, fingerprints and startup
 checks for a small payload reduction.
 
-Their measured results remain below. The transforms, optional delivery route,
-manifest fields, build flag and experiment-only dependencies are no longer part
-of the implementation. Full custom-property shortening remains available in
-`cmd/bench-css-names` as a frozen-page experiment.
+Their measured results remain below. That cleanup removed their transforms,
+delivery route, manifest fields and build flag. The production CSS delivery
+section below describes the subsequent release implementation. Full
+custom-property rewriting remains available in `cmd/bench-css-names` as a
+frozen-page experiment.
 
 ### Standards-mode comparison and recommendation
 
@@ -780,3 +782,41 @@ fingerprint mismatch despite identical screenshots. A subsequent property-by-
 property comparison and repeat of all six combinations matched; its original
 cause was not isolated. This check is evidence for unchanged appearance, not a
 guarantee against every transient state.
+
+
+### Production CSS delivery
+
+As of November 7, release builds enable CSS-only custom-property shortening by default.
+The earlier decision above records the benchmark tradeoffs; this release option
+keeps runtime-facing names intact and does not ship a translation dictionary.
+Class and ID rewriting remains excluded.
+
+`forge/css-delivery.ts` collects generated theme CSS, component bundles and site
+styles, then assigns collision-free identifiers in descending frequency order.
+Source occurrences outside CSS protect both complete names and dynamic prefixes,
+such as `--_motion-`. The same map applies to every stylesheet in a release.
+Controllers and inline styles therefore continue using their original names.
+Changing theme, contrast or component modules does not change the dictionary.
+
+The pack is a separate delivery artifact. It never replaces the original theme,
+DTCG or component assets used by download handlers. A review build compared all
+19 generated DTCG/CSS download files with the original build: every file was
+byte-for-byte identical. A server test also exercises the original CSS download
+handler with a shortened delivery pack loaded.
+
+The review corpus shortened 1,250 of 5,557 properties, reducing its raw CSS from
+3,536,627 to 2,990,986 bytes. These totals include aggregate styles and all theme
+modules; they are not the transfer size of one page. The earlier benchmark
+results remain the evidence for browser performance; this rollout does not
+establish an additional paint-time improvement.
+
+The server loads and verifies source and output checksums once at startup.
+Stylesheet URLs carry the transformed content hash and dictionary ID, so cached
+assets cannot silently mix maps. The existing navigation asset-change check
+reloads the document across incompatible releases. Unknown delivery profiles
+return an uncached 404; original stylesheet URLs still serve original CSS.
+
+`deploy/build-assets.sh` selects `short` unless `TOKENS_CSS_NAMES=original` is set.
+Local builds default to original names. Both use the same renderer and download
+handlers. Carousel thumbnail capture explicitly selects `preview.content=overlay`
+so the generated image contains text on the paintings.

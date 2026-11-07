@@ -79,9 +79,9 @@ func Layout(title string) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var4 templ.SafeURL
-		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinURLErrs(webassets.StaticURL("site.css"))
+		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinURLErrs(webview.StylesheetURL(ctx, webassets.StaticURL("site.css")))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/templates/shared/layout.templ`, Line: 21, Col: 64}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/templates/shared/layout.templ`, Line: 21, Col: 92}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
@@ -92,9 +92,9 @@ func Layout(title string) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var5 templ.SafeURL
-		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinURLErrs(webassets.StaticURL("app.css"))
+		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinURLErrs(webview.StylesheetURL(ctx, webassets.StaticURL("app.css")))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/templates/shared/layout.templ`, Line: 22, Col: 63}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/templates/shared/layout.templ`, Line: 22, Col: 91}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
@@ -105,9 +105,9 @@ func Layout(title string) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var6 templ.SafeURL
-		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinURLErrs(webassets.StaticURL("token-table.css"))
+		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinURLErrs(webview.StylesheetURL(ctx, webassets.StaticURL("token-table.css")))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/templates/shared/layout.templ`, Line: 23, Col: 71}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/templates/shared/layout.templ`, Line: 23, Col: 99}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
@@ -118,9 +118,9 @@ func Layout(title string) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var7 templ.SafeURL
-		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinURLErrs(webassets.StaticURL("buttons.css"))
+		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinURLErrs(webview.StylesheetURL(ctx, webassets.StaticURL("buttons.css")))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/templates/shared/layout.templ`, Line: 24, Col: 67}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/templates/shared/layout.templ`, Line: 24, Col: 95}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 		if templ_7745c5c3_Err != nil {
@@ -131,9 +131,9 @@ func Layout(title string) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var8 templ.SafeURL
-		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinURLErrs(webassets.StaticURL("bundles/common.css"))
+		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinURLErrs(webview.StylesheetURL(ctx, webassets.StaticURL("bundles/common.css")))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/templates/shared/layout.templ`, Line: 25, Col: 74}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/templates/shared/layout.templ`, Line: 25, Col: 102}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 		if templ_7745c5c3_Err != nil {

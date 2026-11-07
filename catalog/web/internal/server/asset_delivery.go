@@ -194,7 +194,7 @@ func (server *Server) useGeneratedAssets(publicationDir, directory string, requi
 		return readErr
 	}
 	server.tokenAssetsDir = directory
-	return nil
+	return server.loadDeliveryCSS(directory)
 }
 
 func (server *Server) handleDTCGDownload(response http.ResponseWriter, request *http.Request) {
@@ -223,7 +223,7 @@ func (server *Server) handleDTCGDownload(response http.ResponseWriter, request *
 func (server *Server) ComponentAssetLinks(assets *webview.ComponentAssets) ([]byte, error) {
 	var links strings.Builder
 	writeStylesheet := func(url string, pageTheme, blocking bool, order int) {
-		url = html.EscapeString(url)
+		url = html.EscapeString(server.StylesheetURL(url))
 		fmt.Fprintf(&links, `<link rel="stylesheet" href="%s" data-component-stylesheet data-component-order="%04d"`, url, order)
 		if pageTheme {
 			links.WriteString(` data-page-theme`)
@@ -276,7 +276,7 @@ func (server *Server) ComponentAssetLinks(assets *webview.ComponentAssets) ([]by
 
 func (server *Server) pageThemes() webview.PageThemesContext {
 	if data, ok := server.themeBundles["shared"]; ok {
-		return webview.PageThemesContext{Shared: "/themes/shared.css?v=" + webassets.AssetVersion(data)}
+		return webview.PageThemesContext{Shared: server.StylesheetURL("/themes/shared.css?v=" + webassets.AssetVersion(data))}
 	}
 	return webview.PageThemesContext{}
 }

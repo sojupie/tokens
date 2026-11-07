@@ -18,11 +18,11 @@ templ Layout(title string) {
 			@webassets.InitialThemeScript()
 			<script src={ webassets.StaticURL("theme.js") } defer></script>
 			<link rel="stylesheet" href={ webview.ThemeURL(ctx) }/>
-			<link rel="stylesheet" href={ webassets.StaticURL("site.css") }/>
-			<link rel="stylesheet" href={ webassets.StaticURL("app.css") }/>
-			<link rel="stylesheet" href={ webassets.StaticURL("token-table.css") }/>
-			<link rel="stylesheet" href={ webassets.StaticURL("buttons.css") }/>
-			<link rel="stylesheet" href={ webassets.StaticURL("bundles/common.css") }/>
+			<link rel="stylesheet" href={ webview.StylesheetURL(ctx, webassets.StaticURL("site.css")) }/>
+			<link rel="stylesheet" href={ webview.StylesheetURL(ctx, webassets.StaticURL("app.css")) }/>
+			<link rel="stylesheet" href={ webview.StylesheetURL(ctx, webassets.StaticURL("token-table.css")) }/>
+			<link rel="stylesheet" href={ webview.StylesheetURL(ctx, webassets.StaticURL("buttons.css")) }/>
+			<link rel="stylesheet" href={ webview.StylesheetURL(ctx, webassets.StaticURL("bundles/common.css")) }/>
 			@webview.SiteNavigationStyles()
 			<script src={ webassets.StaticURL("motion.js") } defer></script>
 			<script src={ webassets.StaticURL("buttons.js") } defer></script>

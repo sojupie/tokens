@@ -335,6 +335,9 @@ func TestComponentGalleryRendersNativeStates(t *testing.T) {
 	if c := thumbnails["segmented-buttons"]; c.Control != "label" || c.Variant != "single" || !c.Selected {
 		t.Fatalf("segmented illustration must match its label-only anatomy: %+v", c)
 	}
+	if c := thumbnails["carousel"]; c.CarouselContent != "overlay" {
+		t.Fatalf("carousel capture must show text on the image: %+v", c)
+	}
 	again, err := server.componentThumbnails(sortedSubjects(state))
 	if err != nil {
 		t.Fatal(err)

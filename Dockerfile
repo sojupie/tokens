@@ -25,9 +25,7 @@ WORKDIR /src
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY forge ./forge
-COPY catalog/web/assets ./catalog/web/assets
-COPY catalog/web/templates ./catalog/web/templates
-COPY catalog/web/build-assets.ts ./catalog/web/build-assets.ts
+COPY catalog/web ./catalog/web
 COPY --from=build /out/tokens /usr/local/bin/tokens
 COPY deploy/build-assets.sh ./deploy/build-assets.sh
 ENV HOME=/tmp
