@@ -11,4 +11,6 @@
 !deploy/testdata/**
 !package.json
 !package-lock.json
+!LICENSE
+!THIRD_PARTY_NOTICES.md
 !deploy/build-assets.sh
