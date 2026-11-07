@@ -114,6 +114,9 @@ func TestOlderContentAddressedIllustrationRemainsAvailable(t *testing.T) {
 
 func TestCatalogThumbnailUsesItsOwnThemeAwareImage(t *testing.T) {
 	server := New(seoTestState(), "")
+	if err := server.SetPublicOrigin("https://tokens.example/md3"); err != nil {
+		t.Fatal(err)
+	}
 	image := webview.Illustration{Path: "/components/snackbar", Name: "Snackbar", Files: map[string]string{}, Thumbnails: map[string]string{}}
 	for _, variant := range []string{"light-default", "light-medium", "light-high", "dark-default", "dark-medium", "dark-high"} {
 		image.Files[variant] = "scene-" + variant + "-0123456789abcdef.jpg"
@@ -123,9 +126,9 @@ func TestCatalogThumbnailUsesItsOwnThemeAwareImage(t *testing.T) {
 	}
 	server.illustrations = map[string]webview.Illustration{image.Path: image}
 	response := httptest.NewRecorder()
-	server.Handler().ServeHTTP(response, httptest.NewRequest("GET", "/components", nil))
+	server.Handler().ServeHTTP(response, httptest.NewRequest("GET", "/md3/components", nil))
 	body := response.Body.String()
-	for _, want := range []string{"thumbnail-light-default-0123456789abcdef.jpg", "thumbnail-dark-high-0123456789abcdef.jpg", `width="720" height="450"`, `loading="lazy"`, "thumbnail-small-0123456789abcdef.jpg 360w", "720w", "data:image/jpeg;base64,YWJj"} {
+	for _, want := range []string{"/md3/illustrations/images/thumbnail-small-0123456789abcdef.jpg 360w, /md3/illustrations/images/thumbnail-light-default-0123456789abcdef.jpg 720w", "/md3/illustrations/images/thumbnail-dark-high-0123456789abcdef.jpg", `width="720" height="450"`, `loading="lazy"`, "data:image/jpeg;base64,YWJj"} {
 		if !strings.Contains(body, want) {
 			t.Fatalf("thumbnail missing %s", want)
 		}
@@ -134,7 +137,7 @@ func TestCatalogThumbnailUsesItsOwnThemeAwareImage(t *testing.T) {
 		t.Fatal("catalog rendered live specimen or editorial image instead of thumbnail")
 	}
 	response = httptest.NewRecorder()
-	server.Handler().ServeHTTP(response, httptest.NewRequest("GET", "/illustrations/render/components/snackbar?composition=thumbnail", nil))
+	server.Handler().ServeHTTP(response, httptest.NewRequest("GET", "/md3/illustrations/render/components/snackbar?composition=thumbnail", nil))
 	if response.Code != 200 || !strings.Contains(response.Body.String(), `data-composition="thumbnail"`) {
 		t.Fatal("thumbnail source unavailable")
 	}
