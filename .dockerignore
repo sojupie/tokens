@@ -13,4 +13,5 @@
 !package-lock.json
 !LICENSE
 !THIRD_PARTY_NOTICES.md
+!tsconfig.json
 !deploy/build-assets.sh
