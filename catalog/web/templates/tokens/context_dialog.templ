@@ -38,9 +38,7 @@ templ ContextDialogActions() {
 	@ui.Action(ui.ButtonProps{Variant: ui.Text, Attrs: templ.Attributes{"data-action": "cancel"}}) {
 		Cancel
 	}
-	@ui.Action(ui.ButtonProps{Type: "submit"}) {
-		Save
-	}
+	@ui.LoadingButton(templ.Attributes{"class": "md-button md-filled-button md-loading-button", "type": "submit", "data-context-save": "", "aria-busy": "false"}, "Save")
 }
 
 templ TableContextFields(filters []webview.TokenFilter) {

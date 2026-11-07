@@ -36,7 +36,7 @@ func TokenBrowserContents(subject publish.SubjectView, browser webview.TokenBrow
 		if len(browser.Sets) == 0 {
 			return write(`<p class="tokens-empty md-typescale-body-large">No published tokens for this page.</p>`)
 		}
-		if err := write(TokenTableSharedMarkup() + `<form class="tokens-token-filters" hx-boost="false" hx-target="#tokens-token-browser" hx-swap="outerHTML" hx-sync="this:replace" hx-push-url="true" hx-get="` + html.EscapeString(webview.SubjectURL(subject)) + `" method="get" action="` + html.EscapeString(webview.SubjectURL(subject)) + `"><div class="tokens-token-toolbar">`); err != nil {
+		if err := write(TokenTableSharedMarkup() + `<form class="tokens-token-filters" hx-boost="false" hx-target="#tokens-token-browser" hx-swap="outerHTML" hx-sync="#tokens-token-browser:replace" hx-push-url="true" hx-get="` + html.EscapeString(webview.SubjectURL(subject)) + `" method="get" action="` + html.EscapeString(webview.SubjectURL(subject)) + `#tokens-heading"><div class="tokens-token-toolbar">`); err != nil {
 			return err
 		}
 		keys := make([]string, 0, len(browser.PreviewQuery))

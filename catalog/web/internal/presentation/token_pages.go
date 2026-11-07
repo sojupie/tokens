@@ -63,6 +63,9 @@ func TokenSetMenuGroups(subject publish.SubjectView, sets []TokenSet) []TokenSet
 
 func TokenSetLinkURL(subject publish.SubjectView, set TokenSet, browser TokenBrowser) string {
 	query := make(url.Values)
+	for key, values := range browser.PreviewQuery {
+		query[key] = values
+	}
 	if browser.Query != "" {
 		query.Set("q", browser.Query)
 	}

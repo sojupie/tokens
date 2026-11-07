@@ -34,9 +34,7 @@ templ TokenSetPicker(subject publish.SubjectView, browser webview.TokenBrowser) 
 					<ul>
 						for _, set := range group.Sets {
 							<li>
-								@ui.MenuLink(webview.TokenSetLinkURL(subject, set, browser), templ.Attributes{"aria-current": webview.CurrentTokenSet(set.Key == browser.Selected.Key)}, ui.Icon("check")) {
-									{ webview.TokenTableQualifier(subject,set) }
-								}
+								@TokenSetMenuLink(webview.TokenSetLinkURL(subject, set, browser), webview.TokenTableQualifier(subject, set), set.Key == browser.Selected.Key)
 							</li>
 						}
 					</ul>
@@ -46,12 +44,25 @@ templ TokenSetPicker(subject publish.SubjectView, browser webview.TokenBrowser) 
 			<section aria-label="All tokens">
 				<ul>
 					<li>
-						@ui.MenuLink(webview.TokenSetLinkURL(subject, webview.AllTokenSet(subject), browser), templ.Attributes{"aria-current": webview.CurrentTokenSet(browser.Selected.All)}, ui.Icon("check")) {
-							All tokens
-						}
+					@TokenSetMenuLink(webview.TokenSetLinkURL(subject, webview.AllTokenSet(subject), browser), "All tokens", browser.Selected.All)
 					</li>
 				</ul>
 			</section>
 		}
+	}
+}
+
+templ TokenSetMenuLink(href, label string, selected bool) {
+	@ui.MenuLink(href, templ.Attributes{
+		"aria-current": webview.CurrentTokenSet(selected),
+		"data-token-set-link": true,
+		"hx-boost": "false",
+		"hx-get": href,
+		"hx-target": "#tokens-token-browser",
+		"hx-swap": "outerHTML focusScroll:false",
+		"hx-sync": "#tokens-token-browser:replace",
+		"hx-push-url": "true",
+	}, ui.Icon("check")) {
+		{ label }
 	}
 }

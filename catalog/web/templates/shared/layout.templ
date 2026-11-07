@@ -1,5 +1,7 @@
 package render
 
+import "strconv"
+
 import webassets "github.com/sojupie/tokens/catalog/web/assets"
 
 import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
@@ -53,8 +55,8 @@ templ Layout(title string) {
 				<meta property="og:description" content={ webview.Metadata(ctx).Description }/>
 				<meta property="og:url" content={ webview.Metadata(ctx).ImagePageURL }/>
 				<meta property="og:image" content={ webview.Metadata(ctx).ImageURL }/>
-				<meta property="og:image:width" content="1200"/>
-				<meta property="og:image:height" content="630"/>
+				<meta property="og:image:width" content={ strconv.Itoa(webview.Metadata(ctx).ImageWidth) }/>
+				<meta property="og:image:height" content={ strconv.Itoa(webview.Metadata(ctx).ImageHeight) }/>
 				<meta property="og:image:type" content="image/jpeg"/>
 				<meta property="og:image:alt" content={ webview.Metadata(ctx).ImageAlt }/>
 				<meta name="twitter:card" content="summary_large_image"/>

@@ -95,14 +95,20 @@ func TestOlderContentAddressedIllustrationRemainsAvailable(t *testing.T) {
 	if err := os.MkdirAll(directory, 0755); err != nil {
 		t.Fatal(err)
 	}
-	file := "components-snackbar-light-default-0123456789abcdef.jpg"
-	if err := os.WriteFile(filepath.Join(directory, file), []byte{0xff, 0xd8, 0xff, 0xd9}, 0644); err != nil {
-		t.Fatal(err)
-	}
-	response := httptest.NewRecorder()
-	server.Handler().ServeHTTP(response, httptest.NewRequest("GET", "/illustrations/images/"+file, nil))
-	if response.Code != 200 || !strings.Contains(response.Header().Get("Cache-Control"), "immutable") {
-		t.Fatalf("%d %v", response.Code, response.Header())
+	for suffix, robots := range map[string]string{
+		"light-default":               "",
+		"thumbnail-720-light-default": "",
+		"thumbnail-360-light-default": "noindex",
+	} {
+		file := "components-snackbar-" + suffix + "-0123456789abcdef.jpg"
+		if err := os.WriteFile(filepath.Join(directory, file), []byte{0xff, 0xd8, 0xff, 0xd9}, 0644); err != nil {
+			t.Fatal(err)
+		}
+		response := httptest.NewRecorder()
+		server.Handler().ServeHTTP(response, httptest.NewRequest("GET", "/illustrations/images/"+file, nil))
+		if response.Code != 200 || !strings.Contains(response.Header().Get("Cache-Control"), "immutable") || response.Header().Get("X-Robots-Tag") != robots {
+			t.Fatalf("%s: %d %v", file, response.Code, response.Header())
+		}
 	}
 }
 
@@ -145,13 +151,31 @@ func TestRemovedSceneRoutesReturnNotFound(t *testing.T) {
 	}
 }
 
-func TestThumbnailOnlyManifestDoesNotAdvertiseSceneImage(t *testing.T) {
+func TestThumbnailOnlyManifestUsesFullThumbnailForLinkPreview(t *testing.T) {
 	server := New(seoTestState(), "")
-	image := webview.Illustration{Path: "/components/snackbar", Thumbnails: map[string]string{"light-default": "thumbnail-0123456789abcdef.jpg"}}
+	if err := server.SetPublicOrigin("https://tokens.example"); err != nil {
+		t.Fatal(err)
+	}
+	image := webview.Illustration{
+		Path:            "/components/snackbar",
+		Thumbnails:      map[string]string{"light-default": "thumbnail-720-light-default-0123456789abcdef.jpg"},
+		SmallThumbnails: map[string]string{"light-default": "thumbnail-360-light-default-0123456789abcdef.jpg"},
+	}
 	server.illustrations = map[string]webview.Illustration{image.Path: image}
-	var info webview.PageMetadata
-	server.setIllustrationMetadata(&info, image.Path)
-	if info.Illustration != nil || info.ImageURL != "" {
-		t.Fatal("thumbnail-only publication advertised a scene image")
+	response := httptest.NewRecorder()
+	server.Handler().ServeHTTP(response, httptest.NewRequest("GET", image.Path, nil))
+	body := response.Body.String()
+	for _, want := range []string{
+		`property="og:image" content="https://tokens.example/illustrations/images/thumbnail-720-light-default-0123456789abcdef.jpg"`,
+		`property="og:image:width" content="720"`,
+		`property="og:image:height" content="450"`,
+		`name="twitter:image" content="https://tokens.example/illustrations/images/thumbnail-720-light-default-0123456789abcdef.jpg"`,
+	} {
+		if !strings.Contains(body, want) {
+			t.Fatalf("missing %s", want)
+		}
+	}
+	if strings.Contains(body, "tokens-subject-illustration") || strings.Contains(body, "thumbnail-360-light-default") {
+		t.Fatal("page rendered a banner or referenced the smaller thumbnail")
 	}
 }

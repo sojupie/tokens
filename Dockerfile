@@ -17,7 +17,7 @@ RUN --mount=type=cache,id=tokens-go-mod,target=/go/pkg/mod,sharing=locked \
 
 # Derive site assets without changing approved publication generations.
 FROM node AS asset-builder
-RUN apt-get update && apt-get install -y --no-install-recommends chromium fonts-liberation \
+RUN apt-get update && apt-get install -y --no-install-recommends chromium fonts-liberation webp \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd --gid 10001 tokens \
     && useradd --uid 10001 --gid tokens --home-dir /tmp --no-create-home tokens

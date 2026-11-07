@@ -12,6 +12,8 @@ type PageMetadata struct {
 	ImagePageURL       string
 	ImageURL           string
 	ImageAlt           string
+	ImageWidth         int
+	ImageHeight        int
 	Export             *ExportPage
 	Tools              []ToolDestination
 	GeneratedDownloads bool

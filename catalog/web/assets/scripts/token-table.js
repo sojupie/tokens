@@ -1,5 +1,6 @@
 (() => {
 const initialized = new WeakSet();
+const tokenSetRequests = new WeakSet();
 let tableDisplay;
 function folderKey(group) {
   const path=[];
@@ -10,6 +11,41 @@ document.addEventListener('htmx:before:swap', event => {
   if (event.detail.ctx.target?.id !== 'tokens-token-browser') return;
   const browser = event.detail.ctx.target;
   tableDisplay = {grid:browser.classList.contains('tokens-grid-view'),hidden:browser.classList.contains('tokens-no-previews'),groups:new Map([...browser.querySelectorAll('details.tokens-token-folder')].map(group=>[folderKey(group),group.open]))};
+});
+
+// The table and playground can update the URL without replacing each other.
+document.addEventListener('htmx:config:request', event => {
+  const {ctx} = event.detail;
+  const {sourceElement, request} = ctx;
+  if (sourceElement.matches('[data-token-set-link]')) {
+    tokenSetRequests.add(ctx);
+    const destination = new URL(request.action, location.href);
+    for (const name of [...destination.searchParams.keys()]) {
+      if (name.startsWith('preview.')) destination.searchParams.delete(name);
+    }
+    for (const [name, value] of new URLSearchParams(location.search)) {
+      if (name.startsWith('preview.')) destination.searchParams.append(name, value);
+    }
+    request.action = destination.pathname + destination.search;
+  } else if (sourceElement.matches('.tokens-gallery-filters')) {
+    const destination = new URL(location.href);
+    for (const name of [...destination.searchParams.keys()]) {
+      if (name.startsWith('preview.')) destination.searchParams.delete(name);
+    }
+    for (const name of [...request.body.keys()]) {
+      if (!name.startsWith('preview.')) request.body.delete(name);
+    }
+    request.action = destination.pathname + destination.search;
+  } else if (sourceElement.matches('.tokens-token-filters') && location.pathname.includes('/sets/')) {
+    request.action = location.pathname;
+    request.body.delete('set');
+  }
+});
+document.addEventListener('htmx:after:swap', event => {
+  const {ctx} = event.detail;
+  if (tokenSetRequests.has(ctx) && ctx.response.status === 200) {
+    document.querySelector('#tokens-token-browser .tokens-token-set')?.focus({preventScroll:true});
+  }
 });
 
 function unbound(selector) {
@@ -71,17 +107,25 @@ unbound('.tokens-token-browser').forEach(browser => {
     }
   }, {capture:true});
   const dialog = browser.querySelector('.tokens-context-dialog');
+  const saveButton = dialog?.querySelector('[data-context-save]');
+  const contextOptions = dialog?.querySelector('#tokens-context-fields');
+  const contextStatus = dialog?.querySelector('[role="status"]');
   const groups = [...browser.querySelectorAll('.tokens-token-folder')];
   let contextFields = '';
-  let contextRequest, changedField;
+  let contextRequest, saveRequest, changedField;
+  const setContextBusy = (busy, disabled = busy) => {
+    saveButton.disabled = disabled;
+    saveButton.setAttribute('aria-busy', String(busy));
+    if (busy) dialog.setAttribute('aria-busy', 'true');
+    else dialog.removeAttribute('aria-busy');
+  };
   // htmx owns validation requests and replacement; these hooks own dialog feedback.
   dialog?.addEventListener('change', event => { changedField = event.target.name; });
   dialog?.addEventListener('htmx:before:request', event => {
     if (event.detail.ctx.sourceElement !== dialog) return;
     contextRequest = event.detail.ctx;
-    dialog.querySelector('[type="submit"]').disabled = true;
-    dialog.querySelector('[role="status"]').textContent = '';
-    dialog.setAttribute('aria-busy', 'true');
+    contextStatus.textContent = '';
+    setContextBusy(true);
   });
   dialog?.addEventListener('htmx:before:swap', event => {
     if (event.detail.ctx !== contextRequest) return;
@@ -96,21 +140,46 @@ unbound('.tokens-token-browser').forEach(browser => {
   dialog?.addEventListener('htmx:after:swap', event => {
     if (event.detail.ctx !== contextRequest || event.detail.ctx.response.status !== 200) return;
     dialog.querySelector(`input[name="${CSS.escape(changedField)}"]:checked`)?.focus({preventScroll:true});
-    dialog.querySelector('[type="submit"]').disabled = false;
+    setContextBusy(false);
   });
   dialog?.addEventListener('htmx:finally:request', event => {
     if (event.detail.ctx !== contextRequest) return;
-    dialog.removeAttribute('aria-busy');
-    if (dialog.querySelector('[type="submit"]').disabled) dialog.querySelector('[role="status"]').textContent = 'Could not check contexts. Change a selection to retry, or cancel.';
+    contextRequest = null;
+    if (saveButton.disabled) {
+      setContextBusy(false, true);
+      contextStatus.textContent = 'Could not check contexts. Change a selection to retry, or cancel.';
+    }
   });
+  if (dialog) {
+    form.addEventListener('htmx:before:request', event => {
+      const {ctx} = event.detail;
+      if (ctx.sourceElement !== form || ctx.request.submitter !== saveButton) return;
+      saveRequest = ctx;
+      contextStatus.textContent = '';
+      contextOptions.inert = true;
+      setContextBusy(true);
+    });
+    form.addEventListener('htmx:finally:request', event => {
+      if (event.detail.ctx !== saveRequest) return;
+      saveRequest = null;
+      if (!dialog.isConnected || !dialog.open) return;
+      contextOptions.inert = false;
+      setContextBusy(false);
+      contextStatus.textContent = 'Could not save the context. Try again.';
+    });
+  }
   const cancelContext = () => {
     contextRequest = null;
     htmx.trigger(dialog, 'htmx:abort');
-    dialog.removeAttribute('aria-busy');
-    dialog.querySelector('.tokens-context-fields').innerHTML = contextFields;
-    htmx.process(dialog.querySelector('.tokens-context-fields'));
-    dialog.querySelector('[role="status"]').textContent = '';
-    dialog.querySelector('[type="submit"]').disabled = false;
+    if (saveRequest) {
+      saveRequest = null;
+      htmx.trigger(form, 'htmx:abort');
+    }
+    contextOptions.inert = false;
+    contextOptions.innerHTML = contextFields;
+    htmx.process(contextOptions);
+    contextStatus.textContent = '';
+    setContextBusy(false);
   };
 
   const contextButton = browser.querySelector('[data-action="context"]');

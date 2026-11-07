@@ -16,6 +16,7 @@ import (
 	"net/http/httptest"
 	"net/url"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 	"time"
@@ -41,6 +42,10 @@ func runIllustrations(args []string) error {
 	}
 	if flags.NArg() != 0 {
 		return fmt.Errorf("illustrations does not accept positional arguments")
+	}
+	encoder, err := exec.LookPath("cwebp")
+	if err != nil {
+		return fmt.Errorf("thumbnail generation requires cwebp: %w", err)
 	}
 	if *assets == "" {
 		*assets = filepath.Join(*published, "assets")
@@ -85,6 +90,7 @@ func runIllustrations(args []string) error {
 		image.Thumbnails = map[string]string{}
 		image.SmallThumbnails = map[string]string{}
 		image.Placeholders = map[string]string{}
+		image.PlaceholderFormat = "webp"
 
 		width, height := 720, 450
 		for _, theme := range []string{"light", "dark"} {
@@ -115,14 +121,15 @@ func runIllustrations(args []string) error {
 				if bitmap.Bounds().Dx() != width || bitmap.Bounds().Dy() != height {
 					return fmt.Errorf("wrong capture dimensions for %s", captureName)
 				}
-				for _, size := range []struct{ width, height, quality int }{{720, 450, 80}, {360, 225, 75}, {24, 15, 15}} {
+				placeholder, err := thumbnailWebP(encoder, capture)
+				if err != nil {
+					return fmt.Errorf("%s / %s: %w", image.Path, variant, err)
+				}
+				image.Placeholders[variant] = base64.StdEncoding.EncodeToString(placeholder)
+				for _, size := range []struct{ width, height, quality int }{{720, 450, 80}, {360, 225, 75}} {
 					encoded, err := thumbnailJPEG(bitmap, size.width, size.height, size.quality)
 					if err != nil {
 						return err
-					}
-					if size.width == 24 {
-						image.Placeholders[variant] = base64.StdEncoding.EncodeToString(encoded)
-						continue
 					}
 					hash := sha256.Sum256(encoded)
 					file := fmt.Sprintf("%s-%d-%s-%x.jpg", assetName, size.width, variant, hash[:8])
@@ -149,6 +156,22 @@ func runIllustrations(args []string) error {
 		return err
 	}
 	return os.Rename(temporary, filepath.Join(output, "manifest.json"))
+}
+
+func thumbnailWebP(encoder string, capture []byte) ([]byte, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	cmd := exec.CommandContext(ctx, encoder, "-quiet", "-q", "15", "-m", "6", "-resize", "40", "25", "-o", "-", "--", "-")
+	cmd.Stdin = bytes.NewReader(capture)
+	output, err := cmd.Output()
+	if err != nil {
+		var exit *exec.ExitError
+		if errors.As(err, &exit) {
+			return nil, fmt.Errorf("encode WebP placeholder: %w: %s", err, strings.TrimSpace(string(exit.Stderr)))
+		}
+		return nil, fmt.Errorf("encode WebP placeholder: %w", err)
+	}
+	return output, nil
 }
 
 func thumbnailJPEG(source imageformat.Image, width, height, quality int) ([]byte, error) {

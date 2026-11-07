@@ -148,7 +148,7 @@
 .tokens-token-folder > summary::-webkit-details-marker {
   display: none;
 }
-.tokens-token-groups > .tokens-token-folder:last-child:not([open]) > summary {
+.tokens-token-folder:last-child:not([open]) > summary {
   border-bottom: 0;
 }
 .tokens-token-folder > summary > svg:last-child {

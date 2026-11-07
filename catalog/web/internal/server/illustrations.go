@@ -98,6 +98,9 @@ func (server *Server) UseIllustrations() error {
 
 var illustrationFilename = regexp.MustCompile(`^[a-z0-9][a-z0-9-]*-[0-9a-f]{16}\.jpg$`)
 
+// Match the capture filename so retained assets from older releases also opt out.
+var smallThumbnailFilename = regexp.MustCompile(`-thumbnail-360-(light|dark)-(default|medium|high)-[0-9a-f]{16}\.jpg$`)
+
 func (server *Server) handleIllustrationFile(w http.ResponseWriter, r *http.Request) {
 	file := r.PathValue("file")
 	if server.tokenAssetsDir == "" || !illustrationFilename.MatchString(file) {
@@ -105,6 +108,9 @@ func (server *Server) handleIllustrationFile(w http.ResponseWriter, r *http.Requ
 		return
 	}
 	w.Header().Set("Cache-Control", "public, max-age=31536000, immutable")
+	if smallThumbnailFilename.MatchString(file) {
+		w.Header().Set("X-Robots-Tag", "noindex")
+	}
 	http.ServeFile(w, r, filepath.Join(server.tokenAssetsDir, "illustrations", file))
 }
 
@@ -154,15 +160,24 @@ func (server *Server) handleIllustrationRender(w http.ResponseWriter, r *http.Re
 
 func (server *Server) setIllustrationMetadata(info *webview.PageMetadata, path string) {
 	image, ok := server.illustrations[path]
-	if !ok || len(image.Files) == 0 {
+	if !ok {
 		return
 	}
-	info.Illustration = &image
-	if server.publicOrigin != "" {
-		info.ImagePageURL = server.publicOrigin + path
-		info.ImageURL = server.publicOrigin + webview.IllustrationFileURL(image.Files["light-default"])
-		info.ImageAlt = image.Alt
+	file := image.Files["light-default"]
+	width, height := IllustrationWidth, IllustrationHeight
+	if file != "" {
+		info.Illustration = &image
+	} else {
+		file = image.Thumbnails["light-default"]
+		width, height = 720, 450
 	}
+	if server.publicOrigin == "" || file == "" {
+		return
+	}
+	info.ImagePageURL = server.publicOrigin + path
+	info.ImageURL = server.publicOrigin + webview.IllustrationFileURL(file)
+	info.ImageAlt = image.Alt
+	info.ImageWidth, info.ImageHeight = width, height
 }
 
 // ThumbnailIllustration resolves a published image for the rendering boundary.

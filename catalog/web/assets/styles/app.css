@@ -454,7 +454,7 @@ button:not(:disabled), [role=button]:not([aria-disabled=true]) { cursor:pointer;
 .tokens-component-thumbnail > .tokens-subject-illustration { display:block; width:100%; margin:0; border-radius:var(--md-sys-shape-corner-none); }
 .tokens-component-thumbnail > .tokens-subject-illustration img { width:100%; height:100%; aspect-ratio:8/5; object-fit:cover; }
 .tokens-thumbnail-image { position:relative;display:block;width:100%;height:100%;isolation:isolate;--_thumbnail-placeholder:var(--_thumbnail-light-default,none); }
-.tokens-thumbnail-image::before { content:"";position:absolute;inset:-8%;z-index:-1;background:var(--_thumbnail-placeholder) center/cover;filter:blur(10px); }
+.tokens-thumbnail-image::before { content:"";position:absolute;inset:-8%;z-index:-1;background:var(--_thumbnail-placeholder) center/cover;filter:blur(var(--_thumbnail-blur,10px)); }
 .tokens-thumbnail-image img { display:block;width:100%;height:100%;object-fit:cover;transition:opacity 280ms ease-out,filter 280ms ease-out; }
 .tokens-thumbnail-image[data-image-loading] img { opacity:0;filter:blur(8px); }
 :root[data-theme="dark"] .tokens-thumbnail-image { --_thumbnail-placeholder:var(--_thumbnail-dark-default,none); }
