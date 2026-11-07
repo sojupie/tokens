@@ -56,13 +56,15 @@ templ NavigationItem(p model.NavigationItemProps) {
 	@model.Require("navigation")
 	if p.Href!="" {
 		<a href={ templ.SafeURL(p.Href) } { p.Attributes()... }>
-			@NavigationItemContent(p)
-   { children... }
+			@NavigationItemContent(p) {
+				{ children... }
+			}
 		</a>
 	} else {
 		<button type="button" { p.Attributes()... }>
-			@NavigationItemContent(p)
-   { children... }
+			@NavigationItemContent(p) {
+				{ children... }
+			}
 		</button>
 	}
 }
@@ -84,6 +86,7 @@ templ NavigationItemContent(p model.NavigationItemProps) {
 		if p.Count!="" {
 			<span class="md-nav-count">{ p.Count }</span>
 		}
+		{ children... }
 	</span>
 }
 

@@ -12,10 +12,10 @@
 .tokens-site-navigation { flex-direction:column; }
 #tokens-site-rail { display:none; }
 .tokens-site-main { flex-direction:column;flex:1;min-block-size:0;overflow:auto;padding:var(--md-sys-measurement-space100); }
-.tokens-site-main .md-nav-item { flex:none;justify-content:space-between; }
+.tokens-site-main .md-nav-item { flex:none; }
 .tokens-site-main .md-nav-indicator { flex:1;justify-content:flex-start;gap:var(--md-sys-measurement-space150); }
 .tokens-site-main .md-nav-icon { inline-size:24px;block-size:24px; }
-.tokens-site-main .md-nav-item > svg { flex:none;inline-size:24px;block-size:24px;margin-inline-end:var(--md-sys-measurement-space200); }
+.tokens-site-main [data-site-section] .md-nav-indicator > svg { inline-size:24px;block-size:24px;margin-inline-start:auto; }
 .tokens-site-section { display:flex;flex:1;flex-direction:column;min-inline-size:0;min-block-size:0; }
 .tokens-site-section[hidden] { display:none; }
 .tokens-section-header { flex:none;padding:var(--md-sys-measurement-space100) var(--md-sys-measurement-space150); }
