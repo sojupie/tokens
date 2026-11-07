@@ -37,6 +37,25 @@
 .md-list[data-variant="standard"]:not([data-shape="expressive"]) > li:last-child {
   --_list-edge-bottom: var(--_list-shape);
 }
+.md-list[data-shape="expressive"] > li:first-child {
+  --_list-edge-top: var(--_list-shape);
+}
+.md-list[data-shape="expressive"] > li:last-child {
+  --_list-edge-bottom: var(--_list-shape);
+}
+.md-list[data-shape="expressive"] > li > .md-list-item,
+.md-list[data-shape="expressive"] > li > .md-list-row > .md-list-item {
+  --_button-rest-shape:
+    max(var(--_list-edge-top), var(--_list-item-shape))
+    max(var(--_list-edge-top), var(--_list-item-shape))
+    max(var(--_list-edge-bottom), var(--_list-item-shape))
+    max(var(--_list-edge-bottom), var(--_list-item-shape));
+  --_button-pressed-shape:
+    max(var(--_list-edge-top), var(--_list-item-pressed-shape, var(--_list-item-shape)))
+    max(var(--_list-edge-top), var(--_list-item-pressed-shape, var(--_list-item-shape)))
+    max(var(--_list-edge-bottom), var(--_list-item-pressed-shape, var(--_list-item-shape)))
+    max(var(--_list-edge-bottom), var(--_list-item-pressed-shape, var(--_list-item-shape)));
+}
 .md-list[data-variant="standard"]:not([data-shape="expressive"]) > li > .md-list-item,
 .md-list[data-variant="standard"]:not([data-shape="expressive"]) > li > .md-list-row > .md-list-item {
   --_list-item-shape:
@@ -468,4 +487,14 @@
 :root:not([data-feedback-ready]) .md-list-item::before {
   background: var(--_list-item-state-color, transparent);
   opacity: var(--_list-item-state-opacity, 0);
+}
+
+/* Unread is host-owned state; the primitive retains its captured type scale. */
+.md-list-item[data-unread] :is(.md-list-label,.md-list-supporting) {
+  font-weight:var(--md-ref-typeface-weight-bold);
+}
+
+@media (scripting: none) {
+ .md-list-item[data-list-selectable] { display:none; }
+ label.md-list-item:has(> input:checked) { background:var(--md-sys-color-secondary-container); color:var(--md-sys-color-on-secondary-container); }
 }

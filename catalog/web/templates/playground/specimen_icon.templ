@@ -1,0 +1,7 @@
+package render
+
+import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+import "github.com/sojupie/tokens/forge/components/ui"
+templ SpecimenIcon(c webview.ComponentCase){
+@PlainTooltip("Mark complete",c.ID()+"-tip") { @ui.IconButton(ui.IconButtonProps{Label:"Mark complete",Icon:"check",Variant:c.Variant,Size:ui.Size(c.Size),Shape:ui.ButtonShape(c.Shape),Width:c.Width,Attrs:c.Attributes()}) }
+}

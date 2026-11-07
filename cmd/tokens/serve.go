@@ -76,6 +76,9 @@ func runServe(args []string) error {
 	if err != nil {
 		return fmt.Errorf("load generated token assets: %w", err)
 	}
+	if err := publicationServer.UseIllustrations(); err != nil {
+		return fmt.Errorf("load generated illustrations: %w", err)
+	}
 	if err := publicationServer.SetPublicOrigin(publicOrigin); err != nil {
 		return err
 	}

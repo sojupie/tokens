@@ -182,6 +182,7 @@
   max-inline-size: calc(100dvw - 2 * var(--md-sys-measurement-space100));
   overflow: auto;
   overscroll-behavior: contain;
+  touch-action: pan-y;
   padding: var(--md-sys-measurement-space100) 0;
   border: 0;
   border-radius: var(--_field-menu-shape);
@@ -536,3 +537,68 @@
 .md-chip-select [data-field-display] { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .md-chip-select > .md-filter-chip { max-inline-size: 100%; }
 .md-chip-select .md-filter-chip > span:first-child { flex: none; }
+
+.md-field-menu .md-menu-item[role="option"]:not([aria-selected="true"]) > [data-slot="trailing-icon"] { visibility: hidden; }
+
+.md-native-select,.md-native-select-label { display:none; }
+@media (scripting: none) {
+  :is(.md-chip-select,.md-outlined-select) > :not(.md-native-select,.md-native-select-label) { display:none; }
+  :is(.md-chip-select,.md-outlined-select) { display:block; min-block-size:0; border:0; padding:0; }
+  .md-native-select-label { display:block !important; font-family:var(--md-sys-typescale-label-large-font); font-size:var(--md-sys-typescale-label-large-size); line-height:var(--md-sys-typescale-label-large-line-height); font-weight:var(--md-sys-typescale-label-large-weight); letter-spacing:var(--md-sys-typescale-label-large-tracking); color:var(--md-sys-color-on-surface-variant); margin-block-end:var(--md-sys-measurement-space50); }
+  :is(.md-native-select,.md-native-control) {
+    box-sizing:border-box; appearance:none; color-scheme:light;
+    max-inline-size:100%; min-inline-size:0; min-block-size:var(--md-sys-measurement-space600);
+    padding:var(--md-sys-measurement-space150) var(--md-sys-measurement-space200);
+    font-family:var(--md-sys-typescale-body-large-font); font-size:var(--md-sys-typescale-body-large-size); line-height:var(--md-sys-typescale-body-large-line-height); font-weight:var(--md-sys-typescale-body-large-weight); letter-spacing:var(--md-sys-typescale-body-large-tracking); color:var(--md-sys-color-on-surface);
+    background-color:var(--md-sys-color-surface-container-low);
+    border:var(--md-comp-divider-thickness,1px) solid var(--md-sys-color-outline);
+    border-radius:var(--md-sys-shape-corner-small);
+    accent-color:var(--md-sys-color-primary);
+  }
+  .md-native-select { display:block !important; }
+  select:is(.md-native-select,.md-native-control) {
+    cursor:pointer; padding-inline-end:var(--md-sys-measurement-space500);
+    background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);
+    background-position:calc(100% - 21px) 50%,calc(100% - 16px) 50%; background-size:5px 5px; background-repeat:no-repeat;
+  }
+  select:is(.md-native-select,.md-native-control):dir(rtl) { background-position:21px 50%,16px 50%; }
+  :is(.md-native-select,.md-native-control):focus-visible {
+    outline:var(--md-sys-state-focus-indicator-thickness) solid var(--md-sys-color-secondary);
+    outline-offset:var(--md-sys-state-focus-indicator-outer-offset);
+  }
+  :is(.md-native-select,.md-native-control):disabled { opacity:.38; cursor:default; }
+  :root[data-theme="dark"] :is(.md-native-select,.md-native-control) { color-scheme:dark; }
+  :is(.md-native-select,.md-native-control) > option { background:var(--md-sys-color-surface-container); color:var(--md-sys-color-on-surface); }
+  /* Keep native form and keyboard behavior while opting into a stylable picker. */
+  @supports (appearance: base-select) {
+    select:is(.md-native-select,.md-native-control),
+    select:is(.md-native-select,.md-native-control)::picker(select) { appearance:base-select; }
+    select:is(.md-native-select,.md-native-control) { display:flex !important; align-items:center; gap:var(--md-sys-measurement-space200); padding-inline:var(--md-sys-measurement-space200); background-image:none; }
+    select:is(.md-native-select,.md-native-control)::picker-icon { color:var(--md-sys-color-on-surface-variant); }
+    select:is(.md-native-select,.md-native-control)::picker(select) {
+      padding:var(--md-sys-measurement-space50);
+      border:var(--md-comp-divider-thickness,1px) solid var(--md-sys-color-outline-variant);
+      border-radius:var(--md-sys-shape-corner-large);
+      background:var(--md-sys-color-surface-container-low);
+      color:var(--md-sys-color-on-surface);
+      max-block-size:min(24rem,60dvh); overflow:auto;
+    }
+    select:is(.md-native-select,.md-native-control) > option {
+      min-block-size:var(--md-sys-measurement-space600);
+      padding:var(--md-sys-measurement-space150) var(--md-sys-measurement-space200);
+      border-radius:var(--md-sys-shape-corner-medium);
+      background:transparent; font:inherit;
+    }
+    select:is(.md-native-select,.md-native-control) > option:checked {
+      background:var(--md-sys-color-secondary-container); color:var(--md-sys-color-on-secondary-container);
+    }
+    select:is(.md-native-select,.md-native-control) > option:is(:hover,:focus-visible) {
+      outline:none;
+      background:color-mix(in srgb,var(--md-sys-color-on-surface) 8%,var(--md-sys-color-surface-container-low));
+    }
+    select:is(.md-native-select,.md-native-control) > option:checked:is(:hover,:focus-visible) {
+      background:color-mix(in srgb,var(--md-sys-color-on-secondary-container) 8%,var(--md-sys-color-secondary-container));
+    }
+    select:is(.md-native-select,.md-native-control) > option::checkmark { order:1; margin-inline-start:auto; }
+  }
+}

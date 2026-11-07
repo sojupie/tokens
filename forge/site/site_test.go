@@ -33,7 +33,7 @@ func TestToolsShareCatalogNavigationAndFooter(t *testing.T) {
 			}
 
 			if component.name == "header" {
-				if strings.Count(html, `class="tokens-brand-logo"`) != 2 || strings.Contains(html, `<img class="tokens-brand-logo"`) || !strings.Contains(html, `fill="var(--md-sys-color-tertiary,var(--tokens-logo-fallback))"`) {
+				if strings.Count(html, `class="tokens-brand-logo"`) != 4 || strings.Contains(html, `<img class="tokens-brand-logo"`) || !strings.Contains(html, `fill="var(--md-sys-color-tertiary,var(--tokens-logo-fallback))"`) {
 					t.Fatal("header and drawer must share the inline, theme-aware tertiary logo")
 				}
 				for _, tool := range config.Tools {
@@ -49,7 +49,7 @@ func TestToolsShareCatalogNavigationAndFooter(t *testing.T) {
 						t.Fatalf("missing drawer contract %s", required)
 					}
 				}
-				if strings.Contains(html, "popovertarget") {
+				if strings.Contains(html, `popovertarget="tokens-site-menu"`) {
 					t.Fatal("site navigation still uses a popover menu")
 				}
 			}
@@ -79,7 +79,40 @@ func TestWorkspaceKeepsWorkingWidth(t *testing.T) {
 	if !strings.Contains(out.String(), `data-drawer-breakpoint="1440"`) {
 		t.Fatal("workspace needs room for viewer and tools")
 	}
-	if c.current("/tools") != "false" || toolCurrent(c, c.Tools[0]) != "page" || toolCurrent(c, c.Tools[1]) != "false" {
+	if c.section() != "/tools" || c.destinationCurrent(c.Tools[0]) != "page" || c.destinationCurrent(c.Tools[1]) != "false" {
 		t.Fatal("only the current tool should be selected")
+	}
+}
+
+func TestSectionNavigationUsesNativeLinksAndOneCurrentSubpage(t *testing.T) {
+	config := Config{Active: "/components/cards", Navigation: []Section{{Path: "/components", Items: []Destination{{Name: "Buttons", URL: "/components/buttons"}, {Name: "Cards", URL: "/components/cards"}}}}}
+	var out bytes.Buffer
+	if err := Header(config).Render(context.Background(), &out); err != nil {
+		t.Fatal(err)
+	}
+	html := out.String()
+	railStart := strings.Index(html, `id="tokens-site-rail"`)
+	drawerStart := strings.Index(html, `<dialog id="tokens-site-menu"`)
+	if railStart < 0 || railStart > drawerStart {
+		t.Fatal("the rail must be outside the drawer primitive")
+	}
+	if strings.Contains(html, `<h2`) {
+		t.Fatal("the section drawer must not repeat its parent title")
+	}
+
+	for _, required := range []string{`data-active-section="/components"`, `aria-label="Components pages"`, `href="/components/cards"`, `data-site-back`, `data-site-section="/components"`, `data-site-scroll="/components"`} {
+		if !strings.Contains(html, required) {
+			t.Fatalf("missing navigation contract %s", required)
+		}
+	}
+	if strings.Count(html, `href="/components/cards" aria-current="page"`) != 2 {
+		t.Fatal("expected one current child in each enhanced and native navigation")
+	}
+	if config.panelSection() != "/components" {
+		t.Fatal("active section missing")
+	}
+	config.Active = "/changes"
+	if config.panelSection() != "" {
+		t.Fatal("destination without subpages should not reserve an empty panel")
 	}
 }

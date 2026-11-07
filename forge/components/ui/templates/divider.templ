@@ -1,0 +1,8 @@
+package render
+
+import model "github.com/sojupie/tokens/forge/components/ui/internal/model"
+
+templ Divider(inset string, attrs templ.Attributes) {
+	@model.Require("common")
+	<hr { model.Attributes(templ.Attributes{"class":"md-divider","data-inset":model.Fallback(inset,"full")},attrs)... }/>
+}

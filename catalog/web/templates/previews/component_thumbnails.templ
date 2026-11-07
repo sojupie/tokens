@@ -1,0 +1,360 @@
+package render
+
+import webassets "github.com/sojupie/tokens/catalog/web/assets"
+
+import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+
+import "github.com/sojupie/tokens/forge/components/ui"
+
+// These are catalogue illustrations. Component anatomy and states still come
+// from the shared specimens; the surrounding app content is authored here.
+templ ComponentThumbnail(c webview.ComponentCase) {
+	switch c.Family {
+		case "appbar":
+			<div class="tokens-thumbnail-phone tokens-thumbnail-top">
+				@ComponentSpecimen(c)
+				<div class="tokens-thumbnail-content">
+					<h3>Field notes</h3>@ThumbnailDocument()
+				</div>
+			</div>
+		case "badge":
+			@webview.UseComponentAssets("badge")
+			<div class="tokens-thumbnail-badges">
+				for i,label := range []string{"Inbox","Activity"} {
+					<div>
+						@ui.BadgeAnchor() {
+							@webview.MaterialSymbol([]string{"folder", "star"}[i])
+							if i==0 {
+								@ui.Badge("labeled", "8", nil)
+							} else {
+								@ui.Badge("small", "", nil)
+							}
+						}
+						<span>{ label }</span>
+					</div>
+				}
+			</div>
+		case "bottom-sheet":
+			@webview.UseComponentAssets("sheet")
+			<div class="tokens-thumbnail-phone tokens-thumbnail-bottom">
+				<div class="tokens-thumbnail-content">
+					<h3>Weekend plans</h3>@ThumbnailDocument()
+				</div>
+				@ui.Sheet(ui.SheetProps{ID: c.ID(), Title: "Add to your plan", Inline: true, HideClose: true, Attrs: c.SheetAttributes()}) {
+					<p>Walk by the river</p>
+					<p>Visit the gallery</p>
+				}
+			</div>
+		case "button-group":
+			<div class="tokens-thumbnail-button-group">
+				@ComponentSpecimen(c)
+			</div>
+		case "button":
+			<div class="tokens-thumbnail-buttons">
+				@ui.Button(c.Attributes()) {
+					@webview.MaterialSymbol("add")
+					<span>New note</span>
+				}
+				<div>
+					@ui.Button(c.ThumbnailVariant("elevated").Attributes()) {
+						@webview.MaterialSymbol("edit")
+						<span>Edit</span>
+					}
+					@ui.Button(c.ThumbnailVariant("tonal").Attributes()) {
+						More
+					}
+				</div>
+			</div>
+		case "card":
+			@webview.UseComponentAssets("card")
+			@ui.CardSurface(ui.CardProps{Variant: "elevated", Attrs: templ.Attributes{"class": "md-card md-elevated-card tokens-thumbnail-card"}}) {
+				<img class="tokens-thumbnail-landscape" src={ webassets.StaticURL("paintings/"+webview.CardPainting) } alt="" width="1200" height="935" loading="lazy" draggable="false"/>
+				@ui.CardBody(nil) {
+					<h3 class="md-card-headline">Blue Morning</h3>
+					<p class="md-card-supporting-text">George Bellows</p>
+				}
+			}
+		case "carousel":
+			@webview.UseComponentAssets("carousel")
+			<div class="tokens-thumbnail-carousel">
+				@ui.Carousel(ui.CarouselProps{Attrs: c.Attributes()}, 3) {
+					for i,label:=range []string{"Trouville","Parasol","Argenteuil"} {
+						@ui.CarouselItem(ui.CarouselItemProps{Index: i, Count: 3, Attrs: c.CarouselItem(i), ImageSrc: webassets.StaticURL("paintings/"+webview.CarouselPaintings[i]), ImagePosition: webview.CarouselPaintingPositions[i], ImageScale: webview.CarouselPaintingScales[i]}) {
+							if c.CarouselContent == "overlay" {
+								@ui.CarouselText() {
+									{ label }
+								}
+							}
+						}
+					}
+				}
+			</div>
+		case "checkbox":
+			<div class="tokens-thumbnail-options tokens-thumbnail-paper">
+				for i,label := range []string{"Design tokens","Components","All collections"} {
+					<div>
+						@CheckboxChoice(c.ThumbnailSelected(i != 1).ThumbnailVariant([]string{"selected", "unselected", "indeterminate"}[i]), label)
+					</div>
+				}
+			</div>
+		case "chip":
+			<div class="tokens-thumbnail-chips tokens-thumbnail-paper">
+				@ComponentSpecimen(c.ThumbnailSelected(true))
+				@ComponentSpecimen(c.ThumbnailSelected(false))
+				@ComponentSpecimen(c.ThumbnailVariant("assist"))
+			</div>
+		case "date":
+			<div class="tokens-thumbnail-calendar">
+				@ComponentSpecimen(c)
+			</div>
+		case "dialog":
+			@webview.UseComponentAssets("dialog")
+			<div class="tokens-thumbnail-window tokens-thumbnail-dialog-context">
+				<div class="tokens-thumbnail-content">
+					<h3>Field notes</h3>@ThumbnailDocument()
+				</div>
+				<div class="tokens-thumbnail-scrim"></div>
+				<div class="tokens-thumbnail-dialog">
+					@ui.Modal(ui.DialogProps{ID: c.ID() + "-panel", TitleID: c.ID() + "-heading", Title: "Keep this note?", Description: "Save your changes before leaving.", Attrs: c.DialogPanel(), Actions: ThumbnailDialogActions(c)})
+				</div>
+			</div>
+		case "divider":
+			<div class="tokens-thumbnail-settings">
+				<div>
+					@webview.MaterialSymbol("folder")
+					<span>Personal notes</span><span>12</span>
+				</div>
+				@ComponentSpecimen(c)
+				<div>
+					@webview.MaterialSymbol("star")
+					<span>Favorites</span><span>4</span>
+				</div>
+				@ui.Divider("full", templ.Attributes{"class": "md-divider", "data-inset": "true"})
+				<div>
+					@webview.MaterialSymbol("folder")
+					<span>Archive</span><span>8</span>
+				</div>
+			</div>
+		case "extended-fab":
+			@webview.UseComponentAssets("fab")
+			@ui.Button(c.Attributes()) {
+				@webview.MaterialSymbol("add")
+				<span>New note</span>
+			}
+		case "fab-menu":
+			<div class="tokens-thumbnail-phone tokens-thumbnail-bottom">
+				<div class="tokens-thumbnail-content">
+					<h3>Your workspace</h3>@ThumbnailDocument()
+				</div>
+				<div class="tokens-thumbnail-fab-menu">
+					@ComponentSpecimen(c)
+				</div>
+			</div>
+		case "fab":
+			@ComponentSpecimen(c)
+		case "icon":
+			<div class="tokens-thumbnail-icons">
+				@ui.Button(c.ThumbnailVariant("outlined").Attributes()) {
+					@webview.MaterialSymbol("edit")
+				}
+				@ui.Button(c.Attributes()) {
+					@webview.MaterialSymbol("star")
+				}
+				@ui.Button(c.ThumbnailVariant("filled").Attributes()) {
+					@webview.MaterialSymbol("open_in_new")
+				}
+			</div>
+		case "list":
+			@webview.UseComponentAssets("list")
+			<div class="tokens-thumbnail-list">
+				@ui.List(ui.ListProps{Attrs: c.Attributes()}) {
+					for i,label:=range []string{"Weekend plans","Reading list","Studio notes"} {
+						@ui.ListButton(ui.ListItemProps{Label: label, Supporting: []string{"Updated today", "8 saved articles", "Shared with Alex"}[i], LeadingKind: ui.LeadingIcon, Leading: ui.Icon("folder"), Trailing: ui.Icon("chevron_right"), Attrs: c.ListItem(i)})
+					}
+				}
+			</div>
+		case "loading":
+			<div class="tokens-thumbnail-loading">
+				@ComponentSpecimen(c)
+			</div>
+		case "menu":
+			<div class="tokens-thumbnail-menu">
+				@ComponentSpecimen(c)
+			</div>
+		case "nav-bar":
+			<div class="tokens-thumbnail-phone tokens-thumbnail-bottom">
+				<div class="tokens-thumbnail-content">
+					<h3>Your library</h3>@ThumbnailDocument()
+				</div>
+				<div class="tokens-thumbnail-nav-bottom">
+					@ComponentSpecimen(c)
+				</div>
+			</div>
+		case "nav-drawer", "nav-rail":
+			<div class="tokens-thumbnail-desktop">
+				<div class="tokens-thumbnail-navigation">
+					if c.Family == "nav-rail" {
+                        @NavigationRailSurface(c, c.NavigationLabels()[:3])
+                    } else {
+                        @ui.NavigationSurface(c.Attributes(), false, templ.Attributes{"aria-label": "Primary navigation"}) { @NavigationDestinations(c, c.NavigationLabels()[:3]) }
+                    }
+				</div>
+				<div class="tokens-thumbnail-content">
+					<h3>Recent notes</h3>@ThumbnailDocument()
+				</div>
+			</div>
+		case "progress":
+			<div class="tokens-thumbnail-progress tokens-thumbnail-paper">
+				<div><span>Trip photos.zip</span><small>Uploading · 40%</small></div>
+				@ComponentSpecimen(webview.ComponentCase{Family: "progress", Variant: "linear", Size: "normal", Shape: "flat", Control: "determinate", State: "enabled"})
+				<div class="tokens-thumbnail-progress-circular">
+					@ComponentSpecimen(c)
+					<span>Preparing preview</span>
+				</div>
+			</div>
+		case "radio":
+			<div class="tokens-thumbnail-options tokens-thumbnail-paper">
+				for i,label := range []string{"Only me","People with the link","Everyone"} {
+					<div>
+						@RadioChoice(c, i, label)
+					</div>
+				}
+			</div>
+		case "search":
+			@webview.UseComponentAssets("search")
+			<div class="tokens-thumbnail-phone tokens-thumbnail-top">
+				<div class="tokens-thumbnail-content">
+					@ui.SearchBarSurface(ui.SearchProps{Label: "Search", Value: "Weekend", Leading: "icon", Attrs: c.SearchBar()})
+					<div class="tokens-thumbnail-search-results">
+						<div>
+							@webview.MaterialSymbol("search")
+							<span>Weekend walks</span>
+						</div>
+						<div>
+							@webview.MaterialSymbol("search")
+							<span>Weekend reading</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		case "segmented":
+			@webview.UseComponentAssets("segmented")
+			<div class="tokens-thumbnail-paper tokens-thumbnail-view">
+				<h3>Calendar</h3>@ui.SegmentedButtons(ui.SegmentedProps{Attrs: c.Attributes()}) {
+	for i,label:=range []string{"Day","Week","Month"} {
+		@ui.Segment(ui.SegmentProps{Label: label, Attrs: c.SegmentAttributes(i), InputAttrs: c.SegmentInput(i, label)})
+	}
+}
+				@ThumbnailDocument()
+			</div>
+		case "side-sheet":
+			@webview.UseComponentAssets("sheet")
+			<div class="tokens-thumbnail-desktop tokens-thumbnail-side-sheet">
+				<div class="tokens-thumbnail-content">
+					<h3>Notes</h3>@ThumbnailDocument()
+				</div>
+				@ui.Sheet(ui.SheetProps{ID: c.ID(), Title: "Note details", Kind: ui.SideSheet, Inline: true, HideClose: true, Attrs: c.SheetAttributes(), Actions: ThumbnailSheetAction()}) {
+					<p>Weekend plans</p>
+					<p>Updated today</p>
+				}
+			</div>
+		case "slider":
+			<div class="tokens-thumbnail-sliders tokens-thumbnail-paper">
+				<span>Volume</span>@ComponentSpecimen(c)
+				<span>Price range</span>@ComponentSpecimen(webview.ComponentCase{Family: "slider", Variant: "discrete", Size: c.Size, Shape: c.Shape, Orientation: "horizontal", Control: "range", State: "enabled"})
+			</div>
+		case "snackbar":
+			<div class="tokens-thumbnail-phone tokens-thumbnail-bottom">
+				<div class="tokens-thumbnail-content">
+					<h3>Field notes</h3>@ThumbnailDocument()
+				</div>
+				<div class="tokens-thumbnail-snackbar">
+					@ComponentSpecimen(c)
+				</div>
+			</div>
+		case "split":
+			@ComponentSpecimen(c)
+		case "switch":
+			<div class="tokens-thumbnail-options tokens-thumbnail-switches">
+				<div>
+					@SwitchChoice(c.ThumbnailSelected(true), "Notifications")
+				</div>
+				<div>
+					@SwitchChoice(c.ThumbnailSelected(false), "Offline access")
+				</div>
+			</div>
+		case "tabs":
+			<div class="tokens-thumbnail-phone tokens-thumbnail-top">
+				@ComponentSpecimen(c)
+				<div class="tokens-thumbnail-content">
+					@ThumbnailDocument()
+				</div>
+			</div>
+		case "field":
+			<div class="tokens-thumbnail-fields tokens-thumbnail-paper">
+				@ComponentSpecimen(c.ThumbnailVariant("filled"))
+				@ComponentSpecimen(c.ThumbnailVariant("outlined"))
+			</div>
+		case "time":
+			<div class="tokens-thumbnail-clock">
+				@ComponentSpecimen(c)
+			</div>
+		case "toolbar":
+			@webview.UseComponentAssets("toolbar")
+			@webview.UseComponentAssets("fab")
+			<div class="tokens-thumbnail-phone tokens-thumbnail-bottom tokens-thumbnail-toolbar-phone">
+				<div class="tokens-thumbnail-toolbar">
+					<div class="md-toolbar-demo" data-orientation="horizontal">
+						@ui.ToolbarSurface(ui.ToolbarProps{Label: "Note actions", Attrs: c.Attributes()}) {
+							for i,icon := range []string{"download","content_copy","more"} {
+								@ui.Button(c.ThumbnailToolbarAction(i)) {
+									@webview.MaterialSymbol(map[string]string{"more": "more_vert", "download": "download", "content_copy": "content_copy"}[icon])
+								}
+							}
+						}
+						@ui.FAB(ui.FABProps{Icon: "add", Label: "Create", Attrs: c.BarFAB()})
+					</div>
+				</div>
+				<span class="tokens-thumbnail-home-indicator"></span>
+			</div>
+		case "tooltip":
+			@webview.UseComponentAssets("messages")
+			<div class="tokens-thumbnail-tooltip tokens-thumbnail-plain-tooltip">
+				@ui.Tooltip(ui.TooltipProps{Text: "Copy link", Inline: true})
+				@ui.Button((webview.ComponentCase{Family: "icon", Variant: "filled", Size: "medium", Shape: "round", Width: "default", State: "enabled"}).Attributes()) {
+					@webview.MaterialSymbol("content_copy")
+				}
+			</div>
+			<div class="tokens-thumbnail-tooltip tokens-thumbnail-rich-tooltip">
+				@ui.Tooltip(ui.TooltipProps{Title: "Share this note", Text: "Anyone with the link can read it.", Variant: "rich", Inline: true, Attrs: c.Attributes(), Actions: ThumbnailTooltipAction(c)})
+				@ui.Button((webview.ComponentCase{Family: "icon", Variant: "tonal", Size: "medium", Shape: "round", Width: "default", State: "enabled"}).Attributes()) {
+					@webview.MaterialSymbol("info")
+				}
+			</div>
+	}
+}
+
+templ ThumbnailDocument() {
+	<div class="tokens-thumbnail-document" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+}
+
+templ ThumbnailSheetAction() {
+	@ui.Action(ui.ButtonProps{Variant: ui.Text}) {
+		Done
+	}
+}
+
+templ ThumbnailTooltipAction(c webview.ComponentCase) {
+	@ui.Button(c.FeedbackAttributes("md-button md-text-button md-feedback-action")) {
+		Copy link
+	}
+}
+
+templ ThumbnailDialogActions(c webview.ComponentCase) {
+	@ui.Button(c.DialogAction(false)) {
+		Discard
+	}
+	@ui.Button(c.DialogAction(true)) {
+		Save
+	}
+}

@@ -1,5 +1,7 @@
 package ui
 
+import "github.com/sojupie/tokens/forge/components/ui/internal/model"
+
 import (
 	"bytes"
 	"context"
@@ -42,13 +44,13 @@ func TestProcessingIndicatorsRenderSharedAnatomy(t *testing.T) {
 	if err := LoadingIndicator(templ.Attributes{"aria-label": "Loading video engine"}).Render(context.Background(), &out); err != nil {
 		t.Fatal(err)
 	}
-	if !strings.Contains(out.String(), `<svg width="38" height="38"`) || !strings.Contains(out.String(), `data-control="indeterminate"`) || !strings.Contains(out.String(), initialLoadingPath) || strings.Contains(out.String(), `aria-valuenow`) {
+	if !strings.Contains(out.String(), `<svg width="38" height="38"`) || !strings.Contains(out.String(), `data-control="indeterminate"`) || !strings.Contains(out.String(), model.InitialLoadingPath) || strings.Contains(out.String(), `aria-valuenow`) {
 		t.Fatal(out.String())
 	}
 }
 func TestFieldNamesAndButtonState(t *testing.T) {
 	var out bytes.Buffer
-	if e := Select("position", "Position", []Option{{"x", "Horizontal"}}).Render(context.Background(), &out); e != nil {
+	if e := Select("position", "Position", []Option{{Value: "x", Label: "Horizontal"}}).Render(context.Background(), &out); e != nil {
 		t.Fatal(e)
 	}
 	for _, required := range []string{`aria-controls="position-options"`, `id="position-options"`, `role="listbox"`, `data-field-value="x"`, `id="position"`, `class="md-chip-icon" data-slot="trailing-icon"`} {
@@ -138,12 +140,30 @@ func TestDrawerLinkPreservesNativeURLAndCurrentState(t *testing.T) {
 
 func TestSelectRendersInitialSelectionBeforeRuntimeLoads(t *testing.T) {
 	var out bytes.Buffer
-	if err := Select("speed", "Speed", []Option{{"0.5", "Half"}, {"1", "Normal"}}, "1").Render(context.Background(), &out); err != nil {
+	if err := Select("speed", "Speed", []Option{{Value: "0.5", Label: "Half"}, {Value: "1", Label: "Normal"}}, "1").Render(context.Background(), &out); err != nil {
 		t.Fatal(err)
 	}
-	for _, required := range []string{`data-field-display>Normal`, `data-field-value value="1"`, `value="1" selected`, `aria-selected="true"`} {
+	for _, required := range []string{`data-field-display>Normal`, `aria-label="Speed" data-field-value`, `value="1" selected`, `aria-selected="true"`} {
 		if !strings.Contains(out.String(), required) {
 			t.Fatal(required, out.String())
 		}
+	}
+}
+
+func TestLoadingButtonPreservesLabelAndSharedDisk(t *testing.T) {
+	var out bytes.Buffer
+	if err := LoadingButton(templ.Attributes{"class": "md-button md-filled-button md-loading-button", "disabled": true, "aria-busy": "true", "type": "submit"}, "Download").Render(context.Background(), &out); err != nil {
+		t.Fatal(err)
+	}
+	for _, required := range []string{`md-loading-button-slot`, `data-button-label>Download`, `aria-busy="true"`, `disabled`, `md-button-loading-disk`, `aria-hidden="true"`, model.InitialLoadingPath} {
+		if !strings.Contains(out.String(), required) {
+			t.Fatal(required, out.String())
+		}
+	}
+	if strings.Count(out.String(), `type=`) != 1 || !strings.Contains(out.String(), `type="submit"`) {
+		t.Fatal("submit type must override the primitive default", out.String())
+	}
+	if strings.Contains(out.String(), `role="progressbar"`) {
+		t.Fatal("decorative disk must not add another accessibility announcement")
 	}
 }

@@ -51,12 +51,12 @@ assessments and their exact revisions live in the canonical component
 
 The generated `components-coverage.json` lists source bindings, exclusions, and supported configurations.
 Component pages such as `/md3/components/cards`, `/md3/components/menus`, and
-`/md3/components/text-fields` contain live previews above their token tables.
+`/md3/components/text-fields` contain interactive playgrounds above their token tables.
 
 The homepage thumbnails have separate compositions in
-`catalog/web/component_thumbnails.templ`. Their fixed specimen choices are in
-`catalog/web/component_thumbnails.go`; app frames and illustration layout are in
-`catalog/web/static/app.css`. Reuse the shared component anatomy and generated
+`catalog/web/templates/previews/component_thumbnails.templ`. Their fixed specimen choices are in
+`catalog/web/internal/server/playground.go`; app frames and illustration layout are in
+`catalog/web/assets/styles/app.css`. Reuse the shared component anatomy and generated
 styles. Scale the whole scene or crop the app frame to fit, keeping component
 proportions intact. Thumbnails are inert and share one secondary-palette backdrop. An SVG viewBox
 scales each HTML scene uniformly through a foreignObject, without CSS zoom or
@@ -65,16 +65,16 @@ browser-specific sizing calculations.
 Component pages open with Variants selected when several variants are available,
 and States otherwise. Progress and loading indicators default to Indeterminate.
 
-Choose States, Sizes, or Variants to vary one dimension across the preview grid.
+Choose States, Sizes, or Variants to vary one dimension across the playground grid.
 The remaining controls fix the other dimensions. Interactive renders one specimen
 without a forced interaction state. Only supported dimensions appear. Text fields
 include a control selector for text fields, selects and autocomplete.
 
-Preview settings use `preview.*` query parameters, for example
+Playground settings use `preview.*` query parameters, for example
 `/md3/components/icon-buttons?preview.compare=sizes&preview.variant=tonal`.
 The form preserves token-table query parameters. Theme and contrast follow the
 site controls. Unsupported component families retain their token tables without
-a preview. New renderers use the same configuration list and preview container.
+a playground. New renderers use the same configuration list and playground container.
 
 Navigation bars and rails use the current separate `md.comp.nav-bar` and
 `md.comp.nav-rail` sets. Their older combined sets remain available as data.
@@ -92,14 +92,20 @@ standard expansion moves body content, while modal expansion overlays it with a
 scrim. The simulated app body becomes inert, focus stays within the expanded
 surface, and Escape, the scrim, the menu button or destination activation
 collapses it. Controls elsewhere on the catalog page remain available; this is
-a scoped preview, not a document-wide native modal. Collapsing can restore the
-collapsed rail or hide the expanded rail until its app menu is used again.
+a scoped preview, not a document-wide native modal. Interactive previews offer
+Collapsed, Expanded or Hidden as their initial state.
+Hidden uses an immersive expanded rail with a single persistent menu toggle
+above the moving panes. It remains visible and
+anchored through expansion and dismissal, preserving focus, hover, ripple and
+icon rotation on the same button. Empty header slots preserve layout.
 
 Rail headers optionally contain a menu, a FAB, both or neither. Menus change to
 the collapse icon when expanded. The nested FAB has level-zero elevation and
-becomes an extended FAB. Four primary destinations remain visible when
-collapsed; expanded rails reveal a secondary section. Destinations can be top
-or center aligned while header controls stay at the top. Badges are optional;
+becomes an extended FAB. The four primary destinations remain visible when
+collapsed; the Library heading and its additional destinations appear only when
+expanded. The optional menu button belongs to the rail header; disabling it
+removes it from the rail. Immersive mode always retains its toggle.
+Destinations can be top or center aligned while header controls stay at the top. Badges are optional;
 their position follows vertical or horizontal label layout. The rail itself
 always remains vertical and sits outside the simulated page pane. Page content
 scrolls independently. Compact-app navigation-bar substitution is application
@@ -209,14 +215,14 @@ TOKEN_CATALOG_THEME_DB="$PWD/published/tokens.sqlite" go test ./...
 npm run test:ui
 ```
 
-`forge/material/component-contract.json` records the reviewed source-token
+`forge/material/components/component-contract.json` records the reviewed source-token
 identities. `generate-components.mjs` maps their anatomy and states into CSS
 properties. A missing token, new property, unknown icon-button or menu set, or
 unconverted mapped value stops the build. Review new upstream concepts before
 updating the contract and renderer together.
 
 `forge/components/styles/` defines browser anatomy by family and concern;
-`forge/components/static/components-base.css` is its assembled output.
+`forge/components/generated/components-base.css` is its assembled output.
 `components.css` combines that anatomy, the shared shadow renderer, and generated
 bindings. The server embeds it. Its checksum must match the publication asset
 manifest, so regenerate assets and rebuild the server together.
@@ -324,7 +330,7 @@ remain application UI.
 
 ## Rendered checks
 
-`forge/conformance/check-component-rendering.mjs` compares computed colors,
+`forge/conformance/browser/check-component-rendering.mjs` compares computed colors,
 opacity, dimensions, typography, shapes, outlines, elevation bindings, and
 state layers against source variables in the gallery. Run it in the browser
 through the available browser-testing tool. It reads the DOM without changing
@@ -345,7 +351,7 @@ validation in Interactive mode as well.
 Run `checkHandoffRendering()` on `/md3/for-agents` in all six appearance settings.
 It checks each nested card's foreground role and a minimum text contrast of 4.5:1.
 
-`forge/conformance/feedback-transitions.html` exercises press, release, pointer
+`forge/conformance/pages/feedback-transitions.html` exercises press, release, pointer
 exit, re-entry, and rapid repeated presses across all six appearances. It loads
 the running catalog's component CSS and shared controller, samples rendered
 layers on animation frames, and checks continuity, ripple overlap, and cleanup.
@@ -543,7 +549,7 @@ and a 6,000 ms circular cycle. Wave travel, SVG geometry, and the preview's line
 length are renderer rules. Motion pauses outside the viewport and in hidden tabs.
 Reduced-motion previews show a stationary segment. Catalog thumbnails remain
 stationary. SVGs have intrinsic dimensions so late styles cannot expand their
-first frame to the browser default SVG size. These animation rules live in `forge/components/static/progress.js`;
+first frame to the browser default SVG size. These animation rules live in `forge/components/behaviors/progress.js`;
 the CSS usage report covers CSS declarations only.
 
 ## Loading indicators
@@ -562,7 +568,7 @@ counterclockwise. Indeterminate progress uses the upstream 650 ms morph interval
 spring directly between intervals. Shape matching, centering, rotation, and
 animation scheduling are renderer behavior.
 
-`forge/components/static/loading-shapes.json` holds matched cubic curves exported
+`forge/components/data/loading-shapes.json` holds matched cubic curves exported
 with AndroidX Graphics Shapes 1.1.0. The first frame is rendered in HTML. Live
 previews fetch the geometry once and animate while visible. Homepage thumbnails
 remain stationary and need no geometry request. Reduced motion keeps indeterminate
@@ -577,7 +583,7 @@ curl -fsSL https://dl.google.com/dl/android/maven2/androidx/graphics/graphics-sh
 unzip -p /tmp/loading-shapes/shapes.aar classes.jar > /tmp/loading-shapes/shapes.jar
 curl -fsSL https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib/2.0.21/kotlin-stdlib-2.0.21.jar -o /tmp/loading-shapes/kotlin.jar
 curl -fsSL https://dl.google.com/dl/android/maven2/androidx/collection/collection-jvm/1.5.0/collection-jvm-1.5.0.jar -o /tmp/loading-shapes/collection.jar
-java --class-path '/tmp/loading-shapes/*' forge/material/reference/LoadingShapes.java > forge/components/static/loading-shapes.json
+java --class-path '/tmp/loading-shapes/*' forge/material/reference/LoadingShapes.java > forge/components/data/loading-shapes.json
 npm run test:ui
 ```
 
@@ -621,7 +627,7 @@ controls in the tab order. Their hover, focus, and press elevations use AndroidX
 system elevation roles where the toolbar-FAB capture only supplies resting
 elevation.
 
-`checkBarRendering()` in `forge/conformance/check-component-rendering.mjs` checks
+`checkBarRendering()` in `forge/conformance/browser/check-component-rendering.mjs` checks
 rendered bar dimensions, icon colors, toolbar states, and FAB geometry against
 the active token bindings. Run it on the component page after switching variants
 or appearance.
@@ -1072,6 +1078,18 @@ field. Closing a fullscreen dialog with unsaved edits opens a discard
 confirmation. Keep editing or Escape returns to the edits; Discard cancels them.
 Initial focus goes to the first control: the basic field or fullscreen Close.
 
+`MaterialDialogs.open(panel, opener)` attaches dialog behavior when opening.
+Closed dialogs allocate no scroll listeners or resize observers. Closing releases
+those resources. `MaterialDialogs.initialize(root)` adopts open dialogs in the
+root and its descendants without resetting values, scroll position or existing
+controllers. Call it after inserting already-open markup. Before removing a
+region, call `MaterialDialogs.dispose(root)` to cancel animations, remove
+listeners, disconnect observers and close its managed dialogs. Disposal skips
+Forge's explicit focus restoration and emits no `md-dialog-closed` event. Both methods accept a dialog
+element or a containing region. Catalog invokes them through its existing asset
+and HTMX events; static consumers can call them directly. Load motion and dialog
+scripts and resolve their styles before opening a dialog.
+
 Captured tokens supply fullscreen container shape and color, header and
 action-bar heights, typography, icon geometry, action states, dividers and scroll
 elevation. Three composite typography fields and the header tint layer are
@@ -1207,12 +1225,31 @@ captured container tokens. The target measurement uses `space600`.
 
 ## Carousel motion
 
-Carousel scrolling uses an empty track with snap positions. The visible items
-share a stationary sticky layer, where their masks and positions update together.
-Native scrolling never translates the visible items separately from those
-updates. Item shapes, colors and states continue to use the captured tokens.
-Mouse release scrolls smoothly to the nearest stop before restoring native
-snapping. Reduced-motion mode settles immediately.
+Contained carousels use native snap positions with a sticky visual track. Mask
+width and image position are calculated separately; viewport clipping does not
+recenter the image. Uncontained layouts retain measured media widths, including
+mixed aspect ratios, while their visible masks interpolate between full-size and
+edge-preview arrangements. Captions remain outside the mask in normal flow.
+Full-screen pages scroll vertically and center their media within the visible
+portion of the page, producing parallax without scaling it.
+
+Touch and trackpad scrolling retain browser momentum. Free mouse drags coast with
+an exponential velocity decay; paused or cancelled drags stop where released.
+Snapping configurations settle to an item, with hero flings limited to one primary
+item. Reduced motion removes mask expansion, parallax, press expansion and mouse
+coasting.
+
+The shared feedback runtime emits bubbling `material:press` events with
+`detail.pressed` on press, release and cancellation. Carousel consumes that
+lifecycle to widen its mask by 5px per side and restore it on release; dragging
+cancels the feedback. Media scale and position stay unchanged. A fixed 5px image overscan on each side
+prevents the expanded mask from revealing empty strips. This amplitude
+comes from the bundled Motion Lab press reference (20 video pixels wider at 2x
+scale), not an override of captured corner-radius tokens. Press and release use the captured
+350ms `medium3` duration and standard easing, selected by comparing the bundled
+reference in Motion Lab. The renderer's mouse
+coasting uses a 250ms decay constant, informed by the measured reference tail;
+it is not a prescribed Material duration.
 
 ## Date picker input and layout
 
@@ -1295,7 +1332,7 @@ to the site theme. Public DTCG and token-CSS downloads retain their selected
 context, which defaults to Standard. Component aliases continue to reference
 canonical system spring names. No captured values are overwritten.
 
-`forge/components/static/motion.cjs` supplies the shared unit-mass spring model.
+`forge/components/generated/motion.cjs` supplies the shared unit-mass spring model.
 The Node build samples it into private `--_motion-*-duration` and
 `--_motion-*-easing` properties in generated component CSS. These are derived
 renderer values, not additional Material source tokens. Browser CSS and Web

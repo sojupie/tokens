@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { themeSubset } from "./theme-subsets.mjs";
+import { themeSubset } from "./theme-subsets.ts";
 
 test("theme dependencies retain appearance aliases and nested fallbacks without leaking scoped inputs", () => {
   const css =

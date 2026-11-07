@@ -1,0 +1,68 @@
+package render
+
+import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+
+import "github.com/sojupie/tokens/forge/components/ui"
+
+import "github.com/sojupie/tokens/source/publish"
+
+templ SubjectPage(subject publish.SubjectView, changes []publish.ChangeView, browser webview.TokenBrowser) {
+	@SubjectPageComponent(subject, changes, browser)
+}
+
+templ TokenSetPicker(subject publish.SubjectView, browser webview.TokenBrowser) {
+	<label class="tokens-native-set">Token set
+			<select class="md-native-control" name="set">
+				for _, set := range browser.Sets {
+					<option value={ set.Key } selected?={ set.Key==browser.Selected.Key }>{ webview.TokenTableQualifier(subject,set) }</option>
+				}
+			</select>
+	</label>
+	@ui.MenuHost(templ.Attributes{"class": "tokens-token-set-host", "style": "display:contents"}) {
+		@ui.Button(templ.Attributes{"class": "md-filter-chip tokens-token-set", "data-selected": "true", "type": "button", "data-menu-open": "tokens-token-set-menu", "aria-controls": "tokens-token-set-menu", "aria-haspopup": "menu", "aria-expanded": "false", "aria-label": "Token set: " + webview.SelectedTableLabel(subject, browser.Selected)}) {
+			<span class="tokens-context-label" title={ webview.SelectedTableLabel(subject, browser.Selected) }>{ webview.SelectedTableLabel(subject, browser.Selected) }</span>
+			<span class="md-chip-icon" data-slot="trailing-icon" aria-hidden="true">
+				@webview.MaterialSymbol("expand_more")
+			</span>
+		}
+		@ui.MenuPanel(templ.Attributes{"class": "tokens-token-set-menu", "id": "tokens-token-set-menu", "aria-label": "Token sets", "data-menu-panel": "", "data-menu-main": ""}) {
+			for index, group := range webview.TokenSetMenuGroups(subject, browser.Sets) {
+				if index > 0 {
+					@ui.Divider("full", templ.Attributes{"class": "md-divider", "data-inset": "middle"})
+				}
+				<section>
+					<ul>
+						for _, set := range group.Sets {
+							<li>
+								@TokenSetMenuLink(webview.TokenSetLinkURL(subject, set, browser), webview.TokenTableQualifier(subject, set), set.Key == browser.Selected.Key)
+							</li>
+						}
+					</ul>
+				</section>
+			}
+			@ui.Divider("full", templ.Attributes{"class": "md-divider", "data-inset": "middle"})
+			<section aria-label="All tokens">
+				<ul>
+					<li>
+					@TokenSetMenuLink(webview.TokenSetLinkURL(subject, webview.AllTokenSet(subject), browser), "All tokens", browser.Selected.All)
+					</li>
+				</ul>
+			</section>
+		}
+	}
+}
+
+templ TokenSetMenuLink(href, label string, selected bool) {
+	@ui.MenuLink(href, templ.Attributes{
+		"aria-current": webview.CurrentTokenSet(selected),
+		"data-token-set-link": true,
+		"hx-boost": "false",
+		"hx-get": href,
+		"hx-target": "#tokens-token-browser",
+		"hx-swap": "outerHTML focusScroll:false",
+		"hx-sync": "#tokens-token-browser:replace",
+		"hx-push-url": "true",
+	}, ui.Icon("check")) {
+		{ label }
+	}
+}

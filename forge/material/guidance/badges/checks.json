@@ -214,21 +214,21 @@
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_navigation.templ; catalog/web/specimen_navigation.go; forge/components/styles/navigation-rail.css; forge/components/behaviors/navigation.js",
-            "result": "Badges are children of the icon, remain within its bounds at the logical ending edge and mirror in RTL. The destination accessible name puts its label before the notification; the visual badge is hidden from duplicate announcement. Selecting the destination removes the badge and the notification name."
+            "location": "forge/components/styles/badges.css; forge/components/ui/components.templ; catalog/web/specimen_navigation.templ",
+            "result": "Shared logical positioning fixes the leading badge anchor to the icon corner. Small badges use 6dp horizontal/vertical anchor offsets; large badges use 12dp horizontal and 14dp vertical offsets. Large badges extend outward as the label grows. RTL mirrors the anchor."
           },
           {
             "kind": "test",
-            "location": "catalog/web/navigation_badge_test.go",
-            "result": "Rendered destination names and badge markup pass."
+            "location": "forge/conformance/navigation-badges.html",
+            "result": "The conformance check now measures the documented anchor offsets rather than incorrectly requiring the entire badge to remain within the icon."
           },
           {
             "kind": "browser",
-            "location": "forge/conformance/navigation-badges.html",
-            "result": "Chromium: 20 assertions pass for both badge types, LTR/RTL bounds, destination/notification name order and acknowledgement persistence."
+            "location": "http://127.0.0.1:18766/components/badges",
+            "result": "Chromium: small badge is 6x6px with 3px corners; large badge is 16px high with 8px corners and 4px inline padding; 1000 renders as 999+ in a 34px container. Measured icon anchors are 6x6px (small) and 14x12px (large), mirrored in RTL. Trailing placement follows the label without overlap. Navigation-rail count is 16x16px and clears on selection."
           }
         ],
-        "notes": "Replaces the old sibling-order evidence: name ordering is now explicit, since the visual badge belongs inside the icon.",
+        "notes": "The previous bounds assertion misread anchor placement as containment of the whole badge. Its old browser result does not verify these corrected measurements.",
         "assessedBaseline": "e23e979d8041e1fe8755e6f85051f8d076e0b928"
       },
       "fixes": [
@@ -297,11 +297,16 @@
         "evidence": [
           {
             "kind": "code",
-            "location": "catalog/web/specimen_badge.templ; catalog/web/specimen_navigation.templ",
-            "result": "The only supported numerical contents are 99+ and 3, both below the four-character maximum."
+            "location": "forge/components/ui/badge.go; forge/components/ui/components.templ",
+            "result": "Shared BadgeContent caps numeric counts above 999 as 999+ and limits status labels to four Unicode characters. The owning control retains the full count in its accessible name."
+          },
+          {
+            "kind": "test",
+            "location": "forge/components/ui/badge_test.go; catalog/web/status_labels_test.go",
+            "result": "Covers one-, two-, three-digit and overflowing counts, status labels, Unicode content, full accessible count and RTL trailing placement."
           }
         ],
-        "notes": "The specimen accepts no arbitrary count input. A general count-formatting API is not present; the old finding projected such an input onto fixed-content examples."
+        "notes": "The playground now exposes count, status, placement and direction choices instead of a fixed 99+ label."
       },
       "fixes": []
     },
@@ -363,7 +368,7 @@
           {
             "kind": "code",
             "location": "catalog/web/specimen_navigation.templ; catalog/web/specimen_navigation.go; forge/components/styles/navigation-rail.css; forge/components/behaviors/navigation.js",
-            "result": "Badges are children of the icon, remain within its bounds at the logical ending edge and mirror in RTL. The destination accessible name puts its label before the notification; the visual badge is hidden from duplicate announcement. Selecting the destination removes the badge and the notification name."
+            "result": "Badges are children of the icon, use the shared logical icon-corner anchor and mirror in RTL. The destination accessible name puts its label before the notification; the visual badge is hidden from duplicate announcement. Selecting the destination removes the badge and the notification name."
           },
           {
             "kind": "test",
@@ -373,7 +378,7 @@
           {
             "kind": "browser",
             "location": "forge/conformance/navigation-badges.html",
-            "result": "Chromium: 20 assertions pass for both badge types, LTR/RTL bounds, destination/notification name order and acknowledgement persistence."
+            "result": "Previous browser run verified destination/notification name order and acknowledgement persistence; its former whole-badge containment assertion was invalid and has been replaced by icon-corner anchor measurements."
           }
         ],
         "notes": "Replaces the old sibling-order evidence: name ordering is now explicit, since the visual badge belongs inside the icon.",
@@ -394,7 +399,7 @@
     },
     {
       "id": "badge-announcement",
-      "statement": "Expose a numerical badge so its number follows the destination label; announce a non-counting badge as “New notification.”",
+      "statement": "Expose a numerical badge so its number follows the destination label; announce a non-counting badge as \u201cNew notification.\u201d",
       "condition": "For screen-reader output.",
       "basis": "explicit",
       "notes": "",
@@ -417,7 +422,7 @@
           {
             "kind": "code",
             "location": "catalog/web/specimen_navigation.templ; catalog/web/specimen_navigation.go; forge/components/styles/navigation-rail.css; forge/components/behaviors/navigation.js",
-            "result": "Badges are children of the icon, remain within its bounds at the logical ending edge and mirror in RTL. The destination accessible name puts its label before the notification; the visual badge is hidden from duplicate announcement. Selecting the destination removes the badge and the notification name."
+            "result": "Badges are children of the icon, use the shared logical icon-corner anchor and mirror in RTL. The destination accessible name puts its label before the notification; the visual badge is hidden from duplicate announcement. Selecting the destination removes the badge and the notification name."
           },
           {
             "kind": "test",
@@ -427,7 +432,7 @@
           {
             "kind": "browser",
             "location": "forge/conformance/navigation-badges.html",
-            "result": "Chromium: 20 assertions pass for both badge types, LTR/RTL bounds, destination/notification name order and acknowledgement persistence."
+            "result": "Previous browser run verified destination/notification name order and acknowledgement persistence; its former whole-badge containment assertion was invalid and has been replaced by icon-corner anchor measurements."
           }
         ],
         "notes": "Replaces the old sibling-order evidence: name ordering is now explicit, since the visual badge belongs inside the icon.",
@@ -486,7 +491,7 @@
     },
     {
       "id": "badge-measurements",
-      "statement": "Use the specified small badge 6dp size and 3dp corners; use 16dp height for large badges, 16×34dp for maximum-character badges, 4dp label padding, and the prescribed 6×6dp (small) or 14×12dp (large) offset from the icon corner.",
+      "statement": "Use the specified small badge 6dp size and 3dp corners; use 16dp height for large badges, 16\u00d734dp for maximum-character badges, 4dp label padding, and the prescribed 6\u00d76dp (small) or 14\u00d712dp (large) offset from the icon corner.",
       "condition": "When implementing the documented Material badge dimensions.",
       "basis": "explicit",
       "notes": "",
@@ -503,17 +508,22 @@
         }
       ],
       "implementation": {
-        "status": "unclear",
+        "status": "verified",
         "sourceRevision": 1,
         "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
         "evidence": [
           {
             "kind": "code",
-            "location": "forge/components/styles/badges.css:1-20; forge/material/generate-components.mjs:430-440",
-            "result": "Size, shape, padding and offsets are variable-driven; the source code does not show resolved 6dp/16dp dimensions or icon-corner offset, so measure computed layout."
+            "location": "forge/components/styles/badges.css; forge/components/ui/components.templ",
+            "result": "Uses captured small/large size, corner and text tokens; specifies icon-corner anchor offsets, 4dp padding and a 34dp maximum-character container."
+          },
+          {
+            "kind": "browser",
+            "location": "http://127.0.0.1:18766/components/badges",
+            "result": "Chromium: small badge is 6x6px with 3px corners; large badge is 16px high with 8px corners and 4px inline padding; 1000 renders as 999+ in a 34px container. Measured icon anchors are 6x6px (small) and 14x12px (large), mirrored in RTL. Trailing placement follows the label without overlap. Navigation-rail count is 16x16px and clears on selection."
           }
         ],
-        "notes": "Size, shape, padding and offsets are variable-driven; the source code does not show resolved 6dp/16dp dimensions or icon-corner offset, so measure computed layout."
+        "notes": "Measured the rendered component playground, including its real icon-button wrapper, rather than inferring values from CSS variables."
       },
       "fixes": []
     },

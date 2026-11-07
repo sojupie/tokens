@@ -1,12 +1,12 @@
 package tokensnapshot
 
 import (
+ jsonschema "github.com/santhosh-tekuri/jsonschema/v6"
 	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
 
-	"github.com/santhosh-tekuri/jsonschema/v6"
 	"github.com/sojupie/tokens/source/crawl"
 )
 

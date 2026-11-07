@@ -1,0 +1,76 @@
+package render
+
+import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+
+templ ComponentSpecimen(c webview.ComponentCase) {
+	switch c.Family {
+		case "button":
+			@SpecimenButton(c)
+		case "card":
+			@SpecimenCard(c)
+		case "icon":
+			@SpecimenIcon(c)
+		case "chip":
+			@SpecimenChip(c)
+		case "badge":
+			@SpecimenBadge(c)
+		case "time":
+			@SpecimenTime(c)
+		case "date":
+			@SpecimenDate(c)
+		case "search":
+			@SpecimenSearch(c)
+		case "carousel":
+			@SpecimenCarousel(c)
+		case "list":
+			@SpecimenList(c)
+		case "fab-menu":
+			@SpecimenFabMenu(c)
+		case "button-group":
+			@SpecimenButtonGroup(c)
+		case "split":
+			@SpecimenSplit(c)
+		case "bottom-sheet", "side-sheet":
+			@SpecimenBottomSheet(c)
+		case "appbar":
+			@SpecimenAppbar(c)
+		case "toolbar":
+			@SpecimenToolbar(c)
+		case "loading":
+			@SpecimenLoading(c)
+		case "progress":
+			@SpecimenProgress(c)
+		case "slider":
+			@SpecimenSlider(c)
+		case "tabs":
+			@SpecimenTabs(c)
+		case "segmented":
+			@SpecimenSegmented(c)
+		case "nav-rail":
+			@SpecimenNavRail(c)
+		case "nav-bar", "nav-drawer":
+			@SpecimenNavBar(c)
+		case "snackbar":
+			@SpecimenSnackbar(c)
+		case "tooltip":
+			@SpecimenTooltip(c)
+		case "fab":
+			@SpecimenFab(c)
+		case "extended-fab":
+			@SpecimenExtendedFab(c)
+		case "checkbox":
+			@SpecimenCheckbox(c)
+		case "switch":
+			@SpecimenSwitch(c)
+		case "radio":
+			@SpecimenRadio(c)
+		case "field", "select", "autocomplete":
+			@SpecimenField(c)
+		case "menu":
+			@SpecimenMenu(c)
+		case "dialog":
+			@SpecimenDialog(c)
+		case "divider":
+			@SpecimenDivider(c)
+	}
+}

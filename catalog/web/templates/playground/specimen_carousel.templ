@@ -1,0 +1,84 @@
+package render
+
+import webassets "github.com/sojupie/tokens/catalog/web/assets"
+
+import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+
+import "github.com/sojupie/tokens/forge/components/ui"
+
+templ SpecimenCarousel(c webview.ComponentCase) {
+	@CarouselSurface(c, true)
+}
+
+templ CarouselSurface(c webview.ComponentCase, demonstration bool) {
+	if c.Variant=="full-screen" {
+		{{
+			width := "384"
+			if demonstration && c.CarouselViewport != "" && c.CarouselViewport != "available" {
+				width = c.CarouselViewport
+			}
+		}}
+		<div data-playground-environment class="tokens-carousel-frame" style={ "inline-size:min(100%," + width + "px);aspect-ratio:9/16;position:relative;margin-inline:auto" }>
+			@CarouselExample(c, demonstration)
+		</div>
+	} else if demonstration && c.CarouselViewport!="" && c.CarouselViewport!="available" {
+		<div data-playground-environment class="tokens-carousel-frame" style={ "inline-size:min(100%," + c.CarouselViewport + "px);margin-inline:auto" }>
+			@CarouselExample(c, demonstration)
+		</div>
+	} else {
+		@CarouselExample(c, demonstration)
+	}
+}
+
+templ CarouselExample(c webview.ComponentCase, demonstration bool) {
+	{{
+		p := ui.CarouselProps{Label: "Example carousel", Variant: c.Variant, Orientation: c.Orientation, Scrolling: c.CarouselScroll, Attrs: c.Attributes()}
+		if c.Variant == "full-screen" {
+			p.Attrs["style"] = "position:absolute;inset:0;block-size:100%"
+		}
+		if demonstration {
+			p.Header = CarouselExampleHeader(c)
+			p.Actions = CarouselExampleActions(c)
+			if c.Variant != "full-screen" {
+				p.Controls = CarouselExampleControls()
+			}
+		}
+	}}
+	@ui.Carousel(p, 6) {
+		for index:=range 6 {
+			@ui.CarouselItem(ui.CarouselItemProps{Index: index, Count: 6, ImageSrc: webassets.StaticURL("paintings/" + webview.CarouselPaintings[index%len(webview.CarouselPaintings)]), ImagePosition: webview.CarouselPaintingPositions[index%len(webview.CarouselPaintingPositions)], ImageScale: webview.CarouselPaintingScales[index%len(webview.CarouselPaintingScales)], SlotAttrs: c.CarouselSlot(index), Attrs: c.CarouselItem(index), Label: webview.CarouselPaintingTitles[index%len(webview.CarouselPaintingTitles)]}) {
+				if demonstration && c.CarouselContent=="overlay" {
+					@ui.CarouselText() {
+						{ webview.CarouselCaption(index) }
+					}
+				}
+			}
+		}
+	}
+}
+
+templ CarouselExampleHeader(c webview.ComponentCase) {
+	if c.Variant!="full-screen"&&c.CarouselAction=="header-arrow" {
+		@ui.CarouselHeader() {
+			<h3 class="md-typescale-title-large">Featured items</h3>@ui.IconButton(ui.IconButtonProps{Label: "Show all featured items", Icon: "arrow_forward"})
+		}
+	}
+}
+
+templ CarouselExampleActions(c webview.ComponentCase) {
+	if c.Variant!="full-screen"&&c.CarouselAction!="none"&&c.CarouselAction!="header-arrow" {
+		@ui.CarouselAction() {
+			@ui.Action(ui.ButtonProps{Variant: ui.Text}) {
+				Show all
+			}
+		}
+	}
+}
+
+templ CarouselExampleControls() {
+	@ui.CarouselControls()
+}
+
+templ CarouselArtwork(index int) {
+	<img src={ webassets.StaticURL("paintings/" + webview.CarouselPaintings[index%len(webview.CarouselPaintings)]) } alt="" width="1200" height="800" draggable="false" style={ webview.CarouselArtworkStyle(index) }/>
+}

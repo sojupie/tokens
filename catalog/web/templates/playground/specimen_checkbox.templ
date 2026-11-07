@@ -1,0 +1,21 @@
+package render
+
+import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+
+import "github.com/sojupie/tokens/forge/components/ui"
+
+templ SpecimenCheckbox(c webview.ComponentCase) {
+	@CheckboxChoice(c, "Receive updates")
+}
+
+templ CheckboxChoice(c webview.ComponentCase, label string) {
+	@webview.UseComponentAssets("checkbox")
+	@SelectionExample(c.ID(), label) {
+@CheckboxSurface(c,label,c.ID()+"-label")
+	}
+}
+
+templ CheckboxSurface(c webview.ComponentCase,label string,labelID ...string) {
+ {{ props:=ui.ChoiceProps{ID:c.ID()+"-input",Label:label,Checked:c.Selected,Disabled:c.State=="disabled",Invalid:c.Invalid,Indeterminate:c.Variant=="indeterminate",Attrs:c.Attributes()};if len(labelID)>0 {props.LabelledBy=labelID[0]} }}
+ @ui.CheckboxControl(props)
+}

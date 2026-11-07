@@ -31,3 +31,7 @@
     opacity: var(--_button-state-opacity);
   }
 }
+
+@media (scripting: none) and (prefers-reduced-motion: no-preference) {
+ .md-button,.md-icon-button { transition:border-radius var(--_motion-fast-spatial-duration,150ms) var(--_motion-fast-spatial-easing,ease-out); }
+}

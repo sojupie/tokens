@@ -1,16 +1,23 @@
-import motion from "./components/static/motion.cjs";
+// Assemble publication themes and downloads from DTCG, then derive the component
+// bindings embedded by the Go server. A staged output directory prevents readers
+// from seeing a half-written asset set; --check-bindings verifies a rebuilt server
+// uses the same component bindings as the publication it will serve.
+import { buildDeliveryStyles } from "./css-delivery.ts";
+import { cssTiming } from "./components/helpers/springs.ts";
 import { parseArgs } from "node:util";
 import StyleDictionary from "style-dictionary";
 import { siteTheme } from "./material/site-theme.mjs";
 import { circularShapeRadius } from "./material/circular-shapes.mjs";
-import { generateComponents } from "./material/generate-components.mjs";
-import { generateButtons } from "./material/generate-buttons.mjs";
-import { buildComponentAssets } from "./components/build-assets.mjs";
-import { compactCSS, themeVariantsCSS } from './css-output.mjs';
-import { componentBundles } from './component-bundles.mjs';
-import { pageThemes } from './theme-subsets.mjs';
+import { generateComponents } from "./material/components/generate-components.mjs";
+import { generateButtons } from "./material/components/generate-buttons.mjs";
+import { buildComponentAssets } from "./components/build-assets.ts";
+import { buildCatalogAssets } from "../catalog/web/build-assets.ts";
+import { compactCSS, themeVariantsCSS } from './css-output.ts';
+import { componentBundles } from './component-bundles.ts';
+import { pageThemes } from './theme-subsets.ts';
 import {
   readdir,
+  cp,
   realpath,
   mkdir,
   readFile,
@@ -214,6 +221,16 @@ function cssVariables(values, selector, names) {
   return `${selector} {\n${declarations.join("\n")}\n}\n`;
 }
 
+// Theme rebuilds must not remove independently generated catalog thumbnails.
+export async function preserveIllustrations(target, output, publicationId) {
+  const source = path.join(target, "illustrations");
+  let manifest;
+  try { manifest = JSON.parse(await readFile(path.join(source, "manifest.json"), "utf8")); }
+  catch (error) { if (error.code === "ENOENT") return; throw error; }
+  if (manifest.publicationId === publicationId)
+    await cp(source, path.join(output, "illustrations"), {recursive:true});
+}
+
 async function main() {
   const { values: args } = parseArgs({
     options: {
@@ -221,11 +238,14 @@ async function main() {
       assets: { type: "string" },
       "tokens-binary": { type: "string" },
       "check-bindings": { type: "boolean", default: false },
+      "css-names": { type: "string", default: "original" },
     },
   });
   if (!args.published)
     throw new Error("Usage: npm run build:tokens -- --published <directory> [--assets <directory>] [--check-bindings]");
+  if (!["original", "short"].includes(args["css-names"])) throw Error("--css-names must be original or short");
   await buildComponentAssets({ check: args["check-bindings"] });
+  await buildCatalogAssets({ check: args["check-bindings"] });
   const executable = args["tokens-binary"] ?? "go";
   const prefix = args["tokens-binary"] ? [] : ["run", "./cmd/tokens"];
   const published = await realpath(args.published);
@@ -256,6 +276,7 @@ async function main() {
         "--output",
         path.join(output, "dtcg"),
         "--themes",
+        "--value-catalog",
       ],
       { stdio: "inherit" },
     );
@@ -263,11 +284,18 @@ async function main() {
     const index = JSON.parse(
       await readFile(path.join(output, "dtcg/index.json"), "utf8"),
     );
+    const valueDocument = JSON.parse(await readFile(path.join(output, "dtcg/values.tokens.json"), "utf8"));
+    const valueCSS = await compile(valueDocument);
+    const cssValueIndex = JSON.stringify({databaseSha256, values: Object.fromEntries(Object.entries(valueCSS.values).map(([key,value]) => [key,String(value)]))});
+    const cssValuesSha256 = createHash("sha256").update(cssValueIndex).digest("hex");
+    await writeFile(path.join(output, "css-values.json"), cssValueIndex);
+    await rm(path.join(output, "dtcg/values.tokens.json"));
     const required = new Set([
       "md-ref-palette-neutral0",
       "md-sys-color-on-primary",
     ]);
-    for (const file of ["catalog/web/static/app.css", "catalog/web/static/token-table.css", "forge/site/site.css"]) {
+    // Scene renders use the full theme; normal pages keep their existing subsets.
+    for (const file of ["catalog/web/assets/styles/app.css", "catalog/web/assets/styles/illustrations.css", "catalog/web/assets/styles/token-table.css", "forge/site/site.css"]) {
       const css = await readFile(file, "utf8");
       for (const match of css.matchAll(/var\(\s*--((?:md|catalog)-[a-z0-9-]+)\s*[,)]/g))
         required.add(match[1]);
@@ -288,11 +316,11 @@ async function main() {
     let componentCSS;
     let componentCoverage;
     const anatomy = await readFile(
-      "forge/components/static/components-base.css",
+      "forge/components/generated/components-base.css",
       "utf8",
     );
     const elevation = await readFile(
-      "forge/components/static/elevation.css",
+      "forge/components/foundations/elevation.css",
       "utf8",
     );
     for (const match of (anatomy + elevation).matchAll(
@@ -347,7 +375,7 @@ async function main() {
       for (const speed of ["fast", "default", "slow"]) for (const type of ["spatial", "effects"]) {
         const name = `md-sys-motion-spring-${speed}-${type}`;
         for (const property of ["damping", "stiffness"]) required.add(`${name}-${property}`);
-        const timing = motion.cssTiming(Number(compiled.values[`${name}-damping`]), Number(compiled.values[`${name}-stiffness`]));
+        const timing = cssTiming(Number(compiled.values[`${name}-damping`]), Number(compiled.values[`${name}-stiffness`]));
         for (const property of ["duration", "easing"]) motionProperties.push(`  --_motion-${speed}-${type}-${property}: ${timing[property]};`);
       }
       const motionCSS = `:root {\n${motionProperties.join("\n")}\n}\n`;
@@ -387,6 +415,8 @@ async function main() {
         .digest("hex") !== databaseSha256
     )
       throw new Error("Publication changed during the build");
+    buttonCSS = generatedBinding(buttonCSS);
+    componentCSS = generatedBinding(componentCSS);
     const bundles = await componentBundles({
       bindings: componentModules, motionCSS: moduleMotionCSS, elevation, allCSS: componentCSS,
     });
@@ -394,24 +424,28 @@ async function main() {
       [
         "forge/site/site.css",
         "forge/site/site.templ",
-        "catalog/web/static/app.css",
-        "catalog/web/static/token-table.css",
-        ...(await readdir("catalog/web"))
+        ...(await readdir("forge/components/ui/templates", {recursive:true}))
+          .filter(file => file.endsWith(".templ") || file.endsWith(".go") && !file.endsWith("_templ.go") && !file.endsWith("_test.go"))
+          .map(file => "forge/components/ui/templates/" + file),
+        "catalog/web/assets/styles/app.css",
+        "catalog/web/assets/styles/token-table.css",
+        ...(await readdir("catalog/web/templates", {recursive:true}))
           .filter((file) => file.endsWith(".templ"))
-          .map((file) => "catalog/web/" + file),
+          .map((file) => "catalog/web/templates/" + file),
       ].map((file) => readFile(file, "utf8")),
     );
     sharedSources.push(buttonCSS);
     const runtimeFiles = (
       await Promise.all(
-        ["forge/components/static", "catalog/web/static"].map(
+        ["forge/components/generated", "catalog/web/assets/scripts", "catalog/web/assets/generated"].map(
           async (directory) =>
             (await readdir(directory))
-              .filter((file) => file.endsWith(".js"))
+              .filter((file) => file.endsWith(".js") || file.endsWith(".cjs"))
               .map((file) => path.join(directory, file)),
         ),
       )
     ).flat();
+    runtimeFiles.push("forge/site/site.js");
     const runtimeSources = await Promise.all(
       runtimeFiles.map((file) => readFile(file, "utf8")),
     );
@@ -486,6 +520,7 @@ async function main() {
           publicationId: identity.publicationId,
           snapshotId: identity.snapshotId,
           databaseSha256,
+          cssValuesSha256,
           componentsSha256: createHash("sha256")
             .update(componentCSS)
             .digest("hex"),
@@ -500,10 +535,11 @@ async function main() {
     );
     if (args["check-bindings"]) {
       for (const [file, css] of [["buttons.css", buttonCSS], ["components.css", componentCSS]]) {
-        if (await readFile(path.join("forge/components/static", file), "utf8") !== css)
+        if (await readFile(path.join("forge/components/generated", file), "utf8") !== css)
           throw new Error(`${file} differs from the committed server bindings; regenerate and rebuild the application`);
       }
     }
+    await preserveIllustrations(target, output, identity.publicationId);
     const backup = `${output}-previous`;
     let previous = false;
     try {
@@ -520,29 +556,30 @@ async function main() {
     }
     if (previous) await rm(backup, { recursive: true });
     if (!args["check-bindings"]) {
-      await writeFile("forge/components/static/buttons.css", buttonCSS);
-      await writeFile("forge/components/static/components.css", componentCSS);
+      await writeFile("forge/components/generated/buttons.css", buttonCSS);
+      await writeFile("forge/components/generated/components.css", componentCSS);
     }
     const moduleManifest = JSON.stringify([...bundles.keys()].filter(name => name !== "all")) + "\n";
-    const manifestFile = "forge/components/static/bundles/modules.json";
+    const manifestFile = "forge/components/generated/bundles/modules.json";
     if (args["check-bindings"]) {
       if (await readFile(manifestFile, "utf8") !== moduleManifest)
         throw new Error("Stale component module manifest");
     } else await writeFile(manifestFile, moduleManifest);
-    for (const file of await readdir("forge/components/static/bundles")) {
+    for (const file of await readdir("forge/components/generated/bundles")) {
       if (!file.endsWith(".css") || bundles.has(file.slice(0, -4))) continue;
       if (args["check-bindings"]) throw new Error(`Obsolete component bundle: ${file}`);
-      await rm(path.join("forge/components/static/bundles", file));
+      await rm(path.join("forge/components/generated/bundles", file));
     }
     for (const [name, css] of bundles) {
-      const file = `forge/components/static/bundles/${name}.css`;
+      const file = `forge/components/generated/bundles/${name}.css`;
       if (args['check-bindings']) {
-        if (await readFile(file, 'utf8') !== css) throw new Error(`Stale component bundle: ${name}`);
+        if (await readFile(file, 'utf8') !== generatedBinding(css)) throw new Error(`Stale component bundle: ${name}`);
       } else {
-        await mkdir('forge/components/static/bundles', { recursive: true });
-        await writeFile(file, css);
+        await mkdir('forge/components/generated/bundles', { recursive: true });
+        await writeFile(file, generatedBinding(css));
       }
     }
+    if (args["css-names"] === "short") await buildDeliveryStyles(target);
     console.log(`Built six themes and DTCG/CSS downloads in ${target}`);
   } finally {
     await rm(output, { recursive: true, force: true });
@@ -557,4 +594,10 @@ if (
     console.error(error);
     process.exitCode = 1;
   });
+}
+
+// Keep the same source banner in repository and publication bindings: startup
+// checks compare their bytes before serving a publication.
+function generatedBinding(css) {
+ return "/* Generated by forge/build-tokens.mjs. DO NOT EDIT. Run npm run build:tokens -- --published PATH. */\n" + css;
 }

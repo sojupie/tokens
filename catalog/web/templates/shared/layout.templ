@@ -1,0 +1,138 @@
+package render
+
+import "strconv"
+
+import webassets "github.com/sojupie/tokens/catalog/web/assets"
+
+import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+
+import "github.com/sojupie/tokens/forge/components/ui"
+
+import "github.com/sojupie/tokens/forge/site"
+
+templ Layout(title string) {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="utf-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<meta name="htmx-config" content='{"compat":{"suppressInheritanceLogs":true},"preload":{"autoBoost":false}}'/>
+			@webassets.InitialThemeScript()
+			<script src={ webassets.StaticURL("theme.js") } defer></script>
+			<link rel="stylesheet" href={ webview.ThemeURL(ctx) }/>
+			<link rel="stylesheet" href={ webview.StylesheetURL(ctx, webassets.StaticURL("site.css")) }/>
+			<link rel="stylesheet" href={ webview.StylesheetURL(ctx, webassets.StaticURL("app.css")) }/>
+			<link rel="stylesheet" href={ webview.StylesheetURL(ctx, webassets.StaticURL("token-table.css")) }/>
+			<link rel="stylesheet" href={ webview.StylesheetURL(ctx, webassets.StaticURL("buttons.css")) }/>
+			<link rel="stylesheet" href={ webview.StylesheetURL(ctx, webassets.StaticURL("bundles/common.css")) }/>
+			@webview.SiteNavigationStyles()
+			<script src={ webassets.StaticURL("motion.js") } defer></script>
+			<script src={ webassets.StaticURL("buttons.js") } defer></script>
+			<script src={ webassets.StaticURL("runtime/utils.js") } defer></script>
+			<script src={ webassets.StaticURL("runtime/navigation.js") } defer></script>
+			<script src={ webassets.StaticURL("fields.js") } defer></script>
+			<script src={ webassets.StaticURL("site-ui.js") } defer></script>
+			<script src={ webassets.StaticURL("thumbnail-images.js") } defer></script>
+			<script src={ webassets.StaticURL("export.js") } defer></script>
+			<script src={ webassets.StaticURL("site.js") } defer></script>
+			<script src={ webassets.StaticURL("menus.js") } defer></script>
+			<script src={ webassets.StaticURL("htmx.min.js") } defer></script>
+			<script src={ webassets.StaticURL("htmx-2-compat.min.js") } defer></script>
+			<script src={ webassets.StaticURL("hx-head.min.js") } defer></script>
+			<script src={ webassets.StaticURL("hx-preload.min.js") } defer></script>
+			<script src={ webassets.StaticURL("token-table.js") } defer></script>
+			<script src={ webassets.StaticURL("webmcp.js") } defer></script>
+			<script src={ webassets.StaticURL("prefetch.js") } defer></script>
+			<script src={ webassets.StaticURL("asset-loader.js") } data-sources={ webview.ComponentScriptSources() } data-shapes-version={ webview.LoadingGeometryVersion } defer></script>
+			<link rel="icon" type="image/svg+xml" href={ webassets.StaticURL("logo.svg") }/>
+			<link rel="apple-touch-icon" href={ webassets.StaticURL("logo-250x250.png") }/>
+			<title>{ webview.PageTitle(ctx, title) } | Token Catalog</title>
+			<meta name="description" content={ webview.Metadata(ctx).Description }/>
+			if webview.Metadata(ctx).ImageURL!="" {
+				<meta property="og:type" content="website"/>
+				<meta property="og:site_name" content="Token Catalog"/>
+				<meta property="og:title" content={ webview.PageTitle(ctx, title) + " | Token Catalog" }/>
+				<meta property="og:description" content={ webview.Metadata(ctx).Description }/>
+				<meta property="og:url" content={ webview.Metadata(ctx).ImagePageURL }/>
+				<meta property="og:image" content={ webview.Metadata(ctx).ImageURL }/>
+				<meta property="og:image:width" content={ strconv.Itoa(webview.Metadata(ctx).ImageWidth) }/>
+				<meta property="og:image:height" content={ strconv.Itoa(webview.Metadata(ctx).ImageHeight) }/>
+				<meta property="og:image:type" content="image/jpeg"/>
+				<meta property="og:image:alt" content={ webview.Metadata(ctx).ImageAlt }/>
+				<meta name="twitter:card" content="summary_large_image"/>
+				<meta name="twitter:image" content={ webview.Metadata(ctx).ImageURL }/>
+				<meta name="twitter:image:alt" content={ webview.Metadata(ctx).ImageAlt }/>
+			}
+			if webview.Metadata(ctx).AgentDiscovery {
+				<link rel="describedby" href="/agents.json" type="application/json"/>
+				<link rel="describedby" href="/llms.txt" type="text/plain"/>
+				<link rel="service-desc" href="/openapi.json" type="application/json"/>
+				<link rel="api-catalog" href="/.well-known/api-catalog" type="application/linkset+json"/>
+				<link rel="ai-catalog" href="/.well-known/ai-catalog.json" type="application/json"/>
+			}
+			if webview.Metadata(ctx).JSONAlternate != "" {
+				<link rel="alternate" href={ templ.SafeURL(webview.Metadata(ctx).JSONAlternate) } type="application/json" title="Token data for this view"/>
+			}
+			if webview.Metadata(ctx).Canonical != "" {
+				<link rel="canonical" href={ templ.SafeURL(webview.Metadata(ctx).Canonical) }/>
+			}
+			if webview.Metadata(ctx).NoIndex {
+				<meta name="robots" content="noindex, follow"/>
+			}
+		</head>
+		<body class="tokens-body" hx-boost="true">
+			<template hx type="partial" hx-target="#tokens-site-rail" hx-swap="innerMorph">@site.Rail(webview.SiteConfig(ctx))
+</template>
+			<template hx type="partial" hx-target="#tokens-site-destinations" hx-swap="innerMorph">
+				@site.Destinations(webview.SiteConfig(ctx))
+			</template>
+			@webview.ComponentAssetScope() {
+				@webview.UseComponentAssets("navigation")
+				@site.Header(webview.SiteConfig(ctx)) {
+					<div class="tokens-theme-controls" role="group" aria-label="Site appearance">
+						@ui.IconButtonContent(ui.IconButtonProps{Variant: "standard", Label: "Dark mode", Attrs: templ.Attributes{"type": "button", "data-app-theme": true, "aria-pressed": "false", "title": "Dark mode"}, Disabled: true}) {
+							<span data-theme-icon="light">
+								@webview.MaterialSymbol("dark_mode")
+							</span>
+							<span data-theme-icon="dark" hidden>
+								@webview.MaterialSymbol("light_mode")
+							</span>
+						}
+						@ui.Divider("middle", templ.Attributes{"class":"md-divider tokens-theme-divider","aria-hidden":"true"})
+                        @ui.IconButtonContent(ui.IconButtonProps{Variant: "standard", Label: "Contrast", Attrs: templ.Attributes{"popovertarget": "tokens-contrast-options", "data-contrast-toggle": true, "title": "Contrast"}}) {
+							<span data-contrast-icon="default">@webview.MaterialSymbol("brightness_low")
+</span>
+							<span data-contrast-icon="medium" hidden>@webview.MaterialSymbol("brightness_medium")
+</span>
+							<span data-contrast-icon="high" hidden>@webview.MaterialSymbol("brightness_high")
+</span>
+						}
+						<div id="tokens-contrast-options" class="tokens-contrast-buttons" popover="auto" role="group" aria-label="Contrast">
+							@ui.IconButtonContent(ui.IconButtonProps{Variant: "filled", Label: "Standard contrast", Attrs: templ.Attributes{"type": "button", "data-app-contrast": "default", "aria-pressed": "true", "title": "Standard contrast"}, Disabled: true}) {
+								@webview.MaterialSymbol("brightness_low")
+							}
+							@ui.IconButtonContent(ui.IconButtonProps{Variant: "filled", Label: "Medium contrast", Attrs: templ.Attributes{"type": "button", "data-app-contrast": "medium", "aria-pressed": "false", "title": "Medium contrast"}, Disabled: true}) {
+								@webview.MaterialSymbol("brightness_medium")
+							}
+							@ui.IconButtonContent(ui.IconButtonProps{Variant: "filled", Label: "High contrast", Attrs: templ.Attributes{"type": "button", "data-app-contrast": "high", "aria-pressed": "false", "title": "High contrast"}, Disabled: true}) {
+								@webview.MaterialSymbol("brightness_high")
+							}
+						</div>
+					</div>
+				}
+			}
+			<div class="tokens-layout tokens-layout-site">
+				<main class="tokens-main tokens-layout-content" data-component-assets>
+					@webview.ComponentAssetScope() {
+						{ children... }
+					}
+				</main>
+				@site.Footer(webview.SiteConfig(ctx)) {
+					@webview.ComponentAssetScope() {
+						@SiteDownloadMenu()
+					}
+				}
+			</div>
+		</body>
+	</html>
+}

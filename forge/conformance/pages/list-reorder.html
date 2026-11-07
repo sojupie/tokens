@@ -1,0 +1,17 @@
+<!doctype html><meta charset="utf-8"><title>List reorder checks</title>
+<link rel="stylesheet" href="http://127.0.0.1:8081/themes/shared.css">
+<link rel="stylesheet" href="http://127.0.0.1:8081/themes/list.css">
+<link rel="stylesheet" href="http://127.0.0.1:8081/static/buttons.css">
+<link rel="stylesheet" href="http://127.0.0.1:8081/static/bundles/common.css">
+<link rel="stylesheet" href="http://127.0.0.1:8081/static/bundles/list.css">
+<style>body{padding:32px;font:16px sans-serif;background:var(--md-sys-color-surface)}.md-list-demo{margin:32px 0}output{display:block;white-space:pre-line}</style>
+<body id="component-preview"><h1>List reorder checks</h1>
+<label>Layout <select id="layout"><option>standard</option><option>segmented</option></select></label> <button id="run">Run reorder checks</button><button id="drop">Drop item</button>
+<div class="md-list-demo" data-interactive="true">
+<ul class="md-list" data-control="reorder" data-family="list" data-variant="standard" data-size="one-line" data-shape="expressive" data-width="icon" data-divider="inset"></ul>
+<output aria-live="polite"></output>
+</div><output id="results"></output>
+<script src="./list-reorder-check.js"></script>
+<script src="http://127.0.0.1:8081/static/motion.js"></script>
+<script src="http://127.0.0.1:8081/static/lists.js"></script>
+<script src="./list-reorder-2-check.js"></script>

@@ -18,3 +18,24 @@
   font-weight: var(--_badge-label-text-font-weight);
   letter-spacing: var(--_badge-label-text-tracking);
 }
+
+/* Anchor to the icon's box, never its surrounding touch target. The leading
+   corner remains fixed as a large badge grows toward the trailing edge. */
+.md-list-leading:has(> .md-badge) { position:relative; }
+.md-badge-anchor { position:relative; display:inline-flex; flex:none; inline-size:24px; block-size:24px; }
+.md-badge-anchor > svg { inline-size:24px; block-size:24px; }
+:is(.md-badge-anchor,.md-nav-icon,.md-list-leading) > .md-badge {
+  position:absolute;
+  inset-block-start:0;
+  inset-inline-start:calc(100% - 6px);
+}
+:is(.md-badge-anchor,.md-nav-icon,.md-list-leading) > .md-badge[data-variant="labeled"] {
+  inset-block-start:-2px;
+  inset-inline-start:calc(100% - 12px);
+}
+.md-badge:not([data-variant="labeled"]) { inline-size:var(--_badge-size); }
+.md-badge[data-variant="labeled"] { white-space:nowrap; }
+.md-icon-button > span.md-badge-anchor:not(.md-button-ripple) { display:inline-flex; }
+.md-icon-button > span.md-badge:not(.md-button-ripple) { display:inline-flex; }
+
+.md-badge[data-variant="labeled"][data-characters="4"] { inline-size:34px; }

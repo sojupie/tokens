@@ -1,0 +1,24 @@
+<!doctype html><meta charset="utf-8" /><title>Component module checks</title>
+<style>
+  body {
+    font: 16px system-ui;
+    margin: 24px;
+  }
+  iframe {
+    width: 100%;
+    height: 600px;
+  }
+  pre {
+    white-space: pre-wrap;
+  }
+</style>
+<h1>Component module checks</h1>
+<p>
+  Compare rendered modules with the complete stylesheet in every appearance,
+  including public pages, token sets, nested controls and gallery thumbnails.
+  Pages come from the sitemap; playground options come from their rendered controls.
+</p>
+<button id="run">Compare styles</button>
+<pre id="result">Ready</pre>
+<div id="frame"></div>
+<script type="module" src="./component-modules-check.js"></script>

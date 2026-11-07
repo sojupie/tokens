@@ -1,0 +1,87 @@
+const button=document.querySelector('#run'),result=document.querySelector('#result'),samples=document.querySelector('#samples');
+button.onclick=async()=>{
+ button.disabled=true;const checks=[];
+ const assert=(condition,message)=>{if(!condition)throw Error(message);checks.push(message);};
+ try {
+  for(const slug of ['navigation-rail','navigation-bar','navigation-drawer']){
+   samples.replaceChildren();const frame=document.createElement('iframe');samples.append(frame);
+   await new Promise((resolve,reject)=>{frame.onload=resolve;frame.onerror=reject;frame.src=`/md3/components/${slug}?preview.compare=interactive`;});
+   const w=frame.contentWindow,d=frame.contentDocument;await w.TokenAssets.ready;await d.fonts.ready;
+   const group=d.querySelector('#component-preview [data-navigation-group]'),items=[...group.querySelectorAll('[data-navigation-item]')],horizontal=group.classList.contains('md-navigation-bar');
+   const visible=()=>items.filter(item=>item.getClientRects().length);
+   const key=(item,name)=>{item.focus();item.dispatchEvent(new w.KeyboardEvent('keydown',{key:name,bubbles:true,cancelable:true}));return d.activeElement;};
+   let candidates=visible(),first=candidates[0],last=candidates.at(-1);
+   assert(key(last,horizontal?'ArrowRight':'ArrowDown')===first,`${slug}: forward wraps to first visible destination`);
+   assert(key(first,horizontal?'ArrowLeft':'ArrowUp')===last,`${slug}: backward wraps to last visible destination`);
+   assert(key(first,'End')===last&&key(last,'Home')===first,`${slug}: Home/End use visible destinations`);
+   const skipped=items[1];skipped.disabled=true;
+   assert(key(first,horizontal?'ArrowRight':'ArrowDown')===items[2],`${slug}: native-disabled destination is skipped`);skipped.disabled=false;
+   skipped.setAttribute('aria-disabled','true');
+   assert(key(first,horizontal?'ArrowRight':'ArrowDown')===items[2],`${slug}: aria-disabled destination is skipped`);skipped.removeAttribute('aria-disabled');
+   skipped.inert=true;
+   assert(key(first,horizontal?'ArrowRight':'ArrowDown')===items[2],`${slug}: inert destination is skipped`);skipped.inert=false;
+   skipped.style.visibility='hidden';
+   assert(key(first,horizontal?'ArrowRight':'ArrowDown')===items[2],`${slug}: visibility-hidden destination is skipped`);skipped.style.removeProperty('visibility');
+   if(horizontal){group.style.direction='rtl';assert(key(first,'ArrowLeft')===items[1]&&key(first,'ArrowRight')===last,`${slug}: RTL reverses horizontal arrows`);}
+   if(slug==='navigation-rail'){
+    assert(candidates.length<items.length,'Collapsed rail has hidden secondary destinations');
+    group.querySelector('[data-navigation-expand]').click();
+    assert(visible().length===items.length,'Expanded rail reveals secondary destinations');
+    assert(key(first,'End')===items.at(-1),'Expanded rail End reaches the final secondary destination');
+    assert(key(candidates.at(-1),'ArrowDown')===items[candidates.length],'Expanded rail traverses newly visible destinations');
+   }
+  }
+  for(const width of ['default','narrow']){
+   samples.replaceChildren();const frame=document.createElement('iframe');samples.append(frame);
+   await new Promise((resolve,reject)=>{frame.onload=resolve;frame.onerror=reject;frame.src=`/md3/components/navigation-rail?preview.compare=variants&preview.width=${width}&preview.rail-state=hidden`;});
+   const w=frame.contentWindow,d=frame.contentDocument;await w.TokenAssets.ready;await d.fonts.ready;
+   const rails=[...d.querySelectorAll('#component-preview .md-navigation-rail')];
+   assert(rails.length===2&&rails[0].dataset.variant==='collapsed'&&rails[1].dataset.variant==='expanded',`${width}: variant comparison contains collapsed and expanded rails`);
+   assert(!d.querySelector('#preview-rail-state'),`${width}: interactive initial state is absent from variant comparison`);
+  }
+  for(const width of ['default','narrow'])for(const layout of ['standard','modal'])for(const header of ['menu','menu-fab']){
+   samples.replaceChildren();const frame=document.createElement('iframe');samples.append(frame);
+   const config=`${width}/${layout}/${header}`;
+   await new Promise((resolve,reject)=>{frame.onload=resolve;frame.onerror=reject;frame.src=`/md3/components/navigation-rail?preview.compare=interactive&preview.rail-state=hidden&preview.width=${width}&preview.layout=${layout}&preview.header=${header}`;});
+   const w=frame.contentWindow,d=frame.contentDocument;await w.TokenAssets.ready;await d.fonts.ready;
+   const host=d.querySelector('.md-rail-frame'),toggle=host.querySelector('.md-rail-toggle'),pageHeader=host.querySelector('.md-rail-body > header');
+   const anchor=element=>{const r=element.getBoundingClientRect(),h=host.getBoundingClientRect();return{x:r.x-h.x,y:r.y-h.y};};
+   const origin=anchor(toggle),height=pageHeader.getBoundingClientRect().height;
+   assert(host.querySelectorAll('[data-navigation-expand]').length===1,`${config}: exactly one toggle`);
+   const settled=async()=>{
+    const rotations=new Set();
+    for(let n=0;n<180;n++){
+     const pos=anchor(toggle),style=w.getComputedStyle(toggle);
+     if(host.querySelector('.md-rail-toggle')!==toggle||!toggle.getClientRects().length||style.visibility!=='visible'||style.opacity!=='1'||toggle.closest('[inert]'))throw Error(`${config}: toggle lost identity, visibility or interactivity`);
+     if(Math.abs(pos.x-origin.x)>0.5||Math.abs(pos.y-origin.y)>0.5)throw Error(`${config}: toggle moved during transition`);
+     rotations.add(w.getComputedStyle(toggle.querySelector('[data-navigation-menu-icon]')).transform);
+     if(!host.hasAttribute('data-transitioning'))return rotations;
+     await new Promise(w.requestAnimationFrame);
+    }
+    throw Error(`${config}: rail did not settle`);
+   };
+   await new Promise(w.requestAnimationFrame);await new Promise(w.requestAnimationFrame);
+   for(let cycle=0;cycle<2;cycle++){
+    toggle.click();const opening=await settled();
+    assert(toggle.getAttribute('aria-expanded')==='true',`${config}: same toggle expands rail ${cycle}`);
+    assert(pageHeader.getBoundingClientRect().height===height,`${config}: page header retains its height`);
+    if(layout==='modal'){
+     toggle.focus();toggle.dispatchEvent(new w.KeyboardEvent('keydown',{key:'Tab',shiftKey:true,bubbles:true,cancelable:true}));
+     const last=[...host.querySelector('.md-navigation-rail').querySelectorAll('button')].filter(e=>e.getClientRects().length).at(-1);
+     assert(d.activeElement===last,`${config}: Shift+Tab wraps from persistent toggle into rail`);
+     last.dispatchEvent(new w.KeyboardEvent('keydown',{key:'Tab',bubbles:true,cancelable:true}));
+     assert(d.activeElement===toggle,`${config}: Tab wraps back to persistent toggle`);
+    }
+    assert(w.matchMedia('(prefers-reduced-motion: reduce)').matches||opening.size>1,`${config}: opening preserves icon spin`);
+    toggle.click();const closing=await settled();
+    assert(toggle.getAttribute('aria-expanded')==='false'&&d.activeElement===toggle,`${config}: same focused toggle dismisses rail ${cycle}`);
+    assert(w.matchMedia('(prefers-reduced-motion: reduce)').matches||closing.size>1,`${config}: closing preserves icon spin`);
+   }
+   toggle.click();await new Promise(w.requestAnimationFrame);toggle.click();await settled();
+   assert(toggle.getAttribute('aria-expanded')==='false'&&d.activeElement===toggle,`${config}: rapid reversal retains the same focused toggle`);
+  }
+
+  result.textContent=JSON.stringify({passed:checks.length,checks},null,2);
+ }catch(error){result.textContent=JSON.stringify({passed:checks.length,checks,error:error.stack},null,2);}
+ finally{button.disabled=false;}
+};

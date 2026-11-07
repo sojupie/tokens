@@ -1,0 +1,54 @@
+package render
+
+import webassets "github.com/sojupie/tokens/catalog/web/assets"
+
+import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+
+import "github.com/sojupie/tokens/forge/components/ui"
+
+templ ForAgentsPage(prompt string, mcpURL string) {
+	@Layout("Give this to your agent") {
+		@webview.UseComponentAssets("card")
+		<header class="tokens-section">
+			<h1 class="md-typescale-headline-medium">Give this to your agent</h1>
+			<p class="md-typescale-body-large">Use Material Design 3 token data in your coding agent. No account or API key is required.</p>
+		</header>
+		<div class="tokens-handoff-grid">
+			@ui.CardSurface(ui.CardProps{Variant: "elevated", Attrs: templ.Attributes{"class": "md-card md-elevated-card tokens-card-content", "aria-labelledby": "skill-heading"}}) {
+				<h2 class="md-typescale-title-medium" id="skill-heading">Install the skill</h2>
+				<p>For clients that support Agent Skills. Choose your agent in the installer.</p>
+				<pre id="agent-skill" { (ui.CardProps{Variant:"outlined",Attrs:templ.Attributes{"class":"tokens-code-block"}}).Attributes()... } tabindex="0" aria-labelledby="skill-heading"><code>npx skills add sojupie/tokens --skill token-catalog</code></pre>
+				@ui.Action(ui.ButtonProps{Variant: ui.ButtonVariant("filled"), Attrs: templ.Attributes{"data-copy-target": "agent-skill", "hidden": true}}) {
+					Copy install command
+				}
+				<p class="tokens-copy-status" data-copy-status aria-live="polite"></p>
+				<a class="tokens-link" href="https://github.com/sojupie/tokens/blob/main/skills/token-catalog/SKILL.md">Read the skill</a>
+			}
+			@ui.CardSurface(ui.CardProps{Variant: "filled", Attrs: templ.Attributes{"class": "md-card md-filled-card tokens-card-content tokens-secondary-option", "aria-labelledby": "prompt-heading"}}) {
+				<h2 class="md-typescale-title-medium" id="prompt-heading">Copy a prompt</h2>
+				<pre id="agent-prompt" { (ui.CardProps{Variant:"outlined",Attrs:templ.Attributes{"class":"tokens-code-block"}}).Attributes()... } tabindex="0" aria-labelledby="prompt-heading"><code>{ prompt }</code></pre>
+				@ui.Action(ui.ButtonProps{Variant: ui.ButtonVariant("elevated"), Attrs: templ.Attributes{"data-copy-target": "agent-prompt", "hidden": true}}) {
+					Copy prompt
+				}
+				<p class="tokens-copy-status" data-copy-status aria-live="polite"></p>
+			}
+			@ui.CardSurface(ui.CardProps{Variant: "filled", Attrs: templ.Attributes{"class": "md-card md-filled-card tokens-card-content tokens-secondary-option", "aria-labelledby": "mcp-heading"}}) {
+				<h2 class="md-typescale-title-medium" id="mcp-heading">Connect with MCP</h2>
+				<p>Add this URL as a Streamable HTTP server in your client.</p>
+				<pre id="agent-mcp" { (ui.CardProps{Variant:"outlined",Attrs:templ.Attributes{"class":"tokens-code-block"}}).Attributes()... } tabindex="0" aria-labelledby="mcp-heading"><code>{ mcpURL }</code></pre>
+				@ui.Action(ui.ButtonProps{Variant: ui.ButtonVariant("elevated"), Attrs: templ.Attributes{"data-copy-target": "agent-mcp", "hidden": true}}) {
+					Copy MCP URL
+				}
+				<p class="tokens-copy-status" data-copy-status aria-live="polite"></p>
+				<p>Start with <code>list_subjects</code>, then use <code>get_tokens</code> with the returned kind and slug.</p>
+			}
+		</div>
+		<section class="tokens-section" aria-labelledby="reference-heading">
+			<h2 class="md-typescale-title-medium" id="reference-heading">API reference</h2>
+			<p>Request parameters, response formats, and download scopes.</p>
+			<a class="tokens-link" href="/llms-full.txt">API and data reference</a>
+			<a class="tokens-link" href="/openapi.json">OpenAPI schema</a>
+		</section>
+		<script src={ webassets.StaticURL("agent-handoff.js") } defer></script>
+	}
+}

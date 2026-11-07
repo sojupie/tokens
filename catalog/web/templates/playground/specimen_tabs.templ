@@ -1,0 +1,30 @@
+package render
+
+import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+
+import "fmt"
+import "github.com/sojupie/tokens/forge/components/ui"
+
+templ SpecimenTabs(c webview.ComponentCase) {
+	@webview.UseComponentAssets("tabs")
+	@ui.TabsHost(c.Attributes(), templ.Attributes{"data-tabs-demo": ""}) {
+		@TabsBar(c)
+		for i,label := range c.TabLabels() {
+			@ui.TabPanel(fmt.Sprintf("%s-panel-%d", c.ID(), i), fmt.Sprintf("%s-tab-%d", c.ID(), i), !(!c.ItemSelected(i))) {
+				<p class="md-typescale-body-medium">{ label+" content" }</p>
+			}
+		}
+	}
+}
+
+templ TabsBar(c webview.ComponentCase) {
+	@ui.Tabs(ui.TabsProps{Label: "Library views", Variant: c.Variant, Content: c.Control, Layout: c.TabLayout, Alignment: c.TabAlignment, Direction: c.TabDirection}) {
+		for i,label:=range c.TabLabels() {
+			{{ badge := ""
+if c.TabHasBadge(i) {
+	badge = c.TabBadge
+} }}
+			@ui.Tab(ui.TabProps{ID:fmt.Sprintf("%s-tab-%d",c.ID(),i), PanelID:fmt.Sprintf("%s-panel-%d",c.ID(),i), Selected:c.ItemSelected(i), Label: label, Icon: []string{"home", "folder", "star"}[i%3], Content: c.Control, Variant: c.Variant, Badge: badge, BadgeText: "3", Attrs: c.TabAttributes(i)})
+		}
+	}
+}

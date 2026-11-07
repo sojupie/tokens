@@ -1,0 +1,56 @@
+package render
+
+import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+
+import "github.com/sojupie/tokens/forge/components/ui"
+
+templ SpecimenAppbar(c webview.ComponentCase) {
+	@PlaygroundAppbar(c)
+}
+
+templ AppbarSurface(c webview.ComponentCase, title string) {
+	{{
+		p := ui.AppBarProps{Title: title, Expanded: c.BarExpanded(), Variant: c.Variant, Attrs: c.Attributes(), Leading: AppbarExampleLeading(c), Actions: AppbarExampleActions(c)}
+		if c.Control == "subtitle" {
+			p.Subtitle = "Subtitle"
+		}
+		if c.Control == "search" {
+			p.Search = AppbarExampleSearch(c)
+		}
+	}}
+	@ui.AppBar(p)
+}
+
+templ AppbarExampleLeading(c webview.ComponentCase) {
+	@ui.Button(c.BarAction(0)) {
+		@ui.Icon("arrow_back")
+	}
+}
+
+templ AppbarExampleActions(c webview.ComponentCase) {
+	@ui.Button(c.BarAction(1)) {
+		@ui.Icon("star")
+	}
+	if c.Control=="avatar" {
+		@ui.AppBarAvatar("A", "Profile")
+	} else {
+		@ui.Button(c.BarAction(2)) {
+			@ui.Icon("menu")
+		}
+	}
+	if c.Control=="fab" {
+		@ui.FAB(ui.FABProps{Label: "Create", Icon: "add", Variant: "secondary-container"})
+	}
+}
+
+templ AppbarExampleSearch(c webview.ComponentCase) {
+	@ui.AppBarSearch(c.AppbarSearch().ID()+"-view", "Search", c.State == "interactive")
+}
+
+// Content app bars share the same anatomy and generated bindings as specimens.
+// The host provides meaningful actions and chooses whether a subtitle is needed.
+templ ContentAppBar(c webview.ComponentCase, title, subtitle string) {
+	@ui.AppBar(ui.AppBarProps{Title: title, Subtitle: subtitle, Expanded: c.BarExpanded(), Attrs: c.Attributes()}) {
+		{ children... }
+	}
+}

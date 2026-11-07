@@ -1,0 +1,17 @@
+package render
+
+import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+
+import "github.com/sojupie/tokens/forge/components/ui"
+
+templ CatalogSelect(id, name, label, selected string, choices []webview.CatalogChoice) {
+	@ui.SelectField(ui.SelectProps{ID: id, Name: name, Label: label, Value: selected, Options: webview.CatalogOptions(choices), Outlined: true, Attrs: templ.Attributes{"class": "tokens-catalog-select"}, MenuAttrs: templ.Attributes{"class": "tokens-catalog-menu"}})
+}
+
+templ FilterPill(id, name, label, selected string, choices []webview.CatalogChoice, showLabel bool) {
+	@ui.SelectField(ui.SelectProps{ID: id, Name: name, Label: label, Value: selected, Options: webview.CatalogOptions(choices), HideLabel: !showLabel, Attrs: templ.Attributes{"class": "tokens-preview-filter"}, MenuAttrs: templ.Attributes{"class": "tokens-catalog-menu"}})
+}
+
+templ PreviewFilter(control webview.PreviewControl) {
+	@FilterPill("preview-"+control.Name, "preview."+control.Name, control.Label, control.Selected, webview.PreviewChoices(control), true)
+}

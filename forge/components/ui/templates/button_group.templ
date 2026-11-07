@@ -1,0 +1,24 @@
+package render
+
+import model "github.com/sojupie/tokens/forge/components/ui/internal/model"
+
+templ ButtonGroupSurface(p model.GroupProps) {
+	@model.Require("button-group")
+	<div { p.Attributes()... }>
+		{ children... }
+	</div>
+}
+
+templ GroupItem(p model.GroupItemProps) {
+	@model.Require("button-group")
+	<button { p.Attributes()... }>
+		if p.Connected {
+			<span class="md-group-check" aria-hidden="true">
+				@model.Icon("check")
+			</span>
+		} else if p.Icon!="" {
+			@model.Icon(p.Icon)
+		}
+		<span>{ p.Label }</span>
+	</button>
+}

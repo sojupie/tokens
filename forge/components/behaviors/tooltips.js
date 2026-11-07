@@ -3,7 +3,7 @@
     const fit = (value, size, edge) => {
       if (value + size > edge - gap) value -= Math.ceil((value + size - edge + gap) / gap) * gap;
       if (value < gap) value += Math.ceil((gap - value) / gap) * gap;
-      return value;
+      return Math.max(gap, Math.min(value, edge - gap - size));
     };
     const candidates = [[anchor.right, anchor.bottom + gap], [anchor.right, anchor.top - box.height - gap],
       [anchor.left - box.width, anchor.bottom + gap], [anchor.left - box.width, anchor.top - box.height - gap],
@@ -15,11 +15,20 @@
     }
     return null;
   }
-  if (typeof module !== "undefined") Object.assign(module.exports, {tooltipPosition});
+  function plainTooltipPosition(anchor, box, viewport, gap = 4, below = false) {
+    const margin = 8;
+    const left = Math.max(margin, Math.min((anchor.left + anchor.right - box.width) / 2, viewport.width - margin - box.width));
+    const aboveTop = anchor.top - gap - box.height, belowTop = anchor.bottom + gap;
+    const candidates = below ? [belowTop, aboveTop] : [aboveTop, belowTop];
+    const top = candidates.find(value => value >= margin && value + box.height <= viewport.height - margin);
+    return top === undefined ? null : {left, top};
+  }
+  if (typeof module !== "undefined") Object.assign(module.exports, {tooltipPosition, plainTooltipPosition});
   if (typeof document === "undefined") return;
   let active, exitTimer, hold, pointerFocus = false;
   function hide() {
     clearTimeout(exitTimer);
+    active?.querySelector('.md-tooltip[popover]:popover-open')?.hidePopover();
     active?.removeAttribute("data-tooltip-visible");
     active = null;
   }
@@ -30,6 +39,8 @@
     demo.removeAttribute("data-tooltip-dismissed");
     demo.setAttribute("data-tooltip-visible", "");
     active = demo;
+    const tip = demo.querySelector('.md-tooltip[data-variant="plain"][popover]');
+    if (tip) { tip.showPopover(); positionTooltip(tip); }
   }
   function leave(demo) {
     if (active === demo) {
@@ -46,18 +57,22 @@
     if (!tip.matches(":popover-open")) return;
     const trigger = tip.closest(".md-tooltip-demo")?.querySelector("button");
     if (!trigger) return;
+    const plain = tip.dataset.variant === "plain";
     const anchor = trigger.getBoundingClientRect(),
-      gap = Number.parseFloat(getComputedStyle(tip).getPropertyValue("--md-sys-measurement-space100")) || 8,
+      gap = Number.parseFloat(getComputedStyle(tip).getPropertyValue(plain ? "--md-sys-measurement-space50" : "--md-sys-measurement-space100")) || (plain ? 4 : 8),
       viewport = {width: document.documentElement.clientWidth, height: document.documentElement.clientHeight};
     tip.style.maxHeight = "";
     tip.style.overflowY = "";
-    let box = tip.getBoundingClientRect(), position = tooltipPosition(anchor, box, viewport, gap);
+    const place = box => plain
+      ? plainTooltipPosition(anchor, box, viewport, gap, !!trigger.closest('.md-app-bar'))
+      : tooltipPosition(anchor, box, viewport, gap);
+    let box = tip.getBoundingClientRect(), position = place(box);
     if (!position) {
       // Preserve all content in a short window instead of covering the trigger.
       tip.style.maxHeight = Math.max(2 * gap, anchor.top - 2 * gap, viewport.height - anchor.bottom - 2 * gap) + "px";
       tip.style.overflowY = "auto";
       box = tip.getBoundingClientRect();
-      position = tooltipPosition(anchor, box, viewport, gap);
+      position = place(box);
     }
     if (!position) return;
     tip.style.margin = "0";
@@ -69,7 +84,7 @@
     for (const demo of document.querySelectorAll('.md-tooltip-demo')) demo.setAttribute('data-tooltip-managed', '');
   }
   document.addEventListener("toggle", event => {
-    if (event.target.matches?.('.md-tooltip[popover]:popover-open')) { hide(); positionTooltip(event.target); }
+    if (event.target.matches?.('.md-tooltip[data-variant="rich"][popover]:popover-open')) { hide(); positionTooltip(event.target); }
   }, true);
   for (const type of ["resize", "scroll"]) window.addEventListener(type, event => {
     if (type === "scroll" && event.target.closest?.(".md-tooltip:popover-open")) return;
@@ -113,7 +128,7 @@
     if (active && active === event.target.closest?.('.md-tooltip-demo') && pointerFocus) event.preventDefault();
   });
   document.addEventListener("htmx:beforeCleanupElement", event => {
-    const root = event.detail.elt;
+    const root = (event.detail?.elt || event.target);
     if (active && root.contains(active)) hide();
     if (hold && root.contains(hold.demo)) cancelHold();
   });

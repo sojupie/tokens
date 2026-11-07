@@ -35,3 +35,12 @@ contrast slogans, invented component names, and tool branding.
 Keep generated captures and publications out of commits. Preserve unrelated
 working changes. Leave visual changes available on a local server for review
 before pushing.
+
+Use `docs/reference/layout.md` for site and scene scaffolding. Shared region grids,
+content margins and spacing live in `forge/site/site.css`; use those values
+instead of adding per-page copies. Keep window breakpoints distinct from
+available-region queries and site navigation thresholds. Compose scenes as usable
+screens with task-appropriate panes and real component primitives. Put screen
+titles in appropriate app bars without repeating them as body headings; website
+page titles can remain in their content header beneath site navigation. Verify real pages and
+scene renders at the relevant widths; successful capture is not visual acceptance.

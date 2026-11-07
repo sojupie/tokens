@@ -5,8 +5,9 @@
   --_carousel-end: 0px;
   --_carousel-height: 192px;
   --_carousel-gap: var(--md-sys-measurement-space100);
-  --_carousel-small: 56px;
-  inline-size: 40rem;
+  --_carousel-aspect-ratio: 1;
+  --_carousel-press-duration: var(--md-sys-motion-duration-medium3);
+  inline-size: 100%;
   max-inline-size: 100%;
   min-inline-size: 0;
 }
@@ -23,9 +24,10 @@
   scrollbar-width: none;
   overscroll-behavior-inline: contain;
   scroll-snap-type: x mandatory;
-  padding: var(--md-sys-measurement-space100);
-  margin-inline: calc(-1 * var(--md-sys-measurement-space100));
-  scroll-padding-inline: var(--md-sys-measurement-space100);
+  /* Outer spacing must not create a visible gutter beyond the masking edge. */
+  margin-inline: var(--md-sys-measurement-space200);
+  padding: var(--md-sys-measurement-space100) 0;
+  scroll-padding-inline: 0;
   outline: none;
   touch-action: pan-x pan-y;
 }
@@ -165,11 +167,13 @@
   inset-inline-start: calc(-1 * var(--_carousel-item-outline-width));
   translate: none;
 }
+.md-carousel-art > img,
 .md-carousel-art svg {
   display: block;
   inline-size: 100%;
   block-size: 100%;
 }
+.md-carousel-art > img { object-fit:cover; }
 .md-carousel-item:disabled {
   cursor: default;
 }
@@ -226,9 +230,14 @@
 }
 
 .md-carousel-all-action {
+  display:flex;
+  justify-content:flex-end;
   padding: var(--md-sys-measurement-space50);
+  /* The viewport already includes 8dp below the images; the action needs 4dp. */
+  margin-block-start: calc(-1 * var(--md-sys-measurement-space100));
 }
 .md-carousel-header {
+  padding-inline:var(--md-sys-measurement-space200);
   display:flex;
   align-items:center;
   gap:var(--md-sys-measurement-space100);
@@ -240,3 +249,98 @@
   inline-size:var(--md-sys-measurement-space600);
 }
 [dir="rtl"] .md-carousel-header > .md-icon-button svg { transform:scaleX(-1); }
+
+/* Layout measurements complement item tokens (captured Carousel specs). */
+.md-carousel[data-variant^="uncontained"] .md-carousel-viewport {
+  padding-inline-end:0;
+  scroll-snap-type:none;
+}
+.md-carousel[data-variant="full-screen"] { --_carousel-gap:var(--md-sys-measurement-space200);display:flex;flex-direction:column;block-size:100dvh; }
+.md-carousel[data-variant="full-screen"] .md-carousel-viewport { padding:0;scroll-padding-inline:0; }
+/* Snap is an optional uncontained configuration, not its default behavior. */
+.md-carousel[data-variant^="uncontained"][data-scrolling="snap"] .md-carousel-viewport { scroll-snap-type:x mandatory; }
+/* Uncontained layouts and reduced motion use full-size items in native flow. */
+.md-carousel[data-carousel-layout="flow"] .md-carousel-scroll-track { display:block; }
+.md-carousel[data-carousel-layout="flow"] .md-carousel-snaps { display:none; }
+.md-carousel[data-carousel-layout="flow"] .md-carousel-track {
+  display:flex;
+  position:static;
+  inline-size:max-content;
+  block-size:var(--_carousel-height);
+}
+.md-carousel[data-carousel-layout="flow"] .md-carousel-track > .md-carousel-slot {
+  position:relative;
+  inline-size:var(--_carousel-logical);
+  block-size:var(--_carousel-height);
+  scroll-snap-align:start;
+}
+.md-carousel[data-variant="uncontained-multi-aspect-ratio"][data-carousel-layout="flow"] .md-carousel-track > .md-carousel-slot { inline-size:calc(var(--_carousel-height) * var(--_carousel-aspect-ratio,1)); }
+.md-carousel[data-carousel-layout="flow"] .md-carousel-art { inset-inline-start:0;inline-size:100%;translate:none; }
+/* Uncontained consumers can put text/actions outside the image button. */
+.md-carousel[data-variant^="uncontained"][data-carousel-layout="flow"] .md-carousel-track { align-items:start;block-size:auto; }
+.md-carousel[data-variant^="uncontained"][data-carousel-layout="flow"] .md-carousel-slot { display:flex;flex-direction:column;block-size:auto;gap:var(--md-sys-measurement-space100); }
+.md-carousel[data-variant^="uncontained"][data-carousel-layout="flow"] .md-carousel-item { position:relative;inset:auto;flex:none;block-size:var(--_carousel-height); }
+.md-carousel:is([data-variant="hero"],[data-variant="center-aligned-hero"]) .md-carousel-snap { scroll-snap-stop:always; }
+/* Reduced motion removes mask expansion; hero retains a partial next item. */
+@media(prefers-reduced-motion:reduce) {
+  .md-carousel[data-carousel-layout="flow"] .md-carousel-viewport { padding-inline:0;scroll-padding-inline:0; }
+  .md-carousel[data-variant="uncontained-multi-aspect-ratio"][data-carousel-layout="flow"] .md-carousel-track > .md-carousel-slot { inline-size:var(--_carousel-logical); }
+}
+
+/* The consumer supplies a window; the component scrolls pages vertically. */
+.md-carousel[data-variant="full-screen"] .md-carousel-viewport { margin-inline:0;flex:1;min-block-size:0;overflow-x:hidden;scroll-snap-type:y mandatory;scroll-padding:0;overscroll-behavior-y:contain; }
+.md-carousel[data-variant="full-screen"] .md-carousel-scroll-track { inline-size:100%; }
+.md-carousel[data-variant="full-screen"][data-carousel-layout="flow"] .md-carousel-track { flex-direction:column;inline-size:100%;block-size:max-content; }
+.md-carousel[data-variant="full-screen"][data-carousel-layout="flow"] .md-carousel-slot { inline-size:100%;block-size:var(--_carousel-page-height,100dvh);scroll-snap-stop:always; }
+.md-carousel[data-variant="full-screen"] .md-carousel-art { inline-size:100%; }
+.md-carousel[data-variant="center-aligned-hero"] { margin-inline:auto;max-inline-size:min(100%,calc(var(--_carousel-maximum,100000px) + 144px)); }
+
+.md-carousel-pagination { display:inline-flex;align-items:center;gap:var(--md-sys-measurement-space50); }
+.md-carousel-pagination > span {
+  inline-size:var(--md-sys-measurement-space100);
+  block-size:var(--md-sys-measurement-space100);
+  border-radius:var(--md-sys-measurement-space100);
+  background:color-mix(in srgb,var(--md-sys-color-on-surface) 16%,transparent);
+  transition:inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-standard),background-color var(--md-sys-motion-duration-medium2) linear;
+}
+.md-carousel-pagination > [data-active] { inline-size:var(--md-sys-measurement-space200);background:var(--md-sys-color-primary); }
+@media(prefers-reduced-motion:reduce) { .md-carousel-pagination > span { transition:none; } }
+/* A photographic scrim supports plain white text without boxing the label. */
+.md-carousel-item:has(.md-carousel-caption) .md-carousel-art::after {
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(transparent 45%,rgb(0 0 0 / 60%));
+}
+.md-carousel-caption {
+  position:absolute;
+  inset-inline-start:var(--md-sys-measurement-space200);
+  inline-size:calc(var(--_carousel-caption-layout-width,var(--_carousel-logical)) - 2 * var(--md-sys-measurement-space200));
+  inset-block-end:var(--md-sys-measurement-space200);
+  color:#fff;
+  text-align:start;
+  white-space:normal;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+  pointer-events:none;
+}
+/* Full-screen pages meet the window edges; the generic rounded item shape is
+   for the horizontal layouts. Captured source values remain unchanged. */
+.md-carousel[data-variant="full-screen"] .md-carousel-item { border-radius:0;--_button-rest-shape:0px;--_button-pressed-shape:0px; }
+.md-carousel { --_carousel-before-space:0px;--_carousel-after-space:0px; }
+.md-carousel:has(.md-carousel-before:not(:empty)) { --_carousel-before-space:calc(var(--md-sys-typescale-body-medium-line-height) + var(--_carousel-gap)); }
+.md-carousel:has(.md-carousel-after:not(:empty)) { --_carousel-after-space:calc(var(--md-sys-typescale-body-medium-line-height) + var(--_carousel-gap)); }
+.md-carousel-before:empty,.md-carousel-after:empty { display:none; }
+.md-carousel-before,.md-carousel-after { min-inline-size:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+.md-carousel-before > *,.md-carousel-after > * { margin:0;overflow:hidden;text-overflow:ellipsis; }
+.md-carousel[data-carousel-layout="masked"] .md-carousel-scroll-track > .md-carousel-track {
+  block-size:calc(var(--_carousel-height) + var(--_carousel-before-space) + var(--_carousel-after-space));
+}
+.md-carousel[data-carousel-layout="masked"] .md-carousel-item { inset-block-start:var(--_carousel-before-space);inset-block-end:auto;block-size:var(--_carousel-height); }
+.md-carousel[data-carousel-layout="masked"] :is(.md-carousel-before,.md-carousel-after) {
+  position:absolute;
+  inset-inline-start:var(--_carousel-caption-left,0px);
+  inline-size:var(--_carousel-caption-width,var(--_carousel-logical));
+}
+.md-carousel[data-carousel-layout="masked"] .md-carousel-before { inset-block-start:0; }
+.md-carousel[data-carousel-layout="masked"] .md-carousel-after { inset-block-start:calc(var(--_carousel-before-space) + var(--_carousel-height) + var(--_carousel-gap)); }

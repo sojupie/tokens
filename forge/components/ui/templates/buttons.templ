@@ -1,0 +1,62 @@
+package render
+
+import model "github.com/sojupie/tokens/forge/components/ui/internal/model"
+
+templ Button(attrs templ.Attributes, extra ...templ.Attributes) {
+	{{
+		for _, more := range extra {
+			attrs = model.Attributes(attrs, more)
+		}
+	}}
+	@model.Require("common")
+	<button
+		if attrs["type"] == nil {
+			type="button"
+		}
+		{ attrs... }
+	>
+		{ children... }
+	</button>
+}
+
+templ ButtonGroup(class string, attrs templ.Attributes) {
+	@model.Require("button-group")
+	<div class={ "md-button-group", class } role="group" { attrs... }>
+		{ children... }
+	</div>
+}
+
+templ LoadingButton(attrs templ.Attributes, label string) {
+	@model.Require("common", "loading")
+	<span class="md-loading-button-slot">
+		@Button(attrs) {
+			<span data-button-label>{ label }</span>
+			<span class="md-loading md-button-loading-disk" data-variant="uncontained" data-control="determinate" aria-hidden="true">
+				@LoadingGraphic()
+			</span>
+		}
+	</span>
+}
+
+// Action is a native button; its children supply label and optional icon content.
+templ Action(p model.ButtonProps) {
+	@model.Require("common")
+	@Button(p.Attributes()) {
+		{ children... }
+	}
+}
+
+// ButtonLink preserves native navigation and open-in-new-tab behavior.
+templ ButtonLink(href string, p model.ButtonProps) {
+	@model.Require("common")
+	{{
+		attrs := p.Attributes()
+		delete(attrs, "type")
+		delete(attrs, "disabled")
+		delete(attrs, "name")
+		delete(attrs, "value")
+	}}
+	<a href={ templ.SafeURL(href) } { attrs... }>
+		{ children... }
+	</a>
+}

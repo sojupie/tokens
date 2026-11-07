@@ -1,0 +1,12 @@
+package render
+
+import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+import "github.com/sojupie/tokens/forge/components/ui"
+templ SpecimenSegmented(c webview.ComponentCase){ @SegmentedSurface(c) }
+templ SegmentedSurface(c webview.ComponentCase){
+ @ui.SegmentedButtons(ui.SegmentedProps{Label:"View selection",Attrs:c.Attributes(),Multiple:c.Variant=="multiple"}){
+ for i,label:=range c.LabelsOr([3]string{"Home","Files","Saved"}){
+ @ui.Segment(ui.SegmentProps{Label:label,Icon:[]string{"home","folder","star"}[i],Content:c.Control,Attrs:c.SegmentAttributes(i),InputAttrs:c.SegmentInput(i,label)})
+ }
+ }
+}

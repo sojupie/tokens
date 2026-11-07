@@ -1,0 +1,50 @@
+package render
+
+import model "github.com/sojupie/tokens/forge/components/ui/internal/model"
+
+templ Tabs(p model.TabsProps) {
+	@model.Require("tabs")
+	<div { p.Attributes()... }>
+		<div class="md-tab-items" role="presentation">
+			{ children... }
+		</div>
+	</div>
+}
+
+templ Tab(p model.TabProps) {
+	@model.Require("tabs")
+	if p.PanelID!="" && !p.Disabled {
+		<noscript><a class="md-tab" href={ templ.SafeURL("#"+p.PanelID) }>{ p.Label }</a></noscript>
+	}
+	<button { p.Attributes()... }>
+		<span class="md-tab-content">
+			if p.ContentResolved()!="label"&&p.Icon!="" {
+				<span class="md-tab-icon">
+					@model.Icon(p.Icon)
+					if p.Badge!=""&&p.Variant!="secondary" {
+						@Badge(p.Badge, p.BadgeText, nil)
+					}
+				</span>
+			}
+			<span class={ templ.KV("tokens-visually-hidden", p.ContentResolved() == "icon") }>{ p.Label }</span>
+			if p.Badge!=""&&(p.ContentResolved()=="label"||p.Variant=="secondary") {
+				@Badge(p.Badge, p.BadgeText, nil)
+			}
+		</span><span class="md-tab-active-indicator" aria-hidden="true"></span>
+	</button>
+}
+
+templ TabPanel(id, tabID string, selected bool) {
+	<section role="tabpanel" tabindex="0" id={ id } aria-labelledby={ tabID } hidden?={ !selected }>
+		{ children... }
+	</section>
+}
+
+templ TabsHost(attrs templ.Attributes, extra ...templ.Attributes) {
+	@model.Require("tabs")
+	{{ for _, more := range extra {
+	attrs = model.Attributes(attrs, more)
+} }}
+	<div { model.Attributes(templ.Attributes{"class":"md-tabs-example"},attrs)... }>{ children... }
+</div>
+}

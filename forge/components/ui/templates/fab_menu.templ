@@ -1,0 +1,34 @@
+package render
+
+import model "github.com/sojupie/tokens/forge/components/ui/internal/model"
+
+templ FABMenu(p model.FABMenuProps) {
+	@model.Require("fab-menu", "fab")
+	<div { p.Attributes()... }>
+		if !p.Inline {
+			<button { p.OpenerResolved()... }>
+				@model.Icon("add")
+			</button>
+		}
+		<div { p.PanelResolved()... }>
+			<ul role="menu" aria-label={ p.Label }>
+				{ children... }
+			</ul>
+			if p.Close!=nil {
+				@p.Close
+			}
+		</div>
+	</div>
+}
+
+templ FABMenuItem(p model.FABMenuItemProps) {
+	@model.Require("fab-menu")
+	<li role="none">
+		<button { model.Attributes(templ.Attributes{"class":"md-button md-fab-menu-item","type":"button","role":"menuitem","data-fab-menu-action":"","data-size":"small","tabindex":"-1"},p.Attrs)... }>
+			<span class="md-fab-menu-item-content">
+				@model.Icon(p.Icon)
+				<span>{ p.Label }</span>
+			</span>
+		</button>
+	</li>
+}

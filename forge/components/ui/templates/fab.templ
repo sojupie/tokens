@@ -1,0 +1,32 @@
+package render
+
+import model "github.com/sojupie/tokens/forge/components/ui/internal/model"
+
+templ FAB(p model.FABProps) {
+ @Fab(p, false)
+}
+
+templ Fab(p model.FABProps, retainLabel bool) {
+	@model.Require("fab")
+	<button { p.Attributes()... }>
+		@model.Icon(p.Icon)
+		if p.Extended || retainLabel {
+			<span>{ p.Label }</span>
+		}
+	</button>
+}
+
+templ FABLink(href string, p model.FABProps) {
+	@model.Require("fab")
+	{{
+		attrs := p.Attributes()
+		delete(attrs, "type")
+		delete(attrs, "disabled")
+	}}
+	<a href={ templ.SafeURL(href) } { attrs... }>
+		@model.Icon(p.Icon)
+		if p.Extended {
+			<span>{ p.Label }</span>
+		}
+	</a>
+}

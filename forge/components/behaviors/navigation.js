@@ -1,3 +1,8 @@
+// Shared navigation interactions own keyboard focus and drawer motion; hosts own
+// destinations and page selection. An interrupted close must not hide a drawer
+// that has already reopened, so completion checks the current animation identity.
+import { navigationIndex } from "../helpers/navigation.ts";
+
 (() => {
   const drawerAnimations = new WeakMap();
   function resetDrawerMotion(drawer) {
@@ -16,7 +21,7 @@
       drawer.showModal();
     }
     if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      const animation = drawer.animate([{transform:from},{transform:"none"}], MaterialMotion.timing(drawer,"default-spatial"));
+      const animation = drawer.animate([{transform:from},{transform:"none"}], MaterialMotion.attachedTiming(drawer));
       drawerAnimations.set(drawer, {animation,closing:false});
     }
   }
@@ -26,7 +31,7 @@
     resetDrawerMotion(drawer);
     if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
       drawer.dataset.drawerClosing = "";
-      const animation = drawer.animate([{transform:from},{transform:drawerOffscreen(drawer)}], {...MaterialMotion.timing(drawer,"default-spatial"),fill:"both"});
+      const animation = drawer.animate([{transform:from},{transform:drawerOffscreen(drawer)}], {...MaterialMotion.attachedTiming(drawer),fill:"both"});
       drawerAnimations.set(drawer, {animation,closing:true});
       try { await animation.finished; } catch { return; }
       if (drawerAnimations.get(drawer)?.animation !== animation) return;
@@ -44,25 +49,23 @@
   }
   if (typeof module !== "undefined") Object.assign(module.exports, { drawerDismissed, drawerForTrigger, openDrawer, closeDrawer });
   if (typeof document === "undefined") return;
-  const { navigationIndex } = globalThis.MaterialComponents;
   function selectNavigation(button) {
     const group = button.closest("[data-navigation-group]");
     if (!group) return;
+    const reselected = button.getAttribute("aria-current") === "page";
     for (const item of group.querySelectorAll("[data-navigation-item]"))
       item.removeAttribute("aria-current");
     button.setAttribute("aria-current", "page");
-    const badges = button.querySelectorAll(".md-nav-badge");
-    if (badges.length) button.removeAttribute("aria-label");
-    for (const badge of badges) badge.remove();
     const label = button.querySelector(".md-nav-label").textContent;
     group.dispatchEvent(
       new CustomEvent("md-navigation-select", {
         bubbles: true,
-        detail: { label },
+        detail: { label, reselected },
       }),
     );
     const frame = group.closest(".md-rail-frame");
-    if (frame?.dataset.modalOpen === "true") setRailExpanded(frame, false);
+    if (frame && (frame.dataset.modalOpen === "true" || frame.dataset.collapse === "hidden"))
+      setRailExpanded(frame, false, true);
     void closeDrawer(group.closest("dialog[data-navigation-modal]:modal"));
   }
   document.addEventListener("keydown", (event) => {
@@ -98,6 +101,10 @@
       if (item && height)
         item.style.setProperty("--_nav-label-height", height + "px");
   }
+  const barItemSizes = new ResizeObserver(entries => {
+    for (const {target,contentRect} of entries) target.style.setProperty("--nav-label-width", Math.max(0,contentRect.width)+"px");
+  });
+  const barItems = new WeakSet();
   const railLabelSizes = new ResizeObserver((entries) =>
     measureRailLabels(entries.map((entry) => entry.target)),
   );
@@ -126,9 +133,6 @@
         expanded ? "Collapse navigation" : "Expand navigation",
       );
     }
-    const external = frame.querySelector(".md-rail-external-menu");
-    external.hidden =
-      !hidden && !["fab", "none"].includes(frame.dataset.header);
     const fab = rail.querySelector(".md-nav-fab");
     if (fab) {
       fab.classList.toggle("md-fab", !expanded);
@@ -155,6 +159,7 @@
           font: style.font,
           color: style.color,
           spacing: style.letterSpacing,
+          padding: style.padding,
           align: style.textAlign,
           opacity: style.opacity,
           direction: style.direction,
@@ -186,11 +191,9 @@
       effects = MaterialMotion.timing(rail, "default-effects");
     const restoreFocus = () => {
       if (focus) {
-        const target = targetHidden
-          ? frame.querySelector(".md-rail-external-menu")
-          : rail.querySelector(
-              "[data-navigation-expand],.md-nav-fab,[data-navigation-item]",
-            );
+        const target = frame.querySelector(".md-rail-toggle") || rail.querySelector(
+          "[data-navigation-expand],.md-nav-fab,[data-navigation-item]",
+        );
         target?.focus({ preventScroll: true });
       }
     };
@@ -272,6 +275,8 @@
         font: old.font,
         color: old.color,
         letterSpacing: old.spacing,
+        boxSizing: "border-box",
+        padding: old.padding,
         textAlign: old.align,
         direction: old.direction,
       });
@@ -428,23 +433,26 @@
           railLabelSizes.observe(label);
         }
     }
+    for (const item of document.querySelectorAll(".md-navigation-bar .md-nav-item")) {
+      if (!barItems.has(item)) {barItems.add(item);barItemSizes.observe(item);}
+    }
     for (const label of document.querySelectorAll(".md-navigation-bar .md-nav-label")) {
       if (!railLabels.has(label)) { railLabels.add(label); railLabelSizes.observe(label); }
     }
   }
   document.addEventListener("keydown", (event) => {
     const frame = event.target.closest?.(".md-rail-frame");
-    if (!frame || frame.dataset.modalOpen !== "true") return;
-    if (event.key === "Escape") {
+    if (!frame) return;
+    const expanded = frame.querySelector(".md-navigation-rail").dataset.variant === "expanded";
+    if (event.key === "Escape" && expanded && (frame.dataset.modalOpen === "true" || frame.dataset.collapse === "hidden")) {
       event.preventDefault();
       setRailExpanded(frame, false, true);
       return;
     }
-    if (event.key === "Tab") {
+    if (event.key === "Tab" && frame.dataset.modalOpen === "true") {
       const controls = [
-          ...frame
-            .querySelector(".md-navigation-rail")
-            .querySelectorAll("button"),
+          ...frame.querySelectorAll(".md-rail-toggle"),
+          ...frame.querySelector(".md-navigation-rail").querySelectorAll("button"),
         ].filter((e) => e.getClientRects().length),
         first = controls[0],
         last = controls.at(-1);
@@ -458,7 +466,7 @@
     }
   });
   document.addEventListener("htmx:beforeCleanupElement", (event) => {
-    const root = event.detail.elt;
+    const root = (event.detail?.elt || event.target);
     for (const label of root.querySelectorAll?.(
       ".md-rail-frame .md-nav-label, .md-navigation-bar .md-nav-label",
     ) || [])

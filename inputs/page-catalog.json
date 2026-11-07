@@ -221,6 +221,12 @@
       "pageType": "specs"
     },
     {
+      "url": "https://m3.material.io/styles/color/static/baseline",
+      "area": "styles",
+      "subject": "color",
+      "pageType": "tokens"
+    },
+    {
       "url": "https://m3.material.io/styles/elevation/tokens",
       "area": "styles",
       "subject": "elevation",

@@ -1,0 +1,36 @@
+package render
+
+import model "github.com/sojupie/tokens/forge/components/ui/internal/model"
+
+templ SplitButton(p model.SplitButtonProps) {
+	@model.Require("split")
+	<div { p.Attributes()... }>
+		<button { p.ActionResolved(false)... }>
+			if p.Content!="label"&&p.Icon!="" {
+				@model.Icon(p.Icon)
+			}
+			if p.Content!="icon" {
+				<span>{ p.Label }</span>
+			}
+		</button>
+		<button { p.ActionResolved(true)... }>
+			@model.Icon("expand_more")
+		</button>
+	</div>
+}
+
+templ SplitHost(attrs ...templ.Attributes) {
+	@model.Require("split")
+	<div { model.Attributes(templ.Attributes{"class":"md-split-demo"},model.FirstAttrs(attrs))... }>
+		{ children... }
+	</div>
+}
+
+templ SplitMenu(id, label string, attrs ...templ.Attributes) {
+	@model.Require("split")
+	<nav { model.Attributes(templ.Attributes{"class":"md-menu md-split-menu","data-variant":"standard","id":id+"-menu","popover":"auto","role":"menu","aria-label":label},model.FirstAttrs(attrs))... }>
+		<ul>
+			{ children... }
+		</ul>
+	</nav>
+}

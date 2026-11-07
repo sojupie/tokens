@@ -140,7 +140,7 @@ func Inspect(files map[string]string, bindingsCSS, themeCSS string) Report {
 	}
 	definitions := map[string][]ValueSource{}
 	definitionSeen := map[string]bool{}
-	for _, row := range append(append([]Declaration{}, rows...), declarations("forge/components/static/components.css", bindingsCSS)...) {
+	for _, row := range append(append([]Declaration{}, rows...), declarations("forge/components/generated/components.css", bindingsCSS)...) {
 		if strings.HasPrefix(row.Property, "--") {
 			key := row.Selector + "\x00" + row.Property + "\x00" + row.Value
 			if definitionSeen[key] {
@@ -274,7 +274,8 @@ func Run(assets string) (Report, error) {
 	if err := json.Unmarshal(manifest, &styles); err != nil {
 		return Report{}, err
 	}
-	sources := []string{"forge/components/static/elevation.css", "catalog/web/static/app.css", "catalog/web/static/token-table.css"}
+	sources := []string{"forge/components/foundations/elevation.css", "forge/site/site.css", "catalog/web/assets/styles/app.css", "catalog/web/assets/styles/illustrations.css",
+		"catalog/web/assets/styles/token-table.css"}
 	for _, style := range styles {
 		sources = append(sources, filepath.Join("forge/components", style))
 	}
@@ -288,7 +289,7 @@ func Run(assets string) (Report, error) {
 	readAsset := func(name string) (string, error) {
 		file := filepath.Join(assets, name)
 		if assets == "" {
-			file = filepath.Join("forge/components/static", name)
+			file = filepath.Join("forge/components/generated", name)
 		}
 		data, err := os.ReadFile(file)
 		return string(data), err
@@ -297,7 +298,7 @@ func Run(assets string) (Report, error) {
 	if err != nil {
 		return Report{}, err
 	}
-	files["forge/components/static/buttons.css"] = buttons
+	files["forge/components/generated/buttons.css"] = buttons
 	bindings, err := readAsset("components.css")
 	if err != nil {
 		return Report{}, err

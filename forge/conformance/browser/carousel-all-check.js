@@ -1,0 +1,49 @@
+const run=document.querySelector('#run'),out=document.querySelector('#result'),samples=document.querySelector('#samples');
+run.onclick=async()=>{run.disabled=true;const checks=[],assert=(ok,message)=>{if(!ok)throw Error(message);checks.push(message)};
+try{
+ for(const variant of ['multi-browse','uncontained','uncontained-multi-aspect-ratio','hero','center-aligned-hero','full-screen'])for(const action of ['none','show-all','header-arrow']){
+  samples.replaceChildren();const f=document.createElement('iframe');samples.append(f);
+  await new Promise(resolve=>{f.onload=resolve;f.src=`/components/carousel?preview.compare=interactive&preview.variant=${variant}&preview.action=${action}`});
+  const w=f.contentWindow,d=f.contentDocument;await w.TokenAssets.ready;
+  const root=d.querySelector('#component-preview .md-carousel'),bottom=root.querySelector('.md-carousel-all-action'),header=root.querySelector('.md-carousel-header');
+  const viewport=root.querySelector('.md-carousel-viewport'),style=w.getComputedStyle(viewport),full=variant==='full-screen',flow=variant.startsWith('uncontained');
+  assert(parseFloat(style.paddingInlineStart)===(full?0:16)&&parseFloat(style.paddingInlineEnd)===(full||flow?0:16),`${variant}: specified inline padding`);
+  assert(parseFloat(style.paddingBlockStart)===(full?0:8)&&parseFloat(style.paddingBlockEnd)===(full?0:8),`${variant}: specified block padding`);
+  assert(parseFloat(w.getComputedStyle(root.querySelector('.md-carousel-track')).gap)===(full?16:8),`${variant}: specified item gap`);
+  const items=[...root.querySelectorAll('.md-carousel-item')];
+  const radius=w.getComputedStyle(root).getPropertyValue('--md-comp-carousel-item-container-shape');
+  if(full)assert(parseFloat(w.getComputedStyle(items[0]).borderTopLeftRadius)===0,'Full-screen pages have square corners');
+  else if(radius)assert(Math.abs(parseFloat(w.getComputedStyle(items[0]).borderTopLeftRadius)-parseFloat(radius))<.1,`${variant}: captured item shape token`);
+  if(variant==='uncontained-multi-aspect-ratio'){
+    const height=items[0].getBoundingClientRect().height;
+    [16/9,9/16,1,3/4].forEach((ratio,i)=>assert(Math.abs(root.querySelectorAll('.md-carousel-slot')[i].getBoundingClientRect().width/height-ratio)<.01,`Mixed item ${i+1}: source ratio`));
+  }
+  assert(!!bottom===(variant!=='full-screen'&&action==='show-all'),`${variant}/${action}: lower action configuration`);
+  assert(!!header===(variant!=='full-screen'&&action==='header-arrow'),`${variant}/${action}: header configuration`);
+  if(bottom){const style=w.getComputedStyle(bottom);assert([style.paddingTop,style.paddingRight,style.paddingBottom,style.paddingLeft].every(v=>parseFloat(v)===4),'Show all retains 4px clearance');
+    const button=bottom.querySelector('button').getBoundingClientRect(),box=root.getBoundingClientRect();
+    assert(Math.abs(box.right-button.right-4)<.1,'Show all aligns to trailing edge with 4px clearance');
+    assert(Math.abs(button.top-items[0].getBoundingClientRect().bottom-4)<.1,'Show all is 4px below items, without stacked viewport padding');
+  }
+  if(!full)assert(root.querySelector('.md-carousel-pagination')&&!root.querySelector('output'),'Pagination uses distinct scroll positions without visible numbers');
+  if(!full&&action==='none'){
+    await new Promise(r=>setTimeout(r,350));
+    const pagination=root.querySelector('.md-carousel-pagination'),dots=[...pagination.children],active=dots[0];
+    const snaps=[...root.querySelectorAll(root.dataset.carouselLayout==='flow'?'.md-carousel-slot':'.md-carousel-snap')],first=snaps[0].getBoundingClientRect().left,max=viewport.scrollWidth-viewport.clientWidth;
+    const targets=[...new Set(snaps.map(snap=>Math.min(max,Math.max(0,Math.abs(snap.getBoundingClientRect().left-first)))))];
+    assert(dots.length===targets.length,`${variant}: pagination counts actual distinct positions`);
+    assert(dots.filter(dot=>dot.hasAttribute('data-active')).length===1,'Exactly one pagination pill is active');
+    assert(Math.abs(active.getBoundingClientRect().width-16)<.1&&Math.abs(active.getBoundingClientRect().height-8)<.1,'Active pill is twice the circle width');
+    root.querySelector('[data-carousel-step="1"]').click();await new Promise(r=>setTimeout(r,120));
+    const incoming=dots.find(dot=>dot.hasAttribute('data-active'));
+    if(incoming!==active)assert(incoming.getBoundingClientRect().width>8&&incoming.getBoundingClientRect().width<16,'Pagination morphs through intermediate widths');
+    await new Promise(r=>setTimeout(r,600));
+    assert(!active.hasAttribute('data-active')&&Math.abs(active.getBoundingClientRect().width-8)<.1,'Previous pill returns to a circle');
+    assert(pagination.querySelectorAll('[data-active]').length===1&&Math.abs(pagination.querySelector('[data-active]').getBoundingClientRect().width-16)<.1,'Next active circle expands into a pill');
+  }
+  if(header){const box=header.querySelector('button').getBoundingClientRect();assert(Math.abs(box.width-48)<.1&&Math.abs(box.height-48)<.1,'Header arrow control is 48px square');}
+  const button=bottom?.querySelector('button')||header?.querySelector('button');
+  if(button){const before=f.contentWindow.location.href;button.click();assert(f.contentWindow.location.href===before,'Demo action does not navigate');}
+ }
+ out.textContent=JSON.stringify({passed:checks.length,checks},null,2);
+}catch(error){out.textContent=JSON.stringify({passed:checks.length,checks,error:error.stack},null,2)}finally{run.disabled=false}};

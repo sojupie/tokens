@@ -1,12 +1,14 @@
+import { navigationIndex } from "../helpers/navigation.ts";
+import { toolbarGap } from "../helpers/controls.ts";
+
 (() => {
   if (typeof document === "undefined") return;
-  const { navigationIndex, toolbarGap } = globalThis.MaterialComponents;
   function syncToolbar(group) {
     const style = getComputedStyle(group),
       value = (key) =>
         Number.parseFloat(style.getPropertyValue("--_toolbar-" + key));
     const demo = group.parentElement,
-      scene = demo.closest(".md-toolbar-scene"),
+      scene = demo.closest("[data-toolbar-viewport],.md-toolbar-scene"),
       items = [...group.querySelectorAll("[data-toolbar-item]")];
     items.forEach((item) => (item.hidden = false));
     const width = (item) => {
@@ -42,7 +44,6 @@
         ) + "px",
       );
     } else {
-      if (!scene) return;
       const vertical = group.dataset.orientation === "vertical",
         clearance =
           parseFloat(
@@ -58,8 +59,8 @@
             )
           : 0;
       const available =
-        (vertical ? scene.clientHeight : scene.clientWidth) -
-        2 * clearance -
+        (vertical ? (scene || demo).clientHeight : (scene || demo).clientWidth) -
+        (scene ? 2 * clearance : 0) -
         fabSpace;
       const fits = () =>
         vertical
@@ -137,7 +138,7 @@
   initialize();
   document.addEventListener("htmx:afterSwap", () => initialize());
   document.addEventListener("htmx:beforeCleanupElement", (event) => {
-    const root = event.detail.elt;
+    const root = (event.detail?.elt || event.target);
     if (root.matches?.(".md-toolbar,[data-toolbar-item]"))
       toolbarResize.unobserve(root);
     for (const item of root.querySelectorAll?.(

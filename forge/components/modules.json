@@ -1,5 +1,6 @@
 {
   "common": {
+    "scripts": ["runtime/utils.js", "runtime/chips.js", "fields.js", "menus.js"],
     "styles": [
       "styles/icon-buttons.css",
       "styles/feedback.css",
@@ -38,6 +39,7 @@
     "bindings": ["radio"]
   },
   "switch": {
+    "scripts": ["runtime/switches.js"],
     "styles": ["styles/switches.css"],
     "bindings": ["switch"]
   },
@@ -54,70 +56,87 @@
     "bindings": ["badge"]
   },
   "messages": {
+    "scripts": ["runtime/snackbars.js", "runtime/tooltips.js"],
     "styles": ["styles/snackbars-tooltips.css"],
     "bindings": ["snackbar", "tooltip", "support-action", "support-icon"]
   },
   "navigation": {
+    "scripts": ["runtime/navigation.js"],
     "styles": ["styles/navigation.css", "styles/navigation-rail.css"],
     "bindings": ["nav", "nav-item"]
   },
   "tabs": {
+    "scripts": ["runtime/tabs.js"],
     "styles": ["styles/tabs.css"],
     "bindings": ["tab"]
   },
   "segmented": {
+    "scripts": ["runtime/segmented-buttons.js"],
     "styles": ["styles/segmented-buttons.css"],
     "bindings": ["segment"]
   },
   "slider": {
+    "scripts": ["runtime/sliders.js"],
     "styles": ["styles/sliders.css"],
     "bindings": ["slider", "slider-control"]
   },
   "progress": {
+    "scripts": ["progress.js"],
     "styles": ["styles/progress.css"],
     "bindings": ["progress"]
   },
   "loading": {
+    "scripts": ["loading.js"],
     "styles": ["styles/loading.css"],
     "bindings": ["loading"]
   },
   "appbar": {
+    "scripts": ["runtime/app-bars.js"],
     "styles": ["styles/app-bars.css"],
     "bindings": ["appbar"]
   },
   "toolbar": {
+    "scripts": ["runtime/toolbars.js"],
     "styles": ["styles/toolbars.css"],
     "bindings": ["toolbar", "toolbar-item", "toolbar-wrapper", "toolbar-fab"]
   },
   "sheet": {
+    "scripts": ["sheets.js"],
     "styles": ["styles/sheets.css"],
     "bindings": ["sheet", "sheet-action"]
   },
   "split": {
+    "scripts": ["runtime/split-buttons.js"],
     "styles": ["styles/split-buttons.css"],
     "bindings": ["split", "split-item"]
   },
   "button-group": {
+    "scripts": ["runtime/button-groups.js"],
     "styles": ["styles/button-groups.css"],
     "bindings": ["group"]
   },
   "fab-menu": {
+    "scripts": ["runtime/fab-menus.js"],
     "styles": ["styles/fab-menus.css"],
     "bindings": ["fab-menu", "fab-menu-item", "fab-menu-close"]
   },
   "list": {
+    "scripts": ["lists.js"],
     "styles": ["styles/lists.css", "styles/list-expansion.css"],
     "bindings": ["list", "list-item", "list-reveal"]
   },
   "carousel": {
+    "scripts": ["carousel.js"],
     "styles": ["styles/carousels.css"],
     "bindings": ["carousel-item"]
   },
   "search": {
+    "scripts": ["search.js"],
     "styles": ["styles/search.css", "styles/search-motion.css"],
     "bindings": ["search", "search-view"]
   },
   "date": {
+    "scripts": ["date-picker.js"],
     "styles": ["styles/date-pickers.css", "styles/date-layout.css"],
     "bindings": [
       "date",
@@ -129,6 +148,7 @@
     ]
   },
   "time": {
+    "scripts": ["time-picker.js"],
     "styles": ["styles/time-pickers.css"],
     "bindings": [
       "time",
@@ -141,6 +161,7 @@
     ]
   },
   "dialog": {
+    "scripts": ["dialogs.js"],
     "styles": [
       "styles/dialogs.css",
       "styles/dialog-layout.css",

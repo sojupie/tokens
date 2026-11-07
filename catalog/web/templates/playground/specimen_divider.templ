@@ -1,0 +1,14 @@
+package render
+
+import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+
+import "github.com/sojupie/tokens/forge/components/ui"
+
+templ SpecimenDivider(c webview.ComponentCase) {
+	<div class={ "md-divider-layout", templ.KV("md-divider-supporting",c.Control=="supporting") } data-inset={ c.DividerInset() } data-spacing={ c.Width }>
+		@ui.Divider(c.DividerInset(), c.Attributes())
+		if c.Control=="supporting" {
+			<p class="md-typescale-body-small">Supporting text</p>
+		}
+	</div>
+}

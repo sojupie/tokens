@@ -1,0 +1,12 @@
+const button=document.querySelector('#run'),out=document.querySelector('#result'),samples=document.querySelector('#samples');
+button.onclick=async()=>{button.disabled=true;const checks=[];const assert=(ok,message)=>{if(!ok)throw Error(message);checks.push(message)};
+try{samples.replaceChildren();const frame=document.createElement('iframe');samples.append(frame);await new Promise(resolve=>{frame.onload=resolve;frame.src='/md3/components/sliders?preview.compare=interactive&preview.control=range'});
+const w=frame.contentWindow,d=frame.contentDocument;await w.TokenAssets.ready;const root=d.querySelector('#component-preview .md-slider'),inputs=[...root.querySelectorAll('input[type=range]')],input=inputs[0];
+const key=(key,type='keydown')=>{const e=new w.KeyboardEvent(type,{key,bubbles:true,cancelable:true});input.dispatchEvent(e);return e.defaultPrevented};
+input.focus();const initial=input.valueAsNumber;assert(key(' '),'Space suppresses page scrolling');assert(key('ArrowRight')&&input.valueAsNumber===initial+10,'Space + Right advances ten percent');assert(d.activeElement===input,'Adjustment retains focus');assert(input.getAttribute('aria-valuenow')===null&&input.valueAsNumber===initial+10,'Native input remains the accessible value source');
+key(' ','keyup');assert(!key('ArrowRight'),'Arrow without Space remains native');
+key(' ');for(let i=0;i<10;i++)key('ArrowRight');assert(input.valueAsNumber===inputs[1].valueAsNumber,'Range lower handle cannot cross upper handle');
+root.dataset.variant='discrete';input.step='2';input.valueAsNumber=30;key('ArrowRight');assert(input.valueAsNumber===32,'Discrete adjustment advances one stop');
+root.style.direction='rtl';key('ArrowRight');assert(input.valueAsNumber===30,'RTL reverses horizontal adjustment');key(' ','keyup');
+out.textContent=JSON.stringify({passed:checks.length,checks},null,2);
+}catch(error){out.textContent=JSON.stringify({passed:checks.length,checks,error:error.stack},null,2)}finally{button.disabled=false}};

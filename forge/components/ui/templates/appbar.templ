@@ -1,0 +1,59 @@
+package render
+
+import model "github.com/sojupie/tokens/forge/components/ui/internal/model"
+
+templ AppBar(p model.AppBarProps) {
+	@model.Require("appbar")
+	<header { p.Attributes()... }>
+		<div class="md-appbar-row">
+			if p.Leading!=nil {
+				@p.Leading
+			}
+			if !p.ExpandedResolved()&&p.Variant!="bottom" {
+				if p.Search!=nil {
+					@p.Search
+				} else {
+					@AppBarTitle(p)
+				}
+			}
+			<div class="md-appbar-actions">
+				if p.Actions!=nil {
+					@p.Actions
+				}
+				{ children... }
+			</div>
+		</div>
+		if p.ExpandedResolved() {
+			@AppBarTitle(p)
+		}
+	</header>
+}
+
+templ AppBarTitle(p model.AppBarProps) {
+	<div class={ "md-appbar-copy",templ.KV("md-appbar-expanded",p.ExpandedResolved()) }>
+		<h1 class="md-appbar-title">{ p.Title }</h1>
+		if p.Subtitle!="" {
+			<p class="md-appbar-subtitle">{ p.Subtitle }</p>
+		}
+	</div>
+}
+
+templ AppBarAvatar(text, label string) {
+	@model.Require("appbar")
+	<span class="md-appbar-avatar-slot"><span class="md-appbar-avatar" role="img" aria-label={ label }>{ text }</span></span>
+}
+
+templ AppBarSearch(target, label string, disclosure bool) {
+	@model.Require("appbar")
+	if disclosure {
+		@Button(templ.Attributes{"class": "md-appbar-search", "data-search-open": "", "aria-label": label, "aria-haspopup": "dialog", "aria-expanded": "false", "aria-controls": target}) {
+			@model.Icon("search")
+			<span>{ label }</span>
+		}
+	} else {
+		<label class="md-appbar-search">
+			@model.Icon("search")
+			<input type="search" placeholder={ label } aria-label={ label }/>
+		</label>
+	}
+}

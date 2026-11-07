@@ -36,3 +36,24 @@ func TestNestedRulesStringsFallbacksAndCycles(t *testing.T) {
 		t.Fatal(report.Declarations[0])
 	}
 }
+
+func TestSharedLayoutAliasesAreIncludedInUsageReport(t *testing.T) {
+	t.Chdir("../..")
+	report, err := Run("")
+	if err != nil {
+		t.Fatal(err)
+	}
+	foundShared, foundScenes := false, false
+	for _, row := range report.Declarations {
+		foundShared = foundShared || row.File == "forge/site/site.css"
+		foundScenes = foundScenes || row.File == "catalog/web/assets/styles/illustrations.css"
+		for _, name := range row.UnknownVariables {
+			if strings.HasPrefix(name, "--layout-") {
+				t.Fatalf("shared dependency missing from %s: %s", row.File, name)
+			}
+		}
+	}
+	if !foundShared || !foundScenes {
+		t.Fatal("report omits shared layout or scene source")
+	}
+}

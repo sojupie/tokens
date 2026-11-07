@@ -1,0 +1,45 @@
+const out=document.querySelector('#result'),host=document.querySelector('#samples');
+const wait=ms=>new Promise(r=>setTimeout(r,ms));let frame;
+async function load(variant,width,extra=''){
+ host.replaceChildren();frame=document.createElement('iframe');frame.style.width=width+'px';host.append(frame);
+ await new Promise(r=>{frame.onload=r;frame.src='/components/carousel?preview.compare=interactive&preview.variant='+variant+extra});
+ const w=frame.contentWindow,d=frame.contentDocument;await w.TokenAssets.ready;
+ const root=d.querySelector('#component-preview .md-carousel');
+ for(let n=root;n&&n!==d.documentElement;n=n.parentElement){if(n!==root&&!n.classList.contains('tokens-carousel-frame')){Object.assign(n.style,{display:'block',width:'100%',maxWidth:'none',minWidth:'0',padding:'0',margin:'0',border:'0',minHeight:'0'});}if(n.parentElement)for(const s of n.parentElement.children)if(s!==n&&!['STYLE','LINK','SCRIPT','TEMPLATE'].includes(s.tagName))s.style.display='none';}
+ await wait(100);return{w,d,root,v:root.querySelector('.md-carousel-viewport'),items:[...root.querySelectorAll('.md-carousel-item')]};
+}
+function measure(c){const box=c.v.getBoundingClientRect(),s=c.w.getComputedStyle(c.v);return {variant:c.root.dataset.variant,width:box.width,height:box.height,logical:parseFloat(c.root.style.getPropertyValue('--_carousel-logical')),padding:[s.paddingTop,s.paddingRight,s.paddingBottom,s.paddingLeft].map(parseFloat),snap:s.scrollSnapType,scroll:c.v.scrollLeft,maxX:c.v.scrollWidth-c.v.clientWidth,maxY:c.v.scrollHeight-c.v.clientHeight,items:c.items.map(e=>{const r=e.getBoundingClientRect(),s=c.w.getComputedStyle(e);return{left:r.left-box.left,right:r.right-box.left,width:r.width,height:r.height,visible:s.visibility!=='hidden',radius:s.borderRadius,label:e.getAttribute('aria-label')};})};}
+document.querySelector('#run').onclick=async()=>{
+ const tests=[],records=[],check=(name,ok,detail)=>tests.push({name,pass:!!ok,detail});out.textContent='Running';document.querySelector('#run').disabled=true;
+ try{
+ for(const width of [360,768,772,1200])for(const variant of ['multi-browse','uncontained','uncontained-multi-aspect-ratio','hero','center-aligned-hero','full-screen']){
+  const c=await load(variant,width),m=measure(c),full=variant==='full-screen',flow=variant.startsWith('uncontained');records.push(m);
+  check(`${variant}/${width}: padding`,m.padding.join(',')===(full?'0,0,0,0':flow?'8,0,8,16':'8,16,8,16'),m.padding);
+  check(`${variant}/${width}: gap`,parseFloat(c.w.getComputedStyle(c.root.querySelector('.md-carousel-track')).gap)===(full?16:8));
+  if(!full)check(`${variant}/${width}: corners`,m.items.every(i=>i.radius==='28px'));
+  if(full){check(`${variant}/${width}: vertical full-screen`,m.maxY>0&&m.maxX===0,m);check(`${variant}/${width}: portrait`,m.height>m.width,[m.width,m.height]);continue;}
+  if(flow){
+   const media=()=>c.items.map(i=>i.querySelector('img').getBoundingClientRect().width),before=media();
+   c.v.scrollLeft=145;await wait(80);const after=measure(c),afterMedia=media();
+   check(`${variant}/${width}: stable media widths`,afterMedia.every((v,n)=>Math.abs(v-before[n])<.02));
+   check(`${variant}/${width}: changing masks`,after.items.some((i,n)=>Math.abs(i.width-m.items[n].width)>.1));
+   const slots=[...c.root.querySelectorAll('.md-carousel-slot')].map(i=>i.getBoundingClientRect());
+   check(`${variant}/${width}: media includes fixed press overscan`,afterMedia.every((v,n)=>Math.abs(v-slots[n].width-10)<.02));
+   if(variant==='uncontained')check(`${variant}/${width}: equal media widths`,before.every(v=>Math.abs(v-before[0])<.02));
+   else check(`${variant}/${width}: varied media ratios in range`,new Set(before).size>1&&after.items.every((i,n)=>slots[n].width/i.height>=9/16-.001&&slots[n].width/i.height<=16/9+.001));continue;
+  }
+  const step=m.logical+8;
+  for(const position of [0,1,2,3,4,5]){
+   c.v.scrollTo({left:position*step,behavior:'instant'});await wait(90);const current=measure(c),visible=current.items.filter(i=>i.visible&&i.width>.5);records.push({...current,position});
+   const large=visible.filter(i=>Math.abs(i.width-m.logical)<1),small=visible.filter(i=>i.width>=39.5&&i.width<=56.5),medium=visible.filter(i=>i.width>56.5&&i.width<m.logical-1);
+   if(variant==='multi-browse')check(`${variant}/${width}/${position}: large medium small`,large.length>=1&&small.length>=1&&medium.length>=1,visible.map(i=>i.width));
+   if(variant==='hero')check(`${variant}/${width}/${position}: large and small`,large.length>=1&&small.length>=1,visible.map(i=>i.width));
+   if(variant==='center-aligned-hero'&&position>0&&position<5)check(`${variant}/${width}/${position}: one centered large and two small`,large.length===1&&small.length===2&&Math.abs((large[0].left+large[0].right)/2-width/2)<1,visible.map(i=>({left:i.left,width:i.width})));
+   if(position===0||position===5)check(`${variant}/${width}/${position}: edges occupied`,Math.abs(Math.min(...visible.map(i=>i.left))-16)<1&&Math.abs(Math.max(...visible.map(i=>i.right))-(width-16))<1,visible.map(i=>({left:i.left,right:i.right})));
+  }
+ }
+ const c=await load('multi-browse',360);const errors=[];c.w.addEventListener('error',e=>errors.push(e.message));c.root.querySelector('.md-carousel-controls').remove();c.items[0].click();await wait(30);check('Optional controls/output',errors.length===0,errors);
+ const before=c.items[0].querySelector('img').getBoundingClientRect();for(const sheet of c.d.styleSheets)if(sheet.href&&/app[.-]|app\.css/.test(sheet.href))sheet.disabled=true;await wait(30);const after=c.items[0].querySelector('img').getBoundingClientRect();check('Image fitting without Catalog stylesheet',Math.abs(before.width-after.width)<1&&Math.abs(before.height-after.height)<1,{before:[before.width,before.height],after:[after.width,after.height]});
+ }catch(e){tests.push({name:'Audit completion',pass:false,detail:e.stack});}
+ out.textContent=JSON.stringify({browser:navigator.userAgent,passed:tests.filter(t=>t.pass).length,failed:tests.filter(t=>!t.pass).length,tests,records},null,2);document.querySelector('#run').disabled=false;
+};

@@ -21,6 +21,23 @@
 .md-nav-item[aria-current="page"] .md-nav-icon > svg:last-of-type {
   display: block;
 }
+/* Hover adds weight without changing the icon's fill or selection state. */
+@media (hover:hover) {
+ .md-navigation-rail .md-nav-item:hover:not([data-touch],[aria-current="page"]) .md-nav-icon > svg:first-of-type { stroke:currentColor;stroke-width:16;stroke-linejoin:round; }
+}
+.md-navigation-rail .md-nav-item[data-component-state="hovered"]:not([aria-current="page"]) .md-nav-icon > svg:first-of-type { stroke:currentColor;stroke-width:16;stroke-linejoin:round; }
+/* Animate the glyph only; notification badges keep their size and anchor. */
+.md-navigation-rail .md-nav-icon > :not(.md-nav-badge) {
+ transition:scale var(--_motion-fast-spatial-duration) var(--_motion-fast-spatial-easing);
+}
+@media (hover:hover) {
+ .md-navigation-rail .md-nav-item:hover:where(:not([data-touch])) .md-nav-icon > :not(.md-nav-badge) { scale:1.05; }
+}
+.md-navigation-rail .md-nav-item[data-component-state="hovered"] .md-nav-icon > :not(.md-nav-badge) { scale:1.05; }
+.md-navigation-rail .md-nav-item:is(:active,[data-pressed],[data-component-state="pressed"]) .md-nav-icon > :not(.md-nav-badge) { scale:.9; }
+@media (prefers-reduced-motion:reduce) {
+ .md-navigation-rail .md-nav-icon > :not(.md-nav-badge) { transition:none; }
+}
 .md-rail-frame {
   --_rail-content-width: 0px;
   --_rail-rest-width: var(--md-comp-nav-rail-collapsed-container-width);
@@ -51,12 +68,16 @@
 .md-navigation-surface[hidden] {
   display: none;
 }
-.md-rail-frame .md-navigation-rail {
+.md-navigation-rail {
+  --_rail-rest-width: var(--md-comp-nav-rail-collapsed-container-width);
   display: flex;
   flex-direction: column;
   block-size: 100%;
   min-block-size: 0;
   overflow: auto;
+}
+.md-navigation-rail[data-width="narrow"] {
+  --_rail-rest-width: var(--md-comp-nav-rail-collapsed-narrow-container-width);
 }
 .md-navigation-rail > header {
   flex: none;
@@ -75,13 +96,11 @@
 }
 .md-navigation-rail[data-variant="expanded"] .md-rail-menu {
   margin-inline-start: calc(
-    (
-        var(--md-comp-fab-container-width) -
-          var(--md-comp-icon-button-small-container-height)
-      ) /
-      2
+    (var(--_rail-rest-width) - var(--md-comp-icon-button-small-container-height)) / 2 -
+    var(--md-comp-nav-rail-item-horizontal-full-width-leading-space)
   );
 }
+
 .md-navigation-rail .md-nav-items {
   flex: none;
   inline-size: 100%;
@@ -139,8 +158,9 @@
 .md-navigation-rail[data-orientation="vertical"] .md-nav-label {
   inline-size: max-content;
   max-inline-size: calc(
-    var(--_rail-rest-width) - 2 * var(--md-sys-measurement-space200)
+    var(--_rail-rest-width, var(--_nav-width)) - 2 * var(--md-sys-measurement-space100)
   );
+  text-align: center;
 }
 .md-navigation-rail[data-variant="collapsed"]
   :is([data-navigation-secondary], .md-nav-section) {
@@ -159,7 +179,7 @@
     var(--md-sys-typescale-label-large-font);
   color: var(--md-sys-color-on-surface-variant);
 }
-.md-navigation-rail .md-nav-fab {
+.md-navigation-rail .md-button.md-nav-fab {
   --_elevation-level: var(--md-sys-elevation-level0);
   justify-content: flex-start;
 }
@@ -203,15 +223,11 @@
   opacity: 0;
   transform: rotate(-90deg);
 }
-.md-navigation-rail[data-variant="expanded"]
-  .md-rail-menu
-  > [data-navigation-menu-icon] {
+.md-icon-button.md-rail-menu[aria-expanded="true"] > [data-navigation-menu-icon] {
   opacity: 0;
   transform: rotate(90deg);
 }
-.md-navigation-rail[data-variant="expanded"]
-  .md-rail-menu
-  > [data-navigation-collapse-icon] {
+.md-icon-button.md-rail-menu[aria-expanded="true"] > [data-navigation-collapse-icon] {
   opacity: 1;
   transform: rotate(0deg);
 }
@@ -243,11 +259,6 @@
 .md-nav-badge {
   flex: none;
 }
-.md-nav-icon > .md-nav-badge {
-  position: absolute;
-  inset-block-start: 0;
-  inset-inline-end: 0;
-}
 .md-rail-frame[data-alignment="center"] .md-nav-items {
   margin-block: auto;
 }
@@ -267,8 +278,27 @@
   padding: var(--md-sys-measurement-space200);
   font: inherit;
 }
-.md-rail-external-menu[hidden] {
-  display: none;
+/* One immersive toggle stays above both moving panes. Empty header slots
+   preserve the page and rail anatomy without duplicating the control. */
+.md-rail-frame > .md-rail-toggle {
+  position: absolute;
+  z-index: 4;
+  inset-block-start: var(--md-comp-nav-rail-expanded-top-space);
+  inset-inline-start: calc(
+    (var(--_rail-rest-width) - var(--md-comp-icon-button-small-container-height)) / 2
+  );
+}
+.md-rail-frame[data-collapse="hidden"] .md-rail-body > header {
+  padding-block-start: var(--md-comp-nav-rail-expanded-top-space);
+  padding-inline-start: calc(
+    (var(--_rail-rest-width) - var(--md-comp-icon-button-small-container-height)) / 2
+  );
+}
+.md-rail-menu-slot {
+  display: grid;
+  flex: none;
+  inline-size: var(--md-comp-icon-button-small-container-height);
+  block-size: var(--md-comp-icon-button-small-container-height);
 }
 .md-rail-screen {
   flex: 1;

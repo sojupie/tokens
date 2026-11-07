@@ -182,14 +182,14 @@
   padding: var(--md-sys-measurement-space200)
     calc((var(--_nav-width) - var(--_nav-indicator-width)) / 2);
 }
-.md-navigation-drawer .md-nav-item {
+.md-navigation-drawer .md-nav-item:where(:not(.md-navigation-rail .md-nav-item, .md-navigation-bar .md-nav-item)) {
   min-height: var(--_nav-indicator-height);
   font-family: var(--_nav-item-font-family);
   font-size: var(--_nav-item-font-size);
   font-weight: var(--_nav-item-font-weight);
   line-height: var(--_nav-item-line-height);
 }
-.md-navigation-drawer .md-nav-indicator {
+.md-navigation-drawer .md-nav-indicator:where(:not(.md-navigation-rail .md-nav-indicator, .md-navigation-bar .md-nav-indicator)) {
   width: var(--_nav-indicator-width);
   max-width: 100%;
   justify-content: start;
@@ -270,53 +270,54 @@
   overscroll-behavior-y: contain;
   flex: 1;
 }
-.md-navigation-drawer .md-nav-item {
+.md-navigation-drawer .md-nav-item:where(:not(.md-navigation-rail .md-nav-item, .md-navigation-bar .md-nav-item)) {
   flex: none;
-}
-
-/* Retain token padding while label height grows with browser text scaling. */
-.md-navigation-bar {
-  min-block-size: var(--_nav-height);
-  block-size: auto;
-}
-.md-navigation-bar > .md-nav-items {
-  min-block-size: inherit;
-  block-size: auto;
-}
-.md-navigation-bar[data-orientation="vertical"] .md-nav-item {
-  --_nav-label-height: 1lh;
-  --_nav-text-padding: max(0px, calc((var(--_nav-height) - var(--_nav-item-indicator-height, var(--_nav-indicator-height)) - var(--md-sys-typescale-label-medium-line-height) - var(--_nav-item-label-gap)) / 2));
-  container-type: inline-size;
-  min-block-size: max(var(--_nav-height), calc(var(--_nav-item-indicator-height, var(--_nav-indicator-height)) + var(--_nav-label-height) + var(--_nav-item-label-gap) + 2 * var(--_nav-text-padding)));
-}
-.md-navigation-bar[data-orientation="vertical"] .md-nav-indicator {
-  transform: translateY(calc((var(--_nav-item-label-gap) + var(--_nav-label-height)) / -2));
-}
-.md-navigation-bar .md-nav-label {
-  white-space: normal;
-  text-align: center;
-  hyphens: auto;
-}
-.md-navigation-bar[data-orientation="vertical"] .md-nav-label {
-  inline-size: max-content;
-  max-inline-size: calc(100cqw - 2 * var(--md-sys-measurement-space100));
-}
-/* Equal intrinsic columns keep horizontal destinations together, with spare
-   surface width at the ends rather than between destinations. */
-.md-navigation-bar[data-orientation="horizontal"] > .md-nav-items {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 1fr;
-  inline-size: max-content;
-  max-inline-size: 100%;
-  margin-inline: auto;
-}
-.md-navigation-bar[data-orientation="horizontal"] .md-nav-indicator {
-  min-block-size: var(--_nav-item-indicator-height, var(--_nav-indicator-height));
-  block-size: auto;
 }
 
 .md-navigation-header { display:flex; align-items:center; flex:none; }
 .md-navigation-header > h3 { flex:1; min-inline-size:0; }
 .md-navigation-drawer a.md-nav-item { text-decoration:none; }
 :root:has(dialog[data-navigation-modal]:modal) { overflow:hidden; }
+
+.md-navigation-rail > .md-nav-items { align-items:stretch; }
+.md-navigation-rail .md-nav-item { flex:none; width:100%; }
+
+/* The surface spans its window. Vertical items share that width; horizontal
+   items retain equal intrinsic widths, with the spare space at the ends. */
+.md-navigation-bar { container:md-navigation-bar / inline-size; block-size:auto; min-block-size:var(--_nav-height); }
+.md-navigation-bar > .md-nav-items { display:grid; grid-auto-flow:column; grid-auto-columns:minmax(0,1fr); min-block-size:var(--_nav-height); block-size:auto; align-items:stretch; }
+.md-navigation-bar .md-nav-item { min-inline-size:0; padding:6px 4px; min-block-size:var(--_nav-height); font:var(--_nav-item-font); }
+.md-navigation-bar .md-nav-label { position:static; transform:none; inline-size:auto; max-inline-size:100%; white-space:normal; overflow-wrap:anywhere; text-align:center; font-weight:500; }
+.md-navigation-bar .md-nav-item[aria-current="page"] .md-nav-label { font-weight:var(--md-sys-typescale-label-medium-weight-prominent,700); }
+.md-navigation-bar:is([data-orientation="vertical"],[data-orientation="adaptive"]) .md-nav-icon { display:grid; place-items:center; inline-size:var(--_nav-item-icon-size); block-size:var(--_nav-item-icon-size); align-self:center; }
+/* The indicator owns its paint/ripple box. Labels remain in normal flow so
+   text scaling grows the bar without size containment collapsing columns. */
+.md-navigation-bar:is([data-orientation="vertical"],[data-orientation="adaptive"]) .md-nav-item { display:flex; flex-direction:column; justify-content:flex-start; gap:0; }
+.md-navigation-bar:is([data-orientation="vertical"],[data-orientation="adaptive"]) .md-nav-indicator { display:flex; flex:none; position:relative; transform:none; inline-size:var(--_nav-item-indicator-width,56px); block-size:var(--_nav-item-indicator-height,32px); padding:0; margin-block-end:calc(1lh + var(--_nav-item-label-gap)); }
+.md-navigation-bar:is([data-orientation="vertical"],[data-orientation="adaptive"]) .md-nav-label { position:absolute; inset-block-start:calc(100% + var(--_nav-item-label-gap)); left:50%; transform:translateX(-50%); inline-size:max-content; max-inline-size:var(--nav-label-width,120px); }
+.md-navigation-bar .md-nav-item { --_nav-label-height:1lh; }
+.md-navigation-bar:is([data-orientation="vertical"],[data-orientation="adaptive"]) .md-nav-indicator { margin-block-end:calc(var(--_nav-label-height) + var(--_nav-item-label-gap)); }
+.md-navigation-bar .md-nav-item[aria-current="page"] > .md-nav-indicator { background:transparent; }
+.md-navigation-bar .md-nav-indicator::after { content:""; position:absolute; inset:0; z-index:-2; border-radius:inherit; background:var(--_nav-item-indicator,var(--_nav-indicator)); transform:scaleX(0); transition:transform var(--_motion-fast-spatial-duration) var(--_motion-fast-spatial-easing); }
+.md-navigation-bar .md-nav-item[aria-current="page"] > .md-nav-indicator::after { transform:scaleX(1); }
+.md-navigation-bar[data-orientation="horizontal"] > .md-nav-items { grid-auto-columns:1fr; inline-size:max-content; max-inline-size:100%; margin-inline:auto; }
+.md-navigation-bar[data-orientation="horizontal"] .md-nav-item { padding:12px 0; min-inline-size:max-content; }
+.md-navigation-bar[data-orientation="horizontal"] .md-nav-indicator { transform:none; inline-size:auto; block-size:auto; min-block-size:var(--_nav-item-indicator-height); padding-inline:var(--_nav-item-leading) var(--_nav-item-trailing); }
+.md-navigation-bar[data-variant="baseline"] .md-nav-item { --_nav-item-indicator-height:var(--md-comp-navigation-bar-active-indicator-height); --_nav-item-indicator-width:var(--md-comp-navigation-bar-active-indicator-width); --_nav-item-label-gap:4px; padding-block:12px 16px; font-family:var(--_nav-item-font-family); font-size:var(--_nav-item-font-size); line-height:var(--_nav-item-line-height); font-weight:var(--_nav-item-font-weight); }
+@container md-navigation-bar (min-width:600px) {
+ .md-navigation-bar[data-orientation="adaptive"] > .md-nav-items { grid-auto-columns:1fr; inline-size:max-content; max-inline-size:100%; margin-inline:auto; }
+ .md-navigation-bar[data-orientation="adaptive"] .md-nav-item { flex-direction:row; justify-content:center; min-inline-size:max-content; padding:12px 0; --_nav-item-indicator-height:var(--md-comp-nav-bar-item-horizontal-active-indicator-height); --_nav-item-indicator-width:auto; --_nav-item-leading:var(--md-comp-nav-bar-item-horizontal-active-indicator-leading-space); --_nav-item-trailing:var(--md-comp-nav-bar-item-horizontal-active-indicator-trailing-space); --_nav-item-indicator-gap:var(--md-comp-nav-bar-item-horizontal-active-indicator-icon-label-space); }
+ .md-navigation-bar[data-orientation="adaptive"] .md-nav-indicator { inline-size:auto; block-size:auto; min-block-size:var(--_nav-item-indicator-height); padding-inline:var(--_nav-item-leading) var(--_nav-item-trailing); margin:0; }
+ .md-navigation-bar[data-orientation="adaptive"] .md-nav-label { position:static; transform:none; inline-size:auto; max-inline-size:none; }
+}
+.md-navigation-bar:is([data-orientation="horizontal"],[data-orientation="adaptive"])[data-alignment="start"] > .md-nav-items { margin-inline:0 auto; }
+.md-navigation-bar:is([data-orientation="horizontal"],[data-orientation="adaptive"])[data-alignment="end"] > .md-nav-items { margin-inline:auto 0; }
+@media (prefers-reduced-motion:reduce) { .md-navigation-bar .md-nav-indicator::after { transition:none; } }
+
+/* Reserve the bold label's width in every state so selecting a destination
+   cannot move horizontal items. Hidden generated text is not announced. */
+.md-navigation-bar .md-nav-label { display:grid; }
+.md-navigation-bar .md-nav-label > span { grid-area:1/1; }
+.md-navigation-bar .md-nav-label::after { content:attr(data-navigation-label); visibility:hidden; font-weight:var(--md-sys-typescale-label-medium-weight-prominent,700); grid-area:1/1; }
+
+.md-navigation-bar[data-variant="baseline"] .md-nav-indicator { border-radius:calc(var(--md-comp-navigation-bar-active-indicator-height) / 2); }

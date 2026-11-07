@@ -1,9 +1,0 @@
-package web
-
-templ specimenFab(c componentCase) {
-	@useComponentAssets("fab")
-	@plainTooltip("Create", c.ID()+"-tip") {
-	<button { c.Attributes()... }>@materialSymbol("add")
-</button>
-	}
-}

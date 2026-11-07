@@ -184,3 +184,10 @@
 @media (prefers-reduced-motion: reduce) {
   .md-switch-handle::before { transition: none; }
 }
+
+/* The labeled primitive owns the gap between its control and label. */
+.md-switch-choice {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--md-sys-measurement-space100);
+}

@@ -1,0 +1,45 @@
+package render
+
+import model "github.com/sojupie/tokens/forge/components/ui/internal/model"
+
+import "fmt"
+
+templ Field(p model.FieldProps) {
+	@model.Require("common")
+	<div { p.Attributes()... }>
+		if !p.Filled {
+			@FieldOutline(p.Label)
+		}
+		<label for={ fmt.Sprint(p.FieldInput()["id"]) } data-slot="label">{ p.Label }</label>
+		if p.MenuIcons {
+			<span data-slot="leading-icon" aria-hidden="true">
+				@model.Icon("search")
+			</span>
+		}
+		if p.Prefix!=""||p.Suffix!="" {
+			<span data-slot="prefix" id={ p.ID + "-prefix" }><span aria-hidden="true">{ p.Prefix }</span><span class="tokens-visually-hidden">{ p.PrefixDescription }</span></span>
+		}
+		<input { p.FieldInput()... }/>
+		if p.Prefix!=""||p.Suffix!="" {
+			<span data-slot="suffix" id={ p.ID + "-suffix" }><span aria-hidden="true">{ p.Suffix }</span><span class="tokens-visually-hidden">{ p.SuffixDescription }</span></span>
+		}
+		if p.Kind=="select"||p.Kind=="autocomplete" {
+			<button type="button" class="md-field-toggle" data-field-toggle tabindex="-1" aria-label="Show options" aria-controls={ p.ID + "-options" } disabled?={ p.Disabled }>
+				<span data-slot="trailing-icon">
+					@model.Icon("expand_more")
+				</span>
+			</button>
+		} else if p.MenuIcons {
+			<span data-slot="trailing-icon" aria-hidden="true">
+				@model.Icon("info")
+			</span>
+		}
+		<small id={ p.ID + "-help" } data-slot="supporting-text" { p.HelpAttrs... }>
+			{ p.Supporting }
+		</small>
+		if p.Kind=="select"||p.Kind=="autocomplete" {
+			<input type="hidden" name={ p.Name } value={ p.Value } disabled?={ p.Disabled } data-field-value/>
+			@OptionList(p.ID, p.Label, p.Value, p.Options, templ.Attributes{"class": "md-field-options"})
+		}
+	</div>
+}

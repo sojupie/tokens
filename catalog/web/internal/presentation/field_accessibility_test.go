@@ -1,0 +1,29 @@
+package presentation_test
+
+import (
+	"bytes"
+	"context"
+	"strings"
+	"testing"
+
+	webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+	webrender "github.com/sojupie/tokens/catalog/web/internal/render"
+)
+
+func TestFieldAffixesAndErrorsAreDescribed(t *testing.T) {
+	c := webview.ComponentCase{Family: "field", Variant: "outlined", Shape: "affixes", Invalid: true}
+	var out bytes.Buffer
+	if err := webrender.SpecimenField(c).Render(context.Background(), &out); err != nil {
+		t.Fatal(err)
+	}
+	for _, want := range []string{`aria-describedby="` + c.ID() + `-prefix ` + c.ID() + `-suffix ` + c.ID() + `-help"`, `id="` + c.ID() + `-prefix"`, `id="` + c.ID() + `-suffix"`, `US dollars`, `per kilogram`, `role="alert"`, `Enter a valid value.`, `Price per kilogram`} {
+		if !strings.Contains(out.String(), want) {
+			t.Errorf("missing %s", want)
+		}
+	}
+	c.Invalid = false
+	c.Shape = "plain"
+	if c.FieldInput()["aria-describedby"] != c.ID()+"-help" {
+		t.Fatal("Plain field must describe only supporting text")
+	}
+}

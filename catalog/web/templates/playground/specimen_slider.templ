@@ -1,0 +1,10 @@
+package render
+
+import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+import "github.com/sojupie/tokens/forge/components/ui"
+templ SpecimenSlider(c webview.ComponentCase) {
+ @SliderSurface(c)
+}
+templ SliderSurface(c webview.ComponentCase,label ...string) {
+ @ui.Range(c.SliderProps(webview.SliderSurfaceLabel(label)))
+}

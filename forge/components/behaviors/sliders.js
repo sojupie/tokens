@@ -1,6 +1,7 @@
+import { sliderValues } from "../helpers/controls.ts";
+
 (() => {
   if (typeof document === "undefined") return;
-  const { sliderValues } = globalThis.MaterialComponents;
   let spaceInput;
   const clearSpace = () => { spaceInput = undefined; };
   document.addEventListener("keyup", event => {
@@ -219,7 +220,7 @@
   initialize();
   document.addEventListener("htmx:afterSwap", () => initialize());
   document.addEventListener("htmx:beforeCleanupElement", (event) => {
-    const root = event.detail.elt;
+    const root = (event.detail?.elt || event.target);
     if (root.matches?.(".md-slider")) sliderResize.unobserve(root);
     for (const slider of root.querySelectorAll?.(".md-slider") || [])
       sliderResize.unobserve(slider);

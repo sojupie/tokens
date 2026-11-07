@@ -8,9 +8,14 @@ import { compile } from "../build-tokens.mjs";
 test("site palette follows appearance and aliases without modifying captured tokens", async () => {
   const token = value => ({ $type: "color", $value: value });
   const source = { md: { sys: { color: { primary: token("{md.ref.palette.secondary90}") } }, ref: { palette: { secondary90: token({ colorSpace: "srgb", components: [1, 0, 0], alpha: 1 }) } }, comp: { example: token("{md.sys.color.primary}") } } };
+  source.md.sys.color["surface-tint-color"] = structuredClone(source.md.sys.color.primary);
+  source.md.ref.palette.black = token({ colorSpace: "srgb", components: [0, 0, 0], alpha: 1 });
+  source.md.ref.palette.white = token({ colorSpace: "srgb", components: [1, 1, 1], alpha: 1 });
+  source.md.ref.palette["blue-variant40"] = token({ colorSpace: "srgb", components: [0, 0, 1], alpha: 1 });
   const before = structuredClone(source);
   const config = JSON.parse(await readFile("forge/material/site-theme.json", "utf8"));
   const values = [];
+  const surfaceTints = new Map();
   for (const theme of ["light", "dark"]) for (const contrast of ["default", "medium", "high"]) {
     const { values: css } = await compile(siteTheme(source, { theme, contrast }, config));
     for (const name of Object.keys(config.extensions)) {
@@ -18,6 +23,11 @@ test("site palette follows appearance and aliases without modifying captured tok
     }
     assert.equal(css["md-ref-palette-secondary90"], "#e2e0f9");
     assert.equal(css["md-comp-example"], css["md-sys-color-primary"]);
+    if (!surfaceTints.has(theme)) surfaceTints.set(theme, css["md-sys-color-surface-tint-color"]);
+    assert.equal(css["md-sys-color-surface-tint-color"], surfaceTints.get(theme));
+    assert.equal(css["md-ref-palette-black"], "#000000");
+    assert.equal(css["md-ref-palette-white"], "#ffffff");
+    assert.equal(css["md-ref-palette-blue-variant40"], "#0000ff");
     const primaryHue = Hct.fromInt(argbFromHex(css["md-sys-color-primary"])).hue;
     assert.ok(Math.abs(primaryHue - Hct.fromInt(argbFromHex(config.primary)).hue) < 5, "primary stays purple at every contrast");
     values.push(css["md-sys-color-primary"]);

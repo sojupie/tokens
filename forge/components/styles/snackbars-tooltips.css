@@ -125,9 +125,6 @@
   z-index: 20;
   visibility: hidden;
 }
-.md-tooltip-demo:has(> .md-standard-icon-button) > .md-tooltip[data-variant="plain"] {
-  --_tooltip-parent-gap: var(--md-sys-measurement-space100);
-}
 .md-app-bar .md-tooltip-demo > .md-tooltip[data-variant="plain"] {
   bottom: auto;
   top: calc(100% + var(--_tooltip-parent-gap, var(--md-sys-measurement-space50)));

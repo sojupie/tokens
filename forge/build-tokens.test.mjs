@@ -1,12 +1,12 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFile, mkdtemp, rm, stat } from "node:fs/promises";
+import { readFile, writeFile, mkdir, mkdtemp, rm, stat } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { componentAssets } from "./components/build-assets.mjs";
-import { compile, flatten, inheritReferencePalette } from "./build-tokens.mjs";
+import { componentAssets } from "./components/build-assets.ts";
+import { compile, flatten, inheritReferencePalette, preserveIllustrations } from "./build-tokens.mjs";
 
 const meta = (kind, value) => ({
   "dev.tokencatalog.material": {
@@ -268,3 +268,17 @@ test("production check mode never rewrites component assets", async () => {
     await rm(temporary, {recursive:true, force:true});
   }
 });
+
+ test("theme rebuild preserves thumbnails only for the same publication", async () => {
+  const temporary=await mkdtemp(path.join(tmpdir(),"tokens-illustrations-"));
+  try {
+   const target=path.join(temporary,"assets"), output=path.join(temporary,"rebuilt");
+   await mkdir(path.join(target,"illustrations"),{recursive:true});
+   await writeFile(path.join(target,"illustrations/manifest.json"),JSON.stringify({publicationId:"same"}));
+   await writeFile(path.join(target,"illustrations/thumbnail.jpg"),"image");
+   await preserveIllustrations(target,output,"different");
+   await assert.rejects(stat(path.join(output,"illustrations")),{code:"ENOENT"});
+   await preserveIllustrations(target,output,"same");
+   assert.equal(await readFile(path.join(output,"illustrations/thumbnail.jpg"),"utf8"),"image");
+  } finally { await rm(temporary,{recursive:true,force:true}); }
+ });

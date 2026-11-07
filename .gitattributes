@@ -7,10 +7,8 @@ deploy/systemd/*.timer text eol=lf
 .github/workflows/*.yaml text eol=lf
 
 # Review maintained templates, styles and behavior sources rather than build output.
-catalog/web/*_templ.go linguist-generated=true
-forge/components/static/components-base.css linguist-generated=true
-forge/components/static/components.css linguist-generated=true
-forge/components/static/components.js linguist-generated=true
-forge/components/static/buttons.css linguist-generated=true
-forge/components/static/bundles/*.css linguist-generated=true
-forge/components/static/runtime/*.js linguist-generated=true
+catalog/web/internal/render/*_templ.go linguist-generated=true
+catalog/web/assets/generated/*.js linguist-generated=true
+forge/components/generated/** linguist-generated=true
+forge/components/ui/internal/render/*_templ.go linguist-generated=true
+forge/components/ui/api_generated.go linguist-generated=true

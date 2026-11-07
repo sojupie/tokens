@@ -1,0 +1,84 @@
+package render
+
+import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+
+import "github.com/sojupie/tokens/forge/components/ui"
+
+templ SpecimenSearch(c webview.ComponentCase) {
+	@PlaygroundSearch(c)
+}
+
+templ SearchScene(c webview.ComponentCase) {
+	@webview.UseComponentAssets("list")
+	@webview.UseComponentAssets("search")
+	<div class="md-search-scene">
+		<section class="md-search-page" data-search-background>
+			if c.Variant=="adaptive" {
+				<h3 data-search-folder-title>Inbox</h3>
+				@ui.ListHost(templ.Attributes{"class":"md-list-demo md-search-messages"}) {
+					@ui.List(c.SearchMessageList()) {
+						for index,label:=range webview.SearchExamples {
+							@ui.ListButton(c.SearchMessage(index,label))
+						}
+					}
+					<output class="tokens-visually-hidden" aria-live="polite"></output>
+				}
+			} else {
+				<h3 data-search-page-title>Component library</h3>
+				<p data-search-page-description>Find controls and patterns for your next screen.</p>
+				<article><strong>Buttons and actions</strong><p>Choose how people take action.</p></article>
+				<article><strong>Content and navigation</strong><p>Organize information and help people find it.</p></article>
+				<article><strong>Inputs and selection</strong><p>Collect information and show available choices.</p></article>
+			}
+		</section>
+		if c.Variant!="adaptive" {
+			@SearchScrim()
+		}
+		@SearchView(c)
+		if c.Shape=="menu" {
+			@ui.NavigationSurface(c.SearchNavigationPanel(), true) {
+				@NavigationContents(c.SearchNavigation())
+			}
+		}
+	</div>
+}
+
+templ SearchCompositionNavigation(c webview.ComponentCase) {
+ @ui.NavigationRail(c.SearchMailRail()) {
+  for index,label:=range []string{"Inbox","Chat","Spaces"} {
+   @ui.NavigationItem(ui.NavigationItemProps{Label:label,Icon:[]string{"mail","chat","groups"}[index],Current:index==0,Attrs:c.SearchMailDestination(index)})
+  }
+ }
+}
+
+templ SearchScrim() {
+	@ui.SearchScrim()
+}
+
+templ SearchView(c webview.ComponentCase) {
+	@ui.SearchView(SearchProps(c, "Search tokens", c.SearchQuery(), true)) {
+		for _,label:=range webview.SearchExamples {
+			@ui.SearchResult(label)
+		}
+	}
+}
+
+templ SearchBar(c webview.ComponentCase, label string) {
+	@SearchBarValue(c, label, c.SearchQuery())
+}
+
+templ SearchBarValue(c webview.ComponentCase, label, value string) {
+	@SearchBarContent(c, label, value, true)
+}
+
+templ SearchBarContent(c webview.ComponentCase, label, value string, disclosure bool) {
+	@ui.SearchBar(SearchProps(c, label, value, disclosure), label, value, disclosure)
+}
+
+templ SearchBarSurface(c webview.ComponentCase, label, value string) {
+	@ui.SearchBarSurface(SearchProps(c, label, value, false))
+}
+
+templ SearchExampleOptions(id string) {
+	@ui.CheckboxField(ui.ChoiceProps{ID: id + "-exact-names", Label: "Match exact names", InputAttrs: templ.Attributes{"data-search-exact": true}})
+}

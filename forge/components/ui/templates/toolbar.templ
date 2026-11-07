@@ -1,0 +1,16 @@
+package render
+
+import model "github.com/sojupie/tokens/forge/components/ui/internal/model"
+
+templ Toolbar(attrs templ.Attributes) {
+	@ToolbarSurface(model.ToolbarProps{Attrs: attrs}) {
+		{ children... }
+	}
+}
+
+templ ToolbarSurface(p model.ToolbarProps) {
+	@model.Require("toolbar")
+	<div { p.Attributes()... }>
+		{ children... }
+	</div>
+}

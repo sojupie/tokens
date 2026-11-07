@@ -2,12 +2,21 @@
 {
  const header=document.currentScript.parentElement;
  const wide=matchMedia(`(min-width:${header.dataset.drawerBreakpoint}px)`).matches;
- header.dataset.docked=String(wide);
- document.documentElement.dataset.siteDrawer=wide?'expanded':'modal';
- if(wide){
+ const rail=matchMedia('(min-width:600px)').matches;
+ header.dataset.docked=String(rail);
+ header.dataset.siteLayout=wide?'wide':rail?'medium':'mobile';
+ document.documentElement.dataset.siteLayout=header.dataset.siteLayout;
+ const section=header.querySelector('[data-site-navigation]')?.dataset.activeSection??'';
+ document.documentElement.dataset.siteSection=section;
+ header.dataset.drawerPersistent=String(wide&&!!section);
+ header.dataset.mobileLevel=section?'section':'main';
+ document.documentElement.dataset.siteDrawer=rail?'expanded':'modal';
+ if(rail){
+  const appearance=header.querySelector('.tokens-drawer-appearance');
+  if(appearance)header.append(appearance);
   const drawer=header.querySelector('#tokens-site-menu');
   drawer.dataset.variant='standard';
-  drawer.setAttribute('role','navigation');
   drawer.setAttribute('open','');
+  drawer.setAttribute('role','navigation');
  }
 }

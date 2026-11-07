@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"flag"
+	"github.com/sojupie/tokens/catalog/web"
+	"github.com/sojupie/tokens/source/publish"
 	"os"
 	"path/filepath"
 	"strings"
@@ -13,6 +15,7 @@ import (
 func runSiteShell(args []string) error {
 	flags := flag.NewFlagSet("tokens site-shell", flag.ContinueOnError)
 	out := flags.String("out", ".", "Output directory for shared site assets and HTML fragments")
+	published := flags.String("published", "", "Optional publication directory supplying component and style navigation")
 	origin := flags.String("catalog", "https://tokencatalog.dev/md3", "Catalog URL including collection path")
 	if err := flags.Parse(args); err != nil {
 		return err
@@ -21,6 +24,13 @@ func runSiteShell(args []string) error {
 		return err
 	}
 	config := site.Default()
+	if *published != "" {
+		state, err := publish.Load(filepath.Join(*published, "tokens.sqlite"))
+		if err != nil {
+			return err
+		}
+		config.Navigation = web.SiteNavigation(state)
+	}
 	config.Catalog = strings.TrimRight(*origin, "/")
 	config.ActiveTool = config.Tools[1].URL
 	for _, name := range []string{"site.css", "site.js", "logo.svg", "logo-250x250.png", "logo-250x250.webp"} {

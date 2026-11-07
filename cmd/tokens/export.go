@@ -18,7 +18,8 @@ func runExport(args []string) error {
 	published, output := "published", "dist/tokens"
 	flags.StringVar(&published, "published", published, "publication directory")
 	flags.StringVar(&output, "output", output, "output directory for tokens.tokens.json and report.json")
-	themes := false
+	themes, valueCatalog := false, false
+	flags.BoolVar(&valueCatalog, "value-catalog", false, "include the captured value catalog for CSS asset compilation")
 	flags.BoolVar(&themes, "themes", false, "export the site's six appearance contexts and an index")
 	context := dtcg.DefaultContext()
 	flags.Func("context", "context selection, e.g. 'Theme=Dark'; repeat for each override", func(value string) error {
@@ -45,6 +46,18 @@ func runExport(args []string) error {
 	state, err := publish.Load(filepath.Join(dir, "tokens.sqlite"))
 	if err != nil {
 		return err
+	}
+	if valueCatalog {
+		if err := os.MkdirAll(output, 0755); err != nil {
+			return err
+		}
+		values, err := json.Marshal(dtcg.ValueCatalog(state))
+		if err != nil {
+			return err
+		}
+		if err := os.WriteFile(filepath.Join(output, "values.tokens.json"), values, 0644); err != nil {
+			return err
+		}
 	}
 	if themes {
 		var index []map[string]string

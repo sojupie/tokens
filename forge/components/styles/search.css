@@ -46,12 +46,8 @@
   background: var(--md-sys-color-surface);
 }
 .md-search-mail-navigation {
-  --_rail-rest-width: var(--md-comp-nav-rail-collapsed-container-width);
   min-block-size: 0;
   overflow: auto;
-}
-.md-search-mail-navigation .md-navigation-rail > header {
-  margin-inline: 0;
 }
 .md-search-app .md-search-scene {
   isolation: auto;
@@ -666,3 +662,8 @@
     border: 1px solid CanvasText;
   }
 }
+
+/* A standalone bar participates in its host layout; disclosure views remain anchored. */
+.md-search-view[data-layout="inline"] { position:relative; inset:auto; inline-size:100%; block-size:auto; }
+
+@media (scripting: none) { .md-search-view:has(.md-search-trigger) { display:none; } }
