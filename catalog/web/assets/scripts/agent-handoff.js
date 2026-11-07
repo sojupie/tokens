@@ -10,7 +10,7 @@
   document.addEventListener('keydown', clearCopied, true);
   for (const button of document.querySelectorAll('[data-copy-target]')) {
     const field = document.getElementById(button.dataset.copyTarget);
-    const status = button.closest('section').querySelector('[data-copy-status]');
+    const status = button.closest('.tokens-card-content')?.querySelector('[data-copy-status]');
     if (!field || !status) continue;
     button.hidden = false;
     button.addEventListener('click', async () => {
