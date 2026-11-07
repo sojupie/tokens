@@ -22,6 +22,8 @@ test("site palette follows appearance and aliases without modifying captured tok
       assert.match(css[`catalog-color-${name}`], /^#[0-9a-f]{6}$/i, "extensions must reach the compiled CSS");
     }
     assert.equal(css["md-ref-palette-secondary90"], "#e2e0f9");
+    assert.match(css["md-sys-color-error-container"], /^#[0-9a-f]{6}$/i);
+    assert.match(css["md-sys-color-on-error-container"], /^#[0-9a-f]{6}$/i);
     assert.equal(css["md-comp-example"], css["md-sys-color-primary"]);
     if (!surfaceTints.has(theme)) surfaceTints.set(theme, css["md-sys-color-surface-tint-color"]);
     assert.equal(css["md-sys-color-surface-tint-color"], surfaceTints.get(theme));

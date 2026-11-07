@@ -21,6 +21,10 @@ export function siteTheme(document, appearance, { primary, secondary, extensions
     const hex = hexFromArgb(argb);
     return { colorSpace: "srgb", components: [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255), alpha: 1 };
   };
+  // Tonal error buttons need this pair even in captures without error containers.
+  for (const name of ["error-container", "on-error-container"]) {
+    themed.md.sys.color[name] ??= { $type: "color" };
+  }
   for (const [name, token] of Object.entries(themed.md.sys.color)) {
     const role = name === "surface-tint-color" ? "surfaceTint" : name.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
     if (!MaterialDynamicColors[role]?.getArgb) throw new Error(`Unmapped site color: ${name}`);
