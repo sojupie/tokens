@@ -79,7 +79,11 @@ func prefixHTML(body []byte, base string) ([]byte, error) {
 			for i := range token.Attr {
 				attr := &token.Attr[i]
 				switch attr.Key {
-				case "href", "src", "srcset", "action", "hx-get", "hx-post", "hx-push-url", "hx-replace-url":
+				case "srcset":
+					value := prefixSrcset(attr.Val, base)
+					changed = changed || value != attr.Val
+					attr.Val = value
+				case "href", "src", "action", "hx-get", "hx-post", "hx-push-url", "hx-replace-url":
 					if strings.HasPrefix(attr.Val, "/") && !strings.HasPrefix(attr.Val, "//") {
 						attr.Val = base + attr.Val
 						changed = true
@@ -93,4 +97,36 @@ func prefixHTML(body []byte, base string) ([]byte, error) {
 		}
 		out.Write(raw)
 	}
+}
+
+func prefixSrcset(value, base string) string {
+	const space = " \t\n\r\f"
+	var out strings.Builder
+	for value != "" {
+		candidate := strings.TrimLeft(value, space+",")
+		out.WriteString(value[:len(value)-len(candidate)])
+		urlEnd := strings.IndexAny(candidate, space)
+		if urlEnd < 0 {
+			urlEnd = len(candidate)
+		}
+		url := candidate[:urlEnd]
+		if strings.HasPrefix(url, "/") && !strings.HasPrefix(url, "//") {
+			out.WriteString(base)
+		}
+		out.WriteString(url)
+		value = candidate[urlEnd:]
+		// A comma inside the URL can be part of a data URL. A trailing comma
+		// ends a candidate without a width or density descriptor.
+		if strings.HasSuffix(url, ",") {
+			continue
+		}
+		descriptorEnd := strings.IndexByte(value, ',')
+		if descriptorEnd < 0 {
+			out.WriteString(value)
+			break
+		}
+		out.WriteString(value[:descriptorEnd+1])
+		value = value[descriptorEnd+1:]
+	}
+	return out.String()
 }

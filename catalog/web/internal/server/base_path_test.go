@@ -10,6 +10,17 @@ import (
 	"golang.org/x/net/html"
 )
 
+func TestPrefixSrcset(t *testing.T) {
+	const candidates = "/small.jpg 360w, /large.jpg 720w"
+	if got := prefixSrcset(candidates, "/md3"); got != "/md3/small.jpg 360w, /md3/large.jpg 720w" {
+		t.Fatalf("width candidates: %q", got)
+	}
+	const mixed = "data:image/jpeg;base64,/abc 1x, //cdn.example/image.jpg 2x,/local.jpg 3x"
+	if got := prefixSrcset(mixed, "/md3"); got != "data:image/jpeg;base64,/abc 1x, //cdn.example/image.jpg 2x,/md3/local.jpg 3x" {
+		t.Fatalf("mixed candidates: %q", got)
+	}
+}
+
 func TestCollectionBasePath(t *testing.T) {
 	server := New(seoTestState(), "")
 	if err := server.SetPublicOrigin("https://tokencatalog.dev/md3/"); err != nil {
