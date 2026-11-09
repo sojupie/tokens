@@ -540,34 +540,45 @@ test('export disclosures receive local open state before the fragment is inserte
  assert.deepEqual(incoming.map(detail=>detail.open),[false,false]);
 });
 
-test('export changes invalidate download and retain native submission and cancellation', () => {
+test('export selection checks and native downloads share the loading button', () => {
  const events={},requests=[],timers=[];
+ let observeLoading;
  function panel(){
   const fields=Object.fromEntries(Object.entries({kind:'component',slug:'buttons',set:'filled',q:'icon',content:'tokens',scope:'view',format:'css','context.Theme':'Dark'}).map(([name,value])=>[name,{name,value,type:'hidden'}]));
   fields._download={name:'_download',value:''};
   const form={id:'tokens-export-form',fields,listeners:{},addEventListener(name,fn){this.listeners[name]=fn;},querySelector:()=>fields._download,setAttribute(){},querySelectorAll:()=>Object.values(fields),closest:()=>result};
-  const nodes={'form':form,'[data-export-confirmation]':{},'#tokens-export-submit-pending':{busy:false,classList:{contains(){return current.nodes['#tokens-export-submit-pending'].busy;}}},'[data-export-counts]':{},'[data-export-error]':{},'#tokens-export-fields':{dataset:{exportReady:'true',exportLabel:'Download ZIP'}},'[data-export-submit]':{attributes:{},label:{},setAttribute(name,value){this.attributes[name]=value;},querySelector(){return this.label;}}};
-  const listeners={};const result={dataset:{defaultScope:'subject'},nodes,querySelector:s=>nodes[s],querySelectorAll:()=>[],addEventListener:(name,fn)=>listeners[name]=fn,contains:()=>false,showModal(){this.open=true;},close(){this.open=false;listeners.close();}};return result;
+  const loadingAction={busy:false,classList:{contains(name){return name==='htmx-request' && loadingAction.busy;}}};
+  const nodes={'form':form,'[data-export-confirmation]':{},'#tokens-export-loading-action':loadingAction,'[data-export-counts]':{},'[data-export-error]':{},'#tokens-export-fields':{dataset:{exportReady:'true',exportLabel:'Download ZIP'}},'[data-export-submit]':{attributes:{},label:{},setAttribute(name,value){this.attributes[name]=value;},querySelector(){return this.label;}}};
+  const listeners={};const result={open:false,dataset:{defaultScope:'subject'},nodes,querySelector:s=>nodes[s],querySelectorAll:()=>[],addEventListener:(name,fn)=>listeners[name]=fn,contains:()=>false,showModal(){this.open=true;},close(){this.open=false;listeners.close();}};return result;
  }
  let current;current=panel();const original=current;
  class FormData extends Map {constructor(form){super(Object.entries(form.fields).map(([name,input])=>[name,input.value]));}}
  const document={cookie:'',readyState:'complete',addEventListener:(name,fn)=>events[name]=fn,getElementById:()=>current,querySelector:()=>null};
- runScript('export.js',{document,setInterval:fn=>{timers.push(fn);return timers.length;},clearInterval(){},location:{search:''},URLSearchParams,FormData,htmx:{trigger:(form,event)=>requests.push({form,event})}});
+ runScript('export.js',{document,MutationObserver:class{constructor(callback){observeLoading=callback;}observe(){}},setInterval:fn=>{timers.push(fn);return timers.length;},clearInterval(){},location:{search:''},URLSearchParams,FormData,htmx:{trigger:(form,event)=>requests.push({form,event})}});
  current=panel();events['htmx:historyRestore']();let focused=false;
  const trigger={dataset:{exportScope:'view'},focus(){focused=true;}};
  events.click({target:{closest:selector=>selector==='[data-export-open]'?trigger:null}});
- assert.equal(current.open,true);assert.equal(original.open,undefined);
+ assert.equal(current.open,true);assert.equal(original.open,false);
  assert.equal(requests[0].event,'export-refresh');assert.equal(requests[0].form,current.nodes.form);
  assert.equal(current.nodes.form.fields.scope.value,'view');
  const ctx={sourceElement:current.nodes.form};
  events['htmx:before:request']({detail:{ctx}});
  assert.equal(current.nodes['[data-export-confirmation]'].disabled,true,'a changed selection is unconfirmed until the server returns an action');
- assert.equal(current.nodes['[data-export-submit]'].attributes['aria-busy'],'false','validation must not activate the purple loading appearance');
+ const form=current.nodes.form,button=current.nodes['[data-export-submit]'];
+ const loadingAction=current.nodes['#tokens-export-loading-action'];
+ assert.equal(button.attributes['aria-busy'],'false','the indicator follows HTMX request state');
+ loadingAction.busy=true;
+ observeLoading();
+ assert.equal(button.attributes['aria-busy'],'true');
+ assert.equal(current.nodes['[data-export-confirmation]'].disabled,true);
  events['htmx:error']({detail:{ctx}});
  assert.equal(current.nodes['[data-export-error]'].hidden,false);
  assert.match(current.nodes['[data-export-error]'].textContent,/Could not check/);
+ loadingAction.busy=false;
+ observeLoading();
+ assert.equal(button.attributes['aria-busy'],'false');
+ assert.equal(current.nodes['[data-export-confirmation]'].disabled,true,'a failed check does not confirm the selection');
  current.nodes['[data-export-confirmation]'].disabled=false;
- const form=current.nodes.form,button=current.nodes['[data-export-submit]'];
  form.listeners.submit({preventDefault(){throw Error('native download was intercepted');}});
  assert.equal(form.target,'tokens-export-transfer');
  assert.equal(button.attributes['aria-busy'],'true');assert.equal(button.disabled,true);
@@ -1032,6 +1043,44 @@ test('per-node HTMX link policy does not rescan processed containers',()=>{
   events['htmx:beforeProcessNode']({detail:{elt:link}});
   assert.equal(attributes['hx-boost'],href.includes('/components/')?undefined:'false');
  }
+});
+
+test('page progress waits for slow full-page requests and clears after the last one', () => {
+ const events = new Map(), timers = new Map(), attributes = new Set(), body = {};
+ let timerID = 0;
+ const document = {
+  body, readyState: 'loading',
+  documentElement: {setAttribute: name => attributes.add(name), removeAttribute: name => attributes.delete(name)},
+  getElementById: () => ({}),
+  addEventListener(name, listener) {
+   if (!events.has(name)) events.set(name, []);
+   events.get(name).push(listener);
+  },
+ };
+ runScript('site-ui.js', {
+  document, window: {addEventListener() {}},
+  setTimeout(fn) {const id = ++timerID; timers.set(id, fn); return id;},
+  clearTimeout: id => timers.delete(id),
+ });
+ const start = ctx => events.get('htmx:before:request').forEach(fn => fn({detail:{ctx}}));
+ const finish = ctx => events.get('htmx:finally:request').forEach(fn => fn({detail:{ctx}}));
+ const page = () => ({target:body, request:{headers:{}}});
+ start({target:{}, request:{headers:{}}});
+ assert.equal(timers.size, 0);
+ const first = page(), second = page();
+ start(first);
+ finish(first);
+ assert.equal(timers.size, 0);
+ start(first);
+ start(second);
+ assert.equal(timers.size, 1);
+ assert.equal(attributes.size, 0);
+ timers.values().next().value();
+ assert.equal(attributes.has('data-page-loading'), true);
+ finish(first);
+ assert.equal(attributes.has('data-page-loading'), true);
+ finish(second);
+ assert.equal(attributes.has('data-page-loading'), false);
 });
 
 function behaviorLoader({css=false,preview=true,eager=[],declared=['runtime/button-groups.js','runtime/segmented-buttons.js']}={}) {

@@ -89,6 +89,20 @@
       const menu=document.getElementById('tokens-site-menu');if(menu?.matches(':modal'))menu.close();
     }
   });
+  const pageRequests = new Set();
+  let pageProgressTimer;
+  document.addEventListener('htmx:before:request', event => {
+    const {ctx} = event.detail;
+    if (ctx.target !== document.body || !document.getElementById('tokens-page-progress')) return;
+    if (pageRequests.size === 0)
+      pageProgressTimer = setTimeout(() => document.documentElement.setAttribute('data-page-loading', ''), 200);
+    pageRequests.add(ctx);
+  });
+  document.addEventListener('htmx:finally:request', event => {
+    if (!pageRequests.delete(event.detail.ctx) || pageRequests.size) return;
+    clearTimeout(pageProgressTimer);
+    document.documentElement.removeAttribute('data-page-loading');
+  });
   // Explicit gallery links and browser history both return to the saved offset.
   const galleryKey=()=>/\/(components|styles)\/?$/.test(location.pathname)?location.pathname+location.search:null;
   function saveGallery(){const key=galleryKey();if(key&&document.getElementById('subject-list'))try{sessionStorage.setItem('tokens-scroll:'+key,String(window.scrollY));}catch{}}

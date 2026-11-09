@@ -39,7 +39,7 @@ function identifiers(text: string, visit: (name: string, index: number) => strin
   return result;
 }
 
-function walk(css: string, visit: Visitor){
+function walk(css: string, visit: Visitor, {dropEmptyRules=false}={}){
   const variable=(text: string,index: number)=>/\b(?:var|style)\(\s*$/i.test(text.slice(0,index).replace(/\/\*[\s\S]*?\*\//g,''));
   const root=postcss.parse(css);
   root.walkDecls(decl=>{
@@ -55,6 +55,7 @@ function walk(css: string, visit: Visitor){
     rule.params=identifiers(params,(name,index)=>
       rule.name==='property'||/^\s*:/.test(params.slice(index+name.length))||variable(params,index)?visit(name):name);
   });
+  if(dropEmptyRules)root.walkRules(rule=>{if(!rule.nodes.length)rule.remove();});
   return root.toString();
 }
 

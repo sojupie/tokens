@@ -130,6 +130,11 @@ func TestExportRequestDependenciesFollowContextOrder(t *testing.T) {
 	if state.RequestAttrs("format")["hx-get"] != "/downloads/export/summary" {
 		t.Fatal("format changes must not wait for option resolution")
 	}
+	for _, name := range []string{"content", "scope", "format", "context.Theme"} {
+		if state.RequestAttrs(name)["hx-indicator"] != "#tokens-export-loading-action" {
+			t.Errorf("%s does not use the Download loading indicator", name)
+		}
+	}
 }
 
 func TestExportFooterKeepsSummaryAndLoadingActionOutsideScrollingForm(t *testing.T) {

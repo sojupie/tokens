@@ -3,10 +3,28 @@ function harness(){
  const listeners={},timers=new Map();let time=0,seq=0;
  const document={readyState:'loading',querySelectorAll:()=>[],addEventListener(t,f){(listeners[t]??=[]).push(f)}};
  runInNewContext(readFileSync(`${__dirname}/../../behaviors/tooltips.js`,'utf8'),{document,window:{addEventListener(){}},setTimeout(fn,ms){const id=++seq;timers.set(id,{fn,at:time+ms});return id},clearTimeout(id){timers.delete(id)}});
- function demo(){const attributes=new Set(),d={matches:()=>false,querySelector:selector=>selector.includes("[popover]")?null:{},contains:e=>e?.parent===d,setAttribute:n=>attributes.add(n),removeAttribute:n=>attributes.delete(n),get visible(){return attributes.has('data-tooltip-visible')}};d.target={parent:d,closest:()=>d};return d}
+ function demo(){const attributes=new Set(),d={matches:()=>false,querySelector:selector=>selector.includes("[popover]")?null:{},contains:e=>e?.parent===d,setAttribute:n=>attributes.add(n),removeAttribute:n=>attributes.delete(n),get visible(){return attributes.has('data-tooltip-visible')}};d.target={parent:d,closest:selector=>selector==='.md-tooltip-demo'?d:null};return d}
  return{demo,send(type,d,more={}){for(const f of listeners[type]||[])f({target:d.target,relatedTarget:null,pointerId:1,isPrimary:true,pointerType:'mouse',clientX:0,clientY:0,...more})},advance(ms){time+=ms;for(const [id,t]of [...timers])if(t.at<=time){timers.delete(id);t.fn()}}};
 }
 test('plain tooltips retain 1.5s exit grace and cancel dismissal on re-entry',()=>{const h=harness(),d=h.demo();h.send('pointerover',d);assert.equal(d.visible,true);h.send('pointerout',d);h.advance(1499);assert.equal(d.visible,true);h.send('pointerover',d);h.advance(10);assert.equal(d.visible,true);h.send('pointerout',d);h.advance(1500);assert.equal(d.visible,false)});
+test('opt-in rich tooltips close immediately after hover without closing tap-opened help', () => {
+ const h = harness(), demo = h.demo();
+ let open = false;
+ const tip = {matches: () => open, showPopover() {open = true}, hidePopover() {open = false}};
+ demo.querySelector = selector => selector === '.md-tooltip[popover]' ? tip : null;
+ const trigger = {parent: demo, parentElement: demo, contains: () => false,
+   closest: selector => selector === '.md-tooltip-demo' ? demo : trigger};
+ demo.target = trigger;
+ h.send('pointerover', demo);
+ assert.equal(open, true);
+ h.send('pointerout', demo);
+ assert.equal(open, false);
+ h.send('pointerover', demo, {pointerType: 'touch'});
+ assert.equal(open, false);
+ tip.showPopover();
+ h.send('pointerout', demo);
+ assert.equal(open, true);
+});
 test('touch hold opens after 500ms; taps and vertical gestures do not open',()=>{const h=harness(),d=h.demo();h.send('pointerdown',d,{pointerType:'touch'});h.send('focusin',d);h.advance(499);assert.equal(d.visible,false);h.advance(1);assert.equal(d.visible,true);h.send('pointerup',d,{pointerType:'touch'});h.advance(1500);assert.equal(d.visible,false);h.send('pointerdown',d,{pointerType:'touch'});h.send('pointerup',d,{pointerType:'touch'});h.advance(600);assert.equal(d.visible,false);h.send('pointerdown',d,{pointerType:'touch'});h.send('pointermove',d,{pointerType:'touch',clientY:20});h.advance(600);assert.equal(d.visible,false)});
 test('opening another tooltip closes the previous one; Escape dismisses keyboard disclosure',()=>{const h=harness(),a=h.demo(),b=h.demo();h.send('focusin',a);assert.equal(a.visible,true);h.send('focusin',b);assert.equal(a.visible,false);assert.equal(b.visible,true);h.send('keydown',b,{key:'Escape'});assert.equal(b.visible,false)});
 

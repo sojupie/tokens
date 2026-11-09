@@ -8,7 +8,9 @@ type ProgressProps struct {
 	// A nil Value is indeterminate. Values are percentages in [0,100].
 	Value     *float64
 	Contained bool
-	Attrs     templ.Attributes
+	// CSSOnly uses the common stylesheet for thin, flat, indeterminate linear progress.
+	CSSOnly bool
+	Attrs   templ.Attributes
 }
 
 func (p ProgressProps) Attributes(loading bool) templ.Attributes {

@@ -25,7 +25,7 @@
   }
   if (typeof module !== "undefined") Object.assign(module.exports, {tooltipPosition, plainTooltipPosition});
   if (typeof document === "undefined") return;
-  let active, exitTimer, hold, pointerFocus = false;
+  let active, exitTimer, hold, hoverTip, pointerFocus = false;
   function hide() {
     clearTimeout(exitTimer);
     active?.querySelector('.md-tooltip[popover]:popover-open')?.hidePopover();
@@ -84,8 +84,23 @@
     for (const demo of document.querySelectorAll('.md-tooltip-demo')) demo.setAttribute('data-tooltip-managed', '');
   }
   document.addEventListener("toggle", event => {
+    if (event.newState === "closed" && event.target === hoverTip) hoverTip = null;
     if (event.target.matches?.('.md-tooltip[data-variant="rich"][popover]:popover-open')) { hide(); positionTooltip(event.target); }
   }, true);
+  for (const type of ["pointerover", "pointerout"]) document.addEventListener(type, event => {
+    if (event.pointerType === "touch") return;
+    const trigger = event.target.closest?.(".md-tooltip-demo[data-tooltip-hover] > button");
+    if (!trigger || trigger.contains(event.relatedTarget)) return;
+    const tip = trigger.parentElement.querySelector(".md-tooltip[popover]");
+    if (!tip) return;
+    if (type === "pointerover" && !tip.matches(":popover-open")) {
+      tip.showPopover();
+      hoverTip = tip;
+    } else if (type === "pointerout" && tip === hoverTip) {
+      tip.hidePopover();
+      hoverTip = null;
+    }
+  });
   for (const type of ["resize", "scroll"]) window.addEventListener(type, event => {
     if (type === "scroll" && event.target.closest?.(".md-tooltip:popover-open")) return;
     for (const tip of document.querySelectorAll(".md-tooltip:popover-open")) positionTooltip(tip);

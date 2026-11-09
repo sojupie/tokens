@@ -34,6 +34,19 @@ import { splitMenuPosition } from "../helpers/controls.ts";
     menu.style.top = pos.top + "px";
   }
   document.addEventListener(
+    "beforetoggle",
+    (event) => {
+      const menu = event.target;
+      if (event.newState !== "closed" || !menu.matches?.(".md-split-menu"))
+        return;
+      menu
+        .closest(".md-split-demo")
+        .querySelector(".md-split-trailing")
+        .setAttribute("aria-expanded", "false");
+    },
+    true,
+  );
+  document.addEventListener(
     "toggle",
     (event) => {
       const menu = event.target;

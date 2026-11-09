@@ -27,6 +27,34 @@ For development with existing data, run `publish` and `serve` against a verified
 snapshot. Rebuilding a publication does not need another crawl. Avoid modifying
 snapshot files after creation; their checksums verify the captured evidence.
 
+### HTTP/3 in development
+
+Use Caddy to terminate HTTPS for transport tests, as Cloudflare does for
+visitors in production. Caddy listens on TCP and UDP port 8085 and forwards
+requests to the Catalog on loopback.
+
+```sh
+./bin/tokens serve --published published --listen 127.0.0.1:8086 \
+  --public-origin https://localhost:8085/md3
+caddy run --config deploy/Caddyfile.dev --adapter caddyfile
+```
+
+Run the commands in separate terminals. Open `https://localhost:8085/md3`
+after trusting the local Caddy CA in your test browser. The config skips
+automatic trust installation. To verify QUIC without changing browser trust,
+use a curl build with HTTP/3 support and pass Caddy's CA explicitly:
+
+```sh
+curl --http3-only --cacert "$(caddy environ | sed -n 's/^caddy.AppDataDir=//p')/pki/authorities/local/root.crt" \
+  -o /dev/null -w '%{http_version}\n' https://localhost:8085/md3/api/v1/health
+```
+
+HTTP/2 and HTTP/1.1 remain available over TCP. To test from another device,
+set `TOKENS_DEV_HTTPS_SITE` to its reachable HTTPS URL (including the port),
+set `TOKENS_DEV_HTTPS_BIND` to the dev host's interface address, and match
+`--public-origin` to that URL plus `/md3`. The client needs to trust the
+same Caddy CA and reach UDP on the chosen port.
+
 ## Checks
 
 ```sh
@@ -666,9 +694,10 @@ builds default to original names and accept `--css-names short` for review.
 
 The delivery pack shares one deterministic name map across site, component and
 theme CSS. Names referenced by controllers, inline styles or templates retain
-their original spelling. The build scans those sources automatically; there is
-no browser translation table. DTCG, exported CSS and component implementation
-downloads retain original names and bytes.
+their original spelling. The build skips test sources. It protects literal names
+individually and protects a prefix when source code uses it to construct names.
+Empty rules are removed from the delivery pack. DTCG, exported CSS and component
+implementation downloads retain their original names and bytes.
 
 The server verifies the pack against its embedded styles and loaded themes at
 startup. Profiled stylesheet URLs include both the content hash and name-map ID.

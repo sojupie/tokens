@@ -1,0 +1,32 @@
+/* The flat indeterminate bar can render before optional component scripts. */
+.md-progress-css {
+  position: relative;
+  inline-size: 15rem;
+  max-inline-size: 100%;
+  block-size: var(--md-sys-measurement-space50);
+  overflow: hidden;
+  background: var(--md-sys-color-secondary-container);
+}
+.md-progress-css:dir(rtl) {
+  transform: scaleX(-1);
+}
+.md-progress-css::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  inset-block: 0;
+  inline-size: 30%;
+  border-radius: var(--md-sys-shape-corner-full);
+  background: var(--md-sys-color-primary);
+  animation: md-progress-css-sweep 1.4s cubic-bezier(.3, 0, .8, .15) infinite;
+}
+@keyframes md-progress-css-sweep {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(334%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .md-progress-css::before {
+    animation: none;
+    transform: translateX(100%);
+  }
+}

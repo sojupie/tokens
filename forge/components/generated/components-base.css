@@ -3125,6 +3125,38 @@
  .md-progress > svg { display:none; }
  .md-progress progress { inline-size:100%; accent-color:var(--md-sys-color-primary); }
 }
+/* The flat indeterminate bar can render before optional component scripts. */
+.md-progress-css {
+  position: relative;
+  inline-size: 15rem;
+  max-inline-size: 100%;
+  block-size: var(--md-sys-measurement-space50);
+  overflow: hidden;
+  background: var(--md-sys-color-secondary-container);
+}
+.md-progress-css:dir(rtl) {
+  transform: scaleX(-1);
+}
+.md-progress-css::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  inset-block: 0;
+  inline-size: 30%;
+  border-radius: var(--md-sys-shape-corner-full);
+  background: var(--md-sys-color-primary);
+  animation: md-progress-css-sweep 1.4s cubic-bezier(.3, 0, .8, .15) infinite;
+}
+@keyframes md-progress-css-sweep {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(334%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .md-progress-css::before {
+    animation: none;
+    transform: translateX(100%);
+  }
+}
 .md-loading {
   display: grid;
   place-items: center;
@@ -3975,6 +4007,8 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
     var(--_split-outer-radius);
 }
 .md-split-button > .md-split-trailing {
+  /* The menu trigger can change shape again when the pointer leaves during close. */
+  --_button-spring-damping: initial;
   --_button-icon-size: var(--_split-item-icon-size);
   --_button-rest-shape: var(--_split-inner-radius) var(--_split-outer-radius)
     var(--_split-outer-radius) var(--_split-inner-radius);
@@ -4032,39 +4066,34 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
 }
 .md-split-button > .md-split-trailing > svg {
   translate: var(--_split-icon-offset) 0;
-  rotate: 0deg;
-  transition:
-    translate var(--_motion-fast-spatial-duration)
-      var(--_motion-fast-spatial-easing),
-    rotate var(--_motion-fast-spatial-duration)
-      var(--_motion-fast-spatial-easing);
 }
 .md-split-button:dir(rtl) > .md-split-trailing > svg {
   translate: calc(-1 * var(--_split-icon-offset)) 0;
 }
-.md-split-button
-  > .md-split-trailing:is(
-    :active,
-    [data-pressed],
-    [data-button-state="pressed"],
-    [aria-expanded="true"]
-  ):not(:disabled)
-  > svg {
-  translate: 0 0;
+.md-split-button > .md-split-trailing > svg > path {
+  transform-box: fill-box;
+  transform-origin: center;
+  rotate: 0deg;
+  transition: rotate var(--_split-chevron-duration) var(--_split-chevron-easing);
+}
+.md-split-demo:has(> .md-split-menu:popover-open) > .md-split-button
+  > .md-split-trailing {
+  --_split-inner: var(--_split-item-selected-inner);
+  /* Keep the open shape through a press that may be cancelled. */
+  --_button-pressed-shape: var(--_button-rest-shape);
+}
+.md-split-demo:has(> .md-split-menu:popover-open) > .md-split-button
+  > .md-split-trailing:not(:disabled)
+  > svg > path {
   rotate: 180deg;
 }
-.md-split-button:dir(rtl)
-  > .md-split-trailing:is(
-    :active,
-    [data-pressed],
-    [data-button-state="pressed"],
-    [aria-expanded="true"]
-  ):not(:disabled)
-  > svg {
+.md-split-demo:has(> .md-split-menu:popover-open) > .md-split-button:dir(rtl)
+  > .md-split-trailing:not(:disabled)
+  > svg > path {
   rotate: -180deg;
 }
 @media (prefers-reduced-motion: reduce) {
-  .md-split-button > .md-split-trailing > svg {
+  .md-split-button > .md-split-trailing > svg > path {
     transition: none;
   }
 }
@@ -4078,10 +4107,6 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   .md-split-button > .md-button {
     transition: none;
   }
-}
-
-.md-split-button > .md-split-trailing[aria-expanded="true"] {
-  --_split-inner: var(--_split-item-selected-inner);
 }
 .md-button-group-demo {
   inline-size: 100%;

@@ -95,6 +95,7 @@ templ Layout(title string) {
 					}
 				</main>
 			} else {
+			@ui.Progress(ui.ProgressProps{ID: "tokens-page-progress", Label: "Loading page", CSSOnly: true, Attrs: templ.Attributes{"hx-preserve": true}})
 			<template hx type="partial" hx-target="#tokens-site-rail" hx-swap="innerMorph">@site.Rail(webview.SiteConfig(ctx))
 </template>
 			<template hx type="partial" hx-target="#tokens-site-destinations" hx-swap="innerMorph">

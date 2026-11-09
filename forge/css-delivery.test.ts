@@ -16,3 +16,18 @@ test('delivery shortening preserves runtime prefixes, inline properties, literal
  assert.deepEqual(deliveryStyles(source,['style="--inline-color:red"','`--motion-${speed}-duration`']),result);
  assert.match(source['/theme.css'],/--brand-long/,'input/download CSS is not mutated');
 });
+
+test('literal runtime names protect only exact matches and empty rules are dropped from delivery',()=>{
+ const css=':root{--surface:red;--surface-variant:blue;--concat-size:4px;--format-color:green}:root[data-theme=dark]{}';
+ const result=deliveryStyles({'/theme.css':css},[
+  'getPropertyValue("--surface");getPropertyValue("--concat-"+key);',
+  'fmt.Sprintf("--format-%s", key);',
+ ]);
+ assert.equal(result.shortened,1);
+ const delivered=result.styles['/theme.css'];
+ assert.match(delivered,/--surface:red/);
+ assert.match(delivered,/--concat-size:4px/);
+ assert.match(delivered,/--format-color:green/);
+ assert.doesNotMatch(delivered,/--surface-variant|data-theme/);
+ assert.match(css,/--surface-variant|data-theme/);
+});

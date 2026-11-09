@@ -730,7 +730,11 @@ func Layout(title string) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 57, "<template hx type=\"partial\" hx-target=\"#tokens-site-rail\" hx-swap=\"innerMorph\">")
+			templ_7745c5c3_Err = ui.Progress(ui.ProgressProps{ID: "tokens-page-progress", Label: "Loading page", CSSOnly: true, Attrs: templ.Attributes{"hx-preserve": true}}).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 57, " <template hx type=\"partial\" hx-target=\"#tokens-site-rail\" hx-swap=\"innerMorph\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

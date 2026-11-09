@@ -371,6 +371,7 @@ async function main() {
       buttonCoverage = buttons.coverage;
       for (const name of buttons.requiredNames) required.add(name);
       const components = generateComponents(document, compiled.values);
+      const downloadable = await compile(document, ":root", { overrides });
       const motionProperties = [];
       for (const speed of ["fast", "default", "slow"]) for (const type of ["spatial", "effects"]) {
         const name = `md-sys-motion-spring-${speed}-${type}`;
@@ -378,6 +379,17 @@ async function main() {
         const timing = cssTiming(Number(compiled.values[`${name}-damping`]), Number(compiled.values[`${name}-stiffness`]));
         for (const property of ["duration", "easing"]) motionProperties.push(`  --_motion-${speed}-${type}-${property}: ${timing[property]};`);
       }
+      // The split-button chevron uses Standard motion regardless of the site scheme.
+      if (identity.context["Motion scheme"] !== "Standard")
+        throw new Error("Split-button chevron timing requires the Standard export context");
+      const chevronTiming = cssTiming(
+        Number(downloadable.values["md-sys-motion-spring-fast-spatial-damping"]),
+        Number(downloadable.values["md-sys-motion-spring-fast-spatial-stiffness"]),
+      );
+      motionProperties.push(
+        `  --_split-chevron-duration: ${chevronTiming.duration};`,
+        `  --_split-chevron-easing: ${chevronTiming.easing};`,
+      );
       const motionCSS = `:root {\n${motionProperties.join("\n")}\n}\n`;
       const generated = compactCSS(motionCSS + anatomy + "\n" + elevation + "\n" + components.css);
       if (componentCSS !== undefined && componentCSS !== generated)
@@ -401,7 +413,6 @@ async function main() {
       for (const name of required)
         if (!(name in compiled.values))
           throw new Error(`${variant.name} is missing --${name}`);
-      const downloadable = await compile(document, ":root", { overrides });
       await writeFile(
         path.join(output, "dtcg", variant.name, "tokens.css"),
         downloadable.css,

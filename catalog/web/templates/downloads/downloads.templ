@@ -43,7 +43,7 @@ templ SiteDownloadDialog() {
 	@webview.UseComponentAssets("checkbox")
 	@webview.UseComponentAssets("messages")
 	@webview.UseComponentAssets("loading")
-	@ui.Modal(ui.DialogProps{ID: "tokens-site-download", TitleID: "tokens-site-download-title", Title: "Download", Attrs: templ.Attributes{"hx-boost": "false", "class": "tokens-export-dialog", "aria-describedby": "tokens-export-scope", "data-component-export": fmt.Sprint(webview.Metadata(ctx).Export != nil && webview.Metadata(ctx).Export.Component), "data-default-scope": webview.Metadata(ctx).Export.DefaultScope(), "data-has-css": fmt.Sprint(webview.Metadata(ctx).Export != nil && webview.Metadata(ctx).Export.CSS), "data-has-implementation": fmt.Sprint(webview.Metadata(ctx).Export != nil && webview.Metadata(ctx).Export.Implementations)}, FormAttrs: templ.Attributes{"id": "tokens-export-form", "action": "/downloads/export", "method": "get", "hx-get": "/downloads/export/options", "hx-trigger": "export-refresh", "hx-target": "#tokens-export-fields", "hx-swap": "outerMorph", "hx-sync": "this:replace", "hx-indicator": "#tokens-export-submit-pending", "hx-disable": "#tokens-export-fields fieldset, #tokens-export-submit-pending"}, Actions: DownloadDialogActions(), ActionsAttrs: templ.Attributes{"class": "tokens-export-actions"}}) {
+	@ui.Modal(ui.DialogProps{ID: "tokens-site-download", TitleID: "tokens-site-download-title", Title: "Download", Attrs: templ.Attributes{"hx-boost": "false", "class": "tokens-export-dialog", "aria-describedby": "tokens-export-scope", "data-component-export": fmt.Sprint(webview.Metadata(ctx).Export != nil && webview.Metadata(ctx).Export.Component), "data-default-scope": webview.Metadata(ctx).Export.DefaultScope(), "data-has-css": fmt.Sprint(webview.Metadata(ctx).Export != nil && webview.Metadata(ctx).Export.CSS), "data-has-implementation": fmt.Sprint(webview.Metadata(ctx).Export != nil && webview.Metadata(ctx).Export.Implementations)}, FormAttrs: templ.Attributes{"id": "tokens-export-form", "action": "/downloads/export", "method": "get", "hx-get": "/downloads/export/options", "hx-trigger": "export-refresh", "hx-target": "#tokens-export-fields", "hx-swap": "outerMorph", "hx-sync": "this:replace", "hx-indicator": webview.ExportLoadingTarget, "hx-disable": "#tokens-export-fields fieldset, #tokens-export-submit-pending"}, Actions: DownloadDialogActions(), ActionsAttrs: templ.Attributes{"class": "tokens-export-actions"}}) {
 		<input type="hidden" name="_download" value=""/>
 		if page := webview.Metadata(ctx).Export; page != nil {
 			@ExportDialogFields(webview.InitialExportDialog(*page))
@@ -143,6 +143,15 @@ templ ExportContextHelp() {
 	<p>Each token context has a separate file with the same token names. CSS uses :root; loading alternative files together makes the later values override earlier ones.</p>
 }
 
+templ ExportFormatHelp() {
+	<ul class="md-typescale-body-medium">
+		<li><strong>DTCG JSON:</strong> Token values and references in the format defined by the Design Tokens Format Module 2025.10.</li>
+		<li><strong>CSS variables:</strong> Generated solely from Google's upstream Material Design tokens and the values they reference.</li>
+		<li><strong>Source JSON:</strong> Token values and reference details captured from m3.material.io, packaged in Token Catalog’s own JSON format.</li>
+	</ul>
+	<p>If you want the full set of CSS used to build the components on Token Catalog, download <strong>Component implementation</strong> which includes styling rules and extra variables not formally expressed as design tokens in upstream sources.</p>
+}
+
 // Keep the form, modal and animated action mounted while replacing its choices.
 templ ExportDialogFields(state webview.ExportDialogState) {
 	<div id="tokens-export-fields" class="tokens-export-fields" data-component-assets>
@@ -186,7 +195,7 @@ templ ExportDialogFields(state webview.ExportDialogState) {
 				</summary>
 				<div class="tokens-export-context-heading">
 					<p>Choose the values to export. Multiple formats or contexts download together in a ZIP.</p>
-					@ui.TooltipHost(nil) {
+					@ui.TooltipHost(templ.Attributes{"data-tooltip-hover": ""}) {
 						@ui.IconButton(ui.IconButtonProps{Label: "About token contexts", Icon: "info", Size: ui.ExtraSmall, Attrs: templ.Attributes{"popovertarget": "export-context-help", "aria-haspopup": "dialog"}})
 						@ui.Tooltip(ui.TooltipProps{ID: "export-context-help", Title: "Token contexts", Variant: "rich", Body: ExportContextHelp()})
 					}
@@ -210,7 +219,15 @@ templ ExportDialogFields(state webview.ExportDialogState) {
 
 templ ExportDialogChoices(state webview.ExportDialogState, name, title string, choices []webview.CatalogChoice, multiple bool) {
 	<fieldset id={ webview.ExportChoiceID(name) } class="tokens-export-choices" aria-label={ title } { state.RequestAttrs(name)... }>
-		<legend><span>{ title }</span></legend>
+		<legend>
+			<span>{ title }</span>
+			if name == "format" {
+				@ui.TooltipHost(templ.Attributes{"data-tooltip-hover": ""}) {
+					@ui.IconButton(ui.IconButtonProps{Label: "About file formats", Icon: "info", Size: ui.ExtraSmall, Attrs: templ.Attributes{"popovertarget": "export-css-help", "aria-haspopup": "dialog"}})
+					@ui.Tooltip(ui.TooltipProps{ID: "export-css-help", Title: "File formats", Variant: "rich", Body: ExportFormatHelp()})
+				}
+			}
+		</legend>
 		<div>
 			for _, choice := range choices {
 				if multiple {

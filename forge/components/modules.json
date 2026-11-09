@@ -17,7 +17,8 @@
       "styles/menus.css",
       "styles/select-caret.css",
       "styles/horizontal-menu-sizing.css",
-      "styles/popup-motion.css"
+      "styles/popup-motion.css",
+      "styles/progress-css.css"
     ],
     "bindings": [
       "icon",

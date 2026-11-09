@@ -66,6 +66,16 @@ test('cards define their own surface foreground instead of inheriting a parent c
 });
 
 const {splitMenuPosition} = exported.exports;
+test('only the split menu trigger uses CSS instead of the press shape spring', () => {
+ const css = readFileSync(`${__dirname}/../../generated/components-base.css`, 'utf8');
+ const trailing = css.match(/\.md-split-button > \.md-split-trailing\s*\{([^}]+)\}/)?.[1];
+ const leading = css.match(/\.md-split-button > \.md-split-leading\s*\{([^}]+)\}/)?.[1];
+ const shared = css.match(/\.md-split-button > \.md-button\s*\{[^}]*transition:([^}]+)\}/)?.[0];
+ assert.match(trailing, /--_button-spring-damping:\s*initial/);
+ assert.doesNotMatch(leading, /--_button-spring-damping/);
+ assert.doesNotMatch(shared, /--_button-spring-damping/);
+});
+
 test('split menu keeps 4dp separation and aligns an available button edge',()=>{
  const trigger={left:200,right:248,top:100,bottom:140},group={left:100,right:248};
  const menu={width:180,height:100},viewport={width:800,height:600};
@@ -80,7 +90,8 @@ test('split menu keeps 4dp separation and aligns an available button edge',()=>{
 
 test('split menu placement measures the full box during opening scale animation',()=>{
  const events={};
- const trigger={getBoundingClientRect:()=>({left:270,right:318,top:20,bottom:60}),closest:()=>({getBoundingClientRect:()=>({left:100,right:318})}),setAttribute(){}};
+ const attributes = new Map();
+ const trigger={getBoundingClientRect:()=>({left:270,right:318,top:20,bottom:60}),closest:()=>({getBoundingClientRect:()=>({left:100,right:318})}),setAttribute:(name,value)=>attributes.set(name,value)};
  const demo={querySelector:()=>trigger};
  const menu={matches:()=>true,closest:()=>demo,offsetWidth:240,offsetHeight:156,style:{},dataset:{},querySelectorAll:()=>[],getBoundingClientRect(){throw Error('animated dimensions must not determine placement');}};
  runInNewContext(readFileSync(`${__dirname}/../../generated/runtime/split-buttons.js`,'utf8'),{
@@ -89,4 +100,7 @@ test('split menu placement measures the full box during opening scale animation'
  });
  events.toggle({target:menu});
  assert.equal(menu.style.left,'78px');assert.equal(menu.style.top,'64px');
+ assert.equal(attributes.get('aria-expanded'),'true');
+ events.beforetoggle({target:menu,newState:'closed'});
+ assert.equal(attributes.get('aria-expanded'),'false');
 });
