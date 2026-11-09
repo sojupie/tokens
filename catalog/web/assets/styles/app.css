@@ -65,7 +65,7 @@ button:not(:disabled), [role=button]:not([aria-disabled=true]) { cursor:pointer;
 .md-card.tokens-secondary-option { --_card-container:var(--md-sys-color-secondary-container); color:var(--md-sys-color-on-secondary-container); }
 .tokens-secondary-option > .tokens-copy-status { color:inherit; }
 
-.tokens-gallery-filters { display:flex; flex-wrap:wrap; align-items:end; gap:var(--md-sys-measurement-space200); margin-block:var(--md-sys-measurement-space300); }
+.tokens-gallery-filters { display:flex; flex-wrap:wrap; align-items:end; gap:var(--md-sys-measurement-space200); }
 .tokens-gallery-filters > label { display:flex; flex-direction:column; min-inline-size:min(100%,8rem); gap:var(--md-sys-measurement-space50); }
 
 .tokens-theme-controls .md-icon-button { flex:none; }
