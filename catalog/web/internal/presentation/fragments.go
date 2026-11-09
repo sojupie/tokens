@@ -42,6 +42,27 @@ func SafeSourceDocumentationURL(raw string) string {
 	return raw
 }
 
+func WriteTokenGroups(writer io.Writer, browser TokenBrowser) error {
+	if len(browser.Sets) == 0 {
+		_, err := io.WriteString(writer, `<p class="tokens-empty md-typescale-body-large">No published tokens for this page.</p>`)
+		return err
+	}
+	if browser.Count == 0 {
+		_, err := io.WriteString(writer, `<p class="tokens-empty md-typescale-body-large">No tokens match these filters.</p>`)
+		return err
+	}
+	if _, err := io.WriteString(writer, `<div class="tokens-token-groups">`); err != nil {
+		return err
+	}
+	for _, group := range browser.Selected.Groups {
+		if err := WriteTokenGroup(writer, group, true); err != nil {
+			return err
+		}
+	}
+	_, err := io.WriteString(writer, `</div>`)
+	return err
+}
+
 func WriteTokenGroup(writer io.Writer, group TokenGroup, state bool) error {
 	write := func(value string) error {
 		_, err := io.WriteString(writer, value)

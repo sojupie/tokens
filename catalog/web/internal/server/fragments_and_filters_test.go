@@ -481,7 +481,7 @@ func TestShapeDescriptionAndPreviewPreserveCornerOverrides(t *testing.T) {
 	if strings.Count(output.String(), `border-radius:0px 16px 16px 0px`) != 1 {
 		t.Fatal("the table must provide one directional shape for reuse in the popup")
 	}
-	markdown, err := htmlMarkdown([]byte(`<main><button class="tokens-token-set"><span>Shape</span></button><table><tr><th>Large end</th><td>`+output.String()+`</td></tr></table></main>`), "https://example.test/styles/shape")
+	markdown, err := htmlMarkdown([]byte(`<main><h2>Shape</h2><table><tr><th>Large end</th><td>`+output.String()+`</td></tr></table></main>`), "https://example.test/styles/shape", "")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -610,8 +610,8 @@ func TestStyleTokenSetsHaveProperLabels(t *testing.T) {
 
 func TestColorTableDefaultsToSchemeAndPreservesExplicitSelection(t *testing.T) {
 	subject := publish.SubjectView{Key: publish.SubjectKey{Kind: publish.SubjectStyle, Slug: "color"}, Name: "Color"}
-	for i, name := range []string{"md.ref.palette", "md.sys.color"} {
-		subject.Tokens = append(subject.Tokens, publish.TokenView{SourceName: name + ".primary", Presentation: &publish.TokenPresentation{SetName: name, SetLabel: name, SetOrder: i}})
+	for i, set := range []struct{ name, label string }{{"md.ref.palette", "Palettes"}, {"md.sys.color", "Color Schemes"}} {
+		subject.Tokens = append(subject.Tokens, publish.TokenView{SourceName: set.name + ".primary", Presentation: &publish.TokenPresentation{SetName: set.name, SetLabel: set.label, SetOrder: i}})
 	}
 	for _, test := range []struct{ selection, want string }{{"", "md.sys.color"}, {"md.ref.palette", "md.ref.palette"}, {"all", "all"}} {
 		browser := buildTokenBrowser(subject, url.Values{"set": {test.selection}})
@@ -620,7 +620,8 @@ func TestColorTableDefaultsToSchemeAndPreservesExplicitSelection(t *testing.T) {
 		}
 	}
 
-	handler := New(publish.PublishedState{Subjects: map[publish.SubjectKey]publish.SubjectView{subject.Key: subject}}, "").Handler()
+	server := New(publish.PublishedState{Subjects: map[publish.SubjectKey]publish.SubjectView{subject.Key: subject}}, "")
+	handler := server.Handler()
 	response := httptest.NewRecorder()
 	handler.ServeHTTP(response, httptest.NewRequest(http.MethodGet, "/styles/color", nil))
 	if response.Code != http.StatusOK || !strings.Contains(response.Body.String(), `href="/styles/color/sets/md.ref.palette"`) {
@@ -635,5 +636,25 @@ func TestColorTableDefaultsToSchemeAndPreservesExplicitSelection(t *testing.T) {
 	body := response.Body.String()
 	if response.Code != http.StatusOK || !strings.Contains(body, "md.ref.palette.primary") || strings.Contains(body, "md.sys.color.primary") || !strings.Contains(body, `href="/styles/color" aria-current="false"`) {
 		t.Fatal("Palettes must render its own tokens and link back to Color Schemes")
+	}
+
+	request = httptest.NewRequest(http.MethodGet, "/styles/color", nil)
+	request.Header.Set("Accept", "text/markdown")
+	response = httptest.NewRecorder()
+	handler.ServeHTTP(response, request)
+	body = response.Body.String()
+	if response.Code != http.StatusOK || !strings.Contains(body, "**Showing Color Schemes**") || !strings.Contains(body, "[Palettes](/styles/color/sets/md.ref.palette)") {
+		t.Fatalf("Markdown lost the selected token set or palette link: %s", body)
+	}
+
+	if err := server.SetPublicOrigin("https://tokens.example/md3"); err != nil {
+		t.Fatal(err)
+	}
+	handler = server.Handler()
+	response = httptest.NewRecorder()
+	handler.ServeHTTP(response, httptest.NewRequest(http.MethodGet, "/sitemap.xml", nil))
+	body = response.Body.String()
+	if response.Code != http.StatusOK || !strings.Contains(body, "<loc>https://tokens.example/md3/styles/color/sets/md.ref.palette</loc>") || strings.Contains(body, "/sets/md.sys.color") {
+		t.Fatalf("sitemap lost the Palettes page or duplicated Color Schemes: %s", body)
 	}
 }

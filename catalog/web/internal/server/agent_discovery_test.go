@@ -361,7 +361,7 @@ func TestMarkdownNegotiation(t *testing.T) {
 }
 
 func TestMarkdownPreservesViewContent(t *testing.T) {
-	markdown, err := htmlMarkdown([]byte(`<html><head><script>secret</script></head><body><nav>Menu</nav><main><h1>Tokens</h1><section id="component-preview"><h2>Preview</h2><p>Demo email text</p><ul><li><button>Only action</button></li></ul></section><div aria-hidden="true">Decorative content</div><p>Read <a href="/components">components</a> here.</p><table><thead><tr><th>Name</th><th>Value</th></tr></thead><tbody><tr><td>md.test</td><td>4 dp</td></tr></tbody></table><nav><a href="?page=2">Next</a><a href="https://example.org/docs">Documentation</a></nav></main><footer>Footer</footer></body></html>`), "https://tokens.example/changes")
+	markdown, err := htmlMarkdown([]byte(`<html><head><script>secret</script></head><body><nav>Menu</nav><main><h1>Tokens</h1><section id="component-preview"><h2>Preview</h2><p>Demo email text</p><ul><li><button>Only action</button></li></ul></section><div aria-hidden="true">Decorative content</div><p>Read <a href="/components">components</a> here.</p><table><thead><tr><th>Name</th><th>Value</th></tr></thead><tbody><tr><td>md.test</td><td>4 dp</td></tr></tbody></table><nav><a href="?page=2">Next</a><a href="https://example.org/docs">Documentation</a></nav></main><footer>Footer</footer></body></html>`), "https://tokens.example/changes", "")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -393,9 +393,126 @@ func TestMarkdownSubjectLinks(t *testing.T) {
 	}
 }
 
+func TestMarkdownTokenTableListsAvailableSelections(t *testing.T) {
+	server := scopedExportFixture()
+	if err := server.SetPublicOrigin("https://tokens.example/md3"); err != nil {
+		t.Fatal(err)
+	}
+	handler := server.Handler()
+	for _, test := range []struct {
+		path string
+		want []string
+		rows int
+	}{
+		{"/components/buttons/sets/button/color/outlined?context.Theme=Dark", []string{
+			"**Showing Outlined / Color** · 2 of 2 rows",
+			"### Token sets",
+			"[view all tokens in this subject](https://tokens.example/md3/components/buttons/sets/all?context.Theme=Dark)",
+			"set key `button|color|outlined` (current)",
+			"| `context.Theme` | Dark | Dark, Light |",
+			"scope=view",
+			"options=1",
+		}, 2},
+		{"/components/buttons/sets/button/color/outlined?context.Theme=Dark&q=icon", []string{
+			"**Showing Outlined / Color** · 1 of 2 rows",
+			"[Clear search](https://tokens.example/md3/components/buttons/sets/button/color/outlined?context.Theme=Dark)",
+			"[Fetch only this table](https://tokens.example/md3/components/buttons/sets/button/color/outlined?context.Theme=Dark&q=icon&view=table)",
+			"/sets/all?context.Theme=Dark&q=icon",
+		}, 1},
+		{"/components/buttons/sets/all", []string{"**Showing All tokens** · 3 of 3 rows"}, 3},
+	} {
+		request := httptest.NewRequest(http.MethodGet, "/md3"+test.path, nil)
+		request.Header.Set("Accept", "text/markdown")
+		response := httptest.NewRecorder()
+		handler.ServeHTTP(response, request)
+		body := response.Body.String()
+		if response.Code != http.StatusOK || strings.Count(body, "| Button ") != test.rows {
+			t.Fatalf("%s: expected %d token rows, got %d %s", test.path, test.rows, response.Code, body)
+		}
+		for _, want := range test.want {
+			if !strings.Contains(body, want) {
+				t.Errorf("%s: missing %q", test.path, want)
+			}
+		}
+	}
+}
+
+func TestTokenTableOnlyView(t *testing.T) {
+	server := scopedExportFixture()
+	if err := server.SetPublicOrigin("https://tokens.example/md3"); err != nil {
+		t.Fatal(err)
+	}
+	handler := server.Handler()
+	get := func(path, accept string, swap bool) *httptest.ResponseRecorder {
+		t.Helper()
+		request := httptest.NewRequest(http.MethodGet, path, nil)
+		request.Header.Set("Accept", accept)
+		if swap {
+			request.Header.Set("HX-Request", "true")
+			request.Header.Set("HX-Target", "tokens-token-browser")
+		}
+		response := httptest.NewRecorder()
+		handler.ServeHTTP(response, request)
+		if response.Code != http.StatusOK {
+			t.Fatalf("%s: %d %s", path, response.Code, response.Body.String())
+		}
+		return response
+	}
+	path := "/md3/components/buttons/sets/button/color/outlined?context.Theme=Dark&q=icon"
+	full := get(path, "text/markdown", false).Body.String()
+	fullHTML := get(path, "", false).Body.String()
+	fragment := get(path+"&view=table", "", false)
+	markdown := get(path+"&view=table", "text/markdown", false)
+	swap := get(path, "", true).Body.String()
+	html := fragment.Body.String()
+	const tableStart = `<table class="tokens-token-table">`
+	_, table, found := strings.Cut(html, tableStart)
+	table, _, closed := strings.Cut(table, "</table>")
+	if !found || !closed || !strings.Contains(swap, tableStart+table+"</table>") ||
+		!strings.Contains(swap, `class="tokens-token-filters"`) {
+		t.Fatalf("table-only HTML should match the rows inside the HTMX response: %s", html)
+	}
+	link := `class="tokens-link tokens-table-only-link" hx-boost="false" href="/md3/components/buttons/sets/button/color/outlined?context.Theme=Dark&amp;q=icon&amp;view=table">View this table only`
+	if !strings.Contains(fullHTML, link) || !strings.Contains(swap, link) ||
+		strings.Contains(html, "tokens-table-only-link") || strings.Count(full, "view=table)") != 1 {
+		t.Fatal("expected the current table link in the page and the swap, and one link in full Markdown")
+	}
+	if !strings.Contains(html, `href="/md3/static/token-table.css?v=`) ||
+		!strings.Contains(html, `id="tokens-table-icon-folder"`) ||
+		!strings.Contains(html, `id="tokens-context-picker"`) ||
+		!strings.Contains(html, `name="view" value="table"`) ||
+		!strings.Contains(html, `q=icon&amp;view=table"`) ||
+		!strings.Contains(html, `id="tokens-site-download"`) ||
+		strings.Contains(html, `id="component-preview"`) || strings.Contains(html, `id="tokens-site-rail"`) {
+		t.Fatal("table-only HTML must contain the shared table controls and omit the catalog shell")
+	}
+	tableSwap := get(path+"&view=table", "", true).Body.String()
+	if !strings.Contains(tableSwap, `name="view" value="table"`) || strings.Contains(tableSwap, "<!doctype html>") {
+		t.Fatal("table-only HTMX requests must return a table fragment")
+	}
+	_, rows, found := strings.Cut(full, "## Token values\n\n")
+	if !found || strings.TrimSpace(rows) != strings.TrimSpace(markdown.Body.String()) ||
+		!strings.Contains(markdown.Body.String(), "md.comp.button.outlined.icon.opacity") || strings.Count(markdown.Body.String(), "| Button ") != 1 {
+		t.Fatalf("table-only Markdown should match the filtered rows: %s", markdown.Body.String())
+	}
+	for _, item := range []struct {
+		response *httptest.ResponseRecorder
+		mime     string
+	}{{fragment, "text/html"}, {markdown, "text/markdown"}} {
+		header := item.response.Header()
+		if header.Get("Content-Type") != item.mime+"; charset=utf-8" || !strings.Contains(header.Get("Vary"), "Accept") || header.Get("X-Robots-Tag") != "noindex, follow" {
+			t.Fatalf("unexpected table-only response headers: %v", header)
+		}
+	}
+	empty := get("/md3/components/buttons?view=table&q=zzz", "text/markdown", false)
+	if empty.Body.String() != "No tokens match these filters.\n" {
+		t.Fatalf("unexpected empty table: %s", empty.Body.String())
+	}
+}
+
 func TestMarkdownTokenTableFormatting(t *testing.T) {
 	source := []byte(`<main><noscript><style>secret CSS</style></noscript><details><summary>Enabled</summary><table><caption>Enabled tokens</caption><thead><tr><th scope="col">Token</th><th scope="col">Value</th></tr></thead><tbody><tr><th scope="row"><span>Container color</span><code>md.comp.container_color</code></th><td><details class="tokens-token-reference"><summary><code>md.sys.color</code><span class="tokens-reference-toggle">Show reference chainHide reference chain</span></summary><div><code>md.comp.container_color</code><ul><li><code>md.sys.color</code></li><li><code>md.ref.color</code></li></ul></div></details><span>#322F35</span></td></tr><tr><th scope="row">Width</th><td>4 dp</td></tr></tbody></table></details></main>`)
-	result, err := htmlMarkdown(source, "https://tokens.example/components/test")
+	result, err := htmlMarkdown(source, "https://tokens.example/components/test", "")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -406,6 +523,23 @@ func TestMarkdownTokenTableFormatting(t *testing.T) {
 	}
 	if strings.Count(result, "| --- | --- |") != 1 || strings.Contains(result, "secret CSS") || strings.Contains(result, "Show reference") || strings.Contains(result, "Hide reference") {
 		t.Fatalf("included UI text or repeated table headers: %s", result)
+	}
+}
+
+func TestMarkdownChangeDisclosuresAndEmptyMenuItems(t *testing.T) {
+	source := []byte(`<main><ul><li><button>Download</button></li></ul><details><summary><h4>md.sys.color.primary</h4><span>Changed</span></summary>
+<table><thead><tr><th>Property</th><th>Previous value</th><th>New value</th></tr></thead>
+<tbody>
+  <tr><th>Color</th><td>#123456</td><td>#234567</td></tr>
+  <tr><th>Alpha</th><td>0</td><td>1</td></tr>
+</tbody></table></details></main>`)
+	result, err := htmlMarkdown(source, "https://tokens.example/md3/changes", "")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.HasPrefix(result, "#### md.sys.color.primary\n\nChanged\n\n") ||
+		!strings.Contains(result, "| Property | Previous value | New value |\n| --- | --- | --- |\n| Color | #123456 | #234567 |\n| Alpha | 0 | 1 |") {
+		t.Fatalf("invalid change disclosure Markdown: %s", result)
 	}
 }
 

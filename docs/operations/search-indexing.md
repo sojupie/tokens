@@ -18,22 +18,22 @@ Without `--public-origin`, HTML pages have `noindex`, robots.txt disallows crawl
 
 - The table's token-set selector contains grouped HTML links. It replaces the separate token-set list and native select. Its links exist in the initial HTML; JavaScript only positions the native popover and adds keyboard navigation.
 - Switching sets retains explicit context selections only when the destination supports that combination. Without explicit filters, links use the clean indexable URLs.
-- The root component page server-renders the first source table with a general component heading and title. The first selector option links to that root URL. All tokens is the last option and server-renders every table at `/sets/all`. Individual tables retain their source membership and URLs.
+- The root subject page server-renders its default table with a general heading and title. The default is the first source table for most subjects and Color Schemes for Color. All tokens is the last option and server-renders every table at `/sets/all`. Individual tables retain their source membership and URLs.
 - Component display names use singular English nouns. Source names, identifiers and URL slugs stay unchanged. Style names retain their source wording.
 - Headings and titles follow `Material Design 3 "Icon Button" tokens`. Table pages append a qualifier such as `Filled / Color` or `Medium / Size`. Titles end with ` | Token Catalog`. Descriptions identify the selected table.
 - Table qualifiers come from captured labels. Baseline and deprecated labels remain visible. Expressive availability and recommendation guidance must not be inferred from a color name such as Vibrant.
 - Playground changes replace the current history entry. The URL retains the configuration for sharing and reloading.
 - A token-set page such as `/components/buttons/sets/button/color/elevated` renders its tokens on the server. JavaScript is not needed to load the content.
-- Existing `?set=...` links still work and declare the corresponding token-set URL as canonical. The first table declares the main subject URL as canonical. Other distinct tables keep their own canonicals. For a single-table subject, All tokens also declares the main subject URL as canonical.
+- Existing `?set=...` links still work and declare the corresponding token-set URL as canonical. The default table declares the main subject URL as canonical. Other distinct tables keep their own canonicals. For a single-table subject, All tokens also declares the main subject URL as canonical.
 - Search, context and changelog-filter views have `noindex, follow`. These views contain selected subsets, so they do not claim to duplicate a full page.
 - Unfiltered component changelog pages have their own canonical URLs. Page two keeps `?page=2`; it is not canonicalized to page one.
 - API and JSON download responses have an `X-Robots-Tag: noindex` header.
 
 ## Sitemap and deployment checks
 
-`/sitemap.xml` lists the home page, component and style indexes, component and style pages, token sets, and each subject's changelog entry page. Further changelog pages are reachable through normal pagination links. Default-table duplicates, single-table All tokens duplicates and filter combinations are not listed. No fabricated modification dates are included.
+`/sitemap.xml` lists the home page, component and style indexes, component and style pages, token sets, each subject's changelog entry page, and the same-origin tool apps. Further changelog pages are reachable through normal pagination links. Default-table duplicates, single-table All tokens duplicates and filter combinations are omitted.
 
-`/robots.txt` advertises the sitemap when the public origin is configured. It does not block filtered HTML pages: crawlers must be able to read their `noindex` instructions.
+`/robots.txt` advertises the root sitemap when the public origin is configured so it covers both `/md3/` and `/tools/`. Crawlers can also fetch filtered pages to read their `noindex` instructions.
 
 After deployment:
 

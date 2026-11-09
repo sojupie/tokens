@@ -55,6 +55,103 @@ function unbound(selector) {
     return true;
   });
 }
+function bindTokenReferences(browser, signal) {
+  // Native popovers provide Escape, outside-click dismissal and invoker focus.
+  // Position beside the active value where space allows, then clamp to the viewport.
+  let invoker, copyStatus, copyStatusTimer;
+  const prepareReference = popup => {
+    if (popup.querySelector('header')) return;
+    const row = popup.closest('tr');
+    const chrome = browser.querySelector('.tokens-reference-chrome').content.cloneNode(true);
+    const title = chrome.querySelector('h3');
+    title.id = `${popup.id}-title`;
+    title.textContent = row.querySelector('.tokens-token-description').textContent;
+    title.title = title.textContent;
+    popup.setAttribute('aria-labelledby', title.id);
+    popup.removeAttribute('aria-label');
+    chrome.querySelector('.tokens-popover-close').setAttribute('popovertarget', popup.id);
+    const preview = chrome.querySelector('.tokens-popup-value');
+    for (const child of row.querySelector('.tokens-large-preview').children) {
+      if (!child.classList.contains('tokens-preview-name')) preview.append(child.cloneNode(true));
+    }
+    const resolved = chrome.querySelector('.tokens-reference-resolved');
+    const compact = row.querySelector('.tokens-compact-value');
+    if (!compact.querySelector('.tokens-color-dot')) resolved.querySelector('.tokens-reference-type').remove();
+    resolved.append(compact.cloneNode(true));
+    const copyButton = chrome.querySelector('[data-copy-reference]');
+    for (const node of popup.querySelectorAll('.tokens-reference-node')) {
+      const button = copyButton.cloneNode(true);
+      const name = node.querySelector('code').textContent;
+      button.dataset.copyReference = name;
+      button.setAttribute('aria-label', `Copy ${name}`);
+      node.append(button);
+    }
+    popup.prepend(chrome.querySelector('header'), preview);
+    popup.querySelector('.tokens-reference-chain').append(resolved);
+    popup.append(chrome.querySelector('[role="status"]'));
+  };
+  const placeReference = popup => {
+    if (!invoker || !popup.matches(':popover-open')) return;
+    const bounds = invoker.getBoundingClientRect();
+    const gap = parseFloat(getComputedStyle(browser).getPropertyValue('--md-sys-measurement-space200'));
+    const width = popup.offsetWidth;
+    const height = popup.offsetHeight;
+    let left = bounds.right + gap;
+    if (left + width > innerWidth - gap) left = bounds.left - width - gap;
+    if (left < gap) left = Math.max(gap, (innerWidth - width) / 2);
+    popup.style.left = `${left}px`;
+    popup.style.top = `${Math.max(gap, Math.min(bounds.top, innerHeight - height - gap))}px`;
+  };
+  browser.querySelectorAll('.tokens-reference-popover').forEach(popup => {
+    popup.addEventListener('beforetoggle', event => {
+      if (event.newState === 'open') prepareReference(popup);
+    });
+    popup.addEventListener('toggle', event => {
+      if (event.newState === 'open') placeReference(popup);
+    });
+  });
+  const reposition = () => browser.querySelectorAll('.tokens-reference-popover:popover-open').forEach(placeReference);
+  addEventListener('resize', reposition, {signal});
+  addEventListener('scroll', reposition, {capture: true, signal});
+  browser.addEventListener('click', async event => {
+    const popupButton = event.target.closest('button[popovertarget]');
+    if (popupButton && popupButton.getAttribute('popovertargetaction') !== 'hide') invoker = popupButton;
+    const copy = event.target.closest('[data-copy-reference]');
+    if (copy) {
+      const status = copy.closest('.tokens-reference-popover').querySelector('[role="status"]');
+      if (copyStatus) copyStatus.textContent = '';
+      clearTimeout(copyStatusTimer);
+      copyStatus = status;
+      try {
+        let copied = false;
+        if (navigator.clipboard?.writeText) {
+          try { await navigator.clipboard.writeText(copy.dataset.copyReference); copied = true; } catch {}
+        }
+        // Local HTTP previews lack the Clipboard API. Copy inside the active
+        // popover so native focus handling does not interfere with the fallback.
+        if (!copied) {
+          const field = document.createElement('textarea');
+          field.value = copy.dataset.copyReference;
+          field.readOnly = true;
+          field.style.cssText = 'position:fixed;opacity:0;pointer-events:none;inset:0 auto auto 0;';
+          copy.closest('.tokens-reference-popover').append(field);
+          try {
+            field.focus({preventScroll:true});
+            field.select();
+            if (!document.execCommand('copy')) throw new Error('Copy failed');
+          } finally {
+            field.remove();
+            copy.focus({preventScroll:true});
+          }
+        }
+        status.textContent = 'Copied.';
+      } catch {
+        status.textContent = 'Could not copy.';
+      }
+      copyStatusTimer = setTimeout(() => { status.textContent = ''; }, 1500);
+    }
+  });
+}
 function initialize() {
 // Cached pages can still contain the old inline no-script fallback rules.
 document.querySelectorAll('noscript style').forEach(style => style.remove());
@@ -95,7 +192,16 @@ unbound('.tokens-token-browser').forEach(browser => {
   }
   const lifecycle = new AbortController();
   const signal = lifecycle.signal;
+  const dialog = browser.querySelector('.tokens-context-dialog');
+  document.addEventListener('htmx:beforeCleanupElement', event => {
+    if ((event.detail?.elt || event.target) === browser || (event.detail?.elt || event.target).contains(browser)) {
+      if (dialog) htmx.trigger(dialog, 'htmx:abort');
+      lifecycle.abort();
+    }
+  }, {signal});
+  bindTokenReferences(browser, signal);
   const form = browser.querySelector('form');
+  if (!form) return;
   // Playground swaps update the URL independently of the table. Capture its
   // current settings before htmx (or a native GET) serializes this form.
   form.addEventListener('submit', () => {
@@ -106,7 +212,6 @@ unbound('.tokens-token-browser').forEach(browser => {
       input.type = 'hidden'; input.name = name; input.value = value; form.append(input);
     }
   }, {capture:true});
-  const dialog = browser.querySelector('.tokens-context-dialog');
   const saveButton = dialog?.querySelector('[data-context-save]');
   const contextOptions = dialog?.querySelector('#tokens-context-fields');
   const contextStatus = dialog?.querySelector('[role="status"]');
@@ -226,101 +331,7 @@ unbound('.tokens-token-browser').forEach(browser => {
     if (event.target.classList.contains('tokens-token-folder')) syncControls();
   }, true);
 
-  // Native popovers provide Escape, outside-click dismissal and invoker focus.
-  // Position beside the active value where space allows, then clamp to the viewport.
-  let invoker, copyStatus, copyStatusTimer;
-  const prepareReference = popup => {
-    if (popup.querySelector('header')) return;
-    const row = popup.closest('tr');
-    const chrome = browser.querySelector('.tokens-reference-chrome').content.cloneNode(true);
-    const title = chrome.querySelector('h3');
-    title.id = `${popup.id}-title`;
-    title.textContent = row.querySelector('.tokens-token-description').textContent;
-    title.title = title.textContent;
-    popup.setAttribute('aria-labelledby', title.id);
-    popup.removeAttribute('aria-label');
-    chrome.querySelector('.tokens-popover-close').setAttribute('popovertarget', popup.id);
-    const preview = chrome.querySelector('.tokens-popup-value');
-    for (const child of row.querySelector('.tokens-large-preview').children) {
-      if (!child.classList.contains('tokens-preview-name')) preview.append(child.cloneNode(true));
-    }
-    const resolved = chrome.querySelector('.tokens-reference-resolved');
-    const compact = row.querySelector('.tokens-compact-value');
-    if (!compact.querySelector('.tokens-color-dot')) resolved.querySelector('.tokens-reference-type').remove();
-    resolved.append(compact.cloneNode(true));
-    const copyButton = chrome.querySelector('[data-copy-reference]');
-    for (const node of popup.querySelectorAll('.tokens-reference-node')) {
-      const button = copyButton.cloneNode(true);
-      const name = node.querySelector('code').textContent;
-      button.dataset.copyReference = name;
-      button.setAttribute('aria-label', `Copy ${name}`);
-      node.append(button);
-    }
-    popup.prepend(chrome.querySelector('header'), preview);
-    popup.querySelector('.tokens-reference-chain').append(resolved);
-    popup.append(chrome.querySelector('[role="status"]'));
-  };
-  const placeReference = popup => {
-    if (!invoker || !popup.matches(':popover-open')) return;
-    const bounds = invoker.getBoundingClientRect();
-    const gap = parseFloat(getComputedStyle(browser).getPropertyValue('--md-sys-measurement-space200'));
-    const width = popup.offsetWidth;
-    const height = popup.offsetHeight;
-    let left = bounds.right + gap;
-    if (left + width > innerWidth - gap) left = bounds.left - width - gap;
-    if (left < gap) left = Math.max(gap, (innerWidth - width) / 2);
-    popup.style.left = `${left}px`;
-    popup.style.top = `${Math.max(gap, Math.min(bounds.top, innerHeight - height - gap))}px`;
-  };
-  browser.querySelectorAll('.tokens-reference-popover').forEach(popup => {
-    popup.addEventListener('beforetoggle', event => {
-      if (event.newState === 'open') prepareReference(popup);
-    });
-    popup.addEventListener('toggle', event => {
-      if (event.newState === 'open') placeReference(popup);
-    });
-  });
-  const reposition = () => browser.querySelectorAll('.tokens-reference-popover:popover-open').forEach(placeReference);
-  addEventListener('resize', reposition, {signal});
-  addEventListener('scroll', reposition, {capture: true, signal});
-  browser.addEventListener('click', async event => {
-    const popupButton = event.target.closest('button[popovertarget]');
-    if (popupButton && popupButton.getAttribute('popovertargetaction') !== 'hide') invoker = popupButton;
-    const copy = event.target.closest('[data-copy-reference]');
-    if (copy) {
-      const status = copy.closest('.tokens-reference-popover').querySelector('[role="status"]');
-      if (copyStatus) copyStatus.textContent = '';
-      clearTimeout(copyStatusTimer);
-      copyStatus = status;
-      try {
-        let copied = false;
-        if (navigator.clipboard?.writeText) {
-          try { await navigator.clipboard.writeText(copy.dataset.copyReference); copied = true; } catch {}
-        }
-        // Local HTTP previews lack the Clipboard API. Copy inside the active
-        // popover so native focus handling does not interfere with the fallback.
-        if (!copied) {
-          const field = document.createElement('textarea');
-          field.value = copy.dataset.copyReference;
-          field.readOnly = true;
-          field.style.cssText = 'position:fixed;opacity:0;pointer-events:none;inset:0 auto auto 0;';
-          copy.closest('.tokens-reference-popover').append(field);
-          try {
-            field.focus({preventScroll:true});
-            field.select();
-            if (!document.execCommand('copy')) throw new Error('Copy failed');
-          } finally {
-            field.remove();
-            copy.focus({preventScroll:true});
-          }
-        }
-        status.textContent = 'Copied.';
-      } catch {
-        status.textContent = 'Could not copy.';
-      }
-      copyStatusTimer = setTimeout(() => { status.textContent = ''; }, 1500);
-      return;
-    }
+  browser.addEventListener('click', event => {
     const button = event.target.closest('button[data-action]');
     if (!button) return;
     browser.querySelectorAll('.tokens-reference-popover:popover-open').forEach(popup => popup.hidePopover());
@@ -350,12 +361,7 @@ unbound('.tokens-token-browser').forEach(browser => {
     syncControls();
   });
   syncControls();
-  document.addEventListener('htmx:beforeCleanupElement', event => {
-    if ((event.detail?.elt || event.target) === browser || (event.detail?.elt || event.target).contains(browser)) {
-      if (dialog) htmx.trigger(dialog, 'htmx:abort');
-      lifecycle.abort();
-    }
-  }, {signal});
+
 });
 }
 document.addEventListener('htmx:afterSwap', initialize);

@@ -9,17 +9,21 @@
   "paths": {
     "/downloads/export": {"get": {
       "operationId": "exportSelection", "summary": "Export selected tokens or a component implementation",
-      "description": "Token exports include required alias targets. Repeat format or context.<dimension> query parameters to download each combination in a ZIP (up to 64 combinations). For example, context.Theme=Light&context.Theme=Dark exports both themes. Add summary=1 to inspect a selection without downloading. Implementation ZIPs require subject or collection scope and use the catalog Web theme.",
+      "description": "For content=tokens, use view, set, subject or collection with format=dtcg, css, source or report. View and set accept set; only view applies q. DTCG and CSS include required alias targets. Source JSON groups captured values and references by subject. Send options=1 with the token scope and current choices to discover applicable context.<dimension> parameters and exact values. For content=implementation, use subject (kind=component with a playground) or collection with format=zip. Implementation exports use the catalog Web theme and accept preview.* parameters plus Theme and Contrast. Repeat supported format or context parameters to export up to 64 combinations in a ZIP. Use summary=1 with the intended selection before downloading.",
       "parameters": [
-        {"name":"scope","in":"query","required":true,"schema":{"type":"string","enum":["view","set","subject","collection"]}},
-        {"name":"format","in":"query","required":true,"style":"form","explode":true,"schema":{"type":"array","items":{"type":"string","enum":["dtcg","css","source","report","summary","zip"]}}},
+        {"name":"scope","in":"query","required":true,"description":"view exports the filtered table, set exports the whole table, subject exports a whole component or style, and collection exports the whole catalog.","schema":{"type":"string","enum":["view","set","subject","collection"]}},
+        {"name":"format","in":"query","description":"Required for a download. Use zip for implementations. The summary format is a single-selection shorthand.","style":"form","explode":true,"schema":{"type":"array","items":{"type":"string","enum":["dtcg","css","source","report","summary","zip"]}}},
         {"name":"content","in":"query","schema":{"type":"string","enum":["tokens","implementation"],"default":"tokens"}},
-        {"name":"kind","in":"query","schema":{"type":"string"}},
-        {"name":"slug","in":"query","schema":{"type":"string"}},
-        {"name":"set","in":"query","schema":{"type":"string"}},
-        {"name":"q","in":"query","schema":{"type":"string"}}
+        {"name":"kind","in":"query","description":"Subject kind from the subject index. Required outside collection scope.","schema":{"type":"string"}},
+        {"name":"slug","in":"query","description":"Subject slug from the subject index. Required outside collection scope.","schema":{"type":"string"}},
+        {"name":"set","in":"query","description":"Exact table key for view or set scope, for example md.sys.color. Defaults to the subject's default table.","schema":{"type":"string"}},
+        {"name":"q","in":"query","description":"Table search for view scope.","schema":{"type":"string"}},
+        {"name":"options","in":"query","description":"For tokens, return the available context dimensions and values for the selection.","schema":{"type":"string","enum":["1"]}},
+        {"name":"summary","in":"query","description":"Return selection counts instead of an attachment. Pass the intended formats and contexts for a batch.","schema":{"type":"string","enum":["1"]}},
+        {"name":"context.Theme","in":"query","style":"form","explode":true,"schema":{"type":"array","items":{"type":"string","enum":["Light","Dark"]}}},
+        {"name":"context.Contrast","in":"query","style":"form","explode":true,"schema":{"type":"array","items":{"type":"string","enum":["Default","Medium contrast","High contrast"]}}}
       ],
-      "responses":{"200":{"description":"Selected token document, CSS, report, summary, or implementation ZIP"},"400":{"description":"Invalid scope or context"},"422":{"description":"Required generated CSS assets are unavailable"}}
+      "responses":{"200":{"description":"Token document, CSS, conversion report, selection summary, context options, or ZIP archive"},"400":{"description":"Invalid scope, format, or context, or unavailable implementation"},"422":{"description":"Required generated CSS assets are unavailable"}}
     }},
     "/api/v1/health": {"get": {
       "operationId": "getHealth", "summary": "Read the active publication identifiers",
@@ -49,12 +53,12 @@
     }},
     "/downloads/{kind}/{slug}.json": {"get": {
       "operationId": "downloadSubject", "summary": "Download a filtered table, a whole table or an entire subject",
-      "description": "Subject scopes: view selects one table and applies q and context filters to its values; set selects one table with every supported context, ignoring q and context filters; all returns every table and supported context in this subject, ignoring set, q and context filters. Collection scope=all at /downloads/tokens.json instead returns every subject on the site. Obtain exact table keys and supported context settings from the subject HTML Download JSON form; do not invent them. Slugs can span multiple path segments.",
+      "description": "Use the subject index's jsonUrl as the starting URL. view applies table, search and context filters. set selects the whole table with every supported context and ignores search. all returns every table and context for the subject. Slugs can span multiple path segments.",
       "parameters": [
         {"name": "kind", "in": "path", "required": true, "schema": {"type": "string"}},
         {"name": "slug", "in": "path", "required": true, "schema": {"type": "string"}},
         {"name": "scope", "in": "query", "required": true, "schema": {"type": "string", "enum": ["view", "set", "all"]}, "description": "view = filtered table; set = whole table, all contexts; all = whole subject, all tables and contexts."},
-        {"name": "set", "in": "query", "schema": {"type": "string"}, "description": "Exact table key from the HTML form. Used by view and set; ignored by all. Omission selects the default table."},
+        {"name": "set", "in": "query", "schema": {"type": "string"}, "description": "Exact table key, for example md.sys.color. Used by view and set. Omission selects the default table."},
         {"name": "q", "in": "query", "schema": {"type": "string"}, "description": "Token search, applied only for scope=view."},
         {"name": "context.Theme", "in": "query", "schema": {"type": "string"}, "description": "Only applies to scope=view when this table supports Theme. Copy an available value from the HTML form. Omission uses the table default. Other context names may be supported."},
         {"name": "context.Platform", "in": "query", "schema": {"type": "string"}, "description": "Only applies to scope=view when this table supports Platform. Copy an available value from the HTML form. Omission uses the table default. Other context names may be supported."},

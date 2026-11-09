@@ -63,6 +63,9 @@ func TokenSetMenuGroups(subject publish.SubjectView, sets []TokenSet) []TokenSet
 
 func TokenSetLinkURL(subject publish.SubjectView, set TokenSet, browser TokenBrowser) string {
 	query := make(url.Values)
+	if browser.TableOnly {
+		query.Set("view", "table")
+	}
 	for key, values := range browser.PreviewQuery {
 		query[key] = values
 	}
@@ -84,6 +87,19 @@ func TokenSetLinkURL(subject publish.SubjectView, set TokenSet, browser TokenBro
 		path += "?" + query.Encode()
 	}
 	return path
+}
+
+func TableOnlyURL(subject publish.SubjectView, browser TokenBrowser) string {
+	query := url.Values{"view": {"table"}}
+	if browser.Query != "" {
+		query.Set("q", browser.Query)
+	}
+	for _, filter := range browser.Filters {
+		if browser.Contexts.Get(filter.Key) == filter.Selected {
+			query.Set(filter.Key, filter.Selected)
+		}
+	}
+	return TokenSetLinkURL(subject, browser.Selected, TokenBrowser{}) + "?" + query.Encode()
 }
 
 func CurrentTokenSet(selected bool) string {

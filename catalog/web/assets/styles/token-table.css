@@ -23,15 +23,30 @@
 .tokens-token-browser {
   container-type: inline-size;
   color: var(--md-sys-color-on-surface);
+  font-family: var(--md-sys-typescale-body-large-font);
+  letter-spacing: var(--md-sys-typescale-body-large-tracking);
+  font-size: var(--md-sys-typescale-body-large-size);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+}
+.tokens-token-surface {
   background: var(--md-sys-color-surface-container-low);
   border: var(--md-comp-divider-thickness) solid
     color-mix(in srgb, var(--md-comp-divider-color) 50%, transparent);
   border-radius: var(--md-sys-shape-corner-large);
   overflow: hidden;
-  font-family: var(--md-sys-typescale-body-large-font);
-  letter-spacing: var(--md-sys-typescale-body-large-tracking);
-  font-size: var(--md-sys-typescale-body-large-size);
-  line-height: var(--md-sys-typescale-body-large-line-height);
+}
+.tokens-table-only-link {
+  display: flex;
+  align-items: center;
+  gap: var(--md-sys-measurement-space50);
+  width: max-content;
+  margin-block-start: var(--md-sys-measurement-space100);
+  margin-inline-start: auto;
+  font: var(--md-sys-typescale-label-medium);
+}
+.tokens-token-browser .tokens-table-only-link svg {
+  width: var(--md-sys-measurement-space200);
+  height: var(--md-sys-measurement-space200);
 }
 .tokens-token-browser svg {
   width: var(--md-comp-dialog-with-icon-icon-size);

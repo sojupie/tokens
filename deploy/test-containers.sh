@@ -41,7 +41,7 @@ compose run --rm --no-deps updater update approve "$run_id" --state-dir /var/lib
 compose up -d --wait tokens
 compose exec -T tokens curl --fail --silent --output /dev/null http://127.0.0.1:8080/md3/components/snackbar
 robots=$(compose exec -T tokens curl --fail --silent http://127.0.0.1:8080/robots.txt)
-printf '%s' "$robots" | grep -q 'Sitemap: https://tokencatalog.dev/md3/sitemap.xml'
+printf '%s' "$robots" | grep -q 'Sitemap: https://tokencatalog.dev/sitemap.xml'
 compose exec -T tokens sh -c 'test ! -w /var/lib/tokens/current/tokens.sqlite; test -w /var/lib/tokens-usage; ! command -v chromium'
 compose run --rm --no-deps updater update status --state-dir /var/lib/tokens
 echo 'Container checks passed: Chromium, review, activation, serving, public URL and read-only state.'

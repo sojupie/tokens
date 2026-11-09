@@ -117,19 +117,31 @@ func TestSitemapAndRobots(t *testing.T) {
 	if err := xml.Unmarshal(response.Body.Bytes(), &document); err != nil {
 		t.Fatal(err)
 	}
-	if response.Code != http.StatusOK || document.XMLNS != "http://www.sitemaps.org/schemas/sitemap/0.9" || len(document.URLs) != 10 {
+	if response.Code != http.StatusOK || document.XMLNS != "http://www.sitemaps.org/schemas/sitemap/0.9" || len(document.URLs) != 12 {
 		t.Fatalf("unexpected sitemap: %s", response.Body.String())
 	}
 	seen := map[string]bool{}
+	tools := map[string]bool{
+		"https://tokens.example/tools/motion/":     true,
+		"https://tokens.example/tools/motion-lab/": true,
+	}
 	for _, entry := range document.URLs {
 		if seen[entry.Location] || !strings.HasPrefix(entry.Location, "https://tokens.example/") || strings.Contains(entry.Location, "?") {
 			t.Fatalf("unexpected sitemap URL %s", entry.Location)
 		}
 		seen[entry.Location] = true
+		if tools[entry.Location] {
+			continue
+		}
 		page := httptest.NewRecorder()
 		server.Handler().ServeHTTP(page, httptest.NewRequest(http.MethodGet, entry.Location, nil))
 		if page.Code != http.StatusOK || !strings.Contains(page.Body.String(), `rel="canonical" href="`+entry.Location+`"`) {
 			t.Fatalf("sitemap URL is not a self-canonical HTML page: %s", entry.Location)
+		}
+	}
+	for location := range tools {
+		if !seen[location] {
+			t.Errorf("sitemap omitted tool %s", location)
 		}
 	}
 	response = httptest.NewRecorder()

@@ -66,10 +66,16 @@ func TestCollectionBasePath(t *testing.T) {
 	if w.Code != 200 || !strings.Contains(w.Header().Get("Content-Type"), "text/markdown") || strings.Contains(w.Body.String(), "https://tokencatalog.dev/components/") {
 		t.Fatal("incorrect Markdown base")
 	}
-	for _, path := range []string{"/robots.txt", "/.well-known/api-catalog", "/.well-known/ai-catalog.json", "/.well-known/agent-skills/index.json", "/llms-full.txt", "/auth.md", "/md3/mcp/server-card", "/md3/api/v1/subjects", "/md3/sitemap.xml", "/md3/static/webmcp.js"} {
+	for _, path := range []string{"/robots.txt", "/sitemap.xml", "/.well-known/api-catalog", "/.well-known/ai-catalog.json", "/.well-known/agent-skills/index.json", "/llms-full.txt", "/auth.md", "/md3/mcp/server-card", "/md3/api/v1/subjects", "/md3/sitemap.xml", "/md3/static/webmcp.js"} {
 		w := get(path, "")
 		if w.Code != 200 {
 			t.Fatalf("%s: %d", path, w.Code)
+		}
+		if path == "/robots.txt" {
+			if !strings.Contains(w.Body.String(), "Sitemap: https://tokencatalog.dev/sitemap.xml\n") {
+				t.Fatal("robots.txt must advertise the root sitemap")
+			}
+			continue
 		}
 		if path == "/md3/static/webmcp.js" {
 			continue

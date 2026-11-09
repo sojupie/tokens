@@ -181,6 +181,29 @@ func TestScopedExportsPreserveContextAndRequiredReferences(t *testing.T) {
 	}
 }
 
+func TestSourceExportKeepsSharedTokensWithinTheRequestedSubject(t *testing.T) {
+	server := scopedExportFixture()
+	buttons := server.state.Subjects[publish.SubjectKey{Kind: publish.SubjectComponent, Slug: "buttons"}]
+	other := publish.SubjectKey{Kind: publish.SubjectStyle, Slug: "other"}
+	server.state.Subjects[other] = publish.SubjectView{Key: other, Tokens: buttons.Tokens[:1]}
+	handler := server.Handler()
+
+	for scope, want := range map[string]int{"view": 1, "set": 1, "subject": 1, "collection": 2} {
+		query := url.Values{"kind": {"component"}, "slug": {"buttons"}, "scope": {scope}, "set": {"button|color|outlined"}, "q": {"icon"}, "format": {"source"}}
+		response := httptest.NewRecorder()
+		handler.ServeHTTP(response, httptest.NewRequest("GET", "/downloads/export?"+query.Encode(), nil))
+		var document struct {
+			Subjects []publish.PublicSubject
+		}
+		if err := json.Unmarshal(response.Body.Bytes(), &document); response.Code != 200 || err != nil {
+			t.Fatalf("%s: %d %s", scope, response.Code, response.Body.String())
+		}
+		if len(document.Subjects) != want || (want == 1 && document.Subjects[0].Slug != "buttons") {
+			t.Fatalf("%s: unexpected subjects %+v", scope, document.Subjects)
+		}
+	}
+}
+
 func TestImplementationArchiveIncludesNestedAssetsAndRunnableExample(t *testing.T) {
 	server := scopedExportFixture()
 	server.themeBundles = map[string][]byte{"shared": []byte(":root{}"), "switch": []byte(":root{}")}

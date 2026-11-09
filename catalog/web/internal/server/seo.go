@@ -32,6 +32,9 @@ func (server *Server) SetPublicOrigin(origin string) error {
 }
 
 func hasContentFilters(query url.Values) bool {
+	if query.Get("view") == "table" {
+		return true
+	}
 	for key, values := range query {
 		if strings.HasPrefix(key, "preview.") || key == "q" || strings.HasPrefix(key, "context.") || key == "snapshot" || key == "type" || key == "subject" {
 			for _, value := range values {
@@ -110,6 +113,11 @@ func (server *Server) handleSitemap(response http.ResponseWriter, request *http.
 	for _, path := range []string{"/", "/components", "/styles", "/changes", "/for-agents", "/tools"} {
 		add(path)
 	}
+	for _, tool := range server.toolDestinations() {
+		if strings.HasPrefix(tool.URL, server.browserOrigin+"/") && !strings.Contains(tool.URL, "?") {
+			document.URLs = append(document.URLs, sitemapEntry{Location: tool.URL})
+		}
+	}
 	for _, subject := range sortedSubjects(server.state) {
 		add(webview.SubjectURL(subject))
 		add(webview.SubjectChangesURL(subject))
@@ -117,8 +125,11 @@ func (server *Server) handleSitemap(response http.ResponseWriter, request *http.
 		if len(sets) <= 1 {
 			continue
 		}
-		for _, set := range sets[1:] {
-			add(webview.TokenSetURL(subject, set))
+		defaultSet := webview.DefaultTokenSet(subject, sets)
+		for _, set := range sets {
+			if set.Key != defaultSet.Key {
+				add(webview.TokenSetURL(subject, set))
+			}
 		}
 		add(webview.TokenSetURL(subject, webview.AllTokenSet(subject)))
 	}
@@ -145,5 +156,6 @@ func (server *Server) handleRobots(response http.ResponseWriter, _ *http.Request
 		_, _ = fmt.Fprint(response, "User-agent: *\nDisallow: /\n")
 		return
 	}
-	_, _ = fmt.Fprintf(response, "User-agent: *\nContent-Signal: "+contentSignal+"\nAllow: /\nSitemap: %s/sitemap.xml\n", server.publicOrigin)
+	// The root sitemap can cover both the collection and its sibling tool apps.
+	_, _ = fmt.Fprintf(response, "User-agent: *\nContent-Signal: "+contentSignal+"\nAllow: /\nSitemap: %s/sitemap.xml\n", server.browserOrigin)
 }

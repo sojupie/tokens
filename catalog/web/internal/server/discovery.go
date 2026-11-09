@@ -78,10 +78,10 @@ func (server *Server) handleAgentDiscovery(response http.ResponseWriter, request
 		{"Snapshots", "/api/v1/releases", "Capture dates and snapshot identifiers."},
 		{"Change history", "/api/v1/changes", "All retained observed changes as JSON."},
 		{"All tokens", "/downloads/tokens.json?scope=all", "Bulk JSON with every subject and supported context."},
-		{"Page index", "/sitemap.xml", "Canonical HTML pages."},
 	} {
 		fmt.Fprintf(&body, "- [%s](%s%s): %s\n", link.label, origin, link.path, link.description)
 	}
+	fmt.Fprintf(&body, "- [Page index](%s/sitemap.xml): Canonical HTML pages.\n", server.browserOrigin)
 	if request.URL.Path == "/llms.txt" {
 		fmt.Fprintf(&body, "- [Full API and agent guide](%s/llms-full.txt): Usage instructions, MCP, Markdown and the subject inventory.\n", origin)
 	}
@@ -112,6 +112,7 @@ and dark-high. Each file contains one selected context and its dependencies.
 
 	return strings.NewReplacer(
 		"{{PUBLIC_ORIGIN}}", origin,
+		"{{SITEMAP_URL}}", server.browserOrigin+"/sitemap.xml",
 		"{{DTCG_DOWNLOADS}}", dtcgGuide,
 		"{{MCP_PROTOCOL}}", mcpProtocol,
 	).Replace(skills.MaterialGuide)

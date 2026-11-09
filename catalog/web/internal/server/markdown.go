@@ -2,12 +2,15 @@ package server
 
 import (
 	"bytes"
+	"fmt"
 	"mime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 
+	webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+	"github.com/sojupie/tokens/source/publish"
 	"golang.org/x/net/html"
 )
 
@@ -40,10 +43,75 @@ func markdownEscape(value string) string {
 	return strings.NewReplacer("\\", "\\\\", "*", "\\*", "_", "\\_", "[", "\\[", "]", "\\]", "<", "&lt;", ">", "&gt;", "|", "\\|", "`", "\\`").Replace(value)
 }
 
+type markdownTokenGuideKey struct{}
+
+// Use the same set links and context choices as the HTML table.
+func (server *Server) markdownTokenGuide(subject publish.SubjectView, browser webview.TokenBrowser, viewJSON string) string {
+	var guide strings.Builder
+	fmt.Fprintf(&guide, "**Showing %s** · %d of %d rows.\n\n", markdownEscape(webview.SelectedTableLabel(subject, browser.Selected)), browser.Count, len(browser.Selected.SourceTokens))
+	if browser.Query != "" {
+		clear := browser
+		clear.Query = ""
+		fmt.Fprintf(&guide, "Search filter `q` is **%s**. [Clear search](%s).\n\n", markdownEscape(strings.Join(strings.Fields(browser.Query), " ")), markdownLinkURL(server.publicOrigin+webview.TokenSetLinkURL(subject, browser.Selected, clear)))
+	}
+	fmt.Fprintf(&guide, "[Fetch only this table](%s).\n\n", markdownLinkURL(server.publicOrigin+webview.TableOnlyURL(subject, browser)))
+	guide.WriteString("### Token sets\n\n")
+	fmt.Fprintf(&guide, "Open a set below, or [view all tokens in this subject](%s). Set links keep the search and any context choices the destination supports.\n\n", markdownLinkURL(server.publicOrigin+webview.TokenSetLinkURL(subject, webview.AllTokenSet(subject), browser)))
+	for _, set := range browser.Sets {
+		fmt.Fprintf(&guide, "- [%s](%s) · set key `%s`", markdownEscape(webview.TokenTableQualifier(subject, set)), markdownLinkURL(server.publicOrigin+webview.TokenSetLinkURL(subject, set, browser)), set.Key)
+		if set.Key == browser.Selected.Key {
+			guide.WriteString(" (current)")
+		}
+		guide.WriteByte('\n')
+	}
+	guide.WriteString("\n### Query parameters\n\n")
+	guide.WriteString("Send `Accept: text/markdown` again when following a link. Add or replace these query parameters on the set URL. Use `?` before the first parameter and `&` between parameters. URL-encode spaces in names and values.\n\n")
+	guide.WriteString("- `q` searches the selected set, for example `q=container`. Remove it to return every row in the set.\n")
+	guide.WriteString("- `set` selects a table on the subject URL. Use one of the keys above, or `set=all` for all tables. The linked set URLs already select their table.\n")
+	guide.WriteString("- `view=table` returns only the token groups and rows in Markdown. HTML also includes the table controls.\n")
+	if len(browser.Filters) > 0 {
+		guide.WriteString("\nUse one value per context parameter. Change one context at a time and read the updated choices. A change can affect the options for other parameters.\n\n")
+		guide.WriteString("| Parameter | Current value | Available values |\n| --- | --- | --- |\n")
+		for _, filter := range browser.Filters {
+			fmt.Fprintf(&guide, "| `%s` | %s | %s |\n", filter.Key, markdownEscape(filter.Selected), markdownEscape(strings.Join(filter.Options, ", ")))
+		}
+	} else {
+		guide.WriteString("\nThis set has no context parameters.\n")
+	}
+	if browser.Preview != nil && len(browser.Preview.Controls) > 0 {
+		guide.WriteString("\n### Playground parameters\n\n")
+		guide.WriteString("Pass these parameters to the implementation export to configure its example. Use `preview.compare=interactive` on this page to see the controls for a single example.\n\n")
+		guide.WriteString("| Parameter | Current value | Available values |\n| --- | --- | --- |\n")
+		for _, control := range browser.Preview.Controls {
+			fmt.Fprintf(&guide, "| `preview.%s` | %s | %s |\n", control.Name, markdownEscape(control.Selected), markdownEscape(strings.Join(control.Options, ", ")))
+		}
+	}
+	download := server.publicOrigin + subjectDownloadURL(subject)
+	setDownload := url.Values{"scope": {"set"}, "set": {browser.Selected.Key}}
+	fmt.Fprintf(&guide, "\n### Downloads\n\n- [Current table view as JSON](%s)\n- [Selected set as JSON with all captured contexts](%s)\n- [Whole subject as JSON with all captured contexts](%s)\n",
+		markdownLinkURL(server.publicOrigin+viewJSON), markdownLinkURL(download+"?"+setDownload.Encode()), markdownLinkURL(download+"?scope=all"))
+	options := url.Values{"kind": {string(subject.Key.Kind)}, "slug": {subject.Key.Slug}, "scope": {"view"}, "set": {browser.Selected.Key}, "options": {"1"}}
+	if browser.Query != "" {
+		options.Set("q", browser.Query)
+	}
+	for _, filter := range browser.Filters {
+		options.Set(filter.Key, filter.Selected)
+	}
+	fmt.Fprintf(&guide, "- [Token export context choices for this selection](%s/downloads/export?%s)\n", server.publicOrigin, options.Encode())
+	if server.publicOrigin != "" {
+		fmt.Fprintf(&guide, "- [Download guide for scopes, contexts, and formats](%s/llms-full.txt)\n", server.publicOrigin)
+	}
+	return "\n\n" + guide.String() + "\n## Token values\n\n"
+}
+
+func markdownLinkURL(href string) string {
+	return strings.NewReplacer("(", "%28", ")", "%29", " ", "%20").Replace(href)
+}
+
 // Convert the rendered view so search, table, context and pagination filters agree
 // with HTML. Keep content navigation; omit scripts, controls and site chrome.
 // Resolve links against the page URL so the Markdown works outside the browser.
-func htmlMarkdown(source []byte, pageURL string) (string, error) {
+func htmlMarkdown(source []byte, pageURL, tokenGuide string) (string, error) {
 	base, err := url.Parse(pageURL)
 	if err != nil {
 		return "", err
@@ -91,12 +159,11 @@ func htmlMarkdown(source []byte, pageURL string) (string, error) {
 			return ""
 		}
 		classes := " " + attrs["class"] + " "
-		if node.Data == "button" && strings.Contains(classes, " tokens-token-set ") {
-			var label strings.Builder
-			for child := node.FirstChild; child != nil; child = child.NextSibling {
-				label.WriteString(render(child))
-			}
-			return "\n\n## " + strings.TrimSpace(label.String()) + "\n\n"
+		if strings.Contains(classes, " tokens-table-only-link ") {
+			return ""
+		}
+		if node.Data == "form" && strings.Contains(classes, " tokens-token-filters ") {
+			return tokenGuide
 		}
 		if strings.Contains(classes, " tokens-reference-popover ") {
 			var references []string
@@ -137,10 +204,17 @@ func htmlMarkdown(source []byte, pageURL string) (string, error) {
 			}
 		}
 		var body strings.Builder
+		summaryHasHeading := false
 		for child := node.FirstChild; child != nil; child = child.NextSibling {
 			if child.Type == html.TextNode && strings.TrimSpace(child.Data) == "" {
 				body.WriteByte(' ')
 				continue
+			}
+			if node.Data == "summary" && child.Type == html.ElementNode && len(child.Data) == 2 && child.Data[0] == 'h' && child.Data[1] >= '1' && child.Data[1] <= '6' {
+				summaryHasHeading = true
+			}
+			if node.Data != "nav" && child.Data == "a" && child.PrevSibling != nil && child.PrevSibling.Data == "a" {
+				body.WriteByte(' ')
 			}
 			body.WriteString(render(child))
 			if node.Data == "nav" {
@@ -154,6 +228,9 @@ func htmlMarkdown(source []byte, pageURL string) (string, error) {
 		case "p", "section", "article", "header", "div", "details", "ul", "ol", "nav":
 			return "\n\n" + text + "\n\n"
 		case "li":
+			if text == "" {
+				return ""
+			}
 			return "\n- " + text + "\n"
 		case "br":
 			return "\n"
@@ -181,6 +258,9 @@ func htmlMarkdown(source []byte, pageURL string) (string, error) {
 			}
 			return " " + delimiter + strings.ReplaceAll(value, "|", "\\|") + delimiter + " "
 		case "summary":
+			if summaryHasHeading {
+				return "\n\n" + text + "\n\n"
+			}
 			return "\n\n### " + text + "\n\n"
 		case "a":
 			href := attrs["href"]
@@ -194,7 +274,7 @@ func htmlMarkdown(source []byte, pageURL string) (string, error) {
 				return text
 			}
 			href = base.ResolveReference(link).String()
-			return "[" + text + "](" + strings.NewReplacer("(", "%28", ")", "%29", " ", "%20").Replace(href) + ")"
+			return "[" + text + "](" + markdownLinkURL(href) + ")"
 		case "tr":
 			cells := []string{}
 			heading := false
@@ -215,7 +295,13 @@ func htmlMarkdown(source []byte, pageURL string) (string, error) {
 			}
 			return row
 		case "table":
-			return "\n\n" + strings.ReplaceAll(text, "\n\n", "\n") + "\n\n"
+			var rows []string
+			for _, line := range strings.Split(text, "\n") {
+				if line = strings.TrimSpace(line); line != "" {
+					rows = append(rows, line)
+				}
+			}
+			return "\n\n" + strings.Join(rows, "\n") + "\n\n"
 		}
 		return body.String()
 	}
