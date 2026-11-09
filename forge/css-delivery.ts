@@ -8,24 +8,37 @@ import {rewriteProperties,shortName} from './short-css-names.ts';
 
 const digest=(text:string)=>createHash('sha256').update(text).digest('hex');
 export function deliveryStyles(styles:Record<string,string>,runtimeSources:string[]) {
- const prefixes=new Set(runtimeSources.flatMap(source=>source.match(/--[\w-]+/g)??[]));
+ const exact=new Set<string>(), prefixes=new Set<string>();
+ // Literal names are exact. Interpolation, printf and concatenation can generate a family.
+ for(const source of runtimeSources) {
+  for(const [,name,dynamic] of source.matchAll(/(--[\w-]+)(\$\{|%(?:\[\d+\])?s|["'`]\s*\+)?/g)) {
+   (dynamic ? prefixes : exact).add(name);
+  }
+ }
+ const runtimePrefixes=[...prefixes];
+ const protectedName=(name:string)=>exact.has(name)||runtimePrefixes.some(prefix=>name.startsWith(prefix));
  const counts=new Map<string,number>();
  for(const css of Object.values(styles)) rewriteProperties(css,name=>{counts.set(name,(counts.get(name)??0)+1);return name;});
  const names=[...counts].sort((a,b)=>b[1]-a[1]||(a[0]<b[0]?-1:a[0]>b[0]?1:0));
  const mapping:Record<string,string>={};let index=0;
  for(const [name] of names) {
-  if([...prefixes].some(prefix=>name.startsWith(prefix)))continue;
-  let shortened:string;do{shortened=shortName(index++);}while(counts.has(shortened));
+  if(protectedName(name))continue;
+  let shortened:string;do{shortened=shortName(index++);}while(counts.has(shortened)||protectedName(shortened));
   mapping[name]=shortened;
  }
- const output=Object.fromEntries(Object.entries(styles).map(([url,css])=>[url,rewriteProperties(css,name=>mapping[name]??name)]));
+ // Keep pruning in delivery so the original theme bundles remain available to downloads.
+ const output=Object.fromEntries(Object.entries(styles).map(([url,css])=>[url,rewriteProperties(css,name=>mapping[name]??name,{dropEmptyRules:true})]));
  return {id:digest(JSON.stringify(mapping)).slice(0,16),styles:output,shortened:Object.keys(mapping).length,properties:counts.size};
 }
 
 async function files(directory:string):Promise<string[]> {
  const entries=await readdir(directory,{withFileTypes:true});
  const result:string[]=[];
- for(const entry of entries){if(['generated','vendor','node_modules'].includes(entry.name))continue;const file=path.join(directory,entry.name);if(entry.isDirectory())result.push(...await files(file));else result.push(file);}
+ for(const entry of entries){
+  if(['generated','vendor','node_modules','test','tests'].includes(entry.name)||/(?:_test|[.-](?:test|spec))\.[^.]+$/.test(entry.name))continue;
+  const file=path.join(directory,entry.name);
+  if(entry.isDirectory())result.push(...await files(file));else result.push(file);
+ }
  return result;
 }
 

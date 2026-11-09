@@ -552,6 +552,10 @@ stationary. SVGs have intrinsic dimensions so late styles cannot expand their
 first frame to the browser default SVG size. These animation rules live in `forge/components/behaviors/progress.js`;
 the CSS usage report covers CSS declarations only.
 
+`ui.Progress` accepts `CSSOnly: true` for thin, flat, indeterminate linear
+progress. It renders with the common stylesheet, which lets the catalog's
+navigation indicator animate as soon as a page request is pending.
+
 ## Loading indicators
 
 Loading previews include determinate and indeterminate modes. Contained uses the
@@ -679,17 +683,19 @@ tokens supply the height, gap, outer shape, inner corners, padding, and trailing
 icon size. Common button tokens supply colors, typography, focus, elevation,
 state layers, ripples, and shape spring parameters.
 
-Each half responds independently. Hover and press change its inner corners;
-opening the menu applies the trailing button's selected inner-corner token.
+Each half responds independently. Hover and press change its inner corners.
+The trailing button keeps its selected inner corners while the menu is open,
+including during the press that dismisses it.
 The layout mirrors in RTL. The menu uses the existing standard menu styles and
 a native popover with Escape dismissal, arrow keys, Home, End, and focus return.
 The demo actions update an inline message. Menu positioning and viewport margins
 are renderer behavior. The menu sits 4dp from the button and prefers a trailing
 button edge, with group-edge and viewport fallbacks. Each half has a minimum
 48×48dp target without changing its captured visible height. Supplemental specs
-shift the closed menu icon toward the leading button by 1, 1, 2, 3 and 6dp for
-XS through XL. Pressing or opening the menu centers it and rotates it 180°
-inward; RTL mirrors the offset and rotation. These are CSS behavior and
+shift the menu icon toward the leading button by 1, 1, 2, 3 and 6dp for
+XS through XL. The icon keeps that offset and rotates 180° inward when the menu
+opens, using the Standard fast spatial spring in both directions.
+RTL mirrors the offset and rotation. These are CSS behavior and
 measurements absent from the captured split-button tokens.
 
 ## Button groups
@@ -1341,7 +1347,8 @@ Catalog serves that URL from the shared `.cjs` source.
 
 | Property or component | Assignment |
 | --- | --- |
-| Menu reveal, submenu corners, switch, radio dot, slider bubble, field label, tab indicator and split-button shape/icon | Fast spatial |
+| Menu reveal, submenu corners, switch, radio dot, slider bubble, field label, tab indicator and split-button shape | Fast spatial |
+| Split-button chevron rotation | Standard fast spatial |
 | Small opacity and color changes, basic dialogs and date/time disclosure | Fast effects |
 | Sheet movement/settling, list expansion/reorder and expanded rail geometry | Default spatial |
 | Rail content/scrim effects and sheet scrim | Default effects |

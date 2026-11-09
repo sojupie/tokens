@@ -82,6 +82,7 @@
     const panel = document.getElementById('tokens-site-download'); if (!panel || initialized.has(panel)) return;
     initialized.add(panel);
     const form = panel.querySelector('form');
+    const loadingAction = panel.querySelector('#tokens-export-loading-action');
     let downloadToken = '', downloadTimer;
     const clearCookie = token => { document.cookie = `tokens-download-${token}=; Max-Age=0; Path=/; SameSite=Strict`; };
     function finishDownload(error) {
@@ -98,10 +99,11 @@
     const reflectLoading = () => {
       const button = panel.querySelector('[data-export-submit]');
       button.disabled = !!downloadToken;
-      button.setAttribute('aria-busy', String(!!downloadToken));
+      const checkingSelection = panel.open && loadingAction.classList.contains('htmx-request');
+      button.setAttribute('aria-busy', String(!!downloadToken || checkingSelection));
     };
-    // Only preparing an attachment uses the loading appearance. Option checks
-    // retain the disabled style through htmx's guard and server confirmation.
+    // HTMX keeps the indicator class through swaps and removes it on abort or failure.
+    new MutationObserver(reflectLoading).observe(loadingAction, {attributeFilter:['class']});
     reflectLoading();
     form.addEventListener('submit', event => {
       if (downloadToken) { event.preventDefault(); return; }

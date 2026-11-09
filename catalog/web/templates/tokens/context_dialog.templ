@@ -23,7 +23,7 @@ templ TableContextChoices(filter webview.TokenFilter) {
 }
 
 templ AudienceContextHelp() {
-	@ui.TooltipHost(templ.Attributes{"class": "tokens-context-help"}) {
+	@ui.TooltipHost(templ.Attributes{"class": "tokens-context-help", "data-tooltip-hover": ""}) {
 		@ui.IconButton(ui.IconButtonProps{Label: "What do 1P and 3P mean?", Icon: "info", Size: ui.ExtraSmall, Attrs: templ.Attributes{"popovertarget": "tokens-audience-help", "aria-haspopup": "dialog"}})
 		@ui.Tooltip(ui.TooltipProps{ID: "tokens-audience-help", Title: "What do 1P and 3P mean?", Variant: "rich", Body: AudienceHelpBody()})
 	}

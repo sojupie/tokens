@@ -793,10 +793,13 @@ Class and ID rewriting remains excluded.
 
 `forge/css-delivery.ts` collects generated theme CSS, component bundles and site
 styles, then assigns collision-free identifiers in descending frequency order.
-Source occurrences outside CSS protect both complete names and dynamic prefixes,
-such as `--_motion-`. The same map applies to every stylesheet in a release.
+The scan skips tests. Literal references outside CSS protect exact names, and
+interpolation, concatenation and string formatting protect runtime prefixes such
+as `--_motion-`. The same map applies to every stylesheet in a release.
 Controllers and inline styles therefore continue using their original names.
 Changing theme, contrast or component modules does not change the dictionary.
+The pack removes empty CSS rules, including appearance selectors left empty
+when a component theme shares all its values with the default appearance.
 
 The pack is a separate delivery artifact. It never replaces the original theme,
 DTCG or component assets used by download handlers. A review build compared all
@@ -809,6 +812,64 @@ The review corpus shortened 1,250 of 5,557 properties, reducing its raw CSS from
 modules; they are not the transfer size of one page. The earlier benchmark
 results remain the evidence for browser performance; this rollout does not
 establish an additional paint-time improvement.
+
+Excluding tests and distinguishing exact names from runtime prefixes raised
+coverage to 5,312 of 5,560 properties in the November 9 review build.
+
+| CSS pack | Raw bytes | Gzipped bytes |
+| --- | ---: | ---: |
+| Original names | 3,540,301 | 358,438 |
+| Previous shortening | 2,994,260 | 329,800 |
+| Current shortening | 1,684,361 | 277,773 |
+
+All three measurements cover the same 61 stylesheets. The gzip column sums
+each file compressed separately with Go's default gzip settings, as the
+server does. Compared with the previous pass, the current pack saves
+1,309,899 raw bytes (44%) and 52,027 gzipped bytes (16%).
+
+The radio theme dropped its empty appearance rules and shortened all radio
+token names. All 19 generated download files, a scoped Buttons CSS export,
+and the Buttons implementation ZIP matched the earlier build byte for byte.
+
+The November 9 class-only trial shortened 503 `md-*` and `tokens-*` classes
+in CSS and frozen HTML for the 14-component benchmark page. Both arms used
+the same shortened variable names. Chromium 156 ran 12 cold loads per arm at
+each CPU setting, alternating order. The screenshots were byte-identical and
+computed appearance fingerprints matched in all six theme and contrast
+combinations. The trial excluded live controller and selector rewrites.
+
+| Metric | Normal CPU | 4× CPU slowdown |
+| --- | ---: | ---: |
+| Gzipped HTML and CSS | 102,927 → 98,913 B | 102,927 → 98,913 B |
+| First contentful paint | 126 → 124 ms | 360 → 344 ms |
+| Isolated CSS parsing | 33.90 → 33.40 ms | 146.70 → 144.25 ms |
+| Initial style calculation | 33.28 → 33.25 ms | 126.27 → 131.46 ms |
+
+The paired FCP median changed by +2 ms at normal speed and −8 ms at 4×.
+The 95% bootstrap intervals crossed zero in both runs.
+
+A separate size test used the same 61 stylesheets and 261 Catalog HTML pages
+listed in the sitemap under `/md3/`. Class names accounted for 13.43% of all
+HTML characters (10,849,870 of 80,783,427) and 12.05% on the median page.
+The count includes every name in a `class` attribute and excludes separators
+and quotes. In the current CSS pack, class names accounted for 11.32% of
+characters (190,741 of 1,684,355), or 12.10% including the selector dots.
+
+The test replaced class names in captured HTML and CSS with one shared,
+collision-free map. It assigned the shortest names to the most frequent
+classes, then compressed each file and page separately with Go's default gzip
+settings. The HTML totals represent one response per sampled URL.
+
+| Payload | Current gzip bytes | Shortened gzip bytes | Savings |
+| --- | ---: | ---: | ---: |
+| CSS pack | 277,773 | 267,143 | 10,630 B (3.83%) |
+| HTML pages | 8,471,924 | 8,104,873 | 367,051 B (4.33%) |
+| Combined | 8,749,697 | 8,372,016 | 377,681 B (4.32%) |
+
+The median page saved 1,263 B. The Components index saved 463 B and Buttons
+saved 1,430 B. Keep the existing class names. The transfer savings and
+inconclusive paint results do not justify maintaining a coordinated rewrite
+across HTML, CSS and JavaScript.
 
 The server loads and verifies source and output checksums once at startup.
 Stylesheet URLs carry the transformed content hash and dictionary ID, so cached

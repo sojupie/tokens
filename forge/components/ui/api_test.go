@@ -113,6 +113,23 @@ func TestInteractiveCardsKeepNativeSemantics(t *testing.T) {
 	}
 }
 
+func TestCSSProgressRequiresOnlyCommonStyles(t *testing.T) {
+	text, assets := renderAPI(t, Progress(ProgressProps{CSSOnly: true, Label: "Loading page"}))
+	for _, want := range []string{`class="md-progress-css"`, `role="progressbar"`, `aria-label="Loading page"`, `data-control="indeterminate"`} {
+		if !strings.Contains(text, want) {
+			t.Fatalf("missing %s in %s", want, text)
+		}
+	}
+	if !assets["common"] || assets["progress"] || strings.Contains(text, "<svg") {
+		t.Fatalf("CSS progress requested SVG rendering: %v %s", assets, text)
+	}
+	value := 40.0
+	text, assets = renderAPI(t, Progress(ProgressProps{CSSOnly: true, Value: &value}))
+	if !assets["progress"] || !strings.Contains(text, `aria-valuenow="40"`) || !strings.Contains(text, "<svg") {
+		t.Fatalf("determinate progress lost SVG rendering: %v %s", assets, text)
+	}
+}
+
 func TestAllComponentFamiliesRenderWithoutCatalog(t *testing.T) {
 	date := func(year, month, day int) time.Time {
 		return time.Date(year, time.Month(month), day, 0, 0, 0, 0, time.UTC)

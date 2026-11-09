@@ -88,12 +88,14 @@ func (state ExportDialogState) RequestAttrs(name string) templ.Attributes {
 	if name == "format" {
 		endpoint = "/downloads/export/summary"
 	}
-	attrs := templ.Attributes{"hx-get": endpoint, "hx-trigger": "change", "hx-include": "closest form", "hx-sync": "closest form:replace", "hx-disable": strings.Join(targets, ","), "hx-target": "#tokens-export-fields", "hx-swap": "outerMorph", "hx-indicator": "#tokens-export-submit-pending"}
+	attrs := templ.Attributes{"hx-get": endpoint, "hx-trigger": "change", "hx-include": "closest form", "hx-sync": "closest form:replace", "hx-disable": strings.Join(targets, ","), "hx-target": "#tokens-export-fields", "hx-swap": "outerMorph", "hx-indicator": ExportLoadingTarget}
 	if name == "format" {
 		attrs["hx-swap"] = "none"
 	}
 	return attrs
 }
+
+const ExportLoadingTarget = "#tokens-export-loading-action"
 
 func ExportChoiceID(name string) string {
 	return "export-choices-" + strings.ToLower(strings.NewReplacer(".", "-", " ", "-").Replace(name))

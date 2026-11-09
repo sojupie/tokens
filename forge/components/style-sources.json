@@ -21,6 +21,7 @@
   "styles/segmented-buttons.css",
   "styles/sliders.css",
   "styles/progress.css",
+  "styles/progress-css.css",
   "styles/loading.css",
   "styles/app-bars.css",
   "styles/toolbars.css",

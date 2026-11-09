@@ -38,6 +38,8 @@
     var(--_split-outer-radius);
 }
 .md-split-button > .md-split-trailing {
+  /* The menu trigger can change shape again when the pointer leaves during close. */
+  --_button-spring-damping: initial;
   --_button-icon-size: var(--_split-item-icon-size);
   --_button-rest-shape: var(--_split-inner-radius) var(--_split-outer-radius)
     var(--_split-outer-radius) var(--_split-inner-radius);
@@ -95,39 +97,34 @@
 }
 .md-split-button > .md-split-trailing > svg {
   translate: var(--_split-icon-offset) 0;
-  rotate: 0deg;
-  transition:
-    translate var(--_motion-fast-spatial-duration)
-      var(--_motion-fast-spatial-easing),
-    rotate var(--_motion-fast-spatial-duration)
-      var(--_motion-fast-spatial-easing);
 }
 .md-split-button:dir(rtl) > .md-split-trailing > svg {
   translate: calc(-1 * var(--_split-icon-offset)) 0;
 }
-.md-split-button
-  > .md-split-trailing:is(
-    :active,
-    [data-pressed],
-    [data-button-state="pressed"],
-    [aria-expanded="true"]
-  ):not(:disabled)
-  > svg {
-  translate: 0 0;
+.md-split-button > .md-split-trailing > svg > path {
+  transform-box: fill-box;
+  transform-origin: center;
+  rotate: 0deg;
+  transition: rotate var(--_split-chevron-duration) var(--_split-chevron-easing);
+}
+.md-split-demo:has(> .md-split-menu:popover-open) > .md-split-button
+  > .md-split-trailing {
+  --_split-inner: var(--_split-item-selected-inner);
+  /* Keep the open shape through a press that may be cancelled. */
+  --_button-pressed-shape: var(--_button-rest-shape);
+}
+.md-split-demo:has(> .md-split-menu:popover-open) > .md-split-button
+  > .md-split-trailing:not(:disabled)
+  > svg > path {
   rotate: 180deg;
 }
-.md-split-button:dir(rtl)
-  > .md-split-trailing:is(
-    :active,
-    [data-pressed],
-    [data-button-state="pressed"],
-    [aria-expanded="true"]
-  ):not(:disabled)
-  > svg {
+.md-split-demo:has(> .md-split-menu:popover-open) > .md-split-button:dir(rtl)
+  > .md-split-trailing:not(:disabled)
+  > svg > path {
   rotate: -180deg;
 }
 @media (prefers-reduced-motion: reduce) {
-  .md-split-button > .md-split-trailing > svg {
+  .md-split-button > .md-split-trailing > svg > path {
     transition: none;
   }
 }
@@ -141,8 +138,4 @@
   .md-split-button > .md-button {
     transition: none;
   }
-}
-
-.md-split-button > .md-split-trailing[aria-expanded="true"] {
-  --_split-inner: var(--_split-item-selected-inner);
 }

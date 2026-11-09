@@ -1,0 +1,11 @@
+{
+	admin off
+	auto_https disable_redirects
+	skip_install_trust
+}
+
+{$TOKENS_DEV_HTTPS_SITE:https://localhost:8085} {
+	bind {$TOKENS_DEV_HTTPS_BIND:127.0.0.1}
+	tls internal
+	reverse_proxy {$TOKENS_DEV_UPSTREAM:127.0.0.1:8086}
+}

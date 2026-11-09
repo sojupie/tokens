@@ -14,5 +14,12 @@ templ ProgressIndicator(attrs templ.Attributes) {
 
 // Progress renders a determinate or indeterminate linear/circular indicator.
 templ Progress(p model.ProgressProps) {
-	@ProgressIndicator(p.Attributes(false))
+	{{ attrs := p.Attributes(false) }}
+	if p.CSSOnly && attrs["data-variant"] == "linear" && attrs["data-control"] == "indeterminate" && attrs["data-shape"] == "flat" && attrs["data-size"] == "thin" {
+		@model.Require("common")
+		{{ attrs["class"] = model.Attributes(templ.Attributes{"class": "md-progress-css"}, p.Attrs)["class"] }}
+		<div { attrs... }></div>
+	} else {
+		@ProgressIndicator(attrs)
+	}
 }
