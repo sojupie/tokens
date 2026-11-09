@@ -121,21 +121,7 @@ func (server *Server) handleHTMLSubject(response http.ResponseWriter, request *h
 			return
 		}
 	}
-	preview, err := server.buildComponentPreview(subjects[0], query)
-	if preview != nil {
-		preview.Action = request.URL.Path
-	}
-	if err != nil {
-		status := http.StatusInternalServerError
-		if errors.Is(err, playground.ErrPreviewInput) {
-			status = http.StatusBadRequest
-		}
-		http.Error(response, err.Error(), status)
-		return
-	}
-
 	browser := buildTokenBrowser(subjects[0], query)
-	browser.Preview = preview
 	if query.Get("set") != "" && query.Get("set") != browser.Selected.Key {
 		http.NotFound(response, request)
 		return
@@ -143,6 +129,27 @@ func (server *Server) handleHTMLSubject(response http.ResponseWriter, request *h
 	if setPath != "" && webview.TokenSetPath(browser.Selected) != setPath {
 		http.NotFound(response, request)
 		return
+	}
+	if browser.TableOnly && wantsMarkdown(request) {
+		if err := server.renderTokenTableMarkdown(response, request, browser); err != nil {
+			http.Error(response, err.Error(), http.StatusInternalServerError)
+		}
+		return
+	}
+	if !browser.TableOnly {
+		preview, err := server.buildComponentPreview(subjects[0], query)
+		if err != nil {
+			status := http.StatusInternalServerError
+			if errors.Is(err, playground.ErrPreviewInput) {
+				status = http.StatusBadRequest
+			}
+			http.Error(response, err.Error(), status)
+			return
+		}
+		if preview != nil {
+			preview.Action = request.URL.Path
+		}
+		browser.Preview = preview
 	}
 	if request.Header.Get("HX-Request") == "true" && !wantsMarkdown(request) {
 		var fragment templ.Component
@@ -159,6 +166,7 @@ func (server *Server) handleHTMLSubject(response http.ResponseWriter, request *h
 			return
 		}
 	}
+	preview := browser.Preview
 	if preview != nil && request.Header.Get("HX-Request") == "true" && (request.Header.Get("HX-Target") == "component-preview" || request.Header.Get("HX-Target") == "section#component-preview") && !wantsMarkdown(request) {
 		if err := server.renderHTML(response, request, webrender.ComponentPreviewView(*preview)); err != nil {
 			http.Error(response, err.Error(), http.StatusInternalServerError)
@@ -166,6 +174,17 @@ func (server *Server) handleHTMLSubject(response http.ResponseWriter, request *h
 		return
 	}
 	info := server.basicMetadata(webview.SubjectURL(subjects[0]), query)
+	if browser.TableOnly {
+		info.TableOnly = true
+		info.Title = subjectTableTitle(subjects[0], browser.Selected)
+		export := server.exportPage(&subjects[0], query)
+		info.Export = &export
+		request = request.WithContext(context.WithValue(request.Context(), webview.PageMetadataKey{}, info))
+		if err := server.renderHTML(response, request, webrender.TableOnlyPage(info.Title, subjects[0], browser)); err != nil {
+			http.Error(response, err.Error(), http.StatusInternalServerError)
+		}
+		return
+	}
 	info.Title = subjectTokenTitle(subjects[0])
 	info.Heading = info.Title
 	if preview != nil {
@@ -201,6 +220,10 @@ func (server *Server) handleHTMLSubject(response http.ResponseWriter, request *h
 		}
 	}
 	request = request.WithContext(context.WithValue(request.Context(), webview.PageMetadataKey{}, info))
+	if wantsMarkdown(request) && len(browser.Sets) > 0 {
+		guide := server.markdownTokenGuide(subjects[0], browser, info.JSONAlternate)
+		request = request.WithContext(context.WithValue(request.Context(), markdownTokenGuideKey{}, guide))
+	}
 	if err := server.renderHTML(response, request, webrender.SubjectPage(subjects[0], subjectChanges(server.state, subjects[0].Key.Slug), browser)); err != nil {
 		http.Error(response, err.Error(), http.StatusInternalServerError)
 	}
@@ -261,6 +284,22 @@ func (server *Server) renderChangeHistory(response http.ResponseWriter, request 
 	}
 }
 
+func (server *Server) renderTokenTableMarkdown(response http.ResponseWriter, request *http.Request, browser webview.TokenBrowser) error {
+	var rendered bytes.Buffer
+	if err := webview.WriteTokenGroups(&rendered, browser); err != nil {
+		return err
+	}
+	markdown, err := htmlMarkdown(rendered.Bytes(), server.publicOrigin+request.URL.RequestURI(), "")
+	if err != nil {
+		return err
+	}
+	response.Header().Set("Content-Type", "text/markdown; charset=utf-8")
+	response.Header().Set("Vary", "Accept")
+	response.Header().Set("X-Robots-Tag", "noindex, follow")
+	_, err = writePageBody(response, request, []byte(markdown))
+	return err
+}
+
 func (server *Server) renderHTML(response http.ResponseWriter, request *http.Request, component templ.Component) error {
 	response.Header().Set("Vary", "HX-Request, HX-Target, Accept")
 	response.Header().Set("Content-Type", "text/html; charset=utf-8")
@@ -313,7 +352,8 @@ func (server *Server) renderHTML(response http.ResponseWriter, request *http.Req
 		return err
 	}
 	if wantsMarkdown(request) {
-		markdown, err := htmlMarkdown(body, server.publicOrigin+request.URL.RequestURI())
+		guide, _ := ctx.Value(markdownTokenGuideKey{}).(string)
+		markdown, err := htmlMarkdown(body, server.publicOrigin+request.URL.RequestURI(), guide)
 		if err != nil {
 			return err
 		}

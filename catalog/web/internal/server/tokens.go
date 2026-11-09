@@ -21,6 +21,7 @@ type tokenFolder struct {
 
 func buildTokenBrowser(subject publish.SubjectView, query url.Values) webview.TokenBrowser {
 	browser := webview.TokenBrowser{Query: strings.TrimSpace(query.Get("q")), Sets: webview.TokenSets(subject)}
+	browser.TableOnly = query.Get("view") == "table"
 	browser.PreviewQuery = make(url.Values)
 	for key, values := range query {
 		if strings.HasPrefix(key, "preview.") {
@@ -162,8 +163,9 @@ func buildTokenBrowser(subject publish.SubjectView, query url.Values) webview.To
 		}
 		return left < right
 	})
+	openGroups := browser.Query != "" || browser.TableOnly
 	for _, name := range stateNames {
-		group := folderView(folders[name], browser.Query != "")
+		group := folderView(folders[name], openGroups)
 		browser.Selected.Groups = append(browser.Selected.Groups, group)
 	}
 	return browser

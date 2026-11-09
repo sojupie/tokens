@@ -271,7 +271,13 @@ func (server *Server) renderTokenFile(query url.Values, document dtcg.Node, repo
 	case "source":
 		names, context, _, _ := server.selectedExport(query)
 		subjects := []publish.PublicSubject{}
-		for _, item := range sortedSubjects(server.state) {
+		var candidates []publish.SubjectView
+		if query.Get("scope") == "collection" {
+			candidates = sortedSubjects(server.state)
+		} else {
+			candidates = []publish.SubjectView{*subject}
+		}
+		for _, item := range candidates {
 			selected := publish.SubjectView{Key: item.Key, Name: item.Name, Tokens: []publish.TokenView{}}
 			for _, token := range item.Tokens {
 				if !names[token.SourceName] {

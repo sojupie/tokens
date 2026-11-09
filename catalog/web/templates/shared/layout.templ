@@ -10,6 +10,15 @@ import "github.com/sojupie/tokens/forge/components/ui"
 
 import "github.com/sojupie/tokens/forge/site"
 
+templ CatalogStyles() {
+	<link rel="stylesheet" href={ webview.ThemeURL(ctx) }/>
+	<link rel="stylesheet" href={ webview.StylesheetURL(ctx, webassets.StaticURL("site.css")) }/>
+	<link rel="stylesheet" href={ webview.StylesheetURL(ctx, webassets.StaticURL("app.css")) }/>
+	<link rel="stylesheet" href={ webview.StylesheetURL(ctx, webassets.StaticURL("token-table.css")) }/>
+	<link rel="stylesheet" href={ webview.StylesheetURL(ctx, webassets.StaticURL("buttons.css")) }/>
+	<link rel="stylesheet" href={ webview.StylesheetURL(ctx, webassets.StaticURL("bundles/common.css")) }/>
+}
+
 templ Layout(title string) {
 	<!DOCTYPE html>
 	<html lang="en">
@@ -19,13 +28,10 @@ templ Layout(title string) {
 			<meta name="htmx-config" content='{"compat":{"suppressInheritanceLogs":true},"preload":{"autoBoost":false}}'/>
 			@webassets.InitialThemeScript()
 			<script src={ webassets.StaticURL("theme.js") } defer></script>
-			<link rel="stylesheet" href={ webview.ThemeURL(ctx) }/>
-			<link rel="stylesheet" href={ webview.StylesheetURL(ctx, webassets.StaticURL("site.css")) }/>
-			<link rel="stylesheet" href={ webview.StylesheetURL(ctx, webassets.StaticURL("app.css")) }/>
-			<link rel="stylesheet" href={ webview.StylesheetURL(ctx, webassets.StaticURL("token-table.css")) }/>
-			<link rel="stylesheet" href={ webview.StylesheetURL(ctx, webassets.StaticURL("buttons.css")) }/>
-			<link rel="stylesheet" href={ webview.StylesheetURL(ctx, webassets.StaticURL("bundles/common.css")) }/>
-			@webview.SiteNavigationStyles()
+			@CatalogStyles()
+			if !webview.Metadata(ctx).TableOnly {
+				@webview.SiteNavigationStyles()
+			}
 			<script src={ webassets.StaticURL("motion.js") } defer></script>
 			<script src={ webassets.StaticURL("buttons.js") } defer></script>
 			<script src={ webassets.StaticURL("runtime/utils.js") } defer></script>
@@ -81,6 +87,14 @@ templ Layout(title string) {
 			}
 		</head>
 		<body class="tokens-body" hx-boost="true">
+			if webview.Metadata(ctx).TableOnly {
+				<main class="tokens-main tokens-layout-content" aria-label={ title } data-component-assets>
+					@webview.ComponentAssetScope() {
+						{ children... }
+						@SiteDownloadDialog()
+					}
+				</main>
+			} else {
 			<template hx type="partial" hx-target="#tokens-site-rail" hx-swap="innerMorph">@site.Rail(webview.SiteConfig(ctx))
 </template>
 			<template hx type="partial" hx-target="#tokens-site-destinations" hx-swap="innerMorph">
@@ -133,6 +147,7 @@ templ Layout(title string) {
 					}
 				}
 			</div>
+			}
 		</body>
 	</html>
 }

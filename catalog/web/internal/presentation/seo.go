@@ -7,6 +7,7 @@ import (
 )
 
 type PageMetadata struct {
+	TableOnly          bool
 	Navigation         []site.Section
 	Illustration       *Illustration
 	ImagePageURL       string

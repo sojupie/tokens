@@ -13,6 +13,7 @@ import (
 )
 
 type TokenBrowser struct {
+	TableOnly    bool
 	Preview      *ComponentPreview
 	Contexts     url.Values
 	PreviewQuery url.Values

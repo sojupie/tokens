@@ -28,24 +28,28 @@ templ SiteDownloadButton() {
 }
 
 templ SiteDownloadMenu() {
+	<div class="tokens-export">
+		@ui.Action(ui.ButtonProps{Variant: ui.ButtonVariant("filled"), Attrs: templ.Attributes{"data-export-open": true, "aria-haspopup": "dialog", "aria-controls": "tokens-site-download"}}) {
+			Download tokens
+		}
+		@SiteDownloadDialog()
+		<noscript><nav class="tokens-native-downloads" aria-label="Downloads"><a href={ templ.SafeURL(webview.NativeDownloadURL(webview.Metadata(ctx).Export)) }>Configure download</a><a href="/downloads/dtcg/light-default/tokens.tokens.json" download>DTCG JSON</a><a href="/downloads/dtcg/light-default/tokens.css" download>CSS variables</a></nav></noscript>
+	</div>
+}
+
+templ SiteDownloadDialog() {
 	@webview.UseComponentAssets("dialog")
 	@webview.UseComponentAssets("radio")
 	@webview.UseComponentAssets("checkbox")
 	@webview.UseComponentAssets("messages")
 	@webview.UseComponentAssets("loading")
-	<div class="tokens-export">
-		@ui.Action(ui.ButtonProps{Variant: ui.ButtonVariant("filled"), Attrs: templ.Attributes{"data-export-open": true, "aria-haspopup": "dialog", "aria-controls": "tokens-site-download"}}) {
-			Download tokens
+	@ui.Modal(ui.DialogProps{ID: "tokens-site-download", TitleID: "tokens-site-download-title", Title: "Download", Attrs: templ.Attributes{"hx-boost": "false", "class": "tokens-export-dialog", "aria-describedby": "tokens-export-scope", "data-component-export": fmt.Sprint(webview.Metadata(ctx).Export != nil && webview.Metadata(ctx).Export.Component), "data-default-scope": webview.Metadata(ctx).Export.DefaultScope(), "data-has-css": fmt.Sprint(webview.Metadata(ctx).Export != nil && webview.Metadata(ctx).Export.CSS), "data-has-implementation": fmt.Sprint(webview.Metadata(ctx).Export != nil && webview.Metadata(ctx).Export.Implementations)}, FormAttrs: templ.Attributes{"id": "tokens-export-form", "action": "/downloads/export", "method": "get", "hx-get": "/downloads/export/options", "hx-trigger": "export-refresh", "hx-target": "#tokens-export-fields", "hx-swap": "outerMorph", "hx-sync": "this:replace", "hx-indicator": "#tokens-export-submit-pending", "hx-disable": "#tokens-export-fields fieldset, #tokens-export-submit-pending"}, Actions: DownloadDialogActions(), ActionsAttrs: templ.Attributes{"class": "tokens-export-actions"}}) {
+		<input type="hidden" name="_download" value=""/>
+		if page := webview.Metadata(ctx).Export; page != nil {
+			@ExportDialogFields(webview.InitialExportDialog(*page))
 		}
-		@ui.Modal(ui.DialogProps{ID: "tokens-site-download", TitleID: "tokens-site-download-title", Title: "Download", Attrs: templ.Attributes{"hx-boost": "false", "class": "tokens-export-dialog", "aria-describedby": "tokens-export-scope", "data-component-export": fmt.Sprint(webview.Metadata(ctx).Export != nil && webview.Metadata(ctx).Export.Component), "data-default-scope": webview.Metadata(ctx).Export.DefaultScope(), "data-has-css": fmt.Sprint(webview.Metadata(ctx).Export != nil && webview.Metadata(ctx).Export.CSS), "data-has-implementation": fmt.Sprint(webview.Metadata(ctx).Export != nil && webview.Metadata(ctx).Export.Implementations)}, FormAttrs: templ.Attributes{"id": "tokens-export-form", "action": "/downloads/export", "method": "get", "hx-get": "/downloads/export/options", "hx-trigger": "export-refresh", "hx-target": "#tokens-export-fields", "hx-swap": "outerMorph", "hx-sync": "this:replace", "hx-indicator": "#tokens-export-submit-pending", "hx-disable": "#tokens-export-fields fieldset, #tokens-export-submit-pending"}, Actions: DownloadDialogActions(), ActionsAttrs: templ.Attributes{"class": "tokens-export-actions"}}) {
-			<input type="hidden" name="_download" value=""/>
-			if page := webview.Metadata(ctx).Export; page != nil {
-				@ExportDialogFields(webview.InitialExportDialog(*page))
-			}
-		}
-		<iframe name="tokens-export-transfer" title="Download transfer" hidden></iframe>
-		<noscript><nav class="tokens-native-downloads" aria-label="Downloads"><a href={ templ.SafeURL(webview.NativeDownloadURL(webview.Metadata(ctx).Export)) }>Configure download</a><a href="/downloads/dtcg/light-default/tokens.tokens.json" download>DTCG JSON</a><a href="/downloads/dtcg/light-default/tokens.css" download>CSS variables</a></nav></noscript>
-	</div>
+	}
+	<iframe name="tokens-export-transfer" title="Download transfer" hidden></iframe>
 }
 
 // Native radios and checkbox-backed filter chips preserve form and keyboard behavior.

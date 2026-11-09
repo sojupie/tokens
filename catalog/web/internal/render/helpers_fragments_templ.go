@@ -26,28 +26,54 @@ import (
 
 func TokenBrowserView(subject publish.SubjectView, browser webview.TokenBrowser) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, writer io.Writer) error {
-		if _, err := io.WriteString(writer, `<div id="tokens-token-browser" class="tokens-token-browser" data-component-assets>`); err != nil {
+		if _, err := io.WriteString(writer, `<div id="tokens-token-browser" class="tokens-token-browser" data-component-assets><div class="tokens-token-surface">`); err != nil {
 			return err
 		}
-		if err := webview.ComponentAssetScope().Render(templ.WithChildren(ctx, TokenBrowserContents(subject, browser)), writer); err != nil {
+		content := templ.ComponentFunc(func(ctx context.Context, writer io.Writer) error {
+			if len(browser.Sets) > 0 {
+				if _, err := io.WriteString(writer, TokenTableSharedMarkup()); err != nil {
+					return err
+				}
+				if err := tokenBrowserControls(subject, browser).Render(ctx, writer); err != nil {
+					return err
+				}
+			}
+			return webview.WriteTokenGroups(writer, browser)
+		})
+		if err := webview.ComponentAssetScope().Render(templ.WithChildren(ctx, content), writer); err != nil {
 			return err
+		}
+		if _, err := io.WriteString(writer, `</div>`); err != nil {
+			return err
+		}
+		if !browser.TableOnly && len(browser.Sets) > 0 {
+			if _, err := io.WriteString(writer, `<a class="tokens-link tokens-table-only-link" hx-boost="false" href="`+html.EscapeString(webview.TableOnlyURL(subject, browser))+`">View this table only`+webview.MaterialSymbolSVG("arrow_forward")+`</a>`); err != nil {
+				return err
+			}
 		}
 		_, err := io.WriteString(writer, `</div>`)
 		return err
 	})
 }
 
-func TokenBrowserContents(subject publish.SubjectView, browser webview.TokenBrowser) templ.Component {
+func tokenBrowserControls(subject publish.SubjectView, browser webview.TokenBrowser) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, writer io.Writer) error {
 		write := func(value string) error {
 			_, err := io.WriteString(writer, value)
 			return err
 		}
-		if len(browser.Sets) == 0 {
-			return write(`<p class="tokens-empty md-typescale-body-large">No published tokens for this page.</p>`)
+		subjectURL := html.EscapeString(webview.SubjectURL(subject))
+		action := subjectURL + "#tokens-heading"
+		if browser.TableOnly {
+			action = subjectURL
 		}
-		if err := write(TokenTableSharedMarkup() + `<form class="tokens-token-filters" hx-boost="false" hx-target="#tokens-token-browser" hx-swap="outerHTML" hx-sync="#tokens-token-browser:replace" hx-push-url="true" hx-get="` + html.EscapeString(webview.SubjectURL(subject)) + `" method="get" action="` + html.EscapeString(webview.SubjectURL(subject)) + `#tokens-heading"><div class="tokens-token-toolbar">`); err != nil {
+		if err := write(`<form class="tokens-token-filters" hx-boost="false" hx-target="#tokens-token-browser" hx-swap="outerHTML" hx-sync="#tokens-token-browser:replace" hx-push-url="true" hx-get="` + subjectURL + `" method="get" action="` + action + `"><div class="tokens-token-toolbar">`); err != nil {
 			return err
+		}
+		if browser.TableOnly {
+			if err := write(`<input type="hidden" name="view" value="table">`); err != nil {
+				return err
+			}
 		}
 		keys := make([]string, 0, len(browser.PreviewQuery))
 		for key := range browser.PreviewQuery {
@@ -92,21 +118,7 @@ func TokenBrowserContents(subject publish.SubjectView, browser webview.TokenBrow
 		} else if err := write(`<span>Value</span></div>`); err != nil {
 			return err
 		}
-		if err := write(`</form>`); err != nil {
-			return err
-		}
-		if browser.Count == 0 {
-			return write(`<p class="tokens-empty md-typescale-body-large">No tokens match these filters.</p>`)
-		}
-		if err := write(`<div class="tokens-token-groups">`); err != nil {
-			return err
-		}
-		for _, group := range browser.Selected.Groups {
-			if err := webview.WriteTokenGroup(writer, group, true); err != nil {
-				return err
-			}
-		}
-		return write(`</div>`)
+		return write(`</form>`)
 	})
 }
 

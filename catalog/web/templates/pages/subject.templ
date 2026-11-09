@@ -10,11 +10,20 @@ templ SubjectPage(subject publish.SubjectView, changes []publish.ChangeView, bro
 	@SubjectPageComponent(subject, changes, browser)
 }
 
+templ TableOnlyPage(title string, subject publish.SubjectView, browser webview.TokenBrowser) {
+	@Layout(title) {
+		@TokenBrowserView(subject, browser)
+	}
+}
+
 templ TokenSetPicker(subject publish.SubjectView, browser webview.TokenBrowser) {
 	<label class="tokens-native-set">Token set
 			<select class="md-native-control" name="set">
 				for _, set := range browser.Sets {
 					<option value={ set.Key } selected?={ set.Key==browser.Selected.Key }>{ webview.TokenTableQualifier(subject,set) }</option>
+				}
+				if browser.TableOnly {
+					<option value="all" selected?={ browser.Selected.All }>All tokens</option>
 				}
 			</select>
 	</label>

@@ -396,6 +396,7 @@ test('table modes preserve preview preference and folder state, with matching ac
     }];
   }));
   const menu = {addEventListener() {}, matches: () => false};
+  const clicks = [];
   const browser = {
     classList: {
       contains: value => classes.has(value),
@@ -409,7 +410,10 @@ test('table modes preserve preview preference and folder state, with matching ac
       return controls[selector.match(/data-action="([^"]+)"/)[1]];
     },
     querySelectorAll: selector => selector === '.tokens-token-folder' ? groups : [],
-    addEventListener: (name, handler) => { listeners[name] = handler; },
+    addEventListener: (name, handler) => {
+      if (name === 'click') clicks.push(handler);
+      else listeners[name] = handler;
+    },
   };
   let copied, failClipboard = false, copyField, copyFallback = true, clearCopyStatus;
   const clipboard = {writeText: async value => { if (failClipboard) throw Error('denied'); copied = value; }};
@@ -424,7 +428,8 @@ test('table modes preserve preview preference and folder state, with matching ac
     setTimeout: (fn, delay) => { assert.equal(delay,1500); clearCopyStatus=fn; return 1; },
     clearTimeout() {},
   });
-  const click = action => listeners.click({target: {closest: selector => selector === 'button[data-action]' ? controls[action] : null}});
+  const dispatchClick = closest => Promise.all(clicks.map(handler => handler({target: {closest}})));
+  const click = action => dispatchClick(selector => selector === 'button[data-action]' ? controls[action] : null);
   await click('previews');
   assert.equal(classes.has('tokens-no-previews'), true);
   assert.equal(controls.previews.icons.off.hidden, false);
@@ -447,12 +452,12 @@ test('table modes preserve preview preference and folder state, with matching ac
   assert.deepEqual(groups.map(group => group.open), [false, false]);
   const status = {};
   const copy = {dataset: {copyReference: 'md.sys.color.primary'}, focus(){}, closest: () => ({querySelector: () => status,append: field => {copyField=field;}})};
-  await listeners.click({target: {closest: selector => selector === '[data-copy-reference]' ? copy : null}});
+  const copyReference = () => dispatchClick(selector => selector === '[data-copy-reference]' ? copy : null);
+  await copyReference();
   assert.equal(copied, 'md.sys.color.primary');
   assert.equal(status.textContent, 'Copied.');
   clearCopyStatus();
   assert.equal(status.textContent, '');
-  const copyReference = () => listeners.click({target:{closest: selector => selector === '[data-copy-reference]' ? copy : null}});
   failClipboard = true;
   copied = undefined;
   await copyReference();

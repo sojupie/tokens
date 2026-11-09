@@ -177,7 +177,7 @@ func TestTableSharesDecorationButIncludesAllReferenceData(t *testing.T) {
 			t.Fatalf("each token must include its full reference tree without JavaScript: %s", name)
 		}
 	}
-	markdown, err := htmlMarkdown([]byte("<main>"+body+"</main>"), "https://tokens.test")
+	markdown, err := htmlMarkdown([]byte("<main>"+body+"</main>"), "https://tokens.test", "")
 	if err != nil {
 		t.Fatal(err)
 	}

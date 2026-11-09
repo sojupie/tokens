@@ -15,8 +15,10 @@ curl https://tokencatalog.dev/md3/api/v1/changes
 curl https://tokencatalog.dev/md3/ -H 'Accept: text/markdown'
 ```
 
-Subject responses include a `jsonUrl` for the token download. The usage skill
-explains references, contexts and capture dates.
+Subject responses include a `jsonUrl` for the captured tokens. The
+[full guide](https://tokencatalog.dev/md3/llms-full.txt) explains how to select
+a table and context, export tokens in a conversion format, or download runnable
+component examples.
 
 For copyable prompts, the skill command, and MCP setup, open
 [Give this to your agent](https://tokencatalog.dev/md3/for-agents).
@@ -92,6 +94,7 @@ skill file only), and the supported `/.well-known/` files also work at the
 root so discovery clients can find the collection. Their contents advertise
 canonical `/md3/` URLs. `/api/v1/health` remains a root alias for internal checks.
 The same discovery files are available under `/md3/` too.
+The root sitemap also lists the same-origin tool apps served under `/tools/`.
 
 
 ## Skill source
