@@ -38,7 +38,14 @@ func TokenBrowserView(subject publish.SubjectView, browser webview.TokenBrowser)
 					return err
 				}
 			}
-			return webview.WriteTokenGroups(writer, browser)
+			if err := webview.WriteTokenGroups(writer, browser); err != nil {
+				return err
+			}
+			if browser.Static != nil {
+				_, err := io.WriteString(writer, `<p class="tokens-empty md-typescale-body-large" role="status" hidden>`+html.EscapeString(browser.Static.EmptyLabel)+`</p>`)
+				return err
+			}
+			return nil
 		})
 		if err := webview.ComponentAssetScope().Render(templ.WithChildren(ctx, content), writer); err != nil {
 			return err
@@ -62,12 +69,21 @@ func tokenBrowserControls(subject publish.SubjectView, browser webview.TokenBrow
 			_, err := io.WriteString(writer, value)
 			return err
 		}
+		if browser.Static != nil {
+			if err := write(`<form class="tokens-token-filters">`); err != nil {
+				return err
+			}
+			if err := tokenBrowserToolbar(subject, browser).Render(ctx, writer); err != nil {
+				return err
+			}
+			return write(`<div class="tokens-token-columns"><span>Token</span></div></form>`)
+		}
 		subjectURL := html.EscapeString(webview.SubjectURL(subject))
 		action := subjectURL + "#tokens-heading"
 		if browser.TableOnly {
 			action = subjectURL
 		}
-		if err := write(`<form class="tokens-token-filters" hx-boost="false" hx-target="#tokens-token-browser" hx-swap="outerHTML" hx-sync="#tokens-token-browser:replace" hx-push-url="true" hx-get="` + subjectURL + `" method="get" action="` + action + `"><div class="tokens-token-toolbar">`); err != nil {
+		if err := write(`<form class="tokens-token-filters" hx-boost="false" hx-target="#tokens-token-browser" hx-swap="outerHTML" hx-sync="#tokens-token-browser:replace" hx-push-url="true" hx-get="` + subjectURL + `" method="get" action="` + action + `">`); err != nil {
 			return err
 		}
 		if browser.TableOnly {
@@ -88,16 +104,7 @@ func tokenBrowserControls(subject publish.SubjectView, browser webview.TokenBrow
 				}
 			}
 		}
-		if err := TokenSetPicker(subject, browser).Render(ctx, writer); err != nil {
-			return err
-		}
-		if err := write(`<div class="tokens-token-actions"><label class="tokens-token-search">` + webview.TableIcon("search") + `<span class="tokens-visually-hidden">Search tokens</span><input id="tokens-token-search" type="search" name="q" value="` + html.EscapeString(browser.Query) + `" placeholder="Search"></label><div class="tokens-token-tools" role="group" aria-label="Table controls">`); err != nil {
-			return err
-		}
-		if err := TableTools().Render(ctx, writer); err != nil {
-			return err
-		}
-		if err := write(`</div></div></div>`); err != nil {
+		if err := tokenBrowserToolbar(subject, browser).Render(ctx, writer); err != nil {
 			return err
 		}
 		if len(browser.Filters) > 0 {
@@ -119,6 +126,34 @@ func tokenBrowserControls(subject publish.SubjectView, browser webview.TokenBrow
 			return err
 		}
 		return write(`</form>`)
+	})
+}
+
+func tokenBrowserToolbar(subject publish.SubjectView, browser webview.TokenBrowser) templ.Component {
+	return templ.ComponentFunc(func(ctx context.Context, writer io.Writer) error {
+		toolbar := `<div class="tokens-token-toolbar">`
+		searchLabel, placeholder, controlsLabel := "Search tokens", "Search", "Table controls"
+		picker, tools := TokenSetPicker(subject, browser), TableTools()
+		if labels := browser.Static; labels != nil {
+			toolbar = `<div class="tokens-token-toolbar" hidden>`
+			searchLabel, placeholder, controlsLabel = labels.SearchLabel, labels.SearchPlaceholder, labels.ControlsLabel
+			picker, tools = StaticTokenSetPicker(browser.Sets, *labels), TableDisplayTools()
+		}
+		if _, err := io.WriteString(writer, toolbar); err != nil {
+			return err
+		}
+		if err := picker.Render(ctx, writer); err != nil {
+			return err
+		}
+		_, err := io.WriteString(writer, `<div class="tokens-token-actions"><label class="tokens-token-search">`+webview.TableIcon("search")+`<span class="tokens-visually-hidden">`+html.EscapeString(searchLabel)+`</span><input id="tokens-token-search" type="search" name="q" value="`+html.EscapeString(browser.Query)+`" placeholder="`+html.EscapeString(placeholder)+`"></label><div class="tokens-token-tools" role="group" aria-label="`+html.EscapeString(controlsLabel)+`">`)
+		if err != nil {
+			return err
+		}
+		if err := tools.Render(ctx, writer); err != nil {
+			return err
+		}
+		_, err = io.WriteString(writer, `</div></div></div>`)
+		return err
 	})
 }
 
