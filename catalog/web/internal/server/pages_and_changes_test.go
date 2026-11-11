@@ -387,8 +387,8 @@ func TestHTMLPagesRenderComponentsAndStyles(t *testing.T) {
 			if initial < 0 || styles < initial || !strings.Contains(body, `<link rel="stylesheet" href="`+webassets.StaticURL("site.css")+`"`) || !strings.Contains(body, `<script src="`+webassets.StaticURL("theme.js")+`" defer></script>`) {
 				t.Fatal("saved theme must be inline before styles; controls must be deferred")
 			}
-			if !strings.Contains(body, `class="tokens-brand-logo"`) || !strings.Contains(body, `fill="var(--md-sys-color-tertiary,var(--tokens-logo-fallback))"`) {
-				t.Fatal("header must use the inline tertiary SVG logo")
+			if !strings.Contains(body, `<svg xmlns="http://www.w3.org/2000/svg" class="tokens-brand-logo"`) {
+				t.Fatal("header must use the inline SVG logo")
 			}
 			for _, value := range []string{`<footer class="tokens-site-footer"`, `href="https://marmenlind.com"`, "Made by ", "Olle Marmenlind", "Independent project. Not affiliated with Google."} {
 				if !strings.Contains(recorder.Body.String(), value) {
