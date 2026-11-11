@@ -4,7 +4,7 @@
 .tokens-site-header { position:sticky;top:0;z-index:10;background:var(--md-sys-color-surface-container-low); }
 .tokens-primary-nav { display:flex;align-items:center;gap:var(--md-sys-measurement-space150);padding:var(--md-sys-measurement-space100) var(--md-sys-measurement-space200); }
 .tokens-brand { display:inline-flex;align-items:center;gap:var(--md-sys-measurement-space150);color:var(--md-sys-color-on-surface);text-decoration:none;font:var(--md-sys-typescale-title-large); }
-.tokens-brand-logo { fill:var(--md-sys-color-tertiary);inline-size:var(--md-sys-measurement-space500);block-size:var(--md-sys-measurement-space500);object-fit:contain;flex:none; }
+.tokens-brand-logo { inline-size:var(--md-sys-measurement-space500);block-size:var(--md-sys-measurement-space500);object-fit:contain;flex:none; }
 .tokens-drawer-brand { flex:1;min-inline-size:0;padding:var(--md-sys-measurement-space200);font:var(--md-sys-typescale-title-medium); }
 .tokens-site-header #tokens-site-menu[open] { display:flex;flex-direction:column;padding:0;overflow:hidden;background:var(--md-sys-color-surface-container-low); }
 .tokens-site-header .md-navigation-header { flex:none;margin:0; }

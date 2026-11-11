@@ -1,1 +1,27 @@
-<svg xmlns="http://www.w3.org/2000/svg" class="tokens-brand-logo" width="40" height="40" viewBox="0 0 100 100" fill="var(--md-sys-color-tertiary,var(--tokens-logo-fallback))" aria-hidden="true" focusable="false"><style>.tokens-brand-logo{--tokens-logo-fallback:#7e5260}@media(prefers-color-scheme:dark){.tokens-brand-logo{--tokens-logo-fallback:#efb8c8}}</style><path fill-rule="evenodd" d="M32 4H68A28 28 0 0 1 96 32V68A28 28 0 0 1 68 96H32A28 28 0 0 1 4 68V32A28 28 0 0 1 32 4ZM26 24H74Q76 24 76 26V36Q76 38 74 38H59Q57 38 57 40V74Q57 76 55 76H45Q43 76 43 74V40Q43 38 41 38H26Q24 38 24 36V26Q24 24 26 24Z"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" class="tokens-brand-logo" width="40" height="40" viewBox="-10 38 316 316" aria-hidden="true" focusable="false">
+  <!-- Both sets of corner arcs share a tangent and step evenly along it. -->
+  <path fill="#ef3c30" d="M101.6326 89.1757 A38 38 0 0 1 147.8574 52.0765
+    L251.2248 74.9929 A38 38 0 0 1 281.0000 112.0921
+    L281.0000 264.5341 A38 38 0 0 1 243.0000 302.5341
+    L139.6326 302.5341 A38 38 0 0 1 101.6326 264.5341 Z"/>
+  <path fill="#16a34a" d="M73.0884 106.7838 A41 41 0 0 1 120.0737 66.2231
+    L238.9854 83.7703 A41 41 0 0 1 274.0000 124.3310
+    L274.0000 275.0227 A41 41 0 0 1 233.0000 316.0227
+    L114.0884 316.0227 A41 41 0 0 1 73.0884 275.0227 Z"/>
+  <path fill="#ffbf16" d="M44.5442 124.3919 A44 44 0 0 1 92.3916 80.5604
+    L226.8474 92.3627 A44 44 0 0 1 267.0000 136.1941
+    L267.0000 285.5114 A44 44 0 0 1 223.0000 329.5114
+    L88.5442 329.5114 A44 44 0 0 1 44.5442 285.5114 Z"/>
+  <g transform="translate(16 95)">
+    <rect width="244" height="248" rx="47" fill="#1673f9"/>
+    <rect x="23" y="23" width="198" height="202" rx="24" fill="#fff"/>
+
+    <circle cx="80" cy="80" r="29" fill="#1673f9"/>
+    <rect x="135" y="51" width="58" height="58" rx="14" fill="#ef3c30"/>
+    <polygon points="0,-26 30.0222,26 -30.0222,26" transform="translate(80 168)"
+             fill="#ffbf16" stroke="#ffbf16" stroke-width="11" stroke-linejoin="round"/>
+    <polygon points="-30,0 -15,-25.9808 15,-25.9808 30,0 15,25.9808 -15,25.9808"
+             transform="translate(164 168)" fill="#16a34a" stroke="#16a34a"
+             stroke-width="7" stroke-linejoin="round"/>
+  </g>
+</svg>
