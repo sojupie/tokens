@@ -19,9 +19,18 @@ type ComponentPreview struct {
 	Interactive bool
 }
 
+func NavBarVariantLabels() map[string]string {
+	return map[string]string{
+		"adaptive":   "Flexible: automatic",
+		"vertical":   "Icon above label",
+		"horizontal": "Icon beside label",
+		"baseline":   "Baseline (not recommended)",
+	}
+}
+
 func (page ComponentPreview) Caption(c ComponentCase) string {
 	if c.Family == "nav-bar" && page.Dimension == "variant" && !page.Interactive {
-		return map[string]string{"adaptive": "Flexible: automatic", "vertical": "Flexible: vertical", "horizontal": "Flexible: horizontal", "baseline": "Baseline (not recommended)"}[c.Variant]
+		return NavBarVariantLabels()[c.Variant]
 	}
 	if page.Interactive {
 		return "Interactive"
