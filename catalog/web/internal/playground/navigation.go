@@ -90,7 +90,7 @@ func ConfigureNavBarPreview(page *webview.ComponentPreview, query url.Values) er
 	}
 	for i := range page.Controls {
 		if page.Controls[i].Name == "variant" {
-			page.Controls[i].Labels = map[string]string{"adaptive": "Flexible: automatic", "vertical": "Flexible: vertical", "horizontal": "Flexible: horizontal", "baseline": "Baseline (not recommended)"}
+			page.Controls[i].Labels = webview.NavBarVariantLabels()
 		}
 	}
 	for _, choice := range []webview.PreviewControl{
