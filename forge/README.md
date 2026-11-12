@@ -8,6 +8,7 @@ cannot describe, including keyboard handling, ripples, and shape animation.
 | `build-tokens.mjs` | Style Dictionary build and catalog theme assembly |
 | `material/` | Material Design 3 component token mappings and coverage checks |
 | `components/` | Shared spring sampler, browser behavior and embedded generated styles |
+| [`react/`](react/README.md) | React renderers that use the same Forge styles and browser controllers |
 | `conformance/` | Browser checks against token-derived properties |
 
 Run these commands from the repository root:

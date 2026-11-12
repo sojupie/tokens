@@ -1,0 +1,26 @@
+{
+  "name": "@token-catalog/forge-react",
+  "version": "0.2.0",
+  "type": "module",
+  "license": "SEE LICENSE IN dist/NOTICE.txt",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./styles.css": "./dist/styles.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "./dist/runtime.js",
+    "**/*.css"
+  ],
+  "peerDependencies": {
+    "react": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0"
+  }
+}

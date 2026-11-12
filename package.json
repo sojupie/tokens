@@ -7,6 +7,7 @@
   },
   "scripts": {
     "build:components": "node forge/components/build-assets.ts && node catalog/web/build-assets.ts",
+    "build:react": "node forge/react/build.ts",
     "check:components": "npm run check:types && go run ./cmd/generate-templates -check && node forge/components/build-assets.ts --check && node catalog/web/build-assets.ts --check",
     "build:tokens": "node forge/build-tokens.mjs",
     "test:tokens": "node --test forge/*.test.mjs forge/*.test.ts forge/material/*.test.mjs forge/material/components/*.test.mjs",
