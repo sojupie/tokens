@@ -2,7 +2,7 @@
   "name": "@token-catalog/forge-react",
   "version": "0.2.0",
   "type": "module",
-  "license": "SEE LICENSE IN dist/NOTICE.txt",
+  "license": "Apache-2.0",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

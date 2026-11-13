@@ -29,8 +29,7 @@ out of tracked documentation.
 
 ## Licenses
 
-Original contributions are covered by the repository's Business Source License 1.1
-(BSL 1.1, transitioning to Apache License 2.0 three years after publication). Preserve
+Original contributions are covered by the repository's [Apache License 2.0](LICENSE). Preserve
 upstream copyright and license notices when adding third-party code or data.
 Record the source and license in [third-party notices](THIRD_PARTY_NOTICES.md).
 Do not apply the project's license to someone else's design-system data.
