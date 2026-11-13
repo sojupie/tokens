@@ -85,7 +85,11 @@ func (c Config) destinationURL(item Destination) string {
 	return item.URL
 }
 func (c Config) destinationCurrent(item Destination) string {
-	if c.Active == item.URL || c.ActiveTool != "" && c.ActiveTool == item.URL {
+	current := c.Active
+	if c.ActiveTool != "" {
+		current = c.ActiveTool
+	}
+	if current == item.URL {
 		return "page"
 	}
 	return "false"
