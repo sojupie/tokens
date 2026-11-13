@@ -1,9 +1,8 @@
 # Third-party notices
 
 Token Catalog's original code and documentation are licensed under the
-Business Source License 1.1 (BSL 1.1, transitioning to Apache License 2.0
-three years after publication). The following material retains its upstream copyright
-and license terms.
+[Apache License 2.0](LICENSE). The following material retains its upstream
+copyright and license terms.
 
 ## Material Design 3
 
