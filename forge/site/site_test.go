@@ -116,3 +116,24 @@ func TestSectionNavigationUsesNativeLinksAndOneCurrentSubpage(t *testing.T) {
 		t.Fatal("destination without subpages should not reserve an empty panel")
 	}
 }
+
+func TestToolsDrawerHasOneCurrentDestination(t *testing.T) {
+	config := Default()
+	for _, activeTool := range []string{"", config.Tools[0].URL, config.Tools[1].URL} {
+		config.ActiveTool = activeTool
+		var out bytes.Buffer
+		if err := Header(config).Render(context.Background(), &out); err != nil {
+			t.Fatal(err)
+		}
+		want := config.Catalog + "/tools"
+		if activeTool != "" {
+			want = activeTool
+		}
+		for _, url := range []string{config.Catalog + "/tools", config.Tools[0].URL, config.Tools[1].URL} {
+			got := strings.Contains(out.String(), `class="md-nav-item" data-navigation-item href="`+url+`" aria-current="page"`)
+			if got != (url == want) {
+				t.Errorf("active tool %q: current state for %q = %t, want %t", activeTool, url, got, url == want)
+			}
+		}
+	}
+}
