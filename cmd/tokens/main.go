@@ -42,6 +42,8 @@ func run(args []string) error {
 		return runForge(args[1:])
 	case "site-shell":
 		return runSiteShell(args[1:])
+	case "table-shell":
+		return runTableShell(args[1:])
 	case "illustrations":
 		return runIllustrations(args[1:])
 	case "serve":
@@ -67,6 +69,7 @@ const topHelp = `Usage:
   tokens serve [flags]
   tokens illustrations [--published directory] [--assets directory] [--chrome-path path]
   tokens site-shell --out directory [--catalog URL]
+  tokens table-shell --assets directory --out directory < table.json
   tokens usage [--since 7d] [--send | --weekly] [flags]
   tokens forge inspect [--assets directory] [--output file]
   tokens snapshot create [flags]

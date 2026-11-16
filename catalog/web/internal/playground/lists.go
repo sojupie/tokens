@@ -10,19 +10,28 @@ import (
 
 func ConfigureListPreview(page *webview.ComponentPreview, query url.Values) error {
 	c := page.Cases[0]
-	choices := []webview.PreviewControl{{Name: "divider", Label: "Dividers", Options: []string{"inset", "full-width", "none"}}, {Name: "trailing", Label: "Trailing content", Options: []string{"text", "icon", "none"}}}
+	choices := []webview.PreviewControl{{Name: "divider", Label: "Dividers", Options: []string{"inset", "full-width", "none"}}}
+	trailing := webview.PreviewControl{Name: "trailing", Label: "Trailing content", Options: []string{"text", "icon", "none"}, Labels: map[string]string{"icon": "Indicator icon"}}
 	if c.Control == "select" && c.Width != "checkbox" && c.Width != "radio" {
 		if c.Selection == "single" {
-			choices[1].Options = append(choices[1].Options, "radio")
+			trailing.Options = append(trailing.Options, "radio")
 		} else {
-			choices[1].Options = append(choices[1].Options, "checkbox", "switch")
+			trailing.Options = append(trailing.Options, "checkbox", "switch")
 		}
 	}
 	if c.Control == "reveal" {
-		choices[1].Options = []string{"text", "none"}
+		trailing.Options = []string{"text", "none"}
 	}
 	if c.Control == "expand" {
-		choices = append(choices, webview.PreviewControl{Name: "inset", Label: "Child inset", Options: []string{"none", "inset"}}, webview.PreviewControl{Name: "surface", Label: "Expanded surface", Options: []string{"tonal", "none"}}, webview.PreviewControl{Name: "expand-icon", Label: "Disclosure icon", Options: []string{"contained", "plain"}})
+		trailing.Label = "Trailing content on child rows"
+	}
+	if c.Control != "actions" {
+		choices = append(choices, trailing)
+	}
+	if c.Control == "expand" {
+		choices = append(choices, webview.PreviewControl{Name: "inset", Label: "Child inset", Options: []string{"none", "inset"}}, webview.PreviewControl{Name: "surface", Label: "Expanded surface", Options: []string{"tonal", "none"}},
+			webview.PreviewControl{Name: "expand-icon", Label: "Expand chevron background", Options: []string{"expanded", "plain", "contained"},
+				Labels: map[string]string{"expanded": "When expanded", "plain": "Never", "contained": "Always"}})
 	}
 	if c.Width == "video" {
 		choices = append(choices, webview.PreviewControl{Name: "media", Label: "Video size", Options: []string{"small", "large"}})

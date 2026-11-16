@@ -1,0 +1,207 @@
+/* Rich component preview scenes and device frames. See docs/reference/preview-scenes.md */
+
+.tokens-illustration-body[data-composition="scene"] {
+  width: 1200px;
+  height: 630px;
+  margin: 0;
+  overflow: hidden;
+  background: var(--md-sys-color-surface-container-low);
+}
+
+[data-composition="scene"] .tokens-scene-banner {
+  width: 1200px;
+  height: 630px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-sizing: border-box;
+  background-color: var(--md-sys-color-surface-container-low);
+  background-image: radial-gradient(var(--md-sys-color-outline-variant) 1.2px, transparent 1.2px);
+  background-size: 20px 20px;
+}
+
+/* Device frame mimicking an expanded/tablet viewport within the 1200x630 banner canvas */
+.scene-device-frame {
+  width: 1040px;
+  height: 560px;
+  background: var(--md-sys-color-surface);
+  border: 2px solid var(--md-sys-color-outline-variant);
+  border-radius: 28px;
+  box-shadow:
+    0 16px 40px -12px rgba(0, 0, 0, 0.2),
+    0 0 0 1px var(--md-sys-color-outline-variant);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* System status bar (time, wifi, signal, battery) */
+.scene-status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 24px 4px;
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--md-sys-color-on-surface-variant);
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.scene-status-icons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.scene-status-icons svg {
+  width: 15px;
+  height: 15px;
+  fill: currentColor;
+}
+
+/* Scaffold body holding the navigation rail and content region */
+.scene-scaffold {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  position: relative;
+}
+
+.scene-rail {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  border-inline-end: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.scene-rail .md-navigation-rail {
+  height: 100%;
+  border: none;
+}
+
+/* Content region wrapped in .tokens-layout container query context */
+.scene-content-region {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+
+.scene-content-inner {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  padding: 8px var(--layout-margin) 12px;
+  gap: var(--layout-related-gap);
+  box-sizing: border-box;
+}
+
+.scene-header {
+  flex-shrink: 0;
+}
+
+.scene-header .md-search-view {
+  width: 100%;
+}
+
+/* Dual panes (List-Detail) using --layout-pane-gap from site.css */
+.scene-panes {
+  display: flex;
+  gap: var(--layout-pane-gap);
+  flex: 1;
+  min-height: 0;
+}
+
+/* Primary List Pane */
+.scene-pane-list {
+  width: 340px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--layout-related-gap);
+  min-height: 0;
+}
+
+.scene-filter-chips {
+  display: flex;
+  gap: var(--layout-related-gap);
+  flex-wrap: nowrap;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.scene-pane-list .md-list {
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Secondary Detail Pane */
+.scene-pane-detail {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 0;
+}
+
+.scene-pane-detail .md-card {
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.scene-detail-media {
+  height: 148px;
+  width: 100%;
+  aspect-ratio: auto;
+  object-fit: cover;
+  object-position: 52% 85%;
+  background: var(--md-sys-color-surface-container-high);
+  flex-shrink: 0;
+}
+
+.scene-pane-detail .md-card-content {
+  min-height: 0;
+}
+
+.scene-pane-detail .md-card-content p {
+  margin: 0;
+}
+
+.scene-pane-detail .md-card-actions {
+  justify-content: flex-start;
+}
+
+.scene-fab-dock {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  z-index: 3;
+}
+
+/* Android system navigation gesture bar */
+.scene-gesture-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20px;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.scene-gesture-pill {
+  width: 104px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--md-sys-color-on-surface);
+  opacity: 0.45;
+}

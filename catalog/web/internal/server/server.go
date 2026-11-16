@@ -92,6 +92,7 @@ func (server *Server) Handler() http.Handler {
 		_ = json.NewEncoder(w).Encode(server.IllustrationJobs())
 	})
 	mux.HandleFunc("GET /illustrations/render/{path...}", server.handleIllustrationRender)
+	mux.HandleFunc("GET /previews/scenes/{name}", server.handleScenePreview)
 	mux.HandleFunc("GET /illustrations/images/{file}", server.handleIllustrationFile)
 	mux.HandleFunc("GET /sitemap.xml", server.handleSitemap)
 	mux.HandleFunc("GET /sitemap.css", handleSitemapCSS)

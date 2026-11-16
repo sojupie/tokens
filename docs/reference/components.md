@@ -777,9 +777,11 @@ independent preview choices: inset or flush, and tonal or no additional fill.
 Tonal uses the system surface-container role as one continuous parent and
 child surface. This is an explicit composition choice: the captured normal and
 expanded container colors are identical in the current scheme. None preserves normal row colors instead of making the rows
-transparent. Disclosure icons independently offer contained and plain styles;
-plain omits the icon background while retaining its size and state colors. These are
-renderer compositions, not token overrides. Reordering starts from anywhere
+transparent. The expand chevron aligns with ordinary trailing icons. Its
+background appears when expanded by default. The preview can also hide it or
+show it in both states. The Actions preview can show a selection toggle, an
+overflow menu, or both. The toggle changes its own IconButton selection state.
+Each action has a separate focus target. Reordering starts from anywhere
 on a row. Activating its handle opens the shared standard bottom sheet with Move up
 and Move down action rows as a single-pointer alternative to dragging. Boundary
 actions are disabled. The sheet has no scrim and leaves the page interactive. Escape dismisses it

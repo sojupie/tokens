@@ -845,7 +845,7 @@ func PlaygroundList(c webview.ComponentCase) templ.Component {
 				}
 				ctx = templ.InitializeContext(ctx)
 				for index := range 3 {
-					templ_7745c5c3_Err = ui.ListRowFrame(ui.ListRowFrameProps{Attrs: templ.Attributes{"role": c.ListRowRole(), "data-list-row": "", "data-list-label": c.ListLabel(index), "data-list-expanded": fmt.Sprint(c.Control == "expand" && c.Expanded && index == 0)}, ContentAttrs: c.ListItem(index), Native: c.ListNativeKind() != "", Content: ListContents(c, index), Before: ListExampleBefore(c, index), After: ListExampleAfter(c, index), Expanded: ListExampleExpanded(c, index), ChildrenAttrs: templ.Attributes{"aria-label": c.ListLabel(index) + " items", "id": fmt.Sprintf("%s-children-%d", c.ID(), index), "hidden": !(c.Expanded && index == 0)}}).Render(ctx, templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = ui.ListRowFrame(ui.ListRowFrameProps{Attrs: templ.Attributes{"role": c.ListRowRole(), "data-list-row": "", "data-list-label": c.ListLabel(index), "data-list-expanded": fmt.Sprint(c.Control == "expand" && c.Expanded && index == 0)}, ContentAttrs: c.ListItem(index), Native: c.ListNativeKind() != "", Content: ListContents(c, index), Before: ListExampleBefore(c, index), After: ListExampleAfter(c, index), Actions: ListExampleActionsFor(c, index), Expanded: ListExampleExpanded(c, index), ChildrenAttrs: templ.Attributes{"aria-label": c.ListLabel(index) + " items", "id": fmt.Sprintf("%s-children-%d", c.ID(), index), "hidden": !(c.Expanded && index == 0)}}).Render(ctx, templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -904,13 +904,23 @@ func PlaygroundList(c webview.ComponentCase) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 60, " <output class=\"md-typescale-body-small\" aria-live=\"polite\"></output>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 60, " <output class=\"md-typescale-body-small\" aria-live=\"polite\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			if c.Control == "actions" {
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 61, " data-menu-output")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 62, "></output>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = ui.ListHost(templ.Attributes{"class": templ.Classes("md-list-demo", templ.KV("md-sheet-demo", c.Control == "reorder")).String(), "data-interactive": "true", "data-native-selection": fmt.Sprint(c.Control == "select")}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var25), templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = ui.ListHost(templ.Attributes{"class": templ.Classes("md-list-demo", templ.KV("md-sheet-demo", c.Control == "reorder")).String(), "data-interactive": "true", "data-native-selection": fmt.Sprint(c.Control == "select"), "data-menu-example": c.Control == "actions"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var25), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

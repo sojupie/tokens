@@ -4535,6 +4535,59 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
 .md-list-row {
   position: relative;
 }
+.md-list-row:has(> .md-list-actions) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: var(--md-comp-list-list-item-between-space);
+}
+.md-list-row:has(> .md-list-actions) > .md-list-item {
+  display: grid;
+  grid-area: 1 / 1 / 2 / -1;
+  grid-template-columns: subgrid;
+}
+.md-list-main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: inherit;
+  gap: var(--_list-item-gap);
+  min-inline-size: 0;
+}
+.md-list-main > .md-list-leading { max-inline-size: 100%; }
+.md-list-main > .md-list-body {
+  flex-basis: min(100%, 8ch);
+  overflow-wrap: anywhere;
+}
+.md-list-actions {
+  grid-area: 1 / 2;
+  align-self: center;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  min-block-size: var(--md-sys-measurement-space600);
+  margin-inline-end: var(--md-comp-list-list-item-trailing-space);
+}
+.md-list-actions > .md-icon-button {
+  /* Reserve room for the icon button's extended hit area. */
+  margin-inline: max(
+    0px,
+    (var(--md-sys-measurement-space600) - var(--_icon-icon-size) - var(--_icon-leading) - var(--_icon-trailing)) / 2
+  );
+}
+.md-list:has(> li > .md-list-row > .md-list-actions) {
+  container: list-actions / inline-size;
+}
+@container list-actions (inline-size < 20rem) {
+  .md-list-row:has(> .md-list-actions) > .md-list-item {
+    grid-area: 1 / 1 / 3 / -1;
+    grid-template-rows: subgrid;
+  }
+  .md-list-main { grid-column: 1 / -1; }
+  .md-list-actions {
+    grid-row: 2;
+    justify-self: end;
+    margin-block-end: var(--md-comp-list-list-item-bottom-space);
+  }
+}
 .md-list-item {
   --_list-item-container-opacity: 1;
   --_list-item-label-opacity: 1;
@@ -4752,12 +4805,30 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   );
 }
 .md-list-expand-icon {
+  position: relative;
+  isolation: isolate;
   display: grid;
   place-content: center;
+  inline-size: var(--_list-item-trailing-icon-size);
+  block-size: var(--_list-item-trailing-icon-size);
+}
+.md-list-expand-icon::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 50% auto auto 50%;
+  translate: -50% -50%;
+  pointer-events: none;
   inline-size: var(--md-comp-icon-button-small-container-height);
   block-size: var(--md-comp-icon-button-small-container-height);
   border-radius: var(--_list-item-expand-icon-shape);
   background: var(--_list-item-expand-icon-container);
+  transition:
+    opacity var(--_motion-fast-effects-duration) var(--_motion-fast-effects-easing),
+    background-color var(--_motion-fast-effects-duration) var(--_motion-fast-effects-easing);
+}
+@media (prefers-reduced-motion: reduce) {
+  .md-list-expand-icon::before { transition: none; }
 }
 .md-list-item[aria-expanded="true"] .md-list-expand-icon svg {
   rotate: 180deg;
@@ -4785,7 +4856,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   display: none;
 }
 .md-list[data-control="reorder"] .md-list-row > .md-list-item,
-.md-list[data-control="actions"] .md-list-row > .md-list-item,
+.md-list[data-control="actions"] .md-list-row:not(:has(> .md-list-actions)) > .md-list-item,
 .md-list[data-control="reveal"] .md-list-row > .md-list-item {
   padding-inline-end: calc(
     var(--_list-item-trailing) +
@@ -8410,8 +8481,11 @@ html:has(dialog:modal) {
   .md-list-item {
   background: transparent;
 }
-.md-list[data-expand-icon="plain"] .md-list-expand-icon {
-  background: transparent;
+.md-list[data-expand-icon="plain"] .md-list-expand-icon::before {
+  content: none;
+}
+.md-list[data-expand-icon="expanded"] .md-list-item[aria-expanded="false"] .md-list-expand-icon::before {
+  opacity: 0;
 }
 
 .md-list[data-expand-surface="tonal"] > li[data-list-expanded="true"] {

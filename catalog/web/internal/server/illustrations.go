@@ -146,7 +146,15 @@ func (server *Server) handleIllustrationRender(w http.ResponseWriter, r *http.Re
 		}
 		specimen = cases[subject.Key.Slug]
 	}
-	if r.URL.Query().Get("composition") != "thumbnail" || subject.Key.Slug == "" {
+	composition := r.URL.Query().Get("composition")
+	if composition == "scene" {
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		if err := server.renderHTML(w, r, webrender.TripPlannerPreviewPage(theme, contrast)); err != nil {
+			http.Error(w, err.Error(), 500)
+		}
+		return
+	}
+	if composition != "thumbnail" || subject.Key.Slug == "" {
 		http.NotFound(w, r)
 		return
 	}
@@ -154,6 +162,26 @@ func (server *Server) handleIllustrationRender(w http.ResponseWriter, r *http.Re
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	if err := server.renderHTML(w, r, webrender.IllustrationPage(subject, specimen, theme, contrast)); err != nil {
+		http.Error(w, err.Error(), 500)
+	}
+}
+
+func (server *Server) handleScenePreview(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("X-Robots-Tag", "noindex")
+	name := r.PathValue("name")
+	if name != "trip-planner" {
+		http.NotFound(w, r)
+		return
+	}
+	theme, contrast := r.URL.Query().Get("theme"), r.URL.Query().Get("contrast")
+	if theme != "dark" {
+		theme = "light"
+	}
+	if contrast != "medium" && contrast != "high" {
+		contrast = "default"
+	}
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	if err := server.renderHTML(w, r, webrender.TripPlannerPreviewPage(theme, contrast)); err != nil {
 		http.Error(w, err.Error(), 500)
 	}
 }

@@ -14,6 +14,7 @@ import (
 
 type TokenBrowser struct {
 	TableOnly    bool
+	Static       *StaticTokenTableLabels
 	Preview      *ComponentPreview
 	Contexts     url.Values
 	PreviewQuery url.Values
@@ -22,6 +23,15 @@ type TokenBrowser struct {
 	Filters      []TokenFilter
 	Query        string
 	Count        int
+}
+
+type StaticTokenTableLabels struct {
+	AllLabel          string
+	SetLabel          string
+	SearchLabel       string
+	SearchPlaceholder string
+	ControlsLabel     string
+	EmptyLabel        string
 }
 
 type TokenSet struct {

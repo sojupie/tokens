@@ -103,9 +103,15 @@ import { navigationIndex } from "../helpers/navigation.ts";
       const items=rows(list);move(row,moveIndex(items.indexOf(row),button.dataset.listMove==='up'?-1:1,items.length));
       (button.disabled?button.closest('[data-list-reorder-sheet]').querySelector('[data-list-move]:not(:disabled)'):button).focus({preventScroll:true});return;
     }
+    if(button.hasAttribute('data-list-primary-action')&&button.hasAttribute('aria-pressed')){
+      announce(list,row.dataset.listLabel+(button.getAttribute('aria-pressed')==='true'?' selected.':' unselected.'));
+      return;
+    }
     if(!button.matches('.md-list-item'))return;
     if(button.hasAttribute('aria-controls')){expand(button);return;}
     if(button.getAttribute('role')==='option'){selectOption(list,button);return;}
+    const action=button.parentElement.querySelector(':scope > .md-list-actions > [data-list-primary-action]');
+    if(action){action.click();return;}
     if(list.dataset.selectionMode==='single')for(const item of rows(list))primary(item).setAttribute('aria-pressed',String(item===row));
     announce(list,button.dataset.listLabel+(button.getAttribute('aria-pressed')==='true'?' selected.':' activated.'));
   });

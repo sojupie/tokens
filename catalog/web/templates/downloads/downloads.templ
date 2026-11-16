@@ -91,6 +91,10 @@ templ TableDownloadButton() {
 
 templ TableTools() {
 	@TableDownloadButton()
+	@TableDisplayTools()
+}
+
+templ TableDisplayTools() {
 	@TableControlTooltip("Hide previews") {
 		@ui.IconButtonContent(ui.IconButtonProps{Variant: "standard", Label: "Hide previews", Attrs: templ.Attributes{"class": "tokens-icon-button", "type": "button", "data-action": "previews", "aria-pressed": "true"}}) {
 			<span data-icon="on">

@@ -1,0 +1,152 @@
+package render
+
+import (
+	webassets "github.com/sojupie/tokens/catalog/web/assets"
+	webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+	"github.com/sojupie/tokens/forge/components/ui"
+)
+
+// TripPlannerPreviewPage renders a rich component preview scene for browser review and capture.
+templ TripPlannerPreviewPage(theme, contrast string) {
+	<!DOCTYPE html>
+	<html lang="en" data-theme={ theme } data-contrast={ contrast }>
+		<head>
+			<meta charset="utf-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<meta name="robots" content="noindex"/>
+			<title>Trip planner preview scene</title>
+			<link rel="stylesheet" href={ webview.StylesheetURL(ctx, "/theme.css") }/>
+			for _, file := range []string{"site.css", "app.css", "buttons.css", "components.css", "bundles/common.css", "illustrations.css", "preview-scenes.css"} {
+				<link rel="stylesheet" href={ webview.StylesheetURL(ctx, webassets.StaticURL(file)) }/>
+			}
+			for _, file := range []string{"motion.js", "buttons.js", "components.js", "fields.js", "lists.js", "search.js", "illustration-ready.js"} {
+				<script src={ webassets.StaticURL(file) } defer></script>
+			}
+		</head>
+		<body class="tokens-illustration-body" data-composition="scene">
+			@webview.ComponentAssetScope() {
+				<main data-component-assets class="tokens-illustration tokens-scene-banner">
+					@TripPlannerScene()
+				</main>
+			}
+		</body>
+	</html>
+}
+
+// TripPlannerScene renders an expanded-viewport List-Detail canonical screen.
+templ TripPlannerScene() {
+	{{ selectedTrue, selectedFalse := true, false }}
+	<div class="scene-device-frame" data-viewport="expanded" data-preview-ready>
+		<div class="scene-status-bar" aria-hidden="true">
+			<span class="scene-status-time">9:30</span>
+			<div class="scene-status-icons">
+				@ui.Icon("wifi")
+				<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 22h20V2L2 22z"></path></svg>
+				@ui.Icon("battery_full")
+			</div>
+		</div>
+		<div class="scene-scaffold">
+			<aside class="scene-rail">
+				@ui.NavigationRail(ui.RailProps{
+					NavigationProps: ui.NavigationProps{Variant: "collapsed", Label: "Trip Planner navigation"},
+					Menu:            true,
+				}) {
+					@ui.NavigationItem(ui.NavigationItemProps{Label: "Trips", Icon: "explore", Current: true})
+					@ui.NavigationItem(ui.NavigationItemProps{Label: "Places", Icon: "location_on", Current: false})
+					@ui.NavigationItem(ui.NavigationItemProps{Label: "Saved", Icon: "star", Current: false})
+					@ui.NavigationItem(ui.NavigationItemProps{Label: "Settings", Icon: "settings", Current: false})
+				}
+			</aside>
+			<div class="scene-content-region tokens-layout">
+				<div class="tokens-layout-content scene-content-inner">
+					<header class="scene-header">
+						@ui.SearchBarSurface(ui.SearchProps{
+							ID:         "scene-search",
+							Label:      "Search itinerary...",
+							Leading:    "icon",
+							Actions:    "avatar",
+							AvatarText: "OM",
+						})
+					</header>
+					<div class="scene-panes">
+						<section class="scene-pane-list" aria-label="Itinerary stops">
+							<div class="scene-filter-chips">
+								@ui.Chip(ui.ChipProps{Label: "All stops", Selected: true})
+								@ui.Chip(ui.ChipProps{Label: "Walking"})
+								@ui.Chip(ui.ChipProps{Label: "Transit"})
+							</div>
+							@ui.List(ui.ListProps{
+								ID:         "scene-stops-list",
+								Label:      "Itinerary stops",
+								Variant:    ui.SegmentedList,
+								Lines:      ui.TwoLines,
+								Leading:    ui.LeadingIcon,
+								Appearance: ui.Expressive,
+							}) {
+								@ui.ListButton(ui.ListItemProps{
+									Label:       "Riverwalk & Station",
+									Supporting:  "Meet at North Gate · 1.2 km",
+									Metadata:    "10:00",
+									LeadingKind: ui.LeadingIcon,
+									Leading:     ui.Icon("directions_walk"),
+									Selected:    &selectedTrue,
+									Current:     true,
+								})
+								@ui.ListButton(ui.ListItemProps{
+									Label:       "Central Market & Plaza",
+									Supporting:  "Lunch & local crafts · 45 min",
+									Metadata:    "11:45",
+									LeadingKind: ui.LeadingIcon,
+									Leading:     ui.Icon("location_on"),
+									Selected:    &selectedFalse,
+								})
+								@ui.ListButton(ui.ListItemProps{
+									Label:       "Art Museum Pavilion",
+									Supporting:  "Exhibition tour · 2 stops",
+									Metadata:    "13:30",
+									LeadingKind: ui.LeadingIcon,
+									Leading:     ui.Icon("directions_bus"),
+									Selected:    &selectedFalse,
+								})
+							}
+						</section>
+						<section class="scene-pane-detail" aria-label="Stop details">
+							@ui.CardSurface(ui.CardProps{Variant: "outlined"}) {
+								<img
+									class="md-card-media scene-detail-media"
+									src={ webassets.StaticURL("paintings/" + webview.CarouselPaintings[2]) }
+									alt="Argenteuil riverfront"
+									draggable="false"
+								/>
+								<div class="md-card-content">
+									<h2 class="md-card-headline">Riverwalk &amp; Station</h2>
+									<p class="md-card-supporting-text">Stop 1 · 10:00–11:30 · Guide provided</p>
+									<p>Meet at North Gate plaza. The walking route follows the river trail past the old boathouse towards Central Market.</p>
+								</div>
+								<div class="md-card-actions">
+									@TripPlannerDetailActions()
+								</div>
+							}
+							<div class="scene-fab-dock">
+								@ui.FAB(ui.FABProps{Icon: "add", Label: "Add stop"})
+							</div>
+						</section>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="scene-gesture-bar" aria-hidden="true">
+			<span class="scene-gesture-pill"></span>
+		</div>
+	</div>
+}
+
+// TripPlannerDetailActions renders contextual action buttons for the selected stop card.
+templ TripPlannerDetailActions() {
+	@ui.Action(ui.ButtonProps{Variant: ui.Filled, Color: ui.ColorPrimary}) {
+		Review stop
+	}
+	@ui.Action(ui.ButtonProps{Variant: ui.Tonal}) {
+		Share
+	}
+}

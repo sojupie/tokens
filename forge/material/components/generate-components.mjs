@@ -995,7 +995,7 @@ export function generateComponents(document, values) {
     for(const control of ['standard','outlined'])for(const size of ['small','medium','large'])
       for(const state of ['enabled','hovered','focused','pressed','disabled'])
         configurations.push({family:'carousel',variant,control,size,state});
-  for(const control of ['select','expand','reorder','reveal'])for(const variant of ['standard','segmented'])
+  for(const control of ['select','expand','reorder','reveal','actions'])for(const variant of ['standard','segmented'])
     for(const shape of ['expressive','baseline'])for(const size of ['one-line','two-line','three-line'])
       for(const width of ['icon','none','avatar','image','video'])
         for(const selection of control==='select'?['multiple','single']:[''])

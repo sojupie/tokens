@@ -107,12 +107,17 @@ templ ListRowFrame(p model.ListRowFrameProps) {
 			}
 			if p.Native {
 				<div { p.ContentAttrs... }>
-					@p.Content
+					@listRowContent(p)
 				</div>
 			} else {
 				@Button(p.ContentAttrs) {
-					@p.Content
+					@listRowContent(p)
 				}
+			}
+			if p.Actions!=nil {
+				<div class="md-list-actions">
+					@p.Actions
+				</div>
 			}
 			if p.After!=nil {
 				@p.After
@@ -124,6 +129,14 @@ templ ListRowFrame(p model.ListRowFrameProps) {
 			</ul>
 		}
 	</li>
+}
+
+templ listRowContent(p model.ListRowFrameProps) {
+	if p.Actions!=nil {
+		<span class="md-list-main">@p.Content</span>
+	} else {
+		@p.Content
+	}
 }
 
 templ ListReorderSheet(id string) {
