@@ -45,6 +45,22 @@ export function IconButton({
     aria-pressed={pressed ?? props['aria-pressed']} />;
 }
 
+export type ListProps = ComponentPropsWithRef<'ul'>;
+
+export function List({ className = '', ...props }: ListProps) {
+  return <ul data-variant="standard" data-shape="expressive" data-size="one-line"
+    data-width="icon" data-divider="none" {...props} className={`md-list ${className}`.trim()} />;
+}
+
+export type ListItemButtonProps = NativeButton & { leading?: ReactNode };
+
+export function ListItemButton({ leading, children, className = '', type = 'button', ...props }: ListItemButtonProps) {
+  return <button {...props} type={type} className={`md-list-item ${className}`.trim()} data-list-item="">
+    {leading != null && <span className="md-list-leading md-list-icon" aria-hidden="true">{leading}</span>}
+    <span className="md-list-body"><span className="md-list-label">{children}</span></span>
+  </button>;
+}
+
 export type CheckboxProps = Omit<ComponentPropsWithRef<'input'>, 'type' | 'children'>;
 
 export function Checkbox(props: CheckboxProps) {

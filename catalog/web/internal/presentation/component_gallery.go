@@ -39,6 +39,7 @@ type ComponentCase struct {
 	DialogHeadline   string `json:"dialogHeadline,omitempty"`
 	DateRange        bool   `json:"dateRange,omitempty"`
 	ListMedia        string `json:"listMedia,omitempty"`
+	ListContainer    string `json:"listContainer,omitempty"`
 	ListDivider      string `json:"listDivider,omitempty"`
 	ListTrailing     string `json:"listTrailing,omitempty"`
 	ListText         string `json:"listText,omitempty"`

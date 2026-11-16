@@ -30,6 +30,7 @@ func ConfigureListPreview(page *webview.ComponentPreview, query url.Values) erro
 	if c.Size != "one-line" {
 		choices = append(choices, webview.PreviewControl{Name: "text", Label: "Text layout", Options: []string{"supporting", "wrapped", "overline"}})
 	}
+	choices = append(choices, webview.PreviewControl{Name: "container", Label: "Row surface", Options: []string{"default", "transparent"}})
 	for _, choice := range choices {
 		choice.Selected = query.Get("preview." + choice.Name)
 		if choice.Selected == "" {
@@ -58,6 +59,8 @@ func ConfigureListPreview(page *webview.ComponentPreview, query url.Values) erro
 				page.Cases[i].ListInset = choice.Selected
 			case "surface":
 				page.Cases[i].ListSurface = choice.Selected
+			case "container":
+				page.Cases[i].ListContainer = choice.Selected
 			case "expand-icon":
 				page.Cases[i].ListExpandIcon = choice.Selected
 			}

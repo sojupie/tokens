@@ -264,6 +264,13 @@ func TestListBehaviorCompositions(t *testing.T) {
 	if page.Cases[0].ListInset != "inset" || page.Cases[0].ListSurface != "none" || page.Cases[0].ListExpandIcon != "plain" {
 		t.Fatal("independent expansion options lost")
 	}
+	page = &webview.ComponentPreview{Cases: []webview.ComponentCase{{Family: "list", Control: "select"}}}
+	if err := playground.ConfigureListPreview(page, map[string][]string{"preview.container": {"transparent"}}); err != nil {
+		t.Fatal(err)
+	}
+	if page.Cases[0].ListContainerAttributes()["data-surface"] != "transparent" {
+		t.Fatal("transparent row surface lost")
+	}
 	if _, ok := (webview.ComponentCase{Control: "reorder"}).ListItem(0)["aria-pressed"]; ok {
 		t.Fatal("reordering must not toggle persistent row selection")
 	}

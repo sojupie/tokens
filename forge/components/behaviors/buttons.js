@@ -185,8 +185,25 @@
   }
   document.addEventListener('htmx:afterSwap',()=>{if(!globalThis.TokenAssets)initializeWidthGroups();});
   document.addEventListener('tokens:assets-ready',initializeWidthGroups);
-  function restoreShape(button) {
+  const listReleases = new WeakMap();
+  function restoreShape(button, immediate = false) {
     if (!button.hasAttribute("data-pressed")) return;
+    if (button.matches(".md-list-item")) {
+      if (listReleases.has(button)) {
+        if (!immediate) return;
+        cancelAnimationFrame(listReleases.get(button));
+      }
+      const restore = () => {
+        listReleases.delete(button);
+        button.removeAttribute("data-pressed");
+        button.dispatchEvent(new CustomEvent("material:press", { bubbles: true, detail: { pressed: false } }));
+      };
+      // Selection is committed by the click. Let CSS transition to that shape
+      // directly, even if pointerup or ripple code reads styles before click.
+      if (immediate) restore();
+      else listReleases.set(button, requestAnimationFrame(restore));
+      return;
+    }
     const start = currentCorners(button);
     button.removeAttribute("data-pressed");
     button.dispatchEvent(new CustomEvent("material:press",{bubbles:true,detail:{pressed:false}}));
@@ -234,6 +251,10 @@
   }
   function begin(button, point, id) {
     if (disabled(button) || forced.matches || active.has(button)) return null;
+    if (listReleases.has(button)) {
+      cancelAnimationFrame(listReleases.get(button));
+      listReleases.delete(button);
+    }
     button.removeAttribute("data-button-cancelled");
     cancelled.delete(button);
     const entry = [...ripples].find((r) => r.button === button) || {
@@ -320,7 +341,7 @@
     if (!entry) return;
     active.delete(button);
     clearTimeout(entry.touchTimer);
-    restoreShape(button);
+    restoreShape(button, abort);
     if (abort) {
       button.setAttribute("data-button-cancelled", "");
       cancelled.set(button, entry.id);

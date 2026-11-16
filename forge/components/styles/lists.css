@@ -109,10 +109,7 @@
     --_list-item-pressed-shape,
     var(--_list-item-shape)
   );
-  --_button-spring-damping: var(--md-sys-motion-spring-fast-spatial-damping);
-  --_button-spring-stiffness: var(
-    --md-sys-motion-spring-fast-spatial-stiffness
-  );
+  --_button-spring-damping: initial;
   --_button-background-state-color: var(
     --_list-item-background-state-color,
     transparent
@@ -165,6 +162,12 @@
   pointer-events: none;
   background: var(--_button-background-state-color);
   opacity: var(--_button-background-state-opacity);
+}
+/* Keep selection and interaction layers on transparent rows. */
+.md-list[data-surface="transparent"] .md-list-item:where(
+  :not([aria-current="page"], [aria-pressed="true"], [aria-selected="true"], [data-selected="true"], :has(> input:checked, > input:indeterminate))
+) {
+  --_list-item-container-opacity: 0;
 }
 .md-list-item:is(:active, [data-pressed], [data-component-state="pressed"]):not(
     :disabled

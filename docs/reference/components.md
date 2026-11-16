@@ -753,6 +753,9 @@ and inset, full-width, or omitted dividers. Checkbox, radio, and switch
 compositions use the existing control renderers and native inputs. Leading
 checkboxes and radios are available for selection rows.
 
+Set `data-surface="transparent"` on a list to omit the unselected row fill.
+Selected rows and interaction state layers keep their theme colors.
+
 Baseline rows at least 88px tall top-align their content, following the Material
 list measurements. A ResizeObserver also handles rows that grow through text
 wrapping or media. Captured padding remains in effect. The preview dot grid uses
@@ -765,7 +768,9 @@ supporting text, and an overline. Heights are minimums so larger media keeps its
 captured size and padding. Video size is selected independently of text lines.
 
 The preview includes single and multiple selection, expansion, reordering, and
-action reveal. State and Selection apply to the first row. Expansion animates
+action reveal. State and Selection apply to the first row. CSS transitions
+list corners to their latest state. Press release and selection are applied
+before the next paint so they share one return motion. Expansion animates
 both opening and closing. Expanded children retain the parent row width and
 leading-content alignment by default. Child inset and expanded surface are
 independent preview choices: inset or flush, and tonal or no additional fill.
