@@ -40,7 +40,7 @@ test(
       assert.ok(tonal.includes(`--md-comp-button-tonal-container-color: var(--md-sys-color-${family}-container);`));
       assert.ok(tonal.includes(`--md-comp-button-tonal-label-text-color: var(--md-sys-color-on-${family}-container);`));
     }
-    assert.equal(generated.coverage.mapped.length, 295);
+    assert.equal(generated.coverage.mapped.length, 296);
     assert.ok(generated.css.includes(':is(:disabled,[aria-disabled="true"]):not([aria-busy="true"])'), 'busy buttons retain enabled token colors');
     assert.match(
       generated.css,
@@ -117,10 +117,17 @@ test(
   },
 );
 
-test("disabled text buttons retain a transparent container", {skip: !process.env.TOKEN_ASSETS_DIR}, async () => {
+test("disabled text and outlined buttons use the captured tint opacity", {skip: !process.env.TOKEN_ASSETS_DIR}, async () => {
   const document = JSON.parse(await readFile(process.env.TOKEN_ASSETS_DIR + "/dtcg/light-default/tokens.tokens.json", "utf8"));
   const overrides = JSON.parse(await readFile("forge/material/overrides.json", "utf8"));
   const {values} = await compile(document, ":root", {appTheme:true, overrides});
-  assert.equal(Number(values["md-comp-button-text-disabled-container-opacity"]), 0);
-  assert.ok(Number(values["md-comp-button-text-disabled-label-text-opacity"]) > 0);
+  for (const variant of ["text", "outlined"]) {
+    assert.equal(Number(values[`md-comp-button-${variant}-disabled-container-opacity`]), 0.1);
+    assert.equal(Number(values[`md-comp-button-${variant}-disabled-label-text-opacity`]), 0.38);
+  }
+  const { coverage } = generateButtons(document, values);
+  assert.ok(coverage.mapped.some(({token, selector, property}) =>
+    token === "md.comp.button.outlined.selected.disabled.container.color" &&
+    selector.startsWith(".md-outlined-button:is(:disabled") &&
+    property === "--_button-container"));
 });

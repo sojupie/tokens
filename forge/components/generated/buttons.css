@@ -640,6 +640,7 @@
   --_button-label: var(--md-comp-button-outlined-disabled-label-text-color);
   --_button-label-opacity: var(--md-comp-button-outlined-disabled-label-text-opacity);
   --_button-outline: var(--md-comp-button-outlined-disabled-outline-color);
+  --_button-container: var(--md-comp-button-outlined-selected-disabled-container-color);
 }
 .md-outlined-button[aria-pressed="false"]:is(:disabled,[aria-disabled="true"]):not([aria-busy="true"]) {
   --_button-outline: var(--md-comp-button-outlined-unselected-disabled-outline-color);

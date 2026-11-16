@@ -220,6 +220,15 @@ export function generateButtons(document, values) {
       throw new Error(`Missing converted button value: ${name}`);
     groups.get(key).push({ name, variable, ...binding });
   }
+  // The default and selected outlined variants share the disabled tint shown in the spec.
+  const disabledOutline = groups.get("color:outlined:disabled:");
+  const selectedDisabledTint = groups.get("color:outlined:disabled:selected")
+    ?.find(({ property }) => property === "--_button-container");
+  if (disabledOutline && selectedDisabledTint &&
+      !disabledOutline.some(({ property }) => property === "--_button-container")) {
+    disabledOutline.push(selectedDisabledTint);
+  }
+
   const requiredNames = new Set();
   const mapped = [];
   const rules = [];
