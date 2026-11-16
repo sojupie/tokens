@@ -182,3 +182,36 @@ func TestThumbnailOnlyManifestUsesFullThumbnailForLinkPreview(t *testing.T) {
 		t.Fatal("page rendered a banner or referenced the smaller thumbnail")
 	}
 }
+
+func TestScenePreviewRoute(t *testing.T) {
+	server := New(seoTestState(), "")
+	for _, path := range []string{
+		"/previews/scenes/trip-planner?theme=dark&contrast=high",
+		"/illustrations/render/components/snackbar?theme=light&contrast=default&composition=scene",
+	} {
+		response := httptest.NewRecorder()
+		server.Handler().ServeHTTP(response, httptest.NewRequest("GET", path, nil))
+		if response.Code != 200 || !strings.HasPrefix(response.Header().Get("X-Robots-Tag"), "noindex") {
+			t.Fatalf("%s: code %d, robots %s", path, response.Code, response.Header().Get("X-Robots-Tag"))
+		}
+		body := response.Body.String()
+		for _, want := range []string{
+			`data-composition="scene"`,
+			`class="scene-device-frame"`,
+			`Search itinerary...`,
+			`Riverwalk &amp; Station`,
+			`preview-scenes.css`,
+			`illustration-ready.js`,
+		} {
+			if !strings.Contains(body, want) {
+				t.Fatalf("%s: missing %q", path, want)
+			}
+		}
+	}
+
+	response := httptest.NewRecorder()
+	server.Handler().ServeHTTP(response, httptest.NewRequest("GET", "/previews/scenes/unknown", nil))
+	if response.Code != 404 {
+		t.Fatalf("expected 404 for unknown scene, got %d", response.Code)
+	}
+}

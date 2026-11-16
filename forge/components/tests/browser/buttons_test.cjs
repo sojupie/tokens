@@ -62,6 +62,7 @@ function harness(reduced = false, initialCheckboxes = []) {
       return this.isButton ? this : (this.parent?.closest() ?? null);
     }
     matches(selector) {
+      if (selector === ".md-list-item") return this.className === "md-list-item";
       if (selector === ".md-loading-button") return !!this.isLoadingButton;
       if (selector === ".md-slider-input") return !!this.isSlider;
       if (selector === '.md-radio,.md-checkbox,.md-switch') return !!this.isSelectionControl;
@@ -197,6 +198,12 @@ function harness(reduced = false, initialCheckboxes = []) {
         ? { matches: false, addEventListener() {} }
         : media,
     performance: { now: () => now },
+    requestAnimationFrame: (fn) => {
+      const id = ++timerID;
+      timers.set(id, { fn, at: now + 16 });
+      return id;
+    },
+    cancelAnimationFrame: (id) => timers.delete(id),
     setTimeout: (fn, delay) => {
       const id = ++timerID;
       timers.set(id, { fn, at: now + delay });
@@ -471,6 +478,23 @@ test(`application ${attribute} changes retarget the release shape`, () => {
   const unselected = h.animations.filter(a => a.frames[0].borderRadius).at(-1);
   assert.equal(selected.cancelled, true);
   assert.equal(unselected.frames.at(-1).borderRadius, "20px 20px 20px 20px");
+});
+
+test("list press release waits for selection and leaves shape motion to CSS", () => {
+  const h = harness(), row = h.button();
+  row.className = "md-list-item";
+  row.noSpring = true;
+  for (const selected of ["true", "false"]) {
+    h.emit("pointerdown", row);
+    h.emit("pointerup", row);
+    assert.equal(row.hasAttribute("data-pressed"), true);
+    h.emit("click", row);
+    row.setAttribute("aria-selected", selected);
+    assert.equal(row.hasAttribute("data-pressed"), true);
+    h.advance(16);
+    assert.equal(row.hasAttribute("data-pressed"), false);
+  }
+  assert.equal(h.animations.some(animation => animation.frames[0].borderRadius), false);
 });
 
 test("keyboard-synthesized clicks create centered ink and toggle selection once", () => {

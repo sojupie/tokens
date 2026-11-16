@@ -1,7 +1,7 @@
 # Forge for React
 
 `@token-catalog/forge-react` renders Forge’s Button, ButtonLink, IconButton,
-Checkbox, TextField, and basic Dialog in React 19. The package carries Forge’s generated token bindings,
+Checkbox, TextField, List, ListItemButton, and basic Dialog in React 19. The package carries Forge’s generated token bindings,
 component styles, fonts, and button and dialog controllers. An installed
 package works without a running Token Catalog or a checkout of this repository.
 
@@ -47,6 +47,11 @@ options to an anchor. Checkbox accepts native checkbox props, including a ref fo
 setting the input’s `indeterminate` property. Give it a visible or accessible label.
 TextField accepts native input props
 with a visible `label`, and can display supporting text, invalid styling, and icons.
+
+List renders a native list. Wrap each ListItemButton in an `li`, pass its icon
+as `leading`, and set `aria-current="page"` for the active destination. For an
+expandable row, React can own the disclosure state and use Forge’s
+`data-expand-inset="inset"` and `md-list-expand-content` for child placement.
 
 Dialog uses the native top layer. Forge handles motion, Escape, backdrop dismissal,
 and returning focus to the opener. Dismissal calls `onOpenChange(false)`; the

@@ -264,6 +264,32 @@ func TestListBehaviorCompositions(t *testing.T) {
 	if page.Cases[0].ListInset != "inset" || page.Cases[0].ListSurface != "none" || page.Cases[0].ListExpandIcon != "plain" {
 		t.Fatal("independent expansion options lost")
 	}
+	page = &webview.ComponentPreview{Cases: []webview.ComponentCase{{Family: "list", Control: "select"}}}
+	if err := playground.ConfigureListPreview(page, map[string][]string{"preview.container": {"transparent"}}); err != nil {
+		t.Fatal(err)
+	}
+	if page.Cases[0].ListContainerAttributes()["data-surface"] != "transparent" {
+		t.Fatal("transparent row surface lost")
+	}
+	page = &webview.ComponentPreview{Cases: []webview.ComponentCase{{Family: "list", Control: "actions"}}}
+	if err := playground.ConfigureListPreview(page, url.Values{"preview.trailing": {"icon"}, "preview.action-style": {"filled"}}); err != nil {
+		t.Fatal(err)
+	}
+	if c := page.Cases[0]; c.ListTrailing != "" {
+		t.Fatal("actions should ignore the decorative trailing content filter", c)
+	}
+	for _, control := range page.Controls {
+		if control.Name == "trailing" || control.Name == "actions" || control.Name == "action-style" {
+			t.Fatal("the actions example should use a fixed pair of trailing buttons", control.Name)
+		}
+	}
+	page = &webview.ComponentPreview{Cases: []webview.ComponentCase{{Family: "list", Control: "expand"}}}
+	if err := playground.ConfigureListPreview(page, url.Values{"preview.trailing": {"text"}, "preview.action-style": {"filled"}}); err != nil {
+		t.Fatal(err)
+	}
+	if c := page.Cases[0]; c.ListTrailing != "text" || c.ListExpandIcon != "expanded" {
+		t.Fatal("expand should keep child trailing content and its own chevron state", c.ListTrailing, c.ListExpandIcon)
+	}
 	if _, ok := (webview.ComponentCase{Control: "reorder"}).ListItem(0)["aria-pressed"]; ok {
 		t.Fatal("reordering must not toggle persistent row selection")
 	}

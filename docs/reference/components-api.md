@@ -230,6 +230,12 @@ single anchored toggle for immersive mode. Selection never marks badges read.
 
 `ListHost` supplies live announcements for interactive lists. A non-nil
 `ListItemProps.Selected` gives an action row an explicit selection state.
+`ListRowFrameProps.Actions` accepts trailing controls such as `IconButton` and
+`Menu`. The frame reserves their width, keeps them outside the primary row
+button, and reserves room for each direct IconButton's 48 px hit area. Set
+`data-list-primary-action` on a direct trailing button to activate it from the
+row as well. A toggle button retains its own pressed state. Use
+`ListItemProps.Trailing` for decorative icons and text inside the primary action.
 `md-list-change` carries feedback text for application listeners; Catalog may show
 that text in its sample output without becoming a runtime dependency.
 

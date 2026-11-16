@@ -21,8 +21,11 @@
   .md-list-item {
   background: transparent;
 }
-.md-list[data-expand-icon="plain"] .md-list-expand-icon {
-  background: transparent;
+.md-list[data-expand-icon="plain"] .md-list-expand-icon::before {
+  content: none;
+}
+.md-list[data-expand-icon="expanded"] .md-list-item[aria-expanded="false"] .md-list-expand-icon::before {
+  opacity: 0;
 }
 
 .md-list[data-expand-surface="tonal"] > li[data-list-expanded="true"] {

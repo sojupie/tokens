@@ -44,10 +44,11 @@ Place `.tokens-layout-content` inside `.tokens-layout`. It supplies:
 | `--layout-pane-gap` | `space-300` (24px) | Separation between content panes |
 | `--layout-section-gap` | `space-400` (32px) | Default section separation |
 
-Gutters and section spacing above are our defaults, not universal Material
-requirements. A different context can use another captured spacing value.
-State the reason beside that layout rule. Do not change component internals to
-make a composition fit.
+Gutters and section spacing above are our defaults on an 8dp baseline grid
+(with 4dp half-steps for compact targets), not universal Material requirements.
+A different context can use another captured spacing value. State the reason
+beside that layout rule. Do not change component internals to make a
+composition fit.
 
 Use `.tokens-layout-grid` for a column grid. Direct children span
 `--layout-span` columns, or the full grid when no span is supplied. Keep every
@@ -66,10 +67,14 @@ does not dictate the number of cards or panes.
    rails and persistent drawers beside the content, not beneath its header.
 4. Choose feed, list-detail, supporting-pane or another task-appropriate layout.
    Do not default every screen to two columns.
-5. In app screens, put the screen title in an appropriate app-bar primitive.
-   Flexible app bars own their larger title treatment. Website pages can use a
-   content heading beneath site navigation, as Catalog does. In either case,
-   give the page title one owner; a second heading must name different content.
+5. When an app screen displays a title, put it in an appropriate app-bar
+   primitive rather than an inline body heading. Many canonical app screens
+   (such as search-anchored feeds or list-detail inboxes) establish context
+   through a search bar, filter chips, and active navigation destinations
+   without an explicit page title. Where a title is used, flexible app bars own
+   their larger title treatment. Website pages can use a content heading beneath
+   site navigation, as Catalog does. In either case, give any page title one
+   owner; a second heading must name different content.
 6. Align content edges and related controls to shared rulers. Distinguish page
    margins, pane spacing, grid gutters and component padding.
 7. Populate the screen with meaningful content and states. Counts, selections,
@@ -78,8 +83,9 @@ does not dictate the number of cards or panes.
    copying a class name onto partial markup does not implement the component.
 
 A grid does not replace component measurements. Use the component's captured
-anatomy and typography. Preserve accessible targets; change composition before
-shrinking controls. Use restrained titles and labels that identify actual tasks.
+anatomy and typography. Preserve accessible targets (minimum 48 × 48dp); change
+composition before shrinking controls. Use restrained titles and labels that
+identify actual tasks.
 
 ## Scene framing
 

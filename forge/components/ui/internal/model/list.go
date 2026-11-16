@@ -86,4 +86,6 @@ type ListRowFrameProps struct {
 	Attrs, FrameAttrs, ContentAttrs, ChildrenAttrs templ.Attributes
 	Native                                         bool
 	Before, After, Content, Expanded               templ.Component
+	// Actions renders independent trailing controls beside the main item.
+	Actions templ.Component
 }

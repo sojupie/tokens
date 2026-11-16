@@ -753,6 +753,9 @@ and inset, full-width, or omitted dividers. Checkbox, radio, and switch
 compositions use the existing control renderers and native inputs. Leading
 checkboxes and radios are available for selection rows.
 
+Set `data-surface="transparent"` on a list to omit the unselected row fill.
+Selected rows and interaction state layers keep their theme colors.
+
 Baseline rows at least 88px tall top-align their content, following the Material
 list measurements. A ResizeObserver also handles rows that grow through text
 wrapping or media. Captured padding remains in effect. The preview dot grid uses
@@ -765,16 +768,20 @@ supporting text, and an overline. Heights are minimums so larger media keeps its
 captured size and padding. Video size is selected independently of text lines.
 
 The preview includes single and multiple selection, expansion, reordering, and
-action reveal. State and Selection apply to the first row. Expansion animates
+action reveal. State and Selection apply to the first row. CSS transitions
+list corners to their latest state. Press release and selection are applied
+before the next paint so they share one return motion. Expansion animates
 both opening and closing. Expanded children retain the parent row width and
 leading-content alignment by default. Child inset and expanded surface are
 independent preview choices: inset or flush, and tonal or no additional fill.
 Tonal uses the system surface-container role as one continuous parent and
 child surface. This is an explicit composition choice: the captured normal and
 expanded container colors are identical in the current scheme. None preserves normal row colors instead of making the rows
-transparent. Disclosure icons independently offer contained and plain styles;
-plain omits the icon background while retaining its size and state colors. These are
-renderer compositions, not token overrides. Reordering starts from anywhere
+transparent. The expand chevron aligns with ordinary trailing icons. Its
+background appears when expanded by default. The preview can also hide it or
+show it in both states. The Actions preview can show a selection toggle, an
+overflow menu, or both. The toggle changes its own IconButton selection state.
+Each action has a separate focus target. Reordering starts from anywhere
 on a row. Activating its handle opens the shared standard bottom sheet with Move up
 and Move down action rows as a single-pointer alternative to dragging. Boundary
 actions are disabled. The sheet has no scrim and leaves the page interactive. Escape dismisses it

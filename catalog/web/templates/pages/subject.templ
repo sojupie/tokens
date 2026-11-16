@@ -75,3 +75,23 @@ templ TokenSetMenuLink(href, label string, selected bool) {
 		{ label }
 	}
 }
+
+templ StaticTokenSetPicker(sets []webview.TokenSet, labels webview.StaticTokenTableLabels) {
+	@ui.MenuHost(templ.Attributes{"class": "tokens-token-set-host", "style": "display:contents"}) {
+		@ui.Button(templ.Attributes{"class": "md-filter-chip tokens-token-set", "data-selected": "true", "type": "button", "data-menu-open": "tokens-token-set-menu", "aria-controls": "tokens-token-set-menu", "aria-haspopup": "menu", "aria-expanded": "false", "aria-label": labels.SetLabel + ": " + labels.AllLabel, "data-set-label": labels.SetLabel}) {
+			<span class="tokens-context-label">{ labels.AllLabel }</span>
+			<span class="md-chip-icon" data-slot="trailing-icon" aria-hidden="true">@webview.MaterialSymbol("expand_more")</span>
+		}
+		@ui.MenuPanel(templ.Attributes{"class": "tokens-token-set-menu", "id": "tokens-token-set-menu", "aria-label": labels.SetLabel, "data-menu-panel": "", "data-menu-main": ""}) {
+			<section><ul>
+				for _, set := range sets {
+					<li>@ui.MenuLink("#", templ.Attributes{"aria-current": "false", "data-static-set-option": set.Key}, ui.Icon("check")) { { set.Label } }</li>
+				}
+			</ul></section>
+			@ui.Divider("full", templ.Attributes{"class": "md-divider", "data-inset": "middle"})
+			<section aria-label={ labels.AllLabel }><ul>
+				<li>@ui.MenuLink("#", templ.Attributes{"aria-current": "page", "data-static-set-option": "all"}, ui.Icon("check")) { { labels.AllLabel } }</li>
+			</ul></section>
+		}
+	}
+}

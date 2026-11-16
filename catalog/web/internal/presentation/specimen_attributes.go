@@ -97,6 +97,9 @@ func (c ComponentCase) Attributes() templ.Attributes {
 		attrs["data-size"] = c.Size
 		attrs["data-selection-mode"] = c.Selection
 		attrs["data-media"] = c.ListMediaKind()
+		if c.ListContainer != "" {
+			attrs["data-surface"] = c.ListContainer
+		}
 		attrs["data-divider"] = c.ListDividerKind()
 		attrs["data-expand-inset"] = c.ListInset
 		attrs["data-expand-surface"] = c.ListSurface
