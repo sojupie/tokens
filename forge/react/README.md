@@ -1,7 +1,7 @@
 # Forge for React
 
 `@token-catalog/forge-react` renders Forge’s Button, ButtonLink, IconButton,
-Checkbox, TextField, SearchBar, SplitButton, Fab, NavigationRail, NavigationRailItem,
+Checkbox, TextField, SearchBar, SplitButton, ConnectedButtonGroup, Fab, NavigationRail, NavigationRailItem,
 SideSheet, List, ListItemButton, and basic Dialog in React 19. The package carries Forge’s generated token bindings,
 component styles, fonts, and button and dialog controllers. An installed
 package works without a running Token Catalog or a checkout of this repository.
@@ -61,6 +61,8 @@ SearchBar uses the contained search bar styles with a native search input.
 Pass an icon as `leading` and an optional icon button as `action`. SplitButton
 uses Forge split button styles. Supply a primary button with `md-split-leading`
 and a menu trigger with `md-split-trailing` and `aria-expanded`.
+ConnectedButtonGroup renders a filled, single-selection group. Pass
+`options`, the selected `value`, and `onChange`. The Forge controller handles arrow-key focus.
 NavigationRailItem uses `aria-current="page"` for the active destination.
 Pass a `Fab` as the rail’s `action` and place persistent controls in `footer`.
 SideSheet supports docked and detached variants. Put it inside an `md-sheet-host`

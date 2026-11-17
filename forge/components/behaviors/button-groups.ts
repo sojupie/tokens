@@ -9,7 +9,8 @@ import { navigationIndex } from "../helpers/navigation.ts";
     if (!group) return;
     if (
       group.dataset.control === "connected" &&
-      group.dataset.shape === "single"
+      group.dataset.shape === "single" &&
+      !group.hasAttribute("data-controlled")
     )
       for (const item of group.querySelectorAll("button"))
         item.setAttribute("aria-pressed", String(item === button));

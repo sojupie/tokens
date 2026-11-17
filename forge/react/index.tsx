@@ -69,6 +69,23 @@ export function SplitButton({ label, size = 'small', variant = 'tonal', primary,
     data-variant={variant} data-size={size} data-shape="icon-label">{primary}{menu}</div>;
 }
 
+export function ConnectedButtonGroup({ label, size = 'small', options, value, onChange, disabled }: {
+  label: string; size?: Size; options: readonly { value: string; label: string }[]; value: string;
+  onChange: (value: string) => void; disabled?: boolean;
+}) {
+  return <div role="group" aria-label={label} className="md-button-group"
+    data-control="connected" data-variant="filled" data-size={size} data-shape="single" data-controlled="">
+    {options.map((option, index) => <Button key={option.value} size={size} disabled={disabled}
+      pressed={value === option.value} data-group-button={index} data-button-toggle="" tabIndex={index === 0 ? 0 : -1}
+      onClick={() => { if (value !== option.value) onChange(option.value); }}>
+      <span className="md-group-check" aria-hidden="true">
+        <svg viewBox="0 -960 960 960" fill="currentColor"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z" /></svg>
+      </span>
+      <span>{option.label}</span>
+    </Button>)}
+  </div>;
+}
+
 export function Fab({ label, size = 'default', variant = 'primary-container', className = '', ...props }: NativeButton & {
   label: string; size?: 'small' | 'default' | 'medium' | 'large'; variant?: 'primary-container' | 'secondary-container' | 'tertiary-container';
 }) {
