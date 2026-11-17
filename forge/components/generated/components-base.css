@@ -4076,17 +4076,19 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   rotate: 0deg;
   transition: rotate var(--_split-chevron-duration) var(--_split-chevron-easing);
 }
-.md-split-demo:has(> .md-split-menu:popover-open) > .md-split-button
-  > .md-split-trailing {
+.md-split-button > .md-split-trailing[aria-expanded="true"],
+.md-split-demo:has(> .md-split-menu:popover-open) > .md-split-button > .md-split-trailing {
   --_split-inner: var(--_split-item-selected-inner);
   /* Keep the open shape through a press that may be cancelled. */
   --_button-pressed-shape: var(--_button-rest-shape);
 }
+.md-split-button > .md-split-trailing[aria-expanded="true"]:not(:disabled) > svg > path,
 .md-split-demo:has(> .md-split-menu:popover-open) > .md-split-button
   > .md-split-trailing:not(:disabled)
   > svg > path {
   rotate: 180deg;
 }
+.md-split-button:dir(rtl) > .md-split-trailing[aria-expanded="true"]:not(:disabled) > svg > path,
 .md-split-demo:has(> .md-split-menu:popover-open) > .md-split-button:dir(rtl)
   > .md-split-trailing:not(:disabled)
   > svg > path {
@@ -4577,12 +4579,14 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   container: list-actions / inline-size;
 }
 @container list-actions (inline-size < 20rem) {
-  .md-list-row:has(> .md-list-actions) > .md-list-item {
+  .md-list:not([data-actions-layout="inline"]) > li > .md-list-row:has(> .md-list-actions) > .md-list-item {
     grid-area: 1 / 1 / 3 / -1;
     grid-template-rows: subgrid;
   }
-  .md-list-main { grid-column: 1 / -1; }
-  .md-list-actions {
+  .md-list:not([data-actions-layout="inline"]) > li > .md-list-row > .md-list-item > .md-list-main {
+    grid-column: 1 / -1;
+  }
+  .md-list:not([data-actions-layout="inline"]) > li > .md-list-row > .md-list-actions {
     grid-row: 2;
     justify-self: end;
     margin-block-end: var(--md-comp-list-list-item-bottom-space);
@@ -4662,6 +4666,11 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   :not([aria-current="page"], [aria-pressed="true"], [aria-selected="true"], [data-selected="true"], :has(> input:checked, > input:indeterminate))
 ) {
   --_list-item-container-opacity: 0;
+}
+.md-list[data-surface="transparent"] .md-list-item:disabled:where(
+  :not([aria-current="page"], [aria-pressed="true"], [aria-selected="true"], [data-selected="true"], :has(> input:checked, > input:indeterminate))
+) {
+  --_button-background-state-opacity: 0;
 }
 .md-list-item:is(:active, [data-pressed], [data-component-state="pressed"]):not(
     :disabled
@@ -4834,20 +4843,30 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   rotate: 180deg;
 }
 /* The source expansion example reveals full-width rows on one continuous surface. */
+.md-list:where([data-control="expand"]) > li {
+  --_list-expanded-surface: var(--md-comp-list-expand-expanded-list-item-container-color);
+  transition:
+    background-color var(--_motion-fast-effects-duration) var(--_motion-fast-effects-easing),
+    border-radius var(--_motion-fast-spatial-duration) var(--_motion-fast-spatial-easing);
+}
 .md-list:where([data-control="expand"]) > li[data-list-expanded="true"] {
   overflow: clip;
-  background: var(--md-comp-list-expand-expanded-list-item-container-color);
+}
+.md-list:where([data-control="expand"]) > li:has(> .md-list-row > [aria-expanded="true"]) {
+  background-color: var(--_list-expanded-surface);
   border-radius: var(--_list-shape);
 }
 .md-list:where([data-control="expand"][data-variant="segmented"])
-  > li[data-list-expanded="true"] {
-  overflow: clip;
-  background: var(
+  > li {
+  --_list-expanded-surface: var(
     --md-comp-list-expand-expanded-list-item-segmented-container-color
   );
 }
 .md-list-expand-content {
   overflow: hidden;
+  background-color: var(--_list-expanded-surface, transparent);
+  border-end-start-radius: var(--_list-shape);
+  border-end-end-radius: var(--_list-shape);
   list-style: none;
   padding: 0;
   margin: 0;
@@ -8463,8 +8482,8 @@ html:has(dialog:modal) {
   box-sizing: border-box;
   padding-inline-start: var(--md-comp-list-list-item-leading-space);
 }
-.md-list[data-expand-surface="none"] > li[data-list-expanded="true"] {
-  background: transparent;
+.md-list[data-expand-surface="none"] > li {
+  --_list-expanded-surface: transparent;
 }
 .md-list[data-expand-surface="none"] .md-list-item[aria-expanded="true"] {
   --_list-item-container: var(--md-comp-list-list-item-container-color);
@@ -8488,13 +8507,13 @@ html:has(dialog:modal) {
   opacity: 0;
 }
 
-.md-list[data-expand-surface="tonal"] > li[data-list-expanded="true"] {
-  background: var(--md-sys-color-surface-container);
+.md-list[data-expand-surface="tonal"] > li {
+  --_list-expanded-surface: var(--md-sys-color-surface-container);
 }
 .md-list[data-expand-surface="tonal"]
-  > li[data-list-expanded="true"]
+  > li
   > .md-list-row
-  > .md-list-item {
+  > .md-list-item[aria-expanded="true"] {
   background: transparent;
 }
 /* Rail layout and app scaffolding are renderer rules, not captured measurements. */

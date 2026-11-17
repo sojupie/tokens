@@ -21,6 +21,9 @@ const [shared, buttons, common, dialogTokens, dialog, checkboxTokens, checkbox, 
   read(generated, 'bundles/list.css'), read(generated, 'motion.cjs'),
   read(generated, 'buttons.js'), read(generated, 'dialogs.js'), read(catalogAssets, 'styles/app.css'),
 ]);
+const workspaceStyles = await Promise.all(['search', 'split', 'navigation', 'sheet', 'fab'].flatMap(name => [
+  read(assets, `themes/${name}.css`), read(generated, `bundles/${name}.css`),
+]));
 if (!shared.includes('--md-sys-color-primary:') || !buttons.includes('--_button-pressed-shape:')) {
   throw new Error('Build publication assets with --css-names original for this package.');
 }
@@ -29,7 +32,7 @@ if (!shared.includes('--md-sys-color-primary:') || !buttons.includes('--_button-
 // restores native dialog centering when an application reset removes its margin.
 const fontFaces = catalogCSS.match(/^@font-face \{.*roboto-.*\}$/gm);
 if (fontFaces?.length !== 2) throw new Error('Expected Catalog’s two self-hosted Roboto subsets.');
-const styles = [...fontFaces, shared, buttons, common, checkboxTokens, checkbox, dialogTokens, dialog, listTokens, list,
+const styles = [...fontFaces, shared, buttons, common, checkboxTokens, checkbox, dialogTokens, dialog, listTokens, list, ...workspaceStyles,
   '.md-dialog[data-dialog-surface]:modal { margin: auto; }'].join('\n');
 const runtime = ['if (typeof document !== "undefined") {', motion, press, modal, '}'].join('\n');
 

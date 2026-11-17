@@ -1,7 +1,8 @@
 # Forge for React
 
 `@token-catalog/forge-react` renders Forge’s Button, ButtonLink, IconButton,
-Checkbox, TextField, List, ListItemButton, and basic Dialog in React 19. The package carries Forge’s generated token bindings,
+Checkbox, TextField, SearchBar, SplitButton, Fab, NavigationRail, NavigationRailItem,
+SideSheet, List, ListItemButton, and basic Dialog in React 19. The package carries Forge’s generated token bindings,
 component styles, fonts, and button and dialog controllers. An installed
 package works without a running Token Catalog or a checkout of this repository.
 
@@ -49,9 +50,21 @@ TextField accepts native input props
 with a visible `label`, and can display supporting text, invalid styling, and icons.
 
 List renders a native list. Wrap each ListItemButton in an `li`, pass its icon
-as `leading`, and set `aria-current="page"` for the active destination. For an
-expandable row, React can own the disclosure state and use Forge’s
-`data-expand-inset="inset"` and `md-list-expand-content` for child placement.
+as `leading`, and set `aria-current="page"` for the active destination. Pass
+non-interactive content as `trailing` and independent buttons as `actions`.
+Set `data-actions-layout="inline"` on the list to keep those buttons beside the
+row content at narrow widths.
+React can own the disclosure state and use `md-list-expand-content` for child
+groups. Add `data-expand-inset="inset"` to the list for indented children.
+
+SearchBar uses the contained search bar styles with a native search input.
+Pass an icon as `leading` and an optional icon button as `action`. SplitButton
+uses Forge split button styles. Supply a primary button with `md-split-leading`
+and a menu trigger with `md-split-trailing` and `aria-expanded`.
+NavigationRailItem uses `aria-current="page"` for the active destination.
+Pass a `Fab` as the rail’s `action` and place persistent controls in `footer`.
+SideSheet supports docked and detached variants. Put it inside an `md-sheet-host`
+and manage visibility and focus in React.
 
 Dialog uses the native top layer. Forge handles motion, Escape, backdrop dismissal,
 and returning focus to the opener. Dismissal calls `onOpenChange(false)`; the

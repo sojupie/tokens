@@ -52,13 +52,76 @@ export function List({ className = '', ...props }: ListProps) {
     data-width="icon" data-divider="none" {...props} className={`md-list ${className}`.trim()} />;
 }
 
-export type ListItemButtonProps = NativeButton & { leading?: ReactNode };
+export function SearchBar({ label, leading, action, placeholder = label, className = '', ...props }: ComponentPropsWithRef<'input'> & {
+  label: string; leading: ReactNode; action?: ReactNode;
+}) {
+  return <div className={`md-search-bar ${className}`.trim()} data-control="contained" data-leading="icon">
+    <span className="md-search-leading-slot"><span className="md-search-leading" aria-hidden="true">{leading}</span></span>
+    <input {...props} type="search" className="md-search-input" aria-label={label} placeholder={placeholder} />
+    {action != null && <div className="md-search-actions"><span className="md-search-action-target">{action}</span></div>}
+  </div>;
+}
 
-export function ListItemButton({ leading, children, className = '', type = 'button', ...props }: ListItemButtonProps) {
-  return <button {...props} type={type} className={`md-list-item ${className}`.trim()} data-list-item="">
+export function SplitButton({ label, size = 'small', variant = 'tonal', primary, menu, className = '' }: {
+  label: string; size?: ButtonProps['size']; variant?: ButtonProps['variant']; primary: ReactNode; menu: ReactNode; className?: string;
+}) {
+  return <div role="group" aria-label={label} className={`md-split-button ${className}`.trim()}
+    data-variant={variant} data-size={size} data-shape="icon-label">{primary}{menu}</div>;
+}
+
+export function Fab({ label, size = 'default', variant = 'primary-container', className = '', ...props }: NativeButton & {
+  label: string; size?: 'small' | 'default' | 'medium' | 'large'; variant?: 'primary-container' | 'secondary-container' | 'tertiary-container';
+}) {
+  return <button {...props} type="button" aria-label={label} className={`md-button md-fab ${className}`.trim()}
+    data-size={size} data-variant={variant} data-width="default" />;
+}
+
+export function NavigationRail({ label, children, action, footer, width = 'narrow', className = '' }: {
+  label: string; children: ReactNode; action?: ReactNode; footer?: ReactNode; width?: 'default' | 'narrow'; className?: string;
+}) {
+  return <nav aria-label={label} className={`md-navigation md-navigation-rail ${className}`.trim()}
+    data-variant="collapsed" data-width={width} data-orientation="vertical" data-alignment="top"
+    data-layout="standard" data-indicator="fill" data-size="default">
+    {action != null && <header>{action}</header>}
+    <div className="md-nav-items">{children}</div>
+    {footer != null && <footer>{footer}</footer>}
+  </nav>;
+}
+
+export function NavigationRailItem({ label, icon, ...props }: NativeButton & { label: string; icon: ReactNode }) {
+  return <button {...props} type="button" className="md-nav-item" data-navigation-item="">
+    <span className="md-nav-indicator">
+      <span className="md-nav-icon" aria-hidden="true"><span style={{ display: 'block' }}>{icon}</span></span>
+      <span className="md-nav-label" data-navigation-label={label}><span>{label}</span></span>
+    </span>
+  </button>;
+}
+
+export function SideSheet({ title, headerAction, children, variant = 'docked', className = '', ...props }: ComponentPropsWithRef<'aside'> & {
+  title: string; headerAction?: ReactNode; variant?: 'docked' | 'detached';
+}) {
+  return <aside {...props} aria-label={title} className={`md-sheet md-side-sheet ${className}`.trim()}
+    data-control="standard" data-variant={variant} data-orientation="end">
+    <header className="md-sheet-header"><h2 className="md-sheet-title">{title}</h2>{headerAction}</header>
+    <div className="md-sheet-body">{children}</div>
+  </aside>;
+}
+
+export type ListItemButtonProps = NativeButton & { leading?: ReactNode; trailing?: ReactNode; actions?: ReactNode };
+
+export function ListItemButton({ leading, trailing, actions, children, className = '', type = 'button', ...props }: ListItemButtonProps) {
+  const content = <>
     {leading != null && <span className="md-list-leading md-list-icon" aria-hidden="true">{leading}</span>}
     <span className="md-list-body"><span className="md-list-label">{children}</span></span>
+    {trailing != null && <span className="md-list-tail">{trailing}</span>}
+  </>;
+  const button = <button {...props} type={type} className={`md-list-item ${className}`.trim()} data-list-item="">
+    {actions == null ? content : <span className="md-list-main">{content}</span>}
   </button>;
+  return actions == null ? button : <div className="md-list-row">
+    {button}
+    <div className="md-list-actions">{actions}</div>
+  </div>;
 }
 
 export type CheckboxProps = Omit<ComponentPropsWithRef<'input'>, 'type' | 'children'>;

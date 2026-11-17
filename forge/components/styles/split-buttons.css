@@ -107,17 +107,19 @@
   rotate: 0deg;
   transition: rotate var(--_split-chevron-duration) var(--_split-chevron-easing);
 }
-.md-split-demo:has(> .md-split-menu:popover-open) > .md-split-button
-  > .md-split-trailing {
+.md-split-button > .md-split-trailing[aria-expanded="true"],
+.md-split-demo:has(> .md-split-menu:popover-open) > .md-split-button > .md-split-trailing {
   --_split-inner: var(--_split-item-selected-inner);
   /* Keep the open shape through a press that may be cancelled. */
   --_button-pressed-shape: var(--_button-rest-shape);
 }
+.md-split-button > .md-split-trailing[aria-expanded="true"]:not(:disabled) > svg > path,
 .md-split-demo:has(> .md-split-menu:popover-open) > .md-split-button
   > .md-split-trailing:not(:disabled)
   > svg > path {
   rotate: 180deg;
 }
+.md-split-button:dir(rtl) > .md-split-trailing[aria-expanded="true"]:not(:disabled) > svg > path,
 .md-split-demo:has(> .md-split-menu:popover-open) > .md-split-button:dir(rtl)
   > .md-split-trailing:not(:disabled)
   > svg > path {
