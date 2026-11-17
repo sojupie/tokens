@@ -63,7 +63,10 @@ func TestExportAliasesContextsAndRootTokens(t *testing.T) {
 	}
 	v := value(4, "Theme: Light")
 	v.References = []publish.TokenReference{{Name: "ref.size"}}
+	alias := value(4)
+	alias.References = []publish.TokenReference{{Name: "size"}}
 	state := publish.PublishedState{PublicationID: "test", Subjects: map[publish.SubjectKey]publish.SubjectView{{Kind: publish.SubjectComponent, Slug: "test"}: {Tokens: []publish.TokenView{
+		{SourceName: "alias", Values: []publish.TokenValueView{alias}},
 		{SourceName: "size", Values: []publish.TokenValueView{v, value(8, "Theme: Dark")}},
 		{SourceName: "size.child", Values: []publish.TokenValueView{value(2)}},
 	}}}}
@@ -72,7 +75,8 @@ func TestExportAliasesContextsAndRootTokens(t *testing.T) {
 		t.Fatal(err)
 	}
 	root := document["size"].(Node)["$root"].(Node)
-	if root["$value"] != "{ref.size}" || report.Aliases != 1 || report.Exported != 3 {
+	if root["$value"] != "{ref.size}" || document["alias"].(Node)["$value"] != "{size.$root}" ||
+		report.Aliases != 2 || report.Exported != 4 {
 		t.Fatal(document, report)
 	}
 	if _, exists := document["ref"].(Node)["size"]; !exists {
@@ -117,12 +121,18 @@ func TestExportRealPublication(t *testing.T) {
 					if node["$type"] == nil {
 						t.Fatal("missing type", originalName)
 					}
+					if alias, ok := node["$value"].(string); ok && strings.HasPrefix(alias, "{") && strings.HasSuffix(alias, "}") {
+						target := nodeAt(document, strings.Split(alias[1:len(alias)-1], "."))
+						if _, ok := target["$value"]; !ok {
+							t.Fatalf("%s %s: %s points to a non-token path %s", theme, contrast, originalName, alias)
+						}
+					}
 				}
 				for key, value := range node {
 					if !strings.HasPrefix(key, "$") {
 						walk(value.(Node), append(append([]string{}, path...), key))
 					} else if key == "$root" {
-						walk(value.(Node), path)
+						walk(value.(Node), append(append([]string{}, path...), key))
 					}
 				}
 			}

@@ -11,7 +11,7 @@ func TestSelectionKeepsAliasDependenciesAndRootTokens(t *testing.T) {
 		return Node{"$type": "number", "$value": v, "$extensions": map[string]any{Extension: map[string]any{"sourceType": "numeric"}}}
 	}
 	root := Node{}
-	for name, node := range map[string]Node{"md.comp.button.opacity": value("{md.sys.opacity}"), "md.sys.opacity": value("{md.ref.opacity}"), "md.ref.opacity": value("1"), "md.ref.opacity.extra": value("2"), "md.unrelated": value("3")} {
+	for name, node := range map[string]Node{"md.comp.button.opacity": value("{md.sys.opacity}"), "md.sys.opacity": value("{md.ref.opacity.$root}"), "md.ref.opacity": value("1"), "md.ref.opacity.extra": value("2"), "md.unrelated": value("3")} {
 		if err := insert(root, strings.Split(name, "."), node); err != nil {
 			t.Fatal(err)
 		}
@@ -20,6 +20,9 @@ func TestSelectionKeepsAliasDependenciesAndRootTokens(t *testing.T) {
 	names := NamedNodes(selected)
 	if roots != 1 || deps != 2 || len(names) != 3 || names["md.ref.opacity"] == nil {
 		t.Fatalf("lost dependencies: %d %d %#v", roots, deps, names)
+	}
+	if nodeAt(selected, []string{"md", "ref", "opacity", "$root"})["$value"] != "1" {
+		t.Fatal("selection changed the root token path")
 	}
 	if len(NamedNodes(root)) != 5 {
 		t.Fatal("selection changed input document")

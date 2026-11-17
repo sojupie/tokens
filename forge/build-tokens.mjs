@@ -60,7 +60,8 @@ export function flatten(document) {
       const node = structuredClone(group);
       node.$type = type;
       if (typeof node.$value === "string" && /^\{[^{}]+\}$/.test(node.$value)) {
-        node.$value = `{${node.$value.slice(1, -1).split(".").join("-")}}`;
+        const target = node.$value.slice(1, -1).replace(/\.\$root$/u, "");
+        node.$value = `{${target.split(".").join("-")}}`;
       }
       tokens[name] = node;
     }

@@ -21,7 +21,7 @@ test("v5 resolves aliases, object dimensions/durations, colors, typography and $
       $root: { $type: "dimension", $value: { value: 16, unit: "px" } },
       small: { $type: "dimension", $value: { value: 4, unit: "px" } },
     },
-    alias: { $type: "dimension", $value: "{size}" },
+    alias: { $type: "dimension", $value: "{size.$root}" },
     duration: { $type: "duration", $value: { value: 250, unit: "ms" } },
     color: {
       $type: "color",

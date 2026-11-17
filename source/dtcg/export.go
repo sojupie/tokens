@@ -137,6 +137,17 @@ func Export(state publish.PublishedState, context map[string]string) (Node, Repo
 			node["$extensions"].(map[string]any)[Extension].(map[string]any)["inferredFromReference"] = true
 		}
 	}
+	root := Node{}
+	names := make([]string, 0, len(values))
+	for name := range values {
+		names = append(names, name)
+	}
+	sort.Strings(names)
+	for _, name := range names {
+		if err := insert(root, strings.Split(name, "."), values[name]); err != nil {
+			return nil, report, err
+		}
+	}
 	// Preserve aliases only when the target is present with the same type/value.
 	// The inferred dependencies remain resolved leaves, preventing inferred cycles.
 	for _, t := range tokens {
@@ -160,19 +171,12 @@ func Export(state publish.PublishedState, context map[string]string) (Node, Repo
 		if text, ok := other["$value"].(string); ok && strings.HasPrefix(text, "{") {
 			continue
 		}
+		path := strings.Split(target, ".")
+		if parent := nodeAt(root, path); parent["$root"] != nil {
+			target += ".$root"
+		}
 		node["$value"] = "{" + target + "}"
 		report.Aliases++
-	}
-	root := Node{}
-	names := make([]string, 0, len(values))
-	for name := range values {
-		names = append(names, name)
-	}
-	sort.Strings(names)
-	for _, name := range names {
-		if err := insert(root, strings.Split(name, "."), values[name]); err != nil {
-			return nil, report, err
-		}
 	}
 	report.MappedNames = len(values)
 	for _, name := range names {
@@ -251,6 +255,14 @@ func clone(node Node) Node {
 	_ = json.Unmarshal(data, &n)
 	return n
 }
+
+func nodeAt(root Node, path []string) Node {
+	for _, part := range path {
+		root, _ = root[part].(Node)
+	}
+	return root
+}
+
 func insert(root Node, path []string, node Node) error {
 	key := path[0]
 	if key == "" || strings.HasPrefix(key, "$") || strings.ContainsAny(key, "{}") {
