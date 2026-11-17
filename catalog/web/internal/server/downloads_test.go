@@ -135,6 +135,31 @@ func scopedExportFixture() *Server {
 	return server
 }
 
+func TestScopedRootAliasesKeepDTCGPathsAndCSSNames(t *testing.T) {
+	server := scopedExportFixture()
+	key := publish.SubjectKey{Kind: publish.SubjectStyle, Slug: "opacity"}
+	server.state.Subjects[key] = publish.SubjectView{Key: key, Tokens: []publish.TokenView{
+		{SourceName: "md.sys.opacity.disabled", Values: []publish.TokenValueView{{Value: json.RawMessage(`{"numeric":1}`)}}},
+	}}
+	query := url.Values{"kind": {"component"}, "slug": {"buttons"}, "scope": {"subject"}, "context.Theme": {"Light"}}
+	document, _, summary, _, err := server.exportDocument(query)
+	if err != nil {
+		t.Fatal(err)
+	}
+	nodes := dtcg.NamedNodes(document)
+	if summary.Dependencies != 1 || nodes["md.comp.button.outlined.icon.opacity"]["$value"] != "{md.sys.opacity.$root}" {
+		t.Fatal(summary, nodes)
+	}
+	css, err := server.exportCSS(document)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(string(css), "--md-sys-opacity: 1;") ||
+		!strings.Contains(string(css), "--md-comp-button-outlined-icon-opacity: var(--md-sys-opacity);") {
+		t.Fatal(string(css))
+	}
+}
+
 func TestScopedExportsPreserveContextAndRequiredReferences(t *testing.T) {
 	server := scopedExportFixture()
 	if err := server.SetPublicOrigin("https://example.test/md3"); err != nil {

@@ -336,8 +336,8 @@ func (server *Server) exportCSS(document dtcg.Node) ([]byte, error) {
 		if !found {
 			return nil, fmt.Errorf("missing compiled CSS value for %s; rebuild token assets", name)
 		}
-		if alias, ok := node["$value"].(string); ok && strings.HasPrefix(alias, "{") {
-			values[prefix] = "var(--" + strings.ReplaceAll(strings.TrimSuffix(strings.TrimPrefix(alias, "{"), "}"), ".", "-") + ")"
+		if target, ok := dtcg.AliasSourceName(node); ok {
+			values[prefix] = "var(--" + strings.ReplaceAll(target, ".", "-") + ")"
 		}
 	}
 	names := make([]string, 0, len(values))
