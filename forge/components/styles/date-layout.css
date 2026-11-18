@@ -1,7 +1,10 @@
-/* Date-picker composition from the guidelines; token replacements live in overrides.json. */
+/* Date-picker composition from the guidelines. */
 .md-date-panel:not([data-variant="docked"]) .md-date-header {
   border-block-end: var(--md-comp-divider-thickness) solid
     var(--md-comp-divider-color);
+}
+.md-date-panel[data-mode="input"] {
+  --_date-height: 0px;
 }
 .md-date-panel[data-mode="input"] .md-date-header p {
   margin-block-end: var(--md-sys-measurement-space450);

@@ -8,7 +8,7 @@ test('readonly inputs and pill buttons toggle and survive native light-dismiss',
  const listeners={},attrs={},positions={},empty={hidden:true};let shown=false,focused=0,prevented=0;
  const options=['One','Two'].map((name,index)=>({id:`option-${index}`,hidden:false,dataset:{fieldOption:name},classList:{contains:c=>c==='md-menu-item'},attrs:{},getAttribute(name){return this.attrs[name]??null;},setAttribute(name,value){this.attrs[name]=value;},scrollIntoView(){}}));
  const menu={dataset:{},scrollWidth:260,scrollHeight:2000,offsetHeight:120,style:{setProperty:(name,value)=>positions[name]=value},matches:()=>shown,showPopover(){shown=true;},hidePopover(){shown=false;},addEventListener(){},querySelectorAll:s=>s==='.md-field-menu-divider'?[]:options,querySelector:s=>s==='.md-field-empty'?empty:null};
- const root={dataset:{},getBoundingClientRect:()=>({left:20,top:300,bottom:356,width:200}),querySelector:s=>s==='.md-field-menu'?menu:null};
+ const root={dataset:{},hasAttribute:()=>false,getBoundingClientRect:()=>({left:20,top:300,bottom:356,width:200}),querySelector:s=>s==='.md-field-menu'?menu:null};
  const input={classList:{contains:name=>useButton&&name==='md-filter-chip'},readOnly:!useButton,hasAttribute:name=>useButton&&name==='data-field-select',value:'One',closest:s=>s==='[data-field-example]'?root:null,focus(){focused++;},setAttribute(k,v){attrs[k]=v;},removeAttribute(k){delete attrs[k];}};
  runInNewContext(readFileSync(`${__dirname}/../../generated/fields.js`,'utf8'),{
   document:{readyState:'complete',documentElement:{clientWidth:800},querySelectorAll:s=>s==='[data-field-combo]'?[input]:[],addEventListener:(name,fn)=>listeners[name]=fn},

@@ -572,6 +572,8 @@
   .md-outlined-autocomplete,
   .md-filled-autocomplete
 ) {
+  --_field-input-padding-top: var(--forge-field-padding-block, var(--md-sys-measurement-space200));
+  --_field-input-padding-bottom: var(--_field-input-padding-top);
   --_field-state-color: transparent;
   --_field-state-opacity: 0;
   --_field-outline-opacity: 1;
@@ -587,8 +589,6 @@
   gap: var(--md-sys-measurement-space100);
   min-width: 0;
   max-width: 100%;
-  height: var(--_field-height);
-  min-height: var(--_field-height);
   border: var(--_field-outline-width) solid
     color-mix(
       in srgb,
@@ -638,7 +638,7 @@
   .md-filled-select,
   .md-outlined-autocomplete,
   .md-filled-autocomplete
-):has(> :is(input, select):focus-visible) {
+):has(> :is(input, textarea, select):focus-visible) {
   outline: var(--_field-focus-width) solid var(--_field-focus-color);
   outline-offset: var(--md-sys-state-focus-indicator-outer-offset);
 }
@@ -658,7 +658,7 @@
     .md-outlined-autocomplete,
     .md-filled-autocomplete
   )
-  input::placeholder {
+  :is(input, textarea)::placeholder {
   color: var(--_field-placeholder);
   opacity: 1;
 }
@@ -672,7 +672,7 @@
   ):has(> [data-slot="label"]):not(:focus-within):not(
     [data-component-state="focused"]
   )
-  input:placeholder-shown::placeholder {
+  :is(input, textarea):placeholder-shown::placeholder {
   color: transparent;
 }
 :is(
@@ -683,12 +683,11 @@
     .md-outlined-autocomplete,
     .md-filled-autocomplete
   )
-  > :is(input, select) {
+  > :is(input, textarea, select) {
   flex: 1;
   width: 100%;
   min-width: 0;
   min-height: 0;
-  height: 100%;
   appearance: none;
   border: 0;
   border-radius: inherit;
@@ -697,7 +696,7 @@
   font: inherit;
   caret-color: inherit;
   outline: 0;
-  padding: 0;
+  padding: var(--_field-input-padding-top) 0 var(--_field-input-padding-bottom);
 }
 .md-outlined-select {
   padding: 0;
@@ -757,7 +756,7 @@
   ):is(
     :focus-within,
     [data-component-state="focused"],
-    :has(> input:not(:placeholder-shown))
+    :has(> :is(input, textarea):not(:placeholder-shown))
   )
   [data-slot="label"] {
   top: 0;
@@ -883,6 +882,35 @@
   )
   [data-slot="suffix"] {
   color: var(--_field-suffix);
+}
+
+:is(.md-outlined-text-field, .md-filled-text-field) > textarea {
+  resize: vertical;
+}
+
+@supports (field-sizing: content) {
+  :is(.md-outlined-text-field, .md-filled-text-field) > textarea {
+    field-sizing: content;
+    min-block-size: calc(
+      var(--_field-rows, 2) * 1lh + var(--_field-input-padding-top) +
+        var(--_field-input-padding-bottom)
+    );
+  }
+}
+
+:is(.md-outlined-text-field, .md-filled-text-field)
+  > [data-slot="trailing-icon"]:has(> :is(button, input)) {
+  inline-size: auto;
+  block-size: auto;
+  align-items: center;
+  padding-block: var(--md-sys-measurement-space50);
+}
+
+:is(.md-outlined-text-field, .md-filled-text-field):not(:focus-within):not(
+    [data-component-state="focused"]
+  ):has(> textarea:placeholder-shown)
+  > [data-slot="label"] {
+  top: calc(var(--_field-input-padding-top) + var(--_field-input-text-line-height) / 2);
 }
 .md-menu {
   --_elevation-level: var(--_menu-elevation);
@@ -5723,15 +5751,19 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   padding-inline: var(--_search-leading) var(--_search-trailing);
   gap: var(--_search-gap);
 }
-.md-search-view[data-open="false"] .md-search-bar[data-leading="none"] {
+.md-search-bar[data-leading="none"]:not(.md-search-view[data-open="true"] *) {
   padding-inline-start: var(--_search-leading);
 }
-.md-search-view[data-open="false"]
-  .md-search-bar[data-control="contained"][data-leading="none"]:not(
-    :has(.md-search-action-target:not([hidden]) button, .md-search-avatar)
-  ) {
-  padding-inline: var(--_search-no-action-leading)
-    var(--_search-no-action-trailing);
+.md-search-bar[data-control="contained"][data-leading="none"]:not(.md-search-view[data-open="true"] *) {
+  padding-inline-start: var(--_search-no-action-leading,
+    var(--md-comp-search-bar-contained-no-actions-leading-space, var(--md-sys-measurement-space200)));
+}
+.md-search-bar[data-control="contained"][data-leading="none"]:not(
+  .md-search-view[data-open="true"] *,
+  :has(.md-search-action-target:not([hidden]) button, .md-search-avatar)
+) {
+  padding-inline-end: var(--_search-no-action-trailing,
+    var(--md-comp-search-bar-contained-no-actions-trailing-space, var(--md-sys-measurement-space200)));
 }
 .md-search-view[data-open="true"] .md-search-bar {
   --_elevation-level: var(--_search-view-elevation);
@@ -5806,8 +5838,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   width: var(--md-comp-search-bar-contained-avatar-target-size);
   height: var(--md-comp-search-bar-contained-avatar-target-size);
 }
-.md-search-view[data-open="false"]
-  .md-search-bar[data-leading="none"]
+.md-search-bar[data-leading="none"]:not(.md-search-view[data-open="true"] *)
   .md-search-leading-slot {
   display: none;
 }
@@ -5889,8 +5920,8 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   --_search-action-target: var(--md-comp-icon-button-small-container-height);
   display: grid;
   place-items: center;
-  width: var(--_search-action-target);
-  height: var(--_search-action-target);
+  min-inline-size: var(--_search-action-min-size, var(--_search-action-target));
+  min-block-size: var(--_search-action-min-size, var(--_search-action-target));
   flex: none;
 }
 .md-search-bar[data-control="contained"] .md-search-action-target {
@@ -5900,17 +5931,6 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
 }
 .md-search-action-target[hidden] {
   display: none;
-}
-.md-search-action-target > button::after {
-  content: "";
-  position: absolute;
-  inset: calc(
-    (
-        var(--md-comp-icon-button-small-container-height) -
-          var(--_search-action-target)
-      ) /
-      2
-  );
 }
 .md-search-avatar {
   --_button-rest-shape: var(--_search-avatar-shape);
@@ -6020,6 +6040,16 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   border-radius: var(--md-sys-shape-corner-medium);
   background: var(--md-sys-color-surface-container-high);
   color: var(--md-sys-color-on-surface);
+}
+@supports (position-area: block-end span-inline-start) {
+  .md-search-options[popover] {
+    inset: auto;
+    margin: 0;
+    margin-block-start: var(--md-sys-measurement-space50);
+    position-area: block-end span-inline-start;
+    justify-self: end;
+    position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
+  }
 }
 .md-search-options label {
   display: flex;
@@ -7263,7 +7293,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   .md-filled-select,
   .md-outlined-autocomplete,
   .md-filled-autocomplete
-):has(> input) {
+):has(> :is(input, textarea)) {
   border: 0;
 }
 :is(
@@ -7273,7 +7303,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
     .md-filled-select,
     .md-outlined-autocomplete,
     .md-filled-autocomplete
-  ):has(> input)::after {
+  ):has(> :is(input, textarea))::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -7310,7 +7340,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
     );
 }
 :is(.md-filled-text-field, .md-filled-select, .md-filled-autocomplete):has(
-    > input
+    > :is(input, textarea)
   )::after {
   inset: auto 0 0;
   block-size: var(--_field-indicator-height);
@@ -7330,7 +7360,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
     .md-outlined-autocomplete,
     .md-filled-autocomplete
   )
-  > input {
+  > :is(input, textarea) {
   box-sizing: border-box;
 }
 :is(
@@ -7350,7 +7380,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
 :is(.md-outlined-text-field, .md-outlined-select, .md-outlined-autocomplete):is(
     :focus-within,
     [data-component-state="focused"],
-    :has(> input:not(:placeholder-shown))
+    :has(> :is(input, textarea):not(:placeholder-shown))
   )
   > [data-slot="label"] {
   inset-inline-start: var(--md-sys-measurement-space200);
@@ -7358,27 +7388,20 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
 :is(.md-filled-text-field, .md-filled-select, .md-filled-autocomplete):is(
     :focus-within,
     [data-component-state="focused"],
-    :has(> input:not(:placeholder-shown))
+    :has(> :is(input, textarea):not(:placeholder-shown))
   )
   > [data-slot="label"] {
-  top: var(--md-sys-measurement-space100);
+  top: var(--forge-field-padding-block, var(--md-sys-measurement-space100));
   transform: none;
   background: transparent;
   padding: 0;
   font-size: var(--_field-populated-label-size);
   line-height: var(--_field-populated-label-line-height);
 }
-:is(.md-filled-text-field, .md-filled-select, .md-filled-autocomplete):is(
-    :focus-within,
-    [data-component-state="focused"],
-    :has(> input:not(:placeholder-shown))
-  )
-  > input {
-  padding-block: calc(
-      var(--md-sys-measurement-space100) +
-        var(--_field-populated-label-line-height)
-    )
-    var(--md-sys-measurement-space100);
+:is(.md-filled-text-field, .md-filled-select, .md-filled-autocomplete):has(> [data-slot="label"]) {
+  --_field-label-padding: var(--forge-field-padding-block, var(--md-sys-measurement-space100));
+  --_field-input-padding-top: calc(var(--_field-label-padding) + var(--_field-populated-label-line-height));
+  --_field-input-padding-bottom: var(--_field-label-padding);
 }
 :is(
     .md-outlined-text-field,
@@ -7526,7 +7549,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
     .md-filled-select,
     .md-outlined-autocomplete,
     .md-filled-autocomplete
-  ):has(> input)::after {
+  ):has(> :is(input, textarea))::after {
   z-index: -1;
 }
 :is(
@@ -7626,10 +7649,10 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   ):is(
     :focus-within,
     [data-component-state="focused"],
-    :has(> input:not(:placeholder-shown))
+    :has(> :is(input, textarea):not(:placeholder-shown))
   )
   > .md-field-outline
-  > legend {
+  > legend:not(:empty) {
   inline-size: auto;
   max-inline-size: calc(100% - 2 * var(--md-sys-measurement-space200));
   padding-inline: var(--md-sys-measurement-space50);
@@ -7671,14 +7694,14 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
     .md-filled-select,
     .md-outlined-autocomplete,
     .md-filled-autocomplete
-  ):has(> input:disabled)
+  ):has(> :is(input, textarea):disabled)
   > :is([data-slot="prefix"], [data-slot="suffix"]) {
   color: inherit;
 }
 :is(.md-filled-text-field, .md-filled-select, .md-filled-autocomplete):is(
     :focus-within,
     [data-component-state="focused"],
-    :has(> input:not(:placeholder-shown))
+    :has(> :is(input, textarea):not(:placeholder-shown))
   )
   > :is([data-slot="prefix"], [data-slot="suffix"]) {
   align-self: flex-end;
@@ -7692,7 +7715,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   ):not(:has(> .md-field-outline)):is(
     :focus-within,
     [data-component-state="focused"],
-    :has(> input:not(:placeholder-shown))
+    :has(> :is(input, textarea):not(:placeholder-shown))
   )
   > [data-slot="label"] {
   padding-inline: var(--md-sys-measurement-space50);
@@ -7728,7 +7751,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
     .md-filled-autocomplete
   ):has(> .md-field-outline):is(
     :focus-visible,
-    :has(> input:focus-visible),
+    :has(> :is(input, textarea):focus-visible),
     [data-component-state="focused"]
   ) {
   outline: none;
@@ -7742,7 +7765,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
     .md-filled-autocomplete
   ):is(
     :focus-visible,
-    :has(> input:focus-visible),
+    :has(> :is(input, textarea):focus-visible),
     [data-component-state="focused"]
   )
   > .md-field-focus-outline {
@@ -8302,10 +8325,13 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   overflow-y: scroll;
   scrollbar-gutter: stable;
 }
-/* Date-picker composition from the guidelines; token replacements live in overrides.json. */
+/* Date-picker composition from the guidelines. */
 .md-date-panel:not([data-variant="docked"]) .md-date-header {
   border-block-end: var(--md-comp-divider-thickness) solid
     var(--md-comp-divider-color);
+}
+.md-date-panel[data-mode="input"] {
+  --_date-height: 0px;
 }
 .md-date-panel[data-mode="input"] .md-date-header p {
   margin-block-end: var(--md-sys-measurement-space450);

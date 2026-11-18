@@ -31,3 +31,9 @@ test('literal runtime names protect only exact matches and empty rules are dropp
  assert.doesNotMatch(delivered,/--surface-variant|data-theme/);
  assert.match(css,/--surface-variant|data-theme/);
 });
+
+test('delivery shortening preserves public Forge properties without runtime references',()=>{
+ const css='.field{padding-block:var(--forge-field-padding-block,16px)}';
+ const result=deliveryStyles({'/static/app.css':css},[]);
+ assert.equal(result.styles['/static/app.css'],css);
+});

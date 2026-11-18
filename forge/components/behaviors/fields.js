@@ -10,8 +10,8 @@
  }
  if(typeof module!=='undefined')module.exports={matches,popupPosition,typeahead};
  if(typeof document==='undefined')return;
- let touchState;
- const states=new WeakMap(),rootFor=e=>e.closest?.('[data-field-example]'),stateFor=e=>states.get(rootFor(e));
+ let touchState,compatibilityTap;
+ const states=new WeakMap(),rootFor=e=>e.closest?.('[data-field-example]'),stateFor=e=>initField(rootFor(e));
  const availableOptions=state=>state.options.filter(e=>!e.hidden&&e.getAttribute('aria-disabled')!=='true');
  function active(state,index) {
   const options=availableOptions(state);state.active=Math.max(-1,Math.min(index,options.length-1));
@@ -19,7 +19,7 @@
   const option=options[state.active];if(option){option.dataset.active='true';if(option.classList.contains('md-menu-item'))option.dataset.componentState='focused';state.input.setAttribute('aria-activedescendant',option.id);option.scrollIntoView({block:'nearest',inline:'nearest'});}else state.input.removeAttribute('aria-activedescendant');
  }
  function filter(state,query) {
-  const visible=new Set(matches(state.options.map(e=>e.dataset.fieldOption),query));state.options.forEach((e,index)=>{e.hidden=!visible.has(index);e.setAttribute('aria-selected',String(e.dataset.fieldOption===state.input.value));});
+  const visible=new Set(matches(state.options.map(e=>e.dataset.fieldOption),query));state.options.forEach((e,index)=>{e.hidden=!visible.has(index);const selected=state.reactValue?e.dataset.fieldValue===state.reactValue.value:e.dataset.fieldOption===state.input.value;e.setAttribute('aria-selected',String(selected));});
   state.menu.querySelector('.md-field-empty').hidden=visible.size>0;
   for(const divider of state.menu.querySelectorAll('.md-field-menu-divider')){const row=divider.closest('li');const list=Array.from(row.parentElement.children),index=list.indexOf(row),visible=nodes=>nodes.some(n=>{const option=n.querySelector('[data-field-option]');return option&&!option.hidden;});row.hidden=!visible(list.slice(0,index))||!visible(list.slice(index+1));}active(state,-1);
  }
@@ -43,13 +43,50 @@
  }
  function close(state) {if(state.menu.matches(':popover-open'))state.menu.hidePopover();state.input.setAttribute('aria-expanded','false');active(state,-1);}
  function choose(state,option) {
-  if(!option||option.getAttribute('aria-disabled')==='true')return;state.input.value=option.dataset.fieldOption;const display=state.root.querySelector('[data-field-display]');if(display)display.textContent=option.dataset.fieldOption;const value=state.root.querySelector('[data-field-value]');if(value)value.value=option.dataset.fieldValue??option.dataset.fieldOption;state.root.dataset.populated='true';for(const e of state.options)e.setAttribute('aria-selected',String(e===option));close(state);state.input.focus({preventScroll:true});
+  if(!option||option.getAttribute('aria-disabled')==='true')return;
+  if(state.reactValue){
+   close(state);state.input.focus({preventScroll:true});
+   const selected=option.dataset.fieldValue;
+   if(state.reactValue.value!==selected){
+    state.reactValue.value=selected;
+    state.reactValue.dispatchEvent(new Event('change',{bubbles:true}));
+   }
+   return;
+  }
+  state.input.value=option.dataset.fieldOption;const display=state.root.querySelector('[data-field-display]');if(display)display.textContent=option.dataset.fieldOption;const value=state.root.querySelector('[data-field-value]');if(value)value.value=option.dataset.fieldValue??option.dataset.fieldOption;state.root.dataset.populated='true';for(const e of state.options)e.setAttribute('aria-selected',String(e===option));close(state);state.input.focus({preventScroll:true});
   state.committing=true;try{state.input.dispatchEvent(new Event('input',{bubbles:true}));state.input.dispatchEvent(new Event('change',{bubbles:true}));}finally{state.committing=false;}
  }
- function init(){for(const input of document.querySelectorAll('[data-field-combo]')){const root=rootFor(input);if(states.has(root))continue;const menu=root.querySelector('.md-field-menu'),state={root,input,menu,readOnly:input.readOnly||input.hasAttribute('data-field-select'),options:Array.from(menu.querySelectorAll('[data-field-option]')),active:-1,buffer:'',typedAt:0};states.set(root,state);input.setAttribute('aria-expanded','false');input.removeAttribute('aria-activedescendant');menu.addEventListener('beforetoggle',event=>{if(event.newState==='closed'){input.setAttribute('aria-expanded','false');active(state,-1);}});}}
+ function initField(root,input){
+  if(!root)return;
+  if(states.has(root))return states.get(root);
+  input??=root.querySelector('[data-field-combo]');if(!input)return;
+  const menu=root.querySelector('.md-field-menu');if(!menu)return;
+  const reactValue=root.hasAttribute('data-react-field')?root.querySelector('[data-field-value]'):null;
+  const options=Array.from(menu.querySelectorAll('[data-field-option]'));
+  const state={root,input,menu,reactValue,readOnly:input.readOnly||input.hasAttribute('data-field-select'),
+   get options(){return reactValue?Array.from(menu.querySelectorAll('[data-field-option]')):options;},active:-1,buffer:'',typedAt:0};
+  if(reactValue&&!menu.hasAttribute('aria-label')&&!menu.hasAttribute('aria-labelledby')){
+   const label=Array.from(input.labels??[],node=>node.textContent.trim()).join(' ');
+   if(label)menu.setAttribute('aria-label',label);
+  }
+  states.set(root,state);input.setAttribute('aria-expanded','false');input.removeAttribute('aria-activedescendant');
+  menu.addEventListener('beforetoggle',event=>{if(event.newState==='closed'){input.setAttribute('aria-expanded','false');active(state,-1);}});
+  return state;
+ }
+ function init(){for(const input of document.querySelectorAll('[data-field-combo]'))initField(rootFor(input),input);}
+ // Closing on touch release can retarget the compatibility mouse events to
+ // the control underneath the popup. Leave that control and focus alone.
+ function suppressCompatibilityTap(event){
+  if(!compatibilityTap||Date.now()>compatibilityTap.until||event.detail===0&&!event.pointerType||
+     Math.hypot(event.clientX-compatibilityTap.x,event.clientY-compatibilityTap.y)>8)return;
+  event.preventDefault();event.stopImmediatePropagation();
+  if(event.type==='click')compatibilityTap=null;
+ }
+ document.addEventListener('mousedown',suppressCompatibilityTap,true);
+ document.addEventListener('click',suppressCompatibilityTap,true);
  document.addEventListener('click',event=>{
   const state=stateFor(event.target);if(!state||state.input.disabled)return;
-  const option=event.target.closest('[data-field-option]');if(option){if(state.touchCommitted===option){delete state.touchCommitted;return;}choose(state,option);return;}
+  const option=event.target.closest('[data-field-option]');if(option){if(state.reactValue)event.preventDefault();if(state.touchCommitted===option){delete state.touchCommitted;return;}choose(state,option);return;}
   if(event.target.closest('[data-field-toggle]')||state.readOnly&&!event.target.closest('.md-field-menu')){
    event.preventDefault();
    // Native light-dismiss may already have closed the popup on pointerup.
@@ -58,6 +95,7 @@
   }
  });
  document.addEventListener('pointerdown',event=>{
+  compatibilityTap=null;
   const state=stateFor(event.target);
   if(state){delete state.touchCommitted;const option=event.target.closest('[data-field-option]');state.touchOption=(event.pointerType==='touch'||event.pointerType==='pen')&&option?{option,id:event.pointerId,x:event.clientX,y:event.clientY,moved:false}:null;if(state.touchOption)touchState=state;}
   if(state&&(event.target.closest('[data-field-toggle]')||state.readOnly&&!event.target.closest('.md-field-menu'))){state.pointerOpen=state.menu.matches(':popover-open');event.preventDefault();}
@@ -66,15 +104,21 @@
  // Commit direct pointer selection on release: Safari can blur the trigger for touch or pen before it
  // delivers a click on a non-focusable option. Keep focusout from hiding it first.
  document.addEventListener('pointermove',event=>{const touch=touchState?.touchOption;if(touch&&touch.id===event.pointerId&&Math.hypot(event.clientX-touch.x,event.clientY-touch.y)>8)touch.moved=true;});
- document.addEventListener('pointerup',event=>{const state=touchState,touch=state?.touchOption;if(!touch||touch.id!==event.pointerId)return;touchState=null;state.touchOption=null;if(touch.moved)return;if(event.target.closest('[data-field-option]')===touch.option&&state.menu.matches(':popover-open')){event.preventDefault();state.touchCommitted=touch.option;choose(state,touch.option);}else close(state);});
+ document.addEventListener('pointerup',event=>{const state=touchState,touch=state?.touchOption;if(!touch||touch.id!==event.pointerId)return;touchState=null;state.touchOption=null;if(touch.moved)return;if(event.target.closest('[data-field-option]')===touch.option&&state.menu.matches(':popover-open')){event.preventDefault();compatibilityTap={x:event.clientX,y:event.clientY,until:Date.now()+500};state.touchCommitted=touch.option;choose(state,touch.option);}else close(state);});
  // Native touch scrolling cancels the pointer; cancel the pending tap, keeping the menu open.
  document.addEventListener('pointercancel',event=>{const state=touchState;if(state?.touchOption?.id===event.pointerId){touchState=null;state.touchOption=null;}});
  document.addEventListener('input',event=>{
   const root=rootFor(event.target);if(root)root.dataset.populated=String(event.target.value!=='');
   const state=stateFor(event.target);if(state&&event.target===state.input&&!state.readOnly&&!state.committing){const value=state.root.querySelector('[data-field-value]');if(value)value.value=state.input.value;open(state,state.input.value);}
  });
- document.addEventListener('keydown',event=>{
-  const state=stateFor(event.target);if(!state||state.input.disabled||event.target!==state.input)return;
+ function keydown(event,react){
+  const state=stateFor(event.target);
+  if(!state||Boolean(state.reactValue)!==react||state.input.disabled||event.target!==state.input||event.defaultPrevented||event.isComposing)return;
+  handleKey(state,event);
+  // The popup handles these keys before React's host editor or dialog can act.
+  if(react&&event.defaultPrevented)event.stopPropagation();
+ }
+ function handleKey(state,event){
   const shown=state.menu.matches(':popover-open');
   if(event.key==='Escape'&&shown){event.preventDefault();event.stopPropagation();close(state);return;}
   if(event.key==='Tab'){close(state);return;}
@@ -87,10 +131,22 @@
   if((event.key==='Enter'||state.readOnly&&event.key===' ')&&shown){const option=availableOptions(state)[state.active];if(option){event.preventDefault();choose(state,option);}else {if(state.readOnly)event.preventDefault();close(state);}return;}
   if(state.readOnly&&['Enter',' '].includes(event.key)){event.preventDefault();open(state);active(state,0);return;}
   if(state.readOnly&&event.key.length===1&&!event.ctrlKey&&!event.metaKey&&!event.altKey){event.preventDefault();const now=Date.now();state.buffer=(now-state.typedAt>500?'':state.buffer)+event.key;state.typedAt=now;if(!shown)open(state);active(state,typeahead(availableOptions(state).map(e=>e.dataset.fieldOption),state.active,state.buffer));}
- });
+ }
+ document.addEventListener('keydown',event=>keydown(event,true),true);
+ document.addEventListener('keydown',event=>keydown(event,false));
  document.addEventListener('focusout',event=>{const state=stateFor(event.target);if(state&&!state.touchOption&&!state.root.contains(event.relatedTarget))close(state);});
  window.addEventListener('resize',()=>{for(const menu of document.querySelectorAll('.md-field-menu:popover-open'))close(stateFor(menu));});
- document.addEventListener('scroll',event=>{if(event.target.closest?.('.md-field-menu'))return;for(const menu of document.querySelectorAll('.md-field-menu:popover-open'))close(stateFor(menu));},true);
+ document.addEventListener('scroll',event=>{
+  if(event.target.closest?.('.md-field-menu'))return;
+  for(const menu of document.querySelectorAll('.md-field-menu:popover-open')){
+   const state=stateFor(menu);
+   if(!state||(event.target!==document&&!event.target.contains?.(state.root)))continue;
+   const anchor=state.root.getBoundingClientRect();
+   const bounds=event.target===document?{top:0,bottom:window.innerHeight}:event.target.getBoundingClientRect();
+   if(anchor.bottom<=bounds.top||anchor.top>=bounds.bottom)close(state);
+   else position(state);
+  }
+ },true);
  document.addEventListener('htmx:beforeCleanupElement',event=>{const node=(event.detail?.elt || event.target);if(typeof node?.querySelectorAll!=='function')return;for(const root of [...(node.matches?.('[data-field-example]')?[node]:[]),...node.querySelectorAll('[data-field-example]')]){const state=states.get(root);if(state){close(state);states.delete(root);}}});
  document.addEventListener('htmx:afterSwap',init);document.addEventListener('htmx:historyRestore',init);if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();

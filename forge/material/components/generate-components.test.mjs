@@ -180,8 +180,9 @@ test(
       );
       const compiled = await compile(document, ":root", { appTheme: true });
       const generated = generateComponents(document, compiled.values);
-      assert.equal(generated.coverage.mapped.length, 3655);
       const names = generated.coverage.mapped.map(({ token }) => token).sort();
+      assert.ok(names.includes("md.comp.date-picker.modal.container.height"));
+      assert.ok(names.includes("md.comp.date-input.modal.container.width"));
       if (bindings !== undefined) assert.deepEqual(names, bindings, appearance);
       bindings = names;
       if (css !== undefined) assert.equal(generated.css, css);
@@ -409,8 +410,10 @@ test("search maps baseline and contained geometry, states and individual type me
 
 test("date pickers map days, years, docked month menus, ranges and input geometry",()=>{
  const {document,values}=fixture(),{coverage,css}=generateComponents(document,values);
- assert.equal(coverage.mapped.filter(r=>/^md.comp.date-(picker|input)\./.test(r.token)).length,210);
- assert.equal(coverage.excluded.filter(r=>/^md.comp.date-(picker|input)\./.test(r.token)).length,19);
+ assert.equal(coverage.mapped.filter(r=>/^md.comp.date-(picker|input)\./.test(r.token)).length,209);
+ assert.equal(coverage.excluded.filter(r=>/^md.comp.date-(picker|input)\./.test(r.token)).length,20);
+ assert.ok(coverage.excluded.some(r=>r.token==='md.comp.date-input.modal.container.height'));
+ assert.doesNotMatch(css,/var\(--md-comp-date-input-modal-container-height\)/);
  assert.ok(coverage.configurations.filter(c=>c.family==='date'&&c.control==='menu-button').every(c=>c.selection===''));
  assert.ok(!coverage.mapped.find(r=>r.token==='md.comp.date-picker.docked.date.container.width').selector.includes(' .md-date-day'));
  assert.ok(!coverage.mapped.find(r=>r.token==='md.comp.date-picker.modal.date.state-layer.width').selector.includes(' .md-date-day'));

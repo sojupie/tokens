@@ -6,6 +6,8 @@
   .md-outlined-autocomplete,
   .md-filled-autocomplete
 ) {
+  --_field-input-padding-top: var(--forge-field-padding-block, var(--md-sys-measurement-space200));
+  --_field-input-padding-bottom: var(--_field-input-padding-top);
   --_field-state-color: transparent;
   --_field-state-opacity: 0;
   --_field-outline-opacity: 1;
@@ -21,8 +23,6 @@
   gap: var(--md-sys-measurement-space100);
   min-width: 0;
   max-width: 100%;
-  height: var(--_field-height);
-  min-height: var(--_field-height);
   border: var(--_field-outline-width) solid
     color-mix(
       in srgb,
@@ -72,7 +72,7 @@
   .md-filled-select,
   .md-outlined-autocomplete,
   .md-filled-autocomplete
-):has(> :is(input, select):focus-visible) {
+):has(> :is(input, textarea, select):focus-visible) {
   outline: var(--_field-focus-width) solid var(--_field-focus-color);
   outline-offset: var(--md-sys-state-focus-indicator-outer-offset);
 }
@@ -92,7 +92,7 @@
     .md-outlined-autocomplete,
     .md-filled-autocomplete
   )
-  input::placeholder {
+  :is(input, textarea)::placeholder {
   color: var(--_field-placeholder);
   opacity: 1;
 }
@@ -106,7 +106,7 @@
   ):has(> [data-slot="label"]):not(:focus-within):not(
     [data-component-state="focused"]
   )
-  input:placeholder-shown::placeholder {
+  :is(input, textarea):placeholder-shown::placeholder {
   color: transparent;
 }
 :is(
@@ -117,12 +117,11 @@
     .md-outlined-autocomplete,
     .md-filled-autocomplete
   )
-  > :is(input, select) {
+  > :is(input, textarea, select) {
   flex: 1;
   width: 100%;
   min-width: 0;
   min-height: 0;
-  height: 100%;
   appearance: none;
   border: 0;
   border-radius: inherit;
@@ -131,7 +130,7 @@
   font: inherit;
   caret-color: inherit;
   outline: 0;
-  padding: 0;
+  padding: var(--_field-input-padding-top) 0 var(--_field-input-padding-bottom);
 }
 .md-outlined-select {
   padding: 0;
@@ -191,7 +190,7 @@
   ):is(
     :focus-within,
     [data-component-state="focused"],
-    :has(> input:not(:placeholder-shown))
+    :has(> :is(input, textarea):not(:placeholder-shown))
   )
   [data-slot="label"] {
   top: 0;
@@ -317,4 +316,33 @@
   )
   [data-slot="suffix"] {
   color: var(--_field-suffix);
+}
+
+:is(.md-outlined-text-field, .md-filled-text-field) > textarea {
+  resize: vertical;
+}
+
+@supports (field-sizing: content) {
+  :is(.md-outlined-text-field, .md-filled-text-field) > textarea {
+    field-sizing: content;
+    min-block-size: calc(
+      var(--_field-rows, 2) * 1lh + var(--_field-input-padding-top) +
+        var(--_field-input-padding-bottom)
+    );
+  }
+}
+
+:is(.md-outlined-text-field, .md-filled-text-field)
+  > [data-slot="trailing-icon"]:has(> :is(button, input)) {
+  inline-size: auto;
+  block-size: auto;
+  align-items: center;
+  padding-block: var(--md-sys-measurement-space50);
+}
+
+:is(.md-outlined-text-field, .md-filled-text-field):not(:focus-within):not(
+    [data-component-state="focused"]
+  ):has(> textarea:placeholder-shown)
+  > [data-slot="label"] {
+  top: calc(var(--_field-input-padding-top) + var(--_field-input-text-line-height) / 2);
 }

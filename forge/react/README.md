@@ -1,10 +1,18 @@
 # Forge for React
 
 `@token-catalog/forge-react` renders Forge’s Button, ButtonLink, IconButton,
-Checkbox, TextField, SearchBar, SplitButton, ConnectedButtonGroup, Fab, NavigationRail, NavigationRailItem,
+Checkbox, TextField, TextArea, Select, ChipSelect, SearchBar, SplitButton, ConnectedButtonGroup, Fab, NavigationRail, NavigationRailItem,
 SideSheet, List, ListItemButton, and basic Dialog in React 19. The package carries Forge’s generated token bindings,
-component styles, fonts, and button and dialog controllers. An installed
+component styles, fonts, and shared controllers for fields, buttons, and dialogs. An installed
 package works without a running Token Catalog or a checkout of this repository.
+
+Use `Select` for fields and `ChipSelect` for filter pills. Both take
+`SelectOption` children and share Catalog’s popup positioning and keyboard behavior.
+
+Set `--forge-field-padding-block` on a field or an enclosing layout to adjust
+vertical padding for text fields, text areas, and selects. The control sizes
+itself from that padding, the text line height, and any taller slots. A filled
+field with a floating label reserves space for the label in both focus states.
 
 From the Token Catalog root, build against a local publication:
 
@@ -48,6 +56,8 @@ options to an anchor. Checkbox accepts native checkbox props, including a ref fo
 setting the input’s `indeterminate` property. Give it a visible or accessible label.
 TextField accepts native input props
 with a visible `label`, and can display supporting text, invalid styling, and icons.
+TextArea shares the same field layout and accepts native textarea props. Set `rows`
+for the starting size and supply a visible `label` or an accessible name.
 
 List renders a native list. Wrap each ListItemButton in an `li`, pass its icon
 as `leading`, and set `aria-current="page"` for the active destination. Pass

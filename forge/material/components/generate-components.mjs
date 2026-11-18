@@ -141,6 +141,7 @@ function binding(set, suffix) {
     else if(['time-value','time-period','time-field'].includes(family)&&(parsed.state||parsed.selected||/(?:color|opacity)$/.test(property)&&!property.startsWith('outline.')))selector+=' .md-'+family;
     return{...parsed,family,selector,property:role,rank};
   } else if(set.startsWith('md.comp.date-picker.')||set==='md.comp.date-input.modal') {
+    if(set==='md.comp.date-input.modal'&&suffix==='container.height')return{excluded:'Date input sizes to its fields, supporting text, and actions.'};
     if(suffix.endsWith('.type'))return{excluded:'Composite typography duplicates individual font, size, weight, line-height and tracking fields.'};
     if(suffix==='container.surface-tint-layer.color')return{excluded:'Deprecated surface tint is replaced by the captured tonal container color.'};
     if(suffix.endsWith('.opcaity'))return{excluded:'Misspelled source duplicate; the canonical opacity field is used after checking equality.'};
@@ -655,6 +656,7 @@ function binding(set, suffix) {
     }
     const raw=suffix.replace(/^text-field\./,''),error=raw.startsWith('error.'),key=error?raw.slice(6):raw;
     parsed=parse(key);property=parsed.sourceProperty;
+    if(property==='container.height')return{excluded:'Text, icons and padding determine the rendered field height.'};
     if(error)selector+=':where([aria-invalid="true"],:has([aria-invalid="true"]))';
     const extras={'leading-icon.size':'leading-icon-size','trailing-icon.size':'trailing-icon-size','caret.color':'caret','input-text.placeholder.color':'placeholder','input-text.prefix.color':'prefix','input-text.suffix.color':'suffix','label-text.populated.size':'populated-label-size','label-text.populated.line-height':'populated-label-line-height','active-indicator.color':'indicator-color','active-indicator.height':'indicator-height','active-indicator.opacity':'indicator-opacity','active-indicator.thickness':'focus-width'};
     if(extras[property])return {...parsed,family,selector,property:extras[property],error};
@@ -921,9 +923,12 @@ export function generateComponents(document, values) {
         : ["menu-item", "checkbox", "switch", "nav-item", "segment", "tab", "toolbar-item", "sheet-action", "split-item", "fab-menu-item", "fab-menu-close", "list-item", "list-reveal", "carousel-item", "date-day", "date-year", "date-month", "date-menu", "time-value", "time-period", "time-field"].includes(b.family) && condition(b)
           ? `:where(${condition(b)})`
           : condition(b);
+    const stateCondition = b.family === "field"
+      ? fieldCondition.replaceAll("> input:disabled, > select:disabled", "> :is(input, textarea, select):disabled")
+      : fieldCondition;
     const selectors = b.selector
       .split(", ")
-      .map((s) => s + fieldCondition + (b.target || ""))
+      .map((s) => s + stateCondition + (b.target || ""))
       .join(", ");
     const property =
       b.family === "dialog-action" &&
