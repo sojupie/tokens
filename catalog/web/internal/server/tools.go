@@ -50,14 +50,25 @@ func (server *Server) handleTools(w http.ResponseWriter, r *http.Request) {
 // It exposes files only: no uploads, project store, processing API or directory listings.
 func MountTools(catalog http.Handler, directory string) (http.Handler, error) {
 	mux := http.NewServeMux()
-	for _, name := range []string{"motion", "motion-lab"} {
+	for _, prefix := range []string{site.MotionLabPath, site.CarouselPlaygroundPath} {
+		name := path.Base(prefix)
 		root := filepath.Join(directory, name)
 		if info, err := os.Stat(filepath.Join(root, "index.html")); err != nil || !info.Mode().IsRegular() {
 			return nil, fmt.Errorf("missing built tool %s/index.html in %s", name, directory)
 		}
-		prefix := "/tools/" + name + "/"
 		mux.Handle(prefix, http.StripPrefix(prefix, toolFiles(root)))
 	}
+	const oldMotionPath = "/tools/motion"
+	redirectMotion := func(w http.ResponseWriter, r *http.Request) {
+		suffix := strings.TrimPrefix(strings.TrimPrefix(r.URL.EscapedPath(), oldMotionPath), "/")
+		target := site.MotionLabPath + suffix
+		if r.URL.RawQuery != "" {
+			target += "?" + r.URL.RawQuery
+		}
+		http.Redirect(w, r, target, http.StatusPermanentRedirect)
+	}
+	mux.HandleFunc("GET "+oldMotionPath, redirectMotion)
+	mux.HandleFunc("GET "+oldMotionPath+"/", redirectMotion)
 	mux.Handle("/", catalog)
 	return mux, nil
 }

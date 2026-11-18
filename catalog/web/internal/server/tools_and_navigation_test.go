@@ -27,12 +27,12 @@ func TestToolsLinksLeaveTheCatalogMount(t *testing.T) {
 		w := httptest.NewRecorder()
 		server.Handler().ServeHTTP(w, httptest.NewRequest("GET", path, nil))
 		body := w.Body.String()
-		for _, link := range []string{`href="/md3/tools"`, `href="https://tokens.example/tools/motion/"`, `href="https://tokens.example/tools/motion-lab/"`, `hx-boost="false"`} {
+		for _, link := range []string{`href="/md3/tools"`, `href="https://tokens.example/tools/motion-lab/"`, `href="https://tokens.example/tools/carousel-playground/"`, `hx-boost="false"`} {
 			if w.Code != 200 || !strings.Contains(body, link) {
 				t.Fatalf("%s: missing tools navigation %s (status %d)", path, link, w.Code)
 			}
 		}
-		if strings.Contains(body, `href="/md3/tools/motion/"`) {
+		if strings.Contains(body, `href="/md3/tools/motion-lab/"`) {
 			t.Fatal("tool app incorrectly mounted inside catalog")
 		}
 	}
@@ -60,7 +60,7 @@ func TestToolURLsAreConfigurableAndValidated(t *testing.T) {
 
 func TestToolsOutsideCollectionMount(t *testing.T) {
 	dir := t.TempDir()
-	for _, name := range []string{"motion", "motion-lab"} {
+	for _, name := range []string{"motion-lab", "carousel-playground"} {
 		if err := os.MkdirAll(filepath.Join(dir, name, "assets"), 0755); err != nil {
 			t.Fatal(err)
 		}
@@ -72,9 +72,9 @@ func TestToolsOutsideCollectionMount(t *testing.T) {
 	}
 	var encoded bytes.Buffer
 	compressor := gzip.NewWriter(&encoded)
-	_, _ = compressor.Write([]byte("motion"))
+	_, _ = compressor.Write([]byte("motion-lab"))
 	_ = compressor.Close()
-	if err := os.WriteFile(filepath.Join(dir, "motion", "index.html.gz"), encoded.Bytes(), 0644); err != nil {
+	if err := os.WriteFile(filepath.Join(dir, "motion-lab", "index.html.gz"), encoded.Bytes(), 0644); err != nil {
 		t.Fatal(err)
 	}
 	fallback := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -93,11 +93,11 @@ func TestToolsOutsideCollectionMount(t *testing.T) {
 		status       int
 		body         string
 	}{
-		{"GET", "/tools/motion/", 200, "motion"}, {"GET", "/tools/motion-lab/", 200, "motion-lab"},
-		{"GET", "/md3/components", 200, "catalog"}, {"GET", "/tools/motion/sw.js", 200, "worker"},
-		{"GET", "/tools/motion/assets/engine.wasm", 200, "wasm"}, {"HEAD", "/tools/motion/", 200, ""},
-		{"POST", "/tools/motion/import", 405, ""}, {"GET", "/tools/motion/assets/", 404, ""},
-		{"GET", "/tools/motion/api/projects", 404, ""}, {"GET", "/tools/motion/index.html.gz", 404, ""},
+		{"GET", "/tools/motion-lab/", 200, "motion-lab"}, {"GET", "/tools/carousel-playground/", 200, "carousel-playground"},
+		{"GET", "/md3/components", 200, "catalog"}, {"GET", "/tools/motion-lab/sw.js", 200, "worker"},
+		{"GET", "/tools/motion-lab/assets/engine.wasm", 200, "wasm"}, {"HEAD", "/tools/motion-lab/", 200, ""},
+		{"POST", "/tools/motion-lab/import", 405, ""}, {"GET", "/tools/motion-lab/assets/", 404, ""},
+		{"GET", "/tools/motion-lab/api/projects", 404, ""}, {"GET", "/tools/motion-lab/index.html.gz", 404, ""},
 	} {
 		w := httptest.NewRecorder()
 		handler.ServeHTTP(w, httptest.NewRequest(tc.method, tc.path, nil))
@@ -105,14 +105,25 @@ func TestToolsOutsideCollectionMount(t *testing.T) {
 			t.Fatalf("%s %s: %d %s", tc.method, tc.path, w.Code, w.Body.String())
 		}
 	}
-	request := httptest.NewRequest("GET", "/tools/motion/", nil)
+	for old, target := range map[string]string{
+		"/tools/motion":                    "/tools/motion-lab/",
+		"/tools/motion/?from=bookmark":     "/tools/motion-lab/?from=bookmark",
+		"/tools/motion/assets/engine.wasm": "/tools/motion-lab/assets/engine.wasm",
+	} {
+		w := httptest.NewRecorder()
+		handler.ServeHTTP(w, httptest.NewRequest("GET", old, nil))
+		if w.Code != http.StatusPermanentRedirect || w.Header().Get("Location") != target {
+			t.Fatalf("%s: got %d to %q, want 308 to %q", old, w.Code, w.Header().Get("Location"), target)
+		}
+	}
+	request := httptest.NewRequest("GET", "/tools/motion-lab/", nil)
 	request.Header.Set("Accept-Encoding", "gzip")
 	w := httptest.NewRecorder()
 	handler.ServeHTTP(w, request)
 	if w.Header().Get("Content-Encoding") != "gzip" || !strings.HasPrefix(w.Header().Get("Content-Type"), "text/html") {
 		t.Fatal(w.Header())
 	}
-	request = httptest.NewRequest("GET", "/tools/motion/assets/engine.wasm", nil)
+	request = httptest.NewRequest("GET", "/tools/motion-lab/assets/engine.wasm", nil)
 	request.Header.Set("Range", "bytes=0-1")
 	w = httptest.NewRecorder()
 	handler.ServeHTTP(w, request)

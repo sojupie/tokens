@@ -40,10 +40,15 @@ type Config struct {
 	Navigation                  []Section
 }
 
+const (
+	MotionLabPath          = "/tools/motion-lab/"
+	CarouselPlaygroundPath = "/tools/carousel-playground/"
+)
+
 func Default() Config {
 	return Config{Catalog: "https://tokencatalog.dev/md3", Active: "/tools", Agents: true, Tools: []Destination{
-		{"Material Motion Lab", "https://tokencatalog.dev/tools/motion/"},
-		{"Carousel playground", "https://tokencatalog.dev/tools/motion-lab/"},
+		{"Material Motion Lab", "https://tokencatalog.dev" + MotionLabPath},
+		{"Carousel playground", "https://tokencatalog.dev" + CarouselPlaygroundPath},
 	}}
 }
 func (c Config) drawerBreakpoint() string {

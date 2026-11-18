@@ -50,11 +50,11 @@ the Forge package in this repository. There is no standalone package release.
 
 The [tools page](https://tokencatalog.dev/md3/tools) includes two browser apps:
 
-- [Material Motion Lab](https://tokencatalog.dev/tools/motion/) measures UI
+- [Material Motion Lab](https://tokencatalog.dev/tools/motion-lab/) measures UI
   movement in recordings. Track an object or edge, compare two videos, or compare
   measurements with Material Design 3 motion curves. A bundled example lets you
   explore an analysis before importing a video.
-- [Carousel playground](https://tokencatalog.dev/tools/motion-lab/) helps
+- [Carousel playground](https://tokencatalog.dev/tools/carousel-playground/) helps
   investigate uneven carousel motion after dragging on iOS. Try different
   implementations on your device and record how they settle.
 

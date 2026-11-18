@@ -122,8 +122,8 @@ func TestSitemapAndRobots(t *testing.T) {
 	}
 	seen := map[string]bool{}
 	tools := map[string]bool{
-		"https://tokens.example/tools/motion/":     true,
-		"https://tokens.example/tools/motion-lab/": true,
+		"https://tokens.example/tools/motion-lab/":          true,
+		"https://tokens.example/tools/carousel-playground/": true,
 	}
 	for _, entry := range document.URLs {
 		if seen[entry.Location] || !strings.HasPrefix(entry.Location, "https://tokens.example/") || strings.Contains(entry.Location, "?") {

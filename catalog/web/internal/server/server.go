@@ -79,7 +79,7 @@ type changesResponse struct {
 
 func New(state publish.PublishedState, downloadsDir string) *Server {
 	css, err := publicationTheme(state)
-	return &Server{navigation: SiteNavigation(state), motionURL: "/tools/motion/", motionLabURL: "/tools/motion-lab/", state: state, downloadsDir: downloadsDir, themeCSS: css, themeError: err}
+	return &Server{navigation: SiteNavigation(state), motionURL: site.MotionLabPath, motionLabURL: site.CarouselPlaygroundPath, state: state, downloadsDir: downloadsDir, themeCSS: css, themeError: err}
 }
 
 func (server *Server) Handler() http.Handler {

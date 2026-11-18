@@ -90,8 +90,8 @@ RUN --mount=type=cache,id=tokens-go-mod,target=/go/pkg/mod,sharing=locked \
     npm run build
 
 FROM runtime AS server
-COPY --from=tool-build /ui-motion/dist/ /opt/tools/motion/
-COPY --from=tool-build /carousel-motion-lab/site/ /opt/tools/motion-lab/
+COPY --from=tool-build /ui-motion/dist/ /opt/tools/motion-lab/
+COPY --from=tool-build /carousel-motion-lab/site/ /opt/tools/carousel-playground/
 ENV TOKENS_TOOLS_DIR=/opt/tools
 EXPOSE 8080
 CMD ["serve", "--published", "/var/lib/tokens/current", "--assets", "/var/lib/tokens/site-assets", "--listen", "0.0.0.0:8080"]

@@ -15,6 +15,7 @@ import (
 
 	"github.com/sojupie/tokens/catalog/usage"
 	"github.com/sojupie/tokens/catalog/web"
+	"github.com/sojupie/tokens/forge/site"
 	"github.com/sojupie/tokens/source/publish"
 )
 
@@ -34,16 +35,16 @@ func runServe(args []string) error {
 	publicOrigin := os.Getenv("TOKENS_PUBLIC_ORIGIN")
 	usageDir := os.Getenv("TOKENS_USAGE_DIR")
 	motionURL := os.Getenv("TOKENS_MOTION_URL")
-	if motionURL == "" {
-		motionURL = "/tools/motion/"
+	if motionURL == "" || strings.TrimSuffix(motionURL, "/") == "/tools/motion" {
+		motionURL = site.MotionLabPath
 	}
 	motionLabURL := os.Getenv("TOKENS_MOTION_LAB_URL")
-	if motionLabURL == "" {
-		motionLabURL = "/tools/motion-lab/"
+	if motionLabURL == "" || strings.TrimSuffix(motionLabURL, "/") == "/tools/motion-lab" {
+		motionLabURL = site.CarouselPlaygroundPath
 	}
-	flags.StringVar(&toolsDir, "tools", toolsDir, "directory containing built motion/ and motion-lab/ static tools; empty disables local tool hosting")
+	flags.StringVar(&toolsDir, "tools", toolsDir, "directory containing built motion-lab/ and carousel-playground/ static tools; empty disables local tool hosting")
 	flags.StringVar(&motionURL, "motion-url", motionURL, "URL for the video motion analysis tool")
-	flags.StringVar(&motionLabURL, "motion-lab-url", motionLabURL, "URL for the carousel motion lab")
+	flags.StringVar(&motionLabURL, "motion-lab-url", motionLabURL, "URL for the Carousel playground")
 	flags.StringVar(&usageDir, "usage-dir", usageDir, "directory for retained usage totals; empty disables usage logging")
 	flags.StringVar(&assetsDir, "assets", assetsDir, "required generated asset directory outside the publication; empty uses publication/assets when present")
 	flags.StringVar(&publishedDir, "published", publishedDir, "publication directory")

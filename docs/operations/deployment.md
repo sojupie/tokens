@@ -175,10 +175,12 @@ The first build after changing the Dockerfile or base images can still be slow.
 
 ## Browser tools
 
-The server image includes Material Motion Lab at `/tools/motion/` and Carousel
-playground at `/tools/motion-lab/`, outside the catalog's `/md3` mount. The existing
+The server image includes Material Motion Lab at `/tools/motion-lab/` and Carousel
+playground at `/tools/carousel-playground/`, outside the catalog's `/md3` mount. The existing
 Cloudflare Tunnel serves all three destinations through `tokens:8080`. No additional
-tunnel, container or processing service is needed.
+tunnel, container or processing service is needed. The old Motion Lab URL at
+`/tools/motion/` redirects to `/tools/motion-lab/`. Update Carousel playground
+bookmarks to `/tools/carousel-playground/`.
 
 Docker builds Material Motion Lab from `sojupie/material-motion-lab` and Carousel
 playground from `sojupie/carousel-motion-lab`. Both use the catalog checkout's shared
