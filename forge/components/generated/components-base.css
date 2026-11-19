@@ -3246,8 +3246,6 @@
   box-sizing: border-box;
   transition:
     background-color var(--_motion-fast-effects-duration)
-      var(--_motion-fast-effects-easing),
-    box-shadow var(--_motion-fast-effects-duration)
       var(--_motion-fast-effects-easing);
 }
 .md-appbar-row {

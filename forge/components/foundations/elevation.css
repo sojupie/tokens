@@ -1,7 +1,7 @@
 /*! Material Web key/ambient shadow geometry, Google LLC, Apache-2.0.
    Source elevations are mapped to renderer levels 0–5 by the token compiler. */
 /* Include surfaces here when their design depicts elevation with a shadow. */
-.md-button,
+.md-button:where(:not(.md-filled-button, .md-fab-menu-item)),
 .md-card,
 .md-icon-button,
 .md-filter-chip,
@@ -15,17 +15,13 @@
 .md-elevation,
 .md-search-view[data-open="true"][data-control="contained"][data-variant="docked"][data-elevation="token"]::before,
 .md-search-view[data-open="true"][data-control="contained"][data-variant="docked"][data-elevation="token"]::after,
-.md-switch-handle,
 .md-snackbar,
 .md-tooltip,
-.md-navigation,
+/* A modal drawer can also be hosted as a nonmodal overlay. */
+.md-navigation:where(:not([data-variant="modal"], [data-layout="modal"]), dialog[open]:not(:modal)),
 .md-tab,
-.md-slider,
-.md-slider-nub,
-.md-slider-value,
-.md-app-bar,
 .md-toolbar,
-.md-sheet {
+.md-sheet:where(:not([data-control="modal"])) {
   box-shadow:
     0
       calc(
