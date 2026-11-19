@@ -237,8 +237,15 @@ with `Deploy production:`. Ordinary pushes skip the management job. This support
 an explicit release commit through Git without an API credential; the same
 production environment and ancestry checks apply.
 
-Deploy does not crawl. It refuses local edits, local commits or a move to an
-older commit. Tunnel and email settings stay in `/etc/tokens`.
+When a release needs new token data, select **Capture fresh tokens during
+deploy**. The workflow builds the release updater, makes a capture, and builds
+assets from the accepted publication before changing the running site. If the
+capture needs review, inspect its report and rerun **deploy** with that run ID
+to approve it and continue. Use **deploy** with neither input to reuse the
+current publication.
+
+Deploy refuses local edits, local commits or a move to an older commit. Tunnel
+and email settings stay in `/etc/tokens`.
 
 Deploy keeps the existing build cache before building. Afterwards, it removes
 unused cache above roughly 20 GB. This cleanup affects the host's default

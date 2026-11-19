@@ -22,8 +22,12 @@ on:
           - retry
           - test-notification
           - usage-report
+      capture:
+        description: Capture fresh tokens during deploy
+        type: boolean
+        default: false
       run_id:
-        description: Run ID (required for inspect, approve and retry)
+        description: Run ID for inspect, approve, retry or deploy with a reviewed capture
         type: string
         required: false
 
@@ -48,6 +52,7 @@ jobs:
     env:
       OPERATION: ${{ inputs.operation || 'deploy' }}
       RUN_ID: ${{ inputs.run_id }}
+      CAPTURE: ${{ inputs.capture && 'true' || 'false' }}
       TOKENS_PUBLIC_ORIGIN: ${{ vars.TOKENS_PUBLIC_ORIGIN }}
     steps:
       - name: Check inputs and installation
@@ -63,6 +68,14 @@ jobs:
             status|logs|deploy|restart|crawl|test-notification|usage-report) ;;
             *) echo 'Unknown operation.' >&2; exit 1 ;;
           esac
+          if [[ "$CAPTURE" == true && ( "$OPERATION" != deploy || -n "$RUN_ID" ) ]]; then
+            echo 'Use Capture for a deploy without a run ID.' >&2
+            exit 1
+          fi
+          if [[ "$OPERATION" == deploy && -n "$RUN_ID" && ! "$RUN_ID" =~ ^[A-Za-z0-9][A-Za-z0-9-]*$ ]]; then
+            echo 'A valid run ID is required.' >&2
+            exit 1
+          fi
           if [[ "$OPERATION" == deploy && -z "$TOKENS_PUBLIC_ORIGIN" ]]; then
             echo 'Set TOKENS_PUBLIC_ORIGIN in the production environment variables on GitHub.' >&2
             exit 1
@@ -149,6 +162,11 @@ jobs:
               printf 'Tool sources: Material Motion Lab `%s`; Carousel playground `%s`\n' "$motion_revision" "$playground_revision" >> "$GITHUB_STEP_SUMMARY"
               timed 'Install deployment configuration' sudo -n /usr/bin/sh /opt/tokens/deploy/install.sh
               timed 'Build images' compose --progress plain --profile update build --pull
+              if [[ "$CAPTURE" == true ]]; then
+                timed 'Capture tokens with the release updater' update run
+              elif [[ -n "$RUN_ID" ]]; then
+                timed 'Approve the reviewed capture' update approve "$RUN_ID"
+              fi
               timed 'Build publication assets' update build-assets
               timed 'Save public URL' update configure-public-origin "$TOKENS_PUBLIC_ORIGIN"
               if /usr/bin/systemctl is-active --quiet tokens.service; then
