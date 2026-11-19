@@ -75,7 +75,7 @@ templ PickerControls(page webview.ComponentPreview) {
 					}
 				}
 			</div>
-			if page.PickerFamily() == "scroll-field" || page.HasTimeWidthControl() {
+			if page.PickerFamily() == "scroll-field" || page.HasInlineTimePicker() {
 				@PickerFieldDimensions(page)
 			}
 		</section>
@@ -93,7 +93,7 @@ templ PickerControls(page webview.ComponentPreview) {
 				<div class="tokens-scroll-dimensions">
 					@ScrollFieldDimension("width", "Available width", 280, 800, 480, 8)
 				</div>
-			} else if page.HasTimeWidthControl() {
+			} else if page.HasInlineTimePicker() {
 				<div class="tokens-scroll-dimensions">
 					@ScrollFieldDimension("width", "Available width", 304, 800, 640, 8)
 				</div>

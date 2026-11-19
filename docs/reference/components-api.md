@@ -62,6 +62,8 @@ Time-picker hours use 0–23 even when the display uses a 12-hour clock. Both
 inline picker commits valid changes as they are made. Committing a new value
 dispatches native `input` and `change` events. Use `DialogTrigger` with the ID
 `<picker ID>-time` to open a standalone modal panel.
+`InlineContainer` adds a filled surface to inline Expressive Input and Scroll
+pickers. Inline pickers default to a transparent surface.
 
 `ScrollField` accepts string `Options` or `Items` with separate labels and
 unique values. The label is displayed and matched in direct entry. The value is

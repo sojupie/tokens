@@ -95,8 +95,11 @@
   if(mode==='input')globalThis.MaterialComponents.focusForEntry(field);
   else field.focus({preventScroll:true});
  }
- function clearScrollHover(panel){
-  for(const field of panel.querySelectorAll('[data-time-scroll]'))globalThis.MaterialScrollFields?.clearHover(field);
+ function resetScrollInteraction(panel){
+  for(const field of panel.querySelectorAll('[data-time-scroll]')){
+   globalThis.MaterialScrollFields?.stop(field);
+   globalThis.MaterialScrollFields?.clearHover(field);
+  }
  }
  function stopModeMotion(state){
   const {panel,dial}=state;
@@ -144,18 +147,18 @@
   const mode=panel.dataset.mode;
   if(mode!=='input'){state.returnMode=mode;panel.dataset.returnMode=mode;}
   state.preferredMode=mode==='input'?state.returnMode:'input';panel.dataset.mode=state.preferredMode;
-  clearScrollHover(panel);
+  resetScrollInteraction(panel);
   render(state);adapt(state);focusField(state);
   if(!before)return;
   const motion=globalThis.MaterialMotion;
   const after=panel.getBoundingClientRect();
-  const modal=panel.matches(':modal');
-  const incoming=modal&&panel.dataset.mode==='clock'&&dialPose(dial);
-  const dialSwap=modal&&panel.dataset.timeStyle==='expressive'&&(outgoing||incoming);
+  const modalSurface=panel.matches(':modal, [data-time-preview]');
+  const incoming=modalSurface&&panel.dataset.mode==='clock'&&dialPose(dial);
+  const dialSwap=modalSurface&&panel.dataset.timeStyle==='expressive'&&(outgoing||incoming);
   const animations=[];
   if(dialSwap)animateDialSwap(state,before,after,outgoing,incoming,animations);
   else animations.push(panel.querySelector('.md-time-body').animate([{opacity:0},{opacity:1}],motion.timing(panel,'fast-effects')));
-  if(modal&&(before.width!==after.width||before.height!==after.height)){
+  if(modalSurface&&(before.width!==after.width||before.height!==after.height)){
    const size=rect=>({width:rect.width+'px',height:rect.height+'px'});
    panel.dataset.timeResizing='';
    // The reference clip matches the Expressive default spatial spring.
@@ -263,7 +266,7 @@
   panel.dataset.mode=mode==='input'?state.returnMode:'input';
   const alternateHeight=panel.getBoundingClientRect().height;
   panel.dataset.mode=mode;
-  root.style.minBlockSize=Math.ceil(Math.max(height,alternateHeight))+'px';
+  root.style.setProperty('--_time-preview-block-size',Math.ceil(Math.max(height,alternateHeight))+'px');
  }
  function initialize(scope=document){for(const panel of panels(scope)){
   const root=hostFor(panel);
@@ -277,7 +280,7 @@
    initialMode:panel.dataset.mode,preferredMode:panel.dataset.mode,preferredOrientation:panel.dataset.orientation,initialReturn:panel.dataset.returnMode||'clock',returnMode:panel.dataset.returnMode||'clock'};
   state.committed={hour:state.hour,minute:state.minute};states.set(root,state);render(state);reservePreview(state);
   panel.addEventListener('md-dialog-beforeopen',()=>{
-   clearScrollHover(panel);
+   resetScrollInteraction(panel);
    state.active='hour';state.choice=undefined;state.preferredMode=state.initialMode;state.returnMode=state.initialReturn;
    panel.dataset.mode=state.initialMode;panel.dataset.returnMode=state.returnMode;render(state);
    requestAnimationFrame(()=>{if(panel.open&&!binding.signal.aborted){adapt(state);focusField(state,'hour');}});
@@ -286,6 +289,7 @@
    const save=event.detail.result==='confirm';
    if(save&&!validate(state)){event.preventDefault();return;}
    stopModeMotion(state);
+   resetScrollInteraction(panel);
    cancelGesture(state);
    if(save)commit(state);
    else Object.assign(state,state.committed);
@@ -322,7 +326,7 @@
  document.addEventListener('focusout',event=>{
   const input=event.target;if(!input.matches?.('[data-time-input]'))return;
   const state=stateFor(input);
-  if(state?.panel.open&&state.panel.dataset.mode==='input'&&validate(state,false))inlineChanged(state);
+  if(state?.panel.dataset.mode==='input'&&(state.panel.open||state.panel.hasAttribute('data-time-inline'))&&validate(state,false))inlineChanged(state);
  });
  document.addEventListener('change',event=>{
   const input=event.target;if(!input.matches?.('[data-time-value-input]'))return;

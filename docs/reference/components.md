@@ -315,6 +315,8 @@ The renderer uses system measurement tokens for content spacing. Radio rings
 use a 2 px stroke and a half-size center dot. Dialog backdrops use the captured
 neutral-black reference at 32% opacity. Shared shadow geometry follows Material
 Web's key and ambient formulas, with the original attribution retained.
+Dialogs and date and time pickers use tonal surfaces. Modal placements use a
+scrim. The source still defines their elevation levels.
 
 The coverage report identifies these exclusions:
 

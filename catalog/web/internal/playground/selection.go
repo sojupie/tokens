@@ -333,7 +333,7 @@ func SelectComponentPreview(cases []webview.ComponentCase, query url.Values) (*w
 		}
 	}
 	if len(result.Cases) > 0 && result.Cases[0].Family == "time" {
-		if err := configureTimeScrollPreview(result, query); err != nil {
+		if err := configureTimePickerPreview(result, query); err != nil {
 			return nil, err
 		}
 	}

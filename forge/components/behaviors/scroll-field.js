@@ -37,6 +37,10 @@
     return index >= 0 && index < length ? index : -1;
   }
 
+  function clampPosition(state, position) {
+    return state.wrap ? position : Math.max(0, Math.min(state.options.length - 1, position));
+  }
+
   function render(state) {
     renderLabels(state);
     for (const [offset, button] of [[-1, state.previous], [1, state.next]]) {
@@ -93,6 +97,7 @@
 
   function stopMotion(state) {
     cancelAnimationFrame(state.flingFrame);
+    state.wheelMotion = null;
     for (const animation of state.animations ?? []) animation.cancel();
     for (const span of state.labels.values()) span.style.removeProperty('transform');
   }
@@ -147,6 +152,48 @@
     stopMotion(state);
     if (!set(state.root, state.index + direction, true)) return;
     settle(state, direction * optionStride(state));
+  }
+
+  function wheelStep(state, direction) {
+    const active = state.wheelMotion;
+    const from = active?.position ?? state.index;
+    const base = active?.direction === direction ? active.target : Math.round(from);
+    const target = clampPosition(state, base + direction);
+    if (target === (active?.target ?? state.index)) return;
+    if (reduced.matches) {
+      stopMotion(state);
+      set(state.root, target, true);
+      return;
+    }
+
+    // Retarget the moving row position. dragTo keeps the nearest row emphasized.
+    if (active) {
+      Object.assign(active, { from, target, direction, start: performance.now() });
+      return;
+    }
+
+    const timing = state.spring ? globalThis.MaterialMotion.timing(state.root, 'fast-spatial') : deceleration;
+    const clock = new Animation(new KeyframeEffect(null, [], { ...timing, fill: 'both' }));
+    stopMotion(state);
+    const stride = optionStride(state);
+    const motion = { from, position: from, target, direction, start: performance.now() };
+    state.wheelMotion = motion;
+    function advance(now) {
+      if (!state.track.offsetHeight) { stopMotion(state); return; }
+      const elapsed = Math.max(0, now - motion.start);
+      clock.currentTime = elapsed;
+      const progress = reduced.matches || elapsed >= timing.duration ? 1 : clock.effect.getComputedTiming().progress;
+      const position = motion.from + (motion.target - motion.from) * progress;
+      // Allow the spring to overshoot without highlighting an extra row.
+      const bounded = Math.max(Math.min(motion.from, motion.target - .49),
+        Math.min(Math.max(motion.from, motion.target + .49), position));
+      motion.position = clampPosition(state, bounded);
+      dragTo(state, motion.position, stride);
+      if (state.wheelMotion !== motion) return;
+      if (!reduced.matches && elapsed < timing.duration) state.flingFrame = requestAnimationFrame(advance);
+      else stopMotion(state);
+    }
+    state.flingFrame = requestAnimationFrame(advance);
   }
 
   function readEntry(state) {
@@ -263,7 +310,7 @@
       lastWheel = event.timeStamp;
       wheel += event.deltaMode ? Math.sign(event.deltaY) * 40 : event.deltaY;
       if (Math.abs(wheel) >= 28) {
-        step(state, Math.sign(wheel));
+        wheelStep(state, Math.sign(wheel));
         wheel = 0;
       }
     }, {passive: false});
@@ -296,7 +343,7 @@
       if (state.drag) return;
       stopMotion(state);
       state.swiped = false;
-      const clamp = index => state.wrap ? index : Math.max(0, Math.min(options.length - 1, index));
+      const clamp = position => clampPosition(state, position);
       state.drag = {
         id: event.pointerId, start: event.clientY, index: state.index, moved: false, remainder: 0,
         stride: optionStride(state) || 48, clamp,
@@ -413,7 +460,11 @@
       clearHover(root);
     }
   }
-  globalThis.MaterialScrollFields = Object.freeze({set, clearHover, initialize, dispose});
+  function stop(root) {
+    const state = fields.get(root);
+    if (state) stopMotion(state);
+  }
+  globalThis.MaterialScrollFields = Object.freeze({set, stop, clearHover, initialize, dispose});
   for (const name of ['DOMContentLoaded', 'htmx:afterSwap', 'tokens:assets-ready']) document.addEventListener(name, () => initialize());
   document.addEventListener('htmx:beforeCleanupElement', event => dispose(event.detail?.elt ?? event.target));
   initialize();

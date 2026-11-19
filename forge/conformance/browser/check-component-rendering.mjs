@@ -490,7 +490,7 @@ export function checkComponentRendering() {
     } else if (f === "dialog") {
       if (!el.open) continue;
       const full=el.dataset.variant==='full-screen',p=full?'md.comp.full-screen-dialog.':'md.comp.dialog.';
-      shadow(el,Number(get(p+'container.elevation')));
+      compare('dialog container shadow',cs.boxShadow,'none');
       c('backgroundColor',get(p+'container.color'));
       value('borderTopLeftRadius',get(p+'container.shape'));
       const heading=el.querySelector('h2'),headline=p+(full?'header.headline.':'headline.');
@@ -502,7 +502,7 @@ export function checkComponentRendering() {
           const bar=el.querySelector(selector);if(!bar)continue;const style=getComputedStyle(bar);
           compare(key+'height',style.height,get(p+key+'container.height'));
           compare(key+'color',style.backgroundColor,get(p+key+(key==='header.'&&scrolled==='true'?'on-scroll.':'')+'container.color'),true);
-          shadow(bar,Number(get(p+key+(scrolled==='true'?'on-scroll.':'')+'container.elevation')));
+          compare(key+'shadow',style.boxShadow,'none');
         }
         const icon=el.querySelector('.md-dialog-close svg');
         compare('close icon size',getComputedStyle(icon).width,get(p+'header.icon.size'));
@@ -539,16 +539,17 @@ export function checkComponentRendering() {
       }
       for(const button of el.querySelectorAll('button')){
         const target=getComputedStyle(button,'::after');checked++;
-        if(Number.Number.parseFloat(target.width)<48 || Number.Number.parseFloat(target.height)<48)failures.push({id:el.dataset.componentCase,property:'dialog target below 48px'});
+        if(Number.parseFloat(target.width)<48 || Number.parseFloat(target.height)<48)failures.push({id:el.dataset.componentCase,property:'dialog target below 48px'});
       }
       for(const divider of el.querySelectorAll('.md-divider')){
         const style=getComputedStyle(divider),prefix=p+'with-divider.divider.';
         compare('divider color',style.borderTopColor,get(prefix+'color'),true);compare('divider height',style.borderTopWidth,get(prefix+'height'));
       }
     } else if (f === "time") {
-      const panel = el.querySelector(".md-time-panel"); if (!panel.open) continue;
+      const panel = el.querySelector(".md-time-panel"); if (!panel?.getClientRects().length) continue;
+      const style = getComputedStyle(panel);
+      compare("time container shadow", style.boxShadow, "none");
       if (panel.dataset.timeStyle === "expressive") {
-        const style = getComputedStyle(panel);
         if (!panel.hasAttribute("data-time-inline")) {
           compare("time container color", style.backgroundColor, get("md.comp.time-pickers.modal.container.color"), true);
           compare("time container shape", style.borderTopLeftRadius, get("md.comp.time-pickers.modal.container.shape"));
@@ -563,10 +564,9 @@ export function checkComponentRendering() {
         }
         continue;
       }
-      const input = panel.dataset.mode === "input", p = "md.comp." + (input ? "time-input." : "time-picker."), style = getComputedStyle(panel);
+      const input = panel.dataset.mode === "input", p = "md.comp." + (input ? "time-input." : "time-picker.");
       compare("time container color", style.backgroundColor, get(p + "container.color"), true);
       compare("time container shape", style.borderTopLeftRadius, get(p + "container.shape"));
-      shadow(panel, Number(get(p + "container.elevation")));
       const title = panel.querySelector(".md-time-title");
       compare("time headline", getComputedStyle(title).color, get(p + "headline.color"), true);
       typography(title, p + "headline.");
@@ -627,7 +627,7 @@ export function checkComponentRendering() {
         source = key => first([...(range ? [p + "range-selection." + key] : []), p + key]);
       compare("date container color", style.backgroundColor, source("container.color"), true);
       compare("date container shape", style.borderTopLeftRadius, panel.dataset.variant === "full-screen" && !input ? get("md.comp.full-screen-dialog.container.shape") : source("container.shape"));
-      shadow(panel, Number(panel.dataset.variant === "full-screen" && !input ? get("md.comp.full-screen-dialog.container.elevation") : source("container.elevation")));
+      compare("date container shadow", style.boxShadow, "none");
       if(input) {
         const header=panel.querySelector('.md-date-header'),fields=panel.querySelector('.md-date-inputs'),actions=panel.querySelector('.md-date-actions');
         const expected=header.getBoundingClientRect().height+fields.getBoundingClientRect().height+actions.getBoundingClientRect().height;
@@ -685,7 +685,7 @@ export function checkComponentRendering() {
             p + "date.unselected." + key, p + "date." + short + "." + key, p + "date." + key]);
         const target=getComputedStyle(button,'::after'),rowHeight=button.closest('.md-date-cell').getBoundingClientRect().height;
         checked++;
-        if(Number.Number.parseFloat(target.width)<48 || Number.Number.parseFloat(target.height)<48 || rowHeight<48)failures.push({id:el.dataset.componentCase,property:'date target below 48px or overlapping rows'});
+        if(Number.parseFloat(target.width)<48 || Number.parseFloat(target.height)<48 || rowHeight<48)failures.push({id:el.dataset.componentCase,property:'date target below 48px or overlapping rows'});
         compare("day width", style.width, get(p + "date.container.width"));
         compare("day height", style.height, get(p + "date.container.height"));
         compare("day color", style.color, dateSource("label-text.color"), true, Number(dateSource("label-text.opacity") || 1));

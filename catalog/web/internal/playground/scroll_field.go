@@ -55,13 +55,29 @@ func configureScrollFieldPreview(page *webview.ComponentPreview, query url.Value
 	return nil
 }
 
-func configureTimeScrollPreview(page *webview.ComponentPreview, query url.Values) error {
+func configureTimePickerPreview(page *webview.ComponentPreview, query url.Values) error {
 	for i := range page.Controls {
 		if page.Controls[i].Name == "control" {
 			page.Controls[i].Labels = map[string]string{
 				"value": "Hour or minute toggle", "field": "Text input",
 				"scroll": "Scroll field", "dial": "Clock face", "period": "AM/PM button",
 			}
+		}
+	}
+	if page.HasInlineTimePicker() {
+		options := []string{"none", "filled"}
+		container := query.Get("preview.container")
+		if container == "" {
+			container = options[0]
+		}
+		if !ContainsPreview(options, container) {
+			return fmt.Errorf("%w: container %s", ErrPreviewInput, container)
+		}
+		page.Controls = append(page.Controls, webview.PreviewControl{
+			Name: "container", Label: "Container", Options: options, Selected: container,
+		})
+		for i := range page.Cases {
+			page.Cases[i].TimeContainer = container == "filled"
 		}
 	}
 	if !page.HasTimeScroll() {

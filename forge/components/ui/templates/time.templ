@@ -5,12 +5,9 @@ import model "github.com/sojupie/tokens/forge/components/ui/internal/model"
 import "fmt"
 
 templ TimePicker(p model.TimePickerProps) {
-	@model.Require("dialog", "time")
 	<div { model.Attributes(templ.Attributes{"class":"md-time-picker","data-time-picker":""},p.Attrs)... }>
 		if !p.IsInline() && !p.Preview {
-			@Button(templ.Attributes{"class": "md-button md-outlined-button", "data-dialog-open": p.ID + "-time", "data-time-open": "", "aria-controls": p.ID + "-time", "aria-haspopup": "dialog", "aria-expanded": "false"}) {
-				{ model.Fallback(p.Label,"Choose time") }
-			}
+			@DialogTrigger(p.ID + "-time", model.Fallback(p.Label,"Choose time"), model.ButtonProps{Variant: "outlined", Attrs: templ.Attributes{"data-time-open": ""}})
 		}
 
 		@timePickerSurface(p, false)
@@ -28,8 +25,19 @@ templ timePickerValue(p model.TimePickerProps) {
 }
 
 templ timePickerSurface(p model.TimePickerProps, standalone bool) {
-	@model.Require("dialog", "time")
-	<dialog { p.PanelResolved()... }>
+	@model.Require("time")
+	if p.IsInline() {
+		<div { p.PanelResolved()... }>
+			@timePickerContent(p, standalone)
+		</div>
+	} else {
+		@DialogSurface(p.PanelResolved()) {
+			@timePickerContent(p, standalone)
+		}
+	}
+}
+
+templ timePickerContent(p model.TimePickerProps, standalone bool) {
 		<h3 class="md-time-title" data-time-title>Select time</h3>
 		<div class="md-time-body">
 			<div class="md-time-selectors">
@@ -85,7 +93,6 @@ templ timePickerSurface(p model.TimePickerProps, standalone bool) {
 		if standalone {
 			@timePickerValue(p)
 		}
-	</dialog>
 }
 
 templ TimePickerField(p model.TimePickerProps, part, caption string) {

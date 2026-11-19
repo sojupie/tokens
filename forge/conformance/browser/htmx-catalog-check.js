@@ -16,10 +16,16 @@ document.querySelector('#run').onclick=async()=>{
  await load('/components/time-pickers?preview.compare=variants');
  await frame.contentWindow.TokenAssets.ready;
  const dialPreview=frame.contentDocument.querySelector('[data-time-preview][data-mode="clock"]');
+ const expressivePanels=frame.contentDocument.querySelectorAll('[data-time-preview][data-time-style="expressive"]');
+ assert(expressivePanels.length===3&&Array.from(expressivePanels).every(panel=>frame.contentWindow.getComputedStyle(panel).boxShadow==='none'),'Expressive modal variants use the same flat surface');
  const nextTimeCase=dialPreview.closest('figure').nextElementSibling;
  const dialField=dialPreview.querySelector('[data-time-value="hour"]').getBoundingClientRect();
  const nextTimeCaseTop=nextTimeCase.getBoundingClientRect().top+frame.contentWindow.scrollY;
  dialPreview.querySelector('[data-time-mode]').click();
+ if(!frame.contentWindow.matchMedia('(prefers-reduced-motion: reduce)').matches){
+   const hasMotion=(element,property)=>element.getAnimations().some(animation=>property in animation.effect.getKeyframes()[0]);
+   assert(hasMotion(dialPreview,'height')&&hasMotion(dialPreview.querySelector('.md-time-dial'),'scale'),'the Variants preview animates the modal size and clock face');
+ }
  await wait(()=>!dialPreview.hasAttribute('data-time-resizing'),'dial-to-input transition');
  const inputField=dialPreview.querySelector('[data-time-input="hour"]').getBoundingClientRect();
  assert(dialPreview.dataset.mode==='input'&&inputField.width===dialField.width&&inputField.height===dialField.height,'switching from dial to input preserves field dimensions');
@@ -29,7 +35,11 @@ document.querySelector('#run').onclick=async()=>{
    await load('/components/time-pickers?preview.variant=scroll&preview.compare='+mode);
    await frame.contentWindow.TokenAssets.ready;
    await selectPreviewOption('placement','inline');
-   assert(!!frame.contentDocument.querySelector('#component-preview [data-time-inline][data-mode="scroll"]'),'Time Picker renders inline in '+mode);
+   const inline=frame.contentDocument.querySelector('#component-preview [data-time-inline][data-mode="scroll"]');
+   assert(inline?.getAttribute('role')==='group'&&!inline.hasAttribute('data-time-inline-container'),'Time Picker renders inline without a container in '+mode);
+   await selectPreviewOption('container','filled');
+   const contained=frame.contentDocument.querySelector('#component-preview [data-time-inline-container][data-mode="scroll"]');
+   assert(contained?.getAttribute('role')==='group'&&frame.contentWindow.getComputedStyle(contained).backgroundColor!=='rgba(0, 0, 0, 0)','the container option fills the inline surface in '+mode);
  }
  await load('/components/scroll-fields?preview.compare=states');
  await frame.contentWindow.TokenAssets.ready;
@@ -38,6 +48,20 @@ document.querySelector('#run').onclick=async()=>{
  await load('/components/scroll-fields?preview.compare=interactive&preview.scene=room');
  await frame.contentWindow.TokenAssets.ready;
  assert(!frame.contentDocument.querySelector('#component-preview [data-scroll-toggle]'),'Scroll Field starts without the optional mode button');
+ const wheelWindow=frame.contentWindow;
+ const wheelField=wheelWindow.document.querySelector('#component-preview [data-scroll-field]');
+ const wheelTrack=wheelField.querySelector('.md-scroll-track');
+ const selectedRow=wheelTrack.querySelector('[data-scroll-current]');
+ const center=element=>{const rect=element.getBoundingClientRect();return rect.top+rect.height/2;};
+ const initialIndex=Number(wheelField.dataset.scrollIndex);
+ const initialCenter=center(selectedRow);
+ for(let n=0;n<3;n++)wheelTrack.dispatchEvent(new wheelWindow.WheelEvent('wheel',{deltaY:100,bubbles:true,cancelable:true}));
+ if(!wheelWindow.matchMedia('(prefers-reduced-motion: reduce)').matches){
+   assert(Number(wheelField.dataset.scrollIndex)===initialIndex&&center(selectedRow)===initialCenter,'rapid wheel input starts from the painted row');
+ }
+ await wait(()=>Number(wheelField.dataset.scrollIndex)===initialIndex+3&&
+   Math.abs(center(selectedRow)-center(wheelTrack))<.1,'wheel settles in the center');
+ assert(wheelTrack.querySelector('[role=spinbutton]').getAttribute('aria-valuetext')===selectedRow.textContent,'wheel keeps the emphasized row and accessible value in sync');
  await selectPreviewOption('direct-entry','on');
  await frame.contentWindow.TokenAssets.ready;
  const scrollScene=frame.contentDocument.querySelector('#component-preview .tokens-scroll-preview');

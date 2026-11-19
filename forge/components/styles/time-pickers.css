@@ -32,21 +32,19 @@
   max-inline-size: 100%;
   max-block-size: none;
 }
+.md-time-picker:has(> [data-time-preview]) {
+  --_time-preview-block-size: auto;
+  min-block-size: var(--_time-preview-block-size);
+}
+.md-time-picker:has(> [data-time-preview][data-time-resizing]) {
+  /* The spring can briefly exceed the larger mode's resting height. */
+  block-size: var(--_time-preview-block-size);
+}
 .md-time-panel[data-time-inline] {
   min-inline-size: max-content;
-  border-radius: 0;
-  box-shadow: none;
   overflow: visible;
 }
 .md-time-panel[data-time-resizing] { overflow: clip; }
-.md-time-panel::backdrop {
-  background: color-mix(
-    in srgb,
-    var(--md-comp-navigation-drawer-scrim-color)
-      calc(var(--md-comp-navigation-drawer-scrim-opacity) * 100%),
-    transparent
-  );
-}
 .md-time-title {
   margin: 0 0 var(--md-sys-measurement-space250);
   color: var(--_time-headline-color);
@@ -701,7 +699,10 @@
 .md-time-panel[data-time-style="expressive"][data-time-inline]:is([data-mode="scroll"], [data-mode="input"]) {
   --_time-period-visual: var(--md-comp-time-pickers-inline-period-selector-width, 40px);
   --_time-period-selected-shape: var(--md-comp-time-pickers-inline-period-selector-selected-shape, var(--md-sys-shape-corner-medium));
+}
+.md-time-panel[data-time-inline]:not([data-time-inline-container]) {
   padding: 0;
+  border-radius: 0;
   background: transparent;
 }
 .md-time-panel[data-time-inline]:is([data-mode="scroll"], [data-mode="input"]) .md-time-body { align-items: stretch; }

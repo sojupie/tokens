@@ -7,7 +7,8 @@
   color: var(--_dialog-supporting-text-color);
   padding: var(--md-sys-measurement-space300);
 }
-.md-dialog::backdrop {
+.md-dialog::backdrop,
+:where(dialog[data-dialog-surface])::backdrop {
   background: color-mix(
     in srgb,
     var(--md-ref-palette-neutral0) 32%,

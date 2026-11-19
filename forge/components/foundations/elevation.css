@@ -1,5 +1,6 @@
 /*! Material Web key/ambient shadow geometry, Google LLC, Apache-2.0.
    Source elevations are mapped to renderer levels 0–5 by the token compiler. */
+/* Include surfaces here when their design depicts elevation with a shadow. */
 .md-button,
 .md-card,
 .md-icon-button,
@@ -8,14 +9,8 @@
 .md-suggestion-chip,
 .md-input-chip,
 .md-menu,
-.md-dialog,
-.md-full-screen-dialog,
-.md-full-header,
-.md-full-action-bar,
 .md-list-item,
 .md-carousel-item,
-.md-date-panel,
-.md-time-panel,
 .md-field-menu,
 .md-elevation,
 .md-search-view[data-open="true"][data-control="contained"][data-variant="docked"][data-elevation="token"]::before,

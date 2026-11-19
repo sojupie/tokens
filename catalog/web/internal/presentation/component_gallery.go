@@ -9,6 +9,7 @@ import (
 type ComponentCase struct {
 	TimeStyle          string `json:"timeStyle,omitempty"`
 	TimePlacement      string `json:"timePlacement,omitempty"`
+	TimeContainer      bool
 	ScrollMotion       string `json:"scrollMotion,omitempty"`
 	ScrollContent      string
 	ScrollScene        string

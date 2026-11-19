@@ -325,7 +325,7 @@ func PickerControls(page webview.ComponentPreview) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		if page.PickerFamily() == "scroll-field" || page.HasTimeWidthControl() {
+		if page.PickerFamily() == "scroll-field" || page.HasInlineTimePicker() {
 			templ_7745c5c3_Err = PickerFieldDimensions(page).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -368,7 +368,7 @@ func PickerControls(page webview.ComponentPreview) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-		} else if page.HasTimeWidthControl() {
+		} else if page.HasInlineTimePicker() {
 			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "<div class=\"tokens-scroll-dimensions\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err

@@ -47,7 +47,7 @@ func (page ComponentPreview) HasExpressiveTimeFields() bool {
 	return false
 }
 
-func (page ComponentPreview) HasTimeWidthControl() bool {
+func (page ComponentPreview) HasInlineTimePicker() bool {
 	for _, c := range page.Cases {
 		if c.Family == "time" && c.TimePlacement == "inline" {
 			return true

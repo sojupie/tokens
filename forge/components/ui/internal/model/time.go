@@ -11,6 +11,7 @@ type TimePickerProps struct {
 	ID, Name, Label                                 string
 	Hour, Minute                                    int
 	Format24, InputMode, Landscape, Inline          bool
+	InlineContainer                                 bool
 	Expressive, ScrollMode, ReturnToScroll, Preview bool
 	Active                                          string
 	ScrollFinite                                    bool
@@ -74,8 +75,11 @@ func (p TimePickerProps) PanelResolved() templ.Attributes {
 	}
 	a := templ.Attributes{"class": "md-time-panel", "id": p.ID + "-time", "data-time-panel": "", "data-mode": mode, "data-time-style": style, "data-return-mode": returnMode, "data-format": format, "data-orientation": orientation, "data-active": p.ActiveResolved(), "data-hour": p.HourResolved(), "data-minute": p.MinuteResolved(), "aria-label": Fallback(p.Label, "Choose time")}
 	if p.IsInline() {
-		a["open"] = true
+		a["role"] = "group"
 		a["data-time-inline"] = ""
+		if p.InlineContainer {
+			a["data-time-inline-container"] = ""
+		}
 	} else if p.Preview {
 		a["open"] = true
 		a["data-time-preview"] = ""
