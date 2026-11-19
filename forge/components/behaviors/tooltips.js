@@ -59,7 +59,7 @@
     if (!trigger) return;
     const plain = tip.dataset.variant === "plain";
     const anchor = trigger.getBoundingClientRect(),
-      gap = Number.parseFloat(getComputedStyle(tip).getPropertyValue(plain ? "--md-sys-measurement-space50" : "--md-sys-measurement-space100")) || (plain ? 4 : 8),
+      gap = Number.parseFloat(getComputedStyle(tip).getPropertyValue(plain ? "--_tooltip-parent-gap" : "--md-sys-measurement-space100")) || (plain ? 4 : 8),
       viewport = {width: document.documentElement.clientWidth, height: document.documentElement.clientHeight};
     tip.style.maxHeight = "";
     tip.style.overflowY = "";

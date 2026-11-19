@@ -1682,8 +1682,12 @@
   text-align: start;
 }
 .md-tooltip[data-variant="plain"] {
-  min-block-size: var(--md-sys-measurement-space300);
-  padding: var(--md-sys-measurement-space50) var(--md-sys-measurement-space100);
+  min-block-size: var(--_tooltip-min-height, var(--md-sys-measurement-space300));
+  min-inline-size: var(--_tooltip-min-width, 0);
+  max-inline-size: min(var(--_tooltip-max-width, 24rem), calc(100vw - 16px));
+  max-block-size: var(--_tooltip-max-height, none);
+  padding: var(--_tooltip-padding-vertical, var(--md-sys-measurement-space50))
+    var(--_tooltip-padding-horizontal, var(--md-sys-measurement-space100));
 }
 .md-tooltip > p {
   margin: 0;

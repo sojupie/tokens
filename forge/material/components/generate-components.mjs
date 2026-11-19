@@ -7,6 +7,16 @@ import { groupBindings } from '../../css-output.ts';
 const contract = JSON.parse(
   readFileSync(new URL("./component-contract.json", import.meta.url)),
 );
+// Material added device-specific plain tooltip geometry after the first captures.
+const plainTooltipGeometry = {
+  "gap.trigger-tooltip": "parent-gap",
+  "max-height": "max-height",
+  "max-width": "max-width",
+  "min-height": "min-height",
+  "min-width": "min-width",
+  "padding.horizontal": "padding-horizontal",
+  "padding.vertical": "padding-vertical",
+};
 const extension = "dev.tokencatalog.material";
 const selection =
   ':where(:checked,[aria-pressed="true"],[aria-selected="true"],[aria-current="page"],[data-selected="true"],:has(> input:checked, > input:indeterminate))';
@@ -467,6 +477,8 @@ function binding(set, suffix) {
   } else if (["md.comp.snackbar", "md.comp.plain-tooltip", "md.comp.rich-tooltip"].includes(set)) {
     family = set === "md.comp.snackbar" ? "snackbar" : "tooltip";
     selector = set === "md.comp.snackbar" ? ".md-snackbar" : set.endsWith("plain-tooltip") ? '.md-tooltip:where([data-variant="plain"])' : '.md-tooltip:where([data-variant="rich"])';
+    if (set === "md.comp.plain-tooltip" && Object.hasOwn(plainTooltipGeometry, suffix))
+      return { family, selector, property: plainTooltipGeometry[suffix] };
     if (property.startsWith("action.")) {
       family = "support-action";
       selector += " .md-feedback-action";
