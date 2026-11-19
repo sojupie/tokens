@@ -15,6 +15,14 @@ type ChangeFilters struct {
 	FixedSubject bool
 }
 
+func HistoryChangeTypes() []CatalogChoice {
+	choices := []CatalogChoice{{Value: "", Label: "All changes"}}
+	for _, value := range []string{"changed", "added", "removed", "context-added", "context-removed", "coverage-added", "coverage-lost"} {
+		choices = append(choices, CatalogChoice{Value: value, Label: ChangeTypeLabel(value)})
+	}
+	return choices
+}
+
 // Reuse the catalog select while keeping history options independent of previews.
 func HistoryChoices(all string, options []ChangeOption) []CatalogChoice {
 	choices := []CatalogChoice{{Value: "", Label: all}}

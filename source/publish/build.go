@@ -48,7 +48,7 @@ func Build(config BuildConfig) (Publication, error) {
 	if _, err := time.Parse(time.RFC3339Nano, publication.GeneratedAt); err != nil {
 		return Publication{}, fmt.Errorf("publication generatedAt is not RFC3339: %w", err)
 	}
-	currentIndex := tokensnapshot.IndexSemanticRecords(input.Graph.Records)
+	currentIndex := tokensnapshot.IndexSemanticSnapshot(input.Graph, input.PayloadDetails)
 	input = snapshotInput{} // History needs the compact index, not another full graph.
 	if err := buildHistory(config, &publication, currentIndex); err != nil {
 		return Publication{}, err

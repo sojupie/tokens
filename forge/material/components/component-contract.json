@@ -1888,6 +1888,13 @@
   "md.comp.plain-tooltip": [
     "container.color",
     "container.shape",
+    "gap.trigger-tooltip",
+    "max-height",
+    "max-width",
+    "min-height",
+    "min-width",
+    "padding.horizontal",
+    "padding.vertical",
     "supporting-text.color",
     "supporting-text.font",
     "supporting-text.line-height",

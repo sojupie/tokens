@@ -7,6 +7,15 @@ import (
 
 // componentCase configures Catalog specimens; it is not a public component API.
 type ComponentCase struct {
+	TimeStyle          string `json:"timeStyle,omitempty"`
+	TimePlacement      string `json:"timePlacement,omitempty"`
+	ScrollMotion       string `json:"scrollMotion,omitempty"`
+	ScrollContent      string
+	ScrollScene        string
+	ScrollWrap         bool
+	TimeScrollFinite   bool
+	ScrollDirectEntry  bool
+	ScrollTextEntry    bool
 	TabLayout          string `json:"tabLayout,omitempty"`
 	TabCount           string `json:"tabCount,omitempty"`
 	TabBadge           string `json:"tabBadge,omitempty"`

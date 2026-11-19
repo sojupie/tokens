@@ -26,12 +26,19 @@
   color: var(--md-sys-color-on-surface);
   overflow: auto;
 }
-.md-time-panel[data-time-inline] {
+.md-time-panel:is([data-time-inline], [data-time-preview]) {
   position: relative;
   margin: 0;
   max-inline-size: 100%;
   max-block-size: none;
 }
+.md-time-panel[data-time-inline] {
+  min-inline-size: max-content;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+}
+.md-time-panel[data-time-resizing] { overflow: clip; }
 .md-time-panel::backdrop {
   background: color-mix(
     in srgb,
@@ -205,6 +212,7 @@
   block-size: var(--_time-field-height);
   min-inline-size: var(--_time-field-width);
   padding: 0;
+  outline: none;
   border: var(--_time-field-outline-width) solid var(--_time-field-outline);
   border-radius: var(--_time-field-shape);
   background: var(--_time-field-container);
@@ -216,10 +224,6 @@
   line-height: var(--_time-field-line-height);
   letter-spacing: var(--_time-field-tracking);
 }
-.md-time-field:is(:focus-visible, [data-component-state="focused"]) {
-  outline: var(--_time-focus-width) solid var(--_time-focus-color);
-  outline-offset: var(--_time-focus-offset);
-}
 .md-time-field:is(:hover, [data-component-state="hovered"]):not(
     :focus-visible
   ):not([data-component-state="focused"]) {
@@ -230,7 +234,7 @@
   );
 }
 .md-time-supporting {
-  margin-block-start: 7px;
+  margin-block-start: var(--md-sys-measurement-space100);
   color: var(--_time-support-color);
   font-family: var(--_time-support-font-family);
   font-size: var(--_time-support-font-size);
@@ -409,22 +413,17 @@
   border-inline-start: var(--_time-period-outline-width) solid
     var(--_time-period-outline);
 }
-[data-time-mode] > svg:last-of-type {
-  display: none;
-}
-.md-time-panel[data-mode="input"] [data-time-mode] > svg:first-of-type {
-  display: none;
-}
-.md-time-panel[data-mode="input"] [data-time-mode] > svg:last-of-type {
-  display: block;
-}
+[data-time-mode] > svg:nth-of-type(n+2),
+.md-time-panel[data-mode="input"] [data-time-mode] > svg:nth-of-type(1) { display: none; }
+.md-time-panel[data-mode="input"]:not([data-return-mode="scroll"]) [data-time-mode] > svg:nth-of-type(2),
+.md-time-panel[data-mode="input"][data-return-mode="scroll"] [data-time-mode] > svg:nth-of-type(3) { display: block; }
 @media (prefers-reduced-motion: reduce) {
   .md-time-dial {
     transition: none;
   }
 }
 @media (forced-colors: active) {
-  .md-time-panel,
+  .md-time-panel:not([data-time-inline]),
   .md-time-period-group,
   .md-time-field,
   .md-time-value {
@@ -455,3 +454,319 @@
 
 .md-native-time { display:none; }
 @media (scripting: none) { .md-native-time { display:block; inline-size:100%; } }
+
+.md-time-choice {
+  position: absolute;
+  left: var(--_time-label-x);
+  top: var(--_time-label-y);
+  translate: -50% -50%;
+  inline-size: 48px;
+  block-size: 48px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.md-time-choice:focus-visible {
+  z-index: 1;
+  outline: var(--_time-focus-width, var(--md-sys-state-focus-indicator-thickness)) solid var(--_time-focus-color, var(--md-sys-color-secondary));
+}
+.md-time-panel:not([data-mode="scroll"]) [data-time-scroll],
+.md-time-panel[data-mode="scroll"] :is(.md-time-value, .md-time-field-wrap, .md-time-dial),
+.md-time-panel[data-time-inline] .md-time-actions:has([data-time-mode][hidden]):not(:has([data-time-save])) { display: none; }
+
+.md-time-panel[data-time-style="expressive"] {
+  --_time-container: var(--md-comp-time-pickers-modal-container-color, var(--md-sys-color-surface-container-high));
+  --_time-shape: var(--md-comp-time-pickers-modal-container-shape, var(--md-sys-shape-corner-extra-large));
+  --_time-value-width: var(--md-comp-time-pickers-scroll-field-container-width, 100px);
+  --_time-value-height: var(--md-comp-time-pickers-scroll-field-container-height, 120px);
+  --_time-field-width: var(--_time-value-width);
+  --_time-field-height: var(--_time-value-height);
+  --_time-field-shape: var(--md-comp-scroll-field-container-shape, var(--md-sys-shape-corner-large));
+  --_time-value-shape: var(--_time-field-shape);
+  --_time-separator-color: var(--md-comp-time-pickers-separator-color, var(--md-sys-color-on-surface));
+  --_time-period-visual: var(--md-comp-time-pickers-modal-period-selector-width, 56px);
+  --_time-period-visual-height: var(--_time-period-visual);
+  --_time-period-shape: 0px;
+  --_time-period-outline-width: 0px;
+  --_time-period-outline: transparent;
+  --_time-focus-color: var(--md-comp-time-pickers-focused-indicator-color, var(--md-sys-color-secondary));
+  --_time-focus-width: var(--md-comp-time-pickers-focused-indicator-thickness, var(--md-sys-state-focus-indicator-thickness));
+  --_time-focus-offset: var(--md-comp-time-pickers-focused-indicator-outline-offset, var(--md-sys-state-focus-indicator-outer-offset));
+  padding: var(--md-comp-time-pickers-padding-vertical, var(--md-sys-measurement-space150))
+    var(--md-comp-time-pickers-padding-horizontal, var(--md-sys-measurement-space150));
+}
+.md-time-panel[data-time-style="expressive"] .md-time-title {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  clip-path: inset(50%);
+  overflow: hidden;
+}
+.md-time-panel[data-time-style="expressive"] .md-time-body {
+  gap: var(--md-comp-time-pickers-dial-gap-vertical, var(--md-sys-measurement-space150));
+}
+.md-time-panel[data-time-style="expressive"] .md-time-selectors { align-items: center; }
+.md-time-panel[data-time-style="expressive"] :is(.md-time-value, .md-time-field, .md-time-separator) {
+  font-family: var(--md-sys-typescale-emphasized-display-large-font, var(--md-sys-typescale-display-large-font));
+  font-size: var(--md-sys-typescale-emphasized-display-large-size, var(--md-sys-typescale-display-large-size));
+  font-weight: var(--md-sys-typescale-emphasized-display-large-weight, var(--md-sys-typescale-display-large-weight));
+  line-height: var(--md-sys-typescale-emphasized-display-large-line-height, var(--md-sys-typescale-display-large-line-height));
+  letter-spacing: var(--md-sys-typescale-emphasized-display-large-tracking, var(--md-sys-typescale-display-large-tracking));
+}
+.md-time-panel[data-time-style="expressive"] .md-time-separator {
+  inline-size: var(--md-comp-time-pickers-separator-width, var(--md-sys-measurement-space200));
+}
+.md-time-panel[data-time-style="expressive"] :is(.md-time-value, .md-time-field) {
+  inline-size: 100%;
+  min-inline-size: 0;
+  background: var(--md-comp-scroll-field-container-color, var(--md-sys-color-surface-container-lowest));
+  color: var(--md-comp-scroll-field-item-selected-color, var(--md-sys-color-on-surface));
+  caret-color: var(--md-comp-scroll-field-active-caret-color, var(--md-sys-color-primary));
+}
+.md-time-panel[data-time-style="expressive"] .md-time-field {
+  border: var(--md-comp-scroll-field-active-container-outline-width, 2px) solid transparent;
+}
+.md-time-panel[data-time-style="expressive"] .md-time-field:is(:focus, [data-component-state="focused"]) {
+  color: var(--md-comp-scroll-field-active-item-selected-color, var(--md-sys-color-primary));
+  border-color: var(--md-comp-scroll-field-active-container-outline-color, var(--md-sys-color-primary));
+}
+.md-time-panel[data-time-style="expressive"] .md-time-value[aria-pressed="true"] {
+  color: var(--md-comp-scroll-field-active-item-selected-color, var(--md-sys-color-primary));
+  box-shadow: inset 0 0 0 var(--md-comp-scroll-field-active-container-outline-width, 2px)
+    var(--md-comp-scroll-field-active-container-outline-color, var(--md-sys-color-primary));
+}
+.md-time-panel[data-time-style="expressive"] .md-time-field[aria-invalid="true"] {
+  background: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
+  caret-color: currentColor;
+  border-color: var(--md-sys-color-error);
+  outline: none;
+}
+.md-time-panel[data-time-style="expressive"] :is(.md-time-hour, .md-time-minute) {
+  inline-size: var(--_time-value-width);
+}
+.md-time-panel[data-time-style="expressive"]:is([data-mode="input"], [data-mode="scroll"]) {
+  --_time-value-height: var(--forge-time-picker-field-block-size, 140px);
+}
+.md-time-panel[data-mode="scroll"] [data-time-scroll] {
+  --_scroll-container-height: var(--_time-value-height);
+  /* The three touch rows meet edge to edge. Their line boxes space the labels. */
+  --forge-scroll-field-item-gap: var(--forge-time-picker-scroll-item-gap, 0px);
+}
+.md-time-panel[data-time-style="expressive"][data-mode="input"][data-return-mode="scroll"] .md-time-field-wrap {
+  padding-block: var(--md-sys-measurement-space175);
+}
+.md-time-panel[data-time-style="expressive"][data-mode="clock"][data-format="24h"][data-orientation="portrait"] {
+  --_time-value-width: var(--md-comp-time-pickers-dial-vertical-scroll-field-container-width, 132px);
+}
+.md-time-panel[data-time-style="expressive"] .md-time-period-group {
+  inline-size: auto;
+  block-size: auto;
+  overflow: visible;
+  gap: var(--md-comp-time-pickers-period-selector-gap, var(--md-sys-measurement-space100));
+  margin-inline-start: var(--md-comp-time-pickers-gap-fields-periods, var(--md-sys-measurement-space100));
+}
+.md-time-panel[data-time-style="expressive"] .md-time-period {
+  --_button-rest-shape: var(--md-comp-time-pickers-modal-period-selector-unselected-shape, var(--md-sys-shape-corner-full));
+  --_button-pressed-shape: var(--_time-period-selected-shape, var(--md-comp-time-pickers-modal-period-selector-selected-shape, var(--md-sys-shape-corner-large)));
+  --_period-ink: var(--md-comp-time-pickers-modal-period-selector-unselected-state-layer-color, var(--md-sys-color-on-surface));
+  --_button-background-state-color: var(--_period-ink);
+  --_button-background-state-opacity: var(--_period-opacity, 0);
+  --_button-state-color: var(--_period-ink);
+  --_button-state-opacity: var(--_period-opacity, 0);
+  --_button-pressed-state-color: var(--_period-ink);
+  --_button-pressed-state-opacity: var(--md-comp-time-pickers-pressed-state-layer-opacity, var(--md-sys-state-pressed-state-layer-opacity));
+  min-inline-size: var(--md-sys-measurement-space600);
+  min-block-size: var(--md-sys-measurement-space600);
+  inline-size: var(--_time-period-visual);
+  block-size: var(--_time-period-visual-height);
+  flex: none;
+  border: 0;
+  border-radius: var(--_button-rest-shape);
+  background: transparent;
+  color: var(--md-comp-time-pickers-period-selector-unselected-label-text-color, var(--md-sys-color-on-surface));
+  font-family: var(--md-sys-typescale-title-medium-font);
+  font-size: var(--md-sys-typescale-title-medium-size);
+  font-weight: var(--md-sys-typescale-title-medium-weight);
+  line-height: var(--md-sys-typescale-title-medium-line-height);
+  transition: border-radius var(--_motion-fast-spatial-duration) var(--_motion-fast-spatial-easing),
+    color var(--_motion-fast-effects-duration) var(--_motion-fast-effects-easing);
+}
+.md-time-panel[data-time-style="expressive"] .md-time-period[aria-checked="true"] {
+  --_button-rest-shape: var(--_button-pressed-shape);
+  --_period-ink: var(--md-comp-time-pickers-modal-period-selector-selected-state-layer-color, var(--md-sys-color-on-primary-container));
+  color: var(--md-comp-time-pickers-period-selector-selected-label-text-color, var(--md-sys-color-on-primary-container));
+  font-weight: var(--md-sys-typescale-emphasized-title-medium-weight, var(--md-sys-typescale-title-medium-weight));
+}
+.md-time-panel[data-time-style="expressive"] .md-time-period:is(:hover:not([data-touch]), [data-component-state="hovered"]) {
+  --_period-opacity: var(--md-comp-time-pickers-hovered-state-layer-opacity, var(--md-sys-state-hover-state-layer-opacity));
+}
+.md-time-panel[data-time-style="expressive"] .md-time-period:is(:focus-visible, [data-component-state="focused"]) {
+  --_period-opacity: var(--md-comp-time-pickers-focused-state-layer-opacity, var(--md-sys-state-focus-state-layer-opacity));
+  outline: none;
+}
+.md-time-panel[data-time-style="expressive"] .md-time-period:is(:active, [data-pressed], [data-component-state="pressed"]):not(:disabled, [data-button-cancelled]) {
+  border-radius: var(--_button-pressed-shape);
+}
+.md-time-panel[data-time-style="expressive"] .md-time-period:is(:active, [data-pressed], [data-component-state="pressed"]):not(:disabled, [data-button-cancelled], [data-rippling]) {
+  --_period-opacity: var(--_button-pressed-state-opacity);
+}
+.md-time-panel[data-time-style="expressive"] .md-time-period::before,
+.md-time-panel[data-time-style="expressive"] .md-time-period::after,
+.md-time-panel[data-time-style="expressive"] .md-time-period > .md-button-ripple {
+  inset: 50% auto auto 50%;
+  translate: -50% -50%;
+  inline-size: var(--_time-period-visual);
+  block-size: var(--_time-period-visual-height);
+  border-radius: inherit;
+  pointer-events: none;
+}
+.md-time-panel[data-time-style="expressive"] .md-time-period::before {
+  transition: opacity var(--_motion-fast-effects-duration) var(--_motion-fast-effects-easing),
+    background-color var(--_motion-fast-effects-duration) var(--_motion-fast-effects-easing);
+}
+.md-time-panel[data-time-style="expressive"] .md-time-period::after {
+  content: "";
+  position: absolute;
+  z-index: -2;
+  background: var(--md-comp-time-pickers-period-selector-unselected-container-color, var(--md-sys-color-surface-container-lowest));
+  transition: background-color var(--_motion-fast-effects-duration) var(--_motion-fast-effects-easing);
+}
+.md-time-panel[data-time-style="expressive"] .md-time-period[aria-checked="true"]::after {
+  background: var(--md-comp-time-pickers-period-selector-selected-container-color, var(--md-sys-color-primary-container));
+}
+.md-time-panel[data-time-style="expressive"] .md-time-period:is(:focus-visible, [data-component-state="focused"])::after {
+  outline: var(--_time-focus-width) solid var(--_time-focus-color);
+  outline-offset: var(--_time-focus-offset);
+}
+@media (prefers-reduced-motion: reduce) {
+  .md-time-panel[data-time-style="expressive"] .md-time-period,
+  .md-time-panel[data-time-style="expressive"] .md-time-period::before,
+  .md-time-panel[data-time-style="expressive"] .md-time-period::after { transition: none; }
+}
+.md-time-panel[data-time-style="expressive"] .md-time-dial {
+  --_time-dial-size: var(--md-comp-time-pickers-dial-face-container-size, 256px);
+  --_time-dial-shape: var(--md-sys-shape-corner-full);
+  --_time-dial-container: var(--md-comp-time-pickers-dial-face-container-color, var(--md-sys-color-surface-container-lowest));
+  --_time-dial-center-size: var(--md-comp-time-pickers-dial-selector-center-container-size, 8px);
+  --_time-dial-center-shape: var(--md-sys-shape-corner-full);
+  --_time-dial-center-color: var(--md-comp-time-pickers-dial-selector-center-container-color, var(--md-sys-color-primary));
+  --_time-dial-handle-size: var(--md-comp-time-pickers-dial-selector-handle-container-size, 48px);
+  --_time-dial-handle-shape: var(--md-sys-shape-corner-full);
+  --_time-dial-handle-color: var(--md-comp-time-pickers-dial-selector-handle-container-color, var(--md-sys-color-primary));
+  --_time-dial-track-width: var(--md-comp-time-pickers-dial-selector-track-width, 2px);
+  --_time-dial-track-color: var(--md-comp-time-pickers-dial-selector-track-color, var(--md-sys-color-primary));
+  --_time-dial-label: var(--md-comp-time-pickers-dial-hour-unselected-label-text-color, var(--md-sys-color-on-surface));
+  --_time-dial-selected-label: var(--md-comp-time-pickers-dial-hour-selected-label-text-color, var(--md-sys-color-on-primary));
+  --_time-dial-font-family: var(--md-sys-typescale-body-large-font);
+  --_time-dial-font-size: var(--md-sys-typescale-body-large-size);
+  --_time-dial-font-weight: var(--md-sys-typescale-body-large-weight);
+  --_time-dial-line-height: var(--md-sys-typescale-body-large-line-height);
+  --_time-dial-tracking: var(--md-sys-typescale-body-large-tracking);
+}
+.md-time-panel[data-time-style="expressive"][data-mode="clock"][data-orientation="landscape"] {
+  --_time-period-visual: var(--md-comp-time-pickers-dial-horizontal-period-selector-width, 100px);
+  --_time-period-visual-height: var(--md-comp-time-pickers-inline-period-selector-width, 40px);
+  --_time-period-selected-shape: var(--md-comp-time-pickers-dial-horizontal-period-selector-selected-shape, var(--md-sys-shape-corner-medium));
+  padding: var(--md-comp-time-pickers-dial-horizontal-padding-vertical, var(--md-sys-measurement-space300))
+    var(--md-comp-time-pickers-dial-horizontal-padding-horizontal, var(--md-sys-measurement-space300));
+}
+.md-time-panel[data-time-style="expressive"][data-mode="clock"][data-orientation="landscape"] .md-time-body {
+  column-gap: var(--md-comp-time-pickers-dial-horizontal-gap-horizontal, 52px);
+}
+.md-time-panel[data-time-style="expressive"][data-mode="clock"][data-orientation="landscape"] .md-time-selectors {
+  row-gap: var(--md-comp-time-pickers-dial-horizontal-gap-fields-periods, var(--md-sys-measurement-space200));
+}
+.md-time-panel[data-time-style="expressive"][data-mode="clock"][data-orientation="landscape"] .md-time-period-group {
+  gap: var(--md-comp-time-pickers-dial-horizontal-period-selector-gap, var(--md-sys-measurement-space200));
+  margin: 0;
+}
+.md-time-panel[data-time-style="expressive"] .md-time-actions {
+  gap: var(--md-comp-time-pickers-gap-actions, var(--md-sys-measurement-space100));
+  margin-block-start: var(--md-comp-time-pickers-dial-gap-vertical, var(--md-sys-measurement-space150));
+}
+.md-time-panel[data-time-style="expressive"]:is([data-mode="input"], [data-mode="scroll"]) .md-time-actions {
+  margin-block-start: var(--md-sys-measurement-space100);
+}
+.md-time-panel[data-time-style="expressive"][data-mode="clock"][data-orientation="landscape"] .md-time-actions {
+  margin-block-start: var(--md-comp-time-pickers-dial-horizontal-gap-vertical, var(--md-sys-measurement-space300));
+}
+.md-time-panel [data-time-mode] {
+  min-inline-size: 48px;
+  min-block-size: 48px;
+}
+.md-time-panel[data-time-inline]:is([data-mode="scroll"], [data-mode="input"]) { inline-size: 100%; }
+.md-time-panel[data-time-style="expressive"][data-time-inline]:is([data-mode="scroll"], [data-mode="input"]) {
+  --_time-period-visual: var(--md-comp-time-pickers-inline-period-selector-width, 40px);
+  --_time-period-selected-shape: var(--md-comp-time-pickers-inline-period-selector-selected-shape, var(--md-sys-shape-corner-medium));
+  padding: 0;
+  background: transparent;
+}
+.md-time-panel[data-time-inline]:is([data-mode="scroll"], [data-mode="input"]) .md-time-body { align-items: stretch; }
+.md-time-panel[data-time-inline]:is([data-mode="scroll"], [data-mode="input"]) :is(.md-time-hour, .md-time-minute) {
+  flex: 1 1 var(--_time-value-width);
+  min-inline-size: var(--_time-value-width);
+}
+@media (forced-colors: active) {
+  .md-time-panel[data-mode="input"] .md-time-field:is(:focus, [data-component-state="focused"]) {
+    border: 2px solid Highlight;
+  }
+  .md-time-period[aria-checked="true"] {
+    outline: 2px solid Highlight;
+    color: HighlightText;
+    background: Highlight;
+  }
+}
+
+.md-time-picker:has(.md-time-side-controls) { inline-size: 100%; }
+.md-time-side-controls {
+  display: grid;
+  flex: none;
+  justify-items: center;
+  align-content: center;
+  --_time-target-size: var(--md-sys-measurement-space600);
+  --_time-target-inset: calc((var(--_time-target-size) - var(--_time-period-visual)) / 2);
+  gap: max(0px, calc(var(--md-comp-time-pickers-inline-gap-periods-input-toggle, var(--md-sys-measurement-space100)) - 2 * var(--_time-target-inset)));
+  margin-inline-start: max(0px, calc(var(--md-comp-time-pickers-gap-fields-periods, var(--md-sys-measurement-space100)) - var(--_time-target-inset)));
+}
+.md-time-panel[data-time-style="expressive"] .md-time-side-controls .md-time-period-group {
+  gap: max(0px, calc(var(--md-comp-time-pickers-period-selector-gap, var(--md-sys-measurement-space100)) - 2 * var(--_time-target-inset)));
+  margin: 0;
+}
+.md-time-side-controls [data-time-mode] { min-inline-size: var(--_time-target-size); min-block-size: var(--_time-target-size); }
+.md-time-side-controls [data-time-mode]::before { inset: var(--_time-target-inset); }
+.md-time-side-controls:not(:has(> :not([hidden]))) { display: none; }
+
+.md-time-panel[data-time-style="baseline"] .md-time-period-group { overflow: visible; }
+.md-time-panel[data-time-style="baseline"] .md-time-period::after { content: ""; position: absolute; inset: 0; }
+.md-time-panel[data-time-style="baseline"] .md-time-period:first-child::after { inset-block-start: -13px; }
+.md-time-panel[data-time-style="baseline"] .md-time-period:last-child::after { inset-block-end: -13px; }
+.md-time-panel[data-time-style="baseline"][data-mode="clock"][data-orientation="landscape"] .md-time-period::after { inset-block: -6px; }
+.md-time-panel[data-time-style="baseline"][data-mode="input"] .md-time-period:first-child::after { inset-block-start: -14px; }
+.md-time-panel[data-time-style="baseline"][data-mode="input"] .md-time-period:last-child::after { inset-block-end: -14px; }
+.md-time-panel[data-time-style="baseline"][data-mode="clock"][data-orientation="landscape"] .md-time-title { margin-block-end: 0; }
+.md-time-panel[data-time-style="baseline"][data-mode="clock"][data-orientation="landscape"] .md-time-body {
+  align-items: start;
+  column-gap: 52px;
+}
+.md-time-panel[data-time-style="baseline"][data-mode="clock"][data-orientation="landscape"] .md-time-selectors {
+  margin-block-start: 72px;
+  row-gap: var(--md-sys-measurement-space200);
+}
+
+.md-time-panel[data-time-dial-swap] {
+  display: flex;
+  flex-direction: column;
+  overflow: clip;
+}
+.md-time-panel[data-time-dial-swap] .md-time-dial {
+  display: block;
+  position: absolute;
+  left: calc(50% + var(--_time-swap-x));
+  top: calc(50% + var(--_time-swap-y));
+  translate: -50% -50%;
+}
+.md-time-panel[data-time-dial-swap] .md-time-dial[inert] { pointer-events: none; }
+.md-time-panel[data-time-dial-swap][data-time-style][data-mode][data-orientation] .md-time-actions { margin-block-start: auto; }

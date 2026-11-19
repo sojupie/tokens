@@ -398,7 +398,11 @@ export function checkComponentRendering() {
       const prefixes=state==='disabled'?['disabled.','']:invalid?['error.'+(short==='enabled'?'':short+'.'),'error.',short+'.','']:[short+'.',''];
       const source=key=>first(prefixes.map(prefix=>p+prefix+key));
       c('color',source('input-text.color'),source('input-text.opacity')||1);
-      value('minHeight',get(p+'container.height'));value('height',get(p+'container.height'));
+      const control=el.querySelector(':scope > :is(input, textarea, select)');
+      if(control) {
+        const bounds=el.getBoundingClientRect(), box=control.getBoundingClientRect();
+        compare('control fits field',String(box.top>=bounds.top&&box.bottom<=bounds.bottom),'true');
+      }
       value('fontSize',get(p+'input-text.size'));value('fontWeight',get(p+'input-text.weight'));value('lineHeight',get(p+'input-text.line-height'));
       const input=el.querySelector('input'),label=el.querySelector('[data-slot="label"]'),floating=state==='focused'||!!input?.value||el.matches(':focus-within');
       if(label){const st=getComputedStyle(label);compare('label color',st.color,source('label-text.color'),true,Number(source('label-text.opacity')||1));compare('label size',st.fontSize,get(p+'label-text.'+(floating?'populated.':'')+'size'));}
@@ -543,6 +547,22 @@ export function checkComponentRendering() {
       }
     } else if (f === "time") {
       const panel = el.querySelector(".md-time-panel"); if (!panel.open) continue;
+      if (panel.dataset.timeStyle === "expressive") {
+        const style = getComputedStyle(panel);
+        if (!panel.hasAttribute("data-time-inline")) {
+          compare("time container color", style.backgroundColor, get("md.comp.time-pickers.modal.container.color"), true);
+          compare("time container shape", style.borderTopLeftRadius, get("md.comp.time-pickers.modal.container.shape"));
+        }
+        if (panel.dataset.mode === "clock") {
+          const dial = getComputedStyle(panel.querySelector(".md-time-dial"));
+          compare("dial face color", dial.backgroundColor, get("md.comp.time-pickers.dial.face.container.color"), true);
+        }
+        for (const rotor of panel.querySelectorAll('[role="spinbutton"]')) {
+          if (!rotor.getClientRects().length) continue;
+          compare("rotor selected color", getComputedStyle(rotor).color, get("md.comp.scroll-field.item.selected.color"), true);
+        }
+        continue;
+      }
       const input = panel.dataset.mode === "input", p = "md.comp." + (input ? "time-input." : "time-picker."), style = getComputedStyle(panel);
       compare("time container color", style.backgroundColor, get(p + "container.color"), true);
       compare("time container shape", style.borderTopLeftRadius, get(p + "container.shape"));
@@ -552,7 +572,7 @@ export function checkComponentRendering() {
       typography(title, p + "headline.");
       for (const [selector,key] of [[".md-time-value","time-selector."],[".md-time-period","period-selector."],[".md-time-field","time-input-field."]]) for (const node of panel.querySelectorAll(selector)) {
         if (!node.getClientRects().length) continue;
-        const style = getComputedStyle(node), selected = node.getAttribute("aria-pressed") === "true", state = node.dataset.componentState || (node.hasAttribute("data-pressed") ? "pressed" : node.matches(":focus-visible") ? "focused" : node.matches(":hover") ? "hovered" : "enabled"), short = {hovered:"hover",focused:"focus"}[state] || state,
+        const style = getComputedStyle(node), selected = (node.getAttribute("aria-pressed") || node.getAttribute("aria-checked")) === "true", state = node.dataset.componentState || (node.hasAttribute("data-pressed") ? "pressed" : node.matches(":focus-visible") ? "focused" : node.matches(":hover") ? "hovered" : "enabled"), short = {hovered:"hover",focused:"focus"}[state] || state,
           source = property => first([p + key + (selected ? "selected." : "unselected.") + short + "." + property, p + key + short + "." + property, p + key + (selected ? "selected." : "unselected.") + property, p + key + property]);
         compare(key + "label", style.color, source("label-text.color"), true);
         let background = source("container.color") || "transparent";
@@ -721,7 +741,7 @@ export function checkComponentRendering() {
       }
       if(!open&&bar.dataset.leading==='none'){
         const noActions=contained&&![...bar.querySelectorAll('.md-search-action-target:not([hidden]) button,.md-search-avatar')].some(b=>b.getClientRects().length);
-        compare('no-leading padding',bs.paddingInlineStart,get(p+(noActions?'contained.no-actions.':contained?'contained.':'')+'leading-space'));
+        compare('no-leading padding',bs.paddingInlineStart,get(p+(contained?'contained.no-actions.':'')+'leading-space'));
         if(noActions)compare('no-actions trailing padding',bs.paddingInlineEnd,get(p+'contained.no-actions.trailing-space'));
       }
       typography(input,(open?q+'header.':p)+'input-text.');

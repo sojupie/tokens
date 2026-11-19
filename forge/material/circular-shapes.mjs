@@ -13,6 +13,7 @@ export function circularShapeRadius(name, values) {
     'md-comp-search-view-contained-docked-bar-shape': ['md-comp-search-view-docked-header-container-height'],
     'md-comp-slider-active-track-outer-corner-corner-size': ['md-comp-slider-active-track-height'],
     'md-comp-time-picker-clock-dial-shape': ['md-comp-time-picker-clock-dial-container-size'],
+    'md-comp-time-pickers-modal-period-selector-unselected-shape': ['md-comp-time-pickers-modal-period-selector-width'],
     'md-comp-toolbar-standard-container-shape': ['md-comp-toolbar-floating-container-height'],
     'md-comp-toolbar-vibrant-container-shape': ['md-comp-toolbar-floating-container-height'],
     'md-comp-menus-horizontal-container-shape': ['md-comp-menus-menu-item-height'],

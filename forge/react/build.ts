@@ -13,14 +13,17 @@ const generated = path.join(directory, '../components/generated');
 const catalogAssets = path.join(directory, '../../catalog/web/assets');
 const read = (root: string, file: string) => readFile(path.join(root, file), 'utf8');
 
-const [shared, buttons, common, dialogTokens, dialog, checkboxTokens, checkbox, listTokens, list, motion, press, modal, catalogCSS] = await Promise.all([
+const [shared, buttons, common, dialogTokens, dialog, checkboxTokens, checkbox, listTokens, list, motion, press, modal, buttonGroups, fields, menus, catalogCSS] = await Promise.all([
   read(assets, 'themes/shared.css'), read(assets, 'buttons.css'),
   read(generated, 'bundles/common.css'), read(assets, 'themes/dialog.css'),
   read(generated, 'bundles/dialog.css'), read(assets, 'themes/checkbox.css'),
   read(generated, 'bundles/checkbox.css'), read(assets, 'themes/list.css'),
   read(generated, 'bundles/list.css'), read(generated, 'motion.cjs'),
-  read(generated, 'buttons.js'), read(generated, 'dialogs.js'), read(catalogAssets, 'styles/app.css'),
+  read(generated, 'buttons.js'), read(generated, 'dialogs.js'), read(generated, 'runtime/button-groups.js'), read(generated, 'fields.js'), read(generated, 'menus.js'), read(catalogAssets, 'styles/app.css'),
 ]);
+const workspaceStyles = await Promise.all(['search', 'split', 'button-group', 'navigation', 'sheet', 'fab'].flatMap(name => [
+  read(assets, `themes/${name}.css`), read(generated, `bundles/${name}.css`),
+]));
 if (!shared.includes('--md-sys-color-primary:') || !buttons.includes('--_button-pressed-shape:')) {
   throw new Error('Build publication assets with --css-names original for this package.');
 }
@@ -29,9 +32,12 @@ if (!shared.includes('--md-sys-color-primary:') || !buttons.includes('--_button-
 // restores native dialog centering when an application reset removes its margin.
 const fontFaces = catalogCSS.match(/^@font-face \{.*roboto-.*\}$/gm);
 if (fontFaces?.length !== 2) throw new Error('Expected Catalog’s two self-hosted Roboto subsets.');
-const styles = [...fontFaces, shared, buttons, common, checkboxTokens, checkbox, dialogTokens, dialog, listTokens, list,
+const disclosure = catalogCSS.match(/^\.tokens-export-disclosure \{[^]*?(?=^\.tokens-export-disclosure > fieldset)/m)?.[0];
+if (!disclosure) throw new Error('Expected Catalog’s export disclosure styles.');
+const controls = await read(directory, 'controls.css');
+const styles = [...fontFaces, shared, buttons, common, checkboxTokens, checkbox, dialogTokens, dialog, listTokens, list, ...workspaceStyles, disclosure, controls,
   '.md-dialog[data-dialog-surface]:modal { margin: auto; }'].join('\n');
-const runtime = ['if (typeof document !== "undefined") {', motion, press, modal, '}'].join('\n');
+const runtime = ['if (typeof document !== "undefined") {', motion, press, modal, buttonGroups, fields, menus, '}'].join('\n');
 
 await mkdir(path.join(dist, 'fonts'), { recursive: true });
 await Promise.all([
@@ -41,6 +47,6 @@ await Promise.all([
   writeFile(path.join(dist, 'runtime.js'), runtime),
   writeFile(path.join(dist, 'styles.css'), styles),
   build({ entryPoints: [path.join(directory, 'index.tsx')], outdir: dist,
-    banner: { js: "import './runtime.js';" }, format: 'esm', jsx: 'automatic', target: 'es2022' }),
+    banner: { js: "import './runtime.js';" }, bundle: true, packages: 'external', format: 'esm', jsx: 'automatic', target: 'es2022' }),
 ]);
 execFileSync(process.execPath, [path.join(directory, '../../node_modules/typescript/bin/tsc'), '-p', directory], { stdio: 'inherit' });

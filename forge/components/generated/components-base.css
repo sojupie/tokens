@@ -572,6 +572,8 @@
   .md-outlined-autocomplete,
   .md-filled-autocomplete
 ) {
+  --_field-input-padding-top: var(--forge-field-padding-block, var(--md-sys-measurement-space200));
+  --_field-input-padding-bottom: var(--_field-input-padding-top);
   --_field-state-color: transparent;
   --_field-state-opacity: 0;
   --_field-outline-opacity: 1;
@@ -587,8 +589,6 @@
   gap: var(--md-sys-measurement-space100);
   min-width: 0;
   max-width: 100%;
-  height: var(--_field-height);
-  min-height: var(--_field-height);
   border: var(--_field-outline-width) solid
     color-mix(
       in srgb,
@@ -625,20 +625,14 @@
 }
 :is(
   .md-outlined-text-field,
-  .md-filled-text-field,
-  .md-outlined-select,
-  .md-filled-select,
-  .md-outlined-autocomplete,
-  .md-filled-autocomplete
+  .md-filled-text-field
 ):focus-visible,
-:is(
-  .md-outlined-text-field,
-  .md-filled-text-field,
+:where(:root:not([data-pointer-focus])) :is(
   .md-outlined-select,
   .md-filled-select,
   .md-outlined-autocomplete,
   .md-filled-autocomplete
-):has(> :is(input, select):focus-visible) {
+):is(:focus-visible, :has(> :is(input, textarea, select):focus-visible)) {
   outline: var(--_field-focus-width) solid var(--_field-focus-color);
   outline-offset: var(--md-sys-state-focus-indicator-outer-offset);
 }
@@ -658,7 +652,7 @@
     .md-outlined-autocomplete,
     .md-filled-autocomplete
   )
-  input::placeholder {
+  :is(input, textarea)::placeholder {
   color: var(--_field-placeholder);
   opacity: 1;
 }
@@ -672,7 +666,7 @@
   ):has(> [data-slot="label"]):not(:focus-within):not(
     [data-component-state="focused"]
   )
-  input:placeholder-shown::placeholder {
+  :is(input, textarea):placeholder-shown::placeholder {
   color: transparent;
 }
 :is(
@@ -683,12 +677,11 @@
     .md-outlined-autocomplete,
     .md-filled-autocomplete
   )
-  > :is(input, select) {
+  > :is(input, textarea, select) {
   flex: 1;
   width: 100%;
   min-width: 0;
   min-height: 0;
-  height: 100%;
   appearance: none;
   border: 0;
   border-radius: inherit;
@@ -697,7 +690,7 @@
   font: inherit;
   caret-color: inherit;
   outline: 0;
-  padding: 0;
+  padding: var(--_field-input-padding-top) 0 var(--_field-input-padding-bottom);
 }
 .md-outlined-select {
   padding: 0;
@@ -757,7 +750,7 @@
   ):is(
     :focus-within,
     [data-component-state="focused"],
-    :has(> input:not(:placeholder-shown))
+    :has(> :is(input, textarea):not(:placeholder-shown))
   )
   [data-slot="label"] {
   top: 0;
@@ -883,6 +876,35 @@
   )
   [data-slot="suffix"] {
   color: var(--_field-suffix);
+}
+
+:is(.md-outlined-text-field, .md-filled-text-field) > textarea {
+  resize: vertical;
+}
+
+@supports (field-sizing: content) {
+  :is(.md-outlined-text-field, .md-filled-text-field) > textarea {
+    field-sizing: content;
+    min-block-size: calc(
+      var(--_field-rows, 2) * 1lh + var(--_field-input-padding-top) +
+        var(--_field-input-padding-bottom)
+    );
+  }
+}
+
+:is(.md-outlined-text-field, .md-filled-text-field)
+  > [data-slot="trailing-icon"]:has(> :is(button, input)) {
+  inline-size: auto;
+  block-size: auto;
+  align-items: center;
+  padding-block: var(--md-sys-measurement-space50);
+}
+
+:is(.md-outlined-text-field, .md-filled-text-field):not(:focus-within):not(
+    [data-component-state="focused"]
+  ):has(> textarea:placeholder-shown)
+  > [data-slot="label"] {
+  top: calc(var(--_field-input-padding-top) + var(--_field-input-text-line-height) / 2);
 }
 .md-menu {
   --_elevation-level: var(--_menu-elevation);
@@ -1660,8 +1682,12 @@
   text-align: start;
 }
 .md-tooltip[data-variant="plain"] {
-  min-block-size: var(--md-sys-measurement-space300);
-  padding: var(--md-sys-measurement-space50) var(--md-sys-measurement-space100);
+  min-block-size: var(--_tooltip-min-height, var(--md-sys-measurement-space300));
+  min-inline-size: var(--_tooltip-min-width, 0);
+  max-inline-size: min(var(--_tooltip-max-width, 24rem), calc(100vw - 16px));
+  max-block-size: var(--_tooltip-max-height, none);
+  padding: var(--_tooltip-padding-vertical, var(--md-sys-measurement-space50))
+    var(--_tooltip-padding-horizontal, var(--md-sys-measurement-space100));
 }
 .md-tooltip > p {
   margin: 0;
@@ -4076,17 +4102,19 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   rotate: 0deg;
   transition: rotate var(--_split-chevron-duration) var(--_split-chevron-easing);
 }
-.md-split-demo:has(> .md-split-menu:popover-open) > .md-split-button
-  > .md-split-trailing {
+.md-split-button > .md-split-trailing[aria-expanded="true"],
+.md-split-demo:has(> .md-split-menu:popover-open) > .md-split-button > .md-split-trailing {
   --_split-inner: var(--_split-item-selected-inner);
   /* Keep the open shape through a press that may be cancelled. */
   --_button-pressed-shape: var(--_button-rest-shape);
 }
+.md-split-button > .md-split-trailing[aria-expanded="true"]:not(:disabled) > svg > path,
 .md-split-demo:has(> .md-split-menu:popover-open) > .md-split-button
   > .md-split-trailing:not(:disabled)
   > svg > path {
   rotate: 180deg;
 }
+.md-split-button:dir(rtl) > .md-split-trailing[aria-expanded="true"]:not(:disabled) > svg > path,
 .md-split-demo:has(> .md-split-menu:popover-open) > .md-split-button:dir(rtl)
   > .md-split-trailing:not(:disabled)
   > svg > path {
@@ -4577,12 +4605,14 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   container: list-actions / inline-size;
 }
 @container list-actions (inline-size < 20rem) {
-  .md-list-row:has(> .md-list-actions) > .md-list-item {
+  .md-list:not([data-actions-layout="inline"]) > li > .md-list-row:has(> .md-list-actions) > .md-list-item {
     grid-area: 1 / 1 / 3 / -1;
     grid-template-rows: subgrid;
   }
-  .md-list-main { grid-column: 1 / -1; }
-  .md-list-actions {
+  .md-list:not([data-actions-layout="inline"]) > li > .md-list-row > .md-list-item > .md-list-main {
+    grid-column: 1 / -1;
+  }
+  .md-list:not([data-actions-layout="inline"]) > li > .md-list-row > .md-list-actions {
     grid-row: 2;
     justify-self: end;
     margin-block-end: var(--md-comp-list-list-item-bottom-space);
@@ -4662,6 +4692,11 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   :not([aria-current="page"], [aria-pressed="true"], [aria-selected="true"], [data-selected="true"], :has(> input:checked, > input:indeterminate))
 ) {
   --_list-item-container-opacity: 0;
+}
+.md-list[data-surface="transparent"] .md-list-item:disabled:where(
+  :not([aria-current="page"], [aria-pressed="true"], [aria-selected="true"], [data-selected="true"], :has(> input:checked, > input:indeterminate))
+) {
+  --_button-background-state-opacity: 0;
 }
 .md-list-item:is(:active, [data-pressed], [data-component-state="pressed"]):not(
     :disabled
@@ -4834,20 +4869,30 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   rotate: 180deg;
 }
 /* The source expansion example reveals full-width rows on one continuous surface. */
+.md-list:where([data-control="expand"]) > li {
+  --_list-expanded-surface: var(--md-comp-list-expand-expanded-list-item-container-color);
+  transition:
+    background-color var(--_motion-fast-effects-duration) var(--_motion-fast-effects-easing),
+    border-radius var(--_motion-fast-spatial-duration) var(--_motion-fast-spatial-easing);
+}
 .md-list:where([data-control="expand"]) > li[data-list-expanded="true"] {
   overflow: clip;
-  background: var(--md-comp-list-expand-expanded-list-item-container-color);
+}
+.md-list:where([data-control="expand"]) > li:has(> .md-list-row > [aria-expanded="true"]) {
+  background-color: var(--_list-expanded-surface);
   border-radius: var(--_list-shape);
 }
 .md-list:where([data-control="expand"][data-variant="segmented"])
-  > li[data-list-expanded="true"] {
-  overflow: clip;
-  background: var(
+  > li {
+  --_list-expanded-surface: var(
     --md-comp-list-expand-expanded-list-item-segmented-container-color
   );
 }
 .md-list-expand-content {
   overflow: hidden;
+  background-color: var(--_list-expanded-surface, transparent);
+  border-end-start-radius: var(--_list-shape);
+  border-end-end-radius: var(--_list-shape);
   list-style: none;
   padding: 0;
   margin: 0;
@@ -5704,15 +5749,19 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   padding-inline: var(--_search-leading) var(--_search-trailing);
   gap: var(--_search-gap);
 }
-.md-search-view[data-open="false"] .md-search-bar[data-leading="none"] {
+.md-search-bar[data-leading="none"]:not(.md-search-view[data-open="true"] *) {
   padding-inline-start: var(--_search-leading);
 }
-.md-search-view[data-open="false"]
-  .md-search-bar[data-control="contained"][data-leading="none"]:not(
-    :has(.md-search-action-target:not([hidden]) button, .md-search-avatar)
-  ) {
-  padding-inline: var(--_search-no-action-leading)
-    var(--_search-no-action-trailing);
+.md-search-bar[data-control="contained"][data-leading="none"]:not(.md-search-view[data-open="true"] *) {
+  padding-inline-start: var(--_search-no-action-leading,
+    var(--md-comp-search-bar-contained-no-actions-leading-space, var(--md-sys-measurement-space200)));
+}
+.md-search-bar[data-control="contained"][data-leading="none"]:not(
+  .md-search-view[data-open="true"] *,
+  :has(.md-search-action-target:not([hidden]) button, .md-search-avatar)
+) {
+  padding-inline-end: var(--_search-no-action-trailing,
+    var(--md-comp-search-bar-contained-no-actions-trailing-space, var(--md-sys-measurement-space200)));
 }
 .md-search-view[data-open="true"] .md-search-bar {
   --_elevation-level: var(--_search-view-elevation);
@@ -5787,8 +5836,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   width: var(--md-comp-search-bar-contained-avatar-target-size);
   height: var(--md-comp-search-bar-contained-avatar-target-size);
 }
-.md-search-view[data-open="false"]
-  .md-search-bar[data-leading="none"]
+.md-search-bar[data-leading="none"]:not(.md-search-view[data-open="true"] *)
   .md-search-leading-slot {
   display: none;
 }
@@ -5870,8 +5918,8 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   --_search-action-target: var(--md-comp-icon-button-small-container-height);
   display: grid;
   place-items: center;
-  width: var(--_search-action-target);
-  height: var(--_search-action-target);
+  min-inline-size: var(--_search-action-min-size, var(--_search-action-target));
+  min-block-size: var(--_search-action-min-size, var(--_search-action-target));
   flex: none;
 }
 .md-search-bar[data-control="contained"] .md-search-action-target {
@@ -5881,17 +5929,6 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
 }
 .md-search-action-target[hidden] {
   display: none;
-}
-.md-search-action-target > button::after {
-  content: "";
-  position: absolute;
-  inset: calc(
-    (
-        var(--md-comp-icon-button-small-container-height) -
-          var(--_search-action-target)
-      ) /
-      2
-  );
 }
 .md-search-avatar {
   --_button-rest-shape: var(--_search-avatar-shape);
@@ -6001,6 +6038,16 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   border-radius: var(--md-sys-shape-corner-medium);
   background: var(--md-sys-color-surface-container-high);
   color: var(--md-sys-color-on-surface);
+}
+@supports (position-area: block-end span-inline-start) {
+  .md-search-options[popover] {
+    inset: auto;
+    margin: 0;
+    margin-block-start: var(--md-sys-measurement-space50);
+    position-area: block-end span-inline-start;
+    justify-self: end;
+    position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
+  }
 }
 .md-search-options label {
   display: flex;
@@ -6605,6 +6652,174 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
  .md-native-date { display:grid; gap:var(--md-sys-measurement-space100); margin-block:var(--md-sys-measurement-space200); color:var(--md-sys-color-on-surface-variant); font:var(--md-sys-typescale-label-large); }
  .md-native-date input { inline-size:100%; }
 }
+.md-scroll-field {
+  --_scroll-min-width: var(--md-comp-scroll-field-container-2-digits-min-width, 100px);
+  --_scroll-padding: var(--md-sys-measurement-space200);
+  display: inline-grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(min-content, 1fr);
+  grid-auto-rows: min-content;
+  gap: var(--md-sys-measurement-space100);
+  max-inline-size: 100%;
+  vertical-align: middle;
+}
+.md-scroll-field[data-scroll-size="medium"] { --_scroll-min-width: var(--md-comp-scroll-field-container-3-digits-min-width, 120px); }
+.md-scroll-field[data-scroll-size="large"] {
+  --_scroll-min-width: var(--md-comp-scroll-field-container-4-digits-min-width, 186px);
+  --_scroll-padding: var(--md-sys-measurement-space300);
+}
+.md-scroll-field[data-scroll-fill="true"] { display: grid; inline-size: 100%; block-size: 100%; }
+.md-scroll-track {
+  --_scroll-radius: var(--md-comp-scroll-field-container-shape, var(--md-sys-shape-corner-large));
+  --_scroll-surface: var(--md-comp-scroll-field-container-color, var(--md-sys-color-surface-container-lowest));
+  --_scroll-clip: var(--md-sys-measurement-space175);
+  --_scroll-gap: var(--forge-scroll-field-item-gap, var(--md-comp-scroll-field-items-gap, var(--md-sys-measurement-space200)));
+  --_scroll-active-line: max(52px, var(--forge-scroll-field-active-line-height, var(--md-sys-typescale-emphasized-display-large-line-height, 64px)));
+  --_scroll-stride: calc((var(--_scroll-active-line) + 48px) / 2 + var(--_scroll-gap));
+  --_scroll-natural-height: max(var(--md-comp-scroll-field-container-min-height, 120px),
+    calc(96px + var(--_scroll-active-line) + 2 * (var(--_scroll-gap) - var(--_scroll-clip))));
+  position: relative;
+  display: grid;
+  grid-template-rows: minmax(48px, 1fr) var(--_scroll-active-line) minmax(48px, 1fr);
+  box-sizing: border-box;
+  min-inline-size: var(--_scroll-min-width, 100px);
+  min-block-size: calc(var(--forge-scroll-field-block-size, var(--_scroll-container-height, var(--_scroll-natural-height))) + 2 * var(--_scroll-clip));
+  padding-inline: var(--_scroll-padding);
+  isolation: isolate;
+  touch-action: none;
+  user-select: none;
+}
+.md-scroll-track::before {
+  content: "";
+  position: absolute;
+  inset: var(--_scroll-clip) 0;
+  z-index: -1;
+  border-radius: var(--_scroll-radius);
+  background: var(--_scroll-surface);
+  pointer-events: none;
+}
+.md-scroll-field[data-scroll-direct] .md-scroll-track::before {
+  outline: var(--md-comp-scroll-field-active-container-outline-width, 2px) solid
+    var(--md-comp-scroll-field-active-container-outline-color, var(--md-sys-color-primary));
+  outline-offset: calc(-1 * var(--md-comp-scroll-field-active-container-outline-width, 2px));
+}
+.md-scroll-track:has(.md-scroll-rotor[data-scroll-keyboard-focus]:focus)::before,
+.md-scroll-field[data-component-state="focused"] .md-scroll-track::before {
+  outline: var(--md-comp-scroll-field-focused-indicator-thickness, var(--md-sys-state-focus-indicator-thickness)) solid
+    var(--md-comp-scroll-field-focused-indicator-color, var(--md-sys-color-secondary));
+  outline-offset: var(--md-comp-scroll-field-focused-indicator-outline-outer-offset, var(--md-sys-state-focus-indicator-outer-offset));
+}
+.md-scroll-track:has(.md-scroll-rotor:disabled)::before {
+  opacity: var(--md-comp-scroll-field-container-disabled-opacity, .38);
+}
+.md-scroll-track[data-scroll-hovered]::after,
+.md-scroll-field[data-component-state="hovered"] .md-scroll-track::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: var(--_scroll-clip) 0;
+  border-radius: var(--_scroll-radius);
+  background: var(--md-comp-scroll-field-state-layer-color, var(--md-sys-color-on-surface));
+  opacity: var(--md-comp-scroll-field-hovered-state-layer-opacity, .08);
+  pointer-events: none;
+}
+.md-scroll-track:has(.md-scroll-rotor:disabled)::after { display: none; }
+.md-scroll-option,
+.md-scroll-rotor {
+  display: grid;
+  place-items: center;
+  min-inline-size: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  -webkit-tap-highlight-color: transparent;
+}
+.md-scroll-entry,
+.md-scroll-values,
+.md-scroll-sizing {
+  color: var(--md-comp-scroll-field-item-selected-color, var(--md-sys-color-on-surface));
+  font: inherit;
+  font-family: var(--md-sys-typescale-emphasized-display-large-font, var(--md-sys-typescale-display-large-font));
+  font-size: var(--forge-scroll-field-active-size, var(--md-sys-typescale-emphasized-display-large-size, var(--md-sys-typescale-display-large-size)));
+  line-height: var(--forge-scroll-field-active-line-height, var(--md-sys-typescale-emphasized-display-large-line-height, var(--md-sys-typescale-display-large-line-height)));
+  font-weight: var(--md-sys-typescale-emphasized-display-large-weight, var(--md-sys-typescale-display-large-weight));
+  letter-spacing: var(--md-sys-typescale-emphasized-display-large-tracking, var(--md-sys-typescale-display-large-tracking));
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.md-scroll-track [hidden] { display: none; }
+.md-scroll-rotor:focus-visible { outline: none; }
+.md-scroll-rotor:not(:disabled), .md-scroll-option:not(:disabled) { cursor: pointer; }
+.md-scroll-track:has(.md-scroll-rotor:disabled) .md-scroll-values,
+.md-scroll-entry:disabled {
+  opacity: var(--md-comp-scroll-field-item-disabled-opacity, .38);
+}
+.md-scroll-values > :not([data-scroll-current]) {
+  color: var(--md-comp-scroll-field-item-unselected-color, var(--md-sys-color-outline));
+  font-family: var(--md-sys-typescale-display-medium-font);
+  font-size: var(--md-sys-typescale-display-medium-size);
+  line-height: var(--md-sys-typescale-display-medium-line-height);
+  font-weight: var(--md-sys-typescale-display-medium-weight);
+  letter-spacing: var(--md-sys-typescale-display-medium-tracking);
+}
+.md-scroll-previous { grid-row: 1; }
+.md-scroll-rotor { grid-row: 2; }
+.md-scroll-next { grid-row: 3; }
+.md-scroll-track > button { grid-column: 1; }
+/* Clip glyphs in the stationary surface's coordinate space while their hit
+   targets extend above and below it. */
+.md-scroll-values {
+  display: grid;
+  grid-column: 1;
+  grid-row: 1 / -1;
+  place-items: center;
+  margin-inline: calc(-1 * var(--_scroll-padding));
+  padding-inline: var(--_scroll-padding);
+  overflow: clip;
+  clip-path: inset(var(--_scroll-clip) 0 round var(--_scroll-radius));
+  pointer-events: none;
+}
+.md-scroll-values > span {
+  grid-area: 1 / 1;
+  translate: 0 calc(var(--_scroll-offset, 0) * var(--_scroll-stride));
+}
+.md-scroll-field[data-scroll-direct] .md-scroll-values { visibility: hidden; }
+/* Reserve the widest option in Hug sizing before the first scroll. */
+.md-scroll-sizing {
+  display: grid;
+  grid-area: 2 / 1;
+  block-size: 0;
+  visibility: hidden;
+  overflow: clip;
+}
+.md-scroll-sizing > span { grid-area: 1 / 1; }
+.md-scroll-entry {
+  color: var(--md-comp-scroll-field-active-item-selected-color, var(--md-sys-color-primary));
+}
+.md-scroll-entry {
+  /* Fill the track without contributing the input's default character width. */
+  position: absolute;
+  inset: 0 var(--_scroll-padding);
+  inline-size: calc(100% - 2 * var(--_scroll-padding));
+  block-size: 100%;
+  box-sizing: border-box;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: center;
+  caret-color: var(--md-comp-scroll-field-active-caret-color, var(--md-sys-color-primary));
+  outline: none;
+}
+.md-scroll-entry[aria-invalid="true"], .md-scroll-error { color: var(--md-sys-color-error); }
+.md-scroll-error { grid-column: 1 / -1; margin: 0; }
+.md-scroll-error:empty { display: none; }
+[data-scroll-toggle] > svg:nth-of-type(2),
+[data-scroll-toggle][data-scroll-text-entry] > svg:nth-of-type(1) { display: none; }
+[data-scroll-toggle][data-scroll-text-entry] > svg:nth-of-type(2) { display: block; }
+@media (forced-colors: active) {
+  .md-scroll-track::before { border: 1px solid CanvasText; }
+  .md-scroll-track:focus-within::before { outline-color: Highlight; }
+}
 @property --_time-angle {
   syntax: "<angle>";
   inherits: true;
@@ -6633,12 +6848,19 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   color: var(--md-sys-color-on-surface);
   overflow: auto;
 }
-.md-time-panel[data-time-inline] {
+.md-time-panel:is([data-time-inline], [data-time-preview]) {
   position: relative;
   margin: 0;
   max-inline-size: 100%;
   max-block-size: none;
 }
+.md-time-panel[data-time-inline] {
+  min-inline-size: max-content;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+}
+.md-time-panel[data-time-resizing] { overflow: clip; }
 .md-time-panel::backdrop {
   background: color-mix(
     in srgb,
@@ -6812,6 +7034,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   block-size: var(--_time-field-height);
   min-inline-size: var(--_time-field-width);
   padding: 0;
+  outline: none;
   border: var(--_time-field-outline-width) solid var(--_time-field-outline);
   border-radius: var(--_time-field-shape);
   background: var(--_time-field-container);
@@ -6823,10 +7046,6 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   line-height: var(--_time-field-line-height);
   letter-spacing: var(--_time-field-tracking);
 }
-.md-time-field:is(:focus-visible, [data-component-state="focused"]) {
-  outline: var(--_time-focus-width) solid var(--_time-focus-color);
-  outline-offset: var(--_time-focus-offset);
-}
 .md-time-field:is(:hover, [data-component-state="hovered"]):not(
     :focus-visible
   ):not([data-component-state="focused"]) {
@@ -6837,7 +7056,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   );
 }
 .md-time-supporting {
-  margin-block-start: 7px;
+  margin-block-start: var(--md-sys-measurement-space100);
   color: var(--_time-support-color);
   font-family: var(--_time-support-font-family);
   font-size: var(--_time-support-font-size);
@@ -7016,22 +7235,17 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   border-inline-start: var(--_time-period-outline-width) solid
     var(--_time-period-outline);
 }
-[data-time-mode] > svg:last-of-type {
-  display: none;
-}
-.md-time-panel[data-mode="input"] [data-time-mode] > svg:first-of-type {
-  display: none;
-}
-.md-time-panel[data-mode="input"] [data-time-mode] > svg:last-of-type {
-  display: block;
-}
+[data-time-mode] > svg:nth-of-type(n+2),
+.md-time-panel[data-mode="input"] [data-time-mode] > svg:nth-of-type(1) { display: none; }
+.md-time-panel[data-mode="input"]:not([data-return-mode="scroll"]) [data-time-mode] > svg:nth-of-type(2),
+.md-time-panel[data-mode="input"][data-return-mode="scroll"] [data-time-mode] > svg:nth-of-type(3) { display: block; }
 @media (prefers-reduced-motion: reduce) {
   .md-time-dial {
     transition: none;
   }
 }
 @media (forced-colors: active) {
-  .md-time-panel,
+  .md-time-panel:not([data-time-inline]),
   .md-time-period-group,
   .md-time-field,
   .md-time-value {
@@ -7062,6 +7276,322 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
 
 .md-native-time { display:none; }
 @media (scripting: none) { .md-native-time { display:block; inline-size:100%; } }
+
+.md-time-choice {
+  position: absolute;
+  left: var(--_time-label-x);
+  top: var(--_time-label-y);
+  translate: -50% -50%;
+  inline-size: 48px;
+  block-size: 48px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.md-time-choice:focus-visible {
+  z-index: 1;
+  outline: var(--_time-focus-width, var(--md-sys-state-focus-indicator-thickness)) solid var(--_time-focus-color, var(--md-sys-color-secondary));
+}
+.md-time-panel:not([data-mode="scroll"]) [data-time-scroll],
+.md-time-panel[data-mode="scroll"] :is(.md-time-value, .md-time-field-wrap, .md-time-dial),
+.md-time-panel[data-time-inline] .md-time-actions:has([data-time-mode][hidden]):not(:has([data-time-save])) { display: none; }
+
+.md-time-panel[data-time-style="expressive"] {
+  --_time-container: var(--md-comp-time-pickers-modal-container-color, var(--md-sys-color-surface-container-high));
+  --_time-shape: var(--md-comp-time-pickers-modal-container-shape, var(--md-sys-shape-corner-extra-large));
+  --_time-value-width: var(--md-comp-time-pickers-scroll-field-container-width, 100px);
+  --_time-value-height: var(--md-comp-time-pickers-scroll-field-container-height, 120px);
+  --_time-field-width: var(--_time-value-width);
+  --_time-field-height: var(--_time-value-height);
+  --_time-field-shape: var(--md-comp-scroll-field-container-shape, var(--md-sys-shape-corner-large));
+  --_time-value-shape: var(--_time-field-shape);
+  --_time-separator-color: var(--md-comp-time-pickers-separator-color, var(--md-sys-color-on-surface));
+  --_time-period-visual: var(--md-comp-time-pickers-modal-period-selector-width, 56px);
+  --_time-period-visual-height: var(--_time-period-visual);
+  --_time-period-shape: 0px;
+  --_time-period-outline-width: 0px;
+  --_time-period-outline: transparent;
+  --_time-focus-color: var(--md-comp-time-pickers-focused-indicator-color, var(--md-sys-color-secondary));
+  --_time-focus-width: var(--md-comp-time-pickers-focused-indicator-thickness, var(--md-sys-state-focus-indicator-thickness));
+  --_time-focus-offset: var(--md-comp-time-pickers-focused-indicator-outline-offset, var(--md-sys-state-focus-indicator-outer-offset));
+  padding: var(--md-comp-time-pickers-padding-vertical, var(--md-sys-measurement-space150))
+    var(--md-comp-time-pickers-padding-horizontal, var(--md-sys-measurement-space150));
+}
+.md-time-panel[data-time-style="expressive"] .md-time-title {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  clip-path: inset(50%);
+  overflow: hidden;
+}
+.md-time-panel[data-time-style="expressive"] .md-time-body {
+  gap: var(--md-comp-time-pickers-dial-gap-vertical, var(--md-sys-measurement-space150));
+}
+.md-time-panel[data-time-style="expressive"] .md-time-selectors { align-items: center; }
+.md-time-panel[data-time-style="expressive"] :is(.md-time-value, .md-time-field, .md-time-separator) {
+  font-family: var(--md-sys-typescale-emphasized-display-large-font, var(--md-sys-typescale-display-large-font));
+  font-size: var(--md-sys-typescale-emphasized-display-large-size, var(--md-sys-typescale-display-large-size));
+  font-weight: var(--md-sys-typescale-emphasized-display-large-weight, var(--md-sys-typescale-display-large-weight));
+  line-height: var(--md-sys-typescale-emphasized-display-large-line-height, var(--md-sys-typescale-display-large-line-height));
+  letter-spacing: var(--md-sys-typescale-emphasized-display-large-tracking, var(--md-sys-typescale-display-large-tracking));
+}
+.md-time-panel[data-time-style="expressive"] .md-time-separator {
+  inline-size: var(--md-comp-time-pickers-separator-width, var(--md-sys-measurement-space200));
+}
+.md-time-panel[data-time-style="expressive"] :is(.md-time-value, .md-time-field) {
+  inline-size: 100%;
+  min-inline-size: 0;
+  background: var(--md-comp-scroll-field-container-color, var(--md-sys-color-surface-container-lowest));
+  color: var(--md-comp-scroll-field-item-selected-color, var(--md-sys-color-on-surface));
+  caret-color: var(--md-comp-scroll-field-active-caret-color, var(--md-sys-color-primary));
+}
+.md-time-panel[data-time-style="expressive"] .md-time-field {
+  border: var(--md-comp-scroll-field-active-container-outline-width, 2px) solid transparent;
+}
+.md-time-panel[data-time-style="expressive"] .md-time-field:is(:focus, [data-component-state="focused"]) {
+  color: var(--md-comp-scroll-field-active-item-selected-color, var(--md-sys-color-primary));
+  border-color: var(--md-comp-scroll-field-active-container-outline-color, var(--md-sys-color-primary));
+}
+.md-time-panel[data-time-style="expressive"] .md-time-value[aria-pressed="true"] {
+  color: var(--md-comp-scroll-field-active-item-selected-color, var(--md-sys-color-primary));
+  box-shadow: inset 0 0 0 var(--md-comp-scroll-field-active-container-outline-width, 2px)
+    var(--md-comp-scroll-field-active-container-outline-color, var(--md-sys-color-primary));
+}
+.md-time-panel[data-time-style="expressive"] .md-time-field[aria-invalid="true"] {
+  background: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
+  caret-color: currentColor;
+  border-color: var(--md-sys-color-error);
+  outline: none;
+}
+.md-time-panel[data-time-style="expressive"] :is(.md-time-hour, .md-time-minute) {
+  inline-size: var(--_time-value-width);
+}
+.md-time-panel[data-time-style="expressive"]:is([data-mode="input"], [data-mode="scroll"]) {
+  --_time-value-height: var(--forge-time-picker-field-block-size, 140px);
+}
+.md-time-panel[data-mode="scroll"] [data-time-scroll] {
+  --_scroll-container-height: var(--_time-value-height);
+  /* The three touch rows meet edge to edge. Their line boxes space the labels. */
+  --forge-scroll-field-item-gap: var(--forge-time-picker-scroll-item-gap, 0px);
+}
+.md-time-panel[data-time-style="expressive"][data-mode="input"][data-return-mode="scroll"] .md-time-field-wrap {
+  padding-block: var(--md-sys-measurement-space175);
+}
+.md-time-panel[data-time-style="expressive"][data-mode="clock"][data-format="24h"][data-orientation="portrait"] {
+  --_time-value-width: var(--md-comp-time-pickers-dial-vertical-scroll-field-container-width, 132px);
+}
+.md-time-panel[data-time-style="expressive"] .md-time-period-group {
+  inline-size: auto;
+  block-size: auto;
+  overflow: visible;
+  gap: var(--md-comp-time-pickers-period-selector-gap, var(--md-sys-measurement-space100));
+  margin-inline-start: var(--md-comp-time-pickers-gap-fields-periods, var(--md-sys-measurement-space100));
+}
+.md-time-panel[data-time-style="expressive"] .md-time-period {
+  --_button-rest-shape: var(--md-comp-time-pickers-modal-period-selector-unselected-shape, var(--md-sys-shape-corner-full));
+  --_button-pressed-shape: var(--_time-period-selected-shape, var(--md-comp-time-pickers-modal-period-selector-selected-shape, var(--md-sys-shape-corner-large)));
+  --_period-ink: var(--md-comp-time-pickers-modal-period-selector-unselected-state-layer-color, var(--md-sys-color-on-surface));
+  --_button-background-state-color: var(--_period-ink);
+  --_button-background-state-opacity: var(--_period-opacity, 0);
+  --_button-state-color: var(--_period-ink);
+  --_button-state-opacity: var(--_period-opacity, 0);
+  --_button-pressed-state-color: var(--_period-ink);
+  --_button-pressed-state-opacity: var(--md-comp-time-pickers-pressed-state-layer-opacity, var(--md-sys-state-pressed-state-layer-opacity));
+  min-inline-size: var(--md-sys-measurement-space600);
+  min-block-size: var(--md-sys-measurement-space600);
+  inline-size: var(--_time-period-visual);
+  block-size: var(--_time-period-visual-height);
+  flex: none;
+  border: 0;
+  border-radius: var(--_button-rest-shape);
+  background: transparent;
+  color: var(--md-comp-time-pickers-period-selector-unselected-label-text-color, var(--md-sys-color-on-surface));
+  font-family: var(--md-sys-typescale-title-medium-font);
+  font-size: var(--md-sys-typescale-title-medium-size);
+  font-weight: var(--md-sys-typescale-title-medium-weight);
+  line-height: var(--md-sys-typescale-title-medium-line-height);
+  transition: border-radius var(--_motion-fast-spatial-duration) var(--_motion-fast-spatial-easing),
+    color var(--_motion-fast-effects-duration) var(--_motion-fast-effects-easing);
+}
+.md-time-panel[data-time-style="expressive"] .md-time-period[aria-checked="true"] {
+  --_button-rest-shape: var(--_button-pressed-shape);
+  --_period-ink: var(--md-comp-time-pickers-modal-period-selector-selected-state-layer-color, var(--md-sys-color-on-primary-container));
+  color: var(--md-comp-time-pickers-period-selector-selected-label-text-color, var(--md-sys-color-on-primary-container));
+  font-weight: var(--md-sys-typescale-emphasized-title-medium-weight, var(--md-sys-typescale-title-medium-weight));
+}
+.md-time-panel[data-time-style="expressive"] .md-time-period:is(:hover:not([data-touch]), [data-component-state="hovered"]) {
+  --_period-opacity: var(--md-comp-time-pickers-hovered-state-layer-opacity, var(--md-sys-state-hover-state-layer-opacity));
+}
+.md-time-panel[data-time-style="expressive"] .md-time-period:is(:focus-visible, [data-component-state="focused"]) {
+  --_period-opacity: var(--md-comp-time-pickers-focused-state-layer-opacity, var(--md-sys-state-focus-state-layer-opacity));
+  outline: none;
+}
+.md-time-panel[data-time-style="expressive"] .md-time-period:is(:active, [data-pressed], [data-component-state="pressed"]):not(:disabled, [data-button-cancelled]) {
+  border-radius: var(--_button-pressed-shape);
+}
+.md-time-panel[data-time-style="expressive"] .md-time-period:is(:active, [data-pressed], [data-component-state="pressed"]):not(:disabled, [data-button-cancelled], [data-rippling]) {
+  --_period-opacity: var(--_button-pressed-state-opacity);
+}
+.md-time-panel[data-time-style="expressive"] .md-time-period::before,
+.md-time-panel[data-time-style="expressive"] .md-time-period::after,
+.md-time-panel[data-time-style="expressive"] .md-time-period > .md-button-ripple {
+  inset: 50% auto auto 50%;
+  translate: -50% -50%;
+  inline-size: var(--_time-period-visual);
+  block-size: var(--_time-period-visual-height);
+  border-radius: inherit;
+  pointer-events: none;
+}
+.md-time-panel[data-time-style="expressive"] .md-time-period::before {
+  transition: opacity var(--_motion-fast-effects-duration) var(--_motion-fast-effects-easing),
+    background-color var(--_motion-fast-effects-duration) var(--_motion-fast-effects-easing);
+}
+.md-time-panel[data-time-style="expressive"] .md-time-period::after {
+  content: "";
+  position: absolute;
+  z-index: -2;
+  background: var(--md-comp-time-pickers-period-selector-unselected-container-color, var(--md-sys-color-surface-container-lowest));
+  transition: background-color var(--_motion-fast-effects-duration) var(--_motion-fast-effects-easing);
+}
+.md-time-panel[data-time-style="expressive"] .md-time-period[aria-checked="true"]::after {
+  background: var(--md-comp-time-pickers-period-selector-selected-container-color, var(--md-sys-color-primary-container));
+}
+.md-time-panel[data-time-style="expressive"] .md-time-period:is(:focus-visible, [data-component-state="focused"])::after {
+  outline: var(--_time-focus-width) solid var(--_time-focus-color);
+  outline-offset: var(--_time-focus-offset);
+}
+@media (prefers-reduced-motion: reduce) {
+  .md-time-panel[data-time-style="expressive"] .md-time-period,
+  .md-time-panel[data-time-style="expressive"] .md-time-period::before,
+  .md-time-panel[data-time-style="expressive"] .md-time-period::after { transition: none; }
+}
+.md-time-panel[data-time-style="expressive"] .md-time-dial {
+  --_time-dial-size: var(--md-comp-time-pickers-dial-face-container-size, 256px);
+  --_time-dial-shape: var(--md-sys-shape-corner-full);
+  --_time-dial-container: var(--md-comp-time-pickers-dial-face-container-color, var(--md-sys-color-surface-container-lowest));
+  --_time-dial-center-size: var(--md-comp-time-pickers-dial-selector-center-container-size, 8px);
+  --_time-dial-center-shape: var(--md-sys-shape-corner-full);
+  --_time-dial-center-color: var(--md-comp-time-pickers-dial-selector-center-container-color, var(--md-sys-color-primary));
+  --_time-dial-handle-size: var(--md-comp-time-pickers-dial-selector-handle-container-size, 48px);
+  --_time-dial-handle-shape: var(--md-sys-shape-corner-full);
+  --_time-dial-handle-color: var(--md-comp-time-pickers-dial-selector-handle-container-color, var(--md-sys-color-primary));
+  --_time-dial-track-width: var(--md-comp-time-pickers-dial-selector-track-width, 2px);
+  --_time-dial-track-color: var(--md-comp-time-pickers-dial-selector-track-color, var(--md-sys-color-primary));
+  --_time-dial-label: var(--md-comp-time-pickers-dial-hour-unselected-label-text-color, var(--md-sys-color-on-surface));
+  --_time-dial-selected-label: var(--md-comp-time-pickers-dial-hour-selected-label-text-color, var(--md-sys-color-on-primary));
+  --_time-dial-font-family: var(--md-sys-typescale-body-large-font);
+  --_time-dial-font-size: var(--md-sys-typescale-body-large-size);
+  --_time-dial-font-weight: var(--md-sys-typescale-body-large-weight);
+  --_time-dial-line-height: var(--md-sys-typescale-body-large-line-height);
+  --_time-dial-tracking: var(--md-sys-typescale-body-large-tracking);
+}
+.md-time-panel[data-time-style="expressive"][data-mode="clock"][data-orientation="landscape"] {
+  --_time-period-visual: var(--md-comp-time-pickers-dial-horizontal-period-selector-width, 100px);
+  --_time-period-visual-height: var(--md-comp-time-pickers-inline-period-selector-width, 40px);
+  --_time-period-selected-shape: var(--md-comp-time-pickers-dial-horizontal-period-selector-selected-shape, var(--md-sys-shape-corner-medium));
+  padding: var(--md-comp-time-pickers-dial-horizontal-padding-vertical, var(--md-sys-measurement-space300))
+    var(--md-comp-time-pickers-dial-horizontal-padding-horizontal, var(--md-sys-measurement-space300));
+}
+.md-time-panel[data-time-style="expressive"][data-mode="clock"][data-orientation="landscape"] .md-time-body {
+  column-gap: var(--md-comp-time-pickers-dial-horizontal-gap-horizontal, 52px);
+}
+.md-time-panel[data-time-style="expressive"][data-mode="clock"][data-orientation="landscape"] .md-time-selectors {
+  row-gap: var(--md-comp-time-pickers-dial-horizontal-gap-fields-periods, var(--md-sys-measurement-space200));
+}
+.md-time-panel[data-time-style="expressive"][data-mode="clock"][data-orientation="landscape"] .md-time-period-group {
+  gap: var(--md-comp-time-pickers-dial-horizontal-period-selector-gap, var(--md-sys-measurement-space200));
+  margin: 0;
+}
+.md-time-panel[data-time-style="expressive"] .md-time-actions {
+  gap: var(--md-comp-time-pickers-gap-actions, var(--md-sys-measurement-space100));
+  margin-block-start: var(--md-comp-time-pickers-dial-gap-vertical, var(--md-sys-measurement-space150));
+}
+.md-time-panel[data-time-style="expressive"]:is([data-mode="input"], [data-mode="scroll"]) .md-time-actions {
+  margin-block-start: var(--md-sys-measurement-space100);
+}
+.md-time-panel[data-time-style="expressive"][data-mode="clock"][data-orientation="landscape"] .md-time-actions {
+  margin-block-start: var(--md-comp-time-pickers-dial-horizontal-gap-vertical, var(--md-sys-measurement-space300));
+}
+.md-time-panel [data-time-mode] {
+  min-inline-size: 48px;
+  min-block-size: 48px;
+}
+.md-time-panel[data-time-inline]:is([data-mode="scroll"], [data-mode="input"]) { inline-size: 100%; }
+.md-time-panel[data-time-style="expressive"][data-time-inline]:is([data-mode="scroll"], [data-mode="input"]) {
+  --_time-period-visual: var(--md-comp-time-pickers-inline-period-selector-width, 40px);
+  --_time-period-selected-shape: var(--md-comp-time-pickers-inline-period-selector-selected-shape, var(--md-sys-shape-corner-medium));
+  padding: 0;
+  background: transparent;
+}
+.md-time-panel[data-time-inline]:is([data-mode="scroll"], [data-mode="input"]) .md-time-body { align-items: stretch; }
+.md-time-panel[data-time-inline]:is([data-mode="scroll"], [data-mode="input"]) :is(.md-time-hour, .md-time-minute) {
+  flex: 1 1 var(--_time-value-width);
+  min-inline-size: var(--_time-value-width);
+}
+@media (forced-colors: active) {
+  .md-time-panel[data-mode="input"] .md-time-field:is(:focus, [data-component-state="focused"]) {
+    border: 2px solid Highlight;
+  }
+  .md-time-period[aria-checked="true"] {
+    outline: 2px solid Highlight;
+    color: HighlightText;
+    background: Highlight;
+  }
+}
+
+.md-time-picker:has(.md-time-side-controls) { inline-size: 100%; }
+.md-time-side-controls {
+  display: grid;
+  flex: none;
+  justify-items: center;
+  align-content: center;
+  --_time-target-size: var(--md-sys-measurement-space600);
+  --_time-target-inset: calc((var(--_time-target-size) - var(--_time-period-visual)) / 2);
+  gap: max(0px, calc(var(--md-comp-time-pickers-inline-gap-periods-input-toggle, var(--md-sys-measurement-space100)) - 2 * var(--_time-target-inset)));
+  margin-inline-start: max(0px, calc(var(--md-comp-time-pickers-gap-fields-periods, var(--md-sys-measurement-space100)) - var(--_time-target-inset)));
+}
+.md-time-panel[data-time-style="expressive"] .md-time-side-controls .md-time-period-group {
+  gap: max(0px, calc(var(--md-comp-time-pickers-period-selector-gap, var(--md-sys-measurement-space100)) - 2 * var(--_time-target-inset)));
+  margin: 0;
+}
+.md-time-side-controls [data-time-mode] { min-inline-size: var(--_time-target-size); min-block-size: var(--_time-target-size); }
+.md-time-side-controls [data-time-mode]::before { inset: var(--_time-target-inset); }
+.md-time-side-controls:not(:has(> :not([hidden]))) { display: none; }
+
+.md-time-panel[data-time-style="baseline"] .md-time-period-group { overflow: visible; }
+.md-time-panel[data-time-style="baseline"] .md-time-period::after { content: ""; position: absolute; inset: 0; }
+.md-time-panel[data-time-style="baseline"] .md-time-period:first-child::after { inset-block-start: -13px; }
+.md-time-panel[data-time-style="baseline"] .md-time-period:last-child::after { inset-block-end: -13px; }
+.md-time-panel[data-time-style="baseline"][data-mode="clock"][data-orientation="landscape"] .md-time-period::after { inset-block: -6px; }
+.md-time-panel[data-time-style="baseline"][data-mode="input"] .md-time-period:first-child::after { inset-block-start: -14px; }
+.md-time-panel[data-time-style="baseline"][data-mode="input"] .md-time-period:last-child::after { inset-block-end: -14px; }
+.md-time-panel[data-time-style="baseline"][data-mode="clock"][data-orientation="landscape"] .md-time-title { margin-block-end: 0; }
+.md-time-panel[data-time-style="baseline"][data-mode="clock"][data-orientation="landscape"] .md-time-body {
+  align-items: start;
+  column-gap: 52px;
+}
+.md-time-panel[data-time-style="baseline"][data-mode="clock"][data-orientation="landscape"] .md-time-selectors {
+  margin-block-start: 72px;
+  row-gap: var(--md-sys-measurement-space200);
+}
+
+.md-time-panel[data-time-dial-swap] {
+  display: flex;
+  flex-direction: column;
+  overflow: clip;
+}
+.md-time-panel[data-time-dial-swap] .md-time-dial {
+  display: block;
+  position: absolute;
+  left: calc(50% + var(--_time-swap-x));
+  top: calc(50% + var(--_time-swap-y));
+  translate: -50% -50%;
+}
+.md-time-panel[data-time-dial-swap] .md-time-dial[inert] { pointer-events: none; }
+.md-time-panel[data-time-dial-swap][data-time-style][data-mode][data-orientation] .md-time-actions { margin-block-start: auto; }
 /* Chip action anatomy uses system spacing; dimensions and colors use each chip's source set. */
 .md-chip-demo {
   display: inline-flex;
@@ -7244,7 +7774,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   .md-filled-select,
   .md-outlined-autocomplete,
   .md-filled-autocomplete
-):has(> input) {
+):has(> :is(input, textarea)) {
   border: 0;
 }
 :is(
@@ -7254,7 +7784,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
     .md-filled-select,
     .md-outlined-autocomplete,
     .md-filled-autocomplete
-  ):has(> input)::after {
+  ):has(> :is(input, textarea))::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -7291,7 +7821,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
     );
 }
 :is(.md-filled-text-field, .md-filled-select, .md-filled-autocomplete):has(
-    > input
+    > :is(input, textarea)
   )::after {
   inset: auto 0 0;
   block-size: var(--_field-indicator-height);
@@ -7311,7 +7841,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
     .md-outlined-autocomplete,
     .md-filled-autocomplete
   )
-  > input {
+  > :is(input, textarea) {
   box-sizing: border-box;
 }
 :is(
@@ -7331,7 +7861,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
 :is(.md-outlined-text-field, .md-outlined-select, .md-outlined-autocomplete):is(
     :focus-within,
     [data-component-state="focused"],
-    :has(> input:not(:placeholder-shown))
+    :has(> :is(input, textarea):not(:placeholder-shown))
   )
   > [data-slot="label"] {
   inset-inline-start: var(--md-sys-measurement-space200);
@@ -7339,27 +7869,20 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
 :is(.md-filled-text-field, .md-filled-select, .md-filled-autocomplete):is(
     :focus-within,
     [data-component-state="focused"],
-    :has(> input:not(:placeholder-shown))
+    :has(> :is(input, textarea):not(:placeholder-shown))
   )
   > [data-slot="label"] {
-  top: var(--md-sys-measurement-space100);
+  top: var(--forge-field-padding-block, var(--md-sys-measurement-space100));
   transform: none;
   background: transparent;
   padding: 0;
   font-size: var(--_field-populated-label-size);
   line-height: var(--_field-populated-label-line-height);
 }
-:is(.md-filled-text-field, .md-filled-select, .md-filled-autocomplete):is(
-    :focus-within,
-    [data-component-state="focused"],
-    :has(> input:not(:placeholder-shown))
-  )
-  > input {
-  padding-block: calc(
-      var(--md-sys-measurement-space100) +
-        var(--_field-populated-label-line-height)
-    )
-    var(--md-sys-measurement-space100);
+:is(.md-filled-text-field, .md-filled-select, .md-filled-autocomplete):has(> [data-slot="label"]) {
+  --_field-label-padding: var(--forge-field-padding-block, var(--md-sys-measurement-space100));
+  --_field-input-padding-top: calc(var(--_field-label-padding) + var(--_field-populated-label-line-height));
+  --_field-input-padding-bottom: var(--_field-label-padding);
 }
 :is(
     .md-outlined-text-field,
@@ -7507,7 +8030,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
     .md-filled-select,
     .md-outlined-autocomplete,
     .md-filled-autocomplete
-  ):has(> input)::after {
+  ):has(> :is(input, textarea))::after {
   z-index: -1;
 }
 :is(
@@ -7607,17 +8130,15 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   ):is(
     :focus-within,
     [data-component-state="focused"],
-    :has(> input:not(:placeholder-shown))
+    :has(> :is(input, textarea):not(:placeholder-shown))
   )
   > .md-field-outline
-  > legend {
+  > legend:not(:empty) {
   inline-size: auto;
   max-inline-size: calc(100% - 2 * var(--md-sys-measurement-space200));
   padding-inline: var(--md-sys-measurement-space50);
 }
 :is(
-  .md-outlined-text-field,
-  .md-filled-text-field,
   .md-outlined-select,
   .md-filled-select,
   .md-outlined-autocomplete,
@@ -7652,14 +8173,14 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
     .md-filled-select,
     .md-outlined-autocomplete,
     .md-filled-autocomplete
-  ):has(> input:disabled)
+  ):has(> :is(input, textarea):disabled)
   > :is([data-slot="prefix"], [data-slot="suffix"]) {
   color: inherit;
 }
 :is(.md-filled-text-field, .md-filled-select, .md-filled-autocomplete):is(
     :focus-within,
     [data-component-state="focused"],
-    :has(> input:not(:placeholder-shown))
+    :has(> :is(input, textarea):not(:placeholder-shown))
   )
   > :is([data-slot="prefix"], [data-slot="suffix"]) {
   align-self: flex-end;
@@ -7673,7 +8194,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   ):not(:has(> .md-field-outline)):is(
     :focus-within,
     [data-component-state="focused"],
-    :has(> input:not(:placeholder-shown))
+    :has(> :is(input, textarea):not(:placeholder-shown))
   )
   > [data-slot="label"] {
   padding-inline: var(--md-sys-measurement-space50);
@@ -7709,22 +8230,22 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
     .md-filled-autocomplete
   ):has(> .md-field-outline):is(
     :focus-visible,
-    :has(> input:focus-visible),
+    :has(> :is(input, textarea):focus-visible),
     [data-component-state="focused"]
   ) {
   outline: none;
 }
 :is(
-    .md-outlined-text-field,
-    .md-filled-text-field,
     .md-outlined-select,
     .md-filled-select,
     .md-outlined-autocomplete,
     .md-filled-autocomplete
   ):is(
-    :focus-visible,
-    :has(> input:focus-visible),
-    [data-component-state="focused"]
+    [data-component-state="focused"],
+    :where(:root:not([data-pointer-focus]) *):is(
+      :focus-visible,
+      :has(> :is(input, textarea):focus-visible)
+    )
   )
   > .md-field-focus-outline {
   opacity: 1;
@@ -8283,10 +8804,13 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   overflow-y: scroll;
   scrollbar-gutter: stable;
 }
-/* Date-picker composition from the guidelines; token replacements live in overrides.json. */
+/* Date-picker composition from the guidelines. */
 .md-date-panel:not([data-variant="docked"]) .md-date-header {
   border-block-end: var(--md-comp-divider-thickness) solid
     var(--md-comp-divider-color);
+}
+.md-date-panel[data-mode="input"] {
+  --_date-height: 0px;
 }
 .md-date-panel[data-mode="input"] .md-date-header p {
   margin-block-end: var(--md-sys-measurement-space450);
@@ -8463,8 +8987,8 @@ html:has(dialog:modal) {
   box-sizing: border-box;
   padding-inline-start: var(--md-comp-list-list-item-leading-space);
 }
-.md-list[data-expand-surface="none"] > li[data-list-expanded="true"] {
-  background: transparent;
+.md-list[data-expand-surface="none"] > li {
+  --_list-expanded-surface: transparent;
 }
 .md-list[data-expand-surface="none"] .md-list-item[aria-expanded="true"] {
   --_list-item-container: var(--md-comp-list-list-item-container-color);
@@ -8488,13 +9012,13 @@ html:has(dialog:modal) {
   opacity: 0;
 }
 
-.md-list[data-expand-surface="tonal"] > li[data-list-expanded="true"] {
-  background: var(--md-sys-color-surface-container);
+.md-list[data-expand-surface="tonal"] > li {
+  --_list-expanded-surface: var(--md-sys-color-surface-container);
 }
 .md-list[data-expand-surface="tonal"]
-  > li[data-list-expanded="true"]
+  > li
   > .md-list-row
-  > .md-list-item {
+  > .md-list-item[aria-expanded="true"] {
   background: transparent;
 }
 /* Rail layout and app scaffolding are renderer rules, not captured measurements. */

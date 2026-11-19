@@ -3,12 +3,25 @@ test('autocomplete matches case-insensitively without changing original indices'
 test('popup placement uses available viewport space and keeps the field width',()=>{let p=popupPosition({left:50,top:30,bottom:86,width:240},{width:800,height:600},200,8);assert.equal(p.top,86);assert.equal(p.width,240);p=popupPosition({left:750,top:530,bottom:586,width:240},{width:800,height:600},200,8);assert.equal(p.top,330);assert.equal(p.left,552);assert.equal(p.height,522);p=popupPosition({left:0,top:0,bottom:56,width:400},{width:200,height:100},200,8);assert.equal(p.width,184);assert.equal(p.left,8);assert.equal(p.height,36);});
 test('select typeahead searches prefixes and cycles repeated letters',()=>{assert.equal(typeahead(['Alpha','Apricot','Beta'],0,'aa'),1);assert.equal(typeahead(['Alpha','Apricot','Beta'],0,'ap'),1);assert.equal(typeahead(['Alpha','Apricot','Beta'],0,'z'),-1);});
 
+test('field focus tracks pointer and keyboard input before popup handling',()=>{
+ const listeners={},attributes=new Set();
+ runInNewContext(readFileSync(`${__dirname}/../../generated/fields.js`,'utf8'),{
+  document:{readyState:'loading',documentElement:{setAttribute:name=>attributes.add(name),removeAttribute:name=>attributes.delete(name)},
+   addEventListener(name,fn,capture){if(capture && !(name in listeners))listeners[name]=fn;}},
+  window:{addEventListener(){}}
+ });
+ listeners.pointerdown();assert(attributes.has('data-pointer-focus'));
+ listeners.keydown({key:'Tab'});assert(!attributes.has('data-pointer-focus'));
+ listeners.pointerdown();listeners.keydown({key:'c',metaKey:true});assert(attributes.has('data-pointer-focus'));
+ listeners.keydown({key:'ArrowDown'});assert(!attributes.has('data-pointer-focus'));
+});
+
 test('readonly inputs and pill buttons toggle and survive native light-dismiss',()=>{
  for(const useButton of [false,true]) {
  const listeners={},attrs={},positions={},empty={hidden:true};let shown=false,focused=0,prevented=0;
  const options=['One','Two'].map((name,index)=>({id:`option-${index}`,hidden:false,dataset:{fieldOption:name},classList:{contains:c=>c==='md-menu-item'},attrs:{},getAttribute(name){return this.attrs[name]??null;},setAttribute(name,value){this.attrs[name]=value;},scrollIntoView(){}}));
  const menu={dataset:{},scrollWidth:260,scrollHeight:2000,offsetHeight:120,style:{setProperty:(name,value)=>positions[name]=value},matches:()=>shown,showPopover(){shown=true;},hidePopover(){shown=false;},addEventListener(){},querySelectorAll:s=>s==='.md-field-menu-divider'?[]:options,querySelector:s=>s==='.md-field-empty'?empty:null};
- const root={dataset:{},getBoundingClientRect:()=>({left:20,top:300,bottom:356,width:200}),querySelector:s=>s==='.md-field-menu'?menu:null};
+ const root={dataset:{},hasAttribute:()=>false,getBoundingClientRect:()=>({left:20,top:300,bottom:356,width:200}),querySelector:s=>s==='.md-field-menu'?menu:null};
  const input={classList:{contains:name=>useButton&&name==='md-filter-chip'},readOnly:!useButton,hasAttribute:name=>useButton&&name==='data-field-select',value:'One',closest:s=>s==='[data-field-example]'?root:null,focus(){focused++;},setAttribute(k,v){attrs[k]=v;},removeAttribute(k){delete attrs[k];}};
  runInNewContext(readFileSync(`${__dirname}/../../generated/fields.js`,'utf8'),{
   document:{readyState:'complete',documentElement:{clientWidth:800},querySelectorAll:s=>s==='[data-field-combo]'?[input]:[],addEventListener:(name,fn)=>listeners[name]=fn},

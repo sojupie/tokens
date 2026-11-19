@@ -11,7 +11,7 @@ import (
 )
 
 func DefaultContext() map[string]string {
-	return map[string]string{"Theme": "Light", "Contrast": "Default", "Platform": "Web", "Audience": "3P", "Font": "Static", "Motion scheme": "Standard", "Language height": "Small", "iOS weight setting": "Default", "iOS dark theme elevation": "None"}
+	return map[string]string{"Theme": "Light", "Contrast": "Default", "Platform": "Web", "Device": "Mobile", "Audience": "3P", "Font": "Static", "Motion scheme": "Standard", "Language height": "Small", "iOS weight setting": "Default", "iOS dark theme elevation": "None"}
 }
 
 type Omission struct {
@@ -195,7 +195,7 @@ func Export(state publish.PublishedState, context map[string]string) (Node, Repo
 // dimensions never cause an arbitrary platform or font to be chosen.
 func Select(values []publish.TokenValueView, context map[string]string) (publish.TokenValueView, bool, error) {
 	var selected publish.TokenValueView
-	found := false
+	ambiguous := false
 	best := -1
 	for _, v := range values {
 		var undefined map[string]json.RawMessage
@@ -227,16 +227,18 @@ func Select(values []publish.TokenValueView, context map[string]string) (publish
 		if !compatible {
 			continue
 		}
-		if found && matches == best && !bytes.Equal(selected.Value, v.Value) {
-			return selected, false, fmt.Errorf("ambiguous values in selected context")
-		}
-		if !found || matches > best {
+		if matches > best {
 			selected = v
-			found = true
 			best = matches
+			ambiguous = false
+		} else if matches == best && !bytes.Equal(selected.Value, v.Value) {
+			ambiguous = true
 		}
 	}
-	return selected, found, nil
+	if ambiguous {
+		return selected, false, fmt.Errorf("ambiguous values in selected context")
+	}
+	return selected, best >= 0, nil
 }
 
 func equalValue(a, b Node) bool {

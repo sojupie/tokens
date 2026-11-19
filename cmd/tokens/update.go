@@ -92,7 +92,12 @@ func runUpdate(args []string) error {
 			fmt.Println("No saved update runs.")
 		}
 		for _, report := range reports {
-			fmt.Printf("%s  %-12s  %s  +%d ~%d -%d\n", report.ID, report.Status, report.Phase, report.Summary.Added, report.Summary.Updated, report.Summary.Removed)
+			summary := report.Summary
+			fmt.Printf("%s  %-12s  %s  +%d ~%d -%d", report.ID, report.Status, report.Phase, summary.Added, summary.Updated, summary.Removed)
+			if summary.CoverageAdded+summary.CoverageLost > 0 {
+				fmt.Printf("  coverage +%d -%d", summary.CoverageAdded, summary.CoverageLost)
+			}
+			fmt.Println()
 		}
 		return nil
 	case "inspect":

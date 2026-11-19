@@ -86,6 +86,9 @@ func emailMessage(config smtpConfig, root string, report Report) []byte {
 	if report.ID != "" {
 		fmt.Fprintf(&body, "Run: %s\nReport: %s\n", report.ID, filepath.Join(root, "runs", report.ID, "report.json"))
 		fmt.Fprintf(&body, "\nChanges: %d added, %d updated, %d removed.\n", report.Summary.Added, report.Summary.Updated, report.Summary.Removed)
+		if report.Summary.CoverageAdded+report.Summary.CoverageLost > 0 {
+			fmt.Fprintf(&body, "Source coverage: +%d -%d records.\n", report.Summary.CoverageAdded, report.Summary.CoverageLost)
+		}
 		fmt.Fprintf(&body, "\nInspect on the host:\nsudo docker compose -f deploy/compose.yaml run --rm --no-deps updater update inspect %s --state-dir %s\n", report.ID, root)
 	}
 	if report.Error != "" {

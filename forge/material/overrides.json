@@ -1,8 +1,4 @@
 {
-  "md.comp.date-input.modal.container.height": {
-    "value": 273,
-    "unit": "px"
-  },
   "md.comp.menus.group.padding": {
     "value": 4,
     "unit": "px"

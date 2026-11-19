@@ -136,12 +136,14 @@
   container: list-actions / inline-size;
 }
 @container list-actions (inline-size < 20rem) {
-  .md-list-row:has(> .md-list-actions) > .md-list-item {
+  .md-list:not([data-actions-layout="inline"]) > li > .md-list-row:has(> .md-list-actions) > .md-list-item {
     grid-area: 1 / 1 / 3 / -1;
     grid-template-rows: subgrid;
   }
-  .md-list-main { grid-column: 1 / -1; }
-  .md-list-actions {
+  .md-list:not([data-actions-layout="inline"]) > li > .md-list-row > .md-list-item > .md-list-main {
+    grid-column: 1 / -1;
+  }
+  .md-list:not([data-actions-layout="inline"]) > li > .md-list-row > .md-list-actions {
     grid-row: 2;
     justify-self: end;
     margin-block-end: var(--md-comp-list-list-item-bottom-space);
@@ -221,6 +223,11 @@
   :not([aria-current="page"], [aria-pressed="true"], [aria-selected="true"], [data-selected="true"], :has(> input:checked, > input:indeterminate))
 ) {
   --_list-item-container-opacity: 0;
+}
+.md-list[data-surface="transparent"] .md-list-item:disabled:where(
+  :not([aria-current="page"], [aria-pressed="true"], [aria-selected="true"], [data-selected="true"], :has(> input:checked, > input:indeterminate))
+) {
+  --_button-background-state-opacity: 0;
 }
 .md-list-item:is(:active, [data-pressed], [data-component-state="pressed"]):not(
     :disabled
@@ -393,20 +400,30 @@
   rotate: 180deg;
 }
 /* The source expansion example reveals full-width rows on one continuous surface. */
+.md-list:where([data-control="expand"]) > li {
+  --_list-expanded-surface: var(--md-comp-list-expand-expanded-list-item-container-color);
+  transition:
+    background-color var(--_motion-fast-effects-duration) var(--_motion-fast-effects-easing),
+    border-radius var(--_motion-fast-spatial-duration) var(--_motion-fast-spatial-easing);
+}
 .md-list:where([data-control="expand"]) > li[data-list-expanded="true"] {
   overflow: clip;
-  background: var(--md-comp-list-expand-expanded-list-item-container-color);
+}
+.md-list:where([data-control="expand"]) > li:has(> .md-list-row > [aria-expanded="true"]) {
+  background-color: var(--_list-expanded-surface);
   border-radius: var(--_list-shape);
 }
 .md-list:where([data-control="expand"][data-variant="segmented"])
-  > li[data-list-expanded="true"] {
-  overflow: clip;
-  background: var(
+  > li {
+  --_list-expanded-surface: var(
     --md-comp-list-expand-expanded-list-item-segmented-container-color
   );
 }
 .md-list-expand-content {
   overflow: hidden;
+  background-color: var(--_list-expanded-surface, transparent);
+  border-end-start-radius: var(--_list-shape);
+  border-end-end-radius: var(--_list-shape);
   list-style: none;
   padding: 0;
   margin: 0;

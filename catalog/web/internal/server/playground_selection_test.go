@@ -9,6 +9,7 @@ import (
 	webrender "github.com/sojupie/tokens/catalog/web/internal/render"
 	"github.com/sojupie/tokens/forge/components/ui"
 	"github.com/sojupie/tokens/source/publish"
+	xhtml "golang.org/x/net/html"
 	"html"
 	"net/http/httptest"
 	"net/url"
@@ -607,6 +608,27 @@ func TestSearchKeepsOneHeaderAndInput(t *testing.T) {
 		text := html.String()
 		if strings.Count(text, `class="md-search-input"`) != 1 || strings.Count(text, `class="md-search-bar md-search-trigger"`) != 1 || strings.Contains(text, `<dialog class="md-search-view`) {
 			t.Fatal("search must retain one header/input rather than a duplicate popup")
+		}
+		doc, err := xhtml.Parse(strings.NewReader(text))
+		if err != nil {
+			t.Fatal(err)
+		}
+		var bar, options *xhtml.Node
+		for node := range doc.Descendants() {
+			for _, attr := range node.Attr {
+				if attr.Key != "class" {
+					continue
+				}
+				switch attr.Val {
+				case "md-search-bar md-search-trigger":
+					bar = node
+				case "md-search-options":
+					options = node
+				}
+			}
+		}
+		if bar == nil || options == nil || bar.Parent != options.Parent {
+			t.Fatal("search options must sit outside the bar's press surface")
 		}
 	}
 }

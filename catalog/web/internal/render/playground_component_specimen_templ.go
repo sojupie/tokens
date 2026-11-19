@@ -65,6 +65,11 @@ func ComponentSpecimen(c webview.ComponentCase) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
+		case "scroll-field":
+			templ_7745c5c3_Err = SpecimenScrollField(c).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
 		case "date":
 			templ_7745c5c3_Err = SpecimenDate(c).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {

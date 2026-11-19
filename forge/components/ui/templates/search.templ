@@ -43,6 +43,11 @@ templ SearchBarSurface(p model.SearchProps) {
 }
 
 templ SearchActions(p model.SearchProps) {
+	@searchActionButtons(p)
+	@searchOptions(p)
+}
+
+templ searchActionButtons(p model.SearchProps) {
 	<div class="md-search-actions">
 		if p.SearchHasAction("clear") {
 			<span class="md-search-action-target" hidden?={ p.Value=="" } data-search-clear-target>
@@ -53,15 +58,10 @@ templ SearchActions(p model.SearchProps) {
 		}
 		if p.SearchHasAction("settings") {
 			<span class="md-search-action-target">
-				<button class="md-icon-button md-standard-icon-button md-search-action" data-size="small" data-shape="round" type="button" aria-label="Search options" popovertarget={ p.SearchOptionsID() }>
+				<button class="md-icon-button md-standard-icon-button md-search-action" data-size="small" data-shape="round" type="button" aria-label="Search options" aria-haspopup="dialog" popovertarget={ p.SearchOptionsID() }>
 					@model.Icon("settings_outline")
 				</button>
 			</span>
-			<div class="md-search-options" id={ p.SearchOptionsID() } popover="auto" role="dialog" aria-label="Search options">
-				if p.Options!=nil {
-					@p.Options
-				}
-			</div>
 		}
 		if p.SearchHasAction("avatar") {
 			<button class="md-icon-button md-standard-icon-button md-search-avatar" data-size="small" data-shape="round" type="button" aria-label="Profile">
@@ -75,6 +75,16 @@ templ SearchActions(p model.SearchProps) {
 			</button>
 		}
 	</div>
+}
+
+templ searchOptions(p model.SearchProps) {
+	if p.SearchHasAction("settings") {
+		<div class="md-search-options" id={ p.SearchOptionsID() } popover="auto" role="dialog" aria-label="Search options">
+			if p.Options!=nil {
+				@p.Options
+			}
+		</div>
+	}
 }
 
 templ SearchView(p model.SearchProps) {
@@ -100,7 +110,7 @@ templ SearchBar(p model.SearchProps, label string, value string, disclosure bool
 	@model.Require("search")
 	<div { p.SearchBar()... }>
 		<span class="md-search-leading-slot">
-			if p.Leading=="icon" {
+			if model.Fallback(p.Leading, "icon")=="icon" {
 				<span class="md-search-leading" aria-hidden="true">
 					@model.Icon("search")
 				</span>
@@ -128,6 +138,7 @@ templ SearchBar(p model.SearchProps, label string, value string, disclosure bool
 			autocomplete="off"
 			readonly?={ disclosure && !p.Expanded }
 		/>
-		@SearchActions(p)
+		@searchActionButtons(p)
 	</div>
+	@searchOptions(p)
 }

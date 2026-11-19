@@ -7,6 +7,16 @@ import { groupBindings } from '../../css-output.ts';
 const contract = JSON.parse(
   readFileSync(new URL("./component-contract.json", import.meta.url)),
 );
+// Material added device-specific plain tooltip geometry after the first captures.
+const plainTooltipGeometry = {
+  "gap.trigger-tooltip": "parent-gap",
+  "max-height": "max-height",
+  "max-width": "max-width",
+  "min-height": "min-height",
+  "min-width": "min-width",
+  "padding.horizontal": "padding-horizontal",
+  "padding.vertical": "padding-vertical",
+};
 const extension = "dev.tokencatalog.material";
 const selection =
   ':where(:checked,[aria-pressed="true"],[aria-selected="true"],[aria-current="page"],[data-selected="true"],:has(> input:checked, > input:indeterminate))';
@@ -141,6 +151,7 @@ function binding(set, suffix) {
     else if(['time-value','time-period','time-field'].includes(family)&&(parsed.state||parsed.selected||/(?:color|opacity)$/.test(property)&&!property.startsWith('outline.')))selector+=' .md-'+family;
     return{...parsed,family,selector,property:role,rank};
   } else if(set.startsWith('md.comp.date-picker.')||set==='md.comp.date-input.modal') {
+    if(set==='md.comp.date-input.modal'&&suffix==='container.height')return{excluded:'Date input sizes to its fields, supporting text, and actions.'};
     if(suffix.endsWith('.type'))return{excluded:'Composite typography duplicates individual font, size, weight, line-height and tracking fields.'};
     if(suffix==='container.surface-tint-layer.color')return{excluded:'Deprecated surface tint is replaced by the captured tonal container color.'};
     if(suffix.endsWith('.opcaity'))return{excluded:'Misspelled source duplicate; the canonical opacity field is used after checking equality.'};
@@ -466,6 +477,8 @@ function binding(set, suffix) {
   } else if (["md.comp.snackbar", "md.comp.plain-tooltip", "md.comp.rich-tooltip"].includes(set)) {
     family = set === "md.comp.snackbar" ? "snackbar" : "tooltip";
     selector = set === "md.comp.snackbar" ? ".md-snackbar" : set.endsWith("plain-tooltip") ? '.md-tooltip:where([data-variant="plain"])' : '.md-tooltip:where([data-variant="rich"])';
+    if (set === "md.comp.plain-tooltip" && Object.hasOwn(plainTooltipGeometry, suffix))
+      return { family, selector, property: plainTooltipGeometry[suffix] };
     if (property.startsWith("action.")) {
       family = "support-action";
       selector += " .md-feedback-action";
@@ -655,6 +668,7 @@ function binding(set, suffix) {
     }
     const raw=suffix.replace(/^text-field\./,''),error=raw.startsWith('error.'),key=error?raw.slice(6):raw;
     parsed=parse(key);property=parsed.sourceProperty;
+    if(property==='container.height')return{excluded:'Text, icons and padding determine the rendered field height.'};
     if(error)selector+=':where([aria-invalid="true"],:has([aria-invalid="true"]))';
     const extras={'leading-icon.size':'leading-icon-size','trailing-icon.size':'trailing-icon-size','caret.color':'caret','input-text.placeholder.color':'placeholder','input-text.prefix.color':'prefix','input-text.suffix.color':'suffix','label-text.populated.size':'populated-label-size','label-text.populated.line-height':'populated-label-line-height','active-indicator.color':'indicator-color','active-indicator.height':'indicator-height','active-indicator.opacity':'indicator-opacity','active-indicator.thickness':'focus-width'};
     if(extras[property])return {...parsed,family,selector,property:extras[property],error};
@@ -822,6 +836,10 @@ export function generateComponents(document, values) {
   }
   const records = [];
   for (const [name, meta] of source) {
+    if (meta.sourceType === "motionReference") {
+      excluded.push({ token: name, reason: "Physical spring reference preserved in source metadata." });
+      continue;
+    }
     const set = meta.presentation?.setName;
     if (
       !set &&
@@ -918,12 +936,17 @@ export function generateComponents(document, values) {
         : b.family === "field" && b.state === "focused"
         ? condition({ ...b, state: "" }) +
           `:where(:focus,:focus-within,[data-component-state="focused"])${enabled}`
+        : b.family === "time-field" && b.state === "focused"
+        ? `:where(:focus,[data-component-state="focused"])${enabled}`
         : ["menu-item", "checkbox", "switch", "nav-item", "segment", "tab", "toolbar-item", "sheet-action", "split-item", "fab-menu-item", "fab-menu-close", "list-item", "list-reveal", "carousel-item", "date-day", "date-year", "date-month", "date-menu", "time-value", "time-period", "time-field"].includes(b.family) && condition(b)
           ? `:where(${condition(b)})`
           : condition(b);
+    const stateCondition = b.family === "field"
+      ? fieldCondition.replaceAll("> input:disabled, > select:disabled", "> :is(input, textarea, select):disabled")
+      : fieldCondition;
     const selectors = b.selector
       .split(", ")
-      .map((s) => s + fieldCondition + (b.target || ""))
+      .map((s) => s + stateCondition + (b.target || ""))
       .join(", ");
     const property =
       b.family === "dialog-action" &&
@@ -975,12 +998,21 @@ export function generateComponents(document, values) {
     requiredNames.add(b.variable);
   }
   const configurations = [];
-  for(const variant of ['clock','input'])for(const orientation of variant==='clock'?['portrait','landscape']:['portrait'])
-    for(const width of ['12h','24h'])for(const control of variant==='clock'?['value','dial',...(width==='12h'?['period']:[])]:['field',...(width==='12h'?['period']:[])])
-      for(const shape of ['value','field','dial'].includes(control)?['hour','minute']:['hour'])
-        for(const selection of ['value','period'].includes(control)?['selected','unselected']:[''])
-          for(const state of control==='dial'?['enabled']:control==='field'?['enabled','hovered','focused']:['enabled','hovered','focused','pressed'])
-            configurations.push({family:'time',variant,orientation,width,control,shape,selection,state});
+  for(const timeStyle of ['expressive','baseline'])
+    for(const variant of timeStyle==='expressive'?['clock','input','scroll']:['clock','input'])
+      for(const timePlacement of variant==='clock'||timeStyle==='baseline'?['modal']:['inline','modal'])
+        for(const orientation of variant==='clock'?['portrait','landscape']:[''])
+          for(const width of ['12h','24h'])
+            for(const control of [variant==='clock'?'value':variant==='scroll'?'scroll':'field', ...(variant==='clock'?['dial']:[]), ...(width==='12h'?['period']:[])])
+              for(const shape of ['value','field','dial','scroll'].includes(control)?['hour','minute']:['hour'])
+                for(const selection of ['value','period'].includes(control)?['selected','unselected']:[''])
+                  for(const state of control==='dial'||control==='scroll'?['enabled']:control==='field'?['enabled','hovered','focused']:['enabled','hovered','focused','pressed'])
+                    configurations.push({family:'time',timeStyle,variant,timePlacement,orientation,width,control,shape,selection,state});
+  for(const variant of ['numeric','text','wrapping','paired','custom'])
+    for(const width of ['hug','fill'])
+      for(const size of ['small','medium','large'])
+        for(const state of ['enabled','hovered','focused','disabled'])
+          configurations.push({family:'scroll-field',variant,size,width,state});
   for(const variant of ['docked','modal','input','full-screen'])
     for(const dateRange of [false,true])
       for(const control of variant==='docked'?['day','month','year','menu-button']:variant==='input'?['day']:['day','year'])

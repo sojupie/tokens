@@ -8,7 +8,7 @@ import {rewriteProperties,shortName} from './short-css-names.ts';
 
 const digest=(text:string)=>createHash('sha256').update(text).digest('hex');
 export function deliveryStyles(styles:Record<string,string>,runtimeSources:string[]) {
- const exact=new Set<string>(), prefixes=new Set<string>();
+ const exact=new Set<string>(), prefixes=new Set<string>(['--forge-']);
  // Literal names are exact. Interpolation, printf and concatenation can generate a family.
  for(const source of runtimeSources) {
   for(const [,name,dynamic] of source.matchAll(/(--[\w-]+)(\$\{|%(?:\[\d+\])?s|["'`]\s*\+)?/g)) {

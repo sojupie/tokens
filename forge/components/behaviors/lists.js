@@ -48,11 +48,12 @@ import { navigationIndex } from "../helpers/navigation.ts";
     const panel=document.getElementById(button.getAttribute('aria-controls')),open=button.getAttribute('aria-expanded')!=='true';
     const from=panel.hidden?0:panel.getBoundingClientRect().height;
     const row=button.closest('[data-list-row]');
+    const motion=reduced.matches?null:timing(panel);
     animations.get(panel)?.cancel();button.setAttribute('aria-expanded',String(open));row.dataset.listExpanded='true';panel.hidden=false;panel.inert=!open;
     panel.style.height='';const to=open?panel.scrollHeight:0;
-    if(reduced.matches){panel.hidden=!open;panel.inert=!open;row.dataset.listExpanded=String(open);panel.removeAttribute('data-list-animating');return;}
+    if(!motion){panel.hidden=!open;panel.inert=!open;row.dataset.listExpanded=String(open);panel.removeAttribute('data-list-animating');return;}
     panel.setAttribute('data-list-animating','');
-    const animation=panel.animate([{height:from+'px'},{height:to+'px'}],{...timing(panel),fill:'both'});animations.set(panel,animation);
+    const animation=panel.animate([{height:from+'px'},{height:to+'px'}],{...motion,fill:'both'});animations.set(panel,animation);
     try{await animation.finished;if(animations.get(panel)!==animation)return;panel.hidden=!open;row.dataset.listExpanded=String(open);panel.style.height='';panel.removeAttribute('data-list-animating');animation.cancel();animations.delete(panel);}catch{}
   }
   function updateMoveActions(list) {

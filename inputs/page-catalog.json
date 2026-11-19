@@ -155,6 +155,12 @@
       "pageType": "specs"
     },
     {
+      "url": "https://m3.material.io/components/scroll-fields/specs",
+      "area": "components",
+      "subject": "scroll-fields",
+      "pageType": "specs"
+    },
+    {
       "url": "https://m3.material.io/components/segmented-buttons/specs",
       "area": "components",
       "subject": "segmented-buttons",

@@ -22,7 +22,7 @@
   .md-filled-select,
   .md-outlined-autocomplete,
   .md-filled-autocomplete
-):has(> input) {
+):has(> :is(input, textarea)) {
   border: 0;
 }
 :is(
@@ -32,7 +32,7 @@
     .md-filled-select,
     .md-outlined-autocomplete,
     .md-filled-autocomplete
-  ):has(> input)::after {
+  ):has(> :is(input, textarea))::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -69,7 +69,7 @@
     );
 }
 :is(.md-filled-text-field, .md-filled-select, .md-filled-autocomplete):has(
-    > input
+    > :is(input, textarea)
   )::after {
   inset: auto 0 0;
   block-size: var(--_field-indicator-height);
@@ -89,7 +89,7 @@
     .md-outlined-autocomplete,
     .md-filled-autocomplete
   )
-  > input {
+  > :is(input, textarea) {
   box-sizing: border-box;
 }
 :is(
@@ -109,7 +109,7 @@
 :is(.md-outlined-text-field, .md-outlined-select, .md-outlined-autocomplete):is(
     :focus-within,
     [data-component-state="focused"],
-    :has(> input:not(:placeholder-shown))
+    :has(> :is(input, textarea):not(:placeholder-shown))
   )
   > [data-slot="label"] {
   inset-inline-start: var(--md-sys-measurement-space200);
@@ -117,27 +117,20 @@
 :is(.md-filled-text-field, .md-filled-select, .md-filled-autocomplete):is(
     :focus-within,
     [data-component-state="focused"],
-    :has(> input:not(:placeholder-shown))
+    :has(> :is(input, textarea):not(:placeholder-shown))
   )
   > [data-slot="label"] {
-  top: var(--md-sys-measurement-space100);
+  top: var(--forge-field-padding-block, var(--md-sys-measurement-space100));
   transform: none;
   background: transparent;
   padding: 0;
   font-size: var(--_field-populated-label-size);
   line-height: var(--_field-populated-label-line-height);
 }
-:is(.md-filled-text-field, .md-filled-select, .md-filled-autocomplete):is(
-    :focus-within,
-    [data-component-state="focused"],
-    :has(> input:not(:placeholder-shown))
-  )
-  > input {
-  padding-block: calc(
-      var(--md-sys-measurement-space100) +
-        var(--_field-populated-label-line-height)
-    )
-    var(--md-sys-measurement-space100);
+:is(.md-filled-text-field, .md-filled-select, .md-filled-autocomplete):has(> [data-slot="label"]) {
+  --_field-label-padding: var(--forge-field-padding-block, var(--md-sys-measurement-space100));
+  --_field-input-padding-top: calc(var(--_field-label-padding) + var(--_field-populated-label-line-height));
+  --_field-input-padding-bottom: var(--_field-label-padding);
 }
 :is(
     .md-outlined-text-field,
@@ -285,7 +278,7 @@
     .md-filled-select,
     .md-outlined-autocomplete,
     .md-filled-autocomplete
-  ):has(> input)::after {
+  ):has(> :is(input, textarea))::after {
   z-index: -1;
 }
 :is(
@@ -385,17 +378,15 @@
   ):is(
     :focus-within,
     [data-component-state="focused"],
-    :has(> input:not(:placeholder-shown))
+    :has(> :is(input, textarea):not(:placeholder-shown))
   )
   > .md-field-outline
-  > legend {
+  > legend:not(:empty) {
   inline-size: auto;
   max-inline-size: calc(100% - 2 * var(--md-sys-measurement-space200));
   padding-inline: var(--md-sys-measurement-space50);
 }
 :is(
-  .md-outlined-text-field,
-  .md-filled-text-field,
   .md-outlined-select,
   .md-filled-select,
   .md-outlined-autocomplete,
@@ -430,14 +421,14 @@
     .md-filled-select,
     .md-outlined-autocomplete,
     .md-filled-autocomplete
-  ):has(> input:disabled)
+  ):has(> :is(input, textarea):disabled)
   > :is([data-slot="prefix"], [data-slot="suffix"]) {
   color: inherit;
 }
 :is(.md-filled-text-field, .md-filled-select, .md-filled-autocomplete):is(
     :focus-within,
     [data-component-state="focused"],
-    :has(> input:not(:placeholder-shown))
+    :has(> :is(input, textarea):not(:placeholder-shown))
   )
   > :is([data-slot="prefix"], [data-slot="suffix"]) {
   align-self: flex-end;
@@ -451,7 +442,7 @@
   ):not(:has(> .md-field-outline)):is(
     :focus-within,
     [data-component-state="focused"],
-    :has(> input:not(:placeholder-shown))
+    :has(> :is(input, textarea):not(:placeholder-shown))
   )
   > [data-slot="label"] {
   padding-inline: var(--md-sys-measurement-space50);
@@ -487,22 +478,22 @@
     .md-filled-autocomplete
   ):has(> .md-field-outline):is(
     :focus-visible,
-    :has(> input:focus-visible),
+    :has(> :is(input, textarea):focus-visible),
     [data-component-state="focused"]
   ) {
   outline: none;
 }
 :is(
-    .md-outlined-text-field,
-    .md-filled-text-field,
     .md-outlined-select,
     .md-filled-select,
     .md-outlined-autocomplete,
     .md-filled-autocomplete
   ):is(
-    :focus-visible,
-    :has(> input:focus-visible),
-    [data-component-state="focused"]
+    [data-component-state="focused"],
+    :where(:root:not([data-pointer-focus]) *):is(
+      :focus-visible,
+      :has(> :is(input, textarea):focus-visible)
+    )
   )
   > .md-field-focus-outline {
   opacity: 1;

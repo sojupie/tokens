@@ -212,6 +212,9 @@
   }
   const shapeMotions = new WeakMap();
   function shapeTo(button, target, initial) {
+    // List rows use CSS for shape changes. Reading styles here can commit an
+    // intermediate shape before a list activation finishes.
+    if (button.matches(".md-list-item")) return;
     const old = shapes.get(button), prior = shapeMotions.get(button);
     const velocity = old && prior ? prior.from.map((n, i) => springState(prior.damping, prior.stiffness, Math.max(0, Number(old.currentTime) || 0) / 1000, n, prior.to[i], prior.velocity[i]).velocity) : [0, 0, 0, 0];
     const style = getComputedStyle(button);

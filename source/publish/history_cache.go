@@ -7,7 +7,7 @@ import (
 )
 
 // Bump when semantic indexing or comparison rules change.
-const historyProcessingVersion = "semantic-history-1"
+const historyProcessingVersion = "semantic-history-2"
 
 type historyCacheEntry struct {
 	Key      string          `json:"key"`

@@ -72,7 +72,7 @@ func (files StaticAssets) Open(name string) (fs.File, error) {
 		return site.Files.Open(name)
 	case "motion.js":
 		return components.Files.Open("static/motion.cjs")
-	case "buttons.css", "buttons.js", "components.css", "components.js", "progress.js", "loading.js", "loading-shapes.json", "sheets.js", "lists.js", "carousel.js", "search.js", "date-picker.js", "time-picker.js", "fields.js", "dialogs.js", "menus.js":
+	case "buttons.css", "buttons.js", "components.css", "components.js", "progress.js", "loading.js", "loading-shapes.json", "sheets.js", "lists.js", "carousel.js", "search.js", "date-picker.js", "time-picker.js", "scroll-field.js", "fields.js", "dialogs.js", "menus.js":
 		return components.Files.Open("static/" + name)
 	default:
 		path, ok := files.paths[name]

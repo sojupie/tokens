@@ -90,9 +90,13 @@ type RecordChange struct {
 }
 
 type SemanticDiff struct {
-	Added   []SemanticChange `json:"added,omitempty"`
-	Removed []SemanticChange `json:"removed,omitempty"`
-	Changed []SemanticChange `json:"changed,omitempty"`
+	Added           []SemanticChange `json:"added,omitempty"`
+	Removed         []SemanticChange `json:"removed,omitempty"`
+	Changed         []SemanticChange `json:"changed,omitempty"`
+	ContextsAdded   []SemanticChange `json:"contextsAdded,omitempty"`
+	ContextsRemoved []SemanticChange `json:"contextsRemoved,omitempty"`
+	CoverageAdded   []SemanticChange `json:"coverageAdded,omitempty"`
+	CoverageLost    []SemanticChange `json:"coverageLost,omitempty"`
 }
 
 type SemanticChange struct {
@@ -160,7 +164,7 @@ func Diff(fromDir, toDir string) (SnapshotDiff, error) {
 		Records:            diffRecords(fromRecords, toRecords),
 		PageResults:        diffPageResults(fromPageResults.Pages, toPageResults.Pages),
 		LifecycleNotices:   diffLifecycleNotices(normalizeLifecycleNoticePayloadIDs(fromLifecycle.Notices, fromPayloadIDs), normalizeLifecycleNoticePayloadIDs(toLifecycle.Notices, toPayloadIDs)),
-		Semantic:           diffSemanticRecords(fromRecords, toRecords),
+		Semantic:           CompareSemanticIndexes(indexSemanticSnapshot(fromGraph, fromPayloadIDs), indexSemanticSnapshot(toGraph, toPayloadIDs)),
 	}
 	diff.Changed = diff.PageCatalogChanged || diff.CaptureChanged || len(diff.Pages.Added) > 0 || len(diff.Pages.Removed) > 0 || len(diff.SourcePayloads.Added) > 0 || len(diff.SourcePayloads.Removed) > 0 || len(diff.SourcePayloads.Changed) > 0 || len(diff.Records.Added) > 0 || len(diff.Records.Removed) > 0 || len(diff.Records.Changed) > 0 || len(diff.PageResults.Added) > 0 || len(diff.PageResults.Removed) > 0 || len(diff.PageResults.Changed) > 0 || len(diff.LifecycleNotices.Added) > 0 || len(diff.LifecycleNotices.Removed) > 0
 	return diff, nil
@@ -255,13 +259,17 @@ func readSourcePayloadIDMap(directory string) (map[string]string, error) {
 	if details.SchemaVersion != 2 && details.SchemaVersion != SchemaVersion {
 		return nil, fmt.Errorf("unsupported source-payload-details schema version %d", details.SchemaVersion)
 	}
+	return sourcePayloadIDMap(details), nil
+}
+
+func sourcePayloadIDMap(details SourcePayloadDetails) map[string]string {
 	result := make(map[string]string, len(details.Records))
 	for _, detail := range details.Records {
 		if detail.ID != "" && detail.SourcePayloadURL != "" {
 			result[detail.ID] = sourcePayloadKey(detail.SourcePayloadURL)
 		}
 	}
-	return result, nil
+	return result
 }
 
 func normalizeRecordPayloadIDs(records []ExtractedRecord, payloadIDs map[string]string) []ExtractedRecord {
@@ -408,35 +416,52 @@ func diffRecords(from, to []ExtractedRecord) RecordSetDiff {
 	return diff
 }
 
-func diffSemanticRecords(from, to []ExtractedRecord) SemanticDiff {
-	return CompareSemanticIndexes(IndexSemanticRecords(from), IndexSemanticRecords(to))
+type SemanticIndex struct {
+	Records  map[string]SemanticRecord
+	Tokens   map[string]bool
+	Payloads map[string]bool
 }
 
-// CompareSemanticIndexes compares token meaning without building the diagnostic
-// payload, page, and raw-record diffs. Callers must verify snapshots first.
-func CompareSemanticIndexes(fromByKey, toByKey map[string]SemanticRecord) SemanticDiff {
+// CompareSemanticIndexes compares token meaning and the coverage of its source.
+func CompareSemanticIndexes(from, to SemanticIndex) SemanticDiff {
 	diff := SemanticDiff{}
-	for key, after := range toByKey {
-		before, exists := fromByKey[key]
-		if !exists {
-			diff.Added = append(diff.Added, semanticChange(after, SemanticRecord{}))
+	for key, after := range to.Records {
+		if before, exists := from.Records[key]; !exists {
+			change := semanticChange(after, SemanticRecord{})
+			switch {
+			case after.PayloadKey != "" && !from.Payloads[after.PayloadKey]:
+				diff.CoverageAdded = append(diff.CoverageAdded, change)
+			case after.Kind == "contextualReferenceTree" && from.Tokens[after.Name]:
+				diff.ContextsAdded = append(diff.ContextsAdded, change)
+			default:
+				diff.Added = append(diff.Added, change)
+			}
 		} else if before.Value != after.Value {
 			diff.Changed = append(diff.Changed, semanticChange(after, before))
 		}
 	}
-	for key, before := range fromByKey {
-		if _, exists := toByKey[key]; !exists {
-			diff.Removed = append(diff.Removed, semanticChange(SemanticRecord{}, before))
+	for key, before := range from.Records {
+		if _, exists := to.Records[key]; !exists {
+			change := semanticChange(SemanticRecord{}, before)
+			switch {
+			case before.PayloadKey != "" && !to.Payloads[before.PayloadKey]:
+				diff.CoverageLost = append(diff.CoverageLost, change)
+			case before.Kind == "contextualReferenceTree" && to.Tokens[before.Name]:
+				diff.ContextsRemoved = append(diff.ContextsRemoved, change)
+			default:
+				diff.Removed = append(diff.Removed, change)
+			}
 		}
 	}
-	sortSemanticChanges(diff.Added)
-	sortSemanticChanges(diff.Removed)
-	sortSemanticChanges(diff.Changed)
+	for _, changes := range [][]SemanticChange{diff.Added, diff.Removed, diff.Changed, diff.ContextsAdded, diff.ContextsRemoved, diff.CoverageAdded, diff.CoverageLost} {
+		sortSemanticChanges(changes)
+	}
 	return diff
 }
 
 type SemanticRecord struct {
 	Key               string
+	PayloadKey        string
 	SourcePayloadKind string
 	SourceSubject     string
 	Kind              string
@@ -444,24 +469,42 @@ type SemanticRecord struct {
 	Value             string
 }
 
-// IndexSemanticRecords retains only the token meaning needed by a timeline.
-func IndexSemanticRecords(records []ExtractedRecord) map[string]SemanticRecord {
-	result := make(map[string]SemanticRecord)
-	contexts := ContextDescriptions(records)
-	for _, record := range records {
+// IndexSemanticSnapshot retains the records and source coverage needed by a timeline.
+func IndexSemanticSnapshot(graph Graph, details SourcePayloadDetails) SemanticIndex {
+	return indexSemanticSnapshot(graph, sourcePayloadIDMap(details))
+}
+
+func indexSemanticSnapshot(graph Graph, payloadIDs map[string]string) SemanticIndex {
+	result := SemanticIndex{
+		Records:  make(map[string]SemanticRecord),
+		Tokens:   make(map[string]bool),
+		Payloads: make(map[string]bool),
+	}
+	for _, payload := range graph.SourcePayloads {
+		if payload.Records > 0 && payload.Error == "" && payload.ExtractionError == "" {
+			result.Payloads[sourcePayloadKey(payload.SourcePayloadURL)] = true
+		}
+	}
+	contexts := ContextDescriptions(graph.Records)
+	add := func(semantic SemanticRecord, record ExtractedRecord) {
+		semantic.PayloadKey = payloadIDs[record.SourcePayloadID]
+		if current, exists := result.Records[semantic.Key]; !exists || semanticRecordPreferred(semantic, current) {
+			result.Records[semantic.Key] = semantic
+		}
+	}
+	for _, record := range graph.Records {
+		if record.Kind == "token" && record.TokenName != "" {
+			result.Tokens[record.TokenName] = true
+		}
 		if record.Kind == "contextualReferenceTree" {
 			for _, semantic := range contextualSemanticRecords(record, contexts) {
-				if current, exists := result[semantic.Key]; !exists || semanticRecordPreferred(semantic, current) {
-					result[semantic.Key] = semantic
-				}
+				result.Tokens[semantic.Name] = true
+				add(semantic, record)
 			}
 			continue
 		}
-		semantic, ok := semanticRecord(record)
-		if ok {
-			if current, exists := result[semantic.Key]; !exists || semanticRecordPreferred(semantic, current) {
-				result[semantic.Key] = semantic
-			}
+		if semantic, ok := semanticRecord(record); ok {
+			add(semantic, record)
 		}
 	}
 	return result

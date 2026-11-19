@@ -1318,10 +1318,9 @@ from the headline row to the divider and from the divider to the floating label,
 half the floating label line height above its outline. This also keeps the
 24px gap between range fields clear of the second floating label.
 These are renderer rules using system measurement tokens.
-`forge/material/overrides.json` replaces the captured 512px input-container minimum
-height with 273px, the sum of the measured header, label clearance, field and
-action-row geometry at the captured typography sizes. Additional fields
-and validation errors can increase the height. The original capture is preserved.
+The modal date input sizes to its contents. Its format hint, additional fields,
+and validation errors contribute to the panel height. Token exports retain
+Material's captured 512dp value.
 
 The full-screen calendar uses the full-screen dialog shape and elevation tokens
 for square corners and zero elevation. Its comparison specimen fills a bounded

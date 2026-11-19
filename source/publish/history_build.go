@@ -20,7 +20,7 @@ type historySnapshot struct {
 
 // Rebuild history from retained snapshots, comparing each consecutive pair once.
 // The first snapshot is a baseline, not a batch of invented additions.
-func buildHistory(config BuildConfig, publication *Publication, currentIndex map[string]tokensnapshot.SemanticRecord) error {
+func buildHistory(config BuildConfig, publication *Publication, currentIndex tokensnapshot.SemanticIndex) error {
 	snapshots, err := historySnapshots(config, publication.CurrentSnapshot)
 	if err != nil {
 		return err
@@ -28,11 +28,11 @@ func buildHistory(config BuildConfig, publication *Publication, currentIndex map
 	publication.Snapshots = nil
 	publication.Changes = nil
 	owners := historyTokenOwners(publication.Subjects)
-	var previousIndex map[string]tokensnapshot.SemanticRecord
+	var previousIndex tokensnapshot.SemanticIndex
 	for index, snapshot := range snapshots {
 		nextIndex := currentIndex
 		if snapshot.view.ID != publication.CurrentSnapshot.ID {
-			nextIndex = nil
+			nextIndex = tokensnapshot.SemanticIndex{}
 			if config.readHistoryCache("index", snapshot.view.ManifestHash, &nextIndex) {
 				if _, err := tokensnapshot.VerifyIntegrity(snapshot.directory); err != nil {
 					return err
@@ -51,7 +51,7 @@ func buildHistory(config BuildConfig, publication *Publication, currentIndex map
 				if input.ManifestHash != snapshot.view.ManifestHash {
 					return fmt.Errorf("history manifest changed during publication: %s", snapshot.view.ID)
 				}
-				nextIndex = tokensnapshot.IndexSemanticRecords(input.Graph.Records)
+				nextIndex = tokensnapshot.IndexSemanticSnapshot(input.Graph, input.PayloadDetails)
 				config.writeHistoryCache("index", snapshot.view.ManifestHash, nextIndex)
 			}
 		} else {

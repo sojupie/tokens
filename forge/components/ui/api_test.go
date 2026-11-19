@@ -87,6 +87,46 @@ func TestTimePickerRendersItsConfiguredValue(t *testing.T) {
 	if !assets["time"] {
 		t.Fatal(assets)
 	}
+	panel, assets := renderAPI(t, TimePickerPanel(TimePickerProps{ID: "alarm", Name: "alarm", Hour: 21, Minute: 45}))
+	for _, want := range []string{`id="alarm-time"`, `name="alarm" value="21:45" data-time-value-input`} {
+		if !strings.Contains(panel, want) {
+			t.Fatal(want, panel)
+		}
+	}
+	if !assets["time"] || !assets["dialog"] {
+		t.Fatal(assets)
+	}
+}
+func TestScrollFieldKeepsLabelsAndFormValuesSeparate(t *testing.T) {
+	text, _ := renderAPI(t, ScrollField(ScrollFieldProps{ID: "schedule", Name: "schedule", Items: []ScrollFieldOption{
+		{Label: "Morning", Value: "shift-a"}, {Label: "Morning", Value: "shift-b"},
+	}, Index: 1}))
+	for _, want := range []string{`aria-valuetext="Morning"`, `aria-valuenow="2"`, `name="schedule" value="shift-b"`} {
+		if !strings.Contains(text, want) {
+			t.Fatal(want, text)
+		}
+	}
+}
+func TestScrollFieldModeButtonIsSeparateAndCanTargetAPair(t *testing.T) {
+	p := ScrollFieldProps{ID: "month", Label: "Month", Options: []string{"Nov", "Dec"}}
+	field, _ := renderAPI(t, ScrollField(p))
+	if strings.Contains(field, "md-scroll-entry") || strings.Contains(field, "data-scroll-toggle") {
+		t.Fatal("plain rotor contains text-entry controls", field)
+	}
+	p.DirectEntry = true
+	field, _ = renderAPI(t, ScrollField(p))
+	if !strings.Contains(field, `id="month-scroll-field"`) || !strings.Contains(field, "md-scroll-entry") || strings.Contains(field, "data-scroll-toggle") {
+		t.Fatal("typing must be available independently of the mode button", field)
+	}
+	button, assets := renderAPI(t, ScrollFieldModeButton([]string{"month", "day"}, true, IconButtonProps{}))
+	for _, want := range []string{`aria-controls="month-scroll-field day-scroll-field"`, `aria-label="Switch to scrolling"`, `data-scroll-text-entry`} {
+		if !strings.Contains(button, want) {
+			t.Fatal(want, button)
+		}
+	}
+	if !assets["scroll-field"] {
+		t.Fatal(assets)
+	}
 }
 func TestModalAndSheetOwnAccessiblePanelReferences(t *testing.T) {
 	text, _ := renderAPI(t, Modal(DialogProps{ID: "delete", Title: "Delete?", Description: "Can be restored."}))

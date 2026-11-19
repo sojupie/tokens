@@ -17,6 +17,16 @@ var ErrPreviewInput = errors.New("invalid playground selection")
 // valid combinations; the page never constructs a Cartesian product.
 func SelectComponentPreview(cases []webview.ComponentCase, query url.Values) (*webview.ComponentPreview, error) {
 
+	scrollField := len(cases) > 0 && cases[0].Family == "scroll-field"
+	if scrollField {
+		specimens := make([]webview.ComponentCase, 0, len(cases))
+		for _, c := range cases {
+			if c.Variant == "numeric" {
+				specimens = append(specimens, c)
+			}
+		}
+		cases = specimens
+	}
 	if len(cases) > 0 && cases[0].Family == "list" {
 		expanded := append([]webview.ComponentCase(nil), cases...)
 		for _, c := range cases {
@@ -81,6 +91,9 @@ func SelectComponentPreview(cases []webview.ComponentCase, query url.Values) (*w
 		comparisons = []string{"layouts", "styles", "states", "interactive"}
 	}
 	comparison := query.Get("preview.compare")
+	if scrollField && (comparison == "" || comparison == "variants") {
+		comparison = "sizes"
+	}
 	if search && comparison == "variants" {
 		comparison = "layouts"
 	}
@@ -97,8 +110,9 @@ func SelectComponentPreview(cases []webview.ComponentCase, query url.Values) (*w
 		return nil, fmt.Errorf("%w: comparison %s", ErrPreviewInput, comparison)
 	}
 	varying := map[string]string{"states": "state", "sizes": "size", "variants": "variant", "layouts": "variant", "styles": "control"}[comparison]
+	timePrimary := len(cases) > 0 && cases[0].Family == "time" && (varying == "variant" || comparison == "interactive")
 	result := &webview.ComponentPreview{Interactive: comparison == "interactive", Dimension: varying}
-	result.Controls = append(result.Controls, webview.PreviewControl{Name: "compare", Label: "Compare", Selected: comparison, Options: comparisons})
+	result.Controls = append(result.Controls, webview.PreviewControl{Name: "compare", Label: "Show", Selected: comparison, Options: comparisons})
 	defaults := map[string]string{"variant": "tonal", "size": "small", "shape": "round", "state": "enabled", "selection": "plain", "control": "indeterminate"}
 	if len(cases) > 0 && cases[0].Family == "menu" {
 		defaults["variant"] = "standard"
@@ -123,6 +137,19 @@ func SelectComponentPreview(cases []webview.ComponentCase, query url.Values) (*w
 	}
 	selected := map[string]string{}
 	keys := []string{"control", "mode", "disclosure", "variant", "headline", "orientation", "size", "shape", "width", "selection", "elevation", "error", "state"}
+	if len(cases) > 0 && cases[0].Family == "time" {
+		keys = []string{"style", "variant", "placement", "orientation", "width", "control", "shape", "selection", "state"}
+		if timePrimary {
+			keys = []string{"style", "variant", "placement", "orientation", "width", "state"}
+		}
+		defaults["style"], defaults["variant"], defaults["placement"] = "expressive", "clock", "modal"
+	}
+	if len(cases) > 0 && cases[0].Family == "scroll-field" {
+		keys = []string{"size", "width", "state"}
+		if result.Interactive {
+			defaults["width"] = "fill"
+		}
+	}
 	if len(cases) > 0 && cases[0].Family == "date" {
 		keys = []string{"mode", "variant", "control", "selection", "state"}
 	}
@@ -181,16 +208,28 @@ func SelectComponentPreview(cases []webview.ComponentCase, query url.Values) (*w
 			value = "enabled"
 		}
 		selected[key] = value
-		if key != varying && len(values) > 1 && !(search && comparison == "states" && key == "disclosure") && !(comparison == "interactive" && key == "state") && !(cases[0].Family == "tabs" && key == "selection" && comparison != "states") {
+		if key != varying && (len(values) > 1 || cases[0].Family == "time" && key == "variant" && varying != "variant") && !(search && comparison == "states" && key == "disclosure") && !(comparison == "interactive" && key == "state") && !(cases[0].Family == "tabs" && key == "selection" && comparison != "states") {
 			result.Controls = append(result.Controls, webview.PreviewControl{Name: key, Label: PreviewControlLabel(cases[0].Family, key), Selected: value, Options: values})
 		}
 	}
 	for _, c := range cases {
+		if timePrimary {
+			primaryControl := map[string]string{"clock": "value", "input": "field", "scroll": "scroll"}[c.Variant]
+			if c.Control != primaryControl || c.Shape != "hour" || c.Selection == "unselected" {
+				continue
+			}
+		}
 		if c.Family == "search" && comparison == "layouts" && c.Variant == "adaptive" {
 			continue
 		}
 		matches := true
 		for key, value := range webview.PreviewDimensions(c) {
+			if scrollField && key == "variant" {
+				continue
+			}
+			if timePrimary && (key == "control" || key == "shape" || key == "selection") {
+				continue
+			}
 			if key != varying && value != "" && value != selected[key] {
 				matches = false
 				break
@@ -288,6 +327,16 @@ func SelectComponentPreview(cases []webview.ComponentCase, query url.Values) (*w
 			}
 		}
 	}
+	if len(result.Cases) > 0 && result.Cases[0].Family == "scroll-field" {
+		if err := configureScrollFieldPreview(result, query); err != nil {
+			return nil, err
+		}
+	}
+	if len(result.Cases) > 0 && result.Cases[0].Family == "time" {
+		if err := configureTimeScrollPreview(result, query); err != nil {
+			return nil, err
+		}
+	}
 	for key, values := range query {
 		if strings.HasPrefix(key, "preview.") {
 			continue
@@ -375,12 +424,21 @@ func PreviewControlLabel(family, key string) string {
 			return "Removal"
 		}
 	}
+	if family == "scroll-field" {
+		if key == "width" {
+			return "Width"
+		}
+	}
 	if family == "time" {
 		switch key {
+		case "style":
+			return "Style"
+		case "placement":
+			return "Placement"
 		case "width":
 			return "Time format"
 		case "control":
-			return "State target"
+			return "Picker part"
 		case "shape":
 			return "Active field"
 		case "orientation":

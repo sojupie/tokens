@@ -135,6 +135,10 @@ func FormattedNamedValue(name string, value any) (string, bool) {
 		if ok {
 			return TypographyValueText(fields), true
 		}
+	case "motionReference":
+		if reference, ok := value.(string); ok {
+			return reference, true
+		}
 	}
 	return "", false
 }
@@ -348,7 +352,15 @@ func ChangeTypeLabel(changeType string) string {
 	case "removed":
 		return "Removed"
 	case "changed":
-		return "Changed"
+		return "Updated"
+	case "context-added":
+		return "Context added"
+	case "context-removed":
+		return "Context removed"
+	case "coverage-added":
+		return "Coverage added"
+	case "coverage-lost":
+		return "Coverage lost"
 	default:
 		return changeType
 	}
