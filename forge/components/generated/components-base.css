@@ -7291,7 +7291,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   z-index: 1;
   outline: var(--_time-focus-width, var(--md-sys-state-focus-indicator-thickness)) solid var(--_time-focus-color, var(--md-sys-color-secondary));
 }
-.md-time-panel:not([data-mode="scroll"]) [data-time-scroll],
+.md-time-panel:not([data-mode="scroll"], [data-mode="input"][data-return-mode="scroll"]) [data-time-scroll],
 .md-time-panel[data-mode="scroll"] :is(.md-time-value, .md-time-field-wrap, .md-time-dial),
 .md-time-panel[data-time-inline] .md-time-actions:has([data-time-mode][hidden]):not(:has([data-time-save])) { display: none; }
 
@@ -7364,18 +7364,37 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   outline: none;
 }
 .md-time-panel[data-time-style="expressive"] :is(.md-time-hour, .md-time-minute) {
+  position: relative;
   inline-size: var(--_time-value-width);
 }
 .md-time-panel[data-time-style="expressive"]:is([data-mode="scroll"], [data-mode="input"]:not([data-return-mode="clock"])) {
   --_time-value-height: var(--forge-time-picker-field-block-size, 140px);
 }
-.md-time-panel[data-mode="scroll"] [data-time-scroll] {
+.md-time-panel:is([data-mode="scroll"], [data-mode="input"][data-return-mode="scroll"]) [data-time-scroll] {
   --_scroll-container-height: var(--_time-value-height);
   /* The three touch rows meet edge to edge. Their line boxes space the labels. */
   --forge-scroll-field-item-gap: var(--forge-time-picker-scroll-item-gap, 0px);
 }
 .md-time-panel[data-time-style="expressive"][data-mode="input"][data-return-mode="scroll"] .md-time-field-wrap {
   padding-block: var(--md-sys-measurement-space175);
+}
+/* Leave the neighboring options in the same coordinate space while the
+   active numeral changes from the rotor's label to the text input. */
+.md-time-panel[data-mode="input"][data-return-mode="scroll"] [data-time-scroll] {
+  position: absolute;
+  inset: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.md-time-panel [data-time-scroll] .md-scroll-values > :not([data-scroll-current]) {
+  visibility: visible;
+  transition: opacity var(--_motion-fast-effects-duration) var(--_motion-fast-effects-easing);
+}
+.md-time-panel[data-mode="input"] [data-time-scroll] .md-scroll-values > :not([data-scroll-current]) {
+  opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .md-time-panel [data-time-scroll] .md-scroll-values > :not([data-scroll-current]) { transition: none; }
 }
 .md-time-panel[data-time-style="expressive"]:is([data-mode="clock"], [data-mode="input"][data-return-mode="clock"])[data-format="24h"][data-orientation="portrait"] {
   --_time-value-width: var(--md-comp-time-pickers-dial-vertical-scroll-field-container-width, 132px);

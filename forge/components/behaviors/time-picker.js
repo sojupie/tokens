@@ -155,9 +155,10 @@
   const modalSurface=panel.matches(':modal, [data-time-preview]');
   const incoming=modalSurface&&panel.dataset.mode==='clock'&&dialPose(dial);
   const dialSwap=modalSurface&&panel.dataset.timeStyle==='expressive'&&(outgoing||incoming);
+  const scrollSwap=mode==='scroll'||panel.dataset.mode==='scroll';
   const animations=[];
   if(dialSwap)animateDialSwap(state,before,after,outgoing,incoming,animations);
-  else animations.push(panel.querySelector('.md-time-body').animate([{opacity:0},{opacity:1}],motion.timing(panel,'fast-effects')));
+  else if(!scrollSwap)animations.push(panel.querySelector('.md-time-body').animate([{opacity:0},{opacity:1}],motion.timing(panel,'fast-effects')));
   if(modalSurface&&(before.width!==after.width||before.height!==after.height)){
    const size=rect=>({width:rect.width+'px',height:rect.height+'px'});
    panel.dataset.timeResizing='';

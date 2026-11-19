@@ -7,9 +7,13 @@ document.querySelector('#run').onclick=async()=>{
  try{
  const selectPreviewOption=async(field,value)=>{
    const doc=frame.contentDocument, previous=doc.querySelector('#component-preview');
+   let swapped=false;
+   const afterSwap=event=>{if(event.detail.ctx.target===previous)swapped=true;};
+   doc.addEventListener('htmx:after:swap',afterSwap);
    previous.querySelector('#preview-'+field).click();
    previous.querySelector('#preview-'+field+'-options [data-field-value="'+value+'"]').click();
-   await wait(()=>!previous.isConnected,field+' preview swap');
+   await wait(()=>swapped&&!previous.isConnected,field+' preview swap');
+   doc.removeEventListener('htmx:after:swap',afterSwap);
    assert(new URLSearchParams(frame.contentWindow.location.search).get('preview.'+field)===value,field+' filter updates the preview URL');
  };
  frame.style.width='390px';
@@ -31,6 +35,27 @@ document.querySelector('#run').onclick=async()=>{
  assert(dialPreview.dataset.mode==='input'&&inputField.width===dialField.width&&inputField.height===dialField.height,'switching from dial to input preserves field dimensions');
  assert(nextTimeCase.getBoundingClientRect().top+frame.contentWindow.scrollY===nextTimeCaseTop,'switching the dial preview preserves the following case position');
  frame.style.removeProperty('width');
+ await load('/components/time-pickers?preview.variant=scroll&preview.compare=interactive&preview.width=12h');
+ await frame.contentWindow.TokenAssets.ready;
+ const pickerDocument=frame.contentDocument,pickerWindow=frame.contentWindow;
+ pickerDocument.querySelector('[data-time-open]').click();
+ const scrollModal=pickerDocument.querySelector('[data-time-panel]');
+ await wait(()=>scrollModal.matches(':modal'),'scroll time picker opens');
+ const modeButton=scrollModal.querySelector('[data-time-mode]');
+ const periodGroup=scrollModal.querySelector('.md-time-period-group');
+ const pm=periodGroup.querySelector('[data-time-period="pm"]');
+ pm.click();
+ const body=scrollModal.querySelector('.md-time-body');
+ const before=periodGroup.getBoundingClientRect();
+ for(const mode of ['input','scroll']){
+   modeButton.click();
+   const after=periodGroup.getBoundingClientRect();
+   assert(scrollModal.dataset.mode===mode&&periodGroup===scrollModal.querySelector('.md-time-period-group')&&
+     pm.getAttribute('aria-checked')==='true'&&after.x===before.x&&after.y===before.y&&
+     pickerWindow.getComputedStyle(body).opacity==='1',
+     'scroll modal keeps AM/PM in place and opaque when switching to '+mode);
+ }
+ scrollModal.querySelector('[data-time-cancel]').click();
  for(const mode of ['interactive','states']){
    await load('/components/time-pickers?preview.variant=scroll&preview.compare='+mode);
    await frame.contentWindow.TokenAssets.ready;
