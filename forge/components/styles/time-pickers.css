@@ -547,7 +547,7 @@
 .md-time-panel[data-time-style="expressive"] :is(.md-time-hour, .md-time-minute) {
   inline-size: var(--_time-value-width);
 }
-.md-time-panel[data-time-style="expressive"]:is([data-mode="input"], [data-mode="scroll"]) {
+.md-time-panel[data-time-style="expressive"]:is([data-mode="scroll"], [data-mode="input"]:not([data-return-mode="clock"])) {
   --_time-value-height: var(--forge-time-picker-field-block-size, 140px);
 }
 .md-time-panel[data-mode="scroll"] [data-time-scroll] {
@@ -558,7 +558,7 @@
 .md-time-panel[data-time-style="expressive"][data-mode="input"][data-return-mode="scroll"] .md-time-field-wrap {
   padding-block: var(--md-sys-measurement-space175);
 }
-.md-time-panel[data-time-style="expressive"][data-mode="clock"][data-format="24h"][data-orientation="portrait"] {
+.md-time-panel[data-time-style="expressive"]:is([data-mode="clock"], [data-mode="input"][data-return-mode="clock"])[data-format="24h"][data-orientation="portrait"] {
   --_time-value-width: var(--md-comp-time-pickers-dial-vertical-scroll-field-container-width, 132px);
 }
 .md-time-panel[data-time-style="expressive"] .md-time-period-group {

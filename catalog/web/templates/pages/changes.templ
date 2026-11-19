@@ -116,7 +116,7 @@ templ ChangeFilterForm(filters webview.ChangeFilters, baseURL string) {
 				}
 			</div>
 		</div>
-		@ui.TextField(ui.TextFieldProps{ID: "history-query", Name: "q", Type: "search", Value: filters.Query, Label: "Token name"})
+		@ui.SearchBarSurface(ui.SearchProps{ID: "history-query", Name: "q", Value: filters.Query, Label: "Search token names", Placeholder: "Token name", Actions: "clear", PanelAttrs: templ.Attributes{"class":"tokens-history-search"}})
 	</form>
 }
 

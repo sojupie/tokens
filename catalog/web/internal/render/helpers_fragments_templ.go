@@ -21,6 +21,7 @@ import (
 	"strconv"
 
 	webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+	"github.com/sojupie/tokens/forge/components/ui"
 	"github.com/sojupie/tokens/source/publish"
 )
 
@@ -83,7 +84,7 @@ func tokenBrowserControls(subject publish.SubjectView, browser webview.TokenBrow
 		if browser.TableOnly {
 			action = subjectURL
 		}
-		if err := write(`<form class="tokens-token-filters" hx-boost="false" hx-target="#tokens-token-browser" hx-swap="outerHTML" hx-sync="#tokens-token-browser:replace" hx-push-url="true" hx-get="` + subjectURL + `" method="get" action="` + action + `">`); err != nil {
+		if err := write(`<form class="tokens-token-filters" hx-boost="false" hx-trigger="submit, md-search-clear" hx-target="#tokens-token-browser" hx-swap="outerHTML" hx-sync="#tokens-token-browser:replace" hx-push-url="true" hx-get="` + subjectURL + `" method="get" action="` + action + `">`); err != nil {
 			return err
 		}
 		if browser.TableOnly {
@@ -145,14 +146,20 @@ func tokenBrowserToolbar(subject publish.SubjectView, browser webview.TokenBrows
 		if err := picker.Render(ctx, writer); err != nil {
 			return err
 		}
-		_, err := io.WriteString(writer, `<div class="tokens-token-actions"><label class="tokens-token-search">`+webview.TableIcon("search")+`<span class="tokens-visually-hidden">`+html.EscapeString(searchLabel)+`</span><input id="tokens-token-search" type="search" name="q" value="`+html.EscapeString(browser.Query)+`" placeholder="`+html.EscapeString(placeholder)+`"></label><div class="tokens-token-tools" role="group" aria-label="`+html.EscapeString(controlsLabel)+`">`)
-		if err != nil {
+		if _, err := io.WriteString(writer, `<div class="tokens-token-actions">`); err != nil {
+			return err
+		}
+		search := ui.SearchBarSurface(ui.SearchProps{ID: "tokens-token-search", Name: "q", Label: searchLabel, Placeholder: placeholder, Value: browser.Query, Actions: "clear", PanelAttrs: templ.Attributes{"class": "tokens-token-search"}})
+		if err := search.Render(ctx, writer); err != nil {
+			return err
+		}
+		if _, err := io.WriteString(writer, `<div class="tokens-token-tools" role="group" aria-label="`+html.EscapeString(controlsLabel)+`">`); err != nil {
 			return err
 		}
 		if err := tools.Render(ctx, writer); err != nil {
 			return err
 		}
-		_, err = io.WriteString(writer, `</div></div></div>`)
+		_, err := io.WriteString(writer, `</div></div></div>`)
 		return err
 	})
 }

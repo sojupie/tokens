@@ -12,6 +12,19 @@ document.querySelector('#run').onclick=async()=>{
    await wait(()=>!previous.isConnected,field+' preview swap');
    assert(new URLSearchParams(frame.contentWindow.location.search).get('preview.'+field)===value,field+' filter updates the preview URL');
  };
+ frame.style.width='390px';
+ await load('/components/time-pickers?preview.compare=variants');
+ await frame.contentWindow.TokenAssets.ready;
+ const dialPreview=frame.contentDocument.querySelector('[data-time-preview][data-mode="clock"]');
+ const nextTimeCase=dialPreview.closest('figure').nextElementSibling;
+ const dialField=dialPreview.querySelector('[data-time-value="hour"]').getBoundingClientRect();
+ const nextTimeCaseTop=nextTimeCase.getBoundingClientRect().top+frame.contentWindow.scrollY;
+ dialPreview.querySelector('[data-time-mode]').click();
+ await wait(()=>!dialPreview.hasAttribute('data-time-resizing'),'dial-to-input transition');
+ const inputField=dialPreview.querySelector('[data-time-input="hour"]').getBoundingClientRect();
+ assert(dialPreview.dataset.mode==='input'&&inputField.width===dialField.width&&inputField.height===dialField.height,'switching from dial to input preserves field dimensions');
+ assert(nextTimeCase.getBoundingClientRect().top+frame.contentWindow.scrollY===nextTimeCaseTop,'switching the dial preview preserves the following case position');
+ frame.style.removeProperty('width');
  for(const mode of ['interactive','states']){
    await load('/components/time-pickers?preview.variant=scroll&preview.compare='+mode);
    await frame.contentWindow.TokenAssets.ready;
@@ -35,6 +48,17 @@ document.querySelector('#run').onclick=async()=>{
  modeButtons[0].click();
  const inputs=Array.from(scrollScene.querySelectorAll('.md-scroll-entry'));
  assert(inputs.every(input=>!input.hidden)&&frame.contentDocument.activeElement===inputs[1],'shared text entry focuses the last used field and exposes both inputs');
+
+ frame.style.width='1440px';
+ await load('/components/buttons?q=icon');
+ await frame.contentWindow.TokenAssets.ready;
+ const filterDocument=frame.contentDocument;
+ const filteredSearch=filterDocument.querySelector('#tokens-token-search');
+ assert(filteredSearch.getBoundingClientRect().width>0,'the token toolbar leaves room for its search input');
+ filterDocument.querySelector('.tokens-token-search [data-search-clear]').click();
+ await wait(()=>!filteredSearch.isConnected&&!new URL(frame.contentWindow.location.href).searchParams.get('q'),'clearing token search');
+ assert(filterDocument.activeElement===filterDocument.querySelector('#tokens-token-search'),'clearing token search keeps input focus through the table swap');
+ frame.style.removeProperty('width');
 
  await load('/components/buttons?preview.compare=interactive');
  let w=frame.contentWindow,d=w.document;
@@ -152,5 +176,6 @@ document.querySelector('#run').onclick=async()=>{
  assert(frame.contentDocument!==d,'changed core assets force a document reload');
 
  }catch(error){const li=document.createElement('li');li.className='fail';li.textContent='FAIL: '+error.message;results.append(li);}
+ frame.style.removeProperty('width');
  document.querySelector('#run').disabled=false;
 };

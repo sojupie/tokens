@@ -6074,7 +6074,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
 /* A standalone bar participates in its host layout; disclosure views remain anchored. */
 .md-search-view[data-layout="inline"] { position:relative; inset:auto; inline-size:100%; block-size:auto; }
 
-@media (scripting: none) { .md-search-view:has(.md-search-trigger) { display:none; } }
+@media (scripting: none) { .md-search-view:not([data-layout="inline"]):has(.md-search-trigger) { display:none; } }
 .md-date-demo {
   container-type: inline-size;
   display: flex;
@@ -7369,7 +7369,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
 .md-time-panel[data-time-style="expressive"] :is(.md-time-hour, .md-time-minute) {
   inline-size: var(--_time-value-width);
 }
-.md-time-panel[data-time-style="expressive"]:is([data-mode="input"], [data-mode="scroll"]) {
+.md-time-panel[data-time-style="expressive"]:is([data-mode="scroll"], [data-mode="input"]:not([data-return-mode="clock"])) {
   --_time-value-height: var(--forge-time-picker-field-block-size, 140px);
 }
 .md-time-panel[data-mode="scroll"] [data-time-scroll] {
@@ -7380,7 +7380,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
 .md-time-panel[data-time-style="expressive"][data-mode="input"][data-return-mode="scroll"] .md-time-field-wrap {
   padding-block: var(--md-sys-measurement-space175);
 }
-.md-time-panel[data-time-style="expressive"][data-mode="clock"][data-format="24h"][data-orientation="portrait"] {
+.md-time-panel[data-time-style="expressive"]:is([data-mode="clock"], [data-mode="input"][data-return-mode="clock"])[data-format="24h"][data-orientation="portrait"] {
   --_time-value-width: var(--md-comp-time-pickers-dial-vertical-scroll-field-container-width, 132px);
 }
 .md-time-panel[data-time-style="expressive"] .md-time-period-group {

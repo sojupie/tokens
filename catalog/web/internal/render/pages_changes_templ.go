@@ -615,7 +615,7 @@ func ChangeFilterForm(filters webview.ChangeFilters, baseURL string) templ.Compo
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = ui.TextField(ui.TextFieldProps{ID: "history-query", Name: "q", Type: "search", Value: filters.Query, Label: "Token name"}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = ui.SearchBarSurface(ui.SearchProps{ID: "history-query", Name: "q", Value: filters.Query, Label: "Search token names", Placeholder: "Token name", Actions: "clear", PanelAttrs: templ.Attributes{"class": "tokens-history-search"}}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

@@ -255,6 +255,16 @@
    state.active='minute';render(state);focusField(state);
   }else close(state,true);
  }
+ function reservePreview(state){
+  const {panel,root}=state;
+  if(root===panel||!panel.hasAttribute('data-time-preview'))return;
+  // Reserve the two in-flow modes without changing the size of either panel.
+  const mode=panel.dataset.mode,height=panel.getBoundingClientRect().height;
+  panel.dataset.mode=mode==='input'?state.returnMode:'input';
+  const alternateHeight=panel.getBoundingClientRect().height;
+  panel.dataset.mode=mode;
+  root.style.minBlockSize=Math.ceil(Math.max(height,alternateHeight))+'px';
+ }
  function initialize(scope=document){for(const panel of panels(scope)){
   const root=hostFor(panel);
   if(states.has(root))continue;
@@ -265,7 +275,7 @@
    binding,
    hour:hasValue?hour:Number(panel.dataset.hour)%24,minute:hasValue?minute:Number(panel.dataset.minute)%60,active:panel.dataset.active,
    initialMode:panel.dataset.mode,preferredMode:panel.dataset.mode,preferredOrientation:panel.dataset.orientation,initialReturn:panel.dataset.returnMode||'clock',returnMode:panel.dataset.returnMode||'clock'};
-  state.committed={hour:state.hour,minute:state.minute};states.set(root,state);render(state);
+  state.committed={hour:state.hour,minute:state.minute};states.set(root,state);render(state);reservePreview(state);
   panel.addEventListener('md-dialog-beforeopen',()=>{
    clearScrollHover(panel);
    state.active='hour';state.choice=undefined;state.preferredMode=state.initialMode;state.returnMode=state.initialReturn;

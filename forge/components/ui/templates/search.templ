@@ -37,7 +37,7 @@ templ SearchResult(label string) {
 
 templ SearchBarSurface(p model.SearchProps) {
 	@model.Require("search")
-	<div class="md-search-view" data-variant="docked" data-layout="inline" data-control={ model.Fallback(p.Control, "contained") } data-open="false" role="search" aria-label={ p.Label }>
+	<div { model.Attributes(templ.Attributes{"class":"md-search-view","data-variant":"docked","data-layout":"inline","data-control":model.Fallback(p.Control,"contained"),"data-open":"false","role":"search","aria-label":p.Label},p.PanelAttrs)... }>
 		@SearchBar(p, p.Label, p.Value, false)
 	</div>
 }
@@ -125,19 +125,8 @@ templ SearchBar(p model.SearchProps, label string, value string, disclosure bool
 				@model.Icon("arrow_back")
 			</button>
 		</span>
-		<input
-			type="search"
-			class="md-search-input"
-			aria-label={ label }
-			if disclosure {
-				aria-expanded={ fmt.Sprint(p.Expanded) }
-				aria-controls={ p.ID + "-results" }
-			}
-			placeholder={ label }
-			value={ value }
-			autocomplete="off"
-			readonly?={ disclosure && !p.Expanded }
-		/>
+		<input { p.SearchInput(label, value, disclosure)... }/>
+
 		@searchActionButtons(p)
 	</div>
 	@searchOptions(p)
