@@ -57,6 +57,21 @@ func TestMaterialConversionPreservesMeaning(t *testing.T) {
 	}
 }
 
+func TestMaterialSpringReferenceStaysInExtension(t *testing.T) {
+	raw := json.RawMessage(`{"motionReference":"md.sys.motion.spring.fast.spatial"}`)
+	node, err := Convert(raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, ok := node["$value"]; ok {
+		t.Fatal("a physical spring has no standard DTCG value type")
+	}
+	metadata := node["$extensions"].(map[string]any)[Extension].(map[string]any)
+	if string(metadata["sourceValue"].(json.RawMessage)) != string(raw) {
+		t.Fatalf("spring reference changed: %v", metadata)
+	}
+}
+
 func TestExportAliasesContextsAndRootTokens(t *testing.T) {
 	value := func(n int, labels ...string) publish.TokenValueView {
 		return publish.TokenValueView{ContextLabels: labels, Value: json.RawMessage(`{"length":{"value":` + strconv.Itoa(n) + `,"unit":"DIPS"}}`)}
@@ -87,6 +102,24 @@ func TestExportAliasesContextsAndRootTokens(t *testing.T) {
 	}
 	if _, _, err := Export(state, map[string]string{}); err == nil {
 		t.Fatal("arbitrary context selection")
+	}
+}
+
+func TestSelectChecksAmbiguityAmongMostSpecificMatches(t *testing.T) {
+	value := func(n int, labels ...string) publish.TokenValueView {
+		return publish.TokenValueView{ContextLabels: labels, Value: json.RawMessage(`{"numeric":` + strconv.Itoa(n) + `}`)}
+	}
+	first, second := value(1), value(2)
+	dark := value(3, "Theme: Dark")
+	context := map[string]string{"Theme": "Dark"}
+	for _, records := range [][]publish.TokenValueView{{first, second, dark}, {dark, first, second}} {
+		selected, found, err := Select(records, context)
+		if err != nil || !found || string(selected.Value) != string(dark.Value) {
+			t.Fatalf("specific value did not win: %s, %v, %v", selected.Value, found, err)
+		}
+	}
+	if _, found, err := Select([]publish.TokenValueView{dark, first, value(4, "Theme: Dark")}, context); found || err == nil {
+		t.Fatal("accepted conflicting values at the highest specificity")
 	}
 }
 

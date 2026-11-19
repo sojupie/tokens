@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"math"
+	"strings"
 )
 
 const Extension = "dev.tokencatalog.material"
@@ -117,6 +118,13 @@ func Convert(raw json.RawMessage) (Node, error) {
 				return nil, fmt.Errorf("invalid cubic Bezier x coordinate")
 			}
 			node = token("cubicBezier", []float64{c.X0, c.Y0, c.X1, c.Y1})
+		case "motionReference":
+			var name string
+			if json.Unmarshal(body, &name) != nil || !strings.HasPrefix(name, "md.sys.motion.spring.") {
+				return nil, fmt.Errorf("invalid Material spring reference")
+			}
+			// DTCG has no physical spring value type.
+			node = Node{}
 		case "type":
 			node, err = typography(body)
 		case "shape":

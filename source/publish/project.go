@@ -104,6 +104,43 @@ func project(input snapshotInput) (Publication, error) {
 		}
 	}
 
+	// Material omits physical spring aliases from its resolved trees. Retain the
+	// authored reference and its source record for otherwise valueless tokens.
+	springOwners := make(map[string]tokensnapshot.ExtractedRecord)
+	for _, record := range input.Graph.Records {
+		if record.Kind == "token" && record.ValueType == "CUSTOM_COMPOSITE" {
+			springOwners[record.SourcePayloadID+"\x00"+record.ID] = record
+		}
+	}
+	for _, record := range input.Graph.Records {
+		if record.Kind != "value" || record.State != "ACTIVE" || !strings.HasPrefix(record.TokenName, "md.sys.motion.spring.") {
+			continue
+		}
+		id, _, ok := strings.Cut(record.ID, "/values/")
+		parent, found := springOwners[record.SourcePayloadID+"\x00"+id]
+		if !ok || !found {
+			continue
+		}
+		var source struct{ ContextTags []string }
+		if err := json.Unmarshal(record.Raw, &source); err != nil {
+			return Publication{}, err
+		}
+		if len(source.ContextTags) > 0 {
+			continue
+		}
+		value, _ := json.Marshal(map[string]string{"motionReference": record.TokenName})
+		for _, key := range recordSubjects(parent, owners, styleTokenSets, payloadSubjects) {
+			builder := builders[key]
+			if builder == nil || builder.tokens[parent.TokenName] == nil || len(builder.tokens[parent.TokenName].Values) > 0 {
+				continue
+			}
+			ref := []TokenReference{{Name: record.TokenName}}
+			if err := builder.addToken(parent.TokenName, "", value, nil, ref, record.Raw, record, contexts); err != nil {
+				return Publication{}, err
+			}
+		}
+	}
+
 	addLifecycleNotices(builders, input.LifecycleNotices.Notices, owners, styleTokenSets, payloadSubjects)
 
 	publication := Publication{
