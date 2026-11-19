@@ -151,7 +151,7 @@ func HistoryCoverage(snapshots []publish.SnapshotView) string {
 	coverage := fmt.Sprintf("History from %s to %s · %d snapshots", ObservationDate(snapshots[0].CreatedAt), ObservationDate(snapshots[len(snapshots)-1].CreatedAt), len(snapshots))
 	for _, snapshot := range snapshots {
 		if snapshot.CaptureStatus == "partial" {
-			return coverage + ". Includes incomplete captures; missing source data can appear as additions or removals."
+			return coverage + ". Some source captures were incomplete."
 		}
 	}
 	return coverage

@@ -9,7 +9,7 @@ import (
 )
 
 func changeViews(diff tokensnapshot.SnapshotDiff) []ChangeView {
-	changes := make([]ChangeView, 0, len(diff.Semantic.Added)+len(diff.Semantic.Removed)+len(diff.Semantic.Changed))
+	changes := make([]ChangeView, 0, len(diff.Semantic.Added)+len(diff.Semantic.Removed)+len(diff.Semantic.Changed)+len(diff.Semantic.ContextsAdded)+len(diff.Semantic.ContextsRemoved)+len(diff.Semantic.CoverageAdded)+len(diff.Semantic.CoverageLost))
 	appendChanges := func(changeType string, values []tokensnapshot.SemanticChange) {
 		for _, value := range values {
 			changes = append(changes, ChangeView{
@@ -29,6 +29,10 @@ func changeViews(diff tokensnapshot.SnapshotDiff) []ChangeView {
 	appendChanges("added", diff.Semantic.Added)
 	appendChanges("removed", diff.Semantic.Removed)
 	appendChanges("changed", diff.Semantic.Changed)
+	appendChanges("context-added", diff.Semantic.ContextsAdded)
+	appendChanges("context-removed", diff.Semantic.ContextsRemoved)
+	appendChanges("coverage-added", diff.Semantic.CoverageAdded)
+	appendChanges("coverage-lost", diff.Semantic.CoverageLost)
 	sort.Slice(changes, func(i, j int) bool {
 		if changes[i].Subject != changes[j].Subject {
 			return changes[i].Subject < changes[j].Subject

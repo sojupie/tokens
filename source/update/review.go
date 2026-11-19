@@ -53,6 +53,7 @@ func undefinedValue(value any) bool {
 func review(candidate publish.Publication, base string, fraction float64) (Summary, []Issue, error) {
 	summary, unresolved := counts(candidate.Subjects)
 	var issues []Issue
+	contextsRemoved := 0
 	if summary.Tokens == 0 || summary.Values == 0 {
 		issues = append(issues, Issue{"empty_publication", "No usable token values were extracted.", true})
 	}
@@ -63,10 +64,17 @@ func review(candidate publish.Publication, base string, fraction float64) (Summa
 		switch change.Type {
 		case "added":
 			summary.Added++
-		case "changed":
+		case "changed", "context-added":
 			summary.Updated++
 		case "removed":
 			summary.Removed++
+		case "context-removed":
+			summary.Updated++
+			contextsRemoved++
+		case "coverage-added":
+			summary.CoverageAdded++
+		case "coverage-lost":
+			summary.CoverageLost++
 		}
 	}
 	if base == "" {
@@ -101,13 +109,17 @@ func review(candidate publish.Publication, base string, fraction float64) (Summa
 	if summary.Tokens < before.Tokens {
 		issues = append(issues, Issue{"token_count_drop", fmt.Sprintf("Token count fell from %d to %d.", before.Tokens, summary.Tokens), false})
 	}
-	if summary.Removed > 0 {
-		issues = append(issues, Issue{"values_removed", fmt.Sprintf("%d contextual values or records were removed.", summary.Removed), false})
+	if summary.Removed+contextsRemoved > 0 {
+		issues = append(issues, Issue{"values_removed", fmt.Sprintf("%d contextual values or records were removed.", summary.Removed+contextsRemoved), false})
 	}
 	if unresolved > previouslyUnresolved {
 		issues = append(issues, Issue{"unresolved_values", fmt.Sprintf("Unresolved values increased from %d to %d.", previouslyUnresolved, unresolved), false})
 	}
-	if before.Values > 0 && float64(summary.Added+summary.Updated+summary.Removed)/float64(before.Values) > fraction {
+	if summary.CoverageLost > 0 {
+		issues = append(issues, Issue{"source_coverage_lost", fmt.Sprintf("Source coverage dropped for %d contextual values or records.", summary.CoverageLost), false})
+	}
+	changed := summary.Added + summary.Updated + summary.Removed + summary.CoverageAdded + summary.CoverageLost
+	if before.Values > 0 && float64(changed)/float64(before.Values) > fraction {
 		issues = append(issues, Issue{"large_change", fmt.Sprintf("Changes exceed %.0f%% of the previous value count.", fraction*100), false})
 	}
 	return summary, issues, nil

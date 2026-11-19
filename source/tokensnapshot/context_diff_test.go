@@ -6,6 +6,13 @@ import (
 	"testing"
 )
 
+func diffSemanticRecords(from, to []ExtractedRecord) SemanticDiff {
+	return CompareSemanticIndexes(
+		indexSemanticSnapshot(Graph{Records: from}, nil),
+		indexSemanticSnapshot(Graph{Records: to}, nil),
+	)
+}
+
 func contextDiffFixture(prefix string, dark int, reversed bool, reference string) []ExtractedRecord {
 	group := prefix + "/contextTagGroups/theme"
 	entry := func(tag string, value int) string {
@@ -58,5 +65,41 @@ func TestContextDiffTracksReferenceAndContextRemoval(t *testing.T) {
 	diff = diffSemanticRecords(after, before)
 	if len(diff.Added) != 2 || diff.Added[0].Key == diff.Added[1].Key {
 		t.Fatalf("context identity collapsed: %#v", diff)
+	}
+}
+
+func TestSemanticDiffSeparatesSourceCoverageAndContextChanges(t *testing.T) {
+	const (
+		oldTable = "https://m3.material.io/dsdb/old/TOKEN_TABLE.tooltip.json"
+		newTable = "https://m3.material.io/dsdb/new/TOKEN_TABLE.tooltip.json"
+		color    = "https://m3.material.io/dsdb/new/COLOR.baseline.json"
+	)
+	tree := func(payload, name, tags string) ExtractedRecord {
+		return ExtractedRecord{SourcePayloadID: payload, Kind: "contextualReferenceTree",
+			Raw: json.RawMessage(fmt.Sprintf(`{"contextualReferenceTree":[{"contextTags":%s,"referenceTree":{"tokenName":%q},"resolvedValue":{"number":1}}]}`, tags, name))}
+	}
+	before := indexSemanticSnapshot(Graph{
+		SourcePayloads: []GraphPayload{{SourcePayloadURL: oldTable, Records: 1}, {SourcePayloadURL: color, ExtractionError: "invalid source"}},
+		Records:        []ExtractedRecord{tree("old", "shape", "[]")},
+	}, map[string]string{"old": sourcePayloadKey(oldTable)})
+	after := indexSemanticSnapshot(Graph{
+		SourcePayloads: []GraphPayload{{SourcePayloadURL: newTable, Records: 3}, {SourcePayloadURL: color, Records: 1}},
+		Records: []ExtractedRecord{
+			tree("new", "shape", "[]"), tree("new", "shape", `["desktop"]`),
+			tree("new", "width", "[]"), tree("color", "palette", "[]"),
+		},
+	}, map[string]string{"new": sourcePayloadKey(newTable), "color": sourcePayloadKey(color)})
+
+	diff := CompareSemanticIndexes(before, after)
+	if len(diff.Added) != 1 || diff.Added[0].Name != "width" ||
+		len(diff.ContextsAdded) != 1 || diff.ContextsAdded[0].Name != "shape" ||
+		len(diff.CoverageAdded) != 1 || diff.CoverageAdded[0].Name != "palette" {
+		t.Fatalf("forward diff = %#v", diff)
+	}
+	reversed := CompareSemanticIndexes(after, before)
+	if len(reversed.Removed) != 1 || reversed.Removed[0].Name != "width" ||
+		len(reversed.ContextsRemoved) != 1 || reversed.ContextsRemoved[0].Name != "shape" ||
+		len(reversed.CoverageLost) != 1 || reversed.CoverageLost[0].Name != "palette" {
+		t.Fatalf("reverse diff = %#v", reversed)
 	}
 }

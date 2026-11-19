@@ -23,12 +23,14 @@ type Issue struct {
 }
 
 type Summary struct {
-	Subjects int `json:"subjects"`
-	Tokens   int `json:"tokens"`
-	Values   int `json:"values"`
-	Added    int `json:"added"`
-	Updated  int `json:"updated"`
-	Removed  int `json:"removed"`
+	Subjects      int `json:"subjects"`
+	Tokens        int `json:"tokens"`
+	Values        int `json:"values"`
+	Added         int `json:"added"`
+	Updated       int `json:"updated"`
+	Removed       int `json:"removed"`
+	CoverageAdded int `json:"coverageAdded,omitempty"`
+	CoverageLost  int `json:"coverageLost,omitempty"`
 }
 
 type Report struct {

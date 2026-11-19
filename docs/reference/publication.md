@@ -171,6 +171,12 @@ The global change log and each component's history show all detected changes,
 newest first, grouped by observation date. Each group compares a capture with the
 one before it. The first capture is a starting point, not a list of additions.
 
+Added and Removed require a successfully extracted matching source payload in
+both snapshots. Matching ignores the release directory in Material's payload
+URLs. A payload captured on only one side produces Coverage added or Coverage
+lost entries for the affected records. A new or missing context for a token that
+exists in both snapshots gets a Context added or Context removed entry.
+
 These are observation dates, not Material's exact change dates. A change can have
 occurred at any point between the two captures. History is limited to snapshots
 you retain. Unsupported snapshot schemas are excluded with a message; corrupt

@@ -66,7 +66,7 @@ func ChangesPage(state publish.PublishedState, subject string, baseURL string, f
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</h1><p class=\"md-typescale-body-large\">Dates show when we detected changes, not when Material published them.</p><p class=\"tokens-metadata\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</h1><p class=\"md-typescale-body-large\">Dates show when Catalog detected changes. Coverage changes mark sources captured for only one side of a comparison.</p><p class=\"tokens-metadata\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -555,7 +555,7 @@ func ChangeFilterForm(filters webview.ChangeFilters, baseURL string) templ.Compo
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = FilterPill("history-type", "type", "Change", filters.Type, []webview.CatalogChoice{{Value: "", Label: "All changes"}, {Value: "changed", Label: "Updated"}, {Value: "added", Label: "Added"}, {Value: "removed", Label: "Removed"}}, false).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = FilterPill("history-type", "type", "Change", filters.Type, webview.HistoryChangeTypes(), false).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

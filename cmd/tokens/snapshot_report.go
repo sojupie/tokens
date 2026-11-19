@@ -17,6 +17,8 @@ import (
 func writeSnapshotCompareReport(writer io.Writer, diff tokensnapshot.SnapshotDiff, verbose bool) {
 	fmt.Fprintf(writer, "Compared %s to %s\n", diff.FromSnapshotID, diff.ToSnapshotID)
 	fmt.Fprintf(writer, "Material changes: +%d -%d changed %d\n", len(diff.Semantic.Added), len(diff.Semantic.Removed), len(diff.Semantic.Changed))
+	fmt.Fprintf(writer, "Context changes: +%d -%d\n", len(diff.Semantic.ContextsAdded), len(diff.Semantic.ContextsRemoved))
+	fmt.Fprintf(writer, "Source coverage: +%d -%d\n", len(diff.Semantic.CoverageAdded), len(diff.Semantic.CoverageLost))
 	fmt.Fprintf(writer, "Source payloads refreshed: %d\n", len(diff.SourcePayloads.Changed))
 	fmt.Fprintf(writer, "Pages with changed results: %d\n", len(diff.PageResults.Changed))
 	if !verbose {
@@ -29,13 +31,17 @@ func printSemanticChanges(writer io.Writer, diff tokensnapshot.SemanticDiff) {
 	printSemanticChangeSet(writer, "Added", diff.Added)
 	printSemanticChangeSet(writer, "Removed", diff.Removed)
 	printSemanticChangeSet(writer, "Changed", diff.Changed)
+	printSemanticChangeSet(writer, "Context added", diff.ContextsAdded)
+	printSemanticChangeSet(writer, "Context removed", diff.ContextsRemoved)
+	printSemanticChangeSet(writer, "Coverage added", diff.CoverageAdded)
+	printSemanticChangeSet(writer, "Coverage lost", diff.CoverageLost)
 }
 
 func printSemanticChangeSet(writer io.Writer, label string, changes []tokensnapshot.SemanticChange) {
 	if len(changes) == 0 {
 		return
 	}
-	fmt.Fprintf(writer, "%s Material changes (%d):\n", label, len(changes))
+	fmt.Fprintf(writer, "%s (%d):\n", label, len(changes))
 	currentSubject := ""
 	for _, change := range changes {
 		if change.SourceSubject != currentSubject {
@@ -47,19 +53,18 @@ func printSemanticChangeSet(writer io.Writer, label string, changes []tokensnaps
 			name = change.Kind
 		}
 		kind := semanticKindLabel(change.Kind)
-		symbol := map[string]string{"Added": "+", "Removed": "-", "Changed": "~"}[label]
-		fmt.Fprintf(writer, "    %s %s %s:\n", symbol, kind, name)
-		for _, line := range semanticChangeLines(change, label) {
+		fmt.Fprintf(writer, "    %s %s:\n", kind, name)
+		for _, line := range semanticChangeLines(change) {
 			fmt.Fprintf(writer, "      %s\n", line)
 		}
 	}
 }
 
-func semanticChangeLines(change tokensnapshot.SemanticChange, label string) []string {
-	if label == "Added" {
+func semanticChangeLines(change tokensnapshot.SemanticChange) []string {
+	if change.Before == "" {
 		return semanticValueLines(change.After)
 	}
-	if label == "Removed" {
+	if change.After == "" {
 		return semanticValueLines(change.Before)
 	}
 	return semanticDiffLines(change.Before, change.After)

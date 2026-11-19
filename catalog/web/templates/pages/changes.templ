@@ -13,7 +13,7 @@ templ ChangesPage(state publish.PublishedState, subject string, baseURL string, 
 	@Layout(webview.TimelineTitle(subject)) {
 		<header class="tokens-history-intro">
 			<h1 class="md-typescale-headline-medium">{ webview.ChangePageHeading(ctx, subject) }</h1>
-			<p class="md-typescale-body-large">Dates show when we detected changes, not when Material published them.</p>
+			<p class="md-typescale-body-large">Dates show when Catalog detected changes. Coverage changes mark sources captured for only one side of a comparison.</p>
 			<p class="tokens-metadata">{ webview.HistoryCoverage(state.Snapshots) }</p>
 		</header>
 		@ChangeFilterForm(filters, baseURL)
@@ -104,7 +104,7 @@ templ ChangeFilterForm(filters webview.ChangeFilters, baseURL string) {
 				@FilterPill("history-subject", "subject", "Component or style", filters.Subject, webview.HistoryChoices("All components and styles", filters.Subjects), false)
 			}
 			@FilterPill("history-snapshot", "snapshot", "Observed", filters.Snapshot, webview.HistoryChoices("All dates", filters.Snapshots), false)
-			@FilterPill("history-type", "type", "Change", filters.Type, []webview.CatalogChoice{{Value: "", Label: "All changes"}, {Value: "changed", Label: "Updated"}, {Value: "added", Label: "Added"}, {Value: "removed", Label: "Removed"}}, false)
+			@FilterPill("history-type", "type", "Change", filters.Type, webview.HistoryChangeTypes(), false)
 			<div class="tokens-change-filter-actions">
 				<noscript>
 					@ui.Action(ui.ButtonProps{Variant: ui.ButtonVariant("filled"), Type: "submit"}) {

@@ -352,7 +352,15 @@ func ChangeTypeLabel(changeType string) string {
 	case "removed":
 		return "Removed"
 	case "changed":
-		return "Changed"
+		return "Updated"
+	case "context-added":
+		return "Context added"
+	case "context-removed":
+		return "Context removed"
+	case "coverage-added":
+		return "Coverage added"
+	case "coverage-lost":
+		return "Coverage lost"
 	default:
 		return changeType
 	}
