@@ -202,6 +202,9 @@ unbound('.tokens-token-browser').forEach(browser => {
   bindTokenReferences(browser, signal);
   const form = browser.querySelector('form');
   if (!form) return;
+  if (form.hasAttribute('hx-get')) {
+    form.addEventListener('md-search-clear', () => form.requestSubmit());
+  }
   // Playground swaps update the URL independently of the table. Capture its
   // current settings before htmx (or a native GET) serializes this form.
   form.addEventListener('submit', () => {

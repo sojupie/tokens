@@ -84,7 +84,7 @@ func tokenBrowserControls(subject publish.SubjectView, browser webview.TokenBrow
 		if browser.TableOnly {
 			action = subjectURL
 		}
-		if err := write(`<form class="tokens-token-filters" hx-boost="false" hx-trigger="submit, md-search-clear" hx-target="#tokens-token-browser" hx-swap="outerHTML" hx-sync="#tokens-token-browser:replace" hx-push-url="true" hx-get="` + subjectURL + `" method="get" action="` + action + `">`); err != nil {
+		if err := write(`<form class="tokens-token-filters" hx-boost="false" hx-target="#tokens-token-browser" hx-swap="outerHTML" hx-sync="#tokens-token-browser:replace" hx-push-url="true" hx-get="` + subjectURL + `" method="get" action="` + action + `">`); err != nil {
 			return err
 		}
 		if browser.TableOnly {

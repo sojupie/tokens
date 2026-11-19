@@ -403,7 +403,7 @@ test('table modes preserve preview preference and folder state, with matching ac
       toggle: value => { if (classes.has(value)) { classes.delete(value); return false; } classes.add(value); return true; },
     },
     querySelector: selector => {
-      if (selector === 'form') return {addEventListener(){}};
+      if (selector === 'form') return {addEventListener(){}, hasAttribute: () => false};
       if (selector === '.tokens-context-dialog') return null;
       if (selector === '.tokens-token-set') return {};
       if (selector === '.tokens-token-set-menu') return menu;

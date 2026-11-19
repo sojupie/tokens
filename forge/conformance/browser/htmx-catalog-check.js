@@ -50,14 +50,18 @@ document.querySelector('#run').onclick=async()=>{
  assert(inputs.every(input=>!input.hidden)&&frame.contentDocument.activeElement===inputs[1],'shared text entry focuses the last used field and exposes both inputs');
 
  frame.style.width='1440px';
- await load('/components/buttons?q=icon');
+ await load('/components/buttons?q=icon&preview.compare=interactive');
  await frame.contentWindow.TokenAssets.ready;
  const filterDocument=frame.contentDocument;
  const filteredSearch=filterDocument.querySelector('#tokens-token-search');
  assert(filteredSearch.getBoundingClientRect().width>0,'the token toolbar leaves room for its search input');
+ const filterPreview=filterDocument.querySelector('#component-preview');
+ filterDocument.querySelector('#preview-compare-states').click();
+ await wait(()=>!filterPreview.isConnected&&new URL(frame.contentWindow.location.href).searchParams.get('preview.compare')==='states','playground configuration before clearing the token search');
  filterDocument.querySelector('.tokens-token-search [data-search-clear]').click();
  await wait(()=>!filteredSearch.isConnected&&!new URL(frame.contentWindow.location.href).searchParams.get('q'),'clearing token search');
  assert(filterDocument.activeElement===filterDocument.querySelector('#tokens-token-search'),'clearing token search keeps input focus through the table swap');
+ assert(new URL(frame.contentWindow.location.href).searchParams.get('preview.compare')==='states','clearing token search preserves the latest playground settings');
  frame.style.removeProperty('width');
 
  await load('/components/buttons?preview.compare=interactive');
