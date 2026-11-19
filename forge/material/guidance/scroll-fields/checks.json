@@ -1,0 +1,849 @@
+{
+  "schemaVersion": 1,
+  "designSystem": "material",
+  "component": "scroll-fields",
+  "sources": [
+    {
+      "url": "https://m3.material.io/components/scroll-fields/overview",
+      "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+      "markdownSha256": "aef44a18b58710dd70b1eebd5c94cd5fb3419889cbad5b711bd8fdb95973ee48",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Page introduction",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "22d2941c-7259-4ad3-834b-8f8efa636e88",
+          "title": "Availability & resources",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "79cbb284-ce6f-41a9-bd6a-423f07653810",
+          "title": "M3 Expressive update",
+          "status": "pending",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/scroll-fields/specs",
+      "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+      "markdownSha256": "d888d7b34edbad685071103ecab9781526aa8baabf4c42115a0ff3d43948ae3b",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Page introduction",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "772a4ede-56c4-4293-80d5-2b610b4c3111",
+          "title": "Tokens & specs",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "3beb4766-8a4e-4847-a49d-a59efcd67c8f",
+          "title": "Anatomy",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "7dc17dc5-5574-41b4-a3b1-a4682cf4321e",
+          "title": "Color",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "38b876f2-76e1-49ab-9c0c-ec0aeeb66811",
+          "title": "States",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "e35ae8bd-27da-41e9-83b1-b2aefcfc1f9b",
+          "title": "Measurements",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "e0219de8-1b79-4d6c-bef6-9f355bfb4daa",
+          "title": "High contrast",
+          "status": "pending",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/scroll-fields/guidelines",
+      "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+      "markdownSha256": "9dff5cbfb327e05ec60fa41b894a3fec3a87bd35eb2ff0d997302ccd0dbf6232",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Page introduction",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "ee439a25-4a76-4a73-9b00-8ce81a613d13",
+          "title": "Usage",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "30c9fb62-5c1a-471d-b536-17e5b0dbd7c1",
+          "title": "Support keyboard input",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "18b30ffa-ef4f-4cd2-a74e-ec7ff9e0e623",
+          "title": "Anatomy",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "b77651f8-c6ca-40a9-ab16-3d604abcf69f",
+          "title": "Behavior",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "0d553fed-6422-4db7-90f7-fe9e051a316f",
+          "title": "Scrolling",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "43d42f9f-1925-4a1e-8192-d357a056bf63",
+          "title": "Motion",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "27b9bb2d-ba56-4b0c-a151-e3b8f7dc2e92",
+          "title": "Input behavior",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "d784318c-77c5-43ac-a223-588e3a461ae5",
+          "title": "Sizing",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "c3db2292-a228-4766-944f-aefde7d64c4c",
+          "title": "Placement",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "a5e9d88a-d8f2-4e1d-9b54-2f2197b81001",
+          "title": "Inline is preferred",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "7e747fb0-fcad-4bf8-80d3-eb4f838e6e9b",
+          "title": "Non-modal dialog",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "7ccd837b-4a81-4e10-923b-48158ebd4830",
+          "title": "Modal dialog",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "238e54fd-0bf3-4f42-8d66-5ef061d242c5",
+          "title": "Adaptive design",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "ffa47202-1ba4-4122-9dfc-1bb2c9a039bd",
+          "title": "Customizations",
+          "status": "pending",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "url": "https://m3.material.io/components/scroll-fields/accessibility",
+      "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+      "markdownSha256": "196865c371091f7ac4f238e0e7851c955c0a82c28a1e7cae58f3745491d8fbbe",
+      "extractorVersion": 2,
+      "sections": [
+        {
+          "id": "page",
+          "title": "Page introduction",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "fad7cd55-61d6-418e-b596-29316f222325",
+          "title": "Use cases",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "baef3681-9f25-498c-b906-0d6835590d67",
+          "title": "Interaction & style",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "1a79c6e6-3d7c-4a49-8f4e-4433dc56c36e",
+          "title": "Include both swipe & text input options",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "4130a852-521c-4cc6-96d4-2c63f75f0a84",
+          "title": "Targets",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "059c74bf-9315-4119-9312-678d5c286bd6",
+          "title": "Keyboard navigation",
+          "status": "pending",
+          "notes": ""
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "scroll-field-content-size",
+      "statement": "Size the field to its contents with token-defined minimums. Allow an available-width layout or a fixed size when the enclosing surface calls for it.",
+      "condition": "When sizing a Scroll Field.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-11-18",
+          "section": "e35ae8bd-27da-41e9-83b1-b2aefcfc1f9b",
+          "url": "https://m3.material.io/components/scroll-fields/specs",
+          "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+          "markdownSha256": "d888d7b34edbad685071103ecab9781526aa8baabf4c42115a0ff3d43948ae3b",
+          "extractorVersion": 2,
+          "summary": "Captured the current Material guidance for this behavior."
+        }
+      ],
+      "implementation": {
+        "status": "verified",
+        "sourceRevision": 1,
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:396",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 1280×960, standalone Scroll Field Hug/Fill and narrow fixed-width host; 2/3/4 digit examples. The standalone Hug examples stayed content sized with token minimums of 100, 120 and 186 CSS px. Fill expanded to the content width of a 360 CSS px scene."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:1109",
+            "result": "Firefox 159.0 on local Catalog. 1280×960, standalone Scroll Field Hug/Fill and narrow fixed-width host; 2/3/4 digit examples. The standalone Hug examples stayed content sized with token minimums of 100, 120 and 186 CSS px. Fill expanded to the content width of a 360 CSS px scene."
+          }
+        ],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "scroll-field-state-matrix",
+      "statement": "Provide enabled, hovered, focused and disabled appearances for inactive and active fields.",
+      "condition": "When rendering the field in either interaction mode.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-11-18",
+          "section": "38b876f2-76e1-49ab-9c0c-ec0aeeb66811",
+          "url": "https://m3.material.io/components/scroll-fields/specs",
+          "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+          "markdownSha256": "d888d7b34edbad685071103ecab9781526aa8baabf4c42115a0ff3d43948ae3b",
+          "extractorVersion": 2,
+          "summary": "Captured the current Material guidance for this behavior."
+        }
+      ],
+      "implementation": {
+        "status": "verified",
+        "sourceRevision": 1,
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:637",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 1280×960, Show States, Scroll and Text entry specimens. The States view rendered enabled, hovered, focused and disabled examples in both Scroll and Text entry. Computed paint distinguished hover, focus and disabled value opacity."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:1350",
+            "result": "Firefox 159.0 on local Catalog. 1280×960, Show States, Scroll and Text entry specimens. The States view rendered enabled, hovered, focused and disabled examples in both Scroll and Text entry. Computed paint distinguished hover, focus and disabled value opacity."
+          }
+        ],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "scroll-field-high-contrast",
+      "statement": "Keep the current field value and its entry mode legible in high contrast.",
+      "condition": "When high contrast is active.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-11-18",
+          "section": "e0219de8-1b79-4d6c-bef6-9f355bfb4daa",
+          "url": "https://m3.material.io/components/scroll-fields/specs",
+          "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+          "markdownSha256": "d888d7b34edbad685071103ecab9781526aa8baabf4c42115a0ff3d43948ae3b",
+          "extractorVersion": 2,
+          "summary": "Captured the current Material guidance for this behavior."
+        }
+      ],
+      "implementation": {
+        "status": "verified",
+        "sourceRevision": 1,
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:602",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 1280×960, standalone Scroll Field in light and dark High contrast, scroll and text entry. Checked visible selected and editable values in the Catalog light and dark High contrast themes. Both modes exceeded 4.5:1 against the track surface."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:1315",
+            "result": "Firefox 159.0 on local Catalog. 1280×960, standalone Scroll Field in light and dark High contrast, scroll and text entry. Checked visible selected and editable values in the Catalog light and dark High contrast themes. Both modes exceeded 4.5:1 against the track surface."
+          }
+        ],
+        "notes": "Assessed the Catalog High contrast theme in light and dark. Operating-system forced colors were outside this run."
+      },
+      "fixes": []
+    },
+    {
+      "id": "scroll-field-distinct-labels",
+      "statement": "Label adjacent fields individually when they adjust different values.",
+      "condition": "When grouping fields for distinct measurements.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-11-18",
+          "section": "ee439a25-4a76-4a73-9b00-8ce81a613d13",
+          "url": "https://m3.material.io/components/scroll-fields/guidelines",
+          "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+          "markdownSha256": "9dff5cbfb327e05ec60fa41b894a3fec3a87bd35eb2ff0d997302ccd0dbf6232",
+          "extractorVersion": 2,
+          "summary": "Captured the current Material guidance for this behavior."
+        }
+      ],
+      "implementation": {
+        "status": "verified",
+        "sourceRevision": 1,
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:359",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 1280×960, Scroll Field Room controls scene and sequential tab order. The Room controls scene exposed two individually named spinbuttons, Temperature and Humidity."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:1072",
+            "result": "Firefox 159.0 on local Catalog. 1280×960, Scroll Field Room controls scene and sequential tab order. The Room controls scene exposed two individually named spinbuttons, Temperature and Humidity."
+          }
+        ],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "scroll-field-input-toggle",
+      "statement": "Provide a control near the field for switching to direct entry.",
+      "condition": "When the field is available for scrolling.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-11-18",
+          "section": "30c9fb62-5c1a-471d-b536-17e5b0dbd7c1",
+          "url": "https://m3.material.io/components/scroll-fields/guidelines",
+          "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+          "markdownSha256": "9dff5cbfb327e05ec60fa41b894a3fec3a87bd35eb2ff0d997302ccd0dbf6232",
+          "extractorVersion": 2,
+          "summary": "Captured the current Material guidance for this behavior."
+        }
+      ],
+      "implementation": {
+        "status": "verified",
+        "sourceRevision": 1,
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:385",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 1280×960, standalone text and numeric Scroll Fields; switch to input, type and submit. The adjacent Switch to text input button opened direct entry for both the numeric Temperature and text Climate mode fields."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:1098",
+            "result": "Firefox 159.0 on local Catalog. 1280×960, standalone text and numeric Scroll Fields; switch to input, type and submit. The adjacent Switch to text input button opened direct entry for both the numeric Temperature and text Climate mode fields."
+          }
+        ],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "scroll-field-scroll-interaction",
+      "statement": "Allow swiping in both directions and tapping a neighboring value above or below the selection.",
+      "condition": "When the scroll mode is active.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-11-18",
+          "section": "0d553fed-6422-4db7-90f7-fe9e051a316f",
+          "url": "https://m3.material.io/components/scroll-fields/guidelines",
+          "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+          "markdownSha256": "9dff5cbfb327e05ec60fa41b894a3fec3a87bd35eb2ff0d997302ccd0dbf6232",
+          "extractorVersion": 2,
+          "summary": "Captured the current Material guidance for this behavior."
+        }
+      ],
+      "implementation": {
+        "status": "verified",
+        "sourceRevision": 1,
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:1439",
+            "result": "Chromium 158.0.8127.18 on local Catalog. Chromium mobile touch emulation at 390×844, finite standalone Scroll Field and Expressive 12-hour modal Scroll; bidirectional drags and both neighbor taps. On a finite standalone field, emulated touch swipes changed the value in both directions and tapping above or below the selected value stepped it in the corresponding direction."
+          }
+        ],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "scroll-field-center-snap",
+      "statement": "Settle the active choice in the vertical center and distinguish it from neighboring values by size and color.",
+      "condition": "When selecting with the rotor.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-11-18",
+          "section": "43d42f9f-1925-4a1e-8192-d357a056bf63",
+          "url": "https://m3.material.io/components/scroll-fields/guidelines",
+          "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+          "markdownSha256": "9dff5cbfb327e05ec60fa41b894a3fec3a87bd35eb2ff0d997302ccd0dbf6232",
+          "extractorVersion": 2,
+          "summary": "Captured the current Material guidance for this behavior."
+        }
+      ],
+      "implementation": {
+        "status": "verified",
+        "sourceRevision": 1,
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:444",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 1280×960, standalone finite Scroll Field, height slider set to 240 CSS px, pointer taps above and below. On a custom-height finite field, measured the selected line box centered within 1 CSS px, with larger type and a distinct color from its neighbors. Both neighbor pointer clicks changed the selection."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:1157",
+            "result": "Firefox 159.0 on local Catalog. 1280×960, standalone finite Scroll Field, height slider set to 240 CSS px, pointer taps above and below. On a custom-height finite field, measured the selected line box centered within 1 CSS px, with larger type and a distinct color from its neighbors. Both neighbor pointer clicks changed the selection."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:1439",
+            "result": "Chromium 158.0.8127.18 on local Catalog. Chromium mobile touch emulation at 390×844, finite standalone Scroll Field and Expressive 12-hour modal Scroll; bidirectional drags and both neighbor taps. After a touch-emulated swipe and release, the selected standalone line box settled within 1 CSS px of the track center."
+          }
+        ],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "scroll-field-direct-entry",
+      "statement": "Allow text entry with a suitable keyboard. Complete string choices from their first character. Show errors below the field and highlight the invalid value.",
+      "condition": "When direct entry is active.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-11-18",
+          "section": "27b9bb2d-ba56-4b0c-a151-e3b8f7dc2e92",
+          "url": "https://m3.material.io/components/scroll-fields/guidelines",
+          "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+          "markdownSha256": "9dff5cbfb327e05ec60fa41b894a3fec3a87bd35eb2ff0d997302ccd0dbf6232",
+          "extractorVersion": 2,
+          "summary": "Captured the current Material guidance for this behavior."
+        }
+      ],
+      "implementation": {
+        "status": "verified",
+        "sourceRevision": 1,
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:385",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 1280×960, standalone text and numeric Scroll Fields; switch to input, type and submit. Numeric and string examples requested their respective keyboard types. Typing h completed Heat, rejected input was highlighted with a message below the field, and valid text committed on Enter."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:1098",
+            "result": "Firefox 159.0 on local Catalog. 1280×960, standalone text and numeric Scroll Fields; switch to input, type and submit. Numeric and string examples requested their respective keyboard types. Typing h completed Heat, rejected input was highlighted with a message below the field, and valid text committed on Enter."
+          }
+        ],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "scroll-field-digit-sizes",
+      "statement": "Prefer up to four digits and use the matching minimum width. Consider increments or direct entry for long consecutive lists.",
+      "condition": "When choosing field size and available values.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-11-18",
+          "section": "d784318c-77c5-43ac-a223-588e3a461ae5",
+          "url": "https://m3.material.io/components/scroll-fields/guidelines",
+          "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+          "markdownSha256": "9dff5cbfb327e05ec60fa41b894a3fec3a87bd35eb2ff0d997302ccd0dbf6232",
+          "extractorVersion": 2,
+          "summary": "Captured the current Material guidance for this behavior."
+        }
+      ],
+      "implementation": {
+        "status": "verified",
+        "sourceRevision": 1,
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:396",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 1280×960, standalone Scroll Field Hug/Fill and narrow fixed-width host; 2/3/4 digit examples. Tested the small, medium and large examples with their selected two-, three- and four-digit values. Computed track minimums were 100, 120 and 186 CSS px respectively."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:1109",
+            "result": "Firefox 159.0 on local Catalog. 1280×960, standalone Scroll Field Hug/Fill and narrow fixed-width host; 2/3/4 digit examples. Tested the small, medium and large examples with their selected two-, three- and four-digit values. Computed track minimums were 100, 120 and 186 CSS px respectively."
+          }
+        ],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "scroll-field-inline-placement",
+      "statement": "Place fields inline when practical so surrounding content remains visible.",
+      "condition": "When selecting a surface for one or more fields.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-11-18",
+          "section": "a5e9d88a-d8f2-4e1d-9b54-2f2197b81001",
+          "url": "https://m3.material.io/components/scroll-fields/guidelines",
+          "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+          "markdownSha256": "9dff5cbfb327e05ec60fa41b894a3fec3a87bd35eb2ff0d997302ccd0dbf6232",
+          "extractorVersion": 2,
+          "summary": "Captured the current Material guidance for this behavior."
+        }
+      ],
+      "implementation": {
+        "status": "verified",
+        "sourceRevision": 1,
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:359",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 1280×960, Scroll Field Room controls scene and sequential tab order. The two rotors rendered and remained visible inline in the Room controls scene."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:1072",
+            "result": "Firefox 159.0 on local Catalog. 1280×960, Scroll Field Room controls scene and sequential tab order. The two rotors rendered and remained visible inline in the Room controls scene."
+          }
+        ],
+        "notes": "The assessment covers the Catalog Room controls scene. Other host surfaces have their own placement decisions."
+      },
+      "fixes": []
+    },
+    {
+      "id": "scroll-field-nonmodal-placement",
+      "statement": "Use a nearby non-modal popup when the field cannot fit inline.",
+      "condition": "When inline placement is unavailable.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-11-18",
+          "section": "7e747fb0-fcad-4bf8-80d3-eb4f838e6e9b",
+          "url": "https://m3.material.io/components/scroll-fields/guidelines",
+          "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+          "markdownSha256": "9dff5cbfb327e05ec60fa41b894a3fec3a87bd35eb2ff0d997302ccd0dbf6232",
+          "extractorVersion": 2,
+          "summary": "Captured the current Material guidance for this behavior."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "scroll-field-modal-placement",
+      "statement": "Reserve modal placement for cases where the surrounding content cannot accommodate a non-modal presentation.",
+      "condition": "When considering modal placement.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-11-18",
+          "section": "7ccd837b-4a81-4e10-923b-48158ebd4830",
+          "url": "https://m3.material.io/components/scroll-fields/guidelines",
+          "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+          "markdownSha256": "9dff5cbfb327e05ec60fa41b894a3fec3a87bd35eb2ff0d997302ccd0dbf6232",
+          "extractorVersion": 2,
+          "summary": "Captured the current Material guidance for this behavior."
+        }
+      ],
+      "implementation": {
+        "status": "unassessed",
+        "sourceRevision": 1,
+        "evidence": [],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "scroll-field-custom-sizing",
+      "statement": "Keep neighboring options partly visible and maintain at least a 16 dp corner radius when customizing dimensions.",
+      "condition": "When adapting the visible field size.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-11-18",
+          "section": "ffa47202-1ba4-4122-9dfc-1bb2c9a039bd",
+          "url": "https://m3.material.io/components/scroll-fields/guidelines",
+          "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+          "markdownSha256": "9dff5cbfb327e05ec60fa41b894a3fec3a87bd35eb2ff0d997302ccd0dbf6232",
+          "extractorVersion": 2,
+          "summary": "Captured the current Material guidance for this behavior."
+        }
+      ],
+      "implementation": {
+        "status": "verified",
+        "sourceRevision": 1,
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:444",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 1280×960, standalone finite Scroll Field, height slider set to 240 CSS px, pointer taps above and below. At a custom 240 CSS px field height, both neighboring line boxes remained partly visible and the painted track radius was at least 16 CSS px."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:1157",
+            "result": "Firefox 159.0 on local Catalog. 1280×960, standalone finite Scroll Field, height slider set to 240 CSS px, pointer taps above and below. At a custom 240 CSS px field height, both neighboring line boxes remained partly visible and the painted track radius was at least 16 CSS px."
+          }
+        ],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "scroll-field-neighbor-targets",
+      "statement": "Give each visible inactive choice a target at least 48 dp high, extending beyond the visual surface as needed.",
+      "condition": "When displaying inactive choices.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-11-18",
+          "section": "4130a852-521c-4cc6-96d4-2c63f75f0a84",
+          "url": "https://m3.material.io/components/scroll-fields/accessibility",
+          "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+          "markdownSha256": "196865c371091f7ac4f238e0e7851c955c0a82c28a1e7cae58f3745491d8fbbe",
+          "extractorVersion": 2,
+          "summary": "Captured the current Material guidance for this behavior."
+        }
+      ],
+      "implementation": {
+        "status": "verified",
+        "sourceRevision": 1,
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:444",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 1280×960, standalone finite Scroll Field, height slider set to 240 CSS px, pointer taps above and below. The inactive controls measured at least 48 CSS px high and accepted hit tests and clicks above and below the selected value."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:1157",
+            "result": "Firefox 159.0 on local Catalog. 1280×960, standalone finite Scroll Field, height slider set to 240 CSS px, pointer taps above and below. The inactive controls measured at least 48 CSS px high and accepted hit tests and clicks above and below the selected value."
+          }
+        ],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "scroll-field-tab",
+      "statement": "Tab focuses the rotor.",
+      "condition": "When navigating to the control by keyboard.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-11-18",
+          "section": "059c74bf-9315-4119-9312-678d5c286bd6",
+          "url": "https://m3.material.io/components/scroll-fields/accessibility",
+          "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+          "markdownSha256": "196865c371091f7ac4f238e0e7851c955c0a82c28a1e7cae58f3745491d8fbbe",
+          "extractorVersion": 2,
+          "summary": "Captured the current Material guidance for this behavior."
+        }
+      ],
+      "implementation": {
+        "status": "verified",
+        "sourceRevision": 1,
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:373",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 1280×960, standalone finite Scroll Field; Tab, Space, Enter, Up and Down. After leaving the standalone Temperature field with Shift+Tab, Tab returned focus to the named rotor."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:1086",
+            "result": "Firefox 159.0 on local Catalog. 1280×960, standalone finite Scroll Field; Tab, Space, Enter, Up and Down. After leaving the standalone Temperature field with Shift+Tab, Tab returned focus to the named rotor."
+          }
+        ],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "scroll-field-activate",
+      "statement": "Space or Enter activates the rotor.",
+      "condition": "When the rotor has keyboard focus.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-11-18",
+          "section": "059c74bf-9315-4119-9312-678d5c286bd6",
+          "url": "https://m3.material.io/components/scroll-fields/accessibility",
+          "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+          "markdownSha256": "196865c371091f7ac4f238e0e7851c955c0a82c28a1e7cae58f3745491d8fbbe",
+          "extractorVersion": 2,
+          "summary": "Captured the current Material guidance for this behavior."
+        }
+      ],
+      "implementation": {
+        "status": "verified",
+        "sourceRevision": 1,
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:373",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 1280×960, standalone finite Scroll Field; Tab, Space, Enter, Up and Down. On the focused standalone rotor, Space and Enter each fired native activation."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:1086",
+            "result": "Firefox 159.0 on local Catalog. 1280×960, standalone finite Scroll Field; Tab, Space, Enter, Up and Down. On the focused standalone rotor, Space and Enter each fired native activation."
+          }
+        ],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "scroll-field-step",
+      "statement": "Up and Down select the previous and next values.",
+      "condition": "When operating the rotor by keyboard.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-11-18",
+          "section": "059c74bf-9315-4119-9312-678d5c286bd6",
+          "url": "https://m3.material.io/components/scroll-fields/accessibility",
+          "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+          "markdownSha256": "196865c371091f7ac4f238e0e7851c955c0a82c28a1e7cae58f3745491d8fbbe",
+          "extractorVersion": 2,
+          "summary": "Captured the current Material guidance for this behavior."
+        }
+      ],
+      "implementation": {
+        "status": "verified",
+        "sourceRevision": 1,
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:373",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 1280×960, standalone finite Scroll Field; Tab, Space, Enter, Up and Down. On the focused finite rotor, Up selected 19 from 20 and Down returned to 20."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:1086",
+            "result": "Firefox 159.0 on local Catalog. 1280×960, standalone finite Scroll Field; Tab, Space, Enter, Up and Down. On the focused finite rotor, Up selected 19 from 20 and Down returned to 20."
+          }
+        ],
+        "notes": ""
+      },
+      "fixes": []
+    }
+  ]
+}

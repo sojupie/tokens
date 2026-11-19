@@ -5,135 +5,291 @@
   "sources": [
     {
       "url": "https://m3.material.io/components/time-pickers/overview",
-      "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
-      "markdownSha256": "9d83d18796620471c91790e3932339737e9e81c67ce81caf3e8874252ecc5935",
+      "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+      "markdownSha256": "f7c0023898219543ce0234b102f7dc843ca9f83483dda5434d3a20d58e5a61d8",
       "extractorVersion": 2,
       "sections": [
         {
           "id": "page",
-          "title": "Time pickers",
-          "status": "no-requirements",
-          "notes": "Introductory definition; variant behavior is detailed below."
+          "title": "Page introduction",
+          "status": "pending",
+          "notes": "Review this section against the November capture and prior check history."
         },
         {
           "id": "f162d76b-487c-4061-9d80-edcbdff5db07",
           "title": "Availability & resources",
-          "status": "no-requirements",
-          "notes": "Upstream implementation availability only."
+          "status": "pending",
+          "notes": "Review this section against the November capture and prior check history."
+        },
+        {
+          "id": "d27999eb-5d07-4165-8ceb-01798a5c94c3",
+          "title": "M3 Expressive update",
+          "status": "pending",
+          "notes": ""
         },
         {
           "id": "cbf493d5-20ed-4f1d-ae52-dad644df0e98",
-          "title": "Differences from M2",
-          "status": "mapped",
-          "notes": ""
+          "title": "Differences from M2 to M3 baseline",
+          "status": "pending",
+          "notes": "Review this section against the November capture and prior check history."
         }
       ]
     },
     {
       "url": "https://m3.material.io/components/time-pickers/specs",
-      "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
-      "markdownSha256": "e34e27af7a4fbc775c2449e3ba8b2b5e0cd704248638f7a087a84637f3fe74b9",
+      "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+      "markdownSha256": "b2fa244da0ed4823907497f6c10fd454e6043edd416709f4fe9cbbd2bbb85c23",
       "extractorVersion": 2,
       "sections": [
         {
           "id": "page",
-          "title": "Time pickers",
-          "status": "no-requirements",
-          "notes": "Repeated introductory description only."
+          "title": "Page introduction",
+          "status": "pending",
+          "notes": "Review this section against the November capture and prior check history."
+        },
+        {
+          "id": "d34f0d41-0662-45bf-aa67-845ebccce613",
+          "title": "Expressive variants",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "06b1908c-0cd1-40bd-94a6-0e840588abf4",
+          "title": "Baseline variants",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "518bbd7b-c7dc-4d2f-9308-59e5a69013a3",
+          "title": "Configurations",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "608c2f06-c3e9-4929-954b-5dddacec5fa9",
+          "title": "Behavior: Inline or modal",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "8c4d1699-d1b2-4474-bb4d-7bbc1e109db1",
+          "title": "Scroll time picker",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "684505ea-6073-4955-97f7-46900dbfd44d",
+          "title": "Input time picker",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "e35ae424-3b50-4b25-95d3-d80e61273b24",
+          "title": "Dial orientation: horizontal or vertical",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "c1b4a031-1465-484c-96d3-6d5bb8e91918",
+          "title": "Time length: 12-hour or 24-hour",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "88b4e564-feba-4d33-a7ca-647782700cec",
+          "title": "Scroll time picker",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "057acd20-8bf2-4f66-8e9b-28d6f08b88b8",
+          "title": "Dial time picker",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "2a02edcc-78a8-48f9-9ce7-d7e7f66c7fc7",
+          "title": "Input time picker",
+          "status": "pending",
+          "notes": ""
         },
         {
           "id": "2ccd9809-9246-4667-85fa-7747f4ac7349",
           "title": "Tokens & specs",
-          "status": "no-requirements",
-          "notes": "Token browser reference only."
+          "status": "pending",
+          "notes": "Review this section against the November capture and prior check history."
         },
         {
           "id": "30b2b7a9-ba53-4aec-9621-89250884c28e",
           "title": "Anatomy",
-          "status": "no-requirements",
-          "notes": "Parent heading introduces diagrams; no additional behavior instruction."
+          "status": "pending",
+          "notes": "Review this section against the November capture and prior check history."
         },
         {
           "id": "656721f2-de86-4311-807d-f295bddfb72f",
-          "title": "Time picker dial",
-          "status": "no-requirements",
-          "notes": "Anatomy diagram lists dial elements; their behavior is described in guidelines."
+          "title": "Scroll time picker",
+          "status": "pending",
+          "notes": "Review this section against the November capture and prior check history."
         },
         {
           "id": "f07ad824-7e63-4d86-b5ca-090f1a6a3ded",
-          "title": "Time picker input",
-          "status": "no-requirements",
-          "notes": "Anatomy illustration labels input-picker elements; behavior appears in guidelines."
+          "title": "Input & dial time picker",
+          "status": "pending",
+          "notes": "Review this section against the November capture and prior check history."
         },
         {
           "id": "fb05e617-91cc-4332-a39f-d4d4d05b66da",
           "title": "Color",
-          "status": "no-requirements",
-          "notes": "Parent heading groups variant color diagrams; mappings are addressed separately below."
+          "status": "pending",
+          "notes": "Review this section against the November capture and prior check history."
         },
         {
           "id": "3245f48a-b605-4a4b-8708-a1659b38673d",
-          "title": "Time picker dial color",
-          "status": "unclear",
-          "notes": "Color-role lists are numbered against an uninspected diagram; element-to-role mapping is unavailable in text."
+          "title": "Scroll time picker color",
+          "status": "pending",
+          "notes": "Review this section against the November capture and prior check history."
         },
         {
           "id": "f0473511-effd-47fd-b643-41c03ca4cd37",
-          "title": "Time picker input color",
-          "status": "unclear",
-          "notes": "Color-role lists are numbered against an uninspected diagram; element-to-role mapping is unavailable in text."
+          "title": "Dial & input time picker  color",
+          "status": "pending",
+          "notes": "Review this section against the November capture and prior check history."
         },
         {
           "id": "b497b301-bd6c-4f4e-9f39-3a5528128122",
           "title": "States",
-          "status": "mapped",
-          "notes": ""
+          "status": "pending",
+          "notes": "Review this section against the November capture and prior check history."
         },
         {
           "id": "d4eea7a5-ae79-492f-89c6-aa1931d1acc8",
           "title": "Measurements",
-          "status": "no-requirements",
-          "notes": "Parent heading groups the dial and input measurement tables below."
+          "status": "pending",
+          "notes": "Review this section against the November capture and prior check history."
         },
         {
           "id": "6473269a-9ae7-4f36-b0f2-b54d03cacc13",
-          "title": "Time picker dial - vertical",
-          "status": "mapped",
-          "notes": ""
+          "title": "Inline time picker (input & scroll)",
+          "status": "pending",
+          "notes": "Review this section against the November capture and prior check history."
         },
         {
           "id": "4614fcf8-674a-49a9-b417-7cde9459e0ee",
-          "title": "Time picker dial - horizontal",
-          "status": "mapped",
-          "notes": ""
+          "title": "Modal time picker (input & scroll)",
+          "status": "pending",
+          "notes": "Review this section against the November capture and prior check history."
         },
         {
           "id": "1596472a-5c46-4692-b628-e4c0741f0b02",
-          "title": "Time picker input",
-          "status": "mapped",
+          "title": "Dial time picker (vertical)",
+          "status": "pending",
+          "notes": "Review this section against the November capture and prior check history."
+        },
+        {
+          "id": "9265399b-afd1-4171-a76b-f4f4ce475688",
+          "title": "Dial time picker (horizontal)",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "298a79d2-01ae-42ac-bbf0-ec89cecd7d6e",
+          "title": "Baseline",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "15b94417-9b18-4742-a34b-0daf76ed9edd",
+          "title": "Tokens & specs",
+          "status": "pending",
           "notes": ""
         },
         {
           "id": "ba58bd17-fe03-4b6b-9bfd-5262b58c33aa",
           "title": "Configurations",
-          "status": "no-requirements",
-          "notes": "Parent heading groups orientation and time-format options mapped in child sections."
+          "status": "pending",
+          "notes": "Review this section against the November capture and prior check history."
+        },
+        {
+          "id": "533817dd-8590-4d07-af4d-3b61de924c5f",
+          "title": "24-hour dial time picker",
+          "status": "pending",
+          "notes": "Review this section against the November capture and prior check history."
+        },
+        {
+          "id": "137e2f88-881b-4dba-b826-c30574d82b50",
+          "title": "12-hour and 24-hour input time pickers",
+          "status": "pending",
+          "notes": "Review this section against the November capture and prior check history."
+        },
+        {
+          "id": "b75e3564-8bcf-40bb-bcc5-f70885df51f1",
+          "title": "Anatomy",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "c5d14fb0-1eae-4f39-9029-c83b73836f43",
+          "title": "Input time picker",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "9cc1a233-5812-4959-955b-97a1363c2d23",
+          "title": "Dial time picker",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "ec6c993f-bb73-4b51-95d0-fb8c742ef453",
+          "title": "Color",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "c60e236f-5749-4a1c-955c-670cefe37d83",
+          "title": "Input time picker color",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "9781f1ca-d5c5-4b08-81b8-d1e5b3a2e70a",
+          "title": "Dial time picker color",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "53ed138b-fe0d-45ab-8da9-f8e592cd9443",
+          "title": "States",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "2f600359-2841-469b-9b29-e1374562387a",
+          "title": "Measurements",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "30d7e81e-e69b-4966-876b-e224e8410bc9",
+          "title": "Input time picker",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "ed473384-4dca-4c76-bfae-2cfbd15c3dbd",
+          "title": "Dial time picker (vertical)",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "19daba2f-12b2-4d47-b54b-29b4fc0d2fd0",
+          "title": "Dial time picker (horizontal)",
+          "status": "pending",
+          "notes": ""
         },
         {
           "id": "52bfec07-bfaf-4291-b655-6917c62e3cff",
           "title": "Vertical orientation and horizontal orientation",
-          "status": "mapped",
-          "notes": ""
-        },
-        {
-          "id": "533817dd-8590-4d07-af4d-3b61de924c5f",
-          "title": "24-hour time picker dial",
-          "status": "mapped",
-          "notes": ""
-        },
-        {
-          "id": "137e2f88-881b-4dba-b826-c30574d82b50",
-          "title": "12-hour and 24-hour time picker inputs",
           "status": "mapped",
           "notes": ""
         }
@@ -141,20 +297,146 @@
     },
     {
       "url": "https://m3.material.io/components/time-pickers/guidelines",
-      "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
-      "markdownSha256": "778a77a4e90e98d475c7812eeafdb83ee4d86d032575f100bdc60381f6f2e168",
+      "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+      "markdownSha256": "fe7b3c0410da5542d1a7b56c0b36951c013914385fa26b54f26339606aaa278c",
       "extractorVersion": 2,
       "sections": [
         {
           "id": "page",
-          "title": "Time pickers",
-          "status": "no-requirements",
-          "notes": "Introductory description only."
+          "title": "Page introduction",
+          "status": "pending",
+          "notes": "Review this section against the November capture and prior check history."
         },
         {
           "id": "17b822dc-3613-490c-b45a-4b13da14949f",
           "title": "Usage",
-          "status": "mapped",
+          "status": "pending",
+          "notes": "Review this section against the November capture and prior check history."
+        },
+        {
+          "id": "896b46be-89a0-49de-a593-a8ec2b02b69f",
+          "title": "Scroll time picker",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "26403b19-6759-456d-935d-227218823f0c",
+          "title": "Input time picker",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "b20e25ad-0bad-4204-8aeb-f7a58c8ab92e",
+          "title": "Dial time picker",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "a245c800-1cd7-4eeb-8405-41018a59104c",
+          "title": "Toggling to input selector",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "ffab9d7d-65fe-4080-a2eb-d86b53e90b8c",
+          "title": "24-hour time selection",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "a50a8871-435a-43e9-a567-f3b5b9606925",
+          "title": "Alternate time selection components",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "96d191ab-629e-4d22-850b-6c48a1801b50",
+          "title": "Customization",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "a305ccb5-5662-4cdb-8aaa-935e08968d99",
+          "title": "Text & containers",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "20d71a9d-5532-4207-a8a5-2953af895774",
+          "title": "Color",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "7505b1d4-632d-4705-8a44-33c2c4a66d4e",
+          "title": "Container (modal)",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "b95120b4-ba7e-4e8e-aa46-f2a81a222468",
+          "title": "Input toggle button",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "944642a7-a290-4b6f-9ffe-d398ae7ad019",
+          "title": "Placement",
+          "status": "pending",
+          "notes": "Review this section against the November capture and prior check history."
+        },
+        {
+          "id": "f5315bd0-1f53-4461-b62f-bdbb325951a7",
+          "title": "Inline",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "988944dc-351e-4d6f-acf5-2b9aad302acd",
+          "title": "Menus",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "cb787b81-595a-4c26-b5a6-cb86e888a02e",
+          "title": "Modals",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "6c1e26c7-679a-4c78-941a-ef2cd0b32ec4",
+          "title": "Adaptive design",
+          "status": "pending",
+          "notes": "Review this section against the November capture and prior check history."
+        },
+        {
+          "id": "26911913-c421-4e83-a244-c73a264fbe66",
+          "title": "Behavior",
+          "status": "pending",
+          "notes": "Review this section against the November capture and prior check history."
+        },
+        {
+          "id": "9abf67ef-7f88-4976-961d-3f8a43de5f25",
+          "title": "Scroll time pickers",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "7ed6d8b3-12e8-42e6-ad2d-7af99f16c5af",
+          "title": "Dial time pickers",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "6a0f8ce9-ea82-4cc5-b31a-c445a01f7357",
+          "title": "Input time picker",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "5496b331-2c94-4c07-b43f-27be610fc486",
+          "title": "Modals & motion",
+          "status": "pending",
           "notes": ""
         },
         {
@@ -206,28 +488,10 @@
           "notes": ""
         },
         {
-          "id": "944642a7-a290-4b6f-9ffe-d398ae7ad019",
-          "title": "Placement",
-          "status": "mapped",
-          "notes": ""
-        },
-        {
-          "id": "6c1e26c7-679a-4c78-941a-ef2cd0b32ec4",
-          "title": "Adaptive design",
-          "status": "mapped",
-          "notes": ""
-        },
-        {
           "id": "c6ba2072-be9a-4890-a050-47fbcfb5b386",
           "title": "Density",
           "status": "mapped",
           "notes": ""
-        },
-        {
-          "id": "26911913-c421-4e83-a244-c73a264fbe66",
-          "title": "Behavior",
-          "status": "no-requirements",
-          "notes": "Parent heading; selection, dismissal, mode-switching, and scrolling behavior are in child sections."
         },
         {
           "id": "c3937362-9f1f-4166-82d2-2589cfb99b6a",
@@ -251,44 +515,62 @@
     },
     {
       "url": "https://m3.material.io/components/time-pickers/accessibility",
-      "capture": "snapshots/material-guidance/20261025T170027.859489225Z-3750769510/capture.json",
-      "markdownSha256": "ec1ca19a96444f09624024ec9be9145e74f0eadc354181b5dd33055026a4358e",
+      "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+      "markdownSha256": "8e982ef13c1023588690e7d7be159d9a8253054c2224f85c9d70d08b69b1de78",
       "extractorVersion": 2,
       "sections": [
         {
           "id": "page",
-          "title": "Time pickers",
-          "status": "no-requirements",
-          "notes": "Introductory description only."
+          "title": "Page introduction",
+          "status": "pending",
+          "notes": "Review this section against the November capture and prior check history."
         },
         {
           "id": "ae17466e-2011-4b8f-8f17-01fe8acd7c93",
           "title": "Use cases",
-          "status": "mapped",
-          "notes": ""
+          "status": "pending",
+          "notes": "Review this section against the November capture and prior check history."
         },
         {
           "id": "f254905e-e23a-4a2a-a120-dab68f07f6c3",
           "title": "Interaction & style",
-          "status": "mapped",
-          "notes": ""
+          "status": "pending",
+          "notes": "Review this section against the November capture and prior check history."
         },
         {
           "id": "11910b76-0544-4265-96d4-dd120873bc2b",
           "title": "Targets",
-          "status": "mapped",
-          "notes": ""
+          "status": "pending",
+          "notes": "Review this section against the November capture and prior check history."
         },
         {
           "id": "ee9e6d22-bae1-4e0d-bdc4-53498d42a827",
           "title": "Keyboard navigation",
-          "status": "mapped",
-          "notes": ""
+          "status": "pending",
+          "notes": "Review this section against the November capture and prior check history."
         },
         {
           "id": "aa616098-3b1a-49a9-a6f0-ab195d58285b",
           "title": "Labeling elements",
-          "status": "mapped",
+          "status": "pending",
+          "notes": "Review this section against the November capture and prior check history."
+        },
+        {
+          "id": "7cfa3c50-d5d7-45a3-9712-9272a3a316ff",
+          "title": "Navigation",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "6f98e5b4-e634-4094-92b0-44f4a10ff02b",
+          "title": "Initial focus",
+          "status": "pending",
+          "notes": ""
+        },
+        {
+          "id": "a1d069f6-a445-4466-a382-baa9a1949f96",
+          "title": "Dial navigation",
+          "status": "pending",
           "notes": ""
         },
         {
@@ -491,14 +773,19 @@
         }
       ],
       "implementation": {
-        "status": "implemented",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
         "evidence": [
           {
-            "kind": "code",
-            "location": "catalog/web/time_picker.go:20-26",
-            "result": "Orientation is carried into the panel and CSS provides a landscape selector/dial layout; the default component configuration uses vertical/portrait mode."
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:281",
+            "result": "Chromium 158.0.8127.18 on local Catalog. Baseline Dial at 390×800, 900×450, 390×390 and back; change viewport while the modal remains open. Keeping the Baseline modal open, a 390×800 viewport showed portrait by default and a 900×450 viewport changed it to landscape."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:994",
+            "result": "Firefox 159.0 on local Catalog. Baseline Dial at 390×800, 900×450, 390×390 and back; change viewport while the modal remains open. Keeping the Baseline modal open, a 390×800 viewport showed portrait by default and a 900×450 viewport changed it to landscape."
           }
         ],
         "notes": ""
@@ -524,14 +811,19 @@
         }
       ],
       "implementation": {
-        "status": "implemented",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
         "evidence": [
           {
-            "kind": "code",
-            "location": "catalog/web/time_picker.go:69-96",
-            "result": "The dial builder supports 24-hour inner and outer rings, and the same orientation attribute controls vertical or landscape rendering."
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:13",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 1280×960, Show Interactive, visit each style, variant, placement and time format. Baseline and Expressive Dial both rendered in portrait and landscape with 24-hour format selected."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:726",
+            "result": "Firefox 159.0 on local Catalog. 1280×960, Show Interactive, visit each style, variant, placement and time format. Baseline and Expressive Dial both rendered in portrait and landscape with 24-hour format selected."
           }
         ],
         "notes": ""
@@ -557,14 +849,19 @@
         }
       ],
       "implementation": {
-        "status": "implemented",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
         "evidence": [
           {
-            "kind": "code",
-            "location": "catalog/web/time_picker.go:20-25",
-            "result": "The picker receives 12h/24h format as a panel attribute; logic and rendering use that flag for hour validation, period visibility and display."
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:13",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 1280×960, Show Interactive, visit each style, variant, placement and time format. Input rendered in both 12-hour and 24-hour formats in the supported Baseline modal and Expressive inline and modal configurations. The Period radio group appeared only in 12-hour format."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:726",
+            "result": "Firefox 159.0 on local Catalog. 1280×960, Show Interactive, visit each style, variant, placement and time format. Input rendered in both 12-hour and 24-hour formats in the supported Baseline modal and Expressive inline and modal configurations. The Period radio group appeared only in 12-hour format."
           }
         ],
         "notes": ""
@@ -617,14 +914,24 @@
         }
       ],
       "implementation": {
-        "status": "implemented",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
         "evidence": [
           {
-            "kind": "code",
-            "location": "catalog/web/specimen_time.templ:42-44",
-            "result": "The keyboard-icon control is present and runtime switches the panel from clock to input mode."
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:153",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 390×800, Baseline and Expressive Dial modal, Expressive Scroll inline and modal; activate the visible mode buttons. At a phone-sized viewport the visible keyboard button opened the named Hour and Minute text inputs from either Dial style."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:866",
+            "result": "Firefox 159.0 on local Catalog. 390×800, Baseline and Expressive Dial modal, Expressive Scroll inline and modal; activate the visible mode buttons. At a phone-sized viewport the visible keyboard button opened the named Hour and Minute text inputs from either Dial style."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/dial-addendum.json:48",
+            "result": "Chromium 158.0.8127.18 on local Catalog. Chromium mobile touch emulation at 390×844, 12-hour Dial, both styles. Tapped the keyboard icon in both Dial styles, switched to the Input picker and focused the named Hour textbox."
           }
         ],
         "notes": ""
@@ -650,14 +957,19 @@
         }
       ],
       "implementation": {
-        "status": "implemented",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
         "evidence": [
           {
-            "kind": "code",
-            "location": "catalog/web/time_picker.go:69-96",
-            "result": "For 24-hour mode the tick builder renders 0–11 on the outer ring and 12–23 on the inner ring."
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:241",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 1280×960, both styles, 24-hour landscape Dial and application-supplied preview format. With 24-hour selected through the host preview, rendered hours 00–11 on the outer ring and 12–23 on the inner ring in both style families."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:954",
+            "result": "Firefox 159.0 on local Catalog. 1280×960, both styles, 24-hour landscape Dial and application-supplied preview format. With 24-hour selected through the host preview, rendered hours 00–11 on the outer ring and 12–23 on the inner ring in both style families."
           }
         ],
         "notes": ""
@@ -683,14 +995,19 @@
         }
       ],
       "implementation": {
-        "status": "implemented",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
         "evidence": [
           {
-            "kind": "code",
-            "location": "forge/components/styles/time-pickers.css:15-42",
-            "result": "The picker is a modal dialog with a ::backdrop using a token-bound scrim color and opacity."
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:326",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 1280×960, Baseline Dial, full motion; observe native top layer and opening/closing animations, then Cancel, OK and scrim. The open picker entered the native modal top layer with a nontransparent backdrop. A pointer gesture on the scrim dismissed the picker."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:1039",
+            "result": "Firefox 159.0 on local Catalog. 1280×960, Baseline Dial, full motion; observe native top layer and opening/closing animations, then Cancel, OK and scrim. The open picker entered the native modal top layer with a nontransparent backdrop. A pointer gesture on the scrim dismissed the picker."
           }
         ],
         "notes": ""
@@ -782,14 +1099,34 @@
         }
       ],
       "implementation": {
-        "status": "implemented",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
         "evidence": [
           {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:326",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 1280×960, Baseline Dial, full motion; observe native top layer and opening/closing animations, then Cancel, OK and scrim. The keyboard button opened numeric Input. Cancel closed the modal and OK committed 06:10."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:1039",
+            "result": "Firefox 159.0 on local Catalog. 1280×960, Baseline Dial, full motion; observe native top layer and opening/closing animations, then Cancel, OK and scrim. The keyboard button opened numeric Input. Cancel closed the modal and OK committed 06:10."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:153",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 390×800, Baseline and Expressive Dial modal, Expressive Scroll inline and modal; activate the visible mode buttons. The visible keyboard icon switched the Dial to Input and the clock icon switched Input back to the Dial."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:866",
+            "result": "Firefox 159.0 on local Catalog. 390×800, Baseline and Expressive Dial modal, Expressive Scroll inline and modal; activate the visible mode buttons. The visible keyboard icon switched the Dial to Input and the clock icon switched Input back to the Dial."
+          },
+          {
             "kind": "code",
-            "location": "catalog/web/specimen_time.templ:42-44",
-            "result": "The mode toggle contains keyboard and clock glyphs, and footer buttons provide Cancel and OK actions."
+            "location": "forge/components/ui/templates/time.templ:108",
+            "result": "The mode action renders the keyboard, clock and swipe icons in the same slot order exercised in the browser."
           }
         ],
         "notes": ""
@@ -815,14 +1152,19 @@
         }
       ],
       "implementation": {
-        "status": "implemented",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
         "evidence": [
           {
-            "kind": "code",
-            "location": "forge/components/styles/time-pickers.css:377-410",
-            "result": "Landscape orientation lays out the time selectors beside the dial and changes AM/PM controls to a horizontal row."
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:281",
+            "result": "Chromium 158.0.8127.18 on local Catalog. Baseline Dial at 390×800, 900×450, 390×390 and back; change viewport while the modal remains open. At 900×450 the open Baseline landscape Dial put the time selectors and dial face side by side."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:994",
+            "result": "Firefox 159.0 on local Catalog. Baseline Dial at 390×800, 900×450, 390×390 and back; change viewport while the modal remains open. At 900×450 the open Baseline landscape Dial put the time selectors and dial face side by side."
           }
         ],
         "notes": ""
@@ -848,17 +1190,22 @@
         }
       ],
       "implementation": {
-        "status": "unclear",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
         "evidence": [
           {
-            "kind": "code",
-            "location": "forge/components/styles/time-pickers.css:15-27",
-            "result": "The dialog has viewport-relative maximum dimensions and remains in the modal top layer, but overflow:auto permits scrolling and crop-free placement was not exercised at constrained sizes."
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:281",
+            "result": "Chromium 158.0.8127.18 on local Catalog. Baseline Dial at 390×800, 900×450, 390×390 and back; change viewport while the modal remains open. At 390×800, 900×450 and 390×390 the open Baseline picker fit within the viewport by using portrait Dial, landscape Dial or Input."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:994",
+            "result": "Firefox 159.0 on local Catalog. Baseline Dial at 390×800, 900×450, 390×390 and back; change viewport while the modal remains open. At 390×800, 900×450 and 390×390 the open Baseline picker fit within the viewport by using portrait Dial, landscape Dial or Input."
           }
         ],
-        "notes": "No small-viewport browser observation."
+        "notes": ""
       },
       "fixes": []
     },
@@ -883,25 +1230,20 @@
       "implementation": {
         "status": "verified",
         "sourceRevision": 1,
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
         "evidence": [
           {
-            "kind": "code",
-            "location": "forge/components/static/time-picker.js:adapt",
-            "result": "An opened modal measures its actual content against available space. It keeps the selected layout when it fits, tries landscape clock when needed, then falls back to input. Resizing restores the preferred layout when it fits again, preserving the time and keeping focus on a visible control. Inline reference previews remain explicit."
-          },
-          {
-            "kind": "test",
-            "location": "forge/components/time_picker_test.cjs",
-            "result": "Three parsing/dial/angle tests pass."
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:281",
+            "result": "Chromium 158.0.8127.18 on local Catalog. Baseline Dial at 390×800, 900×450, 390×390 and back; change viewport while the modal remains open. Resized the open Baseline Dial through 390×800, 900×450 and 390×390, then back. It changed from portrait to landscape to Input and back to portrait, with visible focus and no internal overflow."
           },
           {
             "kind": "browser",
-            "location": "forge/conformance/time-picker-fit.html; forge/conformance/time-picker-dismissal.html",
-            "result": "Chromium: 20 fit/time/focus assertions pass at 390×800, 900×450 and 390×390, including restoration; nine existing dismissal assertions also pass."
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:994",
+            "result": "Firefox 159.0 on local Catalog. Baseline Dial at 390×800, 900×450, 390×390 and back; change viewport while the modal remains open. Resized the open Baseline Dial through 390×800, 900×450 and 390×390, then back. It changed from portrait to landscape to Input and back to portrait, with visible focus and no internal overflow."
           }
         ],
-        "notes": "Overflow remains an accessibility fallback if even text input cannot fit an exceptionally small viewport. Actual iOS keyboard and visual-viewport behavior remains unverified.",
-        "assessedBaseline": "e23e979d8041e1fe8755e6f85051f8d076e0b928"
+        "notes": ""
       },
       "fixes": [
         {
@@ -959,17 +1301,17 @@
       "implementation": {
         "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
         "evidence": [
           {
-            "kind": "code",
-            "location": "forge/components/static/time-picker.js; catalog/web/specimen_time.templ",
-            "result": "Native modal dialog retains its existing enter/exit, OK/Cancel, focus and Escape behavior. Backdrop gestures now invoke the same cancellation path and restore focus."
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:326",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 1280×960, Baseline Dial, full motion; observe native top layer and opening/closing animations, then Cancel, OK and scrim. Observed shared entry and exit motion, keyboard focus staying off the background controls, Cancel dismissal, OK committing 06:10, and scrim dismissal returning focus to the opener."
           },
           {
             "kind": "browser",
-            "location": "forge/conformance/time-picker-dismissal.html",
-            "result": "Chromium: nine assertions pass, including six dismissal/focus checks and three control-name checks. Drag-out/in and pointer cancellation keep the panel open; a complete backdrop gesture dismisses and restores opener focus. The original backdrop assertion failed before its fix."
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:1039",
+            "result": "Firefox 159.0 on local Catalog. 1280×960, Baseline Dial, full motion; observe native top layer and opening/closing animations, then Cancel, OK and scrim. Observed shared entry and exit motion, keyboard focus staying off the background controls, Cancel dismissal, OK committing 06:10, and scrim dismissal returning focus to the opener."
           }
         ],
         "notes": ""
@@ -1001,14 +1343,24 @@
         }
       ],
       "implementation": {
-        "status": "implemented",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
         "evidence": [
           {
-            "kind": "code",
-            "location": "forge/components/static/time-picker.js:85-91",
-            "result": "Activating the keyboard/clock toggle switches mode, validates input when leaving input mode, and moves focus to the corresponding control."
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:153",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 390×800, Baseline and Expressive Dial modal, Expressive Scroll inline and modal; activate the visible mode buttons. At a phone-sized viewport the visible keyboard button switched both Dial styles to Input. The touch-emulation result additionally confirms a tap moves focus to Hour."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:866",
+            "result": "Firefox 159.0 on local Catalog. 390×800, Baseline and Expressive Dial modal, Expressive Scroll inline and modal; activate the visible mode buttons. At a phone-sized viewport the visible keyboard button switched both Dial styles to Input. The touch-emulation result additionally confirms a tap moves focus to Hour."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/dial-addendum.json:48",
+            "result": "Chromium 158.0.8127.18 on local Catalog. Chromium mobile touch emulation at 390×844, 12-hour Dial, both styles. Tapped the keyboard icon in both Dial styles, switched to the Input picker and focused the named Hour textbox."
           }
         ],
         "notes": ""
@@ -1036,25 +1388,20 @@
       "implementation": {
         "status": "verified",
         "sourceRevision": 1,
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
         "evidence": [
           {
-            "kind": "code",
-            "location": "forge/components/static/time-picker.js:adapt",
-            "result": "An opened modal measures its actual content against available space. It keeps the selected layout when it fits, tries landscape clock when needed, then falls back to input. Resizing restores the preferred layout when it fits again, preserving the time and keeping focus on a visible control. Inline reference previews remain explicit."
-          },
-          {
-            "kind": "test",
-            "location": "forge/components/time_picker_test.cjs",
-            "result": "Three parsing/dial/angle tests pass."
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:281",
+            "result": "Chromium 158.0.8127.18 on local Catalog. Baseline Dial at 390×800, 900×450, 390×390 and back; change viewport while the modal remains open. The Baseline modal fit without internal scrolling at each tested viewport. Its top edge stayed fixed after a request to scroll the underlying document."
           },
           {
             "kind": "browser",
-            "location": "forge/conformance/time-picker-fit.html; forge/conformance/time-picker-dismissal.html",
-            "result": "Chromium: 20 fit/time/focus assertions pass at 390×800, 900×450 and 390×390, including restoration; nine existing dismissal assertions also pass."
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:994",
+            "result": "Firefox 159.0 on local Catalog. Baseline Dial at 390×800, 900×450, 390×390 and back; change viewport while the modal remains open. The Baseline modal fit without internal scrolling at each tested viewport. Its top edge stayed fixed after a request to scroll the underlying document."
           }
         ],
-        "notes": "Overflow remains an accessibility fallback if even text input cannot fit an exceptionally small viewport. Actual iOS keyboard and visual-viewport behavior remains unverified.",
-        "assessedBaseline": "e23e979d8041e1fe8755e6f85051f8d076e0b928"
+        "notes": ""
       },
       "fixes": [
         {
@@ -1149,17 +1496,22 @@
         }
       ],
       "implementation": {
-        "status": "unclear",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
         "evidence": [
           {
-            "kind": "code",
-            "location": "forge/components/styles/time-pickers.css:250-298",
-            "result": "The dial itself is a single slider hit target with a token-sized handle; tick labels are aria-hidden and not separate 48×48 interactive targets."
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:251",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 1280×960, Baseline and Expressive Dial; 12/24-hour and hour/minute controls. Measured every rendered hour and minute choice in the tested Baseline and Expressive 12/24-hour Dials. Every measured choice was 48×48 CSS px."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:964",
+            "result": "Firefox 159.0 on local Catalog. 1280×960, Baseline and Expressive Dial; 12/24-hour and hour/minute controls. Measured every rendered hour and minute choice in the tested Baseline and Expressive 12/24-hour Dials. Every measured choice was 48×48 CSS px."
           }
         ],
-        "notes": "Guidance target may refer to dial interaction zones; no per-tick target geometry is implemented."
+        "notes": "The assessment covers target dimensions. Pointer arbitration between overlapping targets is outside this check."
       },
       "fixes": []
     },
@@ -1182,14 +1534,19 @@
         }
       ],
       "implementation": {
-        "status": "implemented",
+        "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "fd88b0dd1ba4bbdd59dd82c840c2c32618e9ce3e",
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
         "evidence": [
           {
-            "kind": "code",
-            "location": "forge/components/static/time-picker.js:101-113",
-            "result": "The dial and input controls are keyboard-focusable, hour/minute buttons and period controls use native button activation, and Enter/Space on the dial advances the active part."
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:716",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 1280×960, Baseline and Expressive 12-hour Dial; Tab and Shift+Tab, then Space and Enter. Tab and Shift+Tab traversed the Hour and Minute Dial toggles in both styles. Space and Enter each activated the enabled Hour toggle."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:1429",
+            "result": "Firefox 159.0 on local Catalog. 1280×960, Baseline and Expressive 12-hour Dial; Tab and Shift+Tab, then Space and Enter. Tab and Shift+Tab traversed the Hour and Minute Dial toggles in both styles. Space and Enter each activated the enabled Hour toggle."
           }
         ],
         "notes": ""
@@ -1250,25 +1607,20 @@
       "implementation": {
         "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
         "evidence": [
           {
-            "kind": "code",
-            "location": "catalog/web/time_picker.go; catalog/web/specimen_time.templ; forge/components/static/time-picker.js",
-            "result": "Input fields are named Hour and Minute. Native mode buttons say Toggle dial picker in input mode and Toggle input picker in clock mode; OK and Cancel retain native button semantics."
-          },
-          {
-            "kind": "test",
-            "location": "catalog/web/time_picker_test.go",
-            "result": "Input-label regression fails before normalization and passes after."
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:153",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 390×800, Baseline and Expressive Dial modal, Expressive Scroll inline and modal; activate the visible mode buttons. After switching Dial to Input, Hour and Minute were exposed as named textboxes, and Toggle dial picker, Cancel and OK were exposed as named buttons."
           },
           {
             "kind": "browser",
-            "location": "forge/conformance/time-picker-dismissal.html",
-            "result": "Chromium: nine assertions pass for mode labels, Hour/Minute input names and existing dismissal protections. Old mode label failed the pre-fix test."
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:866",
+            "result": "Firefox 159.0 on local Catalog. 390×800, Baseline and Expressive Dial modal, Expressive Scroll inline and modal; activate the visible mode buttons. After switching Dial to Input, Hour and Minute were exposed as named textboxes, and Toggle dial picker, Cancel and OK were exposed as named buttons."
           }
         ],
-        "notes": ""
+        "notes": "The clock-toggle row applies to Input paired with a Dial. Scroll-return mode has a separate swipe button."
       },
       "fixes": [
         {
@@ -1332,25 +1684,20 @@
       "implementation": {
         "status": "verified",
         "sourceRevision": 1,
-        "assessedBaseline": "6d00d0e3d2a1bfe19e5188b656ff13f0bd5d20c2",
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
         "evidence": [
           {
-            "kind": "code",
-            "location": "catalog/web/time_picker.go; catalog/web/specimen_time.templ; forge/components/static/time-picker.js",
-            "result": "Input fields are named Hour and Minute. Native mode buttons say Toggle dial picker in input mode and Toggle input picker in clock mode; OK and Cancel retain native button semantics."
-          },
-          {
-            "kind": "test",
-            "location": "catalog/web/time_picker_test.go",
-            "result": "Input-label regression fails before normalization and passes after."
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:153",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 390×800, Baseline and Expressive Dial modal, Expressive Scroll inline and modal; activate the visible mode buttons. After switching Dial to Input, Hour and Minute were exposed as textboxes, and Toggle dial picker, Cancel and OK were exposed as named buttons."
           },
           {
             "kind": "browser",
-            "location": "forge/conformance/time-picker-dismissal.html",
-            "result": "Chromium: nine assertions pass for mode labels, Hour/Minute input names and existing dismissal protections. Old mode label failed the pre-fix test."
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:866",
+            "result": "Firefox 159.0 on local Catalog. 390×800, Baseline and Expressive Dial modal, Expressive Scroll inline and modal; activate the visible mode buttons. After switching Dial to Input, Hour and Minute were exposed as textboxes, and Toggle dial picker, Cancel and OK were exposed as named buttons."
           }
         ],
-        "notes": ""
+        "notes": "The clock-toggle row applies to Input paired with a Dial. Scroll-return mode has a separate swipe button."
       },
       "fixes": [
         {
@@ -1359,6 +1706,482 @@
           "summary": "Match time picker control names to their visible labels"
         }
       ]
+    },
+    {
+      "id": "time-picker-expressive-variants",
+      "statement": "Offer Scroll, Input and Dial as Expressive variants. The legacy Baseline variants are Input and Dial.",
+      "condition": "When showing Time Picker variants.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-11-18",
+          "section": "d34f0d41-0662-45bf-aa67-845ebccce613",
+          "url": "https://m3.material.io/components/time-pickers/specs",
+          "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+          "markdownSha256": "b2fa244da0ed4823907497f6c10fd454e6043edd416709f4fe9cbbd2bbb85c23",
+          "extractorVersion": 2,
+          "summary": "Captured the current Material guidance for this behavior."
+        }
+      ],
+      "implementation": {
+        "status": "verified",
+        "sourceRevision": 1,
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:13",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 1280×960, Show Interactive, visit each style, variant, placement and time format. The actual Variant picker offered Scroll, Input and Dial in Expressive and Input and Dial in Baseline. Each option rendered its stated mode."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:726",
+            "result": "Firefox 159.0 on local Catalog. 1280×960, Show Interactive, visit each style, variant, placement and time format. The actual Variant picker offered Scroll, Input and Dial in Expressive and Input and Dial in Baseline. Each option rendered its stated mode."
+          }
+        ],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-expressive-placement",
+      "statement": "Support inline and modal placements for Expressive Scroll and Input. Use a modal for Dial.",
+      "condition": "When choosing a Time Picker surface.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-11-18",
+          "section": "608c2f06-c3e9-4929-954b-5dddacec5fa9",
+          "url": "https://m3.material.io/components/time-pickers/specs",
+          "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+          "markdownSha256": "b2fa244da0ed4823907497f6c10fd454e6043edd416709f4fe9cbbd2bbb85c23",
+          "extractorVersion": 2,
+          "summary": "Captured the current Material guidance for this behavior."
+        }
+      ],
+      "implementation": {
+        "status": "verified",
+        "sourceRevision": 1,
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:13",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 1280×960, Show Interactive, visit each style, variant, placement and time format. Expressive Scroll and Input rendered inline and opened as native modals when requested. Dial opened as a modal in both style families."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:726",
+            "result": "Firefox 159.0 on local Catalog. 1280×960, Show Interactive, visit each style, variant, placement and time format. Expressive Scroll and Input rendered inline and opened as native modals when requested. Dial opened as a modal in both style families."
+          }
+        ],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-return-icons",
+      "statement": "Use a keyboard icon to enter Input, a clock icon to return to Dial, and a swipe icon to return to Scroll.",
+      "condition": "When switching Time Picker modes.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-11-18",
+          "section": "a245c800-1cd7-4eeb-8405-41018a59104c",
+          "url": "https://m3.material.io/components/time-pickers/guidelines",
+          "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+          "markdownSha256": "fe7b3c0410da5542d1a7b56c0b36951c013914385fa26b54f26339606aaa278c",
+          "extractorVersion": 2,
+          "summary": "Captured the current Material guidance for this behavior."
+        }
+      ],
+      "implementation": {
+        "status": "verified",
+        "sourceRevision": 1,
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:153",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 390×800, Baseline and Expressive Dial modal, Expressive Scroll inline and modal; activate the visible mode buttons. Switched Dial and Scroll into Input and back. The visible SVG slot changed from keyboard to clock for Dial and from keyboard to swipe for Scroll. Inline and modal placement were preserved."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:866",
+            "result": "Firefox 159.0 on local Catalog. 390×800, Baseline and Expressive Dial modal, Expressive Scroll inline and modal; activate the visible mode buttons. Switched Dial and Scroll into Input and back. The visible SVG slot changed from keyboard to clock for Dial and from keyboard to swipe for Scroll. Inline and modal placement were preserved."
+          },
+          {
+            "kind": "code",
+            "location": "forge/components/ui/templates/time.templ:108",
+            "result": "The mode action renders the keyboard, clock and swipe icons in the same slot order exercised in the browser."
+          }
+        ],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-rotor-neighbor-visibility",
+      "statement": "Increase rotor height when narrow or large custom type would otherwise make neighboring options less than half visible.",
+      "condition": "When customizing scroll typography.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-11-18",
+          "section": "a305ccb5-5662-4cdb-8aaa-935e08968d99",
+          "url": "https://m3.material.io/components/time-pickers/guidelines",
+          "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+          "markdownSha256": "fe7b3c0410da5542d1a7b56c0b36951c013914385fa26b54f26339606aaa278c",
+          "extractorVersion": 2,
+          "summary": "Captured the current Material guidance for this behavior."
+        }
+      ],
+      "implementation": {
+        "status": "verified",
+        "sourceRevision": 1,
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:583",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 1280×960, Expressive Scroll inline with enlarged and narrowed type and 32 px option spacing; raise Field height to reveal both neighbors. Overrode the inline Hour rotor with larger and narrower type and 32 px option spacing. Raising Field height from 140 to 280 CSS px increased both neighboring line boxes from under half visible to at least half visible."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:1296",
+            "result": "Firefox 159.0 on local Catalog. 1280×960, Expressive Scroll inline with enlarged and narrowed type and 32 px option spacing; raise Field height to reveal both neighbors. Overrode the inline Hour rotor with larger and narrower type and 32 px option spacing. Raising Field height from 140 to 280 CSS px increased both neighboring line boxes from under half visible to at least half visible."
+          }
+        ],
+        "notes": "The browser run emulated larger and narrower type through field CSS variables. The height was set using the Catalog slider."
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-scroll-settle",
+      "statement": "Let people swipe to change a value and snap that value into position on release.",
+      "condition": "When operating the Scroll picker.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-11-18",
+          "section": "9abf67ef-7f88-4976-961d-3f8a43de5f25",
+          "url": "https://m3.material.io/components/time-pickers/guidelines",
+          "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+          "markdownSha256": "fe7b3c0410da5542d1a7b56c0b36951c013914385fa26b54f26339606aaa278c",
+          "extractorVersion": 2,
+          "summary": "Captured the current Material guidance for this behavior."
+        }
+      ],
+      "implementation": {
+        "status": "verified",
+        "sourceRevision": 1,
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:1439",
+            "result": "Chromium 158.0.8127.18 on local Catalog. Chromium mobile touch emulation at 390×844, finite standalone Scroll Field and Expressive 12-hour modal Scroll; bidirectional drags and both neighbor taps. Swiped the finite Expressive modal Minute rotor in both directions. The selected value changed and its line box settled to within 1 CSS px of the vertical center after release."
+          }
+        ],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-input-validation",
+      "statement": "Display validation errors below the picker and identify the invalid field with the error color scheme.",
+      "condition": "When a typed time is invalid.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-11-18",
+          "section": "6a0f8ce9-ea82-4cc5-b31a-c445a01f7357",
+          "url": "https://m3.material.io/components/time-pickers/guidelines",
+          "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+          "markdownSha256": "fe7b3c0410da5542d1a7b56c0b36951c013914385fa26b54f26339606aaa278c",
+          "extractorVersion": 2,
+          "summary": "Captured the current Material guidance for this behavior."
+        }
+      ],
+      "implementation": {
+        "status": "verified",
+        "sourceRevision": 1,
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:261",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 1280×960, both styles, 12/24-hour Input, modal and supported inline. Entered hour 29 in the exposed 12/24-hour Input configurations. Only Hour was marked invalid and changed to its error border, with an error below the field."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:974",
+            "result": "Firefox 159.0 on local Catalog. 1280×960, both styles, 12/24-hour Input, modal and supported inline. Entered hour 29 in the exposed 12/24-hour Input configurations. Only Hour was marked invalid and changed to its error border, with an error below the field."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/dial-addendum.json:29",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 1280×960, 24-hour modal Input, both styles. Entering 60 marked only Minute invalid and applied its error border, with an error below the field in both modal styles."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/dial-addendum.json:93",
+            "result": "Firefox 159.0 on local Catalog. 1280×960, 24-hour modal Input, both styles. Entering 60 marked only Minute invalid and applied its error border, with an error below the field in both modal styles."
+          }
+        ],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-modal-motion",
+      "statement": "Use the shared dialog appearance and disappearance transitions.",
+      "condition": "When opening or closing a modal Time Picker.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-11-18",
+          "section": "5496b331-2c94-4c07-b43f-27be610fc486",
+          "url": "https://m3.material.io/components/time-pickers/guidelines",
+          "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+          "markdownSha256": "fe7b3c0410da5542d1a7b56c0b36951c013914385fa26b54f26339606aaa278c",
+          "extractorVersion": 2,
+          "summary": "Captured the current Material guidance for this behavior."
+        }
+      ],
+      "implementation": {
+        "status": "verified",
+        "sourceRevision": 1,
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:326",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 1280×960, Baseline Dial, full motion; observe native top layer and opening/closing animations, then Cancel, OK and scrim. With reduced motion off, captured the animated Baseline modal surface. The shared fast-effects timing drove opacity 0 to 1 on open and 1 to 0 on close."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:1039",
+            "result": "Firefox 159.0 on local Catalog. 1280×960, Baseline Dial, full motion; observe native top layer and opening/closing animations, then Cancel, OK and scrim. With reduced motion off, captured the animated Baseline modal surface. The shared fast-effects timing drove opacity 0 to 1 on open and 1 to 0 on close."
+          }
+        ],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-rotor-targets",
+      "statement": "Provide inactive rotor item targets at least 48 dp high and period and mode-switch targets at least 48 by 48 dp.",
+      "condition": "When rendering Scroll or period and mode controls.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-11-18",
+          "section": "11910b76-0544-4265-96d4-dd120873bc2b",
+          "url": "https://m3.material.io/components/time-pickers/accessibility",
+          "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+          "markdownSha256": "8e982ef13c1023588690e7d7be159d9a8253054c2224f85c9d70d08b69b1de78",
+          "extractorVersion": 2,
+          "summary": "Captured the current Material guidance for this behavior."
+        }
+      ],
+      "implementation": {
+        "status": "verified",
+        "sourceRevision": 1,
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:478",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 1280×960, Expressive 12-hour Scroll inline and modal; measure hit areas and hit-test their centers. Measured and hit-tested the inline and modal Expressive Scroll controls. Both rotors had previous and next targets at least 48 CSS px high. AM, PM and the mode switch had at least 48×48 CSS px targets."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:1191",
+            "result": "Firefox 159.0 on local Catalog. 1280×960, Expressive 12-hour Scroll inline and modal; measure hit areas and hit-test their centers. Measured and hit-tested the inline and modal Expressive Scroll controls. Both rotors had previous and next targets at least 48 CSS px high. AM, PM and the mode switch had at least 48×48 CSS px targets."
+          }
+        ],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-scroll-roles",
+      "statement": "Name the hour and minute rotors Hour and Minute and expose their adjustable values. Expose AM and PM as a mutually exclusive radio group.",
+      "condition": "When using the Scroll picker or the 12-hour period controls.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-11-18",
+          "section": "aa616098-3b1a-49a9-a6f0-ab195d58285b",
+          "url": "https://m3.material.io/components/time-pickers/accessibility",
+          "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+          "markdownSha256": "8e982ef13c1023588690e7d7be159d9a8253054c2224f85c9d70d08b69b1de78",
+          "extractorVersion": 2,
+          "summary": "Captured the current Material guidance for this behavior."
+        }
+      ],
+      "implementation": {
+        "status": "verified",
+        "sourceRevision": 1,
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:271",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 1280×960, Expressive Scroll inline and modal in 12-hour format. In inline and modal 12-hour Scroll, Hour and Minute exposed named spinbuttons with current values and bounds. Activating either AM or PM left exactly that option selected in the Period radio group."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:984",
+            "result": "Firefox 159.0 on local Catalog. 1280×960, Expressive Scroll inline and modal in 12-hour format. In inline and modal 12-hour Scroll, Hour and Minute exposed named spinbuttons with current values and bounds. Activating either AM or PM left exactly that option selected in the Period radio group."
+          }
+        ],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-initial-hour",
+      "statement": "Place initial focus on Hour.",
+      "condition": "When opening the picker.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-11-18",
+          "section": "6f98e5b4-e634-4094-92b0-44f4a10ff02b",
+          "url": "https://m3.material.io/components/time-pickers/accessibility",
+          "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+          "markdownSha256": "8e982ef13c1023588690e7d7be159d9a8253054c2224f85c9d70d08b69b1de78",
+          "extractorVersion": 2,
+          "summary": "Captured the current Material guidance for this behavior."
+        }
+      ],
+      "implementation": {
+        "status": "verified",
+        "sourceRevision": 1,
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:200",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 1280×960, open each supported modal with Enter. Opened all five supported style and mode combinations as modals with Enter. Focus landed on the Hour control for each mode."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:913",
+            "result": "Firefox 159.0 on local Catalog. 1280×960, open each supported modal with Enter. Opened all five supported style and mode combinations as modals with Enter. Focus landed on the Hour control for each mode."
+          }
+        ],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-dial-navigation",
+      "statement": "Enter from a value field starts at hour 12 or minute 0. Right and Down move clockwise and Left and Up move counterclockwise. Enter confirms the focused value.",
+      "condition": "When selecting on a 12-hour dial by keyboard.",
+      "basis": "explicit",
+      "notes": "",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-11-18",
+          "section": "a1d069f6-a445-4466-a382-baa9a1949f96",
+          "url": "https://m3.material.io/components/time-pickers/accessibility",
+          "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+          "markdownSha256": "8e982ef13c1023588690e7d7be159d9a8253054c2224f85c9d70d08b69b1de78",
+          "extractorVersion": 2,
+          "summary": "Captured the current Material guidance for this behavior."
+        },
+        {
+          "change": "corrected",
+          "date": "2026-11-19",
+          "section": "a1d069f6-a445-4466-a382-baa9a1949f96",
+          "url": "https://m3.material.io/components/time-pickers/accessibility",
+          "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+          "markdownSha256": "8e982ef13c1023588690e7d7be159d9a8253054c2224f85c9d70d08b69b1de78",
+          "extractorVersion": 2,
+          "summary": "Scoped the Hour 12 starting point to the 12-hour case described alongside AM/PM navigation. Tracked the 24-hour starting point separately."
+        }
+      ],
+      "implementation": {
+        "status": "verified",
+        "sourceRevision": 2,
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:231",
+            "result": "Chromium 158.0.8127.18 on local Catalog. 1280×960, both styles, 12-hour Dial; Enter and four arrow directions. In the 12-hour Dial, Enter started at Hour 12 or Minute 0. The four arrow directions moved through choices and Enter confirmed the value."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/browser.json:944",
+            "result": "Firefox 159.0 on local Catalog. 1280×960, both styles, 12-hour Dial; Enter and four arrow directions. In the 12-hour Dial, Enter started at Hour 12 or Minute 0. The four arrow directions moved through choices and Enter confirmed the value."
+          }
+        ],
+        "notes": ""
+      },
+      "fixes": []
+    },
+    {
+      "id": "time-picker-24-hour-dial-start",
+      "statement": "Enter from the Hour field moves focus to an hour choice on the 24-hour dial.",
+      "condition": "When entering the 24-hour dial from the Hour field by keyboard.",
+      "basis": "interpretation",
+      "notes": "The dial-navigation guidance gives Hour 12 in the context of AM/PM navigation. The expected starting hour for a 24-hour dial is unclear.",
+      "sourceHistory": [
+        {
+          "change": "added",
+          "date": "2026-11-19",
+          "section": "a1d069f6-a445-4466-a382-baa9a1949f96",
+          "url": "https://m3.material.io/components/time-pickers/accessibility",
+          "capture": "snapshots/material-guidance/20261118T163241.175694700Z-1421888046/capture.json",
+          "markdownSha256": "8e982ef13c1023588690e7d7be159d9a8253054c2224f85c9d70d08b69b1de78",
+          "extractorVersion": 2,
+          "summary": "Recorded the 24-hour starting point as a separate interpretation of the captured dial-navigation guidance."
+        }
+      ],
+      "implementation": {
+        "status": "unclear",
+        "sourceRevision": 1,
+        "assessedBaseline": "be265cc076853427e8ad34740635bb2a342ab47e",
+        "evidence": [
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/dial-addendum.json:6",
+            "result": "Chromium 158.0.8127.18 on local Catalog at 1280×960. Enter from Hour focused 00 in both Baseline and Expressive 24-hour dials."
+          },
+          {
+            "kind": "browser",
+            "location": "snapshots/material-token-data/2026-11-18-scroll-fields-time-pickers/implementation/guidance-assessment/dial-addendum.json:70",
+            "result": "Firefox 159.0 on local Catalog at 1280×960. Enter from Hour focused 00 in both Baseline and Expressive 24-hour dials."
+          }
+        ],
+        "notes": "Keep 00 as Forge's 24-hour starting point. The browser results confirm that behavior. The captured guidance leaves the 24-hour starting value unclear."
+      },
+      "fixes": []
     }
   ]
 }
