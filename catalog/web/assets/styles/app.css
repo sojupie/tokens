@@ -172,10 +172,18 @@ button:not(:disabled), [role=button]:not([aria-disabled=true]) { cursor:pointer;
 .tokens-thumbnail-sliders { display:grid; width:280px; gap:var(--md-sys-measurement-space150); }
 .tokens-thumbnail-snackbar { position:absolute; bottom:20px; left:12px; width:360px; transform:scale(.8); transform-origin:bottom left; }
 .tokens-thumbnail-fields { width:280px; display:grid; gap:var(--md-sys-measurement-space400); }
-/* Scale the complete clock in one coordinate space, including its inherited
-   dial lengths. CSS zoom changes layout and needlessly adds another size space. */
-.tokens-component-thumbnail-scene:has(.tokens-thumbnail-clock) { width:720px;height:450px;transform:translate(-50%,-50%) scale(calc(var(--_thumbnail-scale,1) * .5)); }
-.tokens-thumbnail-clock { width:584px; flex:none; }
+.tokens-thumbnail-climate { inset-block-start:var(--md-sys-measurement-space100); }
+.tokens-thumbnail-temperature {
+  --forge-scroll-field-block-size: var(--md-comp-scroll-field-container-min-height);
+  --forge-scroll-field-item-gap: 0px;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  align-items:center;
+  gap:var(--md-sys-measurement-space200);
+  padding-block:0;
+}
+.tokens-thumbnail-temperature > div:first-child { display:grid;gap:var(--md-sys-measurement-space50); }
+.tokens-thumbnail-time-picker { width:max-content;flex:none;transform:scale(.56); }
 .tokens-thumbnail-toolbar { position:absolute; bottom:20px; left:50%; transform:translateX(-50%); }
 .tokens-thumbnail-tooltip { display:grid; justify-items:center; gap:var(--md-sys-measurement-space100); }
 .tokens-component-tile-link { display:flex; flex:1; min-block-size:6rem; flex-direction:column; gap:var(--md-sys-measurement-space50); padding:var(--md-sys-measurement-space200); text-decoration:none; border-radius:inherit; }
