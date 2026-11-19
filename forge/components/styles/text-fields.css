@@ -59,20 +59,14 @@
 }
 :is(
   .md-outlined-text-field,
-  .md-filled-text-field,
-  .md-outlined-select,
-  .md-filled-select,
-  .md-outlined-autocomplete,
-  .md-filled-autocomplete
+  .md-filled-text-field
 ):focus-visible,
-:is(
-  .md-outlined-text-field,
-  .md-filled-text-field,
+:where(:root:not([data-pointer-focus])) :is(
   .md-outlined-select,
   .md-filled-select,
   .md-outlined-autocomplete,
   .md-filled-autocomplete
-):has(> :is(input, textarea, select):focus-visible) {
+):is(:focus-visible, :has(> :is(input, textarea, select):focus-visible)) {
   outline: var(--_field-focus-width) solid var(--_field-focus-color);
   outline-offset: var(--md-sys-state-focus-indicator-outer-offset);
 }

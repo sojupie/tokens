@@ -1,0 +1,61 @@
+package render
+
+import model "github.com/sojupie/tokens/forge/components/ui/internal/model"
+import "strings"
+
+templ ScrollField(p model.ScrollFieldProps) {
+	@model.Require("scroll-field")
+	<div { p.Root()... }>
+		<div class="md-scroll-track">
+			<button class="md-scroll-option md-scroll-previous" type="button" tabindex="-1" aria-hidden="true" data-scroll-step="-1" disabled?={ p.Disabled || !p.HasOption(-1) } hidden?={ p.TextEntryOpen() }></button>
+			<button { p.Rotor()... }></button>
+			<button class="md-scroll-option md-scroll-next" type="button" tabindex="-1" aria-hidden="true" data-scroll-step="1" disabled?={ p.Disabled || !p.HasOption(1) } hidden?={ p.TextEntryOpen() }></button>
+			<div class="md-scroll-values" aria-hidden="true">
+				<span style="--_scroll-offset:-1">{ p.Option(-1).Label }</span>
+				<span data-scroll-current>{ p.Option(0).Label }</span>
+				<span style="--_scroll-offset:1">{ p.Option(1).Label }</span>
+			</div>
+			if !p.Fill {
+				<div class="md-scroll-sizing" aria-hidden="true">
+					for _, option := range p.Entries() {
+						<span>{ option.Label }</span>
+					}
+				</div>
+			}
+			if p.DirectEntry {
+				<input class="md-scroll-entry" type="text" inputmode={ p.InputMode() } autocomplete="off" aria-label={ p.Label } aria-describedby={ p.ID + "-error" } value={ p.Option(0).Label } hidden?={ !p.TextEntryOpen() } disabled?={ p.Disabled || !p.HasOptions() }/>
+			}
+		</div>
+		if p.Name != "" {
+			<input type="hidden" name={ p.Name } value={ p.Option(0).Value } data-scroll-value disabled?={ p.Disabled || !p.HasOptions() }/>
+		}
+		if p.DirectEntry {
+			<p class="md-scroll-error" id={ p.ID + "-error" } role="alert"></p>
+		}
+	</div>
+}
+
+// ScrollFieldModeButton switches the named fields together. Pass their ScrollFieldProps IDs.
+templ ScrollFieldModeButton(fieldIDs []string, textEntry bool, button model.IconButtonProps) {
+	@model.Require("scroll-field")
+	{{
+		controls := make([]string, 0, len(fieldIDs))
+		for _, id := range fieldIDs {
+			if id != "" {
+				controls = append(controls, id+"-scroll-field")
+			}
+		}
+		button.Label = "Switch to text input"
+		if textEntry {
+			button.Label = "Switch to scrolling"
+		}
+		button.Disabled = button.Disabled || len(controls) == 0
+		button.Attrs = model.Attributes(button.Attrs, templ.Attributes{
+			"aria-controls": strings.Join(controls, " "), "data-scroll-toggle": "", "data-scroll-text-entry": textEntry,
+		})
+	}}
+	@IconButtonContent(button) {
+		@model.Icon("keyboard")
+		@model.Icon("swipe")
+	}
+}

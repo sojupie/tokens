@@ -1084,7 +1084,7 @@ func ComponentThumbnail(c webview.ComponentCase) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-		case "time":
+		case "time", "scroll-field":
 			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 95, "<div class=\"tokens-thumbnail-clock\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err

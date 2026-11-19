@@ -39,9 +39,6 @@
       disclosures.delete(detail);
     }
   }, true);
-  // Safari can retain :focus-visible after touch-driven programmatic focus.
-  document.addEventListener('pointerdown',()=>document.documentElement.setAttribute('data-pointer-focus',''),true);
-  document.addEventListener('keydown',event=>{if(!event.metaKey&&!event.altKey&&!event.ctrlKey)document.documentElement.removeAttribute('data-pointer-focus');},true);
   // Boost document links only. Downloads, API documents and external links stay native.
   function navigationLinks(root=document){
     const base=new URL('../',document.querySelector('script[src*="site-ui.js"]').src).pathname.replace(/\/$/,'');

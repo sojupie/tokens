@@ -148,6 +148,11 @@
       "date-year"
     ]
   },
+  "scroll-field": {
+    "scripts": ["scroll-field.js"],
+    "styles": ["styles/scroll-field.css"],
+    "bindings": []
+  },
   "time": {
     "scripts": ["time-picker.js"],
     "styles": ["styles/time-pickers.css"],

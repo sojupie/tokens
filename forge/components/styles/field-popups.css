@@ -387,8 +387,6 @@
   padding-inline: var(--md-sys-measurement-space50);
 }
 :is(
-  .md-outlined-text-field,
-  .md-filled-text-field,
   .md-outlined-select,
   .md-filled-select,
   .md-outlined-autocomplete,
@@ -486,16 +484,16 @@
   outline: none;
 }
 :is(
-    .md-outlined-text-field,
-    .md-filled-text-field,
     .md-outlined-select,
     .md-filled-select,
     .md-outlined-autocomplete,
     .md-filled-autocomplete
   ):is(
-    :focus-visible,
-    :has(> :is(input, textarea):focus-visible),
-    [data-component-state="focused"]
+    [data-component-state="focused"],
+    :where(:root:not([data-pointer-focus]) *):is(
+      :focus-visible,
+      :has(> :is(input, textarea):focus-visible)
+    )
   )
   > .md-field-focus-outline {
   opacity: 1;

@@ -547,6 +547,22 @@ export function checkComponentRendering() {
       }
     } else if (f === "time") {
       const panel = el.querySelector(".md-time-panel"); if (!panel.open) continue;
+      if (panel.dataset.timeStyle === "expressive") {
+        const style = getComputedStyle(panel);
+        if (!panel.hasAttribute("data-time-inline")) {
+          compare("time container color", style.backgroundColor, get("md.comp.time-pickers.modal.container.color"), true);
+          compare("time container shape", style.borderTopLeftRadius, get("md.comp.time-pickers.modal.container.shape"));
+        }
+        if (panel.dataset.mode === "clock") {
+          const dial = getComputedStyle(panel.querySelector(".md-time-dial"));
+          compare("dial face color", dial.backgroundColor, get("md.comp.time-pickers.dial.face.container.color"), true);
+        }
+        for (const rotor of panel.querySelectorAll('[role="spinbutton"]')) {
+          if (!rotor.getClientRects().length) continue;
+          compare("rotor selected color", getComputedStyle(rotor).color, get("md.comp.scroll-field.item.selected.color"), true);
+        }
+        continue;
+      }
       const input = panel.dataset.mode === "input", p = "md.comp." + (input ? "time-input." : "time-picker."), style = getComputedStyle(panel);
       compare("time container color", style.backgroundColor, get(p + "container.color"), true);
       compare("time container shape", style.borderTopLeftRadius, get(p + "container.shape"));
@@ -556,7 +572,7 @@ export function checkComponentRendering() {
       typography(title, p + "headline.");
       for (const [selector,key] of [[".md-time-value","time-selector."],[".md-time-period","period-selector."],[".md-time-field","time-input-field."]]) for (const node of panel.querySelectorAll(selector)) {
         if (!node.getClientRects().length) continue;
-        const style = getComputedStyle(node), selected = node.getAttribute("aria-pressed") === "true", state = node.dataset.componentState || (node.hasAttribute("data-pressed") ? "pressed" : node.matches(":focus-visible") ? "focused" : node.matches(":hover") ? "hovered" : "enabled"), short = {hovered:"hover",focused:"focus"}[state] || state,
+        const style = getComputedStyle(node), selected = (node.getAttribute("aria-pressed") || node.getAttribute("aria-checked")) === "true", state = node.dataset.componentState || (node.hasAttribute("data-pressed") ? "pressed" : node.matches(":focus-visible") ? "focused" : node.matches(":hover") ? "hovered" : "enabled"), short = {hovered:"hover",focused:"focus"}[state] || state,
           source = property => first([p + key + (selected ? "selected." : "unselected.") + short + "." + property, p + key + short + "." + property, p + key + (selected ? "selected." : "unselected.") + property, p + key + property]);
         compare(key + "label", style.color, source("label-text.color"), true);
         let background = source("container.color") || "transparent";

@@ -10,6 +10,11 @@
  }
  if(typeof module!=='undefined')module.exports={matches,popupPosition,typeahead};
  if(typeof document==='undefined')return;
+ // Editable inputs can match :focus-visible even when focused by a pointer.
+ document.addEventListener('pointerdown',()=>document.documentElement.setAttribute('data-pointer-focus',''),true);
+ document.addEventListener('keydown',event=>{
+  if(!event.metaKey&&!event.altKey&&!event.ctrlKey)document.documentElement.removeAttribute('data-pointer-focus');
+ },true);
  let touchState,compatibilityTap;
  const states=new WeakMap(),rootFor=e=>e.closest?.('[data-field-example]'),stateFor=e=>initField(rootFor(e));
  const availableOptions=state=>state.options.filter(e=>!e.hidden&&e.getAttribute('aria-disabled')!=='true');

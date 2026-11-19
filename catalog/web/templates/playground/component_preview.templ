@@ -9,12 +9,23 @@ templ ComponentPreviewView(page webview.ComponentPreview) {
 		@webview.ComponentAssetScope() {
 			@webview.UseCatalogBehavior("component-demos.js")
 			<h2 class="md-typescale-title-medium" id="preview-heading">Playground</h2>
-			<form hx-boost="false" method="get" action={ page.Action } hx-get={ page.Action } hx-target="#component-preview" hx-select="#component-preview" hx-swap="outerHTML" hx-replace-url="true" hx-trigger="change" hx-sync="this:replace" class="tokens-gallery-filters">
+			<form hx-boost="false" method="get" action={ page.Action } hx-get={ page.Action } hx-target="#component-preview" hx-select="#component-preview" hx-swap="outerHTML" hx-replace-url="true" hx-sync="this:replace" class="tokens-gallery-filters"
+				if page.PickerFamily() != "" {
+					hx-trigger="change target:select, change target:[data-field-combo]"
+					hx-params="not scroll-preview-width,scroll-preview-height,scroll-preview-gap"
+				} else {
+					hx-trigger="change"
+				}
+			>
 				for _, hidden := range page.Hidden {
 					<input type="hidden" name={ hidden.Name } value={ hidden.Value }/>
 				}
-				for _, control := range page.Controls {
-					@PreviewSelect(control)
+				if page.PickerFamily() != "" {
+					@PickerControls(page)
+				} else {
+					for _, control := range page.Controls {
+						@PreviewSelect(control)
+					}
 				}
 				<noscript>
 					@ui.Action(ui.ButtonProps{Variant: ui.ButtonVariant("outlined"), Type: "submit"}) {
@@ -34,7 +45,9 @@ templ ComponentPreviewView(page webview.ComponentPreview) {
 			<div class="tokens-preview-grid" data-playground-specimens>
 				for _, c := range page.Cases {
 					<figure class="tokens-component-example">
-						<figcaption class="md-typescale-body-small">{ page.Caption(c) }</figcaption>
+						if c.Family != "scroll-field" || !page.Interactive {
+							<figcaption class="md-typescale-body-small">{ page.Caption(c) }</figcaption>
+						}
 						@ComponentSpecimen(c)
 					</figure>
 				}
@@ -46,11 +59,54 @@ templ ComponentPreviewView(page webview.ComponentPreview) {
 	</section>
 }
 
+templ PickerControls(page webview.ComponentPreview) {
+	<div class="tokens-picker-controls" data-picker-dimensions={ page.PickerFamily() }>
+		for _, control := range page.Controls {
+			if control.Name == "compare" {
+				@PreviewSelect(control)
+			}
+		}
+		<section aria-labelledby="picker-api-heading">
+			<h3 class="md-typescale-label-large" id="picker-api-heading">Component API:</h3>
+			<div class="tokens-gallery-filters">
+				for _, control := range page.Controls {
+					if control.Name != "compare" && !control.IsPickerEnvironment() {
+						@PreviewSelect(control)
+					}
+				}
+			</div>
+			if page.PickerFamily() == "scroll-field" || page.HasTimeWidthControl() {
+				@PickerFieldDimensions(page)
+			}
+		</section>
+		@ui.Divider("", nil)
+		<section aria-labelledby="picker-environment-heading">
+			<h3 class="md-typescale-label-large" id="picker-environment-heading">Environment:</h3>
+			<div class="tokens-gallery-filters">
+				for _, control := range page.Controls {
+					if control.IsPickerEnvironment() {
+						@PreviewSelect(control)
+					}
+				}
+			</div>
+			if page.PickerFamily() == "scroll-field" {
+				<div class="tokens-scroll-dimensions">
+					@ScrollFieldDimension("width", "Available width", 280, 800, 480, 8)
+				</div>
+			} else if page.HasTimeWidthControl() {
+				<div class="tokens-scroll-dimensions">
+					@ScrollFieldDimension("width", "Available width", 304, 800, 640, 8)
+				</div>
+			}
+		</section>
+	</div>
+}
+
 templ PreviewSelect(control webview.PreviewControl) {
 	if control.Name == "compare" {
 		<div class="tokens-preview-comparison">
-			<span class="md-typescale-label-large">Compare:</span>
-			<select class="md-native-select" name="preview.compare" aria-label="Compare">
+			<span class="md-typescale-label-large">{ control.Label + ":" }</span>
+			<select class="md-native-select" name="preview.compare" aria-label={ control.Label }>
 			for _, choice := range webview.PreviewChoices(control) {
 				<option value={ choice.Value } selected?={ choice.Value==control.Selected }>{ choice.Label }</option>
 			}

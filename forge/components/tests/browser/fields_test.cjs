@@ -3,6 +3,19 @@ test('autocomplete matches case-insensitively without changing original indices'
 test('popup placement uses available viewport space and keeps the field width',()=>{let p=popupPosition({left:50,top:30,bottom:86,width:240},{width:800,height:600},200,8);assert.equal(p.top,86);assert.equal(p.width,240);p=popupPosition({left:750,top:530,bottom:586,width:240},{width:800,height:600},200,8);assert.equal(p.top,330);assert.equal(p.left,552);assert.equal(p.height,522);p=popupPosition({left:0,top:0,bottom:56,width:400},{width:200,height:100},200,8);assert.equal(p.width,184);assert.equal(p.left,8);assert.equal(p.height,36);});
 test('select typeahead searches prefixes and cycles repeated letters',()=>{assert.equal(typeahead(['Alpha','Apricot','Beta'],0,'aa'),1);assert.equal(typeahead(['Alpha','Apricot','Beta'],0,'ap'),1);assert.equal(typeahead(['Alpha','Apricot','Beta'],0,'z'),-1);});
 
+test('field focus tracks pointer and keyboard input before popup handling',()=>{
+ const listeners={},attributes=new Set();
+ runInNewContext(readFileSync(`${__dirname}/../../generated/fields.js`,'utf8'),{
+  document:{readyState:'loading',documentElement:{setAttribute:name=>attributes.add(name),removeAttribute:name=>attributes.delete(name)},
+   addEventListener(name,fn,capture){if(capture && !(name in listeners))listeners[name]=fn;}},
+  window:{addEventListener(){}}
+ });
+ listeners.pointerdown();assert(attributes.has('data-pointer-focus'));
+ listeners.keydown({key:'Tab'});assert(!attributes.has('data-pointer-focus'));
+ listeners.pointerdown();listeners.keydown({key:'c',metaKey:true});assert(attributes.has('data-pointer-focus'));
+ listeners.keydown({key:'ArrowDown'});assert(!attributes.has('data-pointer-focus'));
+});
+
 test('readonly inputs and pill buttons toggle and survive native light-dismiss',()=>{
  for(const useButton of [false,true]) {
  const listeners={},attrs={},positions={},empty={hidden:true};let shown=false,focused=0,prevented=0;

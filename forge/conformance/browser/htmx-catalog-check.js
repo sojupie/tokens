@@ -5,6 +5,37 @@ const load=path=>new Promise(resolve=>{frame.onload=resolve;frame.src=path;});
 document.querySelector('#run').onclick=async()=>{
  results.textContent='';document.querySelector('#run').disabled=true;
  try{
+ const selectPreviewOption=async(field,value)=>{
+   const doc=frame.contentDocument, previous=doc.querySelector('#component-preview');
+   previous.querySelector('#preview-'+field).click();
+   previous.querySelector('#preview-'+field+'-options [data-field-value="'+value+'"]').click();
+   await wait(()=>!previous.isConnected,field+' preview swap');
+   assert(new URLSearchParams(frame.contentWindow.location.search).get('preview.'+field)===value,field+' filter updates the preview URL');
+ };
+ for(const mode of ['interactive','states']){
+   await load('/components/time-pickers?preview.variant=scroll&preview.compare='+mode);
+   await frame.contentWindow.TokenAssets.ready;
+   await selectPreviewOption('placement','inline');
+   assert(!!frame.contentDocument.querySelector('#component-preview [data-time-inline][data-mode="scroll"]'),'Time Picker renders inline in '+mode);
+ }
+ await load('/components/scroll-fields?preview.compare=states');
+ await frame.contentWindow.TokenAssets.ready;
+ await selectPreviewOption('content','four-digits');
+ assert(!!frame.contentDocument.querySelector('#component-preview [role="spinbutton"][aria-label="Light level"]'),'Scroll Field renders the selected values');
+ await load('/components/scroll-fields?preview.compare=interactive&preview.scene=room');
+ await frame.contentWindow.TokenAssets.ready;
+ assert(!frame.contentDocument.querySelector('#component-preview [data-scroll-toggle]'),'Scroll Field starts without the optional mode button');
+ await selectPreviewOption('direct-entry','on');
+ await frame.contentWindow.TokenAssets.ready;
+ const scrollScene=frame.contentDocument.querySelector('#component-preview .tokens-scroll-preview');
+ const modeButtons=scrollScene.querySelectorAll('[data-scroll-toggle]');
+ const rotors=scrollScene.querySelectorAll('[role="spinbutton"]');
+ assert(modeButtons.length===1&&!modeButtons[0].closest('[data-scroll-field]')&&rotors.length===2,'the pair uses one host-placed mode button');
+ rotors[1].focus();
+ modeButtons[0].click();
+ const inputs=Array.from(scrollScene.querySelectorAll('.md-scroll-entry'));
+ assert(inputs.every(input=>!input.hidden)&&frame.contentDocument.activeElement===inputs[1],'shared text entry focuses the last used field and exposes both inputs');
+
  await load('/components/buttons?preview.compare=interactive');
  let w=frame.contentWindow,d=w.document;
  await wait(()=>d.querySelector('.tokens-token-filters')&&d.querySelector('[data-export-open]')&&!d.querySelector('[data-app-theme]').disabled,'page initialization');
@@ -18,10 +49,18 @@ document.querySelector('#run').onclick=async()=>{
  assert(d.querySelector('#component-preview')===preview&&d.querySelector('#tokens-site-header')===header,'table filtering preserves playground and shell identity');
  assert(requests.at(-1).options.headers['HX-Target'].includes('tokens-token-browser'),'table request targets its fragment');
  assert(w.location.search.includes('preview.compare=states'),'table submission preserves newly changed playground settings');
- const styles=d.querySelectorAll('[data-component-stylesheet]').length;
- const previousForm=d.querySelector('.tokens-token-filters');previousForm.requestSubmit();await wait(()=>d.querySelector('.tokens-token-filters')!==previousForm,'second filter');
- await new Promise(r=>setTimeout(r,150));
- assert(d.querySelector('#tokens-token-browser [data-component-stylesheet]')&&d.querySelectorAll('[data-component-stylesheet]').length===styles,'repeated table updates keep scoped styles bounded');
+ const headStyles=()=>Array.from(d.head.querySelectorAll('link[data-component-stylesheet]'));
+ const originalStyles=headStyles();
+ assert(originalStyles.length>0&&originalStyles.every(link=>link.sheet),'component stylesheets are loaded in the head');
+ for(let i=0;i<3;i++){
+   const previousForm=d.querySelector('.tokens-token-filters');
+   previousForm.requestSubmit();
+   await wait(()=>!previousForm.isConnected,'repeated table filter');
+   const styles=headStyles();
+   assert(styles.length===originalStyles.length&&styles.every((link,index)=>link===originalStyles[index]&&link.sheet)&&
+     new Set(styles.map(link=>link.href)).size===styles.length&&!d.body.querySelector('link[data-component-stylesheet]'),
+     'table swap '+(i+1)+' keeps the loaded head stylesheets without duplicates');
+ }
 
  d.querySelector('[data-action="context"]').click();
  let dialog=d.querySelector('#tokens-context-picker');
@@ -41,7 +80,16 @@ document.querySelector('#run').onclick=async()=>{
  assert(dialog.querySelector('input[value="Web"]').checked,'cancel restores unapplied context');
  const start=requests.length;d.querySelector('[data-export-open]').click();dialog=d.querySelector('#tokens-site-download');
  const button=dialog.querySelector('[data-export-submit]');
- await wait(()=>dialog.dataset.exportBusy==='false'&&!button.disabled,'download selection');
+ const busy=()=>button.getAttribute('aria-busy')==='true';
+ const disabled=()=>button.matches(':disabled');
+ const ready=()=>!busy()&&!disabled();
+ const summary=()=>dialog.querySelector('#tokens-export-summary');
+ const changeExportOption=async(selector,label)=>{
+   const previous=summary();
+   dialog.querySelector(selector).click();
+   await wait(()=>!previous.isConnected&&!busy(),label);
+ };
+ await wait(ready,'download selection');
  assert(requests.length===start+1&&requests.at(-1).url.includes('/downloads/export/options'),'opening download uses one HTML request');
  assert(dialog.querySelector('[data-export-submit]')===button,'loading action remains mounted');
  dialog.querySelector('.tokens-export-context').open=true;
@@ -50,39 +98,35 @@ document.querySelector('#run').onclick=async()=>{
    if(event.detail.task.target?.id==='tokens-export-fields') insertedDisclosures.push(dialog.querySelector('.tokens-export-context').open);
  };
  d.addEventListener('htmx:before:settle',observeInsertion);
- dialog.querySelector('input[value="css"]').click();
- await wait(()=>dialog.dataset.exportBusy==='false'&&!button.disabled,'format selection');
- assert(dialog.querySelector('input[value="css"]').checked&&dialog.querySelector('input[value="dtcg"]').checked&&button.textContent.includes('ZIP'),'multiple formats survive server rendering');
- assert(insertedDisclosures.length===1&&insertedDisclosures.every(Boolean),'expanded section is already open at insertion, before settling or paint');
+ await changeExportOption('input[value="css"]','format selection');
+ assert(ready()&&dialog.querySelector('input[value="css"]').checked&&dialog.querySelector('input[value="dtcg"]').checked&&summary().textContent.includes('ZIP'),'multiple formats are reflected in the server summary');
+ assert(insertedDisclosures.length===0&&dialog.querySelector('.tokens-export-context').open,'format changes update the summary without replacing or collapsing the options');
  d.removeEventListener('htmx:before:settle',observeInsertion);
  // Hold real responses after they arrive to exercise htmx cancellation deterministically.
  const held=[];
- w.fetch=async(url,options)=>{requests.push({url:String(url),options});const response=await originalFetch(url,options);if(String(url).includes('/downloads/export/options'))await new Promise(resolve=>held.push({resolve,options}));return response;};
+ w.fetch=async(url,options)=>{requests.push({url:String(url),options});const response=await originalFetch(url,options);if(String(url).includes('/downloads/export/summary'))await new Promise(resolve=>held.push({resolve,options}));return response;};
  dialog.querySelector('input[value="source"]').click();await wait(()=>held.length===1,'first held request');
- dialog.querySelector('input[value="report"]').click();await wait(()=>held.length===2,'replacement held request');
+ dialog.querySelector('input[value="css"]').click();await wait(()=>held.length===2,'replacement held request');
  held[0].resolve();await new Promise(r=>setTimeout(r,100));
- assert(held[0].options.signal.aborted&&dialog.dataset.exportBusy==='true'&&button.disabled,'aborted request cannot clear the newer loading state');
+ assert(held[0].options.signal.aborted&&busy()&&disabled(),'aborted request cannot clear the newer loading state');
  w.fetch=async(url,options)=>{requests.push({url:String(url),options});return originalFetch(url,options);};
- held[1].resolve();await wait(()=>dialog.dataset.exportBusy==='false'&&!button.disabled,'replacement completion');
- assert(dialog.querySelector('input[value="source"]').checked&&dialog.querySelector('input[value="report"]').checked,'latest request retains the latest selections');
+ held[1].resolve();await wait(ready,'replacement completion');
+ assert(dialog.querySelector('input[value="source"]').checked&&!dialog.querySelector('input[value="css"]').checked,'latest request retains the latest selections');
 
- dialog.querySelector('input[value="implementation"]').click();
- await wait(()=>dialog.dataset.exportBusy==='false'&&!button.disabled,'implementation selection');
+ await changeExportOption('input[value="implementation"]','implementation selection');
  // Match the reported case: an incomplete selection followed by another chip change.
  insertedDisclosures.length=0;d.addEventListener('htmx:before:settle',observeInsertion);
- dialog.querySelector('input[name="context.Theme"][value="Light"]').click();
- await wait(()=>dialog.dataset.exportBusy==='false'&&button.disabled,'empty theme');
- dialog.querySelector('input[name="context.Contrast"][value="High contrast"]').click();
- await wait(()=>dialog.dataset.exportBusy==='false','contrast with empty theme');
+ await changeExportOption('input[name="context.Theme"][value="Light"]','empty theme');
+ await changeExportOption('input[name="context.Contrast"][value="High contrast"]','contrast with empty theme');
  assert(insertedDisclosures.length===2&&insertedDisclosures.every(Boolean),'incomplete selections keep the context expanded throughout replacement');
- assert(!dialog.querySelector('input[name="context.Theme"]:checked')&&dialog.querySelector('input[name="context.Contrast"][value="High contrast"]').checked,'validation preserves an intentionally empty selection');
+ assert(disabled()&&!dialog.querySelector('input[name="context.Theme"]:checked')&&dialog.querySelector('input[name="context.Contrast"][value="High contrast"]').checked,'validation preserves an intentionally empty selection and disables download');
  d.removeEventListener('htmx:before:settle',observeInsertion);
- dialog.querySelector('input[name="context.Theme"][value="Light"]').click();
- await wait(()=>dialog.dataset.exportBusy==='false'&&!button.disabled,'restore theme');
+ await changeExportOption('input[name="context.Theme"][value="Light"]','restore theme');
+ assert(ready(),'restoring the theme enables download');
 
- dialog.querySelector('input[value="tokens"]').click();
- await wait(()=>dialog.dataset.exportBusy==='false'&&!button.disabled,'return to tokens');
- assert(dialog.querySelector('input[value="css"]').checked&&dialog.querySelector('input[value="dtcg"]').checked,'switching content preserves token formats');
+ await changeExportOption('input[value="tokens"]','return to tokens');
+ assert(ready()&&dialog.querySelector('input[value="dtcg"]').checked&&dialog.querySelector('input[value="source"]').checked&&
+   !dialog.querySelector('input[value="css"]').checked,'switching content preserves token formats');
  assert(dialog.querySelector('.tokens-export-context').open,'expansion survives field replacement');
  const beforeNative=requests.length;let native=false;
  dialog.querySelector('form').addEventListener('submit',event=>{native=!event.defaultPrevented;event.preventDefault();},{once:true});
@@ -92,7 +136,9 @@ document.querySelector('#run').onclick=async()=>{
  d.querySelector('#tokens-site-destinations a[href="/styles"]').click();
  await wait(()=>w.location.pathname==='/styles'&&d.querySelector('h1')?.textContent.includes('Styles'),'boosted navigation');
  assert(w.document===d&&d.querySelector('#tokens-site-header')===header&&d.querySelector('#tokens-site-menu')===drawer,'boosted navigation preserves header and drawer instances');
- assert(d.querySelector('#tokens-site-destinations')===destinations&&destinations.querySelector('[aria-current="page"]').getAttribute('href')==='/styles','partial updates only drawer destinations');
+ assert(d.querySelector('#tokens-site-destinations')===destinations&&
+   destinations.querySelector('[data-site-section="/styles"][aria-current="page"]')&&
+   destinations.querySelector('a[href="/styles"][aria-current="page"]'),'partial navigation updates the active drawer section and destination');
  assert(d.querySelector('meta[name="description"]').content.includes('styles')&&d.querySelectorAll('meta[name="description"]').length===1,'hx-head updates metadata without duplication');
  d.querySelector('#subject-search').value='motion';d.querySelector('#subject-search').dispatchEvent(new w.Event('input',{bubbles:true}));
  await wait(()=>w.location.search.includes('motion'),'index search');

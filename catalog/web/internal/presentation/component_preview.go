@@ -19,6 +19,52 @@ type ComponentPreview struct {
 	Interactive bool
 }
 
+func (page ComponentPreview) PickerFamily() string {
+	if len(page.Cases) > 0 {
+		switch page.Cases[0].Family {
+		case "time", "scroll-field":
+			return page.Cases[0].Family
+		}
+	}
+	return ""
+}
+
+func (c PreviewControl) IsPickerEnvironment() bool {
+	switch c.Name {
+	case "scene", "content", "control", "state", "selection":
+		return true
+	default:
+		return false
+	}
+}
+
+func (page ComponentPreview) HasExpressiveTimeFields() bool {
+	for _, c := range page.Cases {
+		if c.Family == "time" && c.TimeStyle == "expressive" && (c.Variant == "input" || c.Variant == "scroll") {
+			return true
+		}
+	}
+	return false
+}
+
+func (page ComponentPreview) HasTimeWidthControl() bool {
+	for _, c := range page.Cases {
+		if c.Family == "time" && c.TimePlacement == "inline" {
+			return true
+		}
+	}
+	return false
+}
+
+func (page ComponentPreview) HasTimeScroll() bool {
+	for _, c := range page.Cases {
+		if c.Family == "time" && (c.Variant == "scroll" || c.Variant == "input" && c.TimePlacement == "inline") {
+			return true
+		}
+	}
+	return false
+}
+
 func NavBarVariantLabels() map[string]string {
 	return map[string]string{
 		"adaptive":   "Flexible: automatic",
@@ -87,6 +133,8 @@ func PreviewLabel(value string) string {
 		return "Multiple"
 	case "xsmall":
 		return "Extra small"
+	case "clock":
+		return "Dial"
 	case "xlarge":
 		return "Extra large"
 	case "field":
@@ -142,7 +190,12 @@ func PreviewDimensions(c ComponentCase) map[string]string {
 			d["mode"] = "long"
 		}
 	}
+	if c.Family == "scroll-field" {
+		d["control"] = ""
+	}
 	if c.Family == "time" {
+		d["style"] = c.TimeStyle
+		d["placement"] = c.TimePlacement
 		d["selection"] = c.Selection
 	}
 	if c.Family == "date" {

@@ -33,6 +33,7 @@
   "styles/carousels.css",
   "styles/search.css",
   "styles/date-pickers.css",
+  "styles/scroll-field.css",
   "styles/time-pickers.css",
   "styles/chip-actions.css",
   "styles/field-popups.css",

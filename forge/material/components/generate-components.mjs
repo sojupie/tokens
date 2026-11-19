@@ -824,6 +824,10 @@ export function generateComponents(document, values) {
   }
   const records = [];
   for (const [name, meta] of source) {
+    if (meta.sourceType === "motionReference") {
+      excluded.push({ token: name, reason: "Physical spring reference preserved in source metadata." });
+      continue;
+    }
     const set = meta.presentation?.setName;
     if (
       !set &&
@@ -920,6 +924,8 @@ export function generateComponents(document, values) {
         : b.family === "field" && b.state === "focused"
         ? condition({ ...b, state: "" }) +
           `:where(:focus,:focus-within,[data-component-state="focused"])${enabled}`
+        : b.family === "time-field" && b.state === "focused"
+        ? `:where(:focus,[data-component-state="focused"])${enabled}`
         : ["menu-item", "checkbox", "switch", "nav-item", "segment", "tab", "toolbar-item", "sheet-action", "split-item", "fab-menu-item", "fab-menu-close", "list-item", "list-reveal", "carousel-item", "date-day", "date-year", "date-month", "date-menu", "time-value", "time-period", "time-field"].includes(b.family) && condition(b)
           ? `:where(${condition(b)})`
           : condition(b);
@@ -980,12 +986,21 @@ export function generateComponents(document, values) {
     requiredNames.add(b.variable);
   }
   const configurations = [];
-  for(const variant of ['clock','input'])for(const orientation of variant==='clock'?['portrait','landscape']:['portrait'])
-    for(const width of ['12h','24h'])for(const control of variant==='clock'?['value','dial',...(width==='12h'?['period']:[])]:['field',...(width==='12h'?['period']:[])])
-      for(const shape of ['value','field','dial'].includes(control)?['hour','minute']:['hour'])
-        for(const selection of ['value','period'].includes(control)?['selected','unselected']:[''])
-          for(const state of control==='dial'?['enabled']:control==='field'?['enabled','hovered','focused']:['enabled','hovered','focused','pressed'])
-            configurations.push({family:'time',variant,orientation,width,control,shape,selection,state});
+  for(const timeStyle of ['expressive','baseline'])
+    for(const variant of timeStyle==='expressive'?['clock','input','scroll']:['clock','input'])
+      for(const timePlacement of variant==='clock'||timeStyle==='baseline'?['modal']:['inline','modal'])
+        for(const orientation of variant==='clock'?['portrait','landscape']:[''])
+          for(const width of ['12h','24h'])
+            for(const control of [variant==='clock'?'value':variant==='scroll'?'scroll':'field', ...(variant==='clock'?['dial']:[]), ...(width==='12h'?['period']:[])])
+              for(const shape of ['value','field','dial','scroll'].includes(control)?['hour','minute']:['hour'])
+                for(const selection of ['value','period'].includes(control)?['selected','unselected']:[''])
+                  for(const state of control==='dial'||control==='scroll'?['enabled']:control==='field'?['enabled','hovered','focused']:['enabled','hovered','focused','pressed'])
+                    configurations.push({family:'time',timeStyle,variant,timePlacement,orientation,width,control,shape,selection,state});
+  for(const variant of ['numeric','text','wrapping','paired','custom'])
+    for(const width of ['hug','fill'])
+      for(const size of ['small','medium','large'])
+        for(const state of ['enabled','hovered','focused','disabled'])
+          configurations.push({family:'scroll-field',variant,size,width,state});
   for(const variant of ['docked','modal','input','full-screen'])
     for(const dateRange of [false,true])
       for(const control of variant==='docked'?['day','month','year','menu-button']:variant==='input'?['day']:['day','year'])

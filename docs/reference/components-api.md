@@ -56,8 +56,32 @@ templ Inbox() {
 `TextFieldProps`, `ChoiceProps`, `SliderProps` and `TimePickerProps` accept form
 names and values. A slider's `Value` is its upper value; a non-nil `Start` enables
 a range. Progress values are percentages; nil selects indeterminate progress.
-Time-picker hours use 0–23 even when the display uses a 12-hour clock. Its hidden
-form field updates on OK and dispatches native `input` and `change` events.
+Time-picker hours use 0–23 even when the display uses a 12-hour clock. Both
+`TimePicker` and `TimePickerPanel` accept a form name and submit the time as
+`HH:MM`. A modal commits on OK and discards pending changes on dismissal. An
+inline picker commits valid changes as they are made. Committing a new value
+dispatches native `input` and `change` events. Use `DialogTrigger` with the ID
+`<picker ID>-time` to open a standalone modal panel.
+
+`ScrollField` accepts string `Options` or `Items` with separate labels and
+unique values. The label is displayed and matched in direct entry. The value is
+submitted under `Name` and sent with the selected index in
+`md-scroll-field-change`. Submitting the form commits a valid direct entry and
+focuses the first invalid field if validation fails. With repeated labels, use
+the rotor to choose between matching options. Form reset restores the initial
+selection.
+
+Set `DirectEntry` to allow typing. Render `ScrollFieldModeButton(ids, textEntry, props)`
+where the host needs it, passing the IDs of the fields and their initial mode.
+The button switches the fields together and focuses the most recently used field,
+or the first enabled field on initial use. Tab or click between the inputs in
+text-entry mode. Enter commits the active input. A single-field control returns
+to scrolling on Enter, while a shared control keeps the fields open for editing.
+
+Hosts that replace fragments directly can call `MaterialTimePickers.initialize(scope)`
+and `MaterialScrollFields.initialize(scope)` after insertion. Call each
+controller's `dispose(scope)` before removing its fragment. The dialog controller
+has the same lifecycle methods for modal panels. HTMX swaps are handled by Forge.
 
 `Card`, `CardLink` and `CardButton` distinguish content, navigation and actions.
 A link card must not contain another interactive control. Put independent action
@@ -178,7 +202,7 @@ remaining compatibility adapters are tracked in the refactor plan.
 | Cards, badges and dividers | `Card`, `CardLink`, `CardButton`, `Badge`, `Divider` |
 | Chips and choices | `Chip`, `CheckboxField`, `CheckboxControl`, `Switch`, `SwitchControl`, `Radio`, `RadioControl` |
 | Text, select and autocomplete fields | `TextField`, `Field` with `Kind: "select"` or `Kind: "autocomplete"` |
-| Date and time pickers | `DatePicker`, `DatePickerPanel`, `DateEntryField`, `TimePicker`, `TimePickerPanel` |
+| Date and time pickers | `DatePicker`, `DatePickerPanel`, `DateEntryField`, `TimePicker`, `TimePickerPanel`, `ScrollField`, `ScrollFieldModeButton` |
 | Search and carousel | `Search`, `SearchView`, `SearchBarSurface`, `SearchResult`, `Carousel`, `CarouselItem` |
 | Lists | `ListHost`, `List`, `ListRow`, `ListButton`, `ListLink`, `ListContent` |
 | Navigation | `NavigationRail`, `RailToggle`, `NavigationRegion`, `NavigationItem`, `NavigationItemContent`, `Drawer`, `DrawerToggle` |

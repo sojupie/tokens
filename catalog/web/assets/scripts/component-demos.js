@@ -157,6 +157,27 @@
     viewport.style.setProperty('--_search-composition-width',event.target.value+'px');
     root.querySelector('[data-search-composition-width-label]').textContent=Math.round(viewport.getBoundingClientRect().width)+'px';
   });
+  const scrollPreviewDimensions = {};
+  document.addEventListener('input', event => {
+    const input = event.target;
+    const control = input.closest?.('[data-scroll-dimension]');
+    if (!control || input.type !== 'range') return;
+    const dimension = control.dataset.scrollDimension;
+    const family = control.closest('[data-picker-dimensions]').dataset.pickerDimensions;
+    scrollPreviewDimensions[family + ':' + dimension] = input.value;
+    control.querySelector('output').textContent = input.value + ' px';
+    input.closest('#component-preview').style.setProperty('--_scroll-preview-' + dimension, input.value + 'px');
+  });
+  document.addEventListener('htmx:afterSwap', () => {
+    for (const input of document.querySelectorAll('#component-preview [data-scroll-dimension] input')) {
+      const dimension = input.closest('[data-scroll-dimension]').dataset.scrollDimension;
+      const family = input.closest('[data-picker-dimensions]').dataset.pickerDimensions;
+      const value = scrollPreviewDimensions[family + ':' + dimension];
+      if (value === undefined) continue;
+      input.value = value;
+      input.dispatchEvent(new Event('input', {bubbles: true}));
+    }
+  });
   document.addEventListener('md-list-change',event=>{
     const host=event.target.closest('#component-preview .md-list-demo');if(!host)return;
     for(const output of host.querySelectorAll('output:not([data-list-status])'))output.textContent=event.detail.text;

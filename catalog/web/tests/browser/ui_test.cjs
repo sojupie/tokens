@@ -769,18 +769,6 @@ test('Canvas artwork starts each scene at its first painted frame after a late w
   renderer.dispose();
 });
 
-test('pointer focus returns to visible keyboard focus on keyboard input',()=>{
- const events={},attributes=new Set();
- runScript('site-ui.js',{
-  document:{readyState:'loading',documentElement:{setAttribute:name=>attributes.add(name),removeAttribute:name=>attributes.delete(name)},addEventListener:(name,fn)=>events[name]=fn},
-  window:{addEventListener(){}},matchMedia:()=>({matches:false,addEventListener(){}})
- });
- events.pointerdown();assert(attributes.has('data-pointer-focus'));
- events.keydown({key:'Tab'});assert(!attributes.has('data-pointer-focus'));
- events.pointerdown();events.keydown({key:'c',metaKey:true});assert(attributes.has('data-pointer-focus'));
- events.keydown({key:'ArrowDown'});assert(!attributes.has('data-pointer-focus'));
-});
-
 test('returning to a gallery restores its saved offset instantly without restoring on filters',async()=>{
  const events={},windows={},storage=new Map(),scrolls=[];
  const location={pathname:'/md3/components',search:''},window={scrollY:780,addEventListener:(name,fn)=>windows[name]=fn,scrollTo:options=>scrolls.push(options)};

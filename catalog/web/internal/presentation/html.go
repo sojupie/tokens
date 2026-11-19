@@ -135,6 +135,10 @@ func FormattedNamedValue(name string, value any) (string, bool) {
 		if ok {
 			return TypographyValueText(fields), true
 		}
+	case "motionReference":
+		if reference, ok := value.(string); ok {
+			return reference, true
+		}
 	}
 	return "", false
 }

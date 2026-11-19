@@ -33,6 +33,8 @@ const NoLeading = model.NoLeading
 const OneLine = model.OneLine
 const Outlined = model.Outlined
 const Round = model.Round
+const ScrollFieldMotionDecelerate = model.ScrollFieldMotionDecelerate
+const ScrollFieldMotionSpring = model.ScrollFieldMotionSpring
 const SegmentedList = model.SegmentedList
 const SideSheet = model.SideSheet
 const Small = model.Small
@@ -213,8 +215,12 @@ func RailFrame(attrs templ.Attributes, navigation templ.Component, toggle ...tem
 func RailToggle(expanded bool, attrs templ.Attributes) templ.Component {
 	return render.RailToggle(expanded, attrs)
 }
-func Range(p model.SliderProps) templ.Component         { return render.Range(p) }
-func Require(modules ...string) templ.Component         { return model.Require(modules...) }
+func Range(p model.SliderProps) templ.Component            { return render.Range(p) }
+func Require(modules ...string) templ.Component            { return model.Require(modules...) }
+func ScrollField(p model.ScrollFieldProps) templ.Component { return render.ScrollField(p) }
+func ScrollFieldModeButton(fieldIDs []string, textEntry bool, button model.IconButtonProps) templ.Component {
+	return render.ScrollFieldModeButton(fieldIDs, textEntry, button)
+}
 func Search(p model.SearchProps) templ.Component        { return render.Search(p) }
 func SearchActions(p model.SearchProps) templ.Component { return render.SearchActions(p) }
 func SearchBar(p model.SearchProps, label string, value string, disclosure bool) templ.Component {
@@ -264,14 +270,19 @@ func Tabs(p model.TabsProps) templ.Component { return render.Tabs(p) }
 func TabsHost(attrs templ.Attributes, extra ...templ.Attributes) templ.Component {
 	return render.TabsHost(attrs, extra...)
 }
-func TextField(p model.TextFieldProps) templ.Component        { return render.TextField(p) }
-func TimePicker(p model.TimePickerProps) templ.Component      { return render.TimePicker(p) }
-func TimePickerPanel(p model.TimePickerProps) templ.Component { return render.TimePickerPanel(p) }
-func Toolbar(attrs templ.Attributes) templ.Component          { return render.Toolbar(attrs) }
-func ToolbarSurface(p model.ToolbarProps) templ.Component     { return render.ToolbarSurface(p) }
-func Tooltip(p model.TooltipProps) templ.Component            { return render.Tooltip(p) }
-func TooltipContent(p model.TooltipProps) templ.Component     { return render.TooltipContent(p) }
-func TooltipHost(attrs templ.Attributes) templ.Component      { return render.TooltipHost(attrs) }
+func TextField(p model.TextFieldProps) templ.Component   { return render.TextField(p) }
+func TimePicker(p model.TimePickerProps) templ.Component { return render.TimePicker(p) }
+func TimePickerField(p model.TimePickerProps, part string, caption string) templ.Component {
+	return render.TimePickerField(p, part, caption)
+}
+func TimePickerMode(p model.TimePickerProps) templ.Component   { return render.TimePickerMode(p) }
+func TimePickerPanel(p model.TimePickerProps) templ.Component  { return render.TimePickerPanel(p) }
+func TimePickerPeriod(p model.TimePickerProps) templ.Component { return render.TimePickerPeriod(p) }
+func Toolbar(attrs templ.Attributes) templ.Component           { return render.Toolbar(attrs) }
+func ToolbarSurface(p model.ToolbarProps) templ.Component      { return render.ToolbarSurface(p) }
+func Tooltip(p model.TooltipProps) templ.Component             { return render.Tooltip(p) }
+func TooltipContent(p model.TooltipProps) templ.Component      { return render.TooltipContent(p) }
+func TooltipHost(attrs templ.Attributes) templ.Component       { return render.TooltipHost(attrs) }
 func WithAssets(ctx context.Context, assets model.Assets) context.Context {
 	return model.WithAssets(ctx, assets)
 }
@@ -310,6 +321,9 @@ type NavigationProps = model.NavigationProps
 type Option = model.Option
 type ProgressProps = model.ProgressProps
 type RailProps = model.RailProps
+type ScrollFieldMotion = model.ScrollFieldMotion
+type ScrollFieldOption = model.ScrollFieldOption
+type ScrollFieldProps = model.ScrollFieldProps
 type SearchProps = model.SearchProps
 type SegmentProps = model.SegmentProps
 type SegmentedProps = model.SegmentedProps
