@@ -1,4 +1,4 @@
-# Token Catalog
+# TokenCatalog
 
 Token Catalog collects design tokens so you can browse, compare, and download
 them. [Material Design 3](https://tokencatalog.dev/md3/) is the first supported
@@ -29,9 +29,10 @@ Component pages include interactive playgrounds for variants, sizes, and states,
 built from CSS generated out of the captured tokens with authored HTML and
 browser behavior.
 
-The [tools page](https://tokencatalog.dev/md3/tools) also hosts two client-side
+The [tools page](https://tokencatalog.dev/md3/tools) also hosts three client-side
 browser apps built with the same Forge components:
-
+- [Foundry](https://foundry.tokencatalog.dev) ([source](https://github.com/sojupie/token-foundry)):
+  spreadsheet like application for managing DTCG token files and directories. 
 - [Material Motion Lab](https://tokencatalog.dev/tools/motion-lab/) ([source](https://github.com/sojupie/material-motion-lab)):
   tracks UI movement in local video recordings and compares curves against
   Material Design 3 motion tokens. Videos and `.motion` projects stay on your
