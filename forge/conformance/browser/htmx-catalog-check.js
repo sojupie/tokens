@@ -354,8 +354,8 @@ document.querySelector('#run').onclick=async()=>{
  filterDocument.querySelector('#preview-compare-states').click();
  await wait(()=>!filterPreview.isConnected&&new URL(frame.contentWindow.location.href).searchParams.get('preview.compare')==='states','playground configuration before clearing the token search');
  filterDocument.querySelector('.tokens-token-search [data-search-clear]').click();
- await wait(()=>!filteredSearch.isConnected&&!new URL(frame.contentWindow.location.href).searchParams.get('q'),'clearing token search');
- assert(filterDocument.activeElement===filterDocument.querySelector('#tokens-token-search'),'clearing token search keeps input focus through the table swap');
+ await wait(()=>!new URL(frame.contentWindow.location.href).searchParams.get('q'),'clearing token search');
+ assert(filteredSearch.isConnected&&filterDocument.activeElement===filteredSearch,'clearing token search keeps the same input focused');
  assert(new URL(frame.contentWindow.location.href).searchParams.get('preview.compare')==='states','clearing token search preserves the latest playground settings');
  frame.style.removeProperty('width');
 
@@ -367,18 +367,36 @@ document.querySelector('#run').onclick=async()=>{
  d.querySelector('#preview-compare-states').click();await wait(()=>d.querySelector('#component-preview')!==preview,'playground configuration');preview=d.querySelector('#component-preview');
  const originalFetch=w.fetch.bind(w),requests=[];
  w.fetch=async(url,options)=>{requests.push({url:String(url),options});return originalFetch(url,options);};
- const search=d.querySelector('.tokens-token-search input');search.value='icon';d.querySelector('.tokens-token-filters').requestSubmit();
- await wait(()=>d.querySelector('.tokens-token-search input')!==search,'table swap');
+ const tokenBrowser=d.querySelector('#tokens-token-browser');
+ const search=d.querySelector('.tokens-token-search input');
+ const rows=Array.from(tokenBrowser.querySelectorAll('[data-token-search-fields]'));
+ const filterTokens=value=>{search.value=value;search.dispatchEvent(new w.Event('input',{bubbles:true}));};
+ filterTokens('icon');
+ const matches=rows.filter(row=>JSON.parse(row.dataset.tokenSearchFields).some(field=>field.includes('icon')));
+ assert(matches.length>0&&matches.length<rows.length&&rows.every(row=>row.hidden===!matches.includes(row)),
+   'token search shows matching rows from the current set as you type');
+ d.querySelector('.tokens-token-filters').requestSubmit();
+ assert(tokenBrowser.isConnected&&search.isConnected&&requests.length===0,'searching and submitting the token query stays local');
  assert(d.querySelector('#component-preview')===preview&&d.querySelector('#tokens-site-header')===header,'table filtering preserves playground and shell identity');
- assert(requests.at(-1).options.headers['HX-Target'].includes('tokens-token-browser'),'table request targets its fragment');
  assert(w.location.search.includes('preview.compare=states'),'table submission preserves newly changed playground settings');
+ filterTokens('no-token-matches-this-query');
+ assert(rows.every(row=>row.hidden)&&!tokenBrowser.querySelector('[data-token-search-empty]').hidden,
+   'token search shows the empty state when all rows are filtered out');
+ filterTokens('icon');
+ w.history.back();
+ await wait(()=>search.value===''&&rows.every(row=>!row.hidden),'restore unfiltered token table');
+ w.history.forward();
+ await wait(()=>search.value==='icon'&&rows.some(row=>row.hidden),'restore token search');
+ assert(tokenBrowser.isConnected&&requests.length===0,'token search history restores results without a table request');
  const headStyles=()=>Array.from(d.head.querySelectorAll('link[data-component-stylesheet]'));
  const originalStyles=headStyles();
  assert(originalStyles.length>0&&originalStyles.every(link=>link.sheet),'component stylesheets are loaded in the head');
  for(let i=0;i<3;i++){
    const previousForm=d.querySelector('.tokens-token-filters');
-   previousForm.requestSubmit();
-   await wait(()=>!previousForm.isConnected,'repeated table filter');
+   previousForm.querySelector('[data-token-set-link]:not([aria-current="page"])').click();
+   await wait(()=>!previousForm.isConnected,'repeated token set change');
+   assert(requests.at(-1).options.headers['HX-Target'].includes('tokens-token-browser')&&
+     new URL(w.location.href).searchParams.get('q')==='icon','changing token set requests its fragment with the current query');
    const styles=headStyles();
    assert(styles.length===originalStyles.length&&styles.every((link,index)=>link===originalStyles[index]&&link.sheet)&&
      new Set(styles.map(link=>link.href)).size===styles.length&&!d.body.querySelector('link[data-component-stylesheet]'),

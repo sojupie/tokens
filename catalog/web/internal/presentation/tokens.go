@@ -14,6 +14,7 @@ import (
 
 type TokenBrowser struct {
 	TableOnly    bool
+	LocalSearch  bool
 	Static       *StaticTokenTableLabels
 	Preview      *ComponentPreview
 	Contexts     url.Values
@@ -51,6 +52,7 @@ type TokenGroup struct {
 	Name     string
 	Count    int
 	Open     bool
+	Hidden   bool `json:"-"`
 	Tokens   []TokenRow
 	Children []TokenGroup
 }
@@ -65,6 +67,8 @@ type TokenRow struct {
 	Lifecycle  string
 	HasValue   bool
 	References []publish.TokenReference
+	Search     []string `json:"-"`
+	Hidden     bool     `json:"-"`
 }
 
 type TokenFilter struct {

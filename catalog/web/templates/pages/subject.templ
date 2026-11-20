@@ -22,9 +22,7 @@ templ TokenSetPicker(subject publish.SubjectView, browser webview.TokenBrowser) 
 				for _, set := range browser.Sets {
 					<option value={ set.Key } selected?={ set.Key==browser.Selected.Key }>{ webview.TokenTableQualifier(subject,set) }</option>
 				}
-				if browser.TableOnly {
-					<option value="all" selected?={ browser.Selected.All }>All tokens</option>
-				}
+				<option value="all" selected?={ browser.Selected.All }>All tokens</option>
 			</select>
 	</label>
 	@ui.MenuHost(templ.Attributes{"class": "tokens-token-set-host", "style": "display:contents"}) {

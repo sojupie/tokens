@@ -1,6 +1,7 @@
 (() => {
 const initialized = new WeakSet();
 const tokenSetRequests = new WeakSet();
+const tokenSearchFolders = new WeakMap();
 let tableDisplay;
 function folderKey(group) {
   const path=[];
@@ -10,7 +11,8 @@ function folderKey(group) {
 document.addEventListener('htmx:before:swap', event => {
   if (event.detail.ctx.target?.id !== 'tokens-token-browser') return;
   const browser = event.detail.ctx.target;
-  tableDisplay = {grid:browser.classList.contains('tokens-grid-view'),hidden:browser.classList.contains('tokens-no-previews'),groups:new Map([...browser.querySelectorAll('details.tokens-token-folder')].map(group=>[folderKey(group),group.open]))};
+  const beforeSearch = tokenSearchFolders.get(browser);
+  tableDisplay = {grid:browser.classList.contains('tokens-grid-view'),hidden:browser.classList.contains('tokens-no-previews'),groups:new Map([...browser.querySelectorAll('details.tokens-token-folder')].map(group=>[folderKey(group),beforeSearch?.get(group) ?? group.open]))};
 });
 
 // The table and playground can update the URL without replacing each other.
@@ -20,6 +22,8 @@ document.addEventListener('htmx:config:request', event => {
   if (sourceElement.matches('[data-token-set-link]')) {
     tokenSetRequests.add(ctx);
     const destination = new URL(request.action, location.href);
+    const query = sourceElement.closest('#tokens-token-browser')?.querySelector('[data-token-search] input[name="q"]')?.value.trim();
+    if (query !== undefined) setSearchQuery(destination, query);
     for (const name of [...destination.searchParams.keys()]) {
       if (name.startsWith('preview.')) destination.searchParams.delete(name);
     }
@@ -55,6 +59,113 @@ function unbound(selector) {
     return true;
   });
 }
+
+function setSearchQuery(url, query) {
+  if (query) url.searchParams.set('q', query);
+  else url.searchParams.delete('q');
+}
+
+function tokenSearchScope(path) {
+  const url = new URL(path, location.href);
+  url.searchParams.delete('q');
+  url.searchParams.sort();
+  return url.pathname + url.search;
+}
+
+function bindTokenSearch(browser, form, signal, syncControls, previousGroups) {
+  const input = form.elements.q;
+  const empty = browser.querySelector('[data-token-search-empty]');
+  if (!input || !empty) return;
+
+  const folders = [...browser.querySelectorAll('.tokens-token-folder')];
+  const tables = [...browser.querySelectorAll('.tokens-token-table-wrap')];
+  let rows;
+  const links = [...browser.querySelectorAll('[data-token-set-link], .tokens-table-only-link')];
+  const set = form.elements.set;
+  const selectedSet = set?.value;
+  let scope = tokenSearchScope(location.href);
+
+  function filter(query) {
+    rows ??= [...browser.querySelectorAll('[data-token-search-fields]')].map(row => {
+      const ancestors = [];
+      for (let folder = row.closest('.tokens-token-folder'); folder; folder = folder.parentElement.closest('.tokens-token-folder')) {
+        ancestors.push(folder);
+      }
+      return { row, fields: JSON.parse(row.dataset.tokenSearchFields), ancestors, table: row.closest('.tokens-token-table-wrap') };
+    });
+    let beforeSearch = tokenSearchFolders.get(browser);
+    if (query && !beforeSearch) {
+      beforeSearch = new Map(folders.map(folder => [folder, folder.open]));
+      tokenSearchFolders.set(browser, beforeSearch);
+    }
+    const matchingFolders = new Set();
+    const matchingTables = new Set();
+    const term = query.toLowerCase();
+    for (const { row, fields, ancestors, table } of rows) {
+      row.hidden = !!term && !fields.some(field => field.includes(term));
+      if (!row.hidden) {
+        matchingTables.add(table);
+        for (const folder of ancestors) matchingFolders.add(folder);
+      }
+    }
+    for (const table of tables) table.hidden = !matchingTables.has(table);
+    for (const folder of folders) {
+      folder.hidden = !matchingFolders.has(folder);
+      if (query) folder.open = !folder.hidden;
+      else if (beforeSearch) folder.open = beforeSearch.get(folder);
+    }
+    if (!query) tokenSearchFolders.delete(browser);
+    empty.hidden = matchingTables.size > 0;
+    for (const link of links) {
+      const url = new URL(link.href);
+      setSearchQuery(url, query);
+      link.href = url.pathname + url.search + url.hash;
+    }
+    syncControls();
+  }
+
+  function update() {
+    const query = input.value.trim();
+    filter(query);
+    const url = new URL(location.href);
+    setSearchQuery(url, query);
+    if (url.href === location.href) return;
+    scope = tokenSearchScope(url);
+    const state = { ...history.state, htmx: true };
+    if (state.tokenSearch) {
+      history.replaceState(state, '', url);
+    } else {
+      history.replaceState(state, '', location.href);
+      history.pushState({ ...state, tokenSearch: true }, '', url);
+    }
+  }
+
+  if (input.value.trim()) {
+    const defaultOpen = form.elements.view?.value === 'table';
+    tokenSearchFolders.set(browser, new Map(folders.map(folder => [folder, previousGroups?.get(folderKey(folder)) ?? defaultOpen])));
+    filter(input.value.trim());
+  }
+  input.addEventListener('input', update, {signal});
+  form.addEventListener('submit', event => {
+    if (event.submitter?.closest('dialog[open]') || set?.value !== selectedSet) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    update();
+  }, {capture:true, signal});
+  const updateScope = () => { scope = tokenSearchScope(location.href); };
+  document.addEventListener('htmx:after:history:push', updateScope, {signal});
+  document.addEventListener('htmx:after:history:replace', updateScope, {signal});
+  document.addEventListener('htmx:before:history:restore', event => {
+    const url = new URL(event.detail.path, location.href);
+    if (tokenSearchScope(url) !== scope) return;
+    input.value = url.searchParams.get('q') ?? '';
+    const clear = form.querySelector('[data-search-clear-target]');
+    if (clear) clear.hidden = !input.value;
+    filter(input.value.trim());
+    event.preventDefault();
+  }, {signal});
+}
+
 function bindTokenReferences(browser, signal) {
   // Native popovers provide Escape, outside-click dismissal and invoker focus.
   // Position beside the active value where space allows, then clamp to the viewport.
@@ -184,6 +295,7 @@ unbound('[data-site-download-open]').forEach(button => {
 });
 
 unbound('.tokens-token-browser').forEach(browser => {
+  const previousGroups = tableDisplay?.groups;
   if (tableDisplay) {
     browser.classList.toggle('tokens-grid-view',tableDisplay.grid);
     browser.classList.toggle('tokens-no-previews',tableDisplay.hidden);
@@ -202,7 +314,8 @@ unbound('.tokens-token-browser').forEach(browser => {
   bindTokenReferences(browser, signal);
   const form = browser.querySelector('form');
   if (!form) return;
-  if (form.hasAttribute('hx-get')) {
+  const localSearch = form.hasAttribute('data-token-search');
+  if (!localSearch && form.hasAttribute('hx-get')) {
     form.addEventListener('md-search-clear', () => form.requestSubmit());
   }
   // Playground swaps update the URL independently of the table. Capture its
@@ -320,8 +433,9 @@ unbound('.tokens-token-browser').forEach(browser => {
     viewToggle.setAttribute('aria-label', grid ? 'Show table view' : 'Show grid view');
     showIcon(previewToggle, hidden);
     showIcon(viewToggle, grid);
-    const expanded = groups.length > 0 && groups.every(group => group.open);
-    expandToggle.disabled = groups.length === 0;
+    const visibleGroups = groups.filter(group => !group.hidden);
+    const expanded = visibleGroups.length > 0 && visibleGroups.every(group => group.open);
+    expandToggle.disabled = visibleGroups.length === 0;
     expandToggle.setAttribute('aria-expanded', String(expanded));
     expandToggle.setAttribute('aria-label', expanded ? 'Collapse all groups' : 'Expand all groups');
     showIcon(expandToggle, expanded);
@@ -330,9 +444,14 @@ unbound('.tokens-token-browser').forEach(browser => {
       if (tooltip) { tooltip.hidden = button.hidden; tooltip.querySelector('[role="tooltip"] p').textContent = button.getAttribute('aria-label'); }
     }
   };
+  let controlsFrame = 0;
   browser.addEventListener('toggle', event => {
-    if (event.target.classList.contains('tokens-token-folder')) syncControls();
-  }, true);
+    if (controlsFrame || !event.target.classList.contains('tokens-token-folder')) return;
+    controlsFrame = requestAnimationFrame(() => {
+      controlsFrame = 0;
+      if (!signal.aborted) syncControls();
+    });
+  }, {capture:true, signal});
 
   browser.addEventListener('click', event => {
     const button = event.target.closest('button[data-action]');
@@ -357,13 +476,14 @@ unbound('.tokens-token-browser').forEach(browser => {
         break;
       case 'expand': {
         const open = button.getAttribute('aria-expanded') !== 'true';
-        groups.forEach(group => { group.open = open; });
+        groups.filter(group => !group.hidden).forEach(group => { group.open = open; });
         break;
       }
     }
     syncControls();
   });
   syncControls();
+  if (localSearch) bindTokenSearch(browser, form, signal, syncControls, previousGroups);
 
 });
 }

@@ -2,6 +2,7 @@ package presentation
 
 import (
 	"crypto/sha256"
+	"encoding/json"
 	"fmt"
 	"html"
 	"io"
@@ -47,7 +48,7 @@ func WriteTokenGroups(writer io.Writer, browser TokenBrowser) error {
 		_, err := io.WriteString(writer, `<p class="tokens-empty md-typescale-body-large">No published tokens for this page.</p>`)
 		return err
 	}
-	if browser.Count == 0 {
+	if browser.Count == 0 && !browser.LocalSearch {
 		_, err := io.WriteString(writer, `<p class="tokens-empty md-typescale-body-large">No tokens match these filters.</p>`)
 		return err
 	}
@@ -59,7 +60,15 @@ func WriteTokenGroups(writer io.Writer, browser TokenBrowser) error {
 			return err
 		}
 	}
-	_, err := io.WriteString(writer, `</div>`)
+	ending := `</div>`
+	if browser.LocalSearch {
+		hidden := ""
+		if browser.Count > 0 {
+			hidden = ` hidden`
+		}
+		ending += `<p class="tokens-empty md-typescale-body-large" data-token-search-empty role="status"` + hidden + `>No tokens match these filters.</p>`
+	}
+	_, err := io.WriteString(writer, ending)
 	return err
 }
 
@@ -72,21 +81,42 @@ func WriteTokenGroup(writer io.Writer, group TokenGroup, state bool) error {
 	if !state {
 		className += " tokens-token-subfolder"
 	}
-	open := ""
+	attributes := ""
 	if group.Open {
-		open = ` open`
+		attributes += ` open`
+	}
+	if group.Hidden {
+		attributes += ` hidden`
 	}
 	if group.Name != "" {
-		if err := write(`<details class="` + className + `"` + open + `><summary>` + `<span class="tokens-folder-closed">` + TableIcon("folder") + `</span><span class="tokens-folder-open">` + TableIcon("folder-open") + `</span><span>` + html.EscapeString(group.Name) + `</span>` + TableIcon("dropdown") + `</summary>`); err != nil {
+		if err := write(`<details class="` + className + `"` + attributes + `><summary>` + `<span class="tokens-folder-closed">` + TableIcon("folder") + `</span><span class="tokens-folder-open">` + TableIcon("folder-open") + `</span><span>` + html.EscapeString(group.Name) + `</span>` + TableIcon("dropdown") + `</summary>`); err != nil {
 			return err
 		}
 	}
 	if len(group.Tokens) > 0 {
-		if err := write(`<div class="tokens-token-table-wrap"><table class="tokens-token-table"><caption class="tokens-visually-hidden">` + html.EscapeString(strings.TrimSpace(group.Name+" tokens")) + `</caption><colgroup><col><col class="tokens-token-value-column"></colgroup><thead class="tokens-visually-hidden"><tr><th scope="col">Token</th><th scope="col">Value</th></tr></thead><tbody>`); err != nil {
+		hidden := ` hidden`
+		for _, row := range group.Tokens {
+			if !row.Hidden {
+				hidden = ""
+				break
+			}
+		}
+		if err := write(`<div class="tokens-token-table-wrap"` + hidden + `><table class="tokens-token-table"><caption class="tokens-visually-hidden">` + html.EscapeString(strings.TrimSpace(group.Name+" tokens")) + `</caption><colgroup><col><col class="tokens-token-value-column"></colgroup><thead class="tokens-visually-hidden"><tr><th scope="col">Token</th><th scope="col">Value</th></tr></thead><tbody>`); err != nil {
 			return err
 		}
 		for _, token := range group.Tokens {
-			if err := write(`<tr><th scope="row"><span class="tokens-token-description">` + html.EscapeString(token.Name) + `</span><code class="tokens-token-source-name">` + html.EscapeString(token.SourceName) + `</code>`); err != nil {
+			attributes := ""
+			if token.Hidden {
+				attributes += ` hidden`
+			}
+			if token.Search != nil {
+				search, err := json.Marshal(token.Search)
+				if err != nil {
+					return err
+				}
+				attributes += ` data-token-search-fields="` + html.EscapeString(string(search)) + `"`
+			}
+			if err := write(`<tr` + attributes + `><th scope="row"><span class="tokens-token-description">` + html.EscapeString(token.Name) + `</span><code class="tokens-token-source-name">` + html.EscapeString(token.SourceName) + `</code>`); err != nil {
 				return err
 			}
 			if token.Lifecycle != "" {

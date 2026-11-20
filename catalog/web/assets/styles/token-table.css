@@ -120,6 +120,9 @@
   border: 0;
   margin: 0;
 }
+.tokens-token-browser :is(.tokens-token-folder, .tokens-token-table-wrap, .tokens-token-table tr, [data-token-search-empty])[hidden] {
+  display: none;
+}
 .tokens-token-folder[open]:not(:last-child),
 .tokens-token-table-wrap:not(:last-child) {
   border-bottom: var(--md-comp-divider-thickness) solid

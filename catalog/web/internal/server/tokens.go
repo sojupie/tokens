@@ -20,7 +20,11 @@ type tokenFolder struct {
 }
 
 func buildTokenBrowser(subject publish.SubjectView, query url.Values) webview.TokenBrowser {
-	browser := webview.TokenBrowser{Query: strings.TrimSpace(query.Get("q")), Sets: webview.TokenSets(subject)}
+	return buildTokenBrowserView(subject, query, false)
+}
+
+func buildTokenBrowserView(subject publish.SubjectView, query url.Values, localSearch bool) webview.TokenBrowser {
+	browser := webview.TokenBrowser{Query: strings.TrimSpace(query.Get("q")), Sets: webview.TokenSets(subject), LocalSearch: localSearch}
 	browser.TableOnly = query.Get("view") == "table"
 	browser.PreviewQuery = make(url.Values)
 	for key, values := range query {
@@ -60,6 +64,7 @@ func buildTokenBrowser(subject publish.SubjectView, query url.Values) webview.To
 		}
 	}
 	folders := make(map[string]*tokenFolder)
+	search := strings.ToLower(browser.Query)
 	for _, token := range browser.Selected.SourceTokens {
 		_, _, state, path := webview.TokenLocation(token, subject.Key.Kind == publish.SubjectComponent)
 		value, hasValue := selectTokenValue(token.Values, selectedFilters)
@@ -87,7 +92,14 @@ func buildTokenBrowser(subject publish.SubjectView, query url.Values) webview.To
 		if !strings.EqualFold(token.Lifecycle, "active") {
 			row.Lifecycle = webview.DisplayWords(token.Lifecycle)
 		}
-		if browser.Query != "" && !tokenRowMatches(browser.Query, token, row, value, hasValue) {
+		if localSearch || search != "" {
+			fields := tokenSearchFields(token, row, value)
+			row.Hidden = !tokenSearchMatches(search, fields)
+			if localSearch {
+				row.Search = fields
+			}
+		}
+		if row.Hidden && !localSearch {
 			continue
 		}
 		rowFolders := folders
@@ -149,7 +161,9 @@ func buildTokenBrowser(subject publish.SubjectView, query url.Values) webview.To
 				addTokenRow(root, path, row)
 			}
 		}
-		browser.Count++
+		if !row.Hidden {
+			browser.Count++
+		}
 	}
 
 	stateNames := make([]string, 0, len(folders))
@@ -329,28 +343,40 @@ func folderView(folder *tokenFolder, open bool) webview.TokenGroup {
 		}
 		return a.name < b.name
 	})
-	view.Count = len(view.Tokens)
+	for _, row := range view.Tokens {
+		if !row.Hidden {
+			view.Count++
+		}
+	}
 	for _, child := range view.Children {
 		view.Count += child.Count
 	}
+	view.Hidden = view.Count == 0
 	return view
 }
 
-func tokenRowMatches(query string, token publish.TokenView, row webview.TokenRow, value publish.TokenValueView, hasValue bool) bool {
-	query = strings.ToLower(query)
-	if strings.Contains(strings.ToLower(token.SourceName), query) || strings.Contains(strings.ToLower(row.Name), query) ||
-		strings.Contains(strings.ToLower(token.Category), query) || strings.Contains(strings.ToLower(row.Lifecycle), query) {
-		return true
+func tokenSearchFields(token publish.TokenView, row webview.TokenRow, value publish.TokenValueView) []string {
+	fields := []string{token.SourceName, row.Name, token.Category, row.Lifecycle}
+	if row.HasValue {
+		fields = append(fields, row.Value, tokenContextLabel(value))
 	}
-	if referencesMatch(query, row.References) {
-		return true
+	fields = appendReferenceNames(fields, row.References)
+	for i, field := range fields {
+		fields[i] = strings.ToLower(field)
 	}
-	return hasValue && (strings.Contains(strings.ToLower(row.Value), query) || strings.Contains(strings.ToLower(tokenContextLabel(value)), query))
+	return fields
 }
 
-func referencesMatch(query string, references []publish.TokenReference) bool {
+func appendReferenceNames(fields []string, references []publish.TokenReference) []string {
 	for _, reference := range references {
-		if strings.Contains(strings.ToLower(reference.Name), query) || referencesMatch(query, reference.References) {
+		fields = appendReferenceNames(append(fields, reference.Name), reference.References)
+	}
+	return fields
+}
+
+func tokenSearchMatches(query string, fields []string) bool {
+	for _, field := range fields {
+		if strings.Contains(field, query) {
 			return true
 		}
 	}

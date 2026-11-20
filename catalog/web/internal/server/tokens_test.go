@@ -74,7 +74,8 @@ func TestUnresolvedReferencesRemainBrowsable(t *testing.T) {
 	if !ok || len(value.References) != 1 {
 		t.Fatal("unresolved alias was dropped")
 	}
-	if !referencesMatch("elevation.level1", value.References) {
+	row := webview.TokenRow{HasValue: ok, References: value.References}
+	if !tokenSearchMatches("elevation.level1", tokenSearchFields(publish.TokenView{}, row, value)) {
 		t.Fatal("reference names must be searchable")
 	}
 }

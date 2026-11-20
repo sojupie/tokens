@@ -126,7 +126,7 @@ func (server *Server) handleHTMLSubject(response http.ResponseWriter, request *h
 			return
 		}
 	}
-	browser := buildTokenBrowser(subjects[0], query)
+	browser := buildTokenBrowserView(subjects[0], query, !wantsMarkdown(request))
 	if query.Get("set") != "" && query.Get("set") != browser.Selected.Key {
 		http.NotFound(response, request)
 		return
