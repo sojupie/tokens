@@ -512,6 +512,8 @@ import { navigationIndex } from "../helpers/navigation.ts";
     }
     const button = event.target.closest("button, a[data-navigation-item]");
     if (!button) return;
+    if (button.matches("a[href]") && (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey))
+      return;
     if (button.hasAttribute("data-navigation-item")) selectNavigation(button);
     if (button.hasAttribute("data-navigation-open")) {
       const drawer = drawerForTrigger(button, document);

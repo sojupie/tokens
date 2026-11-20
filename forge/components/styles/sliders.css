@@ -2,8 +2,8 @@
    transparent thumbs and the visible handles share the same padded axis. */
 .md-slider {
   --_slider-start: 0;
-  --_slider-end: 0.4;
-  --_slider-mid: 0.2;
+  --_slider-end: 0;
+  --_slider-mid: 0;
   --_slider-padding: 0px;
   --_slider-active-opacity: 1;
   --_slider-inactive-opacity: 1;
@@ -32,9 +32,6 @@
   touch-action: pan-y;
 }
 .md-slider[data-control="range"] {
-  --_slider-start: 0.3;
-  --_slider-end: 0.7;
-  --_slider-mid: 0.5;
   --_slider-start-gap: calc(
     var(--md-comp-slider-handle-width) / 2 + var(--_slider-trailing)
   );

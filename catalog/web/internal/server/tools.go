@@ -127,6 +127,7 @@ func toolFiles(root string) http.Handler {
 // SiteNavigation is also used when exporting the shell for static tools.
 func SiteNavigation(state publish.PublishedState) []site.Section {
 	sections := []site.Section{{Name: "Components", Path: "/components"}, {Name: "Styles", Path: "/styles"}}
+	groups := map[string][]site.Destination{}
 	for _, subject := range state.Subjects {
 		index := 0
 		if subject.Key.Kind == publish.SubjectStyle {
@@ -134,12 +135,42 @@ func SiteNavigation(state publish.PublishedState) []site.Section {
 		} else if subject.Key.Kind != publish.SubjectComponent {
 			continue
 		}
-		sections[index].Items = append(sections[index].Items, site.Destination{Name: webview.SubjectName(subject), URL: webview.SubjectURL(subject)})
+		item := site.Destination{Name: webview.SubjectName(subject), URL: webview.SubjectURL(subject)}
+		if index == 0 {
+			if group := componentNavigationGroup(subject.Key.Slug); group != "" {
+				groups[group] = append(groups[group], item)
+				continue
+			}
+		}
+		sections[index].Items = append(sections[index].Items, item)
 	}
-	for i := range sections {
-		sort.Slice(sections[i].Items, func(a, b int) bool {
-			return strings.ToLower(sections[i].Items[a].Name) < strings.ToLower(sections[i].Items[b].Name)
+	sortItems := func(items []site.Destination) {
+		sort.Slice(items, func(a, b int) bool {
+			return strings.ToLower(items[a].Name) < strings.ToLower(items[b].Name)
 		})
 	}
+	for group, items := range groups {
+		sortItems(items)
+		sections[0].Items = append(sections[0].Items, site.Destination{Name: group, Items: items})
+	}
+	for i := range sections {
+		sortItems(sections[i].Items)
+	}
 	return sections
+}
+
+func componentNavigationGroup(slug string) string {
+	switch slug {
+	case "buttons", "button-groups", "icon-buttons", "split-button", "segmented-buttons", "floating-action-button", "extended-fab", "fab-menu":
+		return "Buttons"
+	case "date-pickers", "time-pickers":
+		return "Date & time pickers"
+	case "loading-indicator", "progress-indicators":
+		return "Loading & progress"
+	case "navigation-bar", "navigation-drawer", "navigation-rail":
+		return "Navigation"
+	case "bottom-sheets", "side-sheets":
+		return "Sheets"
+	}
+	return ""
 }

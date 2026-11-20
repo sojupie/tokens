@@ -18,9 +18,6 @@ func (c ComponentCase) SearchQuery() string {
 }
 func (c ComponentCase) SearchBar() templ.Attributes {
 	a := templ.Attributes{"class": "md-search-bar md-search-trigger", "data-control": c.Control, "data-leading": c.Shape, "data-actions": c.Width}
-	if c.SearchElevation == "token" {
-		a["class"] = "md-search-bar md-search-trigger md-elevation"
-	}
 	if c.State != "interactive" && !c.Expanded {
 		a["data-component-state"] = c.State
 	}
@@ -28,10 +25,6 @@ func (c ComponentCase) SearchBar() templ.Attributes {
 }
 func (c ComponentCase) SearchPanel() templ.Attributes {
 	a := templ.Attributes{"class": "md-search-view", "id": c.ID() + "-view", "data-control": c.Control, "data-variant": c.SearchLayout(), "data-layout": c.Variant, "data-open": fmt.Sprint(c.Expanded), "role": "search", "aria-label": "Search tokens"}
-	a["data-elevation"] = c.SearchElevation
-	if c.SearchElevation == "token" {
-		a["class"] = "md-search-view md-elevation"
-	}
 	if c.Expanded {
 		a["role"] = "dialog"
 	}

@@ -2,10 +2,25 @@ package render
 
 import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
 import "github.com/sojupie/tokens/forge/components/ui"
-templ SpecimenButtonGroup(c webview.ComponentCase){
- <div class="md-button-group-demo">@ui.ButtonGroupSurface(ui.GroupProps{Label:"Actions",Variant:c.Variant,Size:ui.Size(c.Size),Connected:c.Control=="connected",Selection:c.Shape,Attrs:c.Attributes()}){
- for i:=range 3 {
- @ui.GroupItem(ui.GroupItemProps{Label:c.GroupLabel(i),Icon:[]string{"arrow_back","edit","chevron_right"}[i],Index:i,Variant:ui.ButtonVariant(c.Variant),Size:ui.Size(c.Size),Connected:c.Control=="connected",Attrs:c.GroupButton(i)})
- }
- }<output class="md-typescale-body-small" aria-live="polite"></output></div>
+
+templ SpecimenButtonGroup(c webview.ComponentCase) {
+	{{ props := c.ButtonGroupProps() }}
+	if props.WidthResolved() == ui.GroupFill {
+		@PreviewWidthScene("tokens-group-preview") {
+			@ButtonGroupExample(c, props)
+		}
+	} else {
+		@ButtonGroupExample(c, props)
+	}
+}
+
+templ ButtonGroupExample(c webview.ComponentCase, props ui.GroupProps) {
+	<div class="md-button-group-demo">
+		@ui.ButtonGroupSurface(props) {
+			for i := range 3 {
+				@ui.GroupItem(ui.GroupItemProps{Label: c.GroupLabel(i), Icon: []string{"arrow_back", "edit", "chevron_right"}[i], Index: i, Variant: ui.ButtonVariant(c.Variant), Size: props.Size, Connected: props.Connected, Attrs: c.GroupButton(i)})
+			}
+		}
+		<output class="md-typescale-body-small" aria-live="polite"></output>
+	</div>
 }

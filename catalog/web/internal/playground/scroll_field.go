@@ -14,7 +14,7 @@ func configureScrollFieldPreview(page *webview.ComponentPreview, query url.Value
 		{Name: "entry", Label: "Mode", Options: []string{"scroll", "input"}, Labels: map[string]string{"input": "Text entry"}},
 		{Name: "content", Label: "Values", Options: []string{"numbers", "three-digits", "four-digits", "text"},
 			Labels: map[string]string{"numbers": "Two digits"}},
-		{Name: "scene", Label: "Context", Options: []string{"standalone", "room"}, Labels: map[string]string{"room": "Room controls"}},
+		{Name: "scene", Label: "Fields", Options: []string{"standalone", "room"}, Labels: map[string]string{"standalone": "Single", "room": "Pair"}},
 		{Name: "motion", Label: "Motion", Options: []string{"decelerate", "spring"}, Labels: map[string]string{"spring": "Fast spatial spring"}},
 	}
 	// Preserve the settings of links to the old combined specimens.
@@ -65,6 +65,14 @@ func configureTimePickerPreview(page *webview.ComponentPreview, query url.Values
 		}
 	}
 	if page.HasInlineTimePicker() {
+		widths := []string{"hug", "fill"}
+		width := query.Get("preview.inline-width")
+		if width == "" {
+			width = widths[0]
+		}
+		if !ContainsPreview(widths, width) {
+			return fmt.Errorf("%w: inline-width %s", ErrPreviewInput, width)
+		}
 		options := []string{"none", "filled"}
 		container := query.Get("preview.container")
 		if container == "" {
@@ -73,11 +81,13 @@ func configureTimePickerPreview(page *webview.ComponentPreview, query url.Values
 		if !ContainsPreview(options, container) {
 			return fmt.Errorf("%w: container %s", ErrPreviewInput, container)
 		}
-		page.Controls = append(page.Controls, webview.PreviewControl{
-			Name: "container", Label: "Container", Options: options, Selected: container,
-		})
+		page.Controls = append(page.Controls,
+			webview.PreviewControl{Name: "inline-width", Label: "Width", Options: widths, Selected: width},
+			webview.PreviewControl{Name: "container", Label: "Container", Options: options, Selected: container},
+		)
 		for i := range page.Cases {
 			page.Cases[i].TimeContainer = container == "filled"
+			page.Cases[i].TimeWidth = width
 		}
 	}
 	if !page.HasTimeScroll() {

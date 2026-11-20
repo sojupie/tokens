@@ -56,11 +56,14 @@
   document.addEventListener('click',event=>{
     const state=stateFor(event.target);
     if(!state){
+      const bar=event.target.closest('[data-layout="inline"] .md-search-bar');
+      if(!bar)return;
       const clear=event.target.closest('[data-search-clear]');
-      const bar=clear?.closest('[data-layout="inline"] .md-search-bar');
-      const input=bar?.querySelector('.md-search-input');
+      if(!clear&&event.target.closest('button,input'))return;
+      const input=bar.querySelector('.md-search-input');
       if(!input)return;
       input.focus({preventScroll:true});
+      if(!clear)return;
       input.value='';
       input.dispatchEvent(new Event('input',{bubbles:true}));
       input.dispatchEvent(new Event('md-search-clear',{bubbles:true}));

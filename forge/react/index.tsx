@@ -69,12 +69,13 @@ export function SplitButton({ label, size = 'small', variant = 'tonal', primary,
     data-variant={variant} data-size={size} data-shape="icon-label">{primary}{menu}</div>;
 }
 
-export function ConnectedButtonGroup({ label, size = 'small', options, value, onChange, disabled }: {
+export function ConnectedButtonGroup({ label, size = 'small', width = 'fill', options, value, onChange, disabled, className = '', style }: {
   label: string; size?: Size; options: readonly { value: string; label: string }[]; value: string;
-  onChange: (value: string) => void; disabled?: boolean;
+  onChange: (value: string) => void; disabled?: boolean; width?: 'hug' | 'fill';
+  className?: string; style?: ComponentPropsWithRef<'div'>['style'];
 }) {
-  return <div role="group" aria-label={label} className="md-button-group"
-    data-control="connected" data-variant="filled" data-size={size} data-shape="single" data-controlled="">
+  return <div role="group" aria-label={label} className={`md-button-group ${className}`.trim()} style={style}
+    data-control="connected" data-width={width} data-variant="filled" data-size={size} data-shape="single" data-controlled="">
     {options.map((option, index) => <Button key={option.value} size={size} disabled={disabled}
       pressed={value === option.value} data-group-button={index} data-button-toggle="" tabIndex={index === 0 ? 0 : -1}
       onClick={() => { if (value !== option.value) onChange(option.value); }}>

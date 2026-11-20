@@ -1,5 +1,5 @@
 /* Search keeps one persistent header and input inside a bounded app screen.
-   Elevation is optional for either style; full-screen stays flat. */
+   Surface tones and the scrim distinguish its elevation. */
 .md-search-demo {
   inline-size: 48rem;
   max-inline-size: 100%;
@@ -7,24 +7,6 @@
 }
 .md-search-demo:has(.md-search-view[data-layout="adaptive"]) {
   inline-size: 100%;
-}
-.md-search-composition-size {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px;
-  margin-block-end: 16px;
-  font: var(--md-sys-typescale-label-large);
-}
-.md-search-composition-size input {
-  flex: 1;
-  min-inline-size: 120px;
-  max-inline-size: 320px;
-  accent-color: var(--md-sys-color-primary);
-}
-.md-search-composition-size output {
-  font: var(--md-sys-typescale-body-small);
-  color: var(--md-sys-color-on-surface-variant);
 }
 .md-search-workspace {
   --_search-composition-width: 1200px;
@@ -172,7 +154,6 @@
   --_search-active-margin: var(--_search-rest-margin);
   --_search-results-height: 400px;
   --_elevation-level: var(--_search-view-elevation);
-  --_shadow-color: var(--md-sys-color-shadow);
   position: absolute;
   z-index: 2;
   box-sizing: border-box;
@@ -190,35 +171,21 @@
   --_search-spatial-duration: var(--_motion-fast-spatial-duration);
   --_search-spatial-easing: var(--_motion-fast-spatial-easing);
   transition-property:
-    top, left, width, height, border-radius, background-color, padding, gap,
-    box-shadow;
+    top, left, width, height, border-radius, background-color, padding, gap;
   transition-duration:
     var(--_search-spatial-duration), var(--_search-spatial-duration),
     var(--_search-spatial-duration), var(--_search-spatial-duration),
     var(--_search-spatial-duration), var(--_motion-fast-effects-duration),
-    var(--_search-spatial-duration), var(--_search-spatial-duration),
-    var(--_motion-fast-effects-duration);
+    var(--_search-spatial-duration), var(--_search-spatial-duration);
   transition-timing-function:
     var(--_search-spatial-easing), var(--_search-spatial-easing),
     var(--_search-spatial-easing), var(--_search-spatial-easing),
     var(--_search-spatial-easing), var(--_motion-fast-effects-easing),
-    var(--_search-spatial-easing), var(--_search-spatial-easing),
-    var(--_motion-fast-effects-easing);
-}
-.md-search-view[data-open="false"] {
-  box-shadow: none;
-}
-.md-search-view:not([data-elevation="token"]) {
-  box-shadow: none;
-}
-.md-search-view[data-open="true"][data-variant="full-screen"]
-  :is(.md-search-bar, .md-search-results) {
-  box-shadow: none;
+    var(--_search-spatial-easing), var(--_search-spatial-easing);
 }
 .md-search-view[data-control="contained"] {
   --_search-rest-margin: var(--md-comp-search-bar-contained-leading-margin);
   --_search-active-margin: var(--_search-view-margin-leading);
-  box-shadow: none;
   background: transparent;
 }
 .md-search-view[data-open="true"] {
@@ -240,33 +207,6 @@
 .md-search-view[data-open="true"][data-control="contained"] {
   border-radius: 0;
 }
-/* Put both surface shadows behind all search content, at the same elevation. */
-.md-search-view[data-open="true"][data-control="contained"]
-  :is(.md-search-bar, .md-search-results) {
-  box-shadow: none;
-}
-.md-search-view[data-open="true"][data-control="contained"][data-variant="docked"][data-elevation="token"]::before,
-.md-search-view[data-open="true"][data-control="contained"][data-variant="docked"][data-elevation="token"]::after {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  pointer-events: none;
-  left: 0;
-  right: 0;
-}
-.md-search-view[data-open="true"][data-control="contained"][data-variant="docked"][data-elevation="token"]::before {
-  top: 0;
-  height: var(--_search-view-height);
-  border-radius: min(
-    var(--md-comp-search-bar-container-shape),
-    calc(var(--_search-view-height) / 2)
-  );
-}
-.md-search-view[data-open="true"][data-control="contained"][data-variant="docked"][data-elevation="token"]::after {
-  top: calc(var(--_search-view-height) + var(--_search-view-results-gap));
-  bottom: 0;
-  border-radius: var(--_search-view-results-shape);
-}
 .md-search-view[data-layout="adaptive"] {
   left: var(--_search-rest-margin);
   width: calc(100% - 2 * var(--_search-rest-margin));
@@ -281,7 +221,6 @@
   width: 100%;
   height: 100%;
   border-radius: var(--_search-view-shape);
-  box-shadow: none;
   background: var(--_search-view-background);
 }
 .md-search-view[data-open="true"][data-variant="full-screen"][data-control="contained"] {
@@ -298,7 +237,6 @@
   --_search-background-state-color: transparent;
   --_search-background-state-opacity: 0;
   --_elevation-level: var(--_search-elevation);
-  --_shadow-color: var(--md-sys-color-shadow);
   --_button-background-state-color: var(--_search-background-state-color);
   --_button-background-state-opacity: var(--_search-background-state-opacity);
   --_button-state-color: var(--_search-state-color);
@@ -394,12 +332,11 @@
 }
 .md-search-view[data-open="true"][data-control="baseline"] .md-search-bar {
   border-radius: var(--_search-view-shape) var(--_search-view-shape) 0 0;
-  box-shadow: none;
 }
 .md-search-bar:has(.md-search-input:focus-visible),
 .md-search-bar[data-component-state="focused"] {
   outline: var(--_search-focus-width) solid var(--_search-focus-color);
-  outline-offset: var(--_search-focus-offset);
+  outline-offset: calc(-1 * var(--_search-focus-width));
 }
 .md-search-bar::before {
   content: "";
@@ -590,7 +527,6 @@
   border-block-start: var(--md-comp-divider-thickness) solid
     var(--_search-view-divider);
   border-radius: 0 0 var(--_search-view-shape) var(--_search-view-shape);
-  box-shadow: none;
 }
 .md-search-results .md-list {
   width: 100%;

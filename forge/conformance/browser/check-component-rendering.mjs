@@ -725,12 +725,14 @@ export function checkComponentRendering() {
       compare('focus disclosure',input.getAttribute('aria-expanded'),String(open));
       compare('search header height',bs.height,open?first([...(contained?[q+'contained.'+panel.dataset.variant+'.bar.container.height']:[]),q+panel.dataset.variant+'.header.container.height']):get(p+'container.height'));
       compare('header fill',bs.backgroundColor,get(open?q+'container.color':p+'container.color'),true);
-      const elevated=panel.dataset.elevation==='token';
-      if(!open){compare('closed wrapper has no duplicate shadow',ps.boxShadow,'none');if(elevated)shadow(bar,Number(get(p+'container.elevation')));else compare('flat search bar',bs.boxShadow,'none');}
-      else if(!elevated||full){for(const [name,node] of [['view',panel],['header',bar],['results',results]])compare('flat '+name,getComputedStyle(node).boxShadow,'none');}
-      else if(contained){compare('contained wrapper has no shadow',ps.boxShadow,'none');for(const [name,node] of [['bar',bar],['results',results]])compare(name+' casts no shadow over sibling',getComputedStyle(node).boxShadow,'none');for(const pseudo of ['::before','::after']){shadow(panel,Number(get(q+'container.elevation')),pseudo);compare('surface shadow behind content',getComputedStyle(panel,pseudo).zIndex,'-1');}}
-      else{shadow(panel,Number(get(q+'container.elevation')));compare('no duplicate header shadow',bs.boxShadow,'none');compare('no duplicate results shadow',rs.boxShadow,'none');}
-      if(bar.dataset.componentState==='focused'||input.matches(':focus-visible')){compare('unclipped focus indicator',ps.overflowX,'visible');compare('focus thickness',bs.outlineWidth,get(p+'focus.indicator.thickness'));compare('focus offset',bs.outlineOffset,get(p+'focus.indicator.outline.offset'));}
+      for(const [name,node] of [['view',panel],['bar',bar],['results',results]]) {
+        compare('flat search '+name,getComputedStyle(node).boxShadow,'none');
+      }
+      for(const pseudo of ['::before','::after']) compare('flat search '+pseudo,getComputedStyle(panel,pseudo).boxShadow,'none');
+      if(bar.dataset.componentState==='focused'||input.matches(':focus-visible')){
+        compare('focus thickness',bs.outlineWidth,get(p+'focus.indicator.thickness'));
+        compare('focus follows the bar edge',bs.outlineOffset,'-'+get(p+'focus.indicator.thickness'));
+      }
       for(const avatar of bar.querySelectorAll('.md-search-avatar')) {
         const image=avatar.querySelector(':scope > span:not(.md-button-ripple)'),a=avatar.getBoundingClientRect(),i=image.getBoundingClientRect();
         compare('avatar image size',String(i.width),get(p+'avatar.size'));

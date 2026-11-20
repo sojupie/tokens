@@ -26,7 +26,10 @@ var fallbackLogo = func() string {
 //go:embed site-init.js
 var initialLayout string
 
-type Destination struct{ Name, URL string }
+type Destination struct {
+	Name, URL string
+	Items     []Destination
+}
 
 type Section struct {
 	Name, Path, Icon string
@@ -47,8 +50,8 @@ const (
 
 func Default() Config {
 	return Config{Catalog: "https://tokencatalog.dev/md3", Active: "/tools", Agents: true, Tools: []Destination{
-		{"Material Motion Lab", "https://tokencatalog.dev" + MotionLabPath},
-		{"Carousel playground", "https://tokencatalog.dev" + CarouselPlaygroundPath},
+		{Name: "Material Motion Lab", URL: "https://tokencatalog.dev" + MotionLabPath},
+		{Name: "Carousel playground", URL: "https://tokencatalog.dev" + CarouselPlaygroundPath},
 	}}
 }
 func (c Config) drawerBreakpoint() string {
@@ -98,6 +101,15 @@ func (c Config) destinationCurrent(item Destination) string {
 		return "page"
 	}
 	return "false"
+}
+
+func (c Config) destinationGroupOpen(group Destination) bool {
+	for _, item := range group.Items {
+		if c.destinationCurrent(item) == "page" {
+			return true
+		}
+	}
+	return false
 }
 
 func (c Config) panelSection() string {

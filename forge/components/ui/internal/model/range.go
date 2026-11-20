@@ -39,7 +39,19 @@ func (p SliderProps) Attributes() templ.Attributes {
 	if p.Start != nil {
 		control = "range"
 	}
-	return Attributes(templ.Attributes{"class": "md-slider", "role": "group", "aria-label": Fallback(p.Label, "Value"), "data-size": Fallback(string(p.Size), "small"), "data-variant": variant, "data-control": control, "data-orientation": orientation, "data-value-display": Fallback(p.Display, "interaction"), "data-end-stops": Fallback(p.EndStops, "shown")}, p.Attrs)
+	attrs := Attributes(templ.Attributes{"class": "md-slider", "role": "group", "aria-label": Fallback(p.Label, "Value"), "data-size": Fallback(string(p.Size), "small"), "data-variant": variant, "data-control": control, "data-orientation": orientation, "data-value-display": Fallback(p.Display, "interaction"), "data-end-stops": Fallback(p.EndStops, "shown")}, p.Attrs)
+	lo, hi, _ := p.LimitsResolved()
+	start, end := 0.0, (p.ValueResolved("end")-lo)/(hi-lo)
+	if p.Start != nil {
+		start = (p.ValueResolved("start") - lo) / (hi - lo)
+	}
+	// Paint the native inputs' initial positions before the runtime is ready.
+	style := fmt.Sprintf("--_slider-start:%g;--_slider-end:%g;--_slider-mid:%g;", start, end, (start+end)/2)
+	if custom, ok := p.Attrs["style"]; ok {
+		style += fmt.Sprint(custom)
+	}
+	attrs["style"] = style
+	return attrs
 }
 func (p SliderProps) HandlesResolved() []string {
 	if p.Start != nil {

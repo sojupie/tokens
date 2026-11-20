@@ -328,19 +328,19 @@ HTML, Markdown and static CSS/JS negotiate
 gzip; compressed and uncompressed representations have separate ETags.
 DTCG downloads revalidate and remain tied to the loaded publication.
 
-HTMX 4.0.1 boosts internal navigation and preserves `#tokens-site-header`.
+HTMX 4.0.1 boosts internal navigation and replaces `#tokens-site-page`. The
+header and drawer stay mounted during navigation and history restores.
 The official `hx-head` extension merges document metadata. An asset-version guard
 forces a full navigation when deployed core assets change; dynamically loaded
 component scripts remain mounted. The official 2.x compatibility extension keeps
 existing lifecycle listeners working during migration.
 
 Normal and boosted navigation share the document cache. An inert
-`<template hx type="partial">` in that document updates only
-`#tokens-site-destinations`; the drawer and appearance controls retain their
-instances. Component and style navigation comes from the loaded publication and
-is cached when the server starts. The section list retains its scroll position
-while its current-page link updates. Index search uses `hx-sync="this:replace"` so late responses cannot
-replace a newer query.
+`<template hx type="partial">` updates the rail and drawer navigation in place.
+Component and style navigation comes from the loaded publication and is cached
+when the server starts. The section list retains its scroll position while its
+current-page link updates. Index search uses `hx-sync="this:replace"` so late
+responses cannot replace a newer query.
 
 Playground requests and token-table submissions replace their own regions.
 Table submissions retain the latest playground query settings, view preferences

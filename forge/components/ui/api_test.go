@@ -77,6 +77,35 @@ func TestSliderAPIKeepsBoundsAndRangeValues(t *testing.T) {
 		t.Fatal(assets)
 	}
 }
+func TestSliderPaintsItsInitialValueBeforeBehaviorLoads(t *testing.T) {
+	zero, _ := renderAPI(t, Range(SliderProps{ID: "spacing", Max: 32}))
+	if !strings.Contains(zero, `style="--_slider-start:0;--_slider-end:0;--_slider-mid:0;"`) {
+		t.Fatal(zero)
+	}
+	start := 20.0
+	selected, _ := renderAPI(t, Range(SliderProps{ID: "range", Min: 10, Max: 50, Start: &start, Value: 40,
+		Attrs: templ.Attributes{"style": "max-width:600px"}}))
+	if !strings.Contains(selected, `style="--_slider-start:0.25;--_slider-end:0.75;--_slider-mid:0.5;max-width:600px"`) {
+		t.Fatal(selected)
+	}
+}
+
+func TestButtonGroupWidth(t *testing.T) {
+	for _, test := range []struct {
+		props GroupProps
+		want  string
+	}{
+		{GroupProps{}, "hug"},
+		{GroupProps{Connected: true}, "fill"},
+		{GroupProps{Connected: true, Width: GroupHug}, "hug"},
+		{GroupProps{Width: GroupFill}, "fill"},
+	} {
+		markup, _ := renderAPI(t, ButtonGroupSurface(test.props))
+		if !strings.Contains(markup, `data-width="`+test.want+`"`) {
+			t.Fatalf("expected button group width %s: %s", test.want, markup)
+		}
+	}
+}
 func TestTimePickerRendersItsConfiguredValue(t *testing.T) {
 	text, assets := renderAPI(t, TimePicker(TimePickerProps{ID: "alarm", Name: "alarm", Hour: 21, Minute: 45, Format24: true}))
 	for _, want := range []string{`value="21:45"`, `data-hour="21"`, `data-minute="45"`, `value="21"`, `value="45"`, `data-ring="inner"`, `--_time-angle:270deg;`} {
@@ -95,6 +124,21 @@ func TestTimePickerRendersItsConfiguredValue(t *testing.T) {
 	}
 	if !assets["time"] || !assets["dialog"] {
 		t.Fatal(assets)
+	}
+}
+func TestTimePickerInlineWidth(t *testing.T) {
+	for _, test := range []struct {
+		width TimePickerWidth
+		want  string
+	}{{"", "fill"}, {TimePickerHug, "hug"}, {TimePickerFill, "fill"}} {
+		props := TimePickerProps{ID: "alarm", Inline: true, Expressive: true, ScrollMode: true, Width: test.width}
+		picker, _ := renderAPI(t, TimePicker(props))
+		panel, _ := renderAPI(t, TimePickerPanel(props))
+		for _, markup := range []string{picker, panel} {
+			if !strings.Contains(markup, `data-time-width="`+test.want+`"`) || strings.Count(markup, `data-scroll-fill="true"`) != 2 {
+				t.Fatalf("expected inline width %s with two filling fields: %s", test.want, markup)
+			}
+		}
 	}
 }
 func TestScrollFieldKeepsLabelsAndFormValuesSeparate(t *testing.T) {

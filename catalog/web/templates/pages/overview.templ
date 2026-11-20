@@ -30,12 +30,12 @@ templ OverviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView
 		<div class="tokens-landing-samples">
 			<section class="tokens-section" aria-labelledby="components-heading">
 				<div class="tokens-landing-section-heading"><h2 class="md-typescale-title-large" id="components-heading">Components</h2></div>
-				@SubjectCardGrid(subjects, thumbnails, false)
+				@SubjectCardGrid(subjects, thumbnails, false, "")
 				<a class="tokens-link tokens-landing-view-all" href="/components">View all components</a>
 			</section>
 			<section class="tokens-section" aria-labelledby="styles-heading">
 				<div class="tokens-landing-section-heading"><h2 class="md-typescale-title-large" id="styles-heading">Styles</h2></div>
-				@SubjectCardGrid(subjects, thumbnails, true)
+				@SubjectCardGrid(subjects, thumbnails, true, "")
 				<a class="tokens-link tokens-landing-view-all" href="/styles">View all styles</a>
 			</section>
 		</div>

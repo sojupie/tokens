@@ -18,30 +18,30 @@ templ SubjectListPage(snapshot publish.SnapshotView, subjects []publish.SubjectV
 			}
 		</header>
 		<div data-nosnippet><p class="tokens-metadata">Current snapshot: <code class="tokens-code">{ snapshot.ID }</code></p></div>
-		<form hx-boost="false" class="tokens-search-form" method="get" action={ webview.SubjectListPath(styles) }>
-			@ui.SearchBarSurface(ui.SearchProps{ID: "subject-search", Name: "q", Value: query, Label: "Search by name or slug", Placeholder: "Search", Actions: "clear", InputAttrs: templ.Attributes{ "hx-get": webview.SubjectListPath(styles), "hx-target": "#subject-list", "hx-trigger": "input changed delay:250ms", "hx-push-url": "true", "hx-sync": "this:replace"}})
+		<form hx-boost="false" class="tokens-search-form" data-subject-search method="get" action={ webview.SubjectListPath(styles) }>
+			@ui.SearchBarSurface(ui.SearchProps{ID: "subject-search", Name: "q", Value: query, Label: "Search by name or slug", Placeholder: "Search", Actions: "clear"})
 		</form>
 		<div id="subject-list" aria-live="polite">
-			@SubjectCardGrid(subjects, thumbnails, styles)
+			@SubjectCardGrid(subjects, thumbnails, styles, query)
 		</div>
 	}
 }
 
-templ SubjectCardGrid(subjects []publish.SubjectView, thumbnails map[string]webview.ComponentCase, styles bool) {
+templ SubjectCardGrid(subjects []publish.SubjectView, thumbnails map[string]webview.ComponentCase, styles bool, query string) {
+	{{ hasMatches := false }}
 	<ul class="tokens-card-grid tokens-layout-grid">
 		for _, subject := range subjects {
 			if (subject.Key.Kind!=publish.SubjectComponent)==styles {
-				@SubjectCard(subject, thumbnails, styles)
+				{{ matches := webview.SubjectMatchesQuery(subject, query); hasMatches = hasMatches || matches }}
+				@SubjectCard(subject, !matches)
 			}
 		}
-		if len(subjects)==0 {
-			<li class="tokens-empty md-typescale-body-large">No matching subjects.</li>
-		}
+		<li class="tokens-empty md-typescale-body-large" data-subject-empty hidden?={ hasMatches }>No matching subjects.</li>
 	</ul>
 }
 
-templ SubjectCard(subject publish.SubjectView, thumbnails map[string]webview.ComponentCase, styles bool) {
-	<li class="tokens-component-tile">
+templ SubjectCard(subject publish.SubjectView, hide bool) {
+	<li class="tokens-component-tile" data-subject-name={ subject.Name } data-subject-slug={ subject.Key.Slug } hidden?={ hide }>
 		<div class="tokens-component-thumbnail">
 			if image,ok:=webview.ThumbnailIllustration(ctx,webview.SubjectURL(subject)); ok {
 				@ThumbnailPicture(image)

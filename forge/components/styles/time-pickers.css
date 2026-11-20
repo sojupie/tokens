@@ -714,7 +714,10 @@
   min-inline-size: 48px;
   min-block-size: 48px;
 }
-.md-time-panel[data-time-inline]:is([data-mode="scroll"], [data-mode="input"]) { inline-size: 100%; }
+.md-time-picker:has(> [data-time-inline]) { max-inline-size: 100%; }
+.md-time-picker:has(> [data-time-inline][data-time-width="hug"]) { inline-size: max-content; }
+.md-time-picker:has(> [data-time-inline][data-time-width="fill"]),
+.md-time-panel[data-time-inline][data-time-width="fill"] { inline-size: 100%; }
 .md-time-panel[data-time-style="expressive"][data-time-inline]:is([data-mode="scroll"], [data-mode="input"]) {
   --_time-period-visual: var(--md-comp-time-pickers-inline-period-selector-width, 40px);
   --_time-period-selected-shape: var(--md-comp-time-pickers-inline-period-selector-selected-shape, var(--md-sys-shape-corner-medium));
@@ -725,7 +728,7 @@
   background: transparent;
 }
 .md-time-panel[data-time-inline]:is([data-mode="scroll"], [data-mode="input"]) .md-time-body { align-items: stretch; }
-.md-time-panel[data-time-inline]:is([data-mode="scroll"], [data-mode="input"]) :is(.md-time-hour, .md-time-minute) {
+.md-time-panel[data-time-inline][data-time-width="fill"] :is(.md-time-hour, .md-time-minute) {
   flex: 1 1 var(--_time-value-width);
   min-inline-size: var(--_time-value-width);
 }
@@ -740,7 +743,6 @@
   }
 }
 
-.md-time-picker:has(.md-time-side-controls) { inline-size: 100%; }
 .md-time-side-controls {
   display: grid;
   flex: none;

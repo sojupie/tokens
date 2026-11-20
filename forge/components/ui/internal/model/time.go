@@ -7,11 +7,19 @@ import (
 	"github.com/a-h/templ"
 )
 
+type TimePickerWidth string
+
+const (
+	TimePickerHug  TimePickerWidth = "hug"
+	TimePickerFill TimePickerWidth = "fill"
+)
+
 type TimePickerProps struct {
 	ID, Name, Label                                 string
 	Hour, Minute                                    int
 	Format24, InputMode, Landscape, Inline          bool
 	InlineContainer                                 bool
+	Width                                           TimePickerWidth
 	Expressive, ScrollMode, ReturnToScroll, Preview bool
 	Active                                          string
 	ScrollFinite                                    bool
@@ -77,6 +85,11 @@ func (p TimePickerProps) PanelResolved() templ.Attributes {
 	if p.IsInline() {
 		a["role"] = "group"
 		a["data-time-inline"] = ""
+		width := TimePickerFill
+		if p.Width == TimePickerHug {
+			width = TimePickerHug
+		}
+		a["data-time-width"] = string(width)
 		if p.InlineContainer {
 			a["data-time-inline-container"] = ""
 		}

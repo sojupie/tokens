@@ -2,6 +2,8 @@ package presentation
 
 import (
 	"strings"
+
+	"github.com/sojupie/tokens/forge/components/ui"
 )
 
 type PreviewControl struct {
@@ -19,23 +21,64 @@ type ComponentPreview struct {
 	Interactive bool
 }
 
-func (page ComponentPreview) PickerFamily() string {
+func (page ComponentPreview) ControlFamily() string {
 	if len(page.Cases) > 0 {
 		switch page.Cases[0].Family {
-		case "time", "scroll-field":
+		case "time", "scroll-field", "button-group", "search":
 			return page.Cases[0].Family
 		}
 	}
 	return ""
 }
 
-func (c PreviewControl) IsPickerEnvironment() bool {
+func (c PreviewControl) IsEnvironment(family string) bool {
+	switch family {
+	case "button-group":
+		return c.Name == "state"
+	case "search":
+		return c.Name == "state" || c.Name == "disclosure" || c.Name == "content"
+	}
 	switch c.Name {
 	case "scene", "content", "control", "state", "selection":
 		return true
 	default:
 		return false
 	}
+}
+
+func (page ComponentPreview) HasSizingControls() bool {
+	return page.ControlFamily() == "scroll-field" || page.HasInlineTimePicker() || page.HasFillingButtonGroups() || page.HasAdaptiveSearch()
+}
+
+func (page ComponentPreview) HasAdaptiveSearch() bool {
+	for _, c := range page.Cases {
+		if c.Family == "search" && c.Variant == "adaptive" {
+			return true
+		}
+	}
+	return false
+}
+
+func (page ComponentPreview) HasEnvironmentControls() bool {
+	family := page.ControlFamily()
+	if page.HasSizingControls() {
+		return true
+	}
+	for _, control := range page.Controls {
+		if control.IsEnvironment(family) {
+			return true
+		}
+	}
+	return false
+}
+
+func (page ComponentPreview) HasFillingButtonGroups() bool {
+	for _, c := range page.Cases {
+		if c.Family == "button-group" && c.ButtonGroupProps().WidthResolved() == ui.GroupFill {
+			return true
+		}
+	}
+	return false
 }
 
 func (page ComponentPreview) HasExpressiveTimeFields() bool {

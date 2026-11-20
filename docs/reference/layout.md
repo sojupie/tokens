@@ -54,6 +54,11 @@ Use `.tokens-layout-grid` for a column grid. Direct children span
 `--layout-span` columns, or the full grid when no span is supplied. Keep every
 track shrinkable and each grid child at `min-inline-size: 0`.
 
+Use `.tokens-layout-two-column` for a paired set of controls or cards. Set
+`--layout-two-column-min` when a column needs more than 12rem. The grid keeps
+two equal tracks when both fit, even with one item. It uses a single full-width
+track when the available space is narrower.
+
 Catalog card feeds use one card per row below 600px, two from 600px, and four
 from 840px. Tool destinations use one below 840px and two above it. These are
 content-specific span decisions in `catalog/web/assets/styles/app.css`; column count

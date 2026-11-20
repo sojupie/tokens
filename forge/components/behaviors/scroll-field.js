@@ -383,16 +383,32 @@
       });
     }
     if (state.entry) {
-      state.entry.addEventListener('keydown', event => {
-        if (event.key === 'Enter') { event.preventDefault(); commitFromKeyboard(state); }
+      const entry = state.entry;
+      entry.addEventListener('keydown', event => {
+        if (event.key === 'Enter' && !event.isComposing) {
+          event.preventDefault();
+          commitFromKeyboard(state);
+        }
       });
-      state.entry.addEventListener('input', event => {
-        state.entry.removeAttribute('aria-invalid');
+      entry.addEventListener('input', event => {
+        entry.removeAttribute('aria-invalid');
         state.error.textContent = '';
-        if (state.entry.value.length !== 1 || /^\d$/.test(state.entry.value) || event?.inputType?.startsWith('delete')) return;
-        const text = state.entry.value.toLocaleLowerCase();
-        const match = options.find(option => option.label.toLocaleLowerCase().startsWith(text))?.label;
-        if (match) { state.entry.value = match; state.entry.setSelectionRange(1, match.length); }
+        const {value, selectionStart, selectionEnd} = entry;
+        if (event.isComposing || (event.inputType && !['insertText', 'insertReplacementText'].includes(event.inputType)) ||
+            !value || entry.inputMode === 'numeric' || /^\d+$/.test(value) ||
+            selectionStart !== value.length || selectionEnd !== value.length) return;
+
+        // Typing replaces the previous selection, leaving the new prefix at the caret.
+        const prefix = value.toLocaleLowerCase();
+        let suggestion;
+        for (const {label} of options) {
+          if (label.length < value.length || label.slice(0, value.length).toLocaleLowerCase() !== prefix) continue;
+          if (label.length === value.length) return;
+          suggestion ??= label;
+        }
+        if (!suggestion) return;
+        entry.value = suggestion;
+        entry.setSelectionRange(value.length, suggestion.length);
       });
     }
     return state;

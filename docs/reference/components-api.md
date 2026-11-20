@@ -56,6 +56,12 @@ templ Inbox() {
 `TextFieldProps`, `ChoiceProps`, `SliderProps` and `TimePickerProps` accept form
 names and values. A slider's `Value` is its upper value; a non-nil `Start` enables
 a range. Progress values are percentages; nil selects indeterminate progress.
+A connected button group fills its available inline width and expands its
+buttons. Set `GroupProps.Width` to `GroupHug` for intrinsic width or `GroupFill`
+to request fill explicitly. Standard groups default to Hug. To cap the group
+on larger surfaces, set `max-inline-size` on its host or
+`--forge-button-group-max-inline-size` on the group.
+
 Time-picker hours use 0–23 even when the display uses a 12-hour clock. Both
 `TimePicker` and `TimePickerPanel` accept a form name and submit the time as
 `HH:MM`. A modal commits on OK and discards pending changes on dismissal. An
@@ -63,7 +69,10 @@ inline picker commits valid changes as they are made. Committing a new value
 dispatches native `input` and `change` events. Use `DialogTrigger` with the ID
 `<picker ID>-time` to open a standalone modal panel.
 `InlineContainer` adds a filled surface to inline Expressive Input and Scroll
-pickers. Inline pickers default to a transparent surface.
+pickers. Inline pickers default to a transparent surface. Set `Width` to
+`TimePickerHug` for intrinsic width or `TimePickerFill` to use the available
+inline space. The zero value continues to fill. Each scroll field fills its
+column in either mode.
 
 `ScrollField` accepts string `Options` or `Items` with separate labels and
 unique values. The label is displayed and matched in direct entry. The value is

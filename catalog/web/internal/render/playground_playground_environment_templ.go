@@ -330,7 +330,7 @@ func PlaygroundSearch(c webview.ComponentCase) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, " <label class=\"md-search-composition-size\">Composition width <input type=\"range\" min=\"320\" max=\"1200\" value=\"1200\" step=\"1\" data-search-composition-width><output data-search-composition-width-label>Fit to available space</output></label><div class=\"md-search-workspace\" data-search-viewport><div class=\"md-search-app\"><div class=\"md-search-mail-navigation\" data-search-background>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, " <div class=\"md-search-workspace\" data-search-viewport><div class=\"md-search-app\"><div class=\"md-search-mail-navigation\" data-search-background>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -488,7 +488,7 @@ func PlaygroundNavRail(c webview.ComponentCase) templ.Component {
 			var templ_7745c5c3_Var16 string
 			templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(c.ID() + "-screen")
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/templates/playground/playground_environment.templ`, Line: 110, Col: 57}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/templates/playground/playground_environment.templ`, Line: 109, Col: 57}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 			if templ_7745c5c3_Err != nil {
@@ -529,7 +529,7 @@ func PlaygroundNavRail(c webview.ComponentCase) templ.Component {
 				var templ_7745c5c3_Var17 string
 				templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(label)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/templates/playground/playground_environment.templ`, Line: 124, Col: 25}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/templates/playground/playground_environment.templ`, Line: 123, Col: 25}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 				if templ_7745c5c3_Err != nil {
@@ -586,7 +586,7 @@ func PlaygroundToolbar(c webview.ComponentCase) templ.Component {
 		var templ_7745c5c3_Var19 string
 		templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(c.Orientation)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/templates/playground/playground_environment.templ`, Line: 135, Col: 81}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `catalog/web/templates/playground/playground_environment.templ`, Line: 134, Col: 81}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 		if templ_7745c5c3_Err != nil {

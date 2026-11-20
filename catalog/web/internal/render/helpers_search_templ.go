@@ -16,7 +16,7 @@ import (
 )
 
 func SearchProps(c webview.ComponentCase, label, value string, disclosure bool) ui.SearchProps {
-	return ui.SearchProps{Action: "/components", Name: "q", ID: c.ID(), AvatarText: "A", Options: SearchExampleOptions(c.ID()), Label: label, Value: value, Variant: c.Variant, Control: c.Control, Leading: c.Shape, Actions: c.Width, Elevation: c.SearchElevation, Expanded: c.Expanded, Disclosure: disclosure, BarAttrs: c.SearchBar(), PanelAttrs: c.SearchPanel()}
+	return ui.SearchProps{Action: "/components", Name: "q", ID: c.ID(), AvatarText: "A", Options: SearchExampleOptions(c.ID()), Label: label, Value: value, Variant: c.Variant, Control: c.Control, Leading: c.Shape, Actions: c.Width, Expanded: c.Expanded, Disclosure: disclosure, BarAttrs: c.SearchBar(), PanelAttrs: c.SearchPanel()}
 }
 
 var _ = templruntime.GeneratedTemplate

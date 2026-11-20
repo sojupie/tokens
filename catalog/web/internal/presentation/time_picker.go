@@ -49,8 +49,8 @@ func (c ComponentCase) TimeTicks() []TimeTick { return c.TimePickerProps().Ticks
 func (c ComponentCase) TimePickerProps() ui.TimePickerProps {
 	return ui.TimePickerProps{
 		ID: c.ID(), Hour: 10, Minute: 10, Inline: c.TimePlacement == "inline",
-		InlineContainer: c.TimeContainer,
-		Preview:         c.State != "interactive" && c.TimePlacement != "inline", Format24: c.Width == "24h",
+		InlineContainer: c.TimeContainer, Width: ui.TimePickerWidth(c.TimeWidth),
+		Preview: c.State != "interactive" && c.TimePlacement != "inline", Format24: c.Width == "24h",
 		Expressive: c.TimeStyle == "expressive", InputMode: c.Variant == "input",
 		ScrollMode: c.Variant == "scroll", Landscape: c.Orientation == "landscape", Active: c.TimeActive(),
 		ScrollFinite: c.TimeScrollFinite,

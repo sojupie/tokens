@@ -135,6 +135,9 @@ func SelectComponentPreview(cases []webview.ComponentCase, query url.Values) (*w
 	if len(cases) > 0 && cases[0].Family == "toolbar" {
 		defaults["size"] = "none"
 	}
+	if len(cases) > 0 && cases[0].Family == "button-group" {
+		defaults["control"] = "connected"
+	}
 	selected := map[string]string{}
 	keys := []string{"control", "mode", "disclosure", "variant", "headline", "orientation", "size", "shape", "width", "selection", "elevation", "error", "state"}
 	if len(cases) > 0 && cases[0].Family == "time" {
@@ -180,7 +183,7 @@ func SelectComponentPreview(cases []webview.ComponentCase, query url.Values) (*w
 		value := query.Get("preview." + key)
 		if value == "" {
 			value = defaults[key]
-			if key == "size" {
+			if key == "size" && cases[0].Family != "button-group" {
 				for _, preferred := range []string{"medium", "default"} {
 					if ContainsPreview(values, preferred) {
 						value = preferred
@@ -335,6 +338,22 @@ func SelectComponentPreview(cases []webview.ComponentCase, query url.Values) (*w
 	if len(result.Cases) > 0 && result.Cases[0].Family == "time" {
 		if err := configureTimePickerPreview(result, query); err != nil {
 			return nil, err
+		}
+	}
+	if len(result.Cases) > 0 && result.Cases[0].Family == "button-group" {
+		widths := []string{"default", "hug", "fill"}
+		width := query.Get("preview.width")
+		if width == "" {
+			width = widths[0]
+		}
+		if !ContainsPreview(widths, width) {
+			return nil, fmt.Errorf("%w: width %s", ErrPreviewInput, width)
+		}
+		result.Controls = append(result.Controls, webview.PreviewControl{
+			Name: "width", Label: "Width", Options: widths, Selected: width,
+		})
+		for i := range result.Cases {
+			result.Cases[i].Width = width
 		}
 	}
 	for key, values := range query {

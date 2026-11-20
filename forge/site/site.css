@@ -24,6 +24,34 @@
 .tokens-site-header .tokens-section-links .md-nav-item { flex:none;min-block-size:var(--md-sys-measurement-space600); }
 .tokens-site-header .tokens-section-links .md-nav-indicator { block-size:auto;min-block-size:var(--md-sys-measurement-space600); }
 .tokens-site-header .tokens-section-links .md-nav-label { white-space:normal; }
+.tokens-site-group { flex:none; }
+.tokens-site-group > summary {
+ display:flex;align-items:center;justify-content:space-between;gap:var(--md-sys-measurement-space100);
+ box-sizing:border-box;min-block-size:var(--md-sys-measurement-space600);padding-inline:var(--md-sys-measurement-space200);
+ border-radius:var(--md-sys-shape-corner-full);cursor:pointer;list-style:none;
+ font:var(--md-sys-typescale-label-large);color:var(--md-sys-color-on-surface-variant);
+}
+.tokens-site-group > summary::-webkit-details-marker { display:none; }
+.tokens-site-group > summary:hover { background:var(--md-sys-color-surface-container-high); }
+.tokens-site-group > summary:focus-visible {
+ outline:var(--md-sys-state-focus-indicator-thickness) solid var(--md-sys-color-secondary);
+ outline-offset:calc(-1 * var(--md-sys-state-focus-indicator-thickness));
+}
+.tokens-site-group > summary > svg { inline-size:24px;block-size:24px;flex:none; }
+.tokens-site-group[open] > summary > svg { rotate:180deg; }
+.tokens-site-group-items { display:flex;flex-direction:column;padding-inline-start:var(--md-sys-measurement-space200); }
+@supports selector(details::details-content) {
+ @media (prefers-reduced-motion:no-preference) {
+  .tokens-site-group::details-content { block-size:0;overflow:clip;interpolate-size:allow-keywords; }
+  .tokens-site-group[open]::details-content { block-size:auto; }
+  .tokens-site-header:not([data-site-nav-swapping]) .tokens-site-group::details-content {
+   transition:block-size var(--_motion-default-spatial-duration,250ms) var(--_motion-default-spatial-easing),content-visibility var(--_motion-default-spatial-duration,250ms) allow-discrete;
+  }
+  .tokens-site-header:not([data-site-nav-swapping]) .tokens-site-group > summary > svg {
+   transition:rotate var(--_motion-default-spatial-duration,250ms) var(--_motion-default-spatial-easing);
+  }
+ }
+}
 .tokens-site-header[data-mobile-level="main"] .tokens-site-section { display:none; }
 .tokens-site-header[data-mobile-level="section"] .tokens-site-main { display:none; }
 .tokens-drawer-appearance { flex:none;padding:var(--md-sys-measurement-space200); }
@@ -130,6 +158,22 @@
 }
 .tokens-layout-grid > * {
   grid-column: span var(--layout-span, var(--layout-columns));
+  min-inline-size: 0;
+}
+
+/* Keep the second track available even when the row has only one item. */
+.tokens-layout-two-column {
+  --layout-two-column-min: 12rem;
+  --layout-two-column-gap: var(--layout-gutter, var(--md-sys-measurement-space100));
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, max(
+    var(--layout-two-column-min),
+    (100% - var(--layout-two-column-gap)) / 2
+  )), 1fr));
+  column-gap: var(--layout-two-column-gap);
+  row-gap: var(--layout-related-gap, var(--md-sys-measurement-space100));
+}
+.tokens-layout-two-column > * {
   min-inline-size: 0;
 }
 .tokens-layout-site { display:flex; flex:1; flex-direction:column; inline-size:100%; }

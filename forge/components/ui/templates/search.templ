@@ -95,7 +95,7 @@ templ SearchView(p model.SearchProps) {
 	@model.Require("list")
 	<div { p.SearchPanel()... }>
 		@SearchBar(p, p.Label, p.Value, p.Disclosure)
-		<div class={ "md-search-results",templ.KV("md-elevation",p.Elevation=="token") } id={ p.ID + "-results" } hidden?={ !p.Expanded }>
+		<div class="md-search-results" id={ p.ID + "-results" } hidden?={ !p.Expanded }>
 			<h3 class="md-search-results-heading" data-search-heading tabindex="-1">Suggestions</h3>
 			@List(model.ListProps{Label: "Search suggestions and results", Lines: model.OneLine, Appearance: model.Baseline}) {
 				{ children... }

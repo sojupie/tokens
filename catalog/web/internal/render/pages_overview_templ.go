@@ -117,7 +117,7 @@ func OverviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView,
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = SubjectCardGrid(subjects, thumbnails, false).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = SubjectCardGrid(subjects, thumbnails, false, "").Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -125,7 +125,7 @@ func OverviewPage(snapshot publish.SnapshotView, subjects []publish.SubjectView,
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = SubjectCardGrid(subjects, thumbnails, true).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = SubjectCardGrid(subjects, thumbnails, true, "").Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

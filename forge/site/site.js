@@ -10,7 +10,8 @@
   const rail=matchMedia('(min-width:600px)');
   const viewport=window.visualViewport;
   const scrollPositions=new Map();
-  let viewportFrame=0,navigation,navigationState,pointerType,latched=false,pendingSection;
+  let viewportFrame=0,navigation,navigationState,pointerType,latched=false,pendingSection,openingCurrentGroup=false;
+  const pageKey=nav=>nav.dataset.activeSection+'\n'+nav.dataset.activePage;
   function rememberScroll(){
    for(const list of header.querySelectorAll('[data-site-scroll]')) if(list.getClientRects().length)scrollPositions.set(list.dataset.siteScroll,list.scrollTop);
   }
@@ -32,7 +33,7 @@
   function refreshNavigation(){
    const next=header.querySelector('[data-site-navigation]');
    if(!next)return;
-   const state=next.dataset.activeSection+'\n'+next.dataset.activePage;
+   const state=pageKey(next);
    if(navigation===next&&navigationState===state)return;
    navigation=next;navigationState=state;
    const section=next.dataset.activeSection;
@@ -94,13 +95,33 @@
   header.addEventListener('scroll',event=>{
    if(event.target.matches('[data-site-scroll]'))scrollPositions.set(event.target.dataset.siteScroll,event.target.scrollTop);
   },true);
+  function installNavigationMorph(){
+   window.htmx?.registerExtension('site-navigation',{
+    htmx_before_morph_attr(group,{attrName,newValue}){
+     if(attrName!=='open'||!group.matches('[data-site-group]')||!header.contains(group))return;
+     // Keep native disclosure state while HTMX updates the links inside it.
+     // The response may open a closed group when navigating to a new child.
+     if(newValue===null||pageKey(group.closest('[data-site-navigation]'))===navigationState)return false;
+     openingCurrentGroup=true;
+     header.setAttribute('data-site-nav-swapping','');
+    }
+   });
+  }
+  if(window.htmx)installNavigationMorph();
+  else document.addEventListener('DOMContentLoaded',installNavigationMorph,{once:true});
   document.addEventListener('htmx:beforeSwap',()=>{
    rememberScroll();
    // Preserved headers temporarily enter htmx's hidden pantry. Reinsertion is
    // not a section entrance and must not restart its opacity transition.
    for(const panel of header.querySelectorAll('[data-site-panel]'))panel.removeAttribute('data-site-enter');
   });
-  document.addEventListener('htmx:afterSwap',refreshNavigation);
+  document.addEventListener('htmx:afterSwap',()=>{
+   refreshNavigation();
+   if(openingCurrentGroup){
+    openingCurrentGroup=false;
+    requestAnimationFrame(()=>header.removeAttribute('data-site-nav-swapping'));
+   }
+  });
   function syncViewport(){
    viewportFrame=0;
    // Follow browser-chrome height, not elastic-scroll offsets or pinch zoom.

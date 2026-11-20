@@ -2448,8 +2448,8 @@
    transparent thumbs and the visible handles share the same padded axis. */
 .md-slider {
   --_slider-start: 0;
-  --_slider-end: 0.4;
-  --_slider-mid: 0.2;
+  --_slider-end: 0;
+  --_slider-mid: 0;
   --_slider-padding: 0px;
   --_slider-active-opacity: 1;
   --_slider-inactive-opacity: 1;
@@ -2478,9 +2478,6 @@
   touch-action: pan-y;
 }
 .md-slider[data-control="range"] {
-  --_slider-start: 0.3;
-  --_slider-end: 0.7;
-  --_slider-mid: 0.5;
   --_slider-start-gap: calc(
     var(--md-comp-slider-handle-width) / 2 + var(--_slider-trailing)
   );
@@ -4138,14 +4135,15 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
 }
 .md-button-group-demo {
   inline-size: 100%;
-  max-inline-size: 40rem;
   display: grid;
   justify-items: start;
   gap: var(--md-sys-measurement-space100);
 }
 .md-button-group {
   display: inline-flex;
+  box-sizing: border-box;
   inline-size: max-content;
+  max-inline-size: var(--forge-button-group-max-inline-size, none);
   align-items: center;
   gap: var(--_group-gap);
 }
@@ -4259,10 +4257,10 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   transform: translateY(-50%);
 }
 
-.md-button-group[data-control="connected"] {
+.md-button-group:is([data-width="fill"], [data-control="connected"]:not([data-width="hug"])) {
   inline-size: 100%;
 }
-.md-button-group[data-control="connected"] > .md-button {
+.md-button-group:is([data-width="fill"], [data-control="connected"]:not([data-width="hug"])) > .md-button {
   flex: 1;
 }
 
@@ -5405,7 +5403,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
 .md-carousel[data-carousel-layout="masked"] .md-carousel-before { inset-block-start:0; }
 .md-carousel[data-carousel-layout="masked"] .md-carousel-after { inset-block-start:calc(var(--_carousel-before-space) + var(--_carousel-height) + var(--_carousel-gap)); }
 /* Search keeps one persistent header and input inside a bounded app screen.
-   Elevation is optional for either style; full-screen stays flat. */
+   Surface tones and the scrim distinguish its elevation. */
 .md-search-demo {
   inline-size: 48rem;
   max-inline-size: 100%;
@@ -5413,24 +5411,6 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
 }
 .md-search-demo:has(.md-search-view[data-layout="adaptive"]) {
   inline-size: 100%;
-}
-.md-search-composition-size {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px;
-  margin-block-end: 16px;
-  font: var(--md-sys-typescale-label-large);
-}
-.md-search-composition-size input {
-  flex: 1;
-  min-inline-size: 120px;
-  max-inline-size: 320px;
-  accent-color: var(--md-sys-color-primary);
-}
-.md-search-composition-size output {
-  font: var(--md-sys-typescale-body-small);
-  color: var(--md-sys-color-on-surface-variant);
 }
 .md-search-workspace {
   --_search-composition-width: 1200px;
@@ -5578,7 +5558,6 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   --_search-active-margin: var(--_search-rest-margin);
   --_search-results-height: 400px;
   --_elevation-level: var(--_search-view-elevation);
-  --_shadow-color: var(--md-sys-color-shadow);
   position: absolute;
   z-index: 2;
   box-sizing: border-box;
@@ -5596,35 +5575,21 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   --_search-spatial-duration: var(--_motion-fast-spatial-duration);
   --_search-spatial-easing: var(--_motion-fast-spatial-easing);
   transition-property:
-    top, left, width, height, border-radius, background-color, padding, gap,
-    box-shadow;
+    top, left, width, height, border-radius, background-color, padding, gap;
   transition-duration:
     var(--_search-spatial-duration), var(--_search-spatial-duration),
     var(--_search-spatial-duration), var(--_search-spatial-duration),
     var(--_search-spatial-duration), var(--_motion-fast-effects-duration),
-    var(--_search-spatial-duration), var(--_search-spatial-duration),
-    var(--_motion-fast-effects-duration);
+    var(--_search-spatial-duration), var(--_search-spatial-duration);
   transition-timing-function:
     var(--_search-spatial-easing), var(--_search-spatial-easing),
     var(--_search-spatial-easing), var(--_search-spatial-easing),
     var(--_search-spatial-easing), var(--_motion-fast-effects-easing),
-    var(--_search-spatial-easing), var(--_search-spatial-easing),
-    var(--_motion-fast-effects-easing);
-}
-.md-search-view[data-open="false"] {
-  box-shadow: none;
-}
-.md-search-view:not([data-elevation="token"]) {
-  box-shadow: none;
-}
-.md-search-view[data-open="true"][data-variant="full-screen"]
-  :is(.md-search-bar, .md-search-results) {
-  box-shadow: none;
+    var(--_search-spatial-easing), var(--_search-spatial-easing);
 }
 .md-search-view[data-control="contained"] {
   --_search-rest-margin: var(--md-comp-search-bar-contained-leading-margin);
   --_search-active-margin: var(--_search-view-margin-leading);
-  box-shadow: none;
   background: transparent;
 }
 .md-search-view[data-open="true"] {
@@ -5646,33 +5611,6 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
 .md-search-view[data-open="true"][data-control="contained"] {
   border-radius: 0;
 }
-/* Put both surface shadows behind all search content, at the same elevation. */
-.md-search-view[data-open="true"][data-control="contained"]
-  :is(.md-search-bar, .md-search-results) {
-  box-shadow: none;
-}
-.md-search-view[data-open="true"][data-control="contained"][data-variant="docked"][data-elevation="token"]::before,
-.md-search-view[data-open="true"][data-control="contained"][data-variant="docked"][data-elevation="token"]::after {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  pointer-events: none;
-  left: 0;
-  right: 0;
-}
-.md-search-view[data-open="true"][data-control="contained"][data-variant="docked"][data-elevation="token"]::before {
-  top: 0;
-  height: var(--_search-view-height);
-  border-radius: min(
-    var(--md-comp-search-bar-container-shape),
-    calc(var(--_search-view-height) / 2)
-  );
-}
-.md-search-view[data-open="true"][data-control="contained"][data-variant="docked"][data-elevation="token"]::after {
-  top: calc(var(--_search-view-height) + var(--_search-view-results-gap));
-  bottom: 0;
-  border-radius: var(--_search-view-results-shape);
-}
 .md-search-view[data-layout="adaptive"] {
   left: var(--_search-rest-margin);
   width: calc(100% - 2 * var(--_search-rest-margin));
@@ -5687,7 +5625,6 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   width: 100%;
   height: 100%;
   border-radius: var(--_search-view-shape);
-  box-shadow: none;
   background: var(--_search-view-background);
 }
 .md-search-view[data-open="true"][data-variant="full-screen"][data-control="contained"] {
@@ -5704,7 +5641,6 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   --_search-background-state-color: transparent;
   --_search-background-state-opacity: 0;
   --_elevation-level: var(--_search-elevation);
-  --_shadow-color: var(--md-sys-color-shadow);
   --_button-background-state-color: var(--_search-background-state-color);
   --_button-background-state-opacity: var(--_search-background-state-opacity);
   --_button-state-color: var(--_search-state-color);
@@ -5800,12 +5736,11 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
 }
 .md-search-view[data-open="true"][data-control="baseline"] .md-search-bar {
   border-radius: var(--_search-view-shape) var(--_search-view-shape) 0 0;
-  box-shadow: none;
 }
 .md-search-bar:has(.md-search-input:focus-visible),
 .md-search-bar[data-component-state="focused"] {
   outline: var(--_search-focus-width) solid var(--_search-focus-color);
-  outline-offset: var(--_search-focus-offset);
+  outline-offset: calc(-1 * var(--_search-focus-width));
 }
 .md-search-bar::before {
   content: "";
@@ -5996,7 +5931,6 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   border-block-start: var(--md-comp-divider-thickness) solid
     var(--_search-view-divider);
   border-radius: 0 0 var(--_search-view-shape) var(--_search-view-shape);
-  box-shadow: none;
 }
 .md-search-results .md-list {
   width: 100%;
@@ -7536,7 +7470,10 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   min-inline-size: 48px;
   min-block-size: 48px;
 }
-.md-time-panel[data-time-inline]:is([data-mode="scroll"], [data-mode="input"]) { inline-size: 100%; }
+.md-time-picker:has(> [data-time-inline]) { max-inline-size: 100%; }
+.md-time-picker:has(> [data-time-inline][data-time-width="hug"]) { inline-size: max-content; }
+.md-time-picker:has(> [data-time-inline][data-time-width="fill"]),
+.md-time-panel[data-time-inline][data-time-width="fill"] { inline-size: 100%; }
 .md-time-panel[data-time-style="expressive"][data-time-inline]:is([data-mode="scroll"], [data-mode="input"]) {
   --_time-period-visual: var(--md-comp-time-pickers-inline-period-selector-width, 40px);
   --_time-period-selected-shape: var(--md-comp-time-pickers-inline-period-selector-selected-shape, var(--md-sys-shape-corner-medium));
@@ -7547,7 +7484,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   background: transparent;
 }
 .md-time-panel[data-time-inline]:is([data-mode="scroll"], [data-mode="input"]) .md-time-body { align-items: stretch; }
-.md-time-panel[data-time-inline]:is([data-mode="scroll"], [data-mode="input"]) :is(.md-time-hour, .md-time-minute) {
+.md-time-panel[data-time-inline][data-time-width="fill"] :is(.md-time-hour, .md-time-minute) {
   flex: 1 1 var(--_time-value-width);
   min-inline-size: var(--_time-value-width);
 }
@@ -7562,7 +7499,6 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   }
 }
 
-.md-time-picker:has(.md-time-side-controls) { inline-size: 100%; }
 .md-time-side-controls {
   display: grid;
   flex: none;

@@ -45,15 +45,20 @@ func (server *Server) handleOverview(response http.ResponseWriter, request *http
 	}
 	styles := request.URL.Path == "/styles"
 	query := request.URL.Query().Get("q")
-	subjects := filterSubjects(sortedSubjects(server.state), query, styles)
+	partial := request.Header.Get("HX-Request") == "true"
+	subjectFilter := ""
+	if partial {
+		subjectFilter = query
+	}
+	subjects := filterSubjects(sortedSubjects(server.state), subjectFilter, styles)
 	thumbnails, err := server.componentThumbnails(subjects)
 	if err != nil {
 		http.Error(response, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	if request.Header.Get("HX-Request") == "true" {
+	if partial {
 		response.Header().Set("Vary", "HX-Request, Accept")
-		if err := server.renderHTML(response, request, webrender.SubjectCardGrid(subjects, thumbnails, styles)); err != nil {
+		if err := server.renderHTML(response, request, webrender.SubjectCardGrid(subjects, thumbnails, styles, "")); err != nil {
 			http.Error(response, err.Error(), http.StatusInternalServerError)
 		}
 		return
@@ -380,13 +385,12 @@ func sortedSubjects(state publish.PublishedState) []publish.SubjectView {
 }
 
 func filterSubjects(subjects []publish.SubjectView, query string, styles bool) []publish.SubjectView {
-	query = strings.ToLower(strings.TrimSpace(query))
 	filtered := make([]publish.SubjectView, 0, len(subjects))
 	for _, subject := range subjects {
 		if styles != (subject.Key.Kind != publish.SubjectComponent) {
 			continue
 		}
-		if query != "" && !strings.Contains(strings.ToLower(subject.Key.Slug), query) && !strings.Contains(strings.ToLower(subject.Name), query) {
+		if !webview.SubjectMatchesQuery(subject, query) {
 			continue
 		}
 		filtered = append(filtered, subject)

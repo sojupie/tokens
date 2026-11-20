@@ -362,7 +362,7 @@ func TestHTMLPagesRenderComponentsAndStyles(t *testing.T) {
 		{path: "/components/snackbar", body: []string{"Snackbar", "Container", "Snackbar container width", "md.comp.snackbar.container.width", "560", "Download"}, status: http.StatusOK},
 		{path: "/styles/elevation", body: []string{"Elevation", "Download"}, status: http.StatusOK},
 		{path: "/styles/motion/overview", body: []string{"Motion", "Download"}, status: http.StatusOK},
-		{path: "/components?q=snack", body: []string{"snack", "hx-target=\"#subject-list\""}, status: http.StatusOK},
+		{path: "/components?q=snack", body: []string{"snack", "data-subject-search"}, status: http.StatusOK},
 		{path: "/changes", body: []string{"Change log", "1 item changed", "/components/snackbar", "View changes"}, status: http.StatusOK},
 		{path: "/components/snackbar/changes", body: []string{"Material Design 3 &#34;Snackbar&#34; token changes", "md.comp.snackbar.container.width", "480", "560"}, status: http.StatusOK},
 	}

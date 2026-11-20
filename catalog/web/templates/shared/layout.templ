@@ -39,6 +39,7 @@ templ Layout(title string) {
 			<script src={ webassets.StaticURL("fields.js") } defer></script>
 			<script src={ webassets.StaticURL("site-ui.js") } defer></script>
 			<script src={ webassets.StaticURL("thumbnail-images.js") } defer></script>
+			<script src={ webassets.StaticURL("subject-search.js") } defer></script>
 			<script src={ webassets.StaticURL("export.js") } defer></script>
 			<script src={ webassets.StaticURL("site.js") } defer></script>
 			<script src={ webassets.StaticURL("menus.js") } defer></script>
@@ -136,7 +137,7 @@ templ Layout(title string) {
 					</div>
 				}
 			}
-			<div class="tokens-layout tokens-layout-site">
+			<div id="tokens-site-page" class="tokens-layout tokens-layout-site">
 				<main class="tokens-main tokens-layout-content" data-component-assets>
 					@webview.ComponentAssetScope() {
 						{ children... }

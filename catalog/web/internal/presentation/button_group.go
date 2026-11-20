@@ -4,7 +4,17 @@ import (
 	"fmt"
 
 	"github.com/a-h/templ"
+	"github.com/sojupie/tokens/forge/components/ui"
 )
+
+func (c ComponentCase) ButtonGroupProps() ui.GroupProps {
+	attrs := c.Attributes()
+	delete(attrs, "data-width")
+	return ui.GroupProps{
+		Label: "Actions", Variant: c.Variant, Size: ui.Size(c.Size), Width: ui.GroupWidth(c.Width),
+		Connected: c.Control == "connected", Selection: c.Shape, Attrs: attrs,
+	}
+}
 
 func (c ComponentCase) GroupLabel(index int) string {
 	if index < len(c.IllustrationLabels) && c.IllustrationLabels[index] != "" {

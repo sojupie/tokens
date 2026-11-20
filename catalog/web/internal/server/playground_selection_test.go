@@ -4,6 +4,7 @@ package server
 import (
 	"bytes"
 	"context"
+	"github.com/a-h/templ"
 	"github.com/sojupie/tokens/catalog/web/internal/playground"
 	webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
 	webrender "github.com/sojupie/tokens/catalog/web/internal/render"
@@ -633,20 +634,21 @@ func TestSearchKeepsOneHeaderAndInput(t *testing.T) {
 	}
 }
 
-func TestSearchElevationIsExplicit(t *testing.T) {
+func TestSearchIgnoresLegacyShadowFilter(t *testing.T) {
 	for _, style := range []string{"baseline", "contained"} {
 		page := &webview.ComponentPreview{Cases: []webview.ComponentCase{{Family: "search", Control: style}}}
-		if err := playground.ConfigureSearchPreview(page, map[string][]string{}); err != nil {
-			t.Fatal(err)
-		}
-		if page.Cases[0].SearchElevation != "none" || strings.Contains(page.Cases[0].SearchPanel()["class"].(string), "md-elevation") {
-			t.Fatal("search must have no shadow by default")
-		}
 		if err := playground.ConfigureSearchPreview(page, map[string][]string{"preview.shadow": {"token"}}); err != nil {
 			t.Fatal(err)
 		}
-		if !strings.Contains(page.Cases[0].SearchBar()["class"].(string), "md-elevation") || !strings.Contains(page.Cases[0].SearchPanel()["class"].(string), "md-elevation") {
-			t.Fatal("explicit elevation must be available to both styles")
+		for _, control := range page.Controls {
+			if control.Name == "shadow" {
+				t.Fatal("search exposes a shadow control")
+			}
+		}
+		for _, attrs := range []templ.Attributes{page.Cases[0].SearchBar(), page.Cases[0].SearchPanel()} {
+			if attrs["data-elevation"] != nil || strings.Contains(attrs["class"].(string), "md-elevation") {
+				t.Fatal("the old Search shadow query changes its surface")
+			}
 		}
 	}
 }

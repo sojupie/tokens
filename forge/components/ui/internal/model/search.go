@@ -7,11 +7,13 @@ import (
 )
 
 type SearchProps struct {
-	ID, Label, Value, Variant, Control, Leading, Actions, Elevation, AvatarText string
-	Action, Name, Placeholder                                                   string
-	Expanded, Disclosure                                                        bool
-	Options, Page                                                               templ.Component
-	Attrs, BarAttrs, PanelAttrs, InputAttrs                                     templ.Attributes
+	ID, Label, Value, Variant, Control, Leading, Actions string
+	// Deprecated: Search depicts elevation with its surfaces and scrim.
+	Elevation                               string
+	AvatarText, Action, Name, Placeholder   string
+	Expanded, Disclosure                    bool
+	Options, Page                           templ.Component
+	Attrs, BarAttrs, PanelAttrs, InputAttrs templ.Attributes
 }
 
 func (p SearchProps) SearchHasAction(action string) bool {
@@ -50,5 +52,5 @@ func (p SearchProps) SearchPanel() templ.Attributes {
 	if p.Expanded {
 		role = "dialog"
 	}
-	return Attributes(templ.Attributes{"class": "md-search-view", "id": p.ID + "-view", "data-control": Fallback(p.Control, "contained"), "data-variant": Fallback(p.Variant, "docked"), "data-layout": Fallback(p.Variant, "docked"), "data-open": fmt.Sprint(p.Expanded), "role": role, "aria-label": p.Label, "data-elevation": p.Elevation}, p.PanelAttrs)
+	return Attributes(templ.Attributes{"class": "md-search-view", "id": p.ID + "-view", "data-control": Fallback(p.Control, "contained"), "data-variant": Fallback(p.Variant, "docked"), "data-layout": Fallback(p.Variant, "docked"), "data-open": fmt.Sprint(p.Expanded), "role": role, "aria-label": p.Label}, p.PanelAttrs)
 }

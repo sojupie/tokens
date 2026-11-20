@@ -10,6 +10,7 @@ type ComponentCase struct {
 	TimeStyle          string `json:"timeStyle,omitempty"`
 	TimePlacement      string `json:"timePlacement,omitempty"`
 	TimeContainer      bool
+	TimeWidth          string
 	ScrollMotion       string `json:"scrollMotion,omitempty"`
 	ScrollContent      string
 	ScrollScene        string
@@ -45,7 +46,6 @@ type ComponentCase struct {
 	MenuMode         string `json:"menuMode,omitempty"`
 	SegmentDensity   string `json:"segmentDensity,omitempty"`
 	SearchContent    string `json:"searchContent,omitempty"`
-	SearchElevation  string `json:"searchElevation,omitempty"`
 	DialogHeadline   string `json:"dialogHeadline,omitempty"`
 	DateRange        bool   `json:"dateRange,omitempty"`
 	ListMedia        string `json:"listMedia,omitempty"`

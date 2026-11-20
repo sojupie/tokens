@@ -1,4 +1,13 @@
 (() => {
+  // Apply the arrow-free style only where the browser reserves a scrollbar gutter.
+  if (globalThis.CSS?.supports('selector(::-webkit-scrollbar-button)')) {
+    const probe = document.createElement('div');
+    probe.style.cssText = 'position:fixed;top:0;left:-100px;width:32px;height:32px;overflow:scroll;visibility:hidden;scrollbar-width:auto;scrollbar-color:auto';
+    document.body.append(probe);
+    document.documentElement.toggleAttribute('data-classic-scrollbars', probe.clientWidth < probe.offsetWidth);
+    probe.remove();
+  }
+
   const disclosures = new WeakMap();
   document.addEventListener('click', async event => {
     const summary = event.target.closest?.('details.tokens-export-disclosure > summary');
@@ -39,6 +48,13 @@
       disclosures.delete(detail);
     }
   }, true);
+  // HTMX's listener cancels click defaults before checking link modifiers.
+  // Leave those clicks to the browser before they reach the link handler.
+  document.addEventListener('click', event => {
+    if (!event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey) return;
+    const link = event.target.closest?.('a[href]');
+    if (link?.closest('[hx-boost]')?.getAttribute('hx-boost') === 'true') event.stopPropagation();
+  }, true);
   // Boost document links only. Downloads, API documents and external links stay native.
   function navigationLinks(root=document){
     const base=new URL('../',document.querySelector('script[src*="site-ui.js"]').src).pathname.replace(/\/$/,'');
@@ -78,6 +94,23 @@
   });
   document.addEventListener('htmx:head:before:remove',event=>{
     if(event.detail.headElement.matches('[data-component-script],[data-component-stylesheet]'))event.preventDefault();
+  });
+  document.addEventListener('htmx:before:swap', event => {
+    const {ctx, tasks} = event.detail;
+    const task = tasks.find(task => task.type === 'main');
+    // HTMX's attribute settling would restore the server's initial range
+    // attributes after the sizing controller has measured the new preview.
+    if (task?.fragment.querySelector('[data-preview-sizing-pending]')) task.swapSpec.settle = 0;
+    if (ctx.target !== document.body) return;
+    const page = document.getElementById('tokens-site-page');
+    const incoming = task?.fragment.querySelector('#tokens-site-page');
+    if (!page || !incoming) return;
+    // Keep the shell mounted. The response's partials still update its current links.
+    task.target = page;
+    task.fragment = document.createDocumentFragment();
+    task.fragment.append(incoming);
+    task.swapSpec.style = 'outerHTML';
+    if (task.swapSpec.show === 'top') task.swapSpec.showTarget = 'window';
   });
   document.addEventListener('htmx:after:request',event=>{
     const ctx=event.detail.ctx;

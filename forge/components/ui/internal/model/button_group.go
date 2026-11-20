@@ -5,11 +5,30 @@ import (
 	"github.com/a-h/templ"
 )
 
+type GroupWidth string
+
+const (
+	GroupHug  GroupWidth = "hug"
+	GroupFill GroupWidth = "fill"
+)
+
 type GroupProps struct {
 	Label, Variant, Selection string
 	Size                      Size
+	Width                     GroupWidth
 	Connected                 bool
 	Attrs                     templ.Attributes
+}
+
+func (p GroupProps) WidthResolved() GroupWidth {
+	switch p.Width {
+	case GroupFill, GroupHug:
+		return p.Width
+	}
+	if p.Connected {
+		return GroupFill
+	}
+	return GroupHug
 }
 
 func (p GroupProps) Attributes() templ.Attributes {
@@ -17,7 +36,7 @@ func (p GroupProps) Attributes() templ.Attributes {
 	if p.Connected {
 		control = "connected"
 	}
-	return Attributes(templ.Attributes{"class": "md-button-group", "role": "group", "aria-label": p.Label, "data-control": control, "data-variant": Fallback(p.Variant, "filled"), "data-size": Fallback(string(p.Size), "small"), "data-shape": Fallback(p.Selection, "single")}, p.Attrs)
+	return Attributes(templ.Attributes{"class": "md-button-group", "data-width": string(p.WidthResolved()), "role": "group", "aria-label": p.Label, "data-control": control, "data-variant": Fallback(p.Variant, "filled"), "data-size": Fallback(string(p.Size), "small"), "data-shape": Fallback(p.Selection, "single")}, p.Attrs)
 }
 
 type GroupItemProps struct {

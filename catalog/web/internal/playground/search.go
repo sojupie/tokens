@@ -16,14 +16,6 @@ func ConfigureSearchPreview(page *webview.ComponentPreview, query url.Values) er
 	if content != "empty" && content != "text" {
 		return fmt.Errorf("%w: search content %s", ErrPreviewInput, content)
 	}
-	elevation := query.Get("preview.shadow")
-	if elevation == "" {
-		elevation = "none"
-	}
-	if elevation != "none" && elevation != "token" {
-		return fmt.Errorf("%w: search shadow %s", ErrPreviewInput, elevation)
-	}
-	page.Controls = append(page.Controls, webview.PreviewControl{Name: "shadow", Label: "Shadow", Options: []string{"none", "token"}, Selected: elevation, Labels: map[string]string{"none": "None (default)", "token": "Token elevation"}})
 	page.Controls = append(page.Controls, webview.PreviewControl{Name: "content", Label: "Query", Options: []string{"empty", "text"}, Selected: content, Labels: map[string]string{"text": "Sample query"}})
 	for i := range page.Controls {
 		c := &page.Controls[i]
@@ -47,7 +39,6 @@ func ConfigureSearchPreview(page *webview.ComponentPreview, query url.Values) er
 	}
 	for i := range page.Cases {
 		page.Cases[i].SearchContent = content
-		page.Cases[i].SearchElevation = elevation
 	}
 	return nil
 }

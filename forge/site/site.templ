@@ -12,7 +12,16 @@ templ Header(config Config) {
 						<summary><span>@ui.Icon(section.Icon)<span>{ section.Name }</span></span>@ui.Icon("expand_more")</summary>
 						<a href={ templ.SafeURL(config.Catalog + section.Path) }>{ section.Name + " overview" }</a>
 						for _, item := range section.Items {
-							<a href={ templ.SafeURL(config.destinationURL(item)) } aria-current={ config.destinationCurrent(item) }>{ item.Name }</a>
+							if len(item.Items)>0 {
+								<details open?={ config.destinationGroupOpen(item) }>
+									<summary><span>{ item.Name }</span>@ui.Icon("expand_more")</summary>
+									for _, child := range item.Items {
+										<a href={ templ.SafeURL(config.destinationURL(child)) } aria-current={ config.destinationCurrent(child) }>{ child.Name }</a>
+									}
+								</details>
+							} else {
+								<a href={ templ.SafeURL(config.destinationURL(item)) } aria-current={ config.destinationCurrent(item) }>{ item.Name }</a>
+							}
 						}
 					</details>
 				}
@@ -100,7 +109,18 @@ templ Destinations(config Config) {
 					<nav class="md-nav-items tokens-section-links" aria-label={ section.Name + " pages" } data-navigation-group data-site-scroll={ section.Path }>
 						@ui.DrawerLink(config.Catalog+section.Path, templ.Attributes{"aria-current": config.destinationCurrent(Destination{URL: section.Path})}, section.Name+" overview")
 						for _, item := range section.Items {
-							@ui.DrawerLink(config.destinationURL(item), templ.Attributes{"aria-current": config.destinationCurrent(item), "hx-boost": map[bool]string{true: "false", false: "true"}[section.Path == "/tools"]}, item.Name)
+							if len(item.Items)>0 {
+								<details class="tokens-site-group" data-site-group={ item.Name } open?={ config.destinationGroupOpen(item) }>
+									<summary>{ item.Name } @ui.Icon("expand_more")</summary>
+									<div class="tokens-site-group-items">
+										for _, child := range item.Items {
+											@ui.DrawerLink(config.destinationURL(child), templ.Attributes{"aria-current": config.destinationCurrent(child)}, child.Name)
+										}
+									</div>
+								</details>
+							} else {
+								@ui.DrawerLink(config.destinationURL(item), templ.Attributes{"aria-current": config.destinationCurrent(item), "hx-boost": map[bool]string{true: "false", false: "true"}[section.Path == "/tools"]}, item.Name)
+							}
 						}
 					</nav>
 				</section>

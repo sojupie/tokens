@@ -3,37 +3,32 @@ package render
 import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
 
 import "github.com/sojupie/tokens/forge/components/ui"
-import "fmt"
 
 templ PickerFieldDimensions(page webview.ComponentPreview) {
-	<div class="tokens-scroll-dimensions">
+	@PlaygroundSliderGrid() {
 		if page.Cases[0].Family == "scroll-field" {
-			@ScrollFieldDimension("height", "Field height", 140, 360, 164, 4)
-			@ScrollFieldDimension("gap", "Option spacing", 0, 32, 16, 1)
+			@PreviewDimension("height", "Field height", 140, 360, 1)
+			@PreviewDimension("gap", "Option spacing", 0, 32, 1)
 		} else {
 			if page.HasExpressiveTimeFields() {
-				@ScrollFieldDimension("height", "Field height", 140, 360, 140, 4)
+				@PreviewDimension("height", "Field height", 140, 360, 4)
 			}
 			if page.HasTimeScroll() {
-				@ScrollFieldDimension("gap", "Option spacing", 0, 32, 0, 1)
+				@PreviewDimension("gap", "Option spacing", 0, 32, 1)
 			}
 		}
-	</div>
-}
-
-templ ScrollFieldDimension(name string, label string, min float64, max float64, value float64, step float64) {
-	<div data-scroll-dimension={ name }>
-		<div class="tokens-scroll-dimension-label">
-			<label class="md-typescale-label-large" for={ "scroll-preview-" + name + "-end" }>{ label }</label>
-			<output class="md-typescale-body-small" aria-hidden="true">{ fmt.Sprintf("%g px", value) }</output>
-		</div>
-		@ui.Range(ui.SliderProps{ID:"scroll-preview-" + name, Label:label, Min:min, Max:max, Value:value, Step:step, Display:"hidden"})
-	</div>
+	}
 }
 
 templ SpecimenTime(c webview.ComponentCase) {
 	{{ p:=c.TimePickerProps(); p.Attrs=c.Attributes(); p.Name="time" }}
-	@ui.CardSurface(ui.CardProps{Variant:"filled", Attrs:templ.Attributes{"class":"tokens-picker-scene tokens-time-preview"}}) {
+	if p.IsInline() {
+		@PreviewWidthScene("tokens-time-preview") {
+			<div class="tokens-picker-height-guide">
+				@ui.TimePicker(p)
+			</div>
+		}
+	} else {
 		@ui.TimePicker(p)
 	}
 }
@@ -45,7 +40,7 @@ templ TimePickerPanel(c webview.ComponentCase) {
 
 templ SpecimenScrollField(c webview.ComponentCase) {
 	{{ primary := c.ScrollFieldProps(); secondary := c.ScrollFieldSecondary() }}
-	@ui.CardSurface(ui.CardProps{Variant:"filled", Attrs:templ.Attributes{"class":"tokens-picker-scene tokens-scroll-preview"}}) {
+	@PreviewWidthScene("tokens-scroll-preview") {
 		if primary.DirectEntry {
 			<div class="tokens-scroll-field-actions">
 				if c.ScrollScene == "room" {
@@ -55,18 +50,11 @@ templ SpecimenScrollField(c webview.ComponentCase) {
 				}
 			</div>
 		}
-		<div class="tokens-scroll-field-specimen" role="group" aria-label="Scroll field preview">
-			@LabeledScrollField(primary)
+		<div class="tokens-scroll-field-specimen tokens-picker-height-guide" role="group" aria-label="Scroll field preview">
+			<div>@ui.ScrollField(primary)</div>
 			if c.ScrollScene == "room" {
-				@LabeledScrollField(secondary)
+				<div>@ui.ScrollField(secondary)</div>
 			}
 		</div>
 	}
-}
-
-templ LabeledScrollField(field ui.ScrollFieldProps) {
-	<div>
-		@ui.ScrollField(field)
-		<span class="md-typescale-label-large">{ field.Label }</span>
-	</div>
 }

@@ -3,16 +3,21 @@ package render
 import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
 
 import "github.com/sojupie/tokens/forge/components/ui"
+import "fmt"
 
 templ ComponentPreviewView(page webview.ComponentPreview) {
-	<section class="tokens-section" data-playground-environment id="component-preview" data-component-assets aria-labelledby="preview-heading">
+	<section class="tokens-section" data-playground-environment id="component-preview" data-component-assets aria-labelledby="preview-heading"
+		if page.HasSizingControls() {
+			data-preview-sizing-pending
+		}
+	>
 		@webview.ComponentAssetScope() {
 			@webview.UseCatalogBehavior("component-demos.js")
 			<h2 class="md-typescale-title-medium" id="preview-heading">Playground</h2>
 			<form hx-boost="false" method="get" action={ page.Action } hx-get={ page.Action } hx-target="#component-preview" hx-select="#component-preview" hx-swap="outerHTML" hx-replace-url="true" hx-sync="this:replace" class="tokens-gallery-filters"
-				if page.PickerFamily() != "" {
+				if page.ControlFamily() != "" {
 					hx-trigger="change target:select, change target:[data-field-combo]"
-					hx-params="not scroll-preview-width,scroll-preview-height,scroll-preview-gap"
+					hx-params="not preview-dimension-width,preview-dimension-height,preview-dimension-gap,preview-dimension-max-width,preview-dimension-composition-width"
 				} else {
 					hx-trigger="change"
 				}
@@ -20,13 +25,7 @@ templ ComponentPreviewView(page webview.ComponentPreview) {
 				for _, hidden := range page.Hidden {
 					<input type="hidden" name={ hidden.Name } value={ hidden.Value }/>
 				}
-				if page.PickerFamily() != "" {
-					@PickerControls(page)
-				} else {
-					for _, control := range page.Controls {
-						@PreviewSelect(control)
-					}
-				}
+				@PlaygroundControls(page)
 				<noscript>
 					@ui.Action(ui.ButtonProps{Variant: ui.ButtonVariant("outlined"), Type: "submit"}) {
 						Apply
@@ -59,65 +58,126 @@ templ ComponentPreviewView(page webview.ComponentPreview) {
 	</section>
 }
 
-templ PickerControls(page webview.ComponentPreview) {
-	<div class="tokens-picker-controls" data-picker-dimensions={ page.PickerFamily() }>
+templ PlaygroundControls(page webview.ComponentPreview) {
+	{{ family := page.ControlFamily(); fillsWidth := page.HasFillingButtonGroups() }}
+	<div class="tokens-playground-controls" data-preview-dimensions={ family }>
 		for _, control := range page.Controls {
 			if control.Name == "compare" {
-				@PreviewSelect(control)
+				@PreviewComparison(control)
 			}
 		}
-		<section aria-labelledby="picker-api-heading">
-			<h3 class="md-typescale-label-large" id="picker-api-heading">Component API:</h3>
-			<div class="tokens-gallery-filters">
-				for _, control := range page.Controls {
-					if control.Name != "compare" && !control.IsPickerEnvironment() {
-						@PreviewSelect(control)
+		if family != "" {
+			@PlaygroundControlCard("preview-api-heading", "Component API") {
+				<div class="tokens-gallery-filters">
+					for _, control := range page.Controls {
+						if control.Name != "compare" && !control.IsEnvironment(family) {
+							@PreviewFilter(control)
+						}
+					}
+				</div>
+				if family == "scroll-field" || page.HasInlineTimePicker() {
+					@PickerFieldDimensions(page)
+				} else if fillsWidth {
+					@PlaygroundSliderGrid() {
+						@PreviewDimension("max-width", "Maximum width", 240, 800, 1)
 					}
 				}
-			</div>
-			if page.PickerFamily() == "scroll-field" || page.HasInlineTimePicker() {
-				@PickerFieldDimensions(page)
 			}
-		</section>
-		@ui.Divider("", nil)
-		<section aria-labelledby="picker-environment-heading">
-			<h3 class="md-typescale-label-large" id="picker-environment-heading">Environment:</h3>
-			<div class="tokens-gallery-filters">
-				for _, control := range page.Controls {
-					if control.IsPickerEnvironment() {
-						@PreviewSelect(control)
+			if page.HasEnvironmentControls() {
+				@PlaygroundControlCard("preview-environment-heading", "Environment") {
+					<div class="tokens-gallery-filters">
+						for _, control := range page.Controls {
+							if control.IsEnvironment(family) {
+								@PreviewFilter(control)
+							}
+						}
+					</div>
+					if page.HasSizingControls() {
+						@PlaygroundSliderGrid() {
+							switch {
+								case family == "scroll-field":
+									@PreviewDimension("width", "Available width", 186, 800, 1)
+								case page.HasInlineTimePicker():
+									@PreviewDimension("width", "Available width", 268, 800, 1)
+								case fillsWidth:
+									@PreviewDimension("width", "Available width", 240, 800, 1)
+								case page.HasAdaptiveSearch():
+									@PlaygroundSlider(ui.SliderProps{
+										ID: "preview-dimension-composition-width", Label: "Composition width",
+										Min: 320, Max: 1200, Value: 1200, Step: 1,
+									}, "Fit to available space", templ.Attributes{"data-preview-dimension": "composition-width"})
+							}
+						}
 					}
 				}
-			</div>
-			if page.PickerFamily() == "scroll-field" {
-				<div class="tokens-scroll-dimensions">
-					@ScrollFieldDimension("width", "Available width", 280, 800, 480, 8)
-				</div>
-			} else if page.HasInlineTimePicker() {
-				<div class="tokens-scroll-dimensions">
-					@ScrollFieldDimension("width", "Available width", 304, 800, 640, 8)
+			}
+		} else if len(page.Controls) > 1 {
+			@PlaygroundControlCard("preview-configuration-heading", "Configuration") {
+				<div class="tokens-gallery-filters">
+					for _, control := range page.Controls {
+						if control.Name != "compare" {
+							@PreviewFilter(control)
+						}
+					}
 				</div>
 			}
-		</section>
+		}
 	</div>
 }
 
-templ PreviewSelect(control webview.PreviewControl) {
-	if control.Name == "compare" {
+templ PlaygroundControlCard(id string, label string) {
+	@ui.CardSurface(ui.CardProps{Variant: "outlined", Attrs: templ.Attributes{
+		"class": "tokens-playground-control-section",
+		"aria-labelledby": id,
+	}}) {
+		<h3 class="md-typescale-title-small" id={ id }>{ label }</h3>
+		{ children... }
+	}
+}
+
+templ PlaygroundSliderGrid() {
+	<div class="tokens-layout-two-column tokens-preview-dimensions">
+		{ children... }
+	</div>
+}
+
+templ PreviewDimension(name string, label string, min float64, max float64, step float64) {
+	@PlaygroundSlider(ui.SliderProps{
+		ID: "preview-dimension-" + name, Label: label, Min: min, Max: max, Value: min, Step: step,
+	}, fmt.Sprintf("%g px", min), templ.Attributes{"data-preview-dimension": name})
+}
+
+templ PlaygroundSlider(props ui.SliderProps, valueText string, attrs templ.Attributes) {
+	<div class="tokens-preview-dimension" { attrs... }>
+		<div class="tokens-preview-dimension-label">
+			<label class="md-typescale-label-medium" for={ props.ID + "-end" }>{ props.Label }</label>
+			<output class="md-typescale-body-small" for={ props.ID + "-end" } aria-hidden="true">{ valueText }</output>
+		</div>
+		{{ props.Label += " (px)"; props.Size = ui.Small; props.Display = "hidden" }}
+		@ui.Range(props)
+	</div>
+}
+
+templ PreviewWidthScene(class string) {
+	<div class={ "tokens-preview-width-scene", class }>
+		{ children... }
+	</div>
+}
+
+templ PreviewComparison(control webview.PreviewControl) {
+	<section class="tokens-playground-control-section" aria-labelledby="preview-show-heading">
+		<h3 class="md-typescale-title-small" id="preview-show-heading">{ control.Label }</h3>
 		<div class="tokens-preview-comparison">
-			<span class="md-typescale-label-large">{ control.Label + ":" }</span>
 			<select class="md-native-select" name="preview.compare" aria-label={ control.Label }>
-			for _, choice := range webview.PreviewChoices(control) {
-				<option value={ choice.Value } selected?={ choice.Value==control.Selected }>{ choice.Label }</option>
-			}
-		</select>
-			@ui.ButtonGroupSurface(ui.GroupProps{Label: control.Label, Connected: true, Variant: "tonal", Size: ui.Size("xsmall"), Attrs: templ.Attributes{"data-preview-compare": ""}}) {
+				for _, choice := range webview.PreviewChoices(control) {
+					<option value={ choice.Value } selected?={ choice.Value==control.Selected }>{ choice.Label }</option>
+				}
+			</select>
+			@ui.ButtonGroupSurface(ui.GroupProps{Label: control.Label, Connected: true, Width: ui.GroupFill, Variant: "tonal", Size: ui.Size("xsmall"), Attrs: templ.Attributes{"data-preview-compare": ""}}) {
 				for index, choice := range webview.PreviewChoices(control) {
 					@ui.GroupItem(ui.GroupItemProps{Label: choice.Label, Index: index, Connected: true, Selected: choice.Value == control.Selected, Variant: ui.ButtonVariant("tonal"), Size: ui.Size("xsmall"), Attrs: templ.Attributes{"id": "preview-compare-"+choice.Value, "data-preview-comparison": choice.Value, "tabindex": webview.PreviewCompareTabIndex(choice.Value == control.Selected)}})
 				}
 			}
 		</div>
-	} else {
-		@PreviewFilter(control)
-	}
+	</section>
 }

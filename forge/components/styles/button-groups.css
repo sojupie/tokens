@@ -1,13 +1,14 @@
 .md-button-group-demo {
   inline-size: 100%;
-  max-inline-size: 40rem;
   display: grid;
   justify-items: start;
   gap: var(--md-sys-measurement-space100);
 }
 .md-button-group {
   display: inline-flex;
+  box-sizing: border-box;
   inline-size: max-content;
+  max-inline-size: var(--forge-button-group-max-inline-size, none);
   align-items: center;
   gap: var(--_group-gap);
 }
@@ -121,10 +122,10 @@
   transform: translateY(-50%);
 }
 
-.md-button-group[data-control="connected"] {
+.md-button-group:is([data-width="fill"], [data-control="connected"]:not([data-width="hug"])) {
   inline-size: 100%;
 }
-.md-button-group[data-control="connected"] > .md-button {
+.md-button-group:is([data-width="fill"], [data-control="connected"]:not([data-width="hug"])) > .md-button {
   flex: 1;
 }
 

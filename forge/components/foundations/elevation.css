@@ -12,9 +12,7 @@
 .md-list-item,
 .md-carousel-item,
 .md-field-menu,
-.md-elevation,
-.md-search-view[data-open="true"][data-control="contained"][data-variant="docked"][data-elevation="token"]::before,
-.md-search-view[data-open="true"][data-control="contained"][data-variant="docked"][data-elevation="token"]::after,
+.md-elevation:where(:not(.md-search-demo, .md-search-view, .md-search-bar, .md-search-results)),
 .md-snackbar,
 .md-tooltip,
 /* A modal drawer can also be hosted as a nonmodal overlay. */

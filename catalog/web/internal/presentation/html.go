@@ -19,6 +19,12 @@ func SubjectListPath(styles bool) string {
 	return "/components"
 }
 
+func SubjectMatchesQuery(subject publish.SubjectView, query string) bool {
+	query = strings.ToLower(strings.TrimSpace(query))
+	return query == "" || strings.Contains(strings.ToLower(subject.Name), query) ||
+		strings.Contains(strings.ToLower(subject.Key.Slug), query)
+}
+
 func SubjectURL(subject publish.SubjectView) string {
 	section := "styles"
 	if subject.Key.Kind == publish.SubjectComponent {
