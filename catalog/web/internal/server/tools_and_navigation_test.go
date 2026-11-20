@@ -27,7 +27,7 @@ func TestToolsLinksLeaveTheCatalogMount(t *testing.T) {
 		w := httptest.NewRecorder()
 		server.Handler().ServeHTTP(w, httptest.NewRequest("GET", path, nil))
 		body := w.Body.String()
-		for _, link := range []string{`href="/md3/tools"`, `href="https://tokens.example/tools/motion-lab/"`, `href="https://tokens.example/tools/carousel-playground/"`, `hx-boost="false"`} {
+		for _, link := range []string{`href="/md3/tools"`, `href="https://foundry.tokencatalog.dev/"`, `href="https://tokens.example/tools/motion-lab/"`, `href="https://tokens.example/tools/carousel-playground/"`, `hx-boost="false"`} {
 			if w.Code != 200 || !strings.Contains(body, link) {
 				t.Fatalf("%s: missing tools navigation %s (status %d)", path, link, w.Code)
 			}
@@ -48,7 +48,7 @@ func TestToolURLsAreConfigurableAndValidated(t *testing.T) {
 		t.Fatal(err)
 	}
 	destinations := server.toolDestinations()
-	if destinations[0].URL != "https://motion.example/" || destinations[1].URL != "/lab/" {
+	if destinations[0].URL != "https://foundry.tokencatalog.dev/" || destinations[1].URL != "https://motion.example/" || destinations[2].URL != "/lab/" {
 		t.Fatal(destinations)
 	}
 	for _, target := range []string{"", "javascript:alert(1)", "//other.example/", "https://user:secret@example.com/", "relative/path"} {

@@ -48,7 +48,7 @@ func ToolsPage() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<section class=\"tokens-section tokens-tools\" aria-labelledby=\"tools-heading\"><div class=\"tokens-tools-heading\"><h1 class=\"md-typescale-headline-medium\" id=\"tools-heading\">Tools</h1><p class=\"md-typescale-body-large\">Inspect interaction behavior and measure motion.</p></div><ul class=\"tokens-card-grid tokens-layout-grid\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<section class=\"tokens-section tokens-tools\" aria-labelledby=\"tools-heading\"><div class=\"tokens-tools-heading\"><h1 class=\"md-typescale-headline-medium\" id=\"tools-heading\">Tools</h1><p class=\"md-typescale-body-large\">Edit DTCG token files, measure motion, and inspect interaction behavior.</p></div><ul class=\"tokens-card-grid tokens-layout-grid\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

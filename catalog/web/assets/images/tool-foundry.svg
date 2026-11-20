@@ -1,0 +1,268 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750" role="img">
+  <title>Token Foundry editor showing Material 3 tokens, group tree, resolved values, and variant controls</title>
+  <defs>
+    <clipPath id="foundry-window">
+      <rect x="44" y="36" width="1112" height="678" rx="22"/>
+    </clipPath>
+    <filter id="foundry-shadow" x="-4%" y="-4%" width="108%" height="110%">
+      <feDropShadow dx="0" dy="6" stdDeviation="12" flood-color="#1d1b20" flood-opacity="0.10"/>
+    </filter>
+  </defs>
+  <!-- Catalog tool backdrop matching tool-motion.svg and tool-carousel-lab.svg -->
+  <rect width="1200" height="750" fill="#e2e0f9"/>
+
+  <!-- App window frame -->
+  <g filter="url(#foundry-shadow)">
+    <rect x="44" y="36" width="1112" height="678" rx="22" fill="#f5eff7"/>
+  </g>
+
+  <g clip-path="url(#foundry-window)" font-family="Roboto, Arial, sans-serif">
+    <!-- Top menu bar -->
+    <rect x="44" y="36" width="1112" height="46" fill="#f5eff7"/>
+    <g fill="#1d1b20" font-size="13.5" font-weight="500">
+      <text x="112" y="64">File</text>
+      <text x="154" y="64">Edit</text>
+      <text x="198" y="64">View</text>
+      <text x="248" y="64">Variants</text>
+      <text x="318" y="64">Help</text>
+      <text x="366" y="64" fill="#49454e" font-weight="400">Material 3</text>
+    </g>
+    <rect x="1028" y="45" width="112" height="28" rx="14" fill="#e6e0e9"/>
+    <text x="1084" y="63.5" fill="#79747e" font-size="12.5" font-weight="500" text-anchor="middle">Review changes</text>
+
+    <!-- Far-left Navigation Rail -->
+    <rect x="44" y="82" width="62" height="632" fill="#f5eff7"/>
+    <!-- Tokens (active) -->
+    <rect x="53" y="92" width="44" height="28" rx="14" fill="#e0dcf5"/>
+    <path d="M75 99l-8 4.2 8 4.2 8-4.2-8-4.2zm-8 7.2l8 4.2 8-4.2" fill="none" stroke="#1d1b20" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="75" y="134" fill="#1d1b20" font-size="11.5" font-weight="500" text-anchor="middle">Tokens</text>
+    <!-- Variants -->
+    <g stroke="#49454e" stroke-width="1.5" stroke-linecap="round">
+      <line x1="67" y1="158" x2="83" y2="158"/>
+      <line x1="67" y1="164" x2="83" y2="164"/>
+      <line x1="67" y1="170" x2="83" y2="170"/>
+      <circle cx="71" cy="158" r="2" fill="#f5eff7"/>
+      <circle cx="79" cy="164" r="2" fill="#f5eff7"/>
+      <circle cx="73" cy="170" r="2" fill="#f5eff7"/>
+    </g>
+    <text x="75" y="188" fill="#49454e" font-size="11.5" text-anchor="middle">Variants</text>
+    <!-- Workspace -->
+    <g fill="none" stroke="#49454e" stroke-width="1.5">
+      <circle cx="71" cy="214" r="2.5"/>
+      <circle cx="79" cy="214" r="2.5"/>
+      <path d="M69 224c0-2.5 2-4 6-4s6 1.5 6 4"/>
+    </g>
+    <text x="75" y="242" fill="#49454e" font-size="11.5" text-anchor="middle">Workspace</text>
+    <!-- Moon icon at bottom -->
+    <path d="M78.5 686a6.5 6.5 0 1 1-7-9.5 5 5 0 0 0 7 9.5z" fill="none" stroke="#49454e" stroke-width="1.6" stroke-linejoin="round"/>
+
+    <!-- Groups sidebar -->
+    <rect x="106" y="82" width="166" height="632" fill="#faf6fc"/>
+    <line x1="106" y1="82" x2="106" y2="714" stroke="#e6e0e9" stroke-width="1"/>
+    <line x1="272" y1="82" x2="272" y2="714" stroke="#e6e0e9" stroke-width="1"/>
+    <text x="120" y="108" fill="#1d1b20" font-size="13.5" font-weight="500">Groups</text>
+    <g fill="#49454e">
+      <circle cx="246" cy="103" r="1.4"/><circle cx="251" cy="103" r="1.4"/><circle cx="256" cy="103" r="1.4"/>
+    </g>
+    <!-- Active All tokens pill -->
+    <rect x="114" y="122" width="148" height="36" rx="18" fill="#e2dff7"/>
+    <path d="M134 134l-6 3.2 6 3.2 6-3.2-6-3.2zm-6 5.6l6 3.2 6-3.2" fill="none" stroke="#1d1b20" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="148" y="145" fill="#1d1b20" font-size="13.5" font-weight="500">All tokens</text>
+    <!-- Folder tree -->
+    <g fill="#49454e" font-size="13.5">
+      <!-- md (expanded) -->
+      <path d="M124 176h5l2 2h7v10h-14z" fill="none" stroke="#49454e" stroke-width="1.4" stroke-linejoin="round"/>
+      <text x="146" y="186" fill="#1d1b20">md</text>
+      <path d="M244 184l4-4 4 4" fill="none" stroke="#49454e" stroke-width="1.5" stroke-linecap="round"/>
+      <!-- comp -->
+      <path d="M132 214h5l2 2h7v10h-14z" fill="none" stroke="#49454e" stroke-width="1.4" stroke-linejoin="round"/>
+      <text x="154" y="224">comp</text>
+      <path d="M244 218l4 4 4-4" fill="none" stroke="#49454e" stroke-width="1.5" stroke-linecap="round"/>
+      <!-- fab -->
+      <path d="M132 252h5l2 2h7v10h-14z" fill="none" stroke="#49454e" stroke-width="1.4" stroke-linejoin="round"/>
+      <text x="154" y="262">fab</text>
+      <path d="M244 256l4 4 4-4" fill="none" stroke="#49454e" stroke-width="1.5" stroke-linecap="round"/>
+      <!-- outlined-ic... -->
+      <path d="M132 290h5l2 2h7v10h-14z" fill="none" stroke="#49454e" stroke-width="1.4" stroke-linejoin="round"/>
+      <text x="154" y="300">outlined-ic...</text>
+      <path d="M244 294l4 4 4-4" fill="none" stroke="#49454e" stroke-width="1.5" stroke-linecap="round"/>
+      <!-- ref -->
+      <path d="M132 328h5l2 2h7v10h-14z" fill="none" stroke="#49454e" stroke-width="1.4" stroke-linejoin="round"/>
+      <text x="154" y="338">ref</text>
+      <path d="M244 332l4 4 4-4" fill="none" stroke="#49454e" stroke-width="1.5" stroke-linecap="round"/>
+      <!-- sys -->
+      <path d="M132 366h5l2 2h7v10h-14z" fill="none" stroke="#49454e" stroke-width="1.4" stroke-linejoin="round"/>
+      <text x="154" y="376">sys</text>
+      <path d="M244 370l4 4 4-4" fill="none" stroke="#49454e" stroke-width="1.5" stroke-linecap="round"/>
+    </g>
+
+    <!-- Main workspace panel -->
+    <rect x="272" y="82" width="884" height="632" fill="#fefbff"/>
+    <line x1="272" y1="82" x2="1156" y2="82" stroke="#e6e0e9" stroke-width="1"/>
+
+    <!-- Workspace header row -->
+    <rect x="288" y="95" width="14" height="14" rx="2.5" fill="none" stroke="#49454e" stroke-width="1.4"/>
+    <line x1="293" y1="95" x2="293" y2="109" stroke="#49454e" stroke-width="1.4"/>
+    <text x="310" y="107" fill="#1d1b20" font-size="14" font-weight="500">All tokens</text>
+
+    <!-- Right header controls -->
+    <rect x="760" y="90" width="132" height="28" rx="8" fill="#fefbff" stroke="#cac4d0" stroke-width="1"/>
+    <text x="772" y="108" fill="#1d1b20" font-size="12.5" font-weight="500">Edit set · All tokens</text>
+    <path d="M878 102l3.5 3.5 3.5-3.5" fill="none" stroke="#49454e" stroke-width="1.4" stroke-linecap="round"/>
+
+    <rect x="900" y="90" width="106" height="28" rx="8" fill="#fefbff" stroke="#cac4d0" stroke-width="1"/>
+    <text x="912" y="108" fill="#1d1b20" font-size="12.5" font-weight="500">Preview · Light</text>
+    <path d="M992 102l3.5 3.5 3.5-3.5" fill="none" stroke="#49454e" stroke-width="1.4" stroke-linecap="round"/>
+
+    <rect x="1014" y="89" width="128" height="30" rx="15" fill="#ece6f0"/>
+    <circle cx="1030" cy="103" r="4.5" fill="none" stroke="#49454e" stroke-width="1.5"/>
+    <line x1="1033.5" y1="106.5" x2="1037" y2="110" stroke="#49454e" stroke-width="1.5" stroke-linecap="round"/>
+    <text x="1044" y="108" fill="#49454e" font-size="12.5">Search tokens</text>
+
+    <line x1="272" y1="128" x2="1156" y2="128" stroke="#ece6f0" stroke-width="1"/>
+
+    <!-- Action toolbar row -->
+    <g fill="#938f99" font-size="12.5" font-weight="500">
+      <text x="292" y="151">Rename</text>
+      <text x="356" y="151">Value</text>
+      <text x="408" y="151">Type</text>
+      <text x="454" y="151">Description</text>
+      <line x1="534" y1="138" x2="534" y2="156" stroke="#e6e0e9" stroke-width="1"/>
+      <text x="548" y="151">Move</text>
+      <text x="598" y="151">Duplicate</text>
+      <text x="668" y="151">Delete</text>
+    </g>
+    <text x="1008" y="151" fill="#4f378b" font-size="12.5" font-weight="500">Edit token</text>
+    <rect x="1074" y="134" width="70" height="26" rx="13" fill="#65558f"/>
+    <text x="1109" y="151" fill="#ffffff" font-size="12" font-weight="500" text-anchor="middle">+ New</text>
+
+    <!-- Grid table header -->
+    <rect x="272" y="168" width="884" height="32" fill="#f7f2fa"/>
+    <line x1="272" y1="168" x2="1156" y2="168" stroke="#e6e0e9" stroke-width="1"/>
+    <line x1="272" y1="200" x2="1156" y2="200" stroke="#e6e0e9" stroke-width="1"/>
+    <rect x="288" y="177" width="14" height="14" rx="2.5" fill="none" stroke="#49454e" stroke-width="1.5"/>
+    <g fill="#49454e" font-size="12.5" font-weight="500">
+      <text x="316" y="189">Name</text>
+      <text x="596" y="189">Value</text>
+      <text x="822" y="189">Resolved in Light</text>
+      <text x="954" y="189">Type</text>
+      <text x="1028" y="189">Description</text>
+    </g>
+    <!-- Column separators -->
+    <g stroke="#ece6f0" stroke-width="1">
+      <line x1="584" y1="168" x2="584" y2="674"/>
+      <line x1="810" y1="168" x2="810" y2="674"/>
+      <line x1="942" y1="168" x2="942" y2="674"/>
+      <line x1="1016" y1="168" x2="1016" y2="674"/>
+    </g>
+
+    <!-- Table rows (9 real MD3 rows, 52px each from y=200 to 668) -->
+    <!-- Row 1 -->
+    <g>
+      <rect x="288" y="219" width="14" height="14" rx="2.5" fill="none" stroke="#49454e" stroke-width="1.5"/>
+      <text x="316" y="222" fill="#1d1b20" font-family="ui-monospace, Consolas, monospace" font-size="12.5">md.comp.app-bar.avatar.size</text>
+      <text x="316" y="239" fill="#79747e" font-size="11.5">Shared</text>
+      <text x="596" y="230" fill="#1d1b20" font-family="ui-monospace, Consolas, monospace" font-size="12.5">32 px</text>
+      <text x="954" y="230" fill="#49454e" font-size="12.5">dimension</text>
+      <text x="1028" y="230" fill="#49454e" font-size="12.5">App bar avatar size</text>
+      <line x1="272" y1="252" x2="1156" y2="252" stroke="#ece6f0" stroke-width="1"/>
+    </g>
+    <!-- Row 2 -->
+    <g>
+      <rect x="288" y="271" width="14" height="14" rx="2.5" fill="none" stroke="#49454e" stroke-width="1.5"/>
+      <text x="316" y="274" fill="#1d1b20" font-family="ui-monospace, Consolas, monospace" font-size="12.5">md.comp.app-bar.container.elevation</text>
+      <text x="316" y="291" fill="#79747e" font-size="11.5">Shared</text>
+      <text x="596" y="282" fill="#4f378b" font-family="ui-monospace, Consolas, monospace" font-size="12.5">{md.sys.elevation.level0}</text>
+      <text x="822" y="282" fill="#1d1b20" font-family="ui-monospace, Consolas, monospace" font-size="12.5">0 px</text>
+      <text x="954" y="282" fill="#49454e" font-size="12.5">dimension</text>
+      <text x="1028" y="282" fill="#49454e" font-size="12.5">App bar elevation</text>
+      <line x1="272" y1="304" x2="1156" y2="304" stroke="#ece6f0" stroke-width="1"/>
+    </g>
+    <!-- Row 3 -->
+    <g>
+      <rect x="288" y="323" width="14" height="14" rx="2.5" fill="none" stroke="#49454e" stroke-width="1.5"/>
+      <text x="316" y="326" fill="#1d1b20" font-family="ui-monospace, Consolas, monospace" font-size="12.5">md.comp.app-bar.container.color</text>
+      <text x="316" y="343" fill="#65558f" font-size="11.5" font-weight="500">Light</text>
+      <text x="596" y="334" fill="#4f378b" font-family="ui-monospace, Consolas, monospace" font-size="12.5">{md.sys.color.surface}</text>
+      <circle cx="830" cy="330" r="7" fill="#fef7ff" stroke="#cac4d0" stroke-width="1.2"/>
+      <text x="844" y="334" fill="#1d1b20" font-family="ui-monospace, Consolas, monospace" font-size="12.5">#FEF7FF</text>
+      <text x="954" y="334" fill="#49454e" font-size="12.5">color</text>
+      <text x="1028" y="334" fill="#49454e" font-size="12.5">App bar container</text>
+      <line x1="272" y1="356" x2="1156" y2="356" stroke="#ece6f0" stroke-width="1"/>
+    </g>
+    <!-- Row 4 -->
+    <g>
+      <rect x="288" y="375" width="14" height="14" rx="2.5" fill="none" stroke="#49454e" stroke-width="1.5"/>
+      <text x="316" y="378" fill="#1d1b20" font-family="ui-monospace, Consolas, monospace" font-size="12.5">md.comp.app-bar.icon.size</text>
+      <text x="316" y="395" fill="#79747e" font-size="11.5">Shared</text>
+      <text x="596" y="386" fill="#1d1b20" font-family="ui-monospace, Consolas, monospace" font-size="12.5">24 px</text>
+      <text x="954" y="386" fill="#49454e" font-size="12.5">dimension</text>
+      <text x="1028" y="386" fill="#49454e" font-size="12.5">App bar icon size</text>
+      <line x1="272" y1="408" x2="1156" y2="408" stroke="#ece6f0" stroke-width="1"/>
+    </g>
+    <!-- Row 5 -->
+    <g>
+      <rect x="288" y="427" width="14" height="14" rx="2.5" fill="none" stroke="#49454e" stroke-width="1.5"/>
+      <text x="316" y="430" fill="#1d1b20" font-family="ui-monospace, Consolas, monospace" font-size="12.5">md.comp.app-bar.icon-button-space</text>
+      <text x="316" y="447" fill="#79747e" font-size="11.5">Shared</text>
+      <text x="596" y="438" fill="#4f378b" font-family="ui-monospace, Consolas, monospace" font-size="12.5">{md.sys.measurement.space0}</text>
+      <text x="822" y="438" fill="#1d1b20" font-family="ui-monospace, Consolas, monospace" font-size="12.5">0 px</text>
+      <text x="954" y="438" fill="#49454e" font-size="12.5">dimension</text>
+      <text x="1028" y="438" fill="#49454e" font-size="12.5">App bar icon spacing</text>
+      <line x1="272" y1="460" x2="1156" y2="460" stroke="#ece6f0" stroke-width="1"/>
+    </g>
+    <!-- Row 6 (selected highlight) -->
+    <g>
+      <rect x="272" y="460" width="884" height="52" fill="#f3edf7"/>
+      <rect x="288" y="479" width="14" height="14" rx="2.5" fill="#65558f"/>
+      <path d="M291 486l3 3 5-5.5" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="316" y="482" fill="#1d1b20" font-family="ui-monospace, Consolas, monospace" font-size="12.5" font-weight="600">md.comp.filled-button.container.color</text>
+      <text x="316" y="499" fill="#65558f" font-size="11.5" font-weight="500">Light</text>
+      <text x="596" y="490" fill="#4f378b" font-family="ui-monospace, Consolas, monospace" font-size="12.5">{md.sys.color.primary}</text>
+      <circle cx="830" cy="486" r="7" fill="#65558f"/>
+      <text x="844" y="490" fill="#1d1b20" font-family="ui-monospace, Consolas, monospace" font-size="12.5">#65558F</text>
+      <text x="954" y="490" fill="#49454e" font-size="12.5">color</text>
+      <text x="1028" y="490" fill="#49454e" font-size="12.5">Filled button fill</text>
+      <line x1="272" y1="512" x2="1156" y2="512" stroke="#e6e0e9" stroke-width="1"/>
+    </g>
+    <!-- Row 7 -->
+    <g>
+      <rect x="288" y="531" width="14" height="14" rx="2.5" fill="none" stroke="#49454e" stroke-width="1.5"/>
+      <text x="316" y="534" fill="#1d1b20" font-family="ui-monospace, Consolas, monospace" font-size="12.5">md.comp.app-bar.large.subtitle.font</text>
+      <text x="316" y="551" fill="#79747e" font-size="11.5">Shared</text>
+      <text x="596" y="542" fill="#1d1b20" font-family="ui-monospace, Consolas, monospace" font-size="12.5">Roboto · 16 px · 500</text>
+      <text x="954" y="542" fill="#49454e" font-size="12.5">typography</text>
+      <text x="1028" y="542" fill="#49454e" font-size="12.5">Large subtitle font</text>
+      <line x1="272" y1="564" x2="1156" y2="564" stroke="#ece6f0" stroke-width="1"/>
+    </g>
+    <!-- Row 8 -->
+    <g>
+      <rect x="288" y="583" width="14" height="14" rx="2.5" fill="none" stroke="#49454e" stroke-width="1.5"/>
+      <text x="316" y="586" fill="#1d1b20" font-family="ui-monospace, Consolas, monospace" font-size="12.5">md.comp.app-bar.large.title.font</text>
+      <text x="316" y="603" fill="#79747e" font-size="11.5">Shared</text>
+      <text x="596" y="594" fill="#1d1b20" font-family="ui-monospace, Consolas, monospace" font-size="12.5">Roboto · 28 px · 400</text>
+      <text x="954" y="594" fill="#49454e" font-size="12.5">typography</text>
+      <text x="1028" y="594" fill="#49454e" font-size="12.5">Large title font</text>
+      <line x1="272" y1="616" x2="1156" y2="616" stroke="#ece6f0" stroke-width="1"/>
+    </g>
+    <!-- Row 9 -->
+    <g>
+      <rect x="288" y="635" width="14" height="14" rx="2.5" fill="none" stroke="#49454e" stroke-width="1.5"/>
+      <text x="316" y="638" fill="#1d1b20" font-family="ui-monospace, Consolas, monospace" font-size="12.5">md.comp.app-bar.leading-space</text>
+      <text x="316" y="655" fill="#79747e" font-size="11.5">Shared</text>
+      <text x="596" y="646" fill="#4f378b" font-family="ui-monospace, Consolas, monospace" font-size="12.5">{md.sys.measurement.space50}</text>
+      <text x="822" y="646" fill="#1d1b20" font-family="ui-monospace, Consolas, monospace" font-size="12.5">4 px</text>
+      <text x="954" y="646" fill="#49454e" font-size="12.5">dimension</text>
+      <text x="1028" y="646" fill="#49454e" font-size="12.5">App bar left padding</text>
+    </g>
+
+    <!-- Scrollbar thumb -->
+    <rect x="1146" y="206" width="5" height="140" rx="2.5" fill="#938f99" opacity="0.65"/>
+
+    <!-- Footer status bar -->
+    <rect x="272" y="674" width="884" height="40" fill="#f7f2fa"/>
+    <line x1="272" y1="674" x2="1156" y2="674" stroke="#e6e0e9" stroke-width="1"/>
+    <text x="288" y="698" fill="#49454e" font-size="12.5">6,814 tokens</text>
+    <text x="1088" y="698" fill="#49454e" font-size="12.5" text-anchor="middle">‹   Page 1 of 69   ›</text>
+  </g>
+</svg>

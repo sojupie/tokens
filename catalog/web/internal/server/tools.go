@@ -36,6 +36,7 @@ func (server *Server) toolDestinations() []webview.ToolDestination {
 		return target
 	}
 	return []webview.ToolDestination{
+		{Name: "Token Foundry", Description: "Open local DTCG token files or folders, edit tokens and variants in a table, and review the file diff before saving.", URL: site.FoundryURL, Image: "tool-foundry.svg", ImageAlt: "Token Foundry workspace showing DTCG token groups, resolved alias values, and a pending diff."},
 		{Name: "Material Motion Lab", Description: "Measure how an interface moves in a recording. Compare its timing and motion with another video or Material Design 3 reference curves.", URL: external(server.motionURL), Image: "tool-motion.svg", ImageAlt: "A tracked carousel card in a video, with its measured width change compared against MD3 standard easing."},
 		{Name: "Carousel playground", Description: "Help investigate uneven carousel motion after dragging on iOS. Try different implementations on your device and record how they settle.", URL: external(server.motionLabURL), Image: "tool-carousel-lab.svg", ImageAlt: "Full recorded returns to rest for the same carousel baseline: about 304 ms on PC and 739 ms on iOS."},
 	}

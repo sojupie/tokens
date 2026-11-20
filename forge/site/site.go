@@ -44,12 +44,14 @@ type Config struct {
 }
 
 const (
+	FoundryURL             = "https://foundry.tokencatalog.dev/"
 	MotionLabPath          = "/tools/motion-lab/"
 	CarouselPlaygroundPath = "/tools/carousel-playground/"
 )
 
 func Default() Config {
 	return Config{Catalog: "https://tokencatalog.dev/md3", Active: "/tools", Agents: true, Tools: []Destination{
+		{Name: "Token Foundry", URL: FoundryURL},
 		{Name: "Material Motion Lab", URL: "https://tokencatalog.dev" + MotionLabPath},
 		{Name: "Carousel playground", URL: "https://tokencatalog.dev" + CarouselPlaygroundPath},
 	}}
