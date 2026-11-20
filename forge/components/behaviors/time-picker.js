@@ -143,8 +143,11 @@
   const {panel,dial}=state;
   const before=reduced.matches?null:panel.getBoundingClientRect();
   const outgoing=before&&dialPose(dial);
-  stopModeMotion(state);
   const mode=panel.dataset.mode;
+  const landscapeDial=mode==='clock'&&panel.dataset.orientation==='landscape';
+  const selectors=before&&panel.querySelector('.md-time-selectors');
+  const selectorsBefore=selectors&&selectors.getBoundingClientRect();
+  stopModeMotion(state);
   if(mode!=='input'){state.returnMode=mode;panel.dataset.returnMode=mode;}
   state.preferredMode=mode==='input'?state.returnMode:'input';panel.dataset.mode=state.preferredMode;
   resetScrollInteraction(panel);
@@ -156,15 +159,25 @@
   const incoming=modalSurface&&panel.dataset.mode==='clock'&&dialPose(dial);
   const dialSwap=modalSurface&&panel.dataset.timeStyle==='expressive'&&(outgoing||incoming);
   const scrollSwap=mode==='scroll'||panel.dataset.mode==='scroll';
+  const landscapeSwap=dialSwap&&(landscapeDial||panel.dataset.orientation==='landscape');
+  const selectorsAfter=landscapeSwap&&selectors.getBoundingClientRect();
   const animations=[];
   if(dialSwap)animateDialSwap(state,before,after,outgoing,incoming,animations);
   else if(!scrollSwap)animations.push(panel.querySelector('.md-time-body').animate([{opacity:0},{opacity:1}],motion.timing(panel,'fast-effects')));
-  if(modalSurface&&(before.width!==after.width||before.height!==after.height)){
+  if(landscapeSwap||(modalSurface&&(before.width!==after.width||before.height!==after.height))){
    const size=rect=>({width:rect.width+'px',height:rect.height+'px'});
    panel.dataset.timeResizing='';
    // The reference clip matches the Expressive default spatial spring.
    const spring=dialSwap?motion.cssTiming(.8,380):motion.timing(panel,'fast-spatial');
-   animations.push(panel.animate([size(before),size(after)],{...spring,duration:parseFloat(spring.duration),fill:'both'}));
+   const timing={...spring,duration:parseFloat(spring.duration),fill:'both'};
+   if(landscapeSwap){
+    // The animated face is out of flow, so the landscape grid loses its
+    // row height. Interpolate the selectors between the laid-out positions.
+    const swapOffset=selectors.getBoundingClientRect().top-panel.getBoundingClientRect().top;
+    const position=(fields,frame)=>({translate:'0 '+(fields.top-frame.top-swapOffset)+'px'});
+    animations.push(selectors.animate([position(selectorsBefore,before),position(selectorsAfter,after)],timing));
+   }
+   animations.push(panel.animate([size(before),size(after)],timing));
   }
   state.modeAnimations=animations;
   Promise.allSettled(animations.map(animation=>animation.finished)).then(()=>{
@@ -311,7 +324,8 @@
   const period=event.target.closest('[data-time-period]');
   if(period){selectPeriod(state,period.dataset.timePeriod);return;}
   if(event.target.closest('[data-time-mode]')){
-   if(!validate(state))return;
+   // Leaving direct input restores the last valid time if the draft is invalid.
+   if(state.panel.dataset.mode==='input'&&validate(state,false))inlineChanged(state);
    cancelGesture(state);
    changeMode(state);return;
   }

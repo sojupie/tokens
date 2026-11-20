@@ -37,6 +37,34 @@ document.querySelector('#run').onclick=async()=>{
  assert(dialPreview.dataset.mode==='input'&&inputField.width===dialField.width&&inputField.height===dialField.height,'switching from dial to input preserves field dimensions');
  assert(nextTimeCase.getBoundingClientRect().top+frame.contentWindow.scrollY===nextTimeCaseTop,'switching the dial preview preserves the following case position');
  frame.style.removeProperty('width');
+ await load('/components/time-pickers?preview.compare=interactive&preview.variant=clock&preview.orientation=landscape');
+ const landscapeWindow=frame.contentWindow,landscapeDocument=frame.contentDocument;
+ await landscapeWindow.TokenAssets.ready;
+ const landscapeModal=landscapeDocument.querySelector('#component-preview [data-time-panel]');
+ landscapeDocument.querySelector('#component-preview [data-time-open]').click();
+ await wait(()=>landscapeModal.matches(':modal'),'landscape time picker opens');
+ await Promise.all(landscapeModal.getAnimations().map(animation=>animation.finished.catch(()=>{})));
+ if(!landscapeWindow.matchMedia('(prefers-reduced-motion: reduce)').matches){
+   const selectors=landscapeModal.querySelector('.md-time-selectors');
+   const dial=landscapeModal.querySelector('.md-time-dial');
+   const y=()=>selectors.getBoundingClientRect().top;
+   for(const mode of ['input','clock']){
+     const initial=y();
+     landscapeModal.querySelector('[data-time-mode]').click();
+     const animations=[...landscapeModal.getAnimations(),...selectors.getAnimations(),...dial.getAnimations()]
+       .filter(animation=>!(animation instanceof landscapeWindow.CSSTransition));
+     for(const animation of animations)animation.pause();
+     await Promise.all(animations.map(animation=>animation.ready));
+     for(const animation of animations)animation.currentTime=0;
+     const startsAtRest=Math.abs(y()-initial)<1;
+     for(const animation of animations)animation.currentTime=animation.effect.getComputedTiming().endTime;
+     const end=y();
+     for(const animation of animations)animation.finish();
+     await wait(()=>!landscapeModal.hasAttribute('data-time-dial-swap'),'landscape dial transition to '+mode);
+     assert(landscapeModal.dataset.mode===mode&&startsAtRest&&Math.abs(y()-end)<1,
+       'landscape fields stay aligned at both ends of the transition to '+mode);
+   }
+ }
  await load('/components/time-pickers?preview.variant=scroll&preview.compare=interactive&preview.width=12h');
  await frame.contentWindow.TokenAssets.ready;
  const pickerDocument=frame.contentDocument,pickerWindow=frame.contentWindow;
@@ -57,6 +85,14 @@ document.querySelector('#run').onclick=async()=>{
      pickerWindow.getComputedStyle(body).opacity==='1',
      'scroll modal keeps AM/PM in place and opaque when switching to '+mode);
  }
+ modeButton.click();
+ const minuteDraft=scrollModal.querySelector('[data-time-input="minute"]'),previousMinute=minuteDraft.value;
+ minuteDraft.value='90';
+ minuteDraft.dispatchEvent(new pickerWindow.Event('input',{bubbles:true}));
+ modeButton.click();
+ assert(scrollModal.dataset.mode==='scroll'&&!scrollModal.querySelector('[data-time-error]').textContent&&
+   minuteDraft.value===previousMinute&&pm.getAttribute('aria-checked')==='true',
+   'invalid direct input returns to the scroll picker with the last valid time');
  scrollModal.querySelector('[data-time-cancel]').click();
  for(const mode of ['interactive','states']){
    await load('/components/time-pickers?preview.variant=scroll&preview.compare='+mode);

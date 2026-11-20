@@ -6,6 +6,17 @@ const finish=async()=>{await Promise.all(panel.getAnimations().map(a=>a.finished
 const pointer=(type,outside,id=1)=>{const r=panel.getBoundingClientRect();panel.dispatchEvent(new w.PointerEvent(type,{bubbles:true,button:0,isPrimary:true,pointerId:id,clientX:outside?r.left-10:r.left+10,clientY:r.top+10}));};
 opener.click();await finish();assert(panel.open,'Dialog opens');
 const mode=panel.querySelector('[data-time-mode]');assert(mode.getAttribute('aria-label')==='Toggle input picker','Clock mode names its input toggle');mode.click();assert(mode.getAttribute('aria-label')==='Toggle dial picker','Input mode names its dial toggle');assert(panel.querySelector('[data-time-input="hour"]').getAttribute('aria-label')==='Hour'&&panel.querySelector('[data-time-input="minute"]').getAttribute('aria-label')==='Minute','Input names match Hour and Minute labels');mode.click();
+mode.click();await finish();
+const minute=panel.querySelector('[data-time-input="minute"]'),error=panel.querySelector('[data-time-error]'),formValue=root.querySelector('[data-time-value-input]');
+const originalTime=formValue.value,originalMinute=minute.value;
+minute.value='90';minute.dispatchEvent(new w.Event('input',{bubbles:true}));
+panel.querySelector('[data-time-save]').click();await finish();
+assert(panel.open&&panel.dataset.mode==='input'&&minute.getAttribute('aria-invalid')==='true'&&formValue.value===originalTime,'Invalid direct input still blocks confirmation');
+mode.click();await finish();
+assert(panel.dataset.mode==='clock'&&!error.textContent&&panel.querySelector('[data-time-value="minute"]').textContent===originalMinute,'Invalid direct input can return to the dial with the last valid time');
+mode.click();await finish();
+assert(minute.value===originalMinute&&minute.getAttribute('aria-invalid')==='false','Re-entering direct input starts with the valid time');
+mode.click();await finish();
 pointer('pointerdown',false);pointer('pointerup',true);await finish();assert(panel.open,'Dragging out from the panel does not dismiss');
 pointer('pointerdown',true);pointer('pointerup',false);await finish();assert(panel.open,'Dragging into the panel does not dismiss');
 pointer('pointerdown',true);pointer('pointercancel',true);pointer('pointerup',true);await finish();assert(panel.open,'Cancelled pointer cannot dismiss');

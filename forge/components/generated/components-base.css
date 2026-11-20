@@ -7521,7 +7521,28 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
 .md-time-side-controls [data-time-mode]::before { inset: var(--_time-target-inset); }
 .md-time-side-controls:not(:has(> :not([hidden]))) { display: none; }
 
-.md-time-panel[data-time-style="baseline"] .md-time-period-group { overflow: visible; }
+/* Keep the expanded hit targets while shaping the painted inner corners. */
+.md-time-panel[data-time-style="baseline"] .md-time-period-group {
+  --_time-period-inner-corner: max(0px, calc(var(--_time-period-shape) - var(--_time-period-outline-width)));
+  overflow: visible;
+}
+.md-time-panel[data-time-style="baseline"] .md-time-period {
+  --_button-rest-shape: var(--_time-period-button-shape);
+  --_button-pressed-shape: var(--_time-period-button-shape);
+  border-radius: var(--_time-period-button-shape);
+}
+.md-time-panel[data-time-style="baseline"] .md-time-period:first-child {
+  --_time-period-button-shape: var(--_time-period-inner-corner) var(--_time-period-inner-corner) 0 0;
+}
+.md-time-panel[data-time-style="baseline"] .md-time-period:last-child {
+  --_time-period-button-shape: 0 0 var(--_time-period-inner-corner) var(--_time-period-inner-corner);
+}
+.md-time-panel[data-time-style="baseline"][data-mode="clock"][data-orientation="landscape"] .md-time-period:first-child {
+  --_time-period-button-shape: var(--_time-period-inner-corner) 0 0 var(--_time-period-inner-corner);
+}
+.md-time-panel[data-time-style="baseline"][data-mode="clock"][data-orientation="landscape"] .md-time-period:last-child {
+  --_time-period-button-shape: 0 var(--_time-period-inner-corner) var(--_time-period-inner-corner) 0;
+}
 .md-time-panel[data-time-style="baseline"] .md-time-period::after { content: ""; position: absolute; inset: 0; }
 .md-time-panel[data-time-style="baseline"] .md-time-period:first-child::after { inset-block-start: -13px; }
 .md-time-panel[data-time-style="baseline"] .md-time-period:last-child::after { inset-block-end: -13px; }
