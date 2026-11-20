@@ -1,60 +1,43 @@
 # Catalog web
 
-`web.go` preserves the public server API. The implementation has three owners:
-HTTP handlers load publication data, playground selection normalizes options, and
-presentation models supply rendering data. Templates render that data through
-Forge primitives.
+`web.go` exposes the public HTTP server API. Request handling, playground state
+selection, and presentation models live in separate internal packages so
+templates stay decoupled from the HTTP layer.
 
-| Directory | Ownership |
+| Directory | Responsibility |
 | --- | --- |
-| Root Go files | Public server API and generation entry point |
-| `internal/server/` | Routing, handlers, publication access, caches and integration tests |
-| `internal/playground/` | Pure case selection and family-specific control validation |
-| `internal/presentation/` | Rendering models, formatting and dependency collection |
-| `templates/pages/`, `templates/shared/` | Pages, layout and shared fragments |
-| `templates/tokens/`, `templates/downloads/` | Token tables, details and download forms |
-| `templates/playground/`, `templates/previews/` | Controls, specimens and image markup |
-| `templates/helpers/` | Render helpers that compose templates |
-| `internal/render/` | Generated Go; edit source templates instead |
-| `assets/scripts/`, `assets/styles/` | Maintained browser scripts and Catalog CSS |
+| Root Go files | Public server API and `go:generate` entry point |
+| `internal/server/` | Routing, handlers, publication loading, response cache, discovery/MCP, and integration tests |
+| `internal/playground/` | Pure preview case selection and control validation |
+| `internal/presentation/` | Rendering models, formatting, and asset dependency collection |
+| `templates/` | Templ pages, shared layout, token tables, downloads, playgrounds, and preview helpers |
+| `internal/render/` | Generated Go templates (edit `templates/` instead) |
+| `assets/scripts/`, `assets/styles/` | Maintained browser TypeScript/JS and Catalog CSS |
 | `assets/generated/`, `assets/vendor/` | Compiled scripts and third-party libraries |
-| `assets/images/`, `assets/fonts/` | Embedded media and licenses |
-| `tests/browser/` | Browser-script unit checks |
+| `assets/images/`, `assets/fonts/` | Embedded media and font licenses |
+| `tests/browser/` | Browser-script unit tests |
 
-## HTTP ownership
+`internal/presentation` and `internal/playground` do not import
+`internal/server`; renderers resolve component links and published images
+through the small `AssetDelivery` interface.
 
-The server keeps route registration in `server.go`. `pages.go` owns page requests;
-`tokens.go` and `markdown.go` expose data representations. Download selection,
-preparation and form rendering have separate files because changing options must
-not prepare an export. `asset_delivery.go` resolves component dependencies;
-`response_cache.go` owns encoded response reuse. `discovery.go`, `mcp.go` and
-`seo.go` expose their respective discovery contracts. Tools, appearance and
-illustrations retain their own owners.
+## Build and check
 
-Presentation and playground packages cannot import the server. Renderers use the
-small `AssetDelivery` interface for component links and published-image lookup;
-request handling and mutable caches stay in the HTTP package.
+Run from the repository root after editing templates or browser scripts:
 
-## Source to output
+```sh
+npm run generate
+npm run check:components
+npm run check:templates
+go test ./catalog/web/...
+npm run test:ui
+```
 
-Run `npm run generate` after editing templates or browser sources. The pinned
-compiler writes Catalog Go to `internal/render/` and Forge Go to its own renderer
-package. TypeScript compiles to the corresponding generated asset folder.
-Commit source and generated output. `npm run check:components` checks types and
-output freshness; `npm run check:templates` checks both template renderers and the
-Forge public facade. Use these commands rather than running templ across the repo,
-which would place Go files beside their template sources.
+`npm run generate` compiles Catalog templates into `internal/render/`, Forge
+templates into Forge's renderer package, and TypeScript into
+`assets/generated/`. Commit both sources and generated output, and rebuild the
+Go binary after changing embedded assets or templates.
 
-Run `go test ./catalog/web/...` and `npm run test:ui`. Rebuild and restart after
-changing embedded assets or templates.
-
-## Public paths
-
-`assets/static.go` derives stable public names from embedded source/output folders.
-Existing `/static/...` paths remain unchanged. Duplicate asset names fail at
-startup. Forge runtime and site-shell aliases remain available to Catalog and
-statically built tools.
-
-Published token CSS and rendered thumbnails remain publication outputs. Captured
-source data does not belong in this folder. The embedded OpenAPI contract lives
-beside its discovery handler in `internal/server/`.
+`assets/static.go` maps embedded folders to `/static/...` URLs and fails at
+startup on duplicate names. Published token CSS and thumbnails are loaded from
+the publication directory, not embedded here.

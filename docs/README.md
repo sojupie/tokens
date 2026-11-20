@@ -1,6 +1,6 @@
 # Documentation
 
-[Usage](usage.md) covers browsing, filtering, downloads and comparisons.
+[Usage](usage.md) covers browsing, filtering, downloads, and comparisons.
 [API and agent access](reference/agents.md) covers programmatic reads.
 
 ## Development
@@ -19,11 +19,15 @@
 - [Snapshot format](reference/snapshot-format.md)
 - [Publication and history](reference/publication.md)
 - [DTCG exports and CSS](reference/dtcg.md)
+- [Delivery and on-page performance](reference/delivery-performance.md)
+- [Go/templ components API](reference/components-api.md)
 - [Generated buttons](reference/buttons.md)
 - [Generated components](reference/components.md)
-- [Toolbar source measurements and implementation](reference/toolbar-spec.md)
+- [Toolbar specification](reference/toolbar-spec.md)
+- [Layout](reference/layout.md)
+- [Preview scenes and thumbnails](reference/preview-scenes.md)
 - [Documentation capture](reference/guidance-capture.md)
-- [Component guidance curation and assessment](reference/guidance-curation.md)
+- [Component guidance curation](reference/guidance-curation.md)
 - [API and agent access](reference/agents.md)
 
 ## Operations
@@ -35,5 +39,5 @@
 
 ## History
 
-[Historical notes](history/README.md) record completed implementations and
-migrations. Current instructions live in the guides above.
+[Historical notes](history/README.md) record completed implementations,
+benchmarks, and migrations. Current instructions live in the guides above.

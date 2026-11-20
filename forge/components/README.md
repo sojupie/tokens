@@ -1,37 +1,34 @@
 # Component ownership
 
-Forge separates component data, markup, behavior and token bindings. A primitive
-can render without Catalog; the host resolves its declared asset requirements.
+Forge separates component props, markup, behavior, and token bindings so
+primitives render independently of Catalog; hosts resolve each component's
+declared asset requirements.
 
-| Directory | Edit here for |
+| Path | Edit here for |
 | --- | --- |
-| `ui/internal/model/` | Typed props, attribute rules, geometry and asset declarations |
-| `ui/templates/` | Component markup |
-| `ui/internal/render/` | Generated Go only |
-| `ui/api_generated.go` | Generated public facade; edit its model or template source |
-| `behaviors/`, `helpers/` | Browser controllers and their pure helpers |
-| `styles/`, `foundations/` | Component anatomy and shared elevation CSS |
+| `ui/internal/model/` | Typed props, attribute rules, geometry, and asset declarations |
+| `ui/templates/` | Component templ markup |
+| `ui/internal/render/` | Generated Go renderers (do not edit directly) |
+| `ui/api_generated.go` | Generated public facade for `forge/components/ui` |
+| `behaviors/`, `helpers/` | Browser controllers and stateless shared helpers |
+| `styles/`, `foundations/` | Component CSS anatomy and shared elevation rules |
 | `data/` | Loading-indicator geometry |
-| `generated/` | Built scripts, token-bound CSS, bundles and notices |
-| `modules.json` | Ownership of component styles, bindings and runtime scripts |
-| `style-sources.json` | CSS assembly order; changes can affect the cascade |
-| `behavior-sources.json` | Aggregate entries and dedicated output exceptions |
+| `generated/` | Built scripts, token-bound CSS, bundles, and notices |
+| `modules.json` | Module ownership of styles, bindings, and runtime scripts |
+| `style-sources.json` | Explicit CSS assembly order |
+| `behavior-sources.json` | Aggregate script entries and dedicated output exceptions |
 
-Run `npm run generate` for templates and browser assets. Dedicated controllers are
-found automatically in `behaviors/`; aggregate membership stays explicit. Each
-controller must have one owner in `modules.json`. Pure imports are bundled into
-classic-script entries, so the browser does not need a new module loading model.
+## Build
 
-Run `npm run build:tokens -- --published PATH` for token bindings. This requires
-publication data and also refreshes component CSS bundles. `npm run check:components`
-checks types and source/output freshness; `npm run test:ui` and `npm run test:tokens`
-check browser logic and token mappings.
+- Run `npm run generate` to compile templates and browser assets. Each
+  controller in `behaviors/` must have one owner in `modules.json`; stateless
+  helpers are bundled into classic-script entries by esbuild.
+- Run `npm run build:tokens -- --published PATH` to regenerate token bindings
+  and CSS bundles from a publication.
+- Run `npm run check:components`, `npm run test:ui`, and `npm run test:tokens`
+  to verify types, freshness, behaviors, and mappings.
 
-The public Go import remains `forge/components/ui`. Public component functions and
-prop aliases are generated from source declarations. A `//forge:internal` directive
-marks model helpers that templates need across the package boundary but consumers
-should not receive as public functions.
-
-`assets.go` maps the existing logical `static/...` paths to `generated/` and `data/`.
-Consumers and exported bundles keep their existing paths. Generated files identify
-their source; change source files and regenerate rather than patching output.
+Public Go consumers import `forge/components/ui`. Mark internal model helpers
+needed by templates with `//forge:internal` so they are excluded from the
+generated public facade. `assets.go` maps logical `static/...` paths to
+`generated/` and `data/`.

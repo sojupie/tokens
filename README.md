@@ -1,193 +1,103 @@
 # Token Catalog
 
-Token Catalog collects design tokens and makes them easier to browse, compare
-and download. [Material Design 3](https://tokencatalog.dev/md3/) is the first
-supported collection.
+Token Catalog collects design tokens so you can browse, compare, and download
+them. [Material Design 3](https://tokencatalog.dev/md3/) is the first supported
+collection.
 
-The goal is fast, direct access to design data for developers and [agents](#use-with-your-agent). Tokens,
-references and settings are available in readable pages and structured responses
-that can be inspected, crawled and fetched with ordinary HTTP clients. Source
-links connect the data to the original design guidance.
+Tokens, references, and context-specific values are available as server-rendered
+HTML, Markdown, JSON, and read-only MCP tools—no account or JavaScript required.
+Source links connect every token back to its original design guidance.
 
 [![Token Catalog landing page with Material Design 3 components and styles](docs/images/landing-page.png)](https://tokencatalog.dev/md3/)
 
 ## Browse and download
 
-Find tokens by component or style, inspect their references, and filter values
-by platform, theme and other settings. Downloads can include the filtered table,
-all values in a table, a whole component, or the collection.
+Find tokens by component or style, follow their reference chains, and filter
+values by platform, theme, contrast, or size. Download the filtered rows, a
+complete table, a component, or the full collection as DTCG JSON, CSS variables,
+or source JSON. You can also download a standalone component implementation with
+CSS, example HTML, and required JavaScript.
 
-Download tokens as DTCG JSON, CSS variables or source JSON, or download a
-component implementation with CSS, example HTML and required JavaScript.
+The change log compares retained captures and records when values were added,
+removed, or changed across contexts. Incomplete captures are marked as partial.
 
-For example, select a Buttons table, choose a platform and theme, then choose
-“Current filtered table” in the download dialog to export that selection.
-Broader scopes include tokens outside the selected table and filters.
+See [usage](docs/usage.md) and [API and agent access](docs/reference/agents.md).
 
-The change log compares retained captures. It shows added, removed and changed
-values, including changes to individual settings. Dates record when a change
-was observed. Incomplete captures remain marked as partial.
+## Component playground and motion tools
 
-The same data is available through a public JSON API, Markdown responses and
-read-only MCP tools. See [usage](docs/usage.md) and
-[API and agent access](docs/reference/agents.md).
+Component pages include interactive playgrounds for variants, sizes, and states,
+built from CSS generated out of the captured tokens with authored HTML and
+browser behavior.
 
-## Component playground
+The [tools page](https://tokencatalog.dev/md3/tools) also hosts two client-side
+browser apps built with the same Forge components:
 
-Component pages include interactive examples and comparisons of supported
-variants, sizes and states. The examples use CSS bindings generated from the
-captured tokens, with authored HTML, layout and browser behavior where tokens
-do not describe implementation. Theme and contrast controls apply to both the
-site and its examples.
-
-The gallery and playground use the same Forge assets. Specimen markup,
-component styling and browser behavior have separate source files; see the
-[component authoring map](docs/architecture.md#component-authoring) to follow a
-component from its example to its token bindings. These components ship with the site and are shared with the motion tools through
-the Forge package in this repository. There is no standalone package release.
-
-## Motion tools
-
-The [tools page](https://tokencatalog.dev/md3/tools) includes two browser apps:
-
-- [Material Motion Lab](https://tokencatalog.dev/tools/motion-lab/) measures UI
-  movement in recordings. Track an object or edge, compare two videos, or compare
-  measurements with Material Design 3 motion curves. A bundled example lets you
-  explore an analysis before importing a video.
-- [Carousel playground](https://tokencatalog.dev/tools/carousel-playground/) helps
-  investigate uneven carousel motion after dragging on iOS. Try different
-  implementations on your device and record how they settle.
-
-Material Motion Lab processes videos on your device and saves projects in your
-browser. Download a `.motion` project file to keep a portable copy, including its
-videos and measurements. Videos and projects are not uploaded to the server.
-
-The tools share the catalog's navigation, themes and Forge components. Their
-source lives in [Material Motion Lab](https://github.com/sojupie/material-motion-lab)
-and [Carousel playground](https://github.com/sojupie/carousel-motion-lab).
+- [Material Motion Lab](https://tokencatalog.dev/tools/motion-lab/) ([source](https://github.com/sojupie/material-motion-lab)):
+  tracks UI movement in local video recordings and compares curves against
+  Material Design 3 motion tokens. Videos and `.motion` projects stay on your
+  device.
+- [Carousel playground](https://tokencatalog.dev/tools/carousel-playground/) ([source](https://github.com/sojupie/carousel-motion-lab)):
+  tests and records carousel settling behavior across implementations.
 
 ## Use with your agent
 
 [Give this to your agent](https://tokencatalog.dev/md3/for-agents) has a copyable
-prompt, skill install command, and MCP server URL.
+prompt, skill install command, and MCP URL.
 
-Give your agent this instruction:
+Prompt:
 
 > Use Token Catalog at https://tokencatalog.dev/md3 to find the Material Design 3
 > tokens for this task. Read its agent guide, fetch the relevant component or
 > style, and preserve the token references and selected context.
 
-For agents that support installable skills:
+Installable skill:
 
 ```sh
 npx skills add sojupie/tokens --skill token-catalog
 ```
 
-The installer lets you choose your agent. The [skill](skills/token-catalog/SKILL.md)
-lives in this repo and reads the current API guide from the site. You do not need
-to clone or run the catalog to use its data.
+Streamable HTTP MCP server (no account or API key):
 
-If your client supports MCP, add `https://tokencatalog.dev/md3/mcp` as a
-Streamable HTTP server. Start with `list_subjects`, then call `get_tokens` with
-the returned kind and slug. No account or API key is required.
+- URL: `https://tokencatalog.dev/md3/mcp`
+- Start with `list_subjects`, then call `get_tokens` with the returned kind and slug.
 
-Example requests:
-
-- “Find the filled button tokens for Android in the dark theme.”
-- “Compare the corner tokens for cards and dialogs.”
-- “Check which motion token values changed between retained captures.”
-
-See [API and agent access](docs/reference/agents.md) for setup and data formats.
+See [API and agent access](docs/reference/agents.md) for endpoints and formats.
 
 ## Usage
 
 ![Token Catalog usage over the last seven days: server requests, downloads, Markdown requests, successful MCP tool calls, and popular subjects](docs/images/usage.svg)
 
-The graphic updates weekly from retained server request totals, with prefetches
-counted separately.
+Updated weekly from retained server request totals (prefetches counted separately).
 
-## Performance and access
+## Repository layout
 
-Pages render on the server with the token data already present in the HTML.
-Reading pages and fetching JSON do not require JavaScript or an account.
-Markdown responses, OpenAPI, discovery files and MCP tools make the same data
-available to different clients. Small assets and deferred scripts keep the
-browser's initial work limited.
+One Go module and CLI (`cmd/tokens/`) covers three parts:
 
-The October 11, 2026 [mobile PageSpeed Insights report](https://pagespeed.web.dev/analysis/https-tokencatalog-dev/91lzhrkat6?hl=en&form_factor=mobile)
-scores 100 for performance, accessibility, best practices and SEO, with 4/4
-agentic browsing checks passed. The measured largest contentful paint is 1.2 s,
-with 0 ms total blocking time and no layout shift.
-
-The captured [Is It Agent Ready?](https://isitagentready.com/) check scores 80/100,
-including 100 for discoverability, content and bot access control.
-The remaining three checks concern OAuth/OIDC discovery, protected-resource
-metadata and agent registration. Token Catalog provides public, read-only access
-without accounts or protected APIs, so those authentication features are
-deliberately omitted. The lower score reflects those checks being counted as
-missing even though the discovery and access checks for the public service pass.
-
-<a href="https://pagespeed.web.dev/analysis/https-tokencatalog-dev/91lzhrkat6?hl=en&amp;form_factor=mobile"><img src="docs/images/PageSpeedInsights.png" alt="October 11, 2026 mobile PageSpeed Insights report showing four scores of 100 and 4/4 agentic browsing checks" width="420" /></a>
-<img src="docs/images/isitagentready.png" alt="Is It Agent Ready report for Token Catalog showing 80/100 overall and 100 for discoverability, content and bot access control" width="420" />
-
-## Repository components
-
-The project has three parts in one repository. They share the existing CLI,
-Go module, and deployment.
-
-| Part | What it does | Source |
+| Part | Responsibility | Source |
 | --- | --- | --- |
 | Source | Captures upstream data, verifies snapshots, compares changes, builds publications, and exports DTCG | [`source/`](source/) |
-| Catalog | Serves token tables, filters, downloads, history, API and agent interfaces, and usage reports | [`catalog/`](catalog/) |
-| Forge | Generates CSS and component state bindings, implements browser behavior, and checks the rendered result | [`forge/`](forge/) |
+| Catalog | Serves token tables, filters, downloads, history, API/MCP interfaces, and usage reports | [`catalog/`](catalog/) |
+| Forge | Generates CSS and component token bindings, implements browser behavior, and runs conformance checks | [`forge/`](forge/) |
 
-[`skills/`](skills/) contains the installable agent skill and the reference used
-by the hosted guide. [`cmd/tokens/`](cmd/tokens/) provides the shared CLI.
-Deployment configuration remains in [`deploy/`](deploy/).
+[`skills/`](skills/) holds the installable agent skill and hosted API guide.
+[`deploy/`](deploy/) holds Docker, systemd, and update scripts. See
+[architecture](docs/architecture.md) for the data pipeline and component authoring map.
 
-Forge generates the catalog theme and shared components, including buttons,
-cards, chips, fields, menus, and dialogs. See [generated components](docs/reference/components.md)
-and [buttons](docs/reference/buttons.md) for supported variants, states, and checks.
+## Run locally
 
-## Material Design 3 data pipeline
-
-The capture command opens the reviewed source pages with Chromium and saves
-their token payloads. Snapshot creation bundles those payloads with extracted
-tokens, source URLs, coverage results and SHA-256 checksums. Verification checks
-that the saved files match their checksums and schemas.
-
-Publication compares verified snapshots and builds a SQLite read index, change
-history and JSON downloads. The web server loads a publication at startup and
-uses it for HTML pages, API responses and MCP tools. Its own Material component
-styles also come from the published tokens.
-
-Scheduled updates carry out the same steps, retain a report for each run and
-check the candidate publication before activation. See
-[architecture](docs/architecture.md) for the data flow and
-[scheduled updates](docs/operations/updates.md) for review and recovery.
-
-## Run the catalog server locally
-
-Build the Go application with Go 1.26 or newer:
+Requires Go 1.26+.
 
 ```sh
 go build -o ./bin/tokens ./cmd/tokens
-```
-
-With an existing publication in `published/`, start the catalog server:
-
-```sh
 ./bin/tokens serve --published published --listen 127.0.0.1:8081
 ```
 
-Open [localhost:8081](http://127.0.0.1:8081) to browse the saved tokens. This starts
-the website and its data endpoints. The [agent access reference](docs/reference/agents.md)
-explains public-origin configuration for discovery metadata and MCP.
+Open [localhost:8081](http://127.0.0.1:8081) to browse a saved publication. On
+Windows, build and run `bin/tokens.exe`.
 
-### Create a Material Design 3 publication
+### Build a Material Design 3 publication
 
-For a fresh checkout, install Chrome or Chromium and run these commands before
-starting the server:
+For a fresh checkout (requires Chrome or Chromium):
 
 ```sh
 ./bin/tokens crawl
@@ -196,46 +106,24 @@ starting the server:
 ./bin/tokens publish
 ```
 
-The crawl fetches Google's source pages and payloads over the network.
-Subsequent server starts use the saved publication. On Windows, build
-`bin/tokens.exe` and use that executable for the same commands.
-
-See [development](docs/development.md) for tests and template changes, or
-[deployment](docs/operations/deployment.md) for Docker, scheduled updates and
-usage reports. To use the hosted data from an agent, follow
-[Use with your agent](#use-with-your-agent).
-
-## Supported design systems and source coverage
-
-Material Design 3 is the current collection. Its capture and extraction
-code reads Google's source payloads, and its website theme uses Material tokens.
-Adding another design system requires a source catalog, capture and extraction
-rules, publication mapping, a website theme and source attribution. The
-[development guide](docs/development.md#other-design-systems) describes those
-integration points.
-
-The Material Design 3 page catalog defines capture coverage. Snapshots retain
-page and payload results, and incomplete captures are marked as partial in the
-change history. Coverage records accompany comparisons so source changes can
-be assessed against the pages captured in each run.
+See [development](docs/development.md) for tests, CSS builds, and adding another
+design system, or [deployment](docs/operations/deployment.md) for Docker and
+scheduled updates.
 
 ## Documentation
 
 - [Using the catalog](docs/usage.md)
 - [Developing and contributing](CONTRIBUTING.md)
 - [Architecture](docs/architecture.md)
-- [CLI, snapshots and publication](docs/README.md#reference)
-- [Deployment and recovery](docs/README.md#operations)
+- [Reference](docs/README.md#reference)
+- [Operations](docs/README.md#operations)
 - [Project history](docs/history/README.md)
 
 ## License and attribution
 
-Token Catalog’s original code, schemas, and documentation use the
-[Apache License 2.0](LICENSE).
-
-Material Design 3 data comes from Google and retains its upstream terms.
-Bundled fonts, icons and dependencies retain their own licenses.
+Original code, schemas, and documentation use the [Apache License 2.0](LICENSE).
+Material Design 3 data comes from Google and retains its upstream terms. Bundled
+fonts, icons, and dependencies retain their own licenses.
 
 Token Catalog is an independent project. See [third-party notices](THIRD_PARTY_NOTICES.md)
-and [licensing and source attribution](docs/licensing.md) for the distinction
-between the software engine and the token data it publishes.
+and [licensing and source attribution](docs/licensing.md).

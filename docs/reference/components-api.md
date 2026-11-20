@@ -1,27 +1,17 @@
 # Go/templ components
 
-Import `github.com/sojupie/tokens/forge/components/ui` from a Go/templ caller.
-Forge owns component anatomy, token bindings, accessibility attributes and browser
-mechanics. Catalog owns page layouts, sample content, playground configurations
-and application actions. Future scenes must use the same Forge package as other callers.
+Import `github.com/sojupie/tokens/forge/components/ui` from Go/templ callers.
+Forge owns component anatomy, token bindings, accessibility attributes, and
+browser controllers; callers own layouts, content, and application actions.
+The package ships inside this Go module and must match the CSS and scripts from
+the same build.
 
-The package is part of this repository's Go module. It is not a separately
-versioned library. Component CSS and scripts must come from the same build.
+## Authoring basics
 
-## Authoring
-
-Buttons accept a color family independently of their visual variant:
-`ui.ButtonProps{Variant: ui.Filled, Color: ui.ColorTertiary}`. The HTML equivalent
-is `class="md-button md-filled-button" data-color="tertiary"`. Available families
-are primary, secondary, tertiary and error. Omitting the color preserves the
-captured default mapping. Tonal buttons use the family's container/on-container
-pair; the other styles remap their primary accent roles. Neutral, disabled and
-inverse roles retain their source mappings. These are Forge mappings; exported
-upstream DTCG tokens are unchanged.
-
-Use typed props for normal configuration. Supply content through templ children
-or component slots. Supply unique IDs for fields and panels. Use native links for
-navigation and native buttons for actions.
+Use typed props for configuration, templ children/slots for content, unique IDs
+for fields and panels, native links for navigation, and native buttons for
+actions. `Attrs` and `InputAttrs` pass consumer hooks and merge `Attrs["class"]`
+with component classes.
 
 ```templ
 package example
@@ -53,166 +43,75 @@ templ Inbox() {
 }
 ```
 
-`TextFieldProps`, `ChoiceProps`, `SliderProps` and `TimePickerProps` accept form
-names and values. A slider's `Value` is its upper value; a non-nil `Start` enables
-a range. Progress values are percentages; nil selects indeterminate progress.
-A connected button group fills its available inline width and expands its
-buttons. Set `GroupProps.Width` to `GroupHug` for intrinsic width or `GroupFill`
-to request fill explicitly. Standard groups default to Hug. To cap the group
-on larger surfaces, set `max-inline-size` on its host or
-`--forge-button-group-max-inline-size` on the group.
+### Buttons and groups
+- `ButtonProps.Color` accepts `primary`, `secondary`, `tertiary`, or `error`
+  independently of `Variant` (`data-color="..."` in HTML). Tonal buttons use the
+  family's container/on-container pair; other styles remap accent roles.
+- Connected button groups fill inline width by default; set `GroupProps.Width`
+  to `GroupHug` or `GroupFill` (standard groups default to `GroupHug`). Cap
+  width via `max-inline-size` or `--forge-button-group-max-inline-size`.
 
-Time-picker hours use 0–23 even when the display uses a 12-hour clock. Both
-`TimePicker` and `TimePickerPanel` accept a form name and submit the time as
-`HH:MM`. A modal commits on OK and discards pending changes on dismissal. An
-inline picker commits valid changes as they are made. Committing a new value
-dispatches native `input` and `change` events. Use `DialogTrigger` with the ID
-`<picker ID>-time` to open a standalone modal panel.
-`InlineContainer` adds a filled surface to inline Expressive Input and Scroll
-pickers. Inline pickers default to a transparent surface. Set `Width` to
-`TimePickerHug` for intrinsic width or `TimePickerFill` to use the available
-inline space. The zero value continues to fill. Each scroll field fills its
-column in either mode.
+### Forms, fields, and pickers
+- `TextFieldProps`, `ChoiceProps`, `SliderProps`, and `TimePickerProps` accept
+  form names and values. Slider `Value` is the upper value (non-nil `Start`
+  enables a range). Progress values are percentages (`nil` = indeterminate).
+- `SelectField` renders outlined or chip-style selects with separate display
+  labels and submitted values; `Field` uses the same option list for select and
+  autocomplete. `Select` keeps its hidden native `<select>` for compatibility.
+- **Date pickers:** Accept civil dates via `Value`, `End`, `Today`, and `Month`
+  (range 1900–2100; form fields `Name` / `EndName`).
+- **Time pickers:** Use 0–23 hours internally and submit `HH:MM`, dispatching
+  native `input` and `change` events on commit. Use `DialogTrigger` with
+  `<picker ID>-time` for a standalone modal panel. `InlineContainer` adds a
+  filled surface to inline pickers; `Width` accepts `TimePickerHug` or
+  `TimePickerFill` (default).
+- **ScrollField:** Accepts `Options` or `Items` (label + value), emits
+  `md-scroll-field-change`, and supports `DirectEntry` paired with
+  `ScrollFieldModeButton(ids, textEntry, props)`.
+- Hosts replacing fragments outside HTMX call `initialize(scope)` after insert
+  and `dispose(scope)` before removal on `MaterialTimePickers`,
+  `MaterialScrollFields`, and `MaterialDialogs`.
 
-`ScrollField` accepts string `Options` or `Items` with separate labels and
-unique values. The label is displayed and matched in direct entry. The value is
-submitted under `Name` and sent with the selected index in
-`md-scroll-field-change`. Submitting the form commits a valid direct entry and
-focuses the first invalid field if validation fails. With repeated labels, use
-the rotor to choose between matching options. Form reset restores the initial
-selection.
+### Cards, dialogs, and sheets
+- Use `Card` (content + `Actions` slot), `CardLink` (navigation; never nest
+  interactive controls), or `CardButton` (phrasing content, no actions slot).
+- `Modal` takes a title, description, body children, and `Actions`
+  (`FullScreen` / `BottomActions` for full-screen dialogs; `DialogProps.FormAttrs`
+  makes the content region a native `<form>`). Open with `DialogTrigger`, close
+  with `DialogClose`.
+- Place interactive `Sheet` or `SheetSurface` inside `SheetHost` with a
+  trigger (`Hidden: true` starts a standard sheet closed). Set
+  `SheetProps.AllowFullHeight` on modal bottom sheets to add a `full` anchor
+  alongside `default` and `minimized` (tracked in `data-sheet-size`).
 
-Set `DirectEntry` to allow typing. Render `ScrollFieldModeButton(ids, textEntry, props)`
-where the host needs it, passing the IDs of the fields and their initial mode.
-The button switches the fields together and focuses the most recently used field,
-or the first enabled field on initial use. Tab or click between the inputs in
-text-entry mode. Enter commits the active input. A single-field control returns
-to scrolling on Enter, while a shared control keeps the fields open for editing.
-
-Hosts that replace fragments directly can call `MaterialTimePickers.initialize(scope)`
-and `MaterialScrollFields.initialize(scope)` after insertion. Call each
-controller's `dispose(scope)` before removing its fragment. The dialog controller
-has the same lifecycle methods for modal panels. HTMX swaps are handled by Forge.
-
-`Card`, `CardLink` and `CardButton` distinguish content, navigation and actions.
-A link card must not contain another interactive control. Put independent action
-buttons in a content card's `Actions` slot. `CardButton` accepts phrasing content
-and does not render an actions slot.
-
-`DialogProps.FormAttrs` makes its content region a native form, with the normal
-content class and spacing. Supply the form ID/action/method there and associate
-footer submit controls through their native `form` attribute. `DescriptionID`
-preserves an existing supporting-text reference when adapting a playground.
-
-`SelectField` accepts an ID, form name, value, options, outlined/chip presentation
-and consumer attributes. Display labels and submitted values remain separate.
-`Field` uses the same option list for select/autocomplete; option dividers and
-leading content are supplied by callers. The compatibility `Select` entry point
-retains its hidden native select for existing tool integrations.
-
-`AppBarProps.ScrollTarget` names an application scroll container, or `document`, to
-update its scrolled surface without a playground host. `MenuHost` supplies the
-root for command and submenu coordination; callers supply commands and optional
-feedback. A menu command does not require a demo feedback output.
-
-`Modal` accepts a title, optional description, body children and an `Actions`
-component. `FullScreen` selects the full-screen anatomy; `BottomActions` places
-its actions in the bottom action bar. `DialogTrigger` opens it; `DialogClose` supplies a result. `Sheet`
-supplies normal header/body/actions slots. `SheetSurface` supplies panel and handle
-anatomy when the application needs its own header. Place interactive sheets inside
-`SheetHost`; render a trigger alongside the sheet. `Hidden: true` starts a standard
-sheet closed. Modal sheets start closed through native dialog state.
-
-Bottom sheets have explicit `minimized` and `default` height anchors. Set
-`SheetProps.AllowFullHeight` on a modal bottom sheet to add a `full` anchor.
-The handle cycles default → full → minimized → default when enabled; without
-full height it alternates default and minimized. Dragging snaps to the enabled
-anchors, arrow keys move one anchor, and Home/End select the largest/smallest.
-Equivalent heights are skipped. Reopening restores the configured initial height.
-`data-sheet-size` records the active anchor; `data-variant` remains the captured
-expanded/minimized visual configuration. Modal sheets retain rounded top corners
-at the minimized anchor; the captured square minimized shape applies to standard
-sheets.
-
-`Attrs` and `InputAttrs` extend application hooks or adapt playground states.
-`Attrs["class"]` merges consumer classes with the component classes. Root styles
-and application hooks use these attributes; shared variants use typed props.
-`IconButtonContent`, `CardSurface`, `CardLinkSurface`, `CardBody`, `SheetHeader`,
-`SheetBody` and `SheetActions` provide slots for application compositions without
-copying component structure.
-Normal callers should use typed props rather than copy `md-*` classes or forced
-`data-component-state` values. Existing attribute-based helpers remain compatible;
-they are lower-level entry points, not a second component implementation.
-
-## Assets
-
-A render records modules through `ui.WithAssets`. Nested components register their
-own modules. A badge inside a list therefore records both `badge` and `list`.
-The common module is always included when a component registers dependencies.
-
-```go
-assets := ui.Assets{}
-var body bytes.Buffer
-ctx := ui.WithAssets(request.Context(), assets)
-if err := page.Render(ctx, &body); err != nil {
-    return err
-}
-// Resolve assets through Forge's modules.json, write the head, then the body.
-```
-
-Buffer before emitting the page head, or perform the host's existing collection
-pass. Keep the map scoped to one render; it is not a concurrent global registry.
-The host resolves module names using `forge/components/modules.json`, includes
-common CSS/runtime first, and serves generated theme bindings with authored CSS.
-`WithAssets` collects requirements; it does not generate URLs or insert script
-and link elements. Catalog's normal render and nested asset scopes attach it
-already. A new server must provide the corresponding asset delivery.
-
-Run `npm run build:components` after browser-behavior changes. Run
-`npm run build:tokens -- --published <publication>` after CSS or token-binding
-changes. These builds serve different purposes.
-
-## State and events
-
-| Owner | Responsibilities |
-| --- | --- |
-| Forge controller | Open/close, focus return, Escape, gestures, animation interruption, cleanup and native control synchronization |
-| Application | Data loading, unread state, saving, validation policy, deletion and routing |
-| Catalog playground | Example values, forced visual states, comparison controls and sample save/discard behavior |
-| Server pipeline | Capture completeness, publication integrity and persisted update states |
-
-`MaterialDialogs.open(dialog, opener)` and `MaterialDialogs.close(dialog, result,
-reason)` provide programmatic dialog control once its script has loaded. The
-controller emits `md-dialog-beforeopen`, `md-dialog-opened`,
-`md-dialog-beforeclose` and `md-dialog-closed`. The two `before` events are
-cancelable. Close events include the result; `beforeclose` also includes the
-reason. Application listeners can prevent dismissal while validating or saving.
-Native `dialog.close()` and `form method="dialog"` remain native close paths;
-use the controller API for animated, cancelable dismissal.
-
-Sheets emit cancelable `md-sheet-beforeclose` and completed `md-sheet-closed`
-events. Their reason is `confirm` or `dismiss`. Closing a sheet does not save or
-restore inputs. Tabs emit `md-tab-change` with the selected tab ID and panel ID;
-selecting a tab does not remove its badges.
-
-No shared state-machine framework is required. Each controller owns its local
-interaction lifecycle. Persisted capture/publication workflows, export request
-cancellation and page caches have separate owners and invariants.
+### Compound components and host hooks
+- **Navigation:** `NavigationRail` owns its header, FAB, and destination region
+  (`PersistentMenu` reserves the slot for immersive `RailFrame`). Selection does
+  not clear badges. `NavigationItemProps.IconContent` accepts a custom icon;
+  child content renders a trailing indicator.
+- **Lists:** `ListHost` provides live announcements and emits `md-list-change`.
+  `ListRowFrameProps.Actions` keeps trailing controls (`IconButton`, `Menu`)
+  outside the primary row button; `data-list-primary-action` activates a
+  trailing button from the row. Use `ListItemProps.Trailing` for decorative
+  content.
+- **Search:** Emits `md-search-select` (`detail.label`) and `md-search-profile`.
+  Mark inert background regions with `data-search-background` and adaptive
+  viewports with `data-search-viewport`.
+- **App bars, menus, toolbars, loading:** `AppBarProps.ScrollTarget` names a
+  scroll container (or `document`). `MenuHost` coordinates commands/submenus.
+  `data-toolbar-viewport` identifies available space for floating toolbars. Use
+  `Loading` for shared loading geometry.
 
 ## Component families
-
-Every component family has an entry point in `forge/components/ui`. Templates
-and props are grouped by component. Application scenes have been removed; the
-remaining compatibility adapters are tracked in the refactor plan.
 
 | Family | Entry points |
 | --- | --- |
 | Buttons and icon buttons | `Action`, `ButtonLink`, `IconButton` |
 | Button groups and split buttons | `ButtonGroupSurface`, `GroupItem`, `SplitHost`, `SplitButton`, `SplitMenu` |
-| FAB and FAB menu | `FAB` with `Extended` when needed, `FABMenu`, `FABMenuItem` |
-| Cards, badges and dividers | `Card`, `CardLink`, `CardButton`, `Badge`, `Divider` |
+| FAB and FAB menu | `FAB`, `FABMenu`, `FABMenuItem` |
+| Cards, badges, dividers | `Card`, `CardLink`, `CardButton`, `Badge`, `Divider` |
 | Chips and choices | `Chip`, `CheckboxField`, `CheckboxControl`, `Switch`, `SwitchControl`, `Radio`, `RadioControl` |
-| Text, select and autocomplete fields | `TextField`, `Field` with `Kind: "select"` or `Kind: "autocomplete"` |
+| Text, select, autocomplete | `TextField`, `SelectField`, `Field` (`Kind: "select"` / `"autocomplete"`) |
 | Date and time pickers | `DatePicker`, `DatePickerPanel`, `DateEntryField`, `TimePicker`, `TimePickerPanel`, `ScrollField`, `ScrollFieldModeButton` |
 | Search and carousel | `Search`, `SearchView`, `SearchBarSurface`, `SearchResult`, `Carousel`, `CarouselItem` |
 | Lists | `ListHost`, `List`, `ListRow`, `ListButton`, `ListLink`, `ListContent` |
@@ -222,72 +121,39 @@ remaining compatibility adapters are tracked in the refactor plan.
 | Dialogs and sheets | `Modal`, `DialogTrigger`, `DialogClose`, `SheetHost`, `SheetTrigger`, `Sheet`, `SheetSurface` |
 | Progress and loading | `Progress`, `Loading` |
 | Feedback | `PlainTooltip`, `Tooltip`, `TooltipContent`, `SnackbarMessage` |
-| Menus | `Menu`, `MenuSurface`, `MenuItem`, `MenuEntry` |
+| Menus | `Menu`, `MenuSurface`, `MenuItem`, `MenuEntry`, `MenuHost` |
 
-The date picker accepts civil dates through `Value`, `End`, `Today` and `Month`.
-Use `Name` and `EndName` for its form fields. An empty `Month` follows the selected
-date, or today when no date is selected. Its supported range is 1900–2100.
-Supply `Today` when the rendered date must be deterministic. Sample dates and
-forced states belong to the Catalog adapter.
+## Assets
 
-Composite components use content slots. Put a split button and its `SplitMenu`
-inside `SplitHost`; the menu ID uses the same base ID as the button. Carousel
-items take application images and labels; the host supplies any header or
-navigation controls. Search results, optional search options and page content
-belong to the caller. A navigation-button search bar requires the host to provide
-its matching navigation dialog. `MenuEntry` adds supporting text and shortcut slots to `MenuItem`. Their attributes carry command IDs, submenu
-relationships and checked states; command execution belongs to the application.
+Components register their module dependencies via `ui.WithAssets` (including
+nested components; `common` is always included):
 
-Playground environment composition lives in Catalog's
-`playground_environment.templ`: simulated viewports, scroll regions, backdrop and
-sample application layout. `component_preview.templ` marks the environment and
-specimen boundaries with `data-playground-environment` and
-`data-playground-specimens`. These are inspection hooks, not a second component
-runtime. Legacy `md-*-demo` classes remain where existing CSS/controllers need
-them. Environment controls use the same APIs where they represent components.
+```go
+assets := ui.Assets{}
+var body bytes.Buffer
+ctx := ui.WithAssets(request.Context(), assets)
+if err := page.Render(ctx, &body); err != nil {
+    return err
+}
+// Resolve assets through forge/components/modules.json, write <head>, then body.
+```
 
-Catalog still has adapters for its playground controls and older illustration
-fixtures. They choose configurations and sample content. They are not the API for
-building application scenes. Keep new screen composition in the application
-scene templates, with pane/grid rules from `docs/reference/layout.md`.
+Keep `ui.Assets` scoped to one render and buffer the body before writing `<head>`.
+Run `npm run build:components` after behavior changes and
+`npm run build:tokens -- --published <dir>` after CSS/token-binding changes.
 
-The migration preserves the existing CSS implementation. API coverage does not
-by itself certify every component against Material guidelines. Source fidelity,
-layout and interaction checks still apply.
+## State and events
 
-## Compound components and application boundaries
+| Owner | Responsibilities |
+| --- | --- |
+| Forge controller | Open/close, focus return, Escape, gestures, animation interruption, cleanup, native sync |
+| Application | Data loading, unread state, saving, validation policy, deletion, routing |
+| Catalog playground | Sample values, forced visual states, comparison controls |
 
-`NavigationRail(RailProps)` owns its optional menu header, FAB and destination
-region. Supply destinations as children. Its FAB retains label anatomy during
-collapse; callers should not construct a separate header or copy rail FAB classes.
-`PersistentMenu` reserves the internal menu slot when `RailFrame` supplies the
-single anchored toggle for immersive mode. Selection never marks badges read.
-
-`ListHost` supplies live announcements for interactive lists. A non-nil
-`ListItemProps.Selected` gives an action row an explicit selection state.
-`ListRowFrameProps.Actions` accepts trailing controls such as `IconButton` and
-`Menu`. The frame reserves their width, keeps them outside the primary row
-button, and reserves room for each direct IconButton's 48 px hit area. Set
-`data-list-primary-action` on a direct trailing button to activate it from the
-row as well. A toggle button retains its own pressed state. Use
-`ListItemProps.Trailing` for decorative icons and text inside the primary action.
-`md-list-change` carries feedback text for application listeners; Catalog may show
-that text in its sample output without becoming a runtime dependency.
-
-Search emits `md-search-select` with `detail.label` and `md-search-profile` for
-application actions. Result activation closes search and restores input focus;
-it does not route or rewrite application content. Mark inert background regions
-with `data-search-background` and an adaptive viewport with
-`data-search-viewport`. Playground width controls remain consumer code.
-
-Floating toolbar hosts can identify available space using
-`data-toolbar-viewport`; without that hook, measurement uses the component's
-parent. Use `Loading` for shared loading geometry instead of interpreting the
-shape asset in a consumer.
-
-Navigation items accept child content for a trailing indicator, such as a
-section disclosure chevron. `NavigationItemProps.IconContent` accepts a custom
-icon component, such as the site logo; otherwise `Icon` supplies the standard
-outline and selected symbols. The site shell owns section switching; destination
-items retain native links. Keep navigation hierarchy and appearance controls in
-the host shell rather than adding site behavior to the navigation primitive.
+- **Dialogs:** `MaterialDialogs.open(dialog, opener)` and
+  `MaterialDialogs.close(dialog, result, reason)` emit `md-dialog-beforeopen`
+  (cancelable), `md-dialog-opened`, `md-dialog-beforeclose` (cancelable,
+  includes `result` and `reason`), and `md-dialog-closed`.
+- **Sheets:** Emit `md-sheet-beforeclose` (cancelable) and `md-sheet-closed`
+  with reason `confirm` or `dismiss`.
+- **Tabs:** Emit `md-tab-change` with the selected tab and panel IDs.

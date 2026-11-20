@@ -102,9 +102,7 @@ playgrounds, dialogs, table controls and implementation downloads. Catalog
 owns sample content, application actions and the exterior playground environment.
 Custom component and tool tiles remain site designs. Consumer classes and hooks
 use `Attrs` and slot attributes; recurring anatomy and behavior fixes belong in Forge.
-See [component authoring](reference/components-api.md) for the API contract and
-[the migration checklist](component-api-refactor-plan.md) for remaining adapter
-and standalone interaction audits. API imports alone do not establish adoption.
+See [component authoring](reference/components-api.md) for the API contract.
 
 Catalog uses native HTML/CSS/JavaScript components and shared Go templ controls.
 Forge does not publish a Web Components package.

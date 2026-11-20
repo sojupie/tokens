@@ -2,8 +2,8 @@
 
 Benchmarks through November 10, 2026, at Catalog revision `71811ed`. The
 inventory follows Git history from source capture through browser delivery.
-The [delivery reference](delivery-performance.md) and [development guide](../development.md)
-retain the longer experiments and implementation details.
+The [delivery reference](../reference/delivery-performance.md) and [development guide](../development.md)
+document the current architecture and benchmark commands.
 
 The biggest measured gains came from avoiding work. The crawler can finish
 before its deadline, publication builds can reuse history, repeated requests

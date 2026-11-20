@@ -1,45 +1,44 @@
 # Search indexing
 
-Build and run the server with its public origin:
+Set the public collection origin (HTTPS with `/md3`, no trailing slash, query,
+or fragment) via `--public-origin` or `TOKENS_PUBLIC_ORIGIN`:
 
-```powershell
-go build -o .\bin\tokens.exe .\cmd\tokens
-.\bin\tokens.exe serve --published published --listen 127.0.0.1:8081 --public-origin https://tokencatalog.dev/md3
+```sh
+./bin/tokens serve --published published --listen 127.0.0.1:8081 \
+  --public-origin https://tokencatalog.dev/md3
 ```
 
-Replace the example with the site's public HTTPS URL. Include `/md3` as the collection path. Do not include a
-query, fragment or credentials. `TOKENS_PUBLIC_ORIGIN` sets the same default;
-the command-line flag overrides it. The server uses this URL for canonical links
-and the sitemap, not the incoming request headers.
+The server uses this value for canonical URLs and the sitemap rather than
+incoming request headers. When unset, HTML pages emit `noindex`, `/robots.txt`
+disallows crawling, and `/sitemap.xml` returns `503`.
 
-Without `--public-origin`, HTML pages have `noindex`, robots.txt disallows crawling, and the sitemap returns 503. This keeps local and preview instances out of search results. Set the flag when deploying the public site.
+## Canonical and `noindex` rules
 
-## Pages and filters
+- **Subject pages & token sets:** The default table and single-table
+  `/sets/all` views declare the main subject URL as canonical. Distinct
+  token-set pages (`/components/<slug>/sets/...`) keep their own canonicals,
+  and legacy `?set=...` URLs canonicalize to the corresponding `/sets/...` URL.
+- **Filtered views:** Search queries, context filters, and filtered changelog
+  views emit `noindex, follow`.
+- **Pagination:** Unfiltered component changelog pages keep their own canonical
+  URLs (`?page=2` is not canonicalized to page 1).
+- **APIs and downloads:** JSON API and download responses send
+  `X-Robots-Tag: noindex`.
 
-- The table's token-set selector contains grouped HTML links. It replaces the separate token-set list and native select. Its links exist in the initial HTML; JavaScript only positions the native popover and adds keyboard navigation.
-- Switching sets retains explicit context selections only when the destination supports that combination. Without explicit filters, links use the clean indexable URLs.
-- The root subject page server-renders its default table with a general heading and title. The default is the first source table for most subjects and Color Schemes for Color. All tokens is the last option and server-renders every table at `/sets/all`. Individual tables retain their source membership and URLs.
-- Component display names use singular English nouns. Source names, identifiers and URL slugs stay unchanged. Style names retain their source wording.
-- Headings and titles follow `Material Design 3 "Icon Button" tokens`. Table pages append a qualifier such as `Filled / Color` or `Medium / Size`. Titles end with ` | Token Catalog`. Descriptions identify the selected table.
-- Table qualifiers come from captured labels. Baseline and deprecated labels remain visible. Expressive availability and recommendation guidance must not be inferred from a color name such as Vibrant.
-- Playground changes replace the current history entry. The URL retains the configuration for sharing and reloading.
-- A token-set page such as `/components/buttons/sets/button/color/elevated` renders its tokens on the server. JavaScript is not needed to load the content.
-- Existing `?set=...` links still work and declare the corresponding token-set URL as canonical. The default table declares the main subject URL as canonical. Other distinct tables keep their own canonicals. For a single-table subject, All tokens also declares the main subject URL as canonical.
-- Search, context and changelog-filter views have `noindex, follow`. These views contain selected subsets, so they do not claim to duplicate a full page.
-- Unfiltered component changelog pages have their own canonical URLs. Page two keeps `?page=2`; it is not canonicalized to page one.
-- API and JSON download responses have an `X-Robots-Tag: noindex` header.
+## Sitemap and robots.txt
 
-## Sitemap and deployment checks
+- `/sitemap.xml` lists the home page, component and style indexes, subject
+  pages, distinct token sets, each subject's first changelog page, and
+  same-origin browser tools. Default-table duplicates and filtered views are
+  omitted.
+- `/robots.txt` advertises `/sitemap.xml` when `TOKENS_PUBLIC_ORIGIN` is set and
+  allows crawlers to fetch filtered pages so they can read their `noindex` tags.
 
-`/sitemap.xml` lists the home page, component and style indexes, component and style pages, token sets, each subject's changelog entry page, and the same-origin tool apps. Further changelog pages are reachable through normal pagination links. Default-table duplicates, single-table All tokens duplicates and filter combinations are omitted.
+## Post-deploy checks
 
-`/robots.txt` advertises the root sitemap when the public origin is configured so it covers both `/md3/` and `/tools/`. Crawlers can also fetch filtered pages to read their `noindex` instructions.
-
-After deployment:
-
-1. Check that the public site is accessible without a Cloudflare Access login or bot challenge for ordinary crawlers.
-2. Verify the canonical URL and description in the HTML response for a component and a token-set page.
-3. Add the domain to Google Search Console and submit `/sitemap.xml`.
-4. Inspect representative URLs in Search Console. Check which canonical Google selected and whether the HTML contains the expected tokens.
-
-Canonical URLs and sitemaps help discovery and consolidation; they do not guarantee indexing or rankings. See Google's [canonical URL guidance](https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls), [pagination guidance](https://developers.google.com/search/docs/specialty/ecommerce/pagination-and-incremental-page-loading), and [sitemap guidance](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap).
+1. Confirm ordinary crawlers can fetch pages without a Cloudflare Access login
+   or bot challenge.
+2. Check `<link rel="canonical">` and meta descriptions on a subject page and a
+   token-set page.
+3. Submit `/sitemap.xml` in Google Search Console and inspect representative
+   URLs.

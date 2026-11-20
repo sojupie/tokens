@@ -1,17 +1,16 @@
 # DTCG exports and CSS
 
-The exporter converts a saved publication into DTCG 2025.10 JSON. Each export
-contains one selected context, its references and their dependencies. Google’s
-captured payloads remain unchanged.
+The exporter converts a saved publication into DTCG 2025.10 JSON for one
+selected context, including its references and required dependencies.
 
-## Export tokens
+## Export tokens via CLI
 
 ```sh
 go run ./cmd/tokens export --published published --output dist/tokens
 ```
 
-The default context uses Light, Default contrast, Web, 3P, Static font,
-Standard motion and Small language height. Override individual dimensions:
+Default context: Light, Default contrast, Web, 3P, Static font, Standard motion,
+Small language height. Override individual dimensions with `--context`:
 
 ```sh
 go run ./cmd/tokens export --published published \
@@ -19,20 +18,19 @@ go run ./cmd/tokens export --published published \
   --output dist/dark-high
 ```
 
-`tokens.tokens.json` contains the DTCG document. `report.json` records the
-publication, selected context, DTCG token count, mapped source names, aliases
-and omitted values. `extensionOnly` lists circular shapes represented through
-source metadata.
-Unknown context choices and conflicting values fail the export. Tokens with
-no defined value in the selected context appear in the report.
+Outputs:
+- `tokens.tokens.json` — the DTCG document.
+- `report.json` — publication metadata, selected context, token counts, aliases,
+  omitted values, and `extensionOnly` entries (such as circular shapes and
+  percentage lengths).
 
-`--themes` exports the six Light/Dark and Default/Medium/High contrast
-combinations used by the site, with an `index.json` listing their files.
-Other context dimensions keep their selected values.
+Pass `--themes` to export all six Light/Dark × Default/Medium/High contrast
+combinations with an `index.json`. Unknown context choices and conflicting
+values fail the export.
 
 ## Generate CSS locally
 
-Install Node.js 22.18 or newer and Go, then run from the repository root:
+Requires Go and Node.js 22.18+:
 
 ```sh
 npm ci
@@ -40,33 +38,36 @@ npm run build:tokens -- --published published
 go run ./cmd/tokens serve --published published --listen 127.0.0.1:8081
 ```
 
-The build uses pinned Style Dictionary 5.6.1. It writes DTCG documents, reports
-and CSS for all six appearance contexts under `published/assets/`. The site
-loads `assets/theme.css` on startup. Its manifest binds the generated theme to
-the exact SQLite database and checks the CSS checksum.
+The build uses pinned Style Dictionary 5.6.1 and writes DTCG documents, reports,
+and CSS for all six appearances under `published/assets/`. It also regenerates
+[button](buttons.md) and [component](components.md) CSS; rebuild the Go binary
+afterwards so embedded bindings match the asset manifest. A failed build leaves
+previous assets intact.
 
-The site's color palette is generated with Material Color Utilities from the
-primary and secondary seeds in `forge/material/site-theme.json`. Change either
-palette seed and rebuild to update
-light and dark themes at default, medium, and high contrast. The build uses
-Tonal Spot with contrast levels 0, 0.5, and 1. Component color aliases resolve
-against these generated roles. The configured `motionScheme` selects the captured
-spring context for the site independently; it currently selects Expressive.
-The public download default remains Standard motion. Captured DTCG and downloadable CSS retain the
-upstream palette.
+For an immutable production publication, build assets outside the publication
+directory:
 
-Material Color Utilities is pinned to 0.3.0 because 0.4.0 contains extensionless
-imports that fail in the Node.js build.
+```sh
+npm run build:tokens -- --published /path/to/publication --assets /tmp/site-assets --check-bindings
+go run ./cmd/tokens serve --published /path/to/publication --assets /tmp/site-assets
+```
 
-The build also generates [button styles and a coverage report](buttons.md)
-from the current color and size sets. Rebuild the Go binary after this step.
+`--check-bindings` verifies generated component CSS matches the checked-in files
+without modifying them. In containers, pass `--tokens-binary /usr/local/bin/tokens`.
+See [production asset builds](../operations/deployment.md#generated-publication-assets).
 
-The app stylesheet includes the token variables referenced by its static CSS
-and generated button bindings. Downloadable CSS includes every converted token. The builder checks that
-every required app token exists in all six themes before replacing the assets.
-A failed build preserves the previous assets.
+### Site theme
 
-The server exposes these files when generated assets are present:
+- Color palettes are generated with Material Color Utilities (pinned to 0.3.0;
+  0.4.0 breaks Node ESM with extensionless imports) from the Tonal Spot seeds in
+  `forge/material/site-theme.json` at contrast levels `0`, `0.5`, and `1`.
+- `motionScheme` selects the site's spring context (currently `Expressive`);
+  public downloads default to `Standard` and keep Google's captured palette.
+
+## Download and export endpoints
+
+Prebuilt whole-collection downloads (substitute `light-medium`, `light-high`,
+`dark-default`, `dark-medium`, or `dark-high`; prefix with `/md3` in production):
 
 ```text
 /downloads/dtcg/light-default/tokens.tokens.json
@@ -74,99 +75,46 @@ The server exposes these files when generated assets are present:
 /downloads/dtcg/light-default/report.json
 ```
 
-The site's **Download tokens** dialog offers scoped DTCG JSON, CSS variables,
-and source JSON. Scope can be the current filtered table,
-the whole table, the component or style, or the collection. Context controls
-start from page selections and are validated against the captured data.
-Required alias targets are included automatically. Token ZIPs include a conversion
-report beside each exported file. Scoped DTCG JSON includes the report and selection
-counts in its `dev.tokencatalog.export` extension. Single-file CSS and source JSON
-exports remain single files. The dialog shows omission counts and reasons from
-indexed value metadata; changing options does not generate an export.
-
-`GET /downloads/export` accepts `kind`, `slug`, `scope` (`view`, `set`, `subject`,
-or `collection`), `set`, `q`, and `context.<dimension>`. The `format` parameter is
-`dtcg`, `css`, `source`, `report`, or `summary`. The summary reports selected roots,
-exported roots, dependencies, and omissions. CSS conversion uses a build-time
-value index compiled by Style Dictionary, including captured values outside the
-six prebuilt appearance contexts. The server validates its publication and
-checksum; no Node process is started for a download.
-
-`content=implementation&format=zip` exports a whole component or the collection.
-The archive contains example markup, CSS modules declared by that markup,
-module-owned runtime scripts, the catalog theme, font files, and license notices.
-Its Web theme and motion scheme follow the catalog implementation rather than
-raw token context choices. Theme and contrast can be selected; other token
-context controls do not apply to implementation archives.
-
-The prebuilt whole-collection URLs above and the original JSON API/download
-URLs remain available. Their formats and scope semantics are unchanged.
-
-Replace `light-default` with `light-medium`, `light-high`, `dark-default`,
-`dark-medium` or `dark-high`. Include the collection mount, such as `/md3`,
-when accessing them on the public site.
-
-Rebuild local assets after publishing new data, then restart the server.
-Keep these builds outside approved production generations, whose digests cover
-every file.
-Saved publications without generated assets continue to use the existing Go
-stylesheet generator. The scheduled update pipeline currently builds the saved
-publication, then runs a separate Node asset-builder before restarting the
-server. Production assets stay outside approved generations.
-For an immutable publication, build into an external directory:
-
-```sh
-npm run build:tokens -- --published /path/to/publication --assets /tmp/site-assets --check-bindings
-go run ./cmd/tokens serve --published /path/to/publication --assets /tmp/site-assets
-```
-
-The container supplies `--tokens-binary /usr/local/bin/tokens` to reuse its
-compiled CLI; local builds default to `go run ./cmd/tokens`.
-
-`--check-bindings` requires generated button/component CSS to match the checked-in
-files and leaves those files unchanged. `serve --assets` requires a valid manifest
-and pins the directory after resolving symlinks. See
-[production asset builds](../operations/deployment.md#generated-publication-assets).
-
-The existing API and JSON download formats remain unchanged.
+Scoped exports via `GET /downloads/export`:
+- **Parameters:** `kind`, `slug`, `scope` (`view`, `set`, `subject`, or
+  `collection`), `set`, `q`, `context.<dimension>`, and `format` (`dtcg`, `css`,
+  `source`, `report`, or `summary`).
+- **Batch ZIPs:** Repeat `format` or `context.<dimension>` (up to 64
+  combinations) to download one ZIP with `selections.txt` and per-export
+  conversion reports. Add `summary=1` to inspect a batch without downloading, or
+  `options=1` to list applicable context values.
+- **Scoped CSS:** Uses a build-time Style Dictionary value index so downloads
+  never spawn Node.
+- **Component implementations:** `content=implementation&format=zip` exports a
+  component or collection archive with example HTML, required CSS modules,
+  runtime scripts, catalog theme, fonts, and license notices (theme and contrast
+  are selectable).
 
 ## Material conversion
 
 | Source value | DTCG representation |
 | --- | --- |
-| Color | `color` with sRGB components and alpha |
-| Logical DIPS, type-scale POINTS, PIXELS | `dimension` in CSS pixels |
-| Font family and weight | `fontFamily` and `fontWeight` |
-| Typography | `typography`; absolute line height becomes a font-size multiplier |
-| Duration | `duration` with milliseconds |
-| Cubic Bézier | `cubicBezier` with four coordinates |
-| Opacity, numeric value, font axis value | `number` |
-| Rounded shape | A group of four corner dimensions |
-| Elevation | A dimension retaining the source elevation distance |
+| Color | `color` (sRGB components + alpha) |
+| Logical DIPS, type-scale POINTS, PIXELS | `dimension` in `px` |
+| Font family and weight | `fontFamily`, `fontWeight` |
+| Typography | `typography` (absolute line height converted to font-size multiplier) |
+| Duration | `duration` in `ms` |
+| Cubic Bézier | `cubicBezier` (4 coordinates) |
+| Opacity, numeric value, font axis | `number` |
+| Rounded shape | Group of four corner dimensions |
+| Elevation | `dimension` retaining source distance (app theme maps 0/1/3/6/8/12 dp to shadow levels) |
 
-An omitted numeric field in a typed source dimension represents zero. An
-explicit null remains invalid. Named shape corners override the default;
-unspecified corners inherit a published default. A shape lacking enough
-information to resolve all four corners appears in the omission report.
-
-The `dev.tokencatalog.material` extension preserves the original typed value,
-source name, references and presentation metadata. A single primitive reference
-chain can supply dependency values absent as standalone tokens. Conflicting
-inferences are discarded. Aliases are emitted only for present targets with
-matching types and values. Branching references remain source metadata.
-
-DTCG has no percentage dimension or general shape, motion-path or text-transform
-type. Percentage dimensions and unsupported value types appear in the report
-with their source values. Circular shapes retain their family in a group
-extension; the CSS builder emits an infinite border radius. Variable-font axes
-inside typography remain in the source extension.
-
-The downloadable CSS preserves elevation distances in pixels. The app theme
-converts Material’s 0, 1, 3, 6, 8 and 12 dp distances into the levels expected by
-its existing shadow renderer. Shadow geometry remains defined by that renderer.
-
-The build includes a duration transform and adapts `$root` groups to Style
-Dictionary’s input. The exported JSON retains the DTCG group structure.
+- An omitted numeric field in a typed dimension means `0`; explicit `null` is
+  invalid. Unspecified shape corners inherit a published default; unresolvable
+  shapes are listed in `report.json`.
+- `dev.tokencatalog.material` preserves the original typed value, source name,
+  references, and variable-font axes. Single primitive reference chains can
+  supply missing dependency values; aliases are emitted only when target types
+  and values match.
+- Values without a DTCG type—circular shapes, percentage lengths, motion paths,
+  and text transforms—are recorded in `report.json`. Circular shapes and
+  percentage lengths are kept in `dev.tokencatalog.material` on extension-only
+  groups so the CSS compiler can emit `9999px` / `%`.
 
 ## Checks
 
@@ -177,24 +125,5 @@ TOKEN_ASSETS_DIR="$PWD/published/assets" npm run test:tokens
 TOKEN_CATALOG_THEME_DB="$PWD/published/tokens.sqlite" go test ./source/dtcg ./catalog/web
 ```
 
-The last two commands exercise the real publication and its six generated
-themes. The checks cover aliases, corner overrides, units, zero values,
-typography line height, duration output, required theme tokens and stale assets.
-
-Specifications: [DTCG format](https://www.designtokens.org/tr/2025.10/format/),
-[Style Dictionary compatibility](https://styledictionary.com/info/dtcg/).
-
-Percentage lengths remain in the Material source extension on groups without a
-DTCG `$value`, following the existing handling of circular shapes. The CSS
-compiler reads that extension and emits `%`. This preserves values such as
-selected split-button corners without inventing a DTCG dimension unit.
-
-Repeat `format` or `context.<dimension>` parameters to export multiple selections
-in one ZIP. For example, `format=css&format=dtcg&context.Theme=Light&context.Theme=Dark`
-produces four exports. `selections.txt` identifies each folder's exact selection.
-A request can contain up to 64 combinations. Add `summary=1` to inspect the batch
-without downloading it.
-
-Use `options=1` on the scoped export endpoint to read applicable context values.
-Undefined captured values do not create choices. Inactive context parameters are
-removed before batch expansion so they do not produce duplicate exports.
+Specifications: [DTCG 2025.10](https://www.designtokens.org/tr/2025.10/format/),
+[Style Dictionary DTCG](https://styledictionary.com/info/dtcg/).

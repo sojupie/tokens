@@ -1,36 +1,22 @@
 # Cloudflare setup
 
-The application serves the public interfaces described in [APIs and agent
-access](../reference/agents.md). DNS records, tunnel routing and crawler settings
-are configured in Cloudflare.
+Configure DNS, tunnel routing, DNSSEC, and crawler settings in Cloudflare for
+the public interfaces in [API and agent access](../reference/agents.md). Make
+sure `TOKENS_PUBLIC_ORIGIN` is set (see [deployment](deployment.md)); discovery
+and MCP endpoints return `503` when it is unset.
 
-Follow [deployment](deployment.md) to build and start the application. Set
-`TOKENS_PUBLIC_ORIGIN` to your collection URL, such as
-`https://tokencatalog.dev/md3`. GitHub Actions reads this from the production
-environment variable and saves it in `/etc/tokens/server.env`. Manual deployments
-can set the value in that file. Discovery and MCP return 503 when it is unset.
+Examples below use `tokencatalog.dev`; substitute your own hostname for a fork.
 
-The examples below use the hosted Material Design 3 collection. Substitute your
-own hostname when deploying a fork.
+## 1. Tunnel routing and DNS-AID records
 
-## Cloudflare changes
+In **Zero Trust → Networks → Connectors → Cloudflare Tunnels**, route apex
+hostname `tokencatalog.dev` (empty subdomain and path) to HTTP `tokens:8080`.
+Route the whole hostname without stripping `/md3` so root `/robots.txt` and
+discovery files reach the server.
 
-### 1. Connect the new domain and publish discovery DNS
-
-In the **tokencatalog.dev** zone, confirm the domain uses the Cloudflare
-nameservers shown in Overview. In **Zero Trust → Networks → Connectors →
-Cloudflare Tunnels**, open the existing tunnel and add a published
-application route: hostname `tokencatalog.dev` (leave subdomain and path empty),
-service `HTTP`, URL `tokens:8080`. Route the whole hostname because robots.txt
-and discovery files also live at the root. Do not strip `/md3` or put it in the
-service URL. The application handles that path itself.
-
-Cloudflare should create a proxied CNAME for `@` pointing to the tunnel's
-`<UUID>.cfargotunnel.com` hostname. If it does not, add it in **DNS → Records**.
-Do not add an A record with the server's IP. Resolve any existing conflicting
-apex web record before creating the Tunnel record; keep unrelated mail records.
-
-Then add these DNS-only discovery records, TTL 3600:
+Ensure `@` has a proxied CNAME to `<UUID>.cfargotunnel.com` (no apex A record).
+Enable HTTP/2 on the zone, then add these DNS-only discovery records (TTL 3600;
+copyable zone file at [deploy/dns-aid.zone.example](../../deploy/dns-aid.zone.example)):
 
 | Type | Name | Priority | Target | Values / Content |
 | --- | --- | --- | --- | --- |
@@ -38,70 +24,39 @@ Then add these DNS-only discovery records, TTL 3600:
 | SVCB | `_mcp._agents` | 1 | `tokencatalog.dev` | `alpn="mcp,h2" port=443 mandatory=alpn,port key65400="https://tokencatalog.dev/md3/mcp/server-card" key65402="mcp"` |
 | TXT | `_catalog._agents` | — | — | `url=https://tokencatalog.dev/.well-known/ai-catalog.json` |
 
-[Copyable zone records](../../deploy/dns-aid.zone.example). DNS names contain only
-the hostname; `/md3` belongs in URLs. The numbered SVCB keys and `mcp` ALPN
-label are experimental. The server card advertises the actual MCP endpoint.
-Enable HTTP/2 in the zone. No A2A records are needed.
+## 2. DNSSEC
 
-Sources: [Tunnel routing](https://developers.cloudflare.com/tunnel/concepts/routing/),
-[DNS-AID draft](https://datatracker.ietf.org/doc/draft-mozleywilliams-dnsop-dnsaid/),
-[Cloudflare SVCB records](https://developers.cloudflare.com/dns/manage-dns-records/reference/dns-record-types/#svcb-and-https).
+Enable **DNS → Settings → DNSSEC** and add the DS record at your registrar
+(automatic on Cloudflare Registrar). Confirm the status is active and a
+validating resolver returns the `ad` flag.
 
-### 2. Enable DNSSEC and complete registrar setup
+## 3. Public agent and API traffic
 
-Open **DNS → Settings → DNSSEC** and enable it. Follow Cloudflare's displayed
-DS-record instructions at your domain registrar. If Cloudflare Registrar manages
-the domain, Cloudflare handles the DS record. Confirm the DNSSEC status is active
-and a validating resolver returns the AD flag for the discovery records.
-Enabling zone signing without the parent DS chain does not authenticate discovery.
-See [Cloudflare DNSSEC setup](https://developers.cloudflare.com/dns/dnssec/).
+- Allow unauthenticated reads (no Cloudflare Access or JS challenges) on HTML
+  pages, `/robots.txt`, `/agents.txt`, `/agents.json`, `/llms.txt`,
+  `/llms-full.txt`, `/openapi.json`, `/auth.md`, `/skills/`, `/.well-known/`,
+  `/api/`, and `/downloads/`.
+- Allow `POST` and `OPTIONS` on `/md3/mcp` (`GET` returns `405` by design).
+- If **Browser Integrity Check** blocks API clients (e.g. Python `urllib` with
+  HTTP 403 / error `1010`), add a Configuration Rule disabling it for
+  `http.host eq "tokencatalog.dev"`.
+- If Cloudflare Managed `robots.txt` or AI Crawl Control injects content
+  signals, match `ai-train=no, search=yes, ai-input=yes` or disable managed
+  injection so the response has one consistent policy.
 
-### 3. Allow public agent traffic
+## 4. Caching and Markdown negotiation
 
-Review Cloudflare Access, WAF custom rules, Bot Fight Mode / Super Bot Fight Mode,
-AI Crawl Control and rate-limit rules for this hostname. Ensure legitimate
-reads of the HTML pages, `/robots.txt`, `/agents.txt`, `/agents.json`, `/llms.txt`,
-`/llms-full.txt`, `/openapi.json`, `/auth.md`, `/skills/`, `/.well-known/`, `/api/`
-and `/downloads/` do not require a login or JavaScript challenge. Allow POST and
-OPTIONS at `/mcp`; GET at that endpoint returns 405 by design. Keep ordinary
-rate limiting and DDoS protection. Some bot settings cannot be skipped through
-custom WAF rules; adjust the relevant product setting if it still blocks requests.
+HTML routes vary on `Accept` (`text/markdown` vs `text/html`) and `HX-Request`.
+Standard Cloudflare caching ignores those `Vary` headers, so do **not** apply a
+blanket Cache Everything rule to HTML routes—either bypass cache on HTML/MCP or
+scope any HTML Cache Rule to exclude `HX-Request: true` and
+`Accept: text/markdown`. Keep versioned `/static/` assets cached and purge
+discovery/robots caches after deployment.
 
-Browser Integrity Check can block ordinary API clients, including Python's
-default user agent, with HTTP 403 and `error code: 1010`. If that happens, create
-a Configuration Rule matching `http.host eq "tokencatalog.dev"` and set
-Browser Integrity Check to Off for this hostname. This allows clients to use
-their normal user agent. See [Browser Integrity Check](https://developers.cloudflare.com/waf/tools/browser-integrity-check/).
-
-### 4. Keep content signals consistent
-
-If Cloudflare Managed robots.txt or AI Crawl Control inserts content signals,
-use the same `ai-train=no, search=yes, ai-input=yes` policy or disable the managed
-robots.txt injection for this site. Confirm the live robots response contains
-one consistent policy. The origin sends its own `Content-Signal` header, which
-Cloudflare Markdown for Agents preserves.
-
-### 5. Review caching and optional Markdown conversion
-
-Apply the following checks to `tokencatalog.dev`. Paths listed here are relative
-to `/md3` unless described as root discovery files.
-
-Remove any Cache Everything / custom cache rule that caches HTML without
-separating `Accept` and `HX-Request` variants. Bypass cache for `/`, `/components`,
-`/components/*`, `/styles`, `/styles/*`, `/changes` and `/mcp` if such a rule exists.
-Leave versioned `/static/` assets cached. Purge any older cached robots or
-discovery responses after deployment.
-
-**Markdown for Agents is optional** because the origin now handles negotiation.
-If you want Cloudflare's converter (including its token-count header when
-available), select the zone → **AI Crawl Control → Markdown for Agents**, or
-create a Configuration Rule for this hostname. Cloudflare currently documents
-Pro/Business availability. Test both representations after enabling it.
-See [Cloudflare Markdown for Agents](https://developers.cloudflare.com/fundamentals/reference/markdown-for-agents/).
+Cloudflare's **Markdown for Agents** (Pro/Business) is optional because the
+origin handles `Accept: text/markdown` directly.
 
 ## Verify after deploying
-
-Replace the example origin in these commands:
 
 ```sh
 curl -i https://tokencatalog.dev/md3/ -H 'Accept: text/markdown'
@@ -127,14 +82,10 @@ dig @1.1.1.1 +dnssec _mcp._agents.tokencatalog.dev SVCB
 dig @1.1.1.1 _catalog._agents.tokencatalog.dev TXT
 ```
 
-The Markdown response should contain the page heading and data, with no HTML
-scripts, and `Content-Type: text/markdown`. Discovery should return 200; the
-API catalog must use `application/linkset+json`. DNSSEC responses should include
-`ad` in the flags. Test WebMCP in a supporting browser; the automated JS tests
-exercise registration, API reads and cleanup, but cannot provide browser support.
-Rerun the readiness scan after DNS propagation and deployment; authentication
-and registration checks can remain absent for this public service.
-
+Expected results:
+- `Accept: text/markdown` returns `Content-Type: text/markdown` with no `<script>` tags.
+- Discovery endpoints return `200`; `api-catalog` returns `application/linkset+json`.
+- `dig +dnssec` responses include the `ad` flag.
 
 See [URL layout](../reference/agents.md#url-layout) for collection paths and
 root discovery aliases.

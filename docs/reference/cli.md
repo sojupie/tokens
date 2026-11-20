@@ -1,240 +1,80 @@
 # Token Catalog CLI
 
-The command is organized around the work being done:
+All commands run through `cmd/tokens` (use `go run ./cmd/tokens ...` or your
+built `./bin/tokens ...`). Pass `--help` at any level for full flags.
+
+## Commands
 
 ```text
+tokens crawl                      Capture Material source pages and payloads
+tokens snapshot create            Build an immutable snapshot from a crawl receipt
+tokens snapshot verify            Verify snapshot hashes, schemas, and payloads
+tokens snapshot compare           Semantically diff two verified snapshots
+tokens publish                    Build SQLite read index, history, and downloads
+tokens export                     Export a selected context as DTCG 2025.10 JSON
+tokens serve                      Start the read-only catalog server
+tokens update <subcommand>        Run scheduled updates (run, status, inspect, approve, retry, notify, test-notification)
+tokens guidance [subcommand]      Capture docs, snapshot baselines, or validate checks.json
+tokens site-shell                 Export shared header/footer HTML and assets for static tools
+tokens illustrations              Render component thumbnails and write image manifests
+tokens forge inspect              Scan CSS sources and write css-usage.json
+```
+
+## Capture, snapshot, and publish
+
+```sh
 tokens crawl
 tokens snapshot create
 tokens snapshot verify
-tokens snapshot compare
+tokens snapshot compare [--verbose] [--output review/compare.txt]
 tokens publish
-tokens export
-tokens serve
-tokens update run
-tokens update status
-tokens update inspect RUN_ID
-tokens update approve RUN_ID
-tokens update retry RUN_ID
-tokens update notify RUN_ID
-tokens update test-notification
+tokens serve --published published --listen 127.0.0.1:8081
 ```
 
-Show help at any level:
+- **Crawl defaults:** Page catalog `inputs/page-catalog.json`, cache
+  `.cache/material-token-table-responses`, receipts `crawl-results`, 30 s page
+  timeout, max 500 pages. Reuse cached payloads by default; pass `--refresh` to
+  re-download, `--retry-failed` (or `--retry-failed-from RECEIPT`) to repair
+  failed pages, or `--discover --scope token-source-pages --dry-run` to check
+  for catalog drift. See [crawler](crawler.md).
+- **Snapshots:** `snapshot create` writes to
+  `snapshots/material-token-data/<snapshot-id>` (derived from UTC crawl start
+  time; refuses non-empty directories) and works offline from cached payloads.
+  `snapshot compare` diffs the two newest snapshots by `createdAt` semantically,
+  ignoring payload hashes and release URLs. See [snapshot format](snapshot-format.md).
+- **Explicit paths:** Override auto-selection when targeting specific artifacts
+  (do not mix positional args and flags on `verify` or `compare`):
 
-```text
-go run ./cmd/tokens --help
-go run ./cmd/tokens crawl --help
-go run ./cmd/tokens snapshot --help
-go run ./cmd/tokens snapshot create --help
-```
+  ```sh
+  tokens snapshot create --crawl-receipt crawl-results/<receipt>.json \
+    --page-catalog inputs/page-catalog.json \
+    --output snapshots/material-token-data/<id> --id <id>
+  tokens snapshot verify snapshots/material-token-data/<id>
+  tokens snapshot compare snapshots/material-token-data/<older> snapshots/material-token-data/<newer>
+  ```
 
-## Normal workflow
+## Serving and exports
 
-### Capture and publication
+- **`tokens export`:** Exports a context to DTCG JSON (`--published DIR --output DIR`).
+  Repeat `--context Name=Value` to override dimensions, or pass `--themes` for
+  all six site appearances. See [DTCG exports and CSS](dtcg.md).
+- **`tokens serve --assets DIR`:** Loads and verifies external generated assets
+  against the publication and embedded bindings. `--motion-url` /
+  `--motion-lab-url` (or `TOKENS_MOTION_URL` / `TOKENS_MOTION_LAB_URL`) set the
+  tool navigation links. See [deployment](../operations/deployment.md#generated-publication-assets).
+- **`tokens update`:** Manages unattended runs, review, retries, and SMTP/webhook
+  alerts. See [scheduled updates](../operations/updates.md).
 
-For unattended updates, review and notifications, see
-[scheduled updates](../operations/updates.md).
+## Guidance, shell, and illustrations
 
-Run a crawl using the checked-in page URL catalog:
-
-```text
-go run ./cmd/tokens crawl
-```
-
-Create a snapshot from the newest crawl receipt:
-
-```text
-go run ./cmd/tokens snapshot create
-```
-
-The command derives the snapshot ID from the crawl start time in UTC and uses
-`snapshots/material-token-data/<snapshot-id>` as the output directory. It
-refuses to use an existing non-empty output directory.
-
-Verify the newest snapshot:
-
-```text
-go run ./cmd/tokens snapshot verify
-```
-
-Compare the two latest snapshot runs:
-
-```text
-go run ./cmd/tokens snapshot compare
-```
-
-Show affected subjects and before/after semantic values:
-
-```text
-go run ./cmd/tokens snapshot compare --verbose
-```
-
-The normal comparison is semantic: it reports Material changes by token or
-component. It ignores source-payload hashes, release-directory URLs, internal
-version IDs, and repeated copies of the shared design-system graph. `--verbose`
-prints the affected subjects and before/after values.
-
-Write the same human-readable comparison report to a file:
-
-```text
-go run ./cmd/tokens snapshot compare \
-  --output review/snapshot-compare.txt
-```
-
-Comparison reports are derived views. They are generated by `snapshot compare`,
-not placed inside immutable snapshot directories or generated automatically by
-`snapshot create`.
-
-Retry only the failed pages from the newest crawl receipt:
-
-```text
-go run ./cmd/tokens crawl --retry-failed
-```
-
-Select a specific receipt when needed:
-
-```text
-go run ./cmd/tokens crawl \
-  --retry-failed-from crawl-results/20260811T143000.000000000Z.json
-```
-
-The repair crawl opens only pages that previously had a page error, missing
-token-table observation, or failed/missing source payload. Its new crawl
-receipt retains the previous successful pages and replaces only the retried
-pages and their source payload records. In that receipt, `pagesAttempted` is
-the number opened by the repair, while `pagesCarriedForward` is the number
-retained from the earlier crawl. `complete` describes the merged receipt. If
-the retry cannot capture any page successfully, it exits without writing a
-new receipt.
-
-## Broad token-source inventory
-
-Use the broader discovery scope when reviewing foundation and style pages in
-addition to component specification pages:
-
-```text
-go run ./cmd/tokens crawl \
-  --discover \
-  --scope token-source-pages \
-  --dry-run
-```
-
-The scope considers component pages ending in `/specs` and style token pages
-ending in `/tokens`, `/specs`, `-tokens`, or `-scale`. It produces candidate page results and drift. It
-does not automatically make unreviewed pages part of the normal catalog.
-After reviewing the additions, `--discover` and `--update-page-catalog` may be
-combined for one live discovery and capture. The update writes the reviewed
-candidate catalog before the crawl continues.
-
-## Explicit paths
-
-Every automatic choice can be overridden when working with a specific receipt
-or snapshot:
-
-```text
-go run ./cmd/tokens snapshot create \
-  --crawl-receipt crawl-results/20260811T143000.000000000Z.json \
-  --page-catalog inputs/page-catalog.json \
-  --output snapshots/material-token-data/material-2026-08-11-1430-example \
-  --id material-2026-08-11-1430-example
-
-go run ./cmd/tokens snapshot verify \
-  snapshots/material-token-data/material-2026-08-11-1430-example
-
-go run ./cmd/tokens snapshot compare \
-  snapshots/material-token-data/material-2026-08-11-1430-older \
-  snapshots/material-token-data/material-2026-08-11-1500-newer
-```
-
-With no paths, `snapshot compare` selects the two latest snapshot runs by the
-manifest `createdAt` timestamp. The positional forms and flag forms cannot be mixed for `verify` or `compare`.
-Unknown flags, unexpected positional arguments, missing paths, unsupported
-schema versions, and non-empty snapshot output directories are rejected.
-Incomplete captures retain their partial status; publication review is separate.
-
-## Crawl controls
-
-The crawl command uses these defaults:
-
-- page URL catalog: `inputs/page-catalog.json`;
-- live discovery scope: `component-specs`;
-- source-payload cache: `.cache/material-token-table-responses`;
-- crawl receipts: `crawl-results`;
-- page timeout: up to 30 seconds, with early completion after relevant requests settle;
-- maximum pages: 500.
-
-`--max-pages` limits how many failed pages a repair crawl retries. Unretried
-failures remain in the merged crawl receipt and keep its capture incomplete.
-
-Use `--scope token-source-pages` with `--discover` for a deliberate inventory
-of component, foundation, and style token-source pages. The scope does not
-mean every page on the Material site.
-
-During a crawl, the command reports page selection, Chromium startup, page
-progress, source-payload observations, and source-payload reuse, storage, or
-failure. A dry run reports observed payload URLs but explicitly skips payload
-persistence, so its receipt cannot create a snapshot.
-
-By default, the crawl observes each page but reuses a valid cached source
-payload without an HTTP download. Use `--refresh` to re-download source
-payloads whose URL is already in the cache. Cached payloads still appear in the
-receipt because a complete crawl needs them for offline snapshot assembly.
-
-If only the generated snapshot needs to be rerun, use `snapshot create` again
-with the existing crawl receipt. That path reads cached source-payload artifacts
-and does not open Chrome or crawl pages.
-
-## DTCG export
-
-`tokens export --published published --output dist/tokens` exports a selected
-context as DTCG 2025.10 JSON. Repeat `--context Name=Value` to override context
-choices, or use `--themes` to export the site’s six appearance combinations.
-[DTCG exports and CSS](dtcg.md) covers conversion rules and Style Dictionary.
-
-## External generated assets
-
-`serve --assets DIRECTORY` requires a generated asset directory outside the
-publication. Startup checks its database, theme and embedded component checksums.
-Without this flag, local publications can use their optional `assets/` directory.
-See [DTCG exports and CSS](dtcg.md) and
-[deployment](../operations/deployment.md#generated-publication-assets).
-
-## Documentation capture and assessment
-
-`tokens guidance --list` lists component documentation URLs without opening
-Chromium. `tokens guidance --component sliders` captures the selected component's
-overview, specifications, guidelines and accessibility pages. Captures stay in
-`snapshots/material-guidance/` outside Git. See [documentation capture](guidance-capture.md).
-
-`tokens guidance baseline` snapshots the working implementation for assessments.
-`tokens guidance validate` checks canonical guidance files and compares retained
-IDs and append-only history against `HEAD` by default. Use `--against origin/main`
-to compare against the branch base, or `--file PATH` for one component. Validation
-is offline and does not execute the recorded evidence. See [guidance curation](guidance-curation.md).
-
-## Shared site shell
-
-```sh
-./bin/tokens site-shell --out /tmp/catalog-shell --catalog https://tokencatalog.dev/md3
-```
-
-This exports the shared header and footer HTML, site CSS and JavaScript, and logo
-for the static Carousel playground. The exported navigation marks that tool as
-current. Hosts also load the Forge navigation styles and runtime described in
-[development](../development.md#templates-and-assets).
-
-`serve --motion-url URL --motion-lab-url URL` sets the two tool destinations.
-The corresponding environment variables are `TOKENS_MOTION_URL` and
-`TOKENS_MOTION_LAB_URL`. Each accepts an absolute HTTP(S) URL or a root-relative
-path. These settings change links; they do not host the applications.
-
-## Illustration assets
-
-`tokens illustrations --published DIRECTORY` builds the large component and
-style illustrations after CSS generation. `--assets DIRECTORY` selects an
-external generated asset directory, and `--chrome-path PATH` selects Chromium.
-The command renders editorial scenes at 1200 × 630 and catalog thumbnails at 720 × 450 in light/dark and default/medium/high
-contrast, then writes content-addressed JPEGs and an atomic image manifest under
-`assets/illustrations/`. Existing images remain available for older page URLs.
-`--from-captures DIRECTORY` encodes an existing complete set of browser captures
-instead of launching Chromium. No image rendering occurs during website requests.
+- **`tokens guidance`:** `--list` prints Material doc URLs; `--component <slug>`
+  captures pages to `snapshots/material-guidance/` (see [guidance capture](guidance-capture.md)).
+  `guidance baseline` snapshots a working tree for assessments;
+  `guidance validate [--against REF] [--file PATH]` validates `checks.json`
+  files (see [guidance curation](guidance-curation.md)).
+- **`tokens site-shell --out DIR --catalog URL [--published DIR]`:** Exports
+  shared navigation/footer HTML, CSS, JS, and logo for static tools.
+- **`tokens illustrations --published DIR [--assets DIR] [--chrome-path PATH]`:**
+  Renders 720 × 450 catalog thumbnails across six appearances and writes
+  `assets/illustrations/manifest.json`. Pass `--from-captures DIR` to encode
+  existing captures without launching Chromium.

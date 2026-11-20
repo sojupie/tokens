@@ -1,24 +1,15 @@
-# Token Catalog snapshot format
+# Snapshot format (v3)
 
-**Status:** Current implementation contract, version 3
-**Date:** 2026-08-12
-
-## Purpose
-
-A snapshot is an immutable bundle of Material's fetched token-table source
-payloads and the generated token data extracted from them at one point in time.
-It provides a stable data source without requiring the
-crawl tool, a browser, a live API, or Material's website.
-
-The snapshot preserves source meaning, including unresolved references and
-unknown fields.
+A snapshot is an immutable bundle of Material's fetched token-table payloads and
+the extracted token graph at one point in time, preserving unresolved references
+and unknown fields so downstream publishing and diffing work offline.
 
 ## Bundle layout
 
 ```text
 material-token-data-<snapshot-id>/
 |-- manifest.json
-|-- page-catalog.json             # Material token-source page URL catalog
+|-- page-catalog.json
 |-- source-payloads/<hash-prefix>/<sha256>.json.gz
 |-- generated-token-graph.json.gz
 |-- source-payload-details.json
@@ -27,31 +18,13 @@ material-token-data-<snapshot-id>/
 `-- checksums.txt
 ```
 
-Successful content-addressed payload artifacts are part of the snapshot. A
-publisher may provide a separately indexed or compressed distribution, but it
-must contain the same verified payload bytes.
+## Identity and manifest
 
-## Snapshot identity
-
-The publisher serializes release files deterministically, calculates their
-SHA-256 hashes, then writes the manifest. The manifest digest is the integrity
-identity used by consumers. Current Token Catalog-generated IDs use the source
-family, capture date, and capture time in UTC (`HHMM`):
-
-```text
-material-2026-08-11-2348
-```
-
-The manifest SHA-256, not the human-readable ID, provides content identity.
-Existing immutable snapshots may retain historical `m3-...` IDs and the
-historical extractor name `m3source`; they must not be rewritten.
-
-Never replace files under a published snapshot ID. Publish a new snapshot when
-content, extraction rules, or source metadata changes.
-
-## Manifest
-
-Version 3 has this logical shape:
+Snapshot IDs use `<family>-YYYY-MM-DD-HHMM` in UTC (e.g.
+`material-2026-08-11-2348`). The manifest SHA-256—not the human-readable
+ID—provides content identity. Never overwrite files under an existing snapshot
+ID; create a new snapshot instead. Historical pre-v3 snapshots (`m3-...` IDs,
+`m3source` extractor) remain valid immutable evidence and are not rewritten.
 
 ```json
 {
@@ -92,120 +65,41 @@ Version 3 has this logical shape:
 }
 ```
 
-The final schema must state which timestamps are descriptive and which fields
-participate in deterministic identity. Snapshot tooling must reject duplicate
-paths, invalid hashes, unsupported schema versions, and missing required files.
+`tokens snapshot verify` rejects duplicate paths, invalid hashes, unsupported
+schema versions, and missing files.
 
-## Generated token graph
+## Artifacts
 
-`generated-token-graph.json.gz` is generated from the source payload files. It is
-Material-specific and loss-preserving. It retains:
-
-- canonical and display token names;
-- upstream token, value, table, and revision IDs;
-- token sets, states, contexts, and tags;
-- literals and full reference trees;
-- original types and units;
-- unknown fields required to diagnose source-schema drift;
-- source record IDs that join to source-payload details.
-
-Each source-payload and extracted record also carries the source classification
-available at capture time:
-
-- `sourcePayloadURL` — the upstream JSON payload URL;
-- `pageURLs` — every reviewed page that observed that payload;
-- `sourcePayloadKind` — for example `component`, `elevation`, `motion`,
-  `spacing`, `typography`, `shape`, `color`, or `unknown`;
-- `sourceArea`, `sourceSubject`, and `sourcePageType` — page-catalog context.
-
-These fields describe what the payload represents. A component payload may
-contain references to foundation or style tokens, and one payload may be
-observed by more than one page.
-
-The graph preserves themes and contexts rather than flattening them into one
-value. The token browser, downloads, and change history use this data.
-
-## Source-payload details
-
-Source-payload details record page and source-payload URLs, the same source
-classification fields, source-payload hashes, retrieval metadata, upstream
-revision details, and extraction notes. Use stable source IDs so generated
-records can refer to source-payload details without duplicating long strings.
-
-## Page results
-
-The page-results file lists each page and whether it observed source payloads,
-generated records, warnings, or errors. A missing source payload is visible
-evidence, not a silently dropped page. The field is plural because a page may
-expose more than one payload.
-
-## Lifecycle notices
-
-`lifecycle-notices.json` preserves explicit Material notices about the
-lifecycle or recommendation status of source records. It does not infer that a
-component is active or deprecated from a missing payload, a 404, or the absence
-of a warning.
-
-The notice scope is separate from capture status:
-
-- `component` applies to a component-level notice;
-- `style` applies to a token-set or style group;
-- `token` applies to an individual token;
-- `record` preserves a notice whose source shape does not map to one of those
-  scopes.
-
-`deprecated` and `not-recommended` remain separate states. The raw message and
-source record identifiers are retained so readers can trace each notice to its
-source.
-
-## Publishing and storage
-
-Publish static files to content-addressable object storage, GitHub Releases, or
-both. Static HTTP files are the stable contract. Documentation sites, APIs,
-packages, and SQLite databases are derived views.
-
-Git stores code, schemas, the curated page URL catalog, fixtures, and documentation.
-Object storage holds full snapshot bundles and optional raw evidence. A
-per-snapshot SQLite file may provide local query convenience, but it is generated
-from the snapshot and is never canonical.
-
-## Consumer rules
-
-A consumer must:
-
-1. Pin a snapshot ID and manifest SHA-256.
-2. Download the immutable manifest and verify its digest.
-3. Verify every artifact before parsing it.
-4. Reject unsupported schema versions.
-5. Treat import output as a review candidate unless its own policy states
-   otherwise.
-
-A consumer must not rely on mutable `latest` URLs for reproducible builds.
+- **`generated-token-graph.json.gz`:** Loss-preserving Material records
+  (canonical/display names, upstream IDs, token sets, states, contexts, literals,
+  reference trees, units, unknown fields, and source classification:
+  `sourcePayloadURL`, `pageURLs`, `sourcePayloadKind`, `sourceArea`,
+  `sourceSubject`, `sourcePageType`).
+- **`source-payload-details.json`:** Payload URLs, classification, hashes,
+  retrieval metadata, upstream revision details, and extraction notes keyed by
+  stable source IDs.
+- **`page-results.json`:** Per-page observed payloads, extracted record counts,
+  warnings, and errors so missing payloads stay visible.
+- **`lifecycle-notices.json`:** Explicit upstream `deprecated` and
+  `not-recommended` notices scoped to `component`, `style`, `token`, or `record`,
+  with raw message and source record IDs.
 
 ## Diffing
 
-`snapshot compare` verifies both input directories, then compares their page URL
-catalogs, page results, capture completeness, content-addressed source payloads,
-generic extracted records, and lifecycle notices. It reports added, removed, and
-changed page results. Source payloads are matched by their stable upstream
-filename, not by the release directory in the URL. A release-directory change
-therefore appears as one changed payload with before/after URLs and hashes,
-rather than as a removal and an addition. Record changes are keyed by source
-payload, record kind, and upstream record ID. Occurrence order is ignored for
-unique records and is used only to distinguish duplicate upstream IDs; the
-complete upstream object is compared through the record's loss-preserving
-`raw` field. It ignores snapshot IDs, crawl IDs, retrieval timestamps, and
-artifact paths when deciding whether capture metadata changed.
+`tokens snapshot compare` verifies both snapshots and diffs their page catalogs,
+page results, capture completeness, payloads, extracted records, and lifecycle
+notices:
 
-The diff also contains a semantic view for human review. It compares resolved
-token values and selected component or token-set fields, ignores volatile
-internal version identifiers, and deduplicates records repeated in shared
-Material payloads. The CLI uses this semantic view by default; structural
-record and payload details remain available to programmatic consumers.
+- Payloads match by stable upstream filename (ignoring release directories in
+  URLs), so a release-directory bump shows as one updated payload rather than a
+  delete + add.
+- Records match by `(sourcePayload, recordKind, upstreamRecordID)` and compare
+  the full `raw` object, ignoring snapshot/crawl IDs, timestamps, and local
+  paths.
+- The CLI prints a semantic view by default (resolved values and component/set
+  fields, deduplicated across shared payloads, ignoring internal version IDs).
 
-## Historical snapshots
+## Consumer rules
 
-Snapshots created before version 3 retain their original names and fields. They
-are immutable evidence and are not rewritten to match this contract. Current
-verification continues to check their file integrity; new snapshots use the
-version-3 schemas and source-payload terminology.
+Pin a snapshot ID and manifest SHA-256, verify the manifest and artifact hashes
+before parsing, and reject unsupported schema versions.

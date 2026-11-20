@@ -1,113 +1,65 @@
 # Material Design 3 crawler
 
-## Crawl
+## Running a crawl
 
-A normal crawl uses the checked-in page URL catalog. It lists reviewed Material
-token-source pages, including component specification pages and foundation or
-style token pages:
+Normal crawls use the checked-in, reviewed page catalog
+(`inputs/page-catalog.json`):
 
-```text
+```sh
 go run ./cmd/tokens crawl
 ```
 
-The page URL catalog is the default because it is small, deterministic, and
-reviewable.
-It avoids repeated sitemap discovery during routine capture.
+Common flags:
 
-Audit the live sitemap against the page URL catalog and print a JSON report:
-
-```text
+```sh
+# Audit the live sitemap against inputs/page-catalog.json (JSON report, no browser)
 go run ./cmd/tokens crawl --pages-only --scope token-source-pages
-```
 
-The command leaves the page catalog intact and exits with an error if a
-sitemap cannot be read. To observe candidate pages in Chromium as well:
-
-```text
+# Observe candidate pages in Chromium without writing payloads
 go run ./cmd/tokens crawl --discover --scope token-source-pages --dry-run
-```
 
-This scope considers component `/specs` pages and style or foundation token
-pages ending in `/tokens`, `/specs`, `-tokens`, or `-scale`. It reports candidates and page-catalog drift;
-it does not prove that every Material page publishes a token table.
-It also includes `/styles/color/static/baseline`, which publishes the baseline
-color-scheme table despite having no token suffix in its URL.
-
-Update the page URL catalog after reviewing the reported additions and removals:
-
-```text
+# Write reviewed catalog updates and crawl
 go run ./cmd/tokens crawl --update-page-catalog --dry-run=false
-```
 
-Run a small dry crawl during development:
-
-```text
+# Quick dev dry run or headed single-page debug
 go run ./cmd/tokens crawl --max-pages 10 --page-timeout 8s --dry-run
-```
-
-Pages are observed one at a time in a shared browser. `--page-timeout` is a
-maximum wait, not a delay applied to every page. Capture finishes early once
-the DOM is ready, a token payload has appeared, and relevant requests have
-finished and stayed quiet for two seconds. Unrelated iframe traffic does not
-extend the wait. Pages with no payload use the full timeout (30 seconds by
-default). Capture checks still run before publication; network quiet alone
-does not prove that every table was found.
-
-By default, valid cached source payloads are reused without an HTTP download.
-Force a fresh download when needed:
-
-```text
-go run ./cmd/tokens crawl --refresh
-```
-
-Show Chromium while debugging one page:
-
-```text
 go run ./cmd/tokens crawl --headed --max-pages 1 --page-timeout 15s
-```
 
-Use `--chrome-path` when Chrome cannot be found automatically.
+# Force re-downloading cached payloads
+go run ./cmd/tokens crawl --refresh
 
-Retry only the failed pages from the newest crawl receipt:
-
-```text
+# Retry only failed pages from the newest (or a specific) crawl receipt
 go run ./cmd/tokens crawl --retry-failed
+go run ./cmd/tokens crawl --retry-failed-from crawl-results/<receipt>.json
 ```
 
-Use `--retry-failed-from <crawl-receipt>` to select a specific receipt. The
-repair crawl opens only failed pages, then writes a new receipt containing the
-previous successful pages plus the retried results.
+Pass `--chrome-path PATH` if Chromium isn't auto-detected.
 
-To rerun snapshot extraction without opening Chrome or crawling pages again, use
-`snapshot create`. It reads the selected crawl receipt and cached source-payload
-artifacts. A normal `crawl` still re-observes pages so it can detect new, removed,
-or changed source-payload URLs; valid payload bytes are reused unless `--refresh`
-is supplied.
+### Page timing and caching
+- Pages open sequentially in a shared Chromium instance. `--page-timeout` (30 s
+  default) is a ceiling; a page finishes early once DOM is ready, a token
+  payload appears, and relevant requests stay quiet for 2 s (unrelated iframe
+  traffic is ignored).
+- Valid cached payloads are reused without re-downloading unless `--refresh` is
+  set.
+- `--retry-failed` opens only previously failed pages and writes a merged
+  receipt carrying forward prior successes.
+- To rerun snapshot extraction without opening Chromium, run `tokens snapshot
+  create` against an existing crawl receipt.
 
-## Discovery
+## Discovery and capture
 
-The default live discovery scope is `component-specs`. The
-`token-source-pages` scope also considers style and foundation pages such as
-`/styles/elevation/tokens`, `/styles/motion/overview/specs`,
-`/styles/typography/type-scale-tokens`, and `/styles/shape/corner-radius-scale`.
+Live discovery reads `robots.txt` and sitemaps (falling back to same-origin
+links if no sitemap yields pages). `component-specs` is the default scope;
+`token-source-pages` also includes style/foundation pages ending in `/tokens`,
+`/specs`, `-tokens`, or `-scale` (plus `/styles/color/static/baseline`).
 
-The page URL catalog is the reviewed source of truth for normal crawls. Broad
-discovery is an inventory aid. Review its additions before updating the page
-catalog.
-
-Live discovery reads `robots.txt`, follows sitemap indexes, filters same-origin
-URLs, and falls back to same-origin link discovery only when no sitemap yields
-usable pages. The seed page is included when it matches the configured scope.
-
-The crawler does not need manually copied token-table URLs. For each selected
-page it:
-
-1. Opens the page through chromedp.
-2. Observes matching `TOKEN_TABLE*.json` and `TOKEN_TYPE_*.json` network responses.
-3. Fetches each unique payload once.
-4. Hashes the uncompressed response with SHA-256.
-5. Stores a gzip-compressed content-addressed artifact.
-6. Writes a crawl receipt with pages, observations, URLs, hashes, and metadata.
+For each selected page, the crawler:
+1. Opens the page via chromedp.
+2. Watches network responses matching `TOKEN_TABLE*.json` and `TOKEN_TYPE_*.json`.
+3. Fetches each unique payload once, hashes uncompressed bytes (SHA-256), and
+   stores a gzipped content-addressed artifact.
+4. Writes a crawl receipt recording pages, observed URLs, hashes, and errors.
 
 ## Local storage
 
@@ -118,15 +70,7 @@ page it:
 crawl-results/<crawl-id>.json
 ```
 
-The cache contains downloaded Material token-table responses. Crawl receipts
-record what one crawl job did. Both are local evidence until a snapshot command
-deliberately packages them. The hash identifies the bytes Token Catalog ingested;
-the upstream URL records where they came from.
+New upstream URLs create new cache artifacts without overwriting older bytes.
+Use `--refresh` if upstream mutates an existing URL in place.
 
-If upstream publishes a new URL, a later crawl stores a new artifact and leaves
-the old content untouched. If upstream mutates an existing URL, use `--refresh`.
-The new response receives a new content hash.
-
-
-See [snapshot format](snapshot-format.md) for immutable bundles and
-[CLI reference](cli.md) for snapshot commands.
+See [snapshot format](snapshot-format.md) and [CLI reference](cli.md).
