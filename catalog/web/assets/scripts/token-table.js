@@ -181,14 +181,6 @@ function bindTokenReferences(browser, signal) {
     popup.setAttribute('aria-labelledby', title.id);
     popup.removeAttribute('aria-label');
     chrome.querySelector('.tokens-popover-close').setAttribute('popovertarget', popup.id);
-    const preview = chrome.querySelector('.tokens-popup-value');
-    for (const child of row.querySelector('.tokens-large-preview').children) {
-      if (!child.classList.contains('tokens-preview-name')) preview.append(child.cloneNode(true));
-    }
-    const resolved = chrome.querySelector('.tokens-reference-resolved');
-    const compact = row.querySelector('.tokens-compact-value');
-    if (!compact.querySelector('.tokens-color-dot')) resolved.querySelector('.tokens-reference-type').remove();
-    resolved.append(compact.cloneNode(true));
     const copyButton = chrome.querySelector('[data-copy-reference]');
     for (const node of popup.querySelectorAll('.tokens-reference-node')) {
       const button = copyButton.cloneNode(true);
@@ -197,8 +189,7 @@ function bindTokenReferences(browser, signal) {
       button.setAttribute('aria-label', `Copy ${name}`);
       node.append(button);
     }
-    popup.prepend(chrome.querySelector('header'), preview);
-    popup.querySelector('.tokens-reference-chain').append(resolved);
+    popup.prepend(chrome.querySelector('header'));
     popup.append(chrome.querySelector('[role="status"]'));
   };
   const placeReference = popup => {
@@ -207,18 +198,27 @@ function bindTokenReferences(browser, signal) {
     const gap = parseFloat(getComputedStyle(browser).getPropertyValue('--md-sys-measurement-space200'));
     const width = popup.offsetWidth;
     const height = popup.offsetHeight;
-    let left = bounds.right + gap;
-    if (left + width > innerWidth - gap) left = bounds.left - width - gap;
-    if (left < gap) left = Math.max(gap, (innerWidth - width) / 2);
+    let left = bounds.left - width - gap;
+    if (left < gap) left = bounds.right + gap;
+    if (left + width > innerWidth - gap) left = Math.max(gap, (innerWidth - width) / 2);
     popup.style.left = `${left}px`;
     popup.style.top = `${Math.max(gap, Math.min(bounds.top, innerHeight - height - gap))}px`;
   };
+  const popupSize = new ResizeObserver(entries => {
+    for (const {target} of entries) placeReference(target);
+  });
+  signal.addEventListener('abort', () => popupSize.disconnect(), {once:true});
   browser.querySelectorAll('.tokens-reference-popover').forEach(popup => {
     popup.addEventListener('beforetoggle', event => {
       if (event.newState === 'open') prepareReference(popup);
     });
     popup.addEventListener('toggle', event => {
-      if (event.newState === 'open') placeReference(popup);
+      if (event.newState === 'open') {
+        placeReference(popup);
+        popupSize.observe(popup);
+      } else {
+        popupSize.unobserve(popup);
+      }
     });
   });
   const reposition = () => browser.querySelectorAll('.tokens-reference-popover:popover-open').forEach(placeReference);
@@ -226,7 +226,8 @@ function bindTokenReferences(browser, signal) {
   addEventListener('scroll', reposition, {capture: true, signal});
   browser.addEventListener('click', async event => {
     const popupButton = event.target.closest('button[popovertarget]');
-    if (popupButton && popupButton.getAttribute('popovertargetaction') !== 'hide') invoker = popupButton;
+    if (popupButton?.popoverTargetElement?.classList.contains('tokens-reference-popover') &&
+        popupButton.getAttribute('popovertargetaction') !== 'hide') invoker = popupButton;
     const copy = event.target.closest('[data-copy-reference]');
     if (copy) {
       const status = copy.closest('.tokens-reference-popover').querySelector('[role="status"]');

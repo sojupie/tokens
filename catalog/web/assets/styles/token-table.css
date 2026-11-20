@@ -188,6 +188,15 @@
 .tokens-token-description {
   display: block;
 }
+.tokens-token-heading {
+  display: flex;
+  align-items: center;
+  gap: var(--md-sys-measurement-space100);
+}
+.tokens-token-heading > .tokens-token-description {
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
 .tokens-token-value {
   min-height: var(--md-sys-measurement-space700);
   border-radius: var(--md-sys-shape-corner-medium);
@@ -578,12 +587,39 @@
   gap: var(--md-sys-measurement-space150);
 }
 .tokens-large-preview.tokens-token-color {
-  background: var(--tokens-preview-color);
+  /* Translucent captures use the same backing as the contrast calculation. */
+  background:
+    linear-gradient(var(--tokens-preview-color), var(--tokens-preview-color)),
+    var(--tokens-preview-on-dark);
   color: var(--tokens-preview-on-color);
 }
 .tokens-preview-value {
   max-width: 100%;
   overflow-wrap: anywhere;
+}
+.tokens-type-specimen {
+  font-family: var(--tokens-type-family, Roboto, system-ui);
+  font-size: min(var(--tokens-type-size), 5rem);
+  font-weight: var(--tokens-type-weight, 400);
+  line-height: min(var(--tokens-type-line-height, 1.2em), 6rem);
+  letter-spacing: var(--tokens-type-tracking, normal);
+}
+.tokens-token-guidance-anchor {
+  flex: none;
+}
+button.md-icon-button.tokens-token-guidance-trigger {
+  --_icon-container: var(--md-sys-color-error-container);
+  --_icon-icon: var(--md-sys-color-on-error-container);
+}
+@supports (color: oklch(from red l c h)) {
+  button.md-icon-button.tokens-token-guidance-trigger {
+    /* Keep the theme's error contrast pair and shift the warning cue toward amber. */
+    --_icon-container: oklch(from var(--md-sys-color-error-container) l calc(c * 1.5) calc(h + 45));
+    --_icon-icon: oklch(from var(--md-sys-color-on-error-container) l c calc(h + 45));
+  }
+}
+.tokens-token-guidance-anchor .md-tooltip > p + p {
+  margin-block-start: var(--md-sys-measurement-space100);
 }
 .tokens-preview-name {
   display: none;
@@ -618,6 +654,7 @@
   display: inline-flex;
 }
 .tokens-reference-popover {
+  --tokens-reference-surface: var(--md-sys-color-surface);
   position: fixed;
   inset: auto;
   margin: 0;
@@ -626,11 +663,14 @@
   overflow: auto;
   padding: var(--md-sys-measurement-space150);
   border: 0;
-  border-radius: var(--md-comp-rich-tooltip-container-shape);
-  background: var(--md-comp-rich-tooltip-container-color);
+  border-radius: var(--md-sys-shape-corner-large);
+  background: var(--md-sys-color-surface-container);
   color: var(--md-sys-color-on-surface);
   --_elevation-level: var(--md-comp-rich-tooltip-container-elevation);
   --_shadow-color: var(--md-sys-color-shadow);
+}
+:root[data-theme="dark"] .tokens-reference-popover {
+  --tokens-reference-surface: var(--md-sys-color-surface-container-high);
 }
 .tokens-reference-popover > header {
   display: flex;
@@ -650,18 +690,60 @@
 .tokens-reference-popover > header button {
   flex-shrink: 0;
 }
+.tokens-reference-popover:has(.tokens-popup-type) h3 {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
 .tokens-popup-value {
-  min-height: calc(var(--md-sys-measurement-space800) * 2);
+  min-block-size: calc(var(--md-sys-measurement-space800) + var(--md-sys-measurement-space700));
+  margin-block: var(--md-sys-measurement-space100);
+  padding: var(--md-sys-measurement-space150);
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
+  border: var(--md-comp-divider-thickness) solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-medium);
+  background: var(--tokens-reference-surface);
 }
-.tokens-popup-source {
-  display: block;
-  overflow-wrap: anywhere;
-  font-size: var(--md-sys-typescale-body-small-size);
+.tokens-popup-value.tokens-token-color {
+  background:
+    linear-gradient(var(--tokens-preview-color), var(--tokens-preview-color)),
+    var(--tokens-preview-on-dark);
+}
+.tokens-popup-type,
+.tokens-popup-shape,
+.tokens-popup-motion,
+.tokens-popup-value:has(.tokens-elevation-swatch) {
+  background: var(--md-sys-color-surface-container-highest);
+}
+.tokens-type-font-note {
+  margin: 0 0 var(--md-sys-measurement-space100);
   color: var(--md-sys-color-on-surface-variant);
-  margin-bottom: var(--md-sys-measurement-space150);
+  font: var(--md-sys-typescale-body-small);
+}
+.tokens-reference-popover .tokens-value-properties .md-list-item:not([aria-expanded="true"]) {
+  --_list-item-container: var(--tokens-reference-surface);
+}
+.tokens-reference-popover .tokens-value-properties[data-expand-surface="tonal"] > li {
+  --_list-expanded-surface: var(--tokens-reference-surface);
+}
+.tokens-value-properties .tokens-reference-chain {
+  padding-block-start: 0;
+  background: transparent;
+}
+@media (scripting: none) {
+  .tokens-reference-popover { inset: 0; margin: auto; block-size: fit-content; }
+  .tokens-value-properties button[aria-controls] { display: none; }
+  .tokens-value-native-disclosure > summary { cursor: pointer; list-style: none; }
+  .tokens-value-native-disclosure > summary::-webkit-details-marker { display: none; }
+  .tokens-value-native-disclosure[open] .md-list-expand-icon svg { rotate: 180deg; }
+}
+.tokens-reference-leaf {
+  display: inline-block;
+  padding: var(--md-sys-measurement-space50) var(--md-sys-measurement-space100);
+  border-radius: var(--md-sys-shape-corner-small);
+  background: var(--md-sys-color-surface-container-low);
 }
 .tokens-reference-chain {
   background: var(--md-sys-color-surface);
@@ -677,11 +759,23 @@
   display: block;
   margin: var(--md-sys-measurement-space50) 0;
 }
-.tokens-reference-node {
+.tokens-reference-chain ul:has(> li:nth-child(2)) > li + li {
+  margin-block-start: var(--md-sys-measurement-space100);
+}
+.tokens-reference-chain li > ul:has(> li:nth-child(2)) {
+  border-inline-start: var(--md-comp-divider-thickness) solid var(--md-sys-color-outline-variant);
+  padding-inline-start: var(--md-sys-measurement-space100);
+}
+.tokens-reference-node,
+.tokens-reference-literal {
   display: flex;
   align-items: center;
   gap: var(--md-sys-measurement-space100);
   min-width: 0;
+}
+.tokens-reference-literal > svg,
+.tokens-reference-node > svg {
+  flex-shrink: 0;
 }
 .tokens-reference-node > code {
   flex: 1;
@@ -698,10 +792,8 @@
 .tokens-reference-node button {
   flex-shrink: 0;
 }
-.tokens-reference-resolved .tokens-compact-value {
-  display: flex;
-}
 .tokens-reference-status {
+  margin: 0;
   font-size: var(--md-sys-typescale-body-small-size);
 }
 .tokens-elevation-swatch {
@@ -780,14 +872,6 @@
     var(--md-sys-color-primary);
   outline-offset: var(--md-sys-state-focus-indicator-outer-offset);
 }
-.tokens-reference-type {
-  display: block;
-  margin-left: calc(
-    var(--md-sys-measurement-space200) + var(--md-sys-measurement-space100)
-  );
-  font-size: var(--md-sys-typescale-body-small-size);
-  color: var(--md-sys-color-on-surface-variant);
-}
 .tokens-compact-value {
   font-size: var(--md-sys-typescale-body-medium-size);
   line-height: var(--md-sys-typescale-body-medium-line-height);
@@ -803,19 +887,30 @@
   }
 }
 
+.tokens-numeric-swatch {
+  display: inline-grid;
+  place-items: center;
+  inline-size: var(--md-sys-measurement-space400);
+  block-size: var(--md-sys-measurement-space400);
+  border-radius: var(--md-sys-shape-corner-full);
+  background: var(--md-sys-color-surface-container-lowest);
+  color: var(--md-sys-color-on-surface);
+}
+.tokens-numeric-swatch > svg {
+  inline-size: var(--md-sys-measurement-space250);
+  block-size: var(--md-sys-measurement-space250);
+}
+
 .tokens-shape-swatch {
   display: block;
   flex: none;
-  width: var(--md-sys-measurement-space800);
-  height: var(--md-sys-measurement-space800);
-  background: var(--md-sys-color-primary);
+  inline-size: min(100%, calc(var(--md-sys-measurement-space800) + var(--md-sys-measurement-space600)));
+  block-size: var(--md-sys-measurement-space600);
+  border: var(--md-comp-divider-thickness) solid var(--md-sys-color-primary);
+  background: var(--md-sys-color-primary-container);
 }
-
-.tokens-popup-value:has(.tokens-shape-swatch) {
-  flex-direction: column;
-  gap: var(--md-sys-measurement-space150);
-  padding: var(--md-sys-measurement-space150) 0;
-  text-align: center;
+.tokens-shape-circular {
+  inline-size: var(--md-sys-measurement-space600);
 }
 
 .tokens-context-choice { max-width:100%; }

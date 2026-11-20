@@ -457,10 +457,10 @@ func TestSourceTablesRetainMembershipGroupOrderAndTokenOrder(t *testing.T) {
 	subject.Tokens[0].Presentation.Groups = nil
 	browser = buildTokenBrowser(subject, url.Values{"set": {"md.comp.button.elevated"}})
 	var flat strings.Builder
-	if err := webview.WriteTokenGroup(&flat, browser.Selected.Groups[0], true); err != nil {
+	if err := webview.WriteTokenGroup(t.Context(), &flat, browser.Selected.Groups[0], true); err != nil {
 		t.Fatal(err)
 	}
-	if strings.Contains(flat.String(), "<details") {
+	if strings.Contains(flat.String(), `<details class="tokens-token-folder`) {
 		t.Fatal("a source table without display groups must remain flat")
 	}
 }
@@ -480,11 +480,11 @@ func TestShapeDescriptionAndPreviewPreserveCornerOverrides(t *testing.T) {
 		}
 	}
 	var output strings.Builder
-	if err := webview.WriteTokenReferences(&output, webview.TokenRow{Name: "Large end", Value: "Default: 0dp · Top-right: 16dp · Bottom-right: 16dp", Shape: "0px 16px 16px 0px", HasValue: true}); err != nil {
+	if err := webview.WriteTokenReferences(t.Context(), &output, webview.TokenRow{Name: "Large end", Value: "Default: 0dp · Top-right: 16dp · Bottom-right: 16dp", Shape: "0px 16px 16px 0px", HasValue: true}); err != nil {
 		t.Fatal(err)
 	}
-	if strings.Count(output.String(), `border-radius:0px 16px 16px 0px`) != 1 {
-		t.Fatal("the table must provide one directional shape for reuse in the popup")
+	if strings.Count(output.String(), `border-radius:0px 16px 16px 0px`) != 2 {
+		t.Fatal("the table and popover must both render the directional shape before JavaScript")
 	}
 	markdown, err := htmlMarkdown([]byte(`<main><h2>Shape</h2><table><tr><th>Large end</th><td>`+output.String()+`</td></tr></table></main>`), "https://example.test/styles/shape", "")
 	if err != nil {

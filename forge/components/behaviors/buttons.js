@@ -72,12 +72,14 @@
     cancelled = new Map();
   const disabled = (button) =>
     button.matches(':disabled,[aria-disabled="true"],:has(> input:disabled)');
-  const buttonFor = (target) =>
-    target instanceof Element
+  const buttonFor = (target) => {
+    const button = target instanceof Element
       ? target.closest(
           ".md-button,.md-icon-button,.md-filter-chip,.md-assist-chip,.md-suggestion-chip,.md-input-chip,.md-interactive-card,.md-menu-item,.md-radio,.md-checkbox,.md-switch,.md-nav-item,.md-tab,.md-segmented-button,.md-slider-input,.md-list-item,.md-carousel-item,.md-search-trigger,.md-date-day,.md-date-year,.md-date-month-item,.md-date-menu-button,.md-time-value,.md-time-period",
         )
       : null;
+    return button?.hasAttribute("data-list-static") ? null : button;
+  };
   function currentCorners(button) {
     const style = getComputedStyle(button),
       rect = button.getBoundingClientRect();

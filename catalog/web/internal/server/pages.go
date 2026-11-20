@@ -126,7 +126,8 @@ func (server *Server) handleHTMLSubject(response http.ResponseWriter, request *h
 			return
 		}
 	}
-	browser := buildTokenBrowserView(subjects[0], query, !wantsMarkdown(request))
+	motion := server.state.Subjects[publish.SubjectKey{Kind: publish.SubjectStyle, Slug: "motion/overview"}]
+	browser := buildTokenBrowserView(subjects[0], query, !wantsMarkdown(request), motion.Tokens)
 	if query.Get("set") != "" && query.Get("set") != browser.Selected.Key {
 		http.NotFound(response, request)
 		return
@@ -291,7 +292,7 @@ func (server *Server) renderChangeHistory(response http.ResponseWriter, request 
 
 func (server *Server) renderTokenTableMarkdown(response http.ResponseWriter, request *http.Request, browser webview.TokenBrowser) error {
 	var rendered bytes.Buffer
-	if err := webview.WriteTokenGroups(&rendered, browser); err != nil {
+	if err := webview.WriteTokenGroups(request.Context(), &rendered, browser); err != nil {
 		return err
 	}
 	markdown, err := htmlMarkdown(rendered.Bytes(), server.publicOrigin+request.URL.RequestURI(), "")

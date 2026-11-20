@@ -58,17 +58,21 @@ type TokenGroup struct {
 }
 
 type TokenRow struct {
-	Name       string
-	SourceName string
-	Value      string
-	Color      string
-	Elevation  string
-	Shape      string
-	Lifecycle  string
-	HasValue   bool
-	References []publish.TokenReference
-	Search     []string `json:"-"`
-	Hidden     bool     `json:"-"`
+	Name            string
+	SourceName      string
+	Value           string
+	Color           string
+	Elevation       string
+	Shape           string
+	Lifecycle       string
+	HasValue        bool
+	References      []publish.TokenReference
+	ValueKind       string                        `json:"-"`
+	ValueProperties []TokenProperty               `json:"-"`
+	Typography      *TypographyPreview            `json:"-"`
+	Notices         []publish.LifecycleNoticeView `json:"-"`
+	Search          []string                      `json:"-"`
+	Hidden          bool                          `json:"-"`
 }
 
 type TokenFilter struct {

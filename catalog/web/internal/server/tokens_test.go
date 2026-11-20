@@ -30,7 +30,7 @@ func TestAudienceHelpExplainsSourceLabels(t *testing.T) {
 func TestReferenceCellUsesAliasesAndPreservesChain(t *testing.T) {
 	row := webview.TokenRow{SourceName: "md.comp.button.shadow", Value: "Color not resolved", References: []publish.TokenReference{{Name: "md.sys.color.shadow", References: []publish.TokenReference{{Name: "md.ref.palette.neutral0"}}}}}
 	var output bytes.Buffer
-	if err := webview.WriteTokenReferences(&output, row); err != nil {
+	if err := webview.WriteTokenReferences(t.Context(), &output, row); err != nil {
 		t.Fatal(err)
 	}
 	body := output.String()
@@ -42,7 +42,7 @@ func TestReferenceCellUsesAliasesAndPreservesChain(t *testing.T) {
 	}
 	row.References[0].Name = `<script>alert(1)</script>`
 	output.Reset()
-	if err := webview.WriteTokenReferences(&output, row); err != nil {
+	if err := webview.WriteTokenReferences(t.Context(), &output, row); err != nil {
 		t.Fatal(err)
 	}
 	if strings.Contains(output.String(), "<script>") {
@@ -148,14 +148,14 @@ func TestPreviewTextContrast(t *testing.T) {
 func TestValuePreviewAndInfoShareOneNativeReferencePopup(t *testing.T) {
 	row := webview.TokenRow{Name: "Button color", SourceName: "md.comp.button.color", Value: "#6750A4", Color: "rgba(103,80,164,1)", HasValue: true, References: []publish.TokenReference{{Name: "md.sys.color.primary"}}}
 	var output bytes.Buffer
-	if err := webview.WriteTokenReferences(&output, row); err != nil {
+	if err := webview.WriteTokenReferences(t.Context(), &output, row); err != nil {
 		t.Fatal(err)
 	}
 	body := output.String()
 	start := strings.Index(body, `popovertarget="`) + len(`popovertarget="`)
 	end := start + strings.Index(body[start:], `"`)
 	id := body[start:end]
-	if strings.Count(body, `popovertarget="`+id+`"`) != 2 || strings.Count(body, `id="`+id+`"`) != 1 || !strings.Contains(body, `popover role="dialog"`) || !strings.Contains(body, `class="tokens-color-dot"`) || strings.Contains(body, `<details`) {
+	if strings.Count(body, `popovertarget="`+id+`"`) != 2 || strings.Count(body, `id="`+id+`"`) != 1 || !strings.Contains(body, `popover role="dialog"`) || !strings.Contains(body, `class="tokens-color-dot"`) || !strings.Contains(body, `class="tokens-value-native-disclosure"`) {
 		t.Fatal("preview and info must target one popup while the compact swatch remains present")
 	}
 }
@@ -165,17 +165,17 @@ func TestTableSharesDecorationButIncludesAllReferenceData(t *testing.T) {
 	var output bytes.Buffer
 	output.WriteString(webrender.TokenTableSharedMarkup())
 	for range 2 {
-		if err := webview.WriteTokenReferences(&output, row); err != nil {
+		if err := webview.WriteTokenReferences(t.Context(), &output, row); err != nil {
 			t.Fatal(err)
 		}
 	}
 	body := output.String()
-	if strings.Count(body, `<template class="tokens-reference-chrome">`) != 1 || strings.Count(body, webview.MaterialSymbolPath("camera")) != 1 || strings.Count(body, `data-copy-reference`) != 1 {
+	if strings.Count(body, `<template class="tokens-reference-chrome">`) != 1 || strings.Count(body, webview.MaterialSymbolPath("link")) != 1 || strings.Count(body, `data-copy-reference`) != 1 {
 		t.Fatal("popover controls and icon paths must be shared, not repeated per reference")
 	}
 	for _, name := range []string{row.SourceName, "md.sys.color.primary", "md.ref.palette.primary40"} {
-		if strings.Count(body, ">"+name+"</code>") != 2 {
-			t.Fatalf("each token must include its full reference tree without JavaScript: %s", name)
+		if strings.Count(body, ">"+name+"</code>") != 4 {
+			t.Fatalf("each token must include its full reference tree in both disclosures: %s", name)
 		}
 	}
 	markdown, err := htmlMarkdown([]byte("<main>"+body+"</main>"), "https://tokens.test", "")
@@ -208,7 +208,7 @@ func TestMissingTokenValuesHaveExplicitLabels(t *testing.T) {
 		t.Fatal(labels)
 	}
 	var out bytes.Buffer
-	if err := webview.WriteTokenReferences(&out, webview.TokenRow{Name: "Color", Value: "Color not resolved", HasValue: true}); err != nil {
+	if err := webview.WriteTokenReferences(t.Context(), &out, webview.TokenRow{Name: "Color", Value: "Color not resolved", HasValue: true}); err != nil {
 		t.Fatal(err)
 	}
 	if !strings.Contains(out.String(), "Color not resolved") || strings.Contains(out.String(), ">—<") {
@@ -238,5 +238,60 @@ func TestElevationTableExcludesOnlySupportingColorDefinitions(t *testing.T) {
 	subject.Key = publish.SubjectKey{Kind: publish.SubjectComponent, Slug: "elevation"}
 	if len(webview.AllTokenSet(subject).SourceTokens) != 9 {
 		t.Fatal("exclusion leaked into components")
+	}
+}
+
+func TestSpringInspectorUsesCapturedParametersForTheSelectedContext(t *testing.T) {
+	const spring = "md.sys.motion.spring.fast.spatial"
+	tokens := []publish.TokenView{
+		{SourceName: spring + ".damping", Values: []publish.TokenValueView{
+			{Value: json.RawMessage(`{"numeric":0.9}`), ContextLabels: []string{"Motion scheme: Standard"}, IsDefaultContext: true},
+			{Value: json.RawMessage(`{"numeric":0.6}`), ContextLabels: []string{"Motion scheme: Expressive"}},
+		}},
+		{SourceName: spring + ".stiffness", Values: []publish.TokenValueView{
+			{Value: json.RawMessage(`{"numeric":1400}`), ContextLabels: []string{"Motion scheme: Standard"}, IsDefaultContext: true},
+			{Value: json.RawMessage(`{"numeric":800}`), ContextLabels: []string{"Motion scheme: Expressive"}},
+		}},
+	}
+	standard := springProperties(json.RawMessage(`"`+spring+`"`), tokens, nil)
+	if len(standard) != 2 || standard[0].Value != "0.9" || standard[1].Value != "1400" {
+		t.Fatalf("unexpected default spring parameters: %+v", standard)
+	}
+	properties := springProperties(json.RawMessage(`"`+spring+`"`), tokens, map[string]string{"Motion scheme": "Expressive"})
+	if len(properties) != 2 || properties[0].Value != "0.6" || properties[1].Value != "800" ||
+		properties[0].References[0].References[0].Name != spring+".damping" ||
+		properties[1].References[0].References[0].Name != spring+".stiffness" {
+		t.Fatalf("unexpected spring parameters: %+v", properties)
+	}
+	if properties := springProperties(json.RawMessage(`"`+spring+`"`), tokens, map[string]string{"Motion scheme": "Unknown"}); len(properties) != 0 {
+		t.Fatalf("missing context must not invent spring parameters: %+v", properties)
+	}
+}
+
+func TestReferenceArrowsConnectToAnotherAliasOrLiteral(t *testing.T) {
+	const arrow = `href="#tokens-table-icon-arrow_downward"`
+	const literal = `class="tokens-reference-literal"`
+	const alias = "md.sys.duration"
+	row := webview.TokenRow{Name: "Duration", Value: alias, SourceName: "md.comp.demo.duration", References: []publish.TokenReference{{Name: alias}}}
+	var output bytes.Buffer
+	render := func() string {
+		t.Helper()
+		output.Reset()
+		if err := webview.WriteTokenReferences(t.Context(), &output, row); err != nil {
+			t.Fatal(err)
+		}
+		return output.String()
+	}
+	if body := render(); strings.Contains(body, arrow) || strings.Contains(body, literal) {
+		t.Fatal("an unresolved alias must be the last item")
+	}
+	row.Value = "50ms"
+	row.References[0].References = []publish.TokenReference{{Name: "md.ref.duration"}}
+	if body := render(); strings.Count(body, arrow) != 4 || strings.Count(body, literal) != 2 {
+		t.Fatal("each disclosure must connect two aliases and end at a literal")
+	}
+	row.References[0].References = append(row.References[0].References, publish.TokenReference{Name: "md.ref.other"})
+	if body := render(); strings.Count(body, arrow) != 2 || strings.Count(body, literal) != 2 {
+		t.Fatal("a fork must not connect sibling aliases or imply each branch resolves to the shared literal")
 	}
 }

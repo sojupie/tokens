@@ -13,8 +13,6 @@ templ TokenReferenceChrome() {
 				@templ.Raw(webview.TokenTableSymbol("close"))
 			}
 		</header>
-		<div class="tokens-popup-value"></div>
-		<div class="tokens-reference-resolved"><span class="tokens-reference-type">Color</span></div>
 		<p class="tokens-reference-status" role="status" aria-live="polite"></p>
 		@ui.IconButtonContent(ui.IconButtonProps{Variant: "standard", Label: "", Attrs: templ.Attributes{"class": "tokens-icon-button", "data-copy-reference": ""}}) {
 			@templ.Raw(webview.TokenTableSymbol("content_copy"))

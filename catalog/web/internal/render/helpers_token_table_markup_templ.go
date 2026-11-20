@@ -19,7 +19,7 @@ import (
 func TokenTableSharedMarkup() string {
 	var markup strings.Builder
 	markup.WriteString(`<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;overflow:hidden"><defs>`)
-	for _, name := range []string{"search", "visibility", "visibility_off", "grid_view", "table_rows", "unfold_more", "unfold_less", "expand_more", "folder", "folder_open", "check", "info", "close", "camera", "content_copy", "arrow_downward"} {
+	for _, name := range []string{"search", "visibility", "visibility_off", "grid_view", "table_rows", "unfold_more", "unfold_less", "expand_more", "folder", "folder_open", "check", "info", "close", "link", "deployed_code", "numbers", "content_copy", "arrow_downward"} {
 		markup.WriteString(`<symbol id="tokens-table-icon-` + name + `" viewBox="0 -960 960 960"><path d="` + webview.MaterialSymbolPath(name) + `"/></symbol>`)
 	}
 	markup.WriteString(`</defs></svg>`)

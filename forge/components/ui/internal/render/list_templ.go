@@ -323,7 +323,7 @@ func ListRow(p model.ListItemProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "<li><div")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "<li><div data-list-static")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

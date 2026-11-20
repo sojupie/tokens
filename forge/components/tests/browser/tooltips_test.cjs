@@ -11,9 +11,9 @@ test('opt-in rich tooltips close immediately after hover without closing tap-ope
  const h = harness(), demo = h.demo();
  let open = false;
  const tip = {matches: () => open, showPopover() {open = true}, hidePopover() {open = false}};
- demo.querySelector = selector => selector === '.md-tooltip[popover]' ? tip : null;
- const trigger = {parent: demo, parentElement: demo, contains: () => false,
-   closest: selector => selector === '.md-tooltip-demo' ? demo : trigger};
+ demo.querySelector = selector => selector === '.md-tooltip[popover]' ? tip : selector === ':scope > button' ? trigger : null;
+ const trigger = {parent: demo, contains: target => target === trigger, getAttribute: () => null,
+   closest: () => demo};
  demo.target = trigger;
  h.send('pointerover', demo);
  assert.equal(open, true);

@@ -135,7 +135,7 @@ import { navigationIndex } from "../helpers/navigation.ts";
       if(index<0)return;event.preventDefault();const next=event.key==='Home'?0:event.key==='End'?actions.length-1:(index+(['ArrowUp','ArrowLeft'].includes(event.key)?-1:1)+actions.length)%actions.length;actions[next]?.focus();return;
     }
     if(event.target.matches('.md-list-item')&&['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Home','End'].includes(event.key)){
-      const buttons=[...list.querySelectorAll('.md-list-item:not(:disabled):not([aria-disabled="true"])')].filter(item=>item.getClientRects().length&&!item.closest('[inert]')&&getComputedStyle(item).visibility==='visible'),index=buttons.indexOf(event.target);if(index<0)return;
+      const buttons=[...list.querySelectorAll('.md-list-item:not(:disabled,[aria-disabled="true"],[data-list-static])')].filter(item=>item.getClientRects().length&&!item.closest('[inert]')&&getComputedStyle(item).visibility==='visible'),index=buttons.indexOf(event.target);if(index<0)return;
       const horizontal=['ArrowLeft','ArrowRight'].includes(event.key),next=navigationIndex(index,buttons.length,event.key,horizontal,getComputedStyle(list).direction==='rtl');
       event.preventDefault();buttons[next]?.focus({preventScroll:true});
     }

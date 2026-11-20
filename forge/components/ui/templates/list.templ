@@ -41,7 +41,7 @@ templ ListButton(p model.ListItemProps) {
 templ ListRow(p model.ListItemProps) {
 	@model.Require("list")
 	<li>
-		<div { p.Attributes()... }>
+		<div data-list-static { p.Attributes()... }>
 			@ListContent(p)
 		</div>
 	</li>

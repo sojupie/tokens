@@ -63,7 +63,7 @@ func TokenReferenceChrome() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</header><div class=\"tokens-popup-value\"></div><div class=\"tokens-reference-resolved\"><span class=\"tokens-reference-type\">Color</span></div><p class=\"tokens-reference-status\" role=\"status\" aria-live=\"polite\"></p>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</header><p class=\"tokens-reference-status\" role=\"status\" aria-live=\"polite\"></p>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

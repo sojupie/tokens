@@ -1,6 +1,7 @@
 package presentation
 
 import (
+	"context"
 	"crypto/sha256"
 	"encoding/json"
 	"fmt"
@@ -9,6 +10,8 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/a-h/templ"
+	"github.com/sojupie/tokens/forge/components/ui"
 	"github.com/sojupie/tokens/source/publish"
 )
 
@@ -43,7 +46,7 @@ func SafeSourceDocumentationURL(raw string) string {
 	return raw
 }
 
-func WriteTokenGroups(writer io.Writer, browser TokenBrowser) error {
+func WriteTokenGroups(ctx context.Context, writer io.Writer, browser TokenBrowser) error {
 	if len(browser.Sets) == 0 {
 		_, err := io.WriteString(writer, `<p class="tokens-empty md-typescale-body-large">No published tokens for this page.</p>`)
 		return err
@@ -56,7 +59,7 @@ func WriteTokenGroups(writer io.Writer, browser TokenBrowser) error {
 		return err
 	}
 	for _, group := range browser.Selected.Groups {
-		if err := WriteTokenGroup(writer, group, true); err != nil {
+		if err := WriteTokenGroup(ctx, writer, group, true); err != nil {
 			return err
 		}
 	}
@@ -72,7 +75,7 @@ func WriteTokenGroups(writer io.Writer, browser TokenBrowser) error {
 	return err
 }
 
-func WriteTokenGroup(writer io.Writer, group TokenGroup, state bool) error {
+func WriteTokenGroup(ctx context.Context, writer io.Writer, group TokenGroup, state bool) error {
 	write := func(value string) error {
 		_, err := io.WriteString(writer, value)
 		return err
@@ -116,7 +119,15 @@ func WriteTokenGroup(writer io.Writer, group TokenGroup, state bool) error {
 				}
 				attributes += ` data-token-search-fields="` + html.EscapeString(string(search)) + `"`
 			}
-			if err := write(`<tr` + attributes + `><th scope="row"><span class="tokens-token-description">` + html.EscapeString(token.Name) + `</span><code class="tokens-token-source-name">` + html.EscapeString(token.SourceName) + `</code>`); err != nil {
+			if err := write(`<tr` + attributes + `><th scope="row"><div class="tokens-token-heading"><span class="tokens-token-description">` + html.EscapeString(token.Name) + `</span>`); err != nil {
+				return err
+			}
+			if len(token.Notices) > 0 {
+				if err := writeTokenGuidance(ctx, writer, token); err != nil {
+					return err
+				}
+			}
+			if err := write(`</div><code class="tokens-token-source-name">` + html.EscapeString(token.SourceName) + `</code>`); err != nil {
 				return err
 			}
 			if token.Lifecycle != "" {
@@ -131,7 +142,7 @@ func WriteTokenGroup(writer io.Writer, group TokenGroup, state bool) error {
 			if err := write(cell); err != nil {
 				return err
 			}
-			if err := WriteTokenReferences(writer, token); err != nil {
+			if err := WriteTokenReferences(ctx, writer, token); err != nil {
 				return err
 			}
 			if err := write(`</td></tr>`); err != nil {
@@ -143,7 +154,7 @@ func WriteTokenGroup(writer io.Writer, group TokenGroup, state bool) error {
 		}
 	}
 	for _, child := range group.Children {
-		if err := WriteTokenGroup(writer, child, false); err != nil {
+		if err := WriteTokenGroup(ctx, writer, child, false); err != nil {
 			return err
 		}
 	}
@@ -153,9 +164,9 @@ func WriteTokenGroup(writer io.Writer, group TokenGroup, state bool) error {
 	return nil
 }
 
-func WriteTokenReferences(writer io.Writer, token TokenRow) error {
+func WriteTokenReferences(ctx context.Context, writer io.Writer, token TokenRow) error {
 	write := func(value string) error { _, err := io.WriteString(writer, value); return err }
-	id := fmt.Sprintf("token-info-%x", sha256.Sum256([]byte(token.SourceName+"\x00"+token.Name+"\x00"+token.Value)))
+	id := tokenReferenceID(token)
 	label := token.Value
 	if label == "" || label == "Color not resolved" || label == "Undefined: true" {
 		if len(token.References) > 0 {
@@ -168,12 +179,32 @@ func WriteTokenReferences(writer io.Writer, token TokenRow) error {
 	if token.Color != "" {
 		style = ` style="--tokens-preview-color:` + html.EscapeString(token.Color) + `;--tokens-preview-on-color:` + TokenColorTextColor(token.Color) + `"`
 	}
-	preview := `<span class="tokens-preview-value">` + html.EscapeString(label) + `</span>`
+	valueText := `<span class="tokens-preview-value">` + html.EscapeString(label) + `</span>`
+	preview := valueText
+	popupPreview := valueText
+	popupClass := ColorCellClass(token.Color)
+	if token.Typography != nil && token.Typography.Style != "" {
+		preview = typographySpecimen(token.Typography)
+		popupPreview = preview
+		popupClass += " tokens-popup-type"
+	}
 	if token.Shape != "" {
-		preview = `<span class="tokens-shape-swatch" style="border-radius:` + html.EscapeString(token.Shape) + `" aria-hidden="true"></span><span class="tokens-preview-value">` + html.EscapeString(label) + `</span>`
+		shapeClass := "tokens-shape-swatch"
+		if token.Shape == "50%" {
+			shapeClass += " tokens-shape-circular"
+		}
+		popupPreview = `<span class="` + shapeClass + `" style="border-radius:` + html.EscapeString(token.Shape) + `" aria-hidden="true"></span>`
+		preview = popupPreview + valueText
+		popupClass += " tokens-popup-shape"
 	}
 	if token.Elevation != "" {
-		preview = `<span class="md-elevation tokens-elevation-swatch" style="--_elevation-level:` + html.EscapeString(token.Elevation) + `" aria-hidden="true"></span><span class="tokens-visually-hidden">` + html.EscapeString(label) + `</span>`
+		popupPreview = `<span class="md-elevation tokens-elevation-swatch" style="--_elevation-level:` + html.EscapeString(token.Elevation) + `" aria-hidden="true"></span>`
+		preview = popupPreview + `<span class="tokens-visually-hidden">` + html.EscapeString(label) + `</span>`
+	}
+	if token.ValueKind == "motionReference" {
+		popupPreview = `<span class="tokens-numeric-swatch">` + TokenTableSymbol("numbers") + `</span>`
+		preview = popupPreview + `<span class="tokens-visually-hidden">` + html.EscapeString(label) + `</span>`
+		popupClass += " tokens-popup-motion"
 	}
 	compact := `<span class="tokens-compact-value"` + style + `>`
 	if token.Color != "" {
@@ -184,33 +215,208 @@ func WriteTokenReferences(writer io.Writer, token TokenRow) error {
 		return err
 	}
 
-	if err := write(`<div id="` + id + `" class="md-elevation tokens-reference-popover" popover role="dialog" aria-label="` + html.EscapeString(token.Name) + `"><div class="tokens-reference-chain"><code class="tokens-popup-source">` + html.EscapeString(token.SourceName) + `</code>`); err != nil {
+	if err := write(`<div id="` + id + `" class="md-elevation tokens-reference-popover" popover role="dialog" aria-label="` + html.EscapeString(token.Name) + `">`); err != nil {
 		return err
 	}
-	if err := WriteReferenceBranches(writer, token.References); err != nil {
+	if err := write(`<div class="tokens-popup-value` + popupClass + `"` + style + `>` + popupPreview + `</div>`); err != nil {
+		return err
+	}
+	properties := token.ValueProperties
+	if token.Typography != nil {
+		properties = token.Typography.Properties
+		if token.Typography.FallbackFont {
+			if err := write(`<p class="tokens-type-font-note">Uses Roboto when the captured font is unavailable.</p>`); err != nil {
+				return err
+			}
+		}
+	}
+	if len(properties) == 0 {
+		properties = []TokenProperty{scalarTokenProperty(token, label)}
+	}
+	if err := writeTokenProperties(ctx, writer, id, properties, token.SourceName, style); err != nil {
+		return err
+	}
+
+	return write(`</div>`)
+}
+
+func tokenReferenceID(token TokenRow) string {
+	return fmt.Sprintf("token-info-%x", sha256.Sum256([]byte(token.SourceName+"\x00"+token.Name+"\x00"+token.Value)))
+}
+
+func typographySpecimen(typography *TypographyPreview) string {
+	return `<span class="tokens-type-specimen" style="` + html.EscapeString(typography.Style) + `" aria-hidden="true">Aa</span>`
+}
+
+func writeTokenProperties(ctx context.Context, writer io.Writer, id string, properties []TokenProperty, source, colorStyle string) error {
+	list := ui.List(ui.ListProps{
+		Label: "Token properties", Appearance: ui.Expressive, Variant: ui.SegmentedList, Lines: ui.TwoLines, Leading: ui.LeadingIcon,
+		Attrs: templ.Attributes{"class": "md-list tokens-value-properties", "data-control": "expand", "data-expand-surface": "tonal", "data-expand-icon": "expanded"},
+	})
+	rows := templ.ComponentFunc(func(ctx context.Context, writer io.Writer) error {
+		for index, property := range properties {
+			panelID := fmt.Sprintf("%s-property-%d", id, index)
+			if err := writeTokenProperty(ctx, writer, panelID, property, source, colorStyle); err != nil {
+				return err
+			}
+		}
+		return nil
+	})
+	return list.Render(templ.WithChildren(ctx, rows), writer)
+}
+
+func writeTokenProperty(ctx context.Context, writer io.Writer, panelID string, property TokenProperty, source, colorStyle string) error {
+	leading := ui.Icon(property.Icon)
+	if property.Icon == "palette" && colorStyle != "" {
+		leading = templ.Raw(`<span class="tokens-color-dot"` + colorStyle + `></span>`)
+	}
+	item := ui.ListItemProps{
+		LeadingKind: ui.LeadingIcon, Leading: leading,
+		Overline: property.Label, Label: property.Value, SingleLine: true,
+	}
+	if len(property.References) == 0 {
+		return ui.ListRow(item).Render(ctx, writer)
+	}
+	item.Trailing = ui.ListIcon("expand_more", true)
+	content := ui.ListContent(item)
+	var chain strings.Builder
+	if err := writeTokenReferenceChain(&chain, source, property.References, resolvedReferenceValue(property.References, property.Value)); err != nil {
+		return err
+	}
+	aliases := chain.String()
+	fallback := templ.ComponentFunc(func(ctx context.Context, writer io.Writer) error {
+		if _, err := io.WriteString(writer, `<noscript><details class="tokens-value-native-disclosure"><summary class="md-list-item">`); err != nil {
+			return err
+		}
+		if err := content.Render(ctx, writer); err != nil {
+			return err
+		}
+		_, err := io.WriteString(writer, `</summary>`+aliases+`</details></noscript>`)
+		return err
+	})
+	return ui.ListRowFrame(ui.ListRowFrameProps{
+		Attrs:         templ.Attributes{"data-list-row": "", "data-list-label": property.Label, "data-list-expanded": "false"},
+		ContentAttrs:  templ.Attributes{"class": "md-list-item", "type": "button", "data-list-item": "", "aria-expanded": "false", "aria-controls": panelID},
+		ChildrenAttrs: templ.Attributes{"id": panelID, "aria-label": property.Label + " references", "hidden": true, "inert": true},
+		Before:        fallback, Content: content, Expanded: templ.Raw(`<li>` + aliases + `</li>`),
+	}).Render(ctx, writer)
+}
+
+func resolvedReferenceValue(references []publish.TokenReference, value string) string {
+	if value == "" {
+		return ""
+	}
+	for _, reference := range references {
+		if value == reference.Name || resolvedReferenceValue(reference.References, value) == "" {
+			return ""
+		}
+	}
+	return value
+}
+
+func writeTokenReferenceChain(writer io.Writer, source string, references []publish.TokenReference, value string) error {
+	write := func(text string) error { _, err := io.WriteString(writer, text); return err }
+	if err := write(`<div class="tokens-reference-chain">`); err != nil {
+		return err
+	}
+	if source != "" {
+		if err := write(`<code class="tokens-popup-source tokens-visually-hidden">` + html.EscapeString(source) + `</code>`); err != nil {
+			return err
+		}
+	}
+	if err := writeReferenceBranches(writer, references, value); err != nil {
 		return err
 	}
 	return write(`</div>`)
 }
 
-func WriteReferenceBranches(writer io.Writer, references []publish.TokenReference) error {
-	if _, err := io.WriteString(writer, `<ul>`); err != nil {
+func writeTokenGuidance(ctx context.Context, writer io.Writer, token TokenRow) error {
+	var body strings.Builder
+	title := "Usage discouraged"
+	seen := make(map[string]bool)
+	for _, notice := range token.Notices {
+		if notice.Message == "" || seen[notice.Message] {
+			continue
+		}
+		seen[notice.Message] = true
+		if notice.State == "deprecated" {
+			title = "Deprecated token"
+		}
+		body.WriteString(`<p>` + html.EscapeString(notice.Message) + `</p>`)
+	}
+	if body.Len() == 0 {
+		return nil
+	}
+	id := tokenReferenceID(token) + "-guidance"
+	host := ui.TooltipHost(templ.Attributes{"class": "md-tooltip-demo tokens-token-guidance-anchor", "data-tooltip-hover": ""})
+	trigger := ui.IconButton(ui.IconButtonProps{
+		Label: "Usage guidance for " + token.Name, Icon: "warning", Variant: "tonal", Size: ui.ExtraSmall, Width: "wide",
+		Attrs: templ.Attributes{
+			"class":         "md-icon-button md-tonal-icon-button tokens-token-guidance-trigger",
+			"popovertarget": id, "popovertargetaction": "show", "aria-haspopup": "dialog",
+		},
+	})
+	tip := ui.Tooltip(ui.TooltipProps{ID: id, Variant: "rich", Title: title, Body: templ.Raw(body.String())})
+	content := templ.ComponentFunc(func(ctx context.Context, writer io.Writer) error {
+		if err := trigger.Render(ctx, writer); err != nil {
+			return err
+		}
+		return tip.Render(ctx, writer)
+	})
+	return host.Render(templ.WithChildren(ctx, content), writer)
+}
+
+func writeReferenceBranches(writer io.Writer, references []publish.TokenReference, value string) error {
+	write := func(text string) error { _, err := io.WriteString(writer, text); return err }
+	if err := write(`<ul>`); err != nil {
 		return err
 	}
 	for _, reference := range references {
 		name := html.EscapeString(reference.Name)
-		if _, err := io.WriteString(writer, `<li><div class="tokens-reference-node">`+TokenTableSymbol("camera")+`<code title="`+name+`">`+name+`</code></div>`+TokenTableSymbol("arrow_downward")); err != nil {
+		if err := write(`<li><div class="tokens-reference-node">` + TokenTableSymbol("link") + `<code title="` + name + `">` + name + `</code></div>`); err != nil {
 			return err
 		}
-		if len(reference.References) > 0 {
-			if err := WriteReferenceBranches(writer, reference.References); err != nil {
+		next := reference.References
+		// A shared literal belongs to the property, not to each branch in a fork.
+		leaf := value != "" && len(references) == 1 && len(next) == 0
+		if len(next) > 0 || leaf {
+			if err := write(TokenTableSymbol("arrow_downward")); err != nil {
 				return err
 			}
 		}
-		if _, err := io.WriteString(writer, `</li>`); err != nil {
+		if len(next) > 0 {
+			branchValue := value
+			if len(references) > 1 {
+				branchValue = ""
+			}
+			if err := writeReferenceBranches(writer, next, branchValue); err != nil {
+				return err
+			}
+		}
+		if leaf {
+			if err := writeReferenceLeaf(writer, value); err != nil {
+				return err
+			}
+		}
+		if err := write(`</li>`); err != nil {
 			return err
 		}
 	}
-	_, err := io.WriteString(writer, `</ul>`)
+	if len(references) > 1 && value != "" {
+		if err := write(`<li>`); err != nil {
+			return err
+		}
+		if err := writeReferenceLeaf(writer, value); err != nil {
+			return err
+		}
+		if err := write(`</li>`); err != nil {
+			return err
+		}
+	}
+	return write(`</ul>`)
+}
+
+func writeReferenceLeaf(writer io.Writer, value string) error {
+	_, err := io.WriteString(writer, `<div class="tokens-reference-literal">`+TokenTableSymbol("deployed_code")+`<span class="tokens-reference-leaf">`+html.EscapeString(value)+`</span></div>`)
 	return err
 }

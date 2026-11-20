@@ -497,6 +497,18 @@ test("list press release waits for selection and leaves shape motion to CSS", ()
   assert.equal(h.animations.some(animation => animation.frames[0].borderRadius), false);
 });
 
+test("static list rows never start press feedback", () => {
+  const h = harness(), row = h.button();
+  row.className = "md-list-item";
+  row.setAttribute("data-list-static", "");
+  h.emit("pointerdown", row);
+  assert.equal(row.hasAttribute("data-pressed"), false);
+  h.emit("pointerup", row);
+  h.emit("click", row);
+  assert.equal(h.animations.length, 0);
+  assert.equal(row.children.length, 0);
+});
+
 test("keyboard-synthesized clicks create centered ink and toggle selection once", () => {
   const h = harness(),
     b = h.button();

@@ -39,7 +39,7 @@ func TokenBrowserView(subject publish.SubjectView, browser webview.TokenBrowser)
 					return err
 				}
 			}
-			if err := webview.WriteTokenGroups(writer, browser); err != nil {
+			if err := webview.WriteTokenGroups(ctx, writer, browser); err != nil {
 				return err
 			}
 			if browser.Static != nil {

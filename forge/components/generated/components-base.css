@@ -4675,7 +4675,11 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
     border-radius var(--_motion-fast-spatial-duration)
       var(--_motion-fast-spatial-easing);
 }
-.md-list-item::before {
+.md-list-item[data-list-static] {
+  cursor: default;
+  touch-action: auto;
+}
+.md-list-item:not(:where([data-list-static]))::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -4697,7 +4701,7 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
   --_button-background-state-opacity: 0;
 }
 .md-list-item:is(:active, [data-pressed], [data-component-state="pressed"]):not(
-    :disabled
+    :disabled, [data-list-static]
   ):not([data-button-cancelled]) {
   --_button-shape: var(--_button-pressed-shape);
 }

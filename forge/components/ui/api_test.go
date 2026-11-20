@@ -56,6 +56,9 @@ func TestTypedControlsPreserveNativeFormValues(t *testing.T) {
 func TestNestedComponentsRegisterTheirOwnModules(t *testing.T) {
 	p := ListItemProps{Label: "Updates", LeadingKind: LeadingAvatar, Avatar: "M", Badge: Badge("small", "", nil), Trailing: SwitchControl(ChoiceProps{ID: "updates", Label: "Updates"})}
 	text, assets := renderAPI(t, ListRow(p))
+	if !strings.Contains(text, "<div data-list-static") {
+		t.Fatal("a display-only row must opt out of row feedback", text)
+	}
 	for _, module := range []string{"common", "list", "badge", "switch"} {
 		if !assets[module] {
 			t.Fatal("missing", module, assets)

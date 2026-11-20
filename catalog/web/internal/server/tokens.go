@@ -3,12 +3,14 @@ package server
 import (
 	"encoding/json"
 	"fmt"
+	"maps"
 	"math"
 	"net/url"
 	"sort"
 	"strings"
 
 	webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+	"github.com/sojupie/tokens/source/dtcg"
 	"github.com/sojupie/tokens/source/publish"
 )
 
@@ -20,10 +22,10 @@ type tokenFolder struct {
 }
 
 func buildTokenBrowser(subject publish.SubjectView, query url.Values) webview.TokenBrowser {
-	return buildTokenBrowserView(subject, query, false)
+	return buildTokenBrowserView(subject, query, false, nil)
 }
 
-func buildTokenBrowserView(subject publish.SubjectView, query url.Values, localSearch bool) webview.TokenBrowser {
+func buildTokenBrowserView(subject publish.SubjectView, query url.Values, localSearch bool, motionTokens []publish.TokenView) webview.TokenBrowser {
 	browser := webview.TokenBrowser{Query: strings.TrimSpace(query.Get("q")), Sets: webview.TokenSets(subject), LocalSearch: localSearch}
 	browser.TableOnly = query.Get("view") == "table"
 	browser.PreviewQuery = make(url.Values)
@@ -64,6 +66,10 @@ func buildTokenBrowserView(subject publish.SubjectView, query url.Values, localS
 		}
 	}
 	folders := make(map[string]*tokenFolder)
+	notices := make(map[string][]publish.LifecycleNoticeView)
+	for _, notice := range subject.LifecycleNotices {
+		notices[notice.Subject] = append(notices[notice.Subject], notice)
+	}
 	search := strings.ToLower(browser.Query)
 	for _, token := range browser.Selected.SourceTokens {
 		_, _, state, path := webview.TokenLocation(token, subject.Key.Kind == publish.SubjectComponent)
@@ -79,8 +85,19 @@ func buildTokenBrowserView(subject publish.SubjectView, query url.Values, localS
 			row.Value = tokenValueDisplay(token.Category, value.Value)
 			row.Shape = shapePreviewCSS(value.Value)
 			var primitive map[string]json.RawMessage
-			if json.Unmarshal(value.Value, &primitive) == nil && primitive["elevation"] != nil {
-				row.Elevation = themeValue(value.Value)
+			if json.Unmarshal(value.Value, &primitive) == nil {
+				if primitive["elevation"] != nil {
+					row.Elevation = themeValue(value.Value)
+				}
+				if localSearch {
+					row.ValueKind, row.ValueProperties = webview.TokenValueDetails(primitive, row.References)
+					if text := webview.InspectorValue(row.ValueKind, primitive[row.ValueKind]); text != "" {
+						row.Value = text
+					}
+					if row.ValueKind == "motionReference" {
+						row.ValueProperties = springProperties(primitive["motionReference"], motionTokens, selectedFilters)
+					}
+				}
 			}
 			if strings.EqualFold(token.Category, "COLOR") {
 				row.Color = tokenColor(value.Value)
@@ -91,6 +108,10 @@ func buildTokenBrowserView(subject publish.SubjectView, query url.Values, localS
 		}
 		if !strings.EqualFold(token.Lifecycle, "active") {
 			row.Lifecycle = webview.DisplayWords(token.Lifecycle)
+		}
+		row.Notices = notices[token.SourceName]
+		if localSearch && hasValue && strings.EqualFold(token.Category, "TYPOGRAPHY") {
+			row.Typography = webview.TokenTypographyPreview(value.Value, token.SourceName, row.References)
 		}
 		if localSearch || search != "" {
 			fields := tokenSearchFields(token, row, value)
@@ -183,6 +204,38 @@ func buildTokenBrowserView(subject publish.SubjectView, query url.Values, localS
 		browser.Selected.Groups = append(browser.Selected.Groups, group)
 	}
 	return browser
+}
+
+func springProperties(raw json.RawMessage, tokens []publish.TokenView, filters map[string]string) []webview.TokenProperty {
+	var name string
+	if json.Unmarshal(raw, &name) != nil || !strings.HasPrefix(name, "md.sys.motion.spring.") {
+		return nil
+	}
+	// The referencing token may omit a context axis used by its dependencies.
+	context := dtcg.DefaultContext()
+	maps.Copy(context, filters)
+	var properties []webview.TokenProperty
+	for _, key := range []string{"damping", "stiffness"} {
+		propertyName := name + "." + key
+		for _, token := range tokens {
+			if token.SourceName != propertyName {
+				continue
+			}
+			value, ok := selectTokenValue(token.Values, context)
+			if !ok {
+				break
+			}
+			var source struct{ Numeric *float64 }
+			if json.Unmarshal(value.Value, &source) == nil && source.Numeric != nil {
+				properties = append(properties, webview.TokenProperty{
+					Label: webview.DisplayWords(key), Value: webview.FormatNumber(*source.Numeric), Icon: "numbers",
+					References: []publish.TokenReference{{Name: name, References: []publish.TokenReference{{Name: propertyName, References: value.References}}}},
+				})
+			}
+			break
+		}
+	}
+	return properties
 }
 
 func selectTokenValue(values []publish.TokenValueView, filters map[string]string) (publish.TokenValueView, bool) {
@@ -357,6 +410,9 @@ func folderView(folder *tokenFolder, open bool) webview.TokenGroup {
 
 func tokenSearchFields(token publish.TokenView, row webview.TokenRow, value publish.TokenValueView) []string {
 	fields := []string{token.SourceName, row.Name, token.Category, row.Lifecycle}
+	for _, notice := range row.Notices {
+		fields = append(fields, notice.State, notice.Message)
+	}
 	if row.HasValue {
 		fields = append(fields, row.Value, tokenContextLabel(value))
 	}

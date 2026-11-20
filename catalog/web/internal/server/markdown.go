@@ -167,18 +167,25 @@ func htmlMarkdown(source []byte, pageURL, tokenGuide string) (string, error) {
 		}
 		if strings.Contains(classes, " tokens-reference-popover ") {
 			var references []string
-			var collect func(*html.Node, bool)
-			collect = func(n *html.Node, inList bool) {
-				inList = inList || n.Data == "ul"
-				if inList && n.Data == "code" {
-					references = append(references, strings.TrimSpace(render(n)))
+			var collect func(*html.Node)
+			collect = func(n *html.Node) {
+				if n.Data == "noscript" {
+					return
+				}
+				if n.Data == "code" {
+					for _, attr := range n.Attr {
+						if attr.Key == "title" {
+							references = append(references, strings.TrimSpace(render(n)))
+							break
+						}
+					}
 					return
 				}
 				for child := n.FirstChild; child != nil; child = child.NextSibling {
-					collect(child, inList)
+					collect(child)
 				}
 			}
-			collect(node, false)
+			collect(node)
 			if len(references) == 0 {
 				return ""
 			}

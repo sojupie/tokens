@@ -943,7 +943,9 @@ export function generateComponents(document, values) {
           : condition(b);
     const stateCondition = b.family === "field"
       ? fieldCondition.replaceAll("> input:disabled, > select:disabled", "> :is(input, textarea, select):disabled")
-      : fieldCondition;
+      : b.family === "list-item" && b.state
+        ? ":where(:not([data-list-static]))" + fieldCondition
+        : fieldCondition;
     const selectors = b.selector
       .split(", ")
       .map((s) => s + stateCondition + (b.target || ""))
