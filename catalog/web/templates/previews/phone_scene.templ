@@ -1,0 +1,60 @@
+package render
+
+import webview "github.com/sojupie/tokens/catalog/web/internal/presentation"
+
+import "github.com/sojupie/tokens/forge/components/ui"
+
+templ PhoneScene(p webview.PhoneSceneProps) {
+	<div class="tokens-phone-scene">
+		<div class="tokens-phone-screen tokens-layout">
+			<div class="tokens-phone-scaffold tokens-layout-content">
+				if p.TopBar != nil {
+					<div class="tokens-phone-top-bar">
+						@p.TopBar
+					</div>
+				}
+				<div class={ "tokens-phone-pane tokens-layout-grid", templ.KV("tokens-phone-pane-bottom", p.PaneAtBottom) }>
+					{ children... }
+				</div>
+				<div class="tokens-phone-bottom">
+					if p.BottomRail != nil {
+						<div class="tokens-phone-bottom-rail tokens-layout-grid">
+							@p.BottomRail
+						</div>
+					}
+					if p.BottomBar != nil {
+						<div class={ "tokens-phone-bottom-bar", p.BottomBarClass }>
+							@p.BottomBar
+						</div>
+					}
+				</div>
+				if p.Overlay != nil {
+					<div class="tokens-phone-overlay">
+						@p.Overlay
+					</div>
+				}
+			</div>
+			<div class="tokens-phone-status" aria-hidden="true">
+				<span>9:30</span>
+				<span>@ui.Icon("wifi") @ui.Icon("battery_full")</span>
+			</div>
+			<div class="tokens-phone-gesture" aria-hidden="true"></div>
+		</div>
+	</div>
+}
+
+templ PhoneThumbnail(crop webview.PhoneCrop, p webview.PhoneSceneProps) {
+	<div class="tokens-phone-thumbnail" data-phone-crop={ string(crop) }>
+		@PhoneScene(p) {
+			{ children... }
+		}
+	</div>
+}
+
+templ ThumbnailWindow(edge string) {
+	<div class="tokens-thumbnail-window tokens-layout" data-window-crop={ edge }>
+		<div class="tokens-thumbnail-window-layout tokens-layout-content">
+			{ children... }
+		</div>
+	</div>
+}

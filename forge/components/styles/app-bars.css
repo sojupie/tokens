@@ -16,8 +16,9 @@
   display: flex;
   align-items: center;
   block-size: var(--md-comp-app-bar-small-container-height);
-  padding-inline: var(--_appbar-leading, var(--md-sys-measurement-space50))
-    var(--_appbar-trailing, var(--md-sys-measurement-space50));
+  padding-inline:
+    var(--forge-app-bar-action-inset, var(--_appbar-leading, var(--md-sys-measurement-space50)))
+    var(--forge-app-bar-action-inset, var(--_appbar-trailing, var(--md-sys-measurement-space50)));
   gap: var(--_appbar-button-gap, var(--md-sys-measurement-space0));
   box-sizing: border-box;
 }
@@ -51,7 +52,7 @@
 }
 .md-appbar-expanded {
   position: absolute;
-  inset-inline: var(--md-sys-measurement-space200);
+  inset-inline: var(--forge-app-bar-expanded-title-inset, var(--md-sys-measurement-space200));
   inset-block-end: var(--md-sys-measurement-space200);
   padding: 0;
 }
@@ -172,7 +173,7 @@
 .md-app-bar:is([data-variant="medium-flexible"], [data-variant="large-flexible"]) .md-appbar-expanded {
   position: static;
   margin-block: auto var(--md-sys-measurement-space200);
-  padding-inline: var(--md-sys-measurement-space200);
+  padding-inline: var(--forge-app-bar-expanded-title-inset, var(--md-sys-measurement-space200));
 }
 .md-app-bar:is([data-variant="medium-flexible"], [data-variant="large-flexible"]) .md-appbar-title {
   display: -webkit-box;

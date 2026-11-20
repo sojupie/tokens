@@ -134,7 +134,7 @@ func (server *Server) componentThumbnails(subjects []publish.SubjectView) (map[s
 			query.Set("preview.control", "value")
 		case "date-pickers":
 			query.Set("preview.compare", "states")
-			query.Set("preview.variant", "docked")
+			query.Set("preview.variant", "modal")
 			query.Set("preview.control", "day")
 			query.Set("preview.selection", "selected")
 		case "lists":

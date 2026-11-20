@@ -205,6 +205,111 @@ Apply layout variables from `forge/site/site.css` to arrange panes and content:
 - Use semantic color, shape and typography tokens. Check light/dark themes and all
   three contrasts. Keep sample data, counts and selected states consistent.
 
+## Catalog thumbnail prompt
+
+> Make the featured Forge component recognizable at Catalog tile size. Name
+> the component, its state, the task, and the reason for each visible edge.
+> Start on Catalog's tinted backdrop. Add the smallest amount of app content
+> that explains the state or placement. Use the shared phone scene when a
+> device edge explains placement. Put actual Forge components in the scene
+> slots, select the crop, and inspect the resulting tile beside its neighbors.
+> Use Material's gallery to judge how much context the component needs.
+
+### Composition guidelines
+
+- Write one line per tile before building it. For a bottom sheet, the line
+  could be “Expanded share sheet over a photo, docked to the bottom of the
+  phone.” This identifies both the content behind the sheet and the edge
+  that explains where it sits. [Material component gallery](https://m3.material.io/components)
+- Use a standalone specimen for components whose appearance explains their
+  purpose. Add a portion of a list, form, or other app layout when the
+  component's relationship to nearby content matters. A visible surface or
+  boundary should belong to that layout or to the featured component.
+- Use the component that owns each relationship. For a divider between list
+  items, configure the divider through Forge List. Use a card, sheet, or
+  dialog surface where the task calls for one. Give any visible title one
+  owner in the layout.
+- Place bars at the usable edges, place floating actions and toolbars in the
+  adjacent rail, and put primary content in the pane. Use the shared grid,
+  margins, and related spacing. Keep supported component density, type,
+  target sizes, and states in Forge. [Scaffold](https://m3.material.io/foundations/layout/scaffold/overview),
+  [Rails](https://m3.material.io/foundations/layout/scaffold/rails),
+  [Grids and spacing](https://m3.material.io/foundations/layout/grids-spacing/overview),
+  [Grid and rulers](https://m3.material.io/foundations/layout/grids-spacing/grids),
+  [Spacing](https://m3.material.io/foundations/layout/grids-spacing/spacing)
+
+### Shared phone scene
+
+Use `PhoneScene` in `catalog/web/templates/previews/phone_scene.templ` to
+lay out the device. Its children fill the content pane. `TopBar` and
+`BottomBar` take docked bars, `BottomRail` takes floating or inset controls,
+and `Overlay` takes a scene-positioned surface such as a bottom sheet. The
+bottom rail sits above the bottom bar when both are present. A bottom bar
+can continue its own surface through the inset via `BottomBarClass`. The
+pane and bottom rail share four columns, 16px margins, and 8px gutters.
+`PaneAtBottom` places pane content against the bottom rail or bar. Docked
+bars and overlay surfaces can run to the screen edge. Overlay content can
+use `--phone-gesture-inset` to keep controls clear of the system gesture.
+
+The expanded App Bar title and the pane share the 16dp inline ruler. The
+top bar slot sets the App Bar's action inset so the outer small action
+glyph boxes meet that ruler. The action row keeps its token-defined height
+and centers the buttons in the row. The first pane content starts a
+section gap below the top bar. Place pane items directly in the shared
+grid and set `--layout-span` where an item occupies fewer than four columns.
+
+The reference profile has a 390 × 844dp screen, a 4dp bezel, a 48dp top safety
+inset, and a 24dp bottom safety inset. These are Catalog illustration
+measurements for one reference phone. The status marks center 30dp below the
+screen edge. The App Bar action row starts at the top safety ruler and uses
+its Forge height. The noninteractive status and gesture layers paint their
+marks over the app surface.
+[Android system bar protection](https://developer.android.com/develop/ui/compose/system/system-bars)
+
+For gallery art, wrap the scene with `PhoneThumbnail` and select
+`PhoneCropTop` or `PhoneCropBottom`. `PhoneCropDetail` zooms into compact
+controls near the top of the phone. `PhoneCropAction` zooms into the
+trailing bottom corner for a single action, and `PhoneCropActionMenu` gives
+the full stack of actions room within that corner.
+`PhoneCropCenter` keeps a compact centered dialog and its actions in frame.
+`PhoneCropModal` frames the upper portion of a centered portrait dialog, with
+the dialog surface, primary values, and scrim visible against the device edges.
+`PhoneCropModalUpper` moves that frame up so more of the clock face fits.
+The device is laid out at one CSS pixel per logical dp before the entire
+phone is scaled. The standard scale is 0.68. Detail crops use 0.80, action
+crops use 0.92, and expanded action menus use 0.77. The 360 × 225 CSS pixel artboard renders at
+2× for a 720 × 450 capture. At standard scale, a 48dp target spans about
+65 pixels in the capture and 33 in the smaller 360 × 225 image. The same
+conversion applies to the bezel, type, spacing, and component geometry.
+[Material density](https://m3.material.io/foundations/layout/grids-spacing/density)
+
+Use `ThumbnailWindow` to show a docked drawer, rail, or sheet against a wide
+scene edge. It uses the reference frame weight and scale and lays out a
+640 × 480dp window with the shared medium-width margins. Progress and Loading
+show their variants directly on a shared tonal backdrop.
+
+### Acceptance criteria
+
+- [ ] The featured component is identifiable before the surrounding scene.
+  Labels, images, and state have a clear role in the same task.
+- [ ] The tinted backdrop is visible. Each visible edge belongs to the
+  device, an identifiable app surface, a component, or the artboard crop.
+- [ ] Phone tiles share the same frame weight, corner shape, and system UI.
+  The application surface can be traced behind each transparent system mark.
+- [ ] The crop preserves the featured component's defining state and controls.
+  A portrait modal can extend below the frame when its heading and field values
+  establish the component. Any cropped context extends through a tile edge. The view avoids an
+  unexplained interior cut or seam.
+- [ ] The phone measures 390 × 844 logical pixels before framing. Check
+  the shared margin, the system insets, and a component dimension against
+  their measured ratios in the 720 × 450 capture.
+- [ ] In an expanded App Bar scene, check the title, action glyphs, and
+  pane edges against the shared ruler. Measure the first content gap and
+  the gutter between cards or photos in the shared grid.
+- [ ] Inspect the served tiles side by side at desktop and mobile widths in
+  light and dark. For a new direction, review a small set with a phone
+  crop, an app crop, and a standalone specimen before applying it broadly.
+
 ## Files and capture integration
 
 Put maintained scene templates in a dedicated directory under
@@ -234,9 +339,9 @@ replace readiness with an arbitrary screenshot delay.
 
 ## Review and checks
 
-Start with one rich scene and inspect it before multiplying compositions. Reuse
-port **8085** for local review. Check the real render route, framing, text,
-clipping and component behavior; successful capture is not visual acceptance.
+Review representative crops using the acceptance criteria above before
+generating the full set. Reuse port **8085** for local review. Check the real
+render route, framing, text, clipping, and component behavior.
 
 After source changes, run from the repository root:
 

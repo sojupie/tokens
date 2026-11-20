@@ -16,7 +16,7 @@ func (c ComponentCase) ThumbnailSelected(selected bool) ComponentCase {
 
 func (c ComponentCase) ThumbnailToolbarAction(index int) templ.Attributes {
 	attrs := c.BarAction(min(index, 2))
-	attrs["aria-label"] = []string{"Download", "Copy", "More actions"}[index]
+	attrs["aria-label"] = []string{"Edit", "Favorite", "Download", "Copy", "More actions"}[index]
 	delete(attrs, "aria-pressed")
 	delete(attrs, "data-button-toggle")
 	delete(attrs, "data-menu-open")
