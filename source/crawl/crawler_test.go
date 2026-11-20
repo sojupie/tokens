@@ -10,8 +10,92 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"slices"
+	"strings"
 	"testing"
+	"time"
 )
+
+func TestDiscoverPageChangesFindsComponentAndStyleSources(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/sitemap.xml" {
+			t.Errorf("unexpected page request: %s", r.URL.Path)
+			http.NotFound(w, r)
+			return
+		}
+		origin := "http://" + r.Host
+		_, _ = io.WriteString(w, "<urlset>"+
+			"<url><loc>"+origin+"/components/buttons/specs</loc></url>"+
+			"<url><loc>"+origin+"/components/scroll-fields/specs</loc></url>"+
+			"<url><loc>"+origin+"/components/scroll-fields/overview</loc></url>"+
+			"<url><loc>"+origin+"/styles/spacing/tokens</loc></url>"+
+			"</urlset>")
+	}))
+	defer server.Close()
+	seed := server.URL + "/components/buttons/specs"
+	previous := []string{seed, server.URL + "/styles/old-style/tokens"}
+	catalogPath := filepath.Join(t.TempDir(), "pages.json")
+	if err := writePageCatalog(catalogPath, server.URL+"/sitemap.xml", previous); err != nil {
+		t.Fatal(err)
+	}
+	config := Config{
+		Seed: seed, Sitemap: server.URL + "/sitemap.xml", Scope: ScopeTokenSourcePages,
+		PageCatalogPath: catalogPath, MaxPages: 500, Concurrency: 1, PageTimeout: time.Second,
+	}
+	report, err := DiscoverPageChanges(context.Background(), config)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !slices.Equal(report.Added, []string{server.URL + "/components/scroll-fields/specs", server.URL + "/styles/spacing/tokens"}) ||
+		!slices.Equal(report.Removed, previous[1:]) {
+		t.Fatalf("unexpected discovery report: %+v", report)
+	}
+	config.Scope = ScopeComponentSpecs
+	report, err = DiscoverPageChanges(context.Background(), config)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !slices.Equal(report.Added, []string{server.URL + "/components/scroll-fields/specs"}) || len(report.Removed) != 0 {
+		t.Fatalf("unexpected component-only report: %+v", report)
+	}
+	pages, err := loadPageCatalog(catalogPath, 0)
+	if err != nil || !slices.Equal(pages, previous) {
+		t.Fatalf("catalog changed: %v, %v", pages, err)
+	}
+}
+
+func TestDiscoverPageChangesRejectsIncompleteSitemap(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		origin := "http://" + r.Host
+		switch r.URL.Path {
+		case "/sitemap.xml":
+			_, _ = io.WriteString(w, "<sitemapindex>"+
+				"<sitemap><loc>"+origin+"/components.xml</loc></sitemap>"+
+				"<sitemap><loc>"+origin+"/styles.xml</loc></sitemap>"+
+				"</sitemapindex>")
+		case "/components.xml":
+			_, _ = io.WriteString(w, "<urlset><url><loc>"+origin+"/components/buttons/specs</loc></url></urlset>")
+		case "/styles.xml":
+			w.WriteHeader(http.StatusServiceUnavailable)
+		default:
+			t.Errorf("unexpected page request: %s", r.URL.Path)
+			http.NotFound(w, r)
+		}
+	}))
+	defer server.Close()
+	seed := server.URL + "/components/buttons/specs"
+	catalogPath := filepath.Join(t.TempDir(), "pages.json")
+	if err := writePageCatalog(catalogPath, server.URL+"/sitemap.xml", []string{seed, server.URL + "/styles/spacing/tokens"}); err != nil {
+		t.Fatal(err)
+	}
+	report, err := DiscoverPageChanges(context.Background(), Config{
+		Seed: seed, Sitemap: server.URL + "/sitemap.xml", Scope: ScopeTokenSourcePages,
+		PageCatalogPath: catalogPath, MaxPages: 500, Concurrency: 1, PageTimeout: time.Second,
+	})
+	if err == nil || !strings.Contains(err.Error(), "/styles.xml: 503") || len(report.Removed) != 0 {
+		t.Fatalf("expected a sitemap error without removals, got report %+v and error %v", report, err)
+	}
+}
 
 func TestParseRobotsSitemaps(t *testing.T) {
 	origin, _ := url.Parse("https://m3.material.io/components/buttons/specs")

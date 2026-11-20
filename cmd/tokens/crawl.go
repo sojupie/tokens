@@ -3,6 +3,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 
 	"errors"
 	"flag"
@@ -32,6 +33,7 @@ func runCrawl(args []string) error {
 	flags.StringVar(&config.Scope, "scope", crawl.ScopeComponentSpecs, "live discovery scope: component-specs or token-source-pages")
 	flags.StringVar(&config.PageCatalogPath, "page-catalog", crawl.DefaultPageCatalogPath, "page URL catalog used by default")
 	flags.BoolVar(&config.Discover, "discover", false, "bypass the page URL catalog and report page-catalog drift")
+	pagesOnly := flags.Bool("pages-only", false, "report live page-catalog drift without starting Chromium")
 	flags.BoolVar(&config.UpdatePageCatalog, "update-page-catalog", false, "replace the page URL catalog with reviewed live discovery")
 	flags.BoolVar(&config.NoPageCatalog, "no-page-catalog", false, "bypass the page URL catalog without comparing or updating it")
 	flags.IntVar(&config.MaxPages, "max-pages", 500, "maximum candidate pages")
@@ -53,6 +55,15 @@ func runCrawl(args []string) error {
 	}
 	if flags.NArg() > 0 {
 		return fmt.Errorf("crawl does not accept positional arguments: %s", strings.Join(flags.Args(), " "))
+	}
+	if *pagesOnly {
+		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+		defer cancel()
+		report, err := crawl.DiscoverPageChanges(ctx, config)
+		if err != nil {
+			return err
+		}
+		return json.NewEncoder(os.Stdout).Encode(report)
 	}
 	return crawl.Run(context.Background(), config)
 }

@@ -49,6 +49,7 @@ type robotsFile struct {
 }
 
 type sitemapDocument struct {
+	XMLName  xml.Name
 	Sitemaps []struct {
 		Loc string `xml:"loc"`
 	} `xml:"sitemap"`
@@ -60,6 +61,43 @@ type sitemapDocument struct {
 func DiscoverPages(ctx context.Context, config Config) ([]string, error) {
 	pages, _, err := discoverPages(ctx, config)
 	return pages, err
+}
+
+func DiscoverPageChanges(ctx context.Context, config Config) (DiscoveryReport, error) {
+	if config.UpdatePageCatalog || config.NoPageCatalog || config.RetryFailed || config.RetryFailedFrom != "" {
+		return DiscoveryReport{}, errors.New("pages-only compares live URLs with the page catalog and cannot update it or retry captures")
+	}
+	if err := config.validate(); err != nil {
+		return DiscoveryReport{}, err
+	}
+	if config.PageCatalogPath == "" {
+		config.PageCatalogPath = DefaultPageCatalogPath
+	}
+	catalogPages, err := loadPageCatalog(config.PageCatalogPath, 0)
+	if err != nil {
+		return DiscoveryReport{}, fmt.Errorf("read page catalog: %w", err)
+	}
+	config.MaxPages = 0
+	pages, source, err := discoverLivePages(ctx, config, true)
+	if err != nil {
+		return DiscoveryReport{}, err
+	}
+	origin, err := url.Parse(config.Seed)
+	if err != nil {
+		return DiscoveryReport{}, err
+	}
+	var scopedCatalogPages []string
+	for _, page := range catalogPages {
+		page = canonicalPageURL(page, origin, config.PathPrefix)
+		if isPageInScope(page, config.Scope) {
+			scopedCatalogPages = append(scopedCatalogPages, page)
+		}
+	}
+	added, removed := pageDiff(scopedCatalogPages, pages)
+	return DiscoveryReport{
+		Mode: "live", Source: source, PageCatalogPath: config.PageCatalogPath,
+		Added: added, Removed: removed,
+	}, nil
 }
 
 func discoverPages(ctx context.Context, config Config) ([]string, DiscoveryReport, error) {
@@ -82,7 +120,7 @@ func discoverPages(ctx context.Context, config Config) ([]string, DiscoveryRepor
 
 	liveConfig := config
 	liveConfig.MaxPages = 0
-	livePages, source, err := discoverLivePages(ctx, liveConfig)
+	livePages, source, err := discoverLivePages(ctx, liveConfig, false)
 	if err != nil {
 		return nil, DiscoveryReport{}, err
 	}
@@ -236,7 +274,7 @@ func limitPages(pages []string, maxPages int) []string {
 	return pages
 }
 
-func discoverLivePages(ctx context.Context, config Config) ([]string, string, error) {
+func discoverLivePages(ctx context.Context, config Config, requireCompleteSitemap bool) ([]string, string, error) {
 	seed, err := url.Parse(config.Seed)
 	if err != nil {
 		return nil, "", err
@@ -260,9 +298,15 @@ func discoverLivePages(ctx context.Context, config Config) ([]string, string, er
 	if !isPageInScope(seedPage, config.Scope) {
 		return nil, "", fmt.Errorf("seed page is outside discovery scope %q: %s", config.Scope, seedPage)
 	}
-	pages[seedPage] = true
+	if !requireCompleteSitemap {
+		pages[seedPage] = true
+	}
 	for _, sitemap := range sitemaps {
-		for _, candidate := range collectSitemap(ctx, client, sitemap, 3, map[string]bool{}) {
+		candidates, err := collectSitemap(ctx, client, sitemap, 3, map[string]bool{})
+		if requireCompleteSitemap && err != nil {
+			return nil, "", err
+		}
+		for _, candidate := range candidates {
 			canonical := canonicalPageURL(candidate, seed, config.PathPrefix)
 			if canonical != "" && isPageInScope(canonical, config.Scope) {
 				pages[canonical] = true
@@ -275,7 +319,10 @@ func discoverLivePages(ctx context.Context, config Config) ([]string, string, er
 			break
 		}
 	}
-	if len(pages) == 1 {
+	if requireCompleteSitemap && len(pages) == 0 {
+		return nil, "", errors.New("sitemap discovery found no pages in scope")
+	}
+	if !requireCompleteSitemap && len(pages) == 1 {
 		pages = crawlLinks(ctx, client, pages, seed, config.PathPrefix, config.Scope, config.MaxPages)
 	}
 
@@ -317,31 +364,42 @@ func parseRobotsSitemaps(body []byte, origin *url.URL) []string {
 	return result.Sitemaps
 }
 
-func collectSitemap(ctx context.Context, client *http.Client, target string, depth int, seen map[string]bool) []string {
-	if depth < 0 || seen[target] {
-		return nil
+func collectSitemap(ctx context.Context, client *http.Client, target string, depth int, seen map[string]bool) ([]string, error) {
+	if seen[target] {
+		return nil, nil
+	}
+	if depth < 0 {
+		return nil, fmt.Errorf("sitemap %s exceeds the supported nesting depth", target)
 	}
 	seen[target] = true
 	body, err := fetchBody(ctx, client, target)
 	if err != nil {
-		return nil
+		return nil, fmt.Errorf("fetch sitemap %s: %w", target, err)
 	}
 	var document sitemapDocument
-	if xml.Unmarshal(body, &document) != nil {
-		return nil
+	if err := xml.Unmarshal(body, &document); err != nil {
+		return nil, fmt.Errorf("parse sitemap %s: %w", target, err)
+	}
+	if document.XMLName.Local != "urlset" && document.XMLName.Local != "sitemapindex" {
+		return nil, fmt.Errorf("parse sitemap %s: unexpected root element %q", target, document.XMLName.Local)
 	}
 	if len(document.Sitemaps) == 0 {
 		result := make([]string, 0, len(document.URLs))
 		for _, item := range document.URLs {
 			result = append(result, item.Loc)
 		}
-		return result
+		return result, nil
 	}
-	result := []string{}
+	var result []string
+	var failures error
 	for _, nested := range document.Sitemaps {
-		result = append(result, collectSitemap(ctx, client, nested.Loc, depth-1, seen)...)
+		pages, err := collectSitemap(ctx, client, nested.Loc, depth-1, seen)
+		result = append(result, pages...)
+		if err != nil {
+			failures = errors.Join(failures, err)
+		}
 	}
-	return result
+	return result, failures
 }
 
 func canonicalPageURL(candidate string, origin *url.URL, pathPrefix string) string {

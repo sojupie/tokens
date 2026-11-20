@@ -14,14 +14,14 @@ The page URL catalog is the default because it is small, deterministic, and
 reviewable.
 It avoids repeated sitemap discovery during routine capture.
 
-Audit the live sitemap against the page URL catalog:
+Audit the live sitemap against the page URL catalog and print a JSON report:
 
 ```text
-go run ./cmd/tokens crawl --discover --dry-run
+go run ./cmd/tokens crawl --pages-only --scope token-source-pages
 ```
 
-Run the broader inventory scope when reviewing pages outside the current
-catalog:
+The command leaves the page catalog intact and exits with an error if a
+sitemap cannot be read. To observe candidate pages in Chromium as well:
 
 ```text
 go run ./cmd/tokens crawl --discover --scope token-source-pages --dry-run
