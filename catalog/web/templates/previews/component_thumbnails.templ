@@ -135,13 +135,9 @@ templ ComponentThumbnail(c webview.ComponentCase) {
 				@ui.Loading(ui.ProgressProps{Contained: true})
 			</div>
 		case "menu":
-			<div class="tokens-thumbnail-menu">
-				@ui.MenuSurface(c.MenuPanel(false), "") {
-					for i, label := range []string{"Save", "Download", "Copy link"} {
-						<li role="presentation">@ui.MenuItem(nil, label, ui.Icon([]string{"star", "download", "content_copy"}[i]), nil)</li>
-					}
-				}
-			</div>
+			@PhoneThumbnail(webview.PhoneCropDetail, webview.PhoneSceneProps{TopBar: ThumbnailNoteMenu(c)}) {
+				@ThumbnailDocument([]int{84, 95, 72}, []int{98, 88, 74}, []int{90, 82, 65})
+			}
 		case "nav-bar":
 			@PhoneThumbnail(webview.PhoneCropBottom, webview.PhoneSceneProps{
 				BottomBar: ThumbnailNavigationBar(c),
@@ -395,6 +391,23 @@ templ ThumbnailDocument(paragraphs ...[]int) {
 			</div>
 		}
 	</div>
+}
+
+templ ThumbnailNoteMenu(c webview.ComponentCase) {
+	{{ menu := c.MenuPanel(false); menu["id"] = c.ID() + "-note-actions"; menu["aria-label"] = "Note actions" }}
+	@ui.AppBar(ui.AppBarProps{Title: "Field notes", Leading: ui.IconButton(ui.IconButtonProps{Icon: "arrow_back", Label: "Back"})}) {
+		<div class="tokens-thumbnail-menu-anchor">
+			@ui.IconButton(ui.IconButtonProps{
+				Icon: "more_vert", Label: "More actions", Variant: "tonal",
+				Attrs: templ.Attributes{"aria-haspopup": "menu", "aria-expanded": "true", "aria-controls": menu["id"]},
+			})
+			@ui.MenuSurface(menu, "") {
+				<li role="presentation">@ui.MenuItem(nil, "Favorite", ui.Icon("star"), nil)</li>
+				<li role="presentation">@ui.MenuItem(nil, "Download", ui.Icon("download"), nil)</li>
+				<li role="presentation">@ui.MenuItem(nil, "Copy link", ui.Icon("content_copy"), nil)</li>
+			}
+		</div>
+	}
 }
 
 templ ThumbnailPhotoBar(c webview.ComponentCase) {

@@ -168,7 +168,6 @@ button:not(:disabled), [role=button]:not([aria-disabled=true]) { cursor:pointer;
 .tokens-thumbnail-fab-action { justify-self:end; }
 .tokens-thumbnail-fab-menu { justify-self:end; margin-inline:var(--phone-content-inset); margin-block-end:calc(var(--phone-gesture-inset) + var(--layout-related-gap)); }
 .tokens-thumbnail-fab-menu .md-fab-menu { inline-size:auto; min-block-size:0; padding:0; }
-.tokens-thumbnail-menu { scale:1.2; }
 /* The scene is laid out in logical pixels. Only the outer thumbnail crop scales it. */
 .tokens-phone-scene {
   --phone-status-inset:48px;
@@ -285,7 +284,14 @@ button:not(:disabled), [role=button]:not([aria-disabled=true]) { cursor:pointer;
 .tokens-thumbnail-downloads { display:grid; gap:var(--layout-related-gap); margin-block-start:var(--layout-related-gap); }
 .tokens-thumbnail-downloads > div { block-size:var(--md-sys-measurement-space800); border-radius:var(--md-sys-shape-corner-medium); background:var(--md-sys-color-surface-container-high); }
 .tokens-thumbnail-toolbar { justify-self:center; }
-.tokens-thumbnail-tooltip-anchor { position:relative; }
+.tokens-thumbnail-menu-anchor,.tokens-thumbnail-tooltip-anchor { position:relative; }
+.tokens-thumbnail-menu-anchor > .md-menu {
+  position:absolute;
+  z-index:1;
+  inset-inline-end:calc(var(--phone-content-inset) - var(--phone-action-inset));
+  inset-block-start:calc(100% + var(--md-sys-measurement-space50));
+  inline-size:176px;
+}
 .tokens-thumbnail-tooltip-anchor > .md-tooltip {
   position:absolute;
   inset-inline-end:0;
