@@ -53,12 +53,12 @@ templ Layout(title string) {
 			<script src={ webassets.StaticURL("asset-loader.js") } data-sources={ webview.ComponentScriptSources() } data-shapes-version={ webview.LoadingGeometryVersion } defer></script>
 			<link rel="icon" type="image/svg+xml" href={ webassets.StaticURL("logo.svg") }/>
 			<link rel="apple-touch-icon" href={ webassets.StaticURL("logo-250x250.png") }/>
-			<title>{ webview.PageTitle(ctx, title) } | Token Catalog</title>
+			<title>{ webview.PageTitle(ctx, title) } | TokenCatalog</title>
 			<meta name="description" content={ webview.Metadata(ctx).Description }/>
 			if webview.Metadata(ctx).ImageURL!="" {
 				<meta property="og:type" content="website"/>
-				<meta property="og:site_name" content="Token Catalog"/>
-				<meta property="og:title" content={ webview.PageTitle(ctx, title) + " | Token Catalog" }/>
+				<meta property="og:site_name" content="TokenCatalog"/>
+				<meta property="og:title" content={ webview.PageTitle(ctx, title) + " | TokenCatalog" }/>
 				<meta property="og:description" content={ webview.Metadata(ctx).Description }/>
 				<meta property="og:url" content={ webview.Metadata(ctx).ImagePageURL }/>
 				<meta property="og:image" content={ webview.Metadata(ctx).ImageURL }/>

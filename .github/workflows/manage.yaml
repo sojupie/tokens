@@ -1,5 +1,5 @@
-name: Manage Token Catalog
-run-name: Token Catalog · ${{ inputs.operation || 'deploy' }} ${{ inputs.run_id }}
+name: Manage TokenCatalog
+run-name: TokenCatalog · ${{ inputs.operation || 'deploy' }} ${{ inputs.run_id }}
 
 on:
   push:

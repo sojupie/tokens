@@ -87,7 +87,7 @@ func (s *Store) Report(from, until time.Time) (Summary, error) {
 
 func (s Summary) Text() string {
 	var b strings.Builder
-	fmt.Fprintf(&b, "Token Catalog usage\n%s to %s (UTC; hourly totals)\n\n", s.From.UTC().Format("2006-01-02 15:04"), s.Until.UTC().Format("2006-01-02 15:04"))
+	fmt.Fprintf(&b, "TokenCatalog usage\n%s to %s (UTC; hourly totals)\n\n", s.From.UTC().Format("2006-01-02 15:04"), s.Until.UTC().Format("2006-01-02 15:04"))
 	if s.Started != "" {
 		fmt.Fprintf(&b, "Tracking started: %s\n", s.Started)
 	}

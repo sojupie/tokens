@@ -1,4 +1,4 @@
-// Package site provides the shared Token Catalog navigation and footer.
+// Package site provides the shared TokenCatalog navigation and footer.
 package site
 
 import (

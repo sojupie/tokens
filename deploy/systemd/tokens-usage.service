@@ -1,5 +1,5 @@
 [Unit]
-Description=Email the weekly Token Catalog usage digest
+Description=Email the weekly TokenCatalog usage digest
 Wants=network-online.target
 Requires=docker.service
 After=docker.service network-online.target

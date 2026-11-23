@@ -1,4 +1,4 @@
-# Token Catalog CLI
+# TokenCatalog CLI
 
 All commands run through `cmd/tokens` (use `go run ./cmd/tokens ...` or your
 built `./bin/tokens ...`). Pass `--help` at any level for full flags.

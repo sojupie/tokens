@@ -1,6 +1,6 @@
 # Third-party notices
 
-Token Catalog's original code and documentation are licensed under the
+TokenCatalog's original code and documentation are licensed under the
 [Apache License 2.0](LICENSE). The following material retains its upstream
 copyright and license terms.
 
@@ -19,9 +19,9 @@ or upstream material preserved in snapshots and exports.
 
 Source-page and payload URLs are preserved in the captured evidence. Derived
 publications regroup and filter values and references. These transformations
-are Token Catalog's processing of the source data, not Google's original files.
+are TokenCatalog's processing of the source data, not Google's original files.
 
-Material Design and Google names identify the source. Token Catalog is an
+Material Design and Google names identify the source. TokenCatalog is an
 independent project and is not affiliated with or endorsed by Google.
 
 ## Bundled assets

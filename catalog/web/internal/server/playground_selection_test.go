@@ -516,7 +516,7 @@ func TestShowcaseUpdatesReturnOnlyCacheablePreviewHTML(t *testing.T) {
 		if !partial {
 			decoded := html.UnescapeString(body)
 			for _, want := range []string{
-				`<title>Material Design 3 "Switch" tokens and playground | Token Catalog</title>`,
+				`<title>Material Design 3 "Switch" tokens and playground | TokenCatalog</title>`,
 				`>Material Design 3 "Switch" tokens and playground</h1>`,
 				`content="Material Design 3 "Switch" tokens. Try the interactive playground, compare values by context, follow references and download CSS variables or JSON."`,
 			} {

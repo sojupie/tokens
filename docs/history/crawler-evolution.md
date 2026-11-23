@@ -1,6 +1,6 @@
 # Crawler history
 
-How Token Catalog's crawler evolved from the initial commit.
+How TokenCatalog's crawler evolved from the initial commit.
 
 ## Initial commit (10 August 2026)
 

@@ -1,4 +1,4 @@
-# Token Catalog performance inventory
+# TokenCatalog performance inventory
 
 Benchmarks through November 10, 2026, at Catalog revision `71811ed`. The
 inventory follows Git history from source capture through browser delivery.

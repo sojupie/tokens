@@ -21,13 +21,13 @@ const mcpProtocol = "2025-11-25"
 var errMCPArguments = errors.New("Invalid tool parameters")
 
 func (server *Server) mcpInfo() map[string]string {
-	return map[string]string{"name": "io.github.sojupie/material-tokens", "title": "Token Catalog", "version": mcpVersion}
+	return map[string]string{"name": "io.github.sojupie/material-tokens", "title": "TokenCatalog", "version": mcpVersion}
 }
 
 func (server *Server) mcpCard() map[string]any {
 	return map[string]any{
 		"$schema": "https://static.modelcontextprotocol.io/schemas/v1/server-card.schema.json",
-		"name":    "io.github.sojupie/material-tokens", "title": "Token Catalog", "version": mcpVersion,
+		"name":    "io.github.sojupie/material-tokens", "title": "TokenCatalog", "version": mcpVersion,
 		"description": "Read Material Design 3 tokens, context-specific values, references and observed changes.",
 		"websiteUrl":  server.publicOrigin,
 		"remotes":     []any{map[string]any{"type": "streamable-http", "url": server.publicOrigin + "/mcp", "supportedProtocolVersions": []string{mcpProtocol, "2025-06-18", "2025-03-26"}}},

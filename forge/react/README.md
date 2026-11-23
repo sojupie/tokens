@@ -2,7 +2,7 @@
 
 `@token-catalog/forge-react` renders Forge components in React 19 with bundled
 token CSS, fonts, and browser controllers. Installed tarballs work standalone
-without a running Token Catalog or repo checkout.
+without a running TokenCatalog or repo checkout.
 
 ## Build and install
 

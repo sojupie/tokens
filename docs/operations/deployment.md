@@ -1,4 +1,4 @@
-# Deploy Token Catalog
+# Deploy TokenCatalog
 
 Requires a Linux host with systemd, Git, Docker Engine, and Docker Compose
 2.24.4+. The updater can use up to 4 GiB of RAM. Go, Node.js, and Chromium run
@@ -146,7 +146,7 @@ redirects to `/tools/motion-lab/`.
 
 ## Manage from GitHub Actions
 
-Run **Actions → Manage Token Catalog → Run workflow** on `main`:
+Run **Actions → Manage TokenCatalog → Run workflow** on `main`:
 
 | Command | Action |
 | --- | --- |

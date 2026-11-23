@@ -1,6 +1,6 @@
-# Token Catalog
+# TokenCatalog
 
-Token Catalog contains three parts in one repository:
+TokenCatalog contains three parts in one repository:
 
 - `source/` captures upstream data, verifies snapshots, builds publications, and exports DTCG.
 - `catalog/` serves the website, API, MCP, discovery documents, and usage reports.

@@ -1,7 +1,7 @@
 # Updates and recovery
 
 Run these commands from `/opt/tokens`. For first-time installation, use
-[Deploy Token Catalog](deployment.md).
+[Deploy TokenCatalog](deployment.md).
 
 ## Run an update
 

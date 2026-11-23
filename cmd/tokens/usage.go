@@ -91,9 +91,9 @@ func runUsage(args []string) error {
 	body := warning + summary.Text()
 	fmt.Print(body)
 	if send || weekly {
-		subject := "Token Catalog: usage report"
+		subject := "TokenCatalog: usage report"
 		if weekly {
-			subject = "Token Catalog: weekly usage digest"
+			subject = "TokenCatalog: weekly usage digest"
 		}
 		if err := update.SendEmailMessage(context.Background(), subject, body); err != nil {
 			return err

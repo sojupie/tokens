@@ -1,6 +1,6 @@
 # Licensing and source attribution
 
-[Apache License 2.0](../LICENSE) covers Token Catalog’s original code, schemas,
+[Apache License 2.0](../LICENSE) covers TokenCatalog’s original code, schemas,
 and documentation. [Third-party notices](../THIRD_PARTY_NOTICES.md) identify
 upstream data and bundled assets that retain their own terms.
 
@@ -35,7 +35,7 @@ applicable upstream terms and a description of the transformation. The current
 JSON downloads do not include a complete license notice in each response.
 Include that information alongside the JSON when redistributing it.
 
-Token Catalog does not claim Google's trademarks or endorsement. Source names
+TokenCatalog does not claim Google's trademarks or endorsement. Source names
 are used to identify the collection and its provenance.
 
 ## Other collections

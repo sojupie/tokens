@@ -5,7 +5,7 @@ import "github.com/sojupie/tokens/forge/components/ui"
 templ Header(config Config) {
 	<header class="tokens-site-header" id="tokens-site-header" hx-preserve data-component-assets data-drawer-breakpoint={ config.drawerBreakpoint() }>
 		<noscript>
-			<nav class="tokens-native-navigation" aria-label="Token Catalog">
+			<nav class="tokens-native-navigation" aria-label="TokenCatalog">
 				<a class="tokens-native-home" href={ templ.SafeURL(config.Catalog + "/") }>@templ.Raw(fallbackLogo)<span>Home</span></a>
 				for _, section := range config.sections() {
 					<details>
@@ -31,13 +31,13 @@ templ Header(config Config) {
 			@ui.DrawerToggle("tokens-site-menu", "Open navigation")
 			<a class="tokens-brand md-typescale-title-large" href={ templ.SafeURL(config.Catalog + "/") }>
 				@templ.Raw(brandLogo)
-				Token Catalog
+				TokenCatalog
 			</a>
 		</div>
 		<div id="tokens-site-rail">
 			@Rail(config)
 		</div>
-		@ui.Drawer("tokens-site-menu", true, "Token Catalog", drawerBrand(config)) {
+		@ui.Drawer("tokens-site-menu", true, "TokenCatalog", drawerBrand(config)) {
 			<div id="tokens-site-destinations">
 				@Destinations(config)
 			</div>
@@ -78,7 +78,7 @@ templ Footer(config Config) {
 templ drawerBrand(config Config) {
 	<a class="tokens-brand tokens-drawer-brand" href={ templ.SafeURL(config.Catalog + "/") }>
 		@templ.Raw(brandLogo)
-		Token Catalog
+		TokenCatalog
 	</a>
 }
 

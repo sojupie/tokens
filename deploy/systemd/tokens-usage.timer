@@ -1,5 +1,5 @@
 [Unit]
-Description=Weekly Token Catalog usage digest
+Description=Weekly TokenCatalog usage digest
 
 [Timer]
 OnCalendar=Mon *-*-* 09:00:00 Europe/Stockholm

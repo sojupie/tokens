@@ -52,7 +52,7 @@ func TestSEOMetadataAndCanonicalURLs(t *testing.T) {
 			request.Header.Set("X-Forwarded-Host", "untrusted.example")
 			server.Handler().ServeHTTP(response, request)
 			body := response.Body.String()
-			if response.Code != http.StatusOK || !strings.Contains(html.UnescapeString(body), "<title>"+check.title+" | Token Catalog</title>") || !strings.Contains(body, `<meta name="description" content="`) {
+			if response.Code != http.StatusOK || !strings.Contains(html.UnescapeString(body), "<title>"+check.title+" | TokenCatalog</title>") || !strings.Contains(body, `<meta name="description" content="`) {
 				t.Fatalf("%s: unexpected metadata/status %d", check.path, response.Code)
 			}
 			if check.canonical != "" && !strings.Contains(body, `rel="canonical" href="`+check.canonical+`"`) {

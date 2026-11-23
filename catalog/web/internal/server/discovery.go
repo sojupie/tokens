@@ -48,7 +48,7 @@ func (server *Server) handleAgentDiscovery(response http.ResponseWriter, request
 		writeJSON(response, http.StatusOK, map[string]any{
 			"$schema": "https://agents-txt.com/schema/agents-json/v1.0.json",
 			"version": "1.0", "standard": "https://agents-txt.com",
-			"site":   map[string]string{"name": "Token Catalog", "url": origin, "description": "Material Design 3 token references, values, supported contexts and observed changes. An independent site, not a Google service."},
+			"site":   map[string]string{"name": "TokenCatalog", "url": origin, "description": "Material Design 3 token references, values, supported contexts and observed changes. An independent site, not a Google service."},
 			"skills": []map[string]string{{"url": origin + tokenSkillPath, "description": "Find and read Material Design 3 tokens and their observed change history through public JSON endpoints."}},
 		})
 		return
@@ -63,7 +63,7 @@ func (server *Server) handleAgentDiscovery(response http.ResponseWriter, request
 		return
 	}
 	var body strings.Builder
-	body.WriteString("# Token Catalog\n\n> An independent reference for Material Design 3 tokens and observed changes. Not affiliated with Google.\n\n")
+	body.WriteString("# TokenCatalog\n\n> An independent reference for Material Design 3 tokens and observed changes. Not affiliated with Google.\n\n")
 	fmt.Fprintf(&body, "Current snapshot: %s. Captured at: %s.\n\n", server.state.CurrentSnapshot.ID, server.state.CurrentSnapshot.CreatedAt)
 	body.WriteString("## Read the data\n\n")
 	for _, link := range []struct{ label, path, description string }{
@@ -136,7 +136,7 @@ func wellKnownPath(path string) bool {
 }
 
 func (server *Server) tokenSkill() string {
-	return "---\nname: material-tokens\ndescription: Find Material Design 3 token references, values, supported contexts and observed changes using the Token Catalog public read-only API.\n---\n\n" + server.agentGuide()
+	return "---\nname: material-tokens\ndescription: Find Material Design 3 token references, values, supported contexts and observed changes using the TokenCatalog public read-only API.\n---\n\n" + server.agentGuide()
 }
 
 func (server *Server) handleWellKnown(response http.ResponseWriter, request *http.Request) {
@@ -173,11 +173,11 @@ func (server *Server) handleWellKnown(response http.ResponseWriter, request *htt
 				"displayName": title, "type": mediaType, "url": origin + path, "representativeQueries": queries}
 		}
 		writeJSON(response, http.StatusOK, map[string]any{
-			"specVersion": "1.0", "host": map[string]string{"displayName": "Token Catalog", "identifier": origin},
+			"specVersion": "1.0", "host": map[string]string{"displayName": "TokenCatalog", "identifier": origin},
 			"entries": []any{
-				entry("api", "material-tokens", "Token Catalog API", "application/json", "/openapi.json", "Find Material Design 3 component tokens", "Download all style tokens", "Compare observed token changes"),
+				entry("api", "material-tokens", "TokenCatalog API", "application/json", "/openapi.json", "Find Material Design 3 component tokens", "Download all style tokens", "Compare observed token changes"),
 				entry("skill", "material-tokens", "Read Material Design 3 tokens", "text/plain", tokenSkillPath, "How do I read token references?", "How do I choose a token context?"),
-				entry("server", "material-tokens", "Token Catalog MCP server", "application/mcp-server-card+json", "/mcp/server-card", "Find tokens for a Material Design 3 component", "Read the latest token changes"),
+				entry("server", "material-tokens", "TokenCatalog MCP server", "application/mcp-server-card+json", "/mcp/server-card", "Find tokens for a Material Design 3 component", "Read the latest token changes"),
 			},
 		})
 	case mcpCardPath, "/mcp/server-card":
@@ -191,7 +191,7 @@ func (server *Server) handleWellKnown(response http.ResponseWriter, request *htt
 		writeJSON(response, http.StatusOK, card)
 	case "/auth.md":
 		response.Header().Set("Content-Type", "text/markdown; charset=utf-8")
-		fmt.Fprintf(response, "# Token Catalog auth.md\n\n## Access for agents\n\nToken Catalog is a public, read-only Material Design 3 token reference. Agents need no registration, account, API key, access token, or cookies. No credentials are issued.\n\nUse GET requests to %s/api/v1/subjects and follow each subject's jsonUrl. Read %s/openapi.json for the full API. MCP clients can connect to %s/mcp using Streamable HTTP without authentication.\n\nThere is no OAuth authorization server, protected resource, or agent registration endpoint. OAuth discovery and agent_auth metadata are therefore not published.\n", origin, origin, origin)
+		fmt.Fprintf(response, "# TokenCatalog auth.md\n\n## Access for agents\n\nTokenCatalog is a public, read-only Material Design 3 token reference. Agents need no registration, account, API key, access token, or cookies. No credentials are issued.\n\nUse GET requests to %s/api/v1/subjects and follow each subject's jsonUrl. Read %s/openapi.json for the full API. MCP clients can connect to %s/mcp using Streamable HTTP without authentication.\n\nThere is no OAuth authorization server, protected resource, or agent registration endpoint. OAuth discovery and agent_auth metadata are therefore not published.\n", origin, origin, origin)
 	}
 }
 
@@ -200,7 +200,7 @@ func (server *Server) handleForAgents(response http.ResponseWriter, request *htt
 		http.NotFound(response, request)
 		return
 	}
-	prompt := "Use Token Catalog at " + server.publicOrigin + " for the Material Design 3 tokens needed for this task. Read " + server.publicOrigin + tokenSkillPath + ", find the relevant components or styles, and fetch their token data. Choose the supported contexts needed for this task and preserve token references."
+	prompt := "Use TokenCatalog at " + server.publicOrigin + " for the Material Design 3 tokens needed for this task. Read " + server.publicOrigin + tokenSkillPath + ", find the relevant components or styles, and fetch their token data. Choose the supported contexts needed for this task and preserve token references."
 	if err := server.renderHTML(response, request, webrender.ForAgentsPage(prompt, server.publicOrigin+"/mcp")); err != nil {
 		http.Error(response, "Could not render agent setup.", http.StatusInternalServerError)
 	}

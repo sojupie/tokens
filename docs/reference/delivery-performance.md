@@ -1,6 +1,6 @@
 # Delivery and on-page performance
 
-How Token Catalog handles request processing, CSS/script splitting, browser
+How TokenCatalog handles request processing, CSS/script splitting, browser
 navigation, and component behavior lifecycle. For historical benchmark numbers,
 see [November 2026 performance benchmarks](../history/performance-benchmarks.md).
 

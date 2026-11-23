@@ -325,7 +325,7 @@ func TestSourceTableSEOMatrix(t *testing.T) {
 			if tc.qualifier == "changes" {
 				name = `Material Design 3 "Date Picker" token changes`
 			}
-			for _, pattern := range []string{`<title>` + regexp.QuoteMeta(name) + ` \| Token Catalog</title>`, `<h1[^>]*>` + regexp.QuoteMeta(name) + `</h1>`} {
+			for _, pattern := range []string{`<title>` + regexp.QuoteMeta(name) + ` \| TokenCatalog</title>`, `<h1[^>]*>` + regexp.QuoteMeta(name) + `</h1>`} {
 				if !regexp.MustCompile(pattern).MatchString(body) {
 					t.Fatalf("missing %s", pattern)
 				}

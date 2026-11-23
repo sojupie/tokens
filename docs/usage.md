@@ -1,4 +1,4 @@
-# Using Token Catalog
+# Using TokenCatalog
 
 The hosted collection is [Material Design 3](https://tokencatalog.dev/md3/).
 It includes component and style tokens with their source references and

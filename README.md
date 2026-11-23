@@ -1,6 +1,6 @@
 # TokenCatalog
 
-Token Catalog collects design tokens so you can browse, compare, and download
+TokenCatalog collects design tokens so you can browse, compare, and download
 them. [Material Design 3](https://tokencatalog.dev/md3/) is the first supported
 collection.
 
@@ -8,7 +8,7 @@ Tokens, references, and context-specific values are available as server-rendered
 HTML, Markdown, JSON, and read-only MCP tools—no account or JavaScript required.
 Source links connect every token back to its original design guidance.
 
-[![Token Catalog landing page with Material Design 3 components and styles](docs/images/landing-page.png)](https://tokencatalog.dev/md3/)
+[![TokenCatalog landing page with Material Design 3 components and styles](docs/images/landing-page.png)](https://tokencatalog.dev/md3/)
 
 ## Browse and download
 
@@ -47,7 +47,7 @@ prompt, skill install command, and MCP URL.
 
 Prompt:
 
-> Use Token Catalog at https://tokencatalog.dev/md3 to find the Material Design 3
+> Use TokenCatalog at https://tokencatalog.dev/md3 to find the Material Design 3
 > tokens for this task. Read its agent guide, fetch the relevant component or
 > style, and preserve the token references and selected context.
 
@@ -66,7 +66,7 @@ See [API and agent access](docs/reference/agents.md) for endpoints and formats.
 
 ## Usage
 
-![Token Catalog usage over the last seven days: server requests, downloads, Markdown requests, successful MCP tool calls, and popular subjects](docs/images/usage.svg)
+![TokenCatalog usage over the last seven days: server requests, downloads, Markdown requests, successful MCP tool calls, and popular subjects](docs/images/usage.svg)
 
 Updated weekly from retained server request totals (prefetches counted separately).
 
@@ -126,5 +126,5 @@ Original code, schemas, and documentation use the [Apache License 2.0](LICENSE).
 Material Design 3 data comes from Google and retains its upstream terms. Bundled
 fonts, icons, and dependencies retain their own licenses.
 
-Token Catalog is an independent project. See [third-party notices](THIRD_PARTY_NOTICES.md)
+TokenCatalog is an independent project. See [third-party notices](THIRD_PARTY_NOTICES.md)
 and [licensing and source attribution](docs/licensing.md).

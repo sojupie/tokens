@@ -74,7 +74,7 @@ func TestDefaultAndAllViewsAreServerRenderedAndAddressable(t *testing.T) {
 			if response.Code != 200 {
 				t.Fatal(response.Code)
 			}
-			if !strings.Contains(body, "<title>"+tc.title+" | Token Catalog</title>") {
+			if !strings.Contains(body, "<title>"+tc.title+" | TokenCatalog</title>") {
 				t.Fatal("wrong title")
 			}
 			if !strings.Contains(body, `rel="canonical" href="https://tokens.example/md3/components/date-pickers`+tc.canonical+`"`) {

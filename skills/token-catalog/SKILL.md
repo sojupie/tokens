@@ -1,11 +1,11 @@
 ---
 name: token-catalog
-description: Look up Material Design 3 design tokens, context-specific values, references, and observed changes from Token Catalog. Use when implementing or reviewing Material Design UI and exact token data is needed.
+description: Look up Material Design 3 design tokens, context-specific values, references, and observed changes from TokenCatalog. Use when implementing or reviewing Material Design UI and exact token data is needed.
 ---
 
-# Use Token Catalog
+# Use TokenCatalog
 
-Token Catalog provides public, read-only token data at
+TokenCatalog provides public, read-only token data at
 https://tokencatalog.dev/md3. No account or API key is required.
 
 1. Read https://tokencatalog.dev/md3/skills/material-tokens/SKILL.md for the
@@ -36,4 +36,4 @@ can be partial, and change dates are observation dates rather than upstream
 release dates. Use `capturedAt` and the releases endpoint to check freshness.
 
 Apply the data to the user's existing framework and project conventions.
-Token Catalog is an independent reference, not an official Google service.
+TokenCatalog is an independent reference, not an official Google service.

@@ -47,7 +47,7 @@ func generateAt(source, output string, check bool) error {
 		}
 		parent := filepath.Dir(root)
 		if parent == root {
-			return fmt.Errorf("run inside the Token Catalog repository")
+			return fmt.Errorf("run inside the TokenCatalog repository")
 		}
 		root = parent
 	}

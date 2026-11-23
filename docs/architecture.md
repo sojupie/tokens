@@ -1,6 +1,6 @@
 # Architecture
 
-Token Catalog contains Source, Catalog, and Forge in one repository.
+TokenCatalog contains Source, Catalog, and Forge in one repository.
 
 - Source (`source/`) captures upstream data, verifies snapshots, builds
   publications, and exports selected token contexts as DTCG.
@@ -217,7 +217,7 @@ source-payload cache.
 
 The page HTML is observed but is not a snapshot input. The matching
 source-payload response is the fetched source data. Different Material areas
-use different payload filename stems, so Token Catalog does not assume that
+use different payload filename stems, so TokenCatalog does not assume that
 every source payload is named `TOKEN_TABLE`.
 
 ## What is generated?

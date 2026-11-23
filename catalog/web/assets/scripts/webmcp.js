@@ -6,7 +6,7 @@
   const options = {signal: lifecycle.signal};
   async function read(path) {
     const response = await fetch(path, {headers: {Accept: 'application/json'}, signal: lifecycle.signal});
-    if (!response.ok) throw new Error(`Token Catalog request failed (${response.status})`);
+    if (!response.ok) throw new Error(`TokenCatalog request failed (${response.status})`);
     return response.json();
   }
   function result(value) {

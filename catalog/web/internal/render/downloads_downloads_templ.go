@@ -843,7 +843,7 @@ func ExportFormatHelp() templ.Component {
 			templ_7745c5c3_Var29 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "<ul class=\"md-typescale-body-medium\"><li><strong>DTCG JSON:</strong> Token values and references in the format defined by the Design Tokens Format Module 2025.10.</li><li><strong>CSS variables:</strong> Generated solely from Google's upstream Material Design tokens and the values they reference.</li><li><strong>Source JSON:</strong> Token values and reference details captured from m3.material.io, packaged in Token Catalog’s own JSON format.</li></ul><p>If you want the full set of CSS used to build the components on Token Catalog, download <strong>Component implementation</strong> which includes styling rules and extra variables not formally expressed as design tokens in upstream sources.</p>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "<ul class=\"md-typescale-body-medium\"><li><strong>DTCG JSON:</strong> Token values and references in the format defined by the Design Tokens Format Module 2025.10.</li><li><strong>CSS variables:</strong> Generated solely from Google's upstream Material Design tokens and the values they reference.</li><li><strong>Source JSON:</strong> Token values and reference details captured from m3.material.io, packaged in TokenCatalog’s own JSON format.</li></ul><p>If you want the full set of CSS used to build the components on TokenCatalog, download <strong>Component implementation</strong> which includes styling rules and extra variables not formally expressed as design tokens in upstream sources.</p>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
