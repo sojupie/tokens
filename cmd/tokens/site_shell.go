@@ -32,7 +32,7 @@ func runSiteShell(args []string) error {
 		config.Navigation = web.SiteNavigation(state)
 	}
 	config.Catalog = strings.TrimRight(*origin, "/")
-	config.ActiveTool = config.Tools[1].URL
+	config.ActiveTool = site.CarouselPlaygroundURL
 	for _, name := range []string{"site.css", "site.js", "logo.svg", "logo-250x250.png", "logo-250x250.webp"} {
 		data, err := site.Files.ReadFile(name)
 		if err != nil {

@@ -55,7 +55,11 @@ export function List({ className = '', ...props }: ListProps) {
 export function SearchBar({ label, leading, action, placeholder = label, className = '', ...props }: ComponentPropsWithRef<'input'> & {
   label: string; leading?: ReactNode; action?: ReactNode;
 }) {
-  return <div className={`md-search-bar ${className}`.trim()} data-control="contained" data-leading={leading ? 'icon' : 'none'}>
+  return <div className={`md-search-bar ${className}`.trim()} data-control="contained" data-leading={leading ? 'icon' : 'none'}
+    onClick={event => {
+      if ((event.target as Element).closest('button,input')) return;
+      event.currentTarget.querySelector<HTMLInputElement>('.md-search-input')?.focus({ preventScroll: true });
+    }}>
     {leading && <span className="md-search-leading-slot"><span className="md-search-leading" aria-hidden="true">{leading}</span></span>}
     <input {...props} type="search" className="md-search-input" aria-label={label} placeholder={placeholder} />
     {action != null && <div className="md-search-actions"><span className="md-search-action-target">{action}</span></div>}

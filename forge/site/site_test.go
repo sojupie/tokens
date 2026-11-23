@@ -71,7 +71,7 @@ func TestToolsShareCatalogNavigationAndFooter(t *testing.T) {
 func TestWorkspaceKeepsWorkingWidth(t *testing.T) {
 	c := Default()
 	c.Workspace = true
-	c.ActiveTool = c.Tools[0].URL
+	c.ActiveTool = MotionLabURL
 	var out bytes.Buffer
 	if err := Header(c).Render(context.Background(), &out); err != nil {
 		t.Fatal(err)
@@ -79,8 +79,17 @@ func TestWorkspaceKeepsWorkingWidth(t *testing.T) {
 	if !strings.Contains(out.String(), `data-drawer-breakpoint="1440"`) {
 		t.Fatal("workspace needs room for viewer and tools")
 	}
-	if c.section() != "/tools" || c.destinationCurrent(c.Tools[0]) != "page" || c.destinationCurrent(c.Tools[1]) != "false" {
-		t.Fatal("only the current tool should be selected")
+	if c.section() != "/tools" {
+		t.Fatalf("section = %q, want /tools", c.section())
+	}
+	for _, tool := range c.Tools {
+		want := "false"
+		if tool.URL == MotionLabURL {
+			want = "page"
+		}
+		if got := c.destinationCurrent(tool); got != want {
+			t.Errorf("destinationCurrent(%q) = %q, want %q", tool.Name, got, want)
+		}
 	}
 }
 
@@ -119,7 +128,15 @@ func TestSectionNavigationUsesNativeLinksAndOneCurrentSubpage(t *testing.T) {
 
 func TestToolsDrawerHasOneCurrentDestination(t *testing.T) {
 	config := Default()
-	for _, activeTool := range []string{"", config.Tools[0].URL, config.Tools[1].URL} {
+	activeTools := make([]string, 0, len(config.Tools)+1)
+	activeTools = append(activeTools, "")
+	allURLs := make([]string, 0, len(config.Tools)+1)
+	allURLs = append(allURLs, config.Catalog+"/tools")
+	for _, tool := range config.Tools {
+		activeTools = append(activeTools, tool.URL)
+		allURLs = append(allURLs, tool.URL)
+	}
+	for _, activeTool := range activeTools {
 		config.ActiveTool = activeTool
 		var out bytes.Buffer
 		if err := Header(config).Render(context.Background(), &out); err != nil {
@@ -129,7 +146,7 @@ func TestToolsDrawerHasOneCurrentDestination(t *testing.T) {
 		if activeTool != "" {
 			want = activeTool
 		}
-		for _, url := range []string{config.Catalog + "/tools", config.Tools[0].URL, config.Tools[1].URL} {
+		for _, url := range allURLs {
 			got := strings.Contains(out.String(), `class="md-nav-item" data-navigation-item href="`+url+`" aria-current="page"`)
 			if got != (url == want) {
 				t.Errorf("active tool %q: current state for %q = %t, want %t", activeTool, url, got, url == want)
