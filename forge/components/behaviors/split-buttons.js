@@ -32,6 +32,7 @@ import { splitMenuPosition } from "../helpers/controls.ts";
     );
     menu.style.left = pos.left + "px";
     menu.style.top = pos.top + "px";
+    menu.dataset.menuAbove = String(pos.top < r.top);
   }
   document.addEventListener(
     "beforetoggle",
@@ -39,6 +40,7 @@ import { splitMenuPosition } from "../helpers/controls.ts";
       const menu = event.target;
       if (event.newState !== "closed" || !menu.matches?.(".md-split-menu"))
         return;
+      delete menu.dataset.initialFocus;
       menu
         .closest(".md-split-demo")
         .querySelector(".md-split-trailing")
@@ -57,29 +59,42 @@ import { splitMenuPosition } from "../helpers/controls.ts";
         .setAttribute("aria-expanded", String(menu.matches(":popover-open")));
       positionSplitMenu(menu);
       if (menu.matches(":popover-open")) {
-        const items = menu.querySelectorAll("button");
-        items[
-          menu.dataset.initialFocus === "last" ? items.length - 1 : 0
-        ]?.focus();
+        const initial = menu.dataset.initialFocus;
         delete menu.dataset.initialFocus;
+        if (initial) {
+          const items = menu.querySelectorAll("button:not(:disabled)");
+          items[initial === "last" ? items.length - 1 : 0]?.focus();
+        }
       }
     },
     true,
   );
   document.addEventListener("keydown", (event) => {
     const trigger = event.target.closest?.(".md-split-trailing");
-    if (
-      trigger &&
-      !trigger.disabled &&
-      ["ArrowDown", "ArrowUp"].includes(event.key)
-    ) {
-      event.preventDefault();
+    if (trigger && !trigger.disabled) {
       const menu = document.getElementById(
         trigger.getAttribute("popovertarget"),
       );
-      menu.dataset.initialFocus = event.key === "ArrowUp" ? "last" : "first";
-      menu.showPopover();
-      return;
+      if (menu && ["ArrowDown", "ArrowUp"].includes(event.key)) {
+        event.preventDefault();
+        const initial = event.key === "ArrowUp" ? "last" : "first";
+        if (menu.matches(":popover-open")) {
+          const items = menu.querySelectorAll("button:not(:disabled)");
+          items[initial === "last" ? items.length - 1 : 0]?.focus();
+        } else {
+          menu.dataset.initialFocus = initial;
+          menu.showPopover();
+        }
+        return;
+      }
+      if (
+        menu &&
+        (event.key === "Enter" || event.key === " ") &&
+        !menu.matches(":popover-open")
+      ) {
+        menu.dataset.initialFocus = "first";
+        return;
+      }
     }
     const item = event.target.closest?.(".md-split-menu button");
     if (!item) return;

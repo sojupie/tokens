@@ -91,16 +91,31 @@ test('split menu keeps 4dp separation and aligns an available button edge',()=>{
 test('split menu placement measures the full box during opening scale animation',()=>{
  const events={};
  const attributes = new Map();
- const trigger={getBoundingClientRect:()=>({left:270,right:318,top:20,bottom:60}),closest:()=>({getBoundingClientRect:()=>({left:100,right:318})}),setAttribute:(name,value)=>attributes.set(name,value)};
+ const focused = [];
+ const first = {focus:()=>focused.push('first')}, last = {focus:()=>focused.push('last')};
+ let open = true;
+ const trigger={disabled:false,getAttribute:()=>'split-menu',getBoundingClientRect:()=>({left:270,right:318,top:20,bottom:60}),closest:(sel)=>sel==='.md-split-trailing'?trigger:({getBoundingClientRect:()=>({left:100,right:318})}),setAttribute:(name,value)=>attributes.set(name,value)};
  const demo={querySelector:()=>trigger};
- const menu={matches:()=>true,closest:()=>demo,offsetWidth:240,offsetHeight:156,style:{},dataset:{},querySelectorAll:()=>[],getBoundingClientRect(){throw Error('animated dimensions must not determine placement');}};
+ const menu={matches:(sel)=>sel==='.md-split-menu'||(sel===':popover-open'&&open),closest:()=>demo,offsetWidth:240,offsetHeight:156,style:{},dataset:{},querySelectorAll:()=>[first,last],showPopover:()=>{open=true;events.toggle({target:menu});},getBoundingClientRect(){throw Error('animated dimensions must not determine placement');}};
  runInNewContext(readFileSync(`${__dirname}/../../generated/runtime/split-buttons.js`,'utf8'),{
-  document:{documentElement:{clientWidth:328},addEventListener:(type,handler)=>events[type]=handler},
+  document:{documentElement:{clientWidth:328},getElementById:()=>menu,addEventListener:(type,handler)=>events[type]=handler},
   window:{innerHeight:600,addEventListener(){}},getComputedStyle:()=>({direction:'ltr',getPropertyValue:name=>name.endsWith('space50')?'4':'8'})
  });
  events.toggle({target:menu});
  assert.equal(menu.style.left,'78px');assert.equal(menu.style.top,'64px');
  assert.equal(attributes.get('aria-expanded'),'true');
+ assert.deepEqual(focused,[]);
+ events.keydown({target:trigger,key:'ArrowDown',preventDefault(){}});
+ assert.deepEqual(focused,['first']);
+ open = false;
  events.beforetoggle({target:menu,newState:'closed'});
  assert.equal(attributes.get('aria-expanded'),'false');
+ events.keydown({target:trigger,key:'ArrowUp',preventDefault(){}});
+ assert.deepEqual(focused,['first','last']);
+ open = false;
+ events.beforetoggle({target:menu,newState:'closed'});
+ events.keydown({target:trigger,key:'Enter',preventDefault(){}});
+ open = true;
+ events.toggle({target:menu});
+ assert.deepEqual(focused,['first','last','first']);
 });
