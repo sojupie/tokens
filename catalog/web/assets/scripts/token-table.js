@@ -72,7 +72,8 @@ function tokenSearchScope(path) {
   return url.pathname + url.search;
 }
 
-function bindTokenSearch(browser, form, signal, syncControls, previousGroups) {
+function bindTokenSearch(browser, form, lifecycle, syncControls, previousGroups) {
+  const signal = lifecycle.signal;
   const input = form.elements.q;
   const empty = browser.querySelector('[data-token-search-empty]');
   if (!input || !empty) return;
@@ -83,6 +84,7 @@ function bindTokenSearch(browser, form, signal, syncControls, previousGroups) {
   const links = [...browser.querySelectorAll('[data-token-set-link], .tokens-table-only-link')];
   const set = form.elements.set;
   const selectedSet = set?.value;
+  const mountedPath = location.pathname;
   let scope = tokenSearchScope(location.href);
 
   function filter(query) {
@@ -152,12 +154,23 @@ function bindTokenSearch(browser, form, signal, syncControls, previousGroups) {
     event.stopImmediatePropagation();
     update();
   }, {capture:true, signal});
-  const updateScope = () => { scope = tokenSearchScope(location.href); };
+  const updateScope = () => {
+    if (!browser.isConnected) {
+      lifecycle.abort();
+      return;
+    }
+    if (location.pathname !== mountedPath) return;
+    scope = tokenSearchScope(location.href);
+  };
   document.addEventListener('htmx:after:history:push', updateScope, {signal});
   document.addEventListener('htmx:after:history:replace', updateScope, {signal});
   document.addEventListener('htmx:before:history:restore', event => {
+    if (!browser.isConnected) {
+      lifecycle.abort();
+      return;
+    }
     const url = new URL(event.detail.path, location.href);
-    if (tokenSearchScope(url) !== scope) return;
+    if (url.pathname !== mountedPath || tokenSearchScope(url) !== scope) return;
     input.value = url.searchParams.get('q') ?? '';
     const clear = form.querySelector('[data-search-clear-target]');
     if (clear) clear.hidden = !input.value;
@@ -306,11 +319,16 @@ unbound('.tokens-token-browser').forEach(browser => {
   const lifecycle = new AbortController();
   const signal = lifecycle.signal;
   const dialog = browser.querySelector('.tokens-context-dialog');
+  const cleanup = () => {
+    if (dialog && globalThis.htmx) htmx.trigger(dialog, 'htmx:abort');
+    lifecycle.abort();
+  };
   document.addEventListener('htmx:beforeCleanupElement', event => {
-    if ((event.detail?.elt || event.target) === browser || (event.detail?.elt || event.target).contains(browser)) {
-      if (dialog) htmx.trigger(dialog, 'htmx:abort');
-      lifecycle.abort();
-    }
+    const node = event.detail?.elt || event.target;
+    if (node === browser || node?.contains?.(browser)) cleanup();
+  }, {signal});
+  document.addEventListener('htmx:after:swap', () => {
+    if (browser.isConnected === false) cleanup();
   }, {signal});
   bindTokenReferences(browser, signal);
   const form = browser.querySelector('form');
@@ -484,7 +502,7 @@ unbound('.tokens-token-browser').forEach(browser => {
     syncControls();
   });
   syncControls();
-  if (localSearch) bindTokenSearch(browser, form, signal, syncControls, previousGroups);
+  if (localSearch) bindTokenSearch(browser, form, lifecycle, syncControls, previousGroups);
 
 });
 }

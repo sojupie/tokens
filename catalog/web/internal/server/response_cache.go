@@ -53,7 +53,7 @@ func (w *bufferedResponse) Write(body []byte) (int, error) {
 
 func cacheableRequest(r *http.Request) bool {
 	p := r.URL.Path
-	return (r.Method == "GET" || r.Method == "HEAD") && r.Header.Get("Range") == "" && p != "/mcp" && p != "/api/v1/health" && !strings.HasPrefix(p, "/usage") && !strings.HasPrefix(p, "/static/") && !strings.HasPrefix(p, "/illustrations/images/") && p != "/theme.css" && !strings.HasPrefix(p, "/themes/") && (!strings.HasPrefix(p, "/downloads/") || r.URL.Query().Has("scope"))
+	return (r.Method == "GET" || r.Method == "HEAD") && r.Header.Get("Range") == "" && p != "/mcp" && p != "/api/v1/health" && !strings.HasPrefix(p, "/usage") && !strings.HasPrefix(p, "/static/") && !strings.HasPrefix(p, "/illustrations/images/") && p != "/theme.css" && !strings.HasPrefix(p, "/themes/") && p != "/changes/search-index.json" && !strings.HasSuffix(p, "/changes/data.json") && (!strings.HasPrefix(p, "/downloads/") || r.URL.Query().Has("scope"))
 }
 func (c *responseCache) get(key string) *cachedResponse {
 	c.Lock()
@@ -121,11 +121,13 @@ func cacheResponses(next http.Handler) http.Handler {
 
 		variant := r.Clone(r.Context())
 		variant.Header = r.Header.Clone()
-		if r.Header.Get("HX-Boosted") == "true" {
+		boosted := r.Header.Get("HX-Boosted") == "true" || r.Header.Get("HX-History-Restore-Request") == "true"
+		if boosted && (r.Header.Get("HX-Target") == "" || r.Header.Get("HX-Target") == "body") {
 			variant.Header.Del("HX-Request")
 			variant.Header.Del("HX-Target")
+			variant.Header.Set("HX-Boosted", "true")
 		}
-		key := strings.Join([]string{r.URL.RequestURI(), variant.Header.Get("HX-Request"), variant.Header.Get("HX-Target"), r.Header.Get("Accept"), r.Header.Get("Accept-Encoding")}, "\n")
+		key := strings.Join([]string{r.URL.RequestURI(), variant.Header.Get("HX-Request"), variant.Header.Get("HX-Target"), variant.Header.Get("HX-Boosted"), r.Header.Get("Accept"), r.Header.Get("Accept-Encoding")}, "\n")
 		lookup := time.Now()
 		if entry := cache.get(key); entry != nil {
 			writeCachedResponse(w, r, entry, fmt.Sprintf(`cache;desc="hit";dur=%.3f`, float64(time.Since(lookup).Nanoseconds())/1e6))
@@ -224,5 +226,5 @@ func writePageBody(w http.ResponseWriter, r *http.Request, body []byte) (int, er
 	return w.Write(body)
 }
 func compressibleAsset(name string) bool {
-	return strings.HasSuffix(name, ".css") || strings.HasSuffix(name, ".js") || strings.HasSuffix(name, ".svg")
+	return strings.HasSuffix(name, ".css") || strings.HasSuffix(name, ".js") || strings.HasSuffix(name, ".svg") || strings.HasSuffix(name, ".json")
 }

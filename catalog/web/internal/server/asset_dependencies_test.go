@@ -288,8 +288,8 @@ func TestContentPagesIncludeCardAssets(t *testing.T) {
 	}{
 		{"agents", webrender.ForAgentsPage("prompt", "/mcp")},
 		{"overview", webrender.OverviewPage(publish.SnapshotView{}, nil, nil, "canvas")},
-		{"changes", webrender.ChangesPage(state, "", "/changes", webview.ChangeFilters{}, "", changes, 1, 1, false, false)},
-		{"component changes", webrender.ChangesPage(state, "buttons", "/components/buttons/changes", webview.ChangeFilters{}, "", changes, 1, 1, false, false)},
+		{"changes", webrender.ChangesPage(state, "", "/changes", webview.ChangeFilters{LocalMode: "global"}, "", webview.BuildChangeTimeline(changes, nil, nil, webview.ChangeFilters{}, true, true), 1, 1, false, false)},
+		{"component changes", webrender.ChangesPage(state, "buttons", "/components/buttons/changes", webview.ChangeFilters{LocalMode: "all"}, "", webview.BuildChangeTimeline(changes, nil, nil, webview.ChangeFilters{}, false, true), 1, 1, false, false)},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			server := &Server{themeBundles: map[string][]byte{"shared": []byte("shared")}}
@@ -664,14 +664,17 @@ func TestResponseCacheIsBounded(t *testing.T) {
 
 func TestBoostedNavigationSharesDocumentCache(t *testing.T) {
 	handler := New(seoTestState(), "").Handler()
-	get := func(boosted, partial bool) *httptest.ResponseRecorder {
+	get := func(boosted, historyRestore, partial bool) *httptest.ResponseRecorder {
 		r := httptest.NewRequest("GET", "/components", nil)
-		if boosted || partial {
+		if boosted || historyRestore || partial {
 			r.Header.Set("HX-Request", "true")
 		}
 		if boosted {
 			r.Header.Set("HX-Boosted", "true")
 			r.Header.Set("HX-Target", "body")
+		}
+		if historyRestore {
+			r.Header.Set("HX-History-Restore-Request", "true")
 		}
 		if partial {
 			r.Header.Set("HX-Target", "subject-list")
@@ -680,11 +683,17 @@ func TestBoostedNavigationSharesDocumentCache(t *testing.T) {
 		handler.ServeHTTP(w, r)
 		return w
 	}
-	full, boosted, fragment := get(false, false), get(true, false), get(false, true)
-	if full.Header().Get("ETag") != boosted.Header().Get("ETag") || full.Body.String() != boosted.Body.String() {
-		t.Fatal("boosted navigation must reuse the complete document")
+	full, boosted, restore, fragment := get(false, false, false), get(true, false, false), get(false, true, false), get(false, false, true)
+	if boosted.Header().Get("ETag") != restore.Header().Get("ETag") || boosted.Body.String() != restore.Body.String() {
+		t.Fatal("boosted navigation and history restore must share the lean boosted cache entry")
 	}
-	if full.Header().Get("ETag") == fragment.Header().Get("ETag") {
+	if len(boosted.Body.Bytes()) >= len(full.Body.Bytes()) || !strings.Contains(boosted.Body.String(), `<head hx-head="append">`) || strings.Contains(boosted.Body.String(), `id="tokens-site-header"`) || strings.Contains(boosted.Body.String(), `class="tokens-site-footer"`) {
+		t.Fatal("boosted navigation must return a lean payload without the mounted header or footer")
+	}
+	if !strings.Contains(full.Body.String(), `id="tokens-site-header"`) || !strings.Contains(full.Body.String(), `name="tokens-shell"`) {
+		t.Fatal("direct full document must keep the full shell and shell version marker")
+	}
+	if full.Header().Get("ETag") == fragment.Header().Get("ETag") || boosted.Header().Get("ETag") == fragment.Header().Get("ETag") {
 		t.Fatal("index filtering must retain its separate fragment")
 	}
 	if full.Header().Get("Cache-Control") != "public, no-cache" {

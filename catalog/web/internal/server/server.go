@@ -17,10 +17,16 @@ import (
 )
 
 type Server struct {
-	deliveryCSS          *cssDelivery
-	exportIndexOnce      sync.Once
-	exportSelectionIndex *exportIndex
-	navigation           []site.Section
+	deliveryCSS              *cssDelivery
+	exportIndexOnce          sync.Once
+	exportSelectionIndex     *exportIndex
+	changeSearchIndexOnce    sync.Once
+	changeSearchIndexData    []byte
+	changeSearchIndexVersion string
+	subjectChangeDataCache   sync.Map
+	shellVersionOnce         sync.Once
+	shellVersionHash         string
+	navigation               []site.Section
 	illustrations        map[string]webview.Illustration
 	motionURL            string
 	motionLabURL         string
@@ -123,6 +129,7 @@ func (server *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /downloads/{path...}", server.handleDownload)
 	mux.HandleFunc("GET /", server.handleOverview)
 	mux.HandleFunc("GET /changes", server.handleGlobalChanges)
+	mux.HandleFunc("GET /changes/search-index.json", server.handleChangeSearchIndex)
 	mux.HandleFunc("GET /components", server.handleOverview)
 	mux.HandleFunc("GET /components/{slug...}", server.handleHTMLSubject)
 	mux.HandleFunc("GET /styles", server.handleOverview)

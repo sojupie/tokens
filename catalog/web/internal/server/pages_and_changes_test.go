@@ -537,3 +537,155 @@ func TestHTMLChangeLogIsPaginated(t *testing.T) {
 		t.Fatalf("unexpected second change page:\n%s", secondPage.Body.String())
 	}
 }
+
+func TestGlobalChangesMountsLocalFiltersAndImmutableSearchIndex(t *testing.T) {
+	state := publish.PublishedState{
+		Snapshots: []publish.SnapshotView{
+			{ID: "old", CreatedAt: "2026-06-01T12:00:00Z"},
+			{ID: "new", CreatedAt: "2026-06-02T12:00:00Z"},
+		},
+		Changes: []publish.ChangeView{
+			{Subject: "buttons", Kind: "token", Name: "md.comp.button.height", Type: "added", SnapshotID: "new"},
+			{Subject: "snackbar", Kind: "token", Name: "md.comp.snackbar.container.width", Type: "changed", SnapshotID: "new", Before: "40", After: "48"},
+			{Subject: "snackbar", Kind: "token", Name: "md.comp.snackbar.container.width", Type: "context-added", SnapshotID: "new", After: "52"},
+			{Subject: "snackbar", Kind: "token", Name: "md.comp.snackbar.legacy.color", Type: "removed", SnapshotID: "old", Before: "#000"},
+		},
+	}
+	server := New(state, "")
+	if err := server.SetPublicOrigin("https://tokens.example/md3"); err != nil {
+		t.Fatal(err)
+	}
+	handler := server.Handler()
+
+	recorder := httptest.NewRecorder()
+	handler.ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, "/md3/changes", nil))
+	body := recorder.Body.String()
+	if recorder.Code != http.StatusOK {
+		t.Fatalf("status = %d", recorder.Code)
+	}
+	if !strings.Contains(body, `data-change-filters="global"`) || strings.Contains(body, "md.comp.button.height") {
+		t.Fatalf("global changes should mount local filters without embedded token names:\n%s", body)
+	}
+	formTag := regexp.MustCompile(`<form[^>]*data-change-filters="global"[^>]*>`).FindString(body)
+	if formTag == "" || strings.Contains(formTag, "hx-get=") {
+		t.Fatalf("global change form should not use hx-get: %s", formTag)
+	}
+	versionMatch := regexp.MustCompile(`data-change-search-version="([0-9a-f]+)"`).FindStringSubmatch(body)
+	if len(versionMatch) != 2 {
+		t.Fatal("missing data-change-search-version")
+	}
+
+	// Search index serves immutable cached JSON under the base path.
+	indexResp := httptest.NewRecorder()
+	handler.ServeHTTP(indexResp, httptest.NewRequest(http.MethodGet, "/md3/changes/search-index.json?v="+versionMatch[1], nil))
+	if indexResp.Code != http.StatusOK {
+		t.Fatalf("index status = %d", indexResp.Code)
+	}
+	if !strings.Contains(indexResp.Header().Get("Cache-Control"), "immutable") || indexResp.Header().Get("X-Robots-Tag") != "noindex" {
+		t.Fatalf("unexpected index headers: %v", indexResp.Header())
+	}
+	indexBody := indexResp.Body.String()
+	if strings.Count(indexBody, "md.comp.snackbar.container.width") != 1 {
+		t.Fatalf("expected deduplicated item in search index: %s", indexBody)
+	}
+
+	// Direct filtered URL hides non-matching cards in HTML and omits them in Markdown.
+	filtered := httptest.NewRecorder()
+	handler.ServeHTTP(filtered, httptest.NewRequest(http.MethodGet, "/md3/changes?subject=snackbar&type=changed&q=width", nil))
+	filteredBody := filtered.Body.String()
+	if !strings.Contains(filteredBody, `data-change-subject="buttons"`) || !strings.Contains(filteredBody, "1 item changed") {
+		t.Fatalf("filtered global HTML did not preserve mounted summary cards:\n%s", filteredBody)
+	}
+	mdReq := httptest.NewRequest(http.MethodGet, "/md3/changes?subject=snackbar&type=changed&q=width", nil)
+	mdReq.Header.Set("Accept", "text/markdown")
+	mdResp := httptest.NewRecorder()
+	handler.ServeHTTP(mdResp, mdReq)
+	if strings.Contains(mdResp.Body.String(), "Buttons") || !strings.Contains(mdResp.Body.String(), "Snackbar") {
+		t.Fatalf("markdown response leaked hidden cards:\n%s", mdResp.Body.String())
+	}
+}
+
+func TestSubjectChangesUsesLocalFilteringAndHTMXFragmentFallback(t *testing.T) {
+	smallState := publish.PublishedState{
+		Snapshots: []publish.SnapshotView{
+			{ID: "old", CreatedAt: "2026-06-01T12:00:00Z"},
+			{ID: "new", CreatedAt: "2026-06-02T12:00:00Z"},
+		},
+		Changes: []publish.ChangeView{
+			{Subject: "snackbar", Name: "md.comp.snackbar.container.width", Type: "changed", SnapshotID: "new", Before: "40", After: "48"},
+			{Subject: "snackbar", Name: "md.comp.snackbar.container.color", Type: "added", SnapshotID: "old", After: "#fff"},
+		},
+	}
+	smallHandler := New(smallState, "").Handler()
+	rec := httptest.NewRecorder()
+	smallHandler.ServeHTTP(rec, httptest.NewRequest(http.MethodGet, "/components/snackbar/changes?q=width", nil))
+	body := rec.Body.String()
+	smallFormTag := regexp.MustCompile(`<form[^>]*data-change-filters="all"[^>]*>`).FindString(body)
+	if smallFormTag == "" || strings.Contains(smallFormTag, "hx-get=") {
+		t.Fatalf("small subject timeline should use local all mode without hx-get: %s", smallFormTag)
+	}
+	if !strings.Contains(body, "md.comp.snackbar.container.width") || !strings.Contains(body, "md.comp.snackbar.container.color") {
+		t.Fatalf("small subject timeline must mount all records for client-side clearing")
+	}
+	if !strings.Contains(body, "Showing page 1 of 1 · 1 total changes") {
+		t.Fatalf("expected SSR count summary for filtered query:\n%s", body)
+	}
+
+	// Markdown must omit hidden non-matching records.
+	mdReq := httptest.NewRequest(http.MethodGet, "/components/snackbar/changes?q=width", nil)
+	mdReq.Header.Set("Accept", "text/markdown")
+	mdRec := httptest.NewRecorder()
+	smallHandler.ServeHTTP(mdRec, mdReq)
+	if strings.Contains(mdRec.Body.String(), "md.comp.snackbar.container.color") || !strings.Contains(mdRec.Body.String(), "md.comp.snackbar.container.width") {
+		t.Fatalf("markdown subject changes leaked hidden record:\n%s", mdRec.Body.String())
+	}
+
+	// Large subject (>50 total, <=50 in one snapshot): paginated mode on unfiltered, snapshot mode on ?snapshot=snapA, both backed by immutable data.json.
+	largeState := publish.PublishedState{
+		Snapshots: []publish.SnapshotView{
+			{ID: "snapB", CreatedAt: "2026-06-01T12:00:00Z"},
+			{ID: "snapA", CreatedAt: "2026-06-02T12:00:00Z"},
+		},
+	}
+	for i := range 35 {
+		largeState.Changes = append(largeState.Changes, publish.ChangeView{Subject: "buttons", Name: fmt.Sprintf("a-token-%02d", i), Type: "changed", SnapshotID: "snapA"})
+	}
+	for i := range 30 {
+		largeState.Changes = append(largeState.Changes, publish.ChangeView{Subject: "buttons", Name: fmt.Sprintf("b-token-%02d", i), Type: "added", SnapshotID: "snapB"})
+	}
+	largeHandler := New(largeState, "").Handler()
+
+	unfiltered := httptest.NewRecorder()
+	largeHandler.ServeHTTP(unfiltered, httptest.NewRequest(http.MethodGet, "/components/buttons/changes", nil))
+	unfilteredBody := unfiltered.Body.String()
+	dataVersion := regexp.MustCompile(`data-change-data-version="([0-9a-f]+)"`).FindStringSubmatch(unfilteredBody)
+	if !strings.Contains(unfilteredBody, `data-change-filters="paginated"`) || len(dataVersion) != 2 {
+		t.Fatalf("paginated subject should expose paginated mode and data-change-data-version")
+	}
+
+	dataResp := httptest.NewRecorder()
+	largeHandler.ServeHTTP(dataResp, httptest.NewRequest(http.MethodGet, "/components/buttons/changes/data.json?v="+dataVersion[1], nil))
+	if dataResp.Code != http.StatusOK || !strings.Contains(dataResp.Header().Get("Cache-Control"), "immutable") || dataResp.Header().Get("X-Robots-Tag") != "noindex" {
+		t.Fatalf("unexpected subject change data response: %d %v", dataResp.Code, dataResp.Header())
+	}
+	if !strings.Contains(dataResp.Body.String(), "a-token-34") || !strings.Contains(dataResp.Body.String(), "b-token-29") {
+		t.Fatalf("subject change data missing records: %s", dataResp.Body.String())
+	}
+
+	scoped := httptest.NewRecorder()
+	largeHandler.ServeHTTP(scoped, httptest.NewRequest(http.MethodGet, "/components/buttons/changes?snapshot=snapA", nil))
+	if !strings.Contains(scoped.Body.String(), `data-change-filters="snapshot"`) || !strings.Contains(scoped.Body.String(), `data-change-data-version="`+dataVersion[1]+`"`) {
+		t.Fatalf("snapshot-bounded subject should use snapshot local mode with data.json version")
+	}
+
+	// HTMX fragment request targeting #tokens-change-history returns only the fragment (no full document shell).
+	fragReq := httptest.NewRequest(http.MethodGet, "/components/buttons/changes?snapshot=snapA", nil)
+	fragReq.Header.Set("HX-Request", "true")
+	fragReq.Header.Set("HX-Target", "tokens-change-history")
+	fragRec := httptest.NewRecorder()
+	largeHandler.ServeHTTP(fragRec, fragReq)
+	fragBody := fragRec.Body.String()
+	if fragRec.Code != http.StatusOK || strings.Contains(strings.ToLower(fragBody), "<!doctype html>") || !strings.Contains(fragBody, `id="tokens-change-history"`) {
+		t.Fatalf("HTMX target request did not return compact change-history fragment:\n%s", fragBody)
+	}
+}

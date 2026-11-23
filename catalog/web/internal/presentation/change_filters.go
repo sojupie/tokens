@@ -6,13 +6,16 @@ type ChangeOption struct {
 }
 
 type ChangeFilters struct {
-	Query        string
-	Subject      string
-	Snapshot     string
-	Type         string
-	Subjects     []ChangeOption
-	Snapshots    []ChangeOption
-	FixedSubject bool
+	Query         string
+	Subject       string
+	Snapshot      string
+	Type          string
+	Subjects      []ChangeOption
+	Snapshots     []ChangeOption
+	FixedSubject  bool
+	LocalMode     string
+	SearchVersion string
+	DataVersion   string
 }
 
 func HistoryChangeTypes() []CatalogChoice {

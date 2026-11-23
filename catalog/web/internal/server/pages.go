@@ -79,6 +79,10 @@ func (server *Server) handleHTMLSubject(response http.ResponseWriter, request *h
 			return
 		}
 	}
+	if setPath == "" && strings.HasSuffix(slug, "/changes/data.json") {
+		server.handleSubjectChangeData(response, request, strings.TrimSuffix(slug, "/changes/data.json"))
+		return
+	}
 	if setPath == "" && strings.HasSuffix(slug, "/changes") {
 		server.handleHTMLChanges(response, request, strings.TrimSuffix(slug, "/changes"))
 		return
@@ -257,12 +261,266 @@ func (server *Server) handleGlobalChanges(response http.ResponseWriter, request 
 	server.renderChangeHistory(response, request, "")
 }
 
+type changeSearchIndexDocument struct {
+	Snapshots []string `json:"snapshots"`
+	Subjects  []string `json:"subjects"`
+	Types     []string `json:"types"`
+	Items     [][4]any `json:"items"`
+}
+
+func (server *Server) changeSearchIndex() ([]byte, string) {
+	server.changeSearchIndexOnce.Do(func() {
+		doc := changeSearchIndexDocument{
+			Snapshots: []string{},
+			Subjects:  []string{},
+			Types:     []string{},
+			Items:     [][4]any{},
+		}
+		snapshotIdx := map[string]int{}
+		subjectIdx := map[string]int{}
+		typeIdx := map[string]int{}
+		type itemKey struct {
+			snapshot int
+			subject  int
+			kind     string
+			name     string
+		}
+		itemPos := map[itemKey]int{}
+		intern := func(table map[string]int, list *[]string, value string) int {
+			if idx, ok := table[value]; ok {
+				return idx
+			}
+			idx := len(*list)
+			*list = append(*list, value)
+			table[value] = idx
+			return idx
+		}
+		for _, change := range server.state.Changes {
+			sIdx := intern(snapshotIdx, &doc.Snapshots, change.SnapshotID)
+			uIdx := intern(subjectIdx, &doc.Subjects, change.Subject)
+			tIdx := intern(typeIdx, &doc.Types, change.Type)
+			bit := 1 << tIdx
+			key := itemKey{snapshot: sIdx, subject: uIdx, kind: change.Kind, name: change.Name}
+			if pos, ok := itemPos[key]; ok {
+				doc.Items[pos][2] = doc.Items[pos][2].(int) | bit
+				continue
+			}
+			itemPos[key] = len(doc.Items)
+			doc.Items = append(doc.Items, [4]any{sIdx, uIdx, bit, webview.ChangeSearchText(change.Name)})
+		}
+		data, err := json.Marshal(doc)
+		if err != nil {
+			data = []byte(`{"snapshots":[],"subjects":[],"types":[],"items":[]}`)
+		}
+		server.changeSearchIndexData = data
+		server.changeSearchIndexVersion = webassets.AssetVersion(data)
+	})
+	return server.changeSearchIndexData, server.changeSearchIndexVersion
+}
+
+func (server *Server) handleChangeSearchIndex(response http.ResponseWriter, request *http.Request) {
+	data, _ := server.changeSearchIndex()
+	response.Header().Set("Content-Type", "application/json; charset=utf-8")
+	response.Header().Set("X-Robots-Tag", "noindex")
+	serveCachedAsset(response, request, "search-index.json", data)
+}
+
+type cachedChangeData struct {
+	data    []byte
+	version string
+}
+
+type subjectChangeDataDocument struct {
+	BrowseURL string                `json:"browseUrl,omitempty"`
+	Snapshots []subjectSnapshotMeta `json:"snapshots"`
+	Types     []subjectTypeMeta     `json:"types"`
+	Items     []subjectChangeRecord `json:"items"`
+}
+
+type subjectSnapshotMeta struct {
+	ID            string `json:"id"`
+	DetectedAt    string `json:"detectedAt"`
+	ObservedLabel string `json:"observedLabel"`
+	PreviousLabel string `json:"previousLabel,omitempty"`
+}
+
+type subjectTypeMeta struct {
+	Key   string `json:"key"`
+	Label string `json:"label"`
+}
+
+type subjectChangeRecord struct {
+	Snapshot  int         `json:"s"`
+	Type      int         `json:"t"`
+	Name      string      `json:"n"`
+	Search    string      `json:"q"`
+	Context   string      `json:"c,omitempty"`
+	Hierarchy []string    `json:"h,omitempty"`
+	Values    [][3]string `json:"v,omitempty"`
+}
+
+func (server *Server) subjectChangeData(subject string) ([]byte, string) {
+	if cached, ok := server.subjectChangeDataCache.Load(subject); ok {
+		entry := cached.(cachedChangeData)
+		return entry.data, entry.version
+	}
+	changes := subjectChanges(server.state, subject)
+	doc := subjectChangeDataDocument{
+		Snapshots: []subjectSnapshotMeta{},
+		Types:     []subjectTypeMeta{},
+		Items:     make([]subjectChangeRecord, 0, len(changes)),
+	}
+	for _, item := range server.state.Subjects {
+		if item.Key.Slug == subject {
+			doc.BrowseURL = server.basePath + webview.SubjectURL(item)
+			break
+		}
+	}
+	snapshotDates := make(map[string]string, len(server.state.Snapshots))
+	for _, snap := range server.state.Snapshots {
+		snapshotDates[snap.ID] = snap.CreatedAt
+	}
+	snapshotIdx := map[string]int{}
+	typeIdx := map[string]int{}
+	for _, change := range changes {
+		sIdx, ok := snapshotIdx[change.SnapshotID]
+		if !ok {
+			detected := change.DetectedAt
+			if detected == "" {
+				detected = snapshotDates[change.SnapshotID]
+			}
+			prev := snapshotDates[change.PreviousSnapshotID]
+			meta := subjectSnapshotMeta{
+				ID:            change.SnapshotID,
+				DetectedAt:    detected,
+				ObservedLabel: webview.ObservationDate(detected),
+			}
+			if prev != "" {
+				meta.PreviousLabel = webview.ObservationDate(prev)
+			}
+			sIdx = len(doc.Snapshots)
+			doc.Snapshots = append(doc.Snapshots, meta)
+			snapshotIdx[change.SnapshotID] = sIdx
+		}
+		tIdx, ok := typeIdx[change.Type]
+		if !ok {
+			tIdx = len(doc.Types)
+			doc.Types = append(doc.Types, subjectTypeMeta{Key: change.Type, Label: webview.ChangeTypeLabel(change.Type)})
+			typeIdx[change.Type] = tIdx
+		}
+		values := webview.ChangedValues(change)
+		rows := make([][3]string, len(values))
+		for i, v := range values {
+			rows[i] = [3]string{v.Field, v.Before, v.After}
+		}
+		doc.Items = append(doc.Items, subjectChangeRecord{
+			Snapshot:  sIdx,
+			Type:      tIdx,
+			Name:      change.Name,
+			Search:    webview.ChangeSearchText(change.Name),
+			Context:   webview.ChangeContext(change),
+			Hierarchy: webview.ChangeHierarchy(change.Name),
+			Values:    rows,
+		})
+	}
+	data, err := json.Marshal(doc)
+	if err != nil {
+		data = []byte(`{"snapshots":[],"types":[],"items":[]}`)
+	}
+	entry := cachedChangeData{data: data, version: webassets.AssetVersion(data)}
+	actual, _ := server.subjectChangeDataCache.LoadOrStore(subject, entry)
+	stored := actual.(cachedChangeData)
+	return stored.data, stored.version
+}
+
+func (server *Server) handleSubjectChangeData(response http.ResponseWriter, request *http.Request, subject string) {
+	changes := subjectChanges(server.state, subject)
+	if len(changes) == 0 {
+		found := false
+		for _, item := range server.state.Subjects {
+			if item.Key.Slug == subject && (item.Key.Kind == publish.SubjectComponent) == strings.HasPrefix(request.URL.Path, "/components/") {
+				found = true
+				break
+			}
+		}
+		if !found {
+			http.NotFound(response, request)
+			return
+		}
+	}
+	data, _ := server.subjectChangeData(subject)
+	response.Header().Set("Content-Type", "application/json; charset=utf-8")
+	response.Header().Set("X-Robots-Tag", "noindex")
+	serveCachedAsset(response, request, "data.json", data)
+}
+
+func filterChangesByScope(changes []publish.ChangeView, snapshot, changeType string) []publish.ChangeView {
+	filtered := make([]publish.ChangeView, 0, len(changes))
+	for _, change := range changes {
+		if snapshot != "" && change.SnapshotID != snapshot {
+			continue
+		}
+		if changeType != "" && change.Type != changeType {
+			continue
+		}
+		filtered = append(filtered, change)
+	}
+	return filtered
+}
+
 func (server *Server) renderChangeHistory(response http.ResponseWriter, request *http.Request, subject string) {
 	changes, filters := filterChangeHistory(server.state, subject, request.URL.Query())
 	page := requestedPage(request)
 	pageChanges, hasPrevious, hasNext := changes, false, false
 	if subject != "" {
 		pageChanges, page, hasPrevious, hasNext = paginateChanges(changes, page)
+	}
+	localMode, mounted := "server", pageChanges
+	if !wantsMarkdown(request) {
+		if subject == "" {
+			localMode = "global"
+			mounted = server.state.Changes
+			if len(server.state.Changes) > 0 {
+				_, filters.SearchVersion = server.changeSearchIndex()
+			}
+		} else {
+			allSubject := subjectChanges(server.state, subject)
+			if len(allSubject) <= 50 {
+				localMode = "all"
+				mounted = allSubject
+			} else {
+				localMode = "paginated"
+				_, filters.DataVersion = server.subjectChangeData(subject)
+				if filters.Snapshot != "" {
+					snapshotScoped := filterChangesByScope(allSubject, filters.Snapshot, "")
+					if len(snapshotScoped) <= 50 {
+						localMode = "snapshot"
+						mounted = snapshotScoped
+					} else if filters.Type != "" {
+						typeScoped := filterChangesByScope(snapshotScoped, "", filters.Type)
+						if len(typeScoped) <= 50 {
+							localMode = "query"
+							mounted = typeScoped
+						}
+					}
+				} else if filters.Type != "" {
+					typeScoped := filterChangesByScope(allSubject, "", filters.Type)
+					if len(typeScoped) <= 50 {
+						localMode = "query"
+						mounted = typeScoped
+					}
+				}
+			}
+		}
+	}
+	filters.LocalMode = localMode
+	localMounted := localMode == "global" || localMode == "all" || localMode == "snapshot" || localMode == "query"
+	batches := webview.BuildChangeTimeline(mounted, server.state.Snapshots, server.state.Subjects, filters, subject == "", localMounted)
+	if request.Header.Get("HX-Request") == "true" && !wantsMarkdown(request) && (request.Header.Get("HX-Target") == "tokens-change-history" || request.Header.Get("HX-Target") == "div#tokens-change-history") {
+		if err := server.renderHTML(response, request, webrender.ChangeHistoryView(server.state, subject, request.URL.String(), filters, changeCountSummary(changes), batches, page, len(changes), hasPrevious, hasNext)); err != nil {
+			http.Error(response, err.Error(), http.StatusInternalServerError)
+		}
+		return
 	}
 	query := request.URL.Query()
 	query.Set("page", strconv.Itoa(page))
@@ -285,7 +543,7 @@ func (server *Server) renderChangeHistory(response http.ResponseWriter, request 
 		}
 	}
 	request = request.WithContext(context.WithValue(request.Context(), webview.PageMetadataKey{}, info))
-	if err := server.renderHTML(response, request, webrender.ChangesPage(server.state, subject, request.URL.String(), filters, changeCountSummary(changes), pageChanges, page, len(changes), hasPrevious, hasNext)); err != nil {
+	if err := server.renderHTML(response, request, webrender.ChangesPage(server.state, subject, request.URL.String(), filters, changeCountSummary(changes), batches, page, len(changes), hasPrevious, hasNext)); err != nil {
 		http.Error(response, err.Error(), http.StatusInternalServerError)
 	}
 }
@@ -306,6 +564,20 @@ func (server *Server) renderTokenTableMarkdown(response http.ResponseWriter, req
 	return err
 }
 
+func (server *Server) shellVersion() string {
+	server.shellVersionOnce.Do(func() {
+		assets := &webview.ComponentAssets{Modules: map[string]bool{}, Server: server}
+		ctx := context.Background()
+		ctx = context.WithValue(ctx, webview.PageThemeKey{}, server.pageThemes())
+		ctx = context.WithValue(ctx, webview.ThemeVersionKey{}, webassets.AssetVersion([]byte(server.themeCSS)))
+		ctx = ui.WithAssets(context.WithValue(ctx, webview.ComponentAssetsKey{}, assets), ui.Assets(assets.Modules))
+		var rendered bytes.Buffer
+		_ = webrender.ShellAssets().Render(ctx, &rendered)
+		server.shellVersionHash = webassets.AssetVersion(rendered.Bytes())
+	})
+	return server.shellVersionHash
+}
+
 func (server *Server) renderHTML(response http.ResponseWriter, request *http.Request, component templ.Component) error {
 	response.Header().Set("Vary", "HX-Request, HX-Target, Accept")
 	response.Header().Set("Content-Type", "text/html; charset=utf-8")
@@ -314,6 +586,8 @@ func (server *Server) renderHTML(response http.ResponseWriter, request *http.Req
 	if webview.Metadata(ctx).Title == "" {
 		ctx = context.WithValue(ctx, webview.PageMetadataKey{}, server.basicMetadata(request.URL.Path, request.URL.Query()))
 	}
+	ctx = context.WithValue(ctx, webview.PageThemeKey{}, server.pageThemes())
+	ctx = context.WithValue(ctx, webview.ThemeVersionKey{}, webassets.AssetVersion([]byte(server.themeCSS)))
 	info := webview.Metadata(ctx)
 	info.Path = request.URL.Path
 	if info.Illustration == nil {
@@ -326,12 +600,14 @@ func (server *Server) renderHTML(response http.ResponseWriter, request *http.Req
 		page := server.exportPage(nil, request.URL.Query())
 		info.Export = &page
 	}
+	info.Boosted = !info.TableOnly && !wantsMarkdown(request) &&
+		(request.Header.Get("HX-Boosted") == "true" || request.Header.Get("HX-History-Restore-Request") == "true") &&
+		(request.Header.Get("HX-Target") == "" || request.Header.Get("HX-Target") == "body")
+	info.ShellVersion = server.shellVersion()
 	ctx = context.WithValue(ctx, webview.PageMetadataKey{}, info)
 	if webview.Metadata(ctx).NoIndex {
 		response.Header().Set("X-Robots-Tag", "noindex, follow")
 	}
-	ctx = context.WithValue(ctx, webview.PageThemeKey{}, server.pageThemes())
-	ctx = context.WithValue(ctx, webview.ThemeVersionKey{}, webassets.AssetVersion([]byte(server.themeCSS)))
 	assets := &webview.ComponentAssets{Modules: map[string]bool{}, Server: server}
 	ctx = ui.WithAssets(context.WithValue(ctx, webview.ComponentAssetsKey{}, assets), ui.Assets(assets.Modules))
 	var rendered bytes.Buffer
@@ -589,17 +865,13 @@ func filterChangeHistory(state publish.PublishedState, subject string, query url
 	subjects := make(map[string]bool)
 	snapshots := make(map[string]bool)
 	var matches []publish.ChangeView
-	search := strings.ToLower(filters.Query)
 	for _, change := range state.Changes {
 		if subject != "" && change.Subject != subject {
 			continue
 		}
 		subjects[change.Subject] = true
 		snapshots[change.SnapshotID] = true
-		if filters.Subject != "" && change.Subject != filters.Subject || filters.Snapshot != "" && change.SnapshotID != filters.Snapshot || filters.Type != "" && change.Type != filters.Type {
-			continue
-		}
-		if search != "" && !strings.Contains(strings.ToLower(change.Name+" "+strings.Join(webview.ChangeHierarchy(change.Name), " ")), search) {
+		if !webview.ChangeMatchesFilters(change, filters) {
 			continue
 		}
 		matches = append(matches, change)

@@ -19,38 +19,87 @@ templ CatalogStyles() {
 	<link rel="stylesheet" href={ webview.StylesheetURL(ctx, webassets.StaticURL("bundles/common.css")) }/>
 }
 
+templ ShellAssets() {
+	@webassets.InitialThemeScript()
+	<script src={ webassets.StaticURL("theme.js") } defer></script>
+	@CatalogStyles()
+	if !webview.Metadata(ctx).TableOnly {
+		@webview.SiteNavigationStyles()
+	}
+	<script src={ webassets.StaticURL("motion.js") } defer></script>
+	<script src={ webassets.StaticURL("buttons.js") } defer></script>
+	<script src={ webassets.StaticURL("runtime/utils.js") } defer></script>
+	<script src={ webassets.StaticURL("runtime/navigation.js") } defer></script>
+	<script src={ webassets.StaticURL("fields.js") } defer></script>
+	<script src={ webassets.StaticURL("site-ui.js") } defer></script>
+	<script src={ webassets.StaticURL("thumbnail-images.js") } defer></script>
+	<script src={ webassets.StaticURL("subject-search.js") } defer></script>
+	<script src={ webassets.StaticURL("change-filters.js") } defer></script>
+	<script src={ webassets.StaticURL("export.js") } defer></script>
+	<script src={ webassets.StaticURL("site.js") } defer></script>
+	<script src={ webassets.StaticURL("menus.js") } defer></script>
+	<script src={ webassets.StaticURL("htmx.min.js") } defer></script>
+	<script src={ webassets.StaticURL("htmx-2-compat.min.js") } defer></script>
+	<script src={ webassets.StaticURL("hx-head.min.js") } defer></script>
+	<script src={ webassets.StaticURL("token-table.js") } defer></script>
+	<script src={ webassets.StaticURL("webmcp.js") } defer></script>
+	<script src={ webassets.StaticURL("prefetch.js") } defer></script>
+	<script src={ webassets.StaticURL("asset-loader.js") } data-sources={ webview.ComponentScriptSources() } data-shapes-version={ webview.LoadingGeometryVersion } defer></script>
+}
+
+func mainExportAttrs(page *webview.ExportPage) templ.Attributes {
+	attrs := templ.Attributes{
+		"id":                    "tokens-site-main",
+		"class":                 "tokens-main tokens-layout-content",
+		"data-component-assets": true,
+	}
+	if page != nil {
+		attrs["data-export-kind"] = page.Kind
+		attrs["data-export-slug"] = page.Slug
+		attrs["data-export-set"] = page.Set
+		attrs["data-export-query"] = page.Query
+		attrs["data-export-component"] = strconv.FormatBool(page.Component)
+		attrs["data-export-default-scope"] = page.DefaultScope()
+		attrs["data-export-has-css"] = strconv.FormatBool(page.CSS)
+		attrs["data-export-has-implementation"] = strconv.FormatBool(page.Implementations)
+	}
+	return attrs
+}
+
 templ Layout(title string) {
+	if webview.Metadata(ctx).Boosted && !webview.Metadata(ctx).TableOnly {
+		<!DOCTYPE html>
+		<html lang="en">
+			<head hx-head="append">
+				<title>{ webview.PageTitle(ctx, title) } | TokenCatalog</title>
+				<meta name="description" content={ webview.Metadata(ctx).Description }/>
+				if webview.Metadata(ctx).ShellVersion != "" {
+					<meta name="tokens-shell" content={ webview.Metadata(ctx).ShellVersion }/>
+				}
+			</head>
+			<body>
+				<template hx type="partial" hx-target="#tokens-site-rail" hx-swap="innerMorph">@site.Rail(webview.SiteConfig(ctx))</template>
+				<template hx type="partial" hx-target="#tokens-site-destinations" hx-swap="innerMorph">
+					@site.Destinations(webview.SiteConfig(ctx))
+				</template>
+				<main { mainExportAttrs(webview.Metadata(ctx).Export)... }>
+					@webview.ComponentAssetScope() {
+						{ children... }
+					}
+				</main>
+			</body>
+		</html>
+	} else {
 	<!DOCTYPE html>
 	<html lang="en">
 		<head>
 			<meta charset="utf-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
-			<meta name="htmx-config" content='{"compat":{"suppressInheritanceLogs":true},"preload":{"autoBoost":false}}'/>
-			@webassets.InitialThemeScript()
-			<script src={ webassets.StaticURL("theme.js") } defer></script>
-			@CatalogStyles()
-			if !webview.Metadata(ctx).TableOnly {
-				@webview.SiteNavigationStyles()
+			<meta name="htmx-config" content='{"compat":{"suppressInheritanceLogs":true}}'/>
+			if webview.Metadata(ctx).ShellVersion != "" {
+				<meta name="tokens-shell" content={ webview.Metadata(ctx).ShellVersion }/>
 			}
-			<script src={ webassets.StaticURL("motion.js") } defer></script>
-			<script src={ webassets.StaticURL("buttons.js") } defer></script>
-			<script src={ webassets.StaticURL("runtime/utils.js") } defer></script>
-			<script src={ webassets.StaticURL("runtime/navigation.js") } defer></script>
-			<script src={ webassets.StaticURL("fields.js") } defer></script>
-			<script src={ webassets.StaticURL("site-ui.js") } defer></script>
-			<script src={ webassets.StaticURL("thumbnail-images.js") } defer></script>
-			<script src={ webassets.StaticURL("subject-search.js") } defer></script>
-			<script src={ webassets.StaticURL("export.js") } defer></script>
-			<script src={ webassets.StaticURL("site.js") } defer></script>
-			<script src={ webassets.StaticURL("menus.js") } defer></script>
-			<script src={ webassets.StaticURL("htmx.min.js") } defer></script>
-			<script src={ webassets.StaticURL("htmx-2-compat.min.js") } defer></script>
-			<script src={ webassets.StaticURL("hx-head.min.js") } defer></script>
-			<script src={ webassets.StaticURL("hx-preload.min.js") } defer></script>
-			<script src={ webassets.StaticURL("token-table.js") } defer></script>
-			<script src={ webassets.StaticURL("webmcp.js") } defer></script>
-			<script src={ webassets.StaticURL("prefetch.js") } defer></script>
-			<script src={ webassets.StaticURL("asset-loader.js") } data-sources={ webview.ComponentScriptSources() } data-shapes-version={ webview.LoadingGeometryVersion } defer></script>
+			@ShellAssets()
 			<link rel="icon" type="image/svg+xml" href={ webassets.StaticURL("logo.svg") }/>
 			<link rel="apple-touch-icon" href={ webassets.StaticURL("logo-250x250.png") }/>
 			<title>{ webview.PageTitle(ctx, title) } | TokenCatalog</title>
@@ -138,7 +187,7 @@ templ Layout(title string) {
 				}
 			}
 			<div id="tokens-site-page" class="tokens-layout tokens-layout-site">
-				<main class="tokens-main tokens-layout-content" data-component-assets>
+				<main { mainExportAttrs(webview.Metadata(ctx).Export)... }>
 					@webview.ComponentAssetScope() {
 						{ children... }
 					}
@@ -152,4 +201,5 @@ templ Layout(title string) {
 			}
 		</body>
 	</html>
+	}
 }

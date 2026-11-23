@@ -336,6 +336,8 @@
 }
 .tokens-history-intro { display:grid;justify-items:start;gap:var(--md-sys-measurement-space200); }
 .tokens-history-intro .tokens-metadata { max-inline-size:85ch; }
+.tokens-change-history, .tokens-change-results { display:flex;flex-direction:column;gap:var(--md-sys-measurement-space400); }
+:is(.tokens-timeline-batch, .tokens-change-summary, .tokens-change-card, .tokens-history-counts, [data-change-empty])[hidden] { display:none; }
 .tokens-timeline-batch { display:grid;grid-template-columns:14rem minmax(0,1fr);align-items:start;gap:var(--md-sys-measurement-space300); }
 .tokens-observation-heading { position:sticky;inset-block-start:7rem;display:grid;gap:var(--md-sys-measurement-space100); }
 .tokens-observation-records { display:grid;min-inline-size:0;gap:var(--md-sys-measurement-space100); }

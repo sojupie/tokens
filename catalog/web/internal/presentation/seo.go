@@ -8,6 +8,8 @@ import (
 
 type PageMetadata struct {
 	TableOnly          bool
+	Boosted            bool
+	ShellVersion       string
 	Navigation         []site.Section
 	Illustration       *Illustration
 	ImagePageURL       string

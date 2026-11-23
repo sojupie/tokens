@@ -91,15 +91,24 @@ non-document API routes stay native.
 - Playgrounds stay inert while loading and show a reload prompt on failure;
   failed loads clear their pending entries so retries work.
 
-### Hover prefetch and persistent shell
-- Same-origin document links prefetch after 65 ms of hover or keyboard focus
-  (capped at 8 destinations per document; skipped on `Save-Data`, 2G, hidden
-  tabs, downloads, and external links).
-- HTMX's preload extension holds each prefetched response for 5 seconds.
-  Destination scripts start preloading only when navigation consumes the HTML.
+### Hover prefetch, LRU HTML cache, and persistent shell
+- Same-origin document links prefetch after 65 ms of mouse/pen hover or keyboard
+  focus, or immediately (0 ms) on `pointerdown` (including touch), skipping
+  `Save-Data`, 2G, hidden tabs, downloads, and external links.
+- Prefetched and visited boosted HTML responses are stored in a URL-keyed
+  in-memory LRU cache (up to 50 pages / 4 MiB, 10-minute TTL, max 2 concurrent
+  background prefetches), shared across all links to the same URL and cleared on
+  deploy asset mismatches (`meta[name="tokens-shell"]`).
+- Boosted requests return lean HTML payloads (`<head hx-head="append">` with
+  `<title>`, description, shell version, and hoisted component styles, plus rail
+  and destination partials and `<main id="tokens-site-main">`), leaving both the
+  navigation shell and export dialog mounted.
+- Prefetched HTML warms destination component CSS and behavior scripts via
+  `<link rel="preload">` (`TokenAssets.warm`) before navigation starts.
 - Rail and drawer navigation morph in place via partial updates while keeping
-  section scroll positions. Subject search debounces at 250 ms with
-  `hx-sync="this:replace"`.
+  section scroll positions. Subject search, token-table search, and change-log
+  filtering run locally in the browser; `/changes` search indexes pre-warm on
+  search-input focus.
 
 ### Static tool consumers
 Material Motion Lab renders shared Go/templ markup at build time and packages

@@ -1,5 +1,5 @@
 (() => {
-  const initialized = new WeakSet(), openers = new WeakMap();
+  const initialized = new WeakSet(), openers = new WeakMap(), desiredScopes = new WeakMap();
   const inputs = (form, name) => Array.from(form.querySelectorAll('input[name]')).filter(input => input.name === name);
   function set(form, name, next) {
     for (const input of inputs(form, name)) {
@@ -16,7 +16,15 @@
     for (const [key, val] of params) if (key === 'set' || key === 'q' || key.startsWith('context.')) {
       set(form, key, val); if (key.startsWith('context.')) set(form, '_' + key, val);
     }
-    set(form, 'scope', trigger.dataset.exportScope || panel.dataset.defaultScope);
+    const nextScope = trigger.dataset.exportScope || panel.dataset.defaultScope;
+    const scopeInputs = inputs(form, 'scope');
+    if (scopeInputs.some(input => input.value === nextScope)) {
+      desiredScopes.delete(form);
+      set(form, 'scope', nextScope);
+    } else {
+      for (const input of scopeInputs) input.checked = false;
+      desiredScopes.set(form, nextScope);
+    }
   }
   document.addEventListener('click', event => {
     const panel = document.getElementById('tokens-site-download'); if (!panel) return;
@@ -37,6 +45,12 @@
     for (const input of form.querySelectorAll('fieldset:disabled input[name]:not([disabled])')) {
       if (!['checkbox','radio'].includes(input.type) || input.checked)
         event.detail.ctx.request.body.append(input.name, input.value);
+    }
+    const pendingScope = desiredScopes.get(form);
+    if (pendingScope) {
+      desiredScopes.delete(form);
+      if (event.detail.ctx.request.body.set) event.detail.ctx.request.body.set('scope', pendingScope);
+      else event.detail.ctx.request.body.append('scope', pendingScope);
     }
   });
   document.addEventListener('htmx:before:request', event => {

@@ -139,6 +139,26 @@
       return existing.has(url.pathname) && existing.get(url.pathname) !== url.href;
     });
   }
+  const stylePreloads = /* @__PURE__ */ new Set();
+  function warm(incoming) {
+    if (stylesChanged(incoming)) return;
+    preload(incoming);
+    for (const source of incoming.querySelectorAll("link[data-component-stylesheet]")) {
+      const href = new URL(source.getAttribute("href") || "", document.baseURI).href;
+      if (stylePreloads.has(href)) continue;
+      if ([...document.head.querySelectorAll("link[data-component-stylesheet]")].some((link) => link.href === href)) continue;
+      const hint = document.createElement("link");
+      hint.rel = "preload";
+      hint.as = "style";
+      hint.href = href;
+      hint.onerror = () => {
+        hint.remove();
+        stylePreloads.delete(href);
+      };
+      stylePreloads.add(href);
+      document.head.append(hint);
+    }
+  }
   async function prepareStyles(incoming, signal) {
     signal?.throwIfAborted();
     preload(incoming);
@@ -159,7 +179,7 @@
     await Promise.all(ready);
     signal?.throwIfAborted();
   }
-  const api = { ready: Promise.resolve(), prepareStyles, stylesChanged, audit: (root = document) => auditBehaviors(root) };
+  const api = { ready: Promise.resolve(), prepareStyles, warm, stylesChanged, audit: (root = document) => auditBehaviors(root) };
   globalThis.TokenAssets = api;
   let generation = 0;
   function initialize() {

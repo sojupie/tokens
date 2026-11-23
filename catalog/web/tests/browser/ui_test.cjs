@@ -9,7 +9,7 @@ const {runInNewContext} = require('node:vm');
 function runScript(name, globals) {
   globals.document.addEventListener ||= () => {};
   globals.AbortController ||= AbortController;
-  globals.ResizeObserver ||= class {observe(){} unobserve(){}};
+  globals.ResizeObserver ||= class {observe(){} unobserve(){} disconnect(){}};
   // The inline initialization runs before the deferred theme controls in HTML.
   if (name === 'theme.js') runInNewContext(readFileSync(scriptPath('theme-init.js'), 'utf8'), globals);
   runInNewContext(readFileSync(scriptPath(name), 'utf8'), globals);
@@ -183,63 +183,88 @@ test('WebMCP uses the collection path for both index and token downloads', async
   assert.deepEqual(requests, ['/md3/api/v1/subjects', '/md3/downloads/component/snackbar.json?scope=all']);
 });
 
-function prefetchHarness({connection = {}, fail = false} = {}) {
+function prefetchHarness({connection = {}, fail = false, deferFetch = false, warm} = {}) {
   const listeners = {};
   const scheduled = new Map();
   const appended = [];
+  const warmed = [];
   let extension;
   let now = 0;
   let next = 0;
   const document = {
     currentScript: {src: 'https://tokens.test/md3/static/prefetch.js'},
     visibilityState: 'visible',
+    head: {querySelector: () => ({getAttribute: () => 'shell-v1'})},
     body: {},
     addEventListener: (name, listener) => { listeners[name] = listener; },
   };
-  const internal={
-    attributeValue:(elt,name)=>elt.attrs[name], parseTriggerSpecs:name=>[{name}],
-    determineMethodAndAction:()=>({method:'GET'}),
-    createRequestContext:elt=>({target:document.body,request:{action:elt.href,method:'GET',headers:{}}}),
-    collectFormData:()=>new URLSearchParams(),getAttributeObject:()=>undefined,
+  const globals = {
+    document,
+    navigator: {connection},
+    location: new URL('https://tokens.test/md3/'),
+    URL, URLSearchParams, CustomEvent, Response,
+    DOMParser: class {
+      parseFromString(html) {
+        return {
+          html,
+          head: {querySelector: () => ({getAttribute: () => 'shell-v1'})},
+          querySelectorAll: () => [],
+        };
+      }
+    },
+    TokenAssets: {warm: doc => { warmed.push(doc); warm?.(doc); }},
+    htmx: {registerExtension(name, value) { extension = value; }},
+    fetch: (url, request) => {
+      const html = `<main data-url="${url}">ok</main>`;
+      const response = {
+        status: 200,
+        url,
+        headers: {get: name => name.toLowerCase() === 'content-type' ? 'text/html; charset=utf-8' : null},
+        text: async () => html,
+      };
+      let resolveFetch;
+      const promise = deferFetch
+        ? new Promise(resolve => { resolveFetch = () => resolve(response); })
+        : (fail ? Promise.reject(new Error('offline')) : Promise.resolve(response));
+      appended.push({url, request, response, html, resolve: resolveFetch});
+      return promise;
+    },
+    Date: {now: () => now},
+    setTimeout: (callback, delay) => { const id = ++next; scheduled.set(id, {callback, time: now + delay}); return id; },
+    clearTimeout: id => scheduled.delete(id),
+    window: {addEventListener: (name, listener) => { listeners[name] = listener; }},
   };
-  const globals={document,navigator:{connection},location:new URL('https://tokens.test/md3/'),URL,URLSearchParams,CustomEvent,
-    htmx:{config:{preload:{autoBoost:false}},registerExtension(name,value){extension=value;value.init(internal)}},
-    fetch:(url,request)=>{const response={status:200};appended.push({url,request,response});return fail?Promise.reject(new Error("offline")):Promise.resolve(response)},
-    Date:{now:()=>now},
-    setTimeout:(callback,delay)=>{const id=++next;scheduled.set(id,{callback,time:now+delay});return id},
-    clearTimeout:id=>scheduled.delete(id),
-    window:{addEventListener:(name,listener)=>{listeners[name]=listener}},
-  };
-  runScript('hx-preload.min.js',globals);runScript('prefetch.js',globals);
+  runScript('prefetch.js', globals);
   function link(path, options = {}) {
     const anchor = {
       href: new URL(path, 'https://tokens.test').href,
       target: options.target || '',
-      isConnected: true,attrs:{},_htmx:{boosted:true},listeners:{},
-      matches:()=>true,setAttribute(name,value){this.attrs[name]=value},
-      addEventListener(name,fn){this.listeners[name]=fn},removeEventListener(name){delete this.listeners[name]},
-      dispatchEvent(event){this.listeners[event.type]?.(event);return true},
+      isConnected: true, attrs: {}, _htmx: {boosted: true}, listeners: {},
+      matches: () => true, setAttribute(name, value) { this.attrs[name] = value; },
+      addEventListener(name, fn) { this.listeners[name] = fn; },
+      removeEventListener(name) { delete this.listeners[name]; },
+      dispatchEvent(event) { this.listeners[event.type]?.(event); return true; },
       hasAttribute: name => name === 'download' && options.download,
       closest: selector => selector === 'a[href]' ? anchor : (options.htmx || options.unboosted) ? anchor : null,
       contains: node => node === anchor,
     };
-    listeners['htmx:beforeProcessNode']?.({target:anchor,detail:{elt:anchor}});
-    extension.htmx_after_init(anchor);
     return anchor;
   }
   return {
-    appended, document, connection, link, extension, location:globals.location,
-    event: (name, target, extra = {}) => listeners[name]?.({target, pointerType: 'mouse', ...extra}),
+    appended, warmed, document, connection, link, extension, location: globals.location,
+    api: globals.TokenPrefetch,
+    event: (name, target, extra = {}) => listeners[name]?.({target, pointerType: 'mouse', button: 0, ...extra}),
     advance: milliseconds => {
       now += milliseconds;
       for (const [id, job] of scheduled) {
         if (job.time <= now) { scheduled.delete(id); job.callback(); }
       }
     },
+    flush: () => new Promise(resolve => setImmediate(resolve)),
   };
 }
 
-test('hover prefetch waits 65 ms, cancels brief hovers, and deduplicates destinations', () => {
+test('hover prefetch waits 65 ms, cancels brief hovers, and deduplicates across links by URL', async () => {
   const h = prefetchHarness();
   const link = h.link('/md3/components/buttons');
   h.event('pointerover', link);
@@ -251,9 +276,14 @@ test('hover prefetch waits 65 ms, cancels brief hovers, and deduplicates destina
   h.advance(64);
   assert.equal(h.appended.length, 0);
   h.advance(1);
+  await h.flush();
   assert.equal(h.appended[0].url, 'https://tokens.test/md3/components/buttons');
-  assert.equal(h.appended[0].request.headers['HX-Request-Type'],'full');
-  h.event('pointerover', link);
+  assert.equal(h.appended[0].request.headers['HX-Boosted'], 'true');
+  assert.equal(h.appended[0].request.headers['Purpose'], 'prefetch');
+  assert.equal(h.warmed.length, 1, 'prefetched HTML warms destination component CSS and scripts');
+  // A second distinct link to the same URL shares the URL-keyed LRU cache.
+  const otherLink = h.link('/md3/components/buttons');
+  h.event('pointerover', otherLink);
   h.advance(500);
   assert.equal(h.appended.length, 1);
 });
@@ -272,32 +302,45 @@ test('prefetch skips external, download, API, fragment, HTMX and new-tab links',
   ]) {
     h.event('pointerover', link);
     h.advance(65);
+    h.event('pointerdown', link);
   }
   assert.equal(h.appended.length, 0);
 });
 
-test('prefetch handles keyboard focus through the upstream extension, with an eight-page limit', () => {
+test('prefetch supports >8 pages across a session with concurrency throttling and immediate pointerdown', async () => {
   const h = prefetchHarness();
-  for (let index = 0; index < 10; index++) {
+  for (let index = 0; index < 12; index++) {
     h.event('focusin', h.link(`/md3/components/subject-${index}`));
     h.advance(65);
+    await h.flush();
   }
-  assert.equal(h.appended.length, 8);
-  assert.equal(h.appended[0].url,'https://tokens.test/md3/components/subject-0');
+  assert.equal(h.appended.length, 12, 'no permanent 8-page lifetime cap');
+  assert.equal(h.api.size(), 12);
+
+  // Concurrency cap limits background hover prefetches to 2 in-flight, while urgent pointerdown proceeds.
+  const slow = prefetchHarness({deferFetch: true});
+  for (let i = 0; i < 4; i++) {
+    slow.event('pointerover', slow.link(`/md3/components/s-${i}`));
+    slow.advance(65);
+  }
+  assert.equal(slow.appended.length, 2, 'background prefetch caps concurrent in-flight requests at 2');
+  slow.event('pointerdown', slow.link('/md3/components/urgent'), {pointerType: 'touch'});
+  assert.equal(slow.appended.length, 3, 'touch pointerdown starts immediately at 0 ms even when background slots are full');
 });
 
-test('prefetch respects data saving, slow connections, visibility and touch input', () => {
+test('prefetch respects data saving, slow connections, visibility and touch hover', () => {
   for (const connection of [{saveData: true}, {effectiveType: '2g'}, {effectiveType: 'slow-2g'}]) {
     const h = prefetchHarness({connection});
     h.event('pointerover', h.link('/md3/styles'));
     h.advance(65);
+    h.event('pointerdown', h.link('/md3/styles'), {pointerType: 'touch'});
     assert.equal(h.appended.length, 0);
   }
   const h = prefetchHarness();
   const link = h.link('/md3/styles');
   h.event('pointerover', link, {pointerType: 'touch'});
   h.advance(65);
-  assert.equal(h.appended.length, 0);
+  assert.equal(h.appended.length, 0, 'touch hover does not trigger dwell prefetch');
   h.event('pointerover', link);
   h.connection.saveData = true;
   h.advance(65);
@@ -308,6 +351,10 @@ test('prefetch respects data saving, slow connections, visibility and touch inpu
   h.event('visibilitychange');
   h.advance(65);
   assert.equal(h.appended.length, 0);
+  h.document.visibilityState = 'visible';
+  h.event('pointerdown', link, {button: 2});
+  h.event('pointerdown', link, {ctrlKey: true});
+  assert.equal(h.appended.length, 0, 'non-primary or modified clicks skip pointerdown prefetch');
 });
 
 test('prefetch ignores event targets without an element closest method', () => {
@@ -1157,31 +1204,62 @@ test('superseded activations cannot enable a newer preview or report stale error
  assert.equal(replacement.error,null);assert.equal(replacement.inert,false);assert.equal(failed.errors.length,0);
 });
 
-test('upstream HTMX preload reuses a response once and expires stale responses',async()=>{
- const h=prefetchHarness(),link=h.link('/md3/components/buttons');
- h.event('focusin',link);h.advance(65);
- const ctx={request:{action:'/md3/components/buttons'}};
- h.extension.htmx_before_request(link,{ctx});
- assert.equal(await ctx.fetch(),h.appended[0].response);
- assert.equal(h.appended.length,1,'navigation must reuse the prefetch rather than issue another fetch');
- const next={request:{action:'/md3/components/buttons'}};h.extension.htmx_before_request(link,{ctx:next});
- assert.equal(next.fetch,undefined,'a consumed response must not be reused');
- const expired=h.link('/md3/components/cards');h.event('focusin',expired);h.advance(65);h.advance(5001);
- const stale={request:{action:'/md3/components/cards'}};h.extension.htmx_before_request(expired,{ctx:stale});
- assert.equal(stale.fetch,undefined,'expired content falls back to a normal HTMX request');
+test('URL-keyed LRU cache serves revisits, joins in-flight prefetches, caches visited pages, and expires after TTL', async () => {
+  const h = prefetchHarness();
+  const link = h.link('/md3/components/buttons');
+  h.event('focusin', link);
+  h.advance(65);
+  await h.flush();
+  const navCtx = path => ({target: h.document.body, request: {action: path, method: 'GET', headers: {'HX-Boosted': 'true'}}});
+
+  // First navigation reuses cached response; second revisit ALSO reuses it with 0 extra fetches.
+  const first = navCtx('/md3/components/buttons');
+  h.extension.htmx_before_request(link, {ctx: first});
+  assert.equal(await (await first.fetch()).text(), h.appended[0].html);
+  const revisit = navCtx('/md3/components/buttons');
+  h.extension.htmx_before_request(h.link('/md3/components/buttons'), {ctx: revisit});
+  assert.equal(await (await revisit.fetch()).text(), h.appended[0].html);
+  assert.equal(h.appended.length, 1, 'revisits reuse URL-keyed LRU cache without refetching');
+
+  // Cache miss on normal boosted navigation populates the LRU for later revisits.
+  const miss = navCtx('/md3/styles/color');
+  h.extension.htmx_before_request(h.link('/md3/styles/color'), {ctx: miss});
+  assert.match(await (await miss.fetch('/md3/styles/color', miss.request)).text(), /styles\/color/);
+  assert.equal(h.api.has('/md3/styles/color'), true);
+
+  // Stale entry expires after 10 minutes.
+  h.advance(10 * 60 * 1000 + 1);
+  assert.equal(h.api.has('/md3/components/buttons'), false);
 });
 
-test('failed prefetch falls back to navigation, and persistent links remain armed',async()=>{
- const failed=prefetchHarness({fail:true}),link=failed.link('/md3/components/buttons');
- failed.event('focusin',link);failed.advance(65);await new Promise(resolve=>setImmediate(resolve));
- const ctx={request:{action:'/md3/components/buttons'}};failed.extension.htmx_before_request(link,{ctx});
- assert.equal(ctx.fetch,undefined);
- const h=prefetchHarness(),home=h.link('/md3/'),unboosted=h.link('/md3/components/cards',{unboosted:true});
- assert.equal(home.attrs['hx-preload'],'tokens:prefetch');
- assert.equal(unboosted.attrs['hx-preload'],undefined);
- h.event('focusin',home);h.advance(65);assert.equal(h.appended.length,0);
- h.location.href='https://tokens.test/md3/components/buttons';
- h.event('focusin',home);h.advance(65);assert.equal(h.appended.length,1);
+test('failed prefetch falls back to navigation and clears on asset change', async () => {
+  const failed = prefetchHarness({fail: true}), link = failed.link('/md3/components/buttons');
+  failed.event('focusin', link); failed.advance(65); await failed.flush();
+  assert.equal(failed.api.has('/md3/components/buttons'), false);
+  const h = prefetchHarness(), home = h.link('/md3/');
+  h.event('focusin', home); h.advance(65); assert.equal(h.appended.length, 0, 'current URL is skipped');
+  h.location.href = 'https://tokens.test/md3/components/buttons';
+  h.event('focusin', home); h.advance(65); await h.flush();
+  assert.equal(h.appended.length, 1);
+  assert.equal(h.api.has('/md3/'), true);
+  h.api.clear();
+  assert.equal(h.api.size(), 0);
+});
+
+test('TokenAssets.warm emits style and script preload hints without mounting stylesheets', () => {
+  const h = behaviorLoader({css: true});
+  const styleLink = {getAttribute: name => name === 'href' ? '/md3/static/bundles/card.css?v=1' : null};
+  const incoming = {
+    querySelectorAll: selector => selector === 'link[data-component-stylesheet]'
+      ? [styleLink]
+      : selector === 'script[data-component-behaviors]'
+        ? [{textContent: '["dialogs.js"]'}]
+        : [],
+  };
+  h.api.warm(incoming);
+  assert(h.hints().some(node => node.as === 'style' && node.href.includes('/bundles/card.css?v=1')));
+  assert(h.hints().some(node => node.as === 'script' && node.href.includes('/dialogs.js?')));
+  assert.equal(h.scripts().length, 0, 'warming must not execute behavior scripts');
 });
 
 test('incoming HTML starts its script downloads before insertion without evaluating them',async()=>{
@@ -1228,6 +1306,346 @@ test('export morph applies confirmed radio selection instead of preserving a dis
  runScript('export.js',{document:{readyState:'loading',addEventListener:(n,fn)=>events[n]=fn},location:{search:''}});
  events['htmx:before:swap']({detail:{ctx:{sourceElement},tasks:[{target:{id:'tokens-export-fields',querySelectorAll:()=>live},fragment:{querySelectorAll:selector=>selector.startsWith('input')?confirmed:[]}}]}});
  assert.deepEqual(live.map(i=>i.checked),[false,true]);
+});
+
+test('change-filters handles global /changes locally and fetches the search index only once', async () => {
+  const listeners = {};
+  const fetches = [];
+  const historyCalls = [];
+  const location = new URL('https://tokencatalog.dev/md3/changes');
+  const history = {
+    state: null,
+    replaceState(state, _, url) { this.state = state; location.href = new URL(url, location.href).href; historyCalls.push(['replace', location.pathname + location.search]); },
+    pushState(state, _, url) { this.state = state; location.href = new URL(url, location.href).href; historyCalls.push(['push', location.pathname + location.search]); },
+  };
+  const makeSelect = (name, options) => {
+    const display = { textContent: options[0].label };
+    const optionEls = options.map(o => ({
+      dataset: { fieldValue: o.value, fieldOption: o.label },
+      attrs: { 'aria-selected': String(o.value === '') },
+      setAttribute(k, v) { this.attrs[k] = v; },
+    }));
+    const root = {
+      querySelectorAll: s => s === '[data-field-option]' ? optionEls : [],
+      querySelector: s => s === '[data-field-display]' ? display : null,
+    };
+    let val = '';
+    const select = {
+      name,
+      get value() { return val; },
+      set value(v) { val = options.some(o => o.value === v) ? v : ''; },
+      get selectedOptions() { return [{ textContent: options.find(o => o.value === val)?.label || '' }]; },
+      display,
+      optionEls,
+      matches: () => false,
+      closest: s => s === '[data-field-example]' ? root : s === 'form[data-change-filters]' ? form : null,
+    };
+    return select;
+  };
+  const subjectSelect = makeSelect('subject', [{ value: '', label: 'All components and styles' }, { value: 'buttons', label: 'Buttons' }, { value: 'snackbar', label: 'Snackbar' }]);
+  const snapshotSelect = makeSelect('snapshot', [{ value: '', label: 'All dates' }, { value: 'new', label: '2 June 2026' }, { value: 'old', label: '1 June 2026' }]);
+  const typeSelect = makeSelect('type', [{ value: '', label: 'All changes' }, { value: 'added', label: 'Added' }, { value: 'changed', label: 'Updated' }]);
+  const clearTarget = { hidden: true };
+  const queryInput = {
+    name: 'q',
+    value: '',
+    matches: s => s === 'form[data-change-filters] input[name="q"]' || s === 'input[name="q"]',
+    closest: s => s === 'form[data-change-filters]' ? form : null,
+  };
+  const resetLink = {
+    closest: s => s === 'form[data-change-filters] [data-change-reset]' ? resetLink : s === 'form[data-change-filters]' ? form : null,
+  };
+  const makeCard = (snap, subj, counts, href) => {
+    const countEl = { textContent: `${counts['']} items changed` };
+    const link = {
+      dataset: { changeSnapshot: snap },
+      href,
+      getAttribute: k => k === 'href' ? link.href : null,
+      setAttribute: (k, v) => { if (k === 'href') link.href = v; },
+    };
+    return {
+      hidden: false,
+      dataset: { changeSnapshot: snap, changeSubject: subj, changeCounts: JSON.stringify(counts) },
+      countEl,
+      link,
+      querySelector: s => s === '[data-change-count]' ? countEl : s === '[data-change-group-link]' ? link : null,
+    };
+  };
+  const buttonsCard = makeCard('new', 'buttons', { '': 2, added: 1, changed: 1 }, '/md3/components/buttons/changes?snapshot=new');
+  const snackbarCard = makeCard('new', 'snackbar', { '': 1, changed: 1 }, '/md3/components/snackbar/changes?snapshot=new');
+  const oldCard = makeCard('old', 'snackbar', { '': 1, removed: 1 }, '/md3/components/snackbar/changes?snapshot=old');
+  const makeBatch = cards => ({
+    hidden: false,
+    cards,
+    querySelector: s => s === '[data-change-summary]:not([hidden])' ? cards.find(c => !c.hidden) || null : null,
+  });
+  const newBatch = makeBatch([buttonsCard, snackbarCard]);
+  const oldBatch = makeBatch([oldCard]);
+  const emptyEl = { hidden: true };
+  const container = {
+    isConnected: true,
+    querySelectorAll: s => s === '[data-change-summary]' ? [buttonsCard, snackbarCard, oldCard] : s === '.tokens-timeline-batch' ? [newBatch, oldBatch] : [],
+    querySelector: s => s === '[data-change-empty]' ? emptyEl : null,
+  };
+  const form = {
+    action: '/md3/changes',
+    dataset: { changeFilters: 'global', changeSearchVersion: 'v123' },
+    getAttribute: k => k === 'action' ? '/md3/changes' : null,
+    matches: s => s === 'form[data-change-filters]',
+    closest: s => s === '#tokens-change-history' ? container : s === 'form[data-change-filters]' ? form : null,
+    querySelector: s => ({
+      'select[name="subject"]': subjectSelect,
+      'select[name="snapshot"]': snapshotSelect,
+      'select[name="type"]': typeSelect,
+      'input[name="q"]': queryInput,
+      '[data-search-clear-target]': clearTarget,
+    })[s] || null,
+  };
+  const indexPayload = {
+    snapshots: ['new', 'old'],
+    subjects: ['buttons', 'snackbar'],
+    types: ['added', 'changed', 'removed'],
+    items: [
+      [0, 0, 1, 'md.comp.button.height button height'],
+      [0, 0, 2, 'md.comp.button.width button width'],
+      [0, 1, 2, 'md.comp.snackbar.width snackbar width'],
+      [1, 1, 4, 'md.comp.snackbar.color snackbar color'],
+    ],
+  };
+  runScript('change-filters.js', {
+    document: {
+      addEventListener: (name, fn) => { listeners[name] = fn; },
+      querySelector: s => s === 'form[data-change-filters]' ? form : null,
+    },
+    window: { addEventListener: (name, fn) => { listeners['window:' + name] = fn; } },
+    location, history, URL, URLSearchParams,
+    fetch: async url => {
+      fetches.push(url);
+      return { ok: true, json: async () => indexPayload };
+    },
+  });
+
+  // Type filter works synchronously with 0 fetches.
+  typeSelect.value = 'added';
+  listeners.change({ target: typeSelect });
+  assert.equal(fetches.length, 0);
+  assert.equal(buttonsCard.hidden, false);
+  assert.equal(buttonsCard.countEl.textContent, '1 item changed');
+  assert.equal(buttonsCard.link.href, '/md3/components/buttons/changes?snapshot=new&type=added');
+  assert.equal(snackbarCard.hidden, true);
+  assert.equal(oldBatch.hidden, true);
+  assert.equal(location.search, '?type=added');
+
+  // Typing q fetches search-index.json exactly once; backspacing & re-typing reuse the cache.
+  const flush = () => new Promise(resolve => setTimeout(resolve, 0));
+  typeSelect.value = '';
+  listeners.change({ target: typeSelect });
+  queryInput.value = 'width';
+  listeners.input({ target: queryInput });
+  await flush();
+  assert.deepEqual(fetches, ['/md3/changes/search-index.json?v=v123']);
+  assert.equal(buttonsCard.hidden, false);
+  assert.equal(buttonsCard.countEl.textContent, '1 item changed');
+  assert.equal(snackbarCard.hidden, false);
+  assert.equal(oldCard.hidden, true);
+  assert.equal(oldBatch.hidden, true);
+  assert.equal(snackbarCard.link.href, '/md3/components/snackbar/changes?q=width&snapshot=new');
+
+  // Removing a character does NOT trigger another fetch.
+  queryInput.value = 'widt';
+  listeners.input({ target: queryInput });
+  await flush();
+  assert.equal(fetches.length, 1);
+  assert.equal(location.search, '?q=widt');
+
+  // Reset clears everything locally with 0 extra fetches.
+  let prevented = false;
+  listeners.click({ target: resetLink, button: 0, preventDefault() { prevented = true; }, stopImmediatePropagation() {} });
+  assert.equal(prevented, true);
+  assert.equal(fetches.length, 1);
+  assert.equal(queryInput.value, '');
+  assert.equal(buttonsCard.countEl.textContent, '2 items changed');
+  assert.equal(oldBatch.hidden, false);
+  assert.equal(location.search, '');
+
+  // HTMX history restore restores filters locally without refetching.
+  let restorePrevented = false;
+  listeners['htmx:before:history:restore']({ detail: { path: '/md3/changes?subject=snackbar&snapshot=old' }, preventDefault() { restorePrevented = true; } });
+  assert.equal(restorePrevented, true);
+  assert.equal(subjectSelect.value, 'snackbar');
+  assert.equal(subjectSelect.display.textContent, 'Snackbar');
+  assert.equal(newBatch.hidden, true);
+  assert.equal(oldBatch.hidden, false);
+  assert.equal(fetches.length, 1);
+});
+
+test('change-filters filters mounted subject records locally with zero fetches', () => {
+  const listeners = {};
+  let fetchCalled = 0;
+  const location = new URL('https://tokencatalog.dev/md3/components/snackbar/changes');
+  const history = {
+    state: null,
+    replaceState(state, _, url) { this.state = state; location.href = new URL(url, location.href).href; },
+    pushState(state, _, url) { this.state = state; location.href = new URL(url, location.href).href; },
+  };
+  const snapSelect = { value: '', matches: () => false, closest: s => s === 'form[data-change-filters]' ? form : null };
+  const typeSelect = { value: '', matches: () => false, closest: s => s === 'form[data-change-filters]' ? form : null };
+  const queryInput = {
+    value: '',
+    matches: s => s === 'form[data-change-filters] input[name="q"]' || s === 'input[name="q"]',
+    closest: s => s === 'form[data-change-filters]' ? form : null,
+  };
+  const card1 = { hidden: false, dataset: { changeSnapshot: 'new', changeType: 'changed', changeSearch: 'md.comp.snackbar.width snackbar width' } };
+  const card2 = { hidden: false, dataset: { changeSnapshot: 'old', changeType: 'added', changeSearch: 'md.comp.snackbar.color snackbar color' } };
+  const batch1 = { hidden: false, querySelector: s => s === '[data-change-card]:not([hidden])' ? (card1.hidden ? null : card1) : null };
+  const batch2 = { hidden: false, querySelector: s => s === '[data-change-card]:not([hidden])' ? (card2.hidden ? null : card2) : null };
+  const banner = { hidden: false };
+  const pageSummary = { textContent: '' };
+  const typeSummary = { textContent: '' };
+  const emptyEl = { hidden: true };
+  const container = {
+    isConnected: true,
+    querySelectorAll: s => s === '[data-change-card]' ? [card1, card2] : s === '.tokens-timeline-batch' ? [batch1, batch2] : [],
+    querySelector: s => ({
+      '[data-change-counts-banner]': banner,
+      '[data-change-page-summary]': pageSummary,
+      '[data-change-type-summary]': typeSummary,
+      '[data-change-empty]': emptyEl,
+    })[s] || null,
+  };
+  const form = {
+    action: '/md3/components/snackbar/changes',
+    dataset: { changeFilters: 'all' },
+    getAttribute: k => k === 'action' ? '/md3/components/snackbar/changes' : null,
+    matches: s => s === 'form[data-change-filters]',
+    closest: s => s === '#tokens-change-history' ? container : s === 'form[data-change-filters]' ? form : null,
+    querySelector: s => ({
+      'select[name="snapshot"]': snapSelect,
+      'select[name="type"]': typeSelect,
+      'input[name="q"]': queryInput,
+    })[s] || null,
+  };
+  runScript('change-filters.js', {
+    document: { addEventListener: (name, fn) => { listeners[name] = fn; }, querySelector: () => form },
+    window: { addEventListener() {} },
+    location, history, URL, URLSearchParams,
+    fetch: () => { fetchCalled++; },
+  });
+
+  queryInput.value = 'width';
+  listeners.input({ target: queryInput });
+  assert.equal(fetchCalled, 0);
+  assert.equal(card1.hidden, false);
+  assert.equal(card2.hidden, true);
+  assert.equal(batch1.hidden, false);
+  assert.equal(batch2.hidden, true);
+  assert.equal(pageSummary.textContent, 'Showing page 1 of 1 · 1 total changes');
+  assert.equal(typeSummary.textContent, '0 added · 1 updated · 0 removed. One token can have changes in several settings.');
+  assert.equal(emptyEl.hidden, true);
+
+  queryInput.value = 'missing';
+  listeners.input({ target: queryInput });
+  assert.equal(banner.hidden, true);
+  assert.equal(emptyEl.hidden, false);
+
+  queryInput.value = '';
+  listeners.input({ target: queryInput });
+  assert.equal(fetchCalled, 0);
+  assert.equal(banner.hidden, false);
+  assert.equal(emptyEl.hidden, true);
+  assert.equal(pageSummary.textContent, 'Showing page 1 of 1 · 2 total changes');
+  assert.equal(typeSummary.textContent, '1 added · 1 updated · 0 removed. One token can have changes in several settings.');
+});
+
+test('change-filters pre-warms global search index on input focus unless saveData is enabled', async () => {
+  const listeners = {};
+  const fetches = [];
+  const connection = { saveData: false, effectiveType: '4g' };
+  const form = {
+    action: '/md3/changes',
+    dataset: { changeFilters: 'global', changeSearchVersion: 'v999' },
+    getAttribute: k => k === 'action' ? '/md3/changes' : null,
+  };
+  const queryInput = {
+    matches: s => s === 'form[data-change-filters] input[name="q"]',
+    closest: s => s === 'form[data-change-filters]' ? form : null,
+  };
+  runScript('change-filters.js', {
+    document: { addEventListener: (name, fn) => { listeners[name] = fn; } },
+    window: { addEventListener() {} },
+    navigator: { connection },
+    location: new URL('https://tokencatalog.dev/md3/changes'),
+    URL,
+    fetch: async url => {
+      fetches.push(url);
+      return { ok: true, json: async () => ({ snapshots: [], subjects: [], types: [], items: [] }) };
+    },
+  });
+  connection.saveData = true;
+  listeners.focusin({ target: queryInput });
+  assert.equal(fetches.length, 0, 'saveData skips pre-warming');
+  connection.saveData = false;
+  listeners.focusin({ target: queryInput });
+  listeners.focusin({ target: queryInput });
+  assert.deepEqual(fetches, ['/md3/changes/search-index.json?v=v999'], 'focusin pre-warms index once');
+});
+
+test('token-table search listeners dispose on navigation and never hijack another page history restore', () => {
+  const docTarget = new EventTarget();
+  const location = new URL('https://tokencatalog.dev/md3/components/buttons');
+  const input = { value: '', addEventListener() {} };
+  const form = {
+    elements: { q: input },
+    hasAttribute: name => name === 'data-token-search',
+    querySelector: () => null,
+    querySelectorAll: () => [],
+    addEventListener() {},
+  };
+  const empty = { hidden: true };
+  const control = () => ({
+    hidden: false, disabled: false,
+    setAttribute() {},
+    getAttribute: () => '',
+    closest: () => null,
+    querySelector: () => ({ hidden: false }),
+  });
+  const controls = { previews: control(), view: control(), expand: control() };
+  const browser = {
+    isConnected: true,
+    classList: { contains: () => false, toggle: () => false },
+    querySelector: selector => {
+      if (selector === 'form') return form;
+      if (selector === '[data-token-search-empty]') return empty;
+      if (selector === '.tokens-context-dialog') return null;
+      if (selector === '.tokens-token-set') return {};
+      if (selector === '.tokens-token-set-menu') return { addEventListener() {}, matches: () => false };
+      const match = selector.match(/data-action="([^"]+)"/);
+      return match ? controls[match[1]] : null;
+    },
+    querySelectorAll: () => [],
+    addEventListener() {},
+  };
+  runScript('token-table.js', {
+    document: {
+      addEventListener: (name, fn, opts) => docTarget.addEventListener(name, fn, opts),
+      querySelectorAll: selector => selector === '.tokens-token-browser' ? [browser] : [],
+    },
+    location, URL, URLSearchParams, CustomEvent, Event,
+    addEventListener() {},
+  });
+
+  // Navigating to /changes fires htmx:after:history:push BEFORE the DOM swap.
+  location.href = 'https://tokencatalog.dev/md3/changes';
+  docTarget.dispatchEvent(new CustomEvent('htmx:after:history:push'));
+  // Even before disconnect, a restore for /changes must NOT be intercepted by Buttons' token search.
+  const restoreChanges = new CustomEvent('htmx:before:history:restore', { cancelable: true, detail: { path: '/md3/changes' } });
+  assert.equal(docTarget.dispatchEvent(restoreChanges), true, 'must not hijack history restore for another page');
+
+  // After swap removes browser, lifecycle aborts so returning/forwarding to /components/buttons is never intercepted either.
+  browser.isConnected = false;
+  docTarget.dispatchEvent(new CustomEvent('htmx:after:swap', { detail: { ctx: {} } }));
+  const restoreButtons = new CustomEvent('htmx:before:history:restore', { cancelable: true, detail: { path: '/md3/components/buttons' } });
+  assert.equal(docTarget.dispatchEvent(restoreButtons), true, 'disconnected browser must not hijack history restore');
 });
 
 // Tests execute the same source or compiled entry that the asset server exposes.

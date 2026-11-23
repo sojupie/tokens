@@ -69,8 +69,14 @@
     const node=event.detail?.elt || event.target;
     if(node.matches?.('a[href]'))navigationLinks(node);
   });
-  // Check deployed assets before hx-head reads and merges a full response.
+  // Check deployed assets before hx-head reads and merges a response.
   const assets=doc=>Array.from(doc.head.querySelectorAll('script[src]:not([data-component-script]),link[rel="stylesheet"]:not([data-component-stylesheet])'),node=>[node.getAttribute('src')||node.getAttribute('href'),node.getAttribute('data-sources')||'',node.getAttribute('data-shapes-version')||''].join('\n')).join('\n');
+  const shellVersion=doc=>doc.head?.querySelector?.('meta[name="tokens-shell"]')?.getAttribute('content')||'';
+  const shellChanged=incoming=>{
+    const next=shellVersion(incoming),current=shellVersion(document);
+    if(next&&current)return next!==current;
+    return assets(incoming)!==assets(document);
+  };
   document.addEventListener('htmx:head:before:merge',event=>{
     const ctx=event.detail.ctx;
     if(ctx.response.status!==200){event.preventDefault();return;}
@@ -83,7 +89,7 @@
       globalThis.TokenBenchmark?.mark("html-parse-start");
       const incoming=new DOMParser().parseFromString(html,'text/html');
       globalThis.TokenBenchmark?.mark("html-parse-end");
-      ctx.catalogAssetChange=(ctx.target===document.body&&assets(incoming)!==assets(document))||globalThis.TokenAssets.stylesChanged(incoming);
+      ctx.catalogAssetChange=(ctx.target===document.body&&shellChanged(incoming))||globalThis.TokenAssets.stylesChanged(incoming);
       if(ctx.catalogAssetChange)return '';
       globalThis.TokenBenchmark?.mark("styles-prepare-start");
       await globalThis.TokenAssets.prepareStyles(incoming,ctx.request.signal);
@@ -92,9 +98,31 @@
       return html.replace(/<link\b[^>]*\bdata-component-stylesheet\b[^>]*>/gi,'');
     };
   });
+  document.addEventListener('htmx:head:before:add',event=>{
+    const node=event.detail.headElement;
+    if(!node?.matches)return;
+    if(node.matches('meta[name="tokens-shell"],link[data-component-stylesheet]')){event.preventDefault();return;}
+    if(node.matches('meta[name="description"]')){
+      const existing=document.head?.querySelector?.('meta[name="description"]');
+      if(existing){existing.setAttribute('content',node.getAttribute('content')||'');event.preventDefault();}
+    }
+  });
   document.addEventListener('htmx:head:before:remove',event=>{
     if(event.detail.headElement.matches('[data-component-script],[data-component-stylesheet]'))event.preventDefault();
   });
+  function syncExportDialog(main){
+    const panel=document.getElementById('tokens-site-download');
+    if(!panel||!main?.dataset)return;
+    for(const [dst,src] of [['componentExport','exportComponent'],['defaultScope','exportDefaultScope'],['hasCss','exportHasCss'],['hasImplementation','exportHasImplementation']]){
+      if(src in main.dataset)panel.dataset[dst]=main.dataset[src];
+    }
+    const form=panel.querySelector('form');
+    if(!form)return;
+    for(const [name,key] of [['kind','exportKind'],['slug','exportSlug'],['set','exportSet'],['q','exportQuery']]){
+      const input=form.querySelector(`input[name="${name}"]`);
+      if(input&&key in main.dataset)input.value=main.dataset[key];
+    }
+  }
   document.addEventListener('htmx:before:swap', event => {
     const {ctx, tasks} = event.detail;
     const task = tasks.find(task => task.type === 'main');
@@ -102,19 +130,42 @@
     // attributes after the sizing controller has measured the new preview.
     if (task?.fragment.querySelector('[data-preview-sizing-pending]')) task.swapSpec.settle = 0;
     if (ctx.target !== document.body) return;
+    const main = document.getElementById('tokens-site-main');
+    const incomingMain = task?.fragment.querySelector('#tokens-site-main');
     const page = document.getElementById('tokens-site-page');
     const incoming = task?.fragment.querySelector('#tokens-site-page');
-    if (!page || !incoming) return;
-    // Keep the shell mounted. The response's partials still update its current links.
-    task.target = page;
-    task.fragment = document.createDocumentFragment();
-    task.fragment.append(incoming);
-    task.swapSpec.style = 'outerHTML';
-    if (task.swapSpec.show === 'top') task.swapSpec.showTarget = 'window';
+    if (main && incomingMain && !incoming) {
+      // Lean boosted response: keep both header and footer/export dialog mounted.
+      syncExportDialog(incomingMain);
+      task.target = main;
+      task.fragment = document.createDocumentFragment();
+      task.fragment.append(incomingMain);
+      task.swapSpec.style = 'outerHTML';
+      if (task.swapSpec.show === 'top') task.swapSpec.showTarget = 'window';
+    } else if (page && incoming) {
+      // Keep the shell mounted. The response's partials still update its current links.
+      task.target = page;
+      task.fragment = document.createDocumentFragment();
+      task.fragment.append(incoming);
+      task.swapSpec.style = 'outerHTML';
+      if (task.swapSpec.show === 'top') task.swapSpec.showTarget = 'window';
+    }
+  });
+  // HTMX 4 only fires before:cleanup on [data-htmx-powered] nodes. Emit it for
+  // replaced non-HTMX containers so component/controller lifecycles always dispose.
+  document.addEventListener('htmx:before:swap', event => {
+    if (event.defaultPrevented) return;
+    for (const task of event.detail.tasks || []) {
+      const target = task.target;
+      if (target && !target._htmx && typeof target.dispatchEvent === 'function' &&
+          ['outerHTML', 'innerHTML', 'outerSync'].includes(task.swapSpec?.style)) {
+        target.dispatchEvent(new CustomEvent('htmx:beforeCleanupElement', {bubbles: true, detail: {elt: target}}));
+      }
+    }
   });
   document.addEventListener('htmx:after:request',event=>{
     const ctx=event.detail.ctx;
-    if(ctx.catalogAssetChange){event.preventDefault();location.assign(ctx.target===document.body?ctx.response.raw.url:location.href);return;}
+    if(ctx.catalogAssetChange){globalThis.TokenPrefetch?.clear?.();event.preventDefault();location.assign(ctx.target===document.body?ctx.response.raw.url:location.href);return;}
     if(ctx.target===document.body&&ctx.response.status===200){
       const menu=document.getElementById('tokens-site-menu');if(menu?.matches(':modal'))menu.close();
     }

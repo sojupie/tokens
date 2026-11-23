@@ -46,9 +46,9 @@ func TestTokenBrowserFragmentsPreservePlaygroundQuery(t *testing.T) {
 
 func TestNavigationUsesInertPartialToKeepDocumentCacheShared(t *testing.T) {
 	server := scopedExportFixture()
-	for _, partial := range []bool{false, true} {
+	for _, boosted := range []bool{false, true} {
 		r := httptest.NewRequest("GET", "/components", nil)
-		if partial {
+		if boosted {
 			r.Header.Set("HX-Request", "true")
 			r.Header.Set("HX-Target", "body")
 			r.Header.Set("HX-Boosted", "true")
@@ -59,12 +59,22 @@ func TestNavigationUsesInertPartialToKeepDocumentCacheShared(t *testing.T) {
 		if w.Code != 200 {
 			t.Fatal(w.Code, body)
 		}
-		if !strings.Contains(body, `<template hx type="partial" hx-target="#tokens-site-destinations"`) {
-			t.Fatal("wrong partial", body)
-		}
-		for _, want := range []string{`id="tokens-site-destinations"`, `hx-head.min.js`, `hx-sync="this:replace"`, `hx-target="#tokens-site-destinations" hx-swap="innerMorph"`, `hx-target="#tokens-site-rail" hx-swap="innerMorph"`} {
+		for _, want := range []string{`id="tokens-site-main"`, `name="tokens-shell"`, `hx-target="#tokens-site-destinations" hx-swap="innerMorph"`, `hx-target="#tokens-site-rail" hx-swap="innerMorph"`} {
 			if !strings.Contains(body, want) {
-				t.Fatal(want)
+				t.Fatalf("boosted=%v missing %q", boosted, want)
+			}
+		}
+		if boosted {
+			for _, unwanted := range []string{`id="tokens-site-header"`, `id="tokens-site-download"`, `class="tokens-site-footer"`} {
+				if strings.Contains(body, unwanted) {
+					t.Fatalf("boosted response should omit mounted shell %q", unwanted)
+				}
+			}
+		} else {
+			for _, want := range []string{`id="tokens-site-destinations"`, `hx-head.min.js`, `hx-sync="this:replace"`} {
+				if !strings.Contains(body, want) {
+					t.Fatal(want)
+				}
 			}
 		}
 	}

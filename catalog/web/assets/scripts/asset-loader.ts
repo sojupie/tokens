@@ -3,6 +3,7 @@ type AssetAudit = { declared: string[]; discovered: string[]; undeclared: string
 type AssetAPI = {
   ready: Promise<void>;
   prepareStyles(incoming: BehaviorRoot, signal?: AbortSignal): Promise<void>;
+  warm(incoming: BehaviorRoot): void;
   stylesChanged(incoming: BehaviorRoot): boolean;
   audit(root?: BehaviorRoot): AssetAudit;
 };
@@ -149,6 +150,23 @@ declare var TokenBenchmark: { mark(name: string): void } | undefined;
       return existing.has(url.pathname) && existing.get(url.pathname) !== url.href;
     });
   }
+  const stylePreloads = new Set<string>();
+  function warm(incoming: BehaviorRoot) {
+    if (stylesChanged(incoming)) return;
+    preload(incoming);
+    for (const source of incoming.querySelectorAll<HTMLLinkElement>('link[data-component-stylesheet]')) {
+      const href = new URL(source.getAttribute('href') || '', document.baseURI).href;
+      if (stylePreloads.has(href)) continue;
+      if ([...document.head.querySelectorAll<HTMLLinkElement>('link[data-component-stylesheet]')].some(link => link.href === href)) continue;
+      const hint = document.createElement('link');
+      hint.rel = 'preload';
+      hint.as = 'style';
+      hint.href = href;
+      hint.onerror = () => { hint.remove(); stylePreloads.delete(href); };
+      stylePreloads.add(href);
+      document.head.append(hint);
+    }
+  }
   async function prepareStyles(incoming: BehaviorRoot, signal?: AbortSignal) {
     signal?.throwIfAborted();
     // The response identifies the next region's scripts before CSS is ready
@@ -169,7 +187,7 @@ declare var TokenBenchmark: { mark(name: string): void } | undefined;
     await Promise.all(ready);
     signal?.throwIfAborted();
   }
-  const api: AssetAPI = { ready: Promise.resolve(), prepareStyles, stylesChanged, audit: (root = document) => auditBehaviors(root) };
+  const api: AssetAPI = { ready: Promise.resolve(), prepareStyles, warm, stylesChanged, audit: (root = document) => auditBehaviors(root) };
   globalThis.TokenAssets = api;
   let generation = 0;
   function initialize() {
