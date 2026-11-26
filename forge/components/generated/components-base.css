@@ -9060,6 +9060,8 @@ html:has(dialog:modal) {
   display: block;
   inline-size: var(--_nav-item-icon-size);
   block-size: var(--_nav-item-icon-size);
+  min-inline-size: var(--_nav-item-icon-size);
+  min-block-size: var(--_nav-item-icon-size);
   color: var(--_nav-item-icon);
 }
 .md-nav-icon > svg:last-of-type:not(:only-of-type) {
@@ -9073,9 +9075,9 @@ html:has(dialog:modal) {
 }
 /* Hover adds weight without changing the icon's fill or selection state. */
 @media (hover:hover) {
- .md-navigation-rail .md-nav-item:hover:not([data-touch]) .md-nav-icon > svg.tokens-material-symbol { stroke:currentColor;stroke-width:16;stroke-linejoin:round; }
+ .md-navigation-rail .md-nav-item:where(:hover:not([data-touch])) .md-nav-icon > svg.tokens-material-symbol { stroke:currentColor;stroke-width:16;stroke-linejoin:round; }
 }
-.md-navigation-rail .md-nav-item:is([data-component-state="hovered"],[data-component-state="pressed"],[data-pressed],:active) .md-nav-icon > svg.tokens-material-symbol { stroke:currentColor;stroke-width:16;stroke-linejoin:round; }
+.md-navigation-rail .md-nav-item[data-component-state="hovered"] .md-nav-icon > svg.tokens-material-symbol { stroke:currentColor;stroke-width:16;stroke-linejoin:round; }
 /* Animate the glyph only; notification badges keep their size and anchor. */
 .md-navigation-rail .md-nav-icon > svg {
  transition:inline-size var(--_motion-fast-spatial-duration) var(--_motion-fast-spatial-easing),block-size var(--_motion-fast-spatial-duration) var(--_motion-fast-spatial-easing);
@@ -9083,7 +9085,12 @@ html:has(dialog:modal) {
 @media (hover:hover) {
  .md-navigation-rail .md-nav-item:hover:where(:not([data-touch])) .md-nav-icon > svg { inline-size:calc(var(--_nav-item-icon-size) + 2px);block-size:calc(var(--_nav-item-icon-size) + 2px); }
 }
-.md-navigation-rail .md-nav-item:is([data-component-state="hovered"],:active,[data-pressed],[data-component-state="pressed"]) .md-nav-icon > svg { inline-size:calc(var(--_nav-item-icon-size) + 2px);block-size:calc(var(--_nav-item-icon-size) + 2px); }
+.md-navigation-rail .md-nav-item[data-component-state="hovered"] .md-nav-icon > svg { inline-size:calc(var(--_nav-item-icon-size) + 2px);block-size:calc(var(--_nav-item-icon-size) + 2px); }
+/* Press returns to the resting glyph; the minimum size prevents spring undershoot. */
+.md-navigation-rail .md-nav-item:is(:active,[data-pressed],[data-component-state="pressed"]) .md-nav-icon > svg {
+ inline-size:var(--_nav-item-icon-size);block-size:var(--_nav-item-icon-size);
+}
+.md-navigation-rail .md-nav-item:is(:active,[data-pressed],[data-component-state="pressed"]) .md-nav-icon > svg.tokens-material-symbol { stroke:none;stroke-width:0; }
 @media (prefers-reduced-motion:reduce) {
  .md-navigation-rail .md-nav-icon > svg { transition:none; }
 }
