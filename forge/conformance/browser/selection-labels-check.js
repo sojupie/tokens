@@ -3,5 +3,27 @@ button.onclick=async()=>{button.disabled=true;const checks=[];const assert=(ok,m
 try{for(const slug of ['checkbox','switch']){samples.replaceChildren();const frame=document.createElement('iframe');samples.append(frame);await new Promise(resolve=>{frame.onload=resolve;frame.src=`/md3/components/${slug}?preview.compare=interactive`});const w=frame.contentWindow,d=frame.contentDocument;await w.TokenAssets.ready;
 const input=d.querySelector(`#component-preview .md-${slug}>input`),label=d.getElementById(input.getAttribute('aria-labelledby'));
 assert(label&&label.control===input,`${slug}: accessible name refers to its visible label`);assert(label.getBoundingClientRect().width>0,`${slug}: label is visible`);const initial=input.checked;label.click();assert(input.checked!==initial,`${slug}: clicking the text toggles the input`);
-}out.textContent=JSON.stringify({passed:checks.length,checks},null,2);
+}
+samples.replaceChildren();const frame=document.createElement('iframe');samples.append(frame);
+await new Promise(resolve=>{frame.onload=resolve;frame.src='/md3/components/radio-button?preview.compare=interactive'});
+await frame.contentWindow.TokenAssets.ready;
+const d=frame.contentDocument,w=frame.contentWindow;
+const radios=[...d.querySelectorAll('#component-preview .md-radio')];
+const inputs=radios.map(radio=>radio.querySelector('input'));
+inputs.forEach(input=>{input.checked=false});
+assert(inputs.length>1&&inputs.every(input=>input.matches(':indeterminate')),'empty radio group exposes the native indeterminate state');
+const token=(node,name)=>w.getComputedStyle(node).getPropertyValue(name).trim();
+assert(radios.every(radio=>token(radio,'--_radio-icon')===token(radio,'--md-comp-radio-button-unselected-icon-color')),'empty radio group retains unselected icon colors');
+inputs[0].click();
+assert(inputs[0].checked&&inputs.slice(1).every(input=>!input.checked),'selecting a radio retains native group behavior');
+assert(token(radios[0],'--_radio-icon')===token(radios[0],'--md-comp-radio-button-selected-icon-color'),'checked radio uses selected icon color');
+assert(radios.slice(1).every(radio=>token(radio,'--_radio-icon')===token(radio,'--md-comp-radio-button-unselected-icon-color')),'other radios retain unselected icon colors');
+await new Promise(resolve=>{frame.onload=resolve;frame.src='/md3/components/checkbox?preview.compare=interactive'});
+await frame.contentWindow.TokenAssets.ready;
+const checkbox=frame.contentDocument.querySelector('#component-preview .md-checkbox');
+const input=checkbox.querySelector('input');input.checked=false;input.indeterminate=true;
+const style=frame.contentWindow.getComputedStyle(checkbox);
+const expected=style.getPropertyValue('--md-comp-checkbox-selected-container-color').trim();
+assert(!!expected&&style.getPropertyValue('--_checkbox-container').trim()===expected,'mixed checkbox retains selected container color');
+out.textContent=JSON.stringify({passed:checks.length,checks},null,2);
 }catch(error){out.textContent=JSON.stringify({passed:checks.length,checks,error:error.stack},null,2)}finally{button.disabled=false}};

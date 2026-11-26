@@ -38,9 +38,13 @@
   text-overflow: ellipsis;
 }
 .md-appbar-subtitle {
+  margin: 0;
   color: var(--_appbar-subtitle-color);
   font: var(--_appbar-subtitle-font);
   letter-spacing: var(--_appbar-subtitle-tracking);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .md-app-bar:where([data-variant^="baseline-"]) .md-appbar-title {
   margin: 0;

@@ -18,8 +18,10 @@ const plainTooltipGeometry = {
   "padding.vertical": "padding-vertical",
 };
 const extension = "dev.tokencatalog.material";
+// Radios in an unanswered group also match :indeterminate. Only a mixed
+// checkbox represents selected content through that pseudo-class.
 const selection =
-  ':where(:checked,[aria-pressed="true"],[aria-selected="true"],[aria-current="page"],[data-selected="true"],:has(> input:checked, > input:indeterminate))';
+  ':where(:checked,[aria-pressed="true"],[aria-selected="true"],[aria-current="page"],[data-selected="true"],:has(> input:checked, > input[type="checkbox"]:indeterminate))';
 const enabled =
   ':not(:disabled):not([aria-disabled="true"]):not(:has(> input:disabled, > select:disabled))';
 const stateNames = {

@@ -102,8 +102,12 @@
   ):has(> [data-slot="leading-icon"])
   > [data-slot="label"] {
   inset-inline-start: calc(
-    var(--md-sys-measurement-space200) + var(--_field-leading-icon-size) +
-      var(--md-sys-measurement-space100)
+    var(--_field-padding-start) + var(--_field-leading-size) +
+      var(--_field-gap)
+  );
+  max-inline-size: calc(
+    100% - var(--_field-padding-start) - var(--_field-leading-size) -
+      var(--_field-gap) - var(--_field-padding-end)
   );
 }
 :is(.md-outlined-text-field, .md-outlined-select, .md-outlined-autocomplete):is(
@@ -113,6 +117,7 @@
   )
   > [data-slot="label"] {
   inset-inline-start: var(--md-sys-measurement-space200);
+  max-inline-size: calc(100% - 2 * var(--md-sys-measurement-space200));
 }
 :is(.md-filled-text-field, .md-filled-select, .md-filled-autocomplete):is(
     :focus-within,
@@ -151,7 +156,7 @@
   justify-content: center;
   flex: none;
   align-self: stretch;
-  min-inline-size: var(--_field-trailing-icon-size);
+  min-inline-size: var(--_field-trailing-size);
   padding: 0;
   border: 0;
   background: transparent;
@@ -258,7 +263,7 @@
 }
 
 .md-outlined-select:has(> input) {
-  padding-inline: var(--md-sys-measurement-space200);
+  padding-inline: var(--_field-padding-start) var(--_field-padding-end);
 }
 
 :is(
@@ -332,8 +337,8 @@
   )
   > [data-slot="label"] {
   inset-inline-start: calc(
-    var(--md-sys-measurement-space200) + var(--_field-leading-icon-size) +
-      var(--md-sys-measurement-space100)
+    var(--_field-padding-start) + var(--_field-leading-size) +
+      var(--_field-gap)
   );
 }
 .md-field-outline {

@@ -26,10 +26,10 @@ export function CommandMenu({ label, sections, status, triggerRef, icon, disable
 }) {
   return <MenuTrigger>
     <Button ref={triggerRef} aria-label={label} aria-description={status || undefined} isDisabled={disabled ?? false}
-      className={(icon ? 'md-icon-button md-standard-icon-button' : 'command-trigger inline-flex shrink-0 items-center gap-1.5') + (triggerClassName ? ' ' + triggerClassName : '')}
+      className={(icon ? 'md-icon-button md-standard-icon-button' : 'command-trigger') + (triggerClassName ? ' ' + triggerClassName : '')}
       data-size={icon ? 'xsmall' : undefined} data-shape={icon ? 'round' : undefined} data-width={icon ? 'default' : undefined}>
       {icon ?? label}
-      {status && <span aria-hidden="true" className="size-1.5 rounded-full bg-emerald-600" />}
+      {status && <span aria-hidden="true" className="command-trigger-status" />}
     </Button>
     <Popover className="command-menu" placement={icon ? 'bottom end' : 'bottom start'} offset={4} containerPadding={8}>
       <MenuContents {...{ label, sections, heading }} />
@@ -43,10 +43,10 @@ function MenuContents({ label, sections, heading, close }: Menu & {
   return <AriaMenu aria-label={label} {...(close ? { autoFocus: 'first' as const } : {})}>
     {sections.filter(section => section.length > 0).map((section, index) => <MenuSection key={section[0]?.label}>
       {index === 0 && heading && <Header className="command-menu-heading">{heading}</Header>}
-      {index > 0 && <Separator className="my-1 h-px bg-border" />}
+      {index > 0 && <Separator className="command-menu-separator" />}
       {section.map(command => <MenuItem key={command.label} isDisabled={command.disabled ?? false}
         textValue={command.label} aria-description={command.title} onAction={() => { close?.(); command.run(); }}
-        className={'command-menu-item' + (command.destructive ? ' text-destructive' : '')}>
+        className={'command-menu-item' + (command.destructive ? ' command-menu-item-destructive' : '')}>
         {command.icon}{command.label}
       </MenuItem>)}
     </MenuSection>)}

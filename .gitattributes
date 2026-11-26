@@ -6,6 +6,11 @@ deploy/systemd/*.service text eol=lf
 deploy/systemd/*.timer text eol=lf
 .github/workflows/*.yaml text eol=lf
 
+# Template generation must match on Windows and CI.
+*.templ text eol=lf
+*_templ.go text eol=lf
+forge/components/ui/api_generated.go text eol=lf
+
 # Review maintained templates, styles and behavior sources rather than build output.
 catalog/web/internal/render/*_templ.go linguist-generated=true
 catalog/web/assets/generated/*.js linguist-generated=true

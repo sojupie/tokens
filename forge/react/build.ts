@@ -21,7 +21,7 @@ const [shared, buttons, common, dialogTokens, dialog, checkboxTokens, checkbox, 
   read(generated, 'bundles/list.css'), read(generated, 'motion.cjs'),
   read(generated, 'buttons.js'), read(generated, 'dialogs.js'), read(generated, 'runtime/button-groups.js'), read(generated, 'fields.js'), read(generated, 'menus.js'), read(catalogAssets, 'styles/app.css'),
 ]);
-const workspaceStyles = await Promise.all(['search', 'split', 'button-group', 'navigation', 'sheet', 'fab'].flatMap(name => [
+const workspaceStyles = await Promise.all(['search', 'split', 'button-group', 'navigation', 'sheet', 'fab', 'messages', 'card', 'badge', 'appbar'].flatMap(name => [
   read(assets, `themes/${name}.css`), read(generated, `bundles/${name}.css`),
 ]));
 if (!shared.includes('--md-sys-color-primary:') || !buttons.includes('--_button-pressed-shape:')) {
@@ -37,7 +37,8 @@ if (!disclosure) throw new Error('Expected Catalog’s export disclosure styles.
 const controls = await read(directory, 'controls.css');
 const styles = [...fontFaces, shared, buttons, common, checkboxTokens, checkbox, dialogTokens, dialog, listTokens, list, ...workspaceStyles, disclosure, controls,
   '.md-dialog[data-dialog-surface]:modal { margin: auto; }'].join('\n');
-const runtime = ['if (typeof document !== "undefined") {', motion, press, modal, buttonGroups, fields, menus, '}'].join('\n');
+const snackbars = await read(generated, 'runtime/snackbars.js');
+const runtime = ['if (typeof document !== "undefined") {', motion, press, modal, buttonGroups, fields, menus, snackbars, '}'].join('\n');
 
 await mkdir(path.join(dist, 'fonts'), { recursive: true });
 await Promise.all([

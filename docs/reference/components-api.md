@@ -157,3 +157,9 @@ Run `npm run build:components` after behavior changes and
 - **Sheets:** Emit `md-sheet-beforeclose` (cancelable) and `md-sheet-closed`
   with reason `confirm` or `dismiss`.
 - **Tabs:** Emit `md-tab-change` with the selected tab and panel IDs.
+- **Snackbars:** `MaterialSnackbars.show(bar, opener, duration)` and
+  `MaterialSnackbars.dismiss(bar)` own placement and dismissal. Mark additional
+  controls with `data-snackbar-avoid` to keep them unobscured. Open snackbars
+  follow inserted, moved and resized controls; layout work is coalesced and
+  observation stops when the last snackbar closes. Keep persistent save status
+  in the application when a transient notification can expire.

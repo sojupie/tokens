@@ -3,13 +3,42 @@ import { snackbarTimer } from "../helpers/controls.ts";
 (() => {
   if (typeof document === "undefined") return;
   const timers = new WeakMap(), openers = new WeakMap();
+  const obstacleSelector = ".md-fab, .md-navigation-bar, .md-toolbar[data-variant='docked'], [data-snackbar-avoid]";
+  const observed = new Set();
+  let layoutFrame = 0, watching = false;
+  const resizeObserver = typeof ResizeObserver === "function" ? new ResizeObserver(queueLayout) : undefined;
+  const mutationObserver = typeof MutationObserver === "function" ? new MutationObserver(records => {
+    // Placement writes only this inline style; observing that write would keep
+    // scheduling frames after the layout has settled.
+    if (records.some(record => record.type !== "attributes" || record.attributeName !== "style" || !record.target.matches?.(".md-snackbar"))) queueLayout();
+  }) : undefined;
+  function openBars() { return [...document.querySelectorAll(".md-snackbar:popover-open")].filter(bar => bar.matches(":popover-open")); }
+  function obstacles() {
+    const targets = new Set(document.querySelectorAll(obstacleSelector));
+    if (document.activeElement && document.activeElement !== document.body && document.activeElement !== document.documentElement) targets.add(document.activeElement);
+    return targets;
+  }
+  function watchLayout(bars) {
+    if (bars.length && !watching && document.body) {
+      mutationObserver?.observe(document.body, { subtree: true, childList: true, characterData: true, attributes: true,
+        attributeFilter: ["hidden", "open", "class", "style", "data-snackbar-avoid", "data-variant"] });
+      watching = true;
+    } else if (!bars.length) {
+      mutationObserver?.disconnect(); watching = false;
+      if (layoutFrame) { cancelAnimationFrame(layoutFrame); layoutFrame = 0; }
+    }
+    const targets = new Set(bars.length ? [...bars, ...obstacles()].filter(target => typeof target.getBoundingClientRect === "function") : []);
+    for (const target of observed) if (!targets.has(target)) { resizeObserver?.unobserve(target); observed.delete(target); }
+    for (const target of targets) if (!observed.has(target)) { resizeObserver?.observe(target); observed.add(target); }
+  }
+  function queueLayout() {
+    if (!layoutFrame) layoutFrame = requestAnimationFrame(() => { layoutFrame = 0; reposition(); });
+  }
   function position(bar) {
     if (!bar.matches(":popover-open")) return;
     bar.style.removeProperty("--_snackbar-avoid-offset");
     const base = bar.getBoundingClientRect(), gap = parseFloat(getComputedStyle(bar).getPropertyValue("--md-sys-measurement-space200")) || 16;
-    const obstacles = new Set(document.querySelectorAll(".md-fab, .md-navigation-bar, .md-toolbar[data-variant='docked'], [data-snackbar-avoid]"));
-    if (document.activeElement && document.activeElement !== document.body && document.activeElement !== document.documentElement) obstacles.add(document.activeElement);
-    const boxes = [...obstacles].filter(element => element !== bar && !bar.contains(element) && element.getClientRects().length && getComputedStyle(element).visibility === "visible").map(element => element.getBoundingClientRect()).sort((a,b) => b.top-a.top);
+    const boxes = [...obstacles()].filter(element => element !== bar && !bar.contains(element) && element.getClientRects().length && getComputedStyle(element).visibility === "visible").map(element => element.getBoundingClientRect()).sort((a,b) => b.top-a.top);
     let bottom = base.bottom;
     for (const box of boxes) {
       const top = bottom-base.height;
@@ -17,7 +46,7 @@ import { snackbarTimer } from "../helpers/controls.ts";
     }
     bar.style.setProperty("--_snackbar-avoid-offset", Math.max(0,base.bottom-bottom)+"px");
   }
-  const reposition = () => { for (const bar of document.querySelectorAll(".md-snackbar:popover-open")) position(bar); };
+  function reposition() { const bars = openBars(); watchLayout(bars); for (const bar of bars) position(bar); }
   function dismiss(bar) {
     const restore = bar.contains(document.activeElement);
     timers.get(bar)?.stop();
@@ -38,6 +67,7 @@ import { snackbarTimer } from "../helpers/controls.ts";
       timers.set(bar, timer);
       bar.addEventListener("toggle", () => {
         if (!bar.matches(":popover-open")) timer.stop();
+        reposition();
       });
       bar.addEventListener("pointerenter", () => timer.pause("pointer"));
       bar.addEventListener("pointerleave", () => timer.resume("pointer"));
@@ -48,14 +78,14 @@ import { snackbarTimer } from "../helpers/controls.ts";
     }
   }
   // Applications can publish status without fabricating a hidden open button.
-  function showSnackbar(bar, opener = document.activeElement) {
+  function showSnackbar(bar, opener = document.activeElement, duration = 0) {
     initialize();
     openers.set(bar, opener);
     bar.showPopover();
-    position(bar);
-    timers.get(bar).start(0);
+    reposition();
+    timers.get(bar).start(Number.isFinite(duration) && duration > 0 ? duration : 0);
   }
-  globalThis.MaterialSnackbars = Object.freeze({ show: showSnackbar });
+  globalThis.MaterialSnackbars = Object.freeze({ show: showSnackbar, dismiss });
   initialize();
   window.addEventListener("resize", reposition);
   window.addEventListener("scroll", reposition, true);

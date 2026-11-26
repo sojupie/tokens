@@ -50,18 +50,26 @@ export function EditName() {
 
 | Component | Notes |
 | --- | --- |
+| `AppBar` | Top bar with `title`, `subtitle`, `titleAs`, `variant`, `leading`, and `actions`. |
+| `Badge`, `BadgeAnchor` | Status dot (`small`) or compact count/text badge (`labeled`, numeric counts capped at `999+`); `BadgeAnchor` wraps an icon or control. |
 | `Button`, `ButtonLink`, `IconButton` | Native button/anchor props + Forge variants. `IconButton` requires `label` and an icon child; pass `pressed` for toggles. |
+| `Card` | Container with `variant` (`filled`, `outlined`, `elevated`), `headline`, `headlineAs`, `supporting`, `actions`, and `as`. |
 | `Checkbox` | Native checkbox props (including ref for `indeterminate`) with a visible or accessible label. |
-| `TextField`, `TextArea` | Native input/textarea props with `label`, supporting text, invalid state, and icons (`rows` on `TextArea`). Set `--forge-field-padding-block` to adjust vertical padding. |
-| `Select`, `ChipSelect` | Take `SelectOption` children; `Select` renders a field, `ChipSelect` renders a filter pill. Share Forge popup positioning and keyboard behavior. |
+| `FilterChip` | Toggleable filter pill (`selected`, `elevated`, `leading`) backed by `aria-pressed` and `.md-filter-chip` tokens. |
+| `TextField`, `TextArea` | Native input/textarea props with `label`, supporting text, invalid state, and icons (`rows` on `TextArea`). Scope `--forge-field-padding-block`, `--forge-field-icon-size`, `--forge-field-gap`, or `--forge-field-icon-padding-inline` to scale field density cleanly. |
+| `Select`, `ChipSelect` | Take `SelectOption` children; `Select` renders a field with optional `label`, `supporting`, `invalid`, and `containerClassName`, and `ChipSelect` renders a filter pill. Share Forge popup positioning and keyboard behavior. |
 | `SearchBar` | Native search input with `leading` icon and optional `action` icon button. |
 | `SplitButton` | Primary button (`md-split-leading`) + menu trigger (`md-split-trailing`, `aria-expanded`). |
 | `ConnectedButtonGroup` | Filled single-selection group (`options`, `value`, `onChange`); Forge handles arrow-key focus. |
 | `Fab` | Floating action button; can be passed as `NavigationRail` `action`. |
-| `NavigationRail`, `NavigationRailItem` | Active item uses `aria-current="page"`; persistent controls go in `footer`. |
-| `List`, `ListItemButton` | Wrap each `ListItemButton` in `<li>`; supports `leading`, `trailing`, `actions` (`data-actions-layout="inline"` on list), and `md-list-expand-content` (`data-expand-inset="inset"`). |
+| `NavigationBar`, `NavigationItem` | Bottom navigation with equal-width destinations. `variant` is `vertical`, `horizontal` or `adaptive`; active items use `aria-current="page"`; supports `badge` and `badgeText`. |
+| `NavigationRail`, `NavigationRailItem` | Active item uses `aria-current="page"`; supports `badge` and `badgeText`; persistent controls go in `footer`. |
+| `List`, `ListItemButton` | Wrap each `ListItemButton` in `<li>`; supports `leading`, `supporting`, `trailing`, `actions` (`data-actions-layout="inline"` on list), and `md-list-expand-content` (`data-expand-inset="inset"`). |
+| `Divider` | Horizontal hairline divider with `inset` (`full`, `true`, `middle`). |
+| `Progress` | Indeterminate linear progress bar with accessible `label`. |
 | `SideSheet` | Docked or detached inside `md-sheet-host`; React manages visibility and focus. |
 | `Dialog` | Native top layer; Forge handles motion, Escape, backdrop dismissal, and focus return. Keep mounted while `open` changes so exit animations finish (`onAfterClose` fires after exit; `data-dialog-close=""` triggers dismissal). |
+| `Snackbar` | Controlled `open`, `onOpenChange`, `message`, optional `action` and `duration`. Uses Forge's popover, placement, dismissal and focus/pointer-aware timer. Set a duration only when equivalent persistent status remains available elsewhere. |
 
 ## Adding or changing a component
 

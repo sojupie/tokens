@@ -8,6 +8,12 @@
 ) {
   --_field-input-padding-top: var(--forge-field-padding-block, var(--md-sys-measurement-space200));
   --_field-input-padding-bottom: var(--_field-input-padding-top);
+  --_field-padding-start: var(--forge-field-padding-inline, var(--md-sys-measurement-space200));
+  --_field-padding-end: var(--forge-field-padding-inline, var(--md-sys-measurement-space200));
+  --_field-icon-padding: var(--forge-field-icon-padding-inline, var(--md-sys-measurement-space150));
+  --_field-gap: var(--forge-field-gap, var(--md-sys-measurement-space200));
+  --_field-leading-size: var(--forge-field-icon-size, var(--_field-leading-icon-size));
+  --_field-trailing-size: var(--forge-field-icon-size, var(--_field-trailing-icon-size));
   --_field-state-color: transparent;
   --_field-state-opacity: 0;
   --_field-outline-opacity: 1;
@@ -20,7 +26,7 @@
   box-sizing: border-box;
   display: inline-flex;
   align-items: center;
-  gap: var(--md-sys-measurement-space100);
+  gap: var(--_field-gap);
   min-width: 0;
   max-width: 100%;
   border: var(--_field-outline-width) solid
@@ -44,7 +50,8 @@
       )
     ),
     var(--_field-container, transparent);
-  padding: 0 var(--md-sys-measurement-space200);
+  padding-block: 0;
+  padding-inline: var(--_field-padding-start) var(--_field-padding-end);
   caret-color: var(--_field-caret);
   color: color-mix(
     in srgb,
@@ -56,6 +63,31 @@
   line-height: var(--_field-input-text-line-height);
   font-weight: var(--_field-input-text-font-weight);
   letter-spacing: var(--_field-input-text-tracking);
+}
+:is(
+  .md-outlined-text-field,
+  .md-filled-text-field,
+  .md-outlined-select,
+  .md-filled-select,
+  .md-outlined-autocomplete,
+  .md-filled-autocomplete
+):has(> [data-slot="leading-icon"]) {
+  --_field-padding-start: var(--_field-icon-padding);
+}
+:is(
+  .md-outlined-text-field,
+  .md-filled-text-field,
+  .md-outlined-select:has(> input),
+  .md-filled-select,
+  .md-outlined-autocomplete,
+  .md-filled-autocomplete
+):has(> [data-slot="trailing-icon"]) {
+  --_field-padding-end: var(--_field-icon-padding);
+}
+:is(.md-outlined-text-field, .md-filled-text-field):has(
+  > [data-slot="trailing-icon"] > :is(button, input)
+) {
+  --_field-padding-end: var(--md-sys-measurement-space50);
 }
 :is(
   .md-outlined-text-field,
@@ -125,6 +157,10 @@
   caret-color: inherit;
   outline: 0;
   padding: var(--_field-input-padding-top) 0 var(--_field-input-padding-bottom);
+}
+:is(.md-outlined-text-field, .md-filled-text-field) > input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
 }
 .md-outlined-select {
   padding: 0;
@@ -249,8 +285,8 @@
   [data-slot="trailing-icon"] {
   display: inline-flex;
   flex: none;
-  width: var(--_field-leading-icon-size);
-  height: var(--_field-leading-icon-size);
+  width: var(--_field-leading-size);
+  height: var(--_field-leading-size);
   color: color-mix(
     in srgb,
     var(--_field-leading-icon-color)
@@ -267,8 +303,8 @@
     .md-filled-autocomplete
   )
   [data-slot="trailing-icon"] {
-  width: var(--_field-trailing-icon-size);
-  height: var(--_field-trailing-icon-size);
+  width: var(--_field-trailing-size);
+  height: var(--_field-trailing-size);
   color: color-mix(
     in srgb,
     var(--_field-trailing-icon-color)
@@ -331,7 +367,7 @@
   inline-size: auto;
   block-size: auto;
   align-items: center;
-  padding-block: var(--md-sys-measurement-space50);
+  padding-block: 0;
 }
 
 :is(.md-outlined-text-field, .md-filled-text-field):not(:focus-within):not(

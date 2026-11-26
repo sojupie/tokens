@@ -10,6 +10,10 @@ type OptionGroup = { label?: string; options: OptionProps[]; disabled?: boolean 
 type FieldProps = Pick<ComponentProps<'select'>, 'name' | 'required' | 'value' | 'onChange' | 'disabled' | 'children'> & {
   id?: string;
   className?: string;
+  label?: string;
+  supporting?: ReactNode;
+  invalid?: boolean;
+  containerClassName?: string;
 };
 export type SelectProps = FieldProps & Omit<ComponentPropsWithRef<'input'>,
   keyof FieldProps | 'type' | 'defaultValue' | 'readOnly'>;
@@ -50,35 +54,68 @@ function Check() {
   </svg>;
 }
 
-function FieldSelect({ chip, selectedLabel, inputProps, className = '', id, name, required, value, onChange, disabled, children }: FieldProps & {
+function FieldSelect({
+  chip, selectedLabel, inputProps, className = '', containerClassName = '',
+  id, name, required, value, onChange, disabled, label, supporting, invalid, children,
+}: FieldProps & {
   chip?: string;
   selectedLabel?: string;
   inputProps?: Omit<SelectProps, keyof FieldProps>;
 }) {
   const uid = useId();
   const controlId = id ?? uid;
-  const listId = uid + '-options';
+  const labelId = `${uid}-label`;
+  const helpId = `${uid}-help`;
+  const listId = `${uid}-options`;
   const trigger = useRef<HTMLInputElement>(null);
   const { ref, ...attributes } = inputProps ?? {};
   useImperativeHandle(ref, () => trigger.current!, []);
   const groups = optionGroups(children);
   const current = groups.flatMap(group => group.options).find(option => optionValue(option) === String(value ?? ''));
   const display = current ? optionLabel(current) : String(value ?? '');
-  const base = { id: controlId, role: 'combobox', 'aria-expanded': false, 'aria-haspopup': 'listbox' as const,
-    'aria-controls': listId, 'aria-autocomplete': 'none' as const, disabled, 'data-field-combo': '', 'data-select-value': value };
+  const outlined = !chip && (label != null || supporting != null);
+  const invalidState = invalid ?? attributes['aria-invalid'] ?? false;
+  const describedBy = [attributes['aria-describedby'], supporting != null ? helpId : null].filter(Boolean).join(' ') || undefined;
+  const labelledBy = attributes['aria-labelledby'] ?? (outlined && label != null ? labelId : undefined);
+  const base = {
+    id: controlId, role: 'combobox', 'aria-expanded': false, 'aria-haspopup': 'listbox' as const,
+    'aria-controls': listId, 'aria-autocomplete': 'none' as const, disabled,
+    'data-field-combo': '', 'data-select-value': value,
+  };
 
-  return <div className={chip ? 'md-chip-select ' + className : 'md-outlined-select md-react-field-select ' + className}
-    data-field-example data-react-field data-populated="true">
+  return <div
+    className={(chip ? `md-chip-select ${className}` : `md-outlined-select md-react-field-select ${containerClassName} ${className}`).trim()}
+    data-field-example
+    data-react-field
+    data-populated={chip || display !== '' ? 'true' : 'false'}
+    data-invalid={outlined ? invalidState : undefined}
+  >
     {chip ? <button {...base} type="button" className="md-filter-chip" aria-label={chip} data-field-select="">
       <span data-field-display>{selectedLabel ?? display}</span>
       <span className="md-chip-icon" data-slot="trailing-icon"><Chevron /></span>
     </button> : <>
-      <input {...attributes} {...base} ref={trigger} type="text" readOnly value={display}
-        aria-required={required || undefined} />
+      {outlined && <>
+        <fieldset className="md-field-outline" aria-hidden="true"><legend>{label}</legend></fieldset>
+        <fieldset className="md-field-outline md-field-focus-outline" aria-hidden="true"><legend>{label}</legend></fieldset>
+        {label != null && <label id={labelId} htmlFor={controlId} data-slot="label">{label}</label>}
+      </>}
+      <input
+        {...attributes}
+        {...base}
+        ref={trigger}
+        type="text"
+        readOnly
+        placeholder={outlined ? (attributes.placeholder ?? ' ') : attributes.placeholder}
+        value={display}
+        aria-required={required || undefined}
+        aria-invalid={outlined ? invalidState : attributes['aria-invalid']}
+        aria-describedby={describedBy}
+      />
       <button type="button" className="md-field-toggle" data-field-toggle="" tabIndex={-1}
         aria-label="Show options" aria-controls={listId} disabled={disabled}>
         <span data-slot="trailing-icon"><Chevron /></span>
       </button>
+      {supporting != null && <small data-slot="supporting-text" id={helpId}>{supporting}</small>}
     </>}
     <select hidden tabIndex={-1} name={name} required={required} disabled={disabled} value={value} onChange={onChange}
       data-field-value="" onInvalid={event => {
@@ -86,17 +123,17 @@ function FieldSelect({ chip, selectedLabel, inputProps, className = '', id, name
         trigger.current?.focus();
       }}>{children}</select>
     <div id={listId} className="md-field-menu md-menu" data-variant="standard" data-orientation="vertical"
-      role="listbox" aria-labelledby={attributes['aria-labelledby']}
-      aria-label={chip ?? attributes['aria-label']} popover="auto">
+      role="listbox" aria-labelledby={labelledBy}
+      aria-label={chip ?? (labelledBy ? undefined : attributes['aria-label'])} popover="auto">
       <section>
-        {groups.map(({ label, options, disabled: groupDisabled }, groupIndex) =>
-          <div role={label ? 'group' : 'presentation'} aria-label={label} key={groupIndex}>
-            {label && <h3 aria-hidden="true">{label}</h3>}
+        {groups.map(({ label: groupLabel, options, disabled: groupDisabled }, groupIndex) =>
+          <div role={groupLabel ? 'group' : 'presentation'} aria-label={groupLabel} key={groupLabel ?? groupIndex}>
+            {groupLabel && <h3 aria-hidden="true">{groupLabel}</h3>}
             <ul role="presentation">
               {options.map((option, index) => {
                 const key = optionValue(option);
                 return <li role="presentation" key={key}>
-                  <div className="md-menu-item" role="option" id={listId + '-' + groupIndex + '-' + index}
+                  <div className="md-menu-item" role="option" id={`${listId}-${groupIndex}-${index}`}
                     aria-selected={key === String(value ?? '')} aria-disabled={!!(groupDisabled || option.disabled)}
                     data-field-value={key} data-field-option={optionLabel(option)}>
                     <span data-option-label>{option.label ?? option.children}</span>
@@ -112,8 +149,11 @@ function FieldSelect({ chip, selectedLabel, inputProps, className = '', id, name
   </div>;
 }
 
-export function Select({ name, required, value, onChange, disabled, children, className, id, ...inputProps }: SelectProps) {
-  return <FieldSelect {...{ name, required, value, onChange, disabled, children, className, id, inputProps }} />;
+export function Select({
+  name, required, value, onChange, disabled, children, className, containerClassName, id, label, supporting, invalid,
+  ...inputProps
+}: SelectProps) {
+  return <FieldSelect {...{ name, required, value, onChange, disabled, children, className, containerClassName, id, label, supporting, invalid, inputProps }} />;
 }
 
 export function ChipSelect({ label, ...props }: FieldProps & { label: string; selectedLabel: string }) {

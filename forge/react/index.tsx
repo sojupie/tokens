@@ -1,10 +1,130 @@
 import { useId, useLayoutEffect, useRef } from 'react';
-import type { ComponentPropsWithRef, ReactNode } from 'react';
+import type { ComponentPropsWithoutRef, ComponentPropsWithRef, ReactNode } from 'react';
 
 type Size = 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge';
 type Shape = 'round' | 'square';
 type NativeButton = ComponentPropsWithRef<'button'>;
 type ButtonAppearance = { size?: Size; shape?: Shape; pressed?: boolean };
+
+export type BadgeProps = Omit<ComponentPropsWithRef<'span'>, 'children' | 'content'> & {
+  variant?: 'small' | 'labeled';
+  content?: string | number;
+};
+
+function badgeContent(raw?: string | number): string {
+  const content = raw == null ? '' : String(raw).trim();
+  if (/^\d+$/u.test(content) && Number(content) > 999) return '999+';
+  const chars = Array.from(content);
+  return chars.length > 4 ? chars.slice(0, 4).join('') : content;
+}
+
+export function Badge({ variant = 'small', content, className = '', ...props }: BadgeProps) {
+  const text = variant === 'labeled' ? badgeContent(content) : '';
+  return <span
+    {...props}
+    className={`md-badge ${className}`.trim()}
+    data-variant={variant}
+    data-characters={String(Array.from(text).length)}
+    aria-hidden="true"
+  >{text}</span>;
+}
+
+export function BadgeAnchor({ className = '', children, ...props }: ComponentPropsWithRef<'span'>) {
+  return <span {...props} className={`md-badge-anchor ${className}`.trim()}>{children}</span>;
+}
+
+export type DividerProps = ComponentPropsWithRef<'hr'> & {
+  inset?: 'full' | 'true' | 'middle';
+};
+
+export function Divider({ inset = 'full', className = '', ...props }: DividerProps) {
+  return <hr {...props} className={`md-divider ${className}`.trim()} data-inset={inset} />;
+}
+
+export type ProgressProps = Omit<ComponentPropsWithRef<'div'>, 'children'> & {
+  label?: string;
+};
+
+export function Progress({ label = 'Loading', className = '', ...props }: ProgressProps) {
+  return <div
+    {...props}
+    className={`md-progress-css ${className}`.trim()}
+    role="progressbar"
+    aria-label={label}
+    data-variant="linear"
+    data-control="indeterminate"
+    data-shape="flat"
+    data-size="thin"
+  />;
+}
+
+export type CardProps = Omit<ComponentPropsWithoutRef<'div'>, 'title'> & {
+  variant?: 'filled' | 'outlined' | 'elevated';
+  headline?: ReactNode;
+  headlineAs?: 'h2' | 'h3' | 'h4';
+  supporting?: ReactNode;
+  actions?: ReactNode;
+  as?: 'article' | 'section' | 'div';
+};
+
+export function Card({
+  variant = 'outlined', headline, headlineAs: Heading = 'h2', supporting, actions,
+  as = 'article', className = '', children, ...props
+}: CardProps) {
+  const hasHeader = headline != null || supporting != null;
+  const body = hasHeader || actions != null ? <>
+    <div className="md-card-content">
+      {headline != null && <Heading className="md-card-headline">{headline}</Heading>}
+      {supporting != null && <p className="md-card-supporting-text">{supporting}</p>}
+      {children}
+    </div>
+    {actions != null && <div className="md-card-actions">{actions}</div>}
+  </> : children;
+  const classes = `md-card md-${variant}-card ${className}`.trim();
+  if (as === 'section') return <section {...props} className={classes}>{body}</section>;
+  if (as === 'div') return <div {...props} className={classes}>{body}</div>;
+  return <article {...props} className={classes}>{body}</article>;
+}
+
+export type AppBarProps = Omit<ComponentPropsWithRef<'header'>, 'title'> & {
+  title: ReactNode;
+  subtitle?: ReactNode;
+  titleAs?: 'h1' | 'h2';
+  variant?: 'small' | 'centered' | 'medium-flexible' | 'large-flexible';
+  leading?: ReactNode;
+  actions?: ReactNode;
+};
+
+export function AppBar({
+  title, subtitle, titleAs: TitleTag = 'h1', variant = 'small', leading, actions,
+  className = '', children, ...props
+}: AppBarProps) {
+  const expanded = variant === 'medium-flexible' || variant === 'large-flexible';
+  const copy = <div className={`md-appbar-copy ${expanded ? 'md-appbar-expanded' : ''}`.trim()}>
+    <TitleTag className="md-appbar-title">{title}</TitleTag>
+    {subtitle != null && subtitle !== '' && <p className="md-appbar-subtitle">{subtitle}</p>}
+  </div>;
+  return <header
+    {...props}
+    className={`md-app-bar ${className}`.trim()}
+    aria-label={props['aria-label'] ?? (typeof title === 'string' ? title : undefined)}
+    data-variant={variant}
+    data-orientation="horizontal"
+    data-size={expanded ? variant.replace('-flexible', '') : 'small'}
+    data-modern=""
+    data-control={subtitle != null && subtitle !== '' ? 'subtitle' : 'title'}
+  >
+    <div className="md-appbar-row">
+      {leading}
+      {!expanded && copy}
+      <div className="md-appbar-actions">
+        {actions}
+        {children}
+      </div>
+    </div>
+    {expanded && copy}
+  </header>;
+}
 
 export type ButtonProps = NativeButton & ButtonAppearance & {
   variant?: 'filled' | 'tonal' | 'outlined' | 'text' | 'elevated';
@@ -110,14 +230,37 @@ export function NavigationRail({ label, children, action, footer, width = 'narro
   </nav>;
 }
 
-export function NavigationRailItem({ label, icon, ...props }: NativeButton & { label: string; icon: ReactNode }) {
-  return <button {...props} type="button" className="md-nav-item" data-navigation-item="">
+export function NavigationBar({ label, children, variant = 'vertical', className = '', ...props }: ComponentPropsWithRef<'nav'> & {
+  label: string; variant?: 'vertical' | 'horizontal' | 'adaptive';
+}) {
+  return <nav {...props} aria-label={label} className={`md-navigation md-navigation-bar ${className}`.trim()}
+    data-variant={variant} data-orientation={variant} data-alignment="center" data-navigation-group=""
+    data-layout="standard" data-indicator="fill" data-size="default">
+    <div className="md-nav-items">{children}</div>
+  </nav>;
+}
+
+export type NavigationItemBadge = {
+  badge?: 'small' | 'labeled';
+  badgeText?: string | number;
+};
+
+export function NavigationRailItem({ label, icon, badge, badgeText, className = '', ...props }: NativeButton & NavigationItemBadge & {
+  label: string; icon: ReactNode;
+}) {
+  return <button {...props} type="button" className={`md-nav-item ${className}`.trim()} data-navigation-item="">
     <span className="md-nav-indicator">
-      <span className="md-nav-icon" aria-hidden="true"><span style={{ display: 'block' }}>{icon}</span></span>
+      <span className="md-nav-icon" aria-hidden="true">
+        <span style={{ display: 'block' }}>{icon}</span>
+        {badge && <Badge variant={badge} content={badgeText} className="md-nav-badge" />}
+      </span>
       <span className="md-nav-label" data-navigation-label={label}><span>{label}</span></span>
     </span>
   </button>;
 }
+
+// NavigationRegion uses the same item anatomy for bars and rails.
+export const NavigationItem = NavigationRailItem;
 
 export function SideSheet({ title, headerAction, footer, children, variant = 'docked', className = '', ...props }: ComponentPropsWithRef<'aside'> & {
   title: string; headerAction?: ReactNode; footer?: ReactNode; variant?: 'docked' | 'detached';
@@ -130,12 +273,12 @@ export function SideSheet({ title, headerAction, footer, children, variant = 'do
   </aside>;
 }
 
-export type ListItemButtonProps = NativeButton & { leading?: ReactNode; trailing?: ReactNode; actions?: ReactNode };
+export type ListItemButtonProps = NativeButton & { leading?: ReactNode; supporting?: ReactNode; trailing?: ReactNode; actions?: ReactNode };
 
-export function ListItemButton({ leading, trailing, actions, children, className = '', type = 'button', ...props }: ListItemButtonProps) {
+export function ListItemButton({ leading, supporting, trailing, actions, children, className = '', type = 'button', ...props }: ListItemButtonProps) {
   const content = <>
     {leading != null && <span className="md-list-leading md-list-icon" aria-hidden="true">{leading}</span>}
-    <span className="md-list-body"><span className="md-list-label">{children}</span></span>
+    <span className="md-list-body"><span className="md-list-label">{children}</span>{supporting != null && <span className="md-list-supporting">{supporting}</span>}</span>
     {trailing != null && <span className="md-list-tail">{trailing}</span>}
   </>;
   const button = <button {...props} type={type} className={`md-list-item ${className}`.trim()} data-list-item="">
@@ -220,13 +363,53 @@ export function TextArea({
   </Field>;
 }
 
+interface SnackbarController {
+  show(panel: HTMLElement, opener?: Element | null, duration?: number): void;
+  dismiss(panel: HTMLElement): void;
+}
+function isSnackbarController(value: unknown): value is SnackbarController {
+  return typeof value === 'object' && value !== null && 'show' in value && typeof value.show === 'function' && 'dismiss' in value && typeof value.dismiss === 'function';
+}
+export type SnackbarProps = Omit<ComponentPropsWithRef<'div'>, 'ref' | 'children'> & {
+  open: boolean; onOpenChange: (open: boolean) => void; message: string;
+  action?: ReactNode; duration?: number;
+};
+export function Snackbar({ open, onOpenChange, message, action, duration = 0, className = '', ...props }: SnackbarProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  const changed = useRef(onOpenChange);
+  useLayoutEffect(() => { changed.current = onOpenChange; }, [onOpenChange]);
+  useLayoutEffect(() => {
+    const panel = ref.current;
+    const controller: unknown = Reflect.get(globalThis, 'MaterialSnackbars');
+    if (!panel || !isSnackbarController(controller)) return undefined;
+    const toggled = (event: ToggleEvent) => { if (event.newState === 'closed') changed.current(false); };
+    panel.addEventListener('toggle', toggled);
+    if (open) controller.show(panel, document.activeElement, duration);
+    else if (panel.matches(':popover-open')) controller.dismiss(panel);
+    return () => {
+      panel.removeEventListener('toggle', toggled);
+      if (panel.matches(':popover-open')) controller.dismiss(panel);
+    };
+  }, [open, duration, message]);
+  return <div {...props} ref={ref} popover="manual" role="status" aria-live="polite" data-component-assets="" data-variant="two-lines"
+    className={`md-snackbar ${className}`.trim()}>
+    <span className="md-feedback-text">{message}</span>{action}
+    <IconButton label="Dismiss notification" className="md-snackbar-close" data-snackbar-close="">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true"><path d="m18.3 5.7-1.4-1.4L12 9.2 7.1 4.3 5.7 5.7l4.9 4.9-4.9 4.9 1.4 1.4 4.9-4.9 4.9 4.9 1.4-1.4-4.9-4.9z" /></svg>
+    </IconButton>
+  </div>;
+}
+
 type DialogController = {
   open(panel: HTMLDialogElement, opener?: HTMLElement): Promise<void>;
   close(panel: HTMLDialogElement, result: string, reason: string): Promise<void>;
   dispose(panel: HTMLDialogElement): void;
 };
 
-const dialogController = (globalThis as typeof globalThis & { MaterialDialogs?: DialogController }).MaterialDialogs;
+function isDialogController(value: unknown): value is DialogController {
+  return typeof value === 'object' && value !== null && 'open' in value && typeof value.open === 'function'
+    && 'close' in value && typeof value.close === 'function' && 'dispose' in value && typeof value.dispose === 'function';
+}
 
 export type DialogProps = Omit<ComponentPropsWithRef<'dialog'>, 'ref' | 'onClose' | 'onCancel' | 'title'> & {
   open: boolean;
@@ -247,12 +430,17 @@ export function Dialog({
   const ref = useRef<HTMLDialogElement>(null);
 
   useLayoutEffect(() => {
-    const panel = ref.current!;
-    return () => dialogController?.dispose(panel);
+    const panel = ref.current;
+    if (!panel) return undefined;
+    return () => {
+      const controller: unknown = Reflect.get(globalThis, 'MaterialDialogs');
+      if (isDialogController(controller)) controller.dispose(panel);
+    };
   }, []);
 
   useLayoutEffect(() => {
-    const panel = ref.current!;
+    const panel = ref.current;
+    if (!panel) return undefined;
     // Forge detects dismissal. The React owner accepts it by changing open.
     function requestClose(event: Event) {
       const { reason } = (event as CustomEvent<{ reason: string }>).detail;
@@ -273,9 +461,11 @@ export function Dialog({
   }, [open, onOpenChange, onAfterClose]);
 
   useLayoutEffect(() => {
-    const panel = ref.current!;
-    if (open) void dialogController?.open(panel, opener ?? undefined);
-    else void dialogController?.close(panel, '', 'controlled');
+    const panel = ref.current;
+    const controller: unknown = Reflect.get(globalThis, 'MaterialDialogs');
+    if (!panel || !isDialogController(controller)) return;
+    if (open) void controller.open(panel, opener ?? undefined);
+    else void controller.close(panel, '', 'controlled');
   }, [open, opener]);
 
   return <dialog {...props} ref={ref} className={`md-dialog ${className}`.trim()} data-dialog-surface="" data-variant="basic"
@@ -304,6 +494,35 @@ function Chevron() {
 
 export { ChipSelect, Select, SelectOption } from './select.js';
 export type { SelectProps } from './select.js';
+
+export type FilterChipProps = NativeButton & {
+  selected?: boolean;
+  elevated?: boolean;
+  leading?: ReactNode;
+};
+
+export function FilterChip({
+  selected = false, elevated = false, leading, type = 'button',
+  className = '', children, ...props
+}: FilterChipProps) {
+  return <button
+    {...props}
+    type={type}
+    className={`md-filter-chip ${className}`.trim()}
+    data-family="chip"
+    data-variant="filter"
+    data-selected={String(selected)}
+    data-elevated={String(elevated)}
+    data-shape={leading != null ? 'icon' : 'label'}
+    aria-pressed={selected}
+  >
+    <span className="md-chip-icon md-chip-check" data-slot="leading-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="m9 16.17-4.17-4.17-1.42 1.41L9 19 21 7l-1.41-1.41z" /></svg>
+    </span>
+    {leading != null && <span className="md-chip-icon md-chip-leading" data-slot="leading-icon" aria-hidden="true">{leading}</span>}
+    <span className="md-chip-label">{children}</span>
+  </button>;
+}
 
 export function Disclosure({ label, summary, children, compact, className = '', ...props }: ComponentPropsWithRef<'details'> & {
   label: string; summary?: ReactNode; compact?: boolean;
