@@ -4613,14 +4613,13 @@ dialog.md-bottom-sheet[data-control="modal"][data-sheet-size="full"] {
 }
 .md-list-main {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: inherit;
   gap: var(--_list-item-gap);
   min-inline-size: 0;
 }
 .md-list-main > .md-list-leading { max-inline-size: 100%; }
 .md-list-main > .md-list-body {
-  flex-basis: min(100%, 8ch);
   overflow-wrap: anywhere;
 }
 .md-list-actions {
