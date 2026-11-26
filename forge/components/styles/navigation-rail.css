@@ -1,21 +1,22 @@
 /* Rail layout and app scaffolding are renderer rules, not captured measurements. */
 .md-nav-icon {
   position: relative;
-  display: block;
+  display: grid;
+  place-items: center;
   flex: none;
   inline-size: var(--_nav-item-icon-size);
   block-size: var(--_nav-item-icon-size);
 }
 .md-nav-icon > svg {
   display: block;
-  inline-size: 100%;
-  block-size: 100%;
+  inline-size: var(--_nav-item-icon-size);
+  block-size: var(--_nav-item-icon-size);
   color: var(--_nav-item-icon);
 }
-.md-nav-icon > svg:last-of-type {
+.md-nav-icon > svg:last-of-type:not(:only-of-type) {
   display: none;
 }
-.md-nav-item[aria-current="page"] .md-nav-icon > svg:first-of-type {
+.md-nav-item[aria-current="page"] .md-nav-icon > svg:first-of-type:not(:only-of-type) {
   display: none;
 }
 .md-nav-item[aria-current="page"] .md-nav-icon > svg:last-of-type {
@@ -23,20 +24,19 @@
 }
 /* Hover adds weight without changing the icon's fill or selection state. */
 @media (hover:hover) {
- .md-navigation-rail .md-nav-item:hover:not([data-touch],[aria-current="page"]) .md-nav-icon > svg:first-of-type { stroke:currentColor;stroke-width:16;stroke-linejoin:round; }
+ .md-navigation-rail .md-nav-item:hover:not([data-touch]) .md-nav-icon > svg.tokens-material-symbol { stroke:currentColor;stroke-width:16;stroke-linejoin:round; }
 }
-.md-navigation-rail .md-nav-item[data-component-state="hovered"]:not([aria-current="page"]) .md-nav-icon > svg:first-of-type { stroke:currentColor;stroke-width:16;stroke-linejoin:round; }
+.md-navigation-rail .md-nav-item:is([data-component-state="hovered"],[data-component-state="pressed"],[data-pressed],:active) .md-nav-icon > svg.tokens-material-symbol { stroke:currentColor;stroke-width:16;stroke-linejoin:round; }
 /* Animate the glyph only; notification badges keep their size and anchor. */
-.md-navigation-rail .md-nav-icon > :not(.md-nav-badge) {
- transition:scale var(--_motion-fast-spatial-duration) var(--_motion-fast-spatial-easing);
+.md-navigation-rail .md-nav-icon > svg {
+ transition:inline-size var(--_motion-fast-spatial-duration) var(--_motion-fast-spatial-easing),block-size var(--_motion-fast-spatial-duration) var(--_motion-fast-spatial-easing);
 }
 @media (hover:hover) {
- .md-navigation-rail .md-nav-item:hover:where(:not([data-touch])) .md-nav-icon > :not(.md-nav-badge) { scale:1.05; }
+ .md-navigation-rail .md-nav-item:hover:where(:not([data-touch])) .md-nav-icon > svg { inline-size:calc(var(--_nav-item-icon-size) + 2px);block-size:calc(var(--_nav-item-icon-size) + 2px); }
 }
-.md-navigation-rail .md-nav-item[data-component-state="hovered"] .md-nav-icon > :not(.md-nav-badge) { scale:1.05; }
-.md-navigation-rail .md-nav-item:is(:active,[data-pressed],[data-component-state="pressed"]) .md-nav-icon > :not(.md-nav-badge) { scale:.9; }
+.md-navigation-rail .md-nav-item:is([data-component-state="hovered"],:active,[data-pressed],[data-component-state="pressed"]) .md-nav-icon > svg { inline-size:calc(var(--_nav-item-icon-size) + 2px);block-size:calc(var(--_nav-item-icon-size) + 2px); }
 @media (prefers-reduced-motion:reduce) {
- .md-navigation-rail .md-nav-icon > :not(.md-nav-badge) { transition:none; }
+ .md-navigation-rail .md-nav-icon > svg { transition:none; }
 }
 .md-rail-frame {
   --_rail-content-width: 0px;

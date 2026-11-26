@@ -1,3 +1,6 @@
+.tokens-material-symbol > [data-symbol-variant="filled"] { display: none; }
+.md-nav-item[aria-current="page"] .tokens-material-symbol:has(> [data-symbol-variant="filled"]) > [data-symbol-variant="outlined"] { display: none; }
+.md-nav-item[aria-current="page"] .tokens-material-symbol > [data-symbol-variant="filled"] { display: inline; }
 .md-react-field-select {
   min-inline-size: 0;
 }

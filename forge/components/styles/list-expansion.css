@@ -18,7 +18,7 @@
 .md-list:not([data-expand-surface="none"])
   > li[data-list-expanded="true"]
   .md-list-expand-content
-  .md-list-item {
+  .md-list-item:not(:where([aria-current="page"], [aria-pressed="true"], [aria-selected="true"], [data-selected="true"], :has(> input:checked, > input:indeterminate))) {
   background: transparent;
 }
 .md-list[data-expand-icon="plain"] .md-list-expand-icon::before {

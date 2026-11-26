@@ -1,5 +1,19 @@
 import { useId, useLayoutEffect, useRef } from 'react';
 import type { ComponentPropsWithoutRef, ComponentPropsWithRef, ReactNode } from 'react';
+import { materialSymbolPaths } from './material-symbols.js';
+
+export type MaterialSymbolName = keyof typeof materialSymbolPaths;
+export type MaterialSymbolProps = ComponentPropsWithRef<'svg'> & { name: MaterialSymbolName };
+
+export function MaterialSymbol({ name, className = '', ...props }: MaterialSymbolProps) {
+  const filledName = `${name}_filled`;
+  const filled = Object.hasOwn(materialSymbolPaths, filledName) ? materialSymbolPaths[filledName as MaterialSymbolName] : undefined;
+  return <svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 -960 960 960" fill="currentColor"
+    {...props} className={`tokens-material-symbol ${className}`.trim()} data-material-symbol={name}>
+    <path data-symbol-variant="outlined" d={materialSymbolPaths[name]} transform={name === 'star' ? 'translate(0 -56.5)' : undefined} />
+    {filled && <path data-symbol-variant="filled" d={filled} />}
+  </svg>;
+}
 
 type Size = 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge';
 type Shape = 'round' | 'square';
@@ -251,7 +265,7 @@ export function NavigationRailItem({ label, icon, badge, badgeText, className = 
   return <button {...props} type="button" className={`md-nav-item ${className}`.trim()} data-navigation-item="">
     <span className="md-nav-indicator">
       <span className="md-nav-icon" aria-hidden="true">
-        <span style={{ display: 'block' }}>{icon}</span>
+        {icon}
         {badge && <Badge variant={badge} content={badgeText} className="md-nav-badge" />}
       </span>
       <span className="md-nav-label" data-navigation-label={label}><span>{label}</span></span>

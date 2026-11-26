@@ -3,6 +3,7 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"go/ast"
@@ -33,7 +34,56 @@ func generate(check bool) error {
 	if err := generateAt("forge/components/ui/templates", "forge/components/ui/internal/render", check); err != nil {
 		return err
 	}
-	return generateUIFacade(check)
+	if err := generateUIFacade(check); err != nil {
+		return err
+	}
+	return generateReactSymbols(check)
+}
+
+// React uses the same trusted Material Symbol paths as the Go components.
+func generateReactSymbols(check bool) error {
+	file, err := parser.ParseFile(token.NewFileSet(), "forge/components/ui/internal/model/icons.go", nil, 0)
+	if err != nil {
+		return err
+	}
+	paths := map[string]string{}
+	ast.Inspect(file, func(node ast.Node) bool {
+		spec, ok := node.(*ast.ValueSpec)
+		if !ok || len(spec.Names) != 1 || spec.Names[0].Name != "MaterialSymbolPaths" {
+			return true
+		}
+		literal, ok := spec.Values[0].(*ast.CompositeLit)
+		if !ok {
+			return false
+		}
+		for _, entry := range literal.Elts {
+			pair := entry.(*ast.KeyValueExpr)
+			key, keyErr := strconv.Unquote(pair.Key.(*ast.BasicLit).Value)
+			value, valueErr := strconv.Unquote(pair.Value.(*ast.BasicLit).Value)
+			if keyErr == nil && valueErr == nil {
+				paths[key] = value
+			}
+		}
+		return false
+	})
+	if len(paths) == 0 {
+		return fmt.Errorf("Material Symbols paths are empty")
+	}
+	data, err := json.MarshalIndent(paths, "", "  ")
+	if err != nil {
+		return err
+	}
+	data = append([]byte("// Generated from Forge's Go Material Symbols. Run npm run generate.\nexport const materialSymbolPaths = "), data...)
+	data = append(data, []byte(" as const;\n")...)
+	destination := "forge/react/material-symbols.ts"
+	if check {
+		current, readErr := os.ReadFile(destination)
+		if readErr != nil || !bytes.Equal(current, data) {
+			return fmt.Errorf("%s is stale; run npm run generate", destination)
+		}
+		return nil
+	}
+	return os.WriteFile(destination, data, 0644)
 }
 
 func generateAt(source, output string, check bool) error {
