@@ -9051,6 +9051,8 @@ html:has(dialog:modal) {
 .md-nav-icon {
   position: relative;
   display: grid;
+  /* Keep oversized glyphs centered in the slot instead of growing its tracks. */
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
   place-items: center;
   flex: none;
   inline-size: var(--_nav-item-icon-size);
