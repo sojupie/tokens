@@ -1,4 +1,5 @@
 import test from "node:test";
+import { capturedAssets } from '../../test-assets.mjs';
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { buttonBinding, generateButtons } from "./generate-buttons.mjs";
@@ -24,10 +25,10 @@ test("button schema maps known properties and rejects unknown source concepts", 
 
 test(
   "real button sets have complete mappings and generated configurations",
-  { skip: !process.env.TOKEN_ASSETS_DIR },
+  { skip: !capturedAssets },
   async () => {
     const file =
-      process.env.TOKEN_ASSETS_DIR + "/dtcg/light-default/tokens.tokens.json";
+      capturedAssets + "/dtcg/light-default/tokens.tokens.json";
     const document = JSON.parse(await readFile(file, "utf8"));
     const { values } = await compile(document, ":root", { appTheme: true });
     const generated = generateButtons(document, values);
@@ -117,8 +118,8 @@ test(
   },
 );
 
-test("disabled text and outlined buttons use the captured tint opacity", {skip: !process.env.TOKEN_ASSETS_DIR}, async () => {
-  const document = JSON.parse(await readFile(process.env.TOKEN_ASSETS_DIR + "/dtcg/light-default/tokens.tokens.json", "utf8"));
+test("disabled text and outlined buttons use the captured tint opacity", {skip: !capturedAssets}, async () => {
+  const document = JSON.parse(await readFile(capturedAssets + "/dtcg/light-default/tokens.tokens.json", "utf8"));
   const overrides = JSON.parse(await readFile("forge/material/overrides.json", "utf8"));
   const {values} = await compile(document, ":root", {appTheme:true, overrides});
   for (const variant of ["text", "outlined"]) {

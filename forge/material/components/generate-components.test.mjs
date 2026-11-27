@@ -1,4 +1,5 @@
 import test from "node:test";
+import { capturedAssets } from '../../test-assets.mjs';
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { generateComponents } from "./generate-components.mjs";
@@ -161,7 +162,7 @@ test("missing, unknown and unconverted component tokens stop generation", () => 
 });
 test(
   "captured components build the same bindings in all six appearances",
-  { skip: !process.env.TOKEN_ASSETS_DIR },
+  { skip: !capturedAssets },
   async () => {
     let css;
     let bindings;
@@ -175,7 +176,7 @@ test(
     ]) {
       const document = JSON.parse(
         await readFile(
-          `${process.env.TOKEN_ASSETS_DIR}/dtcg/${appearance}/tokens.tokens.json`,
+          `${capturedAssets}/dtcg/${appearance}/tokens.tokens.json`,
         ),
       );
       const compiled = await compile(document, ":root", { appTheme: true });

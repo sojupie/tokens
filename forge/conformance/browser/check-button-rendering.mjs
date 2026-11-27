@@ -1,8 +1,11 @@
 // Run in the button gallery document to compare rendered properties with source variables.
-export function checkButtonRendering() {
+export function checkButtonRendering({ requiredVariants = [], minimumConfigurations = 1 } = {}) {
+  if (!Number.isSafeInteger(minimumConfigurations) || minimumConfigurations < 1) throw new Error('Require at least one button configuration.');
   const failures = [];
   const failureCounts = {};
   let checked = 0;
+  let renderedConfigurations = 0;
+  const variants = new Set();
   const clean = (s) => String(s).trim().replace(/\s+/g, " ");
   const colors = (value) => {
     value = value.trim();
@@ -34,8 +37,11 @@ export function checkButtonRendering() {
     );
   };
   for (const button of document.querySelectorAll("[data-button-case]")) {
+    if (!button.getClientRects().length) continue;
+    renderedConfigurations++;
     const [variant, size, shape, configuredSelection, forced] =
       button.dataset.buttonCase.split("-");
+    variants.add(variant);
     const selection = button.hasAttribute("aria-pressed")
       ? button.getAttribute("aria-pressed") === "true"
         ? "selected"
@@ -260,11 +266,18 @@ export function checkButtonRendering() {
       );
     }
   }
+  const missing = requiredVariants.filter(variant => !variants.has(variant));
+  if (renderedConfigurations < minimumConfigurations || checked === 0 || missing.length) {
+    failureCounts.fixtures = 1;
+    failures.push({ property: 'fixtures', actual: renderedConfigurations, expected: minimumConfigurations, missingVariants: missing });
+  }
   return {
     theme: document.documentElement.dataset.theme,
     contrast: document.documentElement.dataset.contrast,
     configurations: document.querySelectorAll("[data-button-case]").length,
+    renderedConfigurations,
     propertiesChecked: checked,
+    failureCount: Object.values(failureCounts).reduce((count, value) => count + value, 0),
     failureCounts,
     failures,
   };

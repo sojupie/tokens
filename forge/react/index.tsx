@@ -457,12 +457,14 @@ export function Dialog({
     if (!panel) return undefined;
     // Forge detects dismissal. The React owner accepts it by changing open.
     function requestClose(event: Event) {
+      if (event.target !== panel) return;
       const { reason } = (event as CustomEvent<{ reason: string }>).detail;
       if (reason === 'controlled') return;
       event.preventDefault();
       onOpenChange(false);
     }
-    function afterClose() {
+    function afterClose(event: Event) {
+      if (event.target !== panel) return;
       if (open) onOpenChange(false);
       onAfterClose?.();
     }

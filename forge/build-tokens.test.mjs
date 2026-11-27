@@ -1,4 +1,5 @@
 import test from "node:test";
+import { capturedAssets } from './test-assets.mjs';
 import assert from "node:assert/strict";
 import { readFile, writeFile, mkdir, mkdtemp, rm, stat } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
@@ -94,9 +95,9 @@ test("missing aliases and CSS name collisions fail the build", async () => {
 
 test(
   "six real themes generate CSS for every exported leaf",
-  { skip: !process.env.TOKEN_ASSETS_DIR },
+  { skip: !capturedAssets },
   async () => {
-    const root = process.env.TOKEN_ASSETS_DIR;
+    const root = capturedAssets;
     const index = JSON.parse(await readFile(`${root}/dtcg/index.json`, "utf8"));
     assert.equal(index.length, 6);
     const primary = new Set();

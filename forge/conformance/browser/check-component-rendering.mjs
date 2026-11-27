@@ -1,6 +1,8 @@
 // Read-only checks of actual rendered properties against captured source variables.
-export function checkComponentRendering() {
+export function checkComponentRendering({ requiredFamilies = [], minimumCases = 1 } = {}) {
+  if (!Number.isSafeInteger(minimumCases) || minimumCases < 1) throw new Error('Require at least one component case.');
   const failures = [];
+  const families = new Set();
   let checked = 0,
     cases = 0;
   const color = (value) => {
@@ -25,6 +27,7 @@ export function checkComponentRendering() {
     const cs = getComputedStyle(el),
       f = el.dataset.family,
       state = el.dataset.componentState || (["field","select","autocomplete"].includes(f) ? el.querySelector("input")?.disabled ? "disabled" : el.matches(":focus-within") ? "focused" : el.matches(":hover") ? "hovered" : "enabled" : undefined);
+    families.add(f);
     const short = { hovered: "hover", focused: "focus" }[state] || state;
     const selected =
       el.checked || el.dataset.selected === "true" ||
@@ -1091,6 +1094,10 @@ export function checkComponentRendering() {
           expected,
         });
     }
+  }
+  const missing = requiredFamilies.filter(family => !families.has(family));
+  if (cases < minimumCases || checked === 0 || missing.length) {
+    failures.push({ property: 'fixtures', actual: cases, expected: minimumCases, missingFamilies: missing });
   }
   return {
     cases,

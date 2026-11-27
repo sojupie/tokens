@@ -1,6 +1,6 @@
 {
   "name": "@token-catalog/forge-react",
-  "version": "0.3.31",
+  "version": "0.3.32",
   "type": "module",
   "license": "Apache-2.0",
   "exports": {
@@ -24,6 +24,8 @@
     "react-aria-components": "^1.22.1"
   },
   "devDependencies": {
-    "@types/react": "^19.0.0"
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.3.0",
+    "react-dom": "^19.3.1"
   }
 }

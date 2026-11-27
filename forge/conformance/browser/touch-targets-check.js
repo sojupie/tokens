@@ -1,10 +1,10 @@
 const button=document.querySelector('#run'),out=document.querySelector('#result'),samples=document.querySelector('#samples');
 button.onclick=async()=>{button.disabled=true;const checks=[];const assert=(ok,message)=>{if(!ok)throw Error(message);checks.push(message)};
-try{for(const slug of ['icon-buttons','radio-button']){samples.replaceChildren();const frame=document.createElement('iframe');samples.append(frame);await new Promise(resolve=>{frame.onload=resolve;frame.src=`/md3/components/${slug}?preview.compare=interactive&preview.size=xsmall`});const w=frame.contentWindow,d=frame.contentDocument;await w.TokenAssets.ready;
-const control=d.querySelector('#component-preview '+(slug==='icon-buttons'?'.md-icon-button':'.md-radio')),input=control.querySelector('input')||control;control.scrollIntoView({block:'center'});
+try{for(const slug of ['icon-buttons','radio-button','toolbars']){samples.replaceChildren();const frame=document.createElement('iframe');samples.append(frame);await new Promise(resolve=>{frame.onload=resolve;frame.src=`/md3/components/${slug}?preview.compare=interactive${slug==='toolbars'?'&preview.variant=docked&preview.orientation=horizontal&preview.density=compact':'&preview.size=xsmall'}`});const w=frame.contentWindow,d=frame.contentDocument;if(!w.TokenAssets)throw Error(`${slug}: Catalog fixture did not load (${frame.src})`);await w.TokenAssets.ready;
+const control=d.querySelector('#component-preview '+(slug==='icon-buttons'?'.md-icon-button':slug==='toolbars'?'.md-toolbar-item':'.md-radio')),input=control.querySelector('input')||control;control.scrollIntoView({block:'center'});
 const r=control.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2;
 for(const [dx,dy] of [[-23,0],[23,0],[0,-23],[0,23]]){const hit=d.elementFromPoint(x+dx,y+dy);assert(hit===control||control.contains(hit),`${slug}: target includes ${dx},${dy} within its 48px area`);}
 let clicks=0;control.addEventListener('click',()=>clicks++);d.elementFromPoint(x,y-23).click();assert(clicks===1,`${slug}: expanded target activates its control`);
-assert(r.width<48||r.height<48,`${slug}: visual control remains compact`);
+if(slug==='toolbars'){const broken=d.createElement('style');broken.textContent='.md-toolbar .md-toolbar-item::after{translate:-50% -50% !important}';d.head.append(broken);const hit=d.elementFromPoint(x,y+23);assert(hit!==control&&!control.contains(hit),'Toolbar target negative control detects a translated target');broken.remove();}assert(r.width<48||r.height<48,`${slug}: visual control remains compact`);
 }out.textContent=JSON.stringify({passed:checks.length,checks},null,2);
 }catch(error){out.textContent=JSON.stringify({passed:checks.length,checks,error:error.stack},null,2)}finally{button.disabled=false}};

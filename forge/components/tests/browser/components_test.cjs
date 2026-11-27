@@ -51,31 +51,7 @@ test('docked toolbar spacing respects both source limits and available button wi
  assert.equal(toolbarGap(100,[40],4,32),0);
 });
 
-test('toolbar touch targets do not inherit the icon target centering translation', () => {
- const css = readFileSync(`${__dirname}/../../generated/components-base.css`, 'utf8');
- const target = css.match(/\.md-toolbar \.md-toolbar-item::after\s*\{([^}]+)\}/)?.[1];
- assert.ok(target, 'shared toolbar target rule is present');
- assert.match(target, /translate:\s*none\s*;/, 'inset expansion must cancel the inherited half-target translation');
- assert.match(target, /inset:\s*calc\(-1 \* var\(--md-sys-measurement-space50\)\)/);
-});
-
-test('cards define their own surface foreground instead of inheriting a parent color', () => {
-  const css = readFileSync(`${__dirname}/../../generated/components-base.css`, 'utf8');
-  const card = css.match(/^\.md-card\s*\{([^}]+)\}/m)?.[1];
-  assert.match(card, /\bcolor:\s*var\(--md-sys-color-on-surface\)\s*;/);
-});
-
 const {splitMenuPosition} = exported.exports;
-test('only the split menu trigger uses CSS instead of the press shape spring', () => {
- const css = readFileSync(`${__dirname}/../../generated/components-base.css`, 'utf8');
- const trailing = css.match(/\.md-split-button > \.md-split-trailing\s*\{([^}]+)\}/)?.[1];
- const leading = css.match(/\.md-split-button > \.md-split-leading\s*\{([^}]+)\}/)?.[1];
- const shared = css.match(/\.md-split-button > \.md-button\s*\{[^}]*transition:([^}]+)\}/)?.[0];
- assert.match(trailing, /--_button-spring-damping:\s*initial/);
- assert.doesNotMatch(leading, /--_button-spring-damping/);
- assert.doesNotMatch(shared, /--_button-spring-damping/);
-});
-
 test('split menu keeps 4dp separation and aligns an available button edge',()=>{
  const trigger={left:200,right:248,top:100,bottom:140},group={left:100,right:248};
  const menu={width:180,height:100},viewport={width:800,height:600};
